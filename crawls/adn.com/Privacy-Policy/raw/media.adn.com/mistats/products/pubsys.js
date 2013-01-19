@@ -224,17 +224,6 @@ mistats.audienceCounts =
 
    updateAll: function ()
    {
-      var date;
-
-      date = new Date();
-      s.c_w('mi_vs', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_pc_m', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_sc_m', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_vc_m', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_pc_w', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_sc_w', '', new Date(date.getTime() - 86400000));
-      s.c_w('mi_vc_w', '', new Date(date.getTime() - 86400000));
-
       if (!this.hasCookies())
          return;
 
@@ -423,20 +412,18 @@ mistats.AdTracker = function ()
       s.events = s.events.join(',');
    };
 
-   function track(pProd)
+   function track()
    {
       fillAdArray();
-//      s.prop38 = '';
+
       s.eVar15 = '';
 
       if (!allAds.length)
          return;
          
-//      s.prop38 = pl + '|' + allAds.join(',') + ',';
       s.eVar15 = adZone || 'Unknown';
 
- //     if (pProd)
-         updateProducts();
+      updateProducts();
    };
 
    function onload()

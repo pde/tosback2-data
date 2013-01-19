@@ -15,6 +15,7 @@ Changes 2012-11-14: Combined audience and audience_segment in demandbase and add
 Changes 2012-11-28: Demandbase fixes.
 Changes 2012-12-23: tracking every user in demandbase no matter where they land.
 Changes 2013-01-02: Re-instating check for en/us for demandbase tracking
+Changes 2013-01-11: incorporating Sam Jackson's re-write.
 */
 
 var s_account=metaData['repsuite']
@@ -90,7 +91,7 @@ function s_doPlugins(s) {
 
 	// Prop 33 page URL VISTA Rule
 	s.prop33 = "";
-	
+
 	// Internal Tracking Parameter
 	s.prop21 = s.getQueryParam('inid');
 	s.eVar21 = s.prop21;
@@ -480,14 +481,9 @@ s.dc=112
 /* Demandbase code
  *
 
-Added by Rob Perez October 15, 2012
-
-*/
-
 
 /* BEGIN ADD IN */
 /************************** PLUGINS SECTION *************************/
-
 
 /* Demandbase Plugin Start - 9/20/2012 */
 window.wasErrorInDemandbasePlugin = false;
@@ -501,24 +497,13 @@ var demandbasePlugin = {
 		document.cookie = (cname+'='+cvalue+'; domain = .symantec.com; path=/'+(expire)?';expires='+expire.toGMTString():'');
 	},
 	dataIsStored: function() {
-		var dRef;
-		if(1 == 2) {
-			dRef = sessionStorage.sessync;
-			if (dRef) {
-				if (dRef.substr(dRef.indexOf('expires')+10,13) < Date.now()) {
-					return false; //no:expired, need to update
-				} else {
-					return true; //yes:data stored <30 min
-				}
-			}
-			return false; //no:session data sessync
-		} else { //no HTML5 storage support - check cookies
-			if (demandbasePlugin.rCookie('sessync')) {
-				return true; //yes:if cookie exists then it hasn't expired
-			} else {
-				return false; //no:missing cookie data
-			}
+		var dbTracked=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('dbtracked');
+		if (dbTracked) {
+			return true; //yes:if cookie exists then it hasn't expired
+		} else {
+			return false; //no:missing cookie data
 		}
+	//	}
 	},
 	checkAndReturnSameOrErrorValue: function(variableToCheck, isDetailed, errorValue, detailedErrorValue) {
 		errorValue = (this.isDefinedAndNotEmpty(errorValue)) ? errorValue : "ISP Visitor";
@@ -538,16 +523,6 @@ var demandbasePlugin = {
 			return true;
 		}
 		return false;
-	},
-	storeData: function (dataObject) {
-		var dataString = JSON.stringify(dataObject),
-			inThirtyMinutes = (function () {var d = new Date(); d.setTime(d.getTime() + 18E5); return d;}());
-		if (1 == 2) {
-			dataString = dataString.replace('{','{"expires":"'+inThirtyMinutes+'",');
-			sessionStorage.sessync = dataString;
-		} else {
-			wCookie('sessync',dataString,inThirtyMinutes);
-		}
 	},
 	demandbase_parse: function(dbInfo) {
 		try {
@@ -597,67 +572,26 @@ var demandbasePlugin = {
 				dbData.audience = local;
 				dbData.audienceSegment = local;
 			}
-			//write any updates back out to data storage
-			doTracking();
-			demandbasePlugin.storeData(dbData);
+			trackDemandBase();
 		} catch (err) {
 			wasErrorInDemandbasePlugin = true;
 		}
-	},
-	getStoredData: function() {
-		if(1 == 2) {
-			if (sessionStorage.sessync) {
-				return JSON.parse(sessionStorage.sessync);
-			}
-		} else {
-			try{
-				if (demandbasePlugin.rCookie('sessync')) {
-					return JSON.parse(demandbasePlugin.rCookie('sessync'));
-				}
-			}
-			catch(ex){
-				return false;
-			}
-		}
-	},
-	setDataObject: function(){
-		var sesData = demandbasePlugin.getStoredData();
-		//parse sesData to dbObject
-		dbData.companyName = sesData.companyName;
-		dbData.employeeCount = sesData.employeeCount;
-		dbData.accountStatus = sesData.accountStatus;
-		dbData.primaryIndustry = sesData.primaryIndustry;
-		dbData.subIndustry = sesData.subIndustry;
-		dbData.employeeBand = sesData.employeeBand;
-		dbData.revenueBand = sesData.revenueBand;
-		dbData.state = sesData.state;
-		dbData.countryName = sesData.countryName;
-		dbData.fortune1000 = sesData.fortune1000;
-		dbData.website = sesData.website;
-		dbData.demandbaseID = sesData.demandbaseID;
-		dbData.audience = sesData.audience;
-		dbData.audienceSegment = sesData.audienceSegment;
-		dbData.audiencePlusSegment = sesData.audiencePlusSegment;
-		doTracking();
 	}
-
 };
-if (!demandbasePlugin.dataIsStored()){
-	/* Demandbase API Call */
-	var scr = document.createElement('script');
-	scr.src = "https://api.demandbase.com/api/v2/ip.json?key=09884c914277626561f7b4e7cff7fa13edf3b423&query=&var=dbInfo&callback=demandbasePlugin.demandbase_parse";
-	document.getElementsByTagName('head')[0].appendChild(scr);
-} else { //Data Stored, set data object for use w/omniture tracking
-	demandbasePlugin.setDataObject();
-}
 
-trackDemandBase = function(){
+
+
+var trackDemandBase = function(){ //Sam's
 		var dbTracked=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('dbtracked');
 		if(dbTracked.indexOf('db')==-1){
 			try{
 				s.linkTrackVars = 'prop28,prop51,prop55,prop63,eVar15';
 				s.prop28 = dbData.companyName;
-				s.prop51 = dbData.audiencePlusSegment;
+				var apsValue = dbData.audiencePlusSegment;
+				if(apsValue === undefined || apsValue === null || apsValue === ""){
+					apsValue = "not set";
+				}
+				s.prop51 = apsValue;//use error value 'not set' if server hasn't returned in time
 				s.eVar15 = dbData.employeeCount;
 				s.prop55 = dbData.primaryIndustry;
 				s.prop63 = dbData.subIndustry;
@@ -691,11 +625,12 @@ fireDemandBaseTracking = function(){
 }
 
 
-function doTracking(){
-	if(fireDemandBaseTracking()){
-		//console.log("tracking");
-		trackDemandBase();
-	}
+
+if ( !demandbasePlugin.dataIsStored() && fireDemandBaseTracking()){
+	/* Demandbase API Call */
+	var scr = document.createElement('script');
+	scr.src = "https://api.demandbase.com/api/v2/ip.json?key=09884c914277626561f7b4e7cff7fa13edf3b423&query=&var=dbInfo&callback=demandbasePlugin.demandbase_parse";
+	document.getElementsByTagName('head')[0].appendChild(scr);
 }
 
 /* end demandbase code */

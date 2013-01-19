@@ -135,32 +135,39 @@ function starRating(starNum) {
  * Rail Ads
  */
 function railAds() {
-  // ad tag that will passthru the javascript custom name=value pairs from the ad server
-  if((typeof(railAdBg)!='undefined')&&(railAdBg)) {
-    // site specific custom background code.
-    jQuery('body').css({'background-image':'url('+railAdBg+')'})
-  }
-  if((typeof(railAdBgColor)!='undefined')&&(railAdBgColor)) {
-    // site specific custom background color code.
-    jQuery('body').css({'background-color':'#'+railAdBgColor});
-  }
-  if((typeof(railAdBgRepeat)!='undefined')&&(railAdBgRepeat)) {
-    // site specific custom background repeat code.
-    jQuery('body').css({'background-repeat':railAdBgRepeat});
-  }
-  if((typeof(railAdBgClickthru)!='undefined')&&(railAdBgClickthru)) {
-    // site specific custom background click event code.
-    jQuery('body').click(function (e) {
-      evt = e || window.event;
-      if (e.target) targ = e.target;
-      else if (e.srcElement) targ = e.srcElement;
-      if (targ.nodeType == 3) // Safari bug
-        targ = targ.parentNode;
-      if (targ.id == jQuery('body').attr('id')) {
-        window.open(railAdBgClickthru);
-      }
-    });
-  }
+    // ad tag that will passthru the javascript custom name=value pairs from the ad server
+    if ((typeof(railAdBg) != 'undefined') && (railAdBg)) {
+        // site specific custom background code.
+        $('body').css({'background-image': 'url(' + railAdBg + ')', 'background-position': 'center top'});
+        $('header, footer').css({'background': 'none', 'margin': '0 auto', 'width': '1000px'})
+    }
+    if ((typeof(railAdBgColor) != 'undefined') && (railAdBgColor)) {
+        // site specific custom background color code.
+        $('body').css({'background-color': '#' + railAdBgColor});
+    }
+    if ((typeof(railAdBgRepeat) != 'undefined') && (railAdBgRepeat)) {
+        // site specific custom background repeat code.
+        $('body').css({'background-repeat': railAdBgRepeat});
+    }
+    if ((typeof(railAdBgClickthru) != 'undefined') && (railAdBgClickthru)) {
+        // site specific custom background click event code.
+        $('body').click(function(e) {
+            evt = e || window.event;
+            if (e.target) {
+                targ = e.target;
+            }
+            else if (e.srcElement) {
+                targ = e.srcElement;
+            }
+            if (targ.nodeType == 3) {
+                // Safari bug
+                targ = targ.parentNode;
+            }
+            if (targ.id == $('body').attr('id')) {
+                window.open(railAdBgClickthru);
+            }
+        });
+    }
 }
 
 

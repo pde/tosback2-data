@@ -25,14 +25,15 @@ function checkname(txtFName) {
 	else if (filter.test(txtFName)) {
 		alert("Please enter a valid name");
 		return false;
-	}
+	} 
 	else {
 		return true;
 	}
 }
 //--->AR96001
 function checkLname(txtLName) {
-    var filter = /[^A-Za-z0-9\s]/;
+	var filter = /[^A-Za-z0-9\s]/;
+	var filterspace = /^[\s]*$/;
     if (txtLName == "") {
         alert("Please enter a last name");
         return false;
@@ -40,14 +41,20 @@ function checkLname(txtLName) {
     else if (filter.test(txtLName)) {
         alert("Please enter a valid name");
         return false;
-    }
+       }
+    else if (filterspace.test(txtLName)) {
+       	alert("Please enter a valid name");
+       	return false; 
+	   }
     else {
         return true;
     }
 }
 
 function checkemail(txtemail) {
-    var filter = new RegExp("^((([-_!#$%*+/=?^~`{|}\\w]+(\\.[-_!#$%*+/=?^~`{|}\\w]+)*)|(\"[^\"]+\"))@[0-9A-Za-z]+([\\-]+[0-9A-Za-z]+)*(\\.[0-9A-Za-z]+([\\-]+[0-9A-Za-z]+)*)+[;, ]*)+$");
+    // trim
+    txtemail = txtemail.replace(/^\s+|\s+$/g, "");
+    var filter = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", "i");
     if (filter.test(txtemail)) {
         return true;
     }
@@ -568,3 +575,12 @@ function showNonPaypalPaymentmethod()
 		}
 	}
 }
+
+function RestrictSpace(evt1, evt2) 
+{
+	if (evt2 == 32 || evt1 == 32)
+	{
+		return false;
+	}
+}
+

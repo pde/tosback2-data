@@ -1011,6 +1011,16 @@ function usa_setupMeebo()
 
 	// Featured Graphic Promote
 	usa_meeboButtons.buttons.push({
+		id: "usa-featured_3-button",
+        type: "action",
+        isIcon: true,
+        icon: "/_img/nrcatchup_150x30.png",
+        label: "",
+        onClick: function(){ parent.location.href = '/videos/Necessary Roughness/Full Episodes'; }
+	});
+	
+	/*
+	usa_meeboButtons.buttons.push({
 		id: "usa-featured_2-button",
         type: "action",
         isIcon: true,
@@ -1018,7 +1028,7 @@ function usa_setupMeebo()
         label: "",
         onClick: function(){ parent.location.href = '/videos/Suits/Full Episodes'; }
 	});
-	/*
+	
 	usa_meeboButtons.buttons.push({
 		id: "usa-featured_1-button",
         type: "widget",

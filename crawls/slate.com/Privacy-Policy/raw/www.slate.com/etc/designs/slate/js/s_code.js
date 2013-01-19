@@ -65,6 +65,9 @@ function s_doPlugins(s)
 		  s.eVar3=s.getQueryParam('wpisrc');
 		}
 		
+		if (s.getQueryParam('google_editors_picks')) {
+			s.prop20="google_news_editors_picks";
+		}
 
 	    /* Internal Campaigns: getQueryParam */
 		if (s.getQueryParam('fb_ref')) {

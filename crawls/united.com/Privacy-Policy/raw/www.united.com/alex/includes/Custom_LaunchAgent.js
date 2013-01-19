@@ -20,6 +20,7 @@ function LaunchInternalAgent(agentLocation)
     //Agent window width/height and parent window width/height must match popupsettings control in agent.aspx
     var options = 'scrollbars=no,menubar=no,resizable=yes,location=no,status=yes,titlebar=no,toolbar=no';
     PopupScript.ApplyParentTop = true;
+
     PopupScript.LaunchChildWindow(agentLocation, 'internalAgent', 'right', 250, 675, 75, 0, true, null, null, options);
 }
 
@@ -30,7 +31,28 @@ function LaunchExternalAgent(agentLocation)
     PopupScript.ApplyParentTop = false;
     PopupScript.LaunchChildWindow(agentLocation, 'externalAgent', 'right', 250, 675, 20, 0, true, 1024, 768, options);
 }
+function LaunchInternalAlex(agentLocation)
+{
+    //Agent window width/height and parent window width/height must match popupsettings control in agent.aspx
+    var options = 'scrollbars=no,menubar=no,resizable=yes,location=no,status=yes,titlebar=no,toolbar=no';
+    PopupScript.ApplyParentTop = false;
+    var qIndex = agentLocation.indexOf('Question');
+    agentLocation = agentLocation.replace(/agent.aspx/gi, "FTAgent.aspx");
 
+    if (qIndex == -1)
+    {
+        agentLocation = agentLocation + '?FlyingTogether=true#LaunchPointName=FlyingTogether';
+    }
+    else
+    {
+        var Q = agentLocation.substr(qIndex);
+
+        agentLocation = agentLocation.substring(0, qIndex - 1);
+
+        agentLocation = agentLocation + '?FlyingTogether=true#LaunchPointName=FlyingTogether' + '&' + Q;
+    }
+    PopupScript.LaunchChildWindow(agentLocation, 'internalAgent', 'right', 250, 675, 75, 0, true, null, null, options);
+}
 function LaunchExternalUnitedAgent(agentLocation)
 {
     var qIndex = agentLocation.indexOf('Question');
@@ -93,7 +115,7 @@ PopupScript.LaunchChildWindow = function(url, agentWindowName, align, width, hei
     layoutParent = (layoutParent) ? true : false;
     parentWidth = (parentWidth) ? parentWidth : '100%'; // Default height: 100%
     parentHeight = (parentHeight) ? parentHeight : '100%'; // Default height: 100%
-    options = (options) ? options : 'scrollbars=no,menubar=no,resizable=no,location=no,status=yes,titlebar=no,toolbar=no';
+    options = (options) ? options : 'scrollbars=no,menubar=yes,resizable=no,location=yes,status=yes,titlebar=no,toolbar=no';
 
     // Make sure they're numeric (Convert from percentages
     width = PopupScript.WidthToScreen(width);
@@ -138,7 +160,7 @@ PopupScript.LaunchChildWindow = function(url, agentWindowName, align, width, hei
 
         try 
         {
-            url = url.replace('.aspx?', '.aspx?#');
+            url = url.replace('?Question', '?#Question');
             win.location.href = url;
             
             //Get the URL without hash string

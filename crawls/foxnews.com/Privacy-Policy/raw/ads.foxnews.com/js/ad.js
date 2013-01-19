@@ -811,6 +811,32 @@
 			},
 			init: function(d) {
 
+				//append AOL param FOX-33027
+				(function(){
+					var sDomains = ["Mapquest.com", "Pawnation.com", "everydayhealth.com", "mandatory.com", "theboot.com", "techcrunch.com", "Pawnation.com", "everydayhealth.com", "mandatory.com", "theboot.com",
+					 "techcrunch.com", "engadget.com", "aol.sportingnews", "comicsalliance", "defense.aol", "defense.aol", "rssmix.com", "autoblog.com", "aol.com", "aoltv.com", "dailyfinance.com",
+					 "huffingtonpost.com", "popeater.com", "kitchendaily.com", "travel.aol", "energy.aol", "slashfood.com", "gadling.com", "weirdnews.aol", "aolnews.com"];
+
+
+					insertParam = function(linkElm,href){
+
+						href += (href.indexOf("?") === -1)? "?ncid=txtlnkusaolp00000058" : "&ncid=txtlnkusaolp00000058";
+				
+						linkElm.attr("href", href)
+					}
+
+					$('a').each(function(){
+						var linkElm = $(this), href = linkElm.attr("href");
+						for(var s = 0; s < sDomains.length; s++){
+				
+							if(typeof href === "undefined"){continue;}
+							if(href.indexOf(sDomains[s]) > -1){
+								insertParam(linkElm,href);
+							}
+						}
+					})
+				})();				
+				
 				//fbn news exception		
 				if(d.channel.indexOf("fbn/news/") > -1){
 				    
@@ -1010,6 +1036,8 @@
 				"comment-post": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event21";},
 				"fb-share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.tl();},
 				"twttr-follow": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";window.omtr.tl('','o','follow');},
+				"email-sign-up-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event52";window.omtr.events="event52";window.omtr.tl('','o','email-sign-up-success');},	
+								
 				
 				"slide": function(obj){
 					window.omtr.events="event26";
@@ -1182,7 +1210,8 @@
 				"comment-post": function(obj){$.ad.omni.load({"comment-post": obj});},
 				"fb-share": function(obj){$.ad.omni.load({"fb-share": obj});},
 				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},		
-					
+				"email-sign-up-success": function(obj){$.ad.omni.load({"email-sign-up-success": obj});},	
+				
 				"view": function(d){$.ad.omni.init(d);$.ad.niel.pre(d);$.ad.coms.load(d);$.ad.chart.load();},
 				//"slide": function(x){$.ad.omni.load({"slide": x});$.ad.niel.pre($.ad.meta());$.ad.coms.load($.ad.meta());/*$.ad.chart.load('/'+x);*/},
 				"slide": function(obj){
@@ -1697,7 +1726,7 @@
 				var d = $.ad.meta();
 
 				//parse.ly
-				$.ad.prsly.pre(d);
+				//$.ad.prsly.pre(d);
 
 				//comscore
 				$.ad.coms.pre(d);
@@ -1735,7 +1764,7 @@
 												
 			$.ad.adBlade.init();
 			
-			$.ad.optimizely.init(d);
+			//$.ad.optimizely.init(d);
 			
 			var col = "";
 			if (d.ptype==="column"||d.ctype==="column") { var col = "-" + d.channel.split('/').slice(-1)[0]; }

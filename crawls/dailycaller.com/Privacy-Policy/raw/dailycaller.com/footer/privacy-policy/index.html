@@ -19,9 +19,9 @@
 	<!-- CSS
 	================================================== -->
 	
-		<link rel="stylesheet" href="../../../cdn01.dailycaller.com/wp-content/themes/dctwo/style2.11.css%3Fv=2.11.css" media="screen">
+		<link rel="stylesheet" href="../../../cdn01.dailycaller.com/wp-content/themes/dctwo/style2.14.css%3Fv=2.14.css" media="screen">
 <!--[if IE]>
-	<link rel="stylesheet" type="text/css" href="http://cdn01.dailycaller.com/wp-content/themes/dctwo/styleie2.11.css?v=2.11" />
+	<link rel="stylesheet" type="text/css" href="http://cdn01.dailycaller.com/wp-content/themes/dctwo/styleie2.14.css?v=2.14" />
 <![endif]-->	
 
 
@@ -325,6 +325,9 @@ function emailAjaxSubscriptionSubmitFunction(isWidget){
 
 
 <script type="text/javascript">
+
+
+
 jQuery(function ($){
 	$(document).ready(function() {
 	    function isScrolledIntoView(elem,scrollelem) {
@@ -363,7 +366,28 @@ jQuery(function ($){
 });	
 </script>
 
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$('.image_caption_toggle_off').click(function(){	
+			$('.image_caption_toggle_off').hide();
+			$('.image_caption_toggle').show();			
+			$('.image_caption').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });
+		});
+			
+		
 
+		$('.image_caption_toggle').click(function(){	
+			$('.image_caption_toggle').hide();				
+			$('.image_caption').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });
+			$('.image_caption_toggle_off').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });			
+//			$('.image_caption_toggle_off').show();	
+			$('.image_caption_toggle_off').css("display", "block");
+		});
+
+	});
+
+//		
+</script>
 
 </head>
 <body>
@@ -408,7 +432,7 @@ jQuery(function ($){
 	<div class="sixteen columns" id="trending">
 			<div id="buzz">
 							<strong>TRENDING</strong>
-				<a href="http://topics.dailycaller.com/pakistan.htm">PAKISTAN</a> | <a href="http://topics.dailycaller.com/issues/national-rifle-association.htm">NATIONAL RIFLE ASSOCIATION</a> | <a href="http://topics.dailycaller.com/cycling/lance-armstrong.htm">LANCE ARMSTRONG</a> | <a href="http://topics.dailycaller.com/afghanistan.htm">AFGHANISTAN</a> | <a href="http://topics.dailycaller.com/us/republican-party.htm">REPUBLICAN PARTY</a> | <a href="http://topics.dailycaller.com/whitehouse/barack-obama.htm">BARACK OBAMA</a>			</div>
+				<a href="http://topics.dailycaller.com/music/nicki-minaj.htm">NICKI MINAJ</a> | <a href="http://topics.dailycaller.com/issues/gun-control.htm">GUN CONTROL</a> | <a href="http://topics.dailycaller.com/cycling/lance-armstrong.htm">LANCE ARMSTRONG</a> | <a href="http://topics.dailycaller.com/whitehouse/barack-obama.htm">BARACK OBAMA</a> | <a href="http://topics.dailycaller.com/world/kate-middleton.htm">KATE MIDDLETON</a> | <a href="http://topics.dailycaller.com/ncaa/notre-dame-fighting-irish.htm">NOTRE DAME FIGHTING IRISH</a>			</div>
 	</div>
 
 	<div class="four columns" id="network-space">
@@ -539,7 +563,7 @@ jQuery(function ($){
 	    </div>
 	    <div class="dc-module dc-fb-social-exp most-read sm">
 	        <h3 class="dc-se-hdg" style="margin:0 0 7px 0;"><span class="bkg">Most Read</span><span class="corner">&#xA0;</span></h3>
-	            <div><div class="blue"><a href="http://dailycaller.com/2013/01/16/white-house-now-requires-we-the-people-petitions-to-have-100000-signatures-for-official-response/">White House: We won't respond to petitions with 25,000 signatures anymore</a></div><div class="break"></div></div><div><div class="blue"><a href="http://dailycaller.com/2013/01/14/gop-congressman-threatens-impeachment-if-obama-uses-executive-action-for-gun-control/">GOP congressman threatens impeachment if Obama uses executive action for gun control </a></div><div class="break"></div></div><div><div class="blue"><a href="http://dailycaller.com/2013/01/16/michael-savage-mark-levin-reignite-feud-despite-now-having-same-distributors-different-time-slots/">'Fat ass' Michael Savage reignites feud with 'hysteric' Mark Levin [AUDIO]</a></div><div class="break"></div></div>	    </div>
+	            <div><div class="blue"><a href="http://dailycaller.com/2013/01/18/ted-nugent-on-obama-when-a-man-can-dictate-to-another-man-an-unarmed-helplessness-such-a-dictator-is-dangerous/">Ted Nugent on Obama &#8220;When a man, can dictate to another man, an unarmed helplessness, such a dictator is dangerous&#8221;</a></div><div class="break"></div></div><div><div class="blue"><a href="http://dailycaller.com/2013/01/18/obama-bypasses-congress-attempts-to-force-companies-to-reveal-political-donations-to-sec/"><b>SECret No More</b></a></div><div class="break"></div></div><div><div class="blue"><a href="http://dailycaller.com/2013/01/18/bloomberg-most-people-i-know-dont-even-have-a-gun/">Bloomberg: 'Most people I know don't even have a gun'</a></div><div class="break"></div></div>	    </div>
 	    <div class="clear">&#xA0;</div>
 	</div>
 </div>
@@ -745,7 +769,8 @@ jQuery(function ($){
 <p>Questions and comments regarding this Privacy Policy should be directed to privacy@dailycaller.com.</p>
 <p>Copyright (c) 2012, The Daily Caller, Inc.</p>
 <p>Read more: <a href="index.html#ixzz2Aj2rMycx"  >http://dailycaller.com/footer/privacy-policy/#ixzz2Aj2rMycx</a></p>
-
+	<div class="OUTBRAIN" data-src="<?php the_permalink();?>" data-widget-id="AR_1" data-ob-template="Daily Caller" ></div>
+<script type="text/javascript" async="async" src="../../../widgets.outbrain.com/outbrain.js"></script>	
 				
 			</div>
 		</div>
@@ -767,100 +792,107 @@ jQuery(function ($){
 				<div id="widget-most-popular" class="popular-box">
 																<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/16/white-house-now-requires-we-the-people-petitions-to-have-100000-signatures-for-official-response/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/11/White-House-petition-88x40.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/16/white-house-now-requires-we-the-people-petitions-to-have-100000-signatures-for-official-response/">
-													White House: We won't respond to petitions with 25,000 signatures anymore</a>
+																									<a href="http://dailycaller.com/2013/01/17/states-refusal-to-establish-exchanges-could-undo-obamacare/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/17/states-refusal-to-establish-exchanges-could-undo-obamacare/">
+													States' refusal to establish exchanges could undo Obamacare</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/14/gop-congressman-threatens-impeachment-if-obama-uses-executive-action-for-gun-control/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Steve-Stockman-620x413-e1358202016322.jpeg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/14/gop-congressman-threatens-impeachment-if-obama-uses-executive-action-for-gun-control/">
-													GOP congressman threatens impeachment if Obama uses executive action for gun control </a>
+																									<a href="http://dailycaller.com/2013/01/18/obama-bypasses-congress-attempts-to-force-companies-to-reveal-political-donations-to-sec/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/The-Securities-and-Exchange-Commission-e1358495896613.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/obama-bypasses-congress-attempts-to-force-companies-to-reveal-political-donations-to-sec/">
+													SECret No More</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/16/michael-savage-mark-levin-reignite-feud-despite-now-having-same-distributors-different-time-slots/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Savage-Levin116-e1358321641547.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/16/michael-savage-mark-levin-reignite-feud-despite-now-having-same-distributors-different-time-slots/">
-													'Fat ass' Michael Savage reignites feud with 'hysteric' Mark Levin [AUDIO]</a>
+																									<a href="http://dailycaller.com/2013/01/18/piers-morgan-gun-nut/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/piers-morgan-gun-nut/">
+													Piers Morgan: gun nut?</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/liberal-media-glazes-over-obama-press-conference-attacks-contradictions/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/Obama-angry-AP-e1349908598124.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/liberal-media-glazes-over-obama-press-conference-attacks-contradictions/">
-													Fmr. WH adviser: Psychiatrists would say Obama has mastered art of 'projection'</a>
+																									<a href="http://dailycaller.com/2013/01/18/breaking-george-takei-does-not-care-much-for-william-shatner/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/breaking-george-takei-does-not-care-much-for-william-shatner/">
+													BREAKING: George Takei does not care much for William Shatner</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/16/the-best-colleges-for-sugar-babies-and-the-sugar-daddies-who-love-them-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/sugar-baby-students-e1358291537838.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/16/the-best-colleges-for-sugar-babies-and-the-sugar-daddies-who-love-them-slideshow/">
-													The best colleges for 'sugar babies' and the sugar daddies who love them [SLIDESHOW]</a>
+																									<a href="http://dailycaller.com/2013/01/18/ben-shapiro-on-how-to-win-a-debate-against-a-bully-like-piers-morgan/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/ben-shapiro-on-how-to-win-a-debate-against-a-bully-like-piers-morgan/">
+													Ben Shapiro on how to win a debate against a bully like Piers Morgan</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/james-okeefe-goofs-on-gun-grabbers/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Journalists-Gun-Free-e1358260454735.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/james-okeefe-goofs-on-gun-grabbers/">
-													James O'Keefe goofs on gun-grabbers [VIDEO]</a>
+																									<a href="http://dailycaller.com/2013/01/17/anonymous-likens-obama-gun-control-policy-to-hitler/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/adolf_hitler-e1358411955695.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/17/anonymous-likens-obama-gun-control-policy-to-hitler/">
+													Anonymous likens Obama gun control policy to Hitler</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/16/congressman-pushing-obama-impeachment-likens-president-to-saddam-hussein-video/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Stockman115-e1358308599677.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/16/congressman-pushing-obama-impeachment-likens-president-to-saddam-hussein-video/">
-													Congressman pushing Obama impeachment likens president to Saddam Hussein [VIDEO]</a>
+																									<a href="http://dailycaller.com/2013/01/18/bloomberg-most-people-i-know-dont-even-have-a-gun/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/159690458-e1358543991273.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/bloomberg-most-people-i-know-dont-even-have-a-gun/">
+													Bloomberg: 'Most people I know don't even have a gun'</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/krauthammer-debates-oreilly-over-conservatism-in-permanent-decline-video/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/OReilly-Krauthammer115-e1358305668362.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/krauthammer-debates-oreilly-over-conservatism-in-permanent-decline-video/">
-													Krauthammer: Obama deliberately trying to sabotage GOP [VIDEO]</a>
+																									<a href="http://dailycaller.com/2013/01/18/the-mystery-of-ezra-klein/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/the-mystery-of-ezra-klein/">
+													The Mystery of Ezra Klein</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/oregon-sheriff-to-joe-biden-i-wont-enforce-new-federal-gun-laws/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Sheriff-Tim-Mueller-letter-FEATURE-e1358323873875.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/oregon-sheriff-to-joe-biden-i-wont-enforce-new-federal-gun-laws/">
-													Oregon sheriff to Joe Biden: I won't enforce new federal gun laws</a>
+																									<a href="http://dailycaller.com/2013/01/18/huntsman-lauds-house-gop-plan-to-tie-member-salary-to-passing-budget/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/09/Huntsman92-e1346611834915.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/huntsman-lauds-house-gop-plan-to-tie-member-salary-to-passing-budget/">
+													Huntsman lauds House GOP plan to tie member salary to passing budget</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/the-atlantic-runs-weird-scientology-advertorial-then-pulls-it/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/the-atlantic-runs-weird-scientology-advertorial-then-pulls-it/">
-													The Atlantic runs weird Scientology advertorial, then pulls it</a>
+																									<a href="http://dailycaller.com/2013/01/18/sc-bill-would-exempt-state-militia-from-federal-gun-rules/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/3b992a6c21b247b39d313c320d066158-e1358495179592.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/sc-bill-would-exempt-state-militia-from-federal-gun-rules/">
+													SC bill would exempt state militia from federal gun rules</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/13/walter-williams-americans-misunderstand-the-point-of-the-second-amendment/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Untitled1-e1358109991337.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/13/walter-williams-americans-misunderstand-the-point-of-the-second-amendment/">
-													Walter Williams: Americans misunderstand point of the Second Amendment [VIDEO]</a>
+																									<a href="http://dailycaller.com/2013/01/17/cuomos-new-gun-law-does-not-exempt-new-york-cops-could-prevent-police-from-responding-to-school-shootings/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/ap_andrew_cuomo_mi_130109_wg-e1358464921457.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/17/cuomos-new-gun-law-does-not-exempt-new-york-cops-could-prevent-police-from-responding-to-school-shootings/">
+													Cuomo's new gun law does not exempt New York cops</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/16/white-house-downplays-morsis-anti-semitic-apes-and-pigs-rants/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/13fd2ad3389743448b0643a3b6e99b1d-e1358323164202.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/16/white-house-downplays-morsis-anti-semitic-apes-and-pigs-rants/">
-													White House downplays Morsi&#8217;s anti-Semitic &#8216;apes and pigs&#8217; rants</a>
+																									<a href="http://dailycaller.com/2013/01/18/in-england-piers-morgan-joked-about-shooting-rivals-said-homeowners-who-kill-burglars-should-not-be-prosecuted/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/143887941-e1358493836203.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/in-england-piers-morgan-joked-about-shooting-rivals-said-homeowners-who-kill-burglars-should-not-be-prosecuted/">
+													In England, Piers Morgan joked about shooting rivals, said homeowners who kill burglars should not be prosecuted</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/15/taxpayers-pay-for-bill-clintons-cinemax-jimmy-carters-dish-network/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/159437161-e1358218498814.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/15/taxpayers-pay-for-bill-clintons-cinemax-jimmy-carters-dish-network/">
-													Bill Clinton pays for Cinemax with your money</a>
+																									<a href="http://dailycaller.com/2013/01/18/the-10-best-lines-from-the-greatest-lawsuit-ever/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/ap_tiger_woods_jt_120603_wg-e1358538437216.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/the-10-best-lines-from-the-greatest-lawsuit-ever/">
+													The 10 best lines from the greatest lawsuit ever</a>
 												</h3>
 											</div>
 																						<div class="headline clearingfix clearfix includes-image">
  <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2013/01/11/white-house-responds-to-death-star-petition-with-humor/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Death-Star-88x40.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>												<h3><a href="http://dailycaller.com/2013/01/11/white-house-responds-to-death-star-petition-with-humor/">
-													White House responds to 'Death Star' petition with humor</a>
+																									<a href="http://dailycaller.com/2013/01/18/local-dc-tv-reporter-flubs-n-gger-inaugural-tease/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/Morris118-e1358532752908.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/local-dc-tv-reporter-flubs-n-gger-inaugural-tease/">
+													Local DC TV reporter drops 'n-bomb' on live TV</a>
+												</h3>
+											</div>
+																						<div class="headline clearingfix clearfix includes-image">
+ <div class="widget-feature-image">
+																									<a href="http://dailycaller.com/2013/01/18/biden-to-nra-we-dont-have-the-time-to-prosecute-people-who-lie-on-background-checks/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/biden-getty-e1358465150949.jpg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>												<h3><a href="http://dailycaller.com/2013/01/18/biden-to-nra-we-dont-have-the-time-to-prosecute-people-who-lie-on-background-checks/">
+													Biden to NRA: We 'don't have the time' to prosecute gun buyers who lie on background checks</a>
 												</h3>
 											</div>
 															</div>
@@ -910,17 +942,17 @@ jQuery(function ($){
 							</div>
 														<div class="headline clearingfix clearfix includes-image">
 					 <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2012/03/26/former-naacp-leader-accuses-sharpton-and-jackson-of-exploiting-trayvon-martin/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/03/cl01-e1332785760875.jpeg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
-					</div>
-								<h3><a href="http://dailycaller.com/2012/03/26/former-naacp-leader-accuses-sharpton-and-jackson-of-exploiting-trayvon-martin/">
-								Former NAACP leader accuses Sharpton and Jackson of 'exploiting' Trayvon Martin</a></h3>
-							</div>
-														<div class="headline clearingfix clearfix includes-image">
-					 <div class="widget-feature-image">
 																									<a href="http://dailycaller.com/2010/12/06/an-unfinished-legacy-president-reagan-and-the-socrates-project/"><img src="index.html" height="40" width="88"  title="Privacy Policy" border="0" /></a>
 					</div>
 								<h3><a href="http://dailycaller.com/2010/12/06/an-unfinished-legacy-president-reagan-and-the-socrates-project/">
 								An unfinished legacy: President Reagan and the Socrates Project</a></h3>
+							</div>
+														<div class="headline clearingfix clearfix includes-image">
+					 <div class="widget-feature-image">
+																									<a href="http://dailycaller.com/2012/03/26/former-naacp-leader-accuses-sharpton-and-jackson-of-exploiting-trayvon-martin/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/03/cl01-e1332785760875.jpeg" height="40" width="88"  title="Privacy Policy" border="0" /></a>
+					</div>
+								<h3><a href="http://dailycaller.com/2012/03/26/former-naacp-leader-accuses-sharpton-and-jackson-of-exploiting-trayvon-martin/">
+								Former NAACP leader accuses Sharpton and Jackson of 'exploiting' Trayvon Martin</a></h3>
 							</div>
 														<div class="headline clearingfix clearfix includes-image">
 					 <div class="widget-feature-image">
@@ -957,21 +989,21 @@ jQuery(function ($){
 						<div class="blog-widget box content-widget-box-header"><div class='headersection'><a href="http://dailycaller.com/author/mlewis/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/sidebar-columnists-mattlewis.jpg" border="0" alt="" /> </a></div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/15/buzz-bissinger-and-the-ethics-of-landing-an-exclusive-interview/">Buzz Bissinger and the ethics of landing an exclusive interview</a>
+					<a href="http://dailycaller.com/2013/01/18/ben-shapiro-on-how-to-win-a-debate-against-a-bully-like-piers-morgan/">Ben Shapiro on how to win a debate against a bully like Piers Morgan</a>
 				</h3>
-				<div class="date">10:22 AM  01/15/2013</div>
+				<div class="date">11:33 AM  01/18/2013</div>
 			</div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/14/the-next-gop-debacle/">The next GOP debacle?</a>
+					<a href="http://dailycaller.com/2013/01/18/why-conservatism-needs-a-pope/">Why conservatism needs a Pope</a>
 				</h3>
-				<div class="date">1:41 PM  01/14/2013</div>
+				<div class="date">10:12 AM  01/18/2013</div>
 			</div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/14/marco-rubio-pushes-back-at-colin-powells-diversity-criticism-of-republican-party/">Marco Rubio pushes back at Colin Powell&#8217;s diversity criticism of Republican Party</a>
+					<a href="http://dailycaller.com/2013/01/17/how-liberals-learned-to-stop-worrying-and-love-gun-culture/">How liberals learned to stop worrying and love gun culture</a>
 				</h3>
-				<div class="date">10:05 AM  01/14/2013</div>
+				<div class="date">10:33 AM  01/17/2013</div>
 			</div>
 			    <script type="text/javascript">
     // <![CDATA[
@@ -997,23 +1029,29 @@ jQuery(function ($){
 		</div>			<div class="blog-widget box content-widget-box-header"><div class='headersection'><a href="http://dailycaller.com/author/smedlock/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/sidebar-columnists-jimtreacher.png" border="0" alt="" /> </a></div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/15/best-smoothie-bar-in-the-world-charges-liberals-1-extra/">Best smoothie bar in the world charges liberals $1 extra</a>
+					<a href="http://dailycaller.com/2013/01/18/breaking-george-takei-does-not-care-much-for-william-shatner/">BREAKING: George Takei does not care much for William Shatner</a>
 				</h3>
-				<div class="date">6:23 PM  01/15/2013</div>
+				<div class="date">2:15 PM  01/18/2013</div>
 			</div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/15/piers-morgan-hides-behind-grieving-families-to-call-out-ben-shapiro/">Piers Morgan hides behind grieving families to call out Ben Shapiro</a>
+					<a href="http://dailycaller.com/2013/01/18/buzzfeed-staffer-to-goproud-suck-my-d/">BuzzFeed staffer to GOProud: &#8220;SUCK MY D***&#8221;</a>
 				</h3>
-				<div class="date">1:11 PM  01/15/2013</div>
+				<div class="date">12:34 PM  01/18/2013</div>
 			</div>
 						<div class="headline">
 				<h3>
-					<a href="http://dailycaller.com/2013/01/15/james-okeefe-goofs-on-gun-grabbers/">James O&#8217;Keefe goofs on gun-grabbers</a>
+					<a href="http://dailycaller.com/2013/01/18/piers-morgan-gun-nut/">Piers Morgan: gun nut?</a>
 				</h3>
-				<div class="date">9:19 AM  01/15/2013</div>
+				<div class="date">9:43 AM  01/18/2013</div>
 			</div>
 					</div>			<div class="blog-widget box content-widget-box-header"><div class='headersection'><a href="http://dailycaller.com/author/mickeykaus/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/sidebar-columnists-mickeykaus.png" border="0" alt="" /> </a></div>
+						<div class="headline">
+				<h3>
+					<a href="http://dailycaller.com/2013/01/18/the-mystery-of-ezra-klein/">The Mystery of Ezra Klein</a>
+				</h3>
+				<div class="date">4:03 AM  01/18/2013</div>
+			</div>
 						<div class="headline">
 				<h3>
 					<a href="http://dailycaller.com/2013/01/11/state-your-race/">State your race!</a>
@@ -1025,12 +1063,6 @@ jQuery(function ($){
 					<a href="http://dailycaller.com/2013/01/09/would-the-coin-help-the-gops/">Would the coin help the GOPs?</a>
 				</h3>
 				<div class="date">4:55 AM  01/09/2013</div>
-			</div>
-						<div class="headline">
-				<h3>
-					<a href="http://dailycaller.com/2013/01/08/obamas-no-spending-problem-fallacy/">Obama&#8217;s &#8220;no spending problem&#8221; fallacy</a>
-				</h3>
-				<div class="date">3:40 PM  01/08/2013</div>
 			</div>
 					</div>
 
@@ -1091,6 +1123,20 @@ jQuery(function ($){
 					</div></div>			<div class="blog-widget box content-widget-box-header"><div class='headersection'><a href="http://dailycaller.com/section/slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/sidebar-small-header-slideshows.png" border="0" alt="" /> </a></div>
 						<div class="headline clearingfix includes-image">
 				 <div class="widget-feature-image">
+																									<a href="http://dailycaller.com/2013/01/17/the-best-of-teoing-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/teoing101-e1358454304581.jpg" height="40" width="88"  title="The best of Te&#8217;oing [SLIDESHOW]" border="0" /></a>
+					</div>				<h3>
+					<a href="http://dailycaller.com/2013/01/17/the-best-of-teoing-slideshow/">The best of Te&#8217;oing [SLIDESHOW]</a>
+				</h3>
+				 <div class="date">11:53 PM  01/17/2013</div> 			</div>
+						<div class="headline clearingfix includes-image">
+				 <div class="widget-feature-image">
+																									<a href="http://dailycaller.com/2013/01/17/a-guide-to-the-manti-teo-hoax-in-11-crazy-steps-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/1590859941-e1358441705252.jpg" height="40" width="88"  title="A guide to the Manti Te&#8217;o hoax in 11 crazy steps [SLIDESHOW]" border="0" /></a>
+					</div>				<h3>
+					<a href="http://dailycaller.com/2013/01/17/a-guide-to-the-manti-teo-hoax-in-11-crazy-steps-slideshow/">A guide to the Manti Te&#8217;o hoax in 11 crazy steps [SLIDESHOW]</a>
+				</h3>
+				 <div class="date">12:30 PM  01/17/2013</div> 			</div>
+						<div class="headline clearingfix includes-image">
+				 <div class="widget-feature-image">
 																									<a href="http://dailycaller.com/2013/01/16/6-cats-that-are-not-excited-about-inauguration-day-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2013/01/socks1-e1358290455148.jpg" height="40" width="88"  title="6 cats that are not excited about Inauguration Day [SLIDESHOW]" border="0" /></a>
 					</div>				<h3>
 					<a href="http://dailycaller.com/2013/01/16/6-cats-that-are-not-excited-about-inauguration-day-slideshow/">6 cats that are not excited about Inauguration Day [SLIDESHOW]</a>
@@ -1145,32 +1191,18 @@ jQuery(function ($){
 					<a href="http://dailycaller.com/2012/12/28/10-cats-that-are-ready-to-party-on-new-years-eve-slideshow/">10 cats that are ready to party on New Year&#8217;s Eve [SLIDESHOW]</a>
 				</h3>
 				 <div class="date">4:11 AM  12/28/2012</div> 			</div>
-						<div class="headline clearingfix includes-image">
-				 <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2012/12/27/top-10-best-tv-shows-of-2012-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/12/Mad-Men1-e1356365150534.jpg" height="40" width="88"  title="Top 10 best TV shows of 2012 [SLIDESHOW]" border="0" /></a>
-					</div>				<h3>
-					<a href="http://dailycaller.com/2012/12/27/top-10-best-tv-shows-of-2012-slideshow/">Top 10 best TV shows of 2012 [SLIDESHOW]</a>
-				</h3>
-				 <div class="date">8:44 AM  12/27/2012</div> 			</div>
-						<div class="headline clearingfix includes-image">
-				 <div class="widget-feature-image">
-																									<a href="http://dailycaller.com/2012/12/27/2012-the-year-in-photos-of-kate-upton-slideshow/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/12/December-Kate-Upton2-e1356547729802.jpg" height="40" width="88"  title="2012: The year in photos of Kate Upton [SLIDESHOW]" border="0" /></a>
-					</div>				<h3>
-					<a href="http://dailycaller.com/2012/12/27/2012-the-year-in-photos-of-kate-upton-slideshow/">2012: The year in photos of Kate Upton [SLIDESHOW]</a>
-				</h3>
-				 <div class="date">3:06 AM  12/27/2012</div> 			</div>
 			<div class="widget-footer"><a href="/section/slideshow"/" class="see-more">See More</a></div>		</div>			<div class="blog-widget box content-widget-box-header"><div class='headersection'><a href="http://dailycaller.com/author/acoulter/"><img src="../../../cdn01.dailycaller.com/wp-content/uploads/2012/10/sidebar-columnists-anncoulter.png" border="0" alt="" /> </a></div>
+						<div class="headline">
+				<h3>
+					<a href="http://dailycaller.com/2013/01/16/guns-dont-kill-people-the-mentally-ill-do/">Guns don&#8217;t kill people, the mentally ill do</a>
+				</h3>
+				<div class="date">8:29 PM  01/16/2013</div>
+			</div>
 						<div class="headline">
 				<h3>
 					<a href="http://dailycaller.com/2013/01/10/doing-the-research-the-new-york-times-wont/">Doing the research the New York Times won&#8217;t</a>
 				</h3>
 				<div class="date">12:14 AM  01/10/2013</div>
-			</div>
-						<div class="headline">
-				<h3>
-					<a href="http://dailycaller.com/2013/01/02/a-list-of-bad-inventions/">A list of bad inventions</a>
-				</h3>
-				<div class="date">5:46 PM  01/02/2013</div>
 			</div>
 					</div>			<div class="blank"><script type="text/javascript">
 function rboxReady(evnt) {
@@ -1242,7 +1274,7 @@ taboolaLoader.src='http://cdn.taboolasyndication.com/libtrc/dailycaller/rbox.js?
 <li id="menu-item-3443858" class="last-menu-item menu-item menu-item-type-post_type menu-item-object-page menu-item-3443858"><a href="http://dailycaller.com/footer/make-homepage/">Make The Daily Caller Your Homepage</a></li>
 </ul></div></div>
 <div class="sixteen columns">
-	<h5>Copyright 2010 - 2013 The Daily Caller. Version 2.11</h5>
+	<h5>Copyright 2010 - 2013 The Daily Caller. Version 2.14</h5>
 </div>
 </div>
 </div><!-- container -->
@@ -1274,6 +1306,7 @@ var ratings_mouseover_image=new Image();ratings_mouseover_image.src=ratingsL10n.
 /* ]]> */
 </script>
 <script type='text/javascript' src='../../../cdn01.dailycaller.com/wp-content/plugins/wp-postratings/postratings-js.js%3Fver=1.50'></script>
+<script type='text/javascript' src='../../wp-content/plugins/floating-share-buttons/js/floating-share-buttons.js%3Fver=1.0'></script>
 <div id="pmfa-ext-01"></div>
 <!-- Google Analytics -->
 <script type="text/javascript">
@@ -1408,7 +1441,7 @@ qacct:"p-8ckCzGybQyMFc"
 (function(){var b,a,u;a=document.createElement("script");a.type="text/javascript";a.async=true;u=(window.location.protocol==="https:"?"https://sjs.":"http://js.")+"bizographics.com/insight.min.js";a.src=u;b=document.getElementsByTagName("script")[0];return b.parentNode.insertBefore(a,b)})();
 </script>
 
-<!-- This is: 10.10.12.1 -->
+<!-- This is: 10.10.12.2 -->
 
 
 

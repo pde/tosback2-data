@@ -137,7 +137,7 @@ btg.config={
 		dartSite: 'comedycentral.mtvi',
 		isInternational: false,
 		isUnobtrusive: false,
-		allowMobile: false,
+		allowMobile: true,
 		enabledMobileAdDomain: false
 	},
 	International:{

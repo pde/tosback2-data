@@ -64,9 +64,9 @@
     }
 
     //19882 - Criteo Implementation
-    if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
-      wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/criteo.js');
-    }
+    /*&if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
+      wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/criteo.js');
+    }*/
 
   }
 
@@ -202,6 +202,9 @@
         wpAd.cache.ppwidget = wpAd.tools.urlCheck('tid', {type:'variable'}) === 'pp_stream' ? '1' : '';
         return wpAd.cache.ppwidget;
       })();
+    },
+    wpnode: function(){
+      return [commercialNode];
     }
   };
 
@@ -260,60 +263,58 @@
     //important that we clone this
     var tempcase = wpAd.tools.clone(wpAd.briefcase);
 
-    if(tempcase.where.match(/washingtonpost\.com/) && tempcase.what === 'flex_bb_hp' && wpAd.flags.hpRefresh) {
-      tempcase.where += 'refresh';
-    }
-    
-    if(/washingtonpost\.com/.test(tempcase.where) && window.jQuery){
-      if(tempcase.what === 'flex_bb_hp'){
-      
-        //20481
-        /*if(win.estNowWithYear.substr(0,8) === '20121106' && !wpAd.tools.urlCheck('/regional')){
-          //fix gap in masthead
-          $('#masthead-v4').css({marginBottom: '2px'});
-          
-          //fix gap in body above right flex ad
-          $('#content div.wp-row.no-margin.margin-top').first().removeClass('margin-top');
-        }*/
-        
-        $(function(){
-          var $target = $('#eyeDiv');
-          if($target.length){
-            $('li.entertainment, li.lifestyle', '#main-nav').hover(function(){
-              $target.css({left: '-9999px'});
-            }, function(){
-              $target.css({left: '0px'});
-            });
-          }
-        });
-      } else if(tempcase.what === 'pushdown'){
-        $(function(){
-          var $target = $('div.prWrap[id^="prf"]');
-          if($target.length){
-            $('#main-nav>li:not(.jobs)').hover(function(){
-              $target.hide();
-            }, function(){
-              $target.show();
-            });
-          }
-        });
+    //homepage hacks:
+    if(wpAd.flags.is_homepage) {
+      //20757-CD
+      if(tempcase.what === 'leaderboard'){
+        tempcase.where += '/lb';
+      }
+      if((tempcase.what === 'leaderboard' || tempcase.what === 'flex_bb_hp') && wpAd.flags.hpRefresh){
+        tempcase.where += 'refresh';
+      }
+
+      if(window.jQuery){
+        if(tempcase.what === 'flex_bb_hp'){
+          $(function(){
+            var $target = $('#eyeDiv');
+            if($target.length){
+              $('li.entertainment, li.lifestyle', '#main-nav').hover(function(){
+                $target.css({left: '-9999px'});
+              }, function(){
+                $target.css({left: '0px'});
+              });
+            }
+          });
+        } else if(tempcase.what === 'pushdown'){
+          $(function(){
+            var $target = $('div.prWrap[id^="prf"]');
+            if($target.length){
+              $('#main-nav>li:not(.jobs)').hover(function(){
+                $target.hide();
+              }, function(){
+                $target.show();
+              });
+            }
+          });
+        }
+      }
+
+      //20007-CD
+      if(tempcase.what === 'pushdown'){
+        var adi_push = doc.getElementById('wpni_adi_pushdown');
+        if(adi_push){
+          adi_push.style.backgroundImage = 'url(http://img.wpdigital.net/wp-adv/test/mstest/pushdown-ad-small.png)';
+          adi_push.style.backgroundPosition = '-7px -100px';
+        }              
       }
     }
+
     
     if(tempcase.what === 'featrent' && window.jQuery){
       $('#wpni_adi_featrent').css({
         background: 'none',
         padding: '0'
       });
-    }
-
-    //20007-CD
-    if(tempcase.what === 'pushdown' && /washingtonpost\.com/.test(tempcase.where)){
-      var adi_push = doc.getElementById('wpni_adi_pushdown');
-      if(adi_push){
-        adi_push.style.backgroundImage = 'url(http://img.wpdigital.net/wp-adv/test/mstest/pushdown-ad-small.png)';
-        adi_push.style.backgroundPosition = '-7px -100px';
-      }              
     }
     
     //

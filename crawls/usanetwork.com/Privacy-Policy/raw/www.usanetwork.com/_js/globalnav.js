@@ -452,7 +452,7 @@ var usa_globalMenu = {
 							"title" : "Suits",
 							"url" : usa_baseUrlDomain + "/series/suits/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
-							"tuneIn" : "RETURNS JAN 17 10/9C"
+							"tuneIn" : "THURSDAYS 10/9C"
 						},
 						/* Featured Slot 3 */
 						{

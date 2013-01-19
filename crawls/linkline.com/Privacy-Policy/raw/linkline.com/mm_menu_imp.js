@@ -96,7 +96,6 @@ function mmLoadMenus()
     mm_menu_0020154525_1.addMenuItem("Overview","location='http://www.linkline.com/internet_services/overview.php'");
     //mm_menu_0020154525_1.addMenuItem(window.mm_menu_0020154525_1_1,"location='http://www.linkline.com/internet_services/voip_services.php'");
 	mm_menu_0020154525_1.addMenuItem(window.mm_menu_0020154525_1_1,"location='http://www.linkline.com/internet_services/dsl_services.php'");
-    mm_menu_0020154525_1.addMenuItem("Dial-Up&nbsp;Access","location='http://www.linkline.com/internet_services/dial_up_access.php'");
     mm_menu_0020154525_1.addMenuItem("Frame&nbsp;Relay","location='http://www.linkline.com/internet_services/frame_relay.php'");
     mm_menu_0020154525_1.addMenuItem("T1/T3/OCX","location='http://www.linkline.com/internet_services/t1_t3_ocx.php'");
     mm_menu_0020154525_1.addMenuItem("Co-Location","location='http://www.linkline.com/internet_services/colocation.php'");

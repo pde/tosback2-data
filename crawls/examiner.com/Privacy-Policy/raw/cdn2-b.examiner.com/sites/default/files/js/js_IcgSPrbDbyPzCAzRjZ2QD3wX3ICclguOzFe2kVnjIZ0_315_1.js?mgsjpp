@@ -1,0 +1,20 @@
+/*! sites/all/modules/custom/ex_mobile/ex_mobile.location.js */
+(function($){$(document).ready(function(){if(Drupal.settings.ex_mobile){var mobile_edition=$.cookie('MOBILEEDITION');if(mobile_edition==null&&navigator.geolocation){navigator.geolocation.getCurrentPosition(function(position){var coords=position.coords,latLng=coords.latitude+","+coords.longitude,settings=Drupal.settings.ex_mobile,apiUrl;if(settings.is_https){apiUrl='https://dev.virtualearth.net/REST/v1/Locations/';}
+else{apiUrl='http://dev.virtualearth.net/REST/v1/Locations/';}
+$.ajax({url:apiUrl+
+latLng+"?output=json&key="+Drupal.settings.ex_mobile.key,dataType:'jsonp',jsonp:'jsonp',success:function(data){var resourceSets=data.resourceSets,resources=resourceSets.length&&resourceSets[0].resources,address=resources.length&&resources[0].address,province=address&&address.adminDistrict,country=address&&address.countryRegion,lat=coords.latitude,lng=coords.longitude,findException=false,mobile_edition;if(province){if(country=='United States'){mobile_edition=settings.states[province].id;findException=true;}
+else if(country=='Canada'){province=country;mobile_edition=settings.states[country].id;findException=true;}
+else{mobile_edition=settings.states['default'].id;}
+if(findException){$.getJSON('/index.php?q=ex_mobile/location&state='+province+'&lat='+lat+'&lng='+lng,function(data){if(data){setEditionCookie('MOBILEEDITION',data);setEditionCookie('EXAMINEREDITION',data);}});}
+setEditionCookie('MOBILEEDITION',mobile_edition);setEditionCookie('EXAMINEREDITION',mobile_edition);}}})});}
+else{if(mobile_edition==null){mobile_edition=Drupal.settings.ex_mobile.states['default'].id;setEditionCookie('MOBILEEDITION',mobile_edition);setEditionCookie('EXAMINEREDITION',mobile_edition);}}}});}(jQuery));function setEditionCookie(name,value){jQuery.cookie(name,value,{expires:365,path:'/',domain:'.examiner.com'});};
+/*! sites/all/modules/contrib/devel/devel_krumo_path.js */
+(function($){Drupal.behaviors.devel={attach:function(context,settings){$('.krumo-footnote .krumo-call').before('<img style="vertical-align: middle;" title="Click to expand. Double-click to show path." src="'+Drupal.settings.basePath+'misc/help.png"/>');var krumo_name=[];var krumo_type=[];function krumo_traverse(el){krumo_name.push($(el).html());krumo_type.push($(el).siblings('em').html().match(/\w*/)[0]);if($(el).closest('.krumo-nest').length>0){krumo_traverse($(el).closest('.krumo-nest').prev().find('.krumo-name'));}}
+$('.krumo-child > div:first-child',context).dblclick(function(e){if($(this).find('> .krumo-php-path').length>0){$(this).find('> .krumo-php-path').remove();}
+else{krumo_traverse($(this).find('> a.krumo-name'));var krumo_path_string='';for(var i=krumo_name.length-1;i>=0;--i){if((krumo_name.length-1)==i)
+krumo_path_string+='$'+krumo_name[i];if(typeof krumo_name[(i-1)]!=='undefined'){if(krumo_type[i]=='Array'){krumo_path_string+="[";if(!/^\d*$/.test(krumo_name[(i-1)]))
+krumo_path_string+="'";krumo_path_string+=krumo_name[(i-1)];if(!/^\d*$/.test(krumo_name[(i-1)]))
+krumo_path_string+="'";krumo_path_string+="]";}
+if(krumo_type[i]=='Object')
+krumo_path_string+='->'+krumo_name[(i-1)];}}
+$(this).append('<div class="krumo-php-path" style="font-family: Courier, monospace; font-weight: bold;">'+krumo_path_string+'</div>');krumo_name=[];krumo_type=[];}});}};})(jQuery);;

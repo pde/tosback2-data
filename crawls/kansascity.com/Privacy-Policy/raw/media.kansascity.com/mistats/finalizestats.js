@@ -217,11 +217,11 @@ s.eVar4 = s.pageName;
 s.prop15 = s.c_r('mi_adlst');
 s.c_w('mi_adlst', '');
 
-if (mistats.bizunit && mistats.bizunit === 'KEN' && mistats.audienceCounts)
+if (mistats.audienceCounts)
    mistats.audienceCounts.updateAll();
 
 if (mistats.adTracker)
-   mistats.adTracker.track(mistats.bizunit && mistats.bizunit === 'KEN');
+   mistats.adTracker.track();
 
 // Improper Vendor Tracking Code
 // Added 09/06/09

@@ -2790,7 +2790,7 @@ YAHOO.widget.DateMath={DAY:"D",WEEK:"W",YEAR:"Y",MONTH:"M",ONE_DAY_MS:1000*60*60
             if(checkInDate === null) {
                 setDefaultTextToField(this.checkIn);
                 return;
-            } else {
+            } else if(this.checkIn.form.name != "frmMissingCredits"){
                 setDateToField(this, "checkIn", fixDate(checkInDate));
             }
             // if no check out date, or check out is before check in, set it to next day
@@ -2817,7 +2817,7 @@ YAHOO.widget.DateMath={DAY:"D",WEEK:"W",YEAR:"Y",MONTH:"M",ONE_DAY_MS:1000*60*60
             var date = CalUtils.dateFromString(this.checkOut.value);
             if(date === null) {
                 setDefaultTextToField(this.checkOut);
-            } else {
+            } else if(this.checkOut.form.name != "frmMissingCredits") {
                 setDateToField(this, "checkOut", fixDate(date));
             }
         },

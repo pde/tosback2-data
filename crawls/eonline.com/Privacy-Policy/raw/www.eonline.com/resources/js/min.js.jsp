@@ -1329,7 +1329,8 @@ eol.create("page", function($) {
         var adEdition = _s.context.locale.advertisements;
        
         if( !(dart.type || "").match(/^pfadx$/) || (adEdition === "us" || adEdition === "ca" || adEdition === "nz") ) { 
-	        advertisement.push("http://ad.doubleclick.net" + "/" + dart.type + "/" + dart.site + "." + adEdition + "." + dart.domain + "/" + dart.zone );
+	        //not used for pfadx ad calls unless the adEdition is us, ca, OR nz
+        	advertisement.push("http://ad.doubleclick.net" + "/" + dart.type + "/" + dart.site + "." + adEdition + "." + dart.domain + "/" + dart.zone );
 	        if ( parseInt(dart.tile,10) === 1 ) {
 	            advertisement.push("dcopt=ist");
 	        }         
@@ -1359,7 +1360,12 @@ eol.create("page", function($) {
         	advertisement.push("http://cdn-static.liverail.com/swf/v4/plugins/pdk/LiveRailPlugin446.swf|LR_PUBLISHER_ID=" + publisherId + "|LR_SCHEMA=vast2|LR_VERTICALS="+dart.domain);
 //        	advertisement.push("http://ad4.liverail.com/?LR_PUBLISHER_ID=" + publisherId + "&LR_SCHEMA=vast2&LR_VERTICALS=" + dart.domain);
         	retVal = advertisement.join(";").replace(/\;\;/,";");
-        } else {
+        } else if (adEdition === "za") {
+        	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0");
+        	
+        	retVal = advertisement.join(";").replace(/\;\;/,";");
+        } 
+        else {
         	advertisement.push("http://a.collective-media.net/pfadx/wtv.eent/video");
         	advertisement.push("sz=1x1");
         	advertisement.push("ord=" + dart.ord);

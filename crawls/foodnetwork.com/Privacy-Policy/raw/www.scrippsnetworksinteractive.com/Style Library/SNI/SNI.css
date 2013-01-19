@@ -982,6 +982,17 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	overflow: hidden;
 	position: fixed;
 	width: 918px;
+	z-index: 2100;
+}
+#footerSlider .innerShadow {
+	bottom: 0;
+	-webkit-box-shadow: inset 0 -20px 22px -17px rgba(0, 0, 0, .20);
+	-moz-box-shadow: inset 0 -20px 22px -17px rgba(0, 0, 0, .20);
+	box-shadow: inset 0 -20px 22px -17px rgba(0, 0, 0, .20);
+	height: 20px;
+	position: absolute;
+	width: 918px;
+	margin-left: 1px;
 }
 #footerSlider #sliderToggle {
 	background: url('Images/sprite_footer_slider_toggle.png') no-repeat scroll right top transparent;
@@ -1358,6 +1369,16 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	top:313px;
 }
 
+#careerDetailVideoContainer #careersVideoPlayer {
+	width:512px;
+	height:288px;
+}
+
+#careerDetailVideoContainer #careersVideoPlayer #videoControls {
+	left:56px;
+	top:258px;
+}
+
 #playBtn {
 	text-indent:-9000px; 
 	display:block; 
@@ -1482,6 +1503,9 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	position: relative;
 	width:638px;
 }
+#peopleCarousel {
+	background:url('Images/bg_people_carousel.gif') no-repeat 26px 96px;
+}
 #careersLandingCarouselContainer {
 	margin-top:-20px
 }
@@ -1493,7 +1517,7 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	width:1148px;
 	top:135px;
 }
-#socialMediaCarousel .carouselListMask, #programmingCarousel .carouselListMask, #careersCarouselLarge .carouselListMask {
+#socialMediaCarousel .carouselListMask, #programmingCarousel .carouselListMask, #careersCarouselLarge .carouselListMask, #peopleCarousel .carouselListMask {
 	display:block;
 	overflow:hidden;
 	position:relative;
@@ -1505,6 +1529,9 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 #careersCarouselLarge .carouselListMask {
 	width:1148px;
 }	
+#peopleCarousel .carouselListMask {
+	width:847px;
+}
 /* careersCarouselContent refers to the content that gets shown/hid when you click on a person in the lrg. carousel */
 #careersCarouselContent .careersCarouselContentItem {
 	border-bottom:1px solid #ccc;
@@ -1526,14 +1553,14 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	padding-left:20px;
 	width:296px;
 }
-#socialMediaCarousel .carouselSlider, #programmingCarousel .carouselSlider, #careersCarouselLarge .carouselSlider {
+#socialMediaCarousel .carouselSlider, #programmingCarousel .carouselSlider, #careersCarouselLarge .carouselSlider, #peopleCarousel .carouselSlider {
 	overflow:visible;
 	position:relative;
 }
 #careersCarouselLarge .carouselSlider {
 	left:194px;
 }
-#socialMediaCarousel .carouselItem, #programmingCarousel .carouselItem, #careersCarouselLarge .carouselItem {
+#socialMediaCarousel .carouselItem, #programmingCarousel .carouselItem, #careersCarouselLarge .carouselItem, #peopleCarousel .carouselItem {
 	float:left;
 	padding-right:20px;
 	width:145px;
@@ -1554,7 +1581,10 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	padding-right:14px;
 	width:180px;
 }
-
+#peopleCarousel .carouselItem {
+	padding:0;
+	width:77px;
+}
 #socialMediaCarousel .carouselItem a {
 	color:#0067b1;
 	display:block;
@@ -1568,7 +1598,8 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 }
 #socialMediaCarousel .carouselArrowRight, #socialMediaCarousel .carouselArrowLeft, 
 #programmingCarousel .carouselArrowRight, #programmingCarousel .carouselArrowLeft,
-#careersCarouselLarge .carouselArrowRight, #careersCarouselLarge .carouselArrowLeft  {
+#careersCarouselLarge .carouselArrowRight, #careersCarouselLarge .carouselArrowLeft,
+#peopleCarousel .carouselArrowRight, #peopleCarousel .carouselArrowLeft  {
 	background:url('Images/sprite_twitter_carousel_arrows.png') no-repeat;
 	display:block;
 	height:26px;
@@ -1582,10 +1613,13 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 }
 .editMode #socialMediaCarousel .carouselArrowRight, .editMode #socialMediaCarousel .carouselArrowLeft, 
 .editMode #programmingCarousel .carouselArrowRight, .editMode #programmingCarousel .carouselArrowLeft,
-.editMode #careersCarouselLarge .carouselArrowRight, .editMode #careersCarouselLarge .carouselArrowLeft  {
+.editMode #careersCarouselLarge .carouselArrowRight, .editMode #careersCarouselLarge .carouselArrowLeft,
+.editMode #peopleCarousel .carouselArrowRight, .editMode #peopleCarousel .carouselArrowLeft
+  {
 	z-index:0;
 }
-#programmingCarousel .carouselArrowRight, #programmingCarousel .carouselArrowLeft  {
+#programmingCarousel .carouselArrowRight, #programmingCarousel .carouselArrowLeft, 
+#peopleCarousel .carouselArrowRight, #peopleCarousel .carouselArrowLeft  {
 	background:url('Images/sprite_large_carousel_arrows.png') no-repeat;
 	top:30px;
 }
@@ -1598,14 +1632,27 @@ li.myspace {background: url("Images/sprite_social_icons.gif") no-repeat scroll 0
 	left:9px
 }
 
-#programmingCarousel .carouselArrowRight {
+#programmingCarousel .carouselArrowRight,
+#peopleCarousel .carouselArrowRight {
 	background-position:0px 0px;
 	right:-17px;
 }
-#programmingCarousel .carouselArrowLeft {
+#programmingCarousel .carouselArrowLeft, 
+#peopleCarousel .carouselArrowLeft {
 	background-position:0px -27px;
 	left:-17px
 }
+#peopleCarousel .carouselArrowRight {
+	right:30px;
+	top:124px;
+	display:none;
+}
+#peopleCarousel .carouselArrowLeft {
+	left:10px;
+	top:124px;
+	display:none;
+}
+
 #careersCarouselLarge .carouselArrowRight, #careersCarouselLarge .carouselArrowLeft  {
 	background:url('Images/sprite_careers_carousel_arrows_lrg.png') no-repeat 0 0;
 	height:121px;
@@ -1688,50 +1735,74 @@ ul.socialMediaIcons {
 #peopleCarousel {
 	bottom:0px;
 	clear:both;
-	margin:0 0 0 -21px;
-	padding-top:40px;
+	padding:40px 0 0 40px;
 	overflow-y:visible;
 	overflow-x:hidden;
 	position:relative;
 
 }
+.headerHolder {
+	height:170px;
+	left:0px;
+	position:absolute;
+	bottom:0px;
+	width:847px;
+	padding-left:40px;
 
+}
 #littlePeopleContainer #peopleCarousel {
-	overflow: visible;
+	overflow: hidden;
 }
 
 #peopleCarousel ul {
 	list-style:none;
 }
-#peopleCarousel ul li {
+#peopleCarousel .carouselItem {
 	float:left;
 	height:124px;
+	padding-top:40px;
 	width:77px;
-	overflow-y:visible;
 	position:relative;
 }
-#peopleCarousel ul li h3 {
-	background:url('Images/bg_careers_label_bubble_small.png') no-repeat 0 0;
+#peopleCarousel h3, .headerHolder h3 {
+	/*background:url('/Style Library/SNI/Images/bg_careers_label_bubble_small.png') no-repeat 0 0;
+	*/
+	background-color:#d1e3f1;
+	bottom:124px;
 	color:#343434 !important;
 	display:none;
 	font-size:10px;
 	height:32px;
 	letter-spacing:0;
-	margin-left:-35px;
-	padding:8px 5px 0;
+	padding:5px 5px 3px;
 	position:absolute;
 	text-align:center;
 	text-transform:none;
-	top:-40px;
 	width:138px;
+	top:0px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
-#peopleCarousel ul li h3 a {
+#peopleCarousel .carouselItem h3 a, .headerHolder a  {
 	color:#343434 !important;
 	font-size:11px !important;
 }
+div.wordBubbleArrow {
+  width:0px; 
+  height:0px; 
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:8px solid #d1e3f1;
+  font-size:0px;
+  line-height:0px;
+  position:absolute;
+  top:40px;
+  left:65px;
+}
 #peopleCarousel img {
 	position:absolute;
-	top:0px;
+	top:37px;
 }
 .personCover {
 	position:absolute;
@@ -1754,8 +1825,9 @@ ul.socialMediaIcons {
 }
 #littlePeopleContainer #peopleCarousel {
 	bottom:0px;
+	left:15px;
 	position:absolute;
-	width:916px;
+	width:903px;
 }
 .editMode #littlePeopleContainer #peopleCarousel {
 	position:relative;

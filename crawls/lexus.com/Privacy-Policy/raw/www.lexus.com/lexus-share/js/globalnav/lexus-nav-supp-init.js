@@ -1946,7 +1946,8 @@ function animationVehicles(e,callback) {
 			lxShowPromo(e);
 		case "future":
 			LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
-			LXSetTimeout("aniVehiclesC('future','lfcc',40, 100)",200);
+			LXSetTimeout("aniVehiclesC('future','lfcc',40, 100)",250);
+			LXSetTimeout("aniVehiclesC('future','fis',60, 100)",300);
 			lxShowPromo(e);
 		  break;
 	}

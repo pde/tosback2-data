@@ -83,7 +83,7 @@ ATT.ui.rtiListOOS = {
         var pageSkus = this.getPageSkus();
         var oosMsg = this.oosVar.outofstock;
         var list = this.oosVar.list;// = 'accessories';
-        
+        if(list != undefined && list != 'undefined'){
         jQuery.ajax({
           url: this.oosVar.url,
           success: function(data) {  
@@ -194,5 +194,6 @@ ATT.ui.rtiListOOS = {
            
         }
         });//End ajax
+        }//End undefined check
         }// End init
     }

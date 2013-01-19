@@ -1,8 +1,11 @@
+var careersSliderOffset;
+
 $(document).ready(function(){
 	copyrightYear();
 	editMode(); // execute this before any dependent functions
 	wrapZonesParts();
 	horizontalCarousel();	// Typically lives in functions.js, but problem occurs where incorrect outerWidth is returned on carouselItem if its called AFTER wpTabs();
+	ourPeopleCarousel();
 	wpTabs();
 	wpGallery();
 	removeToolTips();
@@ -14,8 +17,16 @@ $(document).ready(function(){
 	expandCollapseWebPartsInZone();
 	flickrFeed();
 	jqueryCookie();
+	
+	setCareersSliderOffset();
+	
 });
-
+function setCareersSliderOffset() {
+	var careerSlider = $("body").find("#careersCarouselLarge");
+	if(careerSlider.length != 0) {
+		careersSliderOffset = $("#careersCarouselLarge .carouselSlider").position().left;	
+	}
+}
 /* ##### SHAREPOINT SCRIPT OVERRIDES ##### */
 
 // Override of FixRibbonAndWorkspaceDimensions() from out-of-the-box SharePoint init.js.
@@ -94,6 +105,7 @@ function wrapZonesParts() {
 	$(".ms-WPBorderBorderOnly").parents("table.s4-wpTopTable").addClass("wpBorderOnly");
 }
 /* --------------------------------------- Begin Carousel Scripts ------------------------------------------------------------ */
+
 // Called from horizontalCarousel unless carousel data is Ajax driven
 function animateCarousel(sliderObj,arrowLocation,isCareers,slideArrowsIn) {
 	//alert("isCareers in animateCarousel: " + isCareers);
@@ -107,49 +119,75 @@ function animateCarousel(sliderObj,arrowLocation,isCareers,slideArrowsIn) {
 	var sliderPositionLeft = sliderPosition.left;
 	
 	var newPosition;
+// RIGHT POINTING ARROW *****************************
 	if(arrowLocation == undefined || arrowLocation == "rightArrow") {
-		
 		if(isCareers) {
 			// IE 7 and 8 exhibited unusual results with sliderPosition.left, so needed to modify calculation position left
 			if((sliderPositionLeft % carouselItemWidth) != 0) {
 				sliderPositionLeft = carouselItemWidth * Math.round(sliderPositionLeft/(carouselItemWidth));	
 			}
-			newPosition = sliderPositionLeft - carouselItemWidth;
+			newPosition = sliderPositionLeft - carouselItemWidth*4;	// Multiplying by 4 to move carousel the distance of 4 people in careers carousel
+			// Move the carousel only far enough to show those items hidden by mask; sometimes that is less than the width of the mask
+			if(((sliderObjWidth + sliderPositionLeft) > carouselItemWidth*4) && ((sliderObjWidth + sliderPositionLeft) <= ((carouselItemWidth*4)*2))) {
+				// ((2910 + -1358) > 194 * 4)  &&  (2910 + -1358) < ((194 * 4) * 2)
+				// Then we don't need to move the slider width of mask, only enough to show those items who are hidden.
+				amountToMove = sliderObjWidth + sliderPositionLeft - maskWidth;
+				newPosition = sliderPositionLeft - amountToMove - careersSliderOffset;
+			}
+ 
 		}
-		// Else, move carousel by the width of the mask area
+		// Else, move carousel left by the width of the mask area
 		else {
 			// IE 7 and 8 exhibited unusual results with sliderPosition.left, so needed to modify calculation position left
 			if((sliderPositionLeft % maskWidth) != 0) {
 				sliderPositionLeft = maskWidth * Math.round(sliderPositionLeft/maskWidth);	
 			}
 			newPosition = sliderPositionLeft - maskWidth;
+			// Move the carousel only far enough to show those items hidden by mask; sometimes that is less than the width of the mask
+			if(((sliderObjWidth + sliderPositionLeft) > maskWidth) && ((sliderObjWidth + sliderPositionLeft) < maskWidth*2)) {
+				// Then we don't need to move the slider width of mask, only enough to show those items who are hidden.
+				amountToMove = maskWidth - (sliderObjWidth + sliderPositionLeft);// - maskWidth;
+				if(amountToMove < maskWidth) {
+					newPosition = amountToMove;
+				}
+			}
 		}
-		
 	}
+// LEFT POINTING ARROW	****************************
 	else if(arrowLocation == "leftArrow") {
-		
 		if(isCareers) {
 			// IE 7 and 8 exhibited unusual results with sliderPosition.left, so needed to modify calculation position left
 			if((sliderPositionLeft % carouselItemWidth ) != 0) {
 				sliderPositionLeft = carouselItemWidth * Math.round(sliderPositionLeft/(carouselItemWidth));	
 			}
-			newPosition = carouselItemWidth + sliderPositionLeft;
+			newPosition = carouselItemWidth*4 + sliderPositionLeft; // Multiplying by 4 to move carousel the distance of 4 people in careers carousel
+			// Move the carousel only far enough to show those items hidden by mask; sometimes that less than the width of the mask
+			if(sliderPositionLeft <= 0 && (Math.abs(sliderPositionLeft) < carouselItemWidth*4)) {
+				newPosition = careersSliderOffset;
+			}
+			
 		}
-		// Else, move carousel by the width of the mask area
+		// Else, move carousel right by the width of the mask area
 		else {
 			// IE 7 and 8 exhibited unusual results with sliderPosition.left, so needed to modify calculation position left
 			if((sliderPositionLeft % maskWidth) != 0) {
 				sliderPositionLeft = maskWidth * Math.round(sliderPositionLeft/maskWidth);	
 			}
 			newPosition = maskWidth + sliderPositionLeft;
+			// Move the carousel only far enough to show those items hidden by mask; sometimes that less than the width of the mask
+			if(Math.abs(sliderPositionLeft) < maskWidth) {
+				newPosition = 0;
+			}
 		}
-	}
+  	}
 
-	//alert("is careers; newPosition: " +newPosition);
+	// Only for small people carousel in the careers subpages;
+	$(".headerHolder").animate({left:newPosition},'slow','easeOutQuad');
+
 	sliderObj.animate({left:newPosition}, 'slow', 'easeOutQuad', function() {
 		if(arrowLocation == undefined || arrowLocation == "rightArrow") {
 			if(isCareers) {
-				showRightArrow = updateRightArrow(sliderObjWidth, sliderPositionLeft-carouselItemWidth, maskWidth);
+				showRightArrow = updateRightArrow(sliderObjWidth, sliderPositionLeft-carouselItemWidth*4, maskWidth);
 				showLeftArrow = updateLeftArrow(sliderPositionLeft-(carouselItemWidth*2));
 			}
 			else {
@@ -159,7 +197,7 @@ function animateCarousel(sliderObj,arrowLocation,isCareers,slideArrowsIn) {
 		}
 		else if(arrowLocation == "leftArrow") {
 			if(isCareers) {
-				showRightArrow = updateRightArrow(sliderObjWidth, sliderPositionLeft + carouselItemWidth, maskWidth);
+				showRightArrow = updateRightArrow(sliderObjWidth, sliderPositionLeft + carouselItemWidth*4, maskWidth);
 				showLeftArrow = updateLeftArrow(newPosition - carouselItemWidth);
 			}
 			else {
@@ -167,12 +205,160 @@ function animateCarousel(sliderObj,arrowLocation,isCareers,slideArrowsIn) {
 				showLeftArrow = updateLeftArrow(maskWidth + sliderPositionLeft);
 			}
 		}
-		//alert("isCareers right before setOpacityOnItem: " + isCareers);
+		// Used by large people careers carousel only
 		setOpacityOnItem(isCareers,newPosition,carouselItemWidth, sliderObjWidth, maskWidth);
 		updateArrows(showRightArrow,showLeftArrow,slideArrowsIn,arrowParent);
+		// Only for small people carousel in the careers subpages; pass the carousel div (div after the trigger).
+		// Checks the id of the arrowParent for "peopleCarousel" before continuing. 
+		showHidePeopleItemHeader(arrowParent,sliderObj.find(".carouselItem.active").index());
+		
 	});
 }
+
+// Excepts the carousel object and index of the carousel item; 
+// Hides or shows headerHolder depending on whether the item is in view
+// given the current position of the carouselSlider.  Only used on little person carousel currently
+function showHidePeopleItemHeader(theCarouselObj,carouselItemIndex) {
+
+	if($(theCarouselObj).attr("id") == "peopleCarousel") {
+		var maskWidth = $(theCarouselObj).find(".carouselListMask").outerWidth();	
+		var positionOfItem = $(".carouselItem").outerWidth() * carouselItemIndex;
+		var sliderPosition = $(".carouselSlider").position().left;
+		var carouselItems = $(theCarouselObj).find(".carouselItem");
+		$(theCarouselObj).find(".carouselItem").each(function(index) {
+			if(index == carouselItemIndex) {
+				 currentItemsBeforeActive = index;
+			}
+		});
+		
+		carouselItemPosition = $(".carouselItem").outerWidth() * currentItemsBeforeActive;
+		if(((carouselItemPosition + sliderPosition) >= 0) && ((sliderPosition + carouselItemPosition) < 847)) {
+			var headerHolderObj = $(".headerHolder");
+			if(!(headerHolderObj.is(":visible"))) {
+				//$(".headerHolder").fadeIn("fast");
+				$(".headerHolder").show();
+			}		
+		}
+		else {
+			var headerHolderObj = $(".headerHolder");
+			if(headerHolderObj.is(":visible")) {			
+				$(".headerHolder").hide();
+			}		
+		}
+	}
+} // end showHidePeopleItemHeader()
+
+// Function is called from ourPeopleCarousel, reads the text of the 'disciplineName' id/page field, then
+// then compares it to each title on all the little people.  When it finds a match, it passes the
+// index of the little person back.
+// Example URL: http://staff.dev.sni.com/careers/life-at-sni/our-people/Pages/administration.aspx
+function selectCurrentLittlePeople() {
+	var currentPersonIndex = 0;
+	var hasPeopleCarousel = ($("#peopleCarousel").html()) != null ? true : false;
+	if(hasPeopleCarousel) {
+		var disciplineString = $("#disciplineName > span").text();
+		var littlePeopleObj = $("#peopleCarousel").find("h3>a");
+		littlePeopleObj.each(function(index) {
+			//alert("h3 > a.html(): ~" + $(this).html() + "~\ndiscipline text: " + disciplineString);
+			var headerDisciplineText = ($(this).html()).split(":");
+			if(headerDisciplineText[0] == disciplineString) {
+				currentPersonIndex = index;
+			};
+		});
+		return currentPersonIndex
+	}
+}
+
+// Function is used on the 'Our People' detail page to handle highlighting the applicable
+// little person.  Also handles the hovers on the other little people and moving the active one into view
+function ourPeopleCarousel() {
+	if(!$('body').hasClass('editMode')) {
+
+		var peopleCarouselItems = $("#peopleCarousel").find('div.carouselItem');
+		$("#peopleCarousel").prepend("<div class=\'headerHolder\'></div>");
+		var personIndex = selectCurrentLittlePeople();  // returns index of person with header that matches discipline in page header
+	
+		peopleCarouselItems.each(function(index) {
+			$(this).prepend('<img src="/Style Library/SNI/Images/career_carousel_sml_person_cover.png" class="personCover"/>');
+			if(index == personIndex) {
+				$(this).find('img.personCover').hide();
+				$(this).addClass('active');
+				var currPersonTitle = $(this).find("h3").html();
+				
+				positionHeader(index,currPersonTitle);
+				
+				//move carousel if necessary; hard-coding assumes that there will be <=22 people ever appearing in the small carousel.
+				var itemPosition = $(this).position().left;
+				var maskWidth = $("#peopleCarousel").find('.carouselListMask').outerWidth();
+				var sliderObjWidth = $("#peopleCarousel").find(".carouselSlider").outerWidth();
+				var sliderPositionLeft = $("#peopleCarousel").find(".carouselSlider").position().left;
+				var difference = itemPosition + sliderPositionLeft;
+								
+				if(itemPosition >= maskWidth) {
+					newPosition = maskWidth - (itemPosition + $(this).outerWidth());
+					$(".headerHolder").animate({left:newPosition},'slow','easeOutQuad');
+					$("#peopleCarousel").find(".carouselSlider").animate({left: newPosition}, function(){
+						var showRightArrow = updateRightArrow(sliderObjWidth, newPosition, maskWidth);
+						var showLeftArrow = updateLeftArrow(newPosition);
+						updateArrows(showRightArrow,showLeftArrow,true,$("#peopleCarousel"));
+						//showHidePeopleItemHeader($("#peopleCarousel"),carouselItemIndex);
+						//alert("sliderPositionLeft: " + $("#peopleCarousel").find(".carouselSlider").position().left + "\nnewPosition: " + newPosition);
+					});
+				}
+				
+			} // end if index=personIndex
+		}); // end peopleCarouselItems.each
+		
+		$("#peopleCarousel div.carouselItem").hover(function(index) {
+			
+			if(!($(this).hasClass('active'))) {
+				
+				var currItemIndex = ($('.carouselItem').index($(this)));
+				$(this).find('img.personCover').hide();
+				var currPersonTitle = $(this).find("h3").html();
+				$(".headerHolder").find('.tempHeader').each( function() {
+					$(this).remove();
+				});
+				
+				positionHeader(currItemIndex,currPersonTitle);
+				showHidePeopleItemHeader($("#peopleCarousel"),currItemIndex);
+				
+			}
+		},
+		function() {
+			if(!($(this).hasClass('active'))) {
+				$(this).find('img.personCover').show();
+				$(this).find('h3').hide();
+				
+				$(".headerHolder").find('.tempHeader').each( function() {
+					$(this).remove();
+					
+				});
+				$("#peopleCarousel div.active img.personCover").hide();
+				
+				var currItemIndex = ($('.carouselItem').index($(this)));
+				var currPersonTitle = $(this).find("h3").html();			
+				positionHeader(personIndex,($(".carouselItem:eq(" + personIndex + ")").find("h3").html()));//currPersonTitle);
+				showHidePeopleItemHeader($("#peopleCarousel"),$("#peopleCarousel").find(".carouselItem.active").index());
+					
+			}
+		});
+	}
+}
+function positionHeader(itemIndex,itemHtml) {
+
+	$("#peopleCarousel div.active h3").hide();
+	$(".headerHolder").prepend("<h3 class='tempHeader' style='display:block'>" + itemHtml + "</h3>");
+	$(".headerHolder h3").append("<div class='wordBubbleArrow'></div>");
+	var positionForHeader = $(".carouselItem").outerWidth() * itemIndex;
+	$(".headerHolder").find("h3.tempHeader").css("left",positionForHeader);
+	
+}
+
+
 function horizontalCarousel() {
+	// Global var in this .js file to hold this constant set help position large person people carousel
+
 	if(!$('body').hasClass('editMode')) {
 		var carouselItemWidth = 0;
 		var carouselMaskWidth = 0;
@@ -222,7 +408,7 @@ function horizontalCarousel() {
 			var showRightArrow = updateRightArrow(carouselSliderWidth, startingPositionLeft, carouselMaskWidth);
 			var valueForLeftArrow = 0;
 			var showLeftArrow = updateLeftArrow(valueForLeftArrow);
-			//alert("showRightArrow = " + showRightArrow + "; showLeftArrow = " +showLeftArrow);
+			//alert("in horizontalCarousel; showRightArrow = " + showRightArrow + "; showLeftArrow = " +showLeftArrow);
 			updateArrows(showRightArrow,showLeftArrow,slideArrowsIn,carouselParent); 
 			var newPosition;
 			
@@ -239,6 +425,7 @@ function horizontalCarousel() {
 				isCareersCarousel = arrowParent.prev().hasClass("careers") ? true : false;
 				slideArrowsIn = arrowParent.prev().hasClass("slideArrowsIn") ? true : false;
 				var currentSlider = arrowParent.find(".carouselSlider");
+				//alert("about to animate carousel");
 				animateCarousel(currentSlider,"rightArrow",isCareersCarousel,slideArrowsIn);
 			});
 			
@@ -284,6 +471,7 @@ function updateLeftArrow(currentLeft) {
 function updateArrows(showRight, showLeft, slideArrowsIn, arrowParent) {
 	rightArrow = arrowParent.find('.carouselArrowRight');
 	leftArrow = arrowParent.find('.carouselArrowLeft');
+	//alert("updateArrow function; slide out left arrwo: " + showLeft);
 	if(!showRight && rightArrow.is(':visible')){
 		if(!slideArrowsIn) {
 			rightArrow.hide("slide", { direction: "right" }, 200);
@@ -301,6 +489,7 @@ function updateArrows(showRight, showLeft, slideArrowsIn, arrowParent) {
 		}
 	}
 	if(!showLeft && leftArrow.is(':visible')){
+		
 		if(!slideArrowsIn) {		
 			leftArrow.hide("slide", { direction: "left" }, 200);
 		}
@@ -309,6 +498,7 @@ function updateArrows(showRight, showLeft, slideArrowsIn, arrowParent) {
 		}
 	}
 	else if(showLeft && leftArrow.is(':hidden')) {
+		//alert("slide arrow into view");
 		if(!slideArrowsIn) {
 			leftArrow.show("slide", { direction: "left" }, 200);
 		}

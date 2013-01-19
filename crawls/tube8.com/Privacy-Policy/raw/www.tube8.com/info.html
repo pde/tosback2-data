@@ -15,7 +15,7 @@
 
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=181.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=185.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=044" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -36,7 +36,7 @@
 <![endif]-->
 
 <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=025"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=026"></script>
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 	var $j = jQuery.noConflict();
@@ -112,6 +112,12 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 
 		$j(document).ready(function() {
 
+			/************* if AOL browser user agent **************************/
+			if($j("#AOLBrowserNotice")){
+				var cover_layer_h = $j('body').outerHeight() + 1;
+				cover_layer_h = Math.max(cover_layer_h, $j(document).height()-10);
+				$j('#AOLBrowserNotice .cover_layer').css("height" , cover_layer_h + "px");
+			}
 			// ****** ADBlocker tracking *************
 			setTimeout(function () {
 				var TJ_missing = [];
@@ -313,7 +319,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 		 jQuery('body').ph_bar({'isGay':false,'site':'tub8','styleCSS':true});
 	</script>
 	<a name="upper_cont"></a>
-	<div id="logindiv" style="display: none;">
+		<div id="logindiv" style="display: none;">
 		<div class="cover_layer"></div>
 		<div class="box-wrapper" id="form_box_img">
 			<div class="border-wrapper">
@@ -1460,7 +1466,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			for (var id in deferred_external_scripts)
 			{
 				load(deferred_external_scripts[id], id);
-				if (id == 'twitter"-wjs') {
+				if (id == 'twitter-wjs') {
 					window.twttr = window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
 				}
 			}

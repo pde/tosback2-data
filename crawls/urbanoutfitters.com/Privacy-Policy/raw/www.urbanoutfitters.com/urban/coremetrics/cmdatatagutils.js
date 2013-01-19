@@ -32,7 +32,7 @@ if (typeof(Iterator) == "object") cmJv = "1.7";
  * Calling this function points tags to the production database
  */
 function cmSetProduction(){
-	cm_HOST="www2.urbanoutfitters.com/eluminate?"; 
+	cm_HOST="test.coremetrics.com/eluminate?"; 
 }
 
 function cmCreateConversionEventTag(eventID, actionType, categoryID, points) {

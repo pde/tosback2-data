@@ -46,6 +46,21 @@ function IHGoTo(action)
 	return false;
 }
 
+function IHGoToNewWindow(action)
+{
+	if (document.forms.navForm)
+	{
+		document.forms.navForm.target = '_blank';
+		document.forms.navForm.action = action;
+		document.forms.navForm.submit();
+	}
+	else
+	{
+		location.href = action;
+	}
+	return false;
+}
+
 function header_DoSiteSearch()
 {
 	if (document.site_search_form) 
@@ -63,49 +78,46 @@ function header_DoSiteSearch()
 
 
 <style>
+FORM {margin:0px; padding:0px;}
+BODY {margin:0px; padding:0px; font:12px arial, verdana, sans-serif; color:black;  background: url(../../assets3.sparkpeople.com/assets/nav/nav_bg_light_v1.jpg) center repeat-y; }
+#site_center_w {text-align:center;}
+#site_center3 { width:840px; position:relative; text-align:left; margin:auto;}
+#site_center2 { text-align:left; background-color:white; width:775px; margin-left:13px; padding:0px 0 20px 0;}
 
-#nav_search {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-868px -10px; height:34px; display:inline-block;}
-#nav_search INPUT {border:none; background:none; font:13px Arial, Verdana, Sans-serif; font-weight:bold; width:150px; padding:2px 6px 2px 10px; margin:0px 0px 0px 0px; }
-HTML>BODY #nav_search INPUT {width:135px;}
-#nav_no_btns {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:0px -87px; height:25px; width:775px;}
+#nav_logo_bg_w { width:800px; text-align:left; position:relative; }
+#nav_logo_bg { padding:4px 12px 0px 13px;  }
+#site_btm {   width:800px; height:20px; }
+
+#nav_top_ad_bg_w { padding:0px 12px 8px 13px;}
+#nav_top_ad_bg { width:775px; padding:8px 0px 4px 25px;  background-color:#f5f5fe;  border-bottom:1px solid #CCCCCC;  margin-bottom:5px;}
+HTML>BODY #nav_top_ad_bg {width:750px;}
+
+#footer {  text-align:center; margin:auto; width:840px;}
+#footer_space {padding:10px 10px 10px 10px; margin:30px 30px 0px 13px; width:755px; text-align:center; }
+
+
+#nav_btns {float:right; margin:2px 12px 0 0; text-align:right;}
+
+
+#nav_search_w {  position:absolute; top:20px; left:315px;}
+#nav_search {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite_blue_v1.gif) no-repeat; background-position:-277px 0px; height:45px;}
+#nav_search_w .nav_search_input1 {border:none; background:none; font:13px Arial, Verdana, Sans-serif; font-weight:bold; width:125px; margin-left:10px;}
+#nav_search_btn { display:inline-block; position:relative; top:10px;}
+
+#nav_logo {float:left; margin:15px 0px 10px 15px; display:block;}
+#nav_logo_teens {float:left; margin:15px 0px 0px 20px; display:block;}
+#nav_logo_ncai {float:left; margin:5px 0px 5px 20px; display:block;}
+#nav_logo_ibm {float:left; margin:15px 0px 15px 20px; display:block;}
+#nav_logo_ibm_by {float:right; margin:30px 20px 10px 20px; display:block;}
+
+#nav_no_btns {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:0px -87px; height:25px; width:775px;}
 #nav_top_ad_caption {font:10px arial,verdana,sans-serif; color:#7C7C7C; text-align:right; padding:4px 10px 0px 0px;}
 
 
 
-FORM {margin:0px; padding:0px;}
-BODY {margin:0px; padding:0px; font:12px arial, verdana, sans-serif; color:black;  background: url(../../assets3.sparkpeople.com/assets/nav/nav_bg_center.jpg) center repeat-y; }
-#site_center_w {text-align:center;}
-#site_center3 { width:840px; position:relative; text-align:left; background: url(../../assets3.sparkpeople.com/assets/nav/nav_page_bg_center3.jpg) repeat-y; margin:auto;}
-#site_center2 { text-align:left; background-color:white; width:775px; margin-left:13px; padding:0px 0 20px 0;}
 
-#nav_logo_bg_w { width:1000px; background-color:#F3F3EB; background: url(../../assets3.sparkpeople.com/assets/nav/nav_top_bg_center3.jpg) no-repeat; text-align:left; }
-#nav_logo_bg { padding:26px 12px 15px 13px;  }
-#site_btm { background: url(../../assets3.sparkpeople.com/assets/nav/nav_page_btm_center3.jpg) no-repeat; width:800px; height:20px; }
-
-#nav_top_ad_bg_w {background: url(../../assets3.sparkpeople.com/assets/nav/nav_bg_center.jpg) center repeat-y; padding:10px 220px 5px 20px; }
-#nav_top_ad_bg {background-color:white; width:728px; border:1px solid #CCCCCC; padding:10px; -moz-border-radius: 8px; border-radius: 8px;  -moz-box-shadow: 0px 0px 12px #666; -webkit-box-shadow: 0px 0px 12px #666; box-shadow: 0px 0px 12px #666; }
-
-.nc1 {padding:0px 4px 0px 0px;}
-.nc2 {padding:0px 25px 0px 30px;}
-.nc3 {padding:0px 0px 0px 0px;}
-.nc4 {padding:0px 0px 0px 3px;}
-.nc5 {padding:0px 0px 0px 3px;}
-.nc6 {padding:0px 0px 0px 3px;}
-
-
-
-
-#footer { margin:30px 0 0 0; width:840px; text-align:center; margin:auto;}
-#footer_space {padding:10px 0px 0 0px; text-align:center; width:735px; margin-left:33px;}
-
-
-
-
-
-
-
-
-
+ 
+/*do nothing the sparkpeople styles are already in here */
 
 
 
@@ -116,11 +128,11 @@ IMG {vertical-align:bottom;} /*fix for IE whitespace below images */
 
 #nav LI {z-index:100;}
 #nav LI.n0 {float:left; width:16px;}
-#nav LI.n1 {float:left; width:172px;}
-#nav LI.n2 {float:left; width:172px;}
-#nav LI.n3 {float:left; width:172px;}
-#nav LI.n4 {float:left; width:172px;}
-#nav LI.n5 {float:left; width:71px;}
+#nav LI.n1 {float:left; width:229px;}
+#nav LI.n2 {float:left; width:229px;}
+#nav LI.n3 {float:left; width:229px;}
+#nav LI.n4 {float:left; width:229px;}
+#nav LI.n5 {float:left; width:72px;}
 
 #nav LI UL {position:absolute; left: -999em; z-index:9999999; margin:0px; padding:0px;}
 #nav LI UL LI { z-index:100; margin:0px; padding:0px;}
@@ -130,63 +142,76 @@ IMG {vertical-align:bottom;} /*fix for IE whitespace below images */
 
 #nav a {display:block; padding:0px; margin:0px;}
 
-#nav LI UL LI A{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:172px; border-top:0px; z-index:9999999;}
-#nav LI UL LI A:hover{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:172px; border-top:0px; z-index:9999999;}
-
-/*for Lifestyle center nav*/
-#nav LI UL UL {padding:0px; margin:-29px 0 0 172px;}
-#nav LI UL UL LI A{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:190px; border-top:0px; z-index:9999999;}
-#nav LI UL UL LI A:hover{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:190px; border-top:0px; z-index:9999999;}
+/*
+#nav LI UL LI A{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:229px; border-top:0px; z-index:9999999;}
+#nav LI UL LI A:hover{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:229px; border-top:0px; z-index:9999999;}
+*/
 
 
-/* This is setting the width for mozilla browsers */
-html>Body #nav LI UL LI A {width:155px;}
-html>Body #nav LI UL LI A:hover {width:155px;}
-html>Body #nav LI UL UL LI A {width:175px;}
-html>Body #nav LI UL UL LI A:hover {width:175px;}
-
-/*drop shadow on nav does not work in IE*/
+/*drop shadow*/
 #nav LI UL { -moz-box-shadow: 1px 3px 12px #444; -webkit-box-shadow: 1px 3px 12px #444; box-shadow: 1px 3px 12px #444; border-bottom-left-radius:10px; border-bottom-right-radius:10px; -moz-border-radius-bottomright:10px; -moz-border-radius-bottomleft:10px; -webkit-border-bottom-left-radius:10px; -webkit-border-bottom-right-radius:10px;}
 
-#sub_tools LI a {background-color:#ff7b08; border: 1px solid #AD2921; }
-#sub_tools LI a:hover {background-color:#EB5A00; border: 1px solid #AD2921; }
-
-#sub_res LI a.nav_arrow2 {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow2.gif) 162px 6px no-repeat;  background-color:#6384bd;}
-#sub_res LI {display:inline;}
-#sub_res LI a {background-color:#6384bd; border: 1px solid #5A5AB5; }
-#sub_res LI a:hover {background-color:#5A5AB5; border: 1px solid #5A5AB5; }
-
-#sub_health LI a.nav_arrow3 {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow3.gif) 162px 6px no-repeat; background-color:#94a531;}
-#sub_health LI {display:inline;}
-#sub_health LI a {background-color:#94a531; border: 1px solid #848429; }
-#sub_health LI a:hover {background-color:#848429; border: 1px solid #848429; }
+/*rounded corner on last list item nav*/
+#nav LI UL LI:last-child a{border-bottom-left-radius:10px; border-bottom-right-radius:10px; -moz-border-radius-bottomright:10px; -moz-border-radius-bottomleft:10px; -webkit-border-bottom-left-radius:10px; -webkit-border-bottom-right-radius:10px;}
 
 
-#sub_comm LI a {background-color:#EB2E2E; border: 1px solid #AD2921; }
-#sub_comm LI a:hover { background-color:#AD2921; border: 1px solid #AD2921; }
+#sub_tools LI a {font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; background-color:#ff7b08; border: 1px solid #AD2921; padding: 6px 8px 6px 8px; width: 229px; border-top:0px; z-index:9999999;}
+/* This is setting the width for mozilla browsers */
+html>Body #sub_tools LI a {width:213px; z-index:9999999;}
+#sub_tools LI a:hover {font:12px Arial,verdana; font-weight:bold;  color:white;  text-decoration: none; background-color:#EB5A00; border: 1px solid #AD2921; padding: 6px 8px 6px 8px; width: 229px;  border-top:0px; z-index:9999999;}
+html>Body #sub_tools LI a:hover {width:213px;  z-index:9999999;}
+
+#sub_res LI a {font:12px Arial,verdana; font-weight:bold;  color:white;  text-decoration: none; background-color:#6384bd; border: 1px solid #5A5AB5; padding: 6px 8px 6px 8px; width: 154px; border-top:0px; z-index:9999999;}
+html>Body #sub_res LI a {width:138px; z-index:9999999;}
+#sub_res LI a:hover {font:12px Arial,verdana; font-weight:bold;  color:white;  text-decoration: none; background-color:#5A5AB5; border: 1px solid #5A5AB5; padding: 6px 8px 6px 8px; width: 154px; border-top:0px; z-index:9999999;}
+html>Body #sub_res LI a:hover {width:138px; z-index:9999999;}
+#sub_res LI a.nav_arrow2 {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow2.gif) 143px 6px no-repeat;  background-color:#6384bd;}
+#sub_res LI a.nav_arrow3 {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow2.gif) 143px 6px no-repeat;  background-color:#6384bd;}
+#sub_res LI a.nav_arrow2:hover {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow2.gif) 143px 6px no-repeat;  background-color:#5A5AB5;}
+#sub_res LI a.nav_arrow3:hover {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow2.gif) 143px 6px no-repeat;  background-color:#5A5AB5;}
+#sub_res LI {display:inline; float:left; width: 154px;}
+#sub_res LI a.nav_eh2 {background-color: #6D6DBE;}
+#sub_res LI:last-child a {border-bottom-right-radius:0px; -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; }
+
+
+#sub_res { width:310px; background-color:#6384bd;}
+html>Body #sub_res {  background-color:#6384bd;}
+
+
+#sub_comm LI a {font:12px Arial,verdana; font-weight:bold;  color:white;  text-decoration: none; background-color:#EB2E2E; border: 1px solid #AD2921; padding: 6px 8px 6px 8px; width:229px; border-top:0px; z-index:9999999;}
+html>Body #sub_comm LI a {width:213px; z-index:9999999;}
+#sub_comm LI a:hover {font:12px Arial,verdana; font-weight:bold;  color:white;  text-decoration: none; background-color:#CB3027; border: 1px solid #AD2921; padding: 6px 8px 6px 8px; width:229px;  border-top:0px; z-index:9999999;}
+html>Body #sub_comm LI a:hover {width:213px; z-index:9999999;}
+#sub_comm LI a.nav_arrow4 {background:url(../../assets3.sparkpeople.com/assets/nav/nav_arrow4.gif) 218px 6px no-repeat;  background-color:#EB2E2E;}
+#sub_comm LI a {background-color:#EB2E2E;  }
+#sub_comm LI a:hover { background-color:#CB3027;}
 
 #sub_shop {margin:0px 0 0 -90px; padding:0px; list-style:none; width:173px; background-color:white;  border-bottom-left-radius:0px; border-bottom-right-radius:0px; -moz-border-radius-bottomright:0px; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; -webkit-border-bottom-right-radius:0px;}
 #sub_shop UL {margin:0px; padding:0px; list-style:none; background-color:white; }
 #sub_shop LI {margin:0px; padding:0px; list-style:none; height:58px; overflow:hidden; }
 #sub_shop LI UL {margin:0px; padding:0px; list-style:none; background-color:white; width:173px;}
 #sub_shop LI UL LI {margin:0px; padding:0px; list-style:none; height:58px; overflow:hidden;}
-#nav LI UL UL.sub_shop_2nd_level { margin:-70px 0 0 172px;}
+
+#nav LI UL UL.sub_shop_2nd_level { margin:-58px 0 0 172px;}
 #nav LI UL.sub_shop_offset { margin:0 0 0 -102px;}
 
-#sub_nav {float:left; position:relative; padding:4px 0px 0px 0px; margin:0px; display:block;}
 
-#sub_nav UL {float:left; list-style:none; margin:0px; padding:0px; height:20px;}
-html>Body #sub_nav UL{margin:5px 0px 0px 0px;}
+/*resize all 2nd level navs*/
+#nav LI UL UL LI A{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:190px; border-top:0px; z-index:9999999;}
+#nav LI UL UL LI A:hover{font:12px Arial,verdana; font-weight:bold; color:white; text-decoration: none; z-index:9999999; margin:0px; padding: 6px 8px 6px 8px; width:190px; border-top:0px; z-index:9999999;}
 
-#sub_nav UL LI {float:left; font:11px Arial,verdana; font-weight:bold; color:white; text-decoration:none;  margin:0px; padding:0px; border-top:0px; z-index:9999999;}
-#sub_nav UL LI A {font:11px Arial,verdana; font-weight:bold; color:white; text-decoration:none; border-top:0px; height:23px; z-index:9999999; padding:6px 14px 6px 14px;}
+/*reposition articles and videos 2nd level nav*/
+#sub_res LI UL {padding:0px; margin:-29px 0 0 155px;}
+#sub_res LI UL LI {display:inline; clear:left; width: 154px;}
+
+/*reposition community 2nd level nav*/
+#sub_comm LI UL {padding:0px; margin:-29px 0 0 230px;}
 
 .first_level {display:inline;}
 
 #content {clear:left; display:block; height:0px; font-size:0px;}
 #ad_hide_for_menu {z-index:50;}
 #ad_hide_for_menu2 {z-index:50;}
-.nav_last_item {border-bottom-left-radius:10px; border-bottom-right-radius:10px; -moz-border-radius-bottomright:10px; -moz-border-radius-bottomleft:10px; -webkit-border-bottom-left-radius:10px; -webkit-border-bottom-right-radius:10px;}
 
 
 
@@ -201,124 +226,147 @@ a.footer_btn1 SPAN {display:none;}
 
 
 
-a.nav_search {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; width:53px; height:34px; display:inline-block;}
-a.nav_search:hover {background-position:0px -34px;}
+
+
+a.nav_search {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite_blue_v1.gif) no-repeat; width:62px; height:35px; display:inline-block;}
+a.nav_search:hover {background-position:0px -35px;}
 a.nav_search SPAN {display:none;}
 
-a.nav_join_free {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-328px 0px; width:105px; height:31px; display:inline-block;}
-a.nav_join_free:hover {background-position:-328px -31px;}
-a.nav_join_free SPAN {display:none;}
+a.nav_join_free {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; font-weight:bold; }
+a.nav_join_free:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; background-color:#f5f5fE; font-weight:bold;}
 
-a.nav_help {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-232px 0px; width:45px; height:31px; display:inline-block;}
-a.nav_help:hover {background-position:-232px -31px;}
-a.nav_help SPAN {display:none;}
+a.nav_sparkmail {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; font-weight:bold; position:relative;}
+a.nav_sparkmail:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; background-color:#f5f5fE; font-weight:bold;  position:relative;}
+.nav_mail_icon {position:absolute; display:block; width:23px; height:24px; background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite_blue_v1.gif) no-repeat; background-position:-500px 0px; left:-19px; top:-3px; }
 
-a.nav_tell_a_friend {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-53px 0px; width:71px; height:31px; display:inline-block;}
-a.nav_tell_a_friend:hover {background-position:-53px -31px;}
-a.nav_tell_a_friend SPAN {display:none;}
+a.nav_help {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; }
+a.nav_help:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; background-color:#f5f5fE; }
 
-a.nav_logout_top {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-124px 0px; width:54px; height:31px; display:inline-block;}
-a.nav_logout_top:hover {background-position:-124px -31px;}
-a.nav_logout_top SPAN {display:none;}
+a.nav_tell_a_friend {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; }
+a.nav_tell_a_friend:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; border-right:1px solid #E5E5E5; background-color:#f5f5fE; }
 
-a.nav_login_top {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-178px 0px; width:54px; height:31px; display:inline-block;}
-a.nav_login_top:hover {background-position:-178px -31px;}
-a.nav_login_top SPAN {display:none;}
+a.nav_logout_top {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; }
+a.nav_logout_top:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; background-color:#f5f5fE; }
 
-a.nav_sparkmail {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite2.gif) no-repeat; background-position:-433px 0px; width:105px; height:31px; display:inline-block;}
-a.nav_sparkmail:hover {background-position:-433px -31px;}
-a.nav_sparkmail SPAN {display:none;}
+a.nav_login_top {display:inline-block; color:#6384BD; text-decoration:none; padding:2px 6px 2px 6px; }
+a.nav_login_top:hover {color:#3B5EE5; text-decoration:none; padding:2px 6px 2px 6px; background-color:#f5f5fE; }
 
 
+a.nav_coach_btn {background:url(../assets/nav/nav_coach_sprite_v1.gif) no-repeat; background-position:0px 0px; width:214px; height:46px; display:inline-block; margin-top:6px; margin-bottom:10px; }
+a.nav_coach_btn:hover {background-position:0px -46px;}
+a.nav_coach_btn SPAN {display:none;}
 
-.nav_bar_spacer {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; width:16px; height:29px; display:block;}
+/* this is the ad for sparkcoach if they already are in sparkcoach*/
+a.nav_coach_ad0 { background-position:-1070px 0px;}
+a.nav_coach_ad0:hover {background-position:-1070px -46px;}
 
-a.nav_my_trackers {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-16px 0px; width:172px; height:29px; display:block;}
+/* other ads for sparkcoach*/
+a.nav_coach_ad1 { background-position:0px 0px;}
+a.nav_coach_ad1:hover {background-position:0px -46px;}
+
+a.nav_coach_ad2 { background-position:-214px 0px;}
+a.nav_coach_ad2:hover {background-position:-214px -46px;}
+
+a.nav_coach_ad3 { background-position:-428px 0px;}
+a.nav_coach_ad3:hover {background-position:-428px -46px;}
+
+a.nav_coach_ad4 { background-position:-642px 0px;}
+a.nav_coach_ad4:hover {background-position:-642px -46px;}
+
+a.nav_coach_ad5 { background-position:-856px 0px;}
+a.nav_coach_ad5:hover {background-position:-856px -46px;}
+
+
+
+
+.nav_bar_spacer {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; width:16px; height:29px; display:block;}
+
+a.nav_my_trackers {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-16px 0px; width:229px; height:29px; display:block;}
 a.nav_my_trackers:hover {background-position:-16px -29px;}
 a.nav_my_trackers SPAN {display:none;}
 
-a.nav_my_trackers_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-16px -58px; width:172px; height:29px; display:block;}
+a.nav_my_trackers_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-16px -58px; width:229px; height:29px; display:block;}
 a.nav_my_trackers_sel:hover {background-position:-16px -29px;}
 a.nav_my_trackers_sel SPAN {display:none;}
 
-a.nav_healthy_lifestyle {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-188px 0px; width:172px; height:29px; display:block;}
-a.nav_healthy_lifestyle:hover {background-position:-188px -29px;}
+a.nav_healthy_lifestyle {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-245px 0px; width:229px; height:29px; display:block;}
+a.nav_healthy_lifestyle:hover {background-position:-245px -29px;}
 a.nav_healthy_lifestyle SPAN {display:none;}
 
-a.nav_healthy_lifestyle_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-188px -58px; width:172px; height:29px; display:block;}
-a.nav_healthy_lifestyle_sel:hover {background-position:-188px -29px;}
+a.nav_healthy_lifestyle_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-245px -58px; width:229px; height:29px; display:block;}
+a.nav_healthy_lifestyle_sel:hover {background-position:-245px -29px;}
 a.nav_healthy_lifestyle_sel SPAN {display:none;}
 
-a.nav_health_conditions {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-360px 0px; width:172px; height:29px; display:block;}
+a.nav_health_conditions {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-360px 0px; width:229px; height:29px; display:block;}
 a.nav_health_conditions:hover {background-position:-360px -29px;}
 a.nav_health_conditions SPAN {display:none;}
 
-a.nav_health_conditions_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-360px -58px; width:172px; height:29px; display:block;}
+a.nav_health_conditions_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-360px -58px; width:229px; height:29px; display:block;}
 a.nav_health_conditions_sel:hover {background-position:-360px -29px;}
 a.nav_health_conditions_sel SPAN {display:none;}
 
-a.nav_community {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-532px 0px; width:172px; height:29px; display:block;}
-a.nav_community:hover {background-position:-532px -29px;}
+a.nav_community {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-474px 0px; width:229px; height:29px; display:block;}
+a.nav_community:hover {background-position:-474px -29px;}
 a.nav_community SPAN {display:none;}
 
-a.nav_community_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-532px -58px; width:172px; height:29px; display:block;}
-a.nav_community_sel:hover {background-position:-532px -29px;}
+a.nav_community_sel {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-474px -58px; width:229px; height:29px; display:block;}
+a.nav_community_sel:hover {background-position:-474px -29px;}
 a.nav_community_sel SPAN {display:none;}
 
 
-a.nav_shop {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1071px 0px; width:71px; height:29px; display:block;}
+a.nav_shop {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1071px 0px; width:72px; height:29px; display:block;}
 a.nav_shop:hover {background-position:-1071px -29px;}
 a.nav_shop SPAN {display:none;}
 
-a.nav_logout {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-929px 0px; width:71px; height:29px; display:block;}
+a.nav_logout {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-929px 0px; width:72px; height:29px; display:block;}
 a.nav_logout:hover {background-position:-929px -29px;}
 a.nav_logout SPAN {display:none;}
 
-a.nav_login {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1000px 0px; width:71px; height:29px; display:block;}
+a.nav_login {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1000px 0px; width:72px; height:29px; display:block;}
 a.nav_login:hover {background-position:-1000px -29px;}
 a.nav_login SPAN {display:none;}
 
-a.nav_bootcamp_dvd {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1158px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_bootcamp_dvd {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1158px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_bootcamp_dvd:hover {background-position:-1158px -58px;}
 a.nav_bootcamp_dvd SPAN {display:none;}
 
-a.nav_total_body_dvd {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2887px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_total_body_dvd {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2887px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_total_body_dvd:hover {background-position:-2887px -58px;}
 a.nav_total_body_dvd SPAN {display:none;}
 
-a.nav_cookbook {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1330px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_cookbook {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1330px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_cookbook:hover {background-position:-1330px -58px;}
 a.nav_cookbook SPAN {display:none;}
 
-a.nav_book {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1503px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_book {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1503px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_book:hover {background-position:-1503px -58px;}
 a.nav_book SPAN {display:none;}
 
-a.nav_merchandise {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1676px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_merchandise {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1676px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_merchandise:hover {background-position:-1676px -58px;}
 a.nav_merchandise SPAN {display:none;}
 
-a.nav_mobile {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-1849px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_mobile {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-1849px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_mobile:hover {background-position:-1849px -58px;}
 a.nav_mobile SPAN {display:none;}
 
-a.nav_live {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2022px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_live {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2022px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_live:hover {background-position:-2022px -58px;}
 a.nav_live SPAN {display:none;}
 
-a.nav_ebooks {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2195px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_ebooks {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2195px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_ebooks:hover {background-position:-2195px -58px;}
 a.nav_ebooks SPAN {display:none;}
 
-a.nav_books {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2714px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_books {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2714px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_books:hover {background-position:-2714px -58px;}
 a.nav_books SPAN {display:none;}
 
-a.nav_sparkcoach {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2368px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_sparkcoach {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2368px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_sparkcoach:hover {background-position:-2368px -58px;}
 a.nav_sparkcoach SPAN {display:none;}
 
-a.nav_deals {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v9.jpg) no-repeat; background-position:-2541px 0px; width:173px; height:58px; display:inline-block;}
+a.nav_deals {background:url(../../assets3.sparkpeople.com/assets/nav/nav_sprite1v11.jpg) no-repeat; background-position:-2541px 0px; width:173px; height:58px; display:inline-block;}
 a.nav_deals:hover {background-position:-2541px -58px;}
 a.nav_deals SPAN {display:none;}
 
@@ -375,25 +423,26 @@ if (window.attachEvent) window.attachEvent("onload", sfHover);
 //--><!]]></script>
 
 </head>
-<!--sid=123-->
+<!--sid=121-->
 <body marginheight="0" topmargin="0" leftmargin="0" marginwidth="0" >
 <!-- begin DFP ad tag -->
-			<script language="JavaScript" src="../../ad.doubleclick.net/N6635/adj/spark.sparkpeople/one_by_one%3Bsz=1x1%3Btile=4%3Bpos=tc%3Bu=sp%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=Opaque%3BrmdWmode=Opaque%3Bthe_end=$%3Bord=116201381744" type="text/javascript"></script>
-			<noscript><a href="http://ad.doubleclick.net/N6635/jump/spark.sparkpeople/one_by_one;sz=1x1;tile=4;pos=tc;u=sp;cmn=wfm;!c=sp;!c=ps;ugc=0;wmode=Opaque;rmdWmode=Opaque;the_end=$;ord=116201381744?" target="_blank"><img src="../../ad.doubleclick.net/N6635/ad/spark.sparkpeople/one_by_one%3Bsz=1x1%3Btile=4%3Bpos=tc%3Bu=sp%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=Opaque%3BrmdWmode=Opaque%3Bthe_end=$%3Bord=116201381744" width="1" height="1" border="0" alt=""></a></noscript>
+			<script language="JavaScript" src="../../ad.doubleclick.net/N6635/adj/spark.sparkpeople/one_by_one%3Bsz=1x1%3Btile=4%3Bpos=tc%3Bu=sp%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=Opaque%3BrmdWmode=Opaque%3Bthe_end=$%3Bord=119201381719" type="text/javascript"></script>
+			<noscript><a href="http://ad.doubleclick.net/N6635/jump/spark.sparkpeople/one_by_one;sz=1x1;tile=4;pos=tc;u=sp;cmn=wfm;!c=sp;!c=ps;ugc=0;wmode=Opaque;rmdWmode=Opaque;the_end=$;ord=119201381719?" target="_blank"><img src="../../ad.doubleclick.net/N6635/ad/spark.sparkpeople/one_by_one%3Bsz=1x1%3Btile=4%3Bpos=tc%3Bu=sp%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=Opaque%3BrmdWmode=Opaque%3Bthe_end=$%3Bord=119201381719" width="1" height="1" border="0" alt=""></a></noscript>
 			<!-- end ad tag -->
 			
 <div id="site_center_w" >
 <div id="site_center3">
 
+
+
+
 	<div id="nav_logo_bg_w" class="hide">
 	<div id="nav_logo_bg" class="hide">
-	<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
 
 
-			<td width="15">
-			<a href="motivation_articles.asp%3Fid=922.html#maincontent"><img src="../../assets3.sparkpeople.com/spacer.gif" border="0" width="1" height="1" alt="Skip Navigation"></a>
-			
+        <div style="float:left; height:0px; width:0px; font-size:0px; display:inline-block; position:absolute;">
+        <a href="motivation_articles.asp%3Fid=922.html#maincontent"><img src="../../assets3.sparkpeople.com/spacer.gif" border="0" width="1" height="1" alt="Skip Navigation"></a>
+        
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -439,42 +488,45 @@ c15:""
 <img src="../../b.scorecardresearch.com/b%3Fc1=2&amp;c2=10432413&amp;c3=&amp;c4=www.sparkpeople.com%252Fresource%252Fmotivation_articles.asp&amp;c5=&amp;c6=&amp;c15=&amp;cv=1.3&amp;cj=1.html" style="display:none" width="0" height="0" alt="" />
 </noscript>
 <!-- End comScore Tag -->
-			</td>
-			
-			
-			
-			<td class="nc1"><a href="http://www.sparkpeople.com/"><img src="../../assets3.sparkpeople.com/assets/nav/logo_spark_v2.gif" alt="" border="0"></a></td>
-			<td><a href="http://www.sparkpeople.com/"><img src="../../assets3.sparkpeople.com/assets/nav/nav_logo_v4.gif" alt="SparkPeople.com :: Sparking Millions of People" border="0"></a></td>
-			
-			<td class="nc2"><form name="site_search_form" method="POST" action="http://www.sparkpeople.com/myspark/search_results.asp" onSubmit="return header_DoSiteSearch();">
-			<table id="nav_search" border="0" cellpadding="0" cellspacing="0"><tr>
-			<td><input name="site_search_term" type="text" maxlength="100" value="" class="nav_search_input1"></td>
-			<td><a href="javascript: void(0);" onClick="return header_DoSiteSearch();" class="nav_search"><span>Search</span></a></td></tr></table></form>
-			 </td>
-
-			
-			<td class="nc3"><a href="http://www.sparkpeople.com/myspark/register.asp" class="nav_join_free"><span>Join Now For Free</span></a></td>
-			
-			<td class="nc4"><a href="http://www.sparkpeople.com/community/help.asp" class="nav_help"><span>Help</span></a></td>
-   			
-			 <td class="nc5"><a href="http://www.sparkpeople.com/myspark/tell_a_friend.asp" class="nav_tell_a_friend"><span>Tell A Friend</span></a></td>
-			 
-			<td class="nc6"><a href="http://www.sparkpeople.com/myspark/loginpage.asp" class="nav_login_top"><span>Log In</span></a></td>
-			
-			
-			
-			<td><IFRAME src="../../assets3.sparkpeople.com/myspark/spacer.gif" name="header_inc_updater" width="1" height="1" frameborder="0" scrolling="no"></IFRAME></td>
-			
-			
-					
+        <IFRAME src="../../assets3.sparkpeople.com/myspark/spacer.gif" name="header_inc_updater" width="0" height="0" frameborder="0" scrolling="no"></IFRAME>
+        </div>
 		
+		
+		<div id="nav_btns">
+
+				
+			<a href="http://www.sparkpeople.com/myspark/register.asp" class="nav_join_free"><span>Join for Free!</span></a>
 			
+			<a href="http://www.sparkpeople.com/community/help.asp" class="nav_help"><span>Help</span></a>
+   			
+			<a href="http://www.sparkpeople.com/myspark/tell_a_friend.asp" class="nav_tell_a_friend"><span>Tell Friends</span></a>
+            
+				<a href="http://www.sparkpeople.com/myspark/loginpage.asp" class="nav_login_top"><span>Log In</span></a>
+				
+		
+        <br>
+		<!-- change nav_coach_ad0 thru nav_coach_ad5 for the different coach ads.  O is for users who are already members-->
+		
+		</div>
+        
+			
+			<a href="http://www.sparkpeople.com/"><img src="../../assets3.sparkpeople.com/assets/nav/nav_logo_v5.jpg" border="0" id="nav_logo" alt="SparkPeople.com :: Sparking Millions of People"></a>
+		
+		
+		<div id="nav_search_w">
+			<form name="site_search_form" method="POST" action="http://www.sparkpeople.com/myspark/search_results.asp" onSubmit="return header_DoSiteSearch();">
+					<div id="nav_search">
+					<input name="site_search_term" type="text" maxlength="100" value="" class="nav_search_input1">
+					<a href="javascript: void(0);" onClick="return header_DoSiteSearch();" class="nav_search" id="nav_search_btn"><span>Search</span></a>
+			 	</div>
+			</form>	
+		</div>
+		
+		
+
+<div style="clear:both;"></div>	
 			
 
-			
-
-			</tr>
-			</table>
 	</div>
 </div>			
 <div id="site_center2">
@@ -502,77 +554,70 @@ c15:""
 <li><a href="Javascript:void(0);" onClick="return IHGoTo('/myspark/sparkmail.asp');">SparkMail</a></li>
 <li><a href="Javascript:void(0);" onClick="return IHGoTo('/myspark/sparkpoints.asp');">my SparkPoints</a></li>
 
-<li><a class="nav_last_item" href="Javascript:void(0);" onClick="return IHGoTo('/myspark/web_search.asp');">Web Search</a></li>
+<li><a href="Javascript:void(0);" onClick="return IHGoTo('/myspark/web_search.asp');">Web Search</a></li>
 
-</ul></li>
-<li class="n2">
+</ul></li><li class="n2">
 
-<a href="http://www.sparkpeople.com/resource/main.asp" class="nav_healthy_lifestyle_sel">
+<a href="http://www.sparkpeople.com/resource/expert-articles-and-videos.asp" class="nav_healthy_lifestyle_sel">
 
-<span>Healthy Lifestyle</span></a>
+<span>Articles &amp; Videos</span></a>
 <ul id="sub_res">
-<li><a href="http://www.sparkpeople.com/resource/main.asp">Healthy Lifestyle Home</a></li>
+
+<li><a href="http://www.sparkpeople.com/resource/expert-articles-and-videos.asp" class="lifestyle_offset nav_eh2">Articles & Videos Home</a></li>
+<li><a href="http://www.sparkpeople.com/resource/health_home.asp" class="nav_eh2">Health Conditions</a></li>
 <li><a href="http://www.sparkpeople.com/resource/nutrition.asp">Nutrition</a></li>
-<li><a href="http://www.sparkpeople.com/resource/fitness.asp">Fitness</a></li>
-<li><a href="http://www.sparkpeople.com/resource/motivation.asp">Motivation</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health-and-wellness.asp">Wellness</a></li>
-<li><a href="http://www.sparkpeople.com/resource/sparkdiet.asp">SparkDiet</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center.asp" class="nav_arrow2">Lifestyle Centers</a>
-
-<ul><li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=1">Maintaining Your New Weight</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=2">Men's Health</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=17">Backyard Gardening</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=8">College Living</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=16">Financial Fitness</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=4">Green Living</a></li>
-<li><a href="http://www.sparkpeople.com/sparkmoms/">SparkMoms</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=6">Natural Beauty</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=7">Senior Health</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=3">Women's Health</a></li>
-<li><a href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=18">Brides-to-Be</a></li>
-<li><a class="nav_last_item" href="http://www.sparkpeople.com/resource/lifestyle_center_detail.asp?id=19">Limited Mobility</a></li>
-
-</ul>
-
+<li><a href="http://www.sparkpeople.com/resource/health_conditions_main.asp" class="nav_arrow3">Condition Centers</a>
+	<ul><li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=6">Depression</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=9">Diabetes (Spark*D Program)</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=7">GERD (Heartburn)</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=15">Healthy Heart</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=16">Healthy Skin</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=5">High Blood Pressure</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=4">High Cholesterol</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=8">Insomnia</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=10">Irritable Bowel Syndrome (IBS)</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=13">Menopause</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=11">Osteoarthritis</a></li>
+	<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=12">Seasonal Allergies</a></li></ul>
 </li>
-<li><a href="http://www.sparkpeople.com/resource/videos.asp">Videos</a></li>
-<li>
+
+<li><a href="http://www.sparkpeople.com/resource/fitness.asp">Fitness</a></li>
+<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=9">Diabetes Program</a></li>
+
+<li><a href="http://www.sparkpeople.com/resource/motivation.asp">Motivation</a></li>
+<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=15">Healthy Heart Program</a></li>
+
+<li><a href="http://www.sparkpeople.com/resource/health-and-wellness.asp">Wellness</a></li>
+<li><a href="http://www.sparkpeople.com/resource/health_a-z.asp">Health A-Z</a></li>
+
+<li><a href="http://www.sparkpeople.com/resource/sparkdiet.asp">SparkDiet</a></li>
+<li><a href="http://www.sparkpeople.com/resource/health_news.asp">Health News</a></li>
+
+
+<li style="clear:left;"><a href="http://www.sparkpeople.com/resource/lifestyle_center.asp">Lifestyle Centers</a></li>
+<li style="clear:left;"><a href="http://www.sparkpeople.com/resource/videos.asp">Videos</a></li>
+<li style="clear:left;"><a href="http://www.sparkpeople.com/myspark/sparkradio.asp">SparkPeople Radio</a></li>
+<li style="clear:left;">
 
 <a href="http://recipes.sparkpeople.com/home.asp" target="_blank">SparkRecipes.com</a></li>
 
-<li><a class="nav_last_item" href="http://www.dailyspark.com" target="_blank">dailySpark.com</a></li>
+<li style="clear:left;"><a href="http://www.dailyspark.com" target="_blank" style="border-bottom-right-radius:0px; -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px;">dailySpark.com</a></li>
 
-</ul></li>
-<li class="n3">
 
-<a href="http://www.sparkpeople.com/resource/health_home.asp" class="nav_health_conditions">
 
-<span>Health Conditions</span></a>
-<ul id="sub_health">
-<li><a href="http://www.sparkpeople.com/resource/health_home.asp">Health Conditions Home</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_a-z.asp">Health A-Z</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions_main.asp" class="nav_arrow3">Condition Centers</a>
-<ul><li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=6">Depression</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=9">Diabetes (Spark*D Program)</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=7">GERD (Heartburn)</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=15">Healthy Heart</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=16">Healthy Skin</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=5">High Blood Pressure</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=4">High Cholesterol</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=8">Insomnia</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=10">Irritable Bowel Syndrome (IBS)</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=13">Menopause</a></li>
-<li><a href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=11">Osteoarthritis</a></li>
-<li><a class="nav_last_item" href="http://www.sparkpeople.com/resource/health_conditions.asp?condition=12">Seasonal Allergies</a></li></ul>
+
+
+</ul>
 </li>
-<li><a class="nav_last_item" href="http://www.sparkpeople.com/resource/health_news.asp">Health News</a></li>
-</ul></li>
 <li class="n4">
 
 <a href="http://www.sparkpeople.com/myspark/community_home.asp" class="nav_community">
 
 <span>Community</span></a>
 <ul id="sub_comm">
+
+
+
 <li><a href="http://www.sparkpeople.com/myspark/community_home.asp">Community Home</a></li>
 <li><a href="http://www.sparkpeople.com/myspark/mycommunity.asp">Message Boards</a></li>
 <li><a href="http://www.sparkpeople.com/myspark/groups.asp">SparkTeams</a></li>
@@ -587,9 +632,6 @@ c15:""
 
 
 <li><a href="javascript: void(0);" onClick="return IHGoTo('/friend_feed_home.asp');">Friend Feed</a></li>
-
-<li><a class="nav_last_item" href="http://www.sparkpeople.com/myspark/sparkamerica_home.asp">SparkAmerica</a></li>
-
 </ul></li>
 
 	<li class="n5">
@@ -815,6 +857,8 @@ a.poll_link:hover {color:#09C;  }
 		
         	<img src="../assets/resource/ar3_help_share.png" alt="Share this article to help Spread the Spark!" class="share_bubble" />
             
+
+
 
 
 <div class="shr_pad">
@@ -1068,11 +1112,11 @@ Last updated February 8, 2012
 						</a></li>
 						
 				<li>
-					<a href="http://www.sparkpeople.com/diet-resources.asp?t=high&#32;fiber&#32;diets">
+					<a href="http://www.sparkpeople.com/diet-resources.asp?t=leg&#32;cramp&#32;remedies">
 					<div class="related_pic_w">
 					<img src="../../assets3.sparkpeople.com/news/genericpictures/BigPictures/health_apple_weights.jpg" class="related_pic1">
 					</div>
-					High Fiber Diets Resources
+					Leg Cramp Remedies Resources
 					</a>
 				</li>
 				
@@ -1156,6 +1200,8 @@ Last updated February 8, 2012
 
 <style>
 #sidebar_today {width: 200px; padding:0px 0px 0px 8px; margin: 0px;  position:absolute; left:790px; top: 12px;}
+
+
 
 
 FORM {margin:0; padding:0;}
@@ -1275,7 +1321,7 @@ a.today_cancel:hover {background-position:-82px -12px;}
 <div id="today_ad_200x170">
 	<!-- begin DFP ad tag -->
 	<script language="JavaScript" src="../../ad.doubleclick.net/N6635/adj/spark.sparkpeople/generalwellness/motivation%3Bsz=200x170,200x350,200x400,200x450,200x550%3Btile=3%3Bpos=today%3Bu=sp%3Bdcopt=ist%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=opaque%3Brm" type="text/javascript"></script>
-	<noscript><a href="http://ad.doubleclick.net/N6635/jump/spark.sparkpeople/generalwellness/motivation;sz=200x170,200x350,200x400,200x450,200x550;tile=3;pos=today;u=sp;dcopt=ist;cmn=wfm;!c=sp;!c=ps;ugc=0;wmode=opaque;rmdwmode=opaque;the_end=$;ord=116201381744?" target="_blank"><img src="../../ad.doubleclick.net/N6635/ad/spark.sparkpeople/generalwellness/motivation%3Bsz=200x170,200x350,200x400,200x450,200x550%3Btile=3%3Bpos=today%3Bu=sp%3Bdcopt=ist%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=opaque%3Brm"></a></noscript>
+	<noscript><a href="http://ad.doubleclick.net/N6635/jump/spark.sparkpeople/generalwellness/motivation;sz=200x170,200x350,200x400,200x450,200x550;tile=3;pos=today;u=sp;dcopt=ist;cmn=wfm;!c=sp;!c=ps;ugc=0;wmode=opaque;rmdwmode=opaque;the_end=$;ord=119201381719?" target="_blank"><img src="../../ad.doubleclick.net/N6635/ad/spark.sparkpeople/generalwellness/motivation%3Bsz=200x170,200x350,200x400,200x450,200x550%3Btile=3%3Bpos=today%3Bu=sp%3Bdcopt=ist%3Bcmn=wfm%3B!c=sp%3B!c=ps%3Bugc=0%3Bwmode=opaque%3Brm"></a></noscript>
 	<!-- end ad tag -->
 </div>
 <div id="today_graphic"><img src="../../assets3.sparkpeople.com/assets/nav/today_on_sp.png" alt="Today On SparkPeople" border="0" width="200" height="32"></div>
@@ -1283,47 +1329,47 @@ a.today_cancel:hover {background-position:-82px -12px;}
 
 <div id="today_w"><div class="today_feature_top"></div>
 <div id="today_feature">
-<div id="today_pic_w"><a href="http://www.sparkpeople.com/myspark/challenge_detail.asp?challenge=10"><img src="../../assets3.sparkpeople.com/news/genericpictures/BigPictures/fit_girl_group_fitness_class_gym_weights_body_pump.jpg" alt="" width="174" class="today_pic_horiz"></a></div>
-<b><a href="http://www.sparkpeople.com/myspark/challenge_detail.asp?challenge=10">The January Jumpstart Workout Challenge</a></b>
+<div id="today_pic_w"><a href="http://www.sparkpeople.com/resource/wellness_articles.asp?id=1597"><img src="../../assets3.sparkpeople.com/news/genericpictures/BigPictures/smoking_quit_sign.jpg" alt="" width="174" class="today_pic_horiz"></a></div>
+<b><a href="http://www.sparkpeople.com/resource/wellness_articles.asp?id=1597">Stop Smoking and Gain Weight? Not Necessarily!</a></b>
 
-<p>Make your fitness dreams a reality by joining our newest "bootcamp" style workout challenge. Win prizes and get in the best shape ever for the new year!</p>
-<a href="http://www.sparkpeople.com/myspark/challenge_detail.asp?challenge=10">Read&nbsp;More</a>
+<p>Quitting smoking is s smart move when it comes to improving your overall health. Learn how to keep the scale steady while you kick the habit.</p>
+<a href="http://www.sparkpeople.com/resource/wellness_articles.asp?id=1597">Read&nbsp;More</a>
 </div></div>
 
 
 <div id="today_w"><div class="today_mb_top"></div>
 <div id="today_mb"><ul>
 
-<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=7&amp;imparent=29848696">WATER TIPS</a>
-
-<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=6&amp;imparent=29772438">How to Plan a Family Health/Fitness Challenge?</a>
+<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=1&amp;imparent=29886574">How do you plan for a big meal?</a>
 
 <li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=7&amp;imparent=29867849">How do you manage your cravings?</a>
 
-<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=7&amp;imparent=29821255">quick breakfast and lunch ideas on a TIGHT budget.</a>
+<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=7&amp;imparent=29782818">Snack attack!</a>
 
-<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=1&amp;imparent=29829641">What was your proud moment today?</a>
+<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=6&amp;imparent=29784625">Favorite Videos To Use</a>
+
+<li><a href="http://www.sparkpeople.com/myspark/messageboard.asp?imboard=7&amp;imparent=29829635">Rejected Titles for My Weightloss Bestseller</a>
 
 </ul></div></div>
 
 <div id="today_w"><div class="today_ex_top"></div>
 <div id="today_ex">
 <div id="today_ex_pic_w">
-<div id="today_ex_pic"><a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=354" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('rfs_view_demo1','','http://assets3.sparkpeople.com/assets/nav/today_see_demo_f2.gif',1);" ><img src="../assets/exercises/SmFinals/Single-Leg-Squat-on-Balance-Board.jpg" alt="" border="0"></a></div>
-<a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=354" class="today_see_demo"><span>View Demo</span></a>
+<div id="today_ex_pic"><a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=459" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('rfs_view_demo1','','http://assets3.sparkpeople.com/assets/nav/today_see_demo_f2.gif',1);" ><img src="../assets/exercises/SmFinals/Staggered-Pushups-on-Medicine-Ball.jpg" alt="" border="0"></a></div>
+<a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=459" class="today_see_demo"><span>View Demo</span></a>
 </div>
-<b><a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=354">Single Leg Squat on Balance Board</a></b><BR>
-Feel the burn in your legs and your abs with this challenging move.
+<b><a href="http://www.sparkpeople.com/resource/exercises.asp?exercise=459">Staggered Pushups on Medicine Ball</a></b><BR>
+Pushups on a medicine ball? Believe it!
 <div style="clear:left;"></div>
 </div></div>
 
 <div id="today_w"><div class="today_recipe_top"></div>
 <div id="today_recipe">
 <b>
-<a href="http://recipes.sparkpeople.com/recipe-detail.asp?recipe=1301034" target="_blank">Mocha Mushroom Rub</a></b>
+<a href="http://recipes.sparkpeople.com/recipe-detail.asp?recipe=949047" target="_blank">Blueberry Flax Seed Muffins</a></b>
 <br>Submitted By: <b>CHEF_MEG</b>
-<p>I love to use unsweetened cocoa powder in rubs for pork. It offers a great depth to the flavor. 
-		   <a href="http://recipes.sparkpeople.com/recipe-detail.asp?recipe=1301034" target="_blank">Full&nbsp;Recipe</a>
+<p>These healthful muffins freeze well! Low-fat buttermilk and applesauce help lower the fat in these, and the whole-wheat flour and flax seed add fiber. 
+		   <a href="http://recipes.sparkpeople.com/recipe-detail.asp?recipe=949047" target="_blank">Full&nbsp;Recipe</a>
 </p>
 
 <div class="today_recipe_search">Search Over 200k Healthy Recipes:</div>

@@ -1,12 +1,22 @@
 (function(){
-var pfs={ "http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1},
+var pfs={ "http://www.usmagazine.com/celebrity-bios":{"nid":21492,"tr":1},
+"http://www.usmagazine.com/moviestvmusic/":{"nid":21491,"tr":1},
+"http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1},
+"http://www.usmagazine.com/photos/":{"nid":21489,"tr":1},
 "http://www.usmagazine.com/style":{"nid":21490,"tr":1},
+"http://www.usmagazine.com/news":{"nid":21488,"tr":1},
 "http://www.usmagazine.com/":{"nid":21487,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){
 var s,u;
 
 if (Math.random()>=n['tr']) {
+	return;
+}
+
+var ar_nodes = ":21492:21491:21489:21488:";
+if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
+	(new Image).src="//amch.questionmarket.com/adscgen/adrad.php?survey_num=0&aicode=0&site="+n['nid'];
 	return;
 }
 

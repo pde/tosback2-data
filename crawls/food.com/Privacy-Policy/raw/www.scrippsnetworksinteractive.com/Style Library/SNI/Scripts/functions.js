@@ -13,8 +13,6 @@ $(document).ready(function(){
 	
 	//handleVideoPosition();	// Called from prepareForVideo when necessary
 	
-	ourPeopleCarousel();
-	
 	footerSelectMenu();
 	
 	styleSocialMediaTabs();
@@ -166,59 +164,6 @@ function footerSelectMenu() {
 		}
 	);
 }
-
-// Function is called from ourPeopleCarousel, reads the text of the 'discipline' page field, then
-// then compares it to each title on all the little people.  When it finds a match, it passes the
-// index of the little person back.
-// Example URL: http://staff.dev.sni.com/careers/life-at-sni/our-people/Pages/administration.aspx
-function selectCurrentLittlePeople() {
-	var currentPersonIndex = 0;
-	var hasPeopleCarousel = ($("#peopleCarousel").html()) != null ? true : false;
-	if(hasPeopleCarousel) {
-		var disciplineString = $("#disciplineName > span").text();
-		var littlePeopleObj = $("#peopleCarousel").find("h3>a");
-		littlePeopleObj.each(function(index) {
-			//alert("h3 > a.html(): ~" + $(this).html() + "~\ndiscipline text: " + disciplineString);
-			var headerDisciplineText = ($(this).html()).split(":");
-			if(headerDisciplineText[0] == disciplineString) {
-				currentPersonIndex = index;
-			};
-		});
-		return currentPersonIndex
-	}
-}
-
-// Function is used on the 'Our People' detail page to handle highlighting the applicable
-// little person.  Also handles the hovers on the other little people.
-function ourPeopleCarousel() {
-	var peopleCarouselItems = $("#peopleCarousel").find('li');
-	var personIndex = selectCurrentLittlePeople();
-	peopleCarouselItems.each(function(index) {
-		$(this).prepend('<img src="/Style Library/SNI/Images/career_carousel_sml_person_cover.png" class="personCover"/>');
-		if(index == personIndex) {
-			$(this).find('img.personCover').hide();
-			$(this).addClass('active');
-			$(this).find('h3').show();
-		}
-	});
-	$("#peopleCarousel ul li").hover(function() {
-		if(!($(this).hasClass('active'))) {
-			$(this).find('img.personCover').hide();
-			$(this).find('h3').show();
-			$("#peopleCarousel li.active img.personCover").show();
-			$("#peopleCarousel li.active h3").hide();
-		}
-	},
-	function() {
-		if(!($(this).hasClass('active'))) {
-			$(this).find('img.personCover').show();
-			$(this).find('h3').hide();
-			$("#peopleCarousel li.active img.personCover").hide();
-			$("#peopleCarousel li.active h3").show();
-		}
-	});
-}
-
 function adjustSearchResultsSpacing() {
 	var searchResultItems = $('.searchResults').find('li');
 	searchResultItems.each(function(index) {
@@ -670,10 +615,18 @@ function handleVideoControls(videoObj) {
 		// take poster url and overlay an image over the video con
 		function handlePoster() {
 			var posterUrl = $(globalVideoObj).attr('poster');
+			var posterWidth = $(globalVideoObj).attr('width');
+			var posterHeight = $(globalVideoObj).attr('height');
+			
+			var imgWidthHeight = "";
+			if(posterWidth != null && posterHeight != null) {
+				imgWidthHeight = " width=\"" + posterWidth + "\" height=\"" + posterHeight + "\"";
+			}
+			
 			isAutoPlay = $(globalVideoObj).attr('autoplay');
 			if(posterUrl != null && !(isAutoPlay)) {
 				isPoster = true;
-				var posterImgHtml = "<div class=\"videoPosterOverlay\"><img src=\"" + posterUrl + "\"/></div>";
+				var posterImgHtml = "<div class=\"videoPosterOverlay\"><img src=\"" + posterUrl + "\"" + imgWidthHeight + " /></div>";
 				$(globalVideoObj).before(posterImgHtml);
 			}
 		}

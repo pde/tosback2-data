@@ -13,15 +13,15 @@
   <meta name="keywords" content="del.icio.us, delicious, bookmarks, bookmark, social bookmarking, links, link, stacks, stack" />
   <meta name="alexaVerifyID" content="Fdu_0zuYnhHPNIQzxqi4n3jY_Ag" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="_csrf" content="j+axml2bIKJW2MzDnKaS2jfB" />
+  <meta name="_csrf" content="PXlrzXVH4LwM7vnFKMhk28Vd" />
 
   <meta name="apple-itunes-app" content="app-id=580295142"/>
 
   <title>Delicious</title>
   <link rel="shortcut icon" href="favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="../css/app.css%3F1358303975549.css">
+  <link rel="stylesheet" type="text/css" href="../css/app.css%3F1358562217981.css">
 
-  <script type="text/javascript" src="../js/modernizr.js%3F1358303975549"></script>
+  <script type="text/javascript" src="../js/modernizr.js%3F1358562217981"></script>
   <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
 </head>
 <body>
@@ -29,11 +29,11 @@
 <div id="fre"></div>
 
 <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.7.2.min.js?1358303975549"%3E%3C/script%3E'))</script>
-<script type="text/javascript" src="../js/vendor.js%3F1358303975549"></script>
-<script type="text/javascript" src="../js/app.js%3F1358303975549"></script>
+<script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.7.2.min.js?1358562217981"%3E%3C/script%3E'))</script>
+<script type="text/javascript" src="../../d3nslu0hdya83q.cloudfront.net/dist/1.0-beta10/raven.min.js"></script>
+<script type="text/javascript" src="../js/vendor.js%3F1358562217981"></script>
+<script type="text/javascript" src="../js/app.js%3F1358562217981"></script>
 <script type="text/javascript">
-
 require('initialize');
 
 var _gaq = _gaq || [];
@@ -47,10 +47,18 @@ _gaq.push(['_trackTiming']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-if(location.origin === "https://demo.delicious.com" || location.origin === "http://alpha.delicious.com" || location.origin === "http://sandbox.delicious.com") {
-  Raven.config('https://8592bbebebb8415facaa2b192871c2a1@app.getsentry.com/3302');
-  window.onerror = Raven.process;
-}
+(function() {
+  var hosts = [
+    "https://delicious.com",
+    "https://release.delicious.com",
+    "http://release.delicious.com",
+    "http://alpha.delicious.com"
+  ];
+
+  if(hosts.indexOf(window.location.origin) != -1) {
+    Raven.config('https://8592bbebebb8415facaa2b192871c2a1@app.getsentry.com/3302', {sourceMaps: true}).install();
+  }
+})();
 
 setTimeout(function() {
   if(location.pathname != '/save') {

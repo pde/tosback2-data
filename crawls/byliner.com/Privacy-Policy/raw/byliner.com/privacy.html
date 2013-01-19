@@ -48,10 +48,10 @@
     }
   //]]>
 </script>
-<link href="assets/mobile-aed77d20dedc021921877e6542305ef1.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="assets/mobile-ddaa83b015ca5415e349f6003c5e4bd8.css" media="screen" rel="stylesheet" type="text/css" />
 
 <meta content="authenticity_token" name="csrf-param" />
-<meta content="QlMM+/p8FcagJ8W6mPK+DXMF/xs7y5CB3Zd8BVoHpP0=" name="csrf-token" />
+<meta content="FuhzL44NGK1YayRbmT5xueSePs5sXR7gJMd0jJ048hA=" name="csrf-token" />
 <script>
   //<![CDATA[
     var addthis_config = {ui_click: true}
@@ -74,12 +74,6 @@
 </a><div class='dropdown-menu' role='menu'>
 <div class='nav-subscribe'>
 <a href="http://byliner.com/subscribe">Subscribe to Byliner Plus!</a>
-</div>
-<div class='nav-search'>
-<form action='http://byliner.com/search'>
-<input autocapitalize='off' autocomplete='off' name='q' placeholder='Search Byliner' type='text'>
-</form>
-
 </div>
 <div class='nav-writers'>
 <a href="http://byliner.com/writers">Writers</a>
@@ -115,7 +109,8 @@ Stories
 </div>
 <div class='nav-search'>
 <form action='http://byliner.com/search'>
-<input autocapitalize='off' autocomplete='off' name='q' placeholder='Search Byliner' type='text'>
+<input autocapitalize='off' autocomplete='on' data-type='search' name='q' placeholder='Search Byliner' type='text'>
+<div id='autocomplete_placeholder'></div>
 </form>
 
 </div>
@@ -323,7 +318,7 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9dRB8PXgcLWVEaUVcMTUJvElACB0YbRlhaFA==",4,66,new Date().getTime(),"","","","",""]);</script></body>
+NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9dRB8PXgcLWVEaUVcMTUJvElACB0YbRlhaFA==",3,25,new Date().getTime(),"","","","",""]);</script></body>
 
 <div id="fb-root"></div>
 <script>
@@ -384,6 +379,20 @@ NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9d
         var onUnfollow = function(event) { postEngagementEvent('Unfollow Writer'); $(event.target.parentElement).one('click', onFollow); };
         $('a.follow-link:not(.active)').one('click', onFollow);
         $('a.follow-link.active').one('click', onUnfollow);
+
+        $('a.-ga-track-writer').click(function() { 
+          var eventLabel = $(this).data('ga-label');
+          tracker._trackEvent('Stories', 'View Writer', eventLabel);
+        });
+
+        $('a.-ga-track-single-recommendation').click(function() {
+          var eventLabel = $(this).data('ga-label');
+          tracker._trackEvent('Stories', 'View Single Recommendation', eventLabel);
+        });
+
+        $('a.-ga-track-more-by').click(function() {
+          tracker._trackEvent('Stories', 'Read More By Writer');
+        });
 
         var onSaveAll = function(event) {
           for (var i = 0; i < Number($(event.target.parentElement).attr('count')); i ++) { postEngagementEvent('Save Story'); }

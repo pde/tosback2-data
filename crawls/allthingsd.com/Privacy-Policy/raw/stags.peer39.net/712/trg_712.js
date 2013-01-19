@@ -253,7 +253,7 @@ function p39_exec_712(ct, useDOM) {
 function p39_clean_url_712(u) {
 
 //global cleans
-	u = u.replace(/\?(mod|sid|sort|as\[|mg|auto_complete_term|cmd|_nocache|ru|sms_ss|mg|hat_input|dlbk|link|Link|reflink|KEYWORDS|fbresult|fb_ref|grcc|q|siteid|imgurl|refresh).*/g, "");
+	u = u.replace(/\?(mod|sid|utm|sort|as\[|mg|auto_complete_term|cmd|_nocache|ru|sms_ss|mg|hat_input|dlbk|link|Link|reflink|KEYWORDS|fbresult|fb_ref|grcc|q|siteid|imgurl|refresh).*/g, "");
 	u = u.replace(/#.*/g, "");
     return u;
 }

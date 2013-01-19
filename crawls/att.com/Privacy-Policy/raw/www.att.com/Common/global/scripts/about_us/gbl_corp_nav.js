@@ -1,18 +1,18 @@
 ﻿jQuery.noConflict();
 // JavaScript Document
-//test for cache  [kd] 11/16/2012//
 
 /* earnings */
 var currQuarter = '3Q12';
 var currPID = '290';
 
 function renderEarningsLP() {
-document.write('<div class="top-content"><ul class="more_links" id="top_content">'
-						 + '<li><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
+document.write('<div class="top-content" style="height:45px;"><ul class="more_links" id="top_content">'
+						 + '<li style="clear:both;"><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
 						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
 						 + '3q12/master_3q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
 						 + '3q12/master_3q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
-						 + '</ul></div>');
+						 + '<li class="last" style="clear:both;padding:5px 0 0;width:95% !important;">NEW: Prior quarter segment results reflecting FORM 8-K filed 01/17/2013: <a href="/Investor/8K/prior_quarter_results_8k_011713.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/8K/prior_quarter_results_8k_011713.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
+						 						 + '</ul></div>');
 }
 
 /* earnings */

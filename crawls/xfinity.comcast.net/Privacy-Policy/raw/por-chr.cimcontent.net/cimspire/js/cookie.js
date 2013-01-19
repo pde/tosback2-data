@@ -478,7 +478,7 @@ CIM.cookie = (function () {
         canWrite: function () {
             var creatablity = false;
 
-            this.write("t", "y", { days: 0 });
+            this.write("t", "y");
             if (this.read("t") === "y") {
                 creatablity = true;
             }

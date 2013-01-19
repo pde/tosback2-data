@@ -1,4 +1,4 @@
-//$Revision: 490632 $, $Date: 2012-10-23 17:19:26 -0700 (Tue, 23 Oct 2012) $ and $Author: bh4634 $
+//$Revision: 503286 $, $Date: 2013-01-07 16:32:30 -0800 (Mon, 07 Jan 2013) $ and $Author: ak8407 $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -270,8 +270,7 @@ ATT.c2c = function () {
         window.lpSendData("page","modalFlag","off") ;
     });
 	
-	if (~location.href.indexOf('/ordersummary')) {
-		
+	if (~location.href.indexOf('/ordersummary')) {		
 			results = getObject("cartItems");
 			
 			// floating issues have to take care 
@@ -283,8 +282,7 @@ ATT.c2c = function () {
 			results.orderTotalAccessoriesValue 	= results.orderTotalAccessoriesValue && typeof(results.orderTotalAccessoriesValue.toFixed(2) === 'string') ?  parseFloat(results.orderTotalAccessoriesValue.toFixed(2)) : '';
 						
 		    window.lpMTagConfig.vars.push(["page","OrderTotal",results.orderTotal || ""]);
-		    window.lpMTagConfig.vars.push(["page","OrderNumber",ATT.globalVars.orderNumber || ""]);
-		   
+		    window.lpMTagConfig.vars.push(["page","OrderNumber",ATT.globalVars.orderNumber || ""]);		   
 		    //thank you /confirmation
 		    window.lpMTagConfig.vars.push(["page","orderTotalOrderType",results.orderType]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalOTR",results.orderTotal || ""]);
@@ -300,8 +298,7 @@ ATT.c2c = function () {
 		    window.lpMTagConfig.vars.push(["page","orderTotalFeatureType",results.orderTotalFeatureType || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesValue",results.orderTotalAccessoriesValue || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesQuantity",results.orderTotalAccessoriesQuantity || ""]);
-		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesType",results.orderTotalAccessoriesType || ""]);
-		
+		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesType",results.orderTotalAccessoriesType || ""]);		
 	}   
 
 };
@@ -312,9 +309,9 @@ ATT.c2c = function () {
 * @param object {} 
 * @example 
 */
-jQuery(document).ready(function(){
-    jQuery.when(ATT.globalVars.cartPromise).then(function() {
-      ATT.c2c();
+jQuery(document).ready(function(){    
+    jQuery.when(ATT.globalVars.cartPromise).then(function() {	
+      ATT.c2c();	
     });
 
     //not the correct place but have to find a better place 

@@ -26,7 +26,7 @@
     <!-- end mBox -->   
     <script src="../../../cdn.optimizely.com/js/148582399.js"></script>
 <meta name="Description" content="Review Carbonite's privacy policy." /><meta name="Generator" content="Sitefinity 3.7.2057.2:1" /><link rel="stylesheet" type="text/css" /><script type="text/javascript">
-                        var _serverTime = '08:13';var _serverDateTime = '2013:01:16:08:13:41';</script><title>
+                        var _serverTime = '08:13';var _serverDateTime = '2013:01:19:08:13:27';</script><title>
 	Carbonite Privacy Policy
 </title></head>
 
@@ -257,5 +257,50 @@ cmCreatePageviewTag("LIGHTBOX BUSINESS PRICING NEW", categoryId, null, null, _se
         
 
     </form>
+    <script>
+        function addTParam() {
+            function getCookie(acqsource) {
+                var i, x, y, ARRcookies = document.cookie.split(';');
+                for (i = 0; i < ARRcookies.length; i++) {
+                    x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
+                    y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
+                    x = x.replace(/^\s+|\s+$/g, '');
+                    if (x == acqsource) {
+                        return unescape(y);
+                    }
+                }
+            }
+            if (typeof (optimizely) != 'undefined') {
+                var experimentId = 0;
+                var variationId = 0;
+                var variationIdx = -1;
+                var activeExpts = optimizely.activeExperiments;
+                var values;
+                var newArray = [];
+                for (var i = 0; i < activeExpts.length; i++) {
+                    experimentId = activeExpts[i];
+                    if (optimizely.variationIdsMap.hasOwnProperty(experimentId)) {
+                        variationId = optimizely.variationIdsMap[experimentId];
+                        newArray = newArray.concat(variationId);
+                    }
+                }
+
+                newArray = activeExpts.concat(newArray);
+                values = newArray.join('-');
+
+                var contents = getCookie('acqsource');
+                if (values && values.length > 0 && contents !== undefined && (contents.indexOf(values) === -1)) {
+                    contents += '&tp=' + values;
+                    document.cookie = 'acqsource=' + contents + '; domain=carbonite.com; path=/';
+                }
+                else if (values && values.length > 0 && contents === undefined) {
+                    document.cookie = 'acqsource=' + values + '; domain=carbonite.com; path=/';
+                }
+            }
+        }
+        $(document).ready(function () {
+            addTParam();
+        });
+</script>
 </body>
 </html>

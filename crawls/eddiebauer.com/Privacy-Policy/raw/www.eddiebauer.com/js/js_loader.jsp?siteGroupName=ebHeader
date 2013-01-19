@@ -1812,17 +1812,23 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				if (jQuery(this).attr('href') == "#DropShip") {
 					jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
 					if (PPL) {
-						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-40, marginTop: contentYpos-268, width: 320});
+						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-180, marginTop: contentYpos-294, width: 320});
 					} else {
-						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-60, marginTop: contentYpos-290, width: 320});
+						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-175, marginTop: contentYpos-294, width: 320});
 						jQuery('#footer .footer_content_spacer').css('display', 'none');
 					}
 					jQuery('.toolTipWrapper').fadeIn(300);
 				} else {
 					jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
-					if (contentXpos > 100) {
+					if (contentXpos > 100 && contentXpos < 120) {
+						jQuery('#ToolTipOverlay').css({left: contentXpos-100, top: contentYpos+15});
+					} else if (contentXpos > 120 && contentXpos < 130) {
+						jQuery('#ToolTipOverlay').css({left: contentXpos-110, top: contentYpos+15});
+					} else if (contentXpos > 130 && contentXpos < 150) {
 						jQuery('#ToolTipOverlay').css({left: contentXpos-130, top: contentYpos+15});
-					} else{
+					} else if (contentXpos > 150) {
+						jQuery('#ToolTipOverlay').css({left: contentXpos-150, top: contentYpos+15});
+					} else {
 						jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
 					}
 					jQuery('.toolTipWrapper').fadeIn(300);
@@ -2389,7 +2395,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				addToWishList = true;
 			}else{
 				addToWishList = false;
-			}				
+			}
+			
 			if (jQuery('#dossier').hasClass('WISHLIST')){
 				addToWishList = true;			
 			}			
@@ -3362,6 +3369,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
     	    	top: '-4px'
     		});
 		}
+		
 		setTipToolStyle = function() {
 			jQuery('div#dossier.PP .infoModule .content .singleTab #tabs-1 ul').removeClass('');
         	jQuery('div#dossier.PP .infoModule .content .singleTab #tabs-1 ul li').removeAttr('class');
@@ -3691,7 +3699,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					}					
 				}
 			}
-			
 			if(typeValue == 'addtobag' || typeValue=='addtowishlist'){
 				if (clearanceFlag == "Y") {
 					if (colorSizeValue === "null" && colorSizeValue.length != 0){
@@ -4283,7 +4290,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				MagicScroll.init();	
 			}
 		};	
-		wishListCheck = function(){
+		wishListCheck = function() {
 			
 		}
 		setBreadCrumbVariable = function() {
@@ -4380,6 +4387,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
+                getWishListStyle();
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
@@ -4402,6 +4410,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
+                getWishListStyle();
           }
 		}
 					
@@ -4539,7 +4548,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									break;
 								case 1: sessionStorage.setItem("videoId1", youtubeValue);
 										if (data_link_name.length > 34) {$height = 30;}else {$height = 20;}
-										console.log($height);
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
 											+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
@@ -5174,6 +5182,31 @@ function prepareWishListItemForm(isEOBProduct) {
 	initializeItemFormToSubmit(isEOBProduct, true);
 }
 
+function createTextTag(tagName, text) {
+	var tagNode = createDOM(tagName, null);
+	if (text != null && text != '')
+		text = text.replace(/&nbsp;/g,'\u00A0');
+	//tagNode.appendChild(document.createTextNode(text));
+	tagNode.innerHTML = text; // innerHTML prevents encoded charater from displaying
+	return tagNode;
+}
+
+function addAbbrTag(title, attr, parent) {
+	var abbrElement = createDOM('abbr', {'title':title});
+	if (attr != null && attr != '')
+		attr = attr.replace(/&nbsp;/g,'\u00A0');
+	//abbrElement.appendChild(document.createTextNode(attr));
+	abbrElement.innerHTML = attr; // innerHTML prevents encoded charater from displaying
+	parent.appendChild(abbrElement);
+	return abbrElement;
+}
+
+function addAnchorElement(href, title, parent) {
+	var aElement = createDOM('a', {'href':href,'title':title});
+	aElement.appendChild(document.createTextNode(title));
+	parent.appendChild(aElement);
+}
+
 
 var bag = "";
 var ensembleId = "";
@@ -5545,7 +5578,7 @@ function showNextPage(e) {
     YAHOO.util.History.navigate("ppl", '{type:"hide"}');
 
 	 if (e && e.srcElement) {
-		//alert('sCOP(1): id='+e.srcElement.id);
+		 //alert('sCOP(1): id='+e.srcElement.id);
 		if (e.srcElement.id == 'goBackFromAdded') {
 			// Let us generate the cm tag
 			//alert('Function: showWishListPage: generate cmLinkClick Tag');
@@ -5873,6 +5906,7 @@ var modalID;
 //This is used for testing if layers are ready.
 var canLoadLayer = false;
 var ensembleId;
+var myDesCode;
 var categoryId;
 var colorId;
 //Added for BUG963
@@ -7992,7 +8026,7 @@ YAHOO.ebauer.productUtils = function () {
         },
 
         checkProductOptions: function (productForm, isEOBProduct, isWishListItem) {
-            var hrefName = "Add To Basket";
+        	var hrefName = "Add To Basket";
             if (isWishListItem) {
                 hrefName = "Save To Wishlist";
             }
@@ -8390,6 +8424,14 @@ YAHOO.ebauer.productUtils = function () {
             YAHOO.ebauer.productUtils.isSizeUpdatedonInventoryForSingleColor = false;
             YAHOO.ebauer.productUtils.isColorUpdatedforSelectedSize = false;
         },
+        
+        reloadItemNumber: function() {
+            if (jQuery('.column2 .wrap .itemNumber span').length > 0) {
+            	jQuery('.itemNumber').find('span').each(function(i, value) {	
+            		jQuery(this).replaceWith(jQuery(this).text());
+            	});
+        	}
+        },
 
         changeWeatheredgeCSS: function () {
             jQuery('div#dossier.PPL .infoModule .content .singleTab #tabs-1 ul').removeAttr('class');
@@ -8575,6 +8617,8 @@ function prepareItemForm(isEOBProduct) {
 	input = createDOM("input", {type:"hidden",name:"ensid",value:"-1"});
 	form.appendChild(input);
 	input = createDOM("input", {type:"hidden",name:"ensname",value:"-1",id:"ensname"});
+	form.appendChild(input);
+	input = createDOM("input", {type:"hidden",name:"mydescode",value:"-1"});
 	form.appendChild(input);
 	input = createDOM("input", {type:"hidden",name:"style",value:"-1",id:"style"});
 	form.appendChild(input);
@@ -8923,10 +8967,11 @@ function createShoppingBag(shoppingBag, siteCss) {
 			invMessage.appendChild(emTag);
 		}
 	}
+	var desCode = document.itemform.mydescode.value;
 	if (bag.checkoutPage.indexOf('?') >= 0) {
-		bag.checkoutPage = bag.checkoutPage + '&ensembleId='+ensembleId;
+		bag.checkoutPage = bag.checkoutPage + '&ensembleId='+ensembleId+'&desCode='+desCode;
 	} else {
-		bag.checkoutPage = bag.checkoutPage + '?ensembleId='+ensembleId;
+		bag.checkoutPage = bag.checkoutPage + '?ensembleId='+ensembleId+'&desCode='+desCode;
 	}
 	dialogSlat = createDOM('div', {'class':'dialog-slat'});
 	matte.appendChild(dialogSlat);
@@ -9368,9 +9413,15 @@ jQuery(document).ready(function () {
 				jQuery('.toolTipWrapper').fadeIn(300);
 			} else {
 				jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
-				if (contentXpos > 100) {
+				if (contentXpos > 100 && contentXpos < 120) {
 					jQuery('#ToolTipOverlay').css({left: contentXpos-100, top: contentYpos+15});
-				} else{
+				} else if (contentXpos > 120 && contentXpos < 130) {
+					jQuery('#ToolTipOverlay').css({left: contentXpos-110, top: contentYpos+15});
+				} else if (contentXpos > 130 && contentXpos < 150) {
+					jQuery('#ToolTipOverlay').css({left: contentXpos-130, top: contentYpos+15});
+				} else if (contentXpos > 150) {
+					jQuery('#ToolTipOverlay').css({left: contentXpos-150, top: contentYpos+15});
+				} else {
 					jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
 				}
 				jQuery('.toolTipWrapper').fadeIn(300);

@@ -3798,7 +3798,7 @@ TNF.assisted_search = {
 		
 		// Add the handler for focus and blur default value
 		if( ! TNF.assisted_search._emptyValue ) {
-			TNF.assisted_search._emptyValue = $('#nav .search-input').val();
+			TNF.assisted_search._emptyValue = $('#nav .search-input').val().trim();
 		}
 		$('#nav .search-input').bind('focus', function(event){
 			if( $(this).val() == TNF.assisted_search._emptyValue ) {
@@ -3842,9 +3842,9 @@ TNF.assisted_search = {
 		});
 	},
 	gotoSearchPage: function() {
-		if ( TNF.assisted_search._widget.val().length > 0 && TNF.assisted_search._widget.val() != TNF.assisted_search._emptyValue ) {
+		if ( TNF.assisted_search._widget.val().trim().length > 0 && TNF.assisted_search._widget.val() != TNF.assisted_search._emptyValue ) {
 			/** ZCG: encode search term to prevent truncation when special characters like & are included */
-			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+encodeURIComponent(TNF.assisted_search._widget.val());
+			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+encodeURIComponent(TNF.assisted_search._widget.val().trim());
 			window.location = url;
 		}
 	}
@@ -4122,7 +4122,7 @@ $(function(){
       }
     });
   };
-
+  
   new TNF.setupToggleDropdowns();
 
   TNF.store_locator.init(TNF.store_locator_element, {url: TNF.env.URL.get('STORE_LOCATOR_URL') + TNF.env.get('store_id'), selectors:{address:'.store-address'}});

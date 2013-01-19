@@ -47,161 +47,6 @@ jQuery.cookie = function(d, e, b) {
     return (a = new RegExp("(?:^|; )" + encodeURIComponent(d) + "=([^;]*)").exec(document.cookie)) ? f(a[1]) : null
 };
 
-//jquery support for CSS3 transitions https://github.com/louisremi/jquery.transition.js
-(function(a) {
-    function t() {
-        setTimeout(v, 0);
-        return n = a.now()
-    }
-    function v() {
-        n = void 0
-    }
-    var s = {},
-        j, r, w = /^(?:toggle|show|hide)$/,
-        x = /^([+\-]=)?([\d+.\-]+)([a-z%]*)$/i,
-        o, n, q = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame,
-        u = document.createElement("div").style;
-    a.support.transition = "MozTransition" in u ? "MozTransition" : "WebkitTransition" in u ? "WebkitTransition" : !1;
-    a.fn.extend({
-        animate: function(c, b, k, f) {
-            var d = a.speed(b, k, f);
-            if (a.isEmptyObject(c)) return this.each(d.complete, [!1]);
-            c = a.extend({}, c);
-            return this[d.queue === !1 ? "each" : "queue"](function() {
-                var l;
-                d.queue === !1 && a._mark(this);
-                var b = a.extend({}, d),
-                    i = this.nodeType === 1,
-                    f = i && a(this).is(":hidden"),
-                    g, e, m, k, h;
-                k = a.cssProps;
-                var n = !b.step && a.support.transition,
-                    o = [],
-                    p, q;
-                b.animatedProperties = {};
-                b.transition = {};
-                for (m in c) {
-                    g = a.camelCase(m);
-                    m !== g && (c[g] = c[m], delete c[m]);
-                    e = c[g];
-                    a.isArray(e) ? (h = b.animatedProperties[g] = e[1], l = c[g] = e[0], e = l) : h = b.animatedProperties[g] = b.specialEasing && b.specialEasing[g] || b.easing || "swing";
-                    if (h = n && i && (h == "swing" ? "ease" : h == "linear" ? h : !1)) p = k[m] || m, q = p.replace(/([A-Z])/g, "-$1").toLowerCase(), h = q + " " + b.duration + "ms " + h, b.transition[m] = {
-                        lower: q,
-                        real: p
-                    }, o.push(h);
-                    if (e === "hide" && f || e === "show" && !f) return b.complete.call(this);
-                    if (i && (g === "height" || g === "width")) if (b.overflow = [this.style.overflow, this.style.overflowX, this.style.overflowY], a.css(this, "display") === "inline" && a.css(this, "float") === "none") if (a.support.inlineBlockNeedsLayout) {
-                        e = this.nodeName;
-                        if (!s[e]) {
-                            g = document.body;
-                            h = a("<" + e + ">").appendTo(g);
-                            p = h.css("display");
-                            h.remove();
-                            if (p === "none" || p === "") {
-                                if (!j) j = document.createElement("iframe"), j.frameBorder = j.width = j.height = 0;
-                                g.appendChild(j);
-                                if (!r || !j.createElement) r = (j.contentWindow || j.contentDocument).document, r.write((document.compatMode === "CSS1Compat" ? "<!doctype html>" : "") + "<html><body>"), r.close();
-                                h = r.createElement(e);
-                                r.body.appendChild(h);
-                                p = a.css(h, "display");
-                                g.removeChild(j)
-                            }
-                            s[e] = p
-                        }
-                        e = s[e];
-                        e === "inline" ? this.style.display = "inline-block" : (this.style.display = "inline", this.style.zoom = 1)
-                    } else this.style.display = "inline-block"
-                }
-                if (b.overflow != null) this.style.overflow = "hidden";
-                for (m in c) if (i = new a.fx(this, b, m), e = c[m], w.test(e)) i[e === "toggle" ? f ? "show" : "hide" : e]();
-                else k = x.exec(e), g = i.cur(), k ? (e = parseFloat(k[2]), h = k[3] || (a.cssNumber[m] ? "" : "px"), h !== "px" && (a.style(this, m, (e || 1) + h), g *= (e || 1) / i.cur(), a.style(this, m, g + h)), k[1] && (e = (k[1] === "-=" ? -1 : 1) * e + g), i.custom(g, e, h)) : i.custom(g, e, "");
-                n && o.length && (h = this.style[n], this.style[n] = o.join() + (h ? "," + h : ""));
-                return !0
-            })
-        },
-        stop: function(c, b) {
-            c && this.queue([]);
-            this.each(function() {
-                var c = a.timers,
-                    f = c.length,
-                    d = a.support.transition;
-                for (b || a._unmark(!0, this); f--;) if (c[f].elem === this) {
-                    if (b || d) c[f](b);
-                    c.splice(f, 1)
-                }
-            });
-            b || this.dequeue();
-            return this
-        }
-    });
-    a.extend(a.fx.prototype, {
-        cur: function() {
-            if (this.elem[this.prop] != null && (!this.elem.style || this.elem.style[this.prop] == null)) return this.elem[this.prop];
-            var c, b = a.css(this.elem, this.prop);
-            return isNaN(c = parseFloat(b)) ? !b || b === "auto" ? 0 : b : c
-        },
-        custom: function(c, b, k) {
-            function f(a) {
-                return d.step(a)
-            }
-            var d = this,
-                j = a.fx,
-                i, l = d.options.transition,
-                g = a.timers,
-                e = this.prop;
-            this.startTime = n || t();
-            this.start = c;
-            this.end = b;
-            this.unit = k || this.unit || (a.cssNumber[e] ? "" : "px");
-            this.now = this.start;
-            this.pos = this.state = 0;
-            f.elem = this.elem;
-            f.transition = l[e];
-            l[e] ? (g.push(f), d.elem.style[l[e].real] = a.css(d.elem, e), setTimeout(function() {
-                a.style(d.elem, e, b + d.unit);
-                l[e].timeout = setTimeout(function() {
-                    g.splice(g.indexOf(f), 1);
-                    d.step(!0)
-                }, d.options.duration + 30)
-            }, 0)) : f() && a.timers.push(f) && !o && (q ? (o = 1, i = function() {
-                o && (q(i), j.tick())
-            }, q(i)) : o = setInterval(j.tick, j.interval))
-        },
-        step: function(c) {
-            var b = n || t(),
-                k = !0,
-                f = this.elem,
-                d = this.options,
-                j, i, l = d.transition[this.prop];
-            if (l || c || b >= d.duration + this.startTime) {
-                l ? (clearTimeout(l.timeout), c || (this.elem.style[l.real] = a.css(this.elem, l.real))) : (this.now = this.end, this.pos = this.state = 1, this.update());
-                d.animatedProperties[this.prop] = !0;
-                for (j in d.animatedProperties) d.animatedProperties[j] !== !0 && (k = !1);
-                if (k) {
-                    d.overflow != null && !a.support.shrinkWrapBlocks && a.each(["", "X", "Y"], function(a, b) {
-                        f.style["overflow" + b] = d.overflow[a]
-                    });
-                    d.hide && a(f).hide();
-                    if (d.hide || d.show) for (i in d.animatedProperties) a.style(f, i, d.orig[i]);
-                    if (c = f.nodeType === 1 && a.support.transition) {
-                        l = "," + f.style[c];
-                        for (i in d.transition) l = l.split(d.transition[i].lower).join("_");
-                        f.style[c] = l.replace(/, ?_[^,]*/g, "").substr(1)
-                    }
-                    d.complete.call(f)
-                }
-                return !1
-            } else d.duration == Infinity ? this.now = b : (i = b - this.startTime, this.state = i / d.duration, this.pos = a.easing[d.animatedProperties[this.prop]](this.state, i, 0, 1, d.duration), this.now = this.start + (this.end - this.start) * this.pos), this.update();
-            return !0
-        }
-    });
-    a.extend(a.fx, {
-        tick: function() {
-            for (var c = a.timers, b = 0; b < c.length; ++b)!c[b].transition && !c[b]() && c.splice(b--, 1);
-            c.length || a.fx.stop()
-        }
-    })
-})(jQuery);
 
 //jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
 jQuery.easing['jswing'] = jQuery.easing['swing'];
@@ -967,6 +812,11 @@ $(document).ready(function() {
 
 //Home Twitter
 jQuery(document).ready(function() {
+
+    $('.accordion-toggle').click( function(e){
+        $(this).toggleClass('icon-arrow-down');
+    });
+
     var $feed = $("#twitter-feed"),
         twitterContent = "";
 

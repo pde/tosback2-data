@@ -75,8 +75,8 @@ var hsocial_tool = {
 			this.iframes.twitterTop.dom = $("[hvtNode='twlikebutton']")[0]; 
 			this.iframes.fblikeBot.dom = $("[hvtnode='fblikebutton'] iframe")[1];
 			this.iframes.twitterBot.dom = $("[hvtNode='twlikebutton']")[1]; 
-			this.iframes.pinTop.dom = $("[hvtnode='pinbutton'] iframe")[0];
-			this.iframes.pinBot.dom = $("[hvtNode='pinbutton'] iframe")[1]; 
+			this.iframes.pinTop.dom = $("[hvtnode='pinbutton'] a")[0];
+			this.iframes.pinBot.dom = $("[hvtNode='pinbutton'] a")[1]; 
 			$("[hTrack='emailTop']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailTop();});
 			$("[hTrack='printTop']").click(function(){eventTracking("event83");});
 			$("[hTrack='emailBot']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailBot();});

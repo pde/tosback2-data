@@ -1060,11 +1060,7 @@ jQuery(window).load(function(){
 			src: 'http://www.facebook.com/plugins/like.php?href=http://bzzabout.it/71&layout=button_count&show_faces=false&width=450&action=like&colorscheme=light'
 		}).appendTo("#facebookLikePlugin");
 		
-		//PROD12-3652 : loading the script element for google plusone button after the DOM is loaded.
-		jQuery('<script/>', {
-			type: 'text/javascript',
-			src: 'http://apis.google.com/js/plusone.js'
-		}).appendTo('head');
+		// Removing the code per B2C-122313 - Google+ Tag remove on U-Verse Shop
 });
 commonFunc.addOnload("roundedCorners();");
 commonFunc.addOnload("getTooltips();");
