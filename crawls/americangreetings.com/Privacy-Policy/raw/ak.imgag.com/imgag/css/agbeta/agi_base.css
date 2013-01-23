@@ -3,12 +3,12 @@
 --------------------------------------------------------------------------*/
 /* basic elements */
 .clearfix:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-    zoom: 1;
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	zoom: 1;
 }
 
 body {
@@ -520,9 +520,14 @@ ul#agi-headerlinks-lower li {
 }
 
 #agi-headerlinks li a {
+	display: block;
 	margin: 0;
 	text-decoration: none;
 	color: #999;
+}
+
+#agi-headerlinks li a.agi-mem-signin {
+	display: inline;
 }
 
 #agi-headerlinks li a#agi-joinnow {
@@ -538,6 +543,10 @@ ul#agi-headerlinks-lower li {
 
 #agi-headerlinks li a:hover {
 	text-decoration: underline;
+}
+
+#agi-headerlinks li a.agi-mem-myagclose:hover {
+	text-decoration: none;
 }
 
 #agi-headerlinks li.agi-noseparator {
@@ -558,35 +567,37 @@ a.agi-cardicon {
 /* =Header member buttons and text
 ------------------------------------------------------------------------------------------------ */
 ul#agi-members {
-	width: 260px;
+	bottom: 36px;
 	position: absolute;
 	right: 155px;
-	bottom: 36px;
+	width: 260px;
 	z-index: 102;
 }
 
 ul#agi-members li {
+	display: block;
+	float: right;
 	margin: 0 0 0 6px;
 	padding: 0;
 	position: relative;
-	display: block;
-	float: right;
 }
 
 ul#agi-members li a.agi-mem-signin,
 ul#agi-members li a.agi-mem-signout,
 ul#agi-members li a.agi-mem-join,
 ul#agi-members li a.agi-mem-myagclose {
+	background-repeat: no-repeat;
+	display: block;
+	height: 24px;
 	margin: 0;
 	padding: 0;
-	display:block;
-	width:80px;
-	height:24px;
-	background-repeat:no-repeat;
-	overflow:hidden;
+	overflow: hidden;
+	width: 80px;
 }
-ul#agi-members li a.agi-mem-myagclose {background-image: url(../../../agbeta/button/nav_sprite_v2.gif);}
 
+ul#agi-members li a.agi-mem-myagclose {
+	background-image: url(../../../agbeta/button/nav_sprite_v2.gif);
+}
 
 /* =My AG
 ------------------------------------------------------------------------------------------------ */
@@ -596,79 +607,46 @@ ul#myag-menu a,
 ul#myag-menu img {
 	margin: 0;
 	padding: 0;
-	text-align:left;
+	text-align: left;
 }
 
-ul#myag-menu {
-	margin: 0 !important;
-	padding: 0 !important;
-	position:relative;
+ul#agi-headerlinks-upper li ul#myag-menu {
+	left: -9999em;
 	list-style: none;
+	margin: 0;
+	padding: 4px 0 0 0;
+	position: absolute;
+	text-align: left;
+	width: 122px;
 	z-index: 600;
-	text-align:left;
 }
 
-#agi-header11 #agi-headerlinks li ul#myag-menu li ul li a {
-	padding: 3px;
+ul#agi-headerlinks-upper li:hover ul#myag-menu {
+	left: auto;
+	visibility: visible; /* this is for an intermittent bug in ie7 */
+}
+
+ul#agi-headerlinks-upper li ul#myag-menu li a {
 	color: #999494 !important;
 	display: block;
+	padding: 3px;
 }
 
-ul#myag-menu li ul li a:hover {
-	background-color: #eee;
-}
-
-ul#myag-menu li ul li.agi-firstmy a:hover {
-	background-color: transparent;
-}
-
-ul#myag-menu li ul li {
-	padding: 0;
-	width: 120px; /* width needed or else Opera goes nuts */
+ul#agi-headerlinks-upper li ul#myag-menu li {
 	background-color: #fff;
 	border-left: 1px solid #81705b;
 	border-right: 1px solid #81705b !important;
 	border-top: 1px solid #81705b;
+	padding: 0;
 	text-align: left;
+	width: 120px; /* width needed or else Opera goes nuts */
 }
 
-ul#myag-menu li ul {
-	display: block;
-	left: -9999px;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 0;
-	width: 60px;
-	z-index: 1000;
+ul#agi-headerlinks-upper li ul#myag-menu li a:hover {
+	background-color: #eee;
 }
 
-ul#myag-menu li:hover ul,
-ul#myag-menu li.over ul {
-	/* lists nested under hovered list items */
-	left: 0 !important;
-}
-
-ul#myag-menu li li.agi-firstmy {
-	margin: 0;
-	padding: 0;
-	width: 60px;
-	border: none;
-	background: transparent;
-}
-
-ul#myag-menu li li.agi-firstmy a,
-ul#myag-menu li li.agi-firstmy a:hover  {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	text-indent: -9999px !important;
-	height: 16px;
-	width: 54px;
-}
-
-ul#myag-menu li ul li.agi-lastmy {
+ul#agi-headerlinks-upper li ul#myag-menu li.agi-lastmy {
 	border-bottom: 1px solid #666;
 }
 

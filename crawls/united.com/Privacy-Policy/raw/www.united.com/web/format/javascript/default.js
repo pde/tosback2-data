@@ -15,10 +15,20 @@
 window.onload = startList; setCookie("ctest", "1");
 
 function getElementOffset(oe){
-	var offset={left:0,top:0}
-	for (var ot=oe; ot && ot.tagName!='BODY'; ot=ot.offsetParent){
-		offset.left+=ot.offsetLeft;
-		offset.top+=ot.offsetTop;
+	var offset = { left: 0, top: 0 }
+	if (oe != null) {
+		if (getElementStyle(oe, "display") == "inline" && oe.getBoundingClientRect != null) {
+			var rectObject = oe.getBoundingClientRect();
+			var scrollObject = getElementScroll(oe)
+			offset.left = rectObject.left + getScrollLeft() + scrollObject.left;
+			offset.top = rectObject.top + getScrollTop() + scrollObject.top;
+		}
+		else {
+			for (var ot = oe; ot && ot.tagName != 'BODY'; ot = ot.offsetParent) {
+				offset.left += ot.offsetLeft;
+				offset.top += ot.offsetTop;
+			}
+		}
 	}
 	return offset;
 }
@@ -112,7 +122,7 @@ function OpenAirports(objLink,strFieldName,strLinkName){
 	if(objForm.hdnLangCode!=null){
 		strLangCode=objForm.hdnLangCode.value;
 	}
-	if(strLangCode!="es"&&strLangCode!="de-DE"&&strLangCode!="ja-JP" && strLangCode!="zh-CN"&&strLangCode!="fr"&&strLangCode!="pt"&&strLangCode!="en-US"){strLangCode="en-US";}
+	if(strLangCode!="es"&&strLangCode!="de-DE"&&strLangCode!="ja-JP" && strLangCode!="zh-CN"&&strLangCode!="fr"&&strLangCode!="pt"&&strLangCode!="zh-HK"&&strLangCode!="ko"&&strLangCode!="en-US"){strLangCode="en-US";}
 	var strURL="/web/"+strLangCode+"/apps/booking/flight/airportList.aspx?FN="+strFieldName;
 	window.open(strURL,"Airport","toolbar=0,status=0,menubar=0,location=0,scrollbars=1,resizable=1,width=540,height=560,top=50,left=50");
 }
@@ -616,7 +626,7 @@ if(gblnAbandonPopUp & gblnInvokeAbandon){
 	if(document.forms[0].hdnSID){
 		strSID=document.forms[0].hdnSID.value;
 	}
-	if (gstrLangCode!="es" && gstrLangCode!="de-DE" && gstrLangCode!="ja-JP" && gstrLangCode!="zh-CN" && gstrLangCode!="fr" && gstrLangCode!="pt" && gstrLangCode!="en-US"){gstrLangCode="en-US";}
+if (gstrLangCode!="es" && gstrLangCode!="de-DE" && gstrLangCode!="ja-JP" && gstrLangCode!="zh-CN" && gstrLangCode!="fr" && gstrLangCode!="pt" && gstrLangCode!="zh-HK" && gstrLangCode!="ko" && gstrLangCode != "en-US") { gstrLangCode = "en-US"; }
 	var strURL="/web/"+gstrLangCode+"/apps/booking/flight/call.aspx?ConfNum="+gstrConfNum+"&LangCode="+gstrLangCode;
 	window.open(strURL,"CallCO","toolbar=0,status=0,menubar=0,location=0,scrollbars=0,resizable=1,width=500,height=300,top=50,left=50");
 	}

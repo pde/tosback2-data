@@ -92,6 +92,9 @@
 
 
 
+
+
+
  
 
 
@@ -136,13 +139,7 @@ var gomez={
 //--> 
 </script>
  <!-- assignment_type: 'section-front' -->
-
-<!-- Finally got off this Oct. 2010. Leaving commented for now just in case.
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
--->
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
 
 
 <script type="text/javascript">
@@ -210,6 +207,26 @@ var gomez={
 </script>
 
 <!-- support/ads/dart_init.ett :start -->
+<script>
+    if(typeof mi == 'undefined') {
+	document.write('<scr'+'ipt type="text/javascript" src="http://media.kansascity.com/mistatic/javascripts/MI.js"></scr'+'ipt><scr'+'ipt type="text/javascript" src="http://media.kansascity.com/mistatic/javascripts/MI_Cookie.js"></scr'+'ipt>');
+    }else if(typeof mi.Cookie == 'undefined'){
+	document.write('<scr'+'ipt type="text/javascript" src="http://media.kansascity.com/mistatic/javascripts/MI_Cookie.js"></scr'+'ipt>');
+    } 
+</script>
+<script>
+  var mi__dart_ord = Math.floor(Math.random()*1000000000000000);
+
+  var dart_ad_cookie = new mi.Cookie(document, 'adinfo');
+  dart_ad_cookie.load();
+
+  if('undefined' !== typeof(dart_ad_cookie['adinfo'])){
+    var dart_ad_cookie_parts = dart_ad_cookie['adinfo'].split('|');
+    var dart_ad_cookie_gender = dart_ad_cookie_parts[0];
+    var dart_ad_cookie_birth_year = dart_ad_cookie_parts[1];
+    var dart_ad_cookie_income = dart_ad_cookie_parts[2];
+  }
+</script>
 <!-- support/ads/dart_init.ett :end -->
 
 
@@ -368,6 +385,142 @@ var miCommentingEnabled = 1;
  
 
 
+<script type="text/javascript">
+//	var _vrq = _vrq || [];
+//	_vrq.push(['id', 169]);
+//	_vrq.push(['automate', true]);
+//	_vrq.push(['track', function(){}]);
+//	(function(d, a){
+//		var s = d.createElement(a),
+//		x = d.getElementsByTagName(a)[0];
+//		s.async = true;
+//		s.src = 'http://a.visualrevenue.com/vrs.js';
+//		x.parentNode.insertBefore(s, x);
+//	})(document, 'script');
+</script>
+
+
+<!-- support/ads/gpt_init.ett :start -->
+
+<script type="text/javascript">
+mi__dart_demo_gender = dart_ad_cookie_gender;
+mi__dart_demo_birth_year = dart_ad_cookie_birth_year;
+mi__dart_demo_income = dart_ad_cookie_income;
+
+if (mi__dart_demo_gender || mi__dart_demo_birth_year || mi__dart_demo_income) {
+  mi__ad_cookie = 1;
+}
+
+if (mi__dart_demo_birth_year) {
+  today_year = new Date().getFullYear();
+  age = today_year - mi__dart_demo_birth_year;
+  if (age < 13) {}
+  else if (age >= 13 && age <=17) {
+    mi__dart_demo_age = '13-17';
+  }
+  else if (age <= 20) {
+    mi__dart_demo_age = '18-20';
+  }
+  else if (age >= 76) {
+    mi__dart_demo_age = '76-200';
+  }
+  else {
+    if (age % 5 == 0) {
+      min_age = age - 4;
+      max_age = age;
+    }
+    else {
+      min_age = age - (age % 5) + 1;
+      max_age = age + (5 - (age % 5));
+    }
+    mi__dart_demo_age = min_age + "-" + max_age;
+  }
+}
+
+// Since this is first pass TT only, ord must be done outside of TT, sooo...js.
+  var mi__gpt_ord = Math.floor(Math.random()*1000000000000000);
+
+// Standard Google Tag init stuff
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+  (function() {
+    var gads = document.createElement("script");
+    gads.async = true;
+    gads.type = "text/javascript";
+    var useSSL = "https:" == document.location.protocol;
+    gads.src = (useSSL ? "https:" : "http:") + "//www.googletagservices.com/tag/js/gpt.js";
+    var node =document.getElementsByTagName("script")[0];
+    node.parentNode.insertBefore(gads, node);
+   })();
+// END Standard Google Tag init stuff
+
+// make this safer for sending
+  var gpt_ref = document.referrer;
+  gpt_ref = gpt_ref.replace("http://","");
+  gpt_ref = gpt_ref.split("/")[0];
+  gpt_ref = gpt_ref.split("#")[0];
+  gpt_ref = gpt_ref.split("?")[0];
+
+// Start defining the ads
+  googletag.cmd.push(function() {
+    googletag.pubads().setTargeting("pl", "sectfront");
+    googletag.pubads().setTargeting("sect", "PrivacyPolicy");
+
+    googletag.pubads().setTargeting("ref", gpt_ref);
+    if (mi__ad_cookie) {
+      googletag.pubads().setTargeting("gender", mi__dart_demo_gender);
+      googletag.pubads().setTargeting("age", mi__dart_demo_age);
+      googletag.pubads().setTargeting("income", mi__dart_demo_income);
+    }
+  });
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [960,30], "div-gpt-ad-"+mi__gpt_ord+"-1")
+        .setTargeting("pos", "1")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [160,90], "div-gpt-ad-"+mi__gpt_ord+"-2")
+        .setTargeting("pos", "1")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [100,25], "div-gpt-ad-"+mi__gpt_ord+"-3")
+        .setTargeting("pos", "1")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [728,90], "div-gpt-ad-"+mi__gpt_ord+"-4")
+        .setTargeting("pos", "1")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [300,250], "div-gpt-ad-"+mi__gpt_ord+"-5")
+        .setTargeting("pos", "2")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [300,250], "div-gpt-ad-"+mi__gpt_ord+"-6")
+        .setTargeting("pos", "3")
+        .setTargeting("atf", "N")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [300,100], "div-gpt-ad-"+mi__gpt_ord+"-7")
+        .setTargeting("pos", "5")
+        .setTargeting("atf", "N")
+        .addService(googletag.pubads());
+      googletag.defineSlot("/7675/KCM.site_kansascity/Online/SiteInformation", [285,70], "div-gpt-ad-"+mi__gpt_ord+"-8")
+        .setTargeting("pos", "1")
+        .setTargeting("atf", "Y")
+        .addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().collapseEmptyDivs();
+    googletag.pubads().enableAsyncRendering();
+    googletag.enableServices();
+  });
+</script>
+
+
+<!-- support/ads/gpt_init.ett :end -->
+
+
 </head>
 
  
@@ -395,31 +548,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_1"
   
  
  
-<div class="advertisement ts_v2_shared_masthead dart3" id="dart_960x30_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_v2_shared_masthead dart3" id="dart_960x30_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=960x30;tile=1;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=960x30;tile=1;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=960x30;tile=1;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=960x30%3Btile=1%3B!c=news%3Bpub=KansasCityStar%3Bord=15243581062" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=960x30;tile=1;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=960x30%3Btile=1%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3Bg" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-1'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-1'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_v2_shared_masthead -->
 
@@ -443,31 +597,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_2"
  
  
  
-<div class="advertisement ts_v2_shared_masthead dart3" id="dart_160x90_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_v2_shared_masthead dart3" id="dart_160x90_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=160x90;tile=2;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=160x90;tile=2;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=160x90;tile=2;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=160x90%3Btile=2%3B!c=news%3Bpub=KansasCityStar%3Bord=15243581062" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=160x90;tile=2;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=160x90%3Btile=2%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3Bg" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-2'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-2'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_v2_shared_masthead -->
  
@@ -538,31 +693,32 @@ var file_type = 'png'
                      
  
  
-<div class="advertisement nav_ad dart3" id="dart_100x25_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement nav_ad dart3" id="dart_100x25_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=100x25;tile=3;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=100x25;tile=3;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=100x25;tile=3;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=100x25%3Btile=3%3B!c=news%3Bpub=KansasCityStar%3Bord=15243581062" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=100x25;tile=3;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=100x25%3Btile=3%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3Bg" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-3'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-3'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement nav_ad -->
  
@@ -589,31 +745,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_4"
                   
  
  
-<div class="advertisement ts_shared_generic dart3" id="dart_728x90_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_shared_generic dart3" id="dart_728x90_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=728x90;tile=4;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=728x90;tile=4;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=728x90;tile=4;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=728x90%3Btile=4%3B!c=news%3Bpub=KansasCityStar%3Bord=15243581062" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=728x90;tile=4;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=728x90%3Btile=4%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3Bg" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-4'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-4'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_shared_generic -->
  
@@ -820,31 +977,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_5"
      
  
  
-<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x250_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x250_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=2;sz=300x250;tile=5;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=2;sz=300x250;tile=5;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=2;sz=300x250;tile=5;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=2%3Bsz=300x250%3Btile=5%3B!c=news%3Bpub=KansasCityStar%3Bord=1524358106" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=2;sz=300x250;tile=5;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=2%3Bsz=300x250%3Btile=5%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3B" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-5'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-5'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_shared_sidebar_default -->
  
@@ -859,31 +1017,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_6"
        
  
  
-<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x250_bts_2">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x250_bts_2"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=3;sz=300x250;tile=6;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=3;sz=300x250;tile=6;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=3;sz=300x250;tile=6;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=N%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=3%3Bsz=300x250%3Btile=6%3B!c=news%3Bpub=KansasCityStar%3Bord=1524358106" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=3;sz=300x250;tile=6;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=N%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=3%3Bsz=300x250%3Btile=6%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3B" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-6'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-6'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_shared_sidebar_default -->
  
@@ -898,31 +1057,32 @@ if(miyahoo.ads[mi_live_or_preview].yahoo.enabled){yld_mgr.place_ad_here("slot_7"
       
  
  
-<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x100_bts_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement ts_shared_sidebar_default dart3" id="dart_300x100_bts_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=5;sz=300x100;tile=7;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=5;sz=300x100;tile=7;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=5;sz=300x100;tile=7;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=N%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=5%3Bsz=300x100%3Btile=7%3B!c=news%3Bpub=KansasCityStar%3Bord=1524358106" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=N;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=5;sz=300x100;tile=7;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=N%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=5%3Bsz=300x100%3Btile=7%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3B" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-7'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-7'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement ts_shared_sidebar_default -->
  
@@ -993,20 +1153,20 @@ document.write('<script type="text/javascript" language="JavaScript1.1" src="htt
 
 <div id="hi-find-n-save" class="widget">
 <style>div#dealsaver_td {border:0 none;font-family:arial;outline:medium none}.ds_clearall {clear:both}.revWidgetWrap {-moz-border-radius:5px 5px 5px 5px;background-color:#568F6B;color:#FFFFFF;width:295px}div#dealsaver_td {margin:5px auto;padding:0 0 5px}.revWidgetWrap h2 {color:#FFFFFF;display: inline-block;font-size:19px;font-weight:bold;line-height:19px;margin:5px 10px 2px;text-align:left;text-shadow: 1px 1px 2px #666666}#dealsaver_td h2 a {color:#FFFFFF;text-decoration:none}#dealsaver_td h2 a:hover {color:#EEEEEE;text-decoration:none}.revWidgetContent {padding:5px}.ds_deal_image {float:left;margin:5px}.ds_deal_image img {border:1px solid #CCCCCC;width:155px}.ds_buycontainer {float:left;margin-top:5px;text-align:center;width:140px}.ds_pricetag {background-color: #FBEEDB;border:1px solid #EFD5C4;color:#333333;font-size:24px;font-weight:bold;line-height:18px;margin-bottom:5px;padding:5px;text-align:center}img.ds_buynow {margin:5px 0 0}h3.ds_deal_title {color:#333333;font-size:18px;line-height:20px;margin:0;padding:0}#dealsaver_td a.ds_title_link {color:#333333;text-decoration:none}#dealsaver_td a.ds_title_link:hover {color:#C15126}#ds_signup {height:60px;overflow:hidden}#dealsaver_td.signup {margin-top: 3px}.discount_left,.discount_right {float:left;line-height:16px;margin:8px 5px}.discount_left {text-align: right;width:60px}.discount_right {color:#C15129;font-size:14px;text-align:left;width:30px}.revWidgetContent h4 {color:#C15129;font-size:14px;font-weight: normal;margin: 0 0 4px}#ds_value_header,#ds_discount_header,#ds_save_header {color:#666666;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:right}#ds_value,#ds_discount,#ds_save {color:#c15129;font-family: Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px}#ds_vdy_headers {float:left;margin-right:10px}</style>
-								<h2><a class="ds_dealtitle" href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&amp;productid=8259399&LID=674#widget=ds_rrail">dealsaver's&trade; Deal of the Day</a></h2>
+								<h2><a class="ds_dealtitle" href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&amp;productid=8234217&LID=674#widget=ds_rrail">dealsaver's&trade; Deal of the Day</a></h2>
 								<div id="dealsaver_td"><div class="revWidgetContent">
 									<div class="dsDetails">
 										<h3 class="ds_deal_title" style="border:none;padding-top:0px;font-size:18px">
-											<a class="ds_title_link" href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8259399&LID=674#widget=ds_rrail">Enjoy Incredible Savings with This Week's Deals!</a>
+											<a class="ds_title_link" href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8234217&LID=674#widget=ds_rrail">$29 for DaVinci Professional Teeth Whitening System, Bonus Remineralizing Pen, Free Shipping ($249 Value)</a>
 										</h3>
 										<div>
 											<div class="ds_deal_image">
-												<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8259399&LID=674#widget=ds_rrail"><img src="../../c.eblastengine.com/EmailImages/79393.jpg"></a>
+												<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8234217&LID=674#widget=ds_rrail"><img src="../../c.eblastengine.com/EmailImages/47753.jpg"></a>
 											</div>
 											<div class="ds_buycontainer">
 												<div class="ds_pricetag">
-														<div class="ds_pricetag_container">$0</div>
-													<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8259399&LID=674#widget=ds_rrail"><img class="ds_buynow" src="../../media.miamiherald.com/static/dealsaver/widget/images/buynow_button.gif" border="0"></a>
+														<div class="ds_pricetag_container">$29</div>
+													<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8234217&LID=674#widget=ds_rrail"><img class="ds_buynow" src="../../media.miamiherald.com/static/dealsaver/widget/images/buynow_button.gif" border="0"></a>
 												</div>
 												<div id="ds_vdy_headers">
 													<div id="ds_value_header">Value:</div>
@@ -1014,22 +1174,22 @@ document.write('<script type="text/javascript" language="JavaScript1.1" src="htt
 													<div id="ds_save_header">You Save:</div>
 												</div>
 												<div id="ds_vdy_results">
-													<div id="ds_value">$0</div>
-													<div id="ds_discount">100%</div>
-													<div id="ds_save">$0</div>
+													<div id="ds_value">$249</div>
+													<div id="ds_discount">88%</div>
+													<div id="ds_save">$220</div>
 												</div>
 											</div>
 											<div id="ds_logo">
-												<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8259399&LID=674#widget=ds_rrail" class="ds_logo_link"><img src="../../media.miamiherald.com/static/dealsaver/widget/images/dealsaver_td_logo.png" alt="dealsaver" border="0"></a>
+												<a href="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&productid=8234217&LID=674#widget=ds_rrail" class="ds_logo_link"><img src="../../media.miamiherald.com/static/dealsaver/widget/images/dealsaver_td_logo.png" alt="dealsaver" border="0"></a>
 											</div>
 											<div class="ds_clearall"></div>
 										</div>
 									</div>
 								</div>
-							</div><form id="BrandingPageForm" name="BrandingPageForm" method="post" action="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&amp;productid=8259399&LID=674" class="clear">
+							</div><form id="BrandingPageForm" name="BrandingPageForm" method="post" action="http://kansascity.dealsaver.com/engine/SplashDetails.aspx?contestid=29805&amp;productid=8234217&LID=674" class="clear">
 					<input id="HiddenBrandingPageFormSubmitted" name="HiddenBrandingPageFormSubmitted" value="SUBSCRIBE" type="hidden" />
 					<input type="text" name="txtEmailAddress" value="Enter your e-mail to receive daily updates" onfocus="this.value=''" style="border:1px solid #666666;margin-left:10px;padding:2px;width:230px;font-size:12px" /> <input type="submit" value=" Register " style="padding:2px" />
-				</form><p style="text-align: center;padding-top: 5px;margin-bottom:0px"><a href="http://www.pennypinchinmom.com/"><img src="../static/findnsave/images/fns_ppm_main_blog_splash_header.jpg" style="width:300px" /></a></p><style> #hi-find-n-save ol {margin-left:25px} </style><h5 style="padding-left: 10px;">Saturday: CVS, Walgreens Deals</h5><img src="../static/findnsave/images/walgreens.jpg" style="display:none" /><h3><a style="display:none" href="http://www.pennypinchinmom.com/walgreens-weekly-ad-coupon-deals-matchups-for-the-week-of-1-13-1-1/">Walgreens</a></h3><ul><li>Estroven Nighttime (24 ct) - $10</li><li>High-T Testosterone (30 ct) - $10</li><li>Lipton Tea - $1</li><li><a href="http://www.pennypinchinmom.com/walgreens-weekly-ad-coupon-deals-matchups-for-the-week-of-1-13-1-1/">more...</a></li></ul>
+				</form><p style="text-align: center;padding-top: 5px;margin-bottom:0px"><a href="http://www.pennypinchinmom.com/"><img src="../static/findnsave/images/fns_ppm_main_blog_splash_header.jpg" style="width:300px" /></a></p><style> #hi-find-n-save ol {margin-left:25px} </style><h5 style="padding-left: 10px;">Wednesday: Hen House, HyVee, Price Chopper Deals</h5><img src="../static/findnsave/images/pricechopper.jpg" style="display:none" /><h3><a style="display:none" href="http://www.pennypinchinmom.com/price-chopper-ad-coupon-deals-matchups-for-the-week-of-912-918/">Price Chopper</a></h3><ul><li>Campbell’s Chunky Soups 15.25-19-oz., Selected Varieties - $1.28</li><li>Rump Roast Boneless - $2.48/lb.</li><li>Campbell’s Spaghetti O’s 14.75-15-oz., Selected Varieties - 3/$2 or $0.67 each</li><li><a href="http://www.pennypinchinmom.com/price-chopper-ad-coupon-deals-matchups-for-the-week-of-912-918/">more...</a></li></ul>
 </div>
 
 <div class="top_jobs">
@@ -1037,6 +1197,42 @@ document.write('<script type="text/javascript" language="JavaScript1.1" src="htt
  <div class="job_widget" id="jobStart_widget">
 <a class="logo" title="Job Start" href="http://jobstart.kansascity.com"><img src="../../media.kansascity.com/images/permanent/ads/house/logo-jobStart-widget.gif" alt="Job Start"/></a>
 <ol>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3F6526Q9X10RP28F03">MAINTENANCE TECH</a></h4>
+			<p></p>
+		</div>
+	</li>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3H61Z6FCRPZ4B66RHC">SALES</a></h4>
+			<p></p>
+		</div>
+	</li>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3J1SY75P0LRDRKPPVJ">Shipping & Receiving Clerks, Quality Con</a></h4>
+			<p></p>
+		</div>
+	</li>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3F0KX63GB5P8X3707W">SECURITY OFFICERS</a></h4>
+			<p>Guardsmark</p>
+		</div>
+	</li>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3J7C45XL3GZF261YL9">RN Occupational Health Nurse</a></h4>
+			<p></p>
+		</div>
+	</li>
+	<li class="feed">
+		<div class="item">
+			<h4><a href="http://www.careerbuilder.com/JobSeeker/Jobs/JobDetails.aspx?lr=cbcb_kc&ff=21&job_did=J3J0PL62NBZSRRJV9CW">DIESEL MECHANIC</a></h4>
+			<p>CRETE CARRIER</p>
+		</div>
+	</li>
 </ol>
 
 <a class="go" href="http://jobstart.kansascity.com">View More</a>
@@ -1052,25 +1248,25 @@ document.write('<script type="text/javascript" language="JavaScript1.1" src="htt
 </ul>
 
 <ul id="pubsys_mr">
-<li><a href="http://www.kansascity.com/2013/01/18/4019448/ku-recruit-hurt-in-scary-tumble.html#storylink=omni_popular">KU recruit suffers concussion during high school tournament game</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4025621/butler-bobblehead-among-royals.html#storylink=omni_popular">Butler bobblehead among Royals 2013 promotions</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4019294/one-dead-in-olathe-shooting.html#storylink=omni_popular">Man shot after pulling gun in Olathe Dollar General store</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4026219/rush-to-judgment-on-haith-ignores.html#storylink=omni_popular">Rush to judgment on Haith ignores most important questions</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/19/4019493/afc-championship-preview-baltimore.html#storylink=omni_popular">AFC championship preview: Baltimore at New England</a></li>
+<li><a href="http://www.kansascity.com/2013/01/18/4011833/the-stars-2013-quilt-project-block.html#storylink=omni_popular">Block 1: It&#x92;s a gem of a quilt</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4018340/former-missouri-governor-robbed.html#storylink=omni_popular">Former Missouri governor robbed in St. Louis</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4026323/another-home-floor-disadvantage.html#storylink=omni_popular">Another home-floor disadvantage for Cats against KU</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4019489/unsolved-homicides-pile-on-the.html#storylink=omni_popular">Unsolved homicides pile on pain for police, families</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4025952/no-3-kansas-leads-no-11-kansas.html#storylink=omni_popular">Kansas alone atop Big 12 after 59-55 win over K-State</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4019275/notre-dame-to-teo-time-to-speak.html#storylink=omni_popular">Te'o tells ESPN: Not involved in creating hoax</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4026276/kate-uptons-super-bowl-commercial.html#storylink=omni_popular">Kate Upton's Super Bowl commercial: All wet? (video)</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/19/4019478/nfc-championship-preview-san-francisco.html#storylink=omni_popular">NFC championship preview: San Francisco at Atlanta</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4026178/gun-control-debate-is-a-test-of.html#storylink=omni_popular">Gun-control debate tests passions as proponents show new fervor</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4018277/8-year-old-douglas-county-girl.html#storylink=omni_popular">8-year-old Douglas County girl drowns in bathtub</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4025966/chiefs-houston-chosen-to-pro-bowl.html#storylink=omni_popular">Chiefs' Houston chosen to Pro Bowl as injury replacement</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4018122/royals-sign-hochevar-to-one-year.html#storylink=omni_popular">Royals sign Hochevar to one-year deal</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4025967/coffee-spill-closes-westbound.html#storylink=omni_popular">Accident closes westbound I-70 in Blue Springs</a></li>
 
-<li><a href="http://www.kansascity.com/2013/01/18/4019296/kus-ellis-is-starting-to-make.html#storylink=omni_popular">KU&#x92;s Ellis is starting to make freshman adjustments</a></li>
+<li><a href="http://www.kansascity.com/2013/01/22/4025895/no-22-missouri-trails-south-carolina.html#storylink=omni_popular">No. 22 Missouri rallies to beat South Carolina 71-65</a></li>
 
 </ul>
 
@@ -1409,31 +1605,32 @@ document.write('<script type="text/javascript" language="JavaScript1.1" src="htt
      
  
  
-<div class="advertisement floorboard shared-footer_test dart3" id="dart_285x70_ats_1">
-<!-- support/ads/dart_call.ett :start v.15690 -->
+<div class="advertisement floorboard shared-footer_test dart3" id="dart_285x70_ats_1"><!-- support/ads/dart_call.ett :start v.15690 -->
 <!-- support/ads/dart3_render_adj.ett :start -->
 	<script language="JavaScript" type="text/javascript">
 	<!-- 
         if ('undefined' !== typeof miadinfo) { var miadinfo = new Array(); }
 	if(typeof(miyahoo) == "undefined" || miyahoo.ads[mi_live_or_preview].dart.enabled){
     document.write('<scr' + 
-        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=285x70;tile=8;!c=news;pub=KansasCityStar;ord=152435810620769' + 
-        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : '') + 
-        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : '') + 
-        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : '') + 
+        'ipt language="JavaScript" src="http://ad.doubleclick.net/adj/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=285x70;tile=8;!c=news;pub=KansasCityStar' + 
+        ';ord=' + mi__dart_ord +
+        ';gender=' + ((miadinfo && miadinfo.length > 0) ? miadinfo[0] : dart_ad_cookie_gender) + 
+        ';year=' + ((miadinfo && miadinfo.length > 1) ? miadinfo[1] : dart_ad_cookie_birth_year) + 
+        ';income=' + ((miadinfo && miadinfo.length > 2) ? miadinfo[2] : dart_ad_cookie_income) + 
         '?" type="text/javascript"></scr' + 'ipt>');
 	}
 	//-->
 	</script>
 	<noscript>
-        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=285x70;tile=8;!c=news;pub=KansasCityStar;ord=152435810620769;gender=;year=;income=?" 
-            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=285x70%3Btile=8%3B!c=news%3Bpub=KansasCityStar%3Bord=15243581062" 
+        <a  href="http://ad.doubleclick.net/jump/mi.ksc00/Online/SiteInformation;atf=Y;dcove=d;pl=sectfront;sect=PrivacyPolicy;pos=1;sz=285x70;tile=8;!c=news;pub=KansasCityStar;ord=123456789;gender=;year=;income=?" 
+            target="_blank"><img src="../../ad.doubleclick.net/ad/mi.ksc00/Online/SiteInformation%3Batf=Y%3Bdcove=d%3Bpl=sectfront%3Bsect=PrivacyPolicy%3Bpos=1%3Bsz=285x70%3Btile=8%3B!c=news%3Bpub=KansasCityStar%3Bord=123456789%3Bg" 
             border="0" alt="Advertisement"></a>
     </noscript> 
 <!-- support/ads/dart3_render_adj.ett :end -->
-
+<script type='text/javascript'>
+document.write("<div id='div-gpt-ad-"+mi__gpt_ord+"-8'><scr"+"ipt type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-"+mi__gpt_ord+"-8'); });</scr"+"ipt></div>");
+</script>
 <!-- support/ads/dart_call.ett :end -->
-
 
 </div><!-- /.advertisement floorboard shared-footer_test -->
  
@@ -1626,5 +1823,8 @@ try {
 var pageTracker = _gat._getTracker("UA-6573881-1");
 pageTracker._trackPageview();
 } catch(err) {}</script>
- </body>
+ 
+
+
+</body>
 </html>

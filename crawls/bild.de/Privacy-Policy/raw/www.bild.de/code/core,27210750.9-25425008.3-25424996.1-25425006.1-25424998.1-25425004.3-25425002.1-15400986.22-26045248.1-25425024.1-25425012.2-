@@ -2495,7 +2495,7 @@ de.bild.sso = (function($){
     }
 
 })(jQuery);
-/*de.bild.social:27524114.10*/
+/*de.bild.social:27524114.11*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -3369,7 +3369,10 @@ de.bild.social = (function($){
         $body.one('facebookLoginStatus', function(){
             de.bild.sso.renderUserBar();
         });
-        facebook.loadSDK();
+        
+        //laden der SDK nur, wenn der User eingeloggt ist! PRODBO-1740  
+        if(de.bild.sso && de.bild.sso.isLoggedIn())
+        {facebook.loadSDK();}
                 
         setupSMButtons();
                 

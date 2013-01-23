@@ -459,7 +459,7 @@ var usa_globalMenu = {
 							"title" : "White Collar",
 							"url" : usa_baseUrlDomain + "/series/whitecollar/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wc.png",
-							"tuneIn" : "RETURNS JAN 22 10/9C"
+							"tuneIn" : "TUESDAYS 10/9C"
 						},
 						/* Featured Slot  - LAST */
 						{
@@ -706,16 +706,16 @@ var usa_globalMenu = {
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
 						},
 						{
-							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "SAT JAN 26 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/gijoe/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+							"title" : "THE GAME PLAN",
+							"subtitle" : "SATURDAY FEBRUARY 2 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gameplan.png"
 						},
 						{
-							"title" : "HE’S JUST NOT THAT INTO YOU",
-							"subtitle" : "SUNDAY JAN 27 11/10C",
+							"title" : "THE BREAK-UP",
+							"subtitle" : "SUNDAY FEBRUARY 3 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_hejustnotthat.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thebreakup.png"
 						}
 					]
 				}

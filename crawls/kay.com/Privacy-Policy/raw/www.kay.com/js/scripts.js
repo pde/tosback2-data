@@ -66,14 +66,75 @@ $(document).ready(function(){
     });
 
     var index = 0;
+    var focusedMenuItem = null;
+    var hoveredMenuItem = null;
+    var isMobile = {
+    	    Android: function() {
+    	        return navigator.userAgent.match(/Android/i);
+    	    },
+    	    BlackBerry: function() {
+    	        return navigator.userAgent.match(/BlackBerry/i);
+    	    },
+    	    iOS: function() {
+    	        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    	    },
+    	    Opera: function() {
+    	        return navigator.userAgent.match(/Opera Mini/i);
+    	    },
+    	    Windows: function() {
+    	        return navigator.userAgent.match(/IEMobile/i);
+    	    },
+    	    any: function() {
+    	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    	    }
+    	};
+    
     $('.megamenu .menu').hover(function(){
+    	// Close focused menu item if different than hovered item 
+    	if (!$(this).is(focusedMenuItem)) {
+    		focusOut(focusedMenuItem);
+    	}
         $(this).addClass('active');
         megamenu_position(this, $(this).children('.submenu'));
+        // Keep track of current hover menu item to close it if different than focused item
+        hoveredMenuItem = this;
     }, function(){
         $(this).removeClass('active');
         megamenu_revert($(this).children('.submenu'));
+        //Clear current hovered item
+        hoveredMenuItem = null;
     });
 
+    // ADA Remediation - Open menu item that has focus and close hovered item
+    $('.megamenu .menu').focusin(function(){
+        $(this).addClass('active');
+	    megamenu_position(this, $(this).children('.submenu'));
+	    focusedMenuItem = this;
+	    if (!$(this).is(hoveredMenuItem)) {
+		    hoverOut(hoveredMenuItem);
+	    }
+    });
+
+    // ADA Remediation - Close menu item that has focus
+    $('.megamenu .menu').focusout(function(){
+       	$(this).removeClass('active');
+       	if (!isMobile.any()) {
+       		megamenu_revert($(this).children('.submenu'));
+       	}
+    });
+
+    // ADA Remediation - Close menu item that is focused 
+    function focusOut(focusedMenuItem){
+        $(focusedMenuItem).removeClass('active');
+        megamenu_revert($(focusedMenuItem).children('.submenu'));
+    }
+
+    // ADA Remediation - Close menu item that is hovered over
+    function hoverOut(hoveredMenuItem){
+        $(hoveredMenuItem).removeClass('active');
+        megamenu_revert($(hoveredMenuItem).children('.submenu'));
+    }
+    
     /* Scripts for cycling the modal dialogs */
     $('.modal-content, .minitools').css('display','none');
     $('.modal-content:first-child').css('display','').addClass('vis').next('.minitools').css('display','');

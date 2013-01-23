@@ -6,12 +6,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<!-- Start - JSP File Name:  HeaderMetaCheck.jspf -->
+
+<meta name="viewport" content="width=1200">
+
+
 	<script language="javascript" type="text/javascript" src="../../../../javascript/TeaLeaf.js"></script>
 
 <div>
 
 					<title>Dillards - Company Notices and Terms of Use</title>
 					
+
 </div>
 <!-- End - JSP File Name:  HeaderMetaCheck.jspf -->
 	<meta http-equiv="X-UA-Compatible" content="IE=8" />
@@ -465,10 +470,10 @@ function getCookie(c_name)
 	function showCart() {remove(); if(isCart != "y"){getMiniCart();}$(this).children('.sub').fadeIn(); z=$(this).children('a'); setTimeout("$(z).addClass('on');", 145 );}
 	
 	function checkClient(){ 
-		if((navigator.userAgent.match(/iPhone/i))|| (navigator.userAgent.match(/iPod/i))){
-			document.getElementById('theContainer').innerHTML="<a href='http://itunes.apple.com/us/app/dillards/id482612140?ls=1&mt=8'><h1 style='text-align:center; border: 10px solid #fff; -webkit-border-radius: 30px; font-size: 400%; background-color: #000; color: #fff; margin: 0 auto; font-family: 'Century Gothic';'><img src='../../../../images/app-logo.jpg' align='left' />Shopping made easier.<br />Tap to download Dillard's FREE iPhone App &gt;</h1></a>"; 
+		if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))){
+			document.getElementById('theContainer').innerHTML="<a href='http://itunes.apple.com/us/app/dillards/id482612140?ls=1&mt=8'><div class='downloadApp'><table><tr><td><img src='../../../../images/common/app-logo.png' /></td><td><p>Shopping made easier.<br />Tap to download Dillard's<br />FREE iPhone App &#9658;</p></td></tr></table></div></a>";  
 		}else{
-			document.getElementById('theContainer').innerHTML="<h1 style='display: none;'</h1>"; 
+			document.getElementById('theContainer').innerHTML="<h1 style='display: none;'></h1>"; 
 		}
 	} 
 
@@ -598,10 +603,10 @@ function getCookie(c_name)
 		return false;
 	}
 
-	var searchForm=$('#search-form');
-	var searchInput=$('#search-input');
-
 	$(document).ready(function() {
+	
+		var searchForm=$('#search-form');
+		var searchInput=$('#search-input');
 
 		searchInput.focus(function() {
 			if ($(this).val() == ''){
@@ -653,7 +658,15 @@ function getCookie(c_name)
 		var frameLogonCookie = getCookie("fromMyFrame");
 		//if logged on through My Dillards Bar, fromMyFrame cookie is set
 		if (frameLogonCookie != null){
-			$.cookie("fromMyFrame", null,{path: '/',domain: '.dillards.com', expires: -10 });
+			var domainName = 'www.dillards.com';
+	    	if ( domainName.indexOf( "dillards.com" ) == -1 ){
+	    		domainName = domainName;
+	    	} else if( domainName == 'www.dillards.com' ) {
+	    		domainName = ".dillards.com";
+	    	} else {
+	    		domainName = "."+domainName;
+	    	}
+			document.cookie = 'fromMyFrame=; max-age=0; path=/; domain=' + domainName;
 			openMyDillardsFlyOut();
 		}
 		
@@ -1458,103 +1471,60 @@ checkCookie();
 	#myDillardsLeftFrameContent .forgotPasswordLink{float:none !important;position:absolute !important;right:10px;bottom:105px !important;}
 	#myDillardsLeftFrameContent button{margin-bottom:0;}
 	#myDillardsCountry #imgFlagCode img{top:0;}
-	#myDillardsBarText{padding-top:0;margin-top:6px;}
+	#myDillardsBarText{top:0;padding-top:0;margin-top:6px;}
+	#myDillardsLeftFrameContent ul.form{margin-top:-10px;}
+	#myDillardsLeftFrameContent .remember-me-checkbox{margin-left:18px;}
 	</style>
 	<script type="text/javascript">
 		$("#utility-nav #dillards-card a").append("&nbsp;");
 	</script>
 <![endif]-->
 
+<script type="text/javascript">
+	$(document).ready(function(){
+		if( null != $(".logoff-url").attr("href") && "" != $(".logoff-url").attr("href")){
+			var returnURL = document.URL;
+			var logoffurl = $(".logoff-url").attr('href');
+			var n=logoffurl.indexOf("URL=");
+			var subN = logoffurl.substring(0,n+4);
+			var newURL = subN + encodeURI(returnURL);
+			$(".logoff-url").attr("href", newURL);
+		}
+		
+		$(window).bind("beforeunload", function(){
+			$("#myDillardsRightFrame").attr("src", "about:blank");
+		});
+	});
+</script>
+
 <div id="myDillardsInvisibleWall" style="display:none;"></div>
 
 <div id="myDillardsContainer" style="display:none;">
 	<div id="myDillardsBar">
-		<a href="http://www.dillards.com/"><div id="myDillardsSmallLogo" style="display:none;color:#fff;position:absolute;top:7px;left:50%;margin-left:-470px;"><img src="../../../../images/smallDillardsLogo.png" style="width:60px;height:15px;"alt="Dillard's"/></div></a>
 		<div id="myDillardsBarText">
+			<a href="http://www.dillards.com/"><div id="myDillardsSmallLogo" style="display:none;"><img src="../../../../images/smallDillardsLogo.png" style="width:60px;height:15px;" alt="Dillard's"/></div></a>
 			
-					<span class="openClose">My Dillard's</span>
+					<span id="barLogIn"><span id="welcome-new">Login</span><span class="grayColor"> or </span><a href="https://www.dillards.com/webapp/wcs/stores/servlet/Logoff?storeId=301&catalogId=301&langId=-1&URL=%2fwebapp%2fwcs%2fstores%2fservlet%2fUserRegistrationForm%3fstoreId%3d301%26catalogId%3d301%26langId%3d-1%26userType%3dG%26userState%3d%26userId%3d-1002%26countrySelected%3dUS%26rURL%3d">Create An Account</a></span>
 				
-			|<span id="holidayScheduleOpener" style="padding:0 6px;">
-				<img alt="" src="../../../../images/wreath.png"/>
-				<span>Holiday Shipping Dates</span>
+					<span class="grayColor">&nbsp;|&nbsp;</span><span class="openClose">My Dillard's</span>
+				
+			<span class="grayColor">|</span><span id="myDillardsCountry">
+				<a href="http://www.dillards.com/webapp/wcs/stores/servlet/ContextChooserView?storeId=301&catalogId=301&langId=-1"><img alt="" src="../../../../images/flags/US.gif"/></a>
 			</span>
-			|<span style="margin-left:6px;" id="myDillardsCountry">
-				<img alt="" src="../../../../images/flags/US.gif"/>
-				<span id="myDillardsCountryText">
-					<a href="http://www.dillards.com/webapp/wcs/stores/servlet/ContextChooserView?storeId=301&catalogId=301&langId=-1" id="chooseCountry">Change Country</a>
-				</span>
-			</span>
-			|<a style="margin-left:6px;" id="headerCartInfo" href="https://www.dillards.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=301&catalogId=301&langId=-1&URL=OrderItemDisplay&updatePrices=1&calculationUsageId=-1&calculationUsageId=-2&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag<span style="margin-left:6px;" class="fiftyOne-cartTotalItems">(0)</span><span style="margin-left:6px;" class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
+			<span class="grayColor">|</span><a id="headerCartInfo" href="https://www.dillards.com/webapp/wcs/stores/servlet/OrderItemDisplay?storeId=301&catalogId=301&langId=-1&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag&nbsp;<span class="fiftyOne-cartTotalItems">(0)</span>&nbsp;<span class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
 		</div>
 	</div>
 	<div id="myDillardsContent">
-		<div id="myDillardsCloseButton">CLOSE</div>
+		<div id="myDillardsContentFloat">
+			<div id="myDillardsCloseButton">CLOSE</div>
 			<div class="leftSide">
 			</div>
 			<div class="rightSide">
 				<iframe scrolling="no" name="myDillardsRightFrame" id="myDillardsRightFrame" src="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html" frameBorder="0" allowTransparency="true" data-host="www.dillards.com"></iframe>
 			</div>
+		</div>
 	</div>
-	<div id="holidayScheduleDropDown">
-		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
-
-
-<div class="genericESpot"><!--<div class="caption" style="display:none">[HOLIDAY_SHIPPING_2012]</div>--> 
-<!--
-	<table>
-	<tr><td>MarketingSpotIdentifier UniqueID:</td> <td> 100301 </td></tr>
-	<tr><td>MarketingSpotIdentifier Name:</td> <td> HOLIDAY_SHIPPING_2012 </td></tr>
-	</table>			
--->
-
-<!-- <h4>Categories</h4> -->
-
-	<!-- <h4>Catalog Entries</h4> -->
-
-	<!-- <h4>Content</h4> -->
-  
- 
-	<div style="font-weight:bold;margin-bottom:3px;">2012 Holiday Season</div>
-	<div>Dec. 5 - Cutoff for APO/FPO/International delivery</div>
-	<div>Dec. 18 (11:30 PM) - Cutoff for standard delivery</div>
-	<div>Dec. 20 (3:00 PM CST) - Cutoff for expedited delivery</div>
-
-<!-- CHANGE VALUE OF DATA-NEEDEDHEIGHT TO MAKE DROP DOWN TALLER OR SHORTER, TO FIT CONTENT -->
-	<span id="holidayScheduleHeight" data-neededheight="63px" style="display:none;"></span><!--
-        1: 104331HOLIDAY_SHIPPING_2012_CNT
-			<table>
-				<tr><td>Name:</td> <td> HOLIDAY_SHIPPING_2012_CNT </td></tr>
-			  	<tr><td>DataType:</td> <td> MarketingContent </td></tr>
-			  	<tr><td>ActivityIdentifier UniqueID:</td> <td> 0 </td></tr>
-			  	<tr><td>ActivityIdentifier Name:</td> <td>  </td></tr>
-			  	<tr><td>CampaignName:</td> <td>  </td></tr>
-			  	<tr><td>ActivityFormat:</td> <td>  </td></tr>
-			  	<tr><td>ActivityPriority:</td> <td> 1 </td></tr>
-		        <tr><td>Url Link:</td> <td>  </td></tr>	
-		        			
-	        		<tr><td>Marketing Text:</td> <td> &lt;div style=&#034;font-weight:bold;margin-bottom:3px;&#034;&gt;2012 Holiday Season&lt;/div&gt;
-	&lt;div&gt;Dec. 5 - Cutoff for APO/FPO/International delivery&lt;/div&gt;
-	&lt;div&gt;Dec. 18 (11:30 PM) - Cutoff for standard delivery&lt;/div&gt;
-	&lt;div&gt;Dec. 20 (3:00 PM CST) - Cutoff for expedited delivery&lt;/div&gt;
-
-&lt;!-- CHANGE VALUE OF DATA-NEEDEDHEIGHT TO MAKE DROP DOWN TALLER OR SHORTER, TO FIT CONTENT --&gt;
-	&lt;span id=&#034;holidayScheduleHeight&#034; data-neededheight=&#034;63px&#034; style=&#034;display:none;&#034;&gt;&lt;/span&gt; </td></tr>
-	        		<tr><td>Location:</td> <td>  </td></tr>
-		         
-		        <tr><td>Format UniqueID:</td> <td> 2 </td></tr>
-		        <tr><td>Format Name:</td> <td> Text </td></tr>      	
-		        <tr><td>Content Mime Type:</td> <td>  </td></tr>    
-		        <tr><td>Name:</td> <td>  </td></tr>      	      	      	
-		        <tr><td>Short Description:</td> <td>  </td></tr>      	      	      	      	
-		        <tr><td>Image:</td> <td>  </td></tr>           
-		            
-	      	</table>       	      	 	      	      	      	
-        --> 
-			
-
-</div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> 
-	</div>
+	
 </div>
 
 <script type="text/javascript">
@@ -1640,7 +1610,8 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 	
 
 <h1>Company Notices and Terms of Use</h1>
-<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices1"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices1Heading]</div>--> 
@@ -1685,7 +1656,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices2"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices2Heading]</div>--> 
@@ -1730,7 +1703,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices3"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices3Heading]</div>--> 
@@ -1775,7 +1750,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices4"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices4Heading]</div>--> 
@@ -1822,7 +1799,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices5"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices5Heading]</div>--> 
@@ -1869,7 +1848,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices6"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices6Heading]</div>--> 
@@ -1914,7 +1895,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices7"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices7Heading]</div>--> 
@@ -1959,7 +1942,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices8"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices8Heading]</div>--> 
@@ -2004,7 +1989,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices9"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices9Heading]</div>--> 
@@ -2049,7 +2036,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices10"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices10Heading]</div>--> 
@@ -2094,7 +2083,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices11"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices11Heading]</div>--> 
@@ -2139,7 +2130,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices12"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices12Heading]</div>--> 
@@ -2184,7 +2177,9 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+	<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#notices13"> <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices13Heading]</div>--> 
@@ -2229,7 +2224,17 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> </a>
+
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices1"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices1Heading]</div>--> 
@@ -2377,7 +2382,16 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices2"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices2Heading]</div>--> 
@@ -2507,7 +2521,16 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices3"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices3Heading]</div>--> 
@@ -2713,7 +2736,16 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices4"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices4Heading]</div>--> 
@@ -2903,7 +2935,16 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices5"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices5Heading]</div>--> 
@@ -3423,7 +3464,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices6"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices6Heading]</div>--> 
@@ -3525,7 +3575,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices7"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices7Heading]</div>--> 
@@ -3631,7 +3690,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices8"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices8Heading]</div>--> 
@@ -3733,7 +3801,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices9"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices9Heading]</div>--> 
@@ -3849,7 +3926,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices10"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices10Heading]</div>--> 
@@ -3953,7 +4039,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices11"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices11Heading]</div>--> 
@@ -4055,7 +4150,16 @@ This policy was last updated effective January 17, 2007.
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices12"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices12Heading]</div>--> 
@@ -4151,7 +4255,16 @@ in your browser via a &#034;secure socket layer&#034;, or SSL, which is the indu
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+	<div align=right>
+		<p>
+			<a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#top">Back to Top</a>
+		</p>
+	</div>
+
+	<a name="notices13"> </a>
+	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
 
 <div class="genericESpot"><!--<div class="caption" style="display:none">[Notices13Heading]</div>--> 
@@ -4284,6 +4397,68 @@ The following describes Dillard&#039;s efforts to eradicate slavery and human tr
 
 </div>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<div class="dillards-modal" id="view-transit-modal">
+		<img src="../../../../images/fedex_ground_service_map.png"/> 
+	</div>	
+</div>
+<!-- :content-area -->
+<script type="text/javascript"> 	
+$('#view-transit-modal-button').click(function (e) {$("#view-transit-modal").modal({
+		minWidth:600,
+		onOpen: function (d) {
+			d.overlay.fadeIn(function() {
+				d.container.fadeIn();
+				d.data.fadeIn();
+			});
+		},onClose:function (d) {
+			d.data.fadeOut('fast');
+			d.container.fadeOut('fast',function() {
+				d.overlay.fadeOut('fast', function () {
+					$.modal.close();
+				});
+			});				
+		},closeHTML:'<a href="javascript:void(0);">CLOSE [X]</a>'//,overlayClose:true  <-- This would allow the user to close the modal by clicking anywhere on the screen, not just the close button
+	}); 
+	return false; 
+});
+</script>
+ 
+<!-- Start Coremetrics Impl --><!-- Coremetrics Tag Library -->
+<script type="text/javascript" src="../../../../../libs.coremetrics.com/eluminate.js"></script> 
+<script type="text/javascript" language="javascript" src="../../../../javascript/compressed/cmcustom_websphere_commerce.js"></script>
+
+<script type="text/javascript">
+cmSetupNormalization("krypto-_-krypto");
+cmSetupOther({"cm_TrackImpressions":""});
+var clientId="";
+var boolVal="";
+var siteVal="";
+var siteVal2="";
+if (document.domain == 'www.dillards.com' || document.domain == 'dillards.com')
+{
+	 clientId="90384811";
+	 boolVal = true;
+	 siteVal="data.coremetrics.com";
+	 siteVal2="dillards.com";
+	 
+}else{
+
+clientId="60384811";
+booVal= false;
+siteVal="testdata.coremetrics.com";
+siteVal2="testsite.com";
+}
+
+cmSetClientID(clientId, boolVal,siteVal,siteVal2); 
+
+</script><!-- Coremetrics pegeview tag --><script type="text/javascript">
+			<!--
+			//-->
+			</script><script language="JavaScript1.1" type="text/JavaScript">
+<!--
+cmCreatePageviewTag("Notices Display", "-10006", null, null, "301");
+//-->
+</script><!-- End Coremetrics Impl -->
 
 <script type="text/javascript" src="../../../../javascript/dillards_s_code.js"></script>
 <script type="text/javascript">
@@ -4304,7 +4479,7 @@ More info available at http://www.omniture.com -->
 	s.server=document.domain;
 	s.prop7=document.domain;
 	
-	s.prop15="506F6366623A10624990C92B7C6E737A";
+	s.prop15="B663DEE6655E10655EA7D7FED841332B";
 	s.campaign=s.getQueryParam('campaign');
 	s.eVar9=s.getQueryParam('Catalog');
 	s.eVar29=s.getQueryParam('ezine');
@@ -4579,7 +4754,7 @@ $(document).ready(function() {
 <p>Sunday: 12PM-6PM CST</p>
 <ul id="customer-service">
 <li><a href="http://www.dillards.com/kana/KanaStartServlet?cm_sp=customerservice-_-contactus-_-null">Contact us via email</a></li>
-<li><a href="http://www.dillards.com/webapp/wcs/stores/servlet/LogonForm?catalogId=301&amp;langId=-1&amp;storeId=301&amp;rURL=OrderHistoryList&amp;cm_sp=customerservice-_-orderstatus-_-null">Check your order status</a></li>
+<li><a href="http://www.dillards.com/webapp/wcs/stores/servlet/OrderStatusLoginChk?storeId=301&amp;catalogId=301&amp;langId=-1&amp;cm_sp=customerservice-_-orderstatus-_-null">Check your order status</a></li>
 <li><a href="http://www.dillards.com/information/ge-splash?catalogId=301&amp;storeId=301&amp;langId=-1&amp;cm_sp=customerservice-_-cardservices-_-null">Dillard's card services</a></li>
 <li><a href="http://www.dillards.com/information/faq?cm_sp=customerservice-_-faq-_-null">FAQ's, notices & policies</a></li>
 <li><a href="http://www.dillards.com/content/salons?cm_sp=customerservice-_-salonspa-_-null">Salon & spa</a></li>
@@ -4605,7 +4780,7 @@ $(document).ready(function() {
 &lt;p&gt;Sunday: 12PM-6PM CST&lt;/p&gt;
 &lt;ul id=&#034;customer-service&#034;&gt;
 &lt;li&gt;&lt;a href=&#034;/kana/KanaStartServlet?cm_sp=customerservice-_-contactus-_-null&#034;&gt;Contact us via email&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#034;/webapp/wcs/stores/servlet/LogonForm?catalogId=301&amp;langId=-1&amp;storeId=301&amp;rURL=OrderHistoryList&amp;cm_sp=customerservice-_-orderstatus-_-null&#034;&gt;Check your order status&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#034;/webapp/wcs/stores/servlet/OrderStatusLoginChk?storeId=301&amp;catalogId=301&amp;langId=-1&amp;cm_sp=customerservice-_-orderstatus-_-null&#034;&gt;Check your order status&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/information/ge-splash?catalogId=301&amp;storeId=301&amp;langId=-1&amp;cm_sp=customerservice-_-cardservices-_-null&#034;&gt;Dillard&#039;s card services&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/information/faq?cm_sp=customerservice-_-faq-_-null&#034;&gt;FAQ&#039;s, notices &amp; policies&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/content/salons?cm_sp=customerservice-_-salonspa-_-null&#034;&gt;Salon &amp; spa&lt;/a&gt;&lt;/li&gt;
@@ -5233,11 +5408,11 @@ $(document).ready(function() {
 	</div>
 	
 	<div id="browsersContainer">
-		<div id="browserChrome"><a href="http://www.google.com/chrome/"><img src="../../../../images/browser_chrome.png" alt="Google Chrome"/></a></div>
-		<div id="browserFirefox"><a href="http://www.mozilla.com/firefox/"><img src="../../../../images/browser_firefox.png" alt="Firefox"/></a></div>
-		<div id="browserIE"><a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx"><img src="../../../../images/browser_ie.png" alt="Internet Explorer"/></a></div>
-		<div id="browserSafari"><a href="http://www.apple.com/safari/download/"><img src="../../../../images/browser_safari.png" alt="Safari"/></a></div>
-		<div id="browserOpera"><a href="http://www.opera.com/download/"><img src="../../../../images/browser_opera.png" alt="Opera"/></a></div>
+		<div id="browserChrome"><a href="http://www.google.com/chrome/"><img src="../../../../images/browser_chrome.jpg" alt="Google Chrome"/></a></div>
+		<div id="browserFirefox"><a href="http://www.mozilla.com/firefox/"><img src="../../../../images/browser_firefox.jpg" alt="Firefox"/></a></div>
+		<div id="browserIE"><a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx"><img src="../../../../images/browser_ie.jpg" alt="Internet Explorer"/></a></div>
+		<div id="browserSafari"><a href="http://www.apple.com/safari/download/"><img src="../../../../images/browser_safari.jpg" alt="Safari"/></a></div>
+		<div id="browserOpera"><a href="http://www.opera.com/download/"><img src="../../../../images/browser_opera.jpg" alt="Opera"/></a></div>
 	</div>
 	
 	<div class="closeContainer">

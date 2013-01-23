@@ -1,9 +1,9 @@
-var bild_smart_test=1; // var fuer bild.de
-var adakey = ''; // important... has to be outside if clause... for AdTag call
+var bild_smart_test = 1; // var fuer bild.de
+var adakey = ''; // Adprobe keyword - important: has to be outside if clause... for AdTag call
 
 //if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
    // Adprobe
-   var wlCus = "13115,13118,13116,13123,13122";
+   var wlCus = "13115,13116,13118,13120,13121,13122,13123,13133,13134,13135";
    var wlOrd = new Date().getTime();
    try { document.write('<scr' + 'ipt src="http://req.connect.wunderloop.net/AP/1627/6657/13115/js?cus=' + wlCus + '&ord=' + wlOrd + '"></scr'+'ipt>');}
    catch(err) { }
@@ -13,41 +13,63 @@ var adakey = ''; // important... has to be outside if clause... for AdTag call
 
 // SAS ASMI GENERIC FUNCTION
 sas_tmstp=Math.round(Math.random()*10000000000);
-sas_masterflag=1;
+sas_masterflag = 1;
 sas_skyexcluded = 0;
 
 
 function SmartAdServer(sas_pageid,sas_formatid,sas_target) {
    // Ad Audience
    //if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
-      if (sas_formatid == 3648 && wl13115camp >0) {
-         adakey = ';ada3648sb';
+      adakey = ''; // important: initialise for every AdTag call
+      // superbanner, exp. superbanner, wallpaper, exp. wallpaper - important: ada3648sb and ada3648sbx doesn't work properly in smart -keyword substring-, therefore ada3648xsb
+      if (sas_formatid == 3648) {
+         if (wl13115camp > 0){
+            adakey += ';ada3648sb';
+         }
+         if (wl13135camp > 0){
+            adakey += ';ada3648xsb';
+         }
+         if (wl13121camp > 0){
+            adakey += ';ada3648wp';
+         }
+         if (wl13133camp > 0){
+            adakey += ';ada3648xwp';
+         }
       }
-      //if (sas_formatid == 3648 && wl13121camp >0) {
-      //  adakey = ';ada3648wp';
-      //}
-      if (sas_formatid == 3650 && wl13118camp >0) {
-         adakey = ';ada3650sk';
+      // superbanner02
+      if (  sas_formatid == 7348 && wl13115camp > 0) {
+         adakey += ';ada3648sb';
       }
-      if (sas_formatid == 4459 && wl13116camp >0) {
-         adakey = ';ada4459mr';
+      // skyscraper, exp. skyscraper - important: ada3650sk and ada3650skx doesn't work properly in smart -keyword substring-, therefore ada3650xsk
+      if (sas_formatid == 3650) {
+         if (wl13118camp > 0){
+            adakey += ';ada3650sk';
+         }
+         if (wl13134camp > 0){
+            adakey += ';ada3650xsk';
+         }
       }
-/* geändert skarl - mit dieser Logik immer banderole wenn bra recommandation...
-      if (sas_formatid == 3651 && wl13123camp >0) {
-         adakey = ';ada3651rm';
+      // medium rectangle, halfpage ad
+      if (sas_formatid == 4459) {
+         if (wl13116camp > 0){
+            adakey += ';ada4459mr';
+         }
+         if (wl13120camp > 0){
+            adakey += ';ada4459hpa';
+         }
       }
-      if (sas_formatid == 3651 && wl13122camp >0) {
-         adakey = ';ada3651bra';
+      // rectangle02
+      if (  sas_formatid == 4460 && wl13116camp > 0) {
+         adakey += ';ada4459mr';
       }
-*/
-      if (sas_formatid == 3651 && wl13123camp > 0 && wl13122camp > 0) {
-         adakey = ';ada3651rm;ada3651bra';
-      } else if (sas_formatid == 3651 && wl13123camp  > 0){
-         adakey = ';ada3651rm';
-      } else if (sas_formatid == 3651 && wl13122camp  > 0){
-         adakey = ';ada3651bra';
-      } else {
-         //
+      // layer, banderole ad
+      if (sas_formatid == 3651) {
+         if (wl13123camp > 0){
+            adakey += ';ada3651rm';
+         }
+         if (wl13122camp > 0){
+            adakey += ';ada3651bra';
+         }
       }
    //}
    if (SmartAdServer.efid && SmartAdServer.efid.indexOf('#'+ sas_formatid +'#')>=0) return;

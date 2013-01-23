@@ -1,9 +1,9 @@
-var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'agweb/pmk-1.6.js';var bbVer = getBBVersion();
+var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'agweb/pmk-1.7.js';var _pmsb = false;var bbVer = getBBVersion();
 if (bbVer == null || parseInt(bbVer) > 5) {
 var pm_ppy="agweb";
 var pmk,pmglb,pmfa,pmad,pmdebug_c;pmglb=pmglb||null;pmfa=pmfa||null;pmad=pmad||null;pmdebug_c=pmdebug_c||null;pmk=pmk||null;
 var _pmenv = getUrlParameter('pmenv');
-if(_pmenv && _pmenv == 'sandbox') {_pmep=_pmep.replace('http://widget.perfectmarket.com', 'http://widget.sandbox.perfectmarket.com');_pmep_geo=_pmep_geo.replace('http://geo.perfectmarket.com', 'http://geo.sandbox.perfectmarket.com');}
+if(_pmenv && _pmenv == 'sandbox' && !_pmsb) {_pmep=_pmep.replace('http://widget.perfectmarket.com', 'http://widget.sandbox.perfectmarket.com');_pmep_geo=_pmep_geo.replace('http://geo.perfectmarket.com', 'http://geo.sandbox.perfectmarket.com');var d = new Date();var rand = d.getTime();_pmpmk=pm_ppy+"/load.js?"+rand;}
 
 (function(){
   var sc='script',doc=document;

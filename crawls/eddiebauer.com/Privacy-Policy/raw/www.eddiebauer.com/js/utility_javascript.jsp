@@ -1109,7 +1109,7 @@ function takeAction(actionType, soaCookieString){
 		if(soaCookieString.indexOf('cartempty=false') == -1) {
 			if(soaCookieString.indexOf('firstorderofsession=true') > -1){
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoanow', 'oessoacart=' );
-				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '01/19/2013 06:10:01 EST');
+				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '01/23/2013 07:58:04 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmcnow', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvennow', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatnow', 'cmcatcart=');
@@ -1118,7 +1118,7 @@ function takeAction(actionType, soaCookieString){
 				soaCookieString = changeSEOString(soaCookieString, 'cartempty', 'false');
 			}else {
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoacartbak', 'oessoacart=');
-			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '01/19/2013 06:10:01 EST');
+			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '01/23/2013 07:58:04 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmccartbak', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvencartbak', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatcartbak', 'cmcatcart=');

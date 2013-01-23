@@ -684,26 +684,26 @@ function search(){
 				//document.write('<div class="accent"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+ "<span class=\"link\">" + apply + "</span>" +'</a></div>');
 			}else{
 				document.write('<span class="accent">Hi ' + displayName+ ',&nbsp;</span>');
-				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm">Not&nbsp;'+displayName+'?</a>');
+				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="1">Not&nbsp;'+displayName+'?</a>');
 				document.write('<span class="spacer">&nbsp;</span>');
-				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm">Sign Out</a>');
+				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="2">Sign Out</a>');
 				if (parseInt(creditAmt) > 0){  // case when the customer is registered and has non-zero Sterling Account OTB
-					document.write('<span id = "hideCredit" style="display:"><span class="accent credit">Available Credit: $' + creditAmt+'</span><span class="spacer">&nbsp;</span><a class="link" href="index.html#" onclick="toggle_visibility(\'hideCredit\',\'viewCredit\'); return false;">Hide</a></span>');
-					document.write('<span id = "viewCredit" style="display:none"><a onmouseover=\'this.style.cursor="pointer" \' onfocus=\'this.blur();\' onclick="toggle_visibility(\'viewCredit\',\'hideCredit\');" href="index.html#" class="accent credit" >View Your Available Credit</a></span>');
+					document.write('<span id = "hideCredit" style="display:"><span class="accent credit">Available Credit: $' + creditAmt+'</span><span class="spacer">&nbsp;</span><a class="link" href="index.html#" onclick="toggle_visibility(\'hideCredit\',\'viewCredit\'); return false;" tabindex="3">Hide</a></span>');
+					document.write('<span id = "viewCredit" style="display:none"><a onmouseover=\'this.style.cursor="pointer" \' onfocus=\'this.blur();\' onclick="toggle_visibility(\'viewCredit\',\'hideCredit\');" href="index.html#" class="accent credit" tabindex="4">View Your Available Credit</a></span>');
 					//document.write('<a href="index.html#" onclick="toggle_visibility(\'otbamount\'); return false;">View your Available Credit</a>');
 				}else if(creditDen == true){ //case when customer is registered and his account is under review or Denied, Apply for credit should not be displayed.
 				}else if(parseInt(creditAmt) == 0){  // case when customer is registred and has no credit account associated
 			   	     var apply="Apply for Kay Credit";
-					 document.write('<div class="accent credit"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+ "<span class=\"link\">&nbsp;" + apply + "</span>" +'</a></div>'); 
+					 document.write('<div class="accent credit"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+ "<span class=\"link\">&nbsp;" + apply + "</span>" +'</a></div>'); 
 				}else{  // case when the customer has sterling account registered but the OTB ==0 or less than threshhold. 
 				
 				}
 			}				
 		}else{ // guest user
-			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
+			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001" tabindex="2">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
 			var apply="Apply for Kay Credit";
 			//document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+  apply + '</a>');
-			document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+  apply + '</a>'); 
+			document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+  apply + '</a>'); 
 		}
 
 
@@ -714,7 +714,7 @@ function search(){
 		<script language="javascript">
 			var storenumber = getStoreNumber();
 			if (storenumber == null ){
-				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001">My Account</a></h4><span class="spacer">&nbsp;</span>');
+				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001" tabindex="6">My Account</a></h4><span class="spacer">&nbsp;</span>');
 			}
 		</script>
 		
@@ -725,7 +725,7 @@ function search(){
 
 
 <div class="modal self-controlled">
-	<h4 id="miniRecentHeader" class="wa_normal">Recently Viewed (0)</h4>
+	<h4 id="miniRecentHeader" class="wa_normal link" tabindex="7">Recently Viewed (0)</h4>
 	<div class="modal-diag iefix">
 		
 				<div class="modal-content">
@@ -754,7 +754,7 @@ function search(){
 					<div dojoType="wc.widget.RefreshArea" id="CompareCollector" widgetId="CompareCollector" controllerId="CompareCollectorController" onmouseover="showMiniCompareDropDown('compareBar','quick_compare_container','compareItemsList');" role="wairole:region" waistate:live="polite" waistate:atomic="true" waistate:relevant="all">
 						
 
-<a class="link" tabindex="0" id="compareBar" waistate:controls="CompareDisplay"  href='index.html#' >
+<a class="link" tabindex="8" id="compareBar" waistate:controls="CompareDisplay"  href='index.html#' >
 		<h4 id="miniCompareBody" class="wa_normal">
 			Compare(0)
 		</h4>
@@ -791,7 +791,7 @@ function search(){
 		<!-- Wish List start-->
 			<div class="modal modal-ie" id="wishlist-modal">
 				
-						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay" class="link" id="wishListBar" >
+						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay" class="link" id="wishListBar" tabindex="9">
 							<span id="miniWishListBody" class="body">
 								<span class="text strong">
 									Wish List 
@@ -809,7 +809,7 @@ function search(){
 			<div dojoType="wc.widget.RefreshArea" id="MiniShoppingCart" widgetId="MiniShoppingCart" controllerId="MiniShoppingCartController" onmouseover="showMiniShopCartDropDown('shoppingCartBar','quick_cart_container','orderItemsList');" role="wairole:region" waistate:live="polite" waistate:atomic="true" waistate:relevant="all">
 				<!-- BEGIN MiniShopCartDisplay.jsp --><!-- If we get here from a generic error this service will fail so we need to catch the exception -->
 
-<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=OrderItemDisplayView&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="0" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
+<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=OrderItemDisplayView&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="10" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
 		<h4 id="miniShopCartBody" class="wa_normal">
 			Shopping Bag(0)
 		</h4>
@@ -928,7 +928,7 @@ function search(){
 	
 		<div class="tool">
 		  	<div class="storelocator" id="storebuttonarea">
-				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=-1&landing=1">FIND A STORE</a>
+				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=-1&landing=1" tabindex="25">FIND A STORE</a>
 			</div>
 			
 			
@@ -967,14 +967,23 @@ function search(){
 		</div>
 		
 	<div class="tool iefix-chat">
+		<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" tabIndex=24> 
+			<img id="chatHeaderImage" border="0" style="margin: -6px 0 -2px;"/> 
+		</a>
+		<div style="position:absolute;top:-9999px;left:-9999px;">
+			<img id="chatStatusImage" src="https://chat.kay.com/netagent/client/invites/chatimage.aspx?style=style0&questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&imagelanguage=en-us&customopenimage=https://www.kay.com/img/chat/livechat_available_footer.png&customcloseimage=https://www.kay.com/img/chat/livechat_unavailable_footer.png"/>
+		</div>
 			<script type="text/javascript">
 				function checkMoxieServerResponse() {
-				if(PROD == 'true')
-					var endpoint = "https://chat.kay.com/netagent/blank.html?date="+(new Date().getTime());
-				else
-				     var endpoint = "https://sterlingtest.ehosts.net/netagent/blank.html?date="+(new Date().getTime());
-				     //console.log("endpoint :" + endpoint);
-				     var jqXHR = $.ajax({
+					var PROD = 'true';
+					if(PROD == 'true') {
+						var endpoint = "https://chat.kay.com/netagent/blank.html?date="+(new Date().getTime());
+					}
+					else {
+					     var endpoint = "https://sterlingtest.ehosts.net/netagent/blank.html?date="+(new Date().getTime());
+					}
+					
+				    var jqXHR = $.ajax({
 								url: endpoint,
 								success: checkMoxieServerResponse_callback,
 								dataType: "script",
@@ -985,20 +994,45 @@ function search(){
 				function checkMoxieServerResponse_callback(data, textStatus, jqXHR) {
 			   		if(jqXHR.status == 200){
 				     	$('#live_chat').show();
-					}
+				     	
+				     	if ( $('#chatStatusImage').width() > 100 ) {
+				     		$('#chatHeaderImage').attr("src","/img/chat/kay_livechat_unavailable.png");
+				     	}
+				     	else {
+				     		$('#chatHeaderImage').attr("src","/img/chat/livechat_available_bubble.png");
+				     	}
+				    }				
 				}
 				
-				if (!($.browser.msie  && parseInt($.browser.version, 10) === 7)) {
-					var storeNumber = getStoreNumber();
-					var PROD = 'true';
-					if (storeNumber == null ){
-						 checkMoxieServerResponse();
-					if(PROD == 'true')
-						document.write('<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" onclick="javascript:window.open(\'https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer=\'+escape(document.location),\'_blank\',\'resizable= no,width=680,height=450,scrollbars=yes\'); cmCreateManualLinkClickTag(\'Click to Chat - Header\',\'Click to Chat - Header\',\'\');cmCreateElementTag(\'Click to Chat - Header\', \'Click to Chat - Header\', \'\'); return false;">  <img src="https://chat.kay.com/netagent/client/invites/chatimage.aspx?style=style0&questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&imagelanguage=en-us&customopenimage=https://www.kay.com/img/chat/livechat_available_bubble.png&customcloseimage=https://www.kay.com/img/chat/kay_livechat_unavailable.png" border="0" style="margin: 0 0 -2px;">  </a>');
-					else
-						document.write('<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" onclick="javascript:window.open(\'https://sterlingtest.ehosts.net/netagent/cimlogin.aspx?questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&nareferer=\'+escape(document.location),\'_blank\',\'resizable= no,width=680,height=450,scrollbars=yes\'); cmCreateManualLinkClickTag(\'Click to Chat - Header\',\'Click to Chat - Header\',\'\');cmCreateElementTag(\'Click to Chat - Header\', \'Click to Chat - Header\', \'\'); return false;"> <img src="../../../../../../../../sterlingtest.ehosts.net/netagent/client/invites/chatimage.aspx%3Fstyle=style0&amp;questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&amp;portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&amp;imagelangu" border="0" style="margin: 0 0 -2px;"> </a>');
+				$(document).ready(function() {
+					if (!($.browser.msie && parseInt($.browser.version, 10) === 7)) {
+						var storeNumber = getStoreNumber();
+						var PROD = 'true';
+						
+						if (storeNumber == null ) {
+							 checkMoxieServerResponse();
+							
+							if(PROD == 'true') {
+								//document.write('<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" onclick="javascript:window.open(\'https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer=\'+escape(document.location),\'_blank\',\'resizable= no,width=680,height=450,scrollbars=yes\');cmCreateManualLinkClickTag(\'Click to Chat - Header\',\'Click to Chat - Header\',\'\');cmCreateElementTag(\'Click to Chat - Header\', \'Click to Chat - Header\', \'\');return false;"><img src="../../../../../../../../chat.kay.com/netagent/client/invites/chatimage.aspx%3Fstyle=style0&amp;questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&amp;portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&amp;imagelangu"border="0" style="margin: 0 0 -2px;">  </a>');
+								$('#live_chat').click(function() {
+									window.open("https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer="+escape(document.location),'_blank','resizable= no,width=680,height=450,scrollbars=yes'); 
+									cmCreateManualLinkClickTag('Click to Chat - Header','Click to Chat - Header','');
+									cmCreateElementTag('Click to Chat - Header', 'Click to Chat - Header', ''); 
+									return false;
+								});
+							}
+							else {
+								//document.write('<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" onclick="javascript:window.open(\'https://sterlingtest.ehosts.net/netagent/cimlogin.aspx?questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&nareferer=\'+escape(document.location),\'_blank\',\'resizable= no,width=680,height=450,scrollbars=yes\'); cmCreateManualLinkClickTag(\'Click to Chat - Header\',\'Click to Chat - Header\',\'\');cmCreateElementTag(\'Click to Chat - Header\', \'Click to Chat - Header\', \'\'); return false;"> <img src="../../../../../../../../sterlingtest.ehosts.net/netagent/client/invites/chatimage.aspx%3Fstyle=style0&amp;questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&amp;portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&amp;imagelangu" border="0" style="margin: 0 0 -2px;"> </a>');
+								$('#live_chat').click(function() {
+									window.open('https://sterlingtest.ehosts.net/netagent/cimlogin.aspx?questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&nareferer='+escape(document.location),'_blank','resizable= no,width=680,height=450,scrollbars=yes'); 
+									cmCreateManualLinkClickTag('Click to Chat - Header','Click to Chat - Header','');
+									cmCreateElementTag('Click to Chat - Header', 'Click to Chat - Header', ''); 
+									return false;
+								});
+							}
+						}
 					}
-				}
+				});
 			</script>
 		</div>
 		
@@ -1008,7 +1042,7 @@ function search(){
 			    		var storeNumber = getStoreNumber();
 						if (storeNumber == null ){
 							document.write('800-527-8029');
-							document.write('<a id="contact_us" class="usertype_storeUser" href="index.html#dialogCS" name="ContactUsModal">Contact Us</a>');
+							document.write('<a id="contact_us" class="usertype_storeUser" href="index.html#dialogCS" name="ContactUsModal" tabindex="23">Contact Us</a>');
 						}
 			    	</script>
 					</div>
@@ -1029,8 +1063,8 @@ function search(){
 					<span id="searchTextHolder" class="nodisplay"></span>
 					<span class="spanacce"></span>
 					
-					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="SEARCH" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="combobox" tabindex="0"/>
-					<input type="submit" onclick="return validateSearchSubmit();" value=" ">
+					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="SEARCH" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="combobox" tabindex="21"/>
+					<input type="submit" onclick="return validateSearchSubmit();" aria-label="search button" value=" " tabindex="22">
 					<div id="autoSuggest_Container">
 						<div id="autoSuggest_Result_div" class="autoSuggestBox1" onmouseover="autoSuggestHover = true;" onmouseout="autoSuggestHover = false; document.getElementById('SimpleSearchForm_SearchTerm').focus();" style="display:none;">
 							<div class="autoSuggestBox autoSuggest_wrapper">
@@ -1167,28 +1201,32 @@ function search(){
 <div class="clear"></div>
 <div class="sbanner">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<img src="../../../../../../../espots/hero/kay_maindfeature_Jan17-20-1.jpg" alt="25% Off Citizen and Bulova Watches" width="1000" height="433" border="0" usemap="#WatchesMap" style="position: absolute; top: 0; left:0;" />
-    <map name="WatchesMap" id="WatchesMap">
-      <area shape="rect" coords="241,122,362,163" href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=citizen%201212&amp;searchText=citizen%201212&amp;cm_sp=hp_hero_banner-_-WATCHES-_-Citizen_Watches" alt="Shop All" title="Shop All" />
-      <area shape="rect" coords="420,123,540,165" href="http://www.kay.com/en/kaystore/bulova-100097--1/1000970000/100090/1/0/0/0/100090.100094.100097?cm_sp=hp_hero_banner-_-WATCHES-_-Bulova_Watches" alt="Shop All" title="Shop All" />
-      <area shape="rect" coords="28,139,189,420" href="http://www.kay.com/en/kaystore/watches-100090--1/citizen-womens-watch-chronograph-diamond-accents?cm_sp=hp_hero_banner-_-WATCHES-_-281733408" alt="Citizen Women's Watch Diamond Accents FB1230-50A" title="Citizen Women's Watch Diamond Accents FB1230-50A" />
-      <area shape="rect" coords="204,162,372,421" href="http://www.kay.com/en/kaystore/watches-100090--1/citizen-mens-watch-diamond-dial-281707404?cm_sp=hp_hero_banner-_-WATCHES-_-281707404" alt="Citizen Men's Watch Diamond Dial AU1054-54G" title="Citizen Men's Watch Diamond Dial AU1054-54G" />
-      <area shape="rect" coords="413,164,559,420" href="http://www.kay.com/en/kaystore/watches-100090--1/bulova-mens-watch-dress-collection-270364704--1/100090/100090.100094.100097?cm_sp=hp_hero_banner-_-WATCHES-_-270364704" alt="Bulova Men's Watch Dress Collection 98A117" title="Bulova Men's Watch Dress Collection 98A117" />
-      <area shape="rect" coords="571,132,712,420" href="http://www.kay.com/en/kaystore/watches-100090--1/bulova-womens-watch--boxed-set--with-heart-necklace/100090/100090.100094.100097?cm_sp=hp_hero_banner-_-WATCHES-_-270302805" alt="Bulova Women's Watch With Heart Necklace 96X111" title="Bulova Women's Watch With Heart Necklace 96X111" />
+	<img src="../../../../../../../espots/hero/kay_maindfeature_Jan21-27.jpg" alt="Personalize a Gift" width="1000" height="433" border="0" usemap="#PersonalizedMap" style="position: absolute; top: 0; left:0;" />
+    <map name="PersonalizedMap" id="PersonalizedMap">
+     <area shape="rect" coords="529,71,666,114" href="http://www.kay.com/categoryProductsAll|10101|10001|-1|100113|1001130000|1|0|||100112|100112.100113?cm_sp=hp_hero_banner-_-PERSONALIZED-_-Create_Now" alt="Create Now" title="Create Now" />
+      <area shape="rect" coords="363,297,502,404" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000195264||100112|100112.100113?cm_sp=hp_hero_banner-_-PERSONALIZED-_-6732"alt="Personalize Your Couple's Color Stone Ring" title="Personalize Your Couple's Color Stone Ring" />
+      <area shape="rect" coords="344,149,509,277" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000190095||100112|100112.100113.100116?cm_sp=hp_hero_banner-_-PERSONALIZED-_-6114" alt="Personalize Your Color Stone Couple's Necklace" title="Personalize Your Color Stone Couple's Necklace" />
+      <area shape="rect" coords="154,168,343,388" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000188918||100112|100112.100113.100116?cm_sp=hp_hero_banner-_-PERSONALIZED-_-5213" alt="Personalize Your Color Stone Couple's Necklace" title="Personalize Your Color Stone Couple's Necklace" />
+      <area shape="rect" coords="29,247,150,379" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000192442||100112|100112.100113.100115?cm_sp=hp_hero_banner-_-PERSONALIZED-_-6410" alt="Personalize Your Diamond and Color Stone Couple's Ring" title="Personalize Your Diamond and Color Stone Couple's Ring" />
+      <area shape="rect" coords="557,210,704,306" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000221111||100112|100112.100113.100115?cm_sp=hp_hero_banner-_-PERSONALIZED-_-1353" alt="Personalize Your 1/8 Carat t.w. Diamond Promise Ring" title="Personalize Your 1/8 Carat t.w. Diamond Promise Ring" />
+      <area shape="rect" coords="558,301,703,396" href="http://www.kay.com/personalizedProduct|10101|10001|-1|732541000221136||100112|100112.100113.100115?cm_sp=hp_hero_banner-_-PERSONALIZED-_-1358" alt="Personalize Your 1/10 Carat t.w. Diamond Promise Ring" title="Personalize Your 1/10 Carat t.w. Diamond Promise Ring" />
     </map><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	<div class="sbanner1">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=valentines&#32;213&amp;searchText=valentines&#32;213&amp;cm_sp=hp_espot-_-diamondfashion"><img src="../../../../../../../espots/carousel/1_hp_espot_30_off_diamonds.jpg" width="253" height="129" alt="Diamond Fashion" border="0"></a>
+	<a href="http://www.kay.com/en/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=valentines&#32;213&amp;searchText=valentines&#32;213&amp;cm_sp=hp_espot-_-diamondfashion"><img src="../../../../../../../espots/carousel/hp_espot_30_off_diamonds.jpg" width="253" height="129" alt="Diamond Fashion" border="0"></a>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 	<div class="sbanner2">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=Open&#32;Hearts&#32;by&#32;Jane&#32;Seymour&amp;searchText=Open&#32;Hearts&#32;by&#32;Jane&#32;Seymour&amp;cm_sp=hp_espot-_-OpenHearts"><img src="../../../../../../../espots/carousel/hp_espot_open_hearts.jpg" width="253" height="129" alt="Open Hearts" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/charmed-memories®/1000820000/100063/1/0/0/0/100063.100066.100082?cm_sp=hp_espot-_-Charmed_Memories"><img src="../../../../../../../espots/carousel/hp_espot_charmed_memories.jpg" width="253" height="129" alt="Charmed Memories" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 	<div class="sbanner3">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/categoryProductsAll|10101|10001|-1|100113|1001130000|1|0|||100112|100112.100113?cm_sp=hp_espot-_-PersonalizedJewelry"><img src="../../../../../../../espots/carousel/3_hp_espot_personalized.jpg" width="253" height="129" alt="Personalized Jewelry" border="0"></a>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<img src="../../../../../../../espots/carousel/hp_espot_25_off_watches.jpg" alt="Save 25% on Citizen and Bulova Watches" width="253" height="129" border="0" usemap="#CarouselMap" />
+<map name="CarouselMap" id="CarouselMap">
+  <area shape="rect" coords="4,108,98,129" href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=citizen%201212&amp;searchText=citizen%201212&amp;cm_sp=hp_espot-_-Citizen_Watches" alt="Save 25% on Citizen watches" tile="Save 25% on Citizen watches"/>
+  <area shape="rect" coords="161,107,254,132" href="http://www.kay.com/en/kaystore/bulova-100097--1/1000970000/100090/1/0/0/0/100090.100094.100097?cm_sp=hp_espot-_-Bulova_Watches" alt="Save 25% on Bulova Watches" title="Save 25% on Bulova Watches"/>
+</map><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 </div>
 <div class="container_39 clearfix" >
@@ -1253,22 +1291,22 @@ function search(){
         <div class="grid_39 bottom_space_3">
 	        <div class="grid_7 alpha">
 	            <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/neil-lane-bridal®/1000160000/100006/1/0/0/0/100006.100008.100016?cm_sp=hp_espot-_-Neil_Lane_Bridal"><img src="../../../../../../../espots/collections/kay_neillane_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Neil Lane Bridal Collections" border="0"></a>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/neil-lane-designs-100061--1/1000610000/100020/1/0/0/0/100020.100023.100061?cm_sp=hp_espot-_-Neil_Lane_Designs"><img src="../../../../../../../espots/collections/kay_Neil_Lane_Designs_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Neil Lane Designs" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
             </div>
 		<div class="grid_7 prefix_1">
 	       	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/charmed-memories®/1000820000/100063/1/0/0/0/100063.100066.100082?cm_sp=hp_espot-_-Charmed_Memories"><img src="../../../../../../../espots/collections/hp_dsnrs_chrmdMem.jpg" width="180" height="150" alt="Charmed Memories" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/color-obsession-made-with-swarovski-elements%C2%99/1000600000/100020/1/0/0/0/100020.100023.100060?cm_sp=hp_espot-_-Color_Obession"><img src="../../../../../../../espots/collections/2_hp_dsnrs_color_obsession.jpg" width="180" height="150" alt="Color Obession" border="0"></a>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
         <div class="grid_7 prefix_1">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/blue-diamond-fashion-100301--1/1003010000/100020/1/0/0/0/100020.100023.100301?cm_sp=hp_espot-_-BlueDiamonds"><img src="../../../../../../../espots/collections/kay_Artistry_Blue_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Blue Diamonds" border="0"></a>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/le-vian®/1000550000/100020/1/0/0/0/100020.100023.100055?cm_sp=hp_espot-_-Levian"><img 
+src="../../../../../../../espots/collections/kay_levian_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="LeVian" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
 		<div class="grid_7 prefix_1">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/loves-embrace®/1000540000/100020/1/0/0/0/100020.100023.100054?cm_sp=hp_espot-_-Loves_Embrace"><img src="../../../../../../../espots/collections/hp_dsnrs_lovesembrace.jpg" width="180" height="150" alt="Love's Embrace" border="0"></a>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/SearchResultsView?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=open&#32;hearts&#32;by&#32;jane&#32;seymour&amp;N=4294966876&amp;No=&amp;Ns=&amp;Nso=&amp;itemsPerPage=20&amp;searchRefinement=true&amp;searchText=open&#32;hearts&#32;by&#32;jane&#32;Seymour"><img src="../../../../../../../espots/collections/kay_openHearts_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Open Hearts by 
+Jane Seymour" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
 		<div class="grid_7 prefix_1 omega">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
@@ -1596,7 +1634,7 @@ value='Enter your email address'>
 </p>
 <ul>
 <li><a id="footerChatLink" class="chatCMSItem" href="index.html#">
-<img id="img_status" src="../../../../../../../../chat.kay.com/netagent/client/invites/chatimage.aspx%3Fstyle=style0&amp;questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&amp;portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&amp;imagelangu" border="0" alt="Login to Chat">
+<img id="img_status" src="https://chat.kay.com/netagent/client/invites/chatimage.aspx?style=style0&amp;questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&amp;portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&amp;imagelanguage=en-us&amp;customopenimage=https://www.kay.com/img/chat/livechat_available_footer.png&amp;customcloseimage=https://www.kay.com/img/chat/livechat_unavailable_footer.png" border="0" alt="Login to Chat">
 </a></li>
 <li><a href="http://www.kay.com/TrackOrderStatus?storeId=10101&amp;catalogId=10001&amp;langId=-1" >Order Status</a></li>
 <li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=kay_credit" >Kay Credit</a></li>
@@ -1666,19 +1704,20 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 </ul><!-- End- JSP File Name: CMSContentSpotDisplay.jsp -->
 <script type="text/javascript">
 	// Based on the return image, set the text
-	$(function(){ 
-		var chatImgW = $('#img_status').width(); 
-		if(chatImgW == null || chatImgW > 100) { 
+	$(document).ready(function(){ 
+		var PROD = 'true';
+		var chatStatusImgWidth = $('#chatStatusImage').width();
+		
+		if ( chatStatusImgWidth == 0 || chatStatusImgWidth > 100 ) { 
 			$('#footerChatLink').html('Live Chat (Unavailable)');
+			$('#chatModalImage').attr("src", "/img/chat/livechat_unavailable_modal.png");
 		}
 		else {
 			$('#footerChatLink').html('Live Chat');
+			$('#chatModalImage').attr("src", "/img/chat/livechat_available_modal.png");
 		}
-	 
-		// Server returned 200, set the onclick
-		if ($('#live_chat').is(":visible")) {
-			var PROD = 'true';
-			
+		
+		if (chatStatusImgWidth > 0) {
 			if(PROD == 'true') {
 				$('.chatCMSItem').click(function() {
 					window.open("https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer="+escape(document.location),"_blank","resizable= no,width=680,height=450,scrollbars=yes"); 
@@ -1695,11 +1734,7 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 					return false;
 				});
 			}
-		}
-		// Server returned 500
-		else {
-			$('#footerChatLink').html('Live Chat (Unavailable)');
-		}
+		}		
 	});
 </script>
 <!-- this code needs to go in CMS 

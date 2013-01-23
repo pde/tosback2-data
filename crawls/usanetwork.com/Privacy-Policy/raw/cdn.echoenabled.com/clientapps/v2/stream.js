@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- * Version: v2.6.31
+ * Version: v2.6.32
  */
 
 (function($) {
@@ -2202,7 +2202,7 @@ Echo.Item.prototype.renderers.body = function(element, dom) {
 	var urlMatcher = "((?:http|ftp|https):\\/\\/(?:[a-z0-9#:\\/\\;\\?\\-\\.\\+,@&=%!\\*\\'(){}\\[\\]$_|^~`](?!gt;|lt;))+)";
 	var normalizeLinks = function(content) {
 		return content.replace(/(<a\s+[^>]*>)(.*?)(<\/a>)/ig, function($0, $1, $2, $3) {
-			if (new RegExp("^" + urlMatcher + "$").test($2)) {
+			if (new RegExp("^" + urlMatcher + "$", "i").test($2)) {
 				$2 = $2.length > limits.bodyLink ? $2.substring(0, limits.bodyLink) + "..." : $2;
 			}
 			if (openLinksInNewWindow && !/\s+target=("[^<>"]*"|'[^<>']*'|\w+)/.test($1)) {

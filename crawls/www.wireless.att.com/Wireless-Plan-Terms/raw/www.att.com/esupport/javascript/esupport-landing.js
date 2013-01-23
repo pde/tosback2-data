@@ -66,9 +66,14 @@ var esupportCarousel = {
 		  if (video.videoLength  == undefined){
 				video.videoLength ="0:00";
 		   }	
-          var playVideo = function () {
+          var envDomain = location.hostname;
+          if(envDomain == "prestage.att.com"){	envDomain == "prestage.att.com";	}
+          else if(envDomain == "finalstage.att.com"){	envDomain == "finalstage.att.com";	}
+          else{	envDomain == "www.att.com";	}
+		  var playVideo = function () {
             var videoPath = video.xmlFileName.replace(/^\/media\/gvp/, '');
-            gvp.showPopUp('Please wait...', true, true, 'gvp', videoPath + '&gvpEnv=//www.att.com/media/gvp/');
+            //Changed as per ticket B2C-146257
+            gvp.showPopUp('Please wait...', true, true, 'gvp', videoPath + '&gvpEnv=//' + envDomain + '/media/gvp/');
           };
 			$('<li>').append($('<div>').addClass('video-thumb-container')
 			        .append($('<a>').append($('<img>').attr({src:video.thumbFilePath,width:110,height:62,alt:vTitle,style:'display:block'}))

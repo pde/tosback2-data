@@ -1,0 +1,171 @@
+function bnNavGetUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+};
+	  
+function bnNavSetBodyClass(){				
+	// adding user agent info as class to body tag 
+	if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
+	 var bnIEversion=new Number(RegExp.$1) // capture x.x portion and store as a number
+	 	if (!(bnIEversion>=7)) { //test less than version 7
+	   	 	$('body').addClass("IE6");	
+		}else{
+			$('body').addClass("IE"+bnIEversion);	
+		};
+	};		
+	var BNuagent = navigator.userAgent.toLowerCase();		
+	 if (BNuagent.indexOf('iphone') > -1) {
+		 $('body').addClass("iphone");					 
+	} else if (BNuagent.indexOf('ipod') > -1) {
+		 $('body').addClass("ipod"); 			
+	} else if (BNuagent.indexOf('ipad') > -1) {
+		 $('body').addClass("ipad"); 			
+	} else if (BNuagent.indexOf('android') > -1) {
+		 $('body').addClass("android"); 	
+	};		
+};		
+
+bnNavSetBodyClass();
+	
+
+ $(document).ready(function(){
+                                       
+        // *** function to render device specific banners on top of page ***
+        renderTopNavBanner = function (device,elem) {                     
+          var bnNavDeviceBanner = "bnNav-"+device+"-Banner"; // which "device" banner          
+          var bnNavDeviceBannerCookie = BN.Cookie.get(bnNavDeviceBanner);     // get cookie value
+		  
+          $(elem).not('.'+device).remove();   //remove unrelated app banners
+		
+           if (bnNavDeviceBannerCookie != 'hideDisplay' && $(elem+'.'+device).length > 0 ){   // if this add banner not blocked, continue                       
+                     $(elem+'.'+device).slideDown("slow"); // 2500 // open the banner			
+                     	// $(elem+"Ghost").slideDown("slow");  // was needed for scolling banner positioning                   
+                     $(elem+" .closeit").click(function (e) {  // bind events to close (X) button   ** close banner and set cookie to not re-display    					 
+		                 e.preventDefault();
+                         $(elem+'.'+device).slideUp("slow");
+                         	// $(elem+"Ghost").slideUp("slow"); // was needed for scolling banner positioning
+                         BN.Cookie.set(bnNavDeviceBanner, 'hideDisplay', { expires: 8760, path: '/', domain: '.barnesandnoble.com' });   
+                     });    								 
+					cmCreatePageElementTag("banner_download-app-"+device,"Promo Message"); // impression tag
+			        /* allow banner to scroll down page ****page scrolling no longer desired****
+                     var name = ".bnnavBannerAd";
+                     var bnnavBannerAdYloc = null;
+                     bnnavBannerAdYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))
+                     $(window).scroll(function () { 
+                         offset = bnnavBannerAdYloc+$(document).scrollTop()+"px";
+                         $(name).animate({top:offset},{duration:0,queue:false});
+                     });
+					 */       
+              } else if (bnNavDeviceBannerCookie == 'hideDisplay' && $(elem+'.'+device).length > 0 ) {
+			  		 $(elem+'.'+device).remove();  // $(elem+"Ghost").remove();  
+			  };                 
+		  // BN.Cookie.set(bnNavDeviceBanner, 'hideDisplay', { expires: -1, path: '/', domain: '.barnesandnoble.com' }); // deletes testing cookie
+    	};
+		
+
+        // test for devices to display app banner based on class applied to body tag
+        if ($("body.ipad").length) {
+            renderTopNavBanner('ipad','.bnNavBannerAd');                            
+        } else if ($("body.android").length){
+        	renderTopNavBanner('android','.bnNavBannerAd');
+        } else { // else remove all hidden banners from html  
+			$('div.bnNavBannerAd').remove();   		//$('.bnNavBannerAdGhost').remove();
+			if ($("body.IE6").length < 1) {$('#ie6upgradeMsg').remove();}			
+		};		
+		 if ($("body.IE7").length || $("body.IE8").length) { // quick search to Flite hack for special characters
+            $('#qs').append('<input type="hidden" name="iehack" value="&#9760;" />');    
+        };		
+		
+ });
+
+
+
+$(window).load(function(){ 
+
+    if (typeof BN_YUI != "undefined" ) {
+        BN_YUI.use('node', 'io-base', 'io-xdr', function(Y) {          
+            emailForm = Y.one('#ftr-email');
+            if (emailForm) {
+                emailForm.one(".ftr-error").hide();
+                emailForm.one(".ftr-thanks").hide();
+                // form submittion - prevent default action
+                emailForm.on('submit', function(e) {
+                    e.preventDefault();
+                    var email = emailForm.one('input#emailInput').get('value');
+                    var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+                    if (email == "" || pattern.test(email) == false) {
+                        emailForm.one("input#emailInput").setStyle("border", "1px solid #cc1d01");
+                        emailForm.one(".ftr-error").setStyle("color", "#cc1d01").show();
+                        return false;
+                    }
+                    else {
+                        // cross domain trasmisson
+                        Y.io("http://apps.m.bn.com/signup/ussignup", {
+                            data: "eml=" + email,
+                            xdr: {
+                                use: 'native',
+                                credentials: true
+                            },
+                            on: {
+                                end: function(oId, resp, args) {
+                                    emailForm.one(".ftr-thanks").show();
+                                    emailForm.all(".ftr-text, .ftr-error").hide();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+ 
+    } 
+    else
+    {
+        if ($("#ftr-email").length) {
+        // intial hide of notfications
+            $("#ftr-email .ftr-error").hide();
+            $("#ftr-email .ftr-thanks").hide();
+            
+        // form validation and submisson
+            $("#ftr-email").submit(function(e) {
+                e.preventDefault();     
+            
+            var email = $("#ftr-email input#emailInput").val().toLowerCase();
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            
+            if (email == "") {
+                $("#ftr-email input#emailInput").css("border","1px solid #cc1d01");
+                $("#ftr-email .ftr-error").css("color","#cc1d01").show();           
+            }
+            if (pattern.test(email) == false) {
+                $("#ftr-email input#emailInput").css("border","1px solid #cc1d01");
+                $("#ftr-email .ftr-error").css("color","#cc1d01").show();           
+            }
+            if (pattern.test(email) == true) {
+                    $.ajax({
+                    type: "POST",
+                    url: "http://apps.m.bn.com/signup/ussignup",
+                    data: "eml="+ email,
+                    success: ( $("#ftr-email .ftr-text").hide() + $("#ftr-email .ftr-error").hide() + $("#ftr-email .ftr-thanks").show() )
+                        
+                    });
+                }
+            });
+        }
+   
+    }; 
+
+    // keep the copyright date with the current year
+    var d = new Date();
+    var cwID = document.getElementById("bnCWYear");                  
+    if (cwID) {
+        cwID.innerHTML = d.getFullYear();
+    }
+
+}); //end window.load

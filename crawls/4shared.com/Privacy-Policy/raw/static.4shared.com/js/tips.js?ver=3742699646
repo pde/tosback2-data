@@ -1,0 +1,48 @@
+$(function() {
+  attachTips(false);
+  $("#includeFileList").mousemove(function(e) {
+    var item = $(e.target).closest(".jsItem[id^='ml_file_']")
+    if (!item.length) return
+    var id = String(item.attr('id')).replace("ml_file_","")
+    var ftype, dcount
+    for (var i in AccountFacade.info.files) {
+      if (AccountFacade.info.files[i].id == id) {
+        ftype = AccountFacade.info.files[i].ftype
+        dcount = AccountFacade.info.files[i].dcount
+        break
+      }
+    }
+    var message = "Type of file: " + ftype + "<br/>Times downloaded: " + dcount
+    if ($('.jsIsThumbnail').length) {
+      item = item.find(".thumbFileTypeIcon").attr("data-tip", message)
+      attachTipsForItemLR($(item[0]), "r", "data-tip")
+    } else {
+      item = item.find(".jsTip").attr("data-tip", message)
+      attachTipsForItemLR($(item[0]), "r", "data-tip")
+    }
+  })
+});
+
+function attachTipsForPopup(dynamicClass){
+  dynamicClass = dynamicClass + '[title!=]'
+
+  attachTipsForItem($(".showTip" + dynamicClass))
+  attachTipsForItemLR($(".showTipLeft" + dynamicClass), "l")
+  attachTipsForItemLR($(".showTipRight" + dynamicClass), "r")
+}
+
+function attachTipsForItem(item, attr){
+  item.tipTip({delay: 300, fadeOut: 100, attribute: attr||"title"})
+}
+
+function attachTipsForItemLR(item, position, attr){
+  var config = {delay: 300, fadeOut: 100, attribute: attr||"title"}
+  var isArabic = Config.isRTLLanguage
+  if (position == "r") config.defaultPosition = isArabic ? "left" : "right"
+  else config.defaultPosition = isArabic ? "right" : "left"
+  item.tipTip(config);
+}
+
+function attachTips(onlyDynamic){
+  attachTipsForPopup(onlyDynamic ?"Dynamic":"");
+}

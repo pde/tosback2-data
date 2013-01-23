@@ -129,7 +129,7 @@
 				}
             }else{
             	var displayName = $('#name_'+ productId).html();
-                if( ($('#MRC_'+productId).html()) != null){
+                /*if( ($('#MRC_'+productId).html()) != null){*/
                 	mrcOrgPrice ="";
                     mrcPrice = $('#MRC_'+productId).html();
                     nrcPrice = $('#NRC_'+productId).html();
@@ -139,6 +139,7 @@
                     
                     if( isNaN(nrcPrice)) { nrcPrice = '';}else{
                     	nrcPriceTxt = '$'+Number(nrcPrice).toFixed(2);
+                    	//alert("nrcPriceTxt"+nrcPriceTxt);
                     	nrcTotalPrice = Number(nrcTotalPrice) + Number(nrcPrice);
                     }
                     if($('#MRCpromotionsApplied_'+productId).html() == 'true'){
@@ -170,9 +171,9 @@
                     }
                     else
                     	{ $('<tr><td>'+displayName+'</td><td class="priceColumn">'+ nrcPriceTxt +'</td><td class="priceColumn">'+mrcOrgPriceHolder+ '</td></tr>').appendTo('#miniCartSummary');}
-                }
+                //}
             	$('#priceMultiLine_'+productId).html('$'+Number(mrcPrice).toFixed(2));
-            }
+           }
             
         }
         
@@ -1121,8 +1122,19 @@ $(document).ready(function() {
 				
 	});*/
 	
-	
-    
+	if($('#support_TF')!=undefined){
+		if($('#isAFLBundle')!= undefined){
+	    if($('#isAFLBundle').val() == 'true')
+	  	  {
+	    	$('#tollFreeNumber').html('1-888-533-8234');
+	  	  	$('#chatHours').html('M-F, 8am-6pm Eastern');
+	  	  }
+	    
+	}
+			$('#support_TF').css('display','block');
+			
+
+	}
 });
 
 /*******************************************************************************************

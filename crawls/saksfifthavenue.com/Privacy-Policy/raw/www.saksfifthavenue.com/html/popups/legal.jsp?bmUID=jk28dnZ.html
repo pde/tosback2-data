@@ -12,6 +12,8 @@
 
 
 
+
+
 	<link type="text/css" rel="stylesheet" href="../../static/build/css/global.css" media="all" />
 	
 
@@ -111,17 +113,7 @@
 
 
 
-
-<div id="saksContainer">
-
-	
-
-
-
-
-
-
-
+   
 
 
 
@@ -149,20 +141,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
 var Saks = Saks || {};
 Saks.config = {};
@@ -175,7 +153,7 @@ Saks.config = {};
 
 	Saks.config['TEALEAF'] = true;
 
-	Saks.config['SCENE7_STL_QL_FIX'] = true;
+	Saks.config['SCENE7_STL_QL_FIX'] = false;
 
 	Saks.config['ALFRESCO_VIDEO_JS'] = false;
 
@@ -184,6 +162,8 @@ Saks.config = {};
 	Saks.config['PROMO_ON_BAG'] = true;
 
 	Saks.config['BUG1613FIX'] = false;
+
+	Saks.config['DOUBLE_CLICK_TAG'] = false;
 
 	Saks.config['LOG_PROMO_USAGE_UPDATE_ERRORS'] = false;
 
@@ -213,17 +193,17 @@ Saks.config = {};
 
 	Saks.config['BUG1604FIX'] = false;
 
-	Saks.config['SCENE7_FF_EVENT_STL'] = true;
+	Saks.config['SCENE7_FF_EVENT_STL'] = false;
 
 	Saks.config['RECAPTCHA'] = false;
 
 	Saks.config['BUG1583FIX'] = true;
 
-	Saks.config['SHIP_FROM_STORE_ENDECA'] = true;
+	Saks.config['SHIP_FROM_STORE_ENDECA'] = false;
 
 	Saks.config['BUG1572FIX'] = true;
 
-	Saks.config['ADD TO WAITLIST FOR PD'] = true;
+	Saks.config['ADD TO WAITLIST FOR PD'] = false;
 
 	Saks.config['SHIP_FROM_STORE'] = true;
 
@@ -255,6 +235,8 @@ Saks.config = {};
 
 	Saks.config['MAJOR PURCHASE ACCOUNT MESSAGE'] = false;
 
+	Saks.config['TOPNAV_SET_NTT_LEGACY_CLEANUP'] = false;
+
 	Saks.config['BUG1586FIX'] = true;
 
 	Saks.config['REALTIME_REVERSAL'] = true;
@@ -283,7 +265,7 @@ Saks.config = {};
 
 	Saks.config['SAKSMC_DISPLAY'] = false;
 
-	Saks.config['ADD TO WAITLIST'] = true;
+	Saks.config['ADD TO WAITLIST'] = false;
 
 	Saks.config['PROMO_EXCLUSION_OPTIMIZATION'] = true;
 
@@ -305,11 +287,11 @@ Saks.config = {};
 
 	Saks.config['PRE_ORDER_AUTH_FIX'] = true;
 
-	Saks.config['BUG1566FIX'] = true;
+	Saks.config['BUG1566FIX'] = false;
 
 	Saks.config['BUG1567FIX'] = true;
 
-	Saks.config['SCENE7_QL_RESTRICTIONS'] = true;
+	Saks.config['SCENE7_QL_RESTRICTIONS'] = false;
 
 	Saks.config['HIGH_DOLLAR_ADDR_FIELD'] = true;
 
@@ -317,7 +299,7 @@ Saks.config = {};
 
 	Saks.config['AUTH_SYSTEM_METRIC'] = true;
 
-	Saks.config['FIT_MODEL_CONTENT_ON_PD_STL_QL'] = true;
+	Saks.config['FIT_MODEL_CONTENT_ON_PD_STL_QL'] = false;
 
 	Saks.config['BUG1555FIX'] = true;
 
@@ -349,6 +331,43 @@ Saks.config = {};
 
 </script>
 
+
+<script type="text/javascript">
+    var onOffSwitch = true;
+    var intlNav = false;
+    var countryCode = "US";
+    var flagImage = "";
+    var daCookie = document.cookie;
+
+    if (daCookie.indexOf("E4X_COUNTRY=") != -1) {
+        countryCode = daCookie.substr((daCookie.indexOf("E4X_COUNTRY=") + 12));
+        countryCode = countryCode.substring(0, 2);
+        if (daCookie.indexOf("E4X_COUNTRY=US") < 0) {
+            intlNav = true;
+        }
+    }
+
+    if (countryCode != "") {
+        flagImage = "/static/images/flags/" + countryCode + ".gif";
+    }
+</script>
+
+
+<div id="saksContainer">
+    
+        
+        
+            
+
+
+
+
+
+
+
+
+
+
 <!--[if lte IE 8]>
     <style>
         #saksSearch{width:305px;position:absolute;right:0;}     
@@ -357,41 +376,26 @@ Saks.config = {};
 
 <div id="topNavContainer">
         <div id="navMenuHeaderLinks" class="topnavRightTxtLinks">
+            <script type="text/javascript">
 
-
-<script>
-var onOffSwitch=true;
-var intlNav = false;
-var countryCode = "US";
-var flagImage = "";
-var daCookie = document.cookie;
-
-if (daCookie.indexOf("E4X_COUNTRY=") != -1) {
-    countryCode = daCookie.substr((daCookie.indexOf("E4X_COUNTRY=")+12));
-    countryCode =countryCode.substring(0,2);
-	if (daCookie.indexOf("E4X_COUNTRY=US") < 0) {
-		intlNav = true;
-	}
-}
-
-if ( countryCode != "" ) flagImage = "/static/images/flags/" + countryCode + ".gif";
-
-if (!onOffSwitch) {
-	document.write("<div><a href='https://www.saksfifthavenue.com/account/login.jsp?catID=0&prp8=t10&bmUID=jNchfNT' onClick='s.events=\"event13\"; void(s.t());'><span>Your Account</span></a></div><div><a href='http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&prp8=t12&bmUID=jNchfNZ' onClick='s.events=\"event16,event25\";void(s.t());'><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNchfOl&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
-} else {
-	if (!intlNav) {
-		document.write("<div><a href="http://www.saksfifthavenue.com/\&quot;https://www.saksfifthavenue.com/account/login.jsp?catID=0&amp;prp8=t10&amp;bmUID=jNchfNT\&quot;" onClick=\"s.events='event13';void(s.t());\"><span>Your Account</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?catID=2534374306418055&FOLDER%3C%3Efolder_id=2534374306418055&prp8=t1&previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNchfOg&bmForm=set_prev_page&bmFormID=jNchfOh&bmUID=jNchfOi'><img src='http://www.saksfifthavenue.com/&quot;+flagImage+&quot;' width='16' height='11'/>&nbsp;<span>Change Country</span></a></div><div><a href="http://www.saksfifthavenue.com/\&quot;http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&amp;prp8=t12&amp;bmUID=jNchfNZ\&quot;" onClick=\"s.events='event16,event25';void(s.t());\"><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNchfOm&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
-		
+	if (!onOffSwitch) {
+		document.write("<div><a href='https://www.saksfifthavenue.com/account/login.jsp?catID=0&prp8=t10&bmUID=jNAI22o' onClick='s.events=\"event13\"; void(s.t());'><span>Your Account</span></a></div><div><a href='http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&prp8=t12&bmUID=jNAI22u' onClick='s.events=\"event16,event25\";void(s.t());'><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNAI22S&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
 	} else {
-		document.write("<div><a href='https://services.fiftyone.com/tracking.srv' target='51' onClick='s.events=\"event14\";void(s.t());'><span>Order Tracking</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?catID=2534374306418055&FOLDER%3C%3Efolder_id=2534374306418055&prp8=t1&previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNchfOg&bmForm=set_prev_page&bmFormID=jNchfOh&bmUID=jNchfOi'><img src='http://www.saksfifthavenue.com/&quot;+flagImage+&quot;' width='16' height='11'/>&nbsp;<span>Change Country</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNchfN.&catID=0&bmForm=back_to_us&bmFormID=jNchfOj&bmUID=jNchfOk'><span>Back to US Shipping</span></a></div><div><a href='http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&prp8=t12&bmUID=jNchfNZ' onClick='s.events=\"event16,event25\";void(s.t());'><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNchfOn&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
+		if (!intlNav) {
+			document.write("<div><a href="http://www.saksfifthavenue.com/\&quot;https://www.saksfifthavenue.com/account/login.jsp?catID=0&amp;prp8=t10&amp;bmUID=jNAI22o\&quot;" onClick=\"s.events='event13';void(s.t());\"><span>Your Account</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?catID=2534374306418055&FOLDER%3C%3Efolder_id=2534374306418055&prp8=t1&previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNAI22I&bmForm=set_prev_page&bmFormID=jNAI22K&bmUID=jNAI22L'><img src='http://www.saksfifthavenue.com/&quot;+flagImage+&quot;' width='16' height='11'/>&nbsp;<span>Change Country</span></a></div><div><a href="http://www.saksfifthavenue.com/\&quot;http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&amp;prp8=t12&amp;bmUID=jNAI22u\&quot;" onClick=\"s.events='event16,event25';void(s.t());\"><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNAI22T&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
+			
+		} else {
+			document.write("<div><a href='https://services.fiftyone.com/tracking.srv' target='51' onClick='s.events=\"event14\";void(s.t());'><span>Order Tracking</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?catID=2534374306418055&FOLDER%3C%3Efolder_id=2534374306418055&prp8=t1&previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNAI22I&bmForm=set_prev_page&bmFormID=jNAI22K&bmUID=jNAI22L'><img src='http://www.saksfifthavenue.com/&quot;+flagImage+&quot;' width='16' height='11'/>&nbsp;<span>Change Country</span></a></div><div><a href='http://www.saksfifthavenue.com/main/context_chooser.jsp?previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjNAI22w&catID=0&bmForm=back_to_us&bmFormID=jNAI22M&bmUID=jNAI22N'><span>Back to US Shipping</span></a></div><div><a href='http://www.saksfifthavenue.com/html/cust_service/cust_service.jsp?catID=0&prp8=t12&bmUID=jNAI22u' onClick='s.events=\"event16,event25\";void(s.t());'><span>Customer Service</span></a></div><div><a href='legal.jsp%3FbmUID=jk28dnZ.html#' onclick=\"s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNAI22U&prp13=b9',540,575,'LiveChat'); return false;\"><img src='../../static/images/icon/chat.gif' alt=''/>&nbsp;<span>Chat</span></a></div><div class='lastcol'>1.877.551.7257</div>");
+		}
 	}
-}
-</script></div>
+</script>
+        </div>
+        
         <div id="saksTopNav" class="holiday-topnav tn-maroon-btn">
             <div id="navmenuLogo">
                 <a id="snowcap" href="http://www.saksfifthavenue.com/Entry.jsp"></a>
                 <ul id="logo">
-                    <li id="navSaksLogo"><a href="http://www.saksfifthavenue.com/Entry.jsp?catID=0&bmUID=jNchfNS" class="nav">Saks Fifth Avenue</a></li>
+                    <li id="navSaksLogo"><a href="http://www.saksfifthavenue.com/Entry.jsp?catID=0&bmUID=jNAI22n" class="nav">Saks Fifth Avenue</a></li>
                 </ul>
               
                 
@@ -557,8 +561,8 @@ if (!onOffSwitch) {
 <!-- Cycling Promos -->
 <ul class="FSO-cycle">
 <li style="color:#000;"><strong style="color:#000;">FREE SHIPPING </strong> on orders of $150 or more with code: <strong style="color:#000;">JANSFA</strong> <a href="legal.jsp%3FbmUID=jk28dnZ.html#" class="FSO-messaging-link" data-element="FreeShippingDetailsPopUp|500" style="color:#000"> Details</a></li>
-<li><strong style="color:#000;">CONSOLIDATION SALE: up to 70% off online and in select stores </strong> <a href="http://www.saksfifthavenue.com/search/SearchSale.jsp" style="font-weight:bold; color:#000;"> Shop Now</a></li>
 
+<li><a href="http://www.saksfifthavenue.com/SaksFirst/saksfirst.jsp"><img src="../../emailMedia/012113_TOPNAV_SAKSFIRST_03.jpg" width="280" height="39" /></a></li>
 <li><a href="http://www.saksfifthavenue.com/editorial/edit.jsp?pageid=collage"><img src="../../emailMedia/edit_tn_resort.gif" width="420" height="37" /></a></li>
 </ul>
 <!-- End Cycling Promos -->
@@ -649,6 +653,50 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
 
 
 <!--  End EGCDetailsPopUp -->
+
+
+
+
+
+
+
+
+
+
+<!-- BEGIN SAKSFIRST DOUBLE POINTS   -->
+<div id="SFDoublePointsDetailsPopUp" class="FSO slideXpandTopNav FSO-popup" style="display:none; margin:0px" >
+
+	<div class="FSO-toolbar">
+		<a class="FSO-close-button">CLOSE <span class="FSO-close-icon"></span></a>
+	</div>
+	
+	<div class="FSO-banner">Enjoy a special treat from Saks.com:</div>
+    
+  <div class="FSO-content">   	
+
+<div class="FSO-disclaimer"> 
+*For approved purchases made with the Saks Fifth Avenue credit card or Saks Fifth Avenue MasterCard in Saks stores and catalogs, Saks Fifth Avenue OFF 5TH,  and at Saks.com during this event, SaksFirst members will earn 2 base points plus 2 bonus points per eligible dollar spent from $1 to $4,999, 4 base points plus 4 bonus points per eligible dollar spent from $5,000 to $9,999, and 6 base points plus 6 bonus points per eligible dollar spent thereafter, based on your calendar year-to-date net purchases. Purchases of sales tax, delivery charges, beauty salon products and services, Cartier purchases, restaurants, alterations, fur storage, gratuity, repairs, at the Martin Lawrence Gallery in the Dallas Saks Fifth Avenue store, corporate gifts, and gift card purchases are not eligible for this bonus points event. Select designers and leased department exclusions apply. Offer valid on Saks.com from 1/22/13 at 12:01AM (ET) through 1/26/13 at 11:59PM (ET) and in Saks Fifth Avenue stores and Saks Fifth Avenue OFF 5TH stores from 1/24/13 through 1/26/13.<br />
+<br />
+
+</div>
+    	
+  </div>
+</div>
+
+
+<!--  End SAKSFIRST DOUBLE POINTS -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -874,13 +922,13 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
                    
 
                 <div id="saksSearch">
-                    <form name="endeca_search_form_one" method="get" action="http://www.saksfifthavenue.com/search/EndecaSearch.jsp?bmUID=jNchfOo" onsubmit="SetNtt(this);">
+                    <form name="endeca_search_form_one" method="get" action="http://www.saksfifthavenue.com/search/EndecaSearch.jsp?bmUID=jNAI22V" onsubmit="SetNtt(this);">
 <input type="hidden" name="bmForm" value="endeca_search_form_one">
-<input type="hidden" name="bmFormID" value="jNchfQ3">
-<input type="hidden" name="bmUID" value="jNchfQ4">
+<input type="hidden" name="bmFormID" value="jNAI23U">
+<input type="hidden" name="bmUID" value="jNAI23V">
 <input type="hidden" name="bmIsForm" value="true">
 <input type="hidden" name="bmPrevTemplate" value="/html/popups/legal.jsp">
-                    <input type="hidden" name="bmText" value="SearchString"><font face="courier new" size="3"><tt>&nbsp;</tt></font><input type="text" size="40" value="Search" id="SearchString" name="SearchString" autocomplete="off" onfocus="focusSearch();" onblur="blurSearch();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; width: 125px; height:18px; vertical-align:middle; padding: 0px;">
+                    <input type="hidden" name="bmText" value="SearchString"><font face="courier new" size="3"><tt>&nbsp;</tt></font><input type="text" size="40" value="Search" id="SearchString" name="SearchString" autocomplete="off" onfocus="focusSearch();" onblur="blurSearch();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; width: 125px; height:18px; vertical-align:middle; padding: 0px;" data-lookahead="true">
                 &nbsp;
                     <input type="hidden" name="bmSingle" value="N_Dim"><font face="courier new" size="3"><tt>&nbsp;</tt></font><select onchange="s.events='event11';void(s.t());" name="N_Dim" style="font-family: Helvetica, arial, sans-serif; font-size: 10px; height:18px; vertical-align:middle;width: 130px;">
                                                 <option value="0">All Categories</option>
@@ -903,112 +951,14 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
                     <input type="hidden" name="bmHidden" value="prp8"><input type="hidden" name="prp8" value="t15">
                     <input type="hidden" name="bmHidden" value="prp13"><input type="hidden" name="prp13" value="">
                                                                         
-                                <input type="hidden" name="bmHidden" value="sid"><input type="hidden" name="sid" value="13C52FB965F7">
+                                <input type="hidden" name="bmHidden" value="sid"><input type="hidden" name="sid" value="13C6793B88F0">
                                 </form>
                                 <script language="JavaScript" type="text/javascript">
-                                    document.endeca_search_form_one.elements['SearchString'].value = "Search";
+                                    (function($){
+                                        $('#saksSearch').find('[name="SearchString"]').val("Search");
+                                    }(jQuery));
                                 </script>
                                 
-                                    <script type="text/javascript">
-                                        /*!
-                                         * @require
-                                         *  - jQuery.UI.AutoComplete
-                                         *
-                                         * @provides
-                                         *  - jQuery.Saks.EndecaSearch
-                                         *
-                                         * @description
-                                         *  initialize auto-complete feature for endeca search.
-                                         * 
-                                         * TODO: 
-                                         *   - EXTERNALIZE PLUGIN TO IMPROVE PERFORMANCE BY CACHING EXTERNAL FILE.
-                                         *   - NAMESPACE PLUGIN INTO JQUERY.SAKS.PLUGIN
-                                         */ 
-                                    
-                                        (function($){
-                                            var search = {
-                                                
-                                                // options refer to those required for the topnav, however, to support
-                                                // reusability they can be modified per request.
-                                                
-                                                options: {
-                                                    url: '//www.saksfifthavenue.com/search/lookahead_json.jsp',
-                                                    responseType: 'jsonp',
-                                                    minLength: 3,
-                                                    submitOnSelection: true,
-                                                    displayParent: '#saksSearch',
-                                                    displayPosition: {
-                                                        me: 'left top',
-                                                        at: 'left bottom'                                                       
-                                                    }
-                                                },
-                                                    
-                                                initialize: function ( options ) {          
-                                                    $.extend(search.options, options);          
-                                                    return this.each(function(){                                                        
-                                                        var $this = $(this);                                                        
-                                                        $this
-                                                            .autocomplete({
-                                                                minLength: search.options.minLength,
-                                                                appendTo: search.options.displayParent,
-                                                                position: search.options.displayPosition,
-                                                                source: function (request, response) {
-                                                                    searchTerm = request.term;                                                                  
-                                                                    $.ajax({
-                                                                       url: search.options.url,                            
-                                                                       dataType: search.options.responseType,
-                                                                       data: { term: $.trim(request.term) },
-                                                                       success: response
-                                                                    });
-                                                                },
-                                                                select: function (event, ui) {                          
-                                                                    if (ui.item) {
-                                                                        $this.val(ui.item.value);
-                                                                        if(search.options.submitOnSelection) 
-                                                                            $this.parent('form').submit();
-                                                                    }
-                                                                    
-                                                                    return false;
-                                                                }
-                                                            })
-                                                            .data('autocomplete')           
-                                                            ._renderItem = function (ul, item) {                                                            
-                                                                return $("<li></li>")
-                                                                    .data("item.autocomplete", item)
-                                                                    .append("<a>" + search.embolden(searchTerm, item.value) + "</a>")
-                                                                    .appendTo(ul);
-                                                            }
-                                                    });
-                                                },
-                                                
-                                                //---------- utilities
-                                                
-                                                embolden: function ( term, text ) {
-                                                    var cleansedTerm = $.trim(term).toLowerCase().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\$&");
-                                                    return $.trim(text.replace(new RegExp("\\b(" + cleansedTerm + ")", "gi"), "<b>$1</b>"));
-                                                }
-                                            };
-                                            
-                                            $.fn.EndecaSearch = function (method) {                                             
-                                                if ( search[method] ) {
-                                                    return search[method].apply( this, Array.prototype.slice.call( arguments, 1 ) );
-                                                } else if (typeof method === 'object' || !method) {
-                                                    return search.initialize.apply( this, arguments );
-                                                } else {
-                                                    $.error( 'Method ' + method + ' does not exist on jQuery.SaksEndecaSearch' );
-                                                }                                               
-                                            }
-                                        })(jQuery);
-                                        
-                                        // on DOM ready initialize autocomplete feature
-                                        
-                                        (function($){
-                                            $(function(){
-                                                $('#SearchString').EndecaSearch();
-                                            })
-                                        })(jQuery);                                 
-                    </script>
-                
               </div>
             </div>            
             
@@ -1140,114 +1090,114 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
 		<ul class="subCategory">
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572235&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5ph">3.1 Phillip Lim</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572235&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5I">3.1 Phillip Lim</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306577495&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pk">Acne</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306577495&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5J">Acne</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306411563&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pl">Akris/Akris Punto</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306411563&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5K">Akris/Akris Punto</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433339&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pm">Alexander McQueen</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433339&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5L">Alexander McQueen</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306437690&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pn">Alexander Wang/T by Alexander Wang</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306437690&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5M">Alexander Wang/T by Alexander Wang</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433428&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5po">Alice + Olivia</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433428&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5N">Alice + Olivia</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080265&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pp">Bottega Veneta</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080265&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5O">Bottega Veneta</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080275&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pr">Burberry</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080275&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5P">Burberry</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306425835&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5ps">Chloe</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306425835&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5Q">Chloe</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306412009&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pt">Christian Louboutin</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306412009&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5R">Christian Louboutin</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092113&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pu">Diane von Furstenberg</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092113&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5S">Diane von Furstenberg</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080327&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pv">Dolce & Gabbana</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080327&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5T">Dolce & Gabbana</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306208727&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5py">Emilio Pucci</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306208727&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5U">Emilio Pucci</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306403111&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pz">Fendi</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306403111&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5V">Fendi</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306390851&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pA">Giorgio Armani</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306390851&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5W">Giorgio Armani</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080469&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pB">Gucci</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080469&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5X">Gucci</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080503&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pC">Jimmy Choo</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080503&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5Y">Jimmy Choo</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306571595&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pE">Manolo Blahnik</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306571595&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5Z">Manolo Blahnik</a></li>
 			
 				
 					</ul><ul class="subCategory">
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080603&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pF">Marc by Marc Jacobs/Marc Jacobs</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080603&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5_">Marc by Marc Jacobs/Marc Jacobs</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306591895&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pG">Marni</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306591895&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz5.">Marni</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306149529&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pH">Michael Kors</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306149529&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz60">Michael Kors</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306420787&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pI">Milly</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306420787&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz61">Milly</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306422507&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pJ">Nanette Lepore</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306422507&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz62">Nanette Lepore</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306431687&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pL">Oscar de la Renta</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306431687&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz63">Oscar de la Renta</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080599&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pN">Prada</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080599&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz64">Prada</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306439105&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pO">Rag & Bone</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306439105&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz65">Rag & Bone</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306404139&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pP">Ralph Lauren</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306404139&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz66">Ralph Lauren</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080593&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pQ">Salvatore Ferragamo</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080593&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz67">Salvatore Ferragamo</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306559805&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pR">Stella McCartney</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306559805&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz68">Stella McCartney</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080525&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pS">St. John</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080525&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz69">St. John</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092177&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pT">Theory</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092177&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6a">Theory</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306428215&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pV">Tory Burch</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306428215&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6b">Tory Burch</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433647&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pW">UGG Australia</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433647&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6c">UGG Australia</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306406570&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pX">Valentino</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306406570&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6d">Valentino</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306400609&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5pY">Vince</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306400609&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6e">Vince</a></li>
 			
 				
-				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080487&PRODUCT%3C%3Eprd_id=845524446525658&bmUID=jMZf5p_">Yves Saint Laurent</a></li>
+				<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080487&PRODUCT%3C%3Eprd_id=845524446449333&bmUID=jNtcz6f">Yves Saint Laurent</a></li>
 			
 		</ul>
 
@@ -5340,7 +5290,7 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
 		<li id="SB" class="nav-category">
 			<a class="nav-link saksbag-nav-link " href="legal.jsp%3FbmUID=jk28dnZ.html#" onclick="javascript:saksBagOpen('SaksBagOverlay',-1); return false;" id="saksBagLink">&nbsp;</a>
 			<a class="saksbag-nav-link" href="legal.jsp%3FbmUID=jk28dnZ.html#" onclick="javascript:saksBagOpen('SaksBagOverlay',-1); return false;" id="numItemsLink">? Items</a>
-			<a class="saksbag-nav-link" href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?catID=0&prp8=t11&bmUID=jNchfNV" id="checkoutLink">&nbsp;</a>
+			<a class="saksbag-nav-link" href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?catID=0&prp8=t11&bmUID=jNAI22q" id="checkoutLink">&nbsp;</a>
 		</li>
 	</ul>
 </div>
@@ -5845,24 +5795,38 @@ Designer Exclusions: Akris, Alexander McQueen apparel and handbags, Ann Demeulem
         </div>
     </div>
 
-	<div id="saksBody" align="center">
-        	<div id="SaksBagOverlay" style="z-index:9999; left: 0px; top: 0px; display:none; position:absolute;">
-	            <div style="height:auto;"><table width="960" cellpadding="0" cellspacing="0" align="left" border="0"&&><tr>
-	                    <td width="745" onclick="SaksBagClose('SaksBagOverlay');" valign="bottom"><img src="../../media/images/constant/spacer_v1_m56577569831381303.gif" alt="" width="456" height="4" border="0"></td>
-	                    <td align="right" width="215"><span id="saksbagoverlay_insert"></span></td>
-			</tr></table></div>
-        	</div>
-        <noscript>
             
-            <div id="Element99" class="Element99" style="position:relative; width:960px; left:0px; top:0px; color: #333333; font-size: 12px; font-family: arial,helvetica,sans-serif;">
-                <div class="orange14" style="border-top:1px solid #ff6600; border-bottom:1px solid #ff6600; padding:10px;">IN ORDER TO USE ALL OF THE SITE FUNCTIONALITY ON THE SAKS FIFTH AVENUE WEBSITE,<br />YOU MUST HAVE <b>JAVASCRIPT ENABLED</b> ON YOUR BROWSER.<br /></div>
-                For instructions to enable JavaScript, <a href="http://www.saksfifthavenue.com/NoJavaScript.jsp?bmUID=jNchfPL" class="CCOrange">click here</a>.<br><br>
-            </div>
                 
-        </noscript>
+                
+                <noscript>        
+                    <div id="Element99" class="Element99" style="position:relative; width:960px; left:0px; top:0px; color: #333333; font-size: 12px; font-family: arial,helvetica,sans-serif;">
+                    <div class="orange14" style="border-top:1px solid #ff6600; border-bottom:1px solid #ff6600; padding:10px;">IN ORDER TO USE ALL OF THE 
+                    SITE FUNCTIONALITY ON THE SAKS FIFTH AVENUE WEBSITE,<br />YOU MUST HAVE <b>JAVASCRIPT ENABLED</b> ON YOUR BROWSER.<br /></div> For instructions 
+                    to enable JavaScript, <a href="http://www.saksfifthavenue.com/NoJavaScript.jsp?bmUID=jNAI23C" class="CCOrange">click here</a>.<br><br></div>
+                </noscript>
+            
         
-		<div id="allDhtmlPopups" style="position:absolute; z-index:1149"></div>
-		
+    
+
+    
+    
+    <div id="SaksBagOverlay">
+        <div class="inner">
+            <table width="960" cellpadding="0" cellspacing="0" align="left" border="0">
+                <tr>
+                    <td width="745" onclick="SaksBagClose('SaksBagOverlay');" valign="bottom">
+                        <img src="../../media/images/constant/spacer_v1_m56577569831381303.gif" alt="" width="456" height="4" border="0">
+                    </td>
+                    <td align="right" width="215">
+                        <span id="saksbagoverlay_insert"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+	
+    <div id="saksBody">
+		<div id="allDhtmlPopups"></div>		
 		<script>
 var zPop;
 function EML1145A() {
@@ -5879,7 +5843,7 @@ function EML1145A() {
 			var PopHeight = 382;
 			var theLeftLoc = (screen.availWidth-PopWidth)*0.5;
 			var theTopLoc = (screen.availHeight-PopHeight)*0.5;
-			zPop = window.open('http://www.saksfifthavenue.com/email_popup/EML1145Acollect.jsp?bmUID=jNchfPM', 'email_pop_under', "top=" + theTopLoc + ",screeny=" + theTopLoc + ",left=" + theLeftLoc + ",screenx" + theLeftLoc + ",width=" + PopWidth + ",height=" + PopHeight + ",buttons=no,scrollbars=no,location=no,menubar=no,resizable=no,status=no,directories=no,toolbar=no");
+			zPop = window.open('http://www.saksfifthavenue.com/email_popup/EML1145Acollect.jsp?bmUID=jNAI23D', 'email_pop_under', "top=" + theTopLoc + ",screeny=" + theTopLoc + ",left=" + theLeftLoc + ",screenx" + theLeftLoc + ",width=" + PopWidth + ",height=" + PopHeight + ",buttons=no,scrollbars=no,location=no,menubar=no,resizable=no,status=no,directories=no,toolbar=no");
 		}
 	}
 	if (pageName == "checkout.__thankyou" || pageName == "checkout.__saksbag2" || pageName == "account.__account" || pageName == "account.__registration" || pageName == "html._email_popup.__email_collect_data" || pageName == "html._email_popup.__email_collect_popup_main" || pageName == "html._email_popup.__SaksFirst_Email_ThankYou") {
@@ -5919,13 +5883,13 @@ var s_account="sakscomlive"
 <table width="960" border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td WIDTH="10" height="" rowspan="4"></td>
-          <td height="20" align="right" valign="bottom" style="font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#000"> <img src='../../media/images/utility_pages/question_mark_v1_m56577569831639973.gif' alt="" width="15" height="15" hspace="3" border='0' align="absbottom" usemap="#NavMap" /><strong>24/7 Customer Service:</strong> <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNchfPP&prp13=b9',540,575,'LiveChat'); return false;" class="linkText"  style="color:#000">Live Chat</a> &nbsp;&#8226;&nbsp; <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jNchfPQ&prp13=b11',537,537); return false;" class="linkText" style="color:#000">Email</a> &nbsp;&#8226;&nbsp;1.877.551.7257</td>
+          <td height="20" align="right" valign="bottom" style="font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#000"> <img src='../../media/images/utility_pages/question_mark_v1_m56577569831639973.gif' alt="" width="15" height="15" hspace="3" border='0' align="absbottom" usemap="#NavMap" /><strong>24/7 Customer Service:</strong> <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNAI23F&prp13=b9',540,575,'LiveChat'); return false;" class="linkText"  style="color:#000">Live Chat</a> &nbsp;&#8226;&nbsp; <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jNAI23G&prp13=b11',537,537); return false;" class="linkText" style="color:#000">Email</a> &nbsp;&#8226;&nbsp;1.877.551.7257</td>
         </tr>
         <tr>
           <td height="41" align="center" valign="bottom" class="titleText"><a name="totop"></a>Our Privacy Policy & Our Website Terms Of Use </td>
         </tr>
         <tr>
-          <td align="center" class="sublinkTexton">Our Privacy Policy &nbsp;&#8226; &nbsp;<a href="http://www.saksfifthavenue.com/html/popups/terms_of_use.jsp?bmUID=jNchfPR" class="sublinkTextoff">Our Website Terms Of Use</a></td>
+          <td align="center" class="sublinkTexton">Our Privacy Policy &nbsp;&#8226; &nbsp;<a href="http://www.saksfifthavenue.com/html/popups/terms_of_use.jsp?bmUID=jNAI23H" class="sublinkTextoff">Our Website Terms Of Use</a></td>
         </tr>
         <tr>
           <td class="utilityText"><a name="ourprivacypolicy"></a><span class="headerText">Our Privacy Policy</span><br>
@@ -6288,7 +6252,7 @@ Thank you for visiting our website, which is part of the Saks family of company 
               </tr>
               <tr>
                 <td align="left" valign="top"  class="questionText">A:</td>
-                <td valign="top" class="utilityText">If you have any questions or concerns about this policy or our privacy practices, please contact Customer Service by <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jNchfPS&prp13=b11',537,537); return false;" style="color:#000">Email</a>, or telephone. 
+                <td valign="top" class="utilityText">If you have any questions or concerns about this policy or our privacy practices, please contact Customer Service by <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jNAI23I&prp13=b11',537,537); return false;" style="color:#000">Email</a>, or telephone. 
                 </td>
               </tr>
             </table>
@@ -6536,17 +6500,58 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 
 
 
-
     </div> 
+
+    <div id="trackingPixel" style="z-index:995;">
+
+
+	<table cellpadding="0" cellspacing="0" border="0" height="1"><tr>
+    <td>
+    	<!-- Start of Channel Advisor Tracking Pixel (#228) -->
+    	<!-- Using a protocol relative URL -->
+    	<script type="text/javascript">
+    	<!--
+		{
+			document.write('<img src="//tracking.searchmarketing.com/welcome.asp?SMCID=50000283&x=' + escape(document.referrer) + '" width="1" height="1">');
+		}
+		//-->
+		</script>
+		<!-- End of Channel Advisor Tracking Pixel -->
+	</td>
+	<td>
+		
+
+					<!-- Tag for Activity Group: Saks 5th Ave, Activity Name: Universal Footer, Activity ID: 1015063 -->
+					<!-- Expected URL: http://www.saks.com -->
+					<script type="text/javascript">
+						var axel = Math.random() + "";
+						var a = axel * 10000000000000;
+						document.write('<iframe src="http://fls.doubleclick.net/activityi;src=1602125;type=saks5th;cat=unive744;u15=[product];u16='+'none'+';u17=[TBD 1];u18=[TBD 2];u13=[category];u14=[brand];u3=[SKU 1];u4=[SKU 2];ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+					</script>
+					<!-- End of DoubleClick Floodlight Tag: Please do not remove -->
+			
+				
+		
+	</td>
     
     
+    
+	</tr></table>
+	
+</div>
+
+
+    
+        
+        
+            
 
 <div id="saksBottomNav">
 		<span class="col">
 			<h2>CONTACT US 24/7</h2>
 			<ul>
 				<li><a href="http://www.saksfifthavenue.com/Customer-Service" class="bottomNavLinks" onClick="s.events='event26';void(s.t());">Customer Service</a></li>
-				<li><a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNchfPV&prp13=b9',540,575,'LiveChat'); return false;" class="bottomNavLinks">Chat</a></li>
+				<li><a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="s.events='event27';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jNAI23L&prp13=b9',540,575,'LiveChat'); return false;" class="bottomNavLinks">Chat</a></li>
 				<li><a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="s.events='event28';void(s.t());popupWinFixed2('http://www.saksfifthavenue.com/Email?&prp13=b11',537,537); return false;" class="bottomNavLinks">Email</a></li>
 				<li class="bottomNavLinks">1.877.551.7257</li>
 				
@@ -6556,7 +6561,9 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 			<h2>SHIPPING, RETURNS &amp; TAXES</h2>
 			<ul>
 				<li><a href="http://www.saksfifthavenue.com/Shipping-Returns-Taxes?&prp13=b6" class="bottomNavLinks">Domestic</a></li>
-				<li><a href="http://www.saksfifthavenue.com/International?&prp13=b6" class="bottomNavLinks">International</a></li>
+				
+					<li><a href="http://www.saksfifthavenue.com/International?&prp13=b6" class="bottomNavLinks">International</a></li>
+				
 				<li><a href="http://www.saksfifthavenue.com/Order-Status" class="bottomNavLinks">Order Status &amp; Tracking</a></li>
 			</ul>
 		</span>
@@ -6573,7 +6580,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 			<h2>STORES &amp; CORPORATE</h2>
 			<ul>
 				<!-- <li id="STORESANDEVENTS"><a href="http://www.saksfifthavenue.com/Store-Locator" class="bottomNavLinks">Store Locator & Events</a></li> -->
-				<li id="STORESANDEVENTS"><a href="http://www.saksfifthavenue.com/stores/stores.jsp?bmUID=jNchfPW" class="bottomNavLinks">Store Locations & Events</a></li>
+				<li id="STORESANDEVENTS"><a href="http://www.saksfifthavenue.com/stores/stores.jsp?bmUID=jNAI23M" class="bottomNavLinks">Store Locations & Events</a></li>
 				<li><a href="http://www.saksfifthavenue.com/About-Us?&prp13=b13" class="bottomNavLinks">About Us</a></li>
 				<li><a href="http://www.careersatsaks.com" target="_blank" class="bottomNavLinks">Careers</a></li>
 				<li><a href="http://www.saksfifthavenue.com/Policies" class="bottomNavLinks">Policies</a></li>
@@ -6582,19 +6589,19 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 		<span class="col">
 			<h2>SHOP</h2>
 			<ul>
-				<li id="CATALOGS"><a href="http://www.saksfifthavenue.com/cqc/select_catalog.jsp?bmUID=jNchfPX&HPCTLG=2&prp16=category1" class="bottomNavLinks">Catalogs</a></li>	
+				<li id="CATALOGS"><a href="http://www.saksfifthavenue.com/cqc/select_catalog.jsp?bmUID=jNAI23N&HPCTLG=2&prp16=category1" class="bottomNavLinks">Catalogs</a></li>	
 				<li id="GIFTCARDS"><a href="http://www.saksfifthavenue.com/Gift-Cards?&prp13=b2" class="bottomNavLinks">Gift Cards</a></li>			
-				<!-- <li><a href="http://www.saksfifthavenue.com/SiteMap/sitemap.jsp?bmUID=jNchfPY" class="bottomNavLinks">Site Map</a></li> -->
+				<!-- <li><a href="http://www.saksfifthavenue.com/SiteMap/sitemap.jsp?bmUID=jNAI23O" class="bottomNavLinks">Site Map</a></li> -->
 			</ul>
 		</span>
 		<span class="lastcol">
 			<div id="saks-bt-media">
 				<div class="email-signup">
 					<h2>Email Sign-Up</h2>
-					<form id="saks-bt-email-signup-form" action="https://www.saksfifthavenue.com/html/email_popup/email_collect_popup_main.jsp?bmUID=jNchfPZ" method="get" name="email_updates_form_one1">
+					<form id="saks-bt-email-signup-form" action="https://www.saksfifthavenue.com/html/email_popup/email_collect_popup_main.jsp?bmUID=jNAI23P" method="get" name="email_updates_form_one1">
 <input type="hidden" name="bmForm" value="email_updates_form_one1">
-<input type="hidden" name="bmFormID" value="jNchfQk">
-<input type="hidden" name="bmUID" value="jNchfQl">
+<input type="hidden" name="bmFormID" value="jNAI24l">
+<input type="hidden" name="bmUID" value="jNAI24m">
 <input type="hidden" name="bmIsForm" value="true">
 <input type="hidden" name="bmPrevTemplate" value="/html/popups/legal.jsp">
 						<input type="hidden" name="bmHidden" value="prp13"><input type="hidden" name="prp13" value="b5">
@@ -6637,21 +6644,22 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 		<span class="bottomNavTextLinks" style="line-height:11px">&copy; 2012, Saks Fifth Avenue</span>
 	
 		
-<div style="margin:4px 0 0 0;text-align:center;vertical-align:top;font-family: sans-serif; font: Arial, Helvetica; font-size: 10px; font-style: normal; font-weight: normal; text-decoration: none; line-height: 20px; color: #000000; "><a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=www.saksfifthavenue.com"><img width="115" height="32" border="0" src="../../../images.scanalert.com/meter/www.saksfifthavenue.com/29.gif" alt="HACKER SAFE certified sites prevent over 99.9% of hacker crime." oncontextmenu="alert('Copying Prohibited by Law - HACKER SAFE is a Trademark of ScanAlert'); return false;"></a></div>
+<div style="padding: 4px 0 10px 0;text-align:center;vertical-align:top;font-family: sans-serif; font: Arial, Helvetica; font-size: 10px; font-style: normal; font-weight: normal; text-decoration: none; line-height: 20px; color: #000000; "><a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=www.saksfifthavenue.com"><img width="115" height="32" border="0" src="../../../images.scanalert.com/meter/www.saksfifthavenue.com/29.gif" alt="HACKER SAFE certified sites prevent over 99.9% of hacker crime." oncontextmenu="alert('Copying Prohibited by Law - HACKER SAFE is a Trademark of ScanAlert'); return false;"></a></div>
 
 		
 		<!-- begin saksfirst disclaimer -->
 	 		
 		<!-- end saksfirst disclaimer -->
 	</div> 
+        
+    
 	
-	<div id="bottomnav-csr-links" style="text-align:center;padding:20px;">
+	<div id="bottomnav-csr-links">
 
 
 		
 	
 </div>
-
 	<script language="JavaScript" type="text/javascript">
 
 var SaksBagShowing = 0; //Toggle to know when the overlay is showing
@@ -6675,7 +6683,7 @@ function getXmlHttpRequestObject() {
 function loadBagNow(num_items_added){
 	document.getElementById('saksbagoverlay_insert').innerHTML = "<table width='417' height='120'  class='BackDropColor' cellpadding='0' cellspacing='5' border='0'><tr><td align='center' valign='center' bgcolor='#ffffff'><img src='../../media/images/saks_bag/loadingsaksbag_v1_m56577569831411277.gif' border='0'></td></tr></table>";
 	var paramsOverlay = "";
-	var urlOverlay = 'http://www.saksfifthavenue.com/include/saksbaginsert.jsp?bmUID=jNchfP_';
+	var urlOverlay = 'http://www.saksfifthavenue.com/include/saksbaginsert.jsp?bmUID=jNAI23Q';
 	var currentUrlnow = window.location.toString();
 	var rehttp= new RegExp ("https://");
 	if(currentUrlnow.match(rehttp)){
@@ -6709,7 +6717,7 @@ function handleAddToBagOverlay() {
 			}
 		}else{
 			document.getElementById('saksbagoverlay_insert').innerHTML = "<table width='417' height='120'  class='BackDropColor' cellpadding='0' cellspacing='5' border='0'><tr><td align='center' valign='center' bgcolor='#ffffff'>Error: " + receiveReqOverlay.status +"<br>Could not load Saks Bag Overlay.<br>Page will Redirected to the Saks Bag Page</td></tr></table>";
-			window.location.href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?bmUID=jNchfP."
+			window.location.href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?bmUID=jNAI23R"
 		}
 	}
 } 
@@ -6731,46 +6739,77 @@ function isIE6orLess(){
 
 			
 function saksBagOpen(SaksBagOverlay,AddCart){
-	if (window.location.href.toLowerCase().indexOf('saksbag.jsp') > 0 || window.location.href.toLowerCase().indexOf('checkout.jsp') > 0)
-		return;
-	if (!(SaksBagShowing)){
-		getNumberofItems();
-		var windowTopLocation = 0;
-		var currentTopLocation = document.body.scrollTop;
-		if(window.jQuery !== undefined){
-			currentTopLocation = jQuery(window).scrollTop();
-		}		
-		if(currentTopLocation >= 136){
-			windowTopLocation = currentTopLocation;
-			windowTopLocation = windowTopLocation - jQuery('#topNavContainer').innerHeight() - 5; 
+
+	if (SaksBagShowing || window.location.href.match(/(saksbag|checkout)\.jsp/i)) return;
+		
+	getNumberofItems();
+
+	var $ = window.jQuery;
+
+	var windowTopLocation = 0;
+	var windowRightLocation = 0;	
+	var currentTopLocation = $(window).scrollTop();
+	var bodyWidth = $('body').innerWidth(), targetWidth, targetHeight, targetOffset;
+	
+	var $topnav = jQuery('#topNavContainer');
+	var $toolbar = jQuery('#toolbar');
+
+	if ($topnav.is(':visible')) {
+		targetWidth = $topnav.find('.saksbag-nav-link').innerWidth();
+		targetHeight = $topnav.find('#saks-nav-categories').innerHeight() + $topnav.find('#saks-nav-categories').offset().top;
+		targetOffset = $topnav.find('.saksbag-nav-link').offset();
+	} else if ($toolbar.is(':visible')) {
+		targetWidth = $toolbar.find('.shopping-bag').innerWidth();
+		targetHeight = $toolbar.innerHeight();
+		targetOffset = $toolbar.find('.shopping-bag').offset();
+	}
+
+	if (currentTopLocation >= targetHeight) {
+		windowTopLocation = currentTopLocation;
+	} else {
+		windowTopLocation = targetHeight;
+	}
+
+	windowRightLocation = bodyWidth - (targetOffset.left + targetWidth);
+	
+	// if(currentTopLocation >= 136){
+	// 	windowTopLocation = currentTopLocation;
+	// 	windowTopLocation = windowTopLocation - jQuery('#topNavContainer').innerHeight() - 5; 
+	// }		
+
+	jQuery('#SaksBagOverlay').css({ 
+		top: windowTopLocation, 
+		right: windowRightLocation,
+		zIndex: 9998
+	});
+
+	receiveReqOverlay = getXmlHttpRequestObject();
+
+	if (AddCart >= 0){
+		if (isIE6orLess()){
+			HideAllPullDowns();
+			showReplaceText('<br>');
 		}
-		jQuery('#SaksBagOverlay').css('top', windowTopLocation + "px");
-		receiveReqOverlay = getXmlHttpRequestObject();
-		if(AddCart>=0){
+		num_items_added = AddCart;
+		SaksBagShowing = 1;
+		loadBagNow(num_items_added);
+		setTimeout("jQuery('#SaksBagOverlay').slideDown(400)", 1000);
+	} else {
+		if (!(SaksBagShowing)){
 			if (isIE6orLess()){
 				HideAllPullDowns();
 				showReplaceText('<br>');
 			}
-			num_items_added = AddCart;
 			SaksBagShowing = 1;
-			loadBagNow(num_items_added);
+			loadNewBag = 1;
 			setTimeout("jQuery('#SaksBagOverlay').slideDown(400)", 1000);
-		}else{
-			if (!(SaksBagShowing)){
-				if (isIE6orLess()){
-					HideAllPullDowns();
-					showReplaceText('<br>');
-				}
-				SaksBagShowing = 1;
-				loadNewBag = 1;
-				setTimeout("jQuery('#SaksBagOverlay').slideDown(400)", 1000);
-			}
-			if (loadNewBag){
-				loadBagNow("-1");
-			}
 		}
-		setTimeout("activateCloseFromOutside()", 1000);
+		if (loadNewBag){
+			loadBagNow("-1");
+		}
 	}
+	setTimeout("activateCloseFromOutside()", 1000);
+	
 }
 
 function overlayEffect (_param){
@@ -7050,51 +7089,10 @@ var overlayReserveSuccess = (function($){
 })(jQuery);
 
 </script>
-
-	<div id="trackingPixel" style="z-index:995;">
-
-
-	<table cellpadding="0" cellspacing="0" border="0" height="1"><tr>
-    <td>
-    	<!-- Start of Channel Advisor Tracking Pixel (#228) -->
-    	<!-- Using a protocol relative URL -->
-    	<script type="text/javascript">
-    	<!--
-		{
-			document.write('<img src="//tracking.searchmarketing.com/welcome.asp?SMCID=50000283&x=' + escape(document.referrer) + '" width="1" height="1">');
-		}
-		//-->
-		</script>
-		<!-- End of Channel Advisor Tracking Pixel -->
-	</td>
-	<td>
-		
-
-					<!-- Tag for Activity Group: Saks 5th Ave, Activity Name: Universal Footer, Activity ID: 1015063 -->
-					<!-- Expected URL: http://www.saks.com -->
-					<script type="text/javascript">
-						var axel = Math.random() + "";
-						var a = axel * 10000000000000;
-						document.write('<iframe src="http://fls.doubleclick.net/activityi;src=1602125;type=saks5th;cat=unive744;u15=[product];u16='+'none'+';u17=[TBD 1];u18=[TBD 2];u13=[category];u14=[brand];u3=[SKU 1];u4=[SKU 2];ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
-					</script>
-					<!-- End of DoubleClick Floodlight Tag: Please do not remove -->
-			
-				
-		
-	</td>
-    
-    
-    
-	</tr></table>
-	
-</div>
-
-
 	
 
 	
 </div> 
-
       <!--- end bottom nav -->
   
 </body>

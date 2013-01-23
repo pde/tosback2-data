@@ -15,6 +15,7 @@
                 state: 'NY',
                 metro: 'NYC',
                 zip: '10007',
+                fcode: 'NYC',
                 partner: 'accuweather',
                 sessionPartner: 'accuweather',
                 referer: '',
@@ -30,8 +31,8 @@
                 geo_zip: '94103',
                 geo_country: 'US'
             };
-            var apgWxInfoObj = {ut:'0',cu:{wx:'3',hi:'33',wd:'',hd:'',uv:''},fc:[{wx:'',hi:'',lo:''},{wx:'',hi:'',lo:''},{wx:'',hi:'',lo:''}],ix:{arthritis:'2',asthma:'1',bbq:'1',cold:'2',flu:'2',lawnmowing:'1',migraine:'2',outdoor:'2',schoolclosing:'1',sinus:'2',soil:'4',field:'4',beach:'1',biking:'2',concert:'1',construction:'2',composting:'1',dust:'5',fishing:'1',fueleconomy:'3',golf:'1',heart:'5',hiking:'2',hvac:'3',mosq:'1',sailing:'2',running:'2',schoolbus:'4',skiing:'4',star:'3',frizz:'0',pollen:'1',uvindex:'1',hunting:'1', driving:'4', travel:'5', airq:'0', pgrass:'1', pmold:'1', pweed:'1', ptree:'1'}};
-            var aadCustomKeyValuePairs = {vabeachtemp:'27',vabeachwx:'01'};
+            var apgWxInfoObj = { nwsalrt: 'SCY', hdln: '', ut: '0', cu: { wx: '1', hi: '11', wd: '', hd: '', uv: '' }, fc: [{ wx: '', hi: '', lo: '' }, { wx: '', hi: '', lo: '' }, { wx: '', hi: '', lo: '' }], ix: {arthritis:'1',asthma:'1',bbq:'1',cold:'3',flu:'3',lawnmowing:'1',migraine:'1',outdoor:'1',schoolclosing:'1',sinus:'2',soil:'4',field:'4',beach:'1',biking:'1',concert:'1',construction:'1',composting:'1',dust:'5',fishing:'1',fueleconomy:'2',golf:'1',heart:'2',hiking:'1',hvac:'4',mosq:'1',sailing:'1',running:'1',schoolbus:'3',skiing:'4',star:'1',frizz:'0',pollen:'1',uvindex:'1',hunting:'1', driving:'3', travel:'5', airq:'0', pgrass:'1', pmold:'1', pweed:'1', ptree:'1' } };
+            var aadCustomKeyValuePairs = {vabeachtemp:'21',vabeachwx:'03'};
             // ISO: en-us
             //  ID: 1
         </script>
@@ -81,8 +82,8 @@
 
     <link rel="shortcut icon" href="../../vortex.accuweather.com/adc2010/images/favicons/accuweather_master_2.ico" />
     <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/lib.min-20121129.js"></script> 
-    <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/site.min-20130111.js"></script> 
-    <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/promo.min-20121129.js"></script> 
+    <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/site.min-20130116.js"></script> 
+    <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/promo.min-20130116.js"></script> 
 	<link rel="stylesheet" href="../../vortex.accuweather.com/adc2010/stylesheets/site.min-20130110.css" type="text/css" media="all" /> 
 	<link rel="stylesheet" href="../../vortex.accuweather.com/adc2010/stylesheets/icons/backgrounds.min-20121129.css" type="text/css" media="all" /> 
     <link rel="stylesheet" href="../../vortex.accuweather.com/adc2010/stylesheets/print.css" type="text/css" media="print" /> 
@@ -103,14 +104,14 @@
                 if (s_value === "") {
                     return false;
                 }
-                var isKeyPress = (key) ? 'EnterKey' : 'ButtonClick';
+                //var isKeyPress = (key) ? 'EnterKey' : 'ButtonClick';
                 if (s_value == "New York, NY") {
-                    _gaq.push(['_trackEvent', 'LocationBox', 'DefaultLocation/' + isKeyPress, s_value]);
+                    _gaq.push(['_trackEvent', 'LocationBox', 'DefaultLocation', s_value.toLowerCase()]);
                     setTimeout(function () {
                         window.location.href = 'http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727';
                     }, 50);
                 } else {
-                    _gaq.push(['_trackEvent', 'LocationBox', 'SearchLocation/' + isKeyPress, s_value]);
+                    _gaq.push(['_trackEvent', 'LocationBox', 'SearchLocation', s_value.toLowerCase()]);
                     setTimeout(function () {
                         document.forms["findcity"].submit();
                     }, 50);
@@ -138,7 +139,7 @@
                     d.src = ["//secure-us.imrworldwide.com/cgi-bin/m?ci=us-accuweather&cg=0&cc=1&si=", escape(window.location.href), "&rp=", escape(document.referrer), "&ts=compact&rnd=", (new Date()).getTime()].join('');
                 })();
             </script>
-                <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/ads.min-20130110.js"></script> 
+                <script type="text/javascript" src="../../vortex.accuweather.com/adc2010/javascripts/ads.min-20130116.js"></script> 
    
     
 
@@ -155,6 +156,15 @@
     <!--[if IE 7]><link rel="stylesheet" href="http://vortex.accuweather.com/adc2010/stylesheets/ie7.min-20121220.css" type="text/css" media="all" /><![endif]--> 
     <!--[if IE 8]><link rel="stylesheet" href="http://vortex.accuweather.com/adc2010/stylesheets/ie8.min-20121220.css" type="text/css" media="all" /><![endif]--> 
     <!--[if gte IE 9]><link rel="stylesheet" href="http://vortex.accuweather.com/adc2010/stylesheets/ie9.min-20121129.css" type="text/css" media="all" /><![endif]--> 
+
+    <script>
+        if (typeof (aadObj) == 'undefined') {
+            _gaq.push(['_setCustomVar', 47, 'Ads_JS_Not_Loaded', apgUserInfoObj.sessionPartner, 3]);
+        }
+
+        _gaq.push(['_trackPageview']);
+    </script>
+
 
 </head>
 <body id="corporate" class="">
@@ -948,8 +958,8 @@
 
 </div><!-- end id="add-interest-dropdown" -->
 
-<div id="wrap" class="winter h-c">
-  <div id="wrap-header-nav" class="day day-psu">
+<div id="wrap" class="winter h-su">
+  <div id="wrap-header-nav" class="day day-su">
     <div id="header-nav">
       
     
@@ -1233,9 +1243,9 @@
 	</ul><!-- end nav-current-location -->
 
 		<ul id="nav-featured" class="sub-nav add-interest-nav">
-			<li class="allergies featured { code:'10201' }">
-				<a href="http://www.accuweather.com/en/us/new-york-ny/10007/allergies-weather/349727" class="tab">
-					<span class="title">Allergies</span>
+			<li class="cold-flu featured { code:'10302' }">
+				<a href="http://www.accuweather.com/en/us/new-york-ny/10007/cold-flu-weather/349727" class="tab">
+					<span class="title">Cold &amp; Flu</span>
 						<!-- icons -->
 						<span class="close-outer">
                             <span class="close">
@@ -1244,7 +1254,7 @@
 						</span>
                         <span class="arrow"></span>
                         <span class="arrow-border"></span>
-						<span class="icon allergies"></span>		
+						<span class="icon cold-flu"></span>		
 						<span class="featured-tag"></span>
 						<!-- end icons -->
 				</a>
@@ -1301,19 +1311,19 @@
 							<div class="my-recent-locations clearfix">
 								<h3>My Recent Locations</h3>
 								<ul>
-                  <li class="day carousel-item bg-c">
+                  <li class="day carousel-item bg-su">
                   	<div class="clearfix">
 						<a href="http://www.accuweather.com/en/us/new-york-ny/10017/weather-forecast/349727">
-							<h4>New York</h4>
-							<div class="icon i-psu"></div>
+							<h4>New York, NY</h4>
+							<div class="icon i-su"></div>
 							<div class="info">
 								<span class="high">
-									<strong class="temp">33<span>&deg;</span></strong>
+									<strong class="temp">11<span>&deg;</span></strong>
 								</span>
 							</div><!-- end info -->
                             <div class="interest-icons"></div>
-							<p class="realfeel clear-both">RealFeel&#174; 25&deg;</p>
-							<p class="cond">Partly Sunny</p>
+							<p class="realfeel clear-both">RealFeel&#174; 0&deg;</p>
+							<p class="cond">Sunny</p>
 							<span class="view-forecast"><span>more</span></span>
 						</a>
 					</div>
@@ -1321,16 +1331,16 @@
                   <li class="day carousel-item bg-r">
                   	<div class="clearfix">
 						<a href="http://www.accuweather.com/en/us/miami-fl/33128/weather-forecast/347936">
-							<h4>Miami</h4>
-							<div class="icon i-r"></div>
+							<h4>Miami, FL</h4>
+							<div class="icon i-c"></div>
 							<div class="info">
 								<span class="high">
-									<strong class="temp">63<span>&deg;</span></strong>
+									<strong class="temp">69<span>&deg;</span></strong>
 								</span>
 							</div><!-- end info -->
                             <div class="interest-icons"></div>
-							<p class="realfeel clear-both">RealFeel&#174; 61&deg;</p>
-							<p class="cond">Rain</p>
+							<p class="realfeel clear-both">RealFeel&#174; 67&deg;</p>
+							<p class="cond">Cloudy</p>
 							<span class="view-forecast"><span>more</span></span>
 						</a>
 					</div>
@@ -1338,15 +1348,15 @@
                   <li class="night carousel-item bg-cl">
                   	<div class="clearfix">
 						<a href="http://www.accuweather.com/en/us/los-angeles-ca/90012/weather-forecast/347625">
-							<h4>Los Angeles</h4>
+							<h4>Los Angeles, CA</h4>
 							<div class="icon i-cl"></div>
 							<div class="info">
 								<span class="high">
-									<strong class="temp">53<span>&deg;</span></strong>
+									<strong class="temp">57<span>&deg;</span></strong>
 								</span>
 							</div><!-- end info -->
                             <div class="interest-icons"></div>
-							<p class="realfeel clear-both">RealFeel&#174; 56&deg;</p>
+							<p class="realfeel clear-both">RealFeel&#174; 59&deg;</p>
 							<p class="cond">Clear</p>
 							<span class="view-forecast"><span>more</span></span>
 						</a>
@@ -1557,7 +1567,7 @@
               <div class="panel-body-rt">
                 <div class="panel-body">
                   <div class="panel-body-content">
-                  <a class="{type:'Image',label:'AccuWeather Premium'}" href="https://wwwl.accuweather.com/premium_login.php?&amp;utm_source=adc&amp;utm_medium=ExtraAd&amp;utm_campaign=MoreWeather" target="_blank"><img src="../../vortex.accuweather.com/adc2010/images/features/en/accuweather-premium.jpg" width="300" height="140" alt="AccuWeather Premium" /></a>
+                  <a class="{type:'Image',label:'AccuWeather for Android'}" href="https://play.google.com/store/apps/details?id=com.accuweather.android&amp;referrer=utm_source%3DADC%26utm_campaign%3DAccuWeatherforAndroid_Extra_ad" target="_blank"><img src="../../vortex.accuweather.com/adc2010/images/features/en/android.png" width="300" height="140" alt="AccuWeather for Android" /></a>
                   </div>
                 </div>
               </div>
@@ -1812,8 +1822,8 @@
     <noscript>
     <img style="display:none;" src="../../secure-us.imrworldwide.com/cgi-bin/m%3Fci=us-accuweather&amp;cg=0&amp;cc=1&amp;ts=noscript" width="1" height="1" alt="" />
     </noscript>
-    <!-- Allergies/allergies --> 
+    <!-- Cold &amp; Flu/cold-flu --> 
 
-<script type="text/javascript">if (!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-3.newrelic.com","a690b21e9f",599479,"NV0GYUFWCEUDBkNQDAwXIFpHeQNCIQpZTRENVAhQQRglWQ8VVlcaTWgWXEVWBU8=",0,155,new Date().getTime()])</script>
+<script type="text/javascript">if (!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-3.newrelic.com","a690b21e9f",599479,"NV0GYUFWCEUDBkNQDAwXIFpHeQNCIQpZTRENVAhQQRglWQ8VVlcaTWgWXEVWBU8=",0,77,new Date().getTime()])</script>
 </body>
 </html>

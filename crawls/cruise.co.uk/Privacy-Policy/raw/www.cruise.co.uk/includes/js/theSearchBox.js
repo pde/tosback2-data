@@ -83,14 +83,17 @@ var searchBox = {
 		searchBox.toggleDropdown('Ocean');
 	},
 	
-	toggleDropdown: function(elem){
-		var cruiselinesDropdown = document.getElementById('hidden' + elem + 'Lines').innerHTML;
+	toggleDropdown: function(elem){		
+		var cruiselinesDropdown_offers = document.getElementById('hidden' + elem + 'Lines_offers').innerHTML;
+		var cruiselinesDropdown_reviews = document.getElementById('hidden' + elem + 'Lines_reviews').innerHTML;
+		var cruiselinesDropdown_answers = document.getElementById('hidden' + elem + 'Lines_answers').innerHTML;	
+		
 		var destinationsDropdown = document.getElementById('hidden' + elem + 'Destinations').innerHTML;		
-		$('#cruiselineid_deals').empty().append(cruiselinesDropdown);
-		$('#cruiselineid_reviews').empty().append(cruiselinesDropdown);
-		$('#cruiselineid_questions').empty().append(cruiselinesDropdown);
-		$('#cruiselineid_photos').empty().append(cruiselinesDropdown);
-		$('#cruiselineid_videos').empty().append(cruiselinesDropdown);	
+		$('#cruiselineid_deals').empty().append(cruiselinesDropdown_offers);
+		$('#cruiselineid_reviews').empty().append(cruiselinesDropdown_reviews);
+		$('#cruiselineid_questions').empty().append(cruiselinesDropdown_answers);
+		$('#cruiselineid_photos').empty().append(cruiselinesDropdown_answers);
+		$('#cruiselineid_videos').empty().append(cruiselinesDropdown_offers);	
 		
 		$('#destinationid_deals').empty().append(destinationsDropdown);
 		$('#destinationid_reviews').empty().append(destinationsDropdown);
@@ -266,6 +269,25 @@ var searchBox = {
 			}
 		}
 		$("#date2 option[value="+defaultdate+"]").attr("selected","selected") ;
+	},
+	
+	datePicker: function (){
+		$(".datepicker").datepicker({
+			dateFormat: "d M yy",
+			changeMonth: true,
+			changeYear: true,
+			onSelect: function(date, instance) {
+					if(instance.id=='date'){
+						var date1 = new Date(date)
+						var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+						var Y    = date1.getUTCFullYear();
+						var M   = months[( date1.getMonth( ) + 2 )];
+						var D     = date1.getDate();
+						var date2 = D + ' ' + M + ' ' + Y
+						$('input[name="date2"]').val(date2);
+					}
+				}
+		});
 	}
 	
 }/*<--end searchBox*/
@@ -276,22 +298,6 @@ window.setInterval(function() {
 
 
 $(document).ready(function(){
-	$(".datepicker").datepicker({
-		dateFormat: "d M yy",
-		changeMonth: true,
-		changeYear: true,
-		onSelect: function(date, instance) {
-				if(instance.id=='date'){
-					var date1 = new Date(date)
-					var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-					var Y    = date1.getUTCFullYear();
-					var M   = months[( date1.getMonth( ) + 2 )];
-					var D     = date1.getDate();
-					var date2 = D + ' ' + M + ' ' + Y
-					$('input[name="date2"]').val(date2);
-				}
-			}
-	});
-
+	searchBox.datePicker();
 });
 

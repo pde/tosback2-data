@@ -12,6 +12,26 @@
 
 <meta name="keywords" content="About us,Topics" />
 
+<script>
+		(function() {
+			var iframe = document.createElement('iframe');
+			iframe.src = "javascript:false";
+			(iframe.frameElement || iframe).style.cssText = "width: 0; height: 0; border: 0";
+			var where = document.getElementsByTagName('script')[0];
+			where.parentNode.insertBefore(iframe, where);
+			var doc = iframe.contentWindow.document;
+			doc
+					.open()
+					.write(
+							'<body onload="'
+									+ 'var js = document.createElement(\'script\');'
+									+ 'js.id = \'boomr-if-as\';'
+									+ 'BOOMR_lstart = new Date().getTime();'
+									+ 'js.src = \'//lognormal.net/boomerang/a0b97645b2925e25ec184ba3859c1c34802bc468c231198850538be3\';'
+									+ 'document.body.appendChild(js);">');
+			doc.close();
+		})();
+	</script>
 <link rel="shortcut icon" href="../../../favicon.ico%3Fv=1.2">
 			<meta name="tmgads.zone" content="topics.aboutus" />
 <meta name="tmgads.channel" content="topics" />
@@ -177,21 +197,61 @@ $(document).ready(function() {
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
   })(); 
 
-</script> 
-	
-		<script type="text/javascript" language="JavaScript">
-				// name: RoS AdprobeTag
-				// created at: 31.05.2011 - 15:21
-				// The placement ids to request, max 10 per request, comma delimited, no spaces:
-				var wlCus = "10085,10086";
-				var wlOrd = new Date().getTime();
-				try {
-				    document.write('<scr' + 'ipt type="text/javascript" language="JavaScript" src="http://req.connect.wunderloop.net/AP/1585/5904/10085/js?cus=' + wlCus + '&ord=' + wlOrd + '"></sc' + 'ript>');
-				} catch(err) { }
-				</script>						
-			<script type="text/javascript">
+</script>		
+<script type="text/javascript" language="JavaScript"> 
+  // Wunderloop/Adprobe Tag 
+  // Male : 13463,13464 
+  // Female: 13399,13400 
+  var wlOrd = new Date().getTime(); 
+  var wlFSites = ['culture','fashion','gardening','health','lifestyle','travel','women','foodanddrink','food_and_drink'];
+   var wlFSects = ['news.newstopics.celebritynews','news.newstopics.theroyalfamily','travel.cruises','travel.destination','travel.destinations','travel.hotel','culture.art','culture.books','culture.music.opera','culture.theatre'];
+   var wlMSites = ['earth','education','finance','history','motoring','news','property','science','sport','technology'];
+   var wlMSects = ['travel.activityandadventure','travel.snowandski','culture.film','culture.music','culture.photography','culture.tvandradio'];
+   // create a function to deal with metatag values 
+  function wlGetMetaTag(tagname){	   
+    var tmp = "null"; 
+    if(document.getElementsByName(tagname)[0] != null){ 
+      tmp = document.getElementsByName(tagname)[0].content; 
+    } 
+    return tmp.toLowerCase(); 
+  } 
+  var wlSite = wlGetMetaTag("tmgads.channel"); 
+  var wlSect = wlGetMetaTag("tmgads.zone");
+  // Male Sites 
+  for(var i=0;i<wlMSites.length;i++){ 
+     if(wlMSites[i]===wlSite){ 
+       var wlTag = "http://req.connect.wunderloop.net/AP/1585/6731/13463/js?cus=13463,13464&ord="+wlOrd;
+      } 
+  } 
+  // Female Sites 
+  for(var i=0;i<wlFSites.length;i++){ 
+    if(wlFSites[i]===wlSite){ 
+       var wlTag = "http://req.connect.wunderloop.net/AP/1585/6731/13399/js?cus=13399,13400&ord="+wlOrd;
+     } 
+  } 
+  // Male Sections 
+  for(var i=0;i<wlMSects.length;i++){ 
+    if(wlMSects[i]===wlSect){ 
+       var wlTag = "http://req.connect.wunderloop.net/AP/1585/6731/13463/js?cus=13463,13464&ord="+wlOrd;
+     } 
+  } 
+  // Female Sections 
+  for(var i=0;i<wlFSects.length;i++){ 
+    if(wlFSects[i]===wlSect){ 
+       var wlTag = "http://req.connect.wunderloop.net/AP/1585/6731/13399/js?cus=13399,13400&ord="+wlOrd;
+     } 
+  } 
+  // write the tag 
+  try { 
+    document.write('<scr'+'ipt type="text/javascript" language="JavaScript" src="'+wlTag+'"></scr'+'ipt>');
+   } catch(err) { 
+    // catch errors 
+  } 
+
+</script>		
+<script type="text/javascript">
   var gs_channels="default";
-  // Last-updated: 2013-01-19 13:13:10.915
+  // Last-updated: 2013-01-23 12:59:35.253
 gs_channels="tch_mobile_phones";
 
 </script>
@@ -201,7 +261,7 @@ gs_channels="tch_mobile_phones";
 		
 	
 
-<link rel="stylesheet" type="text/css" href="../../../template/ver1-0/css/subscriber.css%3Fv=1358601190915.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../../../template/ver1-0/css/subscriber.css%3Fv=1358945975253.css" media="screen" />
 <script language="Javascript" type="text/javascript" src="../../../template/ver1-0/js/ajax.js"></script>
 
 <script language="Javascript" type="text/javascript" src="../../../template/ver1-0/js/commWidget.js"></script>
@@ -320,7 +380,7 @@ gs_channels="tch_mobile_phones";
 				<div id="tmglTopRight" class="tmgTopBarDate">
 					<div id="tmglLasUpdatedDateFeed">
 	<p>
-		Saturday 19 January 2013</p>
+		Wednesday 23 January 2013</p>
 </div>
 
 </div>
@@ -949,11 +1009,6 @@ article.articleTypeName=tmglstory<br>-->
 
 
 </div>
-<div class="summaryMedium  gutterUnder">
-	
-						
-	</div>
-
 <div class="access">Advertisement</div>
 <div id="yell">
 	<div class="adyell InSkinHide">
@@ -969,11 +1024,6 @@ article.articleTypeName=tmglstory<br>-->
 
 
 
-<div class="summaryMedium gutterUnder">
-	
-						
-	</div>
-
 <div class="adarea gutterUnder">
 			<div class="adsky">
 				<div class="access">Advertisement</div>
@@ -986,12 +1036,7 @@ article.articleTypeName=tmglstory<br>-->
 			<div class="cl"></div>
 		</div>
 		
-	<div class="summaryMedium">
-	
-						
-	</div>
-
-<script type="text/JavaScript">
+	<script type="text/JavaScript">
 		var OB_permalink= 'http://www.telegraph.co.uk/topics/about-us/3691972/Privacy-and-Cookie-Policy.html';
 		var OB_Template="telegraph";
 		var OB_widgetId= 'AR_2';
@@ -1307,7 +1352,7 @@ article.articleTypeName=tmglstory<br>-->
 <div id="footerinfo">
 			<p>&copy; Copyright of Telegraph Media Group Limited 2013</p>
 			<p><a href="http://www.telegraph.co.uk/termsandconditions">Terms and Conditions</a> </p>
-			<p><a href="http://www.telegraph.co.uk/archive/2013-1-19.html">Today's News</a></p>
+			<p><a href="http://www.telegraph.co.uk/archive/2013-1-23.html">Today's News</a></p>
 			<p ><a href="http://www.telegraph.co.uk/archive/">Archive</a></p>
 					<p ><a href="http://www.telegraph.co.uk/topics/about-us/style-book/">Style Book</a></p>
 					<p class="last"><a href="http://www.telegraph.co.uk/topics/weather/4142730/Weather-forecast.html">Weather Forecast</a></p>

@@ -247,11 +247,11 @@
 			c: function(){
 				var classification = $.ad.meta().classificationISA;
 				if(classification == ""){return "";}
-					var cArr = classification.split(", ");
+				var cArr = classification.split(",");	
 				var c="";
 				for(i=0; i < cArr.length ;i++){
 					if(i == 0){c += ";";}
-					c += "c=" + cArr[i];
+					c += "c=" + cArr[i].replace(" ","");
 					if(i != cArr.length-1){c+= ";"}
 				}
 				return c;
@@ -1284,6 +1284,7 @@
 		tynt: {
 			init: function(d) {
 				var ptype = d.ptype;
+				window.Tynt = window.Tynt||[];
 				var tynt_map = {
 					"article":"",
 					"bio":"",
@@ -1918,4 +1919,3 @@ if(!Array.indexOf){
 jQuery.ad.chart.start();
 
 var _vrq = _vrq || [];
-var Tynt = Tynt||[];

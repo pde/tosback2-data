@@ -77,7 +77,7 @@ if(typeof btg=='undefined')var btg = {};
 btg.config={
 	version: '3',
 	defferedAdLoading: false,
-	enablePOE: false,
+	enablePOE: true,
 	backwardCompatibility: true,
 	Omniture:{
 		enabled: true,

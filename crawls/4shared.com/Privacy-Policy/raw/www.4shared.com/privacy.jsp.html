@@ -77,36 +77,35 @@
 
 
 <script type="text/javascript">
-    function Config() {
-        return this
-    }
-    document.domain='4shared.com';
+  function Config() {
+    return this
+  }
+  document.domain='4shared.com';
 </script>
 
 
 
 <script type="text/javascript">
-    Config.mainSiteUrlPath = 'http://www.4shared.com/';
-    Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
-    Config.isRTLLanguage = false;
-    Config.isReplaceSearchNameForSeo = false;
-    Config.revisionNum = 28486;
-    Config.syncDomain = 'https://www.4sync.com/';
-    Config.cdDomain = '//dc370.4shared.com/';
-    Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
-    Config.isMobile = false;
-    Config.isIpad = false;
+  Config.mainSiteUrlPath = 'http://www.4shared.com/';
+  Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
+  Config.isRTLLanguage = false;
+  Config.isReplaceSearchNameForSeo = false;
+  Config.revisionNum = 28785;
+  Config.syncDomain = 'https://www.4sync.com/';
+  Config.cdDomain = '//dc613.4shared.com/';
+  Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
+  Config.isMobile = false;
+  Config.isIpad = false;
   Config.is4Sync = false;
 
-
-    $(function(){
-        //lets detect touch device
-        try{
-            document.createEvent("TouchEvent");
-        } catch(e){
-            $("body").addClass("notTouch");
-        }
-    });
+      $(function(){
+      //lets detect touch device
+      try{
+          document.createEvent("TouchEvent");
+      } catch(e){
+          $("body").addClass("notTouch");
+      }
+  });
 </script>
 
 
@@ -184,6 +183,40 @@
 
 <script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.cookie.js%3Fver=3361025129"></script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.localStorage.js%3Fver=2999387803"></script>
 
 
 
@@ -280,7 +313,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=1689300301"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=3321667283"></script>
 
 
 
@@ -452,7 +485,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=285142711.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=264309964.css"/>
 
 
 
@@ -516,8 +549,6 @@
 </head>
 <body>
 <div id="fstickcontainer"><div id="fstickcontent">
-
-
 
 
 
@@ -1061,7 +1092,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=1721445306"></script>
+<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=3106028653"></script>
 
 
 
@@ -1411,7 +1442,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=1804912665"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=2836415852"></script>
 
 
 
@@ -1511,6 +1542,7 @@
   var su;
   var sn = 'www.4shared.com';
 
+  var popupLoginScript;
 
   function adjustLengthOfElements(isJoin){
     var fieldForFocus = isJoin? $('#signupEmailField, #signupPassField, #signupPassFieldRepeat') : $('#loginfield, #passfield');
@@ -1554,7 +1586,7 @@
           if (params2.title) {
             $('#authWindowTitle', data).html(params2.title)
           }
-          AccountFacade.popup({
+          popupLoginScript = AccountFacade.popup({
             title:'Please Sign up or Login',
             element:data
           })
@@ -1580,7 +1612,7 @@
   }
 
   function authSaveParams(params){
-    $('#p_window').hide();
+    popupLoginScript.closePopup();
     var sp = escape(JSON.stringify(params));
     Cookies.create('jsParams', sp, -1, '/', '.4shared.com', false);
     if(params.returnTo){
@@ -1739,7 +1771,7 @@
             
 
             
-            ,sId : 'NxVy4rJwgs8ViPUJ'
+            ,sId : 'khm9znj3a5flQsSi'
             
           },
           function(){
@@ -1906,7 +1938,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/tips.js%3Fver=2029063052"></script>
+<script type="text/javascript" src="../static.4shared.com/js/tips.js%3Fver=3742699646"></script>
 
 
 
@@ -2117,7 +2149,7 @@
 
 
   function selectLang(lang) {
-    langPopup.hide();
+    langPopup.closePopup();
     newLang = lang;
     window.langSelectorChangeCalled = true;
     document.getElementById('iapHiddenFrame').src = "http://www.4shared.com/main/translate/setLang.jsp?silent=true&lang=" + lang;
@@ -2545,7 +2577,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc328, rev=28486"
+    title : "Title = dc330, rev=28785"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2622,9 +2654,9 @@
             var html = "<div onclick=\"doAction('"+event.actionLink+"')\" class='nitem "+unread+" clear paddingLR5'>"+
                 "<div class='uPhoto floatLeft'><img id='userAvatarImage' src='http://www.4shared.com/&quot;+avatar+&quot;' width='32' height='32'></div>"+
                 "<div class='descr floatLeft f11 marginL10 ffshadow'>"+
-                  "<u>"+event.fromUserName+"</u> "+
+                  "<span class='eventUserName'>"+event.fromUserName+"</span> "+
                   event.info1+" "+
-                  "<u>"+event.iFileName+"</u>. "
+                  "<span class='eventFileName'>"+event.iFileName+"</span>. "
                   +info2Text+
                 "</div>"+
                 "<div class='type floatLeft sprite1 "+eventType+"'></div>"+
@@ -2638,7 +2670,8 @@
             $(".ncounter").show();
           }
           if($("#nscroll").height() > 199) {
-            $("#nscroll").slimScroll({height: '200px'})
+            if (Config.isMobile || Config.isIpad) $('#nscroll').css({overflowY: "auto", height:'200px'})
+            else $("#nscroll").slimScroll({height: '200px'})
           }
         },
         error: function() {
@@ -3110,7 +3143,7 @@
 <div class="copy">
     <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc328, rev=28486'>&copy;</span> 2005-2013 4shared.com 
+             Copyright <span title='dc330, rev=28785'>&copy;</span> 2005-2013 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             
@@ -3160,7 +3193,7 @@
 
 
 
-<!-- www.currDcID=328 -->
+<!-- www.currDcID=330 -->
 
 
 

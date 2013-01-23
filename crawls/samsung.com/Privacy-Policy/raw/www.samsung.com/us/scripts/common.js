@@ -2095,6 +2095,12 @@ if(urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('SGH-I717R
 		});
 	}
 
+if(urlValueSplit[6].match('UN75ES9000FXZA')){
+    $('#pbanner').find('p').html('*Purchase a UN75ES9000 and receive a free 46” LED Smart TV (model UN46ES7100)');
+}
+if(urlValueSplit[6].match('PN60E550D1FXZA')){
+    $('#pbanner').find('p').html('*Purchase a Samsung PN60E550 Plasma TV and get a Samsung BD-E5900 Blu-Ray player at no charge.');
+}
 
 });
 

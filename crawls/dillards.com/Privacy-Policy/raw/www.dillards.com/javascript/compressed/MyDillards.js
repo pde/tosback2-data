@@ -4,10 +4,16 @@ var hasBeenOpened = false;
 $(document).ready(function() {
 	
 	// My Dillard's fly-out toggle
-	var slideTime = 250;
-	var clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall");
+	var slideTime = 475;
+	var clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall, #welcome-new");
 	var contentBox = $("#myDillardsContent");
 	var invisibleWall = $("#myDillardsInvisibleWall");
+	
+	$("#myDillardsBarText").find(".openClose").hoverIntent(function(){
+		if($(contentBox).css("display") == "none"){
+		$(this).trigger("click");
+		}
+		},function(){});
 	
 	$(clickZone).click(function() {
 		// Open fly-out
@@ -36,6 +42,7 @@ $(document).ready(function() {
 		}
 	});
 	
+	/*
 	// Holiday schedule fly-out toggle
 	$("#holidayScheduleOpener, #holidayScheduleDropDown").hoverIntent(function(){
 		$("#holidayScheduleDropDown").css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":$("#holidayScheduleHeight").data("neededheight"), "opacity":"1.0"}, slideTime, function() {
@@ -47,6 +54,7 @@ $(document).ready(function() {
 			// no insivible wall
 		});
 	});
+	*/
 
 	// Swap tab panels
 	var thePanels = ["#myDillardsRightFrameContent .shoppingBag", "#myDillardsRightFrameContent .wishList", "#myDillardsRightFrameContent .savedSearch", "#myDillardsRightFrameContent .orderHistory"], theSelector = thePanels.join(", ");
@@ -198,33 +206,6 @@ function changeBodyMargin() {
 	}
 }
 changeBodyMargin();
-*/
-
-// A/B Testing -- Run this function to show My Dillard's bar and rearrange header
-/*
-function myDillardsABtest() {
-	var countryCode = $.cookie("country");
-	var myDillardsTest = $.cookie("MYDILLARDS_AB_TEST");
-	if((countryCode == 'US' || countryCode == '' || countryCode == null) && (myDillardsTest == "B")){
-		$("#fiftyOneContext, #utility-nav #mini-cart, #utility-nav #my-account, #utility-nav #wishlist").hide();
-		$("#myDillardsContainer").show();
-		$("body").css("padding-top", $("#myDillardsBar").css("height"));
-		$("#search").css("clear","right").css("position","relative").css("top","-3px");
-		$("#utility-nav").css("clear","right");
-		$("#utility-nav .genericESpot").css("margin-right","-10px");
-		$("#header-spot #barIsOff").hide();
-		$("#header-spot #barIsOn").show();
-		$("#header-spot").css("margin","0").css("width","auto").css("float","none").css("margin","0").css("position","absolute").css("bottom","12px").css("right","421px");
-		if($("#header-spot #barIsOn img").eq(0).length > 0){
-			$("#header-spot").css("margin-right","23px");
-		}else{
-			$("#header-spot").css("margin-bottom","12px");
-		}
-		$("#header-spot,#utility-nav").show();
-	} else {
-		$("#header-spot,#utility-nav,#fiftyOneContext").show();
-	}
-}
 */
 
 // Show My Dillard's bar, rearrange header accordingly

@@ -97,36 +97,35 @@
 
 
 <script type="text/javascript">
-    function Config() {
-        return this
-    }
-    document.domain='4shared.com';
+  function Config() {
+    return this
+  }
+  document.domain='4shared.com';
 </script>
 
 
 
 <script type="text/javascript">
-    Config.mainSiteUrlPath = 'http://www.4shared.com/';
-    Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
-    Config.isRTLLanguage = false;
-    Config.isReplaceSearchNameForSeo = false;
-    Config.revisionNum = 28486;
-    Config.syncDomain = 'https://www.4sync.com/';
-    Config.cdDomain = '//dc615.4shared.com/';
-    Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
-    Config.isMobile = false;
-    Config.isIpad = false;
+  Config.mainSiteUrlPath = 'http://www.4shared.com/';
+  Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
+  Config.isRTLLanguage = false;
+  Config.isReplaceSearchNameForSeo = false;
+  Config.revisionNum = 28785;
+  Config.syncDomain = 'https://www.4sync.com/';
+  Config.cdDomain = '//dc609.4shared.com/';
+  Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
+  Config.isMobile = false;
+  Config.isIpad = false;
   Config.is4Sync = false;
 
-
-    $(function(){
-        //lets detect touch device
-        try{
-            document.createEvent("TouchEvent");
-        } catch(e){
-            $("body").addClass("notTouch");
-        }
-    });
+      $(function(){
+      //lets detect touch device
+      try{
+          document.createEvent("TouchEvent");
+      } catch(e){
+          $("body").addClass("notTouch");
+      }
+  });
 </script>
 
 
@@ -204,6 +203,40 @@
 
 <script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.cookie.js%3Fver=3361025129"></script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.localStorage.js%3Fver=2999387803"></script>
 
 
 
@@ -300,7 +333,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=1689300301"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=3321667283"></script>
 
 
 
@@ -472,7 +505,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=285142711.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=264309964.css"/>
 
 
 
@@ -540,7 +573,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="http://static.4shared.com/css/pageDownload1/downloadWithoutCommon.css?ver=2872349864"/>
+<link rel="stylesheet" type="text/css" href="http://static.4shared.com/css/pageDownload1/downloadWithoutCommon.css?ver=200033390"/>
 
 
 
@@ -617,8 +650,6 @@
 
 
    
-
-
 
 
 
@@ -1162,7 +1193,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=1721445306"></script>
+<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=3106028653"></script>
 
 
 
@@ -1512,7 +1543,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=1804912665"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=2836415852"></script>
 
 
 
@@ -1612,6 +1643,7 @@
   var su;
   var sn = 'e.4shared.com';
 
+  var popupLoginScript;
 
   function adjustLengthOfElements(isJoin){
     var fieldForFocus = isJoin? $('#signupEmailField, #signupPassField, #signupPassFieldRepeat') : $('#loginfield, #passfield');
@@ -1655,7 +1687,7 @@
           if (params2.title) {
             $('#authWindowTitle', data).html(params2.title)
           }
-          AccountFacade.popup({
+          popupLoginScript = AccountFacade.popup({
             title:'Please Sign up or Login',
             element:data
           })
@@ -1681,7 +1713,7 @@
   }
 
   function authSaveParams(params){
-    $('#p_window').hide();
+    popupLoginScript.closePopup();
     var sp = escape(JSON.stringify(params));
     Cookies.create('jsParams', sp, -1, '/', '.4shared.com', false);
     if(params.returnTo){
@@ -1840,7 +1872,7 @@
             
 
             
-            ,sId : 'iwRwEb41r0oALEZs'
+            ,sId : 'K2Ug6Q0w2geFZQOR'
             
           },
           function(){
@@ -2007,7 +2039,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/tips.js%3Fver=2029063052"></script>
+<script type="text/javascript" src="../static.4shared.com/js/tips.js%3Fver=3742699646"></script>
 
 
 
@@ -2218,7 +2250,7 @@
 
 
   function selectLang(lang) {
-    langPopup.hide();
+    langPopup.closePopup();
     newLang = lang;
     window.langSelectorChangeCalled = true;
     document.getElementById('iapHiddenFrame').src = "http://www.4shared.com/main/translate/setLang.jsp?silent=true&lang=" + lang;
@@ -2646,7 +2678,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc516, rev=28486"
+    title : "Title = dc323, rev=28785"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2723,9 +2755,9 @@
             var html = "<div onclick=\"doAction('"+event.actionLink+"')\" class='nitem "+unread+" clear paddingLR5'>"+
                 "<div class='uPhoto floatLeft'><img id='userAvatarImage' src='http://e.4shared.com/&quot;+avatar+&quot;' width='32' height='32'></div>"+
                 "<div class='descr floatLeft f11 marginL10 ffshadow'>"+
-                  "<u>"+event.fromUserName+"</u> "+
+                  "<span class='eventUserName'>"+event.fromUserName+"</span> "+
                   event.info1+" "+
-                  "<u>"+event.iFileName+"</u>. "
+                  "<span class='eventFileName'>"+event.iFileName+"</span>. "
                   +info2Text+
                 "</div>"+
                 "<div class='type floatLeft sprite1 "+eventType+"'></div>"+
@@ -2739,7 +2771,8 @@
             $(".ncounter").show();
           }
           if($("#nscroll").height() > 199) {
-            $("#nscroll").slimScroll({height: '200px'})
+            if (Config.isMobile || Config.isIpad) $('#nscroll').css({overflowY: "auto", height:'200px'})
+            else $("#nscroll").slimScroll({height: '200px'})
           }
         },
         error: function() {
@@ -2839,7 +2872,7 @@
       </table>
       <br />
         
-      <div class="centeredDownloadDesktopButtonContainer">
+
         
 
 
@@ -2905,7 +2938,7 @@
 
 
 <div class="downloadDesktop floatLeft round5 marginR15">
-    <a class="downloadDesktopButton floatLeft round5 no-line gaClick" href="http://dc622.4shared.com/download/ADUQ7O4E/4shared_Desktop_400c.exe" data-element="12.2" id="download-desktop" data-download-stats="desktop.d1.1">
+    <a class="downloadDesktopButton floatLeft round5 no-line gaClick" href="http://e.4shared.com/downloadDesktop" data-element="12.2" id="download-desktop" data-download-stats="desktop.d1.1">
         <div class="desktopButtonGradient">
             <div class="desktopButtonInner f12 bold paddingL40 paddingR15 alignCenter">Download<br /> desktop</div>
         </div>
@@ -2920,7 +2953,7 @@
 
 
         <div class="clear"></div>
-      </div>
+
 
 
       <br />
@@ -2935,12 +2968,16 @@
 
 
 
+
+
+
 <!-- FCRU-356 -->
 <iframe style="overflow: hidden; margin-top: 15px;" frameborder="0" scrolling="no" hspace="0" vspace="0"
         marginheight="0" marginwidth="0" width="600" height="250"
         src="http://web.adblade.com/impsc.php?cid=1881-3151703633&amp;output=html"></iframe>
 <br>
 <!-- end of FCRU-356 -->
+
 
 
         <br>
@@ -2984,7 +3021,6 @@
   
   
   
-
 
 
 
@@ -3058,6 +3094,7 @@
         <td class="boxl"></td>
         <td class="boxc" style="padding:10px">
             
+
 
 
 
@@ -3251,7 +3288,7 @@ function showTbTip() {
 
 
 
-<script type="text/javascript" src="http://static.4shared.com/js/ui/AnonUploadWidget.js?ver=2917473416"></script>
+<script type="text/javascript" src="http://static.4shared.com/js/ui/AnonUploadWidget.js?ver=1409836618"></script>
 
 
 
@@ -3326,10 +3363,10 @@ function showTbTip() {
 
 
 <script type="text/javascript">
-    function anonUploadDone(aFileId){
+    function anonUploadDone(){
         
             
-            top.location.href='http://www.4shared.com/enter.jsp?sId=mFz5zHS1Ie1wJCCR&&fau=1&ausk=mFz5zHS1Ie1wJCCR&au=1';
+            top.location.href='http://www.4shared.com/enter.jsp?sId=hQ8asaoDUzGbswwk&&fau=1&ausk=hQ8asaoDUzGbswwk&au=1';
         
     }
     
@@ -3366,8 +3403,8 @@ function showTbTip() {
 
 <div id="upload">
 <div id="uploadTR" class="changeDir hideLong 11">
-<form action="http://dc624.4shared.com/main/upload.jsp?sId=mFz5zHS1Ie1wJCCR&amp;fau=1&amp;ausk=mFz5zHS1Ie1wJCCR" name="uploadForm" enctype="multipart/form-data" target="uploadframe1" method="POST">
-<input type="hidden" name="mainDC" value="516">
+<form action="http://dc624.4shared.com/main/upload.jsp?sId=hQ8asaoDUzGbswwk&amp;fau=1&amp;ausk=hQ8asaoDUzGbswwk" name="uploadForm" enctype="multipart/form-data" target="uploadframe1" method="POST">
+<input type="hidden" name="mainDC" value="323">
     <table cellpadding="0" cellspacing="2">
         <tr>
             <td>
@@ -3568,7 +3605,7 @@ function showTbTip() {
 
 
 
-<script type="text/javascript" src="http://static.4shared.com/js/UploadModule.js?ver=883011939"></script>
+<script type="text/javascript" src="http://static.4shared.com/js/UploadModule.js?ver=412228988"></script>
 
 
 
@@ -3621,19 +3658,19 @@ function showTbTip() {
   UploadModule.build = function(options) {
     var defaultSettings = {
       
-      url: 'http://dc624.4shared.com/main/upload.jsp?sId=mFz5zHS1Ie1wJCCR&fau=1&ausk=mFz5zHS1Ie1wJCCR',
+      url: 'http://dc624.4shared.com/main/upload.jsp?sId=hQ8asaoDUzGbswwk&fau=1&ausk=hQ8asaoDUzGbswwk',
       
       uploadHandler: UploadModule.getAnonUploadHandler(),
       
       progressMeter: UploadModule.ProgressMeterJsonp,
-      progress_meter_url : 'http://dc624.4shared.com/servlet/ProgressStatus2?dcID=624&sId=mFz5zHS1Ie1wJCCR&fau=1&ausk=mFz5zHS1Ie1wJCCR',
+      progress_meter_url : 'http://dc624.4shared.com/servlet/ProgressStatus2?dcID=624&sId=hQ8asaoDUzGbswwk&fau=1&ausk=hQ8asaoDUzGbswwk',
       static_resources_root: 'http://static.4shared.com',
       max_file_size: 209715200,
       max_change_dc_attempts: 0,
       plupload_version: '',
       upload_form_handler:{
         max_threads: 1,
-        file_size_url: 'http://dc624.4shared.com/rest/file/size?sId=mFz5zHS1Ie1wJCCR&&fau=1&ausk=mFz5zHS1Ie1wJCCR&httpSessId=UnavailableHttpSession'
+        file_size_url: 'http://dc624.4shared.com/rest/file/size?sId=hQ8asaoDUzGbswwk&&fau=1&ausk=hQ8asaoDUzGbswwk&httpSessId=UnavailableHttpSession'
       },
       i18n: {
         file_size_exceeded: "File is too large. You can\'t upload files larger than [maxFileSize] .",
@@ -4052,7 +4089,7 @@ function showTbTip() {
 <div class="copy">
    <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc516, rev=28486'>&copy;</span> 2005-2013 4shared.com 
+             Copyright <span title='dc323, rev=28785'>&copy;</span> 2005-2013 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             
@@ -4097,7 +4134,7 @@ function showTbTip() {
 </div>
 
 </div>
-<!-- www.currDcID=516 -->
+<!-- www.currDcID=323 -->
 
 
 
@@ -4312,7 +4349,6 @@ _gaq.push(['_setSampleRate', '10']);
   
   
   
-
 
 
 

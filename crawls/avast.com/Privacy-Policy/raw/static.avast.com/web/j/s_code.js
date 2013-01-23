@@ -42,6 +42,7 @@ More info available at http://www.omniture.com */
  *10/10/12 update s_code to version vH.25 (Ales)
  *20/11/12 added escape(c_ot); in Tracking ID section (Jarda)
  *14/12/12 added cid and tid into c_ot in tracking ID section(Milan)
+ *21/01/13 added p_bld test for free in business - eVar27(Milan) 
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -292,7 +293,9 @@ function s_doPlugins(s) {
     if(rc("osc_v27"))
 		s.eVar27=rc("osc_v27");
 	else {
-		if(s.getQueryParam('seg') == "fre_reg" || s.getQueryParam('seg') == "fre_lic")
+	  if(s.getQueryParam('p_bld') == "FreeInBusiness")
+            s.eVar27="Free Program | Free In Business";
+		else if(s.getQueryParam('seg') == "fre_reg" || s.getQueryParam('seg') == "fre_lic")
             s.eVar27="Free Program | Registered";
 		else if(s.getQueryParam('seg') == "fre_unr" || s.getQueryParam('seg') == "fre_unl")
             s.eVar27="Free Program | Not Registered";

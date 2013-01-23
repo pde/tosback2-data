@@ -1,7 +1,7 @@
 /*
  * cmdatatagutils.js 
- * $Id: cmdatatagutils.js,v 1.2.22.18 2011/03/13 17:49:11 pandad Exp $
- * $Revision: 1.2.22.18 $
+ * $Id: cmdatatagutils.js,v 1.11.16.2 2013/01/11 17:13:28 upretin Exp $
+ * $Revision: 1.11.16.2 $
  *
  * Version 4.2.0
  *
@@ -23,6 +23,7 @@
  * 06/24/2010		ETOWB				Updated cmStripIllegals to handle null input
  *							Moved cm_HOST setting logic over from eluminate to fix issue with noResults page going to test
  * 08/20/2010		ETOWB				Updated for new test system.
+ * 12/11/2012		WBIRD				Updated makeTag to allow 50 attributes per tag; extraFields added.
  */
 
 
@@ -148,11 +149,7 @@ function cmCreateManualLinkClickTag(href,name,pageID) {
 }
 
 function cmCreateElementTag(elementID, elementCategory, attributes) {
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","15","eid",elementID,"ecat",elementCategory,"cm_exAttr",cm_exAttr]);
+    cmMakeTag(["tid","15","eid",elementID,"ecat",elementCategory,"cmAttributes",attributes]);
 }
 
 function cmCreatePageElementTag(elementID, elementCategory, pageID, pageCategoryID, elementLocation,attributes) {
@@ -171,13 +168,10 @@ function cmCreateProductElementTag(elementID, elementCategory, productID, produc
  * categoryID		: optional. Category for the event
  * points			: optional. Point value to assign to conversion.
  */
- function cmCreateConversionEventTag(eventID, actionType, categoryID, points,attributes) {
- 	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","14","cid",eventID,"cat",actionType,"ccid",categoryID,"cpt",points,"cm_exAttr",cm_exAttr]);
- }
+
+function cmCreateConversionEventTag(eventID, actionType, categoryID, points,attributes, extraFields) {
+    cmMakeTag(["tid","14","cid",eventID,"cat",actionType,"ccid",categoryID,"cpt",points,"cmAttributes",attributes,"cmExtraFields",extraFields]);
+}
 
 /*
  * Creates a Pageview tag with the default value for Page ID. 
@@ -251,20 +245,16 @@ function cmAddShop(__v) {
  *
  * 
  */
-function cmCreateShopAction5Tag(productID,productName,productQuantity,productPrice,categoryID,attributes) {
+function cmCreateShopAction5Tag(productID,productName,productQuantity,productPrice,categoryID,attributes,extraFields) {
 	if ((typeof(cm_currencyCode) == "undefined") || (!cm_currencyCode)) {
 		cm_currencyCode = "";
 	}
 	var pattern = /[^\-0-9\.]/gi;
         productPrice = productPrice.toString().replace(pattern, "");
-	if (attributes){
-		__ex=attributes.split("-_-");
-	} else {
-	__ex=new Array();
-	}
 	productName = CM_StripIllegals(productName);
 	categoryID = CM_StripIllegals(categoryID);
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cc",cm_currencyCode,"at","5","tid","4","pc","N"]);
+	var hashValue = "" + (attributes ? attributes + "|||" : "") + (extraFields ? "extra" + extraFields : "");
+	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cmAttributes",attributes,"cmExtraFields",extraFields,"ha1",cm_hex_sha1(hashValue),"cc",cm_currencyCode,"at","5","tid","4","pc","N"]);
 }
 
 /*
@@ -280,7 +270,7 @@ function cmCreateShopAction5Tag(productID,productName,productQuantity,productPri
  * categoryID	: optional. Category to set on this Shop tag
  *
  */
-function cmCreateShopAction9Tag(productID,productName,productQuantity,productPrice,customerID,orderID,orderTotal,categoryID,attributes) {
+function cmCreateShopAction9Tag(productID,productName,productQuantity,productPrice,customerID,orderID,orderTotal,categoryID,attributes,extraFields) {
 	if ((typeof(cm_currencyCode) == "undefined") || (!cm_currencyCode)) {
 		cm_currencyCode = "";
 	}
@@ -289,14 +279,10 @@ function cmCreateShopAction9Tag(productID,productName,productQuantity,productPri
     	productPrice = productPrice.toString().replace(pattern, "");
 	orderTotal = orderTotal.toString().replace(pattern, "");
 	productID = productID.toString().replace(pattern1, "");
-	if (attributes){
-		__ex=attributes.split("-_-");
-	} else {
-	__ex=new Array();
-	}
 	productName = CM_StripIllegals(productName);
 	categoryID = CM_StripIllegals(categoryID);
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cd",customerID,"on",orderID,"tr",orderTotal,"cc",cm_currencyCode,"at","9","tid","4","pc","N"]);
+	var hashValue = "" + (attributes ? attributes + "|||" : "") + (extraFields ? "extra" + extraFields : "");
+	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"cmAttributes",attributes,"cmExtraFields",extraFields,"ha1",cm_hex_sha1(hashValue),"cd",customerID,"on",orderID,"tr",orderTotal,"cc",cm_currencyCode,"at","9","tid","4","pc","N"]);
 	cmCalcSKUString();
 }
 
@@ -361,18 +347,14 @@ function cmDisplayShops() {
  * customerZIP		: optional. Zipcode of Customer that placed this order
  *
  */
-function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCity,customerState,customerZIP,attributes) {
+function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCity,customerState,customerZIP,attributes,extraFields) {
 	if ((typeof(cm_currencyCode) == "undefined") || (!cm_currencyCode)) {
 		cm_currencyCode = "";
 	}
 	var pattern = /[^\-0-9\.]/gi;
     orderShipping = orderShipping.toString().replace(pattern, "");
-	orderTotal = orderTotal.toString().replace(pattern, "");
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}	
-	cmMakeTag(["tid","3","osk",__skuString,"on",orderID,"tr",orderTotal,"sg",orderShipping,"cd",customerID,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cc",cm_currencyCode,"cm_exAttr",cm_exAttr]);
+	orderTotal = orderTotal.toString().replace(pattern, "");	
+	cmMakeTag(["tid","3","osk",__skuString,"on",orderID,"tr",orderTotal,"sg",orderShipping,"cd",customerID,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cc",cm_currencyCode,"cmAttributes",attributes,"cmExtraFields",extraFields]);
 	__skuString = "";
 }
 
@@ -414,46 +396,36 @@ function cmMakeTag(__v) {
 		}
 	}
 
-	if (cm.tid != "4" && typeof(cm.cm_exAttr)!="undefined"){
-		switch(cm.tid){
-			case "6":
-				prefix="pv";
-				break;
-			case "1":
-				prefix="pv";
-				break;
-			case "2":
-				prefix="rg";
-				break;
-			case "5":
-				prefix="pr";
-				break;
-			case "3":
-				prefix="o";
-				break;
-			case "14":
-				prefix="c";
-				break;
-			case "15":
-				prefix="e";
-				break;
-			default:
-				break;
-		}		
-		var attrNum=cm.cm_exAttr.length;
-		if (attrNum>15){
-			attrNum=15;
-		}
-		for (i=0;i<attrNum;i++){
-			if (cm.tid=="2"){
-				Attval=prefix+(i+1);
-			} else {
-				Attval=prefix+"_a"+(i+1);
-			}
-			cm[Attval]=cm.cm_exAttr[i];
-		}
-		cm.cm_exAttr=null;
-	}	
+    // process attribute and extrafield strings into correct tag parameters
+    var cmAttributesMap = {"1": "pv_a","2":"rg","3":"o_a","4":"s_a","5":"pr_a","6":"pv_a","14":"c_a","15":"e_a"};
+    var cmExtraFieldsMap = {"1": "pv","2":"rg","3":"or","4":"sx","5":"pr","6":"pv","7":"ps","14":"cx"};
+    if (cm.cmAttributes) {
+        var tempArray = cm.cmAttributes.split("-_-");
+        var name = cmAttributesMap[cm.tid];
+        for (i=0;i<tempArray.length;++i){
+            cm[name + (i + 1)] = tempArray[i];
+        }
+        cm.cmAttributes = null;
+    }
+    if (cm.cmExtraFields) {
+        var tempArray = cm.cmExtraFields.split("-_-");
+        var name = cmExtraFieldsMap[cm.tid];
+        for (i=0;i<tempArray.length;++i){
+            cm[name + (i + 1)] = tempArray[i];
+        }
+        cm.cmExtraFields = null;
+    }
+
+    if (cmAutoCopyAttributesToExtraFields) {
+        if ((cm.tid != '2') && (cm.tid != '15')) {
+            for (var i = 1; i <= 15; ++i) {
+                if (!(cm[cmExtraFieldsMap[cm.tid] + "" + i])) {
+                    cm[cmExtraFieldsMap[cm.tid] + "" + i] = cm[cmAttributesMap[cm.tid] + "" + i];
+                }
+            }
+        }
+    }
+
 	if ((cm.pi == null) && (cm.pc == "Y")) {
 		cm.pi = cmGetDefaultPageID();
 	}
@@ -786,40 +758,24 @@ function cm_bit_rol(num, cnt)
   return (num << cnt) | (num >>> (32 - cnt));
 }
 
-function cmCreatePageviewTag(pageID, searchString, categoryID, searchResults, respondentID, attributes) {
+function cmCreatePageviewTag(pageID, searchString, categoryID, searchResults, respondentID, attributes, extraFields) {
 	if (pageID == null) { pageID = cmGetDefaultPageID(); }
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}	
 	categoryID = CM_StripIllegals(categoryID);
-	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"se",searchString,"sr",searchResults,"cm_exAttr",cm_exAttr,"pv1",respondentID]);
+	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"se",searchString,"sr",searchResults,"cmAttributes",attributes,"cmExtraFields",extraFields,"pv1",respondentID]);
 }
 
-function cmCreateManualPageviewTag(pageID, categoryID,DestinationURL,ReferringURL,searchTerm,attributes) {
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}
+function cmCreateManualPageviewTag(pageID, categoryID,DestinationURL,ReferringURL,searchTerm,attributes, searchResults, extraFields) {
 	categoryID = CM_StripIllegals(categoryID);
-	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"ul",DestinationURL,"rf",ReferringURL,"se",searchTerm,"cm_exAttr",cm_exAttr]);
+	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"ul",DestinationURL,"rf",ReferringURL,"se",searchTerm,"sr",searchResults,"cmAttributes",attributes,"cmExtraFields",extraFields]);
 }
 
-function cmCreateTechPropsTag(pageID, categoryID,attributes) {
-	if(pageID == null) { pageID = cmGetDefaultPageID(); }
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}	
+function cmCreateTechPropsTag(pageID, categoryID,attributes, extraFields) {
+	if(pageID == null) { pageID = cmGetDefaultPageID(); }	
 	categoryID = CM_StripIllegals(categoryID);
-	cmMakeTag(["tid","6","pi",pageID,"cg",categoryID,"pc","Y","cm_exAttr",cm_exAttr]);
+	cmMakeTag(["tid","6","pi",pageID,"cg",categoryID,"pc","Y","cmAttributes",attributes,"cmExtraFields",extraFields]);
 }
 
 function cmCreateProductviewTag(productID, productName, categoryID, totalReviewCount, avgRating, ratingsOnlyRV, buyAgainPerc,expressProduct,crossSell, searchString, searchResults,attributes) {
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}
 
 	productName = CM_StripIllegals(productName);
 	categoryID = CM_StripIllegals(categoryID);
@@ -834,7 +790,7 @@ function cmCreateProductviewTag(productID, productName, categoryID, totalReviewC
 	else {
 		productPageID = "PRODUCT: " + productName + " (" + productID + ")"; }
 	
-	cmMakeTag(["tid","5","pi",productPageID,"pr",productID,"pm",productName,"cg",categoryID,"se",searchString,"sr",searchResults,"pc",createPageview,"cm_vc",cmExtractParameter("cm_vc",document.location.href),"cm_exAttr",cm_exAttr]);
+	cmMakeTag(["tid","5","pi",productPageID,"pr",productID,"pm",productName,"cg",categoryID,"se",searchString,"sr",searchResults,"pc",createPageview,"cm_vc",cmExtractParameter("cm_vc",document.location.href),"cmAttributes",attributes]);
 
 	if (totalReviewCount || avgRating){
 		cmMakeTag(["tid","7","li","10300","ps1",productID,"ps2",productName,"ps3",categoryID,"ps4",totalReviewCount,"ps5",avgRating,"ps6",ratingsOnlyRV,"ps7",buyAgainPerc]);
@@ -853,13 +809,12 @@ function cmCreateProductviewTag(productID, productName, categoryID, totalReviewC
  * subscribe		: required for Newsletters. Either "Y" or "N"
  *
  */
-function cmCreateRegistrationTag(customerID, customerEmail, customerCity,
-				customerState, customerZIP, newsletterName, subscribe, customerCountry, attributes) {
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","2","cd",customerID,"em",customerEmail,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cy",customerCountry,"cm_exAttr",cm_exAttr,"nl",newsletterName,"sd",subscribe]);
+function cmCreateRegistrationTag(customerID, customerEmail, customerCity, customerState, customerZIP, newsletterName, subscribe, customerCountry, attributes) {
+	cmMakeTag(["tid","2","cd",customerID,"em",customerEmail,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cy",customerCountry,"cmAttributes",attributes,"nl",newsletterName,"sd",subscribe]);
+}
+
+function cmCreateCustomTag(lineNumber, extraFields) {
+    cmMakeTag(["tid","7","li",lineNumber,"cmExtraFields",extraFields]);
 }
 
 //CUSTOM FUNCTION - for ForeSee Integration

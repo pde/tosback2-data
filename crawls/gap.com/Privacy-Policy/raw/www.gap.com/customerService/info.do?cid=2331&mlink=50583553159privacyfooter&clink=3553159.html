@@ -977,7 +977,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "01/19/2013 08:13 AM",
+            DATE_IN_USE: "01/23/2013 08:11 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -5749,165 +5749,6 @@ if (location.hostname.indexOf(".app.gidapps.com") != -1) {
 
 
 <!-- container 10 -->
-<!-- BEGIN Content Item File: /content/0005/477/406/cn5477406.html -->
-
-<script type="text/javascript">
-//////////////////////////////////////////////////
-///////  Finds in Store A/B test  - GOL 09.12.12 ///////////////
-/////// jim kwak  /////////////
-//////////////////////////////////////////////////
-var UniversalCookieCutter0723 = Class.create();
-UniversalCookieCutter0723.prototype = {
-	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-		this.EvarToUse = theEvar != "" ? theEvar : false;
-		this.CookieVariableName = CookieVarName;
-		this.CookieUsed = CookieUsedName;
-		this.CookieValueBase = CookieValueBase;
-		this.SegBreakdown = SegmentBreakdown.split("-");
-		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.QuickSegment = '';
-		this.piperlimeException = plExcept;
-		this.userNeedsSync = false;
-		this.ForcedModeBase = ForcedModeBaseName;
-		this.ModeArrayIndex = this.SegBreakdown.length;
-		this.modeArray = new Array();
-		this.modeArray[0] = "a";
-		this.modeArray[1] = "b";
-		this.modeArray[2] = "c";
-		this.modeArray[3] = "d";
-		this.modeArray[4] = "e";
-		this.modeArray[5] = "f";
-		this.modeArray[6] = "g";
-		
-		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-			this.forcedMode();
-		}else{
-			this.cookieScanner();
-		}
-	},
-
-	forcedMode:function() {
-		for (i = 0; i < this.ModeArrayIndex; i++) {
-			if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-
-		userNeedsSync = true;
-	},
-
-	cookieScanner:function() {
-		if (this.DoesTheCookieExist) {
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.RetrievedCookieValue);
-			}
-
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				}
-			}
-		} else {
-			this.tagManager();
-		}
-	},
-
-	tagManager:function() {
-		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-		this.FloorThreshold = 0;
-		this.TopThreshold = 0;
-		
-		for (i = 0; i < this.ModeArrayIndex; i++){
-			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-				break;
-			} else {
-				this.FloorThreshold = this.TopThreshold;
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-	},
-	
-	setABTestVariable: function(setValue) {
-		thisEvar = 'eVar' + this.EvarToUse;
-		ABTestVariables[thisEvar] = setValue;
-	}
-};
-/* /browse/division.do?cid=5001&forcedModeFIST=c */	
-var promoCookieCutter = new UniversalCookieCutter0723("1031REALFindInStoreAB","mktUniversalPersist","1031REALFindInStoreAB_SEG","forcedModeFIST","100-0-0","8","none");
-
-	function VolControlABTestMain() {
-
-		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "1031REALFindInStoreAB");
-		
-		//SEGA &forcedModeFIST=a
-		if( VolControlSegment == "1031REALFindInStoreAB_SEGA" ) {
-			if ($('findInStoreTabWindow')){
-			$('findInStoreTabWindow').setStyle({display: 'block'});
-			}
-		}
-				
-		
-		//SEGB &forcedModeFIST=b
-		if( VolControlSegment == "1031REALFindInStoreAB_SEGB" ) {
-			/*
-			if ($('findInStoreTabWindow')){
-			$('findInStoreTabWindow').setStyle({display: 'block'}); 
-			}
-			
-			// observe for new window
-			
-			if ($('findInStoreButton')){
-			 $('findInStoreButton').observe('click', function (event) {
-				
-				setTimeout(function(){if ($('surveyLink')){
-					var surveyLinkHTML = '<p style="padding-top:5px; font-size:11px;">Please <a href="https://websiteinsiders.com/survey/html.pro?ID=43" target="_new">complete a short survey</a> so we can make improvements to this new (BETA) feature.</p>';
-					$('surveyLink').innerHTML = surveyLinkHTML;
-				}},1000);
-			
-
-
-			});
-			}
-			
-			*/
-			
-		}
-
-		//SEGC &forcedModeFIST=c
-		if( VolControlSegment == "1031REALFindInStoreAB_SEGC" ) {
-			//do nothing
-		}
-
-	}//end
-
-
-
-if (location.pathname == "/browse/product.do") {	
-	Event.observe(window, "load", function() {
-		VolControlABTestMain();
-	});
-}	
-</script>
-
-
-
-<!-- END Content Item File: /content/0005/477/406/cn5477406.html -->
 
 
 
@@ -7034,13 +6875,13 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/019/882/cn6019882.html -->
-<div id="contentItemContainer10000395" class="6019882" >
+    	<!-- BEGIN Content Item File: /content/0006/036/866/cn6036866.html -->
+<div id="contentItemContainer10000395" class="6036866" >
 
 <style type="text/css">
 #globalBanner {
-	width: 638px;
-	height: 64px;
+	width: 463px;
+	height: 63px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
@@ -7091,18 +6932,17 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/019/882/assets/011713_ALL_MLK_GB_US.png" alt="Online: 30% off your purchase. In stores: up to 40% off select styles. Ends 1/21. Enter GAPDEAL" title="Online: 30% off your purchase. In stores: up to 40% off select styles. Ends 1/21. Enter GAPDEAL" usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/036/866/assets/012313_ALL_countdownpromo_GB_US.png" alt="Shop early & save more. 35% off today! Online only. Enter GAPTREAT" title="Shop early & save more. 35% off today! Online only. Enter GAPTREAT" usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="457,4,638,64" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/019/882/assets/legal.html" data-jbox-width="500" data-jbox-height="340">
-			<area class="noHideDisruptor" shape="rect" coords="0,4,638,64" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/019/882/assets/legal.html" data-jbox-width="500" data-jbox-height="340">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,14,463,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/036/866/assets/legal.html" data-jbox-width="500" data-jbox-height="220">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/019/882/assets/011713_ALL_MLK_DISR_US.jpg" alt="Online: 30% off your purchase. In stores: up to 40% off select styles. Ends 1/21. Enter GAPDEAL" title="Online: 30% off your purchase. In stores: up to 40% off select styles. Ends 1/21. Enter GAPDEAL" usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/036/866/assets/012313_ALL_countdownpromo_DISR_US.gif" alt="Shop early & save more. 35% off today! Online only. Enter GAPTREAT" title="Shop early & save more. 35% off today! Online only. Enter GAPTREAT" usemap="#disruptorMap">
 		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/019/882/assets/legal.html" data-jbox-width="500" data-jbox-height="340" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/036/866/assets/legal.html" data-jbox-width="500" data-jbox-height="220" alt="click for details">
         </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -7110,7 +6950,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('011713_GB');
+	globalBannerDisruptor.init('012313_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7231,7 +7071,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/019/882/cn6019882.html -->
+<!-- END Content Item File: /content/0006/036/866/cn6036866.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8432,7 +8272,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6019882,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6036866,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>

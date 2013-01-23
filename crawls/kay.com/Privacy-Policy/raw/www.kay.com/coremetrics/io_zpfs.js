@@ -585,6 +585,8 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var ratings = rec_attributes[ii][4];
 				var style = rec_attributes[ii][5];
 				var isModelThree = false;
+				var storeId = 10101;
+				var startingAt = "";
 				
 				if (style && style != rec_prod_id) {
 					isModelThree = true;
@@ -603,6 +605,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var selected_href = "";
 				if (isModelThree) {
 					selected_href = "/personalizedProduct|" + storeId + "|" + catalogId + "|"+ langId + "||||||||||" + rec_prod_id.replace(style, "") + "|" + style;
+					startingAt = "Starting at";
 				}
 				else {
 					selected_href = "/" + "product1|" + storeId + "|" + catalogId + "|" + langId + "|" + rec_prod_id + "|" + topCatId + "|" + bcCatIds + "||||" + zone + "|" + zone;  // href for link
@@ -655,7 +658,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				
 				lines.push("<a href='" + selected_href + "'>" + imageAlt + "</a>");
 				
-				lines.push("<p class='price'>$" + parseFloat(price).toFixed(2) + "</p>");
+				lines.push("<p class='price'>" + startingAt + " $" + parseFloat(price).toFixed(2) + "</p>");
 				
 				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews'>" + 
 						"<img src='" + ratingImg + "'>"+ "</a></span></div>");
@@ -721,6 +724,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var ratings = rec_attributes[ii][4];
 				var style = rec_attributes[ii][5];
 				var isModelThree = false;
+				var storeId = 10101;
 				
 				if (style && style != rec_prod_id) {
 					isModelThree = true;

@@ -1,0 +1,102 @@
+function swapOnMouseOver (img){
+	img.src=img.src.replace("_off", "_on");
+}
+
+function swapOnMouseOut (img){
+	img.src=img.src.replace("_on", "_off");
+}
+
+(function($) {
+	var cache = [];
+	// Arguments are image paths relative to the current page.
+	$.preLoadImages = function() {
+		var args_len = arguments.length;
+		for (var i = args_len; i--;) {
+			var cacheImage = document.createElement('img');
+			cacheImage.src = arguments[i];
+			cache.push(cacheImage);
+		}
+	}
+})(jQuery)
+
+$.preLoadImages('http://cdn.thomasnet.com/images/logos/ThomasNet_com_logo.png', 'http://cdn.thomasnet.com/images/header/bg.png', 'http://cdn.thomasnet.com/images/buttons/search_button.png', 'http://cdn.thomasnet.com/images/header/searchtabs-supp.png');
+
+$(document).ready(function(){
+	$(".lbflex").colorbox();
+	$(".lblogin").colorbox({width:270, height:275, iframe:true});
+	$(".lbpreview").colorbox({width:450, height:550, iframe:true});
+	$(".lbcontact").colorbox({width:400, height:650, iframe:true});
+	$(".lbchallenge").colorbox({width:550, height:550, iframe:true});
+	$(".lbsuppliers").colorbox({width:800, height:550, iframe:true});
+	$(".lbsmall").colorbox({width:425, height:250, iframe:true});
+	$(".lbmedium").colorbox({width:550, height:325, iframe:true});
+	$(".lblarge").colorbox({width:800, height:550, iframe:true});
+	$(".lbxlarge").colorbox({width:950, height:650, iframe:true});
+	$(".imgrollover").hover(function(){swapOnMouseOver(this)},function(){swapOnMouseOut(this)});
+	$("table.psgrid td.data div.wrapper div[class^=psimg]").hover(function () {
+		if($('#more'+this.id).length!=0){ $('#more'+this.id).show(); }
+	}, function () {
+		if($('#more'+this.id).length!=0){ $('#more'+this.id).hide(); }
+	});
+
+	$("div#rsltlist div.wrapper div[class^=rsltimg]").hover(function () { 
+		if($('#more'+this.id).length!=0){ $('#more'+this.id).show(); }
+	}, function () {
+		if($('#more'+this.id).length!=0){ $('#more'+this.id).hide(); }
+	});
+	
+	$("a[linkimg]").hover(function(){
+		var imgid = $(this).attr('linkimg');
+		var img	= document.getElementById(imgid);
+		if(img)	{
+			var curimg	= img.src;
+			var newimg	= curimg.replace('_off','_on');
+			if(newimg==curimg)	{ newimg = curimg.replace('_on','_off'); }
+			img.src	= newimg;
+		}
+	});
+
+	$('.noimg200').error(function (){ this.src = 'http://cdn.thomasnet.com/images/images/no_image_available_200x150.jpg'; });
+	$('.noimg165').error(function (){ this.src = 'http://cdn.thomasnet.com/images/images/no_image_available_165.jpg'; });
+	$('.noimg125').error(function (){ this.src = 'http://cdn.thomasnet.com/images/images/no_image_available_125x125.jpg'; });
+	$('.noimg120').error(function (){ this.src = 'http://cdn.thomasnet.com/images/images/no_image_available_120x90.jpg'; });
+	$('.noimg90').error(function (){ this.src = 'http://cdn.thomasnet.com/images/images/no_image_available_90x70.jpg'; });
+
+	$('#resultcontainer .resultdata').hover(
+		function () { $(this).addClass("hlrslt"); },
+		function () { $(this).removeClass("hlrslt"); }
+	);
+});
+
+$(window).load(function() {
+   $("img.noimg165").each(function(){
+      var image = $(this);
+      if(image.context.naturalWidth == 0 || image.readyState == 'uninitialized'){   
+         $(image).unbind("error").attr("src", "http://cdn.thomasnet.com/images/images/no_image_available_165.jpg");
+      }
+   });
+   $("img.noimg200").each(function(){
+      var image = $(this);
+      if(image.context.naturalWidth == 0 || image.readyState == 'uninitialized'){   
+         $(image).unbind("error").attr("src", "http://cdn.thomasnet.com/images/images/no_image_available_200x150.jpg");
+      }
+   });
+   $("img.noimg125").each(function(){
+      var image = $(this);
+      if(image.context.naturalWidth == 0 || image.readyState == 'uninitialized'){   
+         $(image).unbind("error").attr("src", "http://cdn.thomasnet.com/images/images/no_image_available_125x125.jpg");
+      }
+   });
+   $("img.noimg120").each(function(){
+      var image = $(this);
+      if(image.context.naturalWidth == 0 || image.readyState == 'uninitialized'){   
+         $(image).unbind("error").attr("src", "http://cdn.thomasnet.com/images/images/no_image_available_120x90.jpg");
+      }
+   });
+   $("img.noimg90").each(function(){
+      var image = $(this);
+      if(image.context.naturalWidth == 0 || image.readyState == 'uninitialized'){   
+         $(image).unbind("error").attr("src", "http://cdn.thomasnet.com/images/images/no_image_available_90x70.jpg");
+      }
+   });
+});

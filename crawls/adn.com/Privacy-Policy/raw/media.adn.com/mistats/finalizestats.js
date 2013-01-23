@@ -238,7 +238,7 @@ else {
 if (window != top)
    s.prop20 = 'IFRM|' + s.prop20;
 
-if (s.pageName.match(/Vendor: HomeScape/i))
+if ((mistats.bizunit || '').match(/MAC/))
 {
 	s.channel  = 'D=c16+": "+c17';
    s.pageURL = 'D=c1+c40+c41';
@@ -645,11 +645,11 @@ if (!location.hostname.match(/dealsaver/i))
 }
 
 // Inject content tracking script -- 2011/12/19 JG
-if (typeof mistats.tyntid !== 'undefined')
+if (mistats.tyntid && !location.hostname.match(/adperfect/i))
 {
    if (!mistats.mediahostname)
       mistats.mediahostname = (mistats.sitefile && mistats.sitefile.match(/https*\W+[^\/]+/i)) ?
-         mistats.sitefile.match(/https*\W+[^\/]+/i)[0] : 'http://www.mcclatchyinteractive.com';
+         mistats.sitefile.match(/https*\W+[^\/]+/i)[0] : 'http://media.mcclatchyinteractive.com';
    (new scriptLoader()).injectScript(mistats.mediahostname + '/mistats/mi_content_tracker.js');
 }
 

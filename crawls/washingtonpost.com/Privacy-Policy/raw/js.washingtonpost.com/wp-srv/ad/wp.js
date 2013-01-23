@@ -64,9 +64,9 @@
     }
 
     //19882 - Criteo Implementation
-    /*&if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
+    if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
       wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/criteo.js');
-    }*/
+    }
 
   }
 

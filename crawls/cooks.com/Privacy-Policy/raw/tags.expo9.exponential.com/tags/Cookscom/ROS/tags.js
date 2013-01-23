@@ -758,7 +758,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 		var     p = this;
 		var	deviceName = navigator.userAgent.match(/iPad|iPhone/i)[0].toLowerCase();
 		var	snackBannerSize = p.snackBarSizeMap[deviceName];
-		var	snackBarClose = false;
+		var	snackBarClose = true;
 		var	content;
 
 		window.top.isSnackBarServedOnPage = true;
