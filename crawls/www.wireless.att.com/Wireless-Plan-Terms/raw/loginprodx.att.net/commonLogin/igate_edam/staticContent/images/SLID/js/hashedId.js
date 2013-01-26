@@ -253,7 +253,7 @@ Utf8.decode = function(strUtf) {
 
 	 	    var pixel = new Image();
 	 	    
-	 	    pixel.src ='https://attadworks.turn.com/r/dd/id/L21rdC8xMDAvY2lkLzEwMDAwNjc2MjIvdC8y/cat/dpuid/'+gHash;
+	 	    pixel.src ='https://attadworks.turn.com/r/dd/id/L21rdC8xMDAvY2lkLzEwMDAwNjc2MjIvdC8y/dpuid/'+gHash;
 
 	 	}
 	}

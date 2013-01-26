@@ -254,7 +254,7 @@ var Class = (function() {
 	}
 
 	// Handles "data-method" on links such as:
-	// <a href="/en_US/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+	// <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
 	function handleMethod(link) {
 		var href = link.attr('href'),
 			method = link.data('method'),
@@ -1114,23 +1114,30 @@ window.log = function() {
 // require jquery_ujs - use this when we switch to 3.1
 //
 (function() {
+
   $.TNF || ($.TNF = {
     BRAND: {}
   });
+
 }).call(this);
 (function() {
   var $, StartupManager;
+
   $ = jQuery;
+
   StartupManager = (function() {
+
     function StartupManager() {
       this.controllers = [];
     }
+
     StartupManager.prototype.registerController = function(controller) {
       return this.controllers.push({
         controller: controller,
         selector: controller.selector
       });
     };
+
     StartupManager.prototype.init = function() {
       var elements, startupController, _i, _len, _ref, _results;
       _ref = this.controllers;
@@ -1138,13 +1145,21 @@ window.log = function() {
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         startupController = _ref[_i];
         elements = $(startupController.selector);
-        _results.push(elements.length > 0 ? startupController['controller'].bootstrap(elements) : void 0);
+        if (elements.length > 0) {
+          _results.push(startupController['controller'].bootstrap(elements));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };
+
     return StartupManager;
+
   })();
+
   $.TNF.BRAND.startupManager = new StartupManager();
+
 }).call(this);
 (function(i){var n=function(){var f=function(){};f.prototype={otag:"{{",ctag:"}}",pragmas:{},buffer:[],pragmas_implemented:{"IMPLICIT-ITERATOR":true},context:{},render:function(a,b,c,d){if(!d){this.context=b;this.buffer=[]}if(!this.includes("",a))if(d)return a;else{this.send(a);return}a=this.render_pragmas(a);a=this.render_section(a,b,c);if(d)return this.render_tags(a,b,c,d);this.render_tags(a,b,c,d)},send:function(a){a!=""&&this.buffer.push(a)},render_pragmas:function(a){if(!this.includes("%",a))return a;
 var b=this;return a.replace(RegExp(this.otag+"%([\\w-]+) ?([\\w]+=[\\w]+)?"+this.ctag),function(c,d,e){if(!b.pragmas_implemented[d])throw{message:"This implementation of mustache doesn't understand the '"+d+"' pragma"};b.pragmas[d]={};if(e){c=e.split("=");b.pragmas[d][c[0]]=c[1]}return""})},render_partial:function(a,b,c){a=this.trim(a);if(!c||c[a]===undefined)throw{message:"unknown_partial '"+a+"'"};if(typeof b[a]!="object")return this.render(c[a],b,c,true);return this.render(c[a],b[a],c,true)},render_section:function(a,
@@ -1429,6 +1444,7 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
 })(jQuery);
 (function() {
   var locale, localizations;
+
   localizations = {
     "en-US": {
       "activity": {
@@ -2439,11 +2455,15 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
       }
     }
   };
+
   locale = $('body').attr('data-locale');
+
   $.extend(TNF.lang, localizations[locale]);
+
 }).call(this);
 (function() {
   var data, locale;
+
   data = {
     'en-US': {
       webid: {
@@ -2479,8 +2499,11 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
       locale: 'fr-CA'
     }
   };
+
   locale = $('body').attr('data-locale');
+
   $.TNF.BRAND.BoldChat = data[locale];
+
 }).call(this);
 (function($) {
 
@@ -2535,19 +2558,27 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
 }(jQuery));
 (function() {
   var Utils;
+
   Utils = (function() {
+
     function Utils() {}
+
     Utils.parseDate = function(date) {
       var date_string;
       date_string = date.replace(/-/g, '/');
       return new Date(date_string);
     };
+
     Utils.iosDevice = function() {
       return navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || TNF.ipad;
     };
+
     return Utils;
+
   })();
+
   $.TNF.BRAND.Utils = Utils;
+
 }).call(this);
 (function($) {
 
@@ -3666,49 +3697,55 @@ $.fn.tnfBrandItemBuilder = function () {
 }(jQuery));
 (function() {
   var Locale;
+
   Locale = (function() {
     var instance;
+
     function Locale() {}
+
     instance = null;
+
     Locale.singleton = function() {
       if (!(instance != null)) {
         instance = new this;
       }
       return instance;
     };
+
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T14:09:27-06:00",
+        "created_at": "2011-08-18T13:09:27-07:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T14:24:13-06:00"
+        "updated_at": "2011-09-21T13:24:13-07:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T14:31:30-07:00",
+        "created_at": "2011-03-04T13:31:30-08:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T12:12:06-06:00"
+        "updated_at": "2011-08-19T11:12:06-07:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T14:09:27-06:00",
+        "created_at": "2011-08-18T13:09:27-07:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T16:11:13-06:00"
+        "updated_at": "2011-09-23T15:11:13-07:00"
       }
     ];
+
     Locale.prototype.current = function() {
       var currentLocale, locale;
       currentLocale = $('html').attr('lang');
@@ -3725,29 +3762,33 @@ $.fn.tnfBrandItemBuilder = function () {
         return _results;
       }).call(this))[0];
     };
+
     Locale.prototype.storeIdentifier = function() {
       return this.current()['store_identifier'];
     };
+
     Locale.prototype.catalogIdentifier = function() {
       return this.current()['catalog_identifier'];
     };
+
     Locale.prototype.langIdentifier = function() {
       return this.current()['lang_identifier'];
     };
+
     return Locale;
+
   })();
+
   $(function() {
     return $.TNF.BRAND.Locale = Locale.singleton();
   });
+
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __indexOf = Array.prototype.indexOf || function(item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (this[i] === item) return i;
-    }
-    return -1;
-  };
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
   $.TNF.BRAND.GeoContentReplacement = (function() {
+
     function GeoContentReplacement(data, container) {
       this.container = container;
       this.writeHeaderTopRightText(data["header-top-right-text"]);
@@ -3756,24 +3797,33 @@ $.fn.tnfBrandItemBuilder = function () {
       this.writeProductName(data["product-name"]);
       this.writeProductLinkURL(data["product-url"]);
     }
+
     GeoContentReplacement.prototype.writeHeaderTopRightText = function(text) {
       return this.container.find(".col-headers a").text(text);
     };
+
     GeoContentReplacement.prototype.writeProductCTAText = function(text) {
       return this.container.find("a.box .rollover .cta").text(text);
     };
+
     GeoContentReplacement.prototype.writeProductImageURL = function(url) {
       return this.container.find("a.box img").attr("src", url);
     };
+
     GeoContentReplacement.prototype.writeProductName = function(text) {
       return this.container.find("a.box .rollover h3").text(text);
     };
+
     GeoContentReplacement.prototype.writeProductLinkURL = function(url) {
       return this.container.find("a.box").attr("href", url);
     };
+
     return GeoContentReplacement;
+
   })();
+
   $.TNF.BRAND.GeoContentableProductGrid = (function() {
+
     function GeoContentableProductGrid(el) {
       this.wrapper = $(el);
       this.geoData = this.wrapper.data("location-specific-grids");
@@ -3781,9 +3831,11 @@ $.fn.tnfBrandItemBuilder = function () {
         this.substituteDefaultContent();
       }
     }
+
     GeoContentableProductGrid.prototype.contentForState = function() {
       return this.geoData[this.region()];
     };
+
     GeoContentableProductGrid.prototype.state = function() {
       if (this.overrideParameter() != null) {
         return this.overrideParameter();
@@ -3791,6 +3843,7 @@ $.fn.tnfBrandItemBuilder = function () {
         return $.cookie("Edgescape-State");
       }
     };
+
     GeoContentableProductGrid.prototype.overrideParameter = function() {
       var hash, hashes, pair, vars, _i, _len;
       vars = [];
@@ -3803,15 +3856,18 @@ $.fn.tnfBrandItemBuilder = function () {
       }
       return vars["overrideEdgescapeState"];
     };
+
     GeoContentableProductGrid.prototype.substituteDefaultContent = function() {
-      return this.wrapper.find("> div").each(__bind(function(index, el) {
+      var _this = this;
+      return this.wrapper.find("> div").each(function(index, el) {
         var data;
-        data = this.contentForState()[index];
+        data = _this.contentForState()[index];
         if (data != null) {
           return new $.TNF.BRAND.GeoContentReplacement(data, $(el));
         }
-      }, this));
+      });
     };
+
     GeoContentableProductGrid.prototype.region = function() {
       var region, regions, _ref, _results;
       regions = {
@@ -3828,8 +3884,11 @@ $.fn.tnfBrandItemBuilder = function () {
       }
       return _results;
     };
+
     return GeoContentableProductGrid;
+
   })();
+
 }).call(this);
 // jquery.tweet.js - See http://tweet.seaofclouds.com/ or https://github.com/seaofclouds/tweet for more info
 // Copyright (c) 2008-2011 Todd Matthews & Steve Purcell
@@ -3899,10 +3958,10 @@ $.fn.tnfBrandItemBuilder = function () {
     }
 
     $.fn.extend({
-      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/en_US/$2\">$2</a>"),
+      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/$2\">$2</a>"),
       // Support various latin1 (\u00**) and arabic (\u06**) alphanumeric chars
       linkHash: replacer(/(?:^| )[\#]+([\w\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0600-\u06ff]+)/gi,
-                         ' <a href="http://'+s.twitter_search_url+'/en_US/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
+                         ' <a href="http://'+s.twitter_search_url+'/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
       capAwesome: replacer(/\b(awesome)\b/gi, '<span class="awesome">$1</span>'),
       capEpic: replacer(/\b(epic)\b/gi, '<span class="epic">$1</span>'),
       makeHeart: replacer(/(&lt;)+[3]/gi, "<tt class='heart'>&#x2665;</tt>")
@@ -4071,7 +4130,9 @@ $.fn.tnfBrandItemBuilder = function () {
 })(jQuery);
 (function() {
   var TwitterSnippet;
+
   TwitterSnippet = (function() {
+
     function TwitterSnippet() {
       var element, twitter_usernames;
       element = $('.tweet-container');
@@ -4083,39 +4144,56 @@ $.fn.tnfBrandItemBuilder = function () {
         template: "<a href='http://twitter.com/{screen_name}'>{screen_name}</a> {text} <div class='twitter-intents'>{time} {reply_action} {retweet_action} {favorite_action}</div>"
       });
     }
+
     return TwitterSnippet;
+
   })();
+
   $.TNF.BRAND.TwitterSnippet = TwitterSnippet;
+
 }).call(this);
 (function() {
-  var RaceNav;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var RaceNav,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   RaceNav = (function() {
+
     function RaceNav() {
       this.redirect = __bind(this.redirect, this);
-      this.redirectToVal = __bind(this.redirectToVal, this);      this.element = $('#race_event');
+
+      this.redirectToVal = __bind(this.redirectToVal, this);
+      this.element = $('#race_event');
       this.setupObservers();
     }
+
     RaceNav.prototype.setupObservers = function() {
       return this.element.change(this.redirectToVal);
     };
+
     RaceNav.prototype.redirectToVal = function() {
       var path;
       path = this.element.val();
       return this.redirect(path);
     };
+
     RaceNav.prototype.redirect = function(path) {
       if (path[0] === '/') {
         return window.location.replace(path);
       }
     };
+
     return RaceNav;
+
   })();
+
   $.TNF.BRAND.RaceNav = RaceNav;
+
 }).call(this);
 (function() {
   var RaceCountdown;
+
   RaceCountdown = (function() {
+
     function RaceCountdown(element) {
       if ($(element).length === 0) {
         return;
@@ -4125,6 +4203,7 @@ $.fn.tnfBrandItemBuilder = function () {
       this.dayElement = $('.race-units', this.element);
       this.applyCountdown();
     }
+
     RaceCountdown.prototype.applyCountdown = function() {
       var dayDelta, oneDay;
       oneDay = 1000 * 60 * 60 * 24;
@@ -4136,19 +4215,27 @@ $.fn.tnfBrandItemBuilder = function () {
         return this.dayElement.text('day');
       }
     };
+
     RaceCountdown.prototype.today = function() {
       return new Date();
     };
+
     RaceCountdown.prototype.raceDate = function() {
       return new Date(this.element.attr('title'));
     };
+
     return RaceCountdown;
+
   })();
+
   $.TNF.BRAND.RaceCountdown = RaceCountdown;
+
 }).call(this);
 (function() {
   var Rating;
+
   Rating = (function() {
+
     function Rating(element) {
       var ratingWidth;
       this.element = $(element);
@@ -4160,23 +4247,32 @@ $.fn.tnfBrandItemBuilder = function () {
       $('.rating-container', this.element).append("<span class='rating-scope'>out of 5</span>");
       $('.rating-container', this.element).append("<span style='width: " + ratingWidth + "px' class='rating-value'>" + this.rating + "</span>");
     }
+
     return Rating;
+
   })();
+
   $.TNF.BRAND.Rating = Rating;
+
 }).call(this);
 (function() {
-  var RaceEventShuffler;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var RaceEventShuffler,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   RaceEventShuffler = (function() {
+
     function RaceEventShuffler(element) {
-      this.oldEventBouncer = __bind(this.oldEventBouncer, this);      this.element = element;
+      this.oldEventBouncer = __bind(this.oldEventBouncer, this);
+      this.element = element;
       this.old_race_events = [];
       this.bounceOldEvents();
       this.appendOldEvents();
     }
+
     RaceEventShuffler.prototype.bounceOldEvents = function() {
       return this.raceEvents().each(this.oldEventBouncer);
     };
+
     RaceEventShuffler.prototype.oldEventBouncer = function(i, race_event) {
       var dayDelta, end_date, oneDay;
       end_date = $.TNF.BRAND.Utils.parseDate($(race_event).attr('data-end-date'));
@@ -4187,27 +4283,37 @@ $.fn.tnfBrandItemBuilder = function () {
         return $(race_event).remove();
       }
     };
+
     RaceEventShuffler.prototype.appendOldEvents = function() {
       this.raceEvents().removeClass('gutter-03');
       this.lastRaceEvent().after(this.old_race_events);
       return this.lastRaceEvent().addClass('gutter-03');
     };
+
     RaceEventShuffler.prototype.lastRaceEvent = function() {
       return this.raceEvents().last();
     };
+
     RaceEventShuffler.prototype.raceEvents = function() {
       return this.race_events = this.element.find('.race-event');
     };
+
     RaceEventShuffler.prototype.today = function() {
       return new Date();
     };
+
     return RaceEventShuffler;
+
   })();
+
   $.TNF.BRAND.RaceEventShuffler = RaceEventShuffler;
+
 }).call(this);
 (function() {
   var RegistrationButtonMonitor;
+
   RegistrationButtonMonitor = (function() {
+
     function RegistrationButtonMonitor(element) {
       this.element = element;
       this.end_date = this.element.parent().attr('data-end-date');
@@ -4215,6 +4321,7 @@ $.fn.tnfBrandItemBuilder = function () {
       this.dataResultsLink = this.element.parent().attr('data-results-link');
       this.processButton();
     }
+
     RegistrationButtonMonitor.prototype.processButton = function() {
       if (this.end_date != null) {
         this.parseDates();
@@ -4227,43 +4334,59 @@ $.fn.tnfBrandItemBuilder = function () {
         return this.convertToResultButton();
       }
     };
+
     RegistrationButtonMonitor.prototype.parseDates = function() {
       this.end_date = $.TNF.BRAND.Utils.parseDate(this.end_date);
       return this.deadline = $.TNF.BRAND.Utils.parseDate(this.deadline);
     };
+
     RegistrationButtonMonitor.prototype.disallowRegistration = function() {
       this.element.parent().find('.elite').remove();
       return this.element.replaceWith('<span class="closed">Registration Closed</span>');
     };
+
     RegistrationButtonMonitor.prototype.replaceWithResultButton = function() {
       this.element.parent().find('.elite').remove();
       return this.element.replaceWith('<a href="' + this.dataResultsLink + '">Results</a>');
     };
+
     RegistrationButtonMonitor.prototype.convertToResultButton = function() {
       return this.element.attr('href', this.dataResultsLink);
     };
+
     RegistrationButtonMonitor.prototype.today = function() {
       return new Date();
     };
+
     return RegistrationButtonMonitor;
+
   })();
+
   $.TNF.BRAND.RegistrationButtonMonitor = RegistrationButtonMonitor;
+
 }).call(this);
 (function() {
-  var $, ProductGridTabController;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var $, ProductGridTabController,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   $ = jQuery;
+
   ProductGridTabController = (function() {
+
     ProductGridTabController.singleton = function() {
       var _ref;
       return (_ref = this.instance) != null ? _ref : this.instance = new this;
     };
+
     function ProductGridTabController() {
       this.activateAnchor = __bind(this.activateAnchor, this);
-      this.activateGrid = __bind(this.activateGrid, this);      this.elements = [];
+
+      this.activateGrid = __bind(this.activateGrid, this);
+      this.elements = [];
       this.build();
       this.bindEvents();
     }
+
     ProductGridTabController.prototype.build = function() {
       var firstGrid;
       this.element = $('<div id="product-grid-tabs" class="row tab-box">\
@@ -4277,10 +4400,12 @@ $.fn.tnfBrandItemBuilder = function () {
       firstGrid.closest('.row').before(this.element);
       return this.add($("<div id='tabbed-product-grid-all' data-product-tab='All'>"));
     };
+
     ProductGridTabController.prototype.bindEvents = function() {
       $('#product-grid-tabs a').live('click', this.activateGrid);
       return this.element.bind('selected_product_grid', this.activateAnchor);
     };
+
     ProductGridTabController.prototype.add = function(element) {
       var anchor, id, name;
       id = element.attr('id').replace(/selected-/, '');
@@ -4289,6 +4414,7 @@ $.fn.tnfBrandItemBuilder = function () {
       this.element.find('ul').append(anchor);
       return this.elements.push(anchor);
     };
+
     ProductGridTabController.prototype.activate = function(target) {
       var anchor, item, targetItem, _i, _len, _ref;
       if (target === '') {
@@ -4307,10 +4433,12 @@ $.fn.tnfBrandItemBuilder = function () {
       anchor = targetItem.find('a');
       return this.select(anchor);
     };
+
     ProductGridTabController.prototype.activateGrid = function(event) {
       event.preventDefault();
       return this.select($(event.target));
     };
+
     ProductGridTabController.prototype.activateAnchor = function(event, anchor) {
       var element, _i, _len, _ref;
       _ref = this.elements;
@@ -4320,22 +4448,32 @@ $.fn.tnfBrandItemBuilder = function () {
       }
       return anchor.parent().addClass('active');
     };
+
     ProductGridTabController.prototype.activateFirst = function() {
       return this.select(this.elements[0].find('a'));
     };
+
     ProductGridTabController.prototype.select = function(anchor) {
       return this.element.trigger('selected_product_grid', [anchor]);
     };
+
     return ProductGridTabController;
+
   })();
+
   $.TNF.BRAND.ProductGridTabController = ProductGridTabController;
+
 }).call(this);
 (function() {
-  var $, ProductGridTabbed;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var $, ProductGridTabbed,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   $ = jQuery;
+
   ProductGridTabbed = (function() {
+
     ProductGridTabbed.selector = '.tabbed-product-grid';
+
     ProductGridTabbed.bootstrap = function(elements) {
       var hash, tabController;
       tabController = $.TNF.BRAND.ProductGridTabController.singleton();
@@ -4345,18 +4483,23 @@ $.fn.tnfBrandItemBuilder = function () {
       hash = $.uri(window.location.href).hash;
       return tabController.activate(hash);
     };
+
     function ProductGridTabbed(element) {
-      this.handleProductGridSelection = __bind(this.handleProductGridSelection, this);      this.element = $(element);
+      this.handleProductGridSelection = __bind(this.handleProductGridSelection, this);
+      this.element = $(element);
       this.tabController = $.TNF.BRAND.ProductGridTabController.singleton();
       this.build();
       this.bindEvents();
     }
+
     ProductGridTabbed.prototype.build = function() {
       return this.tabController.add(this.element);
     };
+
     ProductGridTabbed.prototype.bindEvents = function() {
       return $('body').bind('selected_product_grid', this.handleProductGridSelection);
     };
+
     ProductGridTabbed.prototype.handleProductGridSelection = function(event, anchor) {
       var hash, target;
       hash = anchor.attr('href').split('#')[1];
@@ -4368,12 +4511,15 @@ $.fn.tnfBrandItemBuilder = function () {
       }
       return this.updateHashTag(anchor);
     };
+
     ProductGridTabbed.prototype.show = function() {
       return this.element.show();
     };
+
     ProductGridTabbed.prototype.hide = function() {
       return this.element.hide();
     };
+
     ProductGridTabbed.prototype.updateHashTag = function(anchor) {
       var currentHashTag, full_url, hash, parts, url;
       currentHashTag = $.uri(window.location.href).hash;
@@ -4385,9 +4531,13 @@ $.fn.tnfBrandItemBuilder = function () {
         return window.location.href = "" + url + "#" + hash;
       }
     };
+
     return ProductGridTabbed;
+
   })();
+
   $.TNF.BRAND.startupManager.registerController(ProductGridTabbed);
+
 }).call(this);
 // jQuery.support.transition
 // to verify that CSS3 transition is supported (or any of its browser-specific implementations)
@@ -4398,33 +4548,42 @@ $.support.transition = (function(){
   return support; 
 })();
 (function() {
-  var DISABLED_CLASS_NAME, HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, OPEN_TAB_CLASS_NAME, SELECTION_EVENT, TabbedHeroGallery;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
-    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
-    function ctor() { this.constructor = child; }
-    ctor.prototype = parent.prototype;
-    child.prototype = new ctor;
-    child.__super__ = parent.prototype;
-    return child;
-  };
+  var DISABLED_CLASS_NAME, HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, OPEN_TAB_CLASS_NAME, SELECTION_EVENT, TabbedHeroGallery,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
   OPEN_TAB_CLASS_NAME = 'open';
+
   DISABLED_CLASS_NAME = 'disabled';
+
   SELECTION_EVENT = 'selected.TNF.herogallerytab';
+
   TabbedHeroGallery = (function() {
+
     TabbedHeroGallery.selector = '.tabbed-hero-gallery';
+
     TabbedHeroGallery.bootstrap = function(element) {
       return new this(element);
     };
+
     function TabbedHeroGallery(element) {
       var el, tabElements;
       this.element = element;
       this.closeUstream = __bind(this.closeUstream, this);
+
       this.embedUstream = __bind(this.embedUstream, this);
+
       this.resumeAutoRotation = __bind(this.resumeAutoRotation, this);
+
       this.pauseAutoRotation = __bind(this.pauseAutoRotation, this);
+
       this.stopAutoRotation = __bind(this.stopAutoRotation, this);
+
       this.rotate = __bind(this.rotate, this);
+
       this.addCallout = __bind(this.addCallout, this);
+
       tabElements = $('.side-tabs a', this.element);
       this.tabs = (function() {
         var _i, _len, _results;
@@ -4440,12 +4599,14 @@ $.support.transition = (function(){
       this.autoRotate();
       this.bindEvents();
     }
+
     TabbedHeroGallery.prototype.buildCallouts = function() {
       var callouts;
       callouts = this.element.find('.hero-gallery-callout');
       this.callouts = [];
       return callouts.each(this.addCallout);
     };
+
     TabbedHeroGallery.prototype.addCallout = function(index, el) {
       var callout;
       if (arguments.length === 1) {
@@ -4455,10 +4616,12 @@ $.support.transition = (function(){
       this.callouts.push(callout);
       return callout;
     };
+
     TabbedHeroGallery.prototype.autoRotate = function() {
       this.autoRotationPaused = false;
       return this.autoRotateInterval = setInterval(this.rotate, 7000);
     };
+
     TabbedHeroGallery.prototype.rotate = function() {
       var currentTabIndex, nextTab, nextTabIndex;
       if (!this.autoRotationPaused) {
@@ -4471,16 +4634,20 @@ $.support.transition = (function(){
         return nextTab.select();
       }
     };
+
     TabbedHeroGallery.prototype.stopAutoRotation = function() {
       clearInterval(this.autoRotateInterval);
       return this.autoRotateInterval = null;
     };
+
     TabbedHeroGallery.prototype.pauseAutoRotation = function() {
       return this.autoRotationPaused = true;
     };
+
     TabbedHeroGallery.prototype.resumeAutoRotation = function() {
       return this.autoRotationPaused = false;
     };
+
     TabbedHeroGallery.prototype.bindEvents = function() {
       this.element.bind('mouseover', this.pauseAutoRotation);
       this.element.bind('mouseleave', this.resumeAutoRotation);
@@ -4488,6 +4655,7 @@ $.support.transition = (function(){
       this.element.bind('embed_TNF_ustream', this.embedUstream);
       return this.element.bind('close_TNF_ustream', this.closeUstream);
     };
+
     TabbedHeroGallery.prototype.activeTab = function() {
       var tab;
       return ((function() {
@@ -4503,9 +4671,11 @@ $.support.transition = (function(){
         return _results;
       }).call(this))[0];
     };
+
     TabbedHeroGallery.prototype.embedUstream = function() {
       return this.activeTab().disable();
     };
+
     TabbedHeroGallery.prototype.closeUstream = function() {
       var tab, _i, _len, _ref, _results;
       _ref = this.tabs;
@@ -4516,18 +4686,25 @@ $.support.transition = (function(){
       }
       return _results;
     };
+
     return TabbedHeroGallery;
+
   })();
+
   HeroGalleryTab = (function() {
+
     function HeroGalleryTab(element) {
       this.element = element;
       this.select = __bind(this.select, this);
+
       this.renderStrategy = HeroGalleryTabRenderStrategy.factory(this.element);
       this.element.click(this.select);
     }
+
     HeroGalleryTab.prototype.isActive = function() {
       return this.element.hasClass(OPEN_TAB_CLASS_NAME);
     };
+
     HeroGalleryTab.prototype.select = function(event) {
       if (event != null) {
         event.preventDefault();
@@ -4535,18 +4712,26 @@ $.support.transition = (function(){
       this.element.trigger(SELECTION_EVENT, this.renderStrategy);
       return this.renderStrategy.select();
     };
+
     HeroGalleryTab.prototype.disable = function() {
       return this.renderStrategy.disable();
     };
+
     HeroGalleryTab.prototype.enable = function() {
       return this.renderStrategy.enable();
     };
+
     return HeroGalleryTab;
+
   })();
+
   HeroGalleryTabRenderStrategy = (function() {
     var CLASS_NAME, PANEL_CLASS_NAME;
+
     CLASS_NAME = 'open';
+
     PANEL_CLASS_NAME = 'shown';
+
     HeroGalleryTabRenderStrategy.factory = function(element) {
       if ($.support.transition) {
         return new HeroGalleryTabRenderStrategy(element);
@@ -4554,54 +4739,72 @@ $.support.transition = (function(){
         return new HeroGalleryTabJSRenderStrategy(element);
       }
     };
+
     function HeroGalleryTabRenderStrategy(element) {
       this.element = element;
       this.deselect = __bind(this.deselect, this);
+
       this.select = __bind(this.select, this);
+
       this.panel = $(this.element.attr('href'));
       this.element.closest('.side-tabs').bind(SELECTION_EVENT, this.deselect);
     }
+
     HeroGalleryTabRenderStrategy.prototype.select = function(event) {
       this.element.addClass(OPEN_TAB_CLASS_NAME);
       return this.panel.addClass(PANEL_CLASS_NAME);
     };
+
     HeroGalleryTabRenderStrategy.prototype.deselect = function() {
       this.element.removeClass(CLASS_NAME);
       return this.panel.removeClass(PANEL_CLASS_NAME);
     };
+
     HeroGalleryTabRenderStrategy.prototype.enable = function() {
       this.element.removeClass(DISABLED_CLASS_NAME);
       return this.panel.removeClass(DISABLED_CLASS_NAME);
     };
+
     HeroGalleryTabRenderStrategy.prototype.disable = function() {
       this.element.addClass(DISABLED_CLASS_NAME);
       return this.panel.addClass(DISABLED_CLASS_NAME);
     };
+
     return HeroGalleryTabRenderStrategy;
+
   })();
-  HeroGalleryTabJSRenderStrategy = (function() {
-    __extends(HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy);
+
+  HeroGalleryTabJSRenderStrategy = (function(_super) {
+
+    __extends(HeroGalleryTabJSRenderStrategy, _super);
+
     function HeroGalleryTabJSRenderStrategy() {
       this.deselect = __bind(this.deselect, this);
+
       this.select = __bind(this.select, this);
-      HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
+      return HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
     }
+
     HeroGalleryTabJSRenderStrategy.prototype.select = function(event) {
       this.showTab();
       return this.panel.fadeIn(400, this.constructor.__super__.select.bind(this));
     };
+
     HeroGalleryTabJSRenderStrategy.prototype.deselect = function(event) {
       this.collapseTab();
       return this.panel.fadeOut(400, this.constructor.__super__.deselect.bind(this));
     };
+
     HeroGalleryTabJSRenderStrategy.prototype.enable = function() {
       this.showTab();
       return this.panel.find('img, .hero-cta').fadeTo(400, 1, this.constructor.__super__.enable.bind(this));
     };
+
     HeroGalleryTabJSRenderStrategy.prototype.disable = function() {
       this.collapseTab();
       return this.panel.find('img, .hero-cta').fadeTo(400, 0, this.constructor.__super__.disable.bind(this));
     };
+
     HeroGalleryTabJSRenderStrategy.prototype.collapseTab = function() {
       return this.element.animate({
         width: 31
@@ -4609,6 +4812,7 @@ $.support.transition = (function(){
         left: 0
       });
     };
+
     HeroGalleryTabJSRenderStrategy.prototype.showTab = function() {
       return this.element.animate({
         width: 187
@@ -4616,39 +4820,55 @@ $.support.transition = (function(){
         left: 156
       });
     };
+
     return HeroGalleryTabJSRenderStrategy;
-  })();
+
+  })(HeroGalleryTabRenderStrategy);
+
   $.TNF.BRAND.startupManager.registerController(TabbedHeroGallery);
+
 }).call(this);
 (function() {
-  var Ustream, _ref;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-    if ((_ref = this.JST) != null) {
-    _ref;
-  } else {
+  var Ustream, _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  if ((_ref = this.JST) == null) {
     this.JST = {};
-  };
+  }
+
   this.JST['ustream-video'] = '<iframe id="ustream-video" src="http://www.ustream.tv/embed/12083483?autoplay=true" width="575" height="610" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe>';
+
   this.JST['ustream-social'] = '<iframe id="ustream-social" width="340" scrolling="no" height="610" frameborder="0" style="border: 0px none transparent;" src="http://www.ustream.tv/socialstream/12083483"></iframe>';
+
   this.JST['ustream-ui-close'] = '<a href="#ustream-container" class="video-interface-close">x</a>';
+
   this.JST['ustream-ui-link'] = '<a href="http://www.ustream.tv/" class="ustream-external" target="_blank">Streaming live video by Ustream</a>';
+
   this.JST['ustream'] = "<div id='ustream-container'>" + this.JST['ustream-ui-close'] + this.JST['ustream-video'] + this.JST['ustream-social'] + this.JST['ustream-ui-link'] + "</div>";
+
   Ustream = (function() {
+
     Ustream.selector = '#ustream';
+
     Ustream.bootstrap = function(element) {
       return new Ustream(element);
     };
+
     function Ustream(el) {
       this.el = el;
       this.close = __bind(this.close, this);
+
       this.embed = __bind(this.embed, this);
+
       this.panel = this.el.closest('.panel');
       this.tabs = $('.side-tabs');
       this.bindEvents();
     }
+
     Ustream.prototype.bindEvents = function() {
       return this.el.click(this.embed);
     };
+
     Ustream.prototype.embed = function(event) {
       event.preventDefault();
       this.el.trigger('embed_TNF_ustream');
@@ -4656,6 +4876,7 @@ $.support.transition = (function(){
       this.panel.find('a.video-interface-close').click(this.close);
       return this.tabs.bind('selected.TNF.herogallerytab', this.close);
     };
+
     Ustream.prototype.close = function(event) {
       if (event != null) {
         event.preventDefault();
@@ -4664,22 +4885,32 @@ $.support.transition = (function(){
       this.panel.find('#ustream-container').remove();
       return this.tabs.unbind('selected.TNF.herogallerytab', this.close);
     };
+
     return Ustream;
+
   })();
+
   $.TNF.BRAND.startupManager.registerController(Ustream);
+
 }).call(this);
 (function() {
-  var WhistlerVideo;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var WhistlerVideo,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   WhistlerVideo = (function() {
+
     WhistlerVideo.selector = '#whistler';
+
     WhistlerVideo.bootstrap = function(element) {
       return new WhistlerVideo(element);
     };
+
     function WhistlerVideo(el) {
       this.el = el;
       this.hideVideo = __bind(this.hideVideo, this);
+
       this.showVideo = __bind(this.showVideo, this);
+
       $('#whistler-video-open').bind('click', this.showVideo);
       $('#whistler-video-close').bind('click', this.hideVideo);
       this.galleryItems = $(".hero-gallery-item");
@@ -4687,6 +4918,7 @@ $.support.transition = (function(){
       this.rightArrow = $('.hero-gallery-arrow-right');
       this.paginator = $('.hero-gallery-paginator');
     }
+
     WhistlerVideo.prototype.showVideo = function(event) {
       event.preventDefault();
       this.el.show();
@@ -4695,6 +4927,7 @@ $.support.transition = (function(){
       this.rightArrow.hide();
       return this.paginator.hide();
     };
+
     WhistlerVideo.prototype.hideVideo = function(event) {
       event.preventDefault();
       this.el.hide();
@@ -4703,56 +4936,76 @@ $.support.transition = (function(){
       this.rightArrow.show();
       return this.paginator.show();
     };
+
     return WhistlerVideo;
+
   })();
+
   $.TNF.BRAND.startupManager.registerController(WhistlerVideo);
+
 }).call(this);
 (function() {
-  var AutoProductSwapper;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var AutoProductSwapper,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   AutoProductSwapper = (function() {
+
     AutoProductSwapper.selector = '#auto-product-swapper';
+
     AutoProductSwapper.bootstrap = function(element) {
       return new AutoProductSwapper(element);
     };
+
     function AutoProductSwapper(element) {
       this.element = element;
       this.rotate = __bind(this.rotate, this);
+
       this.index = 0;
       this.setupElements();
       this.bindEvents();
       this.autoRotate();
     }
+
     AutoProductSwapper.prototype.setupElements = function() {
       this.pack = this.element.find('#pack');
       this.vest = this.element.find('#vest');
       return this.products = [this.pack, this.vest];
     };
+
     AutoProductSwapper.prototype.bindEvents = function() {
       this.element.bind('mouseenter', this.pauseAutoRotation);
       return this.element.bind('mouseleave', this.resumeAutoRotation);
     };
+
     AutoProductSwapper.prototype.autoRotate = function() {
       return this.rotationInterval = setInterval(this.rotate, 5000);
     };
+
     AutoProductSwapper.prototype.rotate = function() {
+      var _this = this;
       if (this.paused) {
         return;
       }
-      return this.products[this.index].fadeOut(__bind(function() {
-        this.index = this.index === 0 ? 1 : 0;
-        return this.products[this.index].fadeIn();
-      }, this));
+      return this.products[this.index].fadeOut(function() {
+        _this.index = _this.index === 0 ? 1 : 0;
+        return _this.products[_this.index].fadeIn();
+      });
     };
+
     AutoProductSwapper.prototype.pauseAutoRotation = function() {
       return this.paused = true;
     };
+
     AutoProductSwapper.prototype.resumeAutoRotation = function() {
       return this.paused = false;
     };
+
     return AutoProductSwapper;
+
   })();
+
   $.TNF.BRAND.startupManager.registerController(AutoProductSwapper);
+
 }).call(this);
 (function($) {
   $(function() {

@@ -26,7 +26,7 @@
     <!-- end mBox -->   
     <script src="../../../cdn.optimizely.com/js/148582399.js"></script>
 <meta name="Description" content="Review Carbonite's privacy policy." /><meta name="Generator" content="Sitefinity 3.7.2057.2:1" /><link rel="stylesheet" type="text/css" /><script type="text/javascript">
-                        var _serverTime = '08:11';var _serverDateTime = '2013:01:23:08:11:33';</script><title>
+                        var _serverTime = '08:09';var _serverDateTime = '2013:01:26:08:09:54';</script><title>
 	Carbonite Privacy Policy
 </title></head>
 
@@ -276,25 +276,29 @@ cmCreatePageviewTag("LIGHTBOX BUSINESS PRICING NEW", categoryId, null, null, _se
                 var variationIdx = -1;
                 var activeExpts = optimizely.activeExperiments;
                 var values;
-                var newArray = [];
+                var variation;
                 for (var i = 0; i < activeExpts.length; i++) {
+                    var newArray = [];
                     experimentId = activeExpts[i];
                     if (optimizely.variationIdsMap.hasOwnProperty(experimentId)) {
                         variationId = optimizely.variationIdsMap[experimentId];
                         newArray = newArray.concat(variationId);
                     }
-                }
+                    if (newArray.length >= 2) {
+                        variation = newArray.join('-');
+                    }
+                    else if (newArray.length < 2) {
+                        variation = newArray.toString();
+                    }
+                    values = experimentId + '-' + variation;
 
-                newArray = activeExpts.concat(newArray);
-                values = newArray.join('-');
-
-                var contents = getCookie('acqsource');
-                if (values && values.length > 0 && contents !== undefined && (contents.indexOf(values) === -1)) {
-                    contents += '&tp=' + values;
-                    document.cookie = 'acqsource=' + contents + '; domain=carbonite.com; path=/';
-                }
-                else if (values && values.length > 0 && contents === undefined) {
-                    document.cookie = 'acqsource=' + values + '; domain=carbonite.com; path=/';
+                    var contents = getCookie('acqsource');
+                    if (values && values.length > 0 && contents !== undefined && (contents.indexOf(values) === -1)) {
+                        contents += '&tp=' + values;
+                        document.cookie = 'acqsource=' + contents + '; domain=carbonite.com; path=/';
+                    } else if (values && values.length > 0 && contents === undefined) {
+                        document.cookie = 'acqsource=' + values + '; domain=carbonite.com; path=/';
+                    }
                 }
             }
         }
@@ -302,5 +306,6 @@ cmCreatePageviewTag("LIGHTBOX BUSINESS PRICING NEW", categoryId, null, null, _se
             addTParam();
         });
 </script>
+
 </body>
 </html>

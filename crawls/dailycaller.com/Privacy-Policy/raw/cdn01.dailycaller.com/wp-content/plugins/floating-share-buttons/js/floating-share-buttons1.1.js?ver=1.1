@@ -1,0 +1,43 @@
+jQuery(function ($){
+	$(document).ready(function() {
+	    function isShareBarInView(elem,scrollelem) {
+	        var docViewTop = $(window).scrollTop();
+	        var docViewBottom = docViewTop + $(window).height();
+	        var rtn = false;
+	        var elemTop = $(scrollelem).offset().top;
+
+	        var elemBottom = elemTop + $(scrollelem).height();
+
+	        if(docViewTop <= elemBottom-1){
+		        rtn = false;
+	        }
+	        else if(docViewTop >= elemBottom){
+		        rtn = true;
+	        }
+	        
+	        return rtn;
+	        
+	        
+//	        return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom));
+	    }
+	    
+	    var floating_element = $('#floating-social-bar'); // the element to act on if viewable
+	    var floating_scrolltoelement = $('#share_bar');
+	    $(window).scroll(function() {
+	        if(isShareBarInView(floating_element,floating_scrolltoelement)) {
+	            // do something when element is scrolled to and viewable
+				var w=window.innerWidth;
+				if(w >= 1135){
+		            floating_element.show();					
+				}
+				else{
+					floating_element.hide();
+				}
+
+	        } else {
+	            // do something when element is not viewable
+	            floating_element.hide();
+	        }
+	    });	    
+	});
+});	

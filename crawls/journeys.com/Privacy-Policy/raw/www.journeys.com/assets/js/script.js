@@ -1085,13 +1085,18 @@ JY = {
                             $('input#cbPayPal').attr('checked', false);
                             $('div.pay-choice label[for="cbPayPal"]').removeClass('checked');
                             $('div#dvPPDetails').hide();
-                            $('div#dvGCDetails,div#dvCCDetails').show();
+                            $('div#dvGCDetails').show();
                         } else {
                             $('div#dvGCDetails').show();
                         }
                         if ($('input#cbGiftCard').is(':checked')) {
                             $('input#cbGiftCard').attr('checked', false);
                             $('div.pay-choice label[for="cbGiftCard"]').removeClass('checked');
+                            if ( $('input#cbCreditCard').is(':checked') ){
+                                $('div#dvCCDetails').show();
+                            }else{
+                                $('div#dvCCDetails').hide();
+                            }
                         } else {
                             $('input#cbGiftCard').attr('checked', true);
                             $('div.pay-choice label[for="cbGiftCard"]').addClass('checked');
@@ -1108,7 +1113,11 @@ JY = {
                         $('div.pay-choice label[for="cbBML"],div.pay-choice label[for="cbPayPal"]').removeClass('checked');
                         $('input#cbBML,input#cbPayPal').attr('checked', false);
                         $('div#dvBMLDetails,div#dvPPDetails').hide();
-                        $('div#dvCCDetails').show();
+                        if ($('input#cbGiftCard').is(':checked') && $('input#cbCreditCard').is(':checked')){
+                            $('div#dvCCDetails').hide();
+                        }else{
+                            $('div#dvCCDetails').show();
+                        }
                         break;
                     case 'cbPayPal':
                         $('div.pay-choice label').removeClass('checked');

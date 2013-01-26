@@ -9,12 +9,42 @@ var wpAd, placeAd2;
     //this is function is called on the FIRST placeAd2 call only
     init: function () {
       if(!win.jQuery){
-        wpAd.tools.writeScript('//js.washingtonpost.com/wpost/js/combo?token=20121010232000&c=true&m=true&context=eidos&r=/jquery-1.7.1.js');
+        wpAd.tools.writeScript('http://js.washingtonpost.com/wpost/js/combo?token=20121010232000&c=true&m=true&context=eidos&r=/jquery-1.7.1.js');
       }
       if(typeof wpAd.config.init === 'function') {
         wpAd.config.init();
       }
       wpAd.cache.init();
+    },
+    //delayed ad injection:
+    dai: {
+      queue: [],
+      delay: 500,
+      init: function(pos){
+        wpAd.dai.queue.push(pos);
+        if(!wpAd.dai.initialised && win.jQuery){
+          wpAd.dai.initialised = true;
+          $(function(){
+            wpAd.dai.timeout = setTimeout(wpAd.dai.exec, wpAd.dai.delay);
+          });
+        }
+      },
+      exec: function(){
+        var adToMove, slug, item;
+        while(wpAd.dai.queue.length){
+          item = wpAd.dai.queue.shift();
+          slug = doc.getElementById('wpni_adi_' + item) || doc.getElementById('slug_' + item);
+          adToMove = doc.getElementById('dai_' + item);
+          if(slug && adToMove){
+            slug.appendChild(adToMove);
+            adToMove.style.display = 'block';
+            if(wpAd.flags.debug && win.console){
+              console.log('moved', item, adToMove, 'into', slug);
+            }
+          }
+        }
+        wpAd.dai.executed = true;
+      }
     },
     exec: {
       vi: function(){
@@ -86,7 +116,7 @@ var wpAd, placeAd2;
         if(hc) {
           //else if hc is an html element, append it,
           if(typeof hc === 'object' && hc.tagName) {
-            slug = doc.getElementById('slug_' + wpAd.briefcase.pos);
+            slug = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
             if(slug) {
               slug.appendChild(hc);
             }
@@ -250,6 +280,19 @@ var wpAd, placeAd2;
           adopsDebugDiv = doc.getElementById('adopsDebugDiv');
         adopsDebugDiv.style.display = (toggleButton.innerHTML === 'Show Data') ? 'block' : 'none';
         toggleButton.innerHTML = (toggleButton.innerHTML === 'Show Data') ? 'Hide Data' : 'Show Data';
+      },
+      ajax: function(config){
+        if(win.$){
+          win.$.ajax(config);
+        } else if(config.url) {
+          wpAd.tools.loadScript(config.url + (config.data ? (function(d){
+            var rv = [], key;
+            for(key in d){
+              rv.push(key + '=' + d[key]);
+            }
+            return '?' + rv.join('&');
+          })(config.data) : ''), config.success);
+        }
       },
       charToCodeAt: function (arg) {
         var rv = '',
@@ -434,6 +477,7 @@ var wpAd, placeAd2;
         }
         var types = {
           'adj': wpAd.flags.test_fif ? 'fif' : 'adj',
+          'dai': wpAd.flags.test_fif ? 'fif' : 'adj',
           'ajax': 'ajax',
           'adi': 'adi',
           'iframe': 'adi',
@@ -444,6 +488,10 @@ var wpAd, placeAd2;
           'vi': 'vi'
         };
         delivery = delivery.toLowerCase();
+        //delayed ad injection
+        if(delivery === 'dai'){
+          wpAd.dai.init(wpAd.briefcase.pos);
+        }
         return types[delivery] ? types[delivery] : 'adj';
       },
       demoAds: function () {
@@ -586,11 +634,6 @@ var wpAd, placeAd2;
           }
           target.appendChild(s);
         }
-      },
-      log: function () {
-        try {
-          console.log.apply(this, arguments);
-        } catch(e) {}
       },
       metaCheck: function (arry) {
         var regex = '\\b',
@@ -1151,9 +1194,9 @@ var wpAd, placeAd2;
 
     wpAd.briefcase.where = where;
     wpAd.briefcase.what = what;
-    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx, fif 
     wpAd.briefcase.onTheFly = onTheFly;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
+    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx, fif 
 
     if(wpAd.tools.templatecheck()) {
       if(!wpAd.briefcase.hardcode) {

@@ -315,6 +315,7 @@ div#header {
 .flyout-navigation-title, a.flyout-navigation-title:visited, a.flyout-navigation-title:hover, a.flyout-navigation-title:active {
 	color: #333;
 }
+.flyout-navigation-title{font-weight:bold;text-transform: uppercase;}
 
 #category-navigation-flyout ul {
 	margin: 1px 0 12px;
@@ -790,7 +791,7 @@ form .form-item.col2 {
 
 .pdf-link { background: url("https://www.costco.com/wcsstore/CostcoGLOBALSAS/images/pdf-link.png") no-repeat left center; padding-left: 21px; 
 			display : inline-block;  }
-.html-link { background: url("https://www.costco.com/wcsstore/CostcoGLOBALSAS/images/external-link.png") no-repeat left center; padding-left: 21px; }
+.html-link { background: url("https://www.costco.com/wcsstore/CostcoGLOBALSAS/images/external-link.png") no-repeat left top; padding-left: 21px; }
 .video-link { background: url("https://www.costco.com/wcsstore/CostcoGLOBALSAS/images/video-link.png") no-repeat left top; padding-left: 21px; }
 
 .back-link {
@@ -1747,11 +1748,11 @@ input:placeholder, textarea:placeholder {
     }
 .product-compare-table a.remove { left: 50%; position: relative; margin-left: 60px; width: 30px; text-align: center; margin-bottom: -10px; z-index: 1002; display: block;  }
 .product-compare-table td, .product-compare-table th { vertical-align: top; }
-.product-compare-table th { width: 80px; text-align: right; padding: 3px 10px 10px 0; }
+.product-compare-table th { width: 10%; text-align: right; padding: 3px 10px 10px 0; }
 .product-compare-table td { padding: 3px 10px; }
-.product-compare-table-2 td.product { width: 50%; }
-.product-compare-table-3 td.product { width: 33.3%; }
-.product-compare-table-4 td.product { width: 25%; }
+.product-compare-table-2 td.product { width: 45%; }
+.product-compare-table-3 td.product { width: 30%; }
+.product-compare-table-4 td.product { width: 20%; }
 
 td.product .product-tile { float: none; width: auto; padding: 0 0 0px; margin: 0 0 0px; }
 td.product .product-tile img { margin: 0; }
@@ -1792,9 +1793,11 @@ td.paymentMethod p{
     width: 225px;
     overflow: hidden;
      }
-    
+     
+/* Defect CIS100070603 - min-width added to correct chrome and firefox regression */
 td.address {
 	max-width: 200px;
+	min-width: 140px;
 	width: 200px\9;
 }
 
@@ -1963,7 +1966,8 @@ table.price-table .total-row td { border-top: 1px solid #dbdbdb; font-weight: bo
 .label-table label.field-label{font-size:11px}
 .label-table a.membership-link, a.add-link, a.edit-link, a.paymentMethod-link {font-size:11px}
 
-.shipModeId { width: 100%; }
+/* Defect CIS100070661 - Shipping option is NOT wrapping */
+.shipModeId { width: 100%; *width:auto;}
 
 
 
@@ -2258,3 +2262,14 @@ select.validationError {
 
 /* Defect CIS100069660 : Warehouse list page alignment */
 .WarehouseBrowseH1 { margin :0 !important; }
+
+/* Defect CIS100069907 : Letters on 'Continue Checkout' button are grey when clicked on Payment page in IE8*/
+.disableCheckout{
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+}
+
+/* Defect CIS100069481 : Added styles to display map on WarehouseBrowse page*/
+.mapWidth{width:650px !important;margin-top:15px;}
+.warehouseList{border-top:1px solid #BFBFBF;}
+.warehouseListContent{border-top:0px !important;}

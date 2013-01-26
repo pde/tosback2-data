@@ -1,10 +1,10 @@
-﻿function toggleShowMoreSpinner() {	
+function toggleShowMoreSpinner() {   
 	jQuery('div#deviceList-showMoreFooter div#showMoreDevices').css('display','none');
 	jQuery('div#deviceList-showMoreFooter div#showMoreDevicesSpinner').css('display','block');
 }
 
 
-function checkCompareSelectionCount(selectBoxId,selectProcess) {	
+function checkCompareSelectionCount(selectBoxId,selectProcess) {    
 	var allCheckboxes = jQuery("input[name=skuId]:checked");
 	var allCheckboxesSize = allCheckboxes.size();
 	var checkedCompareSkus = "";
@@ -41,7 +41,18 @@ function checkCompareSelectionCount(selectBoxId,selectProcess) {
 	}
 }
 
-function clearCompareDevices() {	
+function toggleCompareSelectionLabel(selectBoxId) {
+	var boxIsChecked = jQuery('input#'+selectBoxId).attr('checked');
+	if(boxIsChecked) {
+		jQuery('div#'+selectBoxId+'-addtocompare').hide();
+		jQuery('div#'+selectBoxId+'-comparenow').show();
+	} else {
+		jQuery('div#'+selectBoxId+'-addtocompare').show();
+		jQuery('div#'+selectBoxId+'-comparenow').hide();
+	}
+}
+
+function clearCompareDevices() {    
 	jQuery('input[name=skuId]').attr('checked', false);
 	jQuery.uniform.update('input[name=skuId]');
 	updateCompareDevicesLink();
@@ -78,7 +89,7 @@ function updateCompareDevicesLink() {
 }
 
 jQuery(document).ready(function() {
-	updateCompareDevicesLink();
+	clearCompareDevices();
 	
 	//Collapse all but the first three filters.
 	jQuery.each(jQuery(".filterCollapseControl").get().slice(3), function(index, element){filterCollapse(element.id.split("-").pop())});

@@ -337,7 +337,7 @@ if(typeof(omn_ss_categoryview) != 'undefined' && omn_ss_categoryview.length > 0)
 
 if(typeof(omn_ss_pageresults) != 'undefined' && omn_ss_pageresults.toString().length > 0)
 	s.prop49 = omn_ss_pageresults.toLowerCase();
-/* provisional variable for category landing page 11_20_12ß
+/* provisional variable for category landing page 11_20_12?
 if(typeof(omn_ss_catlandingtab) != 'undefined' && omn_ss_catlandingtab.length > 0)
 	ss.prop33 = omn_ss_catlandingtab.toLowerCase();
 */
@@ -1869,106 +1869,50 @@ function do_mouseover_cart(productID)
 	did_mouseover = false;
 	}
 }		
-	
-	/* filter solution 12/7/12 */
+
+/* filter solution 12/7/12 filter solution ~ edited 1/17/13 ~ edited 1/23/13 */
 function ss_filterSolution(){
-	if(window.location.href.indexOf('all-products') > -1){
-$(window).ready(function() {
-/*!
- * jQuery Cookie Plugin v1.3
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2011, Klaus Hartl
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.opensource.org/licenses/GPL-2.0
- */
-(function ($, document, undefined) {
 
-	var pluses = /\+/g;
-
-	function raw(s) {
-		return s;
-	}
-
-	function decoded(s) {
-		return decodeURIComponent(s.replace(pluses, ' '));
-	}
-
-	var config = $.cookie = function (key, value, options) {
-
-		// write
-		if (value !== undefined) {
-			options = $.extend({}, config.defaults, options);
-
-			if (value === null) {
-				options.expires = -1;
-			}
-
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
-			}
-
-			value = config.json ? JSON.stringify(value) : String(value);
-
-			return (document.cookie = [
-				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// read
-		var decode = config.raw ? raw : decoded;
-		var cookies = document.cookie.split('; ');
-		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
-			if (decode(parts.shift()) === key) {
-				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
-			}
-		}
-
-		return null;
-	};
-
-	config.defaults = {};
-
-	$.removeCookie = function (key, options) {
-		if ($.cookie(key) !== null) {
-			$.cookie(key, null, options);
-			return true;
-		}
-		return false;
-	};
-
-})(jQuery, document);
-
-var ss_check = $.cookie('ss_check');
-if(ss_check == null){
+var ss_check = get_cookie('ss_check');
+console.log("In cookie: " + ss_check);
+if(!ss_check){
 	var s_checkboxes = new Array;
 }
 else{
-	var s_checkboxes = ss_check.split('|'); 
-	
-	
+	var s_checkboxes = ss_check.split('|');
 }
-	
+
+
+$(".shop-type-list a").click(function(){
+	s_checkboxes.push($.trim(this.text));
+	console.log("Added: " + $.trim(this.text));	
+    ss_check = s_checkboxes.join("|");
+    createCookie('ss_check', ss_check);
+			
+});	
+
+$(window).load(function () {
+if(window.location.href.indexOf('all-products') > -1){
+
 $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
 	       var inputObj = this;
            var labelObj = $(this).next();
-       if(jQuery.inArray($(labelObj).text(), s_checkboxes) > -1){
-		   s_checkboxes.splice($.inArray($(labelObj).text(),  s_checkboxes), 1 );
+		   var labelTxt = $(labelObj).text()
+		   labelTxt = $.trim(labelTxt);
+       if(ss_check.indexOf(labelTxt) > -1 ){
+		   console.log("Removed: " + labelTxt);
+		   s_checkboxes.splice($.inArray(labelTxt,  s_checkboxes), 1 );
 	   }
   });//unchecked	
 	
   $("input:checkbox[name=filter_option]:checked").each(function() {
 	  	   var inputObj = this;
            var labelObj = $(this).next();
-       if(jQuery.inArray($(labelObj).text(), s_checkboxes) == -1){
-		   s_checkboxes.push($(labelObj).text());
+		   var labelTxt = $(labelObj).text()
+		   labelTxt = $.trim(labelTxt);
+       if(ss_check.indexOf(labelTxt) == -1 ){
+		   s_checkboxes.push(labelTxt);
+		   console.log("Added: " + labelTxt);
 		   
 		   s.linkTrackVars='eVar9,prop15,eVar10,prop16,eVar11,prop17,eVar20,eVar55,events';
 		   s.linkTrackEvents='event73';
@@ -1977,16 +1921,21 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
            s.eVar11 = s.prop17 = s.pageName + ">left_cat_filter>category_filter_check";
            s.eVar20 = '+1';
 		   s.events = 'event73';
-           s.eVar55 = "check_type:" + $(labelObj).text();
+           s.eVar55 = "check_type:" + labelTxt;
 		   
 		   s.tl(this,'o','category_filter_check');
-	   }
+	   }//if all-products
   });//checked
+}
 
   ss_check = s_checkboxes.join("|");
-  $.cookie('ss_check', ss_check);
-});			
-	}
+  createCookie('ss_check', ss_check);
+  
+});
+		
+
+
+
 }//close ss_filterSolution
 ss_filterSolution();
-		
+	

@@ -16,11 +16,14 @@
     <![endif]-->
  
     
+<!--START - /edmunds/sites/vehicledirectory/main/src/main/webapp/WEB-INF/freemarker/global/decorators/parts/global-head.ftl-->
+
 <meta name="apple-itunes-app" content="app-id=393630966">
 
     <link rel="image_src" id="fbImageSrc" />
 
  <!-- is_from_emp = false -->
+
 
 
 
@@ -144,7 +147,7 @@ DEBUG:showLiveChatPromos true]
 
 <div id="header_links">
     <span id="header_welcome" class="header-padding-first"></span> 
-	<span id="fb_pic"></span>
+	<span id="fb_pic"></span>	
 		<span id="fb_logo"></span><b>|</b>			  	
 	<span id="header_login_out" class="header-padding"><b>|</b></span> 
 	<!--<span id="header_account" class="header-padding"><b>|</b></span> -->
@@ -680,11 +683,6 @@ DEBUG:showLiveChatPromos true]
 
 
 
-                <b>|</b> <a href="http://www.insideline.com/" ><em>Inside Line</em></a>
-
-
-
-
                 <b>|</b> <a href="http://www.edmunds.com/industry-center/" >Industry News</a>
 
 
@@ -1052,7 +1050,7 @@ DEBUG:showLiveChatPromos true]
     </div>
 </div>
 <script type="text/javascript">
-
+PAGESETUP.addControl(function() {
 var cookieSub = EDMUNDS.Cookie.getSub('edmunds_abtest', 'inventory_wired_to_mobile_sync_test');
 var compare = document.getElementById('fav_compare_button');
 var emailDealer = document.getElementById('email-dealer-block');
@@ -1072,6 +1070,7 @@ var syncToMobile = document.getElementById('send_to_mobile_button');
         compare.innerHTML = '<div class="compare-icon first"></div> <div class="compare-icon"></div> <div class="link-text link upper">Compare listings</div>';
         emailDealer.innerHTML = '<a class="upper" id="sl_connect" href="http://www.edmunds.com/inventory/used/lead_form.html?zip=&amp;defaultType=&amp;mode="> <span class="icon"></span> <span class="email-text">Email dealers</span>';
     }
+});
 
 PAGESETUP.scope.shortListTmp={
     zip:'94110',
@@ -1283,18 +1282,11 @@ EDM.Core.ABJS.CAMPAIGNS = {
     'ecm_ads_v3':{
         'traffic_allocation':'always_run',
         'recipes':['ecm_con','ecm_rouge']
-    },
-    'attribution_v1':{
-        'traffic_allocation':'always_run',
-        'segmentor': 'cookie',
-        'recipes':['slider_v1']
     }
 };
 EDM.Core.ABJS.RECIPES = {
     'ecm_con':{'traffic_allocation':10,'primer':'EDM.Propensity.Ads.ABTest.OGSpotlightPrimer'},
-    'ecm_rouge':{'traffic_allocation':90, 'primer':'EDM.Propensity.Ads.Primer'},
-
-    'slider_v1':{'cookie': 'EdmundsYear','expression':'dataString.match(/.*dma=(807|819).*/gi)','handler':'EDM.Core.ABJS.PropensityTestModelHandler', 'ptm_primer':'EDM.Widget.ArrowSlider.Primer'},
+    'ecm_rouge':{'traffic_allocation':90, 'primer':'EDM.Propensity.Ads.Primer'}
 };            EDM.Core.ABJS.Primer.execute();
         }
 	},'high');

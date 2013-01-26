@@ -1231,7 +1231,10 @@ mistats.GCSTracker = function ()
 
       mistats.bind(window, 'load', function ()
       {
-         if (typeof mi !== 'undefined' && mi.surveywall && mi.surveywall.surveywallcookie)
+         if (typeof mi !== 'undefined'
+          && mi.surveywall
+          && mi.surveywall.getConf
+          && mi.surveywall.getConf('enabled'))
          {
             gcs = true;
             track(true);

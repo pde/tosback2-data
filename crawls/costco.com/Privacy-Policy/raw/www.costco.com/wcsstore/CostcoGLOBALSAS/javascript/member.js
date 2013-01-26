@@ -5,6 +5,7 @@ $(window).load(function() {
 
 	// country/state dropdowns
 	$('.address-wrap').countryStateSelect();
+	addressTypeChangeEmail(this);
 	
 
 	// fix checkboxes for commerce form submits
@@ -196,6 +197,7 @@ $.fn.countryStateSelect = function(options) {
 };
 
 function addressTypeChange(element){
+	addressTypeChangeEmail(this,true);
 	// Testing if canadian 
 	if (wcs.locale == 'en_CA' || wcs.locale == 'fr_CA'){
 		var billingselected = (element.value == 'B');
@@ -222,6 +224,23 @@ function addressTypeChange(element){
 	countryoption.hide();
 	countryoption.show();
 }
+
+//CIS100070641 : On Adding/Editing a Billing Address page, asterik is appended to show "Email" field as mandatory
+function addressTypeChangeEmail(element,flag){
+	var queryCondition = '#AddressForm input[name=addressType]';
+	if(flag != undefined){
+		queryCondition = '#AddressForm select[name=addressType]';
+	}
+	if(($(queryCondition).val() == 'B')){
+		if($('#AddressForm input[name=email1]').parent().find('span[class=asterisk]').text().length==0)	{
+			$('#AddressForm input[name=email1]').parent().find('label:first').append('<span class="asterisk">*</span>');
+		}
+	}
+	else{
+			$('#AddressForm input[name=email1]').parent().find('span').remove();
+		}
+}
+
 //Defect CIS100069063: Show US country for Billing Address in costco.ca 
 $.fn.showOption = function() {
     this.each(function() {

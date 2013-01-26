@@ -443,7 +443,7 @@ var usa_globalMenu = {
 						/* Featured Slot 1 */
 						{
 							"title" : "WWE RAW",
-							"url" : usa_baseUrlDomain + "/series/wwe/",
+							"url" : usa_baseUrlDomain + "/sports/wwe/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
 							"tuneIn" : "MONDAYS 8/7C"
 						},
@@ -466,7 +466,7 @@ var usa_globalMenu = {
 							"title" : "NECESSARY ROUGHNESS",
 							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
-							"tuneIn" : "RETURNS JAN 23 10/9C"
+							"tuneIn" : "WEDNESDAYS 10/9C"
 						}
 
 					]

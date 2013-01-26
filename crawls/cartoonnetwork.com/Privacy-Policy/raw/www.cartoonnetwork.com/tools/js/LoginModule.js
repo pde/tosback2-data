@@ -480,3 +480,33 @@ LoginModule.getTotalBadges = function() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+jQuery(document).ready(function() {
+
+	var gamePattern1=/cartoonnetwork.com\/games\//;
+	var gamePattern2=/cartoonnetwork.com\/games\/index.html/;
+	var gamePattern3=/cartoonnetwork.com\/games\/.+/;
+	var gamePattern1Found=gamePattern1.test(document.URL);
+	var gamePattern2Found=gamePattern2.test(document.URL);
+	var gamePattern3Found=gamePattern3.test(document.URL);
+	var pattern1Found = false;
+	
+	if(gamePattern2Found == false){
+		if(gamePattern1Found == true){
+			if(gamePattern3Found == true){
+				pattern1Found = true;
+			}
+		}
+	}
+
+	var vidPattern=/cartoonnetwork.com\/tv_shows\/.+\/video\//;
+	var pattern2Found=vidPattern.test(document.URL);
+
+	if(pattern1Found){
+		jQuery('<div id="cn_SearchRev_Tag" style="display:none;"></div>').html('<img src="https://s1.srtk.net/www/delivery/ti.php?trackerid=1702&cb=457852394&_sr_actiontype=Games" width="1" height="1" border="0"/>').prependTo(jQuery('body'));
+	}else if(pattern2Found){
+		jQuery('<div id="cn_SearchRev_Tag" style="display:none;"></div>').html('<img src="https://s1.srtk.net/www/delivery/ti.php?trackerid=1702&cb=457852394&_sr_actiontype=Videos" width="1" height="1" border="0"/>').prependTo(jQuery('body'));
+	}
+	
+});
+
+

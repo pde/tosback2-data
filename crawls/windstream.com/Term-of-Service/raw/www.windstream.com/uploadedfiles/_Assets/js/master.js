@@ -385,38 +385,6 @@ $(document).ready(function () {
 
 
     }); //end click
-
-
-    $(function () {
-        if (!$('.referee-page')) { return false; }
-
-        var $resBtn = $('#ResidentialButton'),
-            $busBtn = $('.ss-businessButton'),
-            resBtnSrc = $resBtn.attr('src'),
-            busBtnSrc = $busBtn.attr('src'),
-            resBtn_off =    '/uploadedimages/_Assets/structure/referee/residential-button_off.png',
-            busBtn_off =    '/uploadedimages/_Assets/structure/referee/business-button_off.png',
-            resBtn_on =     '/uploadedimages/_Assets/structure/referee/residential-button_over.png',
-            busBtn_on =     '/uploadedimages/_Assets/structure/referee/business-button_over.png';
-
-        $resBtn.off('hover').on('hover', function () {
-            if ($resBtn.attr('src') === resBtn_off) {
-                $resBtn.attr('src', resBtn_on);
-            } else {
-                $resBtn.attr('src', resBtn_off);
-            }
-        });
-
-        $busBtn.off('hover').on('hover', function () {
-            if ($busBtn.attr('src') === busBtn_off) {
-                $busBtn.attr('src', busBtn_on);
-            } else {
-                $busBtn.attr('src', busBtn_off);
-            }
-        });
-
-    } ());
-
 });
 
 /* My Location 320 modal */

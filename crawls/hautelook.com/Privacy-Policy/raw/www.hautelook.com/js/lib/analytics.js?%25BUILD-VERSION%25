@@ -99,6 +99,14 @@ if (typeof HauteLook === 'undefined') {
                 "Order Subtotal": subtotal
             });
         };
+        
+        api.inviteSent = function(emailAddress, source, result) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Referral Recipient', {
+                "E-Mail Address": emailAddress,
+                "Source": source,
+                "Result": result
+            });
+        };
 
         return api;
 

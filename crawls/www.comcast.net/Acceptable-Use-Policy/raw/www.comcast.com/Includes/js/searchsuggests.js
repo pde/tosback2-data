@@ -222,13 +222,13 @@ function setSuggestions(id, sugList) {
         else {
             trunc_sugg = limitStr(toDisplay[i], 40);
         }
-        var index = trunc_sugg.indexOf(value);
+        var index = trunc_sugg.indexOf(value.toLowerCase());
 
         if (index != -1) {
             var newB = document.createElement('b');
             text = document.createTextNode(trunc_sugg.substring(0, index));
             newDiv.appendChild(text);
-            text = document.createTextNode(value);
+            text = document.createTextNode(value.toLowerCase());
             newB.appendChild(text);
             newDiv.appendChild(newB);
             text = document.createTextNode(trunc_sugg.substring(index + value.length));
@@ -624,7 +624,11 @@ function CloseSearchPanel() {
         clearTimeout(mySearchTimer);
         AutoComplete_HideAll();
     }
-
+    var searchElement = document.getElementById('shop-search-textbox');
+    var currentElement = document.activeElement;
+    if (searchElement === currentElement) {
+        searchElement.blur();
+    }
 }
 /**
 * Mouse Over Search Panel
@@ -662,4 +666,4 @@ if (typeof jQuery != 'undefined') {
         else
             SearchSuggest();
     });
-} 
+}

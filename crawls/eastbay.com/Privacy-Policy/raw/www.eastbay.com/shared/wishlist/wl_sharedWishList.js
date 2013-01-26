@@ -126,10 +126,7 @@ function sendWishList() {
 			totalrecipient = totalrecipient + 1;			
 		}
 	}
-	
-	//create dotomiXML
-	var dotomiXML = constructWishlistShareXML(recipientEmailArray);
-	
+		
 	arguments.recipientNames = recipientNameArray.toString();
 	arguments.recipientEmails = recipientEmailArray.toString();
 	arguments.wishlistid 			= $("#wishlistid").val();
@@ -176,7 +173,7 @@ function sendWishList() {
 					$("#postcard").show();
 				} else {
 					if (validateResponse == "11") {
-						$("#sharedWishList_content").prepend('<div id="sharedWishList_sent"><h1>Email Sent!</h1><div>Your friend will receive the email shortly.</div><img src="'+ dotomiWishListSharePixel + dotomiXML +'"></div>');
+						$("#sharedWishList_content").prepend('<div id="sharedWishList_sent"><h1>Email Sent!</h1><div>Your friend will receive the email shortly.</div></div>');
 	
 						if (doCoreMetrix) {
 							cmCreatePageviewTag("Wish List Email Sent", "Wish List: Successful email");
@@ -215,12 +212,3 @@ function addmoreRecipients() {
 	}
 }
 
-function constructWishlistShareXML(recipientEmailArray) {
-	var xmlString = "";
-	var xmlString = "<wishlist>";
-	for (var i = 0; i < recipientEmailArray.length; i++) {
-		xmlString =  xmlString + "<entry><customernumber>"+ dotomiCustNbr + "</customernumber><email>" +  recipientEmailArray[i] + "</email><date>" + dotomiDate + "</date><wishlistid>"+ dotomiWishlistId + "</wishlistid></entry>";	
-	}
-	xmlString = xmlString + "</wishlist>";
-	return xmlString;
-}

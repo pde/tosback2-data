@@ -26,11 +26,11 @@ function openInvestWin(url) {
 <HEAD>
 
 <script type="text/javascript" src="../../ns/common/coradiant/tsedge_instr-min.js"> </script>
-<!-- web-25 -->
+<!-- web-17 -->
 <meta name="msvalidate.01" content="EDC57CBB5433904007B934915238FE4A" />
 
 
-	<meta http-equiv="published" content="Wednesday, January 23, 2013 7:08:01">
+	<meta http-equiv="published" content="Saturday, January 26, 2013 7:06:25">
 
 	
 
@@ -207,6 +207,12 @@ function openInvestWin(url) {
 		
 			var ret_val= $.ajax({ type: "GET", url: logoutPath, data: {Next: escape(thisurl)}, async: false, cache : false }).responseText;
 			eraseCookie('BAZAARVOICEUSER');
+
+			//revmove any URL params after logout only if in shopping cart
+			if(thisurl.indexOf("shoppingcart/default.cfm") !== -1){
+				thisurl = thisurl.substring(0, thisurl.indexOf('?'));
+			}
+
 			window.location=thisurl;
 		}
 		
@@ -432,6 +438,7 @@ document.write ('\<\!-- --\>');
 		<style type="text/css">
             </style>
 <script src="../../../cdn.optimizely.com/js/82719230.js"></script>
+<link rel="stylesheet" type="text/css" href="../../ns/header/css/eb_master_combine_12182012.css" />
 <style>
         </style>
     </HEAD>
@@ -441,7 +448,7 @@ document.write ('\<\!-- --\>');
 <script language="javascript1.1" src="../../../libs.coremetrics.com/eluminate.js" type="text/javascript"></script>
 
 <script language="javascript1.1" src="../../coremetrics/cmdatatagutils.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="../../ns/header/css/eb_master_combine_12182012.css" />
+
 
 <!--[if lt IE 7]>
         <script type="text/javascript">
@@ -1220,7 +1227,7 @@ document.write (' <\/script> ');
                   <area shape="rect" coords="355,1,470,22" title="Share your feedback" href="http://www.eastbay.com/content/report_problem/?cm_sp=Header-_-Button-_-websitecomments/" />
                   <area shape="rect" coords="473,2,552,23" title="Free Eastbay Catalog" href="http://www.eastbay.com/catRequest/category/&cm_sp=Header-_-Button-_-Catalog/" />
                   <area shape="rect" coords="554,1,672,24" title="Catalog Quick Order" href="http://www.eastbay.com/catalogQuickOrder/catalogQuickOrder.cfm/?cm_sp=Header-_-Button-_-QuickOrder" />
-                  <area shape="rect" coords="673,2,740,24" title="Wish List" href="http://www.eastbay.com/wishlist/?cm_sp=Header-_-Button-_-Wishlist"/>
+                  <area shape="rect" coords="673,2,740,24" title="Wish List" href="https://www.eastbay.com/wishlist/?cm_sp=Header-_-Button-_-Wishlist"/>
                   <area shape="rect" coords="741,2,810,23" alt="Eastbay Sweepstakes | Daily Prizes" title="Eastbay Sweepstakes | Daily Prizes" href="http://www.eastbay.com/contest/?cm_sp=Header-_-Button-_-contest/"/>
 				</map>
             
@@ -1250,27 +1257,8 @@ document.write (' <\/script> ');
 	  <!-- thirdparty_marketing_code was not set -->
 	
 	<script language="javascript">
-		<!--
-		viewBannerEvent("Free Shipping > 75", 90); 
-			var excludeBannerFromDiscount = true;
-		
-		//-->
+		var excludeBannerFromDiscount = false;
 	</script>
-
-<script language="javascript">
-
-	var excludeBannerFromDiscount = true;
-
-</script>
-<div id="global_Banner">
-	
-		<!-- tpbann --><img src="../../ns/hp/gb/ebg011513b-shipping-bball.gif" border="0" usemap="#GlobalBannerMap" id="a111">
-<map name="GlobalBannerMap">
-  <area shape="rect" coords="9,-1,591,50" href="javascript:openPopUpWindow('http://www.eastbay.com/ns/hp/gb/html/ebgb012213-FS75.html','430','380');" rel="nofollow" title="Free Shipping on Orders over $75" alt="Free Shipping on Orders over $75">
-  <area shape="rect" coords="591,0,965,60" href="http://www.eastbay.com/Basketball/Shoes/Basketball-Shoes/_-_/N-1e1ZneZwa?cm_sp=Header-_-bballfreeship-_-GB"  title="Basketball Shoes" alt="Basketball Shoes">
-</map><!-- end tpbann -->
-	
-</div>	
 
 <!-- MyBuys integration -->
 <!-- requestProtocol: http -->
@@ -1281,7 +1269,7 @@ document.write (' <\/script> ');
 <script language="Javascript">		
 	var inlineAddToCartEnabled = true;
 	var useMyBuyYMALS = true;
-	var MyBuysDisabledForHL = false;
+	var MyBuysDisabledForHL = true;
 	var co_cd = '01';
 </script>
 
@@ -1537,7 +1525,7 @@ document.write (' <\/script> ');
           <li><a href="http://www.eastbayteamservices.com/?cm=FooterPopTeamSales" target="_blank" title="Eastbay Team Services">Eastbay Team Services</a></li>
           <li><a href="http://www.final-score.com/?cm=FooterPopFinalScore" target="_blank" rel="nofollow" title="Final Score">Final Score</a></li>             
           <li><a href="http://www.eastbay.com/tour/?cm=FooterPopTour" title="'Where Athletes Are' Tour"> 'Where Athletes Are' Tour</a></li>
-          <li><a href="http://www.eastbay.com/wishlist/landing.cfm?customerWLFormError=&badAuthEmail=" rel="nofollow" title="Wish List">Wish List</a></li>   
+          <li><a href="https://www.eastbay.com/wishlist/" rel="nofollow" title="Wish List">Wish List</a></li>   
           <li><a href="http://www.eastbay.com/arc/?article=knowledgebase_Shoe-Finder&cm=FooterPopShoefinder" title="Shoe Finder">Shoe Finder</a></li>                 
           <li><a href="http://www.eastbay.com/promotion/promoId:5002148/eastbay-events/?cm=FooterPopEvents" title="Eastbay Events">Eastbay Events</a></li>
         </ul>
@@ -1633,5 +1621,3 @@ document.write (' <\/script> ');
             try { mybuys.initPage(); } catch(e) {}; 
         }); 
     </script> 
-
-<img src="../../dotomi_tracking/event%3FdataType=5&amp;company=01&amp;transactionId=5555-01231307080101070149963-0&amp;metaData=%250A%2509%2509%2509%253COrderMetaData%253E%250A%2509%2509%2509%250">

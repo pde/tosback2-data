@@ -350,11 +350,11 @@ function submitEmailForm(evt) {
 
 $(window).load(function(){
 	var firstToolbar = $('.viral_tools').get(0);
-	var likeFBSocialToolBar = $('.connect_button_container').get(0);
+	var likeFBSocialToolBar = $('#rr_social_tooltip_fb').get(0);
 	if ( typeof FB !== 'undefined' ){
 		FB.Event.subscribe('edge.create',function(href,widget){
 			var thisToolbar = $(widget.dom.parentNode).parents('.viral_tools').get(0);
-			var thisSocialToolBar = $(widget.dom.parentNode).parents('.connect_button_container').get(0);
+			var thisSocialToolBar = $(widget.dom.parentNode).parents('#rr_social_tooltip_fb').get(0);
 			if ( thisToolbar === firstToolbar ){
 				eventTracking('event81');
 			} 

@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.29.8";
+        var acVersion = "4.31.17";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -367,24 +367,24 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
     <!-- BEGIN: HEADER -->
     <div class="headerAlternate header">
 
- 
+
 
 
   <script type="text/javascript">
     function headerOnclick(parentPath, targetUrl, cmTitle, gaPath){
-         
+        
         try{
             cmCreateManualPageviewTag(cmTitle, parentPath, targetUrl, document.URL);
         } catch(ex){}
         try{
             _gaq.push(['_trackPageview',gaPath]);
-        } catch(ex){}   
+        } catch(ex){}
         try{
             pageTracker._trackPageview(gaPath);
         } catch(ex){}
     }
-  </script>   
-               
+  </script>
+
 
     
     
@@ -428,8 +428,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
       <div class="pageHeaderInner">
         <div class="headerConsole">
           <div class="buttons">
-            <a href="http://www.phoenix.edu/request-information.html" class="btn btn-secondary" name="header_request-information" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Request%20Information');">
-            Request Info</a> <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Chat live" class="btn btn-secondary" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Live%20Chat');">
+            <a href="http://www.phoenix.edu/request-information.html" class="btn btn-cta orange" title="Request Info" name="header_request-information" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Request%20Information');">
+            Request Info</a> <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Live Chat" class="btn btn-cta orange" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Live%20Chat');">
             Live Chat</a>
 
             <p class="phoneNumber">(866) 766-0766</p>
@@ -537,8 +537,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
                     <div class="quickLinksColContainer quickLinks1ColContainer">
                       <div class="column quickLinksFirstColumn">
                         <ul>
-                          <li class="firstChild"><a href="http://www.phoenix.edu/colleges_divisions.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_colleges_schools_rsaquo_" id="headeralternate_secondarynavlinks_quicklinks_meganav_colleges_schools_rsaquo_">
-                          Colleges &amp; Schools &#8250;</a></li>
+                          <li class="firstChild"><a href="http://www.phoenix.edu/campus-locations.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_locations_rsaquo_" id="headeralternate_secondarynavlinks_quicklinks_meganav_locations_rsaquo_">
+                          Locations &#8250;</a></li>
 
                           <li class=""><a href="http://www.phoenix.edu/programs/continuing-education.html" name="headeralternate_secondarynavlinks_quicklinks_meganav_continuing_education_rsaquo_" id="headeralternate_secondarynavlinks_quicklinks_meganav_continuing_education_rsaquo_">
                           Continuing Education &#8250;</a></li>
@@ -1652,6 +1652,7 @@ Phoenix, AZ 85040 USA</p>
 
 
 
+
 <div class="related hasPadding ">
 <div class="componentWrapper componentWrapper_container">
     
@@ -1674,7 +1675,7 @@ Phoenix, AZ 85040 USA</p>
 
 </div>	 
 </div><div style="clear:both"></div>
-   </div>
+</div>
 </div>
 
     <div class="rightsubiparsys iparsys"><div class="iparys_inherited"><div class="rightsubiparsys iparsys"></div>
@@ -2337,119 +2338,139 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
   <script type="text/javascript" src="../etc/designs/common/js/s_code.js"></script>
   <script type="text/javascript">
 
-    if(typeof(sc) != 'object') var sc = {}
-      sc.init = function(){
-        s.channel = 'mktg';
-        s.server='cq02.dc3.aptimus.net';
+    if(typeof(sc) !== 'object') var sc = {};
+    sc.init = function(){
+      s.channel = 'mktg';
+      s.server='cq03.dc1.aptimus.net';
 
-        s.pageName='mktg:' + (document.title.indexOf(" - University")>-1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase());
-        if(document.location.pathname == "/") s.pageName = "mktg:home page";
-        if(s.pageName.indexOf('page not found') != -1){//error page
-          s.pageType = "errorPage";
-          s.pageName=document.location.href;
-        } 
+      s.pageName='mktg:' + (document.title.indexOf(" - University") > -1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase());
+      if(document.location.pathname === "/") s.pageName = "mktg:home page";
+      if(s.pageName.indexOf('page not found') !== -1){ //error page
+        s.pageType = "errorPage";
+        s.pageName = document.location.href;
+      } 
 
-        //sProps
-        path = 'mktg'+window.location.pathname;
-        path =  path.indexOf('.') != -1 ? path.substring(0,path.indexOf('.')).split('/') : path.split('/');
-        if(path[1] == '') path[1] = 'home-page';
-        if(typeof(path[1]) != 'undefined'){} s.prop1 = path.slice(0,2).join(':');
-        if(typeof(path[2]) != 'undefined') s.prop2 = path.slice(0,3).join(':');
-        try{
-          var sDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-          var sDay = sDays[new Date().getDay()];
-          var sMins = 15*Math.floor(new Date().getMinutes()/15);
-          if(sMins.toString().length == 1) sMins = '0'+sMins;
-          var sHours = new Date().getMinutes() > 45 ? new Date().getHours()+1 : (new Date().getHours().toString().length == 1 ? '0'+new Date().getHours() : new Date().getHours());
-          var sOffset = new Date().getTimezoneOffset();
-          s.prop3 = sDay + '|' + sHours + ':' + sMins + '|' + sOffset;
-        }catch(e){}
-        s.prop6 = 'contentpage';
-        s.prop7 = '1.12';
-        s.prop8 = 'phoenix.edu';
-        s.prop9 = window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.hash;
-        s.prop10 = 'uop';
-        s.prop11 = s_account.indexOf(',') != -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
-        s.prop12 = path[path.length-1];
-        s.prop13 = typeof(name) == "string" ? name : '';//cms identifier
-        s.prop14 =  document.location.pathname + window.location.hash;
-        s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( path[path.length-1] ), document.location.pathname.length) + window.location.hash;
-        s.prop16 = (typeof(sc.prop16) == 'string') ? sc.prop16 : '';
-        s.prop17 = (typeof(sc.prop17) == 'string') ? sc.prop17 : '';
-        s.prop18 = (typeof(sc.prop18) == 'string') ? sc.prop18 : '';
-        s.prop19 = (typeof(sc.prop19) == 'string') ? sc.prop19 : '';
-        s.prop20 = (typeof(sc.prop20) == 'string') ? sc.prop20 : '';
-        //s.prop36 = typeof(UPX_userDefaultValue.getIP) == "function" ? UPX_userDefaultValue.getIP() : "";
-        //try{ s.prop36 = typeof(CQ_Analytics.UpxDataMgr.data.ip) == "string" ? CQ_Analytics.UpxDataMgr.data.ip : (typeof(UPX_userDefaultValue.getIP) == "function" ? UPX_userDefaultValue.getIP() : ""); }catch(e){}
+      //sProps
+      var path = 'mktg'+window.location.pathname;
+      path =  path.indexOf('.') !== -1 ? path.substring(0,path.indexOf('.')).split('/') : path.split('/');
+      if(path[1] === '') path[1] = 'home-page';
+      if(typeof(path[1]) !== 'undefined') s.prop1 = path.slice(0,2).join(':');
+      if(typeof(path[2]) !== 'undefined') s.prop2 = path.slice(0,3).join(':');
+      s.prop3 = sc.timeZoneOffset();
+      s.prop6 = 'contentpage';
+      s.prop7 = '1.12';
+      s.prop8 = 'phoenix.edu';
+      s.prop9 = unescape(window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.hash);
+      s.prop10 = 'uop';
+      s.prop11 = s_account.indexOf(',') !== -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
+      s.prop12 = path[path.length-1];
+      s.prop13 = typeof(name) === "string" ? name : '';//cms identifier
+      s.prop14 =  unescape(document.location.pathname + window.location.hash);
+      s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( path[path.length-1] ), document.location.pathname.length) + window.location.hash;
+      s.prop16 = (typeof(sc.prop16) === 'string') ? sc.prop16 : '';
+      s.prop17 = (typeof(sc.prop17) === 'string') ? sc.prop17 : '';
+      s.prop18 = (typeof(sc.prop18) === 'string') ? sc.prop18 : '';
+      s.prop19 = (typeof(sc.prop19) === 'string') ? unescape(sc.prop19) : '';
+      s.prop20 = (typeof(sc.prop20) === 'string') ? sc.prop20 : '';
+      s.prop35 = (document.documentElement.clientWidth === document.body.clientWidth) ? 'standard' : 'responsive';
+      //eVars
+      s.eVar1 = "D=c1";
+      s.eVar2 = "D=c2";
+      s.eVar3 = "D=c3";
+      s.eVar6 = "D=c6";
+      s.eVar7 = "D=c7";
+      s.eVar8 = s.prop10 + ':' + s.channel + ':' + s.prop8 + ':' + s.prop11;
+      s.eVar9 = "D=c9";
+      s.eVar12 = s.pageName.toLowerCase();
+      try{ s.eVar13 = ProfileService.profile.analyticsId; } catch(e){}
+      try{ if( isNaN(parseInt(s.getQueryParam('orderID'),10)) === false ) s.eVar14 = s.getQueryParam('orderID'); }catch(e){}
+      s.eVar15 = "D=c13";
+      s.eVar16 = "D=c19";
+      s.eVar18 = "D=c14";
+      s.eVar19 = "D=c15";
+      s.eVar20 = "D=c12";
+      s.eVar21 = "D=c16";
+      s.eVar22 = "D=c17";
 
-        //eVars
-        s.eVar1 = "D=c1";
-        s.eVar2 = "D=c2";
-        s.eVar3 = "D=c3";
-        s.eVar6 = "D=c6"
-        s.eVar7 = "D=c7";
-        s.eVar8 = s.prop10 + ':' + s.channel + ':' + s.prop8 + ':' + s.prop11;
-        s.eVar9 = "D=c9";
-        s.eVar12 = s.pageName.toLowerCase();
-        try{ s.eVar13 = ProfileService.profile.analyticsId } catch(e){}
-        try{ if( isNaN(parseInt(s.getQueryParam('orderID'))) === false ) s.eVar14 = s.getQueryParam('orderID') }catch(e){}
-        s.eVar15 = "D=c13";
-        s.eVar18 = "D=c14";
-        s.eVar19 = "D=c15";
-        s.eVar20 = "D=c12";
-        sc.eVar21 = "D=c16";
-        sc.eVar22 = "D=c17";
-        
-        //Events
-        if(typeof(s.eVar14) != 'undefined') s.events="event3:"+s.eVar14;
-        if(typeof(sc.events) != 'undefined') s.events = sc.events;
+      //Events
+      if(typeof(s.eVar14) !== 'undefined') s.events = "event3:" + s.eVar14;
+      if(typeof(sc.events) !== 'undefined') s.events = sc.events;
+    }
+    sc.timeZoneOffset = function(){
+      var sDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var sDay = sDays[new Date().getDay()];
+      var sMins = 15*Math.floor(new Date().getMinutes()/15);
+      if(sMins.toString().length === 1) sMins = '0'+sMins;
+      var sHours = new Date().getMinutes() > 45 ? new Date().getHours()+1 : (new Date().getHours().toString().length === 1 ? '0'+new Date().getHours() : new Date().getHours());
+      var sOffset = new Date().getTimezoneOffset();
+      return sDay + '|' + sHours + ':' + sMins + '|' + sOffset;
+    }
+  sc.trackCustomLink = function(n,a,t){
+    //n = link name
+    //a = object name if undefined a = true
+    //t = link type, if undefined defaults to 'o' (custom)
+    try{
+      if(typeof(n) === 'undefined') return;
+      if(typeof(a) === 'undefined') a = true;
+      if(typeof(t) === 'undefined') t = 'o';
+      s.linkTrackVars='prop27';
+      s.prop27 = n;
+      s.tl(a,t,n);
+    }catch(e){}
+
   }
-
-  if(document.location.pathname.indexOf('search.html') != -1){
-    //delay pageview tracking until search results ajaxrequest returns with search results
-    //component_search_results.js contains the s.init() and s.t() function calls
+  //delay pageview tracking until search  ajax returns with search results
+  //delay pageview on login lightbox
+  if(document.location.pathname.indexOf('/search.html') !== -1 || document.location.pathname.indexOf('/lightboxLogin.html') !== -1){
     sc.delay = true;
   }
-  if(sc.delay != true){
+  if(sc.delay !== true){
      sc.init();
-     var s_code=s.t();if(s_code)document.write(s_code)//-->
+     var s_code = s.t(); if(s_code)document.write(s_code);//-->
   }
 
 </script>
 
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript><img src="../../metrics.phoenix.edu/b/ss/apollouopmktgprod,apollouopglobal/1/H.25--NS/0%3F[AQB]&amp;cdp=2&amp;ns=metrics&amp;[AQE]" height="1" width="1" border="0" alt=""/></noscript>
 
-<noscript><img src="../../apollo.d1.sc.omtrdc.net/b/ss/apollodev/1/H.25--NS/0%3F[AQB]&amp;cdp=4&amp;[AQE]" height="1" width="1" border="0" alt=""/></noscript><!--/DO NOT REMOVE/-->
 
 
-  <script type="text/javascript">
-    /*Live Chat Tracking*/
-    try{
-      if(window.parent.location.pathname.indexOf('/chat/') !== -1){
-        $('#login-button-anchor',window.parent.document).click(function(e){
-          if($('#first-name',window.parent.document).val() != $('#login-form',window.parent.document).data('first-name')){
-            if(window.parent.sessionName == "" && window.parent.app.sessionEnded == false){//chat opened
-              var s=s_gi(s_account);
-              s.linkTrackVars='events';
-              s.linkTrackEvents='event22';
-              s.events='event22';
-              s.tl(this,'o','Action/Link Name');
-            }
-            $('#message',window.parent.document).bind('focus.chatStart',function(){
-              var s=s_gi(s_account);
-              s.linkTrackVars='eVar28,events';
-              s.linkTrackEvents='event23';
-              s.eVar28 = window.parent.sessionName;
-              s.events ='event23';
-              s.tl(this,'o','Action/Link Name');
-              $('#message',window.parent.document).unbind('focus.chatStart');
-            });
-          }
-        });
-      }
-    }catch(e){}
-  </script>
 
 <script type="text/javascript">
+  /*Live Chat Tracking*/
+  try{
+    if(window.parent.location.pathname.indexOf('/chat/') !== -1){
+      $('#login-button-anchor',window.parent.document).click(function(e){
+        if($('#first-name',window.parent.document).val() != $('#login-form',window.parent.document).data('first-name')){
+          if(window.parent.sessionName == "" && window.parent.app.sessionEnded == false){//chat opened
+            var s=s_gi(s_account);
+            s.linkTrackVars='events';
+            s.linkTrackEvents='event22';
+            s.events='event22';
+            sc.trackCustomLink(s.pageName+' |live chat|open')
+          }
+          $('#message',window.parent.document).bind('focus.chatStart',function(){
+            var s=s_gi(s_account);
+            s.linkTrackVars='eVar28,events';
+            s.linkTrackEvents='event23';
+            s.eVar28 = window.parent.sessionName;
+            s.events ='event23';
+            sc.trackCustomLink(s.pageName+' |live chat|chat start')
+            $('#message',window.parent.document).unbind('focus.chatStart');
+          });
+        }
+      });
+    }
+  }catch(e){}
+  
+  /*CTA Tracking*/
+  try{
+    $('.headerConsole div.buttons').on('click','a',function (e){
+      sc.trackCustomLink(s.pageName+' |button|'+$(this).attr('name').toLowerCase()+'|'+$(this).attr('title').toLowerCase());
+    });
+  }catch(e){}
 
 
 </script>  
@@ -2487,9 +2508,19 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
   
   
     
-    <script src="../../s.btstatic.com/tag.js">{ site: "HAPDeO0" }</script>
-    <noscript><iframe src="../../s.thebrighttag.com/iframe%3Fc=HAPDeO0.html" width="1" height="1"></iframe></noscript>
-
+    <script type="text/javascript">
+      (function () {
+        var tagjs = document.createElement("script");
+        var s = document.getElementsByTagName("script")[0];
+        tagjs.async = true;
+        tagjs.src = "//s.btstatic.com/tag.js#site=HAPDeO0";
+        s.parentNode.insertBefore(tagjs, s);
+      }());
+    </script>
+    <noscript>
+      <iframe src="../../s.thebrighttag.com/iframe%3Fc=HAPDeO0.html" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+    </noscript>
+ 
     <div class="analytics">
 </div>
   
@@ -2507,7 +2538,7 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
   
   </body>
 <!--
-[Instance=cq02.dc3.aptimus.net; Elapsed=0 ms; Last Generated=Wed Jan 23 00:50:09 GMT+00:00 2013; ]
+[Instance=cq03.dc1.aptimus.net; Elapsed=1 ms; Last Generated=Sat Jan 26 00:36:42 GMT 2013; ]
 -->
 
 

@@ -47,7 +47,7 @@ RefineSearch.prototype.OnSubmit = function(postback) {
     var isValid = Page_ClientValidate("RefineSearchVGrp");
     if (!isValid) {
         errorDiplayElement.className = "ErrorDisplay";
-        errorMessagesElement.className = "Error";
+        errorMessagesElement.className = "HideErrorDisplay";
         SetRequiredFieldStyle();
         return false;
     }
@@ -139,7 +139,10 @@ RefineSearch.prototype.Validate = function() {
             streetAddress = streetAddress.trim().replaceAll("+", " ");
         if (streetAddress != control.StreetElement.value)
             isDirty = true;
-
+        var apt = GetCookie("Serviceability", "Apt");
+        if (apt != null)
+            if (apt != control.AptElement.value)
+                isDirty = true;
         var ZipCode = GetCookie("Serviceability", "Zip");
         if (ZipCode != null)
             if (ZipCode != control.ZipCodeElement.value)

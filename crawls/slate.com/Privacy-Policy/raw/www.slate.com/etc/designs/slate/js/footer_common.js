@@ -70,3 +70,9 @@ $(document).ready(function() {
 	});
 });
 
+//Sonar ad call
+$(window).load(function() {
+if (ASL != null && ASL.cfg != null && ASL.cfg.pid != null) {
+    SG_Utils.loadScript("http://js.adsonar.com/js/aslJSON.js", true);
+}
+});

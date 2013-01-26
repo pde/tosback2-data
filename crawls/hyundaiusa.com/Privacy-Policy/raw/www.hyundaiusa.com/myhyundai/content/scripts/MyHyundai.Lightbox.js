@@ -215,7 +215,7 @@ myHyundaiUtils.lightbox = function () {
             var item = lbContentItem || $('.myhyundai-lbContent');
             var h = $(item).outerHeight();
             var w = $(item).outerWidth();
-            
+
             if (h < 20 || w < 20) {
                 setTimeout(function () {
                     myHyundaiUtils.lightbox.reFit(lbContentItem || null);
@@ -226,7 +226,11 @@ myHyundaiUtils.lightbox = function () {
             if (myHyundaiUtils.lightbox.isLB) {
                 myHyundaiUtils.lightbox.parentCallback('resize|' + w + '|' + h);
             } else {
-                myHyundaiUtils.lightbox.resize({ h: h, w: w })
+                try {
+                    myHyundaiUtils.lightbox.resize({ h: h, w: w });
+                } catch (ex) {
+
+                }
             }
         },
 
@@ -259,7 +263,7 @@ myHyundaiUtils.lightbox = function () {
                 // TODO: add page specific updates, like refresh login state
             } else if (hash[0] == 'closeRefreshLoggedIn') {
                 var href = window.top.location.href.toLowerCase();
-                if(href.indexOf("localhost")>=0 || href.indexOf("/myhyundai")>0){
+                if (href.indexOf("localhost") >= 0 || href.indexOf("/myhyundai") > 0) {
                     window.top.location.reload();
                 } else {
                     window.top.location.assign("/myhyundai");
@@ -270,11 +274,11 @@ myHyundaiUtils.lightbox = function () {
             }
         },
 
-        support:function(type){
+        support: function (type) {
             var ret = false;
-            switch(type){
+            switch (type) {
                 case 'closeRefreshLoggedIn':
-                    ret = true;    
+                    ret = true;
                     break;
             }
             return ret;
@@ -291,7 +295,7 @@ myHyundaiUtils.lightbox = function () {
                 if (scriptURL) {
                     scriptURL = $(this).attr('src').split('/');
                     var str = scriptURL[scriptURL.length - 1];
-                    if(str && str.indexOf('?')>=0) str = str.substr(0, str.indexOf('?'));
+                    if (str && str.indexOf('?') >= 0) str = str.substr(0, str.indexOf('?'));
                     if (str == 'MyHyundai.Lightbox.js') {
                         $(callbackIframe).attr('src',
                             (myHyundaiUtils.lightbox.parentDomain ? myHyundaiUtils.lightbox.parentDomain : '') +

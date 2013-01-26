@@ -349,7 +349,7 @@ var noneIndex;
 function s_doPlugins(s) {
 
 		/*s_code date*/
-		s.prop48="10/24/12";
+		s.prop48="1/8/2013";
                 
 		if ((!s.prop3) && (!s.eVar6)) {
             s.eVar6 = s.prop3 = "corporate";
@@ -372,8 +372,10 @@ function s_doPlugins(s) {
                 
         }
         else // not FAQ page
-            s.prop9=""; 
+            s.prop9="";
         // end added for cq
+	
+	
 	
       if (!s.pageType && !s.pageName)s.pageName = s.getPageName()
       if (!s.pageType){
@@ -381,6 +383,21 @@ function s_doPlugins(s) {
 		s.pageName = s.repl(s.pageName, "default", "overview");
 		s.pageName = s.repl(s.pageName, ".html", "");
        }
+       
+       	/* MOD cleanup */
+	if ( /\/rent./.test(document.URL)){
+		if (s.pageName.indexOf("rent.") >= 0) { 
+			var modPath = s.pageName.split(".");
+			var modId = modPath[1];			
+			s.pageName = "rent > " + modId;
+		}
+		if ( s.inList("event66",s.events) ){
+			var modPath2 = s.pageName.split(" > "); 
+			var modId2 = modPath2[1];	
+			s.eVar7 = s.eVar7 + "|" + modId2;
+		}
+	}
+	/* end MOD cleanup */
        
 	/* Populate the Additional variables  */
 	if (s.pageName && s.pageName != ''){

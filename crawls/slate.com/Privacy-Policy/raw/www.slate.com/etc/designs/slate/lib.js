@@ -40,7 +40,7 @@ window.Backplane=window.Backplane||{channelByBus:{},config:{},initialized:false,
 (function(b){var a=Echo.createPlugin({name:"Like",applications:["Stream","UserList"],dependencies:[{application:"UserList",url:"//cdn.echoenabled.com/clientapps/v2.6.30/user-list.js"}],init:function(d,c){if(c instanceof Echo.Stream){d.extendRenderer("Item","likes",d.renderers.Item.likes);d.extendTemplate("Item",d.templates.likeList,"insertAsLastChild","echo-item-data");d.addItemControl(c,d.assembleControl("Like",c));d.addItemControl(c,d.assembleControl("Unlike",c));d.subscribe(c,d.topic("internal.Item","onUnlike"),function(e,f){d.sendRequest(c,{verb:"unlike",target:f.item.object.id,author:f.actor.id},function(){c.startLiveUpdates(true);});});}else{if(c instanceof Echo.UserList){d.extendRenderer("UserList","container",d.renderers.UserList.container);d.extendRenderer("UserListItem","adminUnlike",d.renderers.UserListItem.adminUnlike);d.extendTemplate("UserListItem",d.templates.adminUnlike,"insertAsLastChild","echo-user-list-item-container");}}d.addCss(d.css);}});a.addLabels({likeThis:" like this.",likesThis:" likes this.",likeControl:"Like",unlikeControl:"Unlike",unlikeOnBehalf:"Unlike on behalf of this user",likeProcessing:"Liking...",unlikeProcessing:"Unliking..."});a.templates={likeList:'<div class="echo-item-likes"></div>',adminUnlike:'<img class="echo-user-list-item-adminUnlike" src="//cdn.echoenabled.com/images/container/closeWindow.png" title="'+a.label("unlikeOnBehalf")+'" width="10" height="9">'};a.sendRequest=function(c,d,e){b.get(a.config.get(c,"submissionProxyURL","",true),{appkey:c.config.get("appkey"),content:b.object2JSON(d),"target-query":c.config.get("query",""),sessionID:c.user.get("sessionID","")},e,"jsonp");};a.assembleControl=function(d,c){var e=function(){var f=this;f.controls[a.name+"."+d].element.empty().append(a.label(d.toLowerCase()+"Processing"));a.sendRequest(c,{verb:d.toLowerCase(),target:f.id},function(){var g=a.topic(c,"on"+d+"Complete");a.publish(c,g,c.prepareBroadcastParams({item:{data:f.data,target:f.dom.content}}));c.startLiveUpdates(true);});};return function(){var f=this;var g=(b.map(f.data.object.likes,function(h){if(f.user.hasIdentity(h.actor.id)){return h;}})).length>0?"Unlike":"Like";return{name:d,label:a.label(d.toLowerCase()+"Control"),visible:f.user.logged()&&g==d,onetime:true,callback:e};};};a.renderers={Item:{},UserList:{},UserListItem:{}};a.renderers.Item.likes=function(f){var k=this;if(!k.data.object.likes.length){f.hide();return;}var h=5;var j=a.get(k,"userList")?a.get(k,"userList").getVisibleUsersCount():h;var i=false;var g=k.user.get("id");var c=k.data.object.likes;b.each(c,function(l,m){if(m.actor.id==g){i=true;return false;}});var d=a.assembleConfig(k,{target:f.get(0),data:{itemsPerPage:h,entries:c},initialUsersCount:j,totalUsersCount:k.data.object.accumulators.likesCount,suffixText:a.label(c.length>1||i?"likeThis":"likesThis")});d.plugins.push({name:"Like"});var e=new Echo.UserList(d);a.set(k,"userList",e);f.show();k.subscribe(a.topic("internal.UserListItem","onUnlike"),function(l,m){if(m.target!=f.get(0)){return;}k.publish(a.topic("internal.Item","onUnlike"),{actor:m.actor,item:k.data});});};a.renderers.UserList.container=function(c){var d=this;d.parentRenderer("container",arguments);if(!d.user.isAdmin()){return;}c.addClass("echo-user-list-highlight");};a.renderers.UserListItem.adminUnlike=function(c){var d=this;if(!d.user.isAdmin()){c.remove();return;}c.one("click",function(){d.dom.get("container").css("opacity",0.3);a.publish(d,a.topic("internal.UserListItem","onUnlike"),{actor:d.data,target:d.config.get("target").get(0)});});};a.css=".echo-item-likes { background: url(//cdn.echoenabled.com/images/likes.png) no-repeat 0px 4px; padding: 0px 0px 4px 21px; }.echo-item-likes .echo-user-list-highlight { line-height: 23px; }.echo-item-likes .echo-user-list-highlight .echo-user-list-item-container { display: inline-block; line-height: 16px; background-color: #EEEEEE; padding: 1px 3px; border: 1px solid #D2D2D2; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; margin: 0px 2px; }.echo-item-likes .echo-user-list-highlight .echo-user-list-delimiter { display: none; }.echo-item-likes .echo-user-list-item-adminUnlike { cursor: pointer; margin-left: 3px; }"+(b.browser.msie?".echo-item-likes .echo-user-list-highlight span { vertical-align: middle; }.echo-item-likes { background-position: 0px 2px; }":"");})(jQuery);
 (function(b){var a=Echo.createPlugin({name:"Edit",applications:["Stream","Submit"],dependencies:[{application:"Submit",url:"//cdn.echoenabled.com/clientapps/v2.6.30/submit.js"}],init:function(e,c){if(c instanceof Echo.Stream){var d=e.config.get(c,"layout");if(!d||!/^(?:popup|inline)$/.test(d)){e.config.set(c,"layout","popup");}e.addCss(e.css);e.listenEvents(c);e.addItemControl(c,e.assembleControl(c));}else{if(c instanceof Echo.Submit){e.extendTemplate("Submit",e.template,"insertAfter","echo-submit-post-container");e.extendRenderer("Submit","cancelButton",function(g){var f=this;g.click(function(){f.publish("Submit.onEditError",f.prepareBroadcastParams());});});}}}});a.template='<div class="echo-submit-cancelButton-container"><a href="javascript:void(0);" class="echo-submit-cancelButton echo-primaryFont echo-clickable echo-linkColor">'+a.label("cancel")+"</a></div>";a.addLabels({edit:"Edit",editControl:"Edit",updating:"Updating...",cancel:"cancel"});a.popupClose=function(c){if(a.get(c,"popup")){a.get(c,"popup").close();}};a.submitConfig=function(c,d,e){return a.assembleConfig(c,{target:e,data:d.data,mode:"edit",targetURL:d.id});};a.callbacks={inline:{},popup:{}};a.callbacks.inline={control:function(d){var e=this;var c=a.submitConfig(d,e,e.dom.get("subcontainer"));c.plugins.push({name:"Edit"});c.targetQuery=d.config.get("query","");new Echo.Submit(c);e.dom.content.get(0).scrollIntoView(true);},events:{complete:function(c){c.rerender();}}};a.callbacks.inline.events.error=a.callbacks.inline.events.complete;a.callbacks.popup={control:function(d){var e=this;a.popupClose(e);var c=new Echo.UI.Dialog({content:function(g){b(g).addClass("echo-edit-item-container");var f=a.submitConfig(d,e,g);f.plugins.push({name:"Edit"});f.targetQuery=d.config.get("query","");new Echo.Submit(f);},config:{autoOpen:true,title:a.label("edit"),width:400,height:320,minWidth:300,minHeight:320}});a.set(e,"popup",c);},events:{init:function(c){c.block(a.label("updating"));},complete:function(c){a.popupClose(c);},error:function(c){a.popupClose(c);c.unblock();}}};a.assembleControl=function(c){return function(){var d=this;return{name:"Edit",label:a.label("editControl"),visible:d.user.isAdmin()||d.user.hasIdentity(d.data.actor.id),callback:function(){var e=a.config.get(c,"layout");a.callbacks[e].control.call(d,c);}};};};a.listenEvents=function(c){var d=a.callbacks[a.config.get(c,"layout")].events;b.each(["Init","Complete","Error"],function(f,e){a.subscribe(c,"Submit.onEdit"+e,function(h,g){var j=c.items[g.data.unique];var i=d[e.toLowerCase()];if(j&&i){i(j);}});});};a.css=".echo-edit-item-container .echo-submit-container { margin: 10px; }.echo-submit-cancelButton { float: right; margin: 6px 15px 0px 0px; }";})(jQuery);
 (function(b){var a=Echo.createPlugin({name:"Reply",applications:["Stream"],dependencies:[{application:"Submit",url:"//cdn.echoenabled.com/clientapps/v2.6.30/submit.js"}],init:function(d,c){if(!Echo.Global){Echo.Global={};}d.extendRenderer("Item","children",d.renderers.Item.children);d.extendRenderer("Item","replyForm",d.renderers.Item.replyForm);d.extendRenderer("Item","container",d.renderers.Item.container);d.extendTemplate("Item",d.template,"insertAsLastChild","echo-item-content");d.listenEvents(c);d.addItemControl(c,d.assembleControl("Reply",c));}});a.template='<div class="echo-item-replyForm"></div>';a.addLabels({replyControl:"Reply"});a.assembleControl=function(d,c){var e=function(){var g=this;var h=g.dom.get("replyForm");if(!a.get(g,"form")){a.createForm(g,h);}if(a.get(g,"form.initialized")){if(g.depth||!g.children.length){a.view(g,"toggle");g.rerender("container");}}else{g.rerender("replyForm");}var f=a.get(g,"form");f.instance.switchMode();if(f.visible){if(f.instance.dom){text=f.instance.dom.get("text");if(text&&text.is(":visible")){text.focus();return;}}h.get(0).scrollIntoView(false);}};return function(){var f=this;return{name:"Reply",label:a.label("replyControl"),visible:f.depth<f.config.get("children.maxDepth"),callback:e};};};a.renderers={Item:{}};a.renderers.Item.children=function(e){var g=this;if(g.children.length==1){var f=a.get(g,"form");var h=g.children[0];var d=h.added&&!(f&&f.visible);var c=h.deleted&&!(f&&f.instance&&f.instance.config.get("mode")!="compact");if(c||d&&!g.depth){g.rerender("replyForm");}}g.parentRenderer("children",arguments);};a.renderers.Item.replyForm=function(d){var e=this;if(e.depth==e.config.get("children.maxDepth")){return;}var c=!!e.children.length;if(!e.depth&&c&&!a.get(e,"form")||a.get(Echo.Global,a.getFormKey(e))){a.createForm(e,d);}else{if(!a.get(e,"form")){return;}}if(!a.get(e,"form.initialized")){a.set(e,"form.initialized",true);d.addClass("echo-item-container echo-item-container-child echo-trinaryBackgroundColor echo-item-depth-"+(e.depth+1));if(!c){e.rerender("container");}else{if(e.children.length==1&&e.children[0].deleted){a.view(e,"hide");}else{if(a.get(e,"form.visible")){a.view(e,"show");}}}}else{if(a.get(e,"form.visible")&&(!c||e.children.length==1&&e.children[0].deleted)){a.view(e,"hide");}else{if(c){a.view(e,"show");}}}};a.renderers.Item.container=function(c){var e=this;var d=e.threading;if(a.get(e,"form.visible")){e.threading=true;}e.parentRenderer("container",arguments);e.threading=d;};a.prepareParams=function(c,d){return c.prepareBroadcastParams({plugin:a.name,form:a.get(d,"form"),item:{data:d.data,target:d.dom.content}});};a.listenEvents=function(c){b.map(["Expand","Collapse"],function(d){a.subscribe(c,"Submit.on"+d,function(h,f){var g=c.items[f.data.unique];if(!g||!a.get(g,"form")){return;}if(d=="Collapse"&&(g.depth||!g.children.length)){a.view(g,"hide");g.rerender("container");}var e=a.topic(c,"onForm"+d);a.publish(c,e,a.prepareParams(c,g));});});a.subscribe(c,"Submit.onPostComplete",function(e,d){var f=c.items[d.data.unique];if(!f){return;}a.get(f,"form.instance").switchMode("compact");});};a.createForm=function(f,h){var c=a.assembleConfig(f,{target:h.get(0),inReplyTo:f.data,data:{unique:f.data.unique},mode:"compact",targetURL:f.id,targetQuery:f.config.get("query","")});var d=a.getFormKey(f);var e=(a.get(Echo.Global,d)||{}).instance;if(e){var i=e.dom.get("text").val();e.config.set("target",h);h.empty().append(e.render());if(i){e.dom.get("text").val(i);}}else{e=new Echo.Submit(c);}var g={instance:e,initialized:false,visible:true};a.set(Echo.Global,d,g);a.set(f,"form",g);};a.view=function(d,e){var c=e=="toggle"?!a.get(d,"form.visible"):e=="show";a.set(d,"form.visible",c);a.get(d,"form.instance").config.get("target")[e]();};a.getFormKey=function(c){return"forms."+c.data.unique+"-"+c.getContextId();};})(jQuery);
-(function(b){var a=Echo.createPlugin({name:"CommunityFlag",applications:["Stream"],dependencies:[{application:"UserList",url:"//cdn.echoenabled.com/clientapps/v2.6.30/user-list.js"}],init:function(d,c){if(typeof d.config.get(c,"showUserList")=="undefined"){d.config.set(c,"showUserList",true);}d.extendRenderer("Item","flags",d.renderers.Item.users);d.extendTemplate("Item",d.template,"insertAsLastChild","echo-item-data");d.addItemControl(c,d.assembleControl("Flag",c));d.addItemControl(c,d.assembleControl("Unflag",c));d.addCss(d.css);}});a.template='<div class="echo-item-flags"></div>';a.addLabels({flagged:"Flagged",flaggedThis:" flagged this.",flagControl:"Flag",unflagControl:"Unflag",flagProcessing:"Flagging...",unflagProcessing:"Unflagging..."});a.assembleControl=function(d,c){var e=function(){var f=this;f.controls[a.name+"."+d].element.empty().append(a.label(d.toLowerCase()+"Processing"));b.get(a.config.get(c,"submissionProxyURL","",true),{appkey:c.config.get("appkey"),content:b.object2JSON({verb:d.toLowerCase(),target:f.id}),"target-query":c.config.get("query",""),sessionID:f.user.get("sessionID","")},function(){var g=a.topic(c,"on"+d+"Complete");a.publish(c,g,c.prepareBroadcastParams({item:{data:f.data,target:f.dom.content}}));if(d==="Flag"&&!f.config.get("showFlags")){a.set(f,"flagged",true);f.rerender("controls");}c.startLiveUpdates(true);},"jsonp");};return function(){var h=this;var g=h.data.object.flags.length;var j=(b.map(h.data.object.flags,function(k){if(h.user.hasIdentity(k.actor.id)){return k;}})).length>0?"Unflag":"Flag";var f=d==="Flag"&&!h.config.get("showFlags")&&a.get(h,"flagged");var i={name:d,label:!f?'<span class="echo-clickable">'+a.label(d.toLowerCase()+"Control")+"</span>"+(h.user.isAdmin()&&g?" ("+g+")":""):a.label("flagged"),visible:h.user.logged()&&j==d,clickable:!f,onetime:true,callback:e};if(f){i.template="<span>{Data:label}</span>";}return i;};};a.renderers={Item:{}};a.renderers.Item.users=function(e,h){var f=this;if(!f.data.object.flags.length||!f.user.isAdmin()||!a.config.get(f,"showUserList")){e.hide();return;}var g=5;var c=a.get(f,"userList")?a.get(f,"userList").getVisibleUsersCount():g;var d=a.assembleConfig(f,{target:e.get(0),data:{itemsPerPage:g,entries:f.data.object.flags},initialUsersCount:c,suffixText:a.label("flaggedThis")});a.set(f,"userList",new Echo.UserList(d));e.show();};a.css=".echo-item-flags { background: url(//cdn.echoenabled.com/images/curation/status/communityflagged.png) no-repeat 0px 4px; padding: 0px 0px 4px 21px; }";})(jQuery);
+(function(b){var a=Echo.createPlugin({name:"CommunityFlag",applications:["Stream"],dependencies:[{application:"UserList",url:"//cdn.echoenabled.com/clientapps/v2.6.30/user-list.js"}],init:function(d,c){if(typeof d.config.get(c,"showUserList")=="undefined"){d.config.set(c,"showUserList",true);}d.extendRenderer("Item","flags",d.renderers.Item.users);d.extendTemplate("Item",d.template,"insertAsLastChild","echo-item-data");d.addItemControl(c,d.assembleControl("Flag",c));d.addItemControl(c,d.assembleControl("Unflag",c));d.addCss(d.css);}});a.template='<div class="echo-item-flags"></div>';a.addLabels({flagged:"Flagged",flaggedThis:" flagged this.",flagControl:"Flag",unflagControl:"Unflag",flagProcessing:"Flagging...",unflagProcessing:"Unflagging..."});a.assembleControl=function(d,c){var e=function(){var f=this;f.controls[a.name+"."+d].element.empty().append(a.label(d.toLowerCase()+"Processing"));b.get(a.config.get(c,"submissionProxyURL","",true),{appkey:c.config.get("appkey"),content:b.object2JSON({verb:d.toLowerCase(),target:f.id}),"target-query":c.config.get("query",""),sessionID:f.user.get("sessionID","")},function(){var g=a.topic(c,"on"+d+"Complete");a.publish(c,g,c.prepareBroadcastParams({item:{data:f.data,target:f.dom.content}}));if(d==="Flag"&&!f.config.get("showFlags")){a.set(f,"flagged",true);f.rerender("controls");}c.startLiveUpdates(true);},"jsonp");};return function(){var h=this;var g=h.data.object.flags.length;var j=(b.map(h.data.object.flags,function(k){if(h.user.hasIdentity(k.actor.id)){return k;}})).length>0?"Unflag":"Flag";var f=d==="Flag"&&!h.config.get("showFlags")&&a.get(h,"flagged");var i={name:d,label:!f?'<span class="echo-clickable">'+a.label(d.toLowerCase()+"Control")+"</span>"+(h.user.isAdmin()&&g?" ("+g+")":""):a.label("flagged"),visible:h.user.logged()&&j==d&&h.user.get("state")!="ModeratorBanned",clickable:!f,onetime:true,callback:e};if(f){i.template="<span>{Data:label}</span>";}return i;};};a.renderers={Item:{}};a.renderers.Item.users=function(e,h){var f=this;if(!f.data.object.flags.length||!f.user.isAdmin()||!a.config.get(f,"showUserList")){e.hide();return;}var g=5;var c=a.get(f,"userList")?a.get(f,"userList").getVisibleUsersCount():g;var d=a.assembleConfig(f,{target:e.get(0),data:{itemsPerPage:g,entries:f.data.object.flags},initialUsersCount:c,suffixText:a.label("flaggedThis")});a.set(f,"userList",new Echo.UserList(d));e.show();};a.css=".echo-item-flags { background: url(//cdn.echoenabled.com/images/curation/status/communityflagged.png) no-repeat 0px 4px; padding: 0px 0px 4px 21px; }";})(jQuery);
 /**
  * jQuery Cookie plugin
  *
@@ -699,7 +699,57 @@ SG_Async.loadFacebook = function() {
 	}
 };
 
+SG_Async.fbShareData = function(element, tag) { 
+  return encodeURIComponent($(element).attr(tag)); 
+} 
+
+SG_Async.loadFacebookShare = function () {
+  var theButton = $(this).find(" .sl-fb-sharer-button");
+
+  $(theButton).click(
+	function(e) {
+	  window.open(
+		'http://www.facebook.com/sharer.php?s=100&p[title]=' +
+		  SG_Async.fbShareData(theButton, "sl_title") +
+		  '&p[summary]=' + SG_Async.fbShareData(theButton, "sl_description") +
+		  '&p[url]=' + SG_Async.fbShareData(theButton, "sl_url") +
+		  '&p[images][0]=' + SG_Async.fbShareData(theButton, "sl_image") +
+		  '&p[ref]=' + SG_Async.fbShareData(theButton, "sl_ref"),
+		'sharer',
+		'toolbar=0,status=0,width=620,height=280');
+
+	  e.preventDefault();
+	});
+
+  $.ajax({ 
+		   'url': "https://graph.facebook.com/fql?q=select%20%20total_count%20from%20link_stat%20where%20url=%22" + SG_Async.fbShareData(theButton, "sl_url") +'%22', 
+		   'dataType': 'jsonp', 
+		   'success': function(d, status, xhr) { 
+			 var result = d; 
+			 var sharecount = result["data"][0]["total_count"]; 
+			 if (sharecount || sharecount === 0) { 
+			   $(".sl-fb-count").each(function(i, elm) { 
+										$(elm).html("" + sharecount); 
+									  }); 
+			 } else { 
+			   $(".sl-fb-count").css('display', 'none'); 
+			   if (console && console.log) { 
+				 console.log("Error! " + sharecount); 
+			   } 
+			 } 
+		   }, 
+		   'error': function(xhr, textStatus, errorThrown) { 
+			 if (console && console.log) { 
+			   console.log(textStatus); 
+			   console.log(errorThrown); 
+			 } 
+		   } 
+		 });
+};
+	
+
 SG_Async.loadSocial = function() {
+    SG_Async.loadFacebookShare.call(this);
 	SG_Async.loadFacebook.call(this);
 	SG_Async.loadPlusOne.call(this);
 };
@@ -1608,7 +1658,7 @@ $(document).ready(function() {
  * http://bassistance.de/jquery-plugins/jquery-plugin-validation/
  * http://docs.jquery.com/Plugins/Validation
  *
- * Copyright (c) 2006 - 2011 J????rn Zaefferer
+ * Copyright (c) 2006 - 2011 JÃ¶rn Zaefferer
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -3075,6 +3125,255 @@ $(document).ready(function() {
         $('.prototip').hide();
     }
 });
+/*!
+ * jQuery corner plugin: simple corner rounding
+ * Examples and documentation at: http://jquery.malsup.com/corner/
+ * version 2.12 (23-MAY-2011)
+ * Requires jQuery v1.3.2 or later
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ * Authors: Dave Methvin and Mike Alsup
+ */
+
+/**
+ *  corner() takes a single string argument:  $('#myDiv').corner("effect corners width")
+ *
+ *  effect:  name of the effect to apply, such as round, bevel, notch, bite, etc (default is round). 
+ *  corners: one or more of: top, bottom, tr, tl, br, or bl.  (default is all corners)
+ *  width:   width of the effect; in the case of rounded corners this is the radius. 
+ *           specify this value using the px suffix such as 10px (yes, it must be pixels).
+ */
+;(function($) { 
+
+var style = document.createElement('div').style,
+    moz = style['MozBorderRadius'] !== undefined,
+    webkit = style['WebkitBorderRadius'] !== undefined,
+    radius = style['borderRadius'] !== undefined || style['BorderRadius'] !== undefined,
+    mode = document.documentMode || 0,
+    noBottomFold = $.browser.msie && (($.browser.version < 8 && !mode) || mode < 8),
+
+    expr = $.browser.msie && (function() {
+        var div = document.createElement('div');
+        try { div.style.setExpression('width','0+0'); div.style.removeExpression('width'); }
+        catch(e) { return false; }
+        return true;
+    })();
+
+$.support = $.support || {};
+$.support.borderRadius = moz || webkit || radius; // so you can do:  if (!$.support.borderRadius) $('#myDiv').corner();
+
+function sz(el, p) { 
+    return parseInt($.css(el,p))||0; 
+};
+function hex2(s) {
+    s = parseInt(s).toString(16);
+    return ( s.length < 2 ) ? '0'+s : s;
+};
+function gpc(node) {
+    while(node) {
+        var v = $.css(node,'backgroundColor'), rgb;
+        if (v && v != 'transparent' && v != 'rgba(0, 0, 0, 0)') {
+            if (v.indexOf('rgb') >= 0) { 
+                rgb = v.match(/\d+/g); 
+                return '#'+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]);
+            }
+            return v;
+        }
+        if (node.nodeName.toLowerCase() == 'html')
+            break;
+        node = node.parentNode; // keep walking if transparent
+    }
+    return '#ffffff';
+};
+
+function getWidth(fx, i, width) {
+    switch(fx) {
+    case 'round':  return Math.round(width*(1-Math.cos(Math.asin(i/width))));
+    case 'cool':   return Math.round(width*(1+Math.cos(Math.asin(i/width))));
+    case 'sharp':  return width-i;
+    case 'bite':   return Math.round(width*(Math.cos(Math.asin((width-i-1)/width))));
+    case 'slide':  return Math.round(width*(Math.atan2(i,width/i)));
+    case 'jut':    return Math.round(width*(Math.atan2(width,(width-i-1))));
+    case 'curl':   return Math.round(width*(Math.atan(i)));
+    case 'tear':   return Math.round(width*(Math.cos(i)));
+    case 'wicked': return Math.round(width*(Math.tan(i)));
+    case 'long':   return Math.round(width*(Math.sqrt(i)));
+    case 'sculpt': return Math.round(width*(Math.log((width-i-1),width)));
+    case 'dogfold':
+    case 'dog':    return (i&1) ? (i+1) : width;
+    case 'dog2':   return (i&2) ? (i+1) : width;
+    case 'dog3':   return (i&3) ? (i+1) : width;
+    case 'fray':   return (i%2)*width;
+    case 'notch':  return width; 
+    case 'bevelfold':
+    case 'bevel':  return i+1;
+    case 'steep':  return i/2 + 1;
+    case 'invsteep':return (width-i)/2+1;
+    }
+};
+
+$.fn.corner = function(options) {
+    // in 1.3+ we can fix mistakes with the ready state
+    if (this.length == 0) {
+        if (!$.isReady && this.selector) {
+            var s = this.selector, c = this.context;
+            $(function() {
+                $(s,c).corner(options);
+            });
+        }
+        return this;
+    }
+
+    return this.each(function(index){
+        var $this = $(this),
+            // meta values override options
+            o = [$this.attr($.fn.corner.defaults.metaAttr) || '', options || ''].join(' ').toLowerCase(),
+            keep = /keep/.test(o),                       // keep borders?
+            cc = ((o.match(/cc:(#[0-9a-f]+)/)||[])[1]),  // corner color
+            sc = ((o.match(/sc:(#[0-9a-f]+)/)||[])[1]),  // strip color
+            width = parseInt((o.match(/(\d+)px/)||[])[1]) || 10, // corner width
+            re = /round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,
+            fx = ((o.match(re)||['round'])[0]),
+            fold = /dogfold|bevelfold/.test(o),
+            edges = { T:0, B:1 },
+            opts = {
+                TL:  /top|tl|left/.test(o),       TR:  /top|tr|right/.test(o),
+                BL:  /bottom|bl|left/.test(o),    BR:  /bottom|br|right/.test(o)
+            },
+            // vars used in func later
+            strip, pad, cssHeight, j, bot, d, ds, bw, i, w, e, c, common, $horz;
+        
+        if ( !opts.TL && !opts.TR && !opts.BL && !opts.BR )
+            opts = { TL:1, TR:1, BL:1, BR:1 };
+            
+        // support native rounding
+        if ($.fn.corner.defaults.useNative && fx == 'round' && (radius || moz || webkit) && !cc && !sc) {
+            if (opts.TL)
+                $this.css(radius ? 'border-top-left-radius' : moz ? '-moz-border-radius-topleft' : '-webkit-border-top-left-radius', width + 'px');
+            if (opts.TR)
+                $this.css(radius ? 'border-top-right-radius' : moz ? '-moz-border-radius-topright' : '-webkit-border-top-right-radius', width + 'px');
+            if (opts.BL)
+                $this.css(radius ? 'border-bottom-left-radius' : moz ? '-moz-border-radius-bottomleft' : '-webkit-border-bottom-left-radius', width + 'px');
+            if (opts.BR)
+                $this.css(radius ? 'border-bottom-right-radius' : moz ? '-moz-border-radius-bottomright' : '-webkit-border-bottom-right-radius', width + 'px');
+            return;
+        }
+            
+        strip = document.createElement('div');
+        $(strip).css({
+            overflow: 'hidden',
+            height: '1px',
+            minHeight: '1px',
+            fontSize: '1px',
+            backgroundColor: sc || 'transparent',
+            borderStyle: 'solid'
+        });
+    
+        pad = {
+            T: parseInt($.css(this,'paddingTop'))||0,     R: parseInt($.css(this,'paddingRight'))||0,
+            B: parseInt($.css(this,'paddingBottom'))||0,  L: parseInt($.css(this,'paddingLeft'))||0
+        };
+
+        if (typeof this.style.zoom != undefined) this.style.zoom = 1; // force 'hasLayout' in IE
+        if (!keep) this.style.border = 'none';
+        strip.style.borderColor = cc || gpc(this.parentNode);
+        cssHeight = $(this).outerHeight();
+
+        for (j in edges) {
+            bot = edges[j];
+            // only add stips if needed
+            if ((bot && (opts.BL || opts.BR)) || (!bot && (opts.TL || opts.TR))) {
+                strip.style.borderStyle = 'none '+(opts[j+'R']?'solid':'none')+' none '+(opts[j+'L']?'solid':'none');
+                d = document.createElement('div');
+                $(d).addClass('jquery-corner');
+                ds = d.style;
+
+                bot ? this.appendChild(d) : this.insertBefore(d, this.firstChild);
+
+                if (bot && cssHeight != 'auto') {
+                    if ($.css(this,'position') == 'static')
+                        this.style.position = 'relative';
+                    ds.position = 'absolute';
+                    ds.bottom = ds.left = ds.padding = ds.margin = '0';
+                    if (expr)
+                        ds.setExpression('width', 'this.parentNode.offsetWidth');
+                    else
+                        ds.width = '100%';
+                }
+                else if (!bot && $.browser.msie) {
+                    if ($.css(this,'position') == 'static')
+                        this.style.position = 'relative';
+                    ds.position = 'absolute';
+                    ds.top = ds.left = ds.right = ds.padding = ds.margin = '0';
+                    
+                    // fix ie6 problem when blocked element has a border width
+                    if (expr) {
+                        bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth');
+                        ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ "px"');
+                    }
+                    else
+                        ds.width = '100%';
+                }
+                else {
+                    ds.position = 'relative';
+                    ds.margin = !bot ? '-'+pad.T+'px -'+pad.R+'px '+(pad.T-width)+'px -'+pad.L+'px' : 
+                                        (pad.B-width)+'px -'+pad.R+'px -'+pad.B+'px -'+pad.L+'px';                
+                }
+
+                for (i=0; i < width; i++) {
+                    w = Math.max(0,getWidth(fx,i, width));
+                    e = strip.cloneNode(false);
+                    e.style.borderWidth = '0 '+(opts[j+'R']?w:0)+'px 0 '+(opts[j+'L']?w:0)+'px';
+                    bot ? d.appendChild(e) : d.insertBefore(e, d.firstChild);
+                }
+                
+                if (fold && $.support.boxModel) {
+                    if (bot && noBottomFold) continue;
+                    for (c in opts) {
+                        if (!opts[c]) continue;
+                        if (bot && (c == 'TL' || c == 'TR')) continue;
+                        if (!bot && (c == 'BL' || c == 'BR')) continue;
+                        
+                        common = { position: 'absolute', border: 'none', margin: 0, padding: 0, overflow: 'hidden', backgroundColor: strip.style.borderColor };
+                        $horz = $('<div/>').css(common).css({ width: width + 'px', height: '1px' });
+                        switch(c) {
+                        case 'TL': $horz.css({ bottom: 0, left: 0 }); break;
+                        case 'TR': $horz.css({ bottom: 0, right: 0 }); break;
+                        case 'BL': $horz.css({ top: 0, left: 0 }); break;
+                        case 'BR': $horz.css({ top: 0, right: 0 }); break;
+                        }
+                        d.appendChild($horz[0]);
+                        
+                        var $vert = $('<div/>').css(common).css({ top: 0, bottom: 0, width: '1px', height: width + 'px' });
+                        switch(c) {
+                        case 'TL': $vert.css({ left: width }); break;
+                        case 'TR': $vert.css({ right: width }); break;
+                        case 'BL': $vert.css({ left: width }); break;
+                        case 'BR': $vert.css({ right: width }); break;
+                        }
+                        d.appendChild($vert[0]);
+                    }
+                }
+            }
+        }
+    });
+};
+
+$.fn.uncorner = function() { 
+    if (radius || moz || webkit)
+        this.css(radius ? 'border-radius' : moz ? '-moz-border-radius' : '-webkit-border-radius', 0);
+    $('div.jquery-corner', this).remove();
+    return this;
+};
+
+// expose options
+$.fn.corner.defaults = {
+    useNative: true, // true if plugin should attempt to use native browser support for border radius rounding
+    metaAttr:  'data-corner' // name of meta attribute to use for options
+};
+    
+})(jQuery);
 /*
  * jQuery FlexSlider v2.1
  * http://www.woothemes.com/flexslider/
@@ -3956,253 +4255,4 @@ $(document).ready(function() {
     }
   }  
 
-})(jQuery);
-/*!
- * jQuery corner plugin: simple corner rounding
- * Examples and documentation at: http://jquery.malsup.com/corner/
- * version 2.12 (23-MAY-2011)
- * Requires jQuery v1.3.2 or later
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- * Authors: Dave Methvin and Mike Alsup
- */
-
-/**
- *  corner() takes a single string argument:  $('#myDiv').corner("effect corners width")
- *
- *  effect:  name of the effect to apply, such as round, bevel, notch, bite, etc (default is round). 
- *  corners: one or more of: top, bottom, tr, tl, br, or bl.  (default is all corners)
- *  width:   width of the effect; in the case of rounded corners this is the radius. 
- *           specify this value using the px suffix such as 10px (yes, it must be pixels).
- */
-;(function($) { 
-
-var style = document.createElement('div').style,
-    moz = style['MozBorderRadius'] !== undefined,
-    webkit = style['WebkitBorderRadius'] !== undefined,
-    radius = style['borderRadius'] !== undefined || style['BorderRadius'] !== undefined,
-    mode = document.documentMode || 0,
-    noBottomFold = $.browser.msie && (($.browser.version < 8 && !mode) || mode < 8),
-
-    expr = $.browser.msie && (function() {
-        var div = document.createElement('div');
-        try { div.style.setExpression('width','0+0'); div.style.removeExpression('width'); }
-        catch(e) { return false; }
-        return true;
-    })();
-
-$.support = $.support || {};
-$.support.borderRadius = moz || webkit || radius; // so you can do:  if (!$.support.borderRadius) $('#myDiv').corner();
-
-function sz(el, p) { 
-    return parseInt($.css(el,p))||0; 
-};
-function hex2(s) {
-    s = parseInt(s).toString(16);
-    return ( s.length < 2 ) ? '0'+s : s;
-};
-function gpc(node) {
-    while(node) {
-        var v = $.css(node,'backgroundColor'), rgb;
-        if (v && v != 'transparent' && v != 'rgba(0, 0, 0, 0)') {
-            if (v.indexOf('rgb') >= 0) { 
-                rgb = v.match(/\d+/g); 
-                return '#'+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]);
-            }
-            return v;
-        }
-        if (node.nodeName.toLowerCase() == 'html')
-            break;
-        node = node.parentNode; // keep walking if transparent
-    }
-    return '#ffffff';
-};
-
-function getWidth(fx, i, width) {
-    switch(fx) {
-    case 'round':  return Math.round(width*(1-Math.cos(Math.asin(i/width))));
-    case 'cool':   return Math.round(width*(1+Math.cos(Math.asin(i/width))));
-    case 'sharp':  return width-i;
-    case 'bite':   return Math.round(width*(Math.cos(Math.asin((width-i-1)/width))));
-    case 'slide':  return Math.round(width*(Math.atan2(i,width/i)));
-    case 'jut':    return Math.round(width*(Math.atan2(width,(width-i-1))));
-    case 'curl':   return Math.round(width*(Math.atan(i)));
-    case 'tear':   return Math.round(width*(Math.cos(i)));
-    case 'wicked': return Math.round(width*(Math.tan(i)));
-    case 'long':   return Math.round(width*(Math.sqrt(i)));
-    case 'sculpt': return Math.round(width*(Math.log((width-i-1),width)));
-    case 'dogfold':
-    case 'dog':    return (i&1) ? (i+1) : width;
-    case 'dog2':   return (i&2) ? (i+1) : width;
-    case 'dog3':   return (i&3) ? (i+1) : width;
-    case 'fray':   return (i%2)*width;
-    case 'notch':  return width; 
-    case 'bevelfold':
-    case 'bevel':  return i+1;
-    case 'steep':  return i/2 + 1;
-    case 'invsteep':return (width-i)/2+1;
-    }
-};
-
-$.fn.corner = function(options) {
-    // in 1.3+ we can fix mistakes with the ready state
-    if (this.length == 0) {
-        if (!$.isReady && this.selector) {
-            var s = this.selector, c = this.context;
-            $(function() {
-                $(s,c).corner(options);
-            });
-        }
-        return this;
-    }
-
-    return this.each(function(index){
-        var $this = $(this),
-            // meta values override options
-            o = [$this.attr($.fn.corner.defaults.metaAttr) || '', options || ''].join(' ').toLowerCase(),
-            keep = /keep/.test(o),                       // keep borders?
-            cc = ((o.match(/cc:(#[0-9a-f]+)/)||[])[1]),  // corner color
-            sc = ((o.match(/sc:(#[0-9a-f]+)/)||[])[1]),  // strip color
-            width = parseInt((o.match(/(\d+)px/)||[])[1]) || 10, // corner width
-            re = /round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,
-            fx = ((o.match(re)||['round'])[0]),
-            fold = /dogfold|bevelfold/.test(o),
-            edges = { T:0, B:1 },
-            opts = {
-                TL:  /top|tl|left/.test(o),       TR:  /top|tr|right/.test(o),
-                BL:  /bottom|bl|left/.test(o),    BR:  /bottom|br|right/.test(o)
-            },
-            // vars used in func later
-            strip, pad, cssHeight, j, bot, d, ds, bw, i, w, e, c, common, $horz;
-        
-        if ( !opts.TL && !opts.TR && !opts.BL && !opts.BR )
-            opts = { TL:1, TR:1, BL:1, BR:1 };
-            
-        // support native rounding
-        if ($.fn.corner.defaults.useNative && fx == 'round' && (radius || moz || webkit) && !cc && !sc) {
-            if (opts.TL)
-                $this.css(radius ? 'border-top-left-radius' : moz ? '-moz-border-radius-topleft' : '-webkit-border-top-left-radius', width + 'px');
-            if (opts.TR)
-                $this.css(radius ? 'border-top-right-radius' : moz ? '-moz-border-radius-topright' : '-webkit-border-top-right-radius', width + 'px');
-            if (opts.BL)
-                $this.css(radius ? 'border-bottom-left-radius' : moz ? '-moz-border-radius-bottomleft' : '-webkit-border-bottom-left-radius', width + 'px');
-            if (opts.BR)
-                $this.css(radius ? 'border-bottom-right-radius' : moz ? '-moz-border-radius-bottomright' : '-webkit-border-bottom-right-radius', width + 'px');
-            return;
-        }
-            
-        strip = document.createElement('div');
-        $(strip).css({
-            overflow: 'hidden',
-            height: '1px',
-            minHeight: '1px',
-            fontSize: '1px',
-            backgroundColor: sc || 'transparent',
-            borderStyle: 'solid'
-        });
-    
-        pad = {
-            T: parseInt($.css(this,'paddingTop'))||0,     R: parseInt($.css(this,'paddingRight'))||0,
-            B: parseInt($.css(this,'paddingBottom'))||0,  L: parseInt($.css(this,'paddingLeft'))||0
-        };
-
-        if (typeof this.style.zoom != undefined) this.style.zoom = 1; // force 'hasLayout' in IE
-        if (!keep) this.style.border = 'none';
-        strip.style.borderColor = cc || gpc(this.parentNode);
-        cssHeight = $(this).outerHeight();
-
-        for (j in edges) {
-            bot = edges[j];
-            // only add stips if needed
-            if ((bot && (opts.BL || opts.BR)) || (!bot && (opts.TL || opts.TR))) {
-                strip.style.borderStyle = 'none '+(opts[j+'R']?'solid':'none')+' none '+(opts[j+'L']?'solid':'none');
-                d = document.createElement('div');
-                $(d).addClass('jquery-corner');
-                ds = d.style;
-
-                bot ? this.appendChild(d) : this.insertBefore(d, this.firstChild);
-
-                if (bot && cssHeight != 'auto') {
-                    if ($.css(this,'position') == 'static')
-                        this.style.position = 'relative';
-                    ds.position = 'absolute';
-                    ds.bottom = ds.left = ds.padding = ds.margin = '0';
-                    if (expr)
-                        ds.setExpression('width', 'this.parentNode.offsetWidth');
-                    else
-                        ds.width = '100%';
-                }
-                else if (!bot && $.browser.msie) {
-                    if ($.css(this,'position') == 'static')
-                        this.style.position = 'relative';
-                    ds.position = 'absolute';
-                    ds.top = ds.left = ds.right = ds.padding = ds.margin = '0';
-                    
-                    // fix ie6 problem when blocked element has a border width
-                    if (expr) {
-                        bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth');
-                        ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ "px"');
-                    }
-                    else
-                        ds.width = '100%';
-                }
-                else {
-                    ds.position = 'relative';
-                    ds.margin = !bot ? '-'+pad.T+'px -'+pad.R+'px '+(pad.T-width)+'px -'+pad.L+'px' : 
-                                        (pad.B-width)+'px -'+pad.R+'px -'+pad.B+'px -'+pad.L+'px';                
-                }
-
-                for (i=0; i < width; i++) {
-                    w = Math.max(0,getWidth(fx,i, width));
-                    e = strip.cloneNode(false);
-                    e.style.borderWidth = '0 '+(opts[j+'R']?w:0)+'px 0 '+(opts[j+'L']?w:0)+'px';
-                    bot ? d.appendChild(e) : d.insertBefore(e, d.firstChild);
-                }
-                
-                if (fold && $.support.boxModel) {
-                    if (bot && noBottomFold) continue;
-                    for (c in opts) {
-                        if (!opts[c]) continue;
-                        if (bot && (c == 'TL' || c == 'TR')) continue;
-                        if (!bot && (c == 'BL' || c == 'BR')) continue;
-                        
-                        common = { position: 'absolute', border: 'none', margin: 0, padding: 0, overflow: 'hidden', backgroundColor: strip.style.borderColor };
-                        $horz = $('<div/>').css(common).css({ width: width + 'px', height: '1px' });
-                        switch(c) {
-                        case 'TL': $horz.css({ bottom: 0, left: 0 }); break;
-                        case 'TR': $horz.css({ bottom: 0, right: 0 }); break;
-                        case 'BL': $horz.css({ top: 0, left: 0 }); break;
-                        case 'BR': $horz.css({ top: 0, right: 0 }); break;
-                        }
-                        d.appendChild($horz[0]);
-                        
-                        var $vert = $('<div/>').css(common).css({ top: 0, bottom: 0, width: '1px', height: width + 'px' });
-                        switch(c) {
-                        case 'TL': $vert.css({ left: width }); break;
-                        case 'TR': $vert.css({ right: width }); break;
-                        case 'BL': $vert.css({ left: width }); break;
-                        case 'BR': $vert.css({ right: width }); break;
-                        }
-                        d.appendChild($vert[0]);
-                    }
-                }
-            }
-        }
-    });
-};
-
-$.fn.uncorner = function() { 
-    if (radius || moz || webkit)
-        this.css(radius ? 'border-radius' : moz ? '-moz-border-radius' : '-webkit-border-radius', 0);
-    $('div.jquery-corner', this).remove();
-    return this;
-};
-
-// expose options
-$.fn.corner.defaults = {
-    useNative: true, // true if plugin should attempt to use native browser support for border radius rounding
-    metaAttr:  'data-corner' // name of meta attribute to use for options
-};
-    
 })(jQuery);

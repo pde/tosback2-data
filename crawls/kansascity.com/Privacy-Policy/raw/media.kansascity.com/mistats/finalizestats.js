@@ -569,8 +569,13 @@ if (location.pathname.match(/\/footer/i)
 // Capture Tacoda tag
 s.prop47 = function ()
 {
+   var layout;
    var s
    var scripts;
+
+   layout = document.getElementById('layout_type');
+   if (layout && layout.className)
+      return ['layout', location.hostname.replace(/^www\./i, ''), layout.className.toLowerCase()].join(':');
 
    scripts = document.getElementsByTagName('script');
    for (s = 0; s < scripts.length; s++)

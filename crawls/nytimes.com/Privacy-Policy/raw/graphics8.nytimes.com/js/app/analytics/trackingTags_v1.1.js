@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 118405 2012-12-20 16:47:35Z reed.emmons $
+* $Id: trackingTags_v1.1.js 119395 2013-01-16 18:25:57Z utzc $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -561,7 +561,7 @@ NYTD.EventTracker = (function () {
     };
 })();
 
-NYTD.createPageEventTracker = function (updateFrequency) {
+NYTD.pageEventTracker = (function (updateFrequency) {
     'use strict';
     var tracker = new NYTD.EventTracker();
     var startTime = (new Date()).valueOf();
@@ -598,7 +598,7 @@ NYTD.createPageEventTracker = function (updateFrequency) {
     });
 
     return tracker;
-};
+})();
 
 /* END ANALYTICS TRACKING */
 /* NOTE: ALL NEW CODE NEEDS TO BE ADDED ABOVE THIS LINE */

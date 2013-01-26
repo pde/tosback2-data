@@ -834,6 +834,19 @@ SlateDom.tweenProperty = function(id,p,um,st,end,dur,cb)
 }
 
 
+//This is the global variable that sends IDs over to adsonar.
+ASL = {
+cfg :
+{
+    test: false,
+    pid : -1, // from the jsp
+    type : "0",
+    k : "", //the page url, from the jsp
+    placements :
+            [
+            ]
+}
+}
 var commentCounter = {
     items: {},
     repeatItems: [],

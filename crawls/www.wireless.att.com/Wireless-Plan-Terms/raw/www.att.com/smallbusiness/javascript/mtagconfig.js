@@ -4,3 +4,15 @@ if(!lpMTagConfig.pluginsLoaded&&d)lpMTagConfig.pageLoadTime=(new Date).getTime()
 function lpAddMonitorTag(a){if(!lpMTagConfig.lpTagLoaded){if(typeof a=="undefined"||typeof a=="object")a=lpMTagConfig.lpMTagSrc?lpMTagConfig.lpMTagSrc:lpMTagConfig.lpTagSrv?lpMTagConfig.lpProtocol+"://"+lpMTagConfig.lpTagSrv+"/hcp/html/mTag.js":"/hcp/html/mTag.js";a.indexOf("http")!=0?a=lpMTagConfig.lpProtocol+"://"+lpMTagConfig.lpServer+a+"?site="+lpMTagConfig.lpNumber:a.indexOf("site=")<0&&(a+=a.indexOf("?")<0?"?":"&",a=a+"site="+lpMTagConfig.lpNumber);var b=document.createElement("script");b.setAttribute("type",
 "text/javascript");b.setAttribute("charset","iso-8859-1");b.setAttribute("src",a);document.getElementsByTagName("head").item(0).appendChild(b)}}window.attachEvent?window.attachEvent("onload",lpMTagConfig.loadTag):window.addEventListener("load",lpMTagConfig.loadTag,!1);
 function lpSendData(a,b,c){if(arguments.length>0)lpMTagConfig.vars=lpMTagConfig.vars||[],lpMTagConfig.vars.push([a,b,c]);if(typeof lpMTag!="undefined"&&typeof lpMTagConfig.pluginCode!="undefined"&&typeof lpMTagConfig.pluginCode.simpleDeploy!="undefined"){var d=lpMTagConfig.pluginCode.simpleDeploy.processVars();lpMTag.lpSendData(d,!0)}}function lpAddVars(a,b,c){lpMTagConfig.vars=lpMTagConfig.vars||[];lpMTagConfig.vars.push([a,b,c])};
+function didLiveChat()
+{ try
+    {
+        var holdStr = document.location.href;
+        holdStr = holdStr.substring(holdStr.length, holdStr.lastIndexOf('/') + 1); 
+        holdStr = (holdStr.lastIndexOf('?') > 0) ? holdStr.substring(0, holdStr.lastIndexOf('?')) : holdStr; 
+        holdStr = (holdStr.lastIndexOf('#') > 0) ? holdStr.substring(0, holdStr.lastIndexOf('#')) : holdStr;
+        createCookie("clickToChatPage",holdStr,"3");
+   }
+    catch(e){}
+}
+;

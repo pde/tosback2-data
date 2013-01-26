@@ -175,18 +175,36 @@ $(function() {
 $(function() {		/* lazy images */
     var b, e, lazyLoad;
     b = $(window);
-    e = $('.lazyImage');		
+    e = $('.lazyImage');
+	$(".undefinedSize").each(function(index){
+		var f = $(this)
+		var d = f.data(),
+		img = new Image;
+		img.src = d.src;
+		img.onload = function(){
+			f.attr('data-width',img.width);
+			f.attr('data-height',img.height);
+			f.css({'width': img.width, 'height': img.height});
+		}
+	});
     lazyLoad = function () {
         e = $('.lazyImage');		
-		$.each(e, function () { 
-            var c = $(this),
+		$.each(e, function (index,item) { 
+            var c = $(item),
                 a, d;
             a = c.offset();
             d = c.data();	
             if (!d.loaded && a.top <= b.height() + b.scrollTop()) {
 		        a = new Image, a._parent = c, a.onload = function () { // IE8 fix: a._parent refers to the correct parent for the image, so that the image.onload callback knows which element to append the image to
                     this._parent.prepend(this);
-                    $(this).fadeIn();
+                    try {
+						$(this).fadeIn();
+					} catch (e){
+						try {
+							$(this).slideDown();
+						} catch (ee){ 
+						}
+					} 
                     $(this).css('display', 'block');
                     this._parent.removeClass('lazyImage')
                 }, $.extend(a, d), c.data('loaded', !0), e = $('.lazyImage');

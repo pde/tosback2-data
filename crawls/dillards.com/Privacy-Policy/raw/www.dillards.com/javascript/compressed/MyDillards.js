@@ -5,15 +5,22 @@ $(document).ready(function() {
 	
 	// My Dillard's fly-out toggle
 	var slideTime = 475;
-	var clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall, #welcome-new");
+	var clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall");
+	var welcomeNew = $("#welcome-new");
 	var contentBox = $("#myDillardsContent");
 	var invisibleWall = $("#myDillardsInvisibleWall");
 	
+	$(welcomeNew).live("click", function() {
+		if ($(contentBox).css("display") == "none") {
+			openMyDillardsFlyOut();
+		}
+	});
+	
 	$("#myDillardsBarText").find(".openClose").hoverIntent(function(){
 		if($(contentBox).css("display") == "none"){
-		$(this).trigger("click");
+			$(this).trigger("click");
 		}
-		},function(){});
+	},function(){});
 	
 	$(clickZone).click(function() {
 		// Open fly-out

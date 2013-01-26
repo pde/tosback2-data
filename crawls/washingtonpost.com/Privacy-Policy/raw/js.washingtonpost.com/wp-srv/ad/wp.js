@@ -51,6 +51,42 @@
     })()
   };
 
+  wpAd.tools.add_criteo = function(){
+    var cookieName = 'cto_was',
+      script_base = 'http://rtax.criteo.com/delivery/rta/rta.js';
+
+    wpAd.cache.cookies = wpAd.cache.cookies || {};
+
+    if(!wpAd.cache.cookies.hasOwnProperty('criteo')){
+     wpAd.cache.cookies.criteo = wpAd.tools.getCookie(cookieName);
+    }
+
+    win.crtg_content = wpAd.cache.cookies.criteo;
+
+    wpAd.tools.ajax({
+      cache: true,
+      dataType: 'script',
+      url: script_base,
+      timeout: 2000,
+      data: {
+        netId: '1180',
+        cookieName: cookieName,
+        rnd: Math.floor(Math.random() * 1E11),
+        varName: 'crtg_content'
+      },
+      error: function(err){
+        if(wpAd.flags.debug){
+          try{win.console.log('CRITEO timeout error:', err);}catch(e){}
+        }
+      },
+      success: function(data){
+        if(wpAd.flags.debug){
+          try{win.console.log(script_base, 'loaded:');}catch(e){}
+        }
+      }
+    });
+  };
+
   if(!wpAd.flags.no_ads) {
     //ADD THE TEMPLATES - generated via flight manager tool:
     wpAd.tools.writeScript(wpAd.constants.ad_config_url);
@@ -65,7 +101,7 @@
 
     //19882 - Criteo Implementation
     if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
-      wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/criteo.js');
+      wpAd.tools.add_criteo();
     }
 
   }

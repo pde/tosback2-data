@@ -71,17 +71,19 @@
 						obj.$lightBoxContent.data('srcURL',this.href);
 						obj.showOverlay(elem);
 					});
-					obj.$lightBoxContent.find('.close').click(function(){
-						obj.closeOverlay();
-					});
-	 
-					obj.$backDropContent.click(function(){
-						obj.closeOverlay();
-					});
-					/*code to hide close button in overlay if user passes argument as "no" */ 
+					
 					if(settings['close'] == 'no'){
 						obj.$lightBoxContent.find('.close').hide();
+					}else{
+						obj.$lightBoxContent.find('.close').click(function(){
+							obj.closeOverlay();
+						});
+						
+						obj.$backDropContent.click(function(){
+							obj.closeOverlay();
+						});
 					}
+
 					/*code to scroll the overlay with scroll of window*/
 					$(window).scroll(function(){
 						 oWin = $(window);

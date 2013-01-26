@@ -16,9 +16,9 @@ $(this).removeClass(a.mouseoverClass)
 }}
 }();
 var COMMON_links=function(){return{init:function(){COMMON_links.bindMouseEvents()
-},bindMouseEvents:function(){$(document).off("click.COMMON_links").on("click.COMMON_links","a."+COMMON_globalConstants.newWindowClass,function(a){var a=a||window.event;
+},bindMouseEvents:function(){$(document).off("mouseover.COMMON_links").on("mouseover.COMMON_links","a."+COMMON_globalConstants.newWindowClass,function(a){var a=a||window.event;
 a.preventDefault();
-window.open($(this).attr("href"))
+$(this).attr("target","_blank")
 })
 }}
 }();
@@ -1253,6 +1253,12 @@ a-=1;
 b-=1;
 if(b===0){d()
 }}})
+},enableAjaxDropdownProgress:function(e){$("#"+e).after('<img class="throbber" src="/etc/designs/ac/img/ajax-loader-small.gif" style="position:relative; top:5px; left: 5px;"/>')
+},disableAjaxDropdownProgress:function(){$(".throbber").remove()
+},enableAjaxButtonProgress:function(e){$("#"+e).addClass("ajaxDisabled throbberButton");
+$("#"+e).append('<img class="throbber" src="/etc/designs/ac/img/ajax-loader-small-disabledButton.gif" style="position:relative; right: 45%; top: 3px; margin: 0px; padding: 0px;" />')
+},disableAjaxButtonProgress:function(){$(".throbberButton").removeClass("ajaxDisabled throbberButton");
+$(".throbber").remove()
 }}
 }();
 /**

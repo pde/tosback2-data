@@ -277,6 +277,10 @@ jQuery.extend(netflix.utils, {
     },
     decodeHtml: function (str) {
         return jQuery('<div/>').html(str).text();
+    },
+    beacon: function (str) {
+        var page = jQuery('body').attr('id');
+        jQuery.get('https://signup.netflix.com/beacons?' + str + '&page=' + page + '&tstamp=' + new Date().getTime());
     }
 });netflix = typeof netflix != 'undefined' ? netflix : {};
 netflix.bootstrap = typeof netflix.bootstrap != 'undefined' ? netflix.bootstrap : {};

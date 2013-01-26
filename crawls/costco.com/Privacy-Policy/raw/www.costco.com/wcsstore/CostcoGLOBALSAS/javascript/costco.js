@@ -447,6 +447,9 @@ $(window).load(function(){
 			if (c) {
 				// User signed in before, focus on Registered Shoppers email field. 
 				$('#logonId').focus()
+			} else if (getUrlParam('type') == 'pwr'){			
+				// User may have trouble logging in, requested password reset prior, focus on Registered Shoppers email field. 
+				$('#logonId').focus()
 			} else {
 				// Smells like a fresh user, focus on Not Yet Registered email field.
 				$('#register_email1').focus()
@@ -465,6 +468,18 @@ $(window).load(function(){
 		}	
 	}	
 });
+
+function getUrlParam(name)
+{
+	 name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	 var regexS = "[\\?&]"+name+"=([^&#]*)";
+	 var regex = new RegExp( regexS );
+	 var results = regex.exec( window.location.href );
+	 if( results == null )
+		 return "";
+	 else
+		 return results[1];
+}
 
 // When there is a left navigation, then the main content isn't necessarily in the main_content_wrapper div  
 $(window).load(function() {

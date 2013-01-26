@@ -6,8 +6,8 @@ var url=String(window.location);
 
 if (url.match('http://www.syfy.com')
  || url.match('.defiance.com')
- || url.match('http://dvice.com')
- || url.match('http://blastr.com')
+ || url.match('http://www.dvice.com')
+ || url.match('http://www.blastr.com')
  || url.match('http://mt4-blogs.syfy.com/global/')
  || url.match('http://showblogs.syfy.com')
  || url.match('http://syfygames.com')

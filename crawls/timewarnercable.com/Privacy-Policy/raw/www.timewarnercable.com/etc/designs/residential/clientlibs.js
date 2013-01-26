@@ -12811,12 +12811,6 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 
     $.fn.promoSlider = function (argOptions) {
         var me = this;
-        if($(me).hasClass('promoSlider-enabled')) {
-            return;
-        }
-        else {
-            $(me).addClass('promoSlider-enabled');
-        }
         var settings = $.extend( {
           'dynamicWidth': 'false' },
            argOptions);
@@ -12828,6 +12822,12 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
         }
 
         return this.each(function() {
+            if($(this).hasClass('promoSlider-enabled')) {
+                return;
+            }
+            else {
+                $(this).addClass('promoSlider-enabled');
+            }
             var $container = $(this);
 
             var $slider = $container.find('ul.slides');
@@ -13710,26 +13710,28 @@ console.log("click");
 
 ;(function($) {
 
-    $.fn.multiPanelTabs = function (argDefaultTab) { 
-        
+    $.fn.multiPanelTabs = function (argDefaultTab) {
+        if($(this).hasClass("multiPanelTabs-init")){
+            return;
+        }
         /* Main function that Reveals the content */
         function ShowPanel() {
             var $this = $(this);
             //tabs panel holds the main splash images.
             var $tab_panels = $('.tabs-container:has(.multipanel)');
             var goto_id = ($this.find('a').prop('hash') || '#').replace('#', '.multipanel-');
-            
            
             $this.addClass('active').siblings().removeClass('active');
             $tab_panels
                 .find(goto_id)
-                // .stop(true, true)
+                //.stop(true, true)
                 .fadeIn('slow', function(){
-                       // $(this).addClass('active');
+                        $(this).addClass('active');
                     })
                 .siblings()
                 .hide()
                 .removeClass('active');
+
             var $focus = $(this).find('a');
              //creates the ID of the target splash/slide from the href of the clicked link in the menu.
             var panelID = ($focus.prop('hash') || '#').replace('#', '.multipanel-');
@@ -13739,6 +13741,7 @@ console.log("click");
             var $navItem = $visiblePanel.find('.slide-item:first');
             $navItem.removeClass('active');
             $navItem.trigger('click');
+
         }
         
         /* Main function that Reveals the content */
@@ -13844,7 +13847,7 @@ console.log("click");
                 
                 if ($active.is(':visible')) {
                     //$active.triggerHandler('click');
-                   // alert($active.data('detailsurl'));
+                    //alert($active.data('detailsurl'));
                     ShowPanel.call($active);
                 }
             });
@@ -13857,7 +13860,7 @@ console.log("click");
                // window.location.hash = $(this).attr('href');
                 //TODO: consider the use of #!
             });
-          
+            $container.addClass("multiPanelTabs-init");
         });
 
         
@@ -17321,3 +17324,114 @@ $(document).ready(function () {
         }
     })
 })
+function getUrl() {
+    var geoData;
+    var queryURI;
+    if($.cookie('twc-user-profile')) {
+        geoData = jQuery.parseJSON($.cookie('twc-user-profile'));
+    }
+    if(geoData){
+        queryURI = "/bin/miniclu.json?region=" + geoData.region;
+    }
+    return(queryURI);
+}
+function buildModalHTML(titles, descriptions, channels, bottomMessages) {
+    var modalHTMLStart = "<div class=\"miniCLUTVPlans\">";
+    var modalHTMLTitle = buildModalTitles(titles);
+     var modalModalTabContents = "<div class=\"tabcontents\">";
+    var modalModalTabContentsEnd = "";
+    for(i=0; i<titles.length; i++){
+        modalModalTabContents += buildModalTabContents(descriptions[i], channels[i], i);
+    }
+    modalModalTabContents = modalModalTabContents + "</div><!-- end tabcontents-->";
+    for(i=0; i<bottomMessages.length; i++){
+            modalModalTabContentsEnd += "<div  id=\"" + i +"\" class=\"miniButtomMessage\">" +  bottomMessages[i] + "</div>";
+    }
+    return modalHTMLStart + modalHTMLTitle + modalModalTabContents + modalModalTabContentsEnd ;
+}
+
+function buildModalTitles(titles) {
+    var modalTitleStart = "<ul class=\"tabs\" persist=\"true\">";
+    var modalTitleHTML = "";
+    for(i=0; i<titles.length; i++){
+        modalTitleHTML += "<li><a href=\"#\" minirel=\"" + i + "\" onclick=\"showChannelTab(" + i + ")\">" + titles[i] + "</a></li>";
+    }
+    var modalTitleEnd = "</ul>";
+    return modalTitleStart + modalTitleHTML + modalTitleEnd;
+}
+
+function buildModalTabContents(description, channels, bottomMessages, i) {
+    var modalTabContentsStart = "<div id=\"" + i +"\" class=\"minitabcontent\"><div class=\"content\">";
+    var tableTabContentsEnd = "</div><!-- end content --></div>";
+    return modalTabContentsStart + description + channels + tableTabContentsEnd;
+}
+
+/* @pos 0-n array index number of content to show
+*
+*/
+function showChannelTab(pos) {
+     $('.miniCLUTVPlans li').removeClass('selected');
+    var rel = "a[minirel=" + pos + "]";
+    $(rel).parent().addClass('selected');
+    $($('.minitabcontent').hide()[pos]).show();
+    $($('.miniButtomMessage').hide()[pos]).show();
+}
+
+/* @pos 0-n array index number of content to show
+*
+*/
+function showMiniCLU(pos) {
+    var url = getUrl();
+    if(url){
+        $.getJSON(url, function(data){
+            var titles = new Array();
+            var descriptions = new Array();
+            var channels = new Array();
+            var bottomMessages = new Array();
+            for (i=0; i<data.length; i++){
+                titles[i] = data[i].title;
+                descriptions[i] = data[i].description;
+                channels[i] = data[i].tableData;
+                bottomMessages[i] = data[i].bottomMessage;
+            }
+            var modalHTML = buildModalHTML(titles, descriptions, channels, bottomMessages);
+            $.fancybox(modalHTML, {minWidth:500, maxWidth:1000});
+            showChannelTab(pos);
+        });
+    }
+    return false;   //prevent browser destination
+}
+
+/* @packageName Package Title
+*
+*/
+function showMiniCLUFromTVPage(packageName){
+    var url = getUrl();
+    var pos = 0;
+    if(url){
+        $.getJSON(url, function(data){
+            var titles = new Array();
+            var descriptions = new Array();
+            var channels = new Array();
+            var bottomMessages = new Array();
+            for (i=0; i<data.length; i++){
+                titles[i] = data[i].title;
+                var decodeTitle = $('<div />').html(titles[i]).text();
+                if(packageName == decodeTitle) {//on TV overview page, detail panel need to find it's TV plan.
+                    pos = i;
+                }
+                descriptions[i] = data[i].description;
+                channels[i] = data[i].tableData;
+                bottomMessages[i] = data[i].bottomMessage;
+            }
+            var modalHTML = buildModalHTML(titles, descriptions, channels, bottomMessages);
+            $.fancybox(modalHTML, {minWidth:500, maxWidth:1000});
+            showChannelTab(pos);
+        });
+    }
+    return false;   //prevent browser destination
+}
+
+jQuery(document).on('click', '.miniCLU', function() {
+   showMiniCLU(0);
+});

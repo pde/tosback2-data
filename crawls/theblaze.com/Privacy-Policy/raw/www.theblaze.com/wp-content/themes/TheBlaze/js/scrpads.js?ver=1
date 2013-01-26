@@ -44,8 +44,17 @@
 				var rt = '', rta ='';
 				$.each(params, function(k,v){
 					if(k == 'prnpage' && v == '' ){ v='home';}
-					rt += k+'='+v+';';
-					rta += k+'*'+v+'!';
+					if(k.indexOf('misc') > 0  && v != '' ){
+						if(v.indexOf('=') >= 0 ){
+							 var elms = v.split("=");
+							 k = elms[0];
+							 v = elms[1];
+						}
+					}
+					if(v != ''){						
+						rt += k+'='+v+';';
+						rta += k+'*'+v+'!';
+					}
 				});
 				rta = rta.substring(0, (rta.length - 1));
 				return rt+'u='+rta;

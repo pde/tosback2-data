@@ -727,51 +727,75 @@ function initPaginatedSlider () {
     'use strict';
     NBC('.paginate-slider').each(function () {
         var $slider = NBC(this);
-        var loaded = new Array($slider.data('pages'));
+        var $prev = $slider.parent().find('.paginate-slider-prev');
+        var $next = $slider.parent().find('.paginate-slider-next');
+        var numPages = $slider.data('pages');
+        var isInfinite = !!$slider.data('infinite');
+        var loaded = new Array(numPages);
         var currentSlide = 0;
+        var currentPage = 1;
         $slider.find('.paginate-slider-slide').each(function () {
             loaded[NBC(this).data('page')] = true;
         });
-        $slider.find('.pageinate-slider-slidedeck').append(getBlankPages(1, $slider.data('pages'), loaded));
+        $slider.find('.pageinate-slider-slidedeck').append(getBlankPages(1, numPages, loaded));
         $slider.iosSlider({
             snapToChildren: true,
-            infiniteSlider: true,
+            infiniteSlider: isInfinite,
             autoSlide: false,
-            // autoSlideTimer: 7500,
-            autoSlideToggleSelector: $slider.parent().find('.paginate-slider-prev,paginate-slider-next'),
-            // desktopClickDrag: true,
-            // navSlideSelector: buttons.find('.paginate-slider-nav'),
-            navPrevSelector: $slider.parent().find('.paginate-slider-prev'),
-            navNextSelector: $slider.parent().find('.paginate-slider-next'),
+            // navPrevSelector: $slider.parent().find('.paginate-slider-prev').click(function(e){e.preventDefault()}),
+            // navNextSelector: $slider.parent().find('.paginate-slider-next').click(function(e){e.preventDefault()}),
             responsiveSlideContainer: false,
             responsiveSlides: false,
-            onSlideChange: function (args) {
-                if (currentSlide === args.currentSlideNumber) {
-                    return false;
-                }
-                currentSlide = args.currentSlideNumber;
-                var page = args.currentSlideNumber + 1;
-                // when we arrive on a slide, load it's data if needed
-                if (!loaded[page]) {
-                    NBC.ajax({
-                        url: $slider.data('path').replace('_PAGE_', page),
-                        success: function (html) {
-                            // console.log('retrieved', arguments)
-                            $slider.find('.paginate-slider-slide-' + page).html(
-                                NBC(html).find('.paginate-slider-slide').html()
-                            ).removeClass('loading');
-                        }
-                    });
-                    loaded[page] = true;
+            onSlideStart: function (args) {
+                if (currentSlide !== args.currentSlideNumber) {
+                    loadSlide(args.currentSlideNumber);
                 }
             },
-            onSliderLoaded: function () {
-                // console.log('loaded')
+            onSlideChange: function (args) {
+                if (currentSlide !== args.currentSlideNumber) {
+                    loadSlide(args.currentSlideNumber);
+                    currentSlide = args.currentSlideNumber;
+                    currentPage = currentSlide + 1;
+                }
+                if (!isInfinite) {
+                    $prev.toggleClass('disabled', currentPage <= 1);
+                    $next.toggleClass('disabled', currentPage >= numPages);
+                }
             }
         });
+        $prev.on('touchstart click', function(e){
+            goToPage(currentPage - 1);
+            return false;
+        }).on('touchstart mousedown touchmove touchend mouseup', function (e) {
+            return false;
+        });
+        $next.on('touchstart click', function(e){
+            goToPage(currentPage + 1);
+            return false;
+        }).on('touchstart mousedown touchmove touchend mouseup', function (e) {
+            return false;
+        });
+        function goToPage (page) {
+            if (!isInfinite && (page < 1 || page > numPages)) {
+                return false;
+            }
+            $slider.iosSlider('goToSlide', page);
+        }
+        function loadSlide (slide) {
+            var page = slide + 1;
+            if (page > 0 && !loaded[page]) {
+                NBC.get($slider.data('path').replace('_PAGE_', page), function (html) {
+                    // console.log('retrieved', arguments)
+                    $slider.find('.paginate-slider-slide-' + page).html(
+                        NBC(html).find('.paginate-slider-slide').html()
+                    ).removeClass('loading');
+                });
+                loaded[page] = true;
+            }
+        }
     });
     function getBlankPages (i, n, skip) {
-        for (var h = ''; i < n; i++) {
+        for (var h = ''; i <= n; i++) {
             if (!skip[i]) {
                 h += '<div class="paginate-slider-slide paginate-slider-slide-' + i + ' loading" data-page="' + i + '" />';
             }

@@ -126,6 +126,22 @@ if(u.indexOf('int3.walgreens.com')>-1)
 	s_account="devwalgrnsstaging"; 
 /*Added for EO-22751  End */
 
+/* EO-24813 01/17 Start:Below code added for HTML5 environment utilized by 
+ * Quick Prints and Prescription API checkout pages - PreProd Patch Arrow */
+
+if(u.indexOf('m5-dev.walgreens.com')>-1) 
+	s_account="walgrnsmobiledev"; 
+
+if(u.indexOf('m5-qa.walgreens.com')>-1) 
+	s_account="walgrnsmobiledev"; 
+
+if(u.indexOf('m5.walgreens.com')>-1) 
+	s_account="walgrnsmobile";
+
+/* EO-24813 01/17 End */
+ 
+ 
+
 /************ Start of EHC-182 ********************************/
 if(u.indexOf('health.walgreens.com')>-1)
 	s_account="walgrns";
@@ -287,7 +303,9 @@ function s_doPlugins(s)
 		s.referrer=ksr[0]+kq+ksr[1]
 		}; 
 	// EO-19100 Ends : Modifying Omniture S_Code for Google SSL Changes
-
+	// EO-22440 Start : Modify Omniture S_code to integrate Test&Target Plug-in
+	 s.tnt=s.trackTNT(); 
+	//EO-22440 Ends : Modify Omniture S_code to integrate Test&Target Plug-in
 }
 s.doPlugins=s_doPlugins
 	
@@ -305,6 +323,29 @@ s.trackingServerSecure="smetrics.walgreens.com";
 
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
+
+// EO-22440 Start : Modify Omniture S_code to integrate Test&Target Plug-in
+/*
+* TNT Integration Plugin v1.0
+* v - Name of the javascript variable that is used. Defaults to s_tnt(optional)
+* p - Name of the url parameter. Defaults to s_tnt (optional)
+* b - Blank Global variable after plugin runs. Defaults to true (Optional)
+*/
+s.trackTNT = function(v, p, b)
+{
+var s=this, n="s_tnt", p=(p)?p:n, v=(v)?v:n, r="",pm=false, b=(b)?b:true;
+if(s.getQueryParam)
+pm = s.getQueryParam(p); //grab the parameter
+if(pm)
+r += (pm + ","); // append the parameter
+if(s.wd[v] != undefined)
+r += s.wd[v]; // get the global variable
+if(b)
+s.wd[v] = ""; // Blank out the global variable for ajax requests
+return r;
+}
+//EO-22440 Ends : Modify Omniture S_code to integrate Test&Target Plug-in
+
 /*
  * Plugin: getQueryParam 2.3
  */

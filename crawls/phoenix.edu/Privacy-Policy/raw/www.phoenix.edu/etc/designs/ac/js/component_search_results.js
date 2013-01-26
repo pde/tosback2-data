@@ -143,11 +143,12 @@ if(typeof cmCreatePageviewTag=="function"){if(typeof coremetricsStartPath==="und
 }if(ao>0){cmCreatePageviewTag("Search Successful: Page "+(G+1),coremetricsStartPath+K,N,ao)
 }else{cmCreatePageviewTag("Search Unsuccessful",coremetricsStartPath+K,N,ao)
 }}var ah=window.setInterval(function(){try{if(s){window.clearInterval(ah);
-sc.prop16="mktg:main";
-sc.prop17=N.toLowerCase();
+sc.prop16="mktg:main search";
+sc.prop17=unescape(N).toLowerCase();
 sc.prop18=(ao+"").toLowerCase();
-sc.prop19=(typeof(R)=="string")?unescape(R).toLowerCase():"";
-sc.prop20="";
+var at=(typeof(R)=="string")?unescape(R).toLowerCase():"all";
+sc.prop19=sc.prop16+":"+at+":"+sc.prop17;
+sc.eVar16="D=c19";
 sc.eVar21="D=c16";
 sc.eVar22="D=c17";
 if(ao>0){sc.events="event10"

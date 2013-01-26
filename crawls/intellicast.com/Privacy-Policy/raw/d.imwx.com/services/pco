@@ -178,6 +178,7 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 			 
 		}
 		
+		
 		var sdynhost = "d.imwx.com" || "d.imwx.com";
 		
 		if(locid){
@@ -572,6 +573,46 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 	};
 	
 	var init= function(){
+		var that = this;
+		//Adding the PCO device node
+		var device = $ && $.jStorage ? $.jStorage.get("pcoDeviceNode") : null;
+		if(device && !device.error){
+			prvlgd.set("device",device);
+		}else{
+			var url = "http://www.weather.com/diag/ua.js?cb=?";
+			$.ajax({url:url,
+				dataType: 'jsonp',
+				contentType: "application/json",
+				success:function(data, textStatus, jqXHR){
+					data.error = false;
+					$.jStorage.set("pcoDeviceNode",data);
+					prvlgd.set("device",data);
+				},
+				failure:function(){
+					var defaults = {
+									UserAgent:null,
+									"dClass":null,
+									"dClassVersion":null,
+									"OpenDDRId":null,
+									"OpenDDRDevice":null,
+									"OpenDDRDisplay":null,
+									"OpenDDRJS":null,
+									"OpenDDRWireless":null,
+									"OpenDDRTablet":null,
+									"OpenDDRCrawler":null,
+									"OpenDDRDesktop":null,
+									"browserId":null,
+									"browserName":null,
+									"browserVer":null,
+									"browserOS":null,
+									error : true
+									}
+					$.jStorage.set("pcoDeviceNode",defaults);
+					prvlgd.set("device",defaults);
+				},
+				context:that
+				});
+		}
 		
 		// IMPORTANT!! - Retrieve localstorage and insert it into pco before doing anything else
 		// to pco otherwise the contents of the user object in localstorage will be overwritten by 
@@ -720,7 +761,6 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 		// Read the cookie from the fromStr cookie and set it in the
 		// page node of PCO, then delete the cookie.
 		var fromStr = $.cookie("fromStr");
-		$.cookie("fromStr",null,{path:"/",domain:"weather.com"});
 		if(!fromStr){
 			var params = window.location.search.substring(1);
 			paramArray = params.split("&");
@@ -987,6 +1027,10 @@ try{console.log()}catch(e){}
 			prvlgd.set("user.preferredDeclarationFamily", val);
 		}else if(node=="backTo"){
 			prvlgd.set("user.backTo",val);
+		}else if(node=="parStr"){			
+			prvlgd.set("user.parStr",val);
+		}else if(node=="siteStr"){			
+			prvlgd.set("user.siteStr",val);
 		}else if(node=="lotame"){
 			prvlgd.set("user.lotame",val);
 		}else if(node.match(/Locations/)){

@@ -1259,4 +1259,30 @@ jQuery(document).ready(function(){
 	})(jQuery);
 });
 
+/* PROD12-2092 fix for Android devices */
+var ua = navigator.userAgent.toLowerCase();
+var isAndroid = ua.indexOf("android") > -1;
+if(isAndroid) {
+	var preventLinkClick = false;
+	document.getElementById('overlayDiv').addEventListener('touchstart', function(e) {
+		preventLinkClick = true;
+		// Allow clicks on links inside #mainPopupDiv.
+		if (e.target.nodeName.toLowerCase() == 'a') { 
+			preventLinkClick = false; 
+		} 
+	}, false);
+
+	document.addEventListener('click', function(e) {
+		if (preventLinkClick) { 
+			e.preventDefault(); 
+			e.stopPropagation(); 
+			return false; 
+		}
+	}, true);
+}
+/* PROD12-2092 fix end */
+	
+
+
+
 

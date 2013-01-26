@@ -1247,6 +1247,24 @@
 				}
 			}
 		},
+		wordnik:{
+			init: function(d){
+				var root = this;	
+				if(	$.ad._meta.channel.indexOf("fbn") > -1 	&&  (d.ptype === "article" || d.ptype === "column")){
+					root.insertScript();
+				}
+			},
+			insertScript: function(id,automate){
+ 
+				(function(d, a) {
+					var s = d.createElement(a),
+					x = d.getElementsByTagName(a)[0];
+					s.async = true;
+					s.src = 'http://nik.io/v1/nikio.js'; 
+					x.parentNode.insertBefore(s, x);
+				})(document, 'script');					
+			}
+		},			
 		visrev:{
 			init: function(){
 				var root = this;	
@@ -1727,7 +1745,7 @@
 				var d = $.ad.meta();
 
 				//parse.ly
-				//$.ad.prsly.pre(d);
+				$.ad.prsly.pre(d);
 
 				//comscore
 				$.ad.coms.pre(d);
@@ -1761,8 +1779,10 @@
 			//tynt
 			$.ad.tynt.init(d);			
 
-			$.ad.visrev.init();
-												
+			//$.ad.visrev.init();
+				
+			$.ad.wordnik.init(d);			
+			
 			$.ad.adBlade.init();
 			
 			//$.ad.optimizely.init(d);

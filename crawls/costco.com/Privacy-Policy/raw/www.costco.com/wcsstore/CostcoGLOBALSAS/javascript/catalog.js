@@ -1,10 +1,17 @@
 	 
 
 $(window).load(function() {
+
+	//Defect CIS100071261 : custom validation rule for quantity field on product page
+	$.validator.addMethod("digitsWithSpace",function(value,element){
+		//allows whole numbers with leading and trailing spaces
+		var qtyValue = (value + '').replace(/\s/g, ''); //remove space
+		return this.optional(element) || /^\d+$/.test(qtyValue);
+	},messages.ERR_ADD_TO_CART_INVALID_QTY);
 	
 	$('#ProductForm').validate({
 		rules : { 
-			quantity : { required:false, min : 1, max : constants.MAX_ITEM_QUANTITY, digits:true }
+			quantity : { required:false, min : 1, max : constants.MAX_ITEM_QUANTITY, digits:false , digitsWithSpace:true }
 		},
 		messages : {
 		   quantity: messages.ERR_ADD_TO_CART_INVALID_QTY

@@ -152,7 +152,7 @@ m+="kcacategory="+a.url+";"
 }else{m+="kcacategory="+f[1].substring(0,f[1].length-1)+";"
 }}}k+="index.html"
 }else{if(NICK.club!=null){var f=location.pathname.split("/");
-if(f[2]=="main"||f[2]=="games"||f[2]=="videos"||f[2]=="shows"||f[2]=="buddies"||f[2]=="room"||f[2]=="awards"){k="/"+f[1]+"/"+f[2]+".html"
+if(f[2]=="main"||f[2]=="favs"||f[2]=="games"||f[2]=="videos"||f[2]=="shows"||f[2]=="buddies"||f[2]=="room"||f[2]=="awards"||f[2]=="badges"){k="/"+f[1]+"/"+f[2]+".html"
 }else{k+="index.html"
 }}else{k+="index.html"
 }}var g=k.split("/");

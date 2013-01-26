@@ -106,7 +106,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/outdoor"><img src="/ms/img/menu/products/25x25/outdoor_25x25.gif" alt="" border="0" /><span>Outdoor</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/workspaces"><div class="productImage" style="background-position:-100px 0;"></div><span>Office furniture</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -132,7 +132,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/secondary_storage"><div class="productImage" style="background-position:-225px 0;"></div><span>Secondary storage</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/outdoor"><img src="/ms/img/menu/products/25x25/outdoor_25x25.gif" alt="" border="0" /><span>Outdoor</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -158,7 +158,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/small_storage"><div class="productImage" style="background-position:-50px 0;"></div><span>Small storage</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/secondary_storage"><div class="productImage" style="background-position:-225px 0;"></div><span>Secondary storage</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -184,7 +184,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/Textiles"><div class="productImage" style="background-position:-325px 0;"></div><span>Textiles &amp; Rugs</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/small_storage"><div class="productImage" style="background-position:-50px 0;"></div><span>Small storage</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -210,7 +210,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/workspaces"><div class="productImage" style="background-position:-100px 0;"></div><span>Workspaces</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/Textiles"><div class="productImage" style="background-position:-325px 0;"></div><span>Textiles &amp; Rugs</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -254,19 +254,6 @@ function getProducts() {
     document.write('                        <a href="/us/en/catalog/categories/departments/kitchen"><div class="productImage" style="background-position:-0px 0;"></div><span>Kitchen</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
-    
-    
-    
-    
-    
-    
-    document.write('                <td>');
-    document.write('                    <div class="contentRight noBorder">');
-    document.write('                        <a href="/us/en/catalog/categories/seasonal/winter_holidays"><img src="/ms/img/menu/products/32x32/winter_collections_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Winter holidays</span></a>');
-    document.write('                    </div>');
-    document.write('                </td>');
-    
-    document.write('            </tr>');
     
     
     

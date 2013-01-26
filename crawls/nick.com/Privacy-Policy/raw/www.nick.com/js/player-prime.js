@@ -43,11 +43,11 @@ NICK.prime.Player = function (_config) {
 		},
 		'templateURL': 'http://media.mtvnservices.com/{uri}'
 	};
-
+	
 	// Merge the two objects recursively without changing the defaults.
 	// jQuery.extend( [recursive], target, object1, object2)
 	this.config = $.extend(true, {}, this.defaults, _config);
-
+	
 	this.playerName = this.config.playerName;
 
 	this.load();
@@ -56,7 +56,7 @@ NICK.prime.Player = function (_config) {
 /**
  * Create the player object and embed it in the page.
  */
-NICK.prime.Player.prototype.load = function () {
+NICK.prime.Player.prototype.load = function () {	
 	this.playerObject = new MTVNPlayer.Player(this.config.playerName, this.config, this.config.events);
 
 	// local scope.
@@ -340,16 +340,11 @@ NICK.prime.Player.prototype.getEmbedCode = function () {
 	return this.playerObject.getEmbedCode();
 };
 
-/**
- * Document ready to check for any content that may have the auto-embed-video class attached.
- */
-$(document).ready(function () {
-
-	var targets = $('.auto-embed-video');
-
+NICK.prime.Player.embedVideos = function() {
+	var targets = $('.auto-embed-video');	
 	// Div's want to be embedded.
 	if (targets.size() > 0) {
-
+		
 		// Iterate through the target divs.
 		for (var i = 0; i < targets.size(); i++) {
 
@@ -400,5 +395,13 @@ $(document).ready(function () {
 		}
 
 	}
+}
+
+/**
+ * Document ready to check for any content that may have the auto-embed-video class attached.
+ */
+$(document).ready(function () {
+
+	NICK.prime.Player.embedVideos();
 
 });

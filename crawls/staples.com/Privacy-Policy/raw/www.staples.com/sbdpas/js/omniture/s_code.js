@@ -4,12 +4,12 @@ Modified 7/4/2012 */
      Plugins
 */
 
-if(!s_account)
+if(!s_account){
 	if(document.location.hostname.indexOf('staples.com')>-1)
 		var s_account="staplescomprod"; //route the image request to production unless another s_account value is specified
 	if(document.location.hostname.indexOf('staples.ca')>-1)
 		var s_account="staplescaprodreplat"; //route the image request to production unless another s_account value is specified
-			
+}	
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */

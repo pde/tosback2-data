@@ -238,35 +238,6 @@ var Sandbox = (function() {
 				});
 			});
 		};
-
-		sandboxAPI.fetchMemberPreviewEventsList = function(){
-			Sandbox.getMemberAsync(function(member) {
-				var storage = BrowserStorage.setStorageEngines('local', 'userData'),
-					member_id = member.member_id,
-					savedList=storage.get("preview_events_list_" + member_id);
-	
-				if(savedList!=null){
-						savedList=JSON.parse(savedList);
-						$Halo.bigbro.notify('Sandbox_membersPreviewEventList_Fetched',savedList);
-						return;
-				}
-	
-				$.ajax({
-					url: "/v3/events/member/" + member_id + "/summary",
-						type: 'get',
-						dataType: 'json',
-						useREST: true,
-						haloHandleAjaxResponse: true,
-						haloSuccess: function(response, status, XHR) {
-								storage.set('preview_events_list_' + member_id , response, 1800000);
-								$Halo.bigbro.notify('Sandbox_membersPreviewEventList_Fetched',response);
-						},
-						haloFail: function(response) {
-								this.haloSuccess({data:[]});
-						}
-				});
-			});
-		};
 		
 		sandboxAPI.fetchMemberRole = function () {
 			var member = Sandbox.getMember();

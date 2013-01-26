@@ -64,7 +64,7 @@ metric.writeTags = function() {
 		metric.sendMonetate();
 	}
 	
-	if (metric.mercentActive && window.location.pathname.indexOf("OrderConfirm") == -1 ) {
+	if (metric.mercentActive && window.location.pathname.indexOf("OrderConfirm.cgi") == -1 ) {
 		metric.sendMercent();
 	}
 	
@@ -157,7 +157,7 @@ metric.sendCriteo = function() {
 			'Prices':prices,
 			'Quantities':quantities
 			}],[3396,7714506,7714507,{'Product IDs':['i',1],'Prices':['p',1],'Quantities':['q',1]}]);
-	} else if (window.location.pathname.indexOf("OrderConfirm") != -1 && resx.itemid != null) {
+	} else if (window.location.pathname.indexOf("OrderConfirm.cgi") != -1 && resx.itemid != null) {
 		// Purchase Confirmation Tag
 		var resxItems = resx.itemid.split(",");
 		var resxPrices = resx.price.split(",");
@@ -240,7 +240,7 @@ metric.sendCommissionJunction = function() {
 		Instrumentation.sendBeacon(Events.set_cookie);		
 	}
 	
-	if (window.location.pathname.indexOf("OrderConfirm") != -1 && cj.itemids != null && $.cookie("aff_trck")) {
+	if (window.location.pathname.indexOf("OrderConfirm.cgi") != -1 && cj.itemids != null && $.cookie("aff_trck")) {
 		var actionID = 353241; // core default
 		if (location.host.match("m.landsend.com")) //mobile
 		{

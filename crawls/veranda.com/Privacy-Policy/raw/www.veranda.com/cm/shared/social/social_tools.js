@@ -75,8 +75,8 @@ var hsocial_tool = {
 			this.iframes.twitterTop.dom = $("[hvtNode='twlikebutton']")[0]; 
 			this.iframes.fblikeBot.dom = $("[hvtnode='fblikebutton'] iframe")[1];
 			this.iframes.twitterBot.dom = $("[hvtNode='twlikebutton']")[1]; 
-			this.iframes.pinTop.dom = $("[hvtnode='pinbutton'] iframe")[0];
-			this.iframes.pinBot.dom = $("[hvtNode='pinbutton'] iframe")[1]; 
+			this.iframes.pinTop.dom = $("[hvtnode='pinbutton'] a")[0];
+			this.iframes.pinBot.dom = $("[hvtNode='pinbutton'] a")[1]; 
 			$("[hTrack='emailTop']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailTop();});
 			$("[hTrack='printTop']").click(function(){eventTracking("event83");});
 			$("[hTrack='emailBot']").click(function(){eventTracking("event87");hsocial_tool.tracking.emailBot();});
@@ -350,11 +350,11 @@ function submitEmailForm(evt) {
 
 $(window).load(function(){
 	var firstToolbar = $('.viral_tools').get(0);
-	var likeFBSocialToolBar = $('.connect_button_container').get(0);
+	var likeFBSocialToolBar = $('#rr_social_tooltip_fb').get(0);
 	if ( typeof FB !== 'undefined' ){
 		FB.Event.subscribe('edge.create',function(href,widget){
 			var thisToolbar = $(widget.dom.parentNode).parents('.viral_tools').get(0);
-			var thisSocialToolBar = $(widget.dom.parentNode).parents('.connect_button_container').get(0);
+			var thisSocialToolBar = $(widget.dom.parentNode).parents('#rr_social_tooltip_fb').get(0);
 			if ( thisToolbar === firstToolbar ){
 				eventTracking('event81');
 			} 

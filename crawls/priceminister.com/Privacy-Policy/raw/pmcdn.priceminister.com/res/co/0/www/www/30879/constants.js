@@ -6,7 +6,7 @@ if ( typeof(PM) == 'undefined' ) var PM = {};
  * @base PM
  */
 PM.Constants = {
-  blankImg: "http://pmcdn.priceminister.com/res/static/0/www/www/63330/fb/images/default/structure/blank.gif"
+  blankImg: "http://pmcdn.priceminister.com/res/static/0/www/www/6049/fb/images/default/structure/blank.gif"
 }
 
 /**

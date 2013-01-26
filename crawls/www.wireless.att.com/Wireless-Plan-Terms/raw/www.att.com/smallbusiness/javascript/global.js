@@ -725,6 +725,13 @@ $(document).ready(function() {
             },locationOverlayHandlers);
             
         }
+        
+        $('.showLocationOverlay-strict').myplugin({
+            'backDropId' : 'SeviceEligibiltyStrictBackDrop',
+            'lightBoxId' : 'SeviceEligibiltyLightBox',
+            'close'		 : 'no'
+        },locationOverlayHandlers);
+        
     }init_attactLoactionOverlay();
     $('.productFilterOverlay').each(function(){
     	var thisURL = $(this).attr('href');
@@ -783,40 +790,34 @@ $(document).ready(function() {
         },macSaveCartHandlers);
     }init_macSaveCartOverlay();
     
-    
-    /*function to attach minicart overlay */
-    function init_minicartOverlay(){
-        var overlayHandlers = {
-            handleviewCart : function(e) {
-                $('.lightbox').data('myplugin').closeOverlay();
-
-            },
-            handlesaveCart : function(e) {
-                //alert("handling save cart");
-            }
-
-        }
-        $('a.mini_Cart').myplugin({
-            'backDropId' : 'miniCartDropBox',
-            'lightBoxId' : 'miniCartLightBox'
-        }, overlayHandlers);
-        
-    }init_minicartOverlay();
-    
     /* MIniCart Hover Function */
     miniCartHoverConfig = {
-        sensitivity: 3, 
-        interval: 300, 
-        timeout:1000, 
+        sensitivity: 1, 
+        interval: 30, 
+        timeout:100, 
         over: function() {
-        	$(this).click();
+        	showMiniCart();
         }, 
         out: function() { 
         	} 
-    }
+    };
+
     $('a.mini_Cart').hoverIntent(miniCartHoverConfig);
     
+    $('#miniCart').mouseleave(function(){
+    	 $('#miniCart').hide();
+    });
     
+    function showMiniCart(){
+    	var mEl = GlobalShadow.jMerge(document.getElementById('mini_Cart'));
+    	var mElSummary = GlobalShadow.jMerge(document.getElementById('miniCart'));
+    	var obj = GlobalShadow.offset(mEl);
+    	var left = obj.left - mElSummary.outerWidth() + mEl.outerWidth();
+    	$('#miniCart').css('left',left);
+    	$('#miniCart').css('top',obj.top);
+    	 $('#miniCart').show();
+    	
+    }
     /*function to attach SaveCart overlay */
     function init_savecartOverlay(){
         var saveCartHandlers = {
@@ -1121,6 +1122,16 @@ $(document).ready(function() {
 				}
 				
 	});*/
+	
+	
+	$('#nestedBundleBack').click(function(e){
+		e.preventDefault();
+		$('#nestedBundleBackSubmit').trigger('click');
+	});
+	
+	$('#NestedBundleCancelButton').click(function(){
+		window.parent.location="/smallbusiness/bundles/config.jsp"; 
+	});
 	
 	if($('#support_TF')!=undefined){
 		if($('#isAFLBundle')!= undefined){
