@@ -1,0 +1,41 @@
+// debug.js
+// --------
+// Wrapper for console to log messages without throwing errors,
+// It's safe to leave debug.log calls in code--use instead of console.log, same syntax:
+// debug.log("test");  or  debug.log(testVariable);    etc.
+// If the console is not present (older browsers), the log is dumped to the dom.
+
+debug = (function() {
+
+    var debug;
+
+    debug = {
+
+        hasConsole : function () {
+            return (typeof console !== "undefined" && console !== null);
+        },
+
+        // msgs : [],
+        log: function (msg) {
+            var hasConsole = this.hasConsole();
+            //var hasConsole = false;
+            if (hasConsole) { 
+                console.log(msg);
+            }
+            else {      
+                this.append(msg);
+            }
+        },
+        
+        append: function (msg){
+            $(document).ready(function(){
+                if ($("#debugConsole").length === 0){
+                    $('body').append('<div id="debugConsole"></div>');
+                }
+                $('#debugConsole').append('<p>'+ msg +'</p>');
+            });
+        }
+    };
+
+    return debug;
+})();

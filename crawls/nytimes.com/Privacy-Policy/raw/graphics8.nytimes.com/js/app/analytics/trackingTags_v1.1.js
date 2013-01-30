@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 119395 2013-01-16 18:25:57Z utzc $
+* $Id: trackingTags_v1.1.js 119809 2013-01-24 19:34:39Z richard.pinales $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -421,7 +421,7 @@ NYTD.EventTracker = (function () {
         'wt.z_rmid': 1
     };
 
-    if (NYTD.env === "production") {
+    if (!NYTD.env || NYTD.env === "production") {
       etHost = "et.nytimes.com";
     } else if (NYTD.env === "staging") {
       etHost = "et.stg.use1.nytimes.com";
@@ -557,6 +557,32 @@ NYTD.EventTracker = (function () {
 
         this.getDatumId = function () {
             return datumId;
+        };
+        this.pixelTrack = function (evt, qs) {
+            var imgsrc, validEvt, validQs;
+            validEvt = (function (e) {
+                var k;
+                if (typeof e !== 'object') {
+                    return false;
+                }
+                for (k in e) if (e.hasOwnProperty(k)) {
+                    return true;
+                }
+                return false;
+            }(evt));
+            validQs = (typeof qs === 'string' && qs !== '');
+            if (!validEvt && !validQs) {
+                return;
+            }
+            imgsrc = (document.location.protocol || 'http:') + '//' + etHost +
+                    '/pixel';
+            if (validEvt) {
+                imgsrc = buildUrl(imgsrc, evt);
+            }
+            if (validQs) {
+                imgsrc += ((imgsrc.indexOf('?') === -1 ? '?' : '&') + qs);
+            }
+            new Image().src = imgsrc;
         };
     };
 })();

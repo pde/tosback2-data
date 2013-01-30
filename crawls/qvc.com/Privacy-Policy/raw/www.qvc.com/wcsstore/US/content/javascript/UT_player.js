@@ -30,7 +30,7 @@ function initVideo(controls, stage1, stage2, stage3, flashHeight, flashWidth) {
 		if(videoTemplate!=2){ 
 			$('navigation').setStyle('display', 'none');
 		}else{
-			$$('.video').each(function(item,index){
+			$$('span.video').each(function(item,index){
 				if (item.hasClass('state1')) {
 					item.removeClass('state1');
 					item.addClass('state2');
@@ -69,7 +69,7 @@ function initVideo(controls, stage1, stage2, stage3, flashHeight, flashWidth) {
 		if(videoTemplate == 2){
 			$('navigation').setStyle('top', '240px');
 			$('navigation').setStyle('height', '133px'); 
-			$$('.video').each(function(item,index){
+			$$('span.video').each(function(item,index){
 				if (item.hasClass('state2')) {
 					item.removeClass('state2');
 					item.addClass('state1');
@@ -174,22 +174,21 @@ function initVideo(controls, stage1, stage2, stage3, flashHeight, flashWidth) {
 			video.addStream(o);
 		});
 	};
-
-	$$('.video').each(function(item,index){
-
+	$$('span.video').each(function(item,index){
 		var anchor=item.getElement('a');
-
-		anchor.addEvent('click', function(e){
-			new Event(e).stop();
-			item.fireEvent('click');
-		});
+		if(null != anchor){
+			anchor.addEvent('click', function(e){
+				new Event(e).stop();
+				item.fireEvent('click');
+			});
+		}
 
 		item.addEvent('click', function(e){
 			if(videoTemplate!=2){ 
 				video.contract();
 			}			
 			video.removeStreams();
-			$$('.video').each(function(item2,index2){
+			$$('span.video').each(function(item2,index2){
 				if (index2 >= index) {
 					addStream(item2, index2);
 				}
@@ -198,7 +197,7 @@ function initVideo(controls, stage1, stage2, stage3, flashHeight, flashWidth) {
 			video.setControls();
 		});
 		if(index===0){
-			$$('.video').each(function(item2,index2){
+			$$('span.video').each(function(item2,index2){
 				addStream(item2, index2);
 			});
 		};

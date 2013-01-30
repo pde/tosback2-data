@@ -312,7 +312,7 @@ $(document).ready(function () {
 			
 			var el = $(this);
 			var url = el.attr('href');
-			if(url!==undefined)
+			if (url !== undefined && el.hasClass("no-popup") == false)
 			{
 				var domain = window.location.host;
 				if(url.indexOf("http")==0 && url.indexOf(domain)<0)

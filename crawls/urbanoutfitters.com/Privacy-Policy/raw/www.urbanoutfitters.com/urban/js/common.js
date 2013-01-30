@@ -6,6 +6,17 @@
  
 (function($) {
     $(document).ready(function() {
+    	
+    	//order history table view
+	    $('#content_orderhistory table tr').click(function() {
+	    		
+	        var id = $(this).find("a").attr("data-order");
+	        if(id) {
+	            $('#' + id).submit();
+	        }
+	        return false;
+	    });
+	    
     	// enable datepickers on egiftcard and shopping cart pages
 	    $(".giftCardDatepicker").datepicker({ 
 	    	minDate: 0, 

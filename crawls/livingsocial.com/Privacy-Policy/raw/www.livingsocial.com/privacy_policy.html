@@ -25,7 +25,7 @@
 
     <link href="../a1.lscdn.net/lsui/system/stylesheets/lsui-37bbfb9.css" media="screen" rel="stylesheet" type="text/css" />
 
-    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-18171b69076ccc61073570ad3f480700.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-1fe21407955c5c1f26cee18076ff84e0.css" media="screen" rel="stylesheet" type="text/css" />
 
     
     
@@ -49,9 +49,9 @@
   dls.viewer = {};
   dls.mePresent = false;
 
-  dls.preferredCity = {"image":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/original_q60.jpg","thumb":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/100.jpg","name":"San Francisco","id":15};
+  dls.preferredCity = {"image":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/original_q60.jpg","name":"San Francisco","id":15,"thumb":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/100.jpg"};
 
-  dls.i18n = {currency: {"delimiter":",","precision":2,"unit":"$","format":"%u%n","escapes":"$","separator":"."} };
+  dls.i18n = {currency: {"escapes":"$","delimiter":",","unit":"$","precision":2,"format":"%u%n","separator":"."} };
 </script>
 <script type='text/javascript' src='payments/javascripts/payment.js%3Fv=53bafa26370d6696f8587869b2a66315d8c4ab98'></script>
 <script type="text/javascript">
@@ -62,7 +62,7 @@
   }
 </script>
 
-<script src="../a1.lscdn.net/deals/system/javascripts/headerjs-01e31e8c350a074388422031fe113f11.js" type="text/javascript"></script>
+<script src="../a1.lscdn.net/deals/system/javascripts/headerjs-1da736b3a34bfee81964ce8cfcd3a051.js" type="text/javascript"></script>
     
     
     <meta property="fb:app_id" content="48187595837"/>
@@ -155,7 +155,7 @@ body { padding-top: 60px; }
 </div>
 
         
-<span id="target-6667cb10ea48c928">
+<span id="target-c2edbf852102d307">
   <ul class="actions logged-out">
     
 
@@ -164,7 +164,7 @@ body { padding-top: 60px; }
     <li><a href="https://login.livingsocial.com/signup/?return_to=http://livingsocial.com/privacy_policy" class="ga-track-accts" data-ga-data="UtilityNav, Sign Up">sign up</a></li>
   </ul>
 </span>
-<script id="template-6667cb10ea48c928" type="text/mustache">
+<script id="template-c2edbf852102d307" type="text/mustache">
 {{#me.loggedIn}}
 <ul class="actions logged-in">
   
@@ -259,9 +259,9 @@ body { padding-top: 60px; }
 <script>
 (function() {
   Stached.expireCheck();
-    // {"hide":true,"template_key":"control_bar_v2","name":"me","when":{"cookie":"authd"}}
-  var options = {"hide":true,"template_key":"control_bar_v2","name":"me"};
-  var frame   = ["6667cb10ea48c928", {"me":[{"ts":true,"when":{"cookie":"authd"},"cache":"page","url":"/me/info.json"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
+    // {"when":{"cookie":"authd"},"hide":true,"name":"me","template_key":"control_bar_v2"}
+  var options = {"hide":true,"name":"me","template_key":"control_bar_v2"};
+  var frame   = ["c2edbf852102d307", {"me":[{"ts":true,"when":{"cookie":"authd"},"cache":"page","url":"/me/info.json"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
   var when    = {"cookie":"authd"};
 
   if (when && typeof(when) == 'object' && when.cookie && document.cookie.match(when.cookie) && Cache.Cookie.Helpers.readFor(when.cookie)) {
@@ -520,20 +520,20 @@ body { padding-top: 60px; }
           </div>
         </div>
       </div>
-   <script src="../a1.lscdn.net/deals/system/javascripts/bingy-281953f3fb12d924a612d3c2c7a74423.js" type="text/javascript"></script>     <script>
+   <script src="../a1.lscdn.net/deals/system/javascripts/bingy-500de3c77c875a5097ff2ab74e4da5ff.js" type="text/javascript"></script>     <script>
 
   var notifications_count = null;
     //this needs to be redone, correctly using notificationsTab.js
     //stached bind fires this 3 times so protecting rerunning with the null check
     noficationsUpdate = function() {
-      if(notifications_count==null && Me.loggedIn()() && Me.id()) {
+      if(notifications_count==null && Me.loggedIn()() && dls.viewer.id) {
         notifications_count = 0;
         unread_notifications_count = 0;
         notification_monitor = {
           trackEvent: Journal.newTrackerFunction({
             entityId    : "unspecified event",
-            bucketId    : "notification usage monitoring",
-            userId      : Me.id()
+            bucketId  : "notification usage monitoring",
+            userId      : String(dls.viewer.id)
           })
         };
 
@@ -557,7 +557,7 @@ body { padding-top: 60px; }
             notification_monitor.trackEvent('loaded ' + new Date, {
               variationId: unread_notifications_count + ' unread',
               entityId: 'notification tab',
-              userId: Me.id() });
+              userId: String(dls.viewer.id) });
           }
         });
 }
@@ -719,7 +719,7 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,130579,new Date().getTime(),"","","","",""])</script>
+NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,30512336,new Date().getTime(),"","","","",""])</script>
     <div id="fb-root"></div>
   </body>
 </html>

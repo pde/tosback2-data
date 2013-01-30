@@ -26,7 +26,7 @@ else{
 if (window.adsIn!=1){
 adsIn=1
 var adsHt="http://at.atwola.com",adsNt='5113.1',adsPl='221794',adsESN='',adsATWM='',adsTp='J',
-adsATOth='',adsATMob='',adsSrAT='',adsTacOK=1,adsD=new Date(),aolAdFdBkStr='',adsAddOn=1,adsAJAXAddOn=0,adsMob=0,
+adsATOth='',adsATMob='',adsSrAT='',adsTacOK=1,adsD=new Date(),aolAdFdBkStr='',adsAddOn=1,adsAJAXAddOn=0,adsMob=0,adsCo='us',
 adsScr=adsD.getTime()%0x3b9aca00,adsVal='',adsCp=0,adsMNS,adsExcV='',adsLNm=0,
 adsUA=navigator.userAgent.toLowerCase(),adsIE,adsAJAX=0,adsTzAT="aduho="+(-1*adsD.getTimezoneOffset())+";",
 adsNMSG='',adsTile=1,adsPage='',adsDivs=[],adsQuigo=0,adsCA,adsCF=[],adsCW=[],adsCH=[],adsCAd=[];
@@ -203,6 +203,9 @@ else adsATMob=v;
 try {ATW3_AdObj.adsATMob=adsATMob;}
 catch(e){}
 }}
+function adSetCo(v){
+if (v)adsCo=v.toLowerCase();
+}
 function adSetAddOn(v){
 if (adsAddOn!=2)adsAddOn=parseInt(v);
 }
@@ -488,6 +491,8 @@ return p+r+s+t
 }
 function htmlAdWHDyn(m,s,t,dv,fn,ds){htmlAdWH(m,'','',t,dv,fn,ds,s.toString())}
 function htmlAdWH(m,w,h,t,dv,fn,ds,sz){
+if (m)m=m.toString()
+else return 0;
 if (!adsVal)adsVal=adsGetValues()
 var d=document,inc='',s,r=0,st="<script type='text/javascript' src='",sp1,ye=0,c=0,f=0;
 if (t){
@@ -550,14 +555,16 @@ break
 }}}
 if (m=='0'){adsTile++;return 0}
 if (r==0){
-if (m[0]=='m'||m[0]=='M'){ 
+if (m.substring(0,1).toLowerCase()=='m'){
 adsDisableTacoda();
 m=m.substring(1,m.length);
+if (adsCo!='us')s='http://madsuk'
+else s='http://mads'
 adsMob=1;
 if (f)ds='r'
 if (adsESN)adsESN=adsESN.replace(/&ESN/,"&sn");
 if (adsATOth)adsATOth='&'+adsATOth.substring(0,adsATOth.length-1).replace(/;/g,'&');
-s='http://mads.aol.com/mads/mediate.php?hw=web&appid='+m+'&format=js&width='+w+'&height='+h+'&useragent='+escape(adsUA)+'&pageurl='+escape(adsLo)+adsATMob+adsESN+adsATOth;
+s+='.aol.com/mads/mediate.php?hw=web&appid='+m+'&format=js&width='+w+'&height='+h+'&useragent='+escape(adsUA)+'&pageurl='+escape(adsLo)+adsATMob+adsESN+adsATOth;
 if (adsTp=='I'||t=='iframe')s=s.replace(/format=js/,"format=html");
 }
 else {

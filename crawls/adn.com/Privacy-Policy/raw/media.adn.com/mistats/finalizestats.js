@@ -206,9 +206,43 @@ s.prop39 = mistats.querystring;
 s.prop47 = mistats.widgets;
 s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
 
-// Report in-app browser activity
-if (mistats.pagename.match(/^vendor:/i) && navigator.userAgent.match(/(ipad|iphone|ipod).+applewebkit.+mobile\/\S+$/i))
-   s.prop2 = mistats.sitename + ': ' + mistats.pagename.replace(/^vendor: {0,1}/i, '').replace(/:.*/, '') + ': in-app Browser';
+s.prop2 = function ()
+{
+   var r;
+   var ua;
+
+   function detectDevice()
+   {
+      var pw;
+
+      pw = Math.min(screen.width, screen.height) / (window.devicePixelRatio && !isNaN(window.devicePixelRatio) ? parseFloat(window.devicePixelRatio) : 1);
+
+      if ((navigator.platform || ua).match(/ipad/i)
+       || (ua.match(/windows\snt\s/i) && !ua.match(/windows\sphone/i) && ua.match(/\sarm;/i))
+       || (ua.match(/android/i) && pw > 800)
+       || ua.match(/android\s3/i)
+       || ua.match(/rim\stablet/i)
+       || ua.match(/silk/i))
+         return 'tablet';
+
+      if ((navigator.platform || ua).match(/iphone|ipod/i)
+       || (ua.match(/android/i) && !ua.match(/android\s3/i) && pw <= 800)
+       || (ua.match(/blackberry/i) && ua.match(/mobile/i))
+       || ua.match(/windows\sphone/i)
+       || (pw && pw <= 320))
+         return 'phone';
+
+      return 'other';
+   };
+
+   ua = navigator.userAgent;
+   r = 'dev:' + detectDevice();
+
+   if (mistats.pagename.match(/^vendor:/i) && ua.match(/(ipad|iphone|ipod).+applewebkit.+mobile\/\S+$/i))
+      r += ':in-app browser';
+
+   return r
+}();
 
 // Pagename as a conversion variable - Added 3/31/10 - JJ - Ticket# 727-8314208
 s.events = "event7";
@@ -607,6 +641,19 @@ s.prop14 = function ()
       location.hostname.toLowerCase(),
       'limit=' + ((mistats.mitntrules && mistats.mitntrules.limit) ? mistats.mitntrules.limit : 'unknown')
    ].join(': ') : '';
+}();
+
+s.prop46 = function ()
+{
+   if (!('msDoNotTrack' in navigator || 'doNotTrack' in navigator))
+      return 'dnt:n/a';
+   switch (navigator.msDoNotTrack || navigator.doNotTrack)
+   {
+      case '1':
+      case 'yes':
+         return 'dnt:on'
+   }
+   return 'dnt:off';
 }();
 
 // IMG tag call

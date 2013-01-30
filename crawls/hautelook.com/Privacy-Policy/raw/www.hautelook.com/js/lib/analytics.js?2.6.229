@@ -1,0 +1,141 @@
+if (typeof HauteLook === 'undefined') {
+    var HauteLook = {};
+}
+
+(function( HauteLook, $, window ) {
+    'use strict';
+
+    HauteLook.Analytics = {};
+    HauteLook.Analytics.Client = {};
+
+    /**
+     * KISS Metrics client.
+     *
+     * This is a simple wrapper around the KISS Metrics api that provides a
+     * basic interface.
+     *
+     * It is not recommended that application code use this client directly.
+     * See {@link auteLook.Analytics.Controller}.
+     */
+    HauteLook.Analytics.Client.KissMetrics = (function() {
+
+        var
+
+        api = {},
+
+        push = function() {
+            if (typeof window._kmq !== 'undefined') {
+                window._kmq.push.apply( window._kmq, arguments );
+            }
+        };
+
+        api.recordEvent = function(name, properties) {
+            push(['record', name, properties]);
+        };
+
+        api.identifyUser = function(identifier) {
+            push(['identify', identifier]);
+        };
+
+        api.aliasUser = function(identifier, alias) {
+            push(['alias', alias, identifier]);
+        };
+
+        return api;
+
+    })();
+
+    /**
+     * Application interface for analytics.
+     *
+     */
+    HauteLook.Analytics.Controller = (function() {
+        var
+
+        api = {};
+
+        api.loginEvent = function(memberId, sessionId) {
+            HauteLook.Analytics.Client.KissMetrics.identifyUser(memberId);
+            HauteLook.Analytics.Client.KissMetrics.aliasUser(memberId, sessionId);
+        };
+
+        api.catalogView = function(eventId, eventName) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Viewed Catalog', {
+                "EventID": eventId,
+                "Event Name": eventName
+            });
+        };
+
+        api.productView = function(productName, styleNum, quicklook, eventId, parentId) {
+            var properties = {
+                "Product Name": productName,
+                "Style Num": styleNum,
+                "Quicklook": quicklook,
+                "EventID": eventId
+            };
+
+            if (parentId) {
+                properties.parent_id = parentId;
+            }
+
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Viewed Product', properties);
+        };
+
+        api.cartAdd = function(productId, productName, price, quantity, eventName, brandName) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Add to Cart', {
+                "ProductID": productId,
+                "Product Name": productName,
+                "Price": price,
+                "Quantity": quantity,
+                "Event Name": eventName,
+                "Brand Name": brandName
+            });
+        };
+
+        api.purchase = function(orderId, total, subtotal) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Purchase', {
+                "Order ID": orderId,
+                "Order Total": total,
+                "Order Subtotal": subtotal
+            });
+        };
+        
+        api.inviteSent = function(emailAddress, source, result) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Referral Recipient', {
+                "E-Mail Address": emailAddress,
+                "Source": source,
+                "Result": result
+            });
+        };
+
+        return api;
+
+    })();
+
+    /**
+     * Track all member logged in events.
+     *
+     * This is intentionally coupled to memberLoggedIn event since it happens
+     * all over the code. I did not want to add this directly to the code that
+     * handles login because that would cause a strange dependency. Instead,
+     * this is a nice bridge between the public controller interface and the
+     * login code.
+     */
+    $Halo.bigbro.subscribeOnce("memberLoggedIn", function(loginResponse){
+        var member_id,
+            session_id;
+
+        if (typeof loginResponse === 'undefined' || typeof loginResponse.member === 'undefined') {
+            return;
+        }
+
+        if (typeof Halo === 'undefined' || typeof Halo.getCookie === 'undefined') {
+            return;
+        }
+
+        member_id = loginResponse.member.member_id;
+        session_id = Halo.getCookie('PHPSESSID');
+        HauteLook.Analytics.Controller.loginEvent(member_id, session_id);
+    });
+
+}( HauteLook, jQuery, window ));

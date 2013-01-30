@@ -1,4 +1,4 @@
-/*global wpAd, commercialNode:true, wpAds:true, wp_meta_data, placeAd2, unescape, $, crtg_content, wpTiles:true, countyName:true, stateName:true  */
+/*global wpAd, commercialNode:true, wpAds:true, wp_meta_data, placeAd2, unescape, escape, $, crtg_content, wpTiles:true, countyName:true, stateName:true  */
 (function (win, doc, wpAd, undefined) {
 
   'use strict';
@@ -95,9 +95,10 @@
     wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
     
     //sponsored advertiser (quigo) links:
-    if(typeof wpAds === 'undefined' || !win.wpAds.textlinks) {
+    //moved into this file in wpAd.textlinks
+    /*if(typeof wpAds === 'undefined' || !win.wpAds.textlinks) {
       wpAd.tools.addScript("http://js.washingtonpost.com/wp-srv/ad/textlink_driver.js");
-    }
+    }*/
 
     //19882 - Criteo Implementation
     if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
@@ -265,6 +266,133 @@
       }
       return wpAd.cache.mediaPage;
     })();
+  };
+
+  //QUIGO TEXTLINKS
+  wpAd.textlinks = {
+    //configuration file url:
+    config_url: 'http://www.washingtonpost.com/wp-srv/ad/textlink_quigo_data.js',
+    //if the textlinks config script is not yet loaded, ajax it in
+    //once wpAd.textlinks.templates is available, so some initialisation
+    init: function(contentType, position, cnode) {
+      if(!wpAd.textlinks.templates){
+        wpAd.tools.ajax({
+          url: wpAd.textlinks.config_url,
+          dataType: 'script',
+          timeout: 2000,
+          cache: true,
+          success: function(data){
+            wpAd.textlinks.init(contentType, position, cnode);
+          },
+          error: function(){
+            if(win.console && typeof win.console.log === 'function'){
+              win.console.log('Quigo textlinks config AJAX error:');
+              win.console.log(arguments);
+            }
+          }
+        });
+        return false;
+      }
+
+      contentType = wpAd.textlinks.templates[contentType] ? contentType : 'CompoundStory';
+      cnode = wpAd.textlinks.cat_check(cnode);
+      
+      var template = typeof wpAd.textlinks.templates[contentType] === 'function' ? wpAd.textlinks.templates[contentType]()[position] : wpAd.textlinks.templates[contentType][position];
+      cnode = template[cnode] ? cnode : 'ros';
+
+      if(wpAd.tools.urlCheck('debugAdCode') && win.console && typeof win.console.log === 'function') {
+        win.console.log('template=', contentType);
+        win.console.log('pos=', position);
+        win.console.log('channel=', cnode);
+      }
+
+      return wpAd.textlinks.build(template[cnode], position);
+    },
+    cat_check: function(cNode) {
+      if(wpAd.textlinks.category[0][cNode]) {
+        return cNode;
+      }
+
+      var categories = wpAd.textlinks.category,
+        l = cNode.match(/\//) ? categories.length : 1,
+        category, i;
+
+      while(l--) {
+        for(category in categories[l]) {
+          i = categories[l][category].length;
+          while(i--) {
+            if(cNode.match(new RegExp('^' + categories[l][category][i] + '(\/|$)'))) {
+              return category;
+            }
+          }
+        }
+      }
+      return 'ros';
+    },
+    article_check: function() {
+      return !wpAd.tools.urlCheck('_Comments.html') && (wpAd.tools.urlCheck('/wp-dyn/content/article/') || wpAd.tools.urlCheck('/wp-dyn/content/discussion/')) ? true : false;
+    },
+    index_check: function() {
+      var k = ['politics', 'opinion', 'business', 'technology'],
+        j = k.length,
+        i;
+      for(i = 0; i < j; i++) {
+        if(commercialNode.match(k[i])) {
+          return(commercialNode.match(k[i] + '/')) ? false : 'index';
+        }
+      }
+      return 'index2';
+    },
+    blog_check: function() {
+      return(wpAd.tools.urlCheck(/\/\d{4}\/\d{2}\/.*\.htm/gi)) ? 'blog_permalink' : 'blog_main';
+    },
+    //return the parsed document title
+    getTitle: function() {
+      var h = doc.title;
+      if(h && h !== "undefined") {
+        if(h.length > 100) {
+          h = h.substring(0, 50) + "-" + h.substring(h.length - 50, h.length);
+        }
+      }
+      return escape(h);
+    },
+    //return the meta keywords as an URL safe encoded String (limited to 100 chars)
+    getMetaVals: function() {
+      return encodeURIComponent((win.wp_meta_data.keywords || []).join(',')).replace(/\%2C/g, ',').slice(0, 100);
+    },
+    //get the target container to append the textlinks to
+    getSlug: function(pos){
+      return doc.getElementById('wpni_adi_' + pos) || doc.getElementById('slug_' + pos);
+    },
+    //build the quigo iframe URL, generate the iframe and pass it to wpAd.textlinks.render to render it
+    build: function(template, position) {
+      var url = window.location,
+        adsonar_placementId = template[0],
+        adsonar_pid = template[1],
+        adsonar_ps = /^local/.test(commercialNode) ? '0' : '-1',
+        adsonar_zw = template[2],
+        adsonar_zh = template[3],
+        rand = wpAd.cache.ord || Math.floor(Math.random() * 1E6),
+        srcUrl = "http://ads.adsonar.com/adserving/getAds.jsp?previousPlacementIds=&placementId=" + adsonar_placementId + "&pid=" + adsonar_pid + "&ps=" + adsonar_ps + "&zw=" + adsonar_zw + "&zh=" + adsonar_zh + "&url=" + escape(url) + "&v=5&dct=" + wpAd.textlinks.getTitle() + "&metakw=" + wpAd.textlinks.getMetaVals();
+
+      wpAd.textlinks.render(wpAd.tools.iframeBuilder({
+        'src': srcUrl,
+        'id': "adsonar_serve" + rand,
+        'name': "adsonar_serve" + rand,
+        'width': adsonar_zw,
+        'height': adsonar_zh,
+        'vspace': '0',
+        'hspace': '0'
+      }), 'sponsor_links_' + position);
+      return true;
+    },
+    //render the iframe by appending it to the slug container div
+    render: function(element, pos){
+      var slug = wpAd.textlinks.getSlug(pos);
+      if(slug){
+        slug.appendChild(element);
+      }
+    }
   };
 
   wpAd.tools.initVITest = function(elements){

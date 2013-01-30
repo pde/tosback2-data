@@ -1,6 +1,7 @@
-/* Timestamp: Thu Jan 24 15:48:16 PST 2013*/
-if (window["v3Lander"]==null){
+/* Timestamp: Tue Jan 29 14:57:59 PST 2013*/if (window["v3Lander"]==null){
 v3Lander={
+
+    codeVersion:'1359500279270',
 	v3Frame:false,
 	domState: "defer-failed",
 	domReady: false,
@@ -11,9 +12,9 @@ v3Lander={
 	hostedFileURL:"/inqChat/inqChat.html",
 	isAtHostedFileURL: false,
 	log:function(s) {
-		if (typeof console != "undefined" && console.log) {
-			console.log(s);
-		}
+    	if (typeof console != "undefined" && console.log) {
+        	console.log(s);
+    	}
 	},
 	
 	FMProxy:	{
@@ -73,39 +74,39 @@ v3Lander={
 
 	
 	assignDomain:function(){
-	try{
-		if (this.isAtHostedFileURL){
-			var domainName = document.domain;
-			var temp = domainName.split('.');
-			for (var i=0; i < temp.length; i++){
-				try{
-					var tempwindow = null;
-					if (this.isAtHostedFileURL && (window.location.search == ""))
-						tempwindow = window.opener;
-					else if (this.isAtHostedFileURL && (window.location.search.indexOf('?IFRAME') == 0 || window.location.search == "?IEXF"))
-						tempwindow = window.parent;
-					else if (this.isAtHostedFileURL && window.location.search == "?PRXY")
-						tempwindow = window.parent.parent;
-					else return ;
+		try{
+			if (this.isAtHostedFileURL){
+				var domainName = document.domain;
+				var temp = domainName.split('.');
+				for (var i=0; i < temp.length; i++){
+					try{
+						var tempwindow = null;
+						if (this.isAtHostedFileURL && (window.location.search == ""))
+							tempwindow = window.opener;
+						else if (this.isAtHostedFileURL && (window.location.search.indexOf('?IFRAME') == 0 || window.location.search == "?IEXF"))
+							tempwindow = window.parent;
+						else if (this.isAtHostedFileURL && window.location.search == "?PRXY")
+							tempwindow = window.parent.parent;
+						else return ;
 
-					
-					if (document.domain == tempwindow.document.domain){
-						break;
-					} else {
+						
+						if (document.domain == tempwindow.document.domain){
+							break;
+						} else {
+							temp.shift();
+							document.domain = temp.join('.');
+						}
+					}
+					catch(ee){
 						temp.shift();
-						document.domain = temp.join('.');
+						var finalVar = temp.join('.');
+						document.domain = finalVar;
 					}
 				}
-				catch(ee){
-					temp.shift();
-					var finalVar = temp.join('.');
-					document.domain = finalVar;
-				}
 			}
-		}
-	}catch(e){
+		}catch(e){
 
-	}
+		}
 	},
 
 	embeddedHostedFile: null,
@@ -269,8 +270,7 @@ v3Lander={
 		if (window.clientwin)
 			window.clientwin.inqFrame=window ;
 		window.inqFrame = window ;
-		if (opener) window.name = "_inqPersistentChat" ;
-		else		window.name = "inqV3" ;
+		window.name = opener ? "_inqPersistentChat" : "inqV3";
 		v3Lander.insertLandingTag();
 	},
 	
@@ -305,15 +305,15 @@ v3Lander={
 		div.style.cssText = "z-index:9999999;overflow:hidden;position:absolute;height:1px;width:1px;left:0px;top:0px;"
 						+"border-style: none;border-width: 0px;" ;
 		div.innerHTML = '<ifr'+'ame id="inqChatStage" name="146" src="'+iframesrc+'"'
-					+ ' style="z-index:9999999;overflow:hidden;position:absolute;height:1px;width:1px;left:0px;top:0px;border-style: none;border-width: 0px;display: none;"'
-					+ ' scrolling="NO"'
-					+ ' frameborder=0'
-					+ '></iframe>'
-					+ '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 0px; top: 0px; cursor: move; height: 55px; width: 410px; display: none;" id="inqTitleBar">'
-					+ '<img />'
-					+ '</div>'
-					+ '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 0px; top: 0px; display:none; height: 0px; width: 0px;" id="inqResizeBox">'
-					+ '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 424px; top: 284px; cursor: se-resize; height: 16px; width: 16px; display: none;" id="inqDivResizeCorner"></div>'  ;
+					  + ' style="z-index:9999999;overflow:hidden;position:absolute;height:1px;width:1px;left:0px;top:0px;border-style: none;border-width: 0px;display: none;"'
+					  + ' scrolling="NO"'
+					  + ' frameborder=0'
+					  + '></iframe>'
+					  + '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 0px; top: 0px; cursor: move; height: 55px; width: 410px; display: none;" id="inqTitleBar">'
+					  + '<img />'
+					  + '</div>'
+					  + '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 0px; top: 0px; display:none; height: 0px; width: 0px;" id="inqResizeBox">'
+					  + '<div style="border-width: 0px; position: absolute; z-index: 9999999; left: 424px; top: 284px; cursor: se-resize; height: 16px; width: 16px; display: none;" id="inqDivResizeCorner"></div>'  ;
 		var bdy=document.getElementsByTagName("BODY");
 		if (bdy && bdy[0]){
 			var iframes = div.getElementsByTagName("IFRAME") ;
@@ -343,18 +343,23 @@ v3Lander={
 		v3Lander.fixV3IFrames(div);
 	},
 	insertLandingTag:function(){
-		var bdy=document.getElementsByTagName("BODY");
-		if (bdy && bdy[0]){
+        function insertScript(name) {
 			var srctag=document.createElement("SC"+"RIPT");
-			srctag.src=v3Lander.normalizeProtocol("https://directv.inq.com")+"/chatskins/launch/tcFramework146.js";
+            srctag.src=v3Lander.normalizeProtocol("https://directv.inq.com")+ name;
 			srctag.type="text/javascript";
 			srctag.charset="utf-8";
 			srctag.language="javascript";
 			bdy[0].appendChild(srctag);
 		}
-	},
-	parseC2CQueryString: function() {
-		
+
+		var bdy=document.getElementsByTagName("BODY");
+		if (bdy && bdy[0]){
+
+             insertScript("/chatskins/launch/tcFramework146.js?codeVersion=" + encodeURIComponent(this.codeVersion));
+         }
+     },
+     parseC2CQueryString: function() {
+         
 		var queryStringIndex = window.location.href.indexOf("?C2C");
 		var queryString = window.location.href.substring(queryStringIndex + 4);
 		if(queryString.length > 1) {
@@ -381,7 +386,7 @@ v3Lander={
 		
 		var c2cdiv = document.createElement("DIV");
 		c2cdiv.id = window.name;
-		
+
 		
 		document.body.appendChild(c2cdiv);
 		
@@ -389,7 +394,7 @@ v3Lander={
 		
 		c2cdiv["setSource"] = v3Lander.setSource;
 	},
-	
+
 	onDomReady:function(){
 		if (v3Lander.domReady)return;
 		v3Lander.domReady=true;
@@ -401,18 +406,25 @@ v3Lander={
 			} catch(e) {}
 			return;
 		}
-		if(!v3Lander.v3Frame) v3Lander.createV3Frame();
-		else v3Lander.initV3Frame();
-	},
-	
-	testReady:function(){
-		var alreadyReady=false;
-		try {alreadyReady=(!!$&&!!$.isReady&&$.isReady==true);}catch(e){}
-		if (alreadyReady) {
-			setTimeout("v3Lander.onDomReady()", 1);
-			return;
+		
+		try {
+			if (window != window.parent && !v3Lander.isAtHostedFileURL && window.document.domain == window.parent.document.domain) {
+				return;
+			}
+		} catch(e) {
+			
 		}
-		if (typeof document.readyState == "undefined") {
+        if(!v3Lander.v3Frame) {
+            v3Lander.createV3Frame();
+        } else {
+            v3Lander.initV3Frame();
+        }
+	},
+
+	testReady:function(){
+        if (typeof $ != "undefined" && $.isReady) {
+			setTimeout("v3Lander.onDomReady()", 1);
+		} else if (typeof document.readyState == "undefined") {
 			if (document.addEventListener){
 				document.addEventListener("load",function(){setTimeout("v3Lander.onDomReady();", 0);}, false);
 				document.addEventListener(
@@ -426,19 +438,19 @@ v3Lander={
 			if (document.readyState=="complete")
 				setTimeout("v3Lander.onDomReady();", 0);
 			else if (document.all && !window.opera){
-				var jssrc = ("HTTPS:"==location.protocol.toUpperCase())? "//:javascript:''" : "javascript:''" ;
 				try {
-					document.write('<sc'+'ript type="text/javascript" id="v3ContentLoadTag" defer="defer" '
-								+'src="'+jssrc+'"></sc'+'ript>');
+					
+					document.write('<sc'+'ript type="text/javascript" id="v3ContentLoadTag" defer="defer" '+'></sc'+'ript>');
+
 					
 					var isExitChat = false;
 					if (isExitChat) {
-						
-						if (this.isAtHostedFileURL) {
+					    
+					    if (this.isAtHostedFileURL) {
 							document.write('<iframe id="tcBBFrame" src="' + v3Lander.normalizeProtocol('https://directv.inq.com')+'/tagserver/v3/blank.html" ' +
-								'frameborder="0" style="height:0px;width:0px;visibility:hidden" ' +
-								'onload="window.v3Lander._tcBBFrameOnload()"></iframe>');
-						}
+					            'frameborder="0" style="height:0px;width:0px;visibility:hidden" ' +
+					            'onload="window.v3Lander._tcBBFrameOnload()"></iframe>');
+					    }
 					}
 				} catch (e) {this.log(e);}
 				var v3ContentLoadTag=document.getElementById("v3ContentLoadTag");
@@ -478,10 +490,10 @@ v3Lander={
 				});
 		}
 	},
-	
+    
 	prepBBDetect: function(){
 		var blankURL = v3Lander.normalizeProtocol("https://directv.inq.com")+"/tagserver/v3/blank.html";
-		
+
 		function _tcBBLoader() {
 			setTimeout('document.getElementById("tcBBFrame").src = "'+blankURL+'?tc=1";', 100);
 		}
@@ -526,40 +538,40 @@ v3Lander={
 	},
 
 	
-	removeNode:function(id){
+    removeNode:function(id){
 		try {
 			var tempID = document.getElementById(id);
 			var tag = null;
 			if (!!tempID)
-				tag = parent.parent.tempID;
-			if (tag) {
-			tag = tag.parentNode ;
-			var p = tag.parentNode ;
-			var grandparent = parent.parent;
-			if (grandparent["Inq"]==null) return;
-			if (grandparent.Inq["removeProxyNode"]==null)
-				grandparent.Inq["removeProxyNode"]= new grandparent.Function( "id",
-				'var node=document.getElementById(id);\n'
-			+ 'try{\n'
-			+ 'if(!!node) {\n'
-			+ 'var p=node.parentNode;\n'
-			+ 'p.removeChild(node);\n'
-			+ 'node=p;\n'
-			+ 'if(!!node) {\n'
-			+ 'p=node.parentNode;\n'
-			+ 'p.removeChild(node);\n'
-			+ '}\n'
-			+ '}\n'
-			+ '}catch(e){}\n'
-			);
-			grandparent.setTimeout('Inq.removeProxyNode("'+id+'")', 100);
-		}
+        		tag = parent.parent.tempID;
+        	if (tag) {
+            tag = tag.parentNode ;
+            var p = tag.parentNode ;
+            var grandparent = parent.parent;
+            if (grandparent["Inq"]==null) return;
+            if (grandparent.Inq["removeProxyNode"]==null)
+                grandparent.Inq["removeProxyNode"]= new grandparent.Function( "id",
+                'var node=document.getElementById(id);\n'
+              + 'try{\n'
+			  + 'if(!!node) {\n'
+              + 'var p=node.parentNode;\n'
+              + 'p.removeChild(node);\n'
+              + 'node=p;\n'
+			  + 'if(!!node) {\n'
+              + 'p=node.parentNode;\n'
+              + 'p.removeChild(node);\n'
+			  + '}\n'
+			  + '}\n'
+              + '}catch(e){}\n'
+              );
+             grandparent.setTimeout('Inq.removeProxyNode("'+id+'")', 100);
+        }
 	} catch(ee){
 
 	}
-	},
-	
-	removeNodeXF:function(id){
+    },
+    
+    removeNodeXF:function(id){
 		try {
 			var tag = parent.parent.document.getElementById(id);
 			if (tag) {
@@ -568,37 +580,36 @@ v3Lander={
 				if (p) try { p.removeChild(tag); } catch (e){}
 			}
 		} catch(e){}
-	},
+    },
 	
 	wrapWithTryCatch:function(code){
 		return "try {\n"
-			+ code
-			+ "\n} catch(e){"
-			+ "Inq.log('ERROR:' + e.message);"
-			+"};";
+			 + code
+			 + "\n} catch(e){"
+             + "Inq.log('ERROR:' + e.message);"
+			 +"};";
 	},
-	
-	xframeToIjsf:function(){
-		var items = name.split("||");
-		var command = items[0];
-		var id = items[1];
-		var uri = decodeURIComponent(items[2]);
-		var code = decodeURIComponent(items[3]);
-		
-		var chatStageWindow = window.parent.parent.parent.document.getElementById('inqChatStage').contentWindow;
-		var grandParent = window.parent.parent;
-		try {
-			var tag = parent.parent.document.getElementById(id);
-		} catch(e){}
+    
+    xframeToIjsf:function(){
+        var items = name.split("||");
+        var code = decodeURIComponent(items[3]);
+        
+        var chatStageWindow = window.parent.parent.parent.document.getElementById('inqChatStage').contentWindow;
 		chatStageWindow.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
 	},
 
+	
+	 xhfToIjsf:function(){
+		var code = decodeURIComponent(name);
+		var chatStageWindow = window.parent.parent;
+		chatStageWindow.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
+	},
 
 	
-	postReturnsIE:function(){
-		var items = name.split("||");
-		var code = decodeURIComponent(items[1]);
-		var grandParent = window.parent; 
+     postReturnsIE:function(){
+        var items = name.split("||");
+        var code = decodeURIComponent(items[1]);
+        var grandParent = window.parent; 
 		/* NOTICE: in IE it is problematic to delete an active window
 		 * Using eval, we were executing a code from this thread that deletes this iframe
 		 * This caused problems in IE7 and IE6
@@ -606,14 +617,14 @@ v3Lander={
 		 * @author: fpinn@touchcommerce.com
 		 */
 		/* Wrap the code with try catch */
-		grandParent.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
-		v3Lander.removeNode(items[0]);
-	},
-	
-	postReturns:function(){
-		var items = name.split("||");
-		var code = decodeURIComponent(items[1]);
-		var grandParent = window.parent.parent;
+        grandParent.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
+        v3Lander.removeNode(items[0]);
+    },
+    
+    postReturns:function(){
+        var items = name.split("||");
+        var code = decodeURIComponent(items[1]);
+        var grandParent = window.parent.parent;
 
 		/* NOTICE: in IE it is problematic to delete an active window
 		 * Using eval, we were executing a code from this thread that deletes this iframe
@@ -622,14 +633,15 @@ v3Lander={
 		 * @author: fpinn@touchcommerce.com
 		 */
 		/* Wrap the code with try catch */
-		grandParent.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
+        grandParent.setTimeout(v3Lander.wrapWithTryCatch(code), 1);
 		v3Lander.removeNode(items[0]);
-	},
+    },
 
 
 	main:function(){
-		if(navigator.userAgent.indexOf("Opera") >= 0)
+		if(navigator.userAgent.indexOf("Opera") >= 0) {
 			return;
+		}
 		try {
 			this.assignDomain();
 			v3Lander.v3Frame=(window.frameElement!=null&&typeof(window.frameElement)!="undefined"&& window.frameElement.id=="inqChatStage")
@@ -647,7 +659,12 @@ v3Lander={
 
 
 	(v3Lander).isAtHostedFileURL=(window.location.href.indexOf(v3Lander.hostedFileURL) > -1);
-	if (window.location.href.indexOf("?IEXF")!=-1) {
+	if (window.location.href.indexOf("?BLNK")!=-1) {}/* Do nothing, it's blank :) */
+	else if (window.location.href.indexOf("?XHR")!=-1) {
+			v3Lander.xhfToIjsf() ;
+			window.close();
+	}
+	else if (window.location.href.indexOf("?IEXF")!=-1) {
 		v3Lander.assignDomain();
 		v3Lander.postReturnsIE();
 		window.close();
@@ -676,4 +693,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Thu Jan 24 15:48:16 PST 2013*/
+/* Timestamp: Tue Jan 29 14:57:59 PST 2013*/

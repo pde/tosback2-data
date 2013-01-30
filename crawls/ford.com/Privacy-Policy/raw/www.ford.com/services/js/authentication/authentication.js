@@ -136,10 +136,13 @@ function AXZAuthenticator(rawCookie) {
 
 function ThirdPartyAuthenticator() {
 	// Save and Share js
-	var ACCESSTOKEN_COOKIE_NAME = "JSESSIONID";
+	var CDR_PROFILE_COOKIE_NAME = "cdrProfile";
+	var ACCESSTOKEN_COOKIE_NAME = "accessToken";
 	var PROFILE_ID_COOKIE_NAME = "cdrprofileid";
 	var PROVIDER_COOKIE_NAME = "cdrprofileprovider";
 	var CREATION_STATUS_COOKIE_NAME = "profilecreationstatus";
+	var CONSUMER_ID_COOKIE_NAME = "consumerId";
+	var TIMESTAMP_COOKIE_NAME = "timestamp";
 	var DOMAIN_NAME = ".ford.com";
 	var COOKIE_PATH = "/";
 	var POPUP_FEATURES = "height=250,width=400,status=no,location=no,toolbar=no,directories=no,menubar=no";
@@ -157,25 +160,52 @@ function ThirdPartyAuthenticator() {
 		window[POPUP_NAME].close();
 	};
 	this.logoutUser = function() {
-		deleteCookie(ACCESSTOKEN_COOKIE_NAME, COOKIE_PATH, "");
-		deleteCookie(PROFILE_ID_COOKIE_NAME, COOKIE_PATH, getDomainName());
-		deleteCookie(PROVIDER_COOKIE_NAME, COOKIE_PATH, getDomainName());
-		deleteCookie(CREATION_STATUS_COOKIE_NAME, COOKIE_PATH, getDomainName());
+		deleteCookie(CDR_PROFILE_COOKIE_NAME, COOKIE_PATH, getDomainName());
+		//deleteCookie(PROFILE_ID_COOKIE_NAME, COOKIE_PATH, getDomainName());
+		//deleteCookie(PROVIDER_COOKIE_NAME, COOKIE_PATH, getDomainName());
+		//deleteCookie(CREATION_STATUS_COOKIE_NAME, COOKIE_PATH, getDomainName());
 	};
-
-	function getCookie(name) {
-		var start = document.cookie.indexOf(name + "=");
-		var len = start + name.length + 1;
-		if ((!start) && (name != document.cookie.substring(0, name.length))) {
+	
+	function getCDRProfileCookie() {
+		var start = document.cookie.indexOf(CDR_PROFILE_COOKIE_NAME + "=");
+		var len = start + CDR_PROFILE_COOKIE_NAME.length + 1;
+		if ((!start) && (CDR_PROFILE_COOKIE_NAME != document.cookie.substring(0, CDR_PROFILE_COOKIE_NAME.length))) {
 			return null;
 		}
+		
 		if (start == -1)
 			return null;
+		
 		var end = document.cookie.indexOf(";", len);
 		if (end == -1)
 			end = document.cookie.length;
-		return unescape(document.cookie.substring(len, end));
+		
+		return(unescape(document.cookie.substring(len, end)));
 	}
+
+	function getCookie(name) {
+		//Get the cdrProfile cookie
+		var cdrProfileCookieValue = getCDRProfileCookie();
+		
+		if(cdrProfileCookieValue == null || cdrProfileCookieValue == "" || cdrProfileCookieValue == "null") {
+			return null;
+		}
+		if(name == CDR_PROFILE_COOKIE_NAME) {
+			return unescape(cdrProfileCookieValue);
+		}
+		var start1 = cdrProfileCookieValue.indexOf(name + "=");
+		var len1 = start1 + name.length + 1;
+		if ((!start1) && (name != cdrProfileCookieValue.substring(0, name.length))) {
+			return null;
+		}
+		if (start1 == -1)
+			return null;
+		var end1 = cdrProfileCookieValue.indexOf("|", len1);
+		if (end1 == -1)
+			end1 = cdrProfileCookieValue.length;
+		return unescape(cdrProfileCookieValue.substring(len1, end1));
+	}
+	
 	function deleteCookie(name, path, domain) {
 		if (getCookie(name))
 			document.cookie = name + "=" + ((path) ? ";path=" + path : "")
@@ -206,5 +236,11 @@ function ThirdPartyAuthenticator() {
 	};
 	this.getProfileStatus = function() {
 		return getCookie(CREATION_STATUS_COOKIE_NAME);
+	};
+	this.getConsumerId = function() {
+		return getCookie(CONSUMER_ID_COOKIE_NAME);
+	};
+	this.getTimestamp = function() {
+		return getCookie(TIMESTAMP_COOKIE_NAME);
 	};
 }

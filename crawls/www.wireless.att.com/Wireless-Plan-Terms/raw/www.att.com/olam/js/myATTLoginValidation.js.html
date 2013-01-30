@@ -1,4 +1,5 @@
 var tGuardOn;
+var iphonePasswordRtnType;
 var isWallgardenEnv = false;
 var phoneNumberPattern = /^\(?(\d*)\)?[- .]?(\d*)[- .]?(\d+)$/; 
 function displayBubble(){jQuery("#loginBubbleUnit").show();}
@@ -8,10 +9,7 @@ function hideBubble(){jQuery("#loginBubbleUnit").hide();}
 
 jQuery(document).ready(function() 
 {
-	if(!jQuery.browser.mobile)
-	{
-		jQuery("#password").iphonePassword();
-	}
+	
 	tGuardOn = jQuery('#tGuardOn').val();	
 	if(tGuardOn == "false")
 	{ // Tguard is off
@@ -222,7 +220,7 @@ function populateUserIDPopup()
 				jQuery("#wallgardenUserID").show();
 			}
 			else{
-			jQuery("#wirelessUserID").show();
+				jQuery("#wirelessUserID").show();
 			}
 		}
 		else if(jQuery("#loginType").val() == "TELCO")
@@ -535,18 +533,30 @@ function checkFormValues(formObj)
 	var password;
 	var returnObj = true;
 	var errorFieldFocus;
-	if (tGuardOn == "false")
-	{
+
+	// User ID
+	if (tGuardOn == "false") {
 		userID = jQuery.trim(jQuery("#wireless_num").val()); 
-		password = trim(jQuery("#password").val());
-		jQuery("#password").val(password);
+	}
+	else {
+		userID = jQuery.trim(jQuery("#userID").val());
+	}
+	
+	// Password
+	if(!jQuery.browser.mobile && iphonePasswordRtnType!=null)
+	{
+		var txtObj = iphonePasswordRtnType[0].text;
+		var passObj = iphonePasswordRtnType[0].pass;
+		realPass = trim(txtObj.attr("real"));
+		passObj.val(realPass);
+		iphonePassForm.iphoneOptions.pass.val(realPass);
+		password = realPass;
 	}
 	else
 	{
-		userID = jQuery.trim(jQuery("#userID").val());
-		password = trim(jQuery("#password").val());
-		jQuery("#password").val(password);
+		password = trim(jQuery("input:password").val());
 	}
+	
 	if (userID == "") 
 	{
 		jQuery("#userAlertDiv").show();
@@ -615,17 +625,7 @@ function checkFormValues(formObj)
 	// To TRIM the Password on submission :: 
     if(!jQuery.browser.mobile){
 		try{
-			var realPass = null;
-			if(jQuery("#password")!=null && jQuery("#password").attr("real")!=null){
-				realPass = trim(jQuery("#password").attr("real")); // take the password
-			}
-			if(realPass!=null && jQuery.trim(realPass)!="" 
-				&& jQuery('[name="password"]')!=null 
-				&& (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
-				jQuery('[name="password"]').val(realPass); // copy over the password
-				iphonePassForm.iphoneOptions.pass.val(realPass);
-			}
-			jQuery("#password").attr("disabled", "disabled");
+			jQuery('input:text[id="password"]').attr("disabled", "disabled");
 		}
 		catch(exception){}
     }

@@ -51,7 +51,12 @@ function hideFilter(facetType){
 }
 
 function submitForm(searchTerm)
-{   $("#question").val(searchTerm);
+{  	var searchTerm = searchTerm;
+	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""]]
+	for(var item in findReplace)
+		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1]);
+	
+	$("#question").val(searchTerm);
     $("#question_").val(searchTerm);
     $("#currentSelection").val("");
     $("#searchButton").trigger("click");
@@ -61,10 +66,15 @@ function submitForm(searchTerm)
 function validateQuestion()
 
 { 
-   
-   /* if($("#question").value=='Search' || $("#question").value=='search' ||$("#question_").value=='Search' || $("#question_").value=='search"){
-    $("#question").value=" ";
-    $("#question_").value=" ";}*/
+	searchTerm=$("#question_").val();
+	var searchTerm = searchTerm;
+	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""]]
+	for(var item in findReplace)
+		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1]);
+	$("#question").val(searchTerm);
+    $("#question_").val(searchTerm);
+    $("#currentSelection").val("");
+    $("#searchButton").trigger("click");
     }
 
 

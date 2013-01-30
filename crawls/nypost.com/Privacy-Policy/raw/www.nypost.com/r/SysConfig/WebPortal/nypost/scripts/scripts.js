@@ -805,8 +805,8 @@ $(document).ready(function(){
 	p.app_d = function(){
 		var c,u,r,t,a = navigator.userAgent;
 		if ((a.match(/ipad.+safari/gi) !== null) || (a.match(/android/gi) !== null) || (a.match(/silk/gi) !== null)){
-			c = p.getCookie('nyp-d');
-			if(c === undefined) p.setCookie('nyp-d',true,30);
+			c = p.getCookie('nyp-d-012813');
+			if(c === undefined) p.setCookie('nyp-d-012813',true,30);
 			else return;
 			if(a.match(/ipad.+safari/gi) !== null){ 
 				//t="Have you seen our iPad app?  Download it today for free!";

@@ -590,24 +590,24 @@ var usa_globalMenu = {
 					"title" : "Exclusives",
 					"items" : [
 						{
-							"title" : "SHADOW RECRUIT",
-							"url" : "http://www.usanetwork.com/series/burnnotice/games/shadowrecruit/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_shadowrecruit.png"
+							"title" : "SUITS MOVIE TRIVIA",
+							"url" : "http://www.usanetwork.com/series/suits/games/videotrivia/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_suitsmovietrivia.png"
 						},
 						{
-							"title" : "INTERACTIVE OFFICE",
-							"url" : "http://www.usanetwork.com/series/covertaffairs/features/dpdoffice/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_interactiveoffice.png"
+							"title" : "MATT'S FIT TIPS",
+							"url" : "http://www.usanetwork.com/series/necessaryroughness/features/fittips/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_mattsfittips.png"
 						},
 						{
-							"title" : "GRAPHIC NOVEL",
-							"url" : "http://www.usanetwork.com/series/burnnotice/downloads/app/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_bngraphicnovel.png"
+							"title" : "REAL LIFE CRIMES",
+							"url" : "http://www.usanetwork.com/series/whitecollar/features/reallifecrimes/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_reallifecrimes.png"
 						},
 						{
-							"title" : "HARVEY'S TRIVIA",
-							"url" : "http://www.usanetwork.com/series/suits/games/harveysworld/index.html",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_harveytrivia.png"
+							"title" : "USA SYNC",
+							"url" : "http://characterchatter.usanetwork.com/sync",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_usasync.png"
 						}
 					]
 				}
@@ -694,18 +694,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "CRANK",
-							"subtitle" : "SATURDAY JANUARY 19 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/crank/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_crank.png"
-						},
-						{
-							"title" : "THE UGLY TRUTH",
-							"subtitle" : "SUNDAY JANUARY 20 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
-						},
-						{
 							"title" : "THE GAME PLAN",
 							"subtitle" : "SATURDAY FEBRUARY 2 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -716,6 +704,18 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY FEBRUARY 3 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thebreakup.png"
+						},
+						{
+							"title" : "COUPLES RETREAT",
+							"subtitle" : "SATURDAY FEBRUARY 9 8:30/7:30C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
+						},
+						{
+							"title" : "IT'S COMPLICATED",
+							"subtitle" : "SUNDAY FEBRUARY 10 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_itscomplicated.png"
 						}
 					]
 				}

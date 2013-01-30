@@ -977,7 +977,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "01/26/2013 08:09 AM",
+            DATE_IN_USE: "01/30/2013 08:10 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -4124,42 +4124,7 @@ reportingService.controller.viewManagers.rewardBannerViewManager.controller.getR
 </script>
 <!-- END IT Override #138 - excessive omniture call mitigation -->
 
-<!-- begin contentOverride140 -->
-<script type="text/javascript">
 
-if (typeof productStyleService != 'undefined') {
-	productStyleService.controller.REAL_isOnlyAvailableOnline = productStyleService.controller.isOnlyAvailableOnline;
-	
-	productStyleService.controller.isOnlyAvailableOnline = function(selection){
-		var oaoVariants = {
-			1: ['2','3','8','5','6'],
-			2: ['2'],
-			3: ['2','3','5','6','8','12'],
-			10: ['8']
-		};
-		
-		var flags = ['gap.com exclusive style',
-			 'Online Exclusive',
-			 'gap.com exclusive',
-			 'only at gap.com',
-			 'Only at Oldnavy.com'];
-			 
-		var marketingFlagOAO = false;
-		if (productPage.objP.objMarketingFlag && productPage.objP.objMarketingFlag.strMarketingFlagName) {
-			if (flags.indexOf(productPage.objP.objMarketingFlag.strMarketingFlagName) > -1) {
-				marketingFlagOAO = true;
-			}
-		}
-		
-		var realOAO = productStyleService.controller.REAL_isOnlyAvailableOnline(selection);
-		var variantHackOAO = oaoVariants[brandConst.BRAND_CODE].indexOf(productPage.objV.strVariantId + '') != -1;
-		
-		return realOAO || variantHackOAO || marketingFlagOAO;
-	};
-}
-
-</script>
-<!-- end contentOverride140 -->
 
 <!-- begin contentOverride151.2 -->
 <script type="text/javascript">
@@ -4882,6 +4847,38 @@ if( window["crossLink"] ) {
 
 </script>
 <!-- END content override CNOV-WCD-Quicklinks-Removal-Override -->
+
+<!-- begin CNOV-31 -->
+<script type="text/javascript">
+// check to see if links in account summary page have more than one query string in URL
+if( location.pathname == '/profile/account_summary.do' ) {
+	document.observe('dom:loaded', function() {
+		if( $('personalInformation') ) {
+			var linksToScan = $('personalInformation').select('a');
+			var linkToScan;
+			if( linksToScan && linksToScan.length > 0 ) {
+				for( var i = 0; i < linksToScan.length; i++ ) {
+					linkToScan = linksToScan[i];
+					var firstLinkSearchPref = linkToScan.href.indexOf('?');
+					if( firstLinkSearchPref > -1 ) {
+						var secondLinkSearchPref = linkToScan.href.indexOf('?', firstLinkSearchPref+1);
+						if (secondLinkSearchPref > -1) {
+						  var linkToReplace = linkToScan.href;
+						  function replaceParamAt(str, indx, val) {
+						      	var updatedLinkHref = str.substring(0, indx) + val + str.substring(indx + 1);
+                  						linkToScan.href = updatedLinkHref;
+						  }
+						  replaceParamAt(linkToReplace, secondLinkSearchPref, '&');
+						}
+						
+					}
+				}
+			}
+		}
+	});
+}
+</script>
+<!-- end CNOV-31 -->
 
 
 <!-- END Content Item File: /content/0006/018/319/cn6018319.html -->
@@ -6058,7 +6055,7 @@ if( (location.pathname == '/browse/product.do') ) {
 
 
 <!-- container 15 -->
-<!-- BEGIN Content Item File: /content/0006/019/045/cn6019045.html -->
+<!-- BEGIN Content Item File: /content/0006/082/246/cn6082246.html -->
 
 <!-- Shopping Bag Larger Image A/B code -->
 <script type="text/javascript">
@@ -6462,15 +6459,20 @@ if (shoppingBagUrls.include(location.pathname)){
 				vliContainers[j].style.left = leftOffset;
 				vliContainers[j].style.top = topOffset;
 				vliContainers[j].style.display = "none";
-				vliContainers[j].insert("<p style='float:right;'><a onclick='hideVLIimage(" + j +");'>close window&nbsp;</a></p>");
+				var usersUserAgent = navigator.userAgent;
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					vliContainers[j].insert("<p style='float:right;padding:2px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
+				} else {
+					vliContainers[j].insert("<p style='float:right;padding:2px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/082/246/assets/closewindow.png'/></a></p>");
+				}
 				vliContainers[j].insert(vliImages[j]);
 //alert("big image inserted");
-				var usersUserAgent = navigator.userAgent;
+				
 				if(usersUserAgent.indexOf("MSIE 7") < 0) {
 					longItemSkuParents[j].insert('<img onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="data:image/gif;base64,R0lGODlhRgAYALMAAIiIiLu6upmZmSIiIjExMWdnZ1ZWVnh4eA8PD9bW1qWlpe3t7aqqqkRERAAAAP///yH5BAAAAAAALAAAAABGABgAAAT/8MlJq7046827/2AojmRpnmiqrmzrrsLgOITw3spgPwqh3K7Bb5IDthwWJCVgkAAAjcShQRUYAg8D41HYPg47iaAhpjYAZUPiaxaMqeiHkjKXLBxrBMMRaBQCAQkGBwkOBXJrD2cUBA42UA+FCQAEDAAICX6Ak2SSD0IURRWDDAhyfX8BC2NjAwEDE4sShQVNkHcJA16qmqq3eA8MoA8ADkMUMQUFd31nAAm0yYcSsl9qDguXDQNkCFgNCFDOkwjbZBI5MzPnFIV6p9WfeAWOsXEPCATgT2S4tQsJwlX7lajCjAUWCJiCpw5NAVjFEFJTp2AhJUifGCygR8AAlIYYHXVdUEDDiJEGxuyYdKFA4sqXMGPKnEmzps2bEiIAADs=" />');
 				} else {
 //alert("MSIE7");
-					longItemSkuParents[j].insert('<img onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/019/045/assets/viewLarger.gif" />');				
+					longItemSkuParents[j].insert('<img onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/082/246/assets/viewLarger.gif" />');				
 				}				
 				longItemSkuParents[j].insert(vliContainers[j]);
 			}
@@ -6484,7 +6486,7 @@ if (shoppingBagUrls.include(location.pathname)){
 } // end shopping bag "IF"
 </script>
 
-<!-- END Content Item File: /content/0006/019/045/cn6019045.html -->
+<!-- END Content Item File: /content/0006/082/246/cn6082246.html -->
 
 
 
@@ -7303,12 +7305,12 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/040/726/cn6040726.html -->
-<div id="contentItemContainer10000395" class="6040726" >
+    	<!-- BEGIN Content Item File: /content/0006/050/355/cn6050355.html -->
+<div id="contentItemContainer10000395" class="6050355" >
 
 <style type="text/css">
 #globalBanner {
-	width: 553px;
+	width: 474px;
 	height: 64px;
 	position: relative;
 	display: block;
@@ -7360,17 +7362,17 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/040/726/assets/012613_ALLFIND_SalePlusUp_GB_US.png" alt="Today! Extra 25% off all sale styles. Online only. Ends 1/26. Enter GAPSALE" title="Today! Extra 25% off all sale styles. Online only. Ends 1/26. Enter GAPSALE" usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/050/355/assets/012713_ALL_mysteryOffer_35_GB_US.png" alt="Suprise Deal! 35% off your purchase. Online only. Enter GAP35" title="Suprise Deal! 35% off your purchase. Online only. Enter GAP35" usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,19,553,64" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/040/726/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,674,64" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/050/355/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/040/726/assets/012613_ALLFIND_SalePlusUp_DISR_US.gif" alt="Today! Extra 25% off all sale styles. Online only. Ends 1/26. Enter GAPSALE" title="Today! Extra 25% off all sale styles. Online only. Ends 1/26. Enter GAPSALE" usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/050/355/assets/012713_ALL_mysteryOffer_35_DISR_US.jpg" alt="Suprise Deal! 35% off your purchase. Online only. Enter GAP35" title="Suprise Deal! 35% off your purchase. Online only. Enter GAP35" usemap="#disruptorMap">
 		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/040/726/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/050/355/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
         </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -7378,7 +7380,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('012613_GB');
+	globalBannerDisruptor.init('013013_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7499,7 +7501,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/040/726/cn6040726.html -->
+<!-- END Content Item File: /content/0006/050/355/cn6050355.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8700,7 +8702,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6040726,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6050355,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>

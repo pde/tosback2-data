@@ -12,7 +12,7 @@ var dynamicParams = {
 		drock : ["/dsl", "app=drock"],
 		urock : ["/u-verse/channel-lineup","/u-verse/shop/","app=urock"],
 		sbc : ["/loc/controller","/swot/qualifyingController.do"],
-		ras : ["/storeappointment","qras.test.att.com"]
+		ras : ["/storeappointment","qras.test.att.com","app=qras"]
 	},
 	xcall : function xcall(href,site,winTgt) {
 		if (site == null) {
@@ -37,7 +37,7 @@ var dynamicParams = {
 					seperator = "&"; 
 				} 
 			}	
-		
+		if (siteName == 'ras') winTgt = '_blank';
 		if (h[1]) newHref += "#"+h[1];
 		if (!!winTgt && winTgt != '') {
 			window.open(newHref,winTgt);

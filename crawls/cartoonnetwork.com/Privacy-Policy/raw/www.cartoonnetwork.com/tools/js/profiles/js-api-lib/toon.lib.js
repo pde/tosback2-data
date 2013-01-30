@@ -361,14 +361,6 @@ function toon_lib(){
 		);
 	} 
 	
-	
-	this.me_and_my_friends_badges = function(params,callback){
-		params.ext = 'client/badges/'+params.msib_id+'/@all?sort[0]=update_date|desc';
-		this.social_api(params,function(data){
-			callback(data);
-		});
-	}
-	
 	//badge manager
 	/*	DEPRECATED ::: Use (rest_badge_count)
 	this.badge_managerapi = function(params,callback){
@@ -568,6 +560,21 @@ function toon_lib(){
 	FUNCTIONS
 	*/	
 	
+	/*
+	this.me_and_my_friends_badges = function(params,callback){
+		params.ext = 'client/badges/'+params.msib_id+'/@all?sort[0]=update_date|desc';
+		this.social_api(params,function(data){
+			callback(data);
+		});
+	}
+	*/	
+
+	this.me_and_my_friends_badges = function(params,callback){
+		params.ext = 'client/badges/summary/'+params.msib_id+'/@all';
+		this.social_api(params,function(data){
+			callback(data);
+		});
+	}	
 
 	//Level + Friends
 	this.msibid_level = function(params, callback){
@@ -1163,13 +1170,9 @@ function toon_lib(){
 	// This function is called if its for ALL BADGES
 	this.user_friend_badges_process_allbadges = function(data,params,callback){
 		for(var x in user_friends_badges_data.friends){
-			for(var i in data){
-				if(data[i].user_id == user_friends_badges_data.friends[x].user_data.msibID && data[i].completed == true){
-					if(user_friends_badges_data.friends[x].badge_count == undefined){
-						user_friends_badges_data.friends[x].badge_count = 1;
-					}else{
-						user_friends_badges_data.friends[x].badge_count++;
-					}
+			for(var i in data.user_details){
+				if(data.user_details[i].id == user_friends_badges_data.friends[x].user_data.msibID){
+					 user_friends_badges_data.friends[x].user_data.badge_count = data.user_details[i].badge_count;
 				}
 			}
 		} 
@@ -1182,7 +1185,7 @@ function toon_lib(){
 				var new_obj = {};
 				new_obj.key = x;
 				new_obj.name = friends_data[x].user_data.playerID;
-				new_obj.badge_count = friends_data[x].badge_count;
+				new_obj.badge_count = friends_data[x].user_data.badge_count;
 				new_obj.gamer_score = friends_data[x].user_data.levelInfo.gamer_score.badge_points;				
 				new_obj.received = friends_data[x].received;
 				new_array.push(new_obj); 

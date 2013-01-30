@@ -475,6 +475,12 @@ mistats.InteractionTracker = function ()
       'gcs_survey':     {key: 'mi_gsv', product: 'GCS Answered Survey'},
       'gcs_abandon':    {key: 'mi_gas', product: 'GCS Exited Site', event: 'event21'},
       'gcs_navigate':   {key: 'mi_gap', product: 'GCS Exited Page', event: 'event21'},
+      'share_fb':       {key: 'mi_sfb', product: 'Share Facebook'},
+      'share_tw':       {key: 'mi_stw', product: 'Share Twitter'},
+      'share_gp':       {key: 'mi_sgp', product: 'Share Google+'},
+      'share_print':    {key: 'mi_spr', product: 'Share Print'},
+      'share_email':    {key: 'mi_sem', product: 'Share Email'},
+      'share_any':      {key: 'mi_san', product: 'Share Any'},
       'view_more':      {key: 'mi_vmc', product: 'View More Stories'},
       'widget_show':    {key: 'mi_wsc', product: 'Widget Show'},
       'widget_hide':    {key: 'mi_whc', product: 'Widget Hide'},
@@ -645,7 +651,7 @@ mistats.InteractionTracker = function ()
             });
          }
 
-         if (!href || href.match(/^javascript:|^#/i)
+         if (!href || href.match(/^javascript:|^#/i) || href.match(/^mailto:/i)
           || thisObj.href.toLowerCase().replace(/^https*:\/{2}/, '').split('/')[0] == location.hostname.toLowerCase()
           || ((thisObj.getAttribute('target') || '').match(/_blank/i)))
             pending = false;

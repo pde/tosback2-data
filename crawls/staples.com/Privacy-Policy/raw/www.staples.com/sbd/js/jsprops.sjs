@@ -1,6 +1,7 @@
 
 var chat_switch = "ON";
-var chat_open_time = "08:00";
+var chat_locale_switch = "ON";
+var chat_open_time = "8:00";
 var chat_closed_time = "20:00";
 var chat_open_days = "23456";
 		
@@ -8,7 +9,7 @@ function chatActive(dateStamp) {
 	var pass = 'false';
 	var daylen = 1440; // 1440 mins in a day.
 	var hourlen = 60; // 60 mins in an hour
-	if (chat_switch.toUpperCase() == "ON") {
+	if (chat_switch.toUpperCase() == "ON" && chat_locale_switch.toUpperCase() == "ON") {
 		var daysarray = chat_open_days.split('');
 		var chat_open_time_array = chat_open_time.split(':');
 		var chat_closed_time_array = chat_closed_time.split(':');
@@ -31,14 +32,16 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1359104401585,
+	timeStamp: 1359536409329,
 	
-
+	
 	DEF_LANG_ID: '-1',
 	DEF_STORE_ID: '10001',
 	
 	DEF_CATALOG_ID: '10051',
+	DEF_CATALOG_IDENTIFIER: '2',
 	
+	CONTENT_PATH: '/sbd/content',
 	HTML_PATH: '/sbd/html',
 	ICON_PATH: '/sbd/img/ico/',
 	COMMON_ICON_PATH: '/sbdpas/img/ico/',
@@ -50,6 +53,7 @@ function chatActive(dateStamp) {
 	PRODUCT_IMAGE_PATH: '/sbd/img/prod/',
 	POST_DOMAIN: '/office/supplies/',
 	BACKGROUND_IMAGE_PATH: '/sbd/img/bg/',
+	COMMON_BACKGROUND_IMAGE_PATH: '/sbdpas/img/bg/',
 	XSL_PATH: '/office/supplies/StaplesB2CPAS/cat/',
 	FORESEE_PATH: '/sbdpas/js/foresee/',
 	
@@ -60,6 +64,7 @@ function chatActive(dateStamp) {
 	
 		
         s7path: '/is/image/Staples/{0}_sc7',
+        s7noimagepath: '/is/image/Staples/{0}',
         s7reddotpath: '/is/image/Staples/reddot?{3}&$imgsrc={0}&$headline=SAVE&$symbol=%24&$dollars={1}&$cents={2}',
 
 	cookiepage: '/sbd/sbd/content/help/cookieerror.html',
@@ -67,7 +72,7 @@ function chatActive(dateStamp) {
 	
 	
 	samuserInfo: 'Account Manager',
-		
+	
         loading: 'Loading...',
 
 		
@@ -84,45 +89,54 @@ function chatActive(dateStamp) {
 		
 		
         closewindow: 'Close Window',
-
+	
 	wait: 'Wait',
 	moreAbout: 'More about',
 	lessAbout: 'Less about',
-		
-        addtocart: 'Add to Cart',
+	
+    addtocart: 'Add to Cart',
 	visitStaples: 'Visit Staples.com',
 	learnMore: 'Learn More',
-        
+	
 	
 	
 	Qty: 'Qty',
 	AddToFav:'Add To Favorites',
-
+	
+	
+	CartItem: 'item',
+	CartItems: 'items',
+	
 	
 	cartOverLayFlag: 'ON',
-		
+	
 		reviewsMasterSwitch: 'ON',	
 		
 		
 		reviewsFeaturedItemsThreshold: '10',
-		
+	
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Jan 26, 2013 07:58:51'),
+	isChatOpen: chatActive('Jan 30, 2013 08:19:43'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
 		
 	analyticsSwitch: 'ON',
-
+	
+	
+	analyticsEnv: 'PROD',
+	analyticsReportSuiteDev: 'staplescomdev',
+	analyticsReportSuiteProd: 'staplescomprod',
+	
     	
 	socialLeaderBoardSwitch: 'ON',	
 	socialLeaderBoardSecurePagesSwitch: 'OFF',
 	      
 		
 	searchAutocomplete: 'ON',
-
+	
 		
 	inkTonerAutocomplete: 'ON',
 
@@ -139,11 +153,11 @@ function chatActive(dateStamp) {
 	ajaxPerformanceSwitch: 'OFF',
 	
         ajaxTimeout: '10000',
-	
+
 	
 			
 	
-	paginateAjaxErrorString: 'The last pagination operation failed.',
+	 paginateAjaxErrorString: 'The last pagination operation failed.',
 	filterAjaxErrorString: 'The last filter operation failed. ',  
 	sortAjaxErrorString: 'The last sort operation failed.',
 	
@@ -207,7 +221,7 @@ function chatActive(dateStamp) {
 	flyoutAnalytics: 'Flyout:{0}:{1}',
 	flyoutSearchTextCartridge: 'Cartridge Number Search',
 	flyoutSearchTextPrinter: 'Printer Model Number Search',
-	flyoutSearchTextInkandToner: 'Ink &amp; Toner I&#039;ve Ordered Before',
+	flyoutSearchTextInkandToner: 'Ink & Toner I&#039;ve Ordered Before',
 	flyoutTimeoutOpenMS: '200',
 	flyoutTimeoutCloseMS: '1000',		
 	flyoutPreloadMaxIndex: '3',
@@ -219,6 +233,7 @@ function chatActive(dateStamp) {
 	
         previous: '&laquo; Previous',
         next: 'Next &raquo;',
+        label_bmsm: 'Buy More Save More',
 
 		
         carouselitemcounter: '{0}-{1} of {2} items',
@@ -235,11 +250,11 @@ function chatActive(dateStamp) {
 	 },
 	
     Autocomplete:{
-		selectSearch: 'Please hit enter when ready',
-		keywordMatches: 'Keyword Matches',
+	selectSearch: 'Please hit enter when ready',
+	keywordMatches: 'Keyword Matches',
 		department: 'Department',
 		shopByBrand: 'Shop by Brand',
-		weeklyDeals: 'Weekly Deals',
+	weeklyDeals: 'Weekly Deals',
 		previouslyPurchasedItems: 'Previously Purchased Items',
 		brandDepartmentResultsSwitch:true,
 		productResultsSwitch:true,
@@ -260,7 +275,39 @@ function chatActive(dateStamp) {
 	toggleListItemless: 'Less',
 	requiredFieldError: 'Please enter values in both fields',
 	validationError: 'The &#039;From&#039; value should be less than &#039;To&#039; value'
-	}
+	 },
+	
+    CheckoutreviewandpayPage:{
+	giftscardsalreadyapplied: 'The maximum number of Staples Gift Cards has already been applied.',
+	invalidgiftcardnumber: 'We&#39;re sorry, this is an invalid gift Card Number, please try again.',
+	invalidpin: 'We&#39;re sorry, this is an invalid PIN, please try again.',
+	giftcardapplied: '<p><strong>Gift card value applied.</strong></p><p>Amount due: $',
+	enteradditionalgiftcards: '.</p><p>Enter additional gift cards or select a credit card for remaining balance; if necessary</p>',
+	submityourorder: '.</p><p>Please submit your order</p>',
+	balance: 'Balance $',
+	giftcardremoved: 'The Staples Gift Card has been removed.',
+	clickapply: 'You must click &#39;Apply&#39; if you wish to use the gift card/rebate card entered for this order.',
+	notastaplesgiftcard: 'We&#39;re sorry this is not a Staples Gift Card.',
+	rebatecardsalreadyapplied: 'The maximum number of Staples Rebate Credit Cards has already been applied.',
+	invalidrebatecardnumber: 'We&#39;re sorry, this is an invalid rebate card number, please try again.',
+	invalidcid: 'We&#39;re sorry, this is an invalid CID, please try again',
+	rebatecardexpirationmonth: 'The Staples Rebate Credit Card expiration date must be entered.',
+	expirationmonth: 'We&#39;re sorry, the expiration month and year must be set to the future.',
+	rebatecardapplied: '<p>Rebate card value applied. Amount due: $',
+	enteradditionalrebatecards: '.</p> <p>Enter additional cards or select a credit card for remaining balance; if necessary</p>',
+	rebatecardremoved: 'The Staples Rebate Credit Card has been removed.',
+	notastaplesrebatecard: 'We&#39;re sorry this is not a Staples Rebate Card.',
+	requiredfiledenterinfo: 'This is a required field. Please enter the information.',
+	checkcardinfoandtryagain: 'Please check the credit card information and try again. If this problem persists, please call us at 1-800-3STAPLE (1-800-378-2753) to speak with an associate.',
+	cidmustbenumeric: 'The Prepaid Gift Card CID must be numeric.',
+	numbermustbe4digit: '&lt;p&gt;Card ID Number must be 4 digits.&lt;/p&gt;&lt;p&gt;Please check it and try again.&lt;/p&gt;',
+	idnumbermustbe3digit: 'Card ID Number must be 3 digits. Please check it and try again.',
+	prepaidcardexpiration: 'The Prepaid Gift Card expiration date must be entered.',
+	prapaidexpirationmonth: 'The expiration month and year must be set to the future',
+	prepaidcardnotapplied: 'The Prepaid Gift Card has not been applied.',
+	creditcardcidmustbenumeric: 'The Credit Card CID must be numeric.',
+	selectedcreditcidnumeric: 'The selected Credit Card CID must be numeric.',
+	invalidairmilenumber: 'An error has occurred: The collector number you entered is invalid.					'
+	 }
 
 });
-	

@@ -3952,7 +3952,39 @@ $(function () {
 		}
 	});
 }) (jQuery);
-/* overlay.js */
+/* preferences_check.js */
+$(document).ready(function(){
+	var timeout = new Date();
+	timeout.setMinutes(timeout.getMinutes()+30);
+	timeout = timeout.getTime();
+	
+	if(typeof config.getPreferenceCheckClasses == 'undefined' || typeof Storage == 'undefined' || typeof config.getNiagaraActivityHomeURL == 'undefined') return;
+	var lang = localStorage.getItem('_lang');
+	if(lang != null){
+		langtime = lang.split('|');
+		if(langtime.length == 2){
+			var testDate = new Date();
+			testDate.setTime(langtime[1]);
+			if(testDate > new Date()) return;
+		}
+	}
+	var preferenceFinder = config.getPreferenceCheckClasses();
+	if($(preferenceFinder).length > 0){
+		var found=true;
+		$(preferenceFinder).each(function(){
+			if($(this).height() > 0){
+				found=false;
+			}
+		});
+		if(found){
+			localStorage.setItem('_lang','EN-US|'+timeout);
+			$.ajax({url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{site:window.location.hostname,lang:'EN-US'}});
+		}else{
+			localStorage.setItem('_lang','EN|'+timeout);
+			$.ajax({url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{site:window.location.hostname,lang:'EN'}});
+		}
+	}
+});/* overlay.js */
 /**
  * Crabapple Entertainment Overlay Code
  * 

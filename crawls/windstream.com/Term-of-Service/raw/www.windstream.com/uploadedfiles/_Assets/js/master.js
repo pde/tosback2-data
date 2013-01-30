@@ -157,6 +157,7 @@ function ajaxRequestComplete() {
     $('.bundlizer-tv').each(function () { modSlide($(this)); });
     wireupAdvancedSearch();
     supportTabSlide();
+    supportMapImage();
 };
 
 $(document).ready(function () {
@@ -167,6 +168,7 @@ $(document).ready(function () {
     }
 
     normalizePlanHeight();
+    supportMapImage();
 
     //Characters Remaining
     var characters = 100;
@@ -385,7 +387,115 @@ $(document).ready(function () {
 
 
     }); //end click
+
+
+    $(function () {
+        if (!$('.referee-page')) { return false; }
+
+        var $resBtn = $('#ResidentialButton'),
+            $busBtn = $('.ss-businessButton'),
+            resBtnSrc = $resBtn.attr('src'),
+            busBtnSrc = $busBtn.attr('src'),
+            resBtn_off = '/uploadedimages/_Assets/structure/referee/residential-button_off.png',
+            busBtn_off = '/uploadedimages/_Assets/structure/referee/business-button_off.png',
+            resBtn_on = '/uploadedimages/_Assets/structure/referee/residential-button_over.png',
+            busBtn_on = '/uploadedimages/_Assets/structure/referee/business-button_over.png';
+
+        $resBtn.off('hover').on('hover', function () {
+            if ($resBtn.attr('src') === resBtn_off) {
+                $resBtn.attr('src', resBtn_on);
+            } else {
+                $resBtn.attr('src', resBtn_off);
+            }
+        });
+
+        $busBtn.off('hover').on('hover', function () {
+            if ($busBtn.attr('src') === busBtn_off) {
+                $busBtn.attr('src', busBtn_on);
+            } else {
+                $busBtn.attr('src', busBtn_off);
+            }
+        });
+
+    } ());
+
+
+    $(function () {
+        if (!$('.mod-008')) { return; }
+
+        var $mod8, $dollarSize, colSetup, _determineColumns;
+
+        $mod8 = $('.mod-008'),
+        $dollarSize = $mod8.find('.dollar.size-3'),
+        colSetup = {
+            newColWidth: [
+                {
+                    two: 200,
+                    three: 220,
+                    four: 200
+                }
+            ],
+            colClasses: [
+                {
+                    priceBlock: '.price-block',
+                    two: '.col-2',
+                    three: '.col-3',
+                    four: '.col-4'
+                }
+            ]
+        };
+
+        _determineColumns = function () {
+            if ($mod8.find(colSetup.colClasses[0].two).length >= 1) {
+                return 2;
+            } else if ($mod8.find(colSetup.colClasses[0].three).length >= 1) {
+                return 3;
+            } else if ($mod8.find(colSetup.colClasses[0].four).length >= 1) {
+                return 4;
+            } else {
+                return false;
+            }
+        };
+
+        if ($dollarSize.length >= 1) {
+            return $dollarSize.each(function () {
+                var $this = $(this);
+                if (_determineColumns() === 2) {
+                    return $this.parent(colSetup.colClasses[0].priceBlock).width(colSetup.newColWidth[0].two);
+                } else if (_determineColumns() === 3) {
+                    return $this.parent(colSetup.colClasses[0].priceBlock).width(colSetup.newColWidth[0].three);
+                } else if (_determineColumns() === 4) {
+                    return $this.parent(colSetup.colClasses[0].priceBlock).width(colSetup.newColWidth[0].four);
+                }
+            });
+        }
+    } ());
+
+    (function () {
+        var $supportMapImg = $('.support-stores .col-left').find('img'),
+        mapSrc = $supportMapImg.attr('src');
+
+        if (!mapSrc) {
+            return $supportMapImg.hide();
+        } else {
+            return $supportMapImg.show();
+        }
+    } ());
+
 });
+
+var supportMapImage = function () {
+    var $supportMapImg = $('.support-stores .col-left').find('img'),
+        mapSrc = $supportMapImg.attr('src');
+
+    if (!$supportMapImg) return;
+
+    if (!mapSrc) {
+        return $supportMapImg.hide();
+    } else {
+        return $supportMapImg.show();
+    }
+};
 
 /* My Location 320 modal */
 var mobileUtilityLocation = function () {

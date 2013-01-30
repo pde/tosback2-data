@@ -181,7 +181,8 @@ jQuery.autocomplete = function(input, options) {
 		hideResultsNow();
 		$input.focus();
 		$("#question").val(li.selectValue);
-	    $("#searchButton").trigger("click");
+		submitForm($("#question").val());
+	   // $("#searchButton").trigger("click");
 		if (options.onItemSelect) setTimeout(function() { options.onItemSelect(li) }, 1);
 	};
 

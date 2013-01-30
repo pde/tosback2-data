@@ -955,7 +955,8 @@ $(document).ready(function() {
     
     /**For smallbusiness search**/
     $("#searchGlassButton").click(function(){
-    	$("#searchButton").trigger("click");
+    	 submitForm($("#question").val());
+    	//$("#searchButton").trigger("click");
     });
     $("#question").autocomplete("/smallbusiness/Search/autocomplete.jsp");
     
@@ -1043,7 +1044,8 @@ $(document).ready(function() {
     
     $('#question').bind('keypress',function (event){
 		if (event.keyCode === 13){
-			$("#searchButton").trigger("click");	
+			 submitForm($("#question").val());
+			//$("#searchButton").trigger("click");	
 		}
 	});
     

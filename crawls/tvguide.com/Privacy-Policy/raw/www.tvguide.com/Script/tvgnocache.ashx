@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,0,26,13,14,55,0);
+var tvgServerTimeUTC = new Date(2013,0,30,13,15,50,0);
 
-var dServerET = new Date(2013,0,26,8,14,55,0);
+var dServerET = new Date(2013,0,30,8,15,50,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,0,26);
-dSrvrTime.setUTCHours(13,14,55,0);
+dSrvrTime.setUTCFullYear(2013,0,30);
+dSrvrTime.setUTCHours(13,15,50,0);
 
-var dLocalTime = new Date(2013,0,26,8,14,55,0);
-var dGridStart = new Date(2013,0,26,8,0,0,0);
+var dLocalTime = new Date(2013,0,30,8,15,50,0);
+var dGridStart = new Date(2013,0,30,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= da9dc9a599eeff48f941b0ca98a321d0299c9185 1359206095';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 3790e610386158b8142f573b00538fabe9dc2119 1359551750';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,18 +50,18 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 1/26/2013 1:00:00 PM GMT */
+/* TVGSVC02 1/30/2013 1:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-01-26)*/
+/* Listings: In-Grid and Close-Up Ads (2013-01-30)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/SAGFW_Top_Rev2.jpg";
-var magicBotImage = "/listings/images/topchan/SAGFW_Bottom_MON_Rev2.jpg";
-var magicLogo = "/listings/images/topchan/SAGFW_Middle_Rev2.jpg";
+var magicTopImage = "/listings/images/topchan/GRAMMY_LV_Top.jpg";
+var magicBotImage = "/listings/images/topchan/GRAMMY_LV_Bottom_SUN.jpg";
+var magicLogo = "/listings/images/topchan/GRAMMY_LV_Middle.jpg";
 var magicLink = "https://www.facebook.com/TVGuideNetwork/app_153855648022942";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
@@ -106,10 +106,10 @@ var slot_box_300x250 = 0;
 var bEnableWallpaperAds_HP = true;
 var bEnableRichmediaAds_HP = true;
 var slot_banner_top_HP = 0;
-var slot_box_300x250_HP = 0;
+var slot_box_300x250_HP = 1;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
-var slot_banner_top_LST = 1;
+var slot_banner_top_LST = 0;
 var slot_banner_top_NT = 0;
 var slot_box_300x250_NT = 0;
 

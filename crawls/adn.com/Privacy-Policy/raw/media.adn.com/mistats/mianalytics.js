@@ -388,6 +388,125 @@ mianalytics.TrackPoll = function ()
    mianalytics.bind(window, 'load', init);
 };
 
+mianalytics.TrackShares = function ()
+{
+   var bound;
+   var count;
+   var iframes;
+   var mouseX;
+   var mouseY;
+
+   function trackAnchor(pEvent)
+   {
+      var thisObj;
+      
+      thisObj = pEvent.srcElement || pEvent.target;
+
+      if (thisObj && thisObj.className && !(thisObj.className === 'print' || thisObj.className === 'email'))
+         return;
+
+      mianalytics.unbind(thisObj, pEvent.type, trackAnchor);
+      mistats.interactionTracker.increment('share_' + thisObj.className);
+      mistats.interactionTracker.increment('share_any');
+   };
+
+   function trackIframe(pEvent)
+   {
+      var coords;
+      var i;
+
+      for (i = 0; i < iframes.length; i++)
+         if (iframes[i].obj)
+         {
+            coords = iframes[i].obj.getBoundingClientRect();
+            if (mouseX >= coords.left
+             && mouseX <= coords.left + iframes[i].width
+             && mouseY >= coords.top
+             && mouseY <= coords.top + iframes[i].height
+             && !iframes[i].shared)
+            {
+               iframes[i].shared = true;
+               mistats.interactionTracker.increment('share_' + iframes[i].id);
+               mistats.interactionTracker.increment('share_any');
+               return;
+            }
+         }
+   };
+
+   function mouseover(pEvent)
+   {
+      mouseX = pEvent.clientX;
+      mouseY = pEvent.clientY;
+
+      if (bound)
+         return;
+
+      bound = true;
+
+      if (window.addEventListener)
+         window.addEventListener('blur', trackIframe, false);
+      else if (document.documentElement.attachEvent)
+         document.documentElement.attachEvent('ondeactivate', trackIframe);
+   };
+
+   function mouseout(pEvent)
+   {
+      bound = false;
+
+      if (window.removeEventListener)
+         window.removeEventListener('blur', trackIframe, false);
+      else if (document.documentElement.detachEvent)
+         document.documentElement.detachEvent('ondeactivate', trackIframe);
+   };
+
+   function init()
+   {
+      var objs;
+      var o;
+      var st;
+      var t;
+
+      if (count++ < 120 && !(document.readyState || '').match(/complete|ready/i))
+      {
+         setTimeout(init, 500);
+         return;
+      }
+
+      st = mianalytics.getElementByClassName('story-toolbar');
+      if (!(st && typeof mistats === 'object' && mistats.interactionTracker))
+         return;
+
+      mianalytics.bind(st, 'mouseover', mouseover);
+      mianalytics.bind(st, 'mouseout', mouseout);
+
+      iframes =
+      [
+         {id: 'fb', url: /facebook\.com.*\/like\.php/i,  width: -25, height: 0, obj: null, shared: false},
+         {id: 'tw', url: /twitter.com.*\/tweet_button/i, width: -40, height: 0, obj: null, shared: false},
+         {id: 'gp', url: /plusone\.google\.com/i,        width: -50, height: 0, obj: null, shared: false}
+      ];
+
+      objs = st.getElementsByTagName('iframe');
+      for (o = 0; o < objs.length; o++)
+         if (objs[o].src)
+            for (t = 0; t < iframes.length; t++)
+               if (iframes[t].url.test(objs[o].src))
+               {
+                  iframes[t].obj = objs[o];
+                  iframes[t].width += objs[o].clientWidth;
+                  iframes[t].height += objs[o].clientHeight;
+               }
+
+      objs = st.getElementsByTagName('a');
+      for (o = 0; o < objs.length; o++)
+         mianalytics.bind(objs[o], 'mouseup', trackAnchor);
+   };
+
+   count = 0;
+   init();
+};
+
+mianalytics.trackShares = new mianalytics.TrackShares();
 mianalytics.trackPoll = new mianalytics.TrackPoll();
 mianalytics.trackWidgets = new mianalytics.TrackWidgets();
 mianalytics.trackTrifecta = new mianalytics.TrackTrifecta();

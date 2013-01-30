@@ -1,7 +1,7 @@
 LXinit = function(e) {
 	
 //Global footer mini promo
-//miniPromo(); //uncomment to start the footer mini promo
+miniPromo(); //uncomment to start the footer mini promo
 function miniPromo(){
 	var createLi = document.createElement('li');
 	var createDiv = document.createElement('div');
@@ -37,12 +37,12 @@ function miniPromo(){
 	var browserVer = navigator.appVersion;
 	if (browserNam == "Microsoft Internet Explorer"){
 	var travUl = travSoc.childNodes[0];
-	var targetLi = travUl.childNodes[4];
+	var targetLi = travUl.childNodes[5];
 	}
 	var ieNine = browserVer.indexOf("MSIE 9.0");
 	if (browserNam == "Netscape" || ieNine != -1){
 	var travUl = travSoc.childNodes[1];
-	var targetLi = travUl.childNodes[9];
+	var targetLi = travUl.childNodes[10];
 	}
 	
 	//createLi.appendChild(createDiv).appendChild(createLink1).appendChild(createImg1);

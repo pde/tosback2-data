@@ -1,4 +1,5 @@
 var tGuardOn ;
+var iphonePasswordRtnType;
 var phoneNumberPattern = /^\(?(\d*)\)?[- .]?(\d*)[- .]?(\d+)$/; 
 
 function UserBoxFocusImgChange()
@@ -73,10 +74,7 @@ jQuery(document).ready(function(event)
 		{
 			setTimeout(function() { formatCTN(getUserID(),event); }, 10);
 		});
-		if(!jQuery.browser.mobile)
-		{
-			jQuery("#password").iphonePassword();
-		}
+		
 	}
 	catch(e)
 	{
@@ -229,11 +227,22 @@ function checkFormValues()
 	var isPwdVal =true;
 	var realPass = "";
 	
-		userID = getUserID().val(); 
-		password = trim(jQuery("#password").val());
-		if(jQuery("#password").attr("real")!=null){
-			realPass = trim(jQuery("#password").attr("real"));
+	userID = getUserID().val(); 
+	password = trim(jQuery("input:password").val());
+	
+	if(!jQuery.browser.mobile && iphonePasswordRtnType!=null)
+	{	
+		var txtObj = iphonePasswordRtnType[0].text;
+		var passObj = iphonePasswordRtnType[0].pass;
+		if(txtObj.attr("real")==null || txtObj.attr("real")==undefined){
+			realPass = "";
+		}else{
+			realPass = trim(txtObj.attr("real"));
 		}
+		passObj.val(realPass);
+		iphonePassForm.iphoneOptions.pass.val(realPass);
+		password = realPass;
+	}
 		
 	if (userID == "") 
 	{
@@ -253,7 +262,7 @@ function checkFormValues()
 		isUserVal=false;
 	}
 	
-	if (password == null || password == "" || (!jQuery.browser.mobile && jQuery("#password").attr("real")!=null && realPass == "")) 
+	if (password == null || password == "") 
 	{
 		if(jQuery("#capsLockDiv").is(":visible")){
 			jQuery("#pwdstub").show();
@@ -261,16 +270,18 @@ function checkFormValues()
 		else{ 
 			jQuery("#pwdstub").hide();
 		}
-		jQuery("#password").attr("real" , realPass);
+
 		jQuery("#password").val("");
 		jQuery("#PasswordAlertsDiv").show();
 		jQuery("#pwdErrDiv").show();
 		jQuery("#passwordErrMsg").html(jQuery("#blankPassword").val());
 		jQuery("#pwdDiv").addClass("error");
+		if(jQuery("#password").attr("real") !=undefined){
+			jQuery("#password").attr("real" , realPass);
+		}
 		//jQuery("#pwdDiv").attr("className","w211 rel error");	
 		//jQuery("#password").focus();
 		isPwdVal=false;
-	
 	}
 	else if (password.length < 4) 
     {
@@ -279,7 +290,7 @@ function checkFormValues()
 		jQuery("#passwordErrMsg").html(jQuery("#passwordLessChars").val());
 		jQuery("#pwdDiv").addClass("error");
 		if(jQuery("#capsLockDiv").is(":visible"))jQuery("#pwdstub").show(); else jQuery("#pwdstub").hide();
-	//	jQuery("#pwdDiv").attr("className","w211 rel error");	
+		//jQuery("#pwdDiv").attr("className","w211 rel error");	
 		//jQuery("#password").focus();
 		isPwdVal=false;
     }
@@ -304,7 +315,7 @@ function checkFormValues()
     // To TRIM the Password on submission :: 
     if(retVal && !jQuery.browser.mobile){
     		try{
-    			iphonePassForm.iphoneOptions.pass.val(jQuery.trim(iphonePassForm.iphoneOptions.pass.val()));
+    		/*	iphonePassForm.iphoneOptions.pass.val(jQuery.trim(iphonePassForm.iphoneOptions.pass.val()));
     			if(jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() ==""){
     				if(realPass !=null && jQuery.trim(realPass)!=""){
     					iphonePassForm.iphoneOptions.pass.val(realPass);
@@ -312,6 +323,8 @@ function checkFormValues()
     				}
     			}
     			jQuery("#password").attr("disabled", "disabled");
+    		}*/
+    			jQuery('input:text[id="password"]').attr("disabled", "disabled");
     		}
     		catch(exception){}
     	}

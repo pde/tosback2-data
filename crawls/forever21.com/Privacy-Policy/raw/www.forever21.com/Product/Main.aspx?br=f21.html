@@ -232,8 +232,8 @@
 
     <script type="text/javascript">
 
-        var dateNow    = new Date(2013,0,26,5,14,35); //grab current date
-        var dateFuture = new Date(2013, 0, 27, 0, 0, 0);
+        var dateNow    = new Date(2013,0,30,5,15,28); //grab current date
+        var dateFuture = new Date(2013, 0, 31, 0, 0, 0);
          
         $j(function ($) {
 
@@ -256,7 +256,36 @@
         background-repeat: repeat-x;
         background-position: top;}
         
+        
+        #popUp{position:fixed; right:-174px; top:40%; width: 174px; height: 99px; z-index:1001;}
+	            #tab{    
+                cursor: pointer;
+                height: 99px;
+                width: 34px;
+                position: absolute;
+                right: 174px;
+                top: 0;
+                z-index:1001;
+                }        
     </style>
+    <script type="text/javascript">
+        $j(document).ready(function () {
+            //pop out after 5 hundred milliseconds
+            $j("#popUp").hover(function () {
+                $j("#popUp").animate({
+                    right: "0"
+                }, 500);
+            },
+            //pop back in     
+            function () {
+                $j(this).stop(true);
+                $j("#popUp").animate({
+                    right: "-174px"
+                });
+            });
+
+        });  //end ready
+        </script>
 </head>
 <body>
 <center>
@@ -264,6 +293,12 @@
     <tbody>
     <tr>
     <td>
+    
+         <div id="popUp">
+     	    <div id="tab"><img src="../images/en/common/tab.png" /></div>
+		    <a href="http://www.forever21.com/valentines-gifts/" onclick="return fc_click('VALENTINES GIFTS','ad');"><img width="174px" height="99px;" src="../images/en/valentines-gifts/popout_tab.jpg" /></a>
+         </div><!--popUp-->
+    
         <div id="utilityNav">
             <ul id="links">
                 <li><a href="http://www.forever21.com/CheckOut/Basket.aspx?br=f21" onclick="return fc_click('MY BAG ( HEADER )','ad');">MY BAG (<strong><span id="ctl00_haveBasket">0</span></strong>)&nbsp;<span id="ctl00_haveTotal">$0.00</span></a></li>
@@ -423,7 +458,9 @@
             	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Essentials" class="indent" onclick="return fc_click('ESSENTIALS ( MEGAMENU - SHOP BY )','ad');">Essentials</a></li>
             	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_ExclusiveDesigns" class="indent" onclick="return fc_click('EXCLUSIVES ( MEGAMENU - SHOP BY )','ad');">Exclusives</a></li>
             	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Hello_Kitty_Lookbook" class="indent" onclick="return fc_click('HELLO KITTY ( MEGAMENU - SHOP BY )','ad');">Hello Kitty</a></li>
-            	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Glamour-Mag-Editors-List" class="indent" onclick="return fc_click('CONDE NAST ( MEGAMENU - SHOP BY )','ad');">Conde Nast Editor's Picks</a></li>
+                <li class="static">SHOE COLLECTIONS</li>
+            	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Shoes-Neon-Pop-Neutral" class="indent" onclick="return fc_click('NEON POP CAPSULE ( MEGAMENU - SHOP BY )','ad');">Neon Pop Capsule</a></li>
+            	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Shoe-collection-hologram" class="indent" onclick="return fc_click('HOLOGRAM CAPSULE ( MEGAMENU - SHOP BY )','ad');">Hologram Capsule</a></li>
             	<li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=backinstock" onclick="return fc_click('BACK IN STOCK ( MEGAMENU - SHOP BY )','ad');">BACK IN STOCK</a></li>
                 <li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Top_Rated" onclick="return fc_click('TOP RATED ( MEGAMENU - SHOP BY )','ad');">TOP RATED</a></li>
                 <li><a href="http://www.forever21.com/Product/Category.aspx?br=f21&category=promo_almost_sold_out" onclick="return fc_click('ALMOST SOLD OUT ( MEGAMENU - SHOP BY )','ad');">ALMOST SOLD OUT</a></li>
@@ -455,7 +492,8 @@
             <ul>
 			    <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=faith_main" onclick="return fc_click('ALL ( MEGAMENU - PLUS )','ad');">SHOP ALL</a></li>
 			    <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=Pluswhatsnewall" onclick="return fc_click('NEW ARRIVALS ( MEGAMENU - PLUS )','ad');">NEW ARRIVALS</a></li> 
-			    <li><a href="http://www.forever21.com/Looks/Main.aspx?br=plus" onclick="return fc_click('SHOP BY OUTFIT ( MEGAMENU - PLUS )','ad');">SHOP BY OUTFIT</a></li> 
+			    <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=Plus_Sizes-Restocked" onclick="return fc_click('BACK IN STOCK ( MEGAMENU - PLUS )','ad');">BACK IN STOCK</a></li> 
+                <li><a href="http://www.forever21.com/Looks/Main.aspx?br=plus" onclick="return fc_click('SHOP BY OUTFIT ( MEGAMENU - PLUS )','ad');">SHOP BY OUTFIT</a></li> 
                 <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=faith_dresses" onclick="return fc_click('DRESSES ( MEGAMENU - PLUS )','ad');">DRESSES</a></li> 
                 <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=faith_tops" onclick="return fc_click('TOPS ( MEGAMENU - PLUS )','ad');">TOPS</a></li>
                 <li><a href="http://www.forever21.com/Product/Category.aspx?br=plus&category=faith_sweater" onclick="return fc_click('SWEATER ( MEGAMENU - PLUS )','ad');">SWEATERS & CARDIGANS</a></li> 
@@ -531,7 +569,7 @@
             <table width="990" border="0">
             <tr>
                 <td>
-                    <img src="../images/en/20130122/common/global_bn.jpg" border="0" usemap="#global" /><map name="global"><area shape="rect" coords="0,0,724,41" href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Sale_select-30-off" onClick="return fc_click('30 SWEATERS BLAZERS ( US GLOBAL BANNER )','ad');"><area shape="rect" coords="730,0,986,42" href="javascript:showPopWin('http://www.forever21.com/Htmls/htmlContents.aspx?br=f21&url=/Popup/en-US/DUMMY_30OFF_disclaimer.html',450,140,null);" onClick="return fc_click('30 SWEATERS BLAZERS DISCLAIMER ( US GLOBAL BANNER )','ad');"></map>
+                    <img src="../images/en/20130129/common/global_bn.jpg" border="0" usemap="#global" /><map name="global"><area shape="rect" coords="0,0,814,39" href="http://www.forever21.com/Product/Category.aspx?br=f21&category=Promo_Sale_select-30-off" onClick="return fc_click('30 SWEATERS BLAZERS ( US GLOBAL BANNER )','ad');"><area shape="rect" coords="818,1,989,40" href="javascript:showPopWin('http://www.forever21.com/Htmls/htmlContents.aspx?br=f21&url=/Popup/en-US/DUMMY_30OFF_disclaimer.html',450,140,null);" onClick="return fc_click('30 SWEATERS BLAZERS DISCLAIMER ( US GLOBAL BANNER )','ad');"></map>
                 </td>
             </tr>
             </table>
@@ -554,13 +592,13 @@
 					    
     <form name="aspnetForm" method="post" action="Main.aspx%3Fbr=f21.html" id="aspnetForm">
 <div>
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE5MDQyOTA5NDIPD2RkFgJmD2QWCGYPFgIeBFRleHQFUTx0aXRsZT5Gb3JldmVyIDIxIC0gU2hvcCBmYXNoaW9uYWJsZSBjbG90aGluZyBmb3Igd29tZW4sIHBsdXMsIGdpcmxzLCBtZW48L3RpdGxlPmQCAw8WAh4JaW5uZXJodG1sBQEwZAIEDxYCHwEFBSQwLjAwZAIGDxYCHwAF0AQ8aW1nIHNyYz0iL2ltYWdlcy9lbi8yMDEzMDEyMi9jb21tb24vZ2xvYmFsX2JuLmpwZyIgYm9yZGVyPSIwIiB1c2VtYXA9IiNnbG9iYWwiIC8+PG1hcCBuYW1lPSJnbG9iYWwiPjxhcmVhIHNoYXBlPSJyZWN0IiBjb29yZHM9IjAsMCw3MjQsNDEiIGhyZWY9Imh0dHA6Ly93d3cuZm9yZXZlcjIxLmNvbS9Qcm9kdWN0L0NhdGVnb3J5LmFzcHg/YnI9ZjIxJmNhdGVnb3J5PVByb21vX1NhbGVfc2VsZWN0LTMwLW9mZiIgb25DbGljaz0icmV0dXJuIGZjX2NsaWNrKCczMCBTV0VBVEVSUyBCTEFaRVJTICggVVMgR0xPQkFMIEJBTk5FUiApJywnYWQnKTsiPjxhcmVhIHNoYXBlPSJyZWN0IiBjb29yZHM9IjczMCwwLDk4Niw0MiIgaHJlZj0iamF2YXNjcmlwdDpzaG93UG9wV2luKCdodHRwOi8vd3d3LmZvcmV2ZXIyMS5jb20vSHRtbHMvaHRtbENvbnRlbnRzLmFzcHg/YnI9ZjIxJnVybD0vUG9wdXAvZW4tVVMvRFVNTVlfMzBPRkZfZGlzY2xhaW1lci5odG1sJyw0NTAsMTQwLG51bGwpOyIgb25DbGljaz0icmV0dXJuIGZjX2NsaWNrKCczMCBTV0VBVEVSUyBCTEFaRVJTIERJU0NMQUlNRVIgKCBVUyBHTE9CQUwgQkFOTkVSICknLCdhZCcpOyI+PC9tYXA+ZGQ=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE5MDQyOTA5NDIPD2RkFgJmD2QWCGYPFgIeBFRleHQFUTx0aXRsZT5Gb3JldmVyIDIxIC0gU2hvcCBmYXNoaW9uYWJsZSBjbG90aGluZyBmb3Igd29tZW4sIHBsdXMsIGdpcmxzLCBtZW48L3RpdGxlPmQCAw8WAh4JaW5uZXJodG1sBQEwZAIEDxYCHwEFBSQwLjAwZAIGDxYCHwAF0AQ8aW1nIHNyYz0iL2ltYWdlcy9lbi8yMDEzMDEyOS9jb21tb24vZ2xvYmFsX2JuLmpwZyIgYm9yZGVyPSIwIiB1c2VtYXA9IiNnbG9iYWwiIC8+PG1hcCBuYW1lPSJnbG9iYWwiPjxhcmVhIHNoYXBlPSJyZWN0IiBjb29yZHM9IjAsMCw4MTQsMzkiIGhyZWY9Imh0dHA6Ly93d3cuZm9yZXZlcjIxLmNvbS9Qcm9kdWN0L0NhdGVnb3J5LmFzcHg/YnI9ZjIxJmNhdGVnb3J5PVByb21vX1NhbGVfc2VsZWN0LTMwLW9mZiIgb25DbGljaz0icmV0dXJuIGZjX2NsaWNrKCczMCBTV0VBVEVSUyBCTEFaRVJTICggVVMgR0xPQkFMIEJBTk5FUiApJywnYWQnKTsiPjxhcmVhIHNoYXBlPSJyZWN0IiBjb29yZHM9IjgxOCwxLDk4OSw0MCIgaHJlZj0iamF2YXNjcmlwdDpzaG93UG9wV2luKCdodHRwOi8vd3d3LmZvcmV2ZXIyMS5jb20vSHRtbHMvaHRtbENvbnRlbnRzLmFzcHg/YnI9ZjIxJnVybD0vUG9wdXAvZW4tVVMvRFVNTVlfMzBPRkZfZGlzY2xhaW1lci5odG1sJyw0NTAsMTQwLG51bGwpOyIgb25DbGljaz0icmV0dXJuIGZjX2NsaWNrKCczMCBTV0VBVEVSUyBCTEFaRVJTIERJU0NMQUlNRVIgKCBVUyBHTE9CQUwgQkFOTkVSICknLCdhZCcpOyI+PC9tYXA+ZGQ=" />
 </div>
 
     <div align="center">
         <table width="100%" border="0" cellpadding="0" cellspacing="0"> 
             <tr align="center">
-                <td id="ctl00_MainContent_tdLandingContent"><div id="container"><div id="content"><div id="slider"><ul><li><img src="../images/en/20130124/banner/f21_main1_us.jpg" alt="Slide1" usemap="#MAIN_MAP1" /></li><li><img src="../images/en/20130124/banner/f21_main2_us.jpg" alt="Slide2" usemap="#MAIN_MAP2" /></li><li><img src="../images/en/20130124/banner/f21_main3_us.jpg" alt="Slide3" usemap="#MAIN_MAP3" /></li></ul></div><div id="slider2"><ul><li><div id="kicker-row"><div id="kickerblock"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Jewelry_New-Frontier" onclick="return fc_click('# (Home - Collections1)','ad');"><img src="../images/en/20130125/banner/bn01.jpg" alt="1" height="320" width="326"></a><div id="kicker-txt"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Jewelry_New-Frontier" onclick="return fc_click('# (Home - Collections)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div><div id="kickerblock"><a href="http://www.forever21.com/Product/SetCategory.aspx?br=f21&amp;category=swimwear" onclick="return fc_click('# (Home - Collections2)','ad');"><img src="../images/en/20130125/banner/bn02.jpg" alt="1" height="320" width="326"></a><div id="kicker-txt"><a href="http://www.forever21.com/Product/SetCategory.aspx?br=f21&amp;category=swimwear" onclick="return fc_click('# (Home - Collections2)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div><div id="kickerblock-last"><div style="background-image: url('../images/en/20130125/banner/bn03.jpg'); height: 320px; cursor: pointer;" onclick="location.href='/Product/Category.aspx?br=f21&category=Promo_Shoe-collection-hologram';return fc_click('# (Home - Collections3)','ad');"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-left: 2px;"><font class="time"><span style="position: relative; top: 232px" id="CountDown1"><font class="time"></font></span></font></td></tr></table></div><div id="kicker-txt"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Shoe-collection-hologram" onclick="return fc_click('# (Home - Collections3)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div></div></li></ul></div></div></div><script type="text/javascript">var $j = jQuery.noConflict(); $j(document).ready(function () {$j("#slider").easySlider({ auto:true, continuous: true, pause: 4000, nextId: "slider1next", prevId: "slider1prev"});});</script><map name="MAIN_MAP1"><area shape="rect" coords="1,1,989,489" href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=promo_vertical-stripes" onClick="return fc_click('VERTICAL STRIPES (US Homepage - 1)','ad');"></map><map name="MAIN_MAP2"><area shape="rect" coords="1,1,989,489" href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=promo_pastel-apparel" onClick="return fc_click('PASTELS (US Homepage - 2)','ad');"></map><map name="MAIN_MAP3"><area shape="rect" coords="0,0,510,486"  href="http://www.forever21.com/Product/Category.aspx?br=love21&amp;category=Promo_Love21_Daytime-Dresses" onClick="return fc_click('LOVE - DAY (US Homepage - 3)','ad');"><area shape="rect" coords="512,1,988,486" href="http://www.forever21.com/Product/Category.aspx?br=love21&amp;category=Promo_Love21_going-out-dresses" onClick="return fc_click('LOVE - NIGHT (US Homepage - 3)','ad');"></map></td>
+                <td id="ctl00_MainContent_tdLandingContent"><div id="container"><div id="content"><div id="slider"><ul><li><img src="../images/en/20130129/banner/f21_main1_us.jpg" alt="Slide1" usemap="#MAIN_MAP1" /></li><li><img src="../images/en/20130129/banner/f21_main2_us.jpg" alt="Slide2" usemap="#MAIN_MAP2" /></li><li><img src="../images/en/20130129/banner/f21_main3_us.jpg" alt="Slide3" usemap="#MAIN_MAP3" /></li></ul></div><div id="slider2"><ul><li><div id="kicker-row"><div id="kickerblock"><a href="http://www.forever21.com/contests/ellie-goulding/" onclick="return fc_click('# (Home - Collections1)','ad');"><img src="../images/en/20130128/banner/bn01.jpg" alt="1" height="320" width="326"></a><div id="kicker-txt"><a href="http://www.forever21.com/contests/ellie-goulding/" onclick="return fc_click('# (Home - Collections)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div><div id="kickerblock"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Hello_Kitty_Lookbook" onclick="return fc_click('# (Home - Collections2)','ad');"><img src="../images/en/20130128/banner/bn02.jpg" alt="1" height="320" width="326"></a><div id="kicker-txt"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Hello_Kitty_Lookbook" onclick="return fc_click('# (Home - Collections2)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div><div id="kickerblock-last"><div style="background-image: url('../images/en/20130128/banner/bn03.jpg'); height: 320px; cursor: pointer;" onclick="location.href='/Product/Category.aspx?br=f21&category=promo_pastel-apparel';return fc_click('# (Home - Collections3)','ad');"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-left: 2px;"><font class="time"><span style="position: relative; top: 232px" id="CountDown1"><font class="time"></font></span></font></td></tr></table></div><div id="kicker-txt"><a href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=promo_pastel-apparel" onclick="return fc_click('# (Home - Collections3)','ad');"><p class="kicker-topline-txt"></p><p class="kicker-bottomline-txt"></p></a></div></div></div></li></ul></div></div></div><script type="text/javascript">var $j = jQuery.noConflict(); $j(document).ready(function () {$j("#slider").easySlider({ auto:true, continuous: true, pause: 4000, nextId: "slider1next", prevId: "slider1prev"});});</script><map name="MAIN_MAP1"><area shape="rect" coords="1,1,989,489" href="http://www.forever21.com/valentines-gifts" onClick="return fc_click('VALENTINES SHOP (US Homepage - 1)','ad');"></map><map name="MAIN_MAP2"><area shape="rect" coords="1,1,989,489" href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=Promo_Lingerie_Valentines-Day" onClick="return fc_click('VALENTINES LINGERIE (US Homepage - 2)','ad');"></map><map name="MAIN_MAP3"><area shape="rect" coords="1,1,989,489" href="http://www.forever21.com/Product/Category.aspx?br=f21&amp;category=promo_vertical-stripes" onClick="return fc_click('LINE UP (US Homepage - 3)','ad');"></map></td>
 
             </tr>
         </table>
@@ -801,7 +839,7 @@
     <script type='text/javascript' src='../common/js/suggestahead_o.js'></script>
     <script type='text/javascript' src='../common/js/suggestahead_terms.js'></script>
 
-    <!--USCOM16-->
+    <!--USCOM10-->
 
 <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -810,13 +848,13 @@
     _gaq.push(['_setCustomVar',
                 1,
                 'customer session',
-                'fh000x45h5tj3tmqp1pdfdrv',
+                'a1n43545hihmemmdablsq055',
                 3
              ]);
     _gaq.push(['_setCustomVar',
                 2,
                 'customer id',
-                '{67c2a1b4-1e8e-4511-9e2b-d502fb69b385}',
+                '{2d4e70a4-a454-4d90-b059-12e43b0f47c5}',
                 3
              ]);
     (function () { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();

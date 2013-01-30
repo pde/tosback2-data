@@ -1,0 +1,1701 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/27/yolo-an-snl-digital-short.html",' +
+                '"title": "YOLO: An SNL Digital Short",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84237d4d62a03ec92ac7df13e99c8fe0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/white-house-debunks-iran-nuclear-explosion-but-iran-denies-planting-story.html",' +
+                '"title": "White House Debunks Iran Nuclear Explosion, But Iran Denies Planting Story",' +
+                '"rubric": "Nevermind",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b64121158f2f372c82d661285a3f54e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/arrests-made-in-brazilian-disco-inferno.html",' +
+                '"title": "Arrests Made in Brazilian Nightclub Inferno",' +
+                '"rubric": "TRAGEDY",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9e30da6b5ae861c83e857cb6e81e5ba0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/my-strange-passage-from-suspected-school-shooter-to-prom-queen.html",' +
+                '"title": "My Strange Passage From Suspected School Shooter to Prom Queen",' +
+                '"rubric": "BULLYING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9330f878ef4394abd24145b55500d68f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/22/porn-stars-who-brunch-inside-las-vegas-s-finest-dining.html",' +
+                '"title": "Porn Stars Who Brunch: Inside Las Vegas&rsquo;s Finest Dining",' +
+                '"rubric": "Sizzle",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "187f16e06f5053887378f2802a8102c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/five-moments-from-president-obama-hillary-clinton-s-60-minutes-interview.html",' +
+                '"title": "Five Moments From President Obama &amp; Hillary Clinton&rsquo;s &lsquo;60 Minutes&rsquo; Interview",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "892eaad04511bf3680bb70f83781f4f2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/sneak-preview-of-rihanna-s-bra-less-fashions-tom-ford-creator-of-justin-timberlake-s-suit-and-ties.html",' +
+                '"title": "Sneak Preview of Rihanna&rsquo;s Bra-less Fashions, Tom Ford Creator of Justin Timberlake&rsquo;s Suit and Ties",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "518d668a844ae4c65519d6f5d6767845"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/25/brooklyn-beckham-uk-s-hottest-teen-tests-for-chelsea.html",' +
+                '"title": "Brooklyn Beckham, UK\'s Hottest Teen, Tests for Chelsea",' +
+                '"rubric": "Bend It Like Dad",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0e48356c2cbb470e8347984f71776c23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/culture-warriors-gearing-up-for-new-battle-against-immigration-reform.html",' +
+                '"title": "Culture Warriors Gearing Up for New Battle Against Immigration Reform",' +
+                '"rubric": "Once More to the Breach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "70ff7e2824f445a75f7bb59132bb958f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/are-moderate-republicans-useless.html",' +
+                '"title": "Are Moderate Republicans Useless?",' +
+                '"rubric": "Conservatism Needs a Future",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6cbcb824c6ab32065aee6d80ed592bc3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/arrests-made-in-brazilian-disco-inferno.html",' +
+                '"title": "Arrests Made in Brazilian Nightclub Inferno",' +
+                '"rubric": "TRAGEDY",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9e30da6b5ae861c83e857cb6e81e5ba0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/culture-warriors-gearing-up-for-new-battle-against-immigration-reform.html",' +
+                '"title": "Culture Warriors Gearing Up for New Battle Against Immigration Reform",' +
+                '"rubric": "Once More to the Breach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "70ff7e2824f445a75f7bb59132bb958f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/my-strange-passage-from-suspected-school-shooter-to-prom-queen.html",' +
+                '"title": "My Strange Passage From Suspected School Shooter to Prom Queen",' +
+                '"rubric": "BULLYING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9330f878ef4394abd24145b55500d68f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/11/14/top-5-biggest-surfer-waves-video.html",' +
+                '"title": "Top Five Biggest Surfer Waves (Video)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e5a31b3ca182091947b6e4c7b492c898"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/democrats-and-republicans-reignite-fight-over-vawa.html",' +
+                '"title": "Democrats and Republicans Reignite Fight Over VAWA",' +
+                '"rubric": "Fighting Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1ff66ad0e9da78f1118f55a4196ad822"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/as-obama-offers-immigration-plan-report-shows-border-patrol-corruption.html",' +
+                '"title": "As Obama Offers Immigration Plan, Report Shows Border Patrol Corruption",' +
+                '"rubric": "Code of Silence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3bc42962e8142b6f31fc9d4a83f14b77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/obama-s-odd-new-pals-on-immigration.html",' +
+                '"title": "Obama&rsquo;s Odd New Pals on Immigration",' +
+                '"rubric": "Coalition",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "20fa1d5bfe4e422cab75c5845edfac91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/25/if-washington-wants-to-balance-its-books-congress-could-learn-something-from-texas.html",' +
+                '"title": "If Washington Wants to Balance Its Books, Congress Could Learn Something From Texas",' +
+                '"rubric": "BLUE SOUTH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8ee23b64cf51d93139f492ee85c11a0f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/president-obama-embraces-the-senate-s-bipartisan-immigration-plan.html",' +
+                '"title": "President Obama Embraces the Senate&rsquo;s Bipartisan Immigration Plan",' +
+                '"rubric": "Deal",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "00b570de23edff6c9286759c32314330"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/what-it-takes-to-fight-the-terrorists.html",' +
+                '"title": "What It Takes to Fight the Terrorists",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a11e0bd79454b8819aa3b3bb33e89ca4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/22/porn-stars-who-brunch-inside-las-vegas-s-finest-dining.html",' +
+                '"title": "Porn Stars Who Brunch: Inside Las Vegas&rsquo;s Finest Dining",' +
+                '"rubric": "Sizzle",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "187f16e06f5053887378f2802a8102c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/white-house-debunks-iran-nuclear-explosion-but-iran-denies-planting-story.html",' +
+                '"title": "White House Debunks Iran Nuclear Explosion, But Iran Denies Planting Story",' +
+                '"rubric": "Nevermind",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b64121158f2f372c82d661285a3f54e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/25/los-angeles-s-school-nightmare-another-sex-abuse-scandal.html",' +
+                '"title": "Los Angeles&rsquo;s School Nightmare: Another Sex-Abuse Scandal",' +
+                '"rubric": "NOT AGAIN",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "383b58d45bc017ae9a23d822cfbfcbfa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/24/gop-attracting-minorities.html",' +
+                '"title": "GOP Attracting Minorities?",' +
+                '"rubric": "OUTREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9b1ec805e8e8b4b7464ef33632c1b0d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/17/porn-star-james-deen-on-his-canyons-experience-with-lindsay-lohan.html",' +
+                '"title": "Porn Star James Deen on His &lsquo;Canyons&rsquo; Experience With Lindsay Lohan",' +
+                '"rubric": "CONFESSIONAL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0ebb4f9fc94546833329290ba208d65f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/16/why-so-few-consequences-in-robert-menendez-mike-crapo-senate-scandals.html",' +
+                '"title": "Why So Few Consequences in Robert Menendez and Mike Crapo Senate Scandals?",' +
+                '"rubric": "No Shame",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "843185e50803e48990a38ca6106aae53"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/egyptians-defy-curfew-as-army-warns-of-collapse.html",' +
+                '"title": "Egyptians Defy Curfew as Army Warns of &lsquo;Collapse&rsquo;",' +
+                '"rubric": "Rebellion",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a39d73ddb2e595e523bdd6f9635b3333"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/arrests-made-in-brazilian-disco-inferno.html",' +
+                '"title": "Arrests Made in Brazilian Nightclub Inferno",' +
+                '"rubric": "TRAGEDY",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9e30da6b5ae861c83e857cb6e81e5ba0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.html",' +
+                '"title": "Downton Abbey&rsquo;s Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "RIP",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1d8e813f7dc7f624444820904c37f178"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.lane-pryce-mad-men.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e35b58c44c796a5cc7ea9ad27d2ca530"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/anne-hathaway-vs-claire-danes-the-daily-beast-awards-speech-quiz.html",' +
+                '"title": "Anne Hathaway Vs. Claire Danes: The Daily Beast Awards-Speech Quiz",' +
+                '"rubric": "Who Said It?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "39950dae819e705b1f42394b38a4ee1a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.edith-bunker.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9ef86011b3b959b86d1af09f3562c905"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.charlie-harper.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c80f4179e02c56efc161356b45a86647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/28/downton-abbey-video-game.html",' +
+                '"title": "\'Downton Abbey\' Video Game",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "00c5c1455dd01e19e3b28ae8834ee6bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.maude-flanders.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f694ea250cf95219037de8daf3455c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/29/stephen-colbert-dumps-north-korea.html",' +
+                '"title": "Stephen Colbert Dumps North Korea",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "253757a452aca2bc5bfdcc938b2f1b56"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.rita-morgan.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7ef4df95f3154efde0010bbfc69ddc5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/keri-russell-on-the-americans-sleeper-agents-motherhood-more.html",' +
+                '"title": "Keri Russell On &lsquo;The Americans,&rsquo; Sleeper Agents, Motherhood &amp; More",' +
+                '"rubric": "Keri&rsquo;s New Role",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6d753702d210ebb4e484e608c4861bd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.mrs-landingham.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c2b0e13e12656c465dfa0343eed3a1ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.rosalind-shays.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1ff871abce3220e4858c1ceda1de61a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.teri-bauer.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fc5b81bcc2af575a25ab735a519d3737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.miss-blankenship.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04e5745885553f230c3c88bd304e98de"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.henry-blake.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3bffd01096c9b0e10614b458d5242a65"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.omar-little.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cf67bcf900f39da92ed48c1f8c2228dc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/03/charlie-harper-s-possible-demise-and-more-shocking-tv-deaths-video-photos.jack-shepard.html",' +
+                '"title": "Downton Abbeys Sybil Crawley and More Shocking TV Deaths (VIDEO)",' +
+                '"rubric": "null",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "808636f72a4f6b10075bc377fe40cffb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/28/the-man-um-boy-who-can-save-politics.html",' +
+                '"title": "The Boy Who Can Save Politics",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b8b5400c3ed0ae7fbaaaede70479bfd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/27/yolo-an-snl-digital-short.html",' +
+                '"title": "YOLO: An SNL Digital Short",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84237d4d62a03ec92ac7df13e99c8fe0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/23/did-prince-harry-just-say-that.html",' +
+                '"title": "Did Prince Harry Just Say That?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "89a74f7e3c6580c92cd74fb20147d509"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/arrests-made-in-brazilian-disco-inferno.html",' +
+                '"title": "Arrests Made in Brazilian Nightclub Inferno",' +
+                '"rubric": "TRAGEDY",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9e30da6b5ae861c83e857cb6e81e5ba0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/28/getting-the-band-back-together.html",' +
+                '"title": "Getting the Band Back Together",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "955cad430dbdb0483d05f2865bc84a27"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/my-strange-passage-from-suspected-school-shooter-to-prom-queen.html",' +
+                '"title": "My Strange Passage From Suspected School Shooter to Prom Queen",' +
+                '"rubric": "BULLYING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9330f878ef4394abd24145b55500d68f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/my-harrowing-kidnapping-ordeal-in-syria.html",' +
+                '"title": "My Harrowing Kidnapping Ordeal in Syria",' +
+                '"rubric": "SYRIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "21397ead9b34d2fc3d0cb229ad79042f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/are-moderate-republicans-useless.html",' +
+                '"title": "Are Moderate Republicans Useless?",' +
+                '"rubric": "Conservatism Needs a Future",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6cbcb824c6ab32065aee6d80ed592bc3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/29/sneak-preview-of-rihanna-s-fashion-designs.html",' +
+                '"title": "Sneak Preview of Rihanna&rsquo;s Fashion Designs",' +
+                '"rubric": "Fashion",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "5e98a878e793010866e2220b24206f14"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/after-sandy-swept-away-a-lifetime-of-letters-12-000-new-ones-arrive.html",' +
+                '"title": "After Sandy Swept Away a Lifetime of Letters, 12,000 New Ones Arrive",' +
+                '"rubric": "DISASTER RELIEF",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2d2eaf63871bb986c4f139b950abe913"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2012/02/12/whitney-houston-anatomy-of-a-lesbian-rumor.html",' +
+                '"title": "Whitney Houston: Anatomy of a Lesbian Rumor",' +
+                '"rubric": "How Will I Know?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e7600538ca33a0fde84d8d1360d9c6b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/01/25/why-porn-stars-love-twitter.html",' +
+                '"title": "Why Porn Stars Love Twitter",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1ca39fd325665d2771ce5832895f4333"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/culture-warriors-gearing-up-for-new-battle-against-immigration-reform.html",' +
+                '"title": "Culture Warriors Gearing Up for New Battle Against Immigration Reform",' +
+                '"rubric": "Once More to the Breach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "70ff7e2824f445a75f7bb59132bb958f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/02/12/whitney-houston-anatomy-of-a-lesbian-rumor.html",' +
+                '"title": "Whitney Houston: Anatomy of a Lesbian Rumor",' +
+                '"rubric": "How Will I Know?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e7600538ca33a0fde84d8d1360d9c6b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/are-moderate-republicans-useless.html",' +
+                '"title": "Are Moderate Republicans Useless?",' +
+                '"rubric": "Conservatism Needs a Future",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6cbcb824c6ab32065aee6d80ed592bc3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/barbara-walters-hit-with-chicken-pox-a-rare-malady-among-octogenarians.html",' +
+                '"title": "Barbara Walters Hit With Chicken Pox&mdash;a Rare Malady Among Octogenarians",' +
+                '"rubric": "A Late Surprise",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "0dd6ed9a2846e06f5339165103687dd1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/24/gop-attracting-minorities.html",' +
+                '"title": "GOP Attracting Minorities?",' +
+                '"rubric": "OUTREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9b1ec805e8e8b4b7464ef33632c1b0d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/10/venezuelan-newspaper-reports-missing-vittorio-missoni-s-body-found.html",' +
+                '"title": "Venezuelan Newspaper Reports Missing Vittorio Missoni&rsquo;s Body Found",' +
+                '"rubric": "Tragic",' +
+                '"topic": "World",' +
+                '"urlHashCode": "95bd4be7650cd5dba73b2248eb37de44"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/arrests-made-in-brazilian-disco-inferno.html",' +
+                '"title": "Arrests Made in Brazilian Nightclub Inferno",' +
+                '"rubric": "TRAGEDY",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9e30da6b5ae861c83e857cb6e81e5ba0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/as-obama-offers-immigration-plan-report-shows-border-patrol-corruption.html",' +
+                '"title": "As Obama Offers Immigration Plan, Report Shows Border Patrol Corruption",' +
+                '"rubric": "Code of Silence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3bc42962e8142b6f31fc9d4a83f14b77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/25/if-washington-wants-to-balance-its-books-congress-could-learn-something-from-texas.html",' +
+                '"title": "If Washington Wants to Balance Its Books, Congress Could Learn Something From Texas",' +
+                '"rubric": "BLUE SOUTH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8ee23b64cf51d93139f492ee85c11a0f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/11/14/top-5-biggest-surfer-waves-video.html",' +
+                '"title": "Top Five Biggest Surfer Waves (Video)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e5a31b3ca182091947b6e4c7b492c898"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/democrats-and-republicans-reignite-fight-over-vawa.html",' +
+                '"title": "Democrats and Republicans Reignite Fight Over VAWA",' +
+                '"rubric": "Fighting Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1ff66ad0e9da78f1118f55a4196ad822"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-dublin-wives-are-an-irish-sensation.html",' +
+                '"title": "Meet the Dublin Housewives",' +
+                '"rubric": "Begorrah!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "319772945d2608f8e51ce95bad9131b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/my-strange-passage-from-suspected-school-shooter-to-prom-queen.html",' +
+                '"title": "My Strange Passage From Suspected School Shooter to Prom Queen",' +
+                '"rubric": "BULLYING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9330f878ef4394abd24145b55500d68f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/28/the-man-um-boy-who-can-save-politics.html",' +
+                '"title": "The Boy Who Can Save Politics",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b8b5400c3ed0ae7fbaaaede70479bfd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/obama-s-odd-new-pals-on-immigration.html",' +
+                '"title": "Obama&rsquo;s Odd New Pals on Immigration",' +
+                '"rubric": "Coalition",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "20fa1d5bfe4e422cab75c5845edfac91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/as-more-kids-die-handguns-still-a-bigger-threat-than-assault-rifles.html",' +
+                '"title": "As More Kids Die, Handguns Still a Bigger Threat Than Assault Rifles",' +
+                '"rubric": "Kiddie Carnage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "582a6d3ac1598ae77e81b01126bb3ba4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/democrats-and-republicans-reignite-fight-over-vawa.html",' +
+                '"title": "Democrats and Republicans Reignite Fight Over VAWA",' +
+                '"rubric": "Fighting Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1ff66ad0e9da78f1118f55a4196ad822"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/01/24/gop-attracting-minorities.html",' +
+                '"title": "GOP Attracting Minorities?",' +
+                '"rubric": "OUTREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9b1ec805e8e8b4b7464ef33632c1b0d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/when-going-gluten-free-is-dangerous.html",' +
+                '"title": "When Going Gluten-Free Is Dangerous",' +
+                '"rubric": "Fad Check",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b8559d9ba63f485a817317249dc60841"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/26/the-gop-plan-to-steal-elections.html",' +
+                '"title": "The GOP Plan to Steal Elections",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "06ac8ce41aef0eba256906bf47b2add1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/zero-dark-thirty-lena-dunham-django-stop-politicizing-everything.html",' +
+                '"title": "&lsquo;Zero Dark Thirty,&rsquo; Lena Dunham, &lsquo;Django&rsquo;: Stop Politicizing Everything!",' +
+                '"rubric": "IT&rsquo;S JUST A MOVIE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "633d775a78d34f0f0c33dbc55e35f440"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/22/porn-stars-who-brunch-inside-las-vegas-s-finest-dining.html",' +
+                '"title": "Porn Stars Who Brunch: Inside Las Vegas&rsquo;s Finest Dining",' +
+                '"rubric": "Sizzle",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "187f16e06f5053887378f2802a8102c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/are-moderate-republicans-useless.html",' +
+                '"title": "Are Moderate Republicans Useless?",' +
+                '"rubric": "Conservatism Needs a Future",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6cbcb824c6ab32065aee6d80ed592bc3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/culture-warriors-gearing-up-for-new-battle-against-immigration-reform.html",' +
+                '"title": "Culture Warriors Gearing Up for New Battle Against Immigration Reform",' +
+                '"rubric": "Once More to the Breach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "70ff7e2824f445a75f7bb59132bb958f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/all-we-need-is-growth.html",' +
+                '"title": "All We Need is Growth",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a8289e467bf950ff78266d19c89baaac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/hillary-clinton-and-barack-obama-s-lovefest-on-60-minutes.html",' +
+                '"title": "Hillary Clinton and Barack Obama&rsquo;s Lovefest on &lsquo;60 Minutes&rsquo;",' +
+                '"rubric": "BURNISHING HER IMAGE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c3c1de397d4b5267488e18750c9550"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/27/sag-awards-2013-anne-hathaway-tina-fey-more-best-moments-video.html",' +
+                '"title": "SAG Awards 2013: Anne Hathaway, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0acb7822014c1187d116f5a8cee9e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/egyptians-defy-curfew-as-army-warns-of-collapse.html",' +
+                '"title": "Egyptians Defy Curfew as Army Warns of &lsquo;Collapse&rsquo;",' +
+                '"rubric": "Rebellion",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a39d73ddb2e595e523bdd6f9635b3333"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/25/if-washington-wants-to-balance-its-books-congress-could-learn-something-from-texas.html",' +
+                '"title": "If Washington Wants to Balance Its Books, Congress Could Learn Something From Texas",' +
+                '"rubric": "BLUE SOUTH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8ee23b64cf51d93139f492ee85c11a0f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/white-house-debunks-iran-nuclear-explosion-but-iran-denies-planting-story.html",' +
+                '"title": "White House Debunks Iran Nuclear Explosion, But Iran Denies Planting Story",' +
+                '"rubric": "Nevermind",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b64121158f2f372c82d661285a3f54e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/obama-s-odd-new-pals-on-immigration.html",' +
+                '"title": "Obama&rsquo;s Odd New Pals on Immigration",' +
+                '"rubric": "Coalition",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "20fa1d5bfe4e422cab75c5845edfac91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/facebook-artist-david-choe-launches-new-gig-with-porn-star-asa-akira.html",' +
+                '"title": "Facebook Artist David Choe Launches New Gig With Porn Star Asa Akira",' +
+                '"rubric": "X-Rated Maestro",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "84b106214b6c67004d45b1980c4c80a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/democrats-and-republicans-reignite-fight-over-vawa.html",' +
+                '"title": "Democrats and Republicans Reignite Fight Over VAWA",' +
+                '"rubric": "Fighting Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1ff66ad0e9da78f1118f55a4196ad822"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/dutch-queen-beatrix-abdicates-throne.html",' +
+                '"title": "Dutch Queen Beatrix Abdicates Throne",' +
+                '"rubric": "Hail to the King",' +
+                '"topic": "World",' +
+                '"urlHashCode": "cc7d4486bb1debd903b8a8fad13fdd81"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/01/29/the-real-60-minutes-revelation.html",' +
+                '"title": "The Real &lsquo;60 Minutes&rsquo; Revelation",' +
+                '"rubric": "THE NEW MAINSTREAM",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c2dfba9c5ea3076a264691c927de2259"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/29/stephen-colbert-dumps-north-korea.html",' +
+                '"title": "Stephen Colbert Dumps North Korea",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "253757a452aca2bc5bfdcc938b2f1b56"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/after-sandy-swept-away-a-lifetime-of-letters-12-000-new-ones-arrive.html",' +
+                '"title": "After Sandy Swept Away a Lifetime of Letters, 12,000 New Ones Arrive",' +
+                '"rubric": "DISASTER RELIEF",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2d2eaf63871bb986c4f139b950abe913"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/more-heads-to-roll-at-cnn.html",' +
+                '"title": "More Heads to Roll at CNN",' +
+                '"rubric": "You&rsquo;re Fired!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "72fd7d67cfec2291ba1b81c140f3d664"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/28/getting-the-band-back-together.html",' +
+                '"title": "Getting the Band Back Together",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "955cad430dbdb0483d05f2865bc84a27"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/movie-43-how-hollywood-s-super-star-studded-movie-failed-unnoticed.html",' +
+                '"title": "&lsquo;Movie 43&rsquo;: How Hollywood&rsquo;s Super-Star-Studded Movie Failed Unnoticed",' +
+                '"rubric": "EPIC FAIL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1bcff1c87dc169efb8d0445fe892aeff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/beyond-downton-abbey-preeclampsia-maternal-deaths-continue-today.html",' +
+                '"title": "Beyond &lsquo;Downton Abbey&rsquo;: Preeclampsia Maternal Deaths Continue Today",' +
+                '"rubric": "KNOW THE SYMPTOMS",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "e5259e0da5aeceb343ddb416ec9919c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/a-response-to-david-mamet-on-gun-control.html",' +
+                '"title": "A Response to David Mamet on Gun Control",' +
+                '"rubric": "TALKING BACK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f94cd27244770d294ba756fa59f0729"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/28/chris-brown-reportedly-fights-frank-ocean-is-still-the-worst.html",' +
+                '"title": "Chris Brown Reportedly Fights Frank Ocean, Is Still the Worst",' +
+                '"rubric": "HISTORY OF VIOLENCE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a9527a9cae0b29278f993005e4c4b9d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/22/interactive-map-america-s-abortion-clinics.html",' +
+                '"title": "Interactive: The Geography of Abortion Access",' +
+                '"rubric": "Interactive Map",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5abe9b6795b3672f4d751cdf4904fb54"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/23/did-prince-harry-just-say-that.html",' +
+                '"title": "Did Prince Harry Just Say That?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "89a74f7e3c6580c92cd74fb20147d509"' +
+            '}' +
+        ']' +
+    '}'
+);

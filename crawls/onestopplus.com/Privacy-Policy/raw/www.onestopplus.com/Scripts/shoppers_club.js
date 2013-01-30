@@ -46,3 +46,22 @@ function shoppers_club() {
 	}
     void(0);
 }
+
+function shoppers_clubMember() {
+    var clubURL = '/ShoppersClub/ShoppersClub.aspx?User=Member';
+    if (typeof (_runningFromMicrosite) == "undefined") {
+
+        if (location.pathname.search(/ShoppersClub/) >= 0) {
+            window.location.href = clubURL + location.search;
+        }
+        else if (location.pathname.search("EmptyShoppingBag") >= 0) {
+            window.location.href = clubURL + '&ReturnUrl=/Shopping_bag/ShoppingBag.aspx';
+        }
+        else {
+            window.location.href = clubURL + '&ReturnUrl=' + escape(location.pathname + location.search);
+        }
+    } else {
+        window.location.href = BaseURL + clubURL + '&ReturnUrl=' + escape(location.href + location.search);
+    }
+    void (0);
+}

@@ -1,0 +1,14 @@
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if(!window.__td){window.__MT=100;window.__ti=0;window.__td=[];window.__td.length=window.__MT;window.__noTrace=false;}function LoadFB(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+var d=document;
+var s='script';
+var id='facebook-jssdk';
+
+if(d.getElementById(id)){return;}
+var locale=d.getElementById('fbLangId').value;
+var facebookJS;
+facebookJS=d.createElement(s);
+facebookJS.id=id;
+facebookJS.src="//connect.facebook.net/"+locale+"/all.js#xfbml=1";
+
+d.getElementsByTagName('body')[0].appendChild(facebookJS);
+};LoadFB._vpfn='$vpfn_K4XOL2tg2WPGqF8Si3Z_Qg1$0';

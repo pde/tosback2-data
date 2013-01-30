@@ -81,6 +81,22 @@ s.Media.completeByCloseOffset = false;
 s.Media.trackVars="channel,prop3";
 s.Media.trackEvents="None";
 
+/*
+s.Media.trackVars='events,channel,prop3,eVar15,eVar16,eVar17';
+s.Media.trackEvents='event1,event2,event3,event4';
+s.Media.trackUsingContextData = true;
+s.Media.contextDataMapping =
+{
+   'a.media.name':        'eVar15',
+   'a.media.segment':     'eVar16',
+   'a.contentType':       'eVar17',
+   'a.media.timePlayed':  'event1',
+   'a.media.view':        'event2',
+   'a.media.complete':    'event3',
+   'a.media.segmentView': 'event4'
+};
+*/
+
 /****************************** MODULES *****************************/
 /* Module: Media */
 s.m_Media_c="var m=s.m_i('Media');if(m.completeByCloseOffset==undefined)m.completeByCloseOffset=1;if(m.completeCloseOffsetThreshold==undefined)m.completeCloseOffsetThreshold=1;m.cn=function(n){var m="

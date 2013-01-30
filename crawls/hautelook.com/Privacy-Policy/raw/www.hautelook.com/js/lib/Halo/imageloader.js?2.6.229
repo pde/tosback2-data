@@ -1,0 +1,71 @@
+if (typeof $Halo === 'undefined') {
+    var $Halo = {};
+}
+
+$Halo.imageLoader = {};
+$Halo.imageLoader.currentCdn = 0;
+$Halo.imageLoader.NUM_URLS = 5;
+
+/**
+ * HauteLook currently utilizes a number of subdomains that all point at our
+ * Akamai CDN in order to speed up page loading.
+ *
+ * This function simply rotates between the urls so that we can do as much
+ * parallel processing as possible.
+ *
+ * Pass in a relative url such as '/assets/myimg.jpg'; based upon environment
+ * you will receive a cdn url or a url pointing to the current domain.
+ *
+ * @param rel_url string
+ */
+$Halo.imageLoader.load = function(rel_url) {
+    var cdn = $Halo.imageLoader.currentCdn % $Halo.imageLoader.NUM_URLS + 1;
+    var url = rel_url;
+    var rel = rel_url;
+    var sonic = $('meta[name=server-farm]').attr('content').indexOf('sonic');
+    var nitro = $('meta[name=server-farm]').attr('content').indexOf('nitro');
+
+    if (typeof rel === 'undefined' || rel == null) {
+        return rel;
+    }
+
+    if (!$Halo.imageLoader.isRelative(rel)) {
+        rel = $Halo.imageLoader.getRelative(rel);
+    }
+
+    if (rel.indexOf('/') == 0) {
+        rel = rel.replace('/', '');
+    }
+
+    if (sonic != -1 || nitro != -1) {
+        url = window.location.protocol + '//' + 'www' + cdn + '.hautelookcdn.com' + '/' + rel;
+    } else if (!$Halo.imageLoader.isGetaways(rel)) {
+        url = window.location.protocol + '//' + window.location.hostname + '/' + rel;
+    }
+
+    $Halo.imageLoader.currentCdn++;
+
+    return url;
+};
+
+$Halo.imageLoader.isRelative = function(url) {
+    if (url.indexOf('http') != -1) {
+        return false;
+    }
+
+    return true;
+};
+
+$Halo.imageLoader.isGetaways = function(url) {
+    return url.indexOf('getaways') != -1;
+}
+
+$Halo.imageLoader.getRelative = function(url) {
+    var rel_url = '';
+    var prefix_index = url.indexOf('//') + 2;
+    var hostname_index = url.indexOf('/', prefix_index);
+
+    rel_url = url.substring(hostname_index);
+
+    return rel_url;
+};

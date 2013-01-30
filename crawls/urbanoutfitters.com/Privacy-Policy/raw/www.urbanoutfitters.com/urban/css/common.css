@@ -118,77 +118,6 @@ div#header-search input#header-search-submit:hover {
     color: rgb(250, 250, 250);
 }
 
-/* Header nav */
-div#header-nav {
-    width: 960px;
-    position: relative;
-    height: 124px;
-}
-
-div#header-nav h2 {
-    font: normal 12px "GRD Medium", "Helvetica Neue", sans-serif;
-    font-weight: normal;
-    letter-spacing: 3px;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    top: 0;
-    text-transform: uppercase;
-}
-
-div#header-nav-categories {
-    width: 336px;
-    height: 26px;
-    position: absolute;
-    top: 96px;
-    left: 230px;
-}
-
-div#header-nav h2#header-nav-home {
-    top: 44px;
-    left: 296px;
-}
-
-div#header-nav h2#header-nav-womens {
-    left: 51px;
-}
-
-div#header-nav h2#header-nav-mens {
-    left: 151px;
-}
-
-div#header-nav h2#header-nav-apartment {
-    left: 222px;
-}
-
-div#header-nav h2#header-nav-general {
-    left: 293px;
-}
-
-div#header-nav h2#header-nav-sale {
-    left: 342px;
-}
-
-div#header-nav h2#header-nav-blog {
-    top: 96px;
-    left: 633px;
-}
-
-div#header-nav a {
-    text-decoration: none;
-    color: rgb(0, 0, 0);
-    display: block;
-    padding: 2px;
-}
-
-h2#header-nav-sale a {
-    color: rgb(255, 0, 0);
-}
-
-div#header-nav a:hover, div#header-nav a.selected, h2#header-nav-sale a:hover, h2#header-nav-sale a.selected {
-    color: rgb(0, 0, 255);
-}
-
 /*
  * ----------------------------------------
  *
@@ -316,24 +245,8 @@ div#header-search {
 
 .instant-search-item-img {
   float: left;
-  height: auto;
-  float: none;
-  width: 100%;
-}
-
-.instant-search-price-line {
-float: none;
-padding: 3px 0;
-width: 100%;
-position: absolute;
-color: black;
-background: white;
-background: rgba(255, 255, 255, 0.7);
-bottom: 0;
-text-align: center;
-display: block;
-font-size: 12px;
-line-height: 14px;
+  height: 130px;
+  width: 86px;
 }
 
 #instant-search {
@@ -341,15 +254,15 @@ line-height: 14px;
   font-size: 0;
 }
 
-.instant-search-item {
-  list-style: none;
-  padding: 0;
-  float: left;
-  height: 170px;
-  width: 50%;
-  position: relative;
+.instant-search-item.lastElm {
+  padding-bottom: 5px;
 }
 
+.instant-search-item {
+  padding: 6px 6px 0;
+  height: 130px;
+  list-style: none;
+}
 
 .instant-search-view-all {
   background: rgb(153, 153, 153);
@@ -359,13 +272,32 @@ line-height: 14px;
   text-align: center;
   cursor: pointer;
   list-style: none;
+}
+
+.designed .instant-search-view-all {
   line-height: 20px;
   padding-bottom: 0;
 }
 
+.instant-search-item-title , .instant-search-price-line{
+  float: left;
+  padding: 0 6px;
+  width: 53%;
+  font-size: 12px;
+  line-height: 14px;
+}
 
 .instant-search-item:hover {
   cursor: pointer;
+}
+
+.instant-search-item:hover .instant-search-item-title {
+  text-decoration: underline;
+}
+
+.instant-search-item-title {
+  font-weight: bold;
+  color: rgb(0,0,0);
 }
 
 .instant-search-sale {
@@ -383,31 +315,62 @@ line-height: 14px;
 }
 
 
-#instant-search {
+.designed .instant-search-item {
+  padding: 0;
+  float: left;
+  height: 168px;
+  width: 50%;
+  position: relative;
+}
+
+.designed .instant-search-item-img {
+  height: auto;
+  float: none;
+  width: 100%;
+}
+
+#instant-search.designed {
   overflow: hidden;
   padding-bottom: 0;
 }
 
-#instant-search .total-3.firstElm, #instant-search .total-1.firstElm {
+.designed .total-3.firstElm, .designed .total-1.firstElm {
   width: 100%;
   height: 337px;
 }
 
-.total-5.lastElm {
+.designed .total-5.lastElm {
   display: none;
 }
 
 
-.instant-search-item-title {
+.designed .instant-search-item-title {
   display: none;
 }
 
-.instant-search-old-price {
+.designed .instant-search-price-line {
+  display: none;
+}
+
+.designed .instant-search-item:hover .instant-search-price-line, .designed.price .instant-search-price-line {
+  float: none;
+  padding: 3px 0;
+  width: 100%;
+  position: absolute;
+  color: black;
+  background: white;
+  background: rgba(255, 255, 255, 0.7) ;
+  bottom: 0;
+  text-align: center;
+  display: block;
+}
+
+.designed .instant-search-old-price {
   display: block;
   color: black;
 }
 
-.instant-search-custom-text {
+.designed .instant-search-custom-text {
   margin-left: 0;
   display: block;
 }
@@ -492,6 +455,8 @@ line-height: 20px;
   border: 1px solid #FFF;
   /* background: #E6E6E6; */
   font-weight: normal;
+  
+
 }
 .ui-state-disabled {
   color: #999;

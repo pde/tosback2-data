@@ -959,11 +959,6 @@ if (document.URL.match(/ui\.ppjol\.com/i)) {
 	s.prop18 = s.eVar18 = 'Press+:' + s.pageName; 
 }
 
-/* Below is for Gigya */
-var gigyaCookie = readCookie('gigyaLoggedIn');
-if (gigyaCookie != null) {
-	s.eVar55 = "gigya-registered-user";
-} 
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code=s.t();if(s_code)document.write(s_code)

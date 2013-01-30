@@ -1254,8 +1254,6 @@ $(function() {
 			$("#datingTabs").tabs( 'select' , 2 );
 		}
 
-		$("#comDating > #searchd").removeClass("hide");
-
 	}
 
 	/***********************************************************************
@@ -1647,19 +1645,129 @@ function dcsRebuild() {
 	Webtrends.dcs['dcsMetaCustom'];
 }
 
+var timer;
 /* Dating widget function to navigate through tabs */
 function changeTab(type,url,aID) {
 	if (type != 'searchd') {
 		$("#"+type).html("<div class='datingLoader'>Loading...</div>");
+		if(type =='male'){
+			var gen = 'MALE';
+		$("#comDating .colRight #maleImageButton").html('<img  src="/template/ver1-0/i/dating/men_light.png" style="float: right;"/>');
+		$("#comDating .colRight #femaleImageButton").html('<img  src="/template/ver1-0/i/dating/women_dark.png" style="float: right;"/>');
+		$("#comDating .colRight #searchImageButton").html('<img  src="/template/ver1-0/i/dating/search_dark.png" style="float: right;"/>');
+		$("#comDating > #searchd").addClass("hide");
+		$("#comDating > #male").removeClass("hide");
+		$("#comDating > #female").addClass("hide");
+	}
+	 else if(type =='female'){
+		 var gen = 'FEMALE';
+		 $("#comDating .colRight #femaleImageButton").html('<img  src="/template/ver1-0/i/dating/women_light.png" style="float: right;"/>');
+		 $("#comDating .colRight #maleImageButton").html('<img  src="/template/ver1-0/i/dating/men_dark.png" style="float: right;"/>');
+		 $("#comDating .colRight #searchImageButton").html('<img  src="/template/ver1-0/i/dating/search_dark.png" style="float: right;"/>');
+			$("#comDating > #searchd").addClass("hide");
+			$("#comDating > #male").addClass("hide");
+			$("#comDating > #female").removeClass("hide");
+	 }
+
 		$.ajax({
-		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+url+'&aID='+aID,
+		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+url+'&aID='+aID+'&genderfromURL='+gen,
 		  cache: false,
 		  success: function(html){
 		    $("#"+type).html(html);
-		    datingClickReporting(type);
+		   // datingClickReporting(type);
 		  }
 		});
 	}
+	else if(type =='searchd'){
+		$("#comDating .colRight #searchImageButton").html('<img  src="/template/ver1-0/i/dating/search_light.png" style="float: right;"/>');
+		 $("#comDating .colRight #femaleImageButton").html('<img  src="/template/ver1-0/i/dating/women_dark.png" style="float: right;"/>');
+		 $("#comDating .colRight #maleImageButton").html('<img  src="/template/ver1-0/i/dating/men_dark.png" style="float: right;"/>');
+		$("#comDating > #searchd").removeClass("hide");
+		$("#comDating > #male").addClass("hide");
+		$("#comDating > #female").addClass("hide");
+	}
+		window.clearInterval(timer);
+	  timer = window.setInterval(cycle,7000); 
+}
+
+
+
+
+function viewNext(variable,gend,id){
+	var xmlNext = variable+1;
+	if(gend == 'FEMALE'){
+		var xml = 'dating-file-female';
+		var gen = 'female';
+	}
+	else if(gend == 'MALE'){
+		var xml = 'dating-file-male';
+		var gen = 'male';
+	}
+	
+	$.ajax({
+		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
+		  cache: false,
+		  success: function(html){
+		    $("#"+gen).html(html);
+		   // datingClickReporting(type);
+		  }
+		});
+	window.clearInterval(timer)
+	timer = setInterval(cycle,7000); 
+
+}
+
+$(document).ready(function() {
+	var delay = 9000;
+    timer = setInterval(cycle,7000); 
+
+});
+
+function cycle() {
+	var fade = 2000;
+    var banners = $('.datingBox > ul.profiles');
+    var len = banners.length;
+    var i = 0;
+    $(banners[0]).fadeIn(fade, function() {
+    if($("#comDating #female").hasClass("hide") == false && $("#comDating #male").hasClass("hide") == false){
+    	if(document.getElementById('genderRef1')){
+    		var gend = document.getElementById('genderRef1').value;
+    	}
+    	else if(document.getElementById('genderRef2')){
+    		var gend = document.getElementById('genderRef2').value;
+    	}
+    	var xmlNext =parseInt(document.getElementById('xpathReference').value)+1;
+    }
+    else if ($("#comDating #female").hasClass("hide") == false && $("#comDating #male").hasClass("hide") == true){
+    	var gend = "FEMALE";
+    	var xmlNext =parseInt($("#comDating #female > .datingBox > ul.profiles #xpathReference").val())+1;
+    }
+    else if ($("#comDating #male").hasClass("hide") == false && $("#comDating #female").hasClass("hide") == true){
+    	var gend = "MALE"; 
+    	var xmlNext =parseInt($("#comDating #male > .datingBox > ul.profiles #xpathReference").val())+1;
+    }
+        	
+        	var id = document.getElementById('aIDRef').value;
+        	if(gend == 'FEMALE'){
+        		var xml = 'dating-file-female';
+        		var gen = 'female';
+        	}
+        	else if(gend == 'MALE'){
+        		var xml = 'dating-file-male';
+        		var gen = 'male';
+        	}
+        	$.ajax({
+      		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
+      		  cache: false,
+      		  success: function(html){
+      		    $("#"+gen).html(html);
+      		   // datingClickReporting(type);
+      		  }
+      		});
+        $(banners[0]).fadeOut(2000, function() {
+        	
+        });
+    });
 }
 
 function datingClickReporting(tabType) {

@@ -1010,6 +1010,7 @@ function usa_setupMeebo()
 	});
 
 	// Featured Graphic Promote
+	/*
 	usa_meeboButtons.buttons.push({
 		id: "usa-featured_3-button",
         type: "action",
@@ -1018,7 +1019,7 @@ function usa_setupMeebo()
         label: "",
         onClick: function(){ parent.location.href = '/videos/Necessary Roughness/Full Episodes'; }
 	});
-	
+	*/
 	/*
 	usa_meeboButtons.buttons.push({
 		id: "usa-featured_2-button",

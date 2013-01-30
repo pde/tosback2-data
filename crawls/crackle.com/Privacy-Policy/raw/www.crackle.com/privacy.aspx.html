@@ -48,18 +48,18 @@ function OnLoad(r)
 return;while(_rgPendingScripts.length>0)
 {req=_rgPendingScripts[0];if(!req.isComplete)
 return;callback(req.req.responseText);_rgPendingScripts.shift();}}}
-var _jsLoader=new QueuedLoader("/app/jsmin.ashx?v=-31025&p=",function(str)
+var _jsLoader=new QueuedLoader("/app/jsmin.ashx?v=21931&p=",function(str)
 {var e=document.createElement("script");e.type="text/javascript";if("text"in e)e.text=str;else if("textContent"in e)e.textContent=str;else if("innerHTML"in e)e.innerHTML=str;else e.appendChild(document.createTextNode(str));document.getElementsByTagName("head")[0].appendChild(e);})
-var _cssLoader=new QueuedLoader("/app/cssmin.ashx?v=-31025&p=",function(str)
+var _cssLoader=new QueuedLoader("/app/cssmin.ashx?v=21931&p=",function(str)
 {var e=document.createElement("style");e.type="text/css";if("styleSheet"in e)e.styleSheet.cssText=str;else if("text"in e)e.text=str;else if("textContent"in e)e.textContent=str;else if("innerHTML"in e)e.innerHTML=str;else e.appendChild(document.createTextNode(str));document.getElementsByTagName("head")[0].appendChild(e);})
 var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_isLatAm=(_currentLocale=='pt-br'||_currentLocale=='es'),_closeText="close x",_charMaxLimit='characters max. limit',_registerEmailAddress='Enter your Email Address.',_registerUsernameRequired='User name is required.',_registerPasswordLength='Passwords must be between 8 and 20 characters in length and must contain at least one number or symbol.',_registerPasswordDoesNotMatch='Your password does not match.',_registerGenderRequired='Gender is required.',_registerCountryRequired='Please select your country',_registerValidBirthDate='Enter a valid Month, Day and Year for Date Of Birth.',_registerEnterActivationCode='Please enter your activation code.',_registerAccountDeactivated='You deactivated your account successfully.',_registerValidEmailAddress='Please enter a valid email address.',_registerEnterPassword='Please enter a password.',_registerCaptcha='Please type the 4 digit code in the image.',_registerConfirmEmail='Email is not confirmed.',_emptyUserPlaylist='Are you sure you want to empty this watchlist?',_deleteUserPlaylist='Are you sure you want to delete this watchlist?';if(typeof(s_account)=="undefined"){var s_account='crackleprod';}
 </script>
-    <link rel="stylesheet" type="text/css" href="styles/themes/default/Static_908920CCD39A877DDF0B1FDF19684170.css" />
+    <link rel="stylesheet" type="text/css" href="styles/themes/default/Static_52625883071A803A56EFB8BEECD949AC.css" />
 	
 
 
 
-    <script type="text/javascript" src="scripts/Static_913705C9A8FC830EAA2400A4320A3621.js"></script> 
+    <script type="text/javascript" src="scripts/Static_DA6AAF7969F510C10F82434196C6D017.js"></script> 
  
 	
 
@@ -75,7 +75,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
 		    TypeKitID = 'mix4zbn';
 	    } else if (!!top.match(/gt|do|cl|cr/)) {
 		    TypeKitID = 'qqs1mny';
-	    }
+	    } else { TypeKitID = 'bsv6cgh'; }
 	    var config = {
 	      kitId: TypeKitID,
 	      scriptTimeout: 3000
@@ -119,6 +119,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
     Crackle.social.facebook.socialShare = false;
     Crackle.social.facebook.socialReminder = false;
 </script>
+
 
     <script type="text/javascript" src="scripts/foresee/foresee-trigger.js"></script>
 
@@ -226,7 +227,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
                     <div id="ctl00_ctl00_pnlLoginLinks">
 	
                         <a href="https://www.crackle.com/accounts/login/Login.aspx?urlReturn=http%3a%2f%2fwww.crackle.com%2fprivacy.aspx" name='&lid=login&lpos=header-right'>Sign In</a> | 
-                        <a href="https://www.crackle.com/accounts/create/JoinCrackle.aspx" name="&lid=join&lpos=header-right">Register</a>
+                        <a href="https://www.crackle.com/accounts/create/JoinCrackle.aspx?urlReturn=http%3a%2f%2fwww.crackle.com%2fprivacy.aspx" name="&lid=join&lpos=header-right">Register</a>
                     
 </div>
                 </div>
@@ -332,7 +333,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
                    	  <input id="ezsearch-string" type="text" name="q" autocomplete="off" value="" />
                    	  <input id="ezsearch-countrycode" type="hidden" name="c" value="US" />
                       
-                       <a onclick="submitClearHdrSearch(); return false;" name="&lid=search&lpos=search" href="privacy.aspx.html#" class="btn-search">Search Crackle</a>
+                       <a onclick="$jq('#search-header form.search').trigger('submit'); return false;" name="&lid=search&lpos=search" href="privacy.aspx.html#" class="btn-search">Search Crackle</a>
                     </form>
                     <div style="overflow:visible;" class="ez-searchMod-autocomplete">
                             <div id="ezTypeAhead"></div>
@@ -345,10 +346,10 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
                             queryExpansion_init(jQuery("#ezsearch-string"), jQuery("#ezTypeAhead"));
                         }
                         DefaultInputText('ezsearch-string', 'Search Crackle');
+
                         function submitClearHdrSearch() {
-                            if ($jq('#ezsearch-string').val() != crkSearchDefaultInput && !isEmpty($jq('#ezsearch-string').val())) {
-                                $jq('#search-header .search').submit();
-                            }
+                            var str = $jq('#ezsearch-string').val();
+                            if (str != crkSearchDefaultInput && !isEmpty(str)) { return true; }
                             $jq('#ezsearch-string').focus();
                             return false;
                         }
@@ -535,6 +536,16 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
 	    
 	    
          
+        <div id="adGutters" class="gutters-ad">
+            
+                <script type="text/javascript">
+                    if (typeof (cachebuster) == "undefined") { var cachebuster = Math.floor(Math.random() * 10000000000) }
+                    if (typeof (tile) == "undefined") { var tile = 1; } else { tile++; }
+                    document.write('<scr' + 'ipt src="http://ad.doubleclick.net/adj/cr.crack.' + dfpSiteName + '/homepage;dcopt=ist;title=homepage;parent=homepage;tile=' + tile + ';sz=2000x2000;ord=' + cachebuster + '"></scr' + 'ipt>');
+                </script>
+            
+        </div>
+    
 	    
       </div>
       <div class="footerWrapper">
@@ -583,7 +594,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
 <ul>
     
            <li>
-              <a name="&lpos=footer" href="http://www.crackle.com/c/hostelpartiii">Hostel: Part III</a>
+              <a name="&lpos=footer" href="http://www.crackle.com/c/chosen">Chosen</a>
            </li>
        
            <li>
@@ -698,7 +709,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
                     <form class="search" method="get" action="http://search.crackle.com/search/" onsubmit="return submitClearFtrSearch();">
                           <input id="search-string-footer" type="text" name="q" autocomplete="off" value="" />
                           <input id="ezsearch-countrycode" type="hidden" name="c" value="US" />
-                          <a class="btn-search" onclick="submitClearFtrSearch(); return false;" name="&lid=search&lpos=search" href="privacy.aspx.html#">Search Crackle</a>
+                          <a class="btn-search" onclick="$jq('#search-footer form.search').trigger('submit'); return false;" name="&lid=search&lpos=search" href="privacy.aspx.html#">Search Crackle</a>
                     </form>
                     <div style="overflow:visible;" class="ez-searchMod-autocomplete">
                             <div id="search-result-footer"></div>
@@ -708,11 +719,7 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
                         DefaultInputText('search-string-footer', 'Search Crackle');
                         function submitClearFtrSearch() {
                             var str = $jq('#search-string-footer').val();
-                            var encStr = encodeURIComponent(str);
-                            if (str != crkSearchDefaultInput && !isEmpty(str)) {
-                                $jq('#search-string-footer').val(encStr);
-                                $jq('#search-footer .search').submit();
-                            }
+                            if (str != crkSearchDefaultInput && !isEmpty(str)) { return true; }
                             $jq('#search-string-footer').focus();
                             return false;
                         }
@@ -736,14 +743,22 @@ var _fScriptsLoaded=false,_adRight,_adFooter,_adGutters,_currentLocale='en-us',_
             </div>
         </div>
         </div>
+
+        
+
         <script type="text/javascript">
-            $jq(document).ready(function () {
+            $jq(function () {
                 $jq('html').css('background-color', '#e3e3e3');
                 if (navigator.appVersion.indexOf('MSIE 9.0') > -1) {
                     $jq('.btnOrange').css('filter', 'none');
                     $jq('.btnGray').css('filter', 'none');
                 }
             });
+            var console = console || {
+                log: function (log) {
+                    return log;
+                }
+            };
         </script>
         
 	    
@@ -937,6 +952,6 @@ var s_code=s.t();if(s_code)document.write(s_code)//--></script>
     </noscript>
     <!-- End of DoubleClick Floodlight Tag: Please do not remove -->
 
-<script type="text/javascript">if (!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-2.newrelic.com","749e211f6c",409651,"MVYBYhFSCEFTUBdfDAgcImUzHBZAW0UCVRpIUhBGGw==",0,62,new Date().getTime()])</script></body>
+<script type="text/javascript">if (!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-2.newrelic.com","749e211f6c",409651,"MVYBYhFSCEFTUBdfDAgcImUzHBZAW0UCVRpIUhBGGw==",0,31,new Date().getTime()])</script></body>
 
 </html>

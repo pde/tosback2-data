@@ -1,0 +1,793 @@
+(function () {
+
+    var INSTANCE = null;
+
+    function UserAuthClass(options) {
+        return this.getInstance().init(options); // when called from "new", return the only instance of the API
+    }
+
+    // expose the class on GLOBAL scope!
+    window["UserAuth"] = UserAuthClass;
+
+    UserAuthClass.prototype.getInstance = function () {
+        if (INSTANCE == null) {
+            INSTANCE = createInstance({});
+        }
+        return INSTANCE;
+
+        function createInstance(options) {
+            var api = {
+                VERSION: "latest",
+                SUPPORTED_FLOWS: ["native","bluesky"],
+                SUPPORTED_LANGUAGES: ["en","es","fr","pt","de","it","pl","ru","ja","ko","tr"],
+                LOCALE: "en",
+                FLOW: "native",
+                CONTEXT: "login",
+                MODE: "floating",
+                STANDALONE_SELECTOR: "#login-standalone-container",
+                LOCATOR_ID: "user-auth-dialog-container",
+                BASE_PATH: "",
+                DIALOG_CONTAINER: null,
+                USER_API: null,
+                JQUERY: $,
+                initialized: false,
+                binded: false,
+                options: {},
+                messages: null,
+                errors: {
+                    OK: "0",
+                    RUNTIME_ERROR: "100"
+                },
+                modes: {
+                    FLOATING: "floating",
+                    STANDALONE: "standalone"
+                },
+                contexts: {
+                    LOGIN: "login",
+                    SIGN_UP: "sign-up",
+                    FORGOT_PASSWORD: "forgot-password"
+                },
+
+                __initialize: function(options) {
+                    api.options = options || {};
+
+                    if (api.options.userApi) {
+                        api.USER_API = api.options.userApi;
+                    }
+
+                    if (api.options.jQueryLib) {
+                        api.JQUERY = api.options.jQueryLib;
+                    }
+
+                    var scriptBaseSrc = api.JQUERY("script[src*='/js/auth.js']").attr("src");
+                    api.BASE_PATH = scriptBaseSrc.substring(0, scriptBaseSrc.indexOf("/js/auth.js"));
+
+                    var version = api.BASE_PATH.substring(0, api.BASE_PATH.lastIndexOf("/login"));
+                    version = version.substring(1 + version.lastIndexOf("/"));
+
+                    if (api.options.experiments) {
+                        api.experiments = api.options.experiments;
+                        api.JQUERY.each(api.options.experiments, function(experiment, value) {
+                            switch (experiment) {
+                                case "flow":
+                                    api.JQUERY.extend(api.options, {"flow": value});
+                                    break;
+                                case "context":
+                                    api.JQUERY.extend(api.options, {"context": value});
+                                    break;
+                            }
+                        });
+                    }
+
+                    if (api.options.locale && api.JQUERY.inArray(api.options.locale, api.SUPPORTED_LANGUAGES) != -1) {
+                        api.LOCALE = api.options.locale;
+                    }
+
+                    if (api.options.flow && api.JQUERY.inArray(api.options.flow, api.SUPPORTED_FLOWS) != -1) {
+                        api.FLOW = api.options.flow;
+                    }
+
+                    if (api.options.mode && api.JQUERY.inArray(api.options.mode, [api.modes.FLOATING, api.modes.STANDALONE]) != -1) {
+                        api.MODE = api.options.mode;
+                    }
+
+                    if (api.options.context && api.JQUERY.inArray(api.options.context, [api.contexts.LOGIN, api.contexts.SIGN_UP, api.contexts.FORGOT_PASSWORD]) != -1) {
+                        api.CONTEXT = api.options.context;
+                    }
+
+
+                    var allowTransparency = true;
+                    if (api.MODE == api.modes.FLOATING && api.JQUERY.browser.msie) {
+                        if (parseFloat(api.JQUERY.browser.version) <= 8)
+                            allowTransparency = false;
+                        try {
+                            getFlashAppInstance().startHTMLDialogMode("", "0.8", "0xffffff");
+                        } catch(e) {
+                        }
+                    }
+
+                    var containerElement;
+                    if (api.MODE == api.modes.FLOATING) {
+                        containerElement = {
+                            "selector": "body",
+                            "css": {
+                                "position": "absolute",
+                                "visibility": "hidden",
+                                "z-index": 999999,
+                                "margin": 0,
+                                "zoom": 1
+                            }
+                        };
+                    } else {
+                        containerElement = {
+                            "selector": api.STANDALONE_SELECTOR,
+                            "css": {
+                                "visibility": "hidden",
+                                "margin": 0,
+                                "zoom": 1
+                            }
+                        };
+                    }
+
+                    api.DIALOG_CONTAINER = api.JQUERY('<div id="' + api.LOCATOR_ID + '" />').appendTo(containerElement.selector);
+                    api.DIALOG_CONTAINER.css(containerElement.css);
+
+                    //Load language file
+                    api.getScript(api.BASE_PATH + "/locale/messages_" + api.LOCALE + ".jsonp");
+
+                    //Load AB test flow
+                    api.getScript(api.BASE_PATH + "/flows/" + api.FLOW + "/flow.js");
+                    api.getStylesheet(api.BASE_PATH + "/flows/" + api.FLOW + "/flow.css");
+
+                },
+
+                __bind: function(options) {
+                    api.JQUERY(".wix-users-auth").click(function(e) {
+                        e.preventDefault();
+                        var caller = api.JQUERY(this);
+                        api.dialog.show({
+                            "context": caller.attr("rev") || "",
+                            "origin": caller.attr("rel") || ""
+                        });
+                    });
+
+                    api.JQUERY(document).keydown(function(e) {
+                        if (e.keyCode == 27) { // ESCAPE key pressed
+                            api.dialog.close();
+                            return false;
+                        }
+                    });
+
+                    api.JQUERY(window).resize(function(e) {
+                        var pos = api.getDialogCenterPosition();
+                        api.JQUERY("#" + api.LOCATOR_ID).css({
+                            "top": pos.top,
+                            "left": pos.left
+                        });
+                    });
+                },
+
+                init: function(options) {
+                    if (!api.initialized) {
+                        api.__initialize(options);
+                        api.__bind(options);
+                        api.initialized = true;
+                    }
+                    return returnObj;
+                },
+
+                setLocaleMessages: function(messages) {
+                    api.messages = messages || {};
+                },
+
+                getDialogCenterPosition: function() {
+                    return {
+                        "top": api.getPageScroll().y + (api.getPageHeight() / 10),
+                        "left": api.JQUERY(window).width() / 2 - (api.JQUERY("#" + api.LOCATOR_ID).width() / 2)
+                    };
+                },
+
+                getScript : function(src) {
+                    var js = document.createElement("script");
+                    js.type = "text/javascript";
+                    js.charset = "utf-8";
+                    js.src = src;
+                    document.getElementsByTagName("head")[0].appendChild(js);
+                },
+
+                getStylesheet : function(src) {
+                    api.JQUERY("<link />").appendTo("head").attr({
+                        rel: "stylesheet",
+                        type: "text/css",
+                        href: src
+                    });
+                },
+
+                getPageScroll: function () {
+                    var xScroll, yScroll;
+                    if (self.pageYOffset) {
+                        yScroll = self.pageYOffset;
+                        xScroll = self.pageXOffset;
+                    } else if (document.documentElement && document.documentElement.scrollTop) {     // Explorer 6 Strict
+                        yScroll = document.documentElement.scrollTop;
+                        xScroll = document.documentElement.scrollLeft;
+                    } else if (document.body) {// all other Explorers
+                        yScroll = document.body.scrollTop;
+                        xScroll = document.body.scrollLeft;
+                    }
+                    return {x:xScroll, y:yScroll};
+                },
+
+                getPageHeight: function() {
+                    var windowHeight;
+                    if (self.innerHeight) {    // all except Explorer
+                        windowHeight = self.innerHeight;
+                    } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+                        windowHeight = document.documentElement.clientHeight;
+                    } else if (document.body) { // other Explorers
+                        windowHeight = document.body.clientHeight;
+                    }
+                    return windowHeight
+                },
+
+                validate: function(input) {
+                    var errorObj = {"errorCode":api.errors.OK, "errorDescription":"OK"};
+                    var validationString = input.attr("validation");
+                    if (validationString) {
+                        var terms, value = input.val();
+                        api.JQUERY.each(validationString.split(";"), function(index, validation) {
+                            terms = validation.split(":");
+                            switch (terms[0]) {
+                                case "notempty":
+                                    if (value == "") {
+                                        errorObj.errorCode = "9973";
+                                        return false;
+                                    }
+                                    break;
+                                case "length":
+                                    try {
+                                        var range = terms[1];
+                                        if (range && !new RegExp("^." + range + "$").test(value)) {
+                                            range = range.substr(1, range.length - 2);
+                                            errorObj.errorCode = "101";
+                                            api.JQUERY.extend(errorObj, {"data": range.split(",")});
+                                            return false;
+                                        }
+                                    } catch(e) {
+                                    }
+                                    break;
+                                case "email":
+                                    if (!/^[a-zA-Z0-9_\-+.]+@[a-zA-Z0-9_\-+]+\.[a-zA-Z0-9_\-+.]+$/.test(value)) {
+                                        errorObj.errorCode = "99711";
+                                        return false;
+                                    }
+                                    break;
+                                case "password":
+                                    if (!/^[a-zA-Z0-9_\-!@#$%^&*]+$/.test(value)) {
+                                        errorObj.errorCode = "99721";
+                                        return false;
+                                    }
+                                    break;
+                            }
+                            return true;
+                        });
+                    }
+                    return errorObj;
+                },
+
+                validateForm: function(inputs, onSuccess, onError) {
+                    var errorObj = {"errorCode":api.errors.OK, "errorDescription":"OK"};
+                    api.JQUERY.each(inputs, function() {
+                        var input = api.JQUERY(this);
+                        var name = input.attr("name");
+
+                        input.trigger("beforeValidation");
+                        errorObj = api.validate(input);
+                        if (errorObj.errorCode == api.errors.OK) {
+                            errorObj = UserAuth.getFlow().validate(input);
+                        }
+                        if (errorObj.errorCode != api.errors.OK) {
+                            api.JQUERY.extend(errorObj, {
+                                "name": name,
+                                "input": input
+                            });
+                            onError(errorObj);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    if (errorObj.errorCode == api.errors.OK) {
+                        onSuccess();
+                    }
+                },
+
+                error: function(response) {
+
+                    api.stopProcessing(response.context);
+
+                    var name = response.name || "email";
+                    response.errorCode = response.errorCode || api.errors.RUNTIME_ERROR;
+                    switch (response.errorCode.toString()) {
+                        case "101":
+                            if (response.name == "password")
+                                api.log(103, {"context":response.context});
+                            else if (response.name == "email")
+                                api.log(105, {"context":response.context});
+                            break;
+                        case "9966":
+                            api.log(132, {});
+                            break;
+                        case "9968":
+                            api.log(123, {});
+                            break;
+                        case "9971":
+                            name = "email";
+                            api.log(112, {});
+                            break;
+                        case "99711":
+                            api.log(105, {"context":response.context});
+                            break;
+                        case "9972":
+                            name = "password";
+                            api.log(113, {});
+                            break;
+                        case "9973":
+                            if (response.name == "password")
+                                api.log(102, {"context":response.context});
+                            else if (response.name == "email")
+                                api.log(104, {"context":response.context});
+                            break;
+                    }
+                    api.JQUERY.extend(response, {
+                        "name": name,
+                        "errorCode": response.errorCode.toString(),
+                        "errorDescription": api.messages["error_" + response.errorCode.toString().replace("-", "")] || response.errorDescription || ""
+                    });
+                    if (response.data) {
+                        api.JQUERY.each(response.data, function(index, value) {
+                            response.errorDescription = response.errorDescription.toString().replace(new RegExp('\\$\\{' + index + '\\}', 'g'), value);
+                        });
+                    }
+                    UserAuth.getFlow().error(response);
+                },
+
+                success: function(response) {
+
+                    function postSuccess(handler) {
+                        window.setTimeout(function() {
+                            switch (typeof handler) {
+                                case "string":
+                                    window.location.href = handler;
+                                    break;
+                                case "function":
+                                    handler(response);
+                                    break;
+                            }
+                            api.stopProcessing(response.context);
+                        }, 100);
+                    }
+
+                    UserAuth.getFlow().success(response);
+
+                    switch (response.context) {
+                        case api.contexts.LOGIN:
+                            api.log(114, {});
+                            postSuccess(api.options.postLogin);
+                            api.dialog.close();
+                            break;
+
+                        case api.contexts.SIGN_UP:
+                            api.log(122, {});
+                            postSuccess(api.options.postSignUp);
+                            api.dialog.close();
+                            break;
+
+                        case api.contexts.FORGOT_PASSWORD:
+                            api.log(133, {});
+                            postSuccess(api.options.postForgotPassword);
+                            break;
+                    }
+                },
+
+                startProcessing: function(context) {
+                    UserAuth.getFlow().startProcessing(context);
+                },
+
+                stopProcessing: function(context) {
+                    UserAuth.getFlow().stopProcessing(context);
+                },
+
+                log: function(biEventId, data) {
+                    var arr = [], baseDomain = "wix.com";
+                    if (window.location.host.indexOf(".wix.com") == -1) {
+                        baseDomain = "wixpress.com";
+                    }
+                    arr.push("evid=" + biEventId);
+                    arr.push("src=6");
+
+                    if (data) {
+                        api.JQUERY.each(data, function(key, value) {
+                            arr.push(key + "=" + encodeURIComponent(value));
+                        });
+                    }
+
+                    arr.push("_=" + new Date().getTime());
+
+                    new Image(0, 0).src = "http://frog." + baseDomain + "/hls2?" + arr.join("&");
+                },
+
+                dialog: {
+
+                    show: function(options) {
+
+                        options = options || {};
+                        if (options.context == "createUser") {
+                            options.context = api.contexts.SIGN_UP;
+                        }
+
+                        if (api.JQUERY.inArray(options.context, [api.contexts.LOGIN, api.contexts.SIGN_UP, api.contexts.FORGOT_PASSWORD]) == -1) {
+                            options.context = api.CONTEXT;
+                        }
+
+                        api.log(100, {"origin": options.origin, "ver": api.VERSION});
+
+                        api.dialog.mask();
+
+                        UserAuth.getFlow().render(options, api);
+
+                        api.dialog.reveal();
+
+                        api.log(101, {"context": options.context});
+                    },
+
+                    close: function() {
+                        api.JQUERY("#" + api.LOCATOR_ID).fadeOut(function() {
+                            api.JQUERY(this).css({
+                                "visibility": "hidden",
+                                "display": "block"
+                            });
+                            api.dialog.unmask();
+                        });
+
+                        if (typeof api.options.onClose == "function") {
+                            api.options.onClose();
+                        }
+                    },
+
+                    mask: function() {
+                        if (api.MODE == api.modes.FLOATING) {
+                            if (api.JQUERY("#user-auth-dialog-mask").length == 0) {
+                                api.JQUERY('<div id="user-auth-dialog-mask"></div>').css({
+                                    "position": "fixed",
+                                    "top": 0,
+                                    "left": 0,
+                                    "height": "100%",
+                                    "width": "100%",
+                                    "z-index": 999998
+                                }).appendTo("body");
+                            } else
+                                api.JQUERY("#user-auth-dialog-mask").show();
+                        }
+                    },
+
+                    unmask: function() {
+                        if (api.MODE == api.modes.FLOATING) {
+                            api.JQUERY("#user-auth-dialog-mask").hide();
+                        }
+                    },
+
+                    reveal: function() {
+
+                        if (!api.binded) {
+
+                            api.DIALOG_CONTAINER.find(".action-close").click(function(e) {
+                                e.preventDefault();
+                                api.dialog.close();
+                            });
+
+                            api.DIALOG_CONTAINER.find(".switch-context").click(function(e) {
+                                e.preventDefault();
+                                var context = api.JQUERY(this).attr("rev");
+
+                                if (context == api.contexts.FORGOT_PASSWORD)
+                                    api.log(130, {});
+
+                                UserAuth.getFlow().switchContext(context);
+                                api.log(101, {"context": context});
+                            });
+
+                            api.DIALOG_CONTAINER.find(".action-login").click(function(e) {
+                                e.preventDefault();
+                                if (!api.JQUERY(this).hasClass("disabled")) {
+                                    var context = api.contexts.LOGIN;
+                                    var inputs = api.JQUERY(this).parents(".dialog-tab").find("input");
+
+                                    api.log(110, {});
+                                    api.validateForm(
+                                            inputs,
+                                            function() {
+                                                api.log(111, {});
+                                                api.startProcessing(context);
+                                                api.USER_API.login(
+                                                        inputs.filter("[name='email']").val(),
+                                                        inputs.filter("[name='password']").val(),
+                                                        inputs.filter("[name='rememberMe']").is(":checked"),
+                                                        function(response) {
+                                                            api.error(api.JQUERY.extend(response, {"context":context}));
+                                                        },
+                                                        function(response) {
+                                                            if (response.success) {
+                                                                api.success(api.JQUERY.extend(response, {"context":context}));
+                                                            } else {
+                                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                                            }
+                                                        });
+                                            },
+                                            function(response) {
+                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                            });
+                                }
+                            });
+
+                            api.DIALOG_CONTAINER.find(".action-signup").click(function(e) {
+                                e.preventDefault();
+                                if (!api.JQUERY(this).hasClass("disabled")) {
+                                    var context = api.contexts.SIGN_UP;
+                                    var inputs = api.JQUERY(this).parents(".dialog-tab").find("input");
+                                    api.log(120, {});
+                                    api.validateForm(
+                                            inputs,
+                                            function() {
+                                                api.log(121, {});
+                                                api.startProcessing(context);
+                                                api.USER_API.createUser(
+                                                        inputs.filter("[name='email']").val(),
+                                                        inputs.filter("[name='password']").val(),
+                                                        function(response) {
+                                                            api.error(api.JQUERY.extend(response, {"context":context}));
+                                                        },
+                                                        function(response) {
+                                                            if (response.success) {
+                                                                api.success(api.JQUERY.extend(response, {"context":context}));
+                                                            } else {
+                                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                                            }
+                                                        });
+                                            },
+                                            function(response) {
+                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                            });
+                                }
+                            });
+
+                            api.DIALOG_CONTAINER.find(".action-forgot").click(function(e) {
+                                e.preventDefault();
+                                if (!api.JQUERY(this).hasClass("disabled")) {
+                                    var context = api.contexts.FORGOT_PASSWORD;
+                                    var inputs = api.JQUERY(this).parents(".dialog-tab").find("input");
+                                    api.log(131, {});
+                                    api.validateForm(
+                                            inputs,
+                                            function() {
+                                                api.startProcessing(context);
+                                                api.USER_API.forgotPassword(
+                                                        inputs.filter("[name='email']").val(),
+                                                        function(response) {
+                                                            api.error(api.JQUERY.extend(response, {"context":context}));
+                                                        },
+                                                        function(response) {
+                                                            if (response.success) {
+                                                                api.success(api.JQUERY.extend(response, {"context":context}));
+                                                            } else {
+                                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                                            }
+                                                        });
+                                            },
+                                            function(response) {
+                                                api.error(api.JQUERY.extend(response, {"context":context}));
+                                            });
+                                }
+                            });
+
+                            api.DIALOG_CONTAINER.find("input.enter-key").keydown(function(e) {
+                                // ENTER key pressed
+                                if (e.keyCode == 13) {
+                                    api.JQUERY(this).parents(".dialog-tab").find(".action-box .dialog-button:visible").trigger("click");
+                                }
+                            });
+
+                            (function($) {
+                                function Placeholder(input) {
+                                    this.input = input;
+                                    if (input.attr('type') == 'password') {
+                                        this.handlePassword();
+                                    }
+                                    // Prevent placeholder values from submitting
+                                    input.on("beforeValidation", function() {
+                                        if (input.hasClass('placeholder') && input[0].value == input.attr('placeholder')) {
+                                            input[0].value = '';
+                                        }
+                                    });
+                                }
+
+                                Placeholder.prototype = {
+                                    show : function(loading) {
+                                        // FF and IE saves values when you refresh the page. If the user refreshes the page with
+                                        // the placeholders showing they will be the default values and the input fields won't be empty.
+                                        if (this.input[0].value === '' || (loading && this.valueIsPlaceholder())) {
+                                            if (this.isPassword) {
+                                                try {
+                                                    this.input[0].type = 'text';
+                                                } catch (e) {
+                                                    this.input.before(this.fakePassword.show()).hide();
+                                                }
+                                            }
+                                            this.input.addClass('placeholder');
+                                            this.input[0].value = this.input.attr('placeholder');
+                                        }
+                                    },
+                                    hide : function() {
+                                        if (this.valueIsPlaceholder() && this.input.hasClass('placeholder')) {
+                                            this.input.removeClass('placeholder');
+                                            this.input[0].value = '';
+                                            if (this.isPassword) {
+                                                try {
+                                                    this.input[0].type = 'password';
+                                                } catch (e) {
+                                                }
+                                                // Restore focus for Opera and IE
+                                                this.input.show();
+                                                this.input[0].focus();
+                                            }
+                                        }
+                                    },
+                                    valueIsPlaceholder : function() {
+                                        return this.input[0].value == "" || this.input[0].value == this.input.attr('placeholder');
+                                    },
+                                    handlePassword: function() {
+                                        var input = this.input;
+                                        input.attr('realType', 'password');
+                                        this.isPassword = true;
+                                        // IE < 9 doesn't allow changing the type of password inputs
+                                        if ($.browser.msie && input[0].outerHTML) {
+                                            var fakeHTML = $(input[0].outerHTML.replace(/type=(['"])?password\1/gi, 'type=$1text$1'));
+                                            this.fakePassword = fakeHTML.val(input.attr('placeholder')).addClass('placeholder').focus(function() {
+                                                input.trigger('focus');
+                                                $(this).hide();
+                                            });
+                                            input.on("beforeValidation", function() {
+                                                fakeHTML.remove();
+                                                input.show();
+                                            });
+                                        }
+                                    }
+                                };
+                                var NATIVE_SUPPORT = !!("placeholder" in document.createElement("input"));
+                                $.fn.placeholder = function() {
+                                    return NATIVE_SUPPORT ? this : this.each(function() {
+                                        var input = $(this);
+                                        var placeholder = new Placeholder(input);
+                                        placeholder.show(true);
+                                        input.focus(function() {
+                                            placeholder.hide();
+                                        });
+                                        input.blur(function() {
+                                            placeholder.show(false);
+                                        });
+
+                                        // On page refresh, IE doesn't re-populate user input
+                                        // until the window.onload event is fired.
+                                        if ($.browser.msie) {
+                                            $(window).load(function() {
+                                                if (input.val()) {
+                                                    input.removeClass("placeholder");
+                                                }
+                                                placeholder.show(true);
+                                            });
+                                            // What's even worse, the text cursor disappears
+                                            // when tabbing between text inputs, here's a fix
+                                            input.focus(function() {
+                                                if (this.value == "") {
+                                                    var range = this.createTextRange();
+                                                    range.collapse(true);
+                                                    range.moveStart('character', 0);
+                                                    range.select();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            })(api.JQUERY);
+
+                            api.DIALOG_CONTAINER.find("input[placeholder]").placeholder();
+
+                            api.binded = true;
+                        }
+
+                        window.setTimeout(function() {
+                            var pos = api.getDialogCenterPosition();
+                            api.JQUERY("#" + api.LOCATOR_ID).css({
+                                "top": pos.top,
+                                "left": pos.left,
+                                "display": "block",
+                                "visibility": "visible"
+                            }).fadeIn(200);
+
+                            // api.DIALOG_CONTAINER.find(".dialog-tab:visible input[name='email']").focus();
+
+                        }, 50);
+                    }
+                }
+            };
+
+            var returnObj = {
+
+                init: function(options) {
+                    return api.init(options);
+                },
+
+                load: function() {
+                    var handler = api.options.onLoad;
+                    if (typeof handler == "function") {
+                        if (api.messages == null) {
+                            var timer = window.setInterval(function() {
+                                if (api.messages != null) {
+                                    window.clearInterval(timer);
+                                    handler();
+                                }
+                            }, 100);
+                        } else {
+                            window.setTimeout(function() {
+                                handler();
+                            }, 100);
+                        }
+                    }
+                    //if (api.MODE == api.modes.STANDALONE)
+                    //api.dialog.show(api.options);
+                },
+
+                show: function(options) {
+                    api.dialog.show(options);
+                },
+
+                hide: function() {
+                    api.dialog.close();
+                },
+
+                setLocaleMessages: function(messages) {
+                    return api.setLocaleMessages(messages);
+                },
+
+                setPostLogin: function(handler) {
+                    if (typeof handler == "string" || typeof handler == "function")
+                        api.options.postLogin = handler;
+                },
+
+                setPostSignUp: function(handler) {
+                    if (typeof handler == "string" || typeof handler == "function")
+                        api.options.postSignUp = handler;
+                },
+
+                setPostForgotPassword: function(handler) {
+                    if (typeof handler == "string" || typeof handler == "function")
+                        api.options.postForgotPassword = handler;
+                },
+
+                setOnClose: function(handler) {
+                    if (typeof handler == "string" || typeof handler == "function")
+                        api.options.onClose = handler;
+                },
+
+                setOnLoad: function(handler) {
+                    if (typeof handler == "string" || typeof handler == "function")
+                        api.options.onLoad = handler;
+                }
+            };
+
+            return returnObj;
+        }
+    }
+})();
+
+window["UserAuth"].getInstance = UserAuth.prototype.getInstance;
