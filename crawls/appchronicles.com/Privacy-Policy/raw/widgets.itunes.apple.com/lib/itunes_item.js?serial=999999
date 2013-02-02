@@ -1,0 +1,117 @@
+var iTunesItem = function(item) {
+        this.id = null
+        this.kind = null
+        this.name = null
+        this.artist_name = null
+        this.artist_id = null
+        this.artist_url = null
+        this.collection_name = item.collectionName || ""
+        this.url = null
+        this.artwork_url_100 = item.artworkUrl100 || "default.png"
+        this.artwork_url_60 = item.artworkUrl60 || "default.png"
+        this.price = item.price
+        this.currency = item.currency
+        this.genre = null
+        this.description = item.description || item.longDescription
+        this.rating = null
+        this.preview_url = null
+        this.parse(item)
+    }
+
+iTunesItem.prototype = {
+    parse: function(item) {
+        switch (item.kind || item.collectionType) {
+        case ("Album"):
+            this.id = item.collectionId
+						this.price = item.collectionPrice
+            this.kind = "album"
+            this.name = item.collectionName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.collectionViewUrl
+            break;
+        case ("ebook"):
+            this.id = item.trackId
+            this.kind = "book"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.trackViewUrl
+            break;
+        case ("podcast"):
+            this.id = item.trackId
+            this.kind = "podcast"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.trackViewUrl
+            break;
+        case ("software"):
+            this.id = item.trackId
+            this.kind = "software"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.trackViewUrl
+            this.genre = _.first(item.genres)
+            break;
+        case ("song"):
+            this.id = item.trackId
+            this.kind = "song"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.collection_name = item.collectionName
+            this.url = item.trackViewUrl
+            this.preview_url = item.previewUrl
+            break;
+        case ("TV Season"):
+            this.id = item.collectionId
+            this.kind = "tv-season"
+            this.name = item.collectionName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.collectionViewUrl
+            this.rating = item.contentAdvisoryRating
+						this.genre = item.primaryGenreName
+            break;
+        case ("feature-movie"):
+            this.id = item.trackId
+            this.kind = "feature-movie"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.trackViewUrl
+            this.rating = item.contentAdvisoryRating
+            this.genre = item.primaryGenreName
+            break;
+        case ("mac-software"):
+            this.id = item.trackId
+            this.kind = "mac-software"
+            this.name = item.trackName
+            this.artist_name = item.artistName
+            this.artist_id = item.artistId
+            this.artist_url = item.artistViewUrl
+            this.url = item.trackViewUrl
+            this.genre = _.first(item.genres)
+            break;
+        }
+    },
+
+    formatPrice: function(currency_format) {
+        if(Number(this.price) > 0) {
+            var template = _.template(currency_format.template)
+            var strings = _.extend(this, {price: currency_format.decimal ? this.price : this.price.toFixed(0)})
+            return template(this)
+        } else {
+            return currency_format.currency_free
+        }
+    }
+}

@@ -10,10 +10,10 @@ $(document).ready(function() {
 		$('#header_freeship').css({
 			'position':'absolute',
 			'top':'60px',
-			'right':'18px',
-			'width':'313px',
-			'height':'31px',
-			'padding-top':'3px',
+			'right':'22px',
+			'width':'607px',
+			'height':'14px',
+			'padding-top':'10px',
 			'border':'none'
 		});
 		$('#full_page').css('padding-top','20px');

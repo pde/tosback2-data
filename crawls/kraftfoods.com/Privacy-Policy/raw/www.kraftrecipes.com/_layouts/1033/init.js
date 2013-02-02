@@ -2265,20 +2265,16 @@ function IMNGetOOUILocation(obj)
 	obj=objOOUI;
 	oouiY=objOOUI.getBoundingClientRect().top - 5;
 	oouiX=objOOUI.getBoundingClientRect().left - 5;
-	try
+	var currentWindow=window;
+	while (currentWindow && currentWindow !=currentWindow.parent)
 	{
-		var currentWindow=window;
-		while (currentWindow && currentWindow !=currentWindow.parent)
-		{
-			var iframe=currentWindow.frameElement;
-			var iframetop=iframe ? iframe.getBoundingClientRect().top : 0;
-			var iframeleft=iframe ? iframe.getBoundingClientRect().left : 0;
-			oouiY+=iframetop;
-			oouiX+=iframeleft;
-			currentWindow=currentWindow.parent;
-		}
+		var iframe=currentWindow.frameElement;
+		var iframetop=iframe ? iframe.getBoundingClientRect().top : 0;
+		var iframeleft=iframe ? iframe.getBoundingClientRect().left : 0;
+		oouiY+=iframetop;
+		oouiX+=iframeleft;
+		currentWindow=currentWindow.parent;
 	}
-	catch(e) { };
 	objRet.objSpan=objSpan;
 	objRet.objOOUI=objOOUI;
 	objRet.oouiX=oouiX;
@@ -2588,16 +2584,6 @@ function DefaultFocus()
 }
 function ProcessDefaultOnLoad(onLoadFunctionNames)
 {
-	if (typeof(_spDelayedDomUpdates)=="object")
-	{
-		for (var id in _spDelayedDomUpdates)
-		{
-			if ((!_spDelayedDomUpdates.hasOwnProperty || _spDelayedDomUpdates.hasOwnProperty(id)) && document.getElementById(id))
-			{
-				document.getElementById(id).innerHTML=_spDelayedDomUpdates[id];
-			}
-		}
-	}
 	ProcessPNGImages();
 	UpdateAccessibilityUI();
 	ProcessImn();

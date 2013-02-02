@@ -75,9 +75,11 @@ showUpgradeOrCancel = function() {
 	showAjaxMessage( '/ajax/modalUpgradeOrCancel.jsp', '#upgradeOrCancelDiv', false, '400');
 };
 
+/*
 showNickMomOverlay = function() {
     showAjaxMessage( '/ajax/modalNickMomOverlay.jsp', '#nickMomOverlayDiv', false, '930');
 };
+*/
 
 showStaticSignIn = function( successCallbackFunction, cancelCallbackFunction, trackingCode ) {
 	// only show sign in form if NSI

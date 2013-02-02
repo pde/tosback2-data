@@ -6,28 +6,28 @@ if (!NIT.Launch) NIT.Launch = {};
 //////////////////////////////////////
 NIT.addListener = function (obj, evt, cb) // Cross-browser event attaching ex: (obj, "onload", Init)
 {
-    if (obj.attachEvent)
-    {
-        obj.attachEvent(evt, cb); //"onload", Init );
-    }
-    else if (obj.addEventListener)
-    {
-        evt = (evt.toLowerCase().indexOf("on") == 0) ? evt.substr(2) : evt;
-        obj.addEventListener(evt, cb, false); //"load", Init, false );
-    }
+	if (obj.attachEvent)
+	{
+		obj.attachEvent(evt, cb); //"onload", Init );
+	}
+	else if (obj.addEventListener)
+	{
+		evt = (evt.toLowerCase().indexOf("on") == 0) ? evt.substr(2) : evt;
+		obj.addEventListener(evt, cb, false); //"load", Init, false );
+	}
 };
 
 // Detect url of this script to make our service relative to the script and not the page Agent is running from (required for Embedded)
 NIT.scriptSource = '';
 
 (function () {
-    try // Must be in a try-catch, or intellisense breaks (since this errors during that processing)
+	try // Must be in a try-catch, or intellisense breaks (since this errors during that processing)
 	{
-        var scriptTags = document.getElementsByTagName('script');
-        var script = scriptTags[scriptTags.length - 1];
-        NIT.scriptSource = script.getAttribute('src', -1);
-    }
-    catch (e) { }
+		var scriptTags = document.getElementsByTagName('script');
+		var script = scriptTags[scriptTags.length - 1];
+		NIT.scriptSource = script.getAttribute('src', -1);
+	}
+	catch (e) { }
 } ());
 
 NIT.agentURL = NIT.scriptSource.substr(0, NIT.scriptSource.lastIndexOf('/includes/') + 1) + 'Agent.aspx';
@@ -115,7 +115,7 @@ NIT.Launch.openWindow = function(url, windowName, align, width, height, top, lef
 		{
 			isNew = (win.location.href.indexOf(url) < 0);
 		}
-        catch (e) { }
+		catch (e) { }
 
 		if (isNew)
 		{
@@ -140,24 +140,29 @@ NIT.Launch.openWindow = function(url, windowName, align, width, height, top, lef
 
 NIT.Launch.openAgentWindow = function (launchPointName, Question)
 {
-    var agentURL = NIT.agentURL;
-    var saveCookie = false;
-    if (launchPointName)
-    {
-        NIT.InfoCookie.launchPointName = launchPointName;
-        saveCookie = true;
-    }
+	var agentURL = NIT.agentURL;
+	var saveCookie = false;
 
-    if (Question)
-    {
-        NIT.InfoCookie.question = Question;
-        saveCookie = true;
-    }
+	// JIRA: CHART-1850
+	NIT.InfoCookie.question = '';
+	NIT.InfoCookie.launchPointName = '';
 
-    if (saveCookie)
-        NIT.InfoCookie.save();
+	if (launchPointName)
+	{
+		NIT.InfoCookie.launchPointName = launchPointName;
+		saveCookie = true;
+	}
 
-    NIT.Launch.openWindow(agentURL, 'Agent', 'right', 470, 610, 0, 0, true);
+	if (Question)
+	{
+		NIT.InfoCookie.question = Question;
+		saveCookie = true;
+	}
+
+	if (saveCookie)
+		NIT.InfoCookie.save();
+
+	NIT.Launch.openWindow(agentURL, 'Agent', 'right', 470, 610, 0, 0, true);
 };
 
 //////////////////////////////////////
@@ -165,146 +170,146 @@ NIT.Launch.openAgentWindow = function (launchPointName, Question)
 //////////////////////////////////////
 NIT.Cookie = function (name, sVals, exp)
 {
-    var me = this;
-    this.name = name;
-    this.value = null;
-    this.values = new Object();
-    // These three are for saving cookies
-    this.expires = (exp) ? exp : null; // Leave null for session cookie (or if updating cookie)
-    this.path = '/';
-    this.secure = (window.location.protocol == "https:");
+	var me = this;
+	this.name = name;
+	this.value = null;
+	this.values = new Object();
+	// These three are for saving cookies
+	this.expires = (exp) ? exp : null; // Leave null for session cookie (or if updating cookie)
+	this.path = '/';
+	this.secure = (window.location.protocol == "https:");
 	this.domain = NIT.CookieUtil.getDomain();
 
-    if (sVals != null) // Parse specified value(s) 
-    {
-        var nvc = (typeof (sVals) == "string") ? sVals.split('&') : null; // Get the name-value collection from the cookie
-        if (nvc != null && nvc.length > 0 && sVals.indexOf('=') > -1)
-        {
-            for (var i = 0; i < nvc.length; i++)
-            {
-                var nv = nvc[i].split('='); // Get the name and value of this entry
-                if (nv.length > 1)
-                    me.values[nv[0]] = nvc[i].substr(nv[0].length + 1); //nv[1]; // Add property to our Values (remove the name, since the content may also have '=' characters)
-                else if (i == 0)
-                    me.value = nv[0]; // If no equal sign and the first entry, it is the main property
+	if (sVals != null) // Parse specified value(s) 
+	{
+		var nvc = (typeof (sVals) == "string") ? sVals.split('&') : null; // Get the name-value collection from the cookie
+		if (nvc != null && nvc.length > 0 && sVals.indexOf('=') > -1)
+		{
+			for (var i = 0; i < nvc.length; i++)
+			{
+				var nv = nvc[i].split('='); // Get the name and value of this entry
+				if (nv.length > 1)
+					me.values[nv[0]] = nvc[i].substr(nv[0].length + 1); //nv[1]; // Add property to our Values (remove the name, since the content may also have '=' characters)
+				else if (i == 0)
+					me.value = nv[0]; // If no equal sign and the first entry, it is the main property
 
-            }
-        }
-        else // Single value cookie
-            me.value = sVals;
-    }
+			}
+		}
+		else // Single value cookie
+			me.value = sVals;
+	}
 
-    // Methods
-    this.save = function ()
-    {
-        var v = (me.value != null) ? me.value : '';
-        for (var n in me.values)
-        {
-            var val = (me.values[n] != null) ? me.values[n] : '';
-            v += '&' + n + '=' + val; //escape(val); // No longer escaped, now matching how .NET does it
-        }
-        if (v[0] == '&')
-            v = v.substr(1);
+	// Methods
+	this.save = function ()
+	{
+		var v = (me.value != null) ? me.value : '';
+		for (var n in me.values)
+		{
+			var val = (me.values[n] != null) ? me.values[n] : '';
+			v += '&' + n + '=' + val; //escape(val); // No longer escaped, now matching how .NET does it
+		}
+		if (v[0] == '&')
+			v = v.substr(1);
 
-        var c = this.name + '=' + v +
+		var c = this.name + '=' + v +
 			((me.expires == null) ? "" : (";expires=" + me.expires.toGMTString())) +
 			";path=" + this.path +
 			((me.domain == null) ? "" : (";domain=" + me.domain)) +
 			((me.secure) ? ";secure;" : ";");
-        document.cookie = c;
-    };
+		document.cookie = c;
+	};
 
-    this.remove = function ()
-    {
-        me.expires = new Date(1970, 1, 2); // "Fri, 02-Jan-1970 00:00:00 GMT" );
-        me.save();
-    };
+	this.remove = function ()
+	{
+		me.expires = new Date(1970, 1, 2); // "Fri, 02-Jan-1970 00:00:00 GMT" );
+		me.save();
+	};
 };
 
 NIT.CookieUtil = new function ()
 {
-    var me = this;
-    this.getCookies = function () // Parses all available cookies
-    {
-        var all = new Object();
-        if (document.cookie != "")
-        {
-            var cookies = document.cookie.split("; ");
-            for (i = 0; i < cookies.length; i++)
-            {
-                var c = cookies[i];
-                var idx = c.indexOf('=');
-                var N = c.substr(0, idx);
-                var V = '';
-                if (c.length > idx + 1) // Not an empty value (just in case)
-                    V = c.substring(idx + 1, c.length); //unescape( c.substring(idx+1, c.length) ); // No longer escaped, now matching how .NET does it
-                all[N] = new NIT.Cookie(N, V);
-            }
-        }
-        return all;
-    };
+	var me = this;
+	this.getCookies = function () // Parses all available cookies
+	{
+		var all = new Object();
+		if (document.cookie != "")
+		{
+			var cookies = document.cookie.split("; ");
+			for (i = 0; i < cookies.length; i++)
+			{
+				var c = cookies[i];
+				var idx = c.indexOf('=');
+				var N = c.substr(0, idx);
+				var V = '';
+				if (c.length > idx + 1) // Not an empty value (just in case)
+					V = c.substring(idx + 1, c.length); //unescape( c.substring(idx+1, c.length) ); // No longer escaped, now matching how .NET does it
+				all[N] = new NIT.Cookie(N, V);
+			}
+		}
+		return all;
+	};
 
-    this.getCookie = function (name) // Selects a cookie by name
-    {
-        return me.getCookies()[name];
-    };
+	this.getCookie = function (name) // Selects a cookie by name
+	{
+		return me.getCookies()[name];
+	};
 
-    this.showCookies = function ()
-    {
-        var cookies = me.getCookies();
-        var sCookie = '';
-        for (var crumb in cookies)
-        {
-            sCookie += 'Name: ' + cookies[crumb].name + '\n';
-            sCookie += 'Value: ' + cookies[crumb].value + '\n';
-            // now show Values array for the current crumb
-            for (var values in cookies[crumb].values)
-            {
-                sCookie += "    " + values + ": ";
-                sCookie += cookies[crumb].values[values] + "\n";
-            }
-        }
-        //alert(sCookie);
-        return sCookie;
-    };
+	this.showCookies = function ()
+	{
+		var cookies = me.getCookies();
+		var sCookie = '';
+		for (var crumb in cookies)
+		{
+			sCookie += 'Name: ' + cookies[crumb].name + '\n';
+			sCookie += 'Value: ' + cookies[crumb].value + '\n';
+			// now show Values array for the current crumb
+			for (var values in cookies[crumb].values)
+			{
+				sCookie += "    " + values + ": ";
+				sCookie += cookies[crumb].values[values] + "\n";
+			}
+		}
+		//alert(sCookie);
+		return sCookie;
+	};
 
-    this.getDomain = function ()
-    {
-        var url = document.domain;
-        var end = "";
+	this.getDomain = function ()
+	{
+		var url = document.domain;
+		var end = "";
 
-        if (url.indexOf('.') > -1)
-        {
-            end = url.substr(url.lastIndexOf('.'));
-            url = url.substring(0, url.lastIndexOf('.'));
-        }
-        if (url.indexOf('.') > -1)
-        {
-            url = url.substr(url.lastIndexOf('.') + 1);
-        }
-        url = url + end;
-        if (url.indexOf('.') == -1)
-        {
-            url = null;
-        }
+		if (url.indexOf('.') > -1)
+		{
+			end = url.substr(url.lastIndexOf('.'));
+			url = url.substring(0, url.lastIndexOf('.'));
+		}
+		if (url.indexOf('.') > -1)
+		{
+			url = url.substr(url.lastIndexOf('.') + 1);
+		}
+		url = url + end;
+		if (url.indexOf('.') == -1)
+		{
+			url = null;
+		}
 
-        if (url && (/^[0-9]+.[0-9]+$/g).test(url)) // Fix for when we're referencing by IP address
-            return null;
+		if (url && (/^[0-9]+.[0-9]+$/g).test(url)) // Fix for when we're referencing by IP address
+			return null;
 
-        return url;
-    };
+		return url;
+	};
 
-    this.isCookiesEnabled = function ()
-    {
-        // set a cookie then test to see if it was set properly
-        var n = "Test";
-        var c = new NIT.Cookie(n, n);
-        c.save(); // Save in cookie collection
-        c = me.getCookie(n); // Check that we can retrieve it
-        if (c) c.remove(); // Cleanup
+	this.isCookiesEnabled = function ()
+	{
+		// set a cookie then test to see if it was set properly
+		var n = "Test";
+		var c = new NIT.Cookie(n, n);
+		c.save(); // Save in cookie collection
+		c = me.getCookie(n); // Check that we can retrieve it
+		if (c) c.remove(); // Cleanup
 
-        return (c != null && c.value == n) ? true : false;
-    };
+		return (c != null && c.value == n) ? true : false;
+	};
 };
 //////////////////////////////////////
 // End: NIT.Cookie.js
@@ -315,43 +320,43 @@ NIT.CookieUtil = new function ()
 //////////////////////////////////////
 NIT.CookieCommand = new function ()
 {
-    var me = this;
-    var COOKIE_NAME = "NIT_CMD";
+	var me = this;
+	var COOKIE_NAME = "NIT_CMD";
 
-    this.navigateUrl;
-    this.isNavigating = false;
-    this.pageChanged = false; // New, for the agent side
+	this.navigateUrl;
+	this.isNavigating = false;
+	this.pageChanged = false; // New, for the agent side
 
-    this.write = function ()
-    {
-        var c = new NIT.Cookie(COOKIE_NAME);
-        if (me.navigateUrl)
-        {
-            // Avoid null string concatenation
-            c.values.navigateUrl = encodeURIComponent(me.navigateUrl);
-        }
+	this.write = function ()
+	{
+		var c = new NIT.Cookie(COOKIE_NAME);
+		if (me.navigateUrl)
+		{
+			// Avoid null string concatenation
+			c.values.navigateUrl = encodeURIComponent(me.navigateUrl);
+		}
 
-        c.values.isNavigating = me.isNavigating;
-        c.values.pageChanged = me.pageChanged;
-        c.save();
-    };
+		c.values.isNavigating = me.isNavigating;
+		c.values.pageChanged = me.pageChanged;
+		c.save();
+	};
 
-    this.read = function ()
-    {
-        me.navigateUrl = null;
+	this.read = function ()
+	{
+		me.navigateUrl = null;
 
-        var c = NIT.CookieUtil.getCookie(COOKIE_NAME);
-        if (c && c.values)
-        {
-            if (c.values.navigateUrl)
-            {
-                me.navigateUrl = decodeURIComponent(c.values.navigateUrl);
-            }
+		var c = NIT.CookieUtil.getCookie(COOKIE_NAME);
+		if (c && c.values)
+		{
+			if (c.values.navigateUrl)
+			{
+				me.navigateUrl = decodeURIComponent(c.values.navigateUrl);
+			}
 
-            me.isNavigating = (c.values.isNavigating == "true");
-            me.pageChanged = (c.values.pageChanged == "true");
-        }
-    };
+			me.isNavigating = (c.values.isNavigating == "true");
+			me.pageChanged = (c.values.pageChanged == "true");
+		}
+	};
 };
 //////////////////////////////////////
 // End: CookieCommand Section
@@ -362,52 +367,52 @@ NIT.CookieCommand = new function ()
 //////////////////////////////////////
 NIT.InfoCookie = new function ()
 {
-    var me = this;
-    var COOKIE_NAME = "NIT_INFO";
+	var me = this;
+	var COOKIE_NAME = "NIT_INFO";
 
-    this.pageName = '';
-    this.launchPointName = '';
-    this.question = '';
+	this.pageName = '';
+	this.launchPointName = '';
+	this.question = '';
 
-    this.save = function ()
-    {
-        var c = new NIT.Cookie(COOKIE_NAME);
+	this.save = function ()
+	{
+		var c = new NIT.Cookie(COOKIE_NAME);
 
-        // grab current page info from omniture variables
-        //        if (typeof s_exp != 'undefined' && typeof s_exp.pageName != 'undefined')
-        //            me.pageName = s_exp.pageName;
-        //        if (me.pageName == '' && typeof s_pageName != 'undefined')
-        //            me.pageName = s_pageName;
+		// grab current page info from omniture variables
+		//        if (typeof s_exp != 'undefined' && typeof s_exp.pageName != 'undefined')
+		//            me.pageName = s_exp.pageName;
+		//        if (me.pageName == '' && typeof s_pageName != 'undefined')
+		//            me.pageName = s_pageName;
 
-        c.values.pageName = me.pageName;
-        c.values.launchPointName = me.launchPointName;
-        c.values.question = me.question;
-        c.save();
-    };
+		c.values.pageName = me.pageName;
+		c.values.launchPointName = me.launchPointName;
+		c.values.question = me.question;
+		c.save();
+	};
 
-    this.read = function ()
-    {
-        me.pageName = '';
-        me.launchPointName = '';
-        me.question = '';
+	this.read = function ()
+	{
+		me.pageName = '';
+		me.launchPointName = '';
+		me.question = '';
 
-        var c = NIT.CookieUtil.getCookie(COOKIE_NAME);
-        if (c && c.values)
-        {
-            if (c.values.pageName)
-            {
-                me.pageName = c.values.pageName;
-            }
-            if (c.values.launchPointName)
-            {
-                me.launchPointName = c.values.launchPointName;
-            }
-            if (c.values.question)
-            {
-                me.question = c.values.question;
-            }
-        }
-    };
+		var c = NIT.CookieUtil.getCookie(COOKIE_NAME);
+		if (c && c.values)
+		{
+			if (c.values.pageName)
+			{
+				me.pageName = c.values.pageName;
+			}
+			if (c.values.launchPointName)
+			{
+				me.launchPointName = c.values.launchPointName;
+			}
+			if (c.values.question)
+			{
+				me.question = c.values.question;
+			}
+		}
+	};
 };
 //////////////////////////////////////
 // End: InfoCookie Section
@@ -415,53 +420,53 @@ NIT.InfoCookie = new function ()
 
 NIT.Launch.Integration = new function ()
 {
-    var me = this;
+	var me = this;
 
 
-    NIT.CookieCommand.read();
-    if (NIT.CookieCommand.isNavigating)
-    {
-        NIT.CookieCommand.isNavigating = false;
-        NIT.CookieCommand.write();
-    }
-    else // Page changed, not navigated by agent
-    {
-        NIT.CookieCommand.pageChanged = true;
-        NIT.CookieCommand.write();
-    }
+	NIT.CookieCommand.read();
+	if (NIT.CookieCommand.isNavigating)
+	{
+		NIT.CookieCommand.isNavigating = false;
+		NIT.CookieCommand.write();
+	}
+	else // Page changed, not navigated by agent
+	{
+		NIT.CookieCommand.pageChanged = true;
+		NIT.CookieCommand.write();
+	}
 
-    // Setup cookie polling for two-way commands
-    this.checkCommandCookie = function ()
-    {
-        NIT.CookieCommand.read();
-        if (NIT.CookieCommand.navigateUrl)
-        {
-            var url = NIT.CookieCommand.navigateUrl;
+	// Setup cookie polling for two-way commands
+	this.checkCommandCookie = function ()
+	{
+		NIT.CookieCommand.read();
+		if (NIT.CookieCommand.navigateUrl)
+		{
+			var url = NIT.CookieCommand.navigateUrl;
 
-            location.href = url;
+			location.href = url;
 
-            NIT.CookieCommand.navigateUrl = null;
-            NIT.CookieCommand.write();
-        }
-        setTimeout(me.checkCommandCookie, 500);
-    };
-    this.checkCommandCookie();
+			NIT.CookieCommand.navigateUrl = null;
+			NIT.CookieCommand.write();
+		}
+		setTimeout(me.checkCommandCookie, 500);
+	};
+	this.checkCommandCookie();
 
-    this.onPageLoad = function ()
-    {
-        //NIT.InfoCookie.save();
-    };
+	this.onPageLoad = function ()
+	{
+		//NIT.InfoCookie.save();
+	};
 
-    this.onUnload = function ()
-    {
-        // do page unload stuff
-    };
+	this.onUnload = function ()
+	{
+		// do page unload stuff
+	};
 
-    //add window onload listener
-    NIT.addListener(window, "onload", this.onPageLoad);
+	//add window onload listener
+	NIT.addListener(window, "onload", this.onPageLoad);
 
-    //add window onunload listener
-    NIT.addListener(window, "onunload", this.onUnload);
+	//add window onunload listener
+	NIT.addListener(window, "onunload", this.onUnload);
 };
 
 

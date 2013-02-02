@@ -52,7 +52,12 @@ if (typeof HauteLook === 'undefined') {
     HauteLook.Analytics.Controller = (function() {
         var
 
-        api = {};
+        api = {},
+        squelch = 0;
+
+        api.squelch = function() {
+            squelch = 1;
+        };
 
         api.loginEvent = function(memberId, sessionId) {
             HauteLook.Analytics.Client.KissMetrics.identifyUser(memberId);
@@ -108,6 +113,27 @@ if (typeof HauteLook === 'undefined') {
             });
         };
 
+        function squelchProxy(func) {
+            return function() {
+                if (squelch) {
+                    return;
+                }
+
+                func.apply(this, arguments);
+            }
+        };
+
+        /*
+         * wrap all functions with a check to squelch
+         * before calling the actual function
+         */
+        for (var funcName in api) {
+            if (api.hasOwnProperty(funcName) && typeof api[funcName] === 'function') {
+                var func = api[funcName];
+                api[funcName] = squelchProxy(func);
+            }
+        }
+
         return api;
 
     })();
@@ -125,17 +151,27 @@ if (typeof HauteLook === 'undefined') {
         var member_id,
             session_id;
 
-        if (typeof loginResponse === 'undefined' || typeof loginResponse.member === 'undefined') {
+        if (!loginResponse || !loginResponse.member) {
             return;
         }
 
-        if (typeof Halo === 'undefined' || typeof Halo.getCookie === 'undefined') {
+        if (!Halo || !Halo.getCookie) {
             return;
+        }
+
+        if (loginResponse.member.role > 1) {
+            HauteLook.Analytics.Controller.squelch();
         }
 
         member_id = loginResponse.member.member_id;
         session_id = Halo.getCookie('PHPSESSID');
         HauteLook.Analytics.Controller.loginEvent(member_id, session_id);
+    });
+
+    Sandbox.getMemberAsync(function(member) {
+        if (member && member.role > 1) {
+            HauteLook.Analytics.Controller.squelch();
+        }
     });
 
 }( HauteLook, jQuery, window ));

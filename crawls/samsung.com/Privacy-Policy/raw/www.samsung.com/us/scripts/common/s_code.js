@@ -1874,7 +1874,7 @@ function do_mouseover_cart(productID)
 function ss_filterSolution(){
 
 var ss_check = get_cookie('ss_check');
-console.log("In cookie: " + ss_check);
+//console.log("In cookie: " + ss_check);
 if(!ss_check){
 	var s_checkboxes = new Array;
 }
@@ -1885,7 +1885,7 @@ else{
 
 $(".shop-type-list a").click(function(){
 	s_checkboxes.push($.trim(this.text));
-	console.log("Added: " + $.trim(this.text));	
+	//console.log("Added: " + $.trim(this.text));	
     ss_check = s_checkboxes.join("|");
     createCookie('ss_check', ss_check);
 			
@@ -1900,7 +1900,7 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
 		   var labelTxt = $(labelObj).text()
 		   labelTxt = $.trim(labelTxt);
        if(ss_check.indexOf(labelTxt) > -1 ){
-		   console.log("Removed: " + labelTxt);
+		   //console.log("Removed: " + labelTxt);
 		   s_checkboxes.splice($.inArray(labelTxt,  s_checkboxes), 1 );
 	   }
   });//unchecked	
@@ -1912,7 +1912,7 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
 		   labelTxt = $.trim(labelTxt);
        if(ss_check.indexOf(labelTxt) == -1 ){
 		   s_checkboxes.push(labelTxt);
-		   console.log("Added: " + labelTxt);
+		   //console.log("Added: " + labelTxt);
 		   
 		   s.linkTrackVars='eVar9,prop15,eVar10,prop16,eVar11,prop17,eVar20,eVar55,events';
 		   s.linkTrackEvents='event73';
@@ -1921,7 +1921,7 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
            s.eVar11 = s.prop17 = s.pageName + ">left_cat_filter>category_filter_check";
            s.eVar20 = '+1';
 		   s.events = 'event73';
-           s.eVar55 = "check_type:" + labelTxt;
+		   s.eVar55 = "check_type:" + labelTxt.toLowerCase();
 		   
 		   s.tl(this,'o','category_filter_check');
 	   }//if all-products

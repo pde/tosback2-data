@@ -189,15 +189,60 @@ function loadPostScripts() {
                 }
 			});
 
-		//table rates
-		var ratesColCount = 0;
-		$('table.rates tr').each(function() { $(this).find('td, th').first().addClass('first'); });
-		$('table.rates').each(function() { 
-			$(this).find('tbody tr').last().addClass('last');
-			ratesColCount = $(this).find('thead th, thead td').length;
-			$(this).find('thead').after('<tfoot><tr><td colspan="' + ratesColCount + '">&nbsp;</td></tr></tfoot>').find('td, th').css('width', 100 / ratesColCount + "%");
-		});
+			//table rates
+			var ratesColCount = 0;
+			$('table.rates tr').each(function() { $(this).find('td, th').first().addClass('first'); });
+			$('table.rates tbody').each(function() { 
+		       $(this).find('tbody tr').last().addClass('last');
+		       ratesColCount =  $(this).find('tr:first').length;
+		       $(this).find('thead').after('<tfoot><tr><td colspan="' + ratesColCount + '">&nbsp;</td></tr></tfoot>').find('td, th').css('width', 100 / ratesColCount + "%");
+			});
 	});
+	
+	// grey out via login link
+	primaryNavLogin(false);
+}
+
+// force is true if login from hp
+function primaryNavLogin(force)
+{
+	 if(force){
+		greyOut();
+	}
+	else if((window.location.href.indexOf("login=true")  >  - 1) && (document.referrer.indexOf("login=true") == -1)){
+		greyOut();
+    }
+}
+
+function greyOut()
+{
+	//start fix for IE7 bug
+	$('#whiteout').appendTo($('#section-2').parent()).show();
+	$('#whiteout').appendTo($('#section-3-bll').parent()).show();
+	$('#header').attr('style','z-index:-1 !important');
+	//end IE
+
+	$('#whiteout').show();
+	$('#section-2').addClass("primaryNavLoginZindex");
+	$('#log-in-badge').addClass("primaryNavLoginZindex");
+	$('.user-id input:visible').focus();
+
+	$('#whiteout').click(function() {
+	   $(this).hide();
+		$('#header').removeAttr('style');
+		$('#section-2').removeClass("primaryNavLoginZindex");
+		$('#log-in-badge').removeClass("primaryNavLoginZindex");
+	});
+
+	$('body').keydown(function(w)  {
+		if(w.keyCode  == 27)  {
+			$('#whiteout').hide();
+			$('#header').removeAttr('style');
+			$('#section-2').removeClass("primaryNavLoginZindex");
+			$('#log-in-badge').removeClass("primaryNavLoginZindex");
+			return false;
+		}
+});
 }
 
 /*
@@ -353,12 +398,12 @@ Cof.Header = function() {
         });
 
         // find-a-branch rolldown
-        jQuery('#header #nav-global li.find-branch').mouseover(function() {
+        /*jQuery('#header #nav-global li.find-branch').mouseover(function() {
             jQuery('#header #nav-global li.find-branch').addClass('bankZipCodeOver');
         });
         jQuery('#header #nav-global li.find-branch').mouseout(function() {
             jQuery('#header #nav-global li.find-branch').removeClass('bankZipCodeOver');
-        });
+        });*/
 
         jQuery('#header #nav-global input#bank-zipcode').focus(function() {
             jQuery('#header #nav-global li.find-branch').addClass('bankZipCodeFocus');
@@ -494,7 +539,7 @@ Cof.Header.Zipcode = (function() {
 
     // Indicator for when the zip has been successfully accepted and submitted
     var hasSubmitZip = false;
-	
+
     var modalOpen = function(dialog) {
         dialog.overlay.show();
         dialog.container.show();
@@ -519,6 +564,7 @@ Cof.Header.Zipcode = (function() {
 
         init: function() {
             jQuery(document).ready(function() {
+
                 if (!Cof.Header.Zipcode.validZip()                                          && // only run if the ZIP is not valid
                     !Cof.Header.Zipcode.validRegion()                                       && // only run if the region is not valid
                     window.location.hostname.indexOf('capitalone.com') != -1                && // only run if the hostname contains "capitalone.com"
@@ -529,18 +575,18 @@ Cof.Header.Zipcode = (function() {
 					zipOptOutFlag == false                                                     // only if they have not opted out
                 ) {
                     jQuery('a').click(function() {
-					if( $(this).hasClass('zip-prompt-flag') ) {
-						Cof.Header.Zipcode.askForZip(this.href);
-						return false;
-					} 
+						if( $(this).hasClass('zip-prompt-flag') ) {
+							Cof.Header.Zipcode.askForZip(this.href);
+							return false;
+						} 
                     });
                 }
 
                 jQuery('form[name=change-zip], form[name=zipcode-overlay-form]').submit(function() {
-	if($(this).attr('processed') == null) {
-			$(this).attr('processed', 'true');
-                    return Cof.Header.Zipcode.submitZip(jQuery(this).attr('id'));
-}
+	               if($(this).attr('processed') == null) {
+        	               $(this).attr('processed', 'true');
+                    		return Cof.Header.Zipcode.submitZip(jQuery(this).attr('id'));
+			}
                 });
             });
 
@@ -736,6 +782,38 @@ $(document).ready(function() {
 					$("a.freeFormHref").parent().css('text-align','left');
 					$('a.freeFormHref').attr('href', '#nontextOnlyVersion');
 					}
+
+				// Added for Default Badge Dropdown functions
+				// ACTIVATE SELECTY DROPDOWN
+					$('fieldset.selecty').click(function(){
+						if ( $('.selecty-kids').is(':visible') ) {
+							$('.selecty-kids').slideUp(100);
+						}
+						else {
+							$('.selecty-kids').slideDown(100).css('backgroundColor','#fff');
+							$('.subnav').css('left','230px');
+							$('.subnav-holder').hide();
+						}
+					});
+				
+				
+				// HOVER EFFECTS FOR SELECTY DROPDOWN
+					$('.selecty-kids li a').hover(function(){
+						$('.selecty-kids li a').blur();
+					});	
+				
+				
+				// CLICK OUTSIDE OF SELECTY-KIDS HIDES SELECTY-KIDS 
+					$('html').click(function() {
+						if ( $('.selecty-kids').is(':visible') ) {
+							$('.selecty-kids').slideUp(100);
+							$('.user-id input:visible').focus();
+						}	
+					});
+
+					$('.selecty-kids, .selecty, .tip').click(function(event){
+						event.stopPropagation();
+					});	
 			});
 			
 /* Added for swipe Gesture for Carousel*/
@@ -1324,3 +1402,19 @@ jQuery(document).ready(function() {
 	Cof.Header();
 });
 //end header.js document ready fns
+
+//Pop up for BankRegionalization home.capitalone.360 URL invoked from bank-capitalone360.xml.
+function capitalOne360PopUp(url){	
+	if(url.indexOf("http://") !=-1 || url.indexOf("https://") !=-1 ) {
+		window.open(url)
+	 } 
+	 else {
+		 //Incorrect url pattern or property file fail to load www.capitalone360.bank.redirect.url
+		var port = document.location.port;
+		if(port !=null) {
+               window.open("http://"+window.location.hostname+":" + port +"/misc/error/404.html")
+		} else {
+		      window.open("http://"+window.location.hostname+"/misc/error/404.html")
+		   }
+	  }
+}

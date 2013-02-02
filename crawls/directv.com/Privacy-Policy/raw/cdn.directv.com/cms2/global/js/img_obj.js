@@ -1,1 +1,518 @@
-var img_cookie=Class.create({global_var:{content_width:980,view_port_thres:998},createCookie:function(c,d,e){if(e){var b=new Date();b.setTime(b.getTime()+(e*24*60*60*1000));var a="; expires="+b.toUTCString()}else{var a=""}document.cookie=c+"="+d+a+"; path=/"},readCookie:function(b){var e=b+"=";var a=document.cookie.split(";");for(var d=0;d<a.length;d++){var f=a[d];while(f.charAt(0)==" "){f=f.substring(1,f.length)}if(f.indexOf(e)==0){return f.substring(e.length,f.length)}}return null},eraseCookie:function(a){this.createCookie(a,"",-1)},getVersion:function(b){var a=this.readCookie("img_welcome_lbx");if(a==null){this.eraseCookie("img_welcome_lbx");return false}return a.indexOf(b)>-1},create_div:function create_div(b,e,d){var a=document.createElement(b);Element.extend(a);if(e!=""){a.writeAttribute("id",e)}if(d!=""){a.writeAttribute("class",d)}return a},get_content_center:function(b,c){var d=this.get_content_left(""),a=d+((this.global_var.content_width-b)/2);return(c!="")?a.toString()+c:a},get_content_left:function(a){var b=((document.viewport.getWidth()-this.global_var.content_width)/2);return(a!="")?b.toString()+a:b}});var img_attr_icon={local:{img_float:0,img_duration:1},init:function(c){c.createCookie("img_attraction_icon","at:01;",0.25);var b,a=c.create_div("div","img_attraction","");$("dtv_topnav_sections_nav").appendChild(a);b=c.create_div("div","","close-btn");a.appendChild(b);setTimeout(img_attr_icon.keepfloating,1000);Event.observe(b,"click",img_attr_icon.close_attr)},keepfloating:function(){var b=8;if(img_attr_icon.local.img_float!=0&&!img_attr_icon.isEven(img_attr_icon.img_float)){img_attr_icon.local.img_duration++}var a=(img_attr_icon.isEven(img_attr_icon.local.img_float))?b+img_attr_icon.local.img_float:-b;if(++img_attr_icon.local.img_float<5){new Effect.Move("img_attraction",{x:0,y:a,mode:"relative",duration:img_attr_icon.local.img_duration/10,afterFinish:img_attr_icon.keepfloating})}else{setTimeout(img_attr_icon.close_attr,5000)}},isEven:function(a){a=parseFloat(a);return a%2==0},close_attr:function(){$("img_attraction").fade()}};var dmg_jsonpmify={scripts:[],detect_json:function(){var b=this;$$(".dmg-jsonp").each(function(e,j){var f=e.readAttribute("class"),d=f.indexOf("dmg-category-");if(d===-1){return}f=f.substring(d,f.length);f=f.split(" ")[0];f=f.replace("dmg-category-","");var c=f.split("-"),h=3;c=parseInt(c[c.length-1]);if(!isNaN(c)){h=c}else{if(f.substring(f.length,f.length-1)!="-"){f+="-"}}var k=f.split("-");f="";for(var l=0;l<k.length-1;l++){f+=k[l]+(((k.length-2)===l)?"":"-")}var g=document.createElement("script");g.type="text/javascript";g.src="http://news.directv.com/feed/json/?category_name="+f+"&jsonp=dmg_jsonpmify.callbacks_"+j+".func&maxResults="+h;b["callbacks_"+j]={func:function(i){dmg_jsonpmify.dmg_padding(i,e)}};b.scripts.push(g)});for(var a=0;a<b.scripts.length;a++){document.getElementsByTagName("head")[0].appendChild(b.scripts[a])}},dmg_padding:function(e,b){if(typeof e.posts==="undefined"){return}var d=(typeof b.down(".border-only")!=="undefined"),b=b.down("ul"),c=e.posts;for(var a=0;a<c.length;a++){b.insert('<li class="colspan-3 none"><b class="head"><b></b></b><div class="skin" style=""><div class="inner-skin"><div class="body"><div class="content" style="height: auto; padding-bottom: 0px; "><div class="title "><div class="tup"><h3>'+c[a].title+'</h3></div></div><div class="body-copy"><div class="tup">'+c[a].excerpt+'</div></div><div class="link"><div class="tup"><a href="'+c[a].permalink+'" target="_self">Read more<span class="arrow"></span></a></div></div></div></div></div></div><b class="foot"><b></b></b></li>')}b.down("li:first-child").addClassName("first-row")}};(function(){var b=new img_cookie(),a=b.readCookie("img_instrd");if(a!=null){b.eraseCookie("img_instrd");window.location=a}document.observe("dom:loaded",function(){dmg_jsonpmify.detect_json()})})();(function(a){a(document).ready(function(){try{a(".poster-resize").fadeIn();var c=window.location.pathname.substring(1),g=a('.dmg-filter .ep-radio-toggle a[href*="'+c+'"]');if(g.length===0){return}if(g.length>1){g=a(".dmg-filter .ep-radio-toggle a.first")}g.addClass("active");var f=g.attr("href"),i=null,h=(a("#ctl_tup").hasClass("movies_lp"))?"Movies":"TV Shows",d="Browse All "+h+" <br />";if(f.indexOf("-online")>-1){b("&isstreaming=true");d+="to Watch Online"}else{if(f.indexOf("-on-tv")>-1){b("&islinear=true");d+="to Watch on TV"}else{if(f.indexOf("-on-demand")>-1){b("&isnonlinear=true");d+="On Demand"}}}a(".dmg-filter .dd-title span").html(d);a(".dmg-filter .dmg-browse-all-dropdown").show()}catch(e){}});function b(d){var c=a(".dmg-filter .dmg-browse-all-dropdown ul li a");c.each(function(f){var g=a(this),e=g.attr("href"),h="";if(e.indexOf("?")==-1){h="?"}g.attr("href",e+h+d)})}})(jQuery);(function(b){var c=null,l=null,a=false,o=false,p,r=false,i,n,q=false,g=34,e="//"+m()+".directv.com/cms2/overlays/",s=[{class_check:["movies_lp"],element_check:"#ctl_tup",overlay_image:"overlay__DTVE_Movies.png",image_class:"movies-overlay",cookie_tag:"mov1",show_to_old_nav:true,image_width:null},{class_check:["homepage_customer"],element_check:"#ctl_tup",overlay_image:"overlay__Homepage.png",image_class:"homepage-overlay",cookie_tag:"hp1",show_to_old_nav:false,image_width:"1069px"},{class_check:["tv_shows"],element_check:"#ctl_tup",overlay_image:"overlay__DTVE_TVShows.png",image_class:"tvshows-overlay",cookie_tag:"shows1",show_to_old_nav:true,image_width:null},{class_check:["my-account","my-overview"],element_check:"body",overlay_image:"overlay__My_Account.png",image_class:"my-account-overlay",cookie_tag:"myacc1",show_to_old_nav:true,image_width:"1041px"},{class_check:["my_directv_lp"],element_check:"#ctl_tup",overlay_image:"overlay__DTVE_WatchDTV.png",image_class:"watch-dtv-overlay",cookie_tag:"dtv1",show_to_old_nav:false,image_width:"1054px"}];b(document).ready(function(){try{var w=window.location.toString();if(w.indexOf("dmgOverlay=false")>-1||w.indexOf("cmp=tv-rescus-cus-ppvcin-en-orderppverr")>-1){return}i=new img_cookie();var y=i.readCookie("customer");r=b("body").hasClass("ipad");q=(b("#dtv_legacy_topnav").length==0);if(y!=null){o=(y=="yes")}a=(document.getElementById("utility_bar")!=null);p=b("body").hasClass("ie-lt-9");n=d();if(n===null){return}if(!n.show_to_old_nav&&!q){return}var v=n.cookie_tag;if(!i.getVersion(v)&&n!=null){j();f();var u=i.readCookie("img_welcome_lbx")||"";i.createCookie("img_welcome_lbx",u+"|"+v,6000)}else{if(n!=null){j();t();k()}}}catch(x){}});function m(){return(window.location.protocol=="https:")?"cdns":"cdn"}function d(){for(var u=0;u<s.length;u++){var v=s[u].class_check.length,w=0;for(var z=0;z<v;z++){if(b(s[u].element_check).hasClass(s[u].class_check[z])){w++}}if(w===v){return s[u]}}return null}function j(){if(c!=null){return}c=b("#content_page_layout");c.append('<div id="wb_dimmer" class="dmg-overlay-el"></div>').append('<div id="tutorial_overlay" class="dmg-overlay-el"><img src="'+e+n.overlay_image+'" class="'+n.image_class+'" /></div>');b("#tutorial_overlay").click(h);b("#wb_dimmer").click(h);if(q){return}var u=b("#tutorial_overlay img"),v=parseInt(u.css("top").replace("px",""));u.css({top:(v-g)+"px"})}function t(){b("#content_page_layout").append('<div id="dmg_tutorial_tab"></div>');l=b("#dmg_tutorial_tab");l.click(f)}function f(){if(r&&n.image_width!=null){b("body").css({"min-width":n.image_width})}var u=function(){b(".dmg-overlay-el").each(function(){var v=b(this);v.fadeIn("slow")})};if(l===null){u()}else{b("#dmg_tutorial_tab").animate({left:"-45px"},u)}}function k(){b("#dmg_tutorial_tab").animate({left:"0"})}function h(){b(".dmg-overlay-el").each(function(){var u=b(this);u.fadeOut("slow",function(){if(l===null){t()}k()});if(r&&n.image_width!=null){b("body").css({"min-width":"inherit"})}})}})(jQuery);
+var img_cookie = Class.create({
+	global_var : { content_width: 980, view_port_thres: 998 },
+	createCookie : function(name,value,days) {
+		if (days) {
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = "; expires="+date.toUTCString();
+		}
+		else {
+			var expires = "";
+		}
+		//window.console.log(value);
+		document.cookie = name+"="+value+expires+"; path=/";
+	},
+	readCookie : function(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	},
+	eraseCookie : function(name) {
+		this.createCookie(name,"",-1);
+	},
+	getVersion : function(req) {
+		var cook = this.readCookie('img_welcome_lbx');	
+		if (cook == null) {
+			this.eraseCookie('img_welcome_lbx');
+			return false;
+		}
+		return cook.indexOf(req) > -1;
+		
+	},
+	create_div : function create_div(type, id, c) {
+			var new_div = document.createElement(type);
+			Element.extend(new_div);
+			if (id != '') new_div.writeAttribute('id', id);
+			if (c != '') new_div.writeAttribute('class', c);
+			return new_div;
+	},
+	get_content_center: function(cw, xtra_txt) {
+		
+		var 
+			content_left = this.get_content_left(''),
+			content_center = content_left + ((this.global_var.content_width-cw) / 2)
+		;
+		return (xtra_txt != '') ? content_center.toString() + xtra_txt : content_center;
+		
+	},
+	get_content_left : function(xtra_txt) {
+		var content_left = ((document.viewport.getWidth() - this.global_var.content_width) / 2);
+		return (xtra_txt != '') ? content_left.toString() + xtra_txt : content_left;
+	}
+});
+
+var img_attr_icon = {
+    local : { img_float : 0, img_duration : 1},
+    init : function(img_cookobj) {
+    	img_cookobj.createCookie('img_attraction_icon','at:01;',.25);
+    	var cls_btn, 
+  			attraction = img_cookobj.create_div('div', 'img_attraction', '')
+  		;
+		
+		$('dtv_topnav_sections_nav').appendChild(attraction);
+		
+		cls_btn = img_cookobj.create_div('div', '', 'close-btn');
+		attraction.appendChild(cls_btn);
+		setTimeout(img_attr_icon.keepfloating, 1000);
+		
+		Event.observe(cls_btn, 'click', img_attr_icon.close_attr);
+    },
+	keepfloating : function() {			
+		var distance = 8;
+		
+		if (img_attr_icon.local.img_float != 0 
+			&& !img_attr_icon.isEven(img_attr_icon.img_float))
+			img_attr_icon.local.img_duration++;
+		
+		var direction =	(img_attr_icon.isEven(img_attr_icon.local.img_float)) ? distance+img_attr_icon.local.img_float : -distance;
+		if (++img_attr_icon.local.img_float < 5)
+			new Effect.Move('img_attraction', {
+				x: 0, 
+				y: direction, 
+				mode: 'relative', 
+				duration:  img_attr_icon.local.img_duration/10, 
+				afterFinish: img_attr_icon.keepfloating
+			});
+		else
+			setTimeout(img_attr_icon.close_attr, 5000);
+	},
+	isEven : function(n){
+			n = parseFloat(n);
+	  	return n % 2 == 0;
+	},
+	close_attr : function(){
+		//cls_btn.stopObserving('click');
+		$('img_attraction').fade();	
+	}
+};
+
+var dmg_jsonpmify = {
+	scripts : [],
+	detect_json : function() {
+		var _pass_this = this;
+		$$('.dmg-jsonp').each(function(el, i){
+			var q_need =el.readAttribute('class')
+				, q_index = q_need.indexOf('dmg-category-');
+
+			if (q_index === -1)
+				return;
+
+			q_need = q_need.substring(q_index, q_need.length);
+			q_need = q_need.split(' ')[0];
+			q_need = q_need.replace('dmg-category-', '');
+
+			var q_need_eval = q_need.split('-')
+				, maxResults = 3;
+
+			q_need_eval = parseInt( q_need_eval[q_need_eval.length-1] );
+
+			if ( !isNaN( q_need_eval ) ) 
+				maxResults = q_need_eval;
+			 else 
+				if (q_need.substring(q_need.length, q_need.length-1) != '-')
+					q_need+= '-';
+
+			var build_q_need = q_need.split('-');
+			q_need = '';
+
+			for (var x = 0; x < build_q_need.length-1; x++) 
+				q_need+= build_q_need[x] + ( ( ( build_q_need.length-2 ) === x ) ? '' : '-');
+
+			var _script = document.createElement('script');
+
+			_script.type = 'text/javascript';
+			_script.src = 'http://news.directv.com/feed/json/?category_name=' 
+				+ q_need + '&jsonp=dmg_jsonpmify.callbacks_' 
+				+ i + '.func&maxResults=' + maxResults;
+
+	 		_pass_this['callbacks_' + i] = {
+	 			func : function(obj) {
+					dmg_jsonpmify.dmg_padding(obj, el);
+				}	
+			};
+			_pass_this.scripts.push(_script);
+
+		});
+		
+		for (var x = 0;x < _pass_this.scripts.length;x++)
+			document.getElementsByTagName("head")[0].appendChild(_pass_this.scripts[x]);
+
+	},
+	dmg_padding : function(obj, el) {
+		if (typeof obj['posts'] === 'undefined') {
+			//kill module
+			return;
+		}
+		var is_border_only = (typeof el.down('.border-only') !== 'undefined')
+			, el = el.down('ul')
+			, posts = obj['posts'];
+		
+	//	el.insert('<div class="content json-c-div"></div>');
+	//	el = el.down('.json-c-div');
+
+		for (var i = 0;i < posts.length;i++) {
+			/*el.insert('<li class="colspan-3"><b class="head"><b></b></b><div class="body"><div class="content"><div class="title"><div class="tup"><h4>' + posts[i].title + '</h4></div></div>');
+			el.insert('<div class="body-copy"><div class="tup">' + posts[i].excerpt + '</div></div>');
+			el.insert('<div class="link"><div class="tup"><a href="' + posts[i].permalink + '">Read more <span class="arrow"></span></a></div></div></div></div></li>');*/
+
+
+			el.insert('<li class="colspan-3 none">'
+				+ '<b class="head"><b></b></b>'
+				+ '<div class="skin" style="">'
+				+ '<div class="inner-skin">'
+				+ '<div class="body">'
+				+ '<div class="content" style="height: auto; padding-bottom: 0px; ">'
+				+ '<div class="title ">'
+				+ '<div class="tup"><h3>' + posts[i].title + '</h3></div></div>'
+				+ '<div class="body-copy">'
+				+ '<div class="tup">'
+				+ posts[i].excerpt
+				+ '</div>'
+				+ '</div>'
+				+ '<div class="link">'
+				+ '<div class="tup">'
+				+ '<a href="' + posts[i].permalink + '" target="_self">Read more<span class="arrow"></span></a>'
+				+ '</div>'
+				+ '</div>'
+				+ '</div>'
+				+ '</div>'
+				+ '</div>'
+				+ '</div>'
+				+ '<b class="foot"><b></b></b>'
+				+ '</li>'
+			);
+
+		}
+		el.down('li:first-child').addClassName('first-row');
+	}
+};
+
+(function(){
+	var img_cookobj = new img_cookie(),
+		new_cooks = img_cookobj.readCookie('img_instrd')
+	;
+	
+	if (new_cooks != null) {
+		img_cookobj.eraseCookie('img_instrd');
+		window.location = new_cooks;
+	}
+	
+	//Event.observe(window, 'load', function() {
+	document.observe("dom:loaded", function() {
+
+		dmg_jsonpmify.detect_json();
+		
+	});
+	
+})();
+(function($){
+	$(document).ready(function(){
+			try {
+
+			/*shows the big poster under all ep pages*/
+			$('.poster-resize').fadeIn();
+
+			var _window_location = window.location.pathname.substring(1)
+				, current_tab_selector = $('.dmg-filter .ep-radio-toggle a[href*="' + _window_location + '"]');
+
+			if (current_tab_selector.length === 0) 
+				return;
+
+			if (current_tab_selector.length > 1)
+				current_tab_selector = $('.dmg-filter .ep-radio-toggle a.first');
+
+			current_tab_selector.addClass('active');
+
+			var class_switch = current_tab_selector.attr('href')
+				, filter_qstring = null
+				, is_movie_text = ( $('#ctl_tup').hasClass('movies_lp') ) ? 'Movies' : 'TV Shows'
+				, display_dd = 'Browse All ' + is_movie_text + ' <br />';
+
+			if (class_switch.indexOf('-online') > -1) {
+				add_query_string('&isstreaming=true');
+				display_dd+= 'to Watch Online';
+			}
+			else if (class_switch.indexOf('-on-tv') > -1) {
+				add_query_string('&islinear=true');
+				display_dd+= 'to Watch on TV';
+			}
+			else if (class_switch.indexOf('-on-demand') > -1) {
+				add_query_string('&isnonlinear=true');
+				display_dd+= 'On Demand';
+			}
+
+			$('.dmg-filter .dd-title span').html(display_dd);
+			$('.dmg-filter .dmg-browse-all-dropdown').show();
+
+		}
+		catch(err) {
+		//	console.log(err);
+		}
+	});
+	function add_query_string(q_string_addition) {
+		var selector = $('.dmg-filter .dmg-browse-all-dropdown ul li a');
+		
+		selector.each(function(i){
+			var el = $(this)
+				, href = el.attr('href')
+				, question_add = '';
+
+			if (href.indexOf('?') == -1 ) 
+				question_add = '?';
+
+			el.attr('href', href + question_add + q_string_addition);
+
+		});
+
+	}
+})(jQuery);
+
+
+(function($){
+	
+	/* The reason image_width is not being fed dynamically
+	 * is because we'll probably have to implement an imageloaded
+	 * function since .load is not accurate and can trigger an
+	 * early execution without returning the image width */ 
+	
+	var content_page_layout = null
+		, tut_tab = null
+		, is_logged = false
+		, is_customer = false
+		, is_IE
+		, is_ipad = false
+		, img_cookobj
+		, current_overlay
+		, is_new_nav = false
+		, old_nav_height_diff = 34
+		, overlay_base_url = '//' + cdn_s() + '.directv.com/cms2/overlays/'
+		, overlays = [
+			{
+				class_check : ['movies_lp'],
+				element_check : '#ctl_tup',
+				overlay_image : 'overlay__DTVE_Movies.png',
+				image_class : 'movies-overlay',
+				cookie_tag : 'mov1',
+				show_to_old_nav : true,
+				image_width : null
+			},
+			{
+				class_check : ['homepage_customer'],
+				element_check : '#ctl_tup',
+				overlay_image : 'overlay__Homepage.png',
+				image_class : 'homepage-overlay',
+				cookie_tag : 'hp1',
+				show_to_old_nav : false,
+				image_width : '1069px'
+			},
+			{
+				class_check : ['tv_shows'],
+				element_check : '#ctl_tup',
+				overlay_image : 'overlay__DTVE_TVShows.png',
+				image_class : 'tvshows-overlay',
+				cookie_tag : 'shows1',
+				show_to_old_nav : true,
+				image_width : null
+			},
+			{
+				class_check : ['my-account' ,'my-overview'],
+				element_check : 'body',
+				overlay_image : 'overlay__My_Account.png',
+				image_class : 'my-account-overlay',
+				cookie_tag : 'myacc1',
+				show_to_old_nav : true,
+				image_width : '1041px'
+			},
+			{
+				class_check : ['my_directv_lp'],
+				element_check : '#ctl_tup',
+				overlay_image : 'overlay__DTVE_WatchDTV.png',
+				image_class : 'watch-dtv-overlay',
+				cookie_tag : 'dtv1',
+				show_to_old_nav : false,
+				image_width : '1054px'
+			},
+			{
+				class_check : ['playlist'],
+				element_check : 'body',
+				overlay_image : 'overlay__Playlist.png',
+				image_class : 'playlist-overlay',
+				cookie_tag : 'play1',
+				show_to_old_nav : false,
+				image_width : '1138px'
+			}
+		];
+
+	//Event.observe(window, 'load', function() {
+	$(document).ready(function(){	
+		/*
+		 * Kill if the query string has dmgOverlay=false
+		 * This can be used to flush the cookies.
+		 * If we decide to in a future we need to bring
+		 * the query function used in the premiums
+		 * browse pages. 
+		*/
+
+	try {
+		var _win_loc_test = window.location.toString();
+		if (_win_loc_test.indexOf('dmgOverlay=false') > -1
+				|| _win_loc_test.indexOf('cmp=tv-rescus-cus-ppvcin-en-orderppverr') > -1) //one off supress ask andy if this is done
+			return;
+
+		img_cookobj = new img_cookie();
+		
+		var cCook = img_cookobj.readCookie('customer');
+		
+		is_ipad = $('body').hasClass('ipad');
+		is_new_nav = ($('#dtv_legacy_topnav').length == 0);
+
+		if(cCook != null)
+			is_customer = (cCook == 'yes');
+
+		is_logged = (document.getElementById('utility_bar') != null);
+		is_IE = $('body').hasClass('ie-lt-9');
+
+		current_overlay = look_for_overlay();
+
+		if (current_overlay === null)
+			return;
+
+		if (!current_overlay.show_to_old_nav
+			&& !is_new_nav)
+			return;
+		
+		var _img_current = current_overlay.cookie_tag;
+
+		if (!img_cookobj.getVersion(_img_current)
+			&& current_overlay != null) {
+			lb_init();
+			show_lb();
+			
+			var current_overlays = img_cookobj.readCookie('img_welcome_lbx') || '';
+		//	console.log(current_overlays);
+			img_cookobj.createCookie('img_welcome_lbx', current_overlays + '|' + _img_current, 6000);
+			
+			
+		} else if (current_overlay != null) {
+			lb_init();
+			init_tab();
+			show_tab();
+		}
+
+	} catch(err) {
+		//console.log(err);
+	}
+		
+	});
+	function cdn_s() {
+		//return 'adapt';
+		return (window.location.protocol == 'https:') ? 'cdns' : 'cdn';
+	}
+	function look_for_overlay() {
+		for (var x=0;x<overlays.length;x++) {
+			var verify_len = overlays[x].class_check.length
+				, current_truth = 0;
+
+
+			
+			for (var y = 0; y < verify_len; y++ ){
+				if ($(overlays[x].element_check).hasClass(overlays[x].class_check[y]))
+				current_truth++;
+			}
+
+			if(current_truth === verify_len)
+				return overlays[x];
+		}
+		return null;
+	}
+	
+	function lb_init() {
+
+		if (content_page_layout != null)
+			return;
+		
+		content_page_layout = $('#content_page_layout');
+		content_page_layout
+			.append('<div id="wb_dimmer" class="dmg-overlay-el"></div>')
+			.append('<div id="tutorial_overlay" class="dmg-overlay-el"><img src="' 
+					+ overlay_base_url 
+					+ current_overlay.overlay_image + '" class="' + 
+					current_overlay.image_class + '" /></div>');
+
+		$('#tutorial_overlay').click(close_lb);
+		$('#wb_dimmer').click(close_lb);
+		
+		if (is_new_nav)
+			return;
+		
+		var live_tutorial_img_el = $('#tutorial_overlay img')
+			, tutorial_top = parseInt(live_tutorial_img_el.css('top').replace('px', ''));
+		
+		live_tutorial_img_el.css({
+			top: (tutorial_top - old_nav_height_diff) + 'px'
+		}); 
+
+	}
+	function init_tab() {
+
+		$('#content_page_layout')
+			.append('<div id="dmg_tutorial_tab"></div>');
+		tut_tab = $('#dmg_tutorial_tab');
+		tut_tab.click(show_lb);
+
+	}
+
+	function show_lb() {
+		
+		if (is_ipad && current_overlay.image_width != null)
+			$('body').css({'min-width': current_overlay.image_width});
+
+		var show_function = function() {
+			$('.dmg-overlay-el').each(function() {
+				var el = $(this);
+				el.fadeIn('slow');
+			});
+		};
+
+		if (tut_tab === null)
+			show_function();
+		else
+			$('#dmg_tutorial_tab').animate({left: '-45px'}, show_function);	
+	}
+
+	function show_tab() {
+
+		$('#dmg_tutorial_tab').animate({left: '0'});
+
+	}
+	function close_lb() {
+		$('.dmg-overlay-el').each(function(){
+			var el = $(this);
+			el.fadeOut('slow', function(){
+				if (tut_tab === null)
+					init_tab();
+
+				show_tab();
+			});
+			if (is_ipad && current_overlay.image_width != null)
+				$('body').css({'min-width': 'inherit'});
+		});		
+
+	}
+	
+})(jQuery);

@@ -1,0 +1,675 @@
+var ITunesWidget = function() {
+	this.template = null
+	this.template_strings = null
+	this.filter = "all"
+	this.language = null
+	this.attributes = {
+		affiliate: null,
+		partner_id: null,
+		width: 250,
+		height: 300,
+		inner_width: 230,
+		top_left_color: "FFFFFF",
+		bottom_left_color: "FFFFFF",
+		top_right_color: "FFFFFF",
+		bottom_right_color: "FFFFFF",
+		playlist_title: "",
+		playlist_description: "",
+		itunes_items: this.widget_type === "playlist" ? [] : ""
+	}
+	this.init()
+}
+
+ITunesWidget.SERVER_URL = "http://widgets.itunes.apple.com"
+ITunesWidget.ITUNES_LOOKUP_URL = _.template("http://itunes.apple.com/lookup?country=<%= country %>&id=<%= itunes_items %>&entity=<%= entity %>&callback=?")
+ITunesWidget.ITUNES_SEARCH_URL = _.template("http://itunes.apple.com/search?limit=<%= limit %>&country=<%= country %>&media=<%= media %>&entity=<%= entity %>&term=<%= term %>&callback=?")
+
+ITunesWidget.prototype = {
+	init: function() {
+		var that = this
+
+		if (_.isEmpty(this.getURLParameter("wtype"))) {
+			this.widget_type = this.getURLParameter("wt") || "search"
+			this.media = this.getURLParameter("m") || "music"
+			this.entity = this.getURLParameter("e") || "song"
+			var ids = this.getURLParameter("ids")
+		} else {
+			switch (this.getURLParameter("wtype")) {
+			case "0":
+				this.widget_type = "discovery"
+				this.media = "software"
+				this.entity = "software,iPadSoftware"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "1":
+				this.widget_type = "search"
+				this.media = "software"
+				this.entity = "software"
+				var ids = 0
+				break
+			case "11":
+				this.widget_type = "playlist"
+				this.media = "software"
+				this.entity = "software"
+				var ids = this.getURLParameter("pl")
+				break
+			case "2":
+				this.widget_type = "discovery"
+				this.media = "music"
+				this.entity = "album"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "3":
+				this.widget_type = "search"
+				this.media = "music"
+				this.entity = "album"
+				var ids = 0
+				break
+			case "4":
+				this.widget_type = "playlist"
+				this.media = "song"
+				this.entity = "song"
+				var ids = this.getURLParameter("pl")
+				break
+			case "6":
+				this.widget_type = "discovery"
+				this.media = "ebook"
+				this.entity = "ebook"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "5":
+				this.widget_type = "search"
+				this.media = "ebook"
+				this.entity = "ebook"
+				var ids = 0
+				break
+			case "10":
+				this.widget_type = "playlist"
+				this.media = "ebook"
+				this.entity = "ebook"
+				var ids = this.getURLParameter("pl")
+				break
+			case "7":
+				this.widget_type = "discovery"
+				this.media = "tvSeason"
+				this.entity = "tvSeason"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "8":
+				this.widget_type = "discovery"
+				this.media = "movie"
+				this.entity = "movie"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "9":
+				this.widget_type = "search"
+				this.media = "tvSeason"
+				this.entity = "tvSeason"
+				var ids = 0
+				break
+			case "12":
+				this.widget_type = "playlist"
+				this.media = "podcast"
+				this.entity = "podcast"
+				var ids = this.getURLParameter("pl")
+				break
+			case "13":
+				this.widget_type = "discovery"
+				this.media = "software"
+				this.entity = "macSoftware"
+				var ids = this.getURLParameter("app_id")
+				break
+			case "14":
+				this.widget_type = "search"
+				this.media = "software"
+				this.entity = "macSoftware"
+				var ids = 0
+				break
+			case "15":
+				this.widget_type = "playlist"
+				this.media = "software"
+				this.entity = "macSoftware"
+				var ids = this.getURLParameter("pl")
+				break
+			}
+		}
+
+		this.country = this.getURLParameter("c") || this.getURLParameter("country") || "us"
+		this.category = this.entity == "software,iPadSoftware" ? "software" : this.entity
+		_.extend(this.attributes, {
+			affiliate: decodeURIComponent(decodeURIComponent(this.getURLParameter("affiliate_id"))),
+			partner_id: this.getURLParameter("partnerId"),
+			width: this.getURLParameter("w") || this.getURLParameter("ww") || "250",
+			height: this.getURLParameter("h") || this.getURLParameter("wh") || "300",
+			top_left_color: this.getURLParameter("tlc") || this.getURLParameter("cul"),
+			top_right_color: this.getURLParameter("trc") || this.getURLParameter("cur"),
+			bottom_right_color: this.getURLParameter("brc") || this.getURLParameter("cll"),
+			bottom_left_color: this.getURLParameter("blc") || this.getURLParameter("clr"),
+			playlist_title: unescape(this.getURLParameter("t")) || "",
+			playlist_description: unescape(this.getURLParameter("d")) || "",
+			itunes_items: this.fetchiTunesItems(ids, function() {
+				that.getCountryConfig(function() {
+					that.setTemplate()
+						.show()
+				})
+			})
+		})
+
+	},
+
+	getCountryConfig: function(callback) {
+		var that = this
+		var js_url = _.template(ITunesWidget.SERVER_URL + "/lib/widget_lang/javascripts/<%= language %>.json?99999")
+		var country_url = _.template(ITunesWidget.SERVER_URL + "/lib/builder_lang/javascripts/countries.json?99999")
+		var css_tag = _.template("<link href='/lib/widget_lang/stylesheets/<%= language %>.css' type='text/css' rel='stylesheet' media='screen' />")
+
+		$.getJSON(country_url(), function(country_data) {
+			that.language = _.find(country_data.countries, function(item) {
+				return item.country_code === that.country
+			})
+				.language
+			$("head")
+				.append(css_tag({
+				language: that.language
+			}))
+
+			$.getJSON(js_url({
+				language: that.language
+			}), function(data) {
+				that.template_strings = data
+				callback()
+			})
+		})
+
+
+	},
+
+	listen: function() {
+		var that = this
+		var self = this
+		var filter = ""
+
+		$("#reset")
+			.on("click", function() {
+			$("#container")
+				.removeClass("search_complete")
+			$("#search_field")
+				.val("")
+			$("#reset")
+				.hide()
+
+		})
+
+		$("#btn_view_itunes")
+			.on("click", function() {
+			that.linkToItunes($(this)
+				.attr("data-itunesid"))
+		})
+
+		$('.filter > span')
+			.on('click', function(event) {
+			$('.filter > span')
+				.each(function(i, item) {
+				$(item)
+					.removeClass("highlight")
+			})
+			filter = $(event.target)
+				.attr('data-filter')
+			that.filter = filter
+			that.entity = filter
+			$("#search_field")
+				.trigger("keyup")
+			$(event.target)
+				.addClass("highlight")
+		})
+
+		$("#selector_type")
+			.change(function(id) {
+			that.entity = $("#selector_type option:selected")
+				.val()
+
+			$("#search_field")
+				.val("")
+			$("#reset")
+				.hide()
+			$("#loading")
+				.hide()
+
+			$('#container')
+				.removeClass("search_complete")
+		})
+
+		$("#container.search #search_field")
+			.typeahead({
+			items: 20,
+			item: _.template("<tr audio-preview-url='<%= preview_url %>' class='song' id='<%= id %>'></tr>"),
+			menu: "<div></div>",
+			minLength: 2,
+			source: function(term, process) {
+				$("#loading")
+					.show()
+				that.searchiTunes(term, 20, that.entity, function(data) {
+					process(data)
+					$("#loading")
+						.hide()
+				})
+			},
+			matcher: function(item) {
+				return true
+			},
+			sorter: function(items) {
+				return items
+			},
+			highlighter: function(item) {
+				that.category = that.entity == "software,iPadSoftware" ? "software" : that.entity
+				var template = that.generateTemplate()
+				return template(item)
+			},
+			render: function(items) {
+				var that = this
+				$("#reset")
+					.show()
+				self.attributes.itunes_items = items
+				items = $(items)
+					.map(function(i, item) {
+					i = $(that.options.item(item))
+					i.html(that.highlighter(_.extend(item, {
+						btn_class: 'btn_add_song'
+					})))
+
+					return i[0]
+				})
+				$("#container")
+					.addClass("search_complete")
+				$("#results")
+					.html(items)
+
+				$("#search_results")
+					.tinyscrollbar_update()
+
+				$(".btn_view")
+					.on("click", function() {
+					self.linkToItunes($(this)
+						.attr("data-itunesid"))
+				})
+				ITSMediaPlayer.insertMediaPlayer()
+
+				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
+					click: "togglePlayState",
+					mousedown: "mousePressed"
+				});
+				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song", {
+					mouseover: "rowMouseIn",
+					mouseout: "rowMouseOut"
+				}, true)
+
+				return this
+			},
+			select: function() {}
+		})
+	},
+
+	processSearch: function(items, callback) {
+		callback(_.map(items, function(item) {
+			return new iTunesItem(item)
+		}))
+	},
+
+	searchiTunes: function(term, limit, entity, callback) {
+		var that = this
+		var url = ITunesWidget.ITUNES_SEARCH_URL({
+			limit: limit,
+			country: this.country,
+			term: term,
+			entity: this.entity,
+			media: this.media
+		})
+		try {
+			$.getJSON(url, function(data) {
+				that.processSearch(data.results, callback)
+			})
+				.error(function() {
+				alert("We are having trouble reaching the iTunes Servers")
+			})
+		} catch (err) {}
+	},
+
+	show: function() {
+		var that = this
+
+		var main_template = "main-template"
+		var trackcount_template = _.template(that.entity === "song" || that.entity === "album" ? this.template_strings.trackcount_songs_template : this.template_strings.trackcount_template)
+
+		$('body')
+			.append(Handlebars.templates[main_template](_.extend(this, {
+			inner_width: that.attributes.width - 20,
+			payload_height: this.attributes.height - 26,
+			search_field_width: that.getSearchFieldWidth(),
+			search_field_width_input: that.getSearchFieldWidthInput(),
+			viewport_height: this.getViewportHeight(),
+			width_minus_border: that.attributes.width - 3,
+			meta_width: that.widget_type === "discovery" && that.entity === "song" ? that.attributes.width - 68 : that.attributes.width - 100,
+			meta_preview_width: that.attributes.width - 130,
+			trackcount: trackcount_template({
+				count: that.attributes.itunes_items.length
+			})
+		})))
+
+		this.renderWidget()
+	},
+
+	getDefaultItem: function() {
+		if (this.attributes.itunes_items.length > 0) {
+			return this.attributes.itunes_items
+		} else {
+			switch (this.category) {
+			case ("macSoftware"):
+				return [new iTunesItem(this.template_strings.default_macapp)]
+				break
+			case ("software"):
+				return [new iTunesItem(this.template_strings.default_app)]
+				break
+			case ("ebook"):
+				return [new iTunesItem(this.template_strings.default_book)]
+				break
+			case ("tvSeason"):
+				return [new iTunesItem(this.template_strings.default_tv)]
+				break
+			case ("movie"):
+				return [new iTunesItem(this.template_strings.default_movie)]
+				break
+			case ("album"):
+				return [new iTunesItem(this.template_strings.default_album)]
+				break
+			}
+		}
+	},
+
+	renderWidget: function() {
+		var self = this
+		switch (this.widget_type) {
+		case ("search"):
+			$('#widget')
+				.hide()
+				.html(Handlebars.templates[this.template](this.template_strings.template_strings))
+				.fadeIn("fast", function() {
+				$("#search_results")
+					.tinyscrollbar({
+					size: self.getViewportHeight() - 20
+				})
+			})
+			break
+		case ("discovery"):
+			var defaultItem = this.getDefaultItem()
+			$('#widget')
+				.hide()
+				.html($(Handlebars.templates[this.template](_.extend(_.first(defaultItem), {
+				"formated_price": _.first(defaultItem)
+					.formatPrice(this.template_strings.currency_format)
+			}, this.template_strings.template_strings))))
+				.fadeIn("fast", function() {
+				$("#description")
+					.tinyscrollbar({
+					size: self.getViewportHeight() - 20
+				})
+
+				$("#search_results")
+					.tinyscrollbar({
+					size: self.getViewportHeight() - 20
+				})
+
+				$("#btn_view_itunes")
+					.attr("data-itunesid", _.first(defaultItem)
+					.id)
+
+				if (self.entity === "album") {
+					$("#btn_view_album")
+						.attr("data-itunesid", _.first(defaultItem)
+						.id)
+						.on("click", function() {
+						self.linkToItunes($(this)
+							.attr("data-itunesid"))
+					})
+
+					var template = self.generateTemplate()
+					var row_template = _.template("<tr audio-preview-url='<%= preview_url %>' class='song' id='<%= id %>'></tr>")
+
+					_.each(_.rest(self.attributes.itunes_items), function(item) {
+						$('#results')
+							.append($(row_template(item))
+							.html(template(item)))
+					})
+
+					$("#search_results")
+						.tinyscrollbar_update()
+
+					ITSMediaPlayer.insertMediaPlayer()
+
+					its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
+						click: "togglePlayState",
+						mousedown: "mousePressed"
+					});
+					its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song", {
+						mouseover: "rowMouseIn",
+						mouseout: "rowMouseOut"
+					}, true)
+				}
+			})
+			break
+		case ("playlist"):
+			$('#widget')
+				.hide()
+				.html(Handlebars.templates[this.template](this.attributes))
+				.fadeIn("fast", function() {
+				$("#search_results")
+					.tinyscrollbar({
+					size: self.getViewportHeight() - 20
+				})
+			})
+
+			var template = this.generateTemplate()
+			var row_template = _.template("<tr audio-preview-url='<%= preview_url %>' class='song' id='<%= id %>'></tr>")
+
+			_.each(this.attributes.itunes_items, function(item) {
+				$('#results')
+					.append($(row_template(item))
+					.html(template(item)))
+			})
+
+			$(".btn_view")
+				.on("click", function() {
+				self.linkToItunes($(this)
+					.attr("data-itunesid"))
+			})
+
+			if (this.category === "song") {
+				ITSMediaPlayer.insertMediaPlayer()
+				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
+					click: "togglePlayState",
+					mousedown: "mousePressed"
+				});
+				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song", {
+					mouseover: "rowMouseIn",
+					mouseout: "rowMouseOut"
+				}, true)
+			}
+			break
+		}
+		self.listen()
+	},
+
+	linkToItunes: function(id) {
+		var item = _.find(this.attributes.itunes_items, function(i) {
+			return i.id == id
+		}),
+			url = ""
+
+		if (_.isEmpty(this.attributes.affiliate) || _.isEmpty(this.attributes.partner_id)) {
+			url = item.url
+		} else {
+			var itunes_url = item.url.split("?")
+				.length < 2 ? item.url + "?partnerId=" + this.attributes.partner_id : item.url + "&partnerId=" + this.attributes.partner_id
+			itunes_url = this.attributes.partner_id == "30" ? encodeURIComponent(encodeURIComponent(itunes_url)) : encodeURIComponent(itunes_url)
+			url = this.attributes.affiliate + itunes_url
+		}
+
+		window.open(url, '_blank')
+	},
+
+	analyticsTrackClick: function(action) {
+
+	},
+
+	getViewportHeight: function() {
+		switch (this.category) {
+		case ("software"):
+			switch (this.widget_type) {
+			case ("discovery"):
+				return this.attributes.height - 163
+				break
+			case ("search"):
+				return this.attributes.height - 120
+				break
+			case ("playlist"):
+				return this.attributes.height - 105
+				break;
+			}
+			break
+		case ("movie"):
+		case ("tvSeason"):
+		case ("ebook"):
+		case ("podcast"):
+		case ("macSoftware"):
+			switch (this.widget_type) {
+			case ("discovery"):
+				return this.attributes.height - 163
+				break
+			case ("search"):
+				return this.attributes.height - 104
+				break
+			case ("playlist"):
+				return this.attributes.height - 105
+				break;
+			}
+			break
+		case ("album"):
+		case ("musicArtist"):
+			switch (this.widget_type) {
+			case ("discovery"):
+				return this.attributes.height - 136
+				break;
+			case ("playlist"):
+				return this.attributes.height - 105
+				break;
+			case ("search"):
+				return this.attributes.height - 104
+				break
+			}
+			break
+		case ("song"):
+			switch (this.widget_type) {
+			case ("discovery"):
+				return this.attributes.height - 136
+				break;
+			case ("playlist"):
+				return this.attributes.height - 105
+				break;
+			}
+		}
+	},
+
+	getSearchFieldWidth: function() {
+		switch (this.category) {
+		case ("software"):
+		case ("ebook"):
+		case ("podcast"):
+		case ("macSoftware"):
+			return this.attributes.width - 40
+			break
+		case ("album"):
+		case ("song"):
+		case ("tvSeason"):
+			return this.attributes.width - 140
+			break
+		}
+	},
+
+	getSearchFieldWidthInput: function() {
+		switch (this.category) {
+		case ("ebook"):
+		case ("software"):
+		case ("podcast"):
+		case ("macSoftware"):
+			return this.attributes.width - 85
+			break
+		case ("song"):
+		case ("album"):
+		case ("tvSeason"):
+			return this.attributes.width - 180
+			break
+		}
+	},
+
+	setTemplate: function() {
+		var template_id = (this.widget_type === "playlist" ? "playlist-template" : this.category + "-" + this.widget_type + "-template")
+		this.template = template_id
+
+		return this
+	},
+
+	render: function() {
+		$('body')
+			.append($("<h1>This is a test</h1>"))
+			.addClass("lng_" + this.country)
+	},
+
+	fetchiTunesItems: function(ids, callback) {
+		var that = this
+		var url = ITunesWidget.ITUNES_LOOKUP_URL({
+			entity: this.entity === "album" && this.widget_type === "discovery" ? "song" : this.entity,
+			country: this.country,
+			itunes_items: ids || 0
+		})
+
+			$.getJSON(url, function(data) {
+				that.attributes.itunes_items = _.map(data.results, function(item) {
+					return new iTunesItem(item)
+				})
+			if (callback) callback()
+			})
+	},
+
+	getURLParameter: function(name) {
+		
+		return decodeURIComponent(
+        encodeURIComponent(unescape(
+		        (RegExp('[?|&]' + name + '=' + '(.+?)(&|$)').exec(location.search) || [,""])[1])
+		    ))
+	},
+
+	generateTemplate: function() {
+		var template = ""
+
+		switch (this.category) {
+
+		case ("movie"):
+			template = "<td class='cover movie'><img src='<%= artwork_url_60 %>' /></td><td class='meta'><div><strong><%= name %></strong></div><div><span><%= artist_name %></span></div><div class='btn_view' data-itunesid='<%= id %>'></div></td>"
+			break;
+		case ("tvSeason"):
+		case ("macSoftware"):
+		case ("software"):
+		case ("iPadSoftware"):
+		case ("podcast"):
+		case ("ebook"):
+			template = "<td class='cover'><img src='<%= artwork_url_60 %>' /></td><td class='meta'><div><strong><%= name %></strong></div><div><span><%= artist_name %></span></div><div class='btn_view' data-itunesid='<%= id %>'></div></td>"
+			break;
+		case ("album"):
+			template = this.widget_type === "discovery" ? "<td class='index'><span class='index'><div class='circular-preview-control'><div class='center-control-state foreground-image-stopped-default' title='preview stopped'></div></div></span></td><td class='meta preview'><div class='discover'><span><%= name %></span></div></td>" : "<td class='cover'><img src='<%= artwork_url_60 %>' /></td><td class='meta'><div><strong><%= artist_name %></strong></div><div><span><%= collection_name %></span></div><div class='btn_view' data-itunesid='<%= id %>'></div></td>"
+			break
+		case ("song"):
+			template = "<td class='cover'><img src='<%= artwork_url_60 %>' /></td><td class='index'><span class='index'><div class='circular-preview-control'><div class='center-control-state foreground-image-stopped-default' title='preview stopped'></div></div></span></td><td class='meta preview'><div><strong><%= artist_name %></strong></div><div><span><%= name %></span></div><div class='btn_view' data-itunesid='<%= id %>'></div></td>"
+			break;
+		}
+		return _.template(template)
+	}
+}

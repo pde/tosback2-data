@@ -30,7 +30,8 @@ s.usePlugins=true
 function s_doPlugins(s) {
 	/* Add calls to plugins here */
 	s.campaign=s.getQueryParam('cid');
-	s.prop49=s.getVisitNum();
+	s.prop49 = s.getVisitNum();
+	s.eVar62 = s.getFullReferringDomains();
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
@@ -64,6 +65,15 @@ s.getVisitNum=new Function(""
 +"(c,ct+30*24*60*60*1000+'&vn=1',e);e.setTime(ct+30*60*1000);s.c_w(c2"
 +",'true',e);return 1;}}"
 );
+/*
+* Plugin: Get Full Referring Domains
+* http://webanalyticsland.com/sitecatalyst-implementation
+* /improve-referring-domain-reporting-in-sitecatalyst
+*/
+s.getFullReferringDomains = new Function(""
++ "var s=this,dr=window.document.referrer,n=s.linkInternalFilters.spli"
++ "t(',');if(dr){var r=dr.split('/')[2],l=n.length;for(i=0;i<=l;i++){i"
++ "f(r.indexOf(n[i])!=-1){r='';i=l+1;}}return r}");
 
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be

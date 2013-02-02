@@ -1,9 +1,5 @@
 if( typeof Cof == 'undefined' )
     Cof = {};
-    
-Cof.Header = function() {
-    Cof.Header.PrimaryNav();
-};
 
 Cof.Header.PrimaryNav = function() {
 
@@ -97,6 +93,6 @@ Cof.Header.PrimaryNav.Render = function() {
         });
 };
 jQuery(document).ready(function() {
-	// Run Header
-	Cof.Header();
+	// Run PrimaryNav
+	Cof.Header.PrimaryNav();
 });

@@ -1,27 +1,81 @@
-﻿/* SiteCatalyst code version: H.24.2.migration
+﻿/* SiteCatalyst code version: H.24.2.basics
 Copyright 1996-2012 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
-var s = s_gi(s_account)
+var s = s_gi(s_account);
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 /* Link Tracking Config */
-s.trackDownloadLinks = true
-s.trackExternalLinks = true
-s.trackInlineStats = true
-s.linkDownloadFileTypes = "jpg,jpeg,png,rbt,mov,wmv,mpg,mpeg,avi,zip,sit,lxf,pdf,gif,mp3,wav,exe,air,rar,dmg"
+s.trackDownloadLinks = true;
+s.trackExternalLinks = true;
+s.trackInlineStats = true;
+s.linkDownloadFileTypes = "jpg,jpeg,png,rbt,mov,wmv,mpg,mpeg,avi,zip,sit,lxf,pdf,gif,mp3,wav,exe,air,rar,dmg";
 s.linkInternalFilters = "javascript:,localhost,lego.com,bioniclestory.com,legospace.com,mindstormseducation.com,legofriends.kr,medlem.legoclub.dk,shop.lego.co.kr,city.lego.es,herofactory.lego.it,lego.be,lego.co.uk,lego.de,lego.hu,lego.it,lego.netsvar.se,lego.nettsvar.no,lego.pl,lego.ru,legoclub.com,legoclub.fr,legoeducation.co.kr,legoeducation.co.uk,legoeducation.jp,legoeducation.us,legoevent.co.kr,legofactory.com,legofamilytime.com,legofriends.dk,legofriends.kr,legoshop.com,legoshop.fr,legospace.com,legouniverse.com,legowish.com,legoworld.dk,ninjago.lego.com,ninjago.lego.es";
-s.linkLeaveQueryString = false
-s.linkTrackVars = "None"
-s.linkTrackEvents = "None"
-s.charSet = "UTF-8"
+s.linkLeaveQueryString = false;
+s.linkTrackVars = "None";
+s.linkTrackEvents = "None";
+s.charSet = "UTF-8";
 
 /********************** LEGO SPECIFIC FUNCTIONS *********************/
 var s_isDev = s_account.toLowerCase().indexOf("legoglobaldev") >= 0;
 var s_isQa = s_account.toLowerCase().indexOf("legoglobalqa") >= 0;
 
+LEGOSiteStats = window.LEGOSiteStats || {};
+LEGOSiteStats.Settings = (function () {
+    "use strict";
+    return {
+        setDownloadLinkTrackingEnabled: function (enabled) {
+            var sObj;
+            if (LEGOSiteStats.hasOwnProperty("s")) {
+                sObj = LEGOSiteStats.s;
+            }
+            else {
+                sObj = window.s;
+            }
+            sObj.trackDownloadLinks = (enabled === true);
+        }
+    };
+} ());
+LEGOSiteStats.GetDefaultLinkTrackingVars = function () {
+    return 'events,' +
+           'eVar3,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar12,eVar26,eVar27,eVar47,eVar50,' +
+           'products';
+};
+LEGOSiteStats.GetSCodeVersion = function () {
+    var sCodeSrc, siteStatsSrc, gaDetect, els, i, src, sObj, sVersion;
+    sCodeSrc = "";
+    siteStatsSrc = "";
+    gaDetect = "";
+    try {
+        els = document.getElementsByTagName("script");
+        for (i = 0; i < els.length; i = i + 1) {
+            src = (els[i].src + "").toLowerCase();
+            if (src.length > 0) {
+                if (src.indexOf("/s_code_v") > 0) {
+                    sCodeSrc = "|" + src;
+                    break;
+                }
+                else if (src.indexOf("/legositestats.1.js.ashx") > 0) {
+                    siteStatsSrc = "|" + src;
+                    break;
+                }
+            }
+        }
+        if (Object.prototype.hasOwnProperty.call(window, "_gaq") || Object.prototype.hasOwnProperty.call(window, "_gat") || Object.prototype.hasOwnProperty.call(window, "urchinTracker")) {
+            gaDetect = "|ga";
+        }
+    }
+    catch (ex) {
+    }
+    sObj = LEGOSiteStats.s || window.s;
+    sVersion = sObj.version || "Unknown";
+    return sVersion + sCodeSrc + siteStatsSrc + gaDetect;
+};
+
 function PageStats() {
-    var sPageName, args, pageEvents, i;
+    var sPageName, args, pageEvents, i, prop3val;
+    if (s._cpychannel) s.channel = s._cpychannel;
+    if (s._cpypageName) s.pageName = s._cpypageName;
     sPageName = s.channel;
     args = PageStats.arguments;
     pageEvents = s.events;
@@ -30,23 +84,49 @@ function PageStats() {
             sPageName += ':' + args[i];
         }
     }
+    prop3val = s.prop3;
     if (args[args.length - 1].toLowerCase().indexOf("tellafriend") === 0) {
         pageEvents = "event1";
-		s.prop3 = "";
+        s.prop3 = ""
     }
-    s.t({
-        pageName: sPageName,
-        events: pageEvents
-    });
+    s.pageName = sPageName;
+    s.events = pageEvents;
+    s._cpypageName = s.pageName;
+    s._cpychannel = s.channel;
+    s.t();
+    s.prop3 = prop3val;
+    s.events = "";
 }
 
-function ProductPageStats(Category, ProductNumber) {
-    s.t({
-        pageName: s.channel + ':' + Category + ':overview',
-        events: 'event8',
-        eVar20: ProductNumber,
-        products: ';' + ProductNumber + ';;'
-    });
+function ProductPageStats(category, productNumber) {
+    var omitOverview = false;
+    if (productNumber.toString() === "") {
+        throw "Missing product number for Content Product view event in call to ProductPageStats.";
+    } else {
+        if (LEGOSiteStats.Settings.hasOwnProperty("OmitOverview")) {
+            omitOverview = LEGOSiteStats.Settings.OmitOverview;
+        }
+        if (category.indexOf(":" + productNumber) > 0) {
+            if (s_isDev || s_isQa) {
+                if (Object.prototype.hasOwnProperty.call(window, "console")) {
+                    console.error("Error in call to ProductPageStats. Param category contains :productNumber.");
+                }
+            }
+            category = category.replace(":" + productNumber, "");
+        }
+        if (s._cpychannel) s.channel = s._cpychannel;
+        s.pageName = s.channel + ":" + category + ":" + productNumber + (omitOverview ? "" : ":overview");
+        s._cpypageName = s.pageName;
+        s._cpychannel = s.channel;
+        s.t({
+            events: "event8",
+            eVar20: productNumber,
+            products: ";" + productNumber + ";;"
+        });
+        s.events = "";
+        s.products = "";
+        s.eVar20 = "";
+    }
 }
 
 // Handle ajax download and exit links problems
@@ -84,7 +164,6 @@ function handleClickEvent(e) {
     }
 }
 
-LEGOSiteStats = window.LEGOSiteStats || {};
 LEGOSiteStats.TrackingVerification = (function () {
     "use strict";
 
@@ -97,20 +176,27 @@ LEGOSiteStats.TrackingVerification = (function () {
     addedEvent100 = false;
 
     logVerificationError = function (errorMessage) {
-        var boxDiv, boxId;
+        var boxDiv, boxId, sObj;
+
+        if (LEGOSiteStats.hasOwnProperty("s")) {
+            sObj = LEGOSiteStats.s;
+        }
+        else {
+            sObj = window.s;
+        }
 
         // Fire "TrackingError" event
         if (!addedEvent100) {
-            if (s.events !== "") {
-                s.events += ",";
+            if (sObj.events !== "") {
+                sObj.events += ",";
             }
-            s.events += "event100";
+            sObj.events += "event100";
             addedEvent100 = true;
         }
 
         // Show error in FireBug console
         if (s_isDev || s_isQa) {
-            if (typeof console !== 'undefined' && typeof console.error !== 'undefined') {
+            if (Object.prototype.hasOwnProperty.call(window, "console")) {
                 console.error("SiteCatalyst tracking error found on site '" + document.location.href + "':\n" + errorMessage);
             }
         }
@@ -118,22 +204,54 @@ LEGOSiteStats.TrackingVerification = (function () {
 
     return {
         verifyEVars: function () {
-            var requiredValueAry, v, idx, foundValue;
+            var requiredValueAry, v, idx, foundValue, t, sObj;
             try {
-                requiredValueAry = ['eVar3', 'eVar26', 'eVar27'];
+                if (LEGOSiteStats.hasOwnProperty("s")) {
+                    sObj = LEGOSiteStats.s;
+                }
+                else {
+                    sObj = window.s;
+                }
+                requiredValueAry = ['eVar3', 'eVar7', 'eVar8', 'eVar9', 'eVar26', 'eVar27'];
                 for (idx in requiredValueAry) {
                     if (requiredValueAry.hasOwnProperty(idx) === false) {
                         continue;
                     }
                     v = requiredValueAry[idx];
                     foundValue = false;
-                    if (s.hasOwnProperty(v)) {
+                    if (sObj.hasOwnProperty(v)) {
                         if (hasValue(s[v]) === true) {
                             foundValue = true;
                         }
                     }
                     if (foundValue === false) {
-                        logVerificationError('Required value missing: ' + v);
+                        if (sObj.hasOwnProperty("_trackCallType")) {
+                            t = ', tracking type: ' + sObj._trackCallType;
+                        }
+                        logVerificationError('Required tracking value missing: ' + v + t);
+                    }
+                }
+                if (sObj.hasOwnProperty("_trackCallType")) {
+                    if (s._trackCallType === "PageHit-LinkHit") {
+                        t = "";
+                        if (hasValue(s.server)) {
+                            t += (t === "" ? "" : ", " ) + "server";
+                        }
+                        if (hasValue(s.channel)) {
+                            t += (t === "" ? "" : ", " ) + "channel";
+                        }
+                        if (hasValue(s.pageName)) {
+                            t += (t === "" ? "" : ", " ) + "pageName";
+                        }
+                        if (hasValue(s.eVar22)) {
+                            t += (t === "" ? "" : ", " ) + "eVar22";
+                        }
+                        if (hasValue(s.eVar25)) {
+                            t += (t === "" ? "" : ", " ) + "eVar25";
+                        }
+                        if (t !== "") {
+                            logVerificationError('LinkHits may not track ' + t + '.');
+                        }
                     }
                 }
             }
@@ -142,25 +260,19 @@ LEGOSiteStats.TrackingVerification = (function () {
         }
     };
 } ());
-LEGOSiteStats.Settings = (function () {
-    "use strict";
-	
-	return {
-		setDownloadLinkTrackingEnabled: function (enabled) {
-			s.trackDownloadLinks = (enabled === true);
-		}
-	};
-} ());
-/* End of LEGO specific functions */
+/* End of LEGO SPECIFIC functions */
 
-/* Plugin Config */
-s.usePlugins = true
+/* Plugin Config - LEGO SPECIFIC tracking rules */
+s.usePlugins = true;
+
 function s_doPlugins(s)
 {
-	var hasValue = function (v) {
-		return (typeof v !== 'undefined' && v !== null && v !== '');
-	};
-	
+    var hasValue, t_search;
+
+    hasValue = function (v) {
+        return (typeof v !== 'undefined' && v !== null && v !== '');
+    };
+
     /*Responsys email campaign tracking*/
     s.eVar28 = s.getQueryParam("RRID");
     // s.eVar29 = s.getQueryParam("RVID");
@@ -182,47 +294,38 @@ function s_doPlugins(s)
     if (s.prop3) {
         s.eVar3 = s.prop3;
     }
-	if (hasValue(s.eVar3) === false) {
-		s.eVar3 = s.server;
-	}
-    if (s.prop4) {
-        s.eVar4 = s.prop4;
-    }
-    if (s.prop5) {
-        s.eVar5 = s.prop5;
-    }
-    if (s.prop6) {
-        s.eVar6 = s.prop6;
+    if (hasValue(s.eVar3) === false) {
+        s.eVar3 = s.server;
     }
     if (s.prop7) {
         s.eVar7 = s.prop7;
-        s.eVar7 = s.getValOnce(s.eVar7, 's_evar7', 0);
-    }
-    if (s.prop8) {
-        s.eVar8 = s.prop8;
-        s.eVar8 = s.getValOnce(s.eVar8, 's_evar8', 0);
-    }
-    if (s.prop9) {
-        s.eVar9 = s.prop9;
-        s.eVar9 = s.getValOnce(s.eVar9, 's_evar9', 0);
-    }
-    if (s.prop10) {
-        s.eVar10 = s.prop10;
-        s.eVar10 = s.getValOnce(s.eVar10, 's_evar10', 0);
-    }
-    if (s.prop11) {
-        s.eVar11 = s.prop11;
-        s.eVar11 = s.getValOnce(s.eVar11, 's_evar11', 0);
-    }
-    if (s.prop12) {
-        s.eVar12 = s.prop12;
-        s.eVar12 = s.getValOnce(s.eVar12, 's_evar12', 0);
     }
     if (s.prop13) {
         s.eVar13 = s.prop13;
         s.eVar13 = s.getValOnce(s.eVar13, 's_evar13', 0);
     }
 
+    /*Account*/
+    if (Object.prototype.hasOwnProperty.call(window, "userstats")) {
+        s.prop8 = userstats.auth;
+        s.prop9 = userstats.iplocation;
+        if ((userstats.auth + "").toLowerCase() === "true") {
+            s.prop10 = userstats.age;
+            s.prop11 = userstats.gender;
+            s.prop12 = userstats.country;
+        } 
+        else {
+            s.prop10 = undefined;
+            s.prop11 = undefined;
+            s.prop12 = undefined;
+        }
+    }
+    if (s.prop8)  { s.eVar8  = "D=c8";  }
+    if (s.prop9)  { s.eVar9  = "D=c9";  }
+    if (s.prop10) { s.eVar10 = "D=c10"; }
+    if (s.prop11) { s.eVar11 = "D=c11"; }
+    if (s.prop12) { s.eVar12 = "D=c12"; }
+    
     /*Campaign Stacking*/
     s.eVar17 = s.crossVisitParticipation(s.campaign, 's_ev17', '30', '5', '>', 'purchase', 1);
 
@@ -233,7 +336,7 @@ function s_doPlugins(s)
     if (s.prop17) {
         s.prop17 = s.prop17.toLowerCase();
         s.eVar19 = s.prop17;
-        var t_search = s.getValOnce(s.eVar19, 'ev19', 0);
+        t_search = s.getValOnce(s.eVar19, 'ev19', 0);
         if (t_search) {
             s.events = s.apl(s.events, "event3", ",", 2);
         }
@@ -246,14 +349,11 @@ function s_doPlugins(s)
         s.prop20 = s.prop19 + ' : ' + s.pageName;
     }
 
-    /* Copy pageName and channel to eVar */
-	s.eVar26 = s.pageName;
-    s.eVar27 = s.channel;
-
     /*ChannelManager*/
     s.channelManager('CMP,HQS,KAC', '', '', '1', 'c_dl');
     s._channelPattern = 'Paid Search|KAC>Email|EMC>Affiliate|AFC';
     s._channelDomain = "Social Media|facebook.com,twitter.com,linkedin.com,myspace.com";
+
     /*Rename Channels*/
     if (s._channel == "Direct Load") s._channel = "Typed/Bookmarked";
     if (s._channel == "Natural Search") s._channel = "Search Engines - Natural";
@@ -274,8 +374,11 @@ function s_doPlugins(s)
 
     s.eVar25 = s._referringDomain;
     s.prop25 = s.getAndPersistValue(s.eVar25, 's_v25_persist', 0);
-	
-	LEGOSiteStats.TrackingVerification.verifyEVars();
+
+    /*Apply business logic rules*/
+    if (s.hasOwnProperty("_businessLogicDoPlugins")) {
+        s._businessLogicDoPlugins(s);
+    }
 }
 s.doPlugins = s_doPlugins;
 /************************** PLUGINS SECTION *************************/
@@ -513,7 +616,7 @@ s.c_w = new Function("k", "v", "e", ""
 + "ndexOf(';')));t=t.substring(t.indexOf(';')+1);ht=ht<t1?t1:ht;}d.set"
 + "Time(ht);s.c_wr(pn,pv,d);}return v==s.c_r(s.epa(k));");
 /*
-*	Plug-in: crossVisitParticipation v1.4
+* Plug-in: crossVisitParticipation v1.4
 */
 s.crossVisitParticipation = new Function("v", "cn", "ex", "ct", "dl", "ev", "dv", ""
 + "var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
@@ -546,13 +649,50 @@ s.getCartOpen = new Function("c", ""
 + "{s.c_w(c,1,0)}}else{if(e.indexOf('scAdd')>-1){if(s.c_w(c,1,t)){i=1}"
 + "else if(s.c_w(c,1,0)){i=1}}}if(i){e=e+',scOpen'}return e");
 
+/*
+* Plugin: downloadLinkHandler 0.8 - identify and report download links.
+*/
+s.downloadLinkHandler = new Function("p", "e", ""
++ "var s=this,o=s.p_gh(),h=o.href,n='linkDownloadFileTypes',i,t;if(!h|"
++ "|(s.linkType&&(h||s.linkName)))return'';i=h.indexOf('?');t=s[n];s[n"
++ "]=p?p:t;if(s.lt(h)=='d')s.linkType='d';else h='';s[n]=t;return e?o:"
++ "h;");
+/*
+* Plugin: exitLinkHandler 0.8 - identify and report exit links.
+*/
+s.exitLinkHandler = new Function("p", "e", ""
++ "var s=this,o=s.p_gh(),h=o.href,n='linkInternalFilters',i,t;if(!h||("
++ "s.linkType&&(h||s.linkName)))return'';i=h.indexOf('?');t=s[n];s[n]="
++ "p?p:t;h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);if(s.lt(h)=="
++ "'e')s.linkType='e';else h='';s[n]=t;return e?o:h;");
+/*
+ * Plugin: linkHandler 0.8 - identify and report custom links.
+ */
+s.linkHandler = new Function("p","t","e",""
++ "var s=this,o=s.p_gh(),h=o.href,i,l;t=t?t:'o';if(!h||(s.linkType&&(h"
++ "||s.linkName)))return'';i=h.indexOf('?');h=s.linkLeaveQueryString||"
++ "i<0?h:h.substring(0,i);l=s.pt(p,'|','p_gn',h.toLowerCase());if(l){s"
++ ".linkName=l=='[['?'':l;s.linkType=t;return e?o:h;}return'';");
+/*
+* Helper functions for the downloadLinkHandler, exitLinkHandler and linkHandler plugins.
+*/
+s.p_gh = new Function("", ""
++ "var s=this;if(!s.eo&&!s.lnk)return'';var o=s.eo?s.eo:s.lnk,y=s.ot(o"
++ "),n=s.oid(o),x=o.s_oidt;if(s.eo&&o==s.eo){while(o&&!n&&y!='BODY'){o"
++ "=o.parentElement?o.parentElement:o.parentNode;if(!o)return'';y=s.ot"
++ "(o);n=s.oid(o);x=o.s_oidt;}}return o?o:'';");
+s.p_gn = new Function("t", "h", ""
++ "var i=t?t.indexOf('~'):-1,n,x;if(t&&h){n=i<0?'':t.substring(0,i);x="
++ "t.substring(i+1);if(h.indexOf(x.toLowerCase())>-1)return n?n:'[[';}"
++ "return 0;");
+
 /* Configure Modules and Plugins */
 
-s.loadModule("Media")
-s.Media.autoTrack = true
-s.Media.trackWhilePlaying = true
-s.Media.trackVars = "None"
-s.Media.trackEvents = "None"
+s.loadModule("Media");
+s.Media.autoTrack = true;
+s.Media.trackWhilePlaying = true;
+s.Media.trackVars = "None";
+s.Media.trackEvents = "None";
 
 s.Media.trackMilestones = "25,50,75";
 s.Media.playerName = "My Media Player";
@@ -571,7 +711,23 @@ s.Media.contextDataMapping = {
         50: "event45",
         75: "event46"
     }
-}
+};
+
+s.Media.monitor = function (s, media) {
+    s._trackCallType = "MediaHit";
+    if (media.mediaEvent === "OPEN" || media.mediaEvent === "MILESTONE") {
+        s.eVar38 = media.length;
+        s.events = "event61=" + media.length;
+        if (s.hasOwnProperty("_businessLogicDoPlugins")) {
+            s._businessLogicDoPlugins(s);
+        }
+        s.Media.trackVars = "events,eVar3,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar12,eVar26,eVar27,eVar31,prop31,eVar32,eVar33,eVar38,eVar47,eVar50,eVar52";
+        s.Media.trackEvents = "event41,event42,event43,event44,event45,event46,event47,event62";
+        s.Media.track(media.name);
+        s.eVar38 = "";
+        s.events = "";
+    }
+};
 
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
@@ -630,7 +786,6 @@ s.m_Media_c = "var m=s.m_i('Media');if(m.completeByCloseOffset==undefined)m.comp
 + "Name(m.s.isie?\"OBJECT\":\"EMBED\");if(l)for(n=0;n<l.length;n++)m.a(l[n]);}');if(s.wd.attachEvent)s.wd.attachEvent('onload',m.as);else if(s.wd.addEventListener)s.wd.addEventListener('load',m.as,fal"
 + "se);if(m.onLoad)m.onLoad(s,m)";
 s.m_i("Media");
-
 
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
@@ -789,3 +944,242 @@ function s_giqf() { var w = window, q = w.s_giq, i, t, s; if (q) for (i = 0; i <
 
 s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=w.location;s.tfs=w;if(p&&p.location!=l&&p.location.host==l.host){s.tfs=p;return s.gtfsf(s.tfs)}return s.tfs}this.tfs=w;return w };
 
+//------------------------------------------------------------------------
+// TrackingBusinessLogicInit - LEGO SPECIFIC
+//------------------------------------------------------------------------
+// JSLint.com - validated javascript
+/*jslint browser: true, white: true, maxerr: 50, indent: 4, nomen: true */
+/*global LEGOSiteStats:true, s, window, console, unescape, activatePage */
+//------------------------------------------------------------------------
+
+(function (s) {
+    "use strict";
+    // -------------------------------------------------------------------
+    // Patch s_code with LEGO specific business logic rules & requirements
+    // -------------------------------------------------------------------
+    var hasValue, sObj, stCpy, stlCpy, clearSValue, restoreSValue, sanitizeTrackedVariables;
+    sObj = s;
+    stCpy = sObj.t;
+    stlCpy = sObj.tl;
+    hasValue = function (v) {
+        return (v !== undefined && v !== null && v !== "");
+    };
+    clearSValue = function (s, key, forIl) {
+        // Copy current s value in s[key] into a shadow value, and then clear the value from the s object. Also copy for s._il state array if specified.
+        var i;
+        if (hasValue(s[key])) {
+            s["_cpy" + key] = s[key];
+            s[key] = "";
+            if (forIl === true) {
+                for (i = 0; i < s._il.length; i = i + 1) {
+                    if (hasValue(s._il[i][key])) {
+                        s["_cpy_il" + i + key] = s._il[i][key];
+                        s._il[i][key] = "";
+                    }
+                }
+            }
+        }
+    };
+    restoreSValue = function (s, key, forIl) {
+        // Restore shadow value for key (if found) into s[key], and then delete the shadow copy. Also restore for s._il state array if specified.
+        var i;
+        if (!hasValue(s[key]) && hasValue(s["_cpy" + key])) {
+            s[key] = s["_cpy" + key];
+            //s["_cpy" + key] = undefined;
+            if (forIl === true) {
+                for (i = 0; i < s._il.length; i = i + 1) {
+                    if (hasValue(s["_cpy_il" + i + key])) {
+                        s._il[i][key] = s["_cpy_il" + i + key];
+                        //s["_cpy_il" + i + key] = undefined;
+                    }
+                }
+            }
+        }
+        // Set new tracked value to cpy value
+        s["_cpy" + key] = s[key];
+        if (forIl === true) s["_cpy_il" + key] = s[key];
+    };
+    sanitizeTrackedVariables = function (s, func) {
+        // Generic wrapper for clearSValue and restoreSValue.
+        //console.group("before");
+        //console.log("pageName:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.pageName, s._cpypageName, s.eVar26);
+        //console.log("channel:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.channel, s._cpychannel, s.eVar27);
+        //console.groupEnd();
+        var propIdx;
+        if (func !== null) {
+            func.apply(s, [s, "pageName", true]);
+            func.apply(s, [s, "server", true]);
+            func.apply(s, [s, "channel", true]);
+            for (propIdx = 1; propIdx <= 75; propIdx = propIdx + 1) {
+                // Some props are not to be removed on linkhits
+                if (!(propIdx === 14 || propIdx === 15 || propIdx === 16 || propIdx === 26 || propIdx === 50 || propIdx === 53 || propIdx === 54 || propIdx === 55)) {
+                    func.apply(s, [s, "prop" + propIdx, false]);
+                }
+            }
+        }
+        //console.group("after");
+        //console.log("pageName:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.pageName, s._cpypageName, s.eVar26);
+        //console.log("channel:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.channel, s._cpychannel, s.eVar27);
+        //console.groupEnd();
+    };
+    sObj._trackCallType = "";
+    sObj.t = function () {
+        if (this._trackCallType === "LinkHit") {
+            // Expected s.t call following s.tl call (link hit)
+            this._trackCallType = "PageHit-LinkHit";
+        } else if (this._trackCallType === "MediaHit") {
+            // Expected s.t call following s.Media.track call (media hit)
+            this._trackCallType = "PageHit-MediaHit";
+            // If media hits must track as pagehits, remove this if-block
+        } else {
+            // Regular s.t call (page hit)
+            this._trackCallType = "PageHit";
+        }
+        return stCpy.apply(this, arguments);
+    };
+    sObj.tl = function () {
+        this._trackCallType = "LinkHit";
+        return stlCpy.apply(this, arguments);
+    };
+    sObj._businessLogicDoPlugins = function (s) {
+        /*
+        ** Business Rules to always enforce
+        ** --------------------------------
+        */
+        // General rules goes here...
+
+        // Make sure the s object cannot be re-initialized (made empty / invalid)
+        s_gi = function () { return s; };
+
+        // Always track eVar20 with the last added productNo if event 8,28,53 or 54 is fired
+        var getLastProductNo, evList, downloadLink, exitLinkObject, pathElements, hotfix31012013;
+        getLastProductNo = function (s) { var pA = (";;;;," + s.products).split(","); return pA[pA.length - 1].split(";")[1]; };
+        evList = "," + s.events + ",";
+        if (evList.indexOf("event8") > 0 || evList.indexOf("event28") > 0 || evList.indexOf("event53") > 0 || evList.indexOf("event54") > 0) {
+            if (hasValue(s.eVar20) === false) {
+                s.eVar20 = getLastProductNo(s);
+            }
+        }
+
+        // Download handler, enable eVar tracking
+        downloadLink = s.downloadLinkHandler(s.linkDownloadFileTypes);
+        if (downloadLink) {
+            s.linkTrackVars = LEGOSiteStats.GetDefaultLinkTrackingVars();
+            s.linkTrackEvents = "";
+            s._trackCallType = "DownloadLink";
+        }
+
+        // Exit link handler, enable eVar tracking
+        exitLinkObject = s.exitLinkHandler("", "true");
+        if (exitLinkObject) {
+            s.linkTrackVars = LEGOSiteStats.GetDefaultLinkTrackingVars();
+            s.linkTrackEvents = "";
+            s._trackCallType = "ExitLink";
+        }
+
+        // Set internal search keywords and user location to lower case
+        if (s.prop9) { s.prop9 = s.prop9.toUpperCase(); }
+        if (s.eVar9) { s.eVar9 = s.eVar9.toUpperCase(); }
+        if (s.prop24) { s.prop24 = s.prop24.toLowerCase(); }
+        if (s.eVar24) { s.eVar24 = s.eVar24.toLowerCase(); }
+        if (s.prop13) { s.prop13 = s.prop13.toLowerCase(); }
+        if (s.eVar13) { s.eVar13 = s.eVar13.toLowerCase(); }
+
+        // LEGO API/Interface type tracking
+        s.prop50 = LEGOSiteStats.GetSCodeVersion();
+        s.eVar50 = "D=c50";
+
+        // Settings path information based on PageName
+        pathElements = s.pageName.split(':');
+        s.pageName = pathElements.join(':');
+        s.channel = (pathElements.length > 2) ? pathElements.slice(0, 2).join(':') : undefined;
+        s.eVar4 = s.prop4 = (pathElements.length > 3) ? pathElements.slice(0, 3).join(':') : undefined;
+        s.eVar5 = s.prop5 = (pathElements.length > 4) ? pathElements.slice(0, 4).join(':') : undefined;
+        s.eVar6 = s.prop6 = (pathElements.length > 5) ? pathElements.slice(0, 5).join(':') : undefined;
+
+        hotfix31012013 = function (s) { 
+            // Hotfix - live release 31-01-2013 - fix missing call to AjaxPageStats on various ajax navigation sites
+            var applyHotfix = function (s, v) {
+                if (s[v] !== undefined && s[v][0] === ":" && s.eVar3 !== undefined && s.eVar3 !== "") {
+                    s[v] = s.eVar3 + s[v];
+                }
+            };
+            applyHotfix(s, "channel");
+            applyHotfix(s, "pageName");
+            applyHotfix(s, "eVar26");
+            applyHotfix(s, "prop4");
+            applyHotfix(s, "eVar4");
+            applyHotfix(s, "prop5");
+            applyHotfix(s, "eVar5");
+            applyHotfix(s, "prop6");
+            applyHotfix(s, "eVar6");
+            applyHotfix(s, "eVar27");
+        };
+
+        /*
+        ** Business Rules specific for a link type
+        ** ---------------------------------------
+        */
+        //console.group(s._trackCallType);
+        if (hasValue(s._trackCallType)) {
+            if (s._trackCallType === "PageHit") {
+                /*
+                ** Rules to enforce for page hits only
+                ** -----------------------------------
+                */
+                //console.log("restore");
+                sanitizeTrackedVariables(s, restoreSValue);
+                hotfix31012013(s);
+                s.eVar26 = s.pageName;
+                s.eVar27 = s.channel;
+            } else /*if (s._trackCallType === "PageHit-LinkHit" || s._trackCallType === "DownloadLink" || s._trackCallType === "ExitLink" || s._trackCallType === "MediaHit" || s._trackCallType === "PageHit-MediaHit")*/ {
+                /*
+                **  Rules to enforce for link hits and download links
+                ** --------------------------------------------------
+                */
+
+                //console.log("restore");
+                sanitizeTrackedVariables(s, restoreSValue);
+                hotfix31012013(s);
+                s.eVar26 = s.pageName;
+                s.eVar27 = s.channel;
+
+                // Enrich media name on mediahits
+                if ((s._trackCallType === "MediaHit" || s._trackCallType === "PageHit-MediaHit")) {
+                    if (hasValue(s.eVar31) && hasValue(s.eVar27) && s.eVar31.indexOf(s.eVar27 + ":") < 0) {
+                        s.eVar31 = s.eVar27 + ":" + s.eVar31;
+                    }
+                    s.prop31 = s.eVar31;
+                }
+
+                // Undo any dynamic variable bindings 
+                if (s.prop8) { s.eVar8 = s.prop8; }
+                if (s.prop9) { s.eVar9 = s.prop9; }
+                if (s.prop10) { s.eVar10 = s.prop10; }
+                if (s.prop11) { s.eVar11 = s.prop11; }
+                if (s.prop12) { s.eVar12 = s.prop12; }
+                s.eVar50 = s.prop50;
+
+                //console.log("clear");
+
+                sanitizeTrackedVariables(s, clearSValue);
+
+                if (s.hasOwnProperty("linkTrackVars") === false || s.linkTrackVars === null || s.linkTrackVars === "" || s.linkTrackVars === "None") {
+                    s.linkTrackVars = LEGOSiteStats.GetDefaultLinkTrackingVars();
+                }
+            }
+        }
+
+        /*
+        ** Business Rules Verification
+        ** ---------------------------
+        */
+        LEGOSiteStats.TrackingVerification.verifyEVars();
+
+        //console.group("tracked");
+        //console.log("pageName:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.pageName, s._cpypageName, s.eVar26);
+        //console.log("channel:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.channel, s._cpychannel, s.eVar27);
+        //console.groupEnd();
+        //console.groupEnd(); //_trackCallType
+    };
+} (s));

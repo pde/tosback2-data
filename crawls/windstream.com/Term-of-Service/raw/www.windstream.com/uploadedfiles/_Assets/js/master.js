@@ -117,11 +117,7 @@ $("#search").keydown(function (e) {
 
 var searching = false;
 function doSiteSearch() {
-    $(".errorSearch").css("display", "none");
-    if ($("#search").val() == "Enter Your Search" || $("#search").val == "") {
-        $("#search").val("Enter a search term")
-        $("#search").addClass("error");
-    } else {
+    if ($("#search").val() != "Enter A Search Term" && $("#search").val() != "") {
         if (searching)
             return;
         searching = true;
@@ -700,6 +696,17 @@ var mobileSlideMenu = function () {
                 $('.slide-menu .close').click();
             }
         });
+    }
+};
+
+var mobileLogo = function () {
+    if (layoutWidth === 320) {
+        var utilOffset = $('.utility-bar').offset(),
+            utilOffsetL = utilOffset.left,
+            newOffset = (utilOffsetL + 82);
+        return $('.main-nav-bar').offset({ left: newOffset });
+    } else {
+        return $('.main-nav-bar').css('left', 0);
     }
 };
 

@@ -18,24 +18,17 @@ if (CQ_Analytics && CQ_Analytics.ProfileDataMgr) {
 
     
         CQ_Analytics.ProfileDataMgr.loadInitProperties({
-  "membershipGroup": "IntEmpAllCntntVwr,iBL_User,Employee,PrivateUser",
-  "membershipGroup_xss": "IntEmpAllCntntVwr,iBL_User,Employee,PrivateUser",
-  "avatar": "http://www.gravatar.com/avatar/0e5f6f65b608808234de671f12978cad?d=/etc/designs/default/images/collab/avatar.png&r=g",
-  "path": "/home/users/M/MAD\\arabbani/profile",
-  "isLoggedIn": true,
-  "isLoggedIn_xss": "true",
-  "authorizableId": "MAD\\arabbani",
-  "authorizableId_xss": "MAD\\arabbani",
-  "formattedName": "ALI RABBANI",
-  "formattedName_xss": "ALI RABBANI",
-  "email": "ali.rabbani@intel.com",
-  "email_xss": "ali.rabbani@intel.com",
-  "givenName": "ALI",
-  "givenName_xss": "ALI",
-  "familyName": "RABBANI",
-  "familyName_xss": "RABBANI",
-  "isInternal": "Y",
-  "isInternal_xss": "Y"
+  "membershipGroup": "anonymous",
+  "membershipGroup_xss": "anonymous",
+  "avatar": "/etc/designs/default/images/collab/avatar.png",
+  "path": "/home/users/a/anonymous/profile",
+  "isLoggedIn": false,
+  "isLoggedIn_xss": "false",
+  "authorizableId": "anonymous",
+  "authorizableId_xss": "anonymous",
+  "formattedName": "",
+  "formattedName_xss": "",
+  "memberSince": "26 Jun 2011 10:57 PM"
 });
     
 
@@ -59,6 +52,6 @@ if( CQ_Analytics && CQ_Analytics.SurferInfoMgr) {
 
 if( CQ_Analytics && CQ_Analytics.PageDataMgr) {
     CQ_Analytics.PageDataMgr.loadInitProperties({
-  "random": "0.07"
+  "random": "0.75"
 }, true);
 }

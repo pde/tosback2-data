@@ -52,7 +52,7 @@
   Squidoo = { 
     statichost: 'http://the.squidoocdn.com',
 
-    __generated__: '2013-01-30T07:18:02-05:00', 
+    __generated__: '2013-02-02T04:20:30-05:00', 
 
     host: document.location.protocol + '//' + document.location.hostname,
 
@@ -202,7 +202,7 @@
     
     sdkLoaded: false,
     
-    defaultPicture: 'http://i2.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
+    defaultPicture: 'http://i3.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
     
     // 
     // allows client to reload Facebook SDK on demand
@@ -264,7 +264,7 @@
   MIXPANEL_TOKEN_POSTCARDS = '1';
   CSRF = '';
   squidoo_embedded = '';
-</script><script src="../../the.squidoocdn.com/scripts/squidoo/core/squidoo.v1161905656.js"></script>
+</script><script src="../../the.squidoocdn.com/scripts/squidoo/core/squidoo.v3830823744.js"></script>
 <script src="../../the.squidoocdn.com/scripts/squidoo/lib/bootstrap.js"></script>
 <script src="../../the.squidoocdn.com/scripts/scriptaculous/prototype-1.6.1.0.js"></script>
 <script>
@@ -300,16 +300,83 @@ var lensrankTestTier = function() {
     return '200,001-300k';
   } else if (lensrank > 300000 && lensrank <= 400000) {
     return '300,001-400k';
+  } else {
+    return '>400k';
   }
 }();
-if (inAmazonTestSample) {
-  $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
-    tracker.push(['track', 'Lens Visit', {
+
+$J(window).on('squidoo.lazyload.finished', function() {
+  // figure out what kinds of links are available on this page
+  if (!window.__amazonLinks) {
+    window.__amazonLinks = {
+      'officialCount': 0,
+      'unofficialCount': 0
+    };
+    $a = $J('[href*="amazon."]');
+    window.__amazonLinks.officialCount = $a.filter('[data-official="yes"]').length;
+    window.__amazonLinks.unofficialCount = $a.length - window.__amazonLinks.officialCount;
+  }
+
+  // if this Lens is in our Amazon test sample, track the visit
+  if (inAmazonTestSample) {
+    var sample = {
       'lensrank-tier': lensrankTier,
-      'lensrank-test-tier': lensrankTestTier
-    }]);
-  });
-}
+      'test-lensrank-tier': lensrankTestTier,
+      'official-count': window.__amazonLinks.officialCount,
+      'unofficial-count': window.__amazonLinks.unofficialCount
+    }
+
+    $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+      tracker.push(['track', 'Lens Visit', sample]);
+    });
+
+    // stash the counts
+    $Sq.api('sample/set_amazon_link_counts', 'POST', $J.extend({}, window.__amazonLinks, { 'lens': theLensName }));
+
+    // also in the Amazon test sample, track scroll past 5th, 10th, 15th, and 20th modules
+    !function() {
+      var $ = jQuery, $W = $(window), t = null; 
+      var events = { at5th: false, at10th: false, at15th: false, at20th: false };
+      var modules = { 
+        at5th: $('section.module:eq(4)').offset(), 
+        at10th: $('section.module:eq(9)').offset(), 
+        at15th: $('section.module:eq(14)').offset(), 
+        at20th: $('section.module:eq(19)').offset() 
+      };
+      $W.on('scroll', function() {
+        clearTimeout(t);
+        t = setTimeout(function() {
+          var top = $W.scrollTop() + $W.height();
+          if (modules.at5th && !events.at5th && top >= modules.at5th.top + 200) {
+            events.at5th = true;
+            $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+              tracker.push(['track', '5th Module', sample]);
+            });
+          }
+          if (modules.at10th && !events.at10th && top >= modules.at10th.top + 200) {
+            events.at10th = true;
+            $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+              tracker.push(['track', '10th Module', sample]);
+            });
+          } 
+          if (modules.at15th && !events.at15th && top >= modules.at15th.top + 200) {
+            events.at15th = true;
+            $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+              tracker.push(['track', '15th Module', sample]);
+            });
+          }
+          if (modules.at20th && !events.at20th && top >= modules.at20th.top + 200) {
+            events.at20th = true;
+            $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+              tracker.push(['track', '20th Module', sample]);
+            });
+          }
+        }, 100);
+      });
+    }();
+  }
+});
+
 var url = '/track/ajax_beacon?';
 url += "lens_id=" + theLensId;
 url += "&referrer=" + escape(document.referrer);
@@ -533,6 +600,7 @@ registerPostsTestTier();
 
   function trackAmazonClick(link) {
     var $ = jQuery, sH = $(window).height(), $link = $(link), at = $link.position().top;
+
     var $module = $link.closest('[data-mod-type]'), type = $module.data('mod-type');
     var hasItemDes = 'n/a', displayMode = 'n/a', itemDensity = 'n/a';
     if (type === 'amazon') {
@@ -557,7 +625,9 @@ registerPostsTestTier();
         'column': $module.closest('#left_col_wrap').length ? 'body' : 'sidebar',
         'display-mode': displayMode,
         'lensrank-tier': lensrankTier, // established in lens.php,
-        'lensrank-test-tier': lensrankTestTier
+        'test-lensrank-tier': lensrankTestTier,
+        'official-count': window.__amazonLinks ? window.__amazonLinks.officialCount : 'n/a',
+        'unofficial-count': window.__amazonLinks ? window.__amazonLinks.unofficialCount : 'n/a'
       }]);
     });
   }
@@ -1012,8 +1082,8 @@ registerPostsTestTier();
   <!-- ratings -->
 
   <p class="clear lt_gray font12 lens_ratings"> 
-          Ranked #18,460      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
-      #1,779,881 overall
+          Ranked #18,470      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
+      #1,782,014 overall
     
      | Donates to Rhodesian Ridgeback Rescue of NorCal  </p>
 
@@ -1911,7 +1981,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
   </div>
 </noscript>
 
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,482,new Date().getTime(),"","","","",""]);</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","3cd3786cd7",657144,"MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,243,new Date().getTime()]);</script>
 
 
 <div id="default_onion" class="default_onion" style="display: none;"></div>
@@ -1984,7 +2054,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
             <button class="btn btn-primary" type="submit">Post Comment</button>
             <button class="btn" type="button" onclick="SquidooComments.cancel();">Cancel</button>
           </div><!-- .btn-group -->
-          <input type="hidden" name="comment_nonce" value="addb5fc2f5daf368d4bb174c344602bf">
+          <input type="hidden" name="comment_nonce" value="35249e9ba001e2d2368b83022fb9ba9e">
 
 
         </div>

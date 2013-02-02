@@ -464,27 +464,47 @@ mistats.InteractionTracker = function ()
 
    types =
    {
-      'cs_vote':        {key: 'mi_css', product: 'Poll Votes'},
-      'cs_results':     {key: 'mi_csr', product: 'Poll Results'},
-      'cs_details':     {key: 'mi_csd', product: 'Poll Details'},
-      'cs_hover':       {key: 'mi_csh', product: 'Poll Hover'},
-      'gallery_views':  {key: 'mi_gvc', product: 'Gallery Views', eVar: 'eVar6'},
-      'gallery_panel':  {key: 'mi_gpc', product: 'Gallery Panel Views'},
-      'gcs_another':    {key: 'mi_gan', product: 'GCS Ask Another'},
-      'gcs_signup':     {key: 'mi_gsu', product: 'GCS Signup'},
-      'gcs_survey':     {key: 'mi_gsv', product: 'GCS Answered Survey'},
-      'gcs_abandon':    {key: 'mi_gas', product: 'GCS Exited Site', event: 'event21'},
-      'gcs_navigate':   {key: 'mi_gap', product: 'GCS Exited Page', event: 'event21'},
-      'share_fb':       {key: 'mi_sfb', product: 'Share Facebook'},
-      'share_tw':       {key: 'mi_stw', product: 'Share Twitter'},
-      'share_gp':       {key: 'mi_sgp', product: 'Share Google+'},
-      'share_print':    {key: 'mi_spr', product: 'Share Print'},
-      'share_email':    {key: 'mi_sem', product: 'Share Email'},
-      'share_any':      {key: 'mi_san', product: 'Share Any'},
-      'view_more':      {key: 'mi_vmc', product: 'View More Stories'},
-      'widget_show':    {key: 'mi_wsc', product: 'Widget Show'},
-      'widget_hide':    {key: 'mi_whc', product: 'Widget Hide'},
-      'widget_move':    {key: 'mi_wmc', product: 'Widget Move'},
+      'cs_vote':    {key: 'mi_css', product: 'Poll Votes'},
+      'cs_results': {key: 'mi_csr', product: 'Poll Results'},
+      'cs_details': {key: 'mi_csd', product: 'Poll Details'},
+      'cs_hover':   {key: 'mi_csh', product: 'Poll Hover'},
+
+      'dsq-like-thread':    {key: 'mi_dlp', product: 'Dsq Like Page'},
+      'dsq-dislike-thread': {key: 'mi_ddp', product: 'Dsq Dislike Page'},
+      'dsq-toolbar':        {key: 'mi_dcm', product: 'Dsq Community'},
+      'dsq-account':        {key: 'mi_dlg', product: 'Dsq Login'},
+      'dsq-collapse':       {key: 'mi_dhs', product: 'Dsq Hide/Show'},
+      'dsq-expand':         {key: 'mi_dhs', product: 'Dsq Hide/Show'},
+      'dsq-button':         {key: 'mi_dpo', product: 'Dsq Post'},
+      'dsq-sort':           {key: 'mi_dso', product: 'Dsq Sort'},
+      'dsq-like':           {key: 'mi_dlp', product: 'Dsq Like Post'},
+      'dsq-reply':          {key: 'mi_drp', product: 'Dsq Reply'},
+      'dsq-email':          {key: 'mi_dem', product: 'Dsq Email'},
+      'dsq-rss':            {key: 'mi_drs', product: 'Dsq RSS'},
+      'dsq-pagination':     {key: 'mi_dpg', product: 'Dsq Page'},
+
+      'gallery_views': {key: 'mi_gvc', product: 'Gallery Views', eVar: 'eVar6'},
+      'gallery_panel': {key: 'mi_gpc', product: 'Gallery Panel Views'},
+
+      'gcs_another':  {key: 'mi_gan', product: 'GCS Ask Another'},
+      'gcs_signup':   {key: 'mi_gsu', product: 'GCS Signup'},
+      'gcs_survey':   {key: 'mi_gsv', product: 'GCS Answered Survey'},
+      'gcs_abandon':  {key: 'mi_gas', product: 'GCS Exited Site'},
+      'gcs_navigate': {key: 'mi_gap', product: 'GCS Exited Page'},
+
+      'share_fb':    {key: 'mi_sfb', product: 'Share Facebook'},
+      'share_tw':    {key: 'mi_stw', product: 'Share Twitter'},
+      'share_gp':    {key: 'mi_sgp', product: 'Share Google+'},
+      'share_print': {key: 'mi_spr', product: 'Share Print'},
+      'share_email': {key: 'mi_sem', product: 'Share Email'},
+      'share_any':   {key: 'mi_san', product: 'Share Any'},
+
+      'view_more': {key: 'mi_vmc', product: 'View More Stories'},
+
+      'widget_show': {key: 'mi_wsc', product: 'Widget Show'},
+      'widget_hide': {key: 'mi_whc', product: 'Widget Hide'},
+      'widget_move': {key: 'mi_wmc', product: 'Widget Move'},
+
       'wgt_topjobs':    {key: 'mi_tjc', product: 'Trifecta Jobs'},
       'wgt_cars':       {key: 'mi_tcc', product: 'Trifecta Cars'},
       'wgt_homefinder': {key: 'mi_thc', product: 'Trifecta Homes'}
@@ -1034,41 +1054,14 @@ mistats.GCSTracker = function ()
 
    function trackSignup(pEvent)
    {
-      var evtType;
-      var thisDoc;
       var thisObj;
 
       thisObj = pEvent.srcElement || pEvent.target;
-      thisDoc = thisObj.ownerDocument;
-      evtType = pEvent.type;
 
-      if (pollPtr)
-         clearInterval(pollPtr);
-
-      pollCnt = 0;
-      pollPtr = setInterval(function ()
-      {
-         var msg;
-
-         if (++pollCnt > cPollLim)
-         {
-            clearInterval(pollPtr);
-            pollPtr = null;
-         }
-
-         msg = thisDoc.getElementById('et_msgBlock');
-
-         if (!msg || !msg.innerHTML.match || !msg.innerHTML.match(/confirmation/i))
-            return;
-
-         mistats.unbind(thisObj, evtType, trackSignup);
-         mistats.interactionTracker.increment('gcs_signup');
-         mistats.interactionTracker.setCount('gcs_abandon', 0);
-         bindToAnchors(false);
-
-         clearInterval(pollPtr);
-         pollPtr = null;
-      }, 500);
+      mistats.unbind(thisObj, pEvent.type, trackSignup);
+      mistats.interactionTracker.increment('gcs_signup');
+      mistats.interactionTracker.setCount('gcs_abandon', 0);
+      bindToAnchors(false);
    };
 
    function next()
@@ -1139,7 +1132,7 @@ mistats.GCSTracker = function ()
          pollCnt = 0;
          pollPtr = setInterval(function ()
          {
-            var submit;
+            var login;
 
             if (++pollCnt > cPollLim)
             {
@@ -1150,11 +1143,11 @@ mistats.GCSTracker = function ()
             if (!(signup && signup[0] && signup[0].contentWindow && signup[0].contentWindow.document))
                return;
 
-            submit = getElementLikeId(/Submit/i, signup[0].contentWindow.document);
-            if (!submit)
+            login = signup[0].contentWindow.document.getElementById('plus-link');
+            if (!login)
                return;
 
-            mistats.bind(submit, 'click', trackSignup);
+            mistats.bind(login, 'click', trackSignup);
             clearInterval(pollPtr);
             pollPtr = null;
          }, 500);

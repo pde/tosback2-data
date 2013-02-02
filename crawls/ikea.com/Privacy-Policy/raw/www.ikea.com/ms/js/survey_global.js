@@ -242,226 +242,7 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
                 }
             }
         }
-
-       
-        // language templates
-
-
-
-        inviteLine1["en"] = "Help us to improve!";
-        inviteLine2["en"] = "Would you like to participate in our short survey?";
-        inviteLine3["en"] = "If you agree to take part the survey will start when you finish your visit to IKEA.com today";
-        inviteYes["en" ] = "Take Part";
-        inviteNo["en"] = "No thanks";
-
-        inviteLine1["fr"] = "Aidez-nous &#224; nous am&#233;liorer !";
-        inviteLine2["fr"] = "Souhaiteriez-vous participer &#224; une petite enqu&#234;te ?";
-        inviteLine3["fr"] = "Si vous acceptez de prendre part, l'enqu&#234;te commencera aujourd'hui &#224; la fin de votre visite sur IKEA.com";
-        inviteYes["fr"] = "Prendre part";
-        inviteNo["fr"] = "Non, merci";
-
-        inviteLine1["da"] = "Hj&#230;lp os med at blive bedre!";
-        inviteLine2["da"] = "Har du lyst til at deltage i vores korte unders&#248;gelse?";
-        inviteLine3["da"] = "Hvis du vil v&#230;re med, starter unders&#248;gelsen, n&#229;r du afslutter dit bes&#248;g hos IKEA.com i dag";
-        inviteYes["da"] = "Deltag";
-        inviteNo["da"] = "Nej tak";
-
-
-        inviteLine1["cs"] = "Pomozte n&#225;m zlep&#353;it se!";
-        inviteLine2["cs"] = "Cht&#283;l/a byste se z&#250;&#269;astnit na&#353;eho kr&#225;tk&#233;ho pr&#367;zkumu?";
-        inviteLine3["cs"] = "Pokud se chcete z&#250;&#269;astnit, pr&#367;zkum za&#269;ne, jakmile ukon&#269;&#237;te dne&#353;n&#237; n&#225;v&#353;t&#283;vu webov&#233; str&#225;nky IKEA.com";
-        inviteYes["cs"] = "Z&#250;&#269;astnit se";
-        inviteNo["cs"] = "Ne, d&#283;kuji";
-
-        inviteLine1["fi"] = "Kerro mielipiteesi!";
-        inviteLine2["fi"] = "Haluaisitko osallistua lyhyeen kyselyymme?";
-        inviteLine3["fi"] = "Jos haluat osallistua, kysely k&#228;ynnistyy, kun poistut IKEA-sivustolta.";
-        inviteYes["fi"] = "Haluan osallistua";
-        inviteNo["fi"] = "Ei kiitos";
-
-        inviteLine1["el"] = "&#914;&#959;&#951;&#952;&#942;&#963;&#964;&#949; &#956;&#945;&#962; &#957;&#945; &#946;&#949;&#955;&#964;&#953;&#969;&#952;&#959;&#973;&#956;&#949;!";
-        inviteLine2["el"] = "&#920;&#945; &#952;&#941;&#955;&#945;&#964;&#949; &#957;&#945; &#955;&#940;&#946;&#949;&#964;&#949; &#956;&#941;&#961;&#959;&#962; &#963;&#964;&#951; &#963;&#973;&#957;&#964;&#959;&#956;&#951; &#941;&#961;&#949;&#965;&#957;&#940; &#956;&#945;&#962;;";
-        inviteLine3["el"] = "&#917;&#940;&#957; &#963;&#965;&#956;&#966;&#969;&#957;&#942;&#963;&#949;&#964;&#949; &#957;&#945; &#955;&#940;&#946;&#949;&#964;&#949; &#956;&#941;&#961;&#959;&#962;, &#951; &#941;&#961;&#949;&#965;&#957;&#945; &#952;&#945; &#958;&#949;&#954;&#953;&#957;&#942;&#963;&#949;&#953; &#972;&#964;&#945;&#957; &#964;&#949;&#961;&#956;&#945;&#964;&#943;&#963;&#949;&#964;&#949; &#964;&#951;&#957; &#949;&#960;&#943;&#963;&#954;&#949;&#968;&#942; &#963;&#945;&#962; &#963;&#964;&#959;  IKEA.com &#963;&#942;&#956;&#949;&#961;&#945;";
-        inviteYes["el"] = "&#920;&#945; &#955;&#940;&#946;&#969; &#956;&#941;&#961;&#959;&#962;";
-        inviteNo["el"] = "&#908;&#967;&#953;, &#949;&#965;&#967;&#945;&#961;&#953;&#963;&#964;&#974;";
-
-        inviteLine1["he"] = "&#1506;&#1494;&#1493;&#1512; &#1500;&#1504;&#1493; &#1500;&#1492;&#1513;&#1514;&#1508;&#1512;!";
-        inviteLine2["he"] = "&#1492;&#1488;&#1501; &#1492;&#1497;&#1497;&#1514; &#1512;&#1493;&#1510;&#1492; &#1500;&#1492;&#1513;&#1514;&#1514;&#1507; &#1489;&#1505;&#1511;&#1512; &#1492;&#1511;&#1510;&#1512; &#1513;&#1500;&#1504;&#1493;?";
-        inviteLine3["he"] = "&#1488;&#1501; &#1514;&#1505;&#1499;&#1497;&#1501; &#1500;&#1511;&#1495;&#1514; &#1495;&#1500;&#1511; &#1489;&#1505;&#1511;&#1512;, &#1492;&#1493;&#1488; &#1497;&#1514;&#1495;&#1497;&#1500; &#1499;&#1513;&#1514;&#1505;&#1497;&#1497;&#1501; &#1488;&#1514; &#1492;&#1489;&#1497;&#1511;&#1493;&#1512; &#1513;&#1500;&#1498; &#1489;-IKEA.com &#1492;&#1497;&#1493;&#1501;";
-        inviteYes["he"] = "&#1500;&#1511;&#1495;&#1514; &#1495;&#1500;&#1511; &#1489;&#1505;&#1511;&#1512;";
-        inviteNo["he"] = "&#1500;&#1488; &#1514;&#1493;&#1491;&#1492;";
-
-        inviteLine1["hu"] = "Seg&#237;ts benn&#252;nket a fejl&#337;d&#233;sben!";
-        inviteLine2["hu"] = "Szeretn&#233;l r&#233;szt venni r&#246;vid felm&#233;r&#233;s&#252;nkben?";
-        inviteLine3["hu"] = "Ha beleegyezel a r&#233;szv&#233;telbe, a felm&#233;r&#233;s akkor kezd&#337;dik meg, ha befejezted mai l&#225;togat&#225;sodat az IKEA.com oldalon.";
-        inviteYes["hu"] = "R&#233;szt veszek";
-        inviteNo["hu"] = "K&#246;sz&#246;n&#246;m, nem";        
-
-        inviteLine1["it"] = "Ci aiuti a migliorare?";
-        inviteLine2["it"] = "Vuoi prendere parte ad un breve sondaggio?";
-        inviteLine3["it"] = "Se accetti di partecipare, il sondaggio verr&#224; lanciato al termine della tua visita di oggi su IKEA.com.";
-        inviteYes["it"] = "Partecipa";
-        inviteNo["it"] = "No, grazie";
-
-         inviteLine1["no"] = "Hjelp oss &#229; bli bedre!";
-        inviteLine2["no"] = "Har du lyst til &#229; delta i en unders&#248;kelse?";
-        inviteLine3["no"] = "Hvis du velger &#229; delta, starter unders&#248;kelsen n&#229;r du avslutter dagens bes&#248;k p&#229; IKEA.no.";
-        inviteYes["no"] = "Delta";
-        inviteNo["no"] = "Nei takk";
-
-
-        inviteLine1["pl"] = "Prosimy o pomoc w podniesieniu jako&#347;ci naszych us&#322;ug!";
-        inviteLine2["pl"] = "Czy chcia&#322;(a)by Pan(i) wzi&#261;&#263; udzia&#322; w kr&#243;tkiej ankiecie?";
-        inviteLine3["pl"] = "Je&#380;eli wyrazi Pan(i) zgod&#281;, ankieta rozpocznie si&#281; po zako&#324;czeniu Pana(-i) dzisiejszej wizyty w IKEA.com.";
-        inviteYes["pl"] = "Chc&#281; wzi&#261;&#263; udzia&#322;";
-        inviteNo["pl"] = "Nie, dzi&#281;kuj&#281; ";
-
-
-        inviteLine1["rm"] = "Ajuta&#355;i-ne s&#259; fim mai buni!";
-        inviteLine2["rm"] = "Dori&#355;i s&#259; participa&#355;i la sondajul nostru scurt?";
-        inviteLine3["rm"] = "Dac&#259; sunte&#355;i de acord s&#259; participa&#355;i, sondajul va &#238;ncepe la &#238;ncheierea vizitei dumneavoastr&#259; de ast&#259;zi de pe IKEA.com";
-        inviteYes["rm"] = "Vreau s&#259; iau parte";
-        inviteNo["rm"] = "Nu, mul&#355;umesc ";
-
-        inviteLine1["sl"] = "Pomagajte nam biti bolj&#353;i!";
-        inviteLine2["sl"] = "Si &#382;elite sodelovati v na&#353;i kratki anketi?";
-        inviteLine3["sl"] = "&#268;e se boste strinjali, se bo anketa za&#269;ela, ko boste kon&#269;ali svoj dana&#353;nji obisk spletnega mesta IKEA.com.";
-        inviteYes["sl"] = "&#381;elim sodelovati";
-        inviteNo["sl"] = "Ne, hvala";
-
-        inviteLine1["es-us"] = "&#161;Ay&#250;denos a mejorar!";
-        inviteLine2["es-us"] = "&#191;Le gustar&#237;a participar en nuestra peque&#241;a encuesta?";
-        inviteLine3["es-us"] = "Si acepta participar, la encuesta comenzar&#225; cuando termine su visita a IKEA.com hoy.";
-        inviteYes["es-us"] = "Participar";
-        inviteNo["es-us"] = "No, gracias";
-
-        inviteLine1["fr-ca"] = "Aidez-nous &#224; nous am&#233;liorer!";
-        inviteLine2["fr-ca"] = "Aimeriez-vous participer &#224; notre court sondage?";
-        inviteLine3["fr-ca"] = "Si vous acceptez de participer, le sondage commencera lorsque vous aurez termin&#233; de visiter IKEA.com";
-        inviteYes["fr-ca"] = "Je d&#233;sire participer";
-        inviteNo["fr-ca"] = "Non, merci";
-
-        inviteLine1["ru"] = "&#1055;&#1086;&#1084;&#1086;&#1075;&#1080;&#1090;&#1077; &#1085;&#1072;&#1084; &#1089;&#1090;&#1072;&#1090;&#1100; &#1083;&#1091;&#1095;&#1096;&#1077;!";
-        inviteLine2["ru"] = "&#1042;&#1099; &#1093;&#1086;&#1090;&#1077;&#1083;&#1080; &#1073;&#1099; &#1087;&#1088;&#1080;&#1085;&#1103;&#1090;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1080;&#1077; &#1074; &#1082;&#1086;&#1088;&#1086;&#1090;&#1082;&#1086;&#1084; &#1080;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1080;?";
-        inviteLine3["ru"] = "&#1045;&#1089;&#1083;&#1080; &#1074;&#1099; &#1089;&#1086;&#1075;&#1083;&#1072;&#1089;&#1080;&#1090;&#1077;&#1089;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1074;&#1086;&#1074;&#1072;&#1090;&#1100;, &#1090;&#1086; &#1089;&#1084;&#1086;&#1078;&#1077;&#1090;&#1077; &#1087;&#1088;&#1080;&#1089;&#1090;&#1091;&#1087;&#1080;&#1090;&#1100; &#1082; &#1080;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1102;, &#1082;&#1086;&#1075;&#1076;&#1072; &#1079;&#1072;&#1082;&#1088;&#1086;&#1077;&#1090;&#1077; &#1089;&#1072;&#1081;&#1090; IKEA.com. ";
-        inviteYes["ru"] = "&#1055;&#1088;&#1080;&#1085;&#1103;&#1090;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1080;&#1077;";
-        inviteNo["ru"] = "&#1053;&#1077;&#1090;, &#1089;&#1087;&#1072;&#1089;&#1080;&#1073;&#1086;";
-
-        inviteLine1["zh-hk"] = "&#24171;&#21161;&#25105;&#20497;&#25913;&#21892;&#65281;";
-        inviteLine2["zh-hk"] = "&#24744;&#39000;&#24847;&#21443;&#33287;&#25105;&#20497;&#30340;&#31777;&#30701;&#35519;&#26597;&#21966;&#65311;";
-        inviteLine3["zh-hk"] = "&#22914;&#26524;&#24744;&#21516;&#24847;&#21443;&#33287;&#65292;&#21063;&#22312;&#24744;&#36896;&#35370;&#23436; IKEA.com &#24460;&#65292;&#21363;&#38283;&#22987;&#26412;&#35519;&#26597;";
-        inviteYes["zh-hk"] = "&#21443;&#33287;";
-        inviteNo["zh-hk"] = "&#19981;&#21443;&#33287;&#65292;&#35613;&#35613;";
-        
-        inviteLine1["zh-tw"] = "&#24744;&#30340;&#24847;&#35211;&#26159;&#25105;&#20497;&#36914;&#27493;&#30340;&#21205;&#21147;&#65281;";
-        inviteLine2["zh-tw"] = "IKEA&#35488;&#25711;&#36992;&#35531;&#24744;&#21443;&#33287;&#21839;&#21367;&#35519;&#26597;&#65292;&#25552;&#20379;&#24744;&#23542;&#36020;&#30340;&#24847;&#35211;&#12290;";
-        inviteLine3["zh-tw"] = "&#22914;&#26524;&#24744;&#39000;&#24847;&#21443;&#21152;&#65292;&#21839;&#21367;&#35519;&#26597;&#23559;&#26371;&#22312;&#24744;&#28687;&#35261;&#23436;IKEA&#32178;&#31449;&#12289;&#38626;&#38283;&#25110;&#38364;&#38281;&#35222;&#31383;&#24460;&#38283;&#22987;&#36914;&#34892;&#12290;";
-        inviteYes["zh-tw"] = "&#25105;&#39000;&#24847;&#21443;&#21152;";
-        inviteNo["zh-tw"] = "&#19981;&#29992;&#20102;&#65292;&#35613;&#35613;";
-
-        inviteLine1["zh-cn"] = "&#24110;&#21161;&#25105;&#20204;&#25913;&#36827;&#65281;";
-        inviteLine2["zh-cn"] = "&#24744;&#26159;&#21542;&#24895;&#24847;&#21442;&#19982;&#25105;&#20204;&#30340;&#31616;&#30701;&#35843;&#26597;&#65311;";
-        inviteLine3["zh-cn"] = "&#22914;&#26524;&#21516;&#24847;&#21442;&#19982;&#65292;&#24744;&#29616;&#22312;&#27983;&#35272;&#23436; IKEA.com &#21518;&#21363;&#21487;&#24320;&#22987;&#20570;&#35843;&#26597;&#38382;&#21367;";
-        inviteYes["zh-cn"] = "&#21442;&#19982;";
-        inviteNo["zh-cn"] = "&#19981;&#65292;&#35874;&#35874;";
-
-        inviteLine1["is"] = "Hj&#225;lpa&#240;u okkur a&#240; b&#230;ta okkur?";
-        inviteLine2["is"] = "Viltu taka &#254;&#225;tt &#237; stuttri k&#246;nnun okkar?";
-        inviteLine3["is"] = "Ef &#254;&#250; sam&#254;ykkir a&#240; taka &#254;&#225;tt mun k&#246;nnunin hefjast &#254;egar &#254;&#250; l&#253;kur heims&#243;kn &#254;inni &#225; IKEA.is &#237; dag";
-        inviteYes["is"] = "Taka &#254;&#225;tt";
-        inviteNo["is"] = "Nei takk";
-
-        inviteLine1["ja"] = "&#12469;&#12540;&#12499;&#12473;&#25913;&#21892;&#12395;&#12372;&#21332;&#21147;&#19979;&#12373;&#12356;&#12290;";
-        inviteLine2["ja"] = "&#24330;&#31038;&#12398;&#31777;&#21336;&#12394;&#35519;&#26619;&#12395;&#12372;&#21332;&#21147;&#38914;&#12369;&#12414;&#12377;&#12363;?";
-        inviteLine3["ja"] = "&#35519;&#26619;&#12408;&#12398;&#12372;&#21442;&#21152;&#12395;&#21516;&#24847;&#12373;&#12428;&#12383;&#22580;&#21512;&#12399;&#12289;&#12362;&#23458;&#27096;&#12364;&#26412;&#26085;IKEA.com &#12408;&#12398;&#12450;&#12463;&#12475;&#12473;&#12434;&#32066;&#20102;&#12375;&#12383;&#24460;&#12391;&#35519;&#26619;&#12364;&#22987;&#12414;&#12426;&#12414;&#12377;&#12290;";
-        inviteYes["ja"] = "&#21442;&#21152;&#12377;&#12427;";
-        inviteNo["ja"] = "&#21442;&#21152;&#12375;&#12394;&#12356;";
-
-        inviteLine1["tr"] = "Geli&#351;memiz i&#231;in bize yard&#305;m edin!";
-        inviteLine2["tr"] = "K&#305;sa anketimize kat&#305;lmak ister misiniz?";
-        inviteLine3["tr"] = "Ankete kat&#305;lmay&#305; kabul etti&#287;iniz takdirde, anket IKEA.com.tr'den &#231;&#305;kt&#305;&#287;&#305;n&#305;z zaman ba&#351;layacakt&#305;r.";
-        inviteYes["tr"] = "Kat&#305;l";
-        inviteNo["tr"] = "Hay&#305;r, te&#351;ekk&#252;r ederim.";
-
-        inviteLine1["se"] = "Hj&#228;lp oss att bli b&#228;ttre!";
-        inviteLine2["se"] = "Vill du delta i v&#229;r korta unders&#246;kning?";
-        inviteLine3["se"] = "Om du vill delta s&#229; b&#246;rjar unders&#246;kningen n&#228;r du har avslutat ditt bes&#246;k p&#229; IKEA.com i dag.";
-        inviteYes["se"] = "Delta";
-        inviteNo["se"] = "Nej, tack";
-
-
-
-        inviteLine1["nl"] = "Help ons te verbeteren!";
-        inviteLine2["nl"] = "Wilt u meedoen aan een kort onderzoek?";
-        inviteLine3["nl"] = "Als u meedoet, begint het onderzoek wanneer u de IKEA-site verlaat.";
-        inviteYes["nl"] = "Ik doe mee";
-        inviteNo["nl"] = "Nee, bedankt";    
-
-
-
-        inviteLine1["pt"] = "Ajude-nos a melhorar!";
-        inviteLine2["pt"] = "Gostaria de participar num breve inqu&#233;rito que temos para si?";
-        inviteLine3["pt"] = "Se concordar em participar, o inqu&#233;rito ter&#225; in&#237;cio assim que concluir a sua visita a IKEA.com hoje";
-        inviteYes["pt"] = "Participar";
-        inviteNo["pt"] = "N&#227;o, obrigado(a)";    
-
-
-        inviteLine1["ar"] = "&#1587;&#1575;&#1593;&#1583;&#1606;&#1575; &#1601;&#1610; &#1578;&#1591;&#1608;&#1610;&#1585; &#1571;&#1606;&#1601;&#1587;&#1606;&#1575;!";
-        inviteLine2["ar"] = "&#1607;&#1604; &#1578;&#1585;&#1610;&#1583; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1610; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1575;&#1604;&#1602;&#1589;&#1610;&#1585;&#1577;&#1567;";        
-        inviteLine3["ar"] = "&#1573;&#1584;&#1575; &#1603;&#1606;&#1578; &#1578;&#1608;&#1575;&#1601;&#1602; &#1593;&#1604;&#1609; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1587;&#1578;&#1576;&#1583;&#1571; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1593;&#1606;&#1583; &#1575;&#1604;&#1575;&#1606;&#1578;&#1607;&#1575;&#1569; &#1605;&#1606; &#1586;&#1610;&#1575;&#1585;&#1578;&#1603; &#1604;&#1605;&#1608;&#1602;&#1593; IKEA.com &#1575;&#1604;&#1610;&#1608;&#1605;";
-        inviteYes["ar"] = "&#1587;&#1571;&#1588;&#1575;&#1585;&#1603;";
-        inviteNo["ar"] = "&#1604;&#1575; &#1588;&#1603;&#1585;&#1575;";
-
-        inviteLine1["de"] = "Wir m&#246;chten noch besser werden. Helfen Sie uns dabei!";
-        inviteLine2["de"] = "M&#246;chten Sie an unserer kurzen Umfrage teilnehmen?";        
-        inviteLine3["de"] = "Wenn Sie an der Umfrage teilnehmen m&#246;chten, startet diese, sobald Sie Ihren heutigen Besuch bei IKEA.com beendet haben.";
-        inviteYes["de"] = "Teilnehmen";
-        inviteNo["de"] = "Nein danke";
-
-        inviteLine1["es"] = "&#161;Ay&#250;denos a mejorar!";
-        inviteLine2["es"] = "&#191;Le gustar&#237;a participar en nuestra breve encuesta?";        
-        inviteLine3["es"] = "Si desea participar, la encuesta empezar&#225; cuando termine la visita de hoy a IKEA.com.";
-        inviteYes["es"] = "Participar";
-        inviteNo["es"] = "No, gracias";        
-
-        inviteLine1["sk"] = "Pom&#244;&#382;te n&#225;m, aby sme sa zlep&#353;ovali!";
-        inviteLine2["sk"] = "Chceli by ste sa z&#250;&#269;astni&#357; na na&#353;om kr&#225;tkom prieskume?";        
-        inviteLine3["sk"] = "Pokia&#318; s&#250;hlas&#237;te so svojou &#250;&#269;as&#357;ou, anketa za&#269;ne, ke&#271; ukon&#269;&#237;te svoju dne&#353;n&#250; n&#225;v&#353;tevu na IKEA.com";
-        inviteYes["sk"] = "Z&#250;&#269;astn&#237;m sa";
-        inviteNo["sk"] = "Nie, &#271;akujem ";        
-
-        inviteLine1["my"] = "Bantulah kami untuk menjadi lebih baik!";
-        inviteLine2["my"] = "Adakan anda ingin turut serta kaji selidik ringkas kami?";        
-        inviteLine3["my"] = "Kalau anda bersetuju untuk turut serta, kaji selidik ini akan bermula apabila anda selesai membeli-belah ke IKEA.com hari ini";
-        inviteYes["my"] = "Turut serta";
-        inviteNo["my"] = "Tidak, terima kasih";
-
-        inviteLine1["nl-be"] = "Help ons te verbeteren!";
-        inviteLine2["nl-be"] = "Wilt u meedoen aan een korte enqu&#234;te";
-        inviteLine3["nl-be"] = "Als u meedoet, begint de enqu&#234;te wanneer u de IKEA-site verlaat";
-        inviteYes["nl-be"] = "Ik doe mee";
-        inviteNo["nl-be"] = "Nee, bedankt";
-
-        inviteLine1["de-at"] = "Wir m&#246;chten stets besser werden. Hilf uns dabei!";
-        inviteLine2["de-at"] = "Hier kannst du an unserer kurzen Umfrage teilnehmen.";
-        inviteLine3["de-at"] = "Wenn du mitmachen m&#246;chtest, klick auf 'Teilnehmen'. Du kannst den Fragebogen dann nach deinem Besuch auf www.IKEA.at ausf&#252;llen.";
-        inviteYes["de-at"] = "Teilnehmen";
-        inviteNo["de-at"] = "Nein danke";
-        
-        inviteLine1["ro"] = "Doriti sa participati la sondajul nostru scurt?";
-        inviteLine2["ro"] = "Daca sunteti de acord sa participati, sondajul va &#238;ncepe";
-        inviteLine3["ro"] = "&#238;ntr-o noua fereasta, la &#238;ncheierea vizitei dumneavoastra de astazi de pe IKEA.ro";
-        inviteYes["ro"] = "Vreau sa particip";
-        inviteNo["ro"] = "Nu, multumesc";
-		
-		inviteLine1["th"] = "\u0e0a\u0e48\u0e27\u0e22\u0e40\u0e23\u0e32\u0e1b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e38\u0e07!";
-		inviteLine2["th"] = "\u0e2d\u0e22\u0e32\u0e01\u0e23\u0e48\u0e27\u0e21\u0e17\u0e33\u0e41\u0e1a\u0e1a\u0e2a\u0e33\u0e23\u0e27\u0e08\u0e2a\u0e31\u0e49\u0e19\u0e46 \u0e02\u0e2d\u0e07\u0e40\u0e23\u0e32\u0e21\u0e31\u0e49\u0e22?";
-		inviteLine3["th"] = "\u0e16\u0e49\u0e32\u0e15\u0e01\u0e25\u0e07\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21\u0e17\u0e33\u0e08\u0e30\u0e40\u0e23\u0e34\u0e48\u0e21\u0e41\u0e1a\u0e1a\u0e2a\u0e33\u0e23\u0e27\u0e08\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e04\u0e38\u0e13\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e34\u0e49\u0e19\u0e01\u0e32\u0e23\u0e40\u0e02\u0e49\u0e32\u0e0a\u0e21 IKEA.com \u0e27\u0e31\u0e19\u0e19\u0e35\u0e49";
-		inviteYes["th"] = "\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21";
-		inviteNo["th"] = "\u0e44\u0e21\u0e48\u0e25\u0e48\u0e30 \u0e02\u0e2d\u0e1a\u0e43\u0e08";
-		
         //language invite text - amended sept 2012
-
 	//21092012
         inviteLine1["th"] = "&#3594;&#3656;&#3623;&#3618;&#3648;&#3619;&#3634;&#3611;&#3619;&#3633;&#3610;&#3611;&#3619;&#3640;&#3591;!";
 	inviteLine2["th"] = "&#3588;&#3640;&#3603;&#3605;&#3657;&#3629;&#3591;&#3585;&#3634;&#3619;&#3619;&#3656;&#3623;&#3617;&#3605;&#3629;&#3610;&#3649;&#3610;&#3610;&#3626;&#3635;&#3619;&#3623;&#3592;&#3627;&#3619;&#3639;&#3629;&#3652;&#3617;&#3656; &#3649;&#3610;&#3610;&#3626;&#3635;&#3619;&#3623;&#3592;&#3609;&#3637;&#3657;&#3592;&#3632;&#3651;&#3594;&#3657;&#3648;&#3623;&#3621;&#3634;&#3611;&#3619;&#3632;&#3617;&#3634;&#3603; 10 &#3609;&#3634;&#3607;&#3637;"
@@ -566,11 +347,12 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
 	inviteNo["pl"] = "Nie, dzi&#281;kuj&#281; ";
 
 	//21092012
-        inviteLine1["rm"] = "Ajuta&#355;i-ne s&#259; fim mai buni!";
-	inviteLine2["rm"] = "Dori&#355;i s&#259; participa&#355;i la sondajul nostru? Completarea chestionarului dureaz&#259; aproximativ 10 minute";
-	inviteLine3["rm"] = "Dac&#259; sunte&#355;i de acord s&#259; participa&#355;i, sondajul va &#238;ncepe la &#238;ncheierea vizitei dumneavoastr&#259; de ast&#259;zi de pe IKEA.com";
-	inviteYes["rm"] = "Vreau s&#259; particip";
-	inviteNo["rm"] = "Nu, mul&#355;umesc ";
+    inviteLine1["ro"] = "Ajuta&#355;i-ne s&#259; fim mai buni!";
+    inviteLine2["ro"] = "Dori&#355;i s&#259; participa&#355;i la sondajul nostru? Completarea chestionarului dureaz&#259; aproximativ 10 minute";
+    inviteLine3["ro"] = "Dac&#259; sunte&#355;i de acord s&#259; participa&#355;i, sondajul va &#238;ncepe la &#238;ncheierea vizitei dumneavoastr&#259; de ast&#259;zi de pe IKEA.com";
+    inviteYes["ro"] = "Vreau s&#259; particip";
+    inviteNo["ro"] = "Nu, mul&#355;umesc ";
+
 
  
         //21092012
@@ -1117,7 +899,7 @@ function friendlyLanguageName(languageCode) {
             return "Polski";
         case "pt":
             return "Portugu&#234;s";
-        case "rm":
+        case "ro":
             return "Rom&#226;n&#259;";
         case "sk":
             return "Slovensk&#253;";

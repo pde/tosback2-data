@@ -894,7 +894,7 @@ sheet.disabled=false;if(sheet.removeAttribute){sheet.removeAttribute("disabled")
 return sheet;};adobe.dom.CSSStyleSheet=function(href){this.setHref(href);this.disabled=false;this.element=null;};adobe.dom.CSSStyleSheet.prototype={setHref:function(href){this.href=href.toString();},enable:function(htmlheadelement){if(this.element==null){this.element=adobe.dom.createStyleSheet(htmlheadelement,this.href);}else{adobe.dom.enableStyleSheet(this.element);}
 this.disabled=false;},disable:function(){adobe.dom.disableStyleSheet(this.element);this.disabled=true;},toString:function(){return"[Object adobe.dom.StyleSheet]"}};
 adobe.dom.FaaS=function(target)
-{$.ajaxSetup({async:false});this.target=target;this.targetID='#'+this.target;this.targetObj=$('#'+this.target);this.countryChange=false;this.industryChange=false;this.q_Obj=new Object();this.wsformTemplate=new Object();this.wsformTemplateTag=new Object();this.wsFaaSSourceSystem=new Object();this.wsSourceSystemQuestionId=new Object();this.wsFormTypeQuestionId=new Object();this.wsFormSubtypeQuestionId=new Object();this.wsProductInterestSKUQuestionId=new Object();this.wsInternalCampaignIdQuestionId=new Object();this.wsQuestionTypeHidden=new Object();this.wsQuestionTypeHiddenList=new Object();this.selectedFormTemplate=new Object();this.wsParameters=new Object();this.formDetailData=new Object();this.templateOptions=new Array();this.formSubtypeString=new Object();return this;};adobe.dom.FaaS.prototype={faasCountryChange:function()
+{$.ajaxSetup({async:false});this.target=target;this.targetID='#'+this.target;this.targetObj=$('#'+this.target);this.countryChange=false;this.industryChange=false;this.q_Obj=new Object();this.wsFaaSServerUrl=new Object();this.wsformTemplateTag=new Object();this.wsFaaSSourceSystem=new Object();this.wsSourceSystemQuestionId=new Object();this.wsFormTypeQuestionId=new Object();this.wsFormSubtypeQuestionId=new Object();this.wsProductInterestSKUQuestionId=new Object();this.wsInternalCampaignIdQuestionId=new Object();this.wsQuestionTypeHidden=new Object();this.wsQuestionTypeHiddenList=new Object();this.selectedFormTemplate=new Object();this.wsParameters=new Object();this.formDetailData=new Object();this.templateOptions=new Array();this.formSubtypeString=new Object();return this;};adobe.dom.FaaS.prototype={faasCountryChange:function()
 {window.countryChange=$.proxy(this.countryChange,this);$(this.targetID+' div.14 select').each(function()
 {if($(this).length>0&&typeof _faas_country_onChange_state=='function')
 {$(this).selectBox().unbind('change');$(this).selectBox().change(function()
@@ -946,7 +946,11 @@ else
 {$(this).remove();});window.formReflow=$.proxy(this.formReflow,this);$(document).bind("adobe.reflow.LayoutChange",function()
 {window.formReflow();});},formQuestions:function(question,value)
 {var tempObj=new Object();tempObj[question]=value;this.q_Obj=$.extend(this.q_Obj,tempObj);},formInit:function(id,l,d)
-{l=(l!=null)?l:"en_us";d=(d!=null)?d:"http://www.adobe.com";var faasScript=adobe.http.cdnprefix("entAppsCdnPrefix")+"/faas/service/jquery.faas-3.0.0.js",obj=this.targetObj;var pi=d.indexOf('http');if(pi<0)
+{l=(l!=null)?l:"en_us";d=(d!=null)?d:"http://www.adobe.com";var faasScript=this.wsFaaSServerUrl+"faas/service/jquery.faas-3.0.0.js",hostProtocol=(document.location.protocol=='https:'?'https':'http'),pi=faasScript.indexOf('://');if(pi>=0)
+{faasScript=hostProtocol+faasScript.substring(pi);}
+else
+{faasScript=hostProtocol+'://'+faasScript;}
+obj=this.targetObj;var pi=d.indexOf('http');if(pi<0)
 {d=document.location.protocol+'//'+window.location.host+d;if(!$.string(d).endsWith('.html')||!$.string(d).endsWith('.htm'))
 {d+='.html';}}
 window.formStyle=$.proxy(this.formStyle,this);window.countryChangeCallback=$.proxy(this.countryChangeCallback,this);window.industryChangeCallback=$.proxy(this.industryChangeCallback,this);window.getFormSubtypeName=$.proxy(this.getFormSubtypeName,this);window.formQuestions=this.q_Obj;adobe.http.getScript(faasScript).done(function()
@@ -956,8 +960,9 @@ window.formStyle=$.proxy(this.formStyle,this);window.countryChangeCallback=$.pro
 {data.data.destination+="?form_subtype="+window.getFormSubtypeName();}
 else
 {data.data.destination+="&form_subtype="+window.getFormSubtypeName();}},afterEventFinishedCallback:function()
-{window.countryChangeCallback();window.industryChangeCallback();}}});});},setFormTemplateURL:function(url)
-{this.wsformTemplate=url;},setFormTemplateTag:function(tag)
+{window.countryChangeCallback();window.industryChangeCallback();}}});});},setFaaSServerUrl:function(url)
+{var newUrl;if(!$.string(url).endsWith('/')){var str1=url;newUrl=str1.concat("/");}else{newUrl=url;}
+this.wsFaaSServerUrl=newUrl;},setFormTemplateTag:function(tag)
 {this.wsformTemplateTag=tag;},setFormTypeQuestionId:function(qId)
 {this.wsFormTypeQuestionId=qId;},setFormSubtypeQuestionId:function(qId)
 {this.wsFormSubtypeQuestionId=qId;},setSourceSystemQuestionId:function(qId)
@@ -970,7 +975,7 @@ else
 {this.wsParameters=p;},setFormDetailData:function(d)
 {this.formDetailData=d;},setSourceSystem:function(s)
 {this.wsFaaSSourceSystem=s;},setFormSubtypeString:function(s){this.formSubtypeString=s;},preloadFormTemplates:function()
-{var wsUrl=this.wsformTemplate+'?'+this.wsParameters,hostProtocol=(document.location.protocol=='https:'?'https':'http'),pi=wsUrl.indexOf('://');if(pi>=0)
+{var wsUrl=this.wsFaaSServerUrl+'faas/api/form/?'+this.wsParameters,hostProtocol=(document.location.protocol=='https:'?'https':'http'),pi=wsUrl.indexOf('://');if(pi>=0)
 {wsUrl=hostProtocol+wsUrl.substring(pi);}
 else
 {wsUrl=hostProtocol+'://'+wsUrl;}
@@ -982,7 +987,7 @@ window.templateOpt=this.templateOptions;$.getJSON(wsUrl,{tags:this.wsformTemplat
 {window.populateFormType=$.proxy(this.populateFormType,this);window.populateFormSubtype=$.proxy(this.populateFormSubtype,this);window.populateProductInterestSKU=$.proxy(this.populateProductInterestSKU,this);window.populateInternalCampaignId=$.proxy(this.populateInternalCampaignId,this);window.populateFormType(src);window.populateFormSubtype(src);window.populateProductInterestSKU(src);window.populateInternalCampaignId(src);}},retrieveFormData:function(formId,src)
 {if(formId<=0||formId=='SELECT')
 {return;}
-window.populateFormData=$.proxy(this.populateFormData,this);window.setSelectedFormTemplate=$.proxy(this.setSelectedFormTemplate,this);window.setFormDetailData=$.proxy(this.setFormDetailData,this);window.setSelectedFormTemplate(formId);var wsformUrl=this.wsformTemplate,wsUrl=wsformUrl+formId+'?'+this.wsParameters,hostProtocol=(document.location.protocol=='https:'?'https':'http'),pi=wsUrl.indexOf('://');if(pi>=0)
+window.populateFormData=$.proxy(this.populateFormData,this);window.setSelectedFormTemplate=$.proxy(this.setSelectedFormTemplate,this);window.setFormDetailData=$.proxy(this.setFormDetailData,this);window.setSelectedFormTemplate(formId);var wsformUrl=this.wsFaaSServerUrl,wsUrl=wsformUrl+'faas/api/form/'+formId+'?'+this.wsParameters,hostProtocol=(document.location.protocol=='https:'?'https':'http'),pi=wsUrl.indexOf('://');if(pi>=0)
 {wsUrl=hostProtocol+wsUrl.substring(pi);}
 else
 {wsUrl=hostProtocol+'://'+wsUrl;}

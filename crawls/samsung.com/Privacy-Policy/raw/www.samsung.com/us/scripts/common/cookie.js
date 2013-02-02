@@ -79,7 +79,7 @@ function clearCookiesAndMakeFinalURL(hrefValue)
 	 }
 
      var finalURL=hrefValue+"?url="+mainURL;
-     document.getElementById('logout').href=finalURL;
+     $(".logout").attr("href", finalURL);
     
 
      deleteCookie("prof_country", "/", document.domain);

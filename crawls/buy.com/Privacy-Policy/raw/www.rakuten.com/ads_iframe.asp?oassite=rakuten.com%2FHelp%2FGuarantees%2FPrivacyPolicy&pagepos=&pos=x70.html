@@ -1,0 +1,46 @@
+
+<html>
+<head>
+<script type="text/javascript">
+//<![CDATA[
+    function getCookieVal (offset) {
+    	var endstr = document.cookie.indexOf (";", offset);
+    	if (endstr == -1)
+    		endstr = document.cookie.length;
+    		return unescape(document.cookie.substring(offset, endstr));
+	}
+
+    function GetCookie (name) {
+    	var arg = name + "=";
+    	var alen = arg.length;
+    	var clen = document.cookie.length;
+    	var i = 0;
+    	while (i < clen) {
+    		var j = i + alen;
+    	    if (document.cookie.substring(i, j) == arg)
+    	    	return getCookieVal (j);
+    	    	i = document.cookie.indexOf(" ", i) + 1;
+    		    if (i == 0) break; 
+    		}
+    		if (name == "basket") {
+    	  		return "Basket Empty";
+    		} else {
+    			return "null";
+    		}
+    }
+ //]]>
+</script>
+</head>
+<body>
+<script type="text/javascript" src="retail/flash/swfobject.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+	
+	    document.domain = "rakuten.com";
+        document.write('<SCR' + 'IPT LANGUAGE=JavaScript1.1 type="text/javascript" SRC="http://oascentral.rakuten.com/RealMedia/ads/adstream_jx.ads/rakuten.com\/Help\/Guarantees\/PrivacyPolicy/' + parent.OAS_rns + '@!x70?' + GetCookie("Household") + '"></SCR'+'IPT>');
+
+ //]]>
+</script>
+</body>
+</html>
+

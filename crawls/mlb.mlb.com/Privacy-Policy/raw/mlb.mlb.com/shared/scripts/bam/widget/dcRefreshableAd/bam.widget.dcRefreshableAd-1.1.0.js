@@ -1,15 +1,15 @@
-(function (window, $) {
+(function(window, $) {
 
 
 
-	var _log = function(msg){
-		var isDebug = ~document.location.search.indexOf("debug");
-		if (isDebug && typeof console !== "undefined" && !!console.log) {
-			if (typeof msg === "string") console.log("dcRefreshableAd: "+msg);
-			else if (typeof msg === "object" && !!console.dir) console.dir(msg);
-			else console.log(msg);			
-		}
-	};
+  var _log = function(msg) {
+      var isDebug = ~document.location.search.indexOf("debug");
+      if (isDebug && typeof console !== "undefined" && !! console.log) {
+        if (typeof msg === "string") console.log("dcRefreshableAd: " + msg);
+        else if (typeof msg === "object" && !! console.dir) console.dir(msg);
+        else console.log(msg);
+      }
+    };
 
 
 
@@ -57,13 +57,14 @@
   $.widget('bam.dcRefreshableAd', {
 
     options: {
-      size:     '',
-	  site:		'',
+      size: '',
+      site: '',
       interval: 0,
-      max:      Infinity,
-	  tile:		'',
-	  pos:		'',
-      iframe:   '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"/>',
+      max: Infinity,
+      tile: '',
+      pos: '',
+      iframe: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"/>',
+      networkid: false,
       customparams: {}
     },
 
@@ -72,7 +73,7 @@
      * to contain refreshable advertising.
      * @private
      */
-    _create: function () {
+    _create: function() {
 
       // Do not instantiate ad if using secure protocol to avoid
       if (window.location.protocol === 'https:') {
@@ -80,27 +81,27 @@
       }
 
       var self = this,
-          elem = this.element,
-          opts = this.options,
-          base = this.widgetBaseClass,
-	      dims;
+        elem = this.element,
+        opts = this.options,
+        base = this.widgetBaseClass,
+        dims;
 
-		  
-		// "barf bag" hack for FF < 4 iframe refresh bug:
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=279048
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=363840 
-		if ($.browser.mozilla) {
-			opts.iframe += '<iframe src="#" style="display:none;"></iframe>';
-		}		  
-		  
-		  
+
+      // "barf bag" hack for FF < 4 iframe refresh bug:
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=279048
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=363840 
+      if ($.browser.mozilla) {
+        opts.iframe += '<iframe src="#" style="display:none;"></iframe>';
+      }
+
+
       if (opts.size) {
         dims = opts.size.split('x');
       } else {
         dims = [elem.width(), elem.height()];
         opts.size = dims.join('x');
       }
-      
+
       if (dims.length !== 2) {
         throw '$.fn.dcRefreshableAd: Invalid size option. Example: "728x90"';
       }
@@ -109,20 +110,17 @@
 
       this.refreshableElement = elem.is('iframe') ? elem : $(opts.iframe).appendTo(elem);
 
-      this.refreshableElement
-        .addClass(base + '-refreshable')
-        .attr({
-          width:  dims[0],
-          height: dims[1]
-        })
-        .bind('load', function (evt) {
-          self._handleRefresh(evt);
-        });
-		
-      // Store position and tile values for generating URLs  	  
-	  this.pos  = opts.pos || (window.dc_tiles[opts.size] = ~~+window.dc_tiles[opts.size] + 1);	  
-	  this.tile = opts.tile || ++window.dc_numads;
-	  
+      this.refreshableElement.addClass(base + '-refreshable').attr({
+        width: dims[0],
+        height: dims[1]
+      }).bind('load', function(evt) {
+        self._handleRefresh(evt);
+      });
+
+      // Store position and tile values for generating URLs     
+      this.pos = opts.pos || (window.dc_tiles[opts.size] = ~~ + window.dc_tiles[opts.size] + 1);
+      this.tile = opts.tile || ++window.dc_numads;
+
       // Track impressions (passed with dcrefreshableadload event)
       this.impressions = 0;
 
@@ -137,7 +135,7 @@
      * Handle widget cleanup
      * @public
      */
-    destroy: function () {
+    destroy: function() {
 
       this.stop();
 
@@ -155,7 +153,7 @@
      * @private
      * @return {Number} a big random number
      */
-    _randomizeOrdValue: function () {
+    _randomizeOrdValue: function() {
       return Math.round(Math.random() * 10000000000000000);
     },
 
@@ -165,7 +163,7 @@
      * @return {String} a valid DoubleClick ad URL
      */
     _generateUrl: function () {
-	     var section   = window.section || 'empty',
+       var section   = window.section || 'empty',
           pageid    = window.page_id || window.pageid || 'empty',
           vkey      = window.bam && window.bam.vkey,
           contentid = window.content_id,
@@ -174,10 +172,11 @@
           lang      = window.dc_lang || 'en',
           domains   = window.c_domain || {},
           customparams = this.options.customparams,
+          network   = (window.dc_network) ? 'N2605/' : '',
           site = this.options.site || window.dc_site || (lang !== 'en' ? lang + '.' : '') + domains[club] + '.mlb',
           params    = [],
           key;
-		  
+      
       params.push(
         section,
         'pageid=' + pageid,
@@ -191,34 +190,36 @@
 
       params.push(
         'tile=' + this.tile,
-        'ord=' + ((this.options.syncOrd) ? window.ran_number : this._randomizeOrdValue())		
+        'ord=' + ((this.options.syncOrd) ? window.ran_number : this._randomizeOrdValue())   
       );
 
       for(key in customparams){
         params.push(key + "=" + customparams[key]);
       }
-	  
-      var output = 'http://ad.doubleclick.net/adi/' + site + '/' + params.join(';');
+    
+      var output = 'http://ad.doubleclick.net/' + network + 'adi/' + site + '/' + params.join(';');
       _log("generated URL: " + output);
 
       return output;
-	  
+
     },
 
     /**
      * Refresh the ad by replacing the <iframe> URL
      * @public
      */
-    refresh: function () {
+    refresh: function() {
       if (this.impressions >= this.options.max) {
         this.stop();
         return;
       }
-      
+
       var url = this._generateUrl();
 
       // Trigger the refreshstart event
-      this._trigger('refresh', null, { url: url });
+      this._trigger('refresh', null, {
+        url: url
+      });
 
       // Use location.replace so window.history is not affected
       this.refreshableElement[0].contentWindow.location.replace(url);
@@ -229,23 +230,25 @@
      * @private
      * @param {Object} evt jQuery <iframe> onload event
      */
-    _handleRefresh: function (evt) {
-      this._trigger('load', evt, { impressions: ++this.impressions });
+    _handleRefresh: function(evt) {
+      this._trigger('load', evt, {
+        impressions: ++this.impressions
+      });
     },
 
     /**
      * Start periodically refreshing the ad at the configured interval
      * @public
      */
-    start: function () {
+    start: function() {
 
-      var self     = this,
-          interval = this.options.interval;
+      var self = this,
+        interval = this.options.interval;
 
       if (!this.timer && interval) {
 
         // Start interval
-        this.timer = window.setInterval(function () {
+        this.timer = window.setInterval(function() {
           self.refresh();
         }, interval * 1000);
 
@@ -258,7 +261,7 @@
      * Stop periodically refreshing the ad
      * @public
      */
-    stop: function () {
+    stop: function() {
       if (this.timer) {
 
         // Clear interval

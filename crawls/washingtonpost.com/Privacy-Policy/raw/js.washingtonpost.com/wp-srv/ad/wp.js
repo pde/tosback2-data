@@ -271,17 +271,19 @@
   //QUIGO TEXTLINKS
   wpAd.textlinks = {
     //configuration file url:
-    config_url: 'http://www.washingtonpost.com/wp-srv/ad/textlink_quigo_data.js',
+    config_url: 'http://www.washingtonpost.com/wp-srv/ad/textlink_quigo_data.json',
     //if the textlinks config script is not yet loaded, ajax it in
     //once wpAd.textlinks.templates is available, so some initialisation
     init: function(contentType, position, cnode) {
       if(!wpAd.textlinks.templates){
         wpAd.tools.ajax({
           url: wpAd.textlinks.config_url,
-          dataType: 'script',
+          dataType: 'json',
           timeout: 2000,
           cache: true,
           success: function(data){
+            wpAd.textlinks.templates = data.templates;
+            wpAd.textlinks.category = data.category;
             wpAd.textlinks.init(contentType, position, cnode);
           },
           error: function(){
@@ -297,13 +299,19 @@
       contentType = wpAd.textlinks.templates[contentType] ? contentType : 'CompoundStory';
       cnode = wpAd.textlinks.cat_check(cnode);
       
-      var template = typeof wpAd.textlinks.templates[contentType] === 'function' ? wpAd.textlinks.templates[contentType]()[position] : wpAd.textlinks.templates[contentType][position];
+      var cmpid = win.cmpid && win.cmpid.toLowerCase() || false,
+          template = cmpid && wpAd.textlinks.templates[contentType][position][cmpid] || wpAd.textlinks.templates[contentType][position].standard;
       cnode = template[cnode] ? cnode : 'ros';
 
       if(wpAd.tools.urlCheck('debugAdCode') && win.console && typeof win.console.log === 'function') {
         win.console.log('template=', contentType);
         win.console.log('pos=', position);
         win.console.log('channel=', cnode);
+        if(cmpid){
+          win.console.log('Test Recipe:', 'cmpid=' + win.cmpid, template);
+        } else{
+          win.console.log('Standard Placement:', template);
+        }
       }
 
       return wpAd.textlinks.build(template[cnode], position);

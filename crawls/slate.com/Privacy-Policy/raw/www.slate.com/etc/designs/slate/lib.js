@@ -640,7 +640,8 @@ var SG_Async = {
 	facebook_queue: [],
 	plusone_queue: [],
 	facebook_polling: false,
-	plusone_polling: false
+	plusone_polling: false,
+    fbshare_counts: {}
 };
 
 
@@ -701,50 +702,66 @@ SG_Async.loadFacebook = function() {
 
 SG_Async.fbShareData = function(element, tag) { 
   return encodeURIComponent($(element).attr(tag)); 
-} 
+};
 
 SG_Async.loadFacebookShare = function () {
   var theButton = $(this).find(" .sl-fb-sharer-button");
 
-  $(theButton).click(
-	function(e) {
-	  window.open(
-		'http://www.facebook.com/sharer.php?s=100&p[title]=' +
-		  SG_Async.fbShareData(theButton, "sl_title") +
-		  '&p[summary]=' + SG_Async.fbShareData(theButton, "sl_description") +
-		  '&p[url]=' + SG_Async.fbShareData(theButton, "sl_url") +
-		  '&p[images][0]=' + SG_Async.fbShareData(theButton, "sl_image") +
-		  '&p[ref]=' + SG_Async.fbShareData(theButton, "sl_ref"),
-		'sharer',
-		'toolbar=0,status=0,width=620,height=280');
+  if (theButton.length == 1) {
+	$(theButton).click(
+	  function(e) {
+		window.open(
+		  'http://www.facebook.com/sharer.php?s=100&p[title]=' +
+			SG_Async.fbShareData(theButton, "sl_title") +
+			'&p[summary]=' + SG_Async.fbShareData(theButton, "sl_description") +
+			'&p[url]=' + SG_Async.fbShareData(theButton, "sl_url") +
+			"?fb_ref=" + SG_Async.fbShareData(theButton, "sl_ref") +
+			'&p[images][0]=' + SG_Async.fbShareData(theButton, "sl_image") +
+			'&p[ref]=' + SG_Async.fbShareData(theButton, "sl_ref"),
+		  'sharer',
+		  'toolbar=0,status=0,width=620,height=280');
 
-	  e.preventDefault();
-	});
+		e.preventDefault();
+	  });
 
-  $.ajax({ 
-		   'url': "https://graph.facebook.com/fql?q=select%20%20total_count%20from%20link_stat%20where%20url=%22" + SG_Async.fbShareData(theButton, "sl_url") +'%22', 
-		   'dataType': 'jsonp', 
-		   'success': function(d, status, xhr) { 
-			 var result = d; 
-			 var sharecount = result["data"][0]["total_count"]; 
-			 if (sharecount || sharecount === 0) { 
-			   $(".sl-fb-count").each(function(i, elm) { 
-										$(elm).html("" + sharecount); 
-									  }); 
-			 } else { 
-			   $(".sl-fb-count").css('display', 'none'); 
-			   if (console && console.log) { 
-				 console.log("Error! " + sharecount); 
-			   } 
-			 } 
-		   }, 
-		   'error': function(xhr, textStatus, errorThrown) { 
-			 if (console && console.log) { 
-			   console.log(textStatus); 
-			   console.log(errorThrown); 
-			 } 
-		   } 
-		 });
+	var url = SG_Async.fbShareData(theButton, "sl_url");
+	if (SG_Async.fbshare_counts.hasOwnProperty(url)) {
+	  theButton.find(" .sl-fb-count").each(function(i, elm) {
+		$(elm).html("" + SG_Async.fbshare_counts[url]);
+	  });
+	} else {
+	  $.ajax({ 
+		'url': "https://graph.facebook.com/fql?q=select%20%20share_count%20from%20link_stat%20where%20url=%22" + url +'%22', 
+		'dataType': 'jsonp', 
+		'success': function(d, status, xhr) { 
+		  var result = d; 
+		  var sharecount = result["data"][0]["share_count"]; 
+		  if (sharecount || sharecount === 0) { 
+			if (sharecount > 10000) {
+			  sharecount = Math.round(sharecount/1000) + "k";
+			} else if (sharecount > 1000) {
+			  sharecount = Math.round(sharecount/100)/10 + "k";	 
+			}
+			SG_Async.fbshare_counts[url] = sharecount;
+			theButton.find(" .sl-fb-count").each(function(i, elm) {
+			  $(elm).html("" + sharecount); 
+			}); 
+		  } else {
+			theButton.find(" .sl-fb-count").css('display', 'none'); 
+			if (console && console.log) { 
+			  console.log("Error! " + sharecount); 
+			} 
+		  } 
+		}, 
+		'error': function(xhr, textStatus, errorThrown) { 
+		  if (console && console.log) { 
+			console.log(textStatus); 
+			console.log(errorThrown); 
+		  } 
+		} 
+	  });
+	}
+  }
 };
 	
 

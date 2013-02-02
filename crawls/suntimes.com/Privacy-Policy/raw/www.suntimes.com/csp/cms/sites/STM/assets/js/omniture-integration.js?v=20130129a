@@ -32,10 +32,12 @@ jQuery(function($) {
   }
 
   function trackEventDefault(e) {
-    var action = "gigya." + e.gigya_event.eventName;
-    var msg = e.gigya_event.errorCode + ": " + e.gigya_event.errorMessage;
-    s.prop51 = msg;
-    log(msg);
+    var action = "gigya." + e.gigya_event.source + "." + e.gigya_event.eventName;
+    if( e.gigya_event.errorCode ) {
+      var msg = e.gigya_event.errorCode + ": " + e.gigya_event.errorMessage;
+      s.prop51 = msg;
+      log(msg);      
+    }
 
     //"Custom Link Tracking" code:
     trackCustomLink(action);

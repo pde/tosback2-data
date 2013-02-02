@@ -250,6 +250,16 @@
 			});
 			*/
 			
+			//add click events for ATAM
+			$.each($(".loadATAMmodal"), function(i,thisElem) {
+				$(thisElem).attr("href","#");
+				$(thisElem).click(function() {
+					var modalType = "Enroll";
+					loadModal('/static/Pages/Modals/ATAM.txt',modalType);
+					return false;
+				});
+			});
+			
 			//add click events for Notify Me
 			$.each($(".loadNotifyMemodal"), function(i,thisElem) {
 				$(thisElem).attr("href","#");
@@ -267,7 +277,6 @@
 					return false;
 				});
 			});
-			
 			
 			//add click events for Monthly Charges
 			$("#loadMonthlyChargesModal").click(function() {

@@ -1,0 +1,883 @@
+//GOOGLE CHECKOUT BUTTON PRODUCT
+
+function googleProductButtonCheck() {
+    /*
+    var AdTrackPromo = GetCookie("SessionSource");
+    if ((AdTrackPromo.indexOf('adid=17379',0) != -1) || (AdTrackPromo.indexOf('adid=17902',0) != -1) || (AdTrackPromo.indexOf('adid=17982',0) != -1) || (AdTrackPromo.indexOf('adid=17260',0) != -1)  || (AdTrackPromo.indexOf('adid=16009',0) != -1) || (AdTrackPromo.indexOf('adid=17960',0) != -1) || (AdTrackPromo.indexOf('adid=17961',0) != -1) || (AdTrackPromo.indexOf('adid=17937',0) != -1))  
+    {
+    if (document.getElementById("google_button_Product_Main"))
+    document.getElementById("google_button_Product_Main").style.display = 'block';
+            
+    if (document.getElementById("google_button_Premium_Seller_Buy"))
+    document.getElementById("google_button_Premium_Seller_Buy").style.display = 'block';
+            
+    if (document.getElementById("google_button_Premium_Seller_Main"))
+    document.getElementById("google_button_Premium_Seller_Main").style.display = 'block';
+    }
+    */
+}
+
+//THIS IS FOR THE COMPRA.COM STUFF
+function systranURL(url) {
+    return url;
+}
+
+
+//THIS IS FOR FLASH DETECTION.THIS MUST APPEAR BELOW THE CODE IN HEADER
+// Detect Client Browser type
+var isIE_buycom = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+jsVersion = 1.1;
+// JavaScript helper required to detect Flash Player PlugIn version information
+function JSGetSwfVer(i) {
+    // NS/Opera version >= 3 check for Flash plugin in plugin array
+    if (navigator.plugins != null && navigator.plugins.length > 0) {
+        if (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]) {
+            var swVer2 = navigator.plugins["Shockwave Flash 2.0"] ? " 2.0" : "";
+            var flashDescription = navigator.plugins["Shockwave Flash" + swVer2].description;
+            descArray = flashDescription.split(" ");
+            tempArrayMajor = descArray[2].split(".");
+            versionMajor = tempArrayMajor[0];
+            versionMinor = tempArrayMajor[1];
+            if (descArray[3] != "") {
+                tempArrayMinor = descArray[3].split("r");
+            } else {
+                tempArrayMinor = descArray[4].split("r");
+            }
+            versionRevision = tempArrayMinor[1] > 0 ? tempArrayMinor[1] : 0;
+            flashVer = versionMajor + "." + versionMinor + "." + versionRevision;
+        } else {
+            flashVer = -1;
+        }
+    }
+    // MSN/WebTV 2.6 supports Flash 4
+    else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.6") != -1) flashVer = 4;
+    // WebTV 2.5 supports Flash 3
+    else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.5") != -1) flashVer = 3;
+    // older WebTV supports Flash 2
+    else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) flashVer = 2;
+    // Can't detect in all other cases
+    else {
+        flashVer = -1;
+    }
+    return flashVer;
+}
+// If called with no parameters this function returns a floating point value
+// which should be the version of the Flash Player or 0.0
+// ex: Flash Player 7r14 returns 7.14
+// If called with reqMajorVer, reqMinorVer, reqRevision returns true if that version or greater is available
+function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision) {
+    //reqVer = parseFloat(reqMajorVer + "." + reqMinorVer + "." + reqRevision);
+    reqVer = parseFloat(reqMajorVer + "." + reqRevision);
+    // loop backwards through the versions until we find the newest version
+    for (i = 25; i > 0; i--) {
+        if (isIE_buycom && isWin && !isOpera) {
+            versionStr = VBGetSwfVer(i);
+        } else {
+            versionStr = JSGetSwfVer(i);
+        }
+        if (versionStr == -1) {
+            return false;
+        } else if (versionStr != 0) {
+            if (isIE_buycom && isWin && !isOpera) {
+                tempArray = versionStr.split(" ");
+                tempString = tempArray[1];
+                versionArray = tempString.split(",");
+            } else {
+                versionArray = versionStr.split(".");
+            }
+            versionMajor = versionArray[0];
+            versionMinor = versionArray[1];
+            versionRevision = versionArray[2];
+
+            //versionString     = versionMajor + "." + versionMinor + "." + versionRevision;   // 7.0r24 == 7.0.24
+            versionString = versionMajor + "." + versionRevision;   // 7.0r24 == 7.24
+            versionNum = parseFloat(versionString);
+            if ((versionMajor > reqMajorVer) && (versionNum >= reqVer)) {
+                //alert("Lemme esplain ... \n 1. JavaScript starts by saying you have Flash " + versionStr + " \n 2. There are required Major (" + reqMajorVer + "), Minor (" + reqMinorVer + ") and Revision (" + versionRevision + ") of Flash \n\n You seem to have:\n - Major= " + versionMajor + "\n - Minor= " + versionMinor + "\n - Revision= " +  versionRevision + "\n\n This prompt, A2, the FP_DetectKit says: versionMajor (" + versionMajor + ") > reqMajorVer (" + reqMajorVer + ") && versionNum (" + versionNum + ") >= reqVer (" + reqVer + "), " + ((versionNum >= reqVer) ? "says it is." : "but says no."));
+                return true;
+                //	}
+                //}
+            } else {
+                //alert("Lemme esplain ... \n 1. JavaScript starts by saying you have Flash " + versionStr + " \n 2. There are required Major (" + reqMajorVer + "), Minor (" + reqMinorVer + ") and Revision (" + reqRevision + ") of Flash \n\n You seem to have:\n - Major= " + versionMajor + "\n - Minor= " + versionMinor + "\n - Revision= " +  versionRevision + "\n\n This prompt, B2, my FP_DetectKit checked if: versionMajor (" + versionMajor + ") > reqMajorVer (" + reqMajorVer + ") && versionNum (" + versionNum + ") >= reqVer (" + reqVer + ")" + ((versionNum >= reqVer) ? "" : ", but it doesn't") + ", and now it checks if versionMajor (" + versionMajor + ") >= reqMajorVer (" + reqMajorVer + ") && versionMinor (" + versionMinor + ") >= reqMinorVer (" + reqMinorVer + "), " + ((versionMajor >= reqMajorVer && versionMinor >= reqMinorVer) ? " which is true, so we check versionMinor >= reqMinorVer || versionNum >= reqVer, " + ((versionMinor >= reqMinorVer || versionNum >= reqVer) ? " which is also true" : "which is false") : " which is false."));
+                //return ((versionNum >= reqVer && versionMinor >= reqMinorVer) ? true : false );
+
+                // Check Major version:
+                if (versionMajor > reqMajorVer) { // If newer Major entirely, it passes.
+                    return true;
+                } else if (versionMajor == reqMajorVer) { // If required Major version...
+                    // Check Minor version:
+                    if (versionMinor > reqMinorVer) { // If newer Minor entirely, it passes.
+                        return true;
+                    } else if (versionMinor == reqMinorVer) { // If required Major version...
+                        // Check revision:
+                        if (versionRevision >= reqRevision) { // If required or higher Revision version, it passes.
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+    return (reqVer ? false : 0.0);
+}
+
+
+//NETSAGE_ IT ISN"T USED BUT NOT ALL CODE HAS BEEN REMOVED SO IT IS SET TO FALSE
+//document.write (navigator.appName + '###' + navigator.userAgent)
+//document.write("The value of navigator.appCodeName is " + navigator.appName)
+var displaySage = false
+var mac = navigator.appVersion.indexOf("Mac") > -1
+var loc = window.location
+if (navigator.userAgent.indexOf("Netscape6/6.1") != -1) {
+    displaySage = false
+}
+
+//NS RESIZE BUG FIX- contents of function were deleted
+function resizeIt() {
+}
+
+
+//LENMAR CONFIGURATOR
+
+var childWnd;
+function openBC(varSettings) {
+    childWnd = open('http://www.lenmar.com/bc/configurator.asp?settings=' +
+varSettings, 'childWindow', 'toolbar=no,scrollbars=yes,resizable=no,width=570,height=600,top=120,left=150')
+    if (childWnd.opener == null) childWnd.opener = self;
+}
+
+// variable set to get the affiliate cookie
+var AffTrack = GetCookie("AdTrack");
+
+
+//get the querystring into a global var
+var url = new String(window.location);
+var qs = "";
+if (url.indexOf("?") != -1)
+    qs = url.substring(url.indexOf("?") + 1);
+
+function getQueryStringValue(name) {
+    var indexOfName = qs.indexOf(name + "=");
+    if (indexOfName != -1) {
+        var endPos = qs.indexOf("&", indexOfName);
+        if (endPos != -1)
+            return qs.substring(indexOfName + name.length + 1, endPos);
+        else
+            return qs.substring(indexOfName + name.length + 1, qs.length);
+    }
+    else {
+        return null;
+    }
+}
+
+function alltrim(str) {
+    str = this != window ? this : str;
+    return str.replace(/^\s+/g, '').replace(/\s+$/g, '');
+}
+
+function show(object) {
+    if (document.getElementById) {
+        document.getElementById(object).style.visibility = 'visible';
+    }
+    else if (document.layers && document.layers[object]) {
+        document.layers[object].visibility = 'visible';
+    }
+    else if (document.all) {
+        document.all[object].style.visibility = 'visible';
+    }
+}
+
+function hide(object) {
+    if (document.getElementById) {
+        document.getElementById(object).style.visibility = 'hidden';
+    }
+    else if (document.layers && document.layers[object]) {
+        document.layers[object].visibility = 'hidden';
+    }
+    else if (document.all) {
+        document.all[object].style.visibility = 'hidden';
+    }
+}
+
+function show2(object) {
+    if (document.getElementById) {
+        document.getElementById(object).style.display = 'block';
+    }
+    else if (document.layers && document.layers[object]) {
+        document.layers[object].style.display = 'block';
+    }
+    else if (document.all) {
+        document.all[object].style.display = 'block';
+    }
+}
+
+function hide2(object) {
+    if (document.getElementById) {
+        document.getElementById(object).style.display = 'none';
+    }
+    else if (document.layers && document.layers[object]) {
+        document.layers[object].style.display = 'none';
+    }
+    else if (document.all) {
+        document.all[object].style.display = 'none';
+    }
+}
+
+function toggleElementDisplay(element) {
+    var thisElement = document.getElementById(element);
+    if (thisElement) {
+        if (thisElement.style.display == 'none') {
+            thisElement.style.display = 'block';
+        } else {
+            thisElement.style.display = 'none';
+        }
+    }
+}
+
+function showDynamicContent(element) {
+    var showDynContent = 1;
+    var dynContentCookie = GetCookie(element);
+    if (dynContentCookie != "null") {
+        if (dynContentCookie == "1") {
+            showDynContent = 1;
+        } else {
+            showDynContent = 0;
+        }
+    }
+    return showDynContent;
+}
+
+var prodZoomCookie = showDynamicContent("ShowProdZoom");
+
+function setProdZoomCookie(show) {
+    var exdate = new Date();
+    exdate.setTime(exdate.getTime() + (1000 * 60 * 60 * 24 * 30));
+    var showProdZoomEl = document.getElementById("showProdZoom");
+    if (show != 2) {
+        if (show == 0) {
+            document.cookie = "ShowProdZoom=0;expires=" + exdate.toGMTString() + ";path=/";
+            if (showProdZoomEl)
+                showProdZoomEl.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"setProdZoomCookie(1);\"><img src=\"http://ak.buy.com/buy_assets/buttons/2006/btn_zoom_off.gif\" border=\"0\" alt=\"click to turn product zoom on\" title=\"click to turn product zoom on\"></a>';
+        } else if (show == 1) {
+            document.cookie = "ShowProdZoom=1;expires=" + exdate.toGMTString() + ";path=/";
+            if (showProdZoomEl)
+                showProdZoomEl.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"setProdZoomCookie(0);\"><img src=\"http://ak.buy.com/buy_assets/buttons/2006/btn_zoom_on.gif\" border=\"0\" alt=\"click to turn product zoom off\" title=\"click to turn product zoom off\"></a>';
+        }
+    } else {
+        document.cookie = "ShowProdZoom=1;expires=" + exdate.toGMTString() + ";path=/";
+    }
+
+    prodZoomCookie = show;
+}
+
+function setProdInfoRolloverCookie(show) {
+    var exdate = new Date();
+    exdate.setTime(exdate.getTime() + (1000 * 60 * 60 * 24 * 30));
+    var showProdInfoRolloverEl = document.getElementById("showProdInfoRollover");
+    if (show != 2) {
+        if (show == 0) {
+            document.cookie = "ShowProdInfoRollover=0;expires=" + exdate.toGMTString() + ";path=/";
+            if (showProdInfoRolloverEl)
+                showProdInfoRolloverEl.innerHTML = '<span style=\"font-size:10px;\">Product Rollover: <a href=\"javascript:void(0);\" onclick=\"setProdInfoRolloverCookie(1);\">off</a></span>';
+        } else if (show == 1) {
+            document.cookie = "ShowProdInfoRollover=1;expires=" + exdate.toGMTString() + ";path=/";
+            if (showProdInfoRolloverEl)
+                showProdInfoRolloverEl.innerHTML = '<span style=\"font-size:10px;\">Product Rollover: <a href=\"javascript:void(0);\" onclick=\"setProdInfoRolloverCookie(0);\">on</a></span>';
+        }
+        window.location.href = window.location.href;
+    } else {
+        document.cookie = "ShowProdInfoRollover=1;expires=" + exdate.toGMTString() + ";path=/";
+    }
+}
+
+function getProductData(sku, grpID, insert, count) {
+
+    if (prodZoomCookie == "1") {
+        hideProductDataDiv('', grpID, count);
+        if (document.getElementById('pdHover_' + grpID + '_' + insert).value == sku && document.getElementById('pdInsert_' + grpID + '_' + insert).innerHTML.length > 0) {
+            document.getElementById('pdInsert_' + grpID + '_' + insert).style.visibility = "visible";
+        } else {
+            document.getElementById('pdHover_' + grpID + '_' + insert).value = sku;
+            var url = '/retail/product_ajax_postFile.asp?sku=' + sku + '&grpID=' + grpID + '&itemID=' + insert + '&count=' + count
+            //alert(url)
+            if (window.XMLHttpRequest) {
+                try {
+                    req = new XMLHttpRequest();
+                } catch (e) {
+                    req = false;
+                }
+                // branch for IE/Windows ActiveX version
+            } else if (window.ActiveXObject) {
+                try {
+                    req = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        req = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) {
+                        req = false;
+                    }
+                }
+            }
+
+            if (req) {
+                //req.onreadystatechange = processRequest;
+                req.onreadystatechange = function() {
+                    if (req.readyState == 4) {
+                        if (req.status == 200) {
+                            document.getElementById('pdInsert_' + grpID + '_' + insert).style.visibility = "visible";
+                            document.getElementById('pdInsert_' + grpID + '_' + insert).innerHTML = req.responseText;
+                            //setGrouperPlayerStyle('pdInsert_'+grpID+'_'+insert);
+                        } else {
+                        }
+                    }
+                };
+                req.open("GET", url, true);
+                req.send(null);
+            }
+
+        }
+    }
+}
+
+function getCollaborativeData(modelName, containerName, skuList) {
+    var shopperid = GetCookie('ShopperManager%2F');
+    shopperid = shopperid.substring(16, shopperid.length);
+    var url = '/retail/collaborative_ajax_service.asp?modelName=' + modelName + '&skuList=' + skuList + '&shopperid=' + shopperid + '&eid=10000'
+
+    //alert(url);
+    //alert(shopperid);
+    if (window.XMLHttpRequest) {
+        try {
+            req = new XMLHttpRequest();
+        } catch (e) {
+            req = false;
+        }
+        // branch for IE/Windows ActiveX version
+    } else if (window.ActiveXObject) {
+        try {
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                req = false;
+            }
+        }
+    }
+
+    if (req) {
+        //req.onreadystatechange = processRequest;
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    document.getElementById(containerName).style.display = "block";
+                    document.getElementById(containerName).innerHTML = req.responseText;
+                } else {
+                }
+            }
+        };
+        req.open("GET", url, true);
+        req.send(null);
+    }
+}
+
+function getProductsByLocationData(locid, grpid, count, containerName) {
+    var shopperid = GetCookie('ShopperManager%2F');
+    shopperid = shopperid.substring(16, shopperid.length);
+    var url = '/retail/locationData_ajax_service.asp?locid=' + locid + '&grpid=' + grpid + '&count=' + count + '&containerName=' + containerName
+
+    //alert(url);
+    //alert(shopperid);
+    if (window.XMLHttpRequest) {
+        try {
+            req = new XMLHttpRequest();
+        } catch (e) {
+            req = false;
+        }
+        // branch for IE/Windows ActiveX version
+    } else if (window.ActiveXObject) {
+        try {
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                req = false;
+            }
+        }
+    }
+
+    if (req) {
+        //req.onreadystatechange = processRequest;
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    document.getElementById(containerName).style.display = "block";
+                    document.getElementById(containerName).innerHTML = req.responseText;
+                } else {
+                }
+            }
+        };
+        req.open("GET", url, true);
+        req.send(null);
+    }
+}
+
+function productGroupRotator(elementPrefix, currentID, iCount) {
+    var elementProdNext = document.getElementById(elementPrefix + "_prod_next");
+    var elementProdBack = document.getElementById(elementPrefix + "_prod_back");
+
+    var itdCounter = 1;
+    if (iCount > 0) {
+        for (var x = 1; x <= iCount; x++) {
+            if (document.getElementById(elementPrefix + "_" + x) != null) {
+                document.getElementById(elementPrefix + "_" + x).style.display = "none";
+            }
+        }
+
+        for (var x = currentID; x <= currentID + 3; x++) {
+            if (document.getElementById(elementPrefix + "_" + x) != null) {
+                document.getElementById(elementPrefix + "_" + x).style.display = "";
+            }
+        }
+    }
+
+    if (elementProdNext && (currentID + 3) < iCount) {
+        elementProdNext.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"productGroupRotator(\'' + elementPrefix + '\',' + (currentID + 4) + ',' + iCount + ');\"><img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_r_ON.gif\" border=\"0\" /></a>';
+    } else {
+        elementProdNext.innerHTML = '<img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_r_OFF.gif\" border=\"0\" />';
+    }
+    if (elementProdBack && currentID > 4) {
+        elementProdBack.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"productGroupRotator(\'' + elementPrefix + '\',' + (currentID - 4) + ',' + iCount + ');\"><img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_l_ON.gif\" border=\"0\" /></a>';
+    } else {
+        elementProdBack.innerHTML = '<img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_l_OFF.gif\" border=\"0\" />';
+    }
+
+}
+
+function CategoryGroupRotator(elementPrefix, currentID, iCount) {
+    //alert(elementPrefix + ',' + currentID + ',' + iCount);
+    var elementProdNext = document.getElementById(elementPrefix + "_next");
+    var elementProdBack = document.getElementById(elementPrefix + "_back");
+
+    var itdCounter = 1;
+    if (iCount > 0) {
+        for (var x = 1; x <= iCount; x++) {
+            if (document.getElementById(elementPrefix + "_" + x) != null) {
+                document.getElementById(elementPrefix + "_" + x).style.display = "none";
+            }
+        }
+
+        if (document.getElementById(elementPrefix + "_" + (currentID + 1)) != null) {
+            document.getElementById(elementPrefix + "_" + (currentID + 1)).style.display = "";
+        }
+    }
+
+    if (elementProdNext && (currentID + 1) < iCount) {
+        elementProdNext.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"CategoryGroupRotator(\'' + elementPrefix + '\',' + (currentID + 1) + ',' + iCount + ');\"><img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_r_ON.gif\" border=\"0\" /></a>';
+    } else {
+        elementProdNext.innerHTML = '<img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_r_OFF.gif\" border=\"0\" />';
+    }
+    if (elementProdBack && currentID > 0) {
+        elementProdBack.innerHTML = '<a href=\"javascript:void(0);\" onclick=\"CategoryGroupRotator(\'' + elementPrefix + '\',' + (currentID - 1) + ',' + iCount + ');\"><img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_l_ON.gif\" border=\"0\" /></a>';
+    } else {
+        elementProdBack.innerHTML = '<img src=\"http://ak.buy.com/buy_assets/v6/header/2008/hp_l_OFF.gif\" border=\"0\" />';
+    }
+
+}
+
+function getProductViewImage(sku) {
+
+    var url = '/retail/image_ajax_postFile.asp?sku=' + sku
+
+    if (window.XMLHttpRequest) {
+        try {
+            req = new XMLHttpRequest();
+        } catch (e) {
+            req = false;
+        }
+        // branch for IE/Windows ActiveX version
+    } else if (window.ActiveXObject) {
+        try {
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                req = false;
+            }
+        }
+    }
+
+    if (req) {
+        //req.onreadystatechange = processRequest;
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    document.getElementById('pdview_' + sku).innerHTML = req.responseText;
+                } else {
+                }
+            }
+        };
+        req.open("GET", url, true);
+        req.send(null);
+    }
+
+}
+
+function getProductDataBuyTV(showID, cItemID, grpID, insert, count) {
+    if (document.getElementById('pdHover_' + grpID + '_' + insert).value == cItemID && document.getElementById('pdInsert_' + grpID + '_' + insert).innerHTML.length > 0) {
+        document.getElementById('pdInsert_' + grpID + '_' + insert).style.visibility = "visible";
+    } else {
+        document.getElementById('pdHover_' + grpID + '_' + insert).value = cItemID;
+        var url = '/buytv/buytv_ajax_productdata.asp?showID=' + showID + '&channelItemID=' + cItemID + '&grpID=' + grpID + '&itemID=' + insert + '&count=' + count
+        //alert(url)
+        if (window.XMLHttpRequest) {
+            try {
+                req = new XMLHttpRequest();
+            } catch (e) {
+                req = false;
+            }
+            // branch for IE/Windows ActiveX version
+        } else if (window.ActiveXObject) {
+            try {
+                req = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    req = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {
+                    req = false;
+                }
+            }
+        }
+
+        if (req) {
+            //req.onreadystatechange = processRequest;
+            req.onreadystatechange = function() {
+                if (req.readyState == 4) {
+                    if (req.status == 200) {
+                        document.getElementById('pdInsert_' + grpID + '_' + insert).style.visibility = "visible";
+                        document.getElementById('pdInsert_' + grpID + '_' + insert).innerHTML = req.responseText;
+                        //setGrouperPlayerStyle('pdInsert_'+grpID+'_'+insert);
+                    } else {
+                    }
+                }
+            };
+            req.open("GET", url, true);
+            req.send(null);
+        }
+
+    }
+}
+
+function doNotClose(e, element, grpid, count) {
+    //make sure event was not fired from child element
+    var toElement = e.relatedTarget || e.toElement;
+    while (toElement && toElement != element && toElement.nodeName != 'BODY')
+        toElement = toElement.parentNode;
+    if (toElement == element)
+        return;
+    //otherwise
+    var elementToClose = element;
+    if (count == 0) {
+        elementToClose = element.parentNode.id;
+    }
+    if (grpid == 'TLTSPrice') {
+        hide('TLTSPrice' + count);
+    } else if (grpid == 'homeShopperRecomendations') {
+        hideGroupElements('homeShopperRecomendations', count);
+
+    } else {
+        hideProductDataDiv(elementToClose, grpid, count);
+    }
+}
+
+function hideGroupElements(element, count) {
+    //alert(element + "," + count);
+    for (var x = 1; x < count; x++) {
+        if (document.getElementById(element + '_' + x) != null) {
+            document.getElementById(element + '_' + x).style.visibility = 'hidden';
+        }
+    }
+}
+
+function hideProductDataDiv(element, grpid, count) {
+    //alert(element);
+    if (document.getElementById(element) != null) {
+        document.getElementById(element).style.visibility = "hidden";
+        document.getElementById(element).innerHTML = "";
+    }
+    if (count > 0) {
+        for (var x = 0; x <= count; x++) {
+            if (document.getElementById('pdInsert_' + grpid + '_' + x) != null) {
+                document.getElementById('pdInsert_' + grpid + '_' + x).style.visibility = "hidden";
+                document.getElementById('pdInsert_' + grpid + '_' + x).innerHTML = "";
+            }
+        }
+    }
+}
+
+function StartMP3(element, player, mp3, width, height) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (document.getElementById(element) != null) {
+            document.getElementById(element).innerHTML = '<div id="theMP3" width="' + width + '" height="' + height + '"><embed name="mp3" src="' + player + '" loop="false" menu="false" wmode="transparent" quality="high" bgcolor="#000000"'
+					+ 'width="' + width + '" height="' + height + '" name="mp3" align="left" '
+					+ 'play="true" '
+					+ 'loop="false" '
+					+ 'quality="high" '
+					+ 'allowScriptAccess="always" '
+					+ 'type="application/x-shockwave-flash" '
+					+ 'swLiveConnect="true" '
+					+ 'FlashVars="mp3=' + mp3 + '" '
+					+ 'pluginspage="http://www.macromedia.com/go/getflashplayer">'
+					+ '<\/embed></div>';
+            if (document.getElementById("mp3EmbedLink") != null) {
+                document.getElementById("mp3EmbedLink").innerHTML = "&nbsp;";
+            }
+
+        }   // embed the flash movie
+    } else {  // flash is too old or we can't detect the plugin
+        // SHOW NOTHING
+
+    }
+}
+
+
+function StartBTVMovie(element, strBuyTVFLV) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (document.getElementById(element) != null) {
+            document.getElementById(element).innerHTML = '<embed name="buytvmovie" src="/buytv/clips/buyTVClips.swf" loop="false" menu="false" wmode="transparent" quality="high" bgcolor="#268CD3"'
+				+ 'width="350" height="237" name="buytvmovie" align="left" '
+				+ 'play="true" '
+				+ 'loop="false" '
+				+ 'quality="high" '
+				+ 'allowScriptAccess="always" '
+				+ 'type="application/x-shockwave-flash" '
+				+ 'swLiveConnect="true" '
+				+ 'FlashVars="firstClip=' + strBuyTVFLV + '" '
+				+ ' pluginspage="http://www.macromedia.com/go/getflashplayer">'
+				+ '<\/embed>';
+            if (document.getElementById("buyTVEmbedLink") != null) {
+                document.getElementById("buyTVEmbedLink").innerHTML = "&nbsp;";
+            }
+
+        }   // embed the flash movie
+    } else {  // flash is too old or we can't detect the plugin
+        document.getElementById(element).innerHtml = '<a href="http://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><img src="http://ak.buy.com/buy_assets/buytv/flash7needed_product.jpg" alt="Requires Flash 7 or Higher" border="0" /></a>';
+        // insert non-flash content
+    }
+}
+function StopBTVMovie(element, sBuyTVFLV) {
+    if (document.getElementById(element) != null) {
+        document.getElementById(element).innerHTML = '<img src="http://ak.buy.com/buy_assets/v6/img/clear.gif" width="1" height="1" border="0" onload="StartBTVMovie(\'' + element + '\',\'' + sBuyTVFLV + '\');">';
+    }
+}
+
+function PlayVideoReviewElements(element, flvName, swfName, height, width, startMovie, volume, imgURL, prodImgUrl, sku, channel) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+    var strFlashVar = "";
+    var strImgURL = "";
+    var strProdImgURL = "";
+    var strControlLock = "";
+    var strSWFName = swfName;
+    if (strSWFName == 'expotvProduct' || strSWFName == 'trailerReview' || strSWFName == '3x2videoplayer') {
+        strFlashVar = "videoURL=";
+        strSWFName = "video_player3";
+        height = "198";
+        width = "352"
+        if (imgURL != "autoplay") {
+            if (imgURL == "") {
+                strImgURL = "&loaderURL=0";
+            } else {
+                strImgURL = "&loaderURL=" + imgURL;
+            }
+        }
+        if (prodImgUrl == "") {
+            strProdImgURL = "&productURL=0";
+        } else {
+            strProdImgURL = "&productURL=" + prodImgUrl;
+        }
+        //alert("here");
+    } else if (strSWFName == 'contestVideo' || strSWFName == 'buytvProduct' || strSWFName == '16x9videoplayer') {
+        strFlashVar = "videoURL=";
+        strSWFName = "video_player3";
+        //BuyTV_169_productimage
+        height = "198";
+        width = "352"
+        if (imgURL != "autoplay") {
+            if (imgURL == "") {
+                strImgURL = "&loaderURL=0";
+            } else {
+                strImgURL = "&loaderURL=" + imgURL;
+            }
+        }
+        if (prodImgUrl == "") {
+            strProdImgURL = "&productURL=0";
+        } else {
+            strProdImgURL = "&productURL=" + prodImgUrl;
+        }
+        //alert(prodImgUrl + "###");
+
+        if (swfName == 'contestVideo')
+            strControlLock = "&controlLock=true";
+    } else {
+        strFlashVar = "clips=";
+    }
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (startMovie == 1) {
+            //alert(element+','+flvName+','+swfName+','+strSWFName+','+height+','+width+','+startMovie+','+volume);
+            if (document.getElementById(element) != null) {
+                if (swfName == 'buyTVYouTube' || swfName == 'spotlightYouTube' || swfName == 'youtube') {
+                    document.getElementById(element).innerHTML = '<object width="352" height="195"><param name="wmode" value="transparent" /><param name="movie" value="' + flvName + '" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /><embed src="' + flvName + '" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="352" height="195" wmode="transparent"></embed></object>'
+                }
+                else if (swfName == 'brightcove') {
+                    document.getElementById(element).innerHTML = '<object id="flashObj" width="350" height="243" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,47,0"><param name="wmode" value="transparent" /><param name="movie" value="' + flvName + '" /><param name="bgcolor" value="#FFFFFF" /><param name="flashVars" value="' + volume + '" /><param name="base" value="http://admin.brightcove.com" /><param name="seamlesstabbing" value="false" /><param name="wmode" value="transparent" /><param name="allowFullScreen" value="true" /><param name="swLiveConnect" value="true" /><param name="allowScriptAccess" value="always" /><embed src="' + flvName + '" bgcolor="#FFFFFF" flashVars="' + volume + '" base="http://admin.brightcove.com" name="flashObj" width="350" height="243" seamlesstabbing="false" type="application/x-shockwave-flash" allowFullScreen="true" swLiveConnect="true" allowScriptAccess="always" wmode="transparent" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"></embed></object>'
+                }
+                else {
+                    document.getElementById(element).innerHTML = '<embed name="' + swfName + '" src="http://ak.buy.com/buy_assets/flashplayers/' + strSWFName + '.swf" loop="false" menu="false" wmode="transparent" quality="high"'
+					+ 'width="' + width + '" height="' + height + '" align="left" '
+					+ 'play="true" '
+					+ 'loop="false" '
+					+ 'quality="high" '
+					+ 'allowScriptAccess="always" '
+					+ 'type="application/x-shockwave-flash" '
+					+ 'swLiveConnect="true" '
+					+ 'allowFullScreen="true" '
+					+ 'FlashVars="' + strFlashVar + flvName + strImgURL + strProdImgURL + strControlLock + '&volumeLevel=' + volume + '&videoPageID=' + sku + '|' + channel + '" '
+					+ ' pluginspage="http://www.macromedia.com/go/getflashplayer">'
+					+ '<\/embed>';
+                    //alert("FlashVars="+strFlashVar+flvName+strImgURL+strProdImgURL+"&defaultvolume="+volume)
+                }
+            }
+        } else { //startMovie == 0, so stop the movie
+            if (document.getElementById(element) != null) {
+                if (swfName == 'grouper') {
+                    document.getElementById(element).innerHTML = flvName; //flvName is the full embed for grouper.
+                } else {
+                    document.getElementById(element).innerHTML = '';
+                }
+            }
+        }
+    } else {  // flash is too old or we can't detect the plugin
+        if (volume == "0") { //get rid of the no volume starup movie
+            if (document.getElementById('prodImgTab_2') != null) {
+                document.getElementById('prodImgTab_2').style.display = "none";
+                if (document.getElementById('prodImgSec_2') != null) {
+                    document.getElementById('prodImgSec_2').style.display = "none";
+                }
+                showTabContent('prodImgTab', 1, 'prodImgSec', 1);
+            }
+        } else {
+            document.getElementById(element).innerHTML = '<a href="http://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><img src="http://ak.buy.com/buy_assets/buytv/flash7needed_product.jpg" alt="Requires Flash 7 or Higher" border="0" /></a>';
+        }
+    }
+}
+
+function MusicClipsPlayer(element, swfName, height, width, trackNum, UPC) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (document.getElementById(element) != null) {
+            document.getElementById(element).innerHTML = '<embed name="' + swfName + '" src="/retail/flash/players/' + swfName + '.swf" loop="false" menu="false" wmode="transparent" quality="high"'
+				+ 'width="' + width + '" height="' + height + '" align="middle" '
+				+ 'play="true" '
+				+ 'loop="false" '
+				+ 'quality="high" '
+				+ 'allowScriptAccess="sameDomain" '
+				+ 'type="application/x-shockwave-flash" '
+				+ 'swLiveConnect="true" '
+				+ 'allowFullScreen="true" '
+				+ 'FlashVars="trackNum=' + trackNum + '&UPC=' + UPC + '" '
+				+ ' pluginspage="http://www.macromedia.com/go/getflashplayer">'
+				+ '<\/embed>';
+            //alert("trackNum=" + trackNum + "&UPC=" + UPC);
+        }
+
+    } else {  // flash is too old or we can't detect the plugin
+        document.getElementById(element).innerHTML = '<a href="http://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><img src="http://ak.buy.com/buy_assets/buytv/flash7needed_product.jpg" alt="Requires Flash 7 or Higher" border="0" /></a>';
+        // insert non-flash content
+    }
+}
+
+function StartExpoTvMovie(element, strExpoTVFlv) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (document.getElementById(element) != null) {
+            document.getElementById(element).innerHTML = '<embed name="expotvmovie" src="/retail/flash/players/4x3_productimage.swf" loop="false" menu="false" wmode="transparent" quality="high" bgcolor="#268CD3"'
+				+ 'width="322" height="271" name="expotvmovie" align="left" '
+				+ 'play="true" '
+				+ 'loop="false" '
+				+ 'quality="high" '
+				+ 'allowScriptAccess="always" '
+				+ 'type="application/x-shockwave-flash" '
+				+ 'swLiveConnect="true" '
+				+ 'allowFullScreen="true" '
+				+ 'FlashVars="flvAddress=' + strExpoTVFlv + strProdImgURL + '&volume=50" '
+				+ ' pluginspage="http://www.macromedia.com/go/getflashplayer">'
+				+ '<\/embed>';
+
+        }   // embed the flash movie
+    } else {  // flash is too old or we can't detect the plugin
+        document.getElementById(element).innerHTML = '<a href="http://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><img src="http://ak.buy.com/buy_assets/buytv/flash7needed_product.jpg" alt="Requires Flash 7 or Higher" border="0" /></a>';
+        // insert non-flash content
+    }
+}
+function ChangeExpoTvMovie(element, strExpoTVFlv) {
+    var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+
+    if (hasRightVersion) {  // if we've detected an acceptable version
+        if (document.getElementById(element) != null) {
+            document.getElementById(element).innerHTML = '<embed name="expotvmovie" src="/retail/flash/players/4x3_productimage.swf" loop="false" menu="false" wmode="transparent" quality="high" bgcolor="#268CD3"'
+				+ 'width="322" height="271" name="expotvmovie" align="left" '
+				+ 'play="true" '
+				+ 'loop="false" '
+				+ 'quality="high" '
+				+ 'allowScriptAccess="always" '
+				+ 'type="application/x-shockwave-flash" '
+				+ 'swLiveConnect="true" '
+				+ 'allowFullScreen="true" '
+				+ 'FlashVars="flvAddress=' + strExpoTVFlv + strProdImgURL + '&volume=50" '
+				+ 'pluginspage="http://www.macromedia.com/go/getflashplayer">'
+				+ '<\/embed>';
+
+        }   // embed the flash movie
+    } else {  // flash is too old or we can't detect the plugin
+        document.getElementById(element).innerHTML = '<a href="http://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><img src="http://ak.buy.com/buy_assets/buytv/flash7needed_product.jpg" alt="Requires Flash 7 or Higher" border="0" /></a>';
+        // insert non-flash content
+    }
+}
+function StopExpoTvMovie(element, sExpoTVFlv) {
+    if (document.getElementById(element) != null) {
+        document.getElementById(element).innerHTML = '<img src="http://ak.buy.com/buy_assets/v6/img/clear.gif" width="1" height="1" border="0" onload="StartExpoTvMovie(\'' + element + '\',\'' + sExpoTVFlv + '\');">';
+    }
+}
+
+//CJ
+if (getQueryStringValue("adid") == "17662") {
+    document.cookie = 'Affiliate=noAd;domain=buy.com;path=/';
+    document.cookie = 'GCheck=noGoogle;domain=buy.com;path=/';
+    document.cookie = 'PECheck=noPE;domain=buy.com;path=/';
+}
+
+//Google AdWords
+if (getQueryStringValue("dcaid") == "16009") {
+    document.cookie = 'GCheck=noGoogle;domain=buy.com;path=/';
+
+}
+
+//Google Automator
+if (getQueryStringValue("dcaid") == "17260") {
+    document.cookie = 'GCheck=noGoogle;domain=buy.com;path=/';
+
+}
+

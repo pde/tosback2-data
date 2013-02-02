@@ -30,7 +30,7 @@ function urlDecode( s ){
 function showTDD(){
 	document.getElementById('tdd').innerHTML='1-800-544-3316';
 	document.getElementById('tdd').style.textDecoration = 'none';
-
+	
 }
 
 function open_window(url, specs, name){
@@ -47,9 +47,9 @@ function getCopyright() {
 	currentDate = new Date();
 	//Y2K fix for some browsers - using getFullYear instead of getYear
 	theYear = currentDate.getFullYear();
-
+	
 	var theText = new String("");
-
+	
 	theText = theText + '<table width="95%" align="center">';
 	theText = theText + ' <tr>';
 	theText = theText + ' <td align="center">';
@@ -58,14 +58,14 @@ function getCopyright() {
 	theText = theText + ' &nbsp;All trademarks, service marks and logos are owned by or registered to QVC, Inc., QDirect Ventures, Inc., ER Marks, Inc. or Diamonique Corporation.';
 	theText = theText + ' &nbsp;All other product or brand names are trademarks of their respective owners.</font>';
 	theText = theText + ' </td>';
-	theText = theText + ' </tr>';
+	theText = theText + ' </tr>'; 
 	theText = theText + ' <tr>';
 	theText = theText + ' <td width="100%" align="center">';
 	theText = theText + ' <font size="-1"> URL: http://www.qvc.com</font>';
 	theText = theText + ' </td>';
 	theText = theText + ' </tr>';
 	theText = theText + '</table>';
-
+	
 	if ($('copyrightDiv')) {
 		$('copyrightDiv').set('html', theText);
 	}
@@ -84,28 +84,28 @@ function createAddtoWistListCookie(partNumber, productClassCode){
 function pdfCheck(target) {
 	var isiPad = navigator.userAgent.match(/iPad/i) != null;
 	if(isiPad){return true;}/*Ignore iPad*/
-	var isInstalled = false;
+	var isInstalled = false;  
 	var url = $(target).get('href');
-	if (window.ActiveXObject) {
-	    var control = null;
-	    try {
-	        // AcroPDF.PDF is used by version 7 and later
-	        control = new ActiveXObject('AcroPDF.PDF');
+	if (window.ActiveXObject) {  
+	    var control = null;  
+	    try {  
+	        // AcroPDF.PDF is used by version 7 and later  
+	        control = new ActiveXObject('AcroPDF.PDF');  
 	       	isInstalled = true;
-	    } catch (e) {
-	        // Do nothing
-	    }
-	    if (!control) {
-	        try {
-	            // PDF.PdfCtrl is used by version 6 and earlier
-	            control = new ActiveXObject('PDF.PdfCtrl');
+	    } catch (e) {  
+	        // Do nothing  
+	    }  
+	    if (!control) {  
+	        try {  
+	            // PDF.PdfCtrl is used by version 6 and earlier  
+	            control = new ActiveXObject('PDF.PdfCtrl');  
 	            isInstalled = true;
-	        } catch (e) {
+	        } catch (e) {  
 
-	        }
-	    }
-	} else {
-	    // Check navigator.plugins for "Adobe Acrobat" or "Adobe PDF Plug-in"*
+	        }  
+	    }  
+	} else {  
+	    // Check navigator.plugins for "Adobe Acrobat" or "Adobe PDF Plug-in"*  
 		var str = "";
 		for (var i=0; i<navigator.plugins.length; i++) {
 			str = navigator.plugins[i].description + ",  ";
@@ -114,7 +114,7 @@ function pdfCheck(target) {
 				break;
 			}
 		}
-	}
+	}  
 	if (!isInstalled) {
 		//really only doing this because smoothbox doesn't have a callback structure built into it
 		var callback = function() {
@@ -138,7 +138,7 @@ function pdfCheck(target) {
 	This function is used to trim white space from an input string both left and right side
 */
 function trimAll(sString) {
-
+	
 	var trimmedStr = '';
 	if (sString != null ){
 		trimmedStr = sString.replace(/^\s+|\s+$/g, '') ;
@@ -157,7 +157,7 @@ function removeSpaces(sString)  {
 /**
 	This function is used to check user input for profianity
 */
-function checkProfanity(formName, aCallback, aFailureCallback) {
+function checkProfanity(formName, aCallback) {
 	try
 	{
 		var done = false;
@@ -169,7 +169,7 @@ function checkProfanity(formName, aCallback, aFailureCallback) {
 				aCallback.call();
 				return true;
 			}
-
+			
 			if (doc.getElementsByTagName('anyType') != null)
 			{
 				var badwords = doc.getElementsByTagName('anyType');
@@ -182,22 +182,19 @@ function checkProfanity(formName, aCallback, aFailureCallback) {
 						}
 					}
 					displayMessage('error', null, message);
-					if(typeof aFailureCallback == 'function'){
-						aFailureCallback.call();
-					}
 				}
 				else {
 					aCallback.call();
 				}
 			}
 		};
-
+	
 		var countryCode = "US";
 		var str = "";
 		$$('#' + formName + ' input[type=text]').each( function (item, idx) {
 			str += item.get('value') + " ";
 		});
-
+	
 		if (trimAll(str).length > 0) {
 			// the mooTools request object doesn't support a timeout value :(
 			 var req = new TimedRequest({
@@ -211,7 +208,7 @@ function checkProfanity(formName, aCallback, aFailureCallback) {
 				 onSuccess: function(res) { return handleResponse(res); },
 				 onFailure: function(res) { return handleResponse(res); }
 			 });
-
+		
 			req.send("country=" + countryCode + "&transaction=QVCProfanityFilter&method=GET&message=" + str);
 		}
 		else {
@@ -227,16 +224,16 @@ function checkProfanity(formName, aCallback, aFailureCallback) {
 /**
 	This function is used to validate an input email format: xxxxx@xx.xxx
 	1. One and only one "@" is required and can't be at the beginning and the end.
-	2. The following characters are considered illegal,               ( ) < > , ; : \ " . [ ]
+	2. The following characters are considered illegal,               ( ) < > , ; : \ " . [ ] 
 	3. Space is not allowed in the middle
 	4. More than one  "." are allowed (not required) but can't be at the beginning and the end, can't be right before and after "@".
 */
 function validateEmailFormat(inputEmailValue){
-
+	
 	if (inputEmailValue == null || trimAll(inputEmailValue) == "" ){
 		return false;
 	}
-
+	
 	 var emailPat=/^(.+)@(.+)$/;
 	 var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
 	 var validChars="\[^\\s" + specialChars + "\]";
@@ -279,12 +276,12 @@ function validateEmailFormat(inputEmailValue){
 		 return false;
 	 }
 	 return true;
-
+	
 /*	var retValue = true;
-	retValue = (inputEmailValue.indexOf("@") == inputEmailValue.lastIndexOf("@")) && (inputEmailValue.indexOf("@") > 0)
+	retValue = (inputEmailValue.indexOf("@") == inputEmailValue.lastIndexOf("@")) && (inputEmailValue.indexOf("@") > 0) 
 							&& (inputEmailValue.indexOf("@") < inputEmailValue.length - 1) ;
 	if (retValue){
-		retValue = (inputEmailValue.lastIndexOf(".") > inputEmailValue.indexOf("@")  )
+		retValue = (inputEmailValue.lastIndexOf(".") > inputEmailValue.indexOf("@")  ) 
 								&& (inputEmailValue.lastIndexOf(".") < inputEmailValue.length - 1
 								&& inputEmailValue.charAt(inputEmailValue.indexOf("@") + 1) != '.' ) ;
 	}
@@ -297,8 +294,8 @@ function validateEmailFormat(inputEmailValue){
 
 /**
 	This function is used to validate an input phone number
-	1. 10 digits only
-	2. (3 digits) 3 digits - 4 digits
+	1. 10 digits only  
+	2. (3 digits) 3 digits - 4 digits 
 	3. 3 digits - 3 digits - 4 digits
 	4. 3 digits . 3 digits . 4 digits
 	5. 3 digits , 3 digits , 4 digits
@@ -306,27 +303,27 @@ function validateEmailFormat(inputEmailValue){
 	7. all "-" are optional and space is allowed
 */
 function validatePhoneNumber(phoneNumber){
-
+	
 	var inputPhoneNumber;
-
+	
 	if (phoneNumber == null){
 		return false;
 	}else {
 		inputPhoneNumber = phoneNumber.replace(/\s+/g, '');
 	}
-
+	
 	if ( (new RegExp(/^[1-9]\d{9}$/)).test(inputPhoneNumber) ||
 			(new RegExp(/^\([1-9]\d{2}\)\d{3}\-{0,1}\d{4}$/)).test(inputPhoneNumber) ||
-			(new RegExp(/^[1-9]\d{2}\-{0,1}\d{3}\-{0,1}\d{4}$/)).test(inputPhoneNumber) ||
-			(new RegExp(/^[1-9]\d{2}\.{0,1}\d{3}\.{0,1}\d{4}$/)).test(inputPhoneNumber) ||
+			(new RegExp(/^[1-9]\d{2}\-{0,1}\d{3}\-{0,1}\d{4}$/)).test(inputPhoneNumber) || 
+			(new RegExp(/^[1-9]\d{2}\.{0,1}\d{3}\.{0,1}\d{4}$/)).test(inputPhoneNumber) || 
 			(new RegExp(/^[1-9]\d{2}\,{0,1}\d{3}\,{0,1}\d{4}$/)).test(inputPhoneNumber) ){
-
+		
 		return true;
-
+		
 	}
-
+	
 	return false;
-
+	
 }
 
 /**
@@ -334,7 +331,7 @@ function validatePhoneNumber(phoneNumber){
 	Contains only 5 digits
 */
 function validateZipPostalCodeInput(zipPostalCode){
-
+      
       if (zipPostalCode == null){
             return false;
       }
@@ -342,14 +339,14 @@ function validateZipPostalCodeInput(zipPostalCode){
         if(zipPostalCode.length==6)
         {
            var tempZipcode=zipPostalCode.substring(0,3)+ " " +zipPostalCode.substring(3,zipPostalCode.length);
-           var reZipPostalCode = new RegExp(/^[a-zA-Z][0-9][a-zA-Z]\s?[0-9][a-zA-Z][0-9]$/);
-           zipPostalCode=tempZipcode;
-
+           var reZipPostalCode = new RegExp(/^[a-zA-Z][0-9][a-zA-Z]\s?[0-9][a-zA-Z][0-9]$/); 
+           zipPostalCode=tempZipcode;           
+           
         }else{
-            var reZipPostalCode = new RegExp(/^\d{5}$/);
+            var reZipPostalCode = new RegExp(/^\d{5}$/);         
         }
         /* end of defect 11151 */
-      return (reZipPostalCode.test(zipPostalCode));
+      return (reZipPostalCode.test(zipPostalCode));     
    }
 
 /**
@@ -357,23 +354,23 @@ function validateZipPostalCodeInput(zipPostalCode){
 	Contains only 5 digits - 4 digits, such as 12345-6789 or 9 digits
 */
 function validateExtendZipPostalCodeInput(zipPostalCode){
-
+	
 	var retVal;
-
+	
 	if (zipPostalCode == null){
 		return false;
 	}
-
-	var reZipPostalCode = new RegExp(/^\d{5}-\d{4}$/);
+	
+	var reZipPostalCode = new RegExp(/^\d{5}-\d{4}$/);	
 	retVal = reZipPostalCode.test(zipPostalCode);
-
+	
 	if (!retVal){
 		reZipPostalCode = new RegExp(/^\d{9}$/);
 		retVal = reZipPostalCode.test(zipPostalCode);
 	}
-
+	
 	return retVal;;
-
+	
 }
 
 /**
@@ -381,14 +378,14 @@ function validateExtendZipPostalCodeInput(zipPostalCode){
 	Contains only 6 digits
 */
 function validateCanadianZipPostalCodeInput(zipPostalCode){
-
+	
 	if (zipPostalCode == null){
 		return false;
 	}
-
+	
 	var reZipPostalCode = new RegExp(/^[a-zA-Z][0-9][a-zA-Z]\s?[0-9][a-zA-Z][0-9]$/);
 	return (reZipPostalCode.test(zipPostalCode));
-
+	
 }
 
 /**
@@ -396,14 +393,14 @@ function validateCanadianZipPostalCodeInput(zipPostalCode){
 	Contains only 3 digits
 */
 function validateCreditCardSecurityCodeInput(creditCardSecurityCode){
-
-
+	
+	
 	if (creditCardSecurityCode == null){
 		return false;
 	}
-
+	
 	var reCreditCardSecurityCode = new RegExp(/^\d{3}$/);
-
+	
 	return (reCreditCardSecurityCode.test(creditCardSecurityCode));
 
 }
@@ -413,14 +410,14 @@ function validateCreditCardSecurityCodeInput(creditCardSecurityCode){
 	Contains at least 1 digits
 */
 function validateQVCGiftCardNoInput(QVCGiftCardNo){
-
-
+	
+	
 	if (QVCGiftCardNo == null){
 		return false;
 	}
-
+	
 	var reQVCGiftCardNo = new RegExp(/^\d+$/);
-
+	
 	return (reQVCGiftCardNo.test(QVCGiftCardNo));
 
 }
@@ -430,14 +427,14 @@ function validateQVCGiftCardNoInput(QVCGiftCardNo){
 	Contains at least 1 digits
 */
 function validateQVCGiftCardSecurityCodeInput(QVCGiftCardSecurityCode){
-
-
+	
+	
 	if (QVCGiftCardSecurityCode == null){
 		return false;
 	}
-
+	
 	var reQVCGiftCardSecurityCode = new RegExp(/^\d+$/);
-
+	
 	return (reQVCGiftCardSecurityCode.test(QVCGiftCardSecurityCode));
 
 }
@@ -453,14 +450,14 @@ function validateCreditCardNO(creditCardNO){
 	  if ( !(new RegExp(/^\d+$/)).test(number) ){
 		  return false;
 	  }
-
+	
 	  // Strip any non-digits (useful for credit card numbers with spaces and hyphens)
 	  /*var number=creditCardNO.replace(/\D/g, '');*/
-
+	
 	  // Set the string length and parity
 	  var number_length=number.length;
 	  var parity=number_length % 2;
-
+	
 	  // Loop through each digit and do the maths
 	  var total=0;
 	  for (i=0; i < number_length; i++) {
@@ -476,7 +473,7 @@ function validateCreditCardNO(creditCardNO){
 		// Total up the digits
 		total = total + parseInt(digit);
 	  }
-
+	
 	  // If the total mod 10 equals 0, the number is valid
 	  if (total % 10 == 0) {
 		return true;
@@ -491,11 +488,11 @@ function validateCreditCardNO(creditCardNO){
 	Contain only 5 didigs
 */
 function validatePinInput(pinNumber){
-
+	
 	if (pinNumber == null ){
 		return false;
 	}
-
+	
 	return (new RegExp(/^\d{4}$/)).test(pinNumber);
 }
 
@@ -504,7 +501,7 @@ function validatePinInput(pinNumber){
 	Contain only didigs
 */
 function validateMemberNumberInput(memberNumber){
-
+	
 	if ( memberNumber == null ){
 		return false;
 	}
@@ -516,32 +513,32 @@ function validateMemberNumberInput(memberNumber){
 	Valid birth date format: mm/dd and has to be a valid calendar date.
 */
 function validateBirthdayDate(birthday){
-
+	
 	if ( birthday == null ) {
 		return false;
 	}
-
+	
 	birthdate = birthday.replace(/\s+/g, '');
-
+	
 	if ( !(new RegExp(/^\d{1,2}\/\d{1,2}$/)).test(birthdate) ){
 		return false;
 	}
-
+	
 	var date = birthdate.split('/');
-
+	
 	if ( date[0] < 1 || date[0] > 12) {
 		return false;
     }
-
+	
 	if (date[1] < 1 || date[1] > 31) {
 		return false;
 	}
-
+	
 	if ((date[0] == 4 || date[0] == 6 || date[0] == 9 || date[0]== 11) &&
 		(date[1]== 31)) {
 		return false;
 	}
-
+	
 	if ( date[0] == 2) {
 		if ( date[1]>29 ) {
 			return false;
@@ -555,29 +552,29 @@ function validateBirthdayDate(birthday){
 	Contain only 10 didigs
 */
 function validateOrderNumberInput(orderNumber){
-
+	
 	if (orderNumber == null || trimAll(orderNumber) == "" ){
 		return false;
 	}
-
+	
 	return (new RegExp(/^\d{10}$/)).test(trimAll(orderNumber));
-
+	
 	return true;
 }
 
 /**
 	This function is used to validate an item number input
-	Contain 3-7 chars either start with First char alpha, the rest numeric
+	Contain 3-7 chars either start with First char alpha, the rest numeric 
 	or first char slash, the next alpha, the rest numeric.
 */
 function validateItemNumberInput(itemNumber){
-
+	
 	if (itemNumber == null || trimAll(itemNumber) == "" ){
 		return false;
 	}
-
+	
 	return ((new RegExp(/^\w\d{2,6}$/)).test(trimAll(itemNumber)) || (new RegExp(/^\\\w\d{1,5}$/)).test(trimAll(itemNumber)));
-
+	
 	return true;
 }
 
@@ -588,17 +585,17 @@ function validateItemNumberInput(itemNumber){
 function validateNickNameInput(nickName){
 
     nickName = trimAll(nickName);
-
+	
 	if (nickName == null || nickName == "" || nickName.length > 25){
 		return false;
 	}
-
+	
 	var re =new RegExp(/(^[A-Za-z0-9]+)([A-Za-z0-9\s\&_-]*)([A-Za-z0-9]+$)/);
-
+	
 	if (nickName.match(re)){
 		return true;
 	}
-	else
+	else 
 	{
 		return false;
 	}
@@ -609,24 +606,24 @@ function validateNickNameInput(nickName){
 	This function checks if a given tag(tags) has a class
 */
 function hasClassByTag(tagName,givenClassName) {
-
-	var tags=document.getElementsByTagName(tagName);
+	
+	var tags=document.getElementsByTagName(tagName);  
 
 	for(i=0;i<tags.length;i++){
 		if ( tags[i].className.match(new RegExp('(\\s|^)'+givenClassName+'(\\s|$)')) ){
 			return true;
 		}
 	}
-
-	return false;
+	
+	return false;	
 }
 
 /**
 	This function adds a class to the tag(s) of the same tag name
 */
 function addClassByTag(tagName,givenClassName) {
-
-	var tags=document.getElementsByTagName(tagName);
+	
+	var tags=document.getElementsByTagName(tagName);  
 	for(i=0;i<tags.length;i++){
 		if ( ! tags[i].className.match(new RegExp('(\\s|^)'+givenClassName+'(\\s|$)')) ){
 			tags[i].className += " "+givenClassName;
@@ -638,8 +635,8 @@ function addClassByTag(tagName,givenClassName) {
 	This function removes a class from the tag(s) with the same tag name
 */
 function removeClassByTag(tagName,givenClassName) {
-
-	var tags=document.getElementsByTagName(tagName);
+	
+	var tags=document.getElementsByTagName(tagName);  
 	var reg = new RegExp('(\\s|^)'+givenClassName+'(\\s|$)');
 
 	for(i=0;i<tags.length;i++){
@@ -659,30 +656,30 @@ function hasClassByID(IDName,givenClassName) {
 }
 
 /**
-	This function adds a class to the tag with the input ID
+	This function adds a class to the tag with the input ID 
 */
 function addClassByID(IDName,givenClassName) {
-
+	
 	if ( ! hasClassByID(IDName,givenClassName) ){
 		(document.getElementById(IDName)).className += " "+givenClassName;
 	}
-
+	
 }
 
 /**
 	This function removes a class from the elements with the input tag ID
 */
 function removeClassByID(IDName,givenClassName) {
-
+	
 	var reg = new RegExp('(\\s|^)'+givenClassName+'(\\s|$)');
 	if (  hasClassByID(IDName,givenClassName) ){
 		(document.getElementById(IDName)).className=(document.getElementById(IDName)).className.replace(reg,' ');
 	}
-
+	
 }
 
 /**
-	This function adds a class to an element
+	This function adds a class to an element 
 */
 function addClassName(el, sClassName) {
 	if ( !hasClassName(el,sClassName) ){
@@ -712,19 +709,19 @@ function hasClassName(el, sClassName) {
 	and adds its own class name to that tag
 */
 function highlightTab(tagName,tabGroupID,giveClassName) {
-
-	var tags=document.getElementsByTagName(tagName);
+	
+	var tags=document.getElementsByTagName(tagName); 
 	var allClasses;
 
 	for(i=0;i<tags.length;i++){
-		allClasses = tags[i].className.split(" ");
+		allClasses = tags[i].className.split(" "); 
 		for(t=0;t<allClasses.length;t++){
 			if ( allClasses[t].indexOf(	tabGroupID ) >= 0 ){
 				removeClassByTag(tagName,allClasses[t]);
 			}
 		}
 	}
-
+	
 	addClassByTag(tagName, giveClassName);
 }
 
@@ -797,11 +794,11 @@ function highlightMoreInfoTab(tagName,tabGroupID,giveClassName,updateDiv,path,us
 		}
 	}
 
-	var tags=document.getElementsByTagName(tagName);
+	var tags=document.getElementsByTagName(tagName); 
 	var allClasses;
 
 	for(i=0;i<tags.length;i++){
-		allClasses = tags[i].className.split(" ");
+		allClasses = tags[i].className.split(" "); 
 		for(t=0;t<allClasses.length;t++){
 			if ( allClasses[t].indexOf(	tabGroupID ) >= 0 ){
 				removeClassByTag(tagName,allClasses[t]);
@@ -816,15 +813,15 @@ function highlightMoreInfoTab(tagName,tabGroupID,giveClassName,updateDiv,path,us
 	Returns all elements in the current page which has the input class name
 */
 function getElementsByClass( searchClass ) {
-
+	
 	var classElements = new Array();
 	var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-
+	
 	var allHTMLElements = document.getElementsByTagName("*");
-
+	
 	for (i=0; i<allHTMLElements.length; i++) {
 		if (pattern.test(allHTMLElements[i].className) ) {
-			classElements.push(allHTMLElements[i])
+			classElements.push(allHTMLElements[i]) 
 		}
 	}
 	return classElements;
@@ -837,7 +834,7 @@ This function is used to validate required fields
 
 function validateRequiredTextField(eleID){
 	var requiredField = document.getElementById(eleID);
-
+	
 	if ((requiredField != null) && (trimAll(requiredField.value) != null) && (trimAll(requiredField.value) != "")){
 		return true;
 	}
@@ -856,10 +853,10 @@ function validateAddressNickName(isFocusSetFlag){
 
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_Required_Valid_Address_Nickname = ERR_REQUIRED_VALID_ADDRESS_NICKNAME_NEW;
-
+	var valMessage_Required_Valid_Address_Nickname = ERR_REQUIRED_VALID_ADDRESS_NICKNAME_NEW; 
+	
 	var txtAddressNickname = document.getElementById("txtAddressNickname");
-
+	
 	if (txtAddressNickname != null) {
 		var trimmedNickName = trimAll(txtAddressNickname.value);
 		if (trimmedNickName == "") {
@@ -873,7 +870,7 @@ function validateAddressNickName(isFocusSetFlag){
 			retValue = false;
 		} else if (trimmedNickName.length > 12 && trimmedNickName.substring(0,12) == "CHECKOUTFLOW") {
 			// do nothing
-		} else {
+		} else {	
 			// Ignore nickname checking for CHECKOUTFLOW nicknames
 		 	if (!validateNickNameInput(trimmedNickName)) {
 				if (!isFocusSetFlag){
@@ -884,9 +881,9 @@ function validateAddressNickName(isFocusSetFlag){
 				displayMessage('error',"errnickName",valPageError,valMessage_Required_Valid_Address_Nickname,"lblAddressNickname","txtAddressNickname");
 				retValue = false;
 		 	}
-		}
+		}			
 	}
-
+	
 	return retValue;
 }
 
@@ -898,23 +895,23 @@ This function is used to validate Email input
 */
 function validateEmail(isFocusSetFlag){
 	var retValue = true;
-	/* begin Defect 7048 fix */
+	/* begin Defect 7048 fix */ 
 	var valPageError = ERR_REQUIRED_VALID_EMAILPIN_NEW;
-	/* End defect 7048 fix */
-	var valMessage_Required = ERR_REQIRED_VALID_EMAIL;
+	/* End defect 7048 fix */ 
+	var valMessage_Required = ERR_REQIRED_VALID_EMAIL; 
 	var valMessage_InvalidEmail = ERR_REQIRED_INVALID_EMAIL;
-
+	
 	var txtEmailAddress = document.getElementById("txtEmailAddress");
-
+	
 	if (txtEmailAddress != null && trimAll(txtEmailAddress.value) == ""){
 		if (!isFocusSetFlag){
 			txtEmailAddress.focus();
 			isFocusSetFlag = true;
 		}
-		/* begin Defect 7048 fix */
+		/* begin Defect 7048 fix */ 
 		displayMessage('error',"",valPageError,"","lblEmailAddress","txtEmailAddress");
 		/* End defect 7048 fix */
-		retValue = false;
+		retValue = false;	
 	}
 	else if (txtEmailAddress != null && !validateEmailFormat(txtEmailAddress.value)){
 		if (!isFocusSetFlag){
@@ -922,9 +919,9 @@ function validateEmail(isFocusSetFlag){
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errEmailAddress",valPageError,valMessage_InvalidEmail,"lblEmailAddress","txtEmailAddress");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 	return retValue;
 }
 
@@ -936,21 +933,21 @@ This function is used to validate Name input (first name and last name)
 function validateName(isFocusSetFlag){
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_Required_FirstName = ERR_REQUIRED_VALID_FIRSTNAME;
-	var valMessage_Required_LastName = ERR_REQUIRED_VALID_LASTNAME;
-
+	var valMessage_Required_FirstName = ERR_REQUIRED_VALID_FIRSTNAME; 
+	var valMessage_Required_LastName = ERR_REQUIRED_VALID_LASTNAME; 
+	
 	//movw to res bundle
-	var valMessage_Invalid_FirstName = "First Name is not valid";
-	var valMessage_Invalid_LastName = "Last Name is not valid";
-
-
+	var valMessage_Invalid_FirstName = "First Name is not valid"; 
+	var valMessage_Invalid_LastName = "Last Name is not valid"; 
+	
+	
 	var txtFirstName = document.getElementById("txtFirstName");
 	var txtLastName = document.getElementById("txtLastName");
-
+	
 	var regexp_InvalidChars = "[&]";
 	var re = new RegExp(regexp_InvalidChars);
-
-
+	
+	
 	if (txtFirstName != null && trimAll(txtFirstName.value) == ""){
 		if (!isFocusSetFlag){
 			txtFirstName.focus();
@@ -960,21 +957,21 @@ function validateName(isFocusSetFlag){
 		displayMessage('error',"errfirstName",valPageError,valMessage_Required_FirstName,"lblFirstName","txtFirstName");
 		retValue = false;
 	}else{
-
-		/* now & can be added part of the name
+		
+		/* now & can be added part of the name 
 		if (txtFirstName.value.match(re)) {
-
+			
 			if (!isFocusSetFlag){
 				txtFirstName.focus();
 				isFocusSetFlag = true;
 			}
 			displayMessage('error',"errfirstName",valPageError,valMessage_Invalid_FirstName,"lblFirstName","txtFirstName");
-			retValue = false;
+			retValue = false; 
 		}
 		*/
-
+	
 	}
-
+	
 	if (txtLastName != null && trimAll(txtLastName.value) == ""){
 		if (!isFocusSetFlag){
 			txtLastName.focus();
@@ -991,29 +988,29 @@ function validateName(isFocusSetFlag){
 				isFocusSetFlag = true;
 			}
 			displayMessage('error',"errlastName",valPageError,valMessage_Invalid_LastName,"lblLastName","txtLastName");
-			retValue = false;
+			retValue = false; 
 		}
 		*/
-
-	}
-
+	
+	} 
+	
 	return retValue;
 }
 
 function validateShipToName(isFocusSetFlag){
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_Required_ShipToName = ERR_REQUIRED_VALID_SHIPTONAME;
+	var valMessage_Required_ShipToName = ERR_REQUIRED_VALID_SHIPTONAME; 	
 	//move to res bundle
-	var valMessage_Invalid_ShipToName = "Ship-To Name is not valid";
-
+	var valMessage_Invalid_ShipToName = "Ship-To Name is not valid"; 
+		
 	var txtShipToName = document.getElementById("txtShipToName");
 	var txtFirstName = document.getElementById("txtFirstName");
 	var txtLastName = document.getElementById("txtLastName");
 	var regexp_InvalidChars = "[&]";
 	var re = new RegExp(regexp_InvalidChars);
-
-
+	
+	
 	if (txtShipToName == null || trimAll(txtShipToName.value) == ""){
 		if (!isFocusSetFlag){
 			txtShipToName.focus();
@@ -1026,7 +1023,7 @@ function validateShipToName(isFocusSetFlag){
 		displayMessage('error',"errshipToName",valPageError,valMessage_Required_ShipToName,"lblShipToName","txtShipToName");
 		retValue = false;
 	}
-
+	
 	if(retValue) {
 		if(txtShipToName.value.lastIndexOf(" ")!=-1) {
 			txtFirstName.value = txtShipToName.value.substring(0, txtShipToName.value.lastIndexOf(" "));
@@ -1048,9 +1045,9 @@ function validateAddressInput(isFocusSetFlag){
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
 	var valMessage_Required_Address = ERR_REQUIRED_VALID_ADDRESS;
-
+	
 	var txtAddress1 = document.getElementById("txtAddress1");
-
+		
 	if (txtAddress1 != null && trimAll(txtAddress1.value) == "" ){
 		if (!isFocusSetFlag){
 			txtAddress1.focus();
@@ -1058,40 +1055,40 @@ function validateAddressInput(isFocusSetFlag){
 		}
 		displayMessage('error',"erraddress1",valPageError,valMessage_Required_Address,"lblAddress1","txtAddress1");
 		retValue = false;
-	}
-
+	} 
+	
 	return retValue;
 }
 
 /**
-This function is used to validate ZIP/POSAL Code input,
+This function is used to validate ZIP/POSAL Code input, 
 Call validateZipPostalCodeInput
 */
 function validateZIPPostalCode(isFocusSetFlag, countryCode){
-
+	
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_InvalidZipPostalCode = ERR_REQUIRED_VALID_ZIPPOSTALCODE;
-
+	var valMessage_InvalidZipPostalCode = ERR_REQUIRED_VALID_ZIPPOSTALCODE; 
+	
 	var txtZipPostalCode = document.getElementById("txtZipPostalCode");
 	var validateFlag = true;
-
+	
 	if ( !countryCode ){
 		countryCode = "none";
 	}
-
+	
 	if ( txtZipPostalCode != null ){
 		if ( countryCode == "us" || countryCode == "none" ){
 			validateFlag = (validateZipPostalCodeInput(trimAll(txtZipPostalCode.value)) || validateExtendZipPostalCodeInput(trimAll(txtZipPostalCode.value)));
 		} else if ( countryCode == "canada" || countryCode == "none" ){
 			if ( countryCode != "none" || !validateFlag ){
 				validateFlag = (validateCanadianZipPostalCodeInput(trimAll(txtZipPostalCode.value)));
-
+				
 				// Defect #5586 - Remove space from canadian postal for it to pass QVC postal validation
 				txtZipPostalCode.value = removeSpaces(txtZipPostalCode.value);
 			}
-		}
-
+		} 
+		
 		if ( !validateFlag ){
 			if (!isFocusSetFlag){
 				txtZipPostalCode.focus();
@@ -1099,9 +1096,9 @@ function validateZIPPostalCode(isFocusSetFlag, countryCode){
 			}
 			displayMessage('error',"errzipCode",valPageError,valMessage_InvalidZipPostalCode,"lblZipPostalCode","txtZipPostalCode");
 			retValue = false;
-		}
+		} 
 	}
-
+	
 	return retValue;
 }
 
@@ -1112,33 +1109,33 @@ This function is used to validate address related input
 */
 function validateAddress(isFocusSetFlag){
 	var retValue = true;
-
+	
 	retValue = validateName(isFocusSetFlag);
-
+	
 	if (retValue){
 		retValue = validateAddressInput(isFocusSetFlag);
 	}else {
 		isFocusSetFlag = true;
 		validateAddressInput(isFocusSetFlag);
 	}
-
+	
 	return retValue;
-
+	
 }
 function validateShipToAddress(isFocusSetFlag){
 	var retValue = true;
-
+	
 	retValue = validateShipToName(isFocusSetFlag);
-
+	
 	if (retValue){
 		retValue = validateAddressInput(isFocusSetFlag);
 	}else {
 		isFocusSetFlag = true;
 		validateAddressInput(isFocusSetFlag);
 	}
-
+	
 	return retValue;
-
+	
 }
 
 /**
@@ -1146,13 +1143,13 @@ This function is used to validate Order Number input,
 Call validateOrderNumberInput
 */
 function validateOrderNumber(isFocusSetFlag){
-
+	
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_InvalidOrderNumber = ERR_REQUIRED_VALID_ORDERNUMBER;
-
+	var valMessage_InvalidOrderNumber = ERR_REQUIRED_VALID_ORDERNUMBER; 
+	
 	var txtByOrderNumber = document.getElementById("txtByOrderNumber");
-
+	
 	if (txtByOrderNumber != null && (!validateOrderNumberInput(txtByOrderNumber.value)) ){
 		if (!isFocusSetFlag){
 			txtByOrderNumber.focus();
@@ -1160,10 +1157,10 @@ function validateOrderNumber(isFocusSetFlag){
 		}
 		displayMessage('error',"errOrderStatusByOrderNumber",valPageError,valMessage_InvalidOrderNumber,"lblByOrderNumber","txtByOrderNumber");
 		retValue = false;
-	}
-
+	} 
+	
 	return retValue;
-
+	
 }
 
 /**
@@ -1171,13 +1168,13 @@ This function is used to validate Item Number input,
 call validateItemNumberInput
 */
 function validateItemNumber(isFocusSetFlag){
-
+	
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
-	var valMessage_InvalidItemNumber = ERR_REQUIRED_VALID_ITEMNUMBER;
-
+	var valMessage_InvalidItemNumber = ERR_REQUIRED_VALID_ITEMNUMBER; 
+	
 	var txtByItemNumber = document.getElementById("txtByItemNumber");
-
+	
 	if (txtByItemNumber != null && (!validateItemNumberInput(txtByItemNumber.value)) ){
 		if (!isFocusSetFlag){
 			txtByItemNumber.focus();
@@ -1185,14 +1182,14 @@ function validateItemNumber(isFocusSetFlag){
 		}
 		displayMessage('error',"errOrderStatusByItemNumber",valPageError,valMessage_InvalidItemNumber,"lblByItemNumber","txtByItemNumber");
 		retValue = false;
-	}
-
+	} 
+	
 	return retValue;
-
+	
 }
 
 function validateEmailAFriend(){
-
+	
 	var retValue = true;
 	var isFocusSetFlag = false;
 	var valPageError = ERRCONSOLEMESSAGE;
@@ -1200,82 +1197,82 @@ function validateEmailAFriend(){
 	var valMessage_InvalidFirstName = ERR_REQUIRED_VALID_SENDERFIRSTNAME;
 	var valMessage_InvalidLastName = ERR_REQUIRED_VALID_SENDERLASTNAME;
 	var valMessage_InvalidMessage = ERR_REQUIRED_VALID_EMAILMESSAGE;
-
+	
 	resetLabelInput();
-
+	
 	var txtRecipientEmail = document.getElementById("txtRecipientEmail");
-
+	
 	if (txtRecipientEmail != null && !validateEmailFormat(txtRecipientEmail.value)){
 		if (!isFocusSetFlag){
 			txtRecipientEmail.focus();
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errRecipientEmail",valPageError,valMessage_InvalidEmail,"lblRecipientEmail","txtRecipientEmail");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 	if (!retValue){
 		isFocusSetFlag = true;
 	}
-
+	
 	var txtSenderEmail = document.getElementById("txtSenderEmail");
-
+	
 	if (txtSenderEmail != null && !validateEmailFormat(txtSenderEmail.value)){
 		if (!isFocusSetFlag){
 			txtSenderEmail.focus();
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errSenderEmail",valPageError,valMessage_InvalidEmail,"lblSenderEmail","txtSenderEmail");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 	if (!retValue){
 		isFocusSetFlag = true;
 	}
-
+	
 	var txtSenderFirstName = document.getElementById("txtSenderFirstName");
-
+	
 	if (txtSenderFirstName != null && trimAll(txtSenderFirstName.value) == "" ){
 		if (!isFocusSetFlag){
 			txtSenderFirstName.focus();
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errSenderFirstName",valPageError,valMessage_InvalidFirstName,"lblSenderFirstName","txtSenderFirstName");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 		if (!retValue){
 		isFocusSetFlag = true;
 	}
-
+	
 	var txtSenderLastName = document.getElementById("txtSenderLastName");
-
+	
 	if (txtSenderLastName != null && trimAll(txtSenderLastName.value) == "" ){
 		if (!isFocusSetFlag){
 			txtSenderLastName.focus();
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errSenderLastName",valPageError,valMessage_InvalidLastName,"lblSenderLastName","txtSenderLastName");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 	var taShortMessage = document.getElementById("taShortMessage");
-
+	
 	if (taShortMessage != null && trimAll(taShortMessage.value) == "" ){
 		if (!isFocusSetFlag){
 			taShortMessage.focus();
 			isFocusSetFlag = true;
 		}
 		displayMessage('error',"errShortMessage",valPageError,valMessage_InvalidMessage,"lblShortMessage","taShortMessage");
-		retValue = false;
+		retValue = false;	
 	}
-
+	
 	if (retValue){
 		$('divEmailToAFriend').setStyle('display','none');
 		if($('divEmailToAFriendThankYou') != null)	// Added to fix JS error
 			$('divEmailToAFriendThankYou').setStyle('display','block');
 	}
-
+	
 	return retValue;
 }
 
@@ -1286,63 +1283,63 @@ function validateSecurityCodeInput(securityCode){
 	if (securityCode == null){
 		return false;
 	}
-
+	
 	var reSecurityCode = new RegExp(/^\d+$/);
-
+	
 	return (securityCode.test(reSecurityCode));
 }
 
 function validateInitialLetter(initialLetter){
-
+	
 	if (initialLetter == null || trimAll(initialLetter) == "" ) {
 		return false;
 	}
-
-	var reInitialLetter = new RegExp(/^[a-zA-Z]{1}$/);
+	
+	var reInitialLetter = new RegExp(/^[a-zA-Z]{1}$/);	
 	return (reInitialLetter.test(initialLetter));
-
+	
 }
 
 /*
-The followings functions are invoked only by the functions inside this js file, not by
+The followings functions are invoked only by the functions inside this js file, not by 
 HTML files.
 */
 function resetLabelInput(){
-
+	
 	if (  document.getElementById("errConsole") != null ){
 		document.getElementById("errConsole").style.display = "none";
 	}
-	var curElements =  document.getElementsByTagName("input");
- 	for (i=0; i<curElements.length; i++) {
-		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){
+	var curElements =  document.getElementsByTagName("input"); 
+ 	for (i=0; i<curElements.length; i++) { 
+		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){	
 			curElements[i].className = curElements[i].className.replace(/ ?inputError/g, "");
 		}
-	}
-	curElements =  document.getElementsByTagName("select");
- 	for (i=0; i<curElements.length; i++) {
-		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){
+	} 
+	curElements =  document.getElementsByTagName("select"); 
+ 	for (i=0; i<curElements.length; i++) { 
+		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){	
 			curElements[i].className = curElements[i].className.replace(/ ?inputError/g, "");
 		}
-	}
-	curElements =  document.getElementsByTagName("textarea");
- 	for (i=0; i<curElements.length; i++) {
-		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){
+	} 
+	curElements =  document.getElementsByTagName("textarea"); 
+ 	for (i=0; i<curElements.length; i++) { 
+		if ( curElements[i].className.match(new RegExp(" ?inputError")) ){	
 			curElements[i].className = curElements[i].className.replace(/ ?inputError/g, "");
 		}
-	}
-	curElements =  document.getElementsByTagName("label");
- 	for (i=0; i<curElements.length; i++) {
-		if ( curElements[i].className.match(new RegExp(" ?labelError")) ){
+	} 
+	curElements =  document.getElementsByTagName("label"); 
+ 	for (i=0; i<curElements.length; i++) { 
+		if ( curElements[i].className.match(new RegExp(" ?labelError")) ){	
 			curElements[i].className = curElements[i].className.replace(/ ?labelError/g, "");
 		}
-
-	}
-	curElements = document.getElementsByTagName("p");
-	for (i=0; i<curElements.length; i++) {
+	
+	} 
+	curElements = document.getElementsByTagName("p"); 
+	for (i=0; i<curElements.length; i++) { 
 		if (curElements[i].className == "err"){
 			curElements[i].style.display = "none";
 		}
-	}
+	} 
 }
 
 
@@ -1378,13 +1375,13 @@ function displayMessage(msgType,errorID, msgTitle,msgText,inputLabel,inputMessag
 				errInput.style.border = "1px solid #f00";
 			}*/
 		break
-		case 'help':
+		case 'help':		
 		break
 		default:
 		break
 	}
 }
-function displayMessageNew(msgType,errorID, msgTitle,msgText,inputLabel,inputMessage) {
+function displayMessageNew(msgType,errorID, msgTitle,msgText,inputLabel,inputMessage) {    
 		switch (msgType) {
 		case 'info':
 		break
@@ -1396,11 +1393,11 @@ function displayMessageNew(msgType,errorID, msgTitle,msgText,inputLabel,inputMes
 			var errLabel = document.getElementById(inputLabel);
 			var errInput = document.getElementById(inputMessage);
 			if ( errConsole != null ){
-				errConsole.innerHTML = msgTitle;
+				errConsole.innerHTML = msgTitle;				 
 				if(msgTitle == null){
 				errConsole.style.display = "none";
 				}else{
-				errConsole.style.display = "block";
+				errConsole.style.display = "block";				
 				}
 			}
 			if ( errElement != null ){
@@ -1420,7 +1417,7 @@ function displayMessageNew(msgType,errorID, msgTitle,msgText,inputLabel,inputMes
 				errInput.style.border = "1px solid #f00";
 			}*/
 		break
-		case 'help':
+		case 'help':		
 		break
 		default:
 		break
@@ -1446,7 +1443,7 @@ function displayMessageWithOutStyle(msgType,errorID, msgTitle,msgText,inputLabel
 				errElement.innerHTML = msgText;
 				errElement.style.display = "block";
 			}
-
+			
 			/*if ( errInput.type == "select-one" ){
 				errInput.style.backgroundColor = "#f00";
 			}
@@ -1454,7 +1451,7 @@ function displayMessageWithOutStyle(msgType,errorID, msgTitle,msgText,inputLabel
 				errInput.style.border = "1px solid #f00";
 			}*/
 		break
-		case 'help':
+		case 'help':		
 		break
 		default:
 		break
@@ -1463,44 +1460,44 @@ function displayMessageWithOutStyle(msgType,errorID, msgTitle,msgText,inputLabel
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Below functions - Added By Rajib
+// Below functions - Added By Rajib 
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+	
+	
 	/**
-	 *	Get the query variable
+	 *	Get the query variable 
 	*	from the query string
-	*/
-	function getQueryVariable(variable) {
-		var query = window.location.search.substring(1);
-		var vars = query.split("&");
-		for (var i=0;i<vars.length;i++) {
-			var pair = vars[i].split("=");
-			if (pair[0] == variable) {
-				return pair[1];
-			}
+	*/ 
+	function getQueryVariable(variable) { 
+		var query = window.location.search.substring(1); 
+		var vars = query.split("&"); 
+		for (var i=0;i<vars.length;i++) { 
+			var pair = vars[i].split("="); 
+			if (pair[0] == variable) { 
+				return pair[1]; 
+			} 
 		}
-		return null;
-	}
+		return null; 
+	} 
 
 
 	/**
 	*  Returns true if character c is a digit (0 .. 9).
 	**/
-	function isDigit (c){
+	function isDigit (c){   
 		return ((c >= "0") && (c <= "9"))
 	}
-
+	
 	/**
 	*  Returns true if character c is an alphabet  (a .. z or A .. Z).
 	**/
-	function isAlphabet (c){
+	function isAlphabet (c){   
 		return (((c >= "a") && (c <= "z"))||((c >= "A") && (c <= "Z")))
 	}
-
-
+	
+	
 	/**
 	*  Trim - non numeric and non alphabet character from the string
 	**/
@@ -1547,17 +1544,17 @@ var uattrSeparator = "|";
 function getUserAttrCookie()  {
 	var userAttr = Cookie.read("uattr");
 	if (userAttr == null || userAttr.length == 0)  {
-		userAttr = defaultCustType + uattrSeparator
-				 + defaultMBS + uattrSeparator
-				 + defaultCustSeg + uattrSeparator
-				 + defaultFirstPurchaseDate + uattrSeparator
-				 + defaultLastPurchaseDate + uattrSeparator
+		userAttr = defaultCustType + uattrSeparator 
+				 + defaultMBS + uattrSeparator 
+				 + defaultCustSeg + uattrSeparator 
+				 + defaultFirstPurchaseDate + uattrSeparator 
+				 + defaultLastPurchaseDate + uattrSeparator 
 				 + defaultMerchPreference;
 	}
 	return userAttr;
 }
 
-
+	
 /* For the CT/MBS enhancement, obtain the CT attribute used in registration and page view tagging
    Look into javacode (constants) for meaning of cookie and value */
 function getCTCoreMetricAttribute()  {
@@ -1569,7 +1566,7 @@ function getCTCoreMetricAttribute()  {
 		ct = attributes[0];
 	}
 	return ct;
-
+					
 }
 
 /* For the CT/MBS enhancement, form the MB attribute used in registration and page view tagging
@@ -1633,7 +1630,7 @@ function getUserMerchPreference()  {
 	return merchPreference;
 }
 
-
+	
 /*******************************************
 /* 	For Coremetrics
 /*******************************************/
@@ -1650,11 +1647,7 @@ function addTag(name, tag) {
 	tags[name].push(tag);
 }
 
-function makeCoremetricsCalls(){
-	makeCoremetricsTagCalls(tags);
-}
-
-function makeCoremetricsTagCalls(tags) {
+function makeCoremetricsCalls() {
 	if (tags) {
 		// determine if page view should not be called
 		ignorePageView = false;
@@ -1669,13 +1662,13 @@ function makeCoremetricsTagCalls(tags) {
 				}
 			}
 		}
-
+		
 		if (tags['page'] && !ignorePageView) {
 			if (tags['page'][0]) {
 				try { eval(tags['page'][0]); } catch(e) { /*alert('exception:'+e);*/ }
 			}
 		}
-
+		
 		if (tags['product'] && tags['product'].length > 0) {
 			for (i=0; i<tags['product'].length; i++) {
 				if (tags['product'][i]) {
@@ -1683,29 +1676,29 @@ function makeCoremetricsTagCalls(tags) {
 				}
 			}
 		}
-
+		
 		if (Cookie.read('cmReg')) {
 			regTemp = Cookie.read('cmReg');
 			if (regTemp != null && regTemp.length > 0) {
-				//Start fix defect 9654
+				//Start fix defect 9654 
 				if(new RegExp(/^0\d+$/).test(trimAll(regTemp))){
-					Cookie.dispose('cmReg',{path:"/"});
+					Cookie.dispose('cmReg',{path:"/"});	
 					var customerID = regTemp;
 					var memberID= regTemp;
-
+					
 					// Take defaults if CT and/or MB cookie not present; They should be there thou
 					var ct = getCTCoreMetricAttribute();
 					var mb = getMBCoreMetricAttribute();
 					var cs = getCSCoreMetricAttribute();
-
+					
 					// Obtain the user attributes firstPurchaseDate, lastPurchaseDate, and Merch Performance
 					var firstPurchaseDate = getUserFirstPurchaseDate();
 					var lastPurchaseDate = getUserLastPurchaseDate();
 					var merchPreference = getUserMerchPreference();
-
+									
 					// First 3 attributes are set in community section of site (start date, nickname, total community posts)
 					var attributes = "-_--_--_-" + ct + "-_-" + mb + "-_-" + firstPurchaseDate + "-_-" + lastPurchaseDate + "-_-" + merchPreference + "-_-" + cs;
-					cmCreateRegistrationTag(customerID,memberID,'','','','','',attributes);
+					cmCreateRegistrationTag(customerID,memberID,'','','','','',attributes); 
 				}
 				//End fix defect 9654
 			}
@@ -1714,7 +1707,7 @@ function makeCoremetricsTagCalls(tags) {
 		if (tags['registration'] && tags['registration'].length > 0 && tags['registration'][0]) {
 			try { eval(tags['registration'][0]); } catch(e) { /*alert('exception:'+e);*/ }
 		}
-
+		
 		if (tags['shop5'] && tags['shop5'].length > 0) {
 			for (i=0; i<tags['shop5'].length; i++) {
 				try { eval(tags['shop5'][i]); } catch(e) { /*alert('exception:'+e);*/ }
@@ -1722,20 +1715,20 @@ function makeCoremetricsTagCalls(tags) {
 			}
 
 		}
-
+		
 		if (tags['shop9'] && tags['shop9'].length > 0) {
 			for (i=0; i<tags['shop9'].length; i++) {
 				try { eval(tags['shop9'][i]); } catch(e) { /*alert('exception:'+e);*/ }
 			}
 			cmDisplayShop9s();
 		}
-
+		
 		if (tags['order'] && tags['order'].length > 0) {
 			for (i=0; i<tags['order'].length; i++) {
 				try { eval(tags['order'][i]); } catch(e) { /*alert('exception:'+e);*/ }
 			}
 		}
-
+		
 		if (tags['conversion'] && tags['conversion'].length > 0) {
 			for (i=0; i<tags['conversion'].length; i++) {
 				try { eval(tags['conversion'][i]); } catch(e) { /*alert('exception:'+e);*/ }
@@ -1771,7 +1764,7 @@ if (query_params.sc) { // shopping category added to the query string (see query
 				cookie_val += "_";
 			}
 			oc_sc_split = oc_splits[i].split('-');
-
+			
 			// if the part number does not exist in the shopping category passed in
 			// then tack on the pairing related to other part numbers
 			if (query_params.sc.indexOf(oc_sc_split[0]) == -1) {
@@ -1798,19 +1791,19 @@ if (query_params.sc) { // shopping category added to the query string (see query
 /*******************************************/
 
 function validateInitialLetter(initialLetter){
-
+	
 	if (initialLetter == null || trimAll(initialLetter) == "" ) {
 		return false;
 	}
-
-	var reInitialLetter = new RegExp(/^[a-zA-Z]{1}$/);
+	
+	var reInitialLetter = new RegExp(/^[a-zA-Z]{1}$/);	
 	return (reInitialLetter.test(initialLetter));
-
+	
 }
 
 function callShipCalc(ZipCode, GroupNumber, ItemIdn, waitlistSW, displayFunc)
 {
-	// Defect 7909 - Lets support US and Canadian zipcodes.
+	// Defect 7909 - Lets support US and Canadian zipcodes.  
 	// 		EDD service: For US zipcodes only supports 5 digits, For Canadian zipcodes the service allows either a space or no space (i.e. 'K1A 0G9', 'K1A0G9')
     if (! validateCanadianZipPostalCodeInput(ZipCode))  {
 		ZipCode = ZipCode.toString().substr(0,5);
@@ -1840,7 +1833,7 @@ function processShipCalcDetails(myJSON, displayFunc) {
 	}
 	else if (shipCalcData && shipCalcData.status == "10015") {
 		retObj.error = "Unfortunately, the zip code you have entered appears to be invalid. Please enter another zip code. You may also contact Customer Service at 1-888-345-5788, and a representative can provide more details or alternatives.";
-	}
+	}	
 	else if (shipCalcData && shipCalcData.status == "404") {
 		retObj.error = "Unfortunately, an error occurred while estimating the delivery date. We apologize for any inconvenience this may cause. Please contact Customer Service at 1-888-345-5788, and a representative can assist you.";
 	}
@@ -1849,15 +1842,15 @@ function processShipCalcDetails(myJSON, displayFunc) {
 		//placeholder error message
 		retObj.error = "Unfortunately, an error occurred while estimating the delivery date. We apologize for any inconvenience this may cause. Please contact Customer Service at 1-888-345-5788, and a representative can assist you.";
 	}
-
+	
 	//call the display function
 	displayFunc(retObj);
 }
 
-window.addEvent('domready', function(){
+window.addEvent('domready', function(){ 
 	var _7DayExpiration={path: '/', domain: '.qvc.com', duration: 7}; // stores cookie for 7 days
 	var _sessionExpiration={path: '/', domain: '.qvc.com'};
-	// sample url:  http://www.qvc.com/webapp/wcs/stores/servlet/ProductDisplay?langId=-1&storeId=10251&catalogId=10151&partNumber=A50790&ref=CJ
+	// sample url:  http://www.qvc.com/webapp/wcs/stores/servlet/ProductDisplay?langId=-1&storeId=10251&catalogId=10151&partNumber=A50790&ref=CJ	
 	var expiration = "";
 	var refParamName = "ref";
 	var strHref = window.location.href;
@@ -1870,7 +1863,7 @@ window.addEvent('domready', function(){
         var aParam = params[x].split("=");
         if(trimAll(aParam[1]).length > 0){
       		expiration = (  (is7DayPixelPartner(aParam[1])) ? _7DayExpiration : _sessionExpiration  );
-      		Cookie.write('IQVCREF',aParam[1].toUpperCase(), expiration);
+      		Cookie.write('IQVCREF',aParam[1].toUpperCase(), expiration);         
         	break;
         }
       }
@@ -1894,12 +1887,12 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 		var locationPathnameSplitArr = locationPathname.split(".");
 		var locationPathnameMetaText = locationPathnameSplitArr[0].substring(1,locationPathnameSplitArr[0].length);
 		var locationPathnameCategoryID = locationPathnameSplitArr[2];
-
+		
 		var pageIDVal;
 		var activeVideoHeading;
 		var activeVideoURL;
 		var activeVideoIndex;
-
+		
 		var doc_arrOfDivs = document.getElementsByTagName('div');
 		// declare regex
 		var patternStr= '^eSpot[0-9a-zA-Z]+[\-]' + containerID + '$';
@@ -1909,22 +1902,22 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 		{
 			// execute regular expression against each element id
 			var m = re_eSpot.test(doc_arrOfDivs[i].id);
-			if (m)
+			if (m) 
 			{
 				var hyphenIndex = doc_arrOfDivs[i].id.indexOf('-',0);
 				var firstPattern = doc_arrOfDivs[i].id.substring(0,hyphenIndex);
 				pageIDVal = firstPattern.substring(5, firstPattern.length);
-
+				
 				var identifier = qpVals('identifier');			//'identifier' is the category code in QP.
-
+				 
 				if (identifier !='')
 					pageIDVal = identifier;
-
+				
 				var doc_arrOfLi = doc_arrOfDivs[i].getElementsByTagName('li');
-
+				
 				// declare regex
 				var re_activeVideo = new RegExp(/^activeVideo$/);
-
+				
 				// loop through the form elements
 				for(j = 0; j < doc_arrOfLi.length; j++)
 				{
@@ -1932,7 +1925,7 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 					//---------------------------------------------------------------Active Video------------------------------------------------------------------------------
 					// execute regular expression against each element id
 					var m = re_activeVideo.test(doc_arrOfLi[j].className);
-					if (m)
+					if (m) 
 					{
 						//element id matches regex
 						activeVideoHeading = doc_arrOfLi[j].childNodes[0].childNodes[0].innerHTML;
@@ -1943,7 +1936,7 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 				}
 			}
 		}
-
+		
 		switch(returnParam)
 		{
 			case 'pageID':
@@ -1961,14 +1954,14 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 			case 'activeVideoURL':
 				if (actionVal == 'alert')
 					alert(activeVideoURL);
-
+					
 				else
 					return activeVideoURL;							//renderedHTMLContent('2','activeVideoURL','');
 				break;
 			case 'activeVideoIndex':
 				if (actionVal == 'alert')
 					alert(activeVideoIndex);
-
+					
 				else
 					return activeVideoIndex;							//renderedHTMLContent('2','activeVideoURL','');
 				break;
@@ -2014,15 +2007,15 @@ function renderedHTMLContent(containerID, returnParam, qpText, actionVal)
 
 var notWhitespace = /\S/;
 
-//Remove white space in HTML.
-function cleanWhitespace(node)
+//Remove white space in HTML. 
+function cleanWhitespace(node) 
 {
 	try
 	{
-		for (var x = 0; x < node.childNodes.length; x++)
+		for (var x = 0; x < node.childNodes.length; x++) 
 		{
 			var childNode = node.childNodes[x];
-			if ((childNode.nodeType == 3)&&(!notWhitespace.test(childNode.nodeValue)))
+			if ((childNode.nodeType == 3)&&(!notWhitespace.test(childNode.nodeValue))) 
 			{
 				if (childNode.isElementContentWhitespace)
 				{
@@ -2031,8 +2024,8 @@ function cleanWhitespace(node)
 					x--;
 				}
 			}
-
-			if (childNode.nodeType == 1)
+			
+			if (childNode.nodeType == 1) 
 			{
 				// elements can have text child nodes of their own
 				cleanWhitespace(childNode);
@@ -2045,7 +2038,7 @@ function cleanWhitespace(node)
 }
 
 //HTML Encode content-*Disabled
-function encodeHtmlText(htmlContent)
+function encodeHtmlText(htmlContent) 
 {
 	try
 	{
@@ -2060,7 +2053,7 @@ function encodeHtmlText(htmlContent)
 	}
 	catch(err)
 	{}
-}
+} 
 
 // Get URL query parameters
 function qpVals( name )
@@ -2072,12 +2065,12 @@ function qpVals( name )
 		var locationHost = location.host;
 		var locationPathname = location.pathname;
 		var locationSearch = location.search;
-
+		
 		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 		var regexS = "[\\?&]"+name+"=([^&#]*)";
 		var regex = new RegExp( regexS );
 		var results = regex.exec( window.location.href );
-		if( results == null )
+		if( results == null )    
 			return "";
 		else
 			return results[1];
@@ -2092,16 +2085,16 @@ function tagVideoCoremetrics(videoIndex)
 	{
 		var containerIndex = '2';		//eSpot 2
 		var videoPath = '';
-
+		
 		if (videoIndex == '')			// If passed as a param, use that or else calculate
 			videoPath = encodeHtmlText(renderedHTMLContent(containerIndex, 'activeVideoURL', '', '') + "&cm_re=PROMOTIONSVIDEO-_-" + renderedHTMLContent(containerIndex, 'activeVideoIndex', '', '') + ":" + renderedHTMLContent('2', 'activeVideoHeading', '', '') + "&cm_sp=VIDEO-_-META-_-PLAY");
 		else
 			videoPath = encodeHtmlText(renderedHTMLContent(containerIndex, 'activeVideoURL', '', '') + "&cm_re=PROMOTIONSVIDEO-_-" + videoIndex + ":" + renderedHTMLContent('2', 'activeVideoHeading', '', '') + "&cm_sp=VIDEO-_-META-_-PLAY");
-
+			
 		var videoName = encodeHtmlText(renderedHTMLContent(containerIndex, 'activeVideoHeading', '', ''));
 		var CM_PageID = encodeHtmlText(renderedHTMLContent(containerIndex, 'metaNameInPageTitle', '', ''));
 		cmCreateManualLinkClickTag(videoPath, videoName, CM_PageID);		//Link click tag
-
+		
 		var vidPageId = encodeHtmlText(renderedHTMLContent(containerIndex, 'metaNameInPageTitle', '', '') + ' VIDEO > ' + renderedHTMLContent('2', 'activeVideoHeading', '', ''));
 		var videoCM_CatID = encodeHtmlText(renderedHTMLContent(containerIndex, 'pageID', '', ''));
 		cmCreateManualPageviewTag(vidPageId, videoCM_CatID);				//Page view tag
@@ -2116,14 +2109,14 @@ function getMemberIdFromCookie()
 	{
 		var caValue;
 		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++)
+		for(var i=0;i < ca.length;i++) 
 		{
 			var c = ca[i];
 			while (c.charAt(0)==' ')
 			{
 				c = c.substring(1,c.length);
 			}
-			if (c.indexOf('WC_USERACTIVITY_') == 0)
+			if (c.indexOf('WC_USERACTIVITY_') == 0) 
 			{
 				caValue = c.substring((c.indexOf('=') + 1),c.length);
 				if(caValue.indexOf(',') != -1)

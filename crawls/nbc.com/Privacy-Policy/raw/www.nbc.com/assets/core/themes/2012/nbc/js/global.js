@@ -476,10 +476,11 @@ function loadGlobalFooterShop() {
     var shopFooter = NBC('footer.global #shop-footer'),
         url;
 
+
     if (document.domain == "www.nbc.com") {
-        url = "/api/shop/products.php?v=nbc&cnt=3&thumbnailImgsize=77&format=json&bestSellers=1" + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
+        url = "/api/shop/products.php?v=nbc&cnt=3&thumbnailImgsize=77&format=json" + ((SITE.id == '69') ? "&bestSellers=1" : "") + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
     } else {
-        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fv%3Dnbc%26cnt%3D3%26thumbnailImgsize%3D107%26format%3Djson%26bestSellers%3D1" + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
+        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fv%3Dnbc%26cnt%3D3%26thumbnailImgsize%3D107%26format%3Djson" + ((SITE.id == '69') ? "%26bestSellers%3D1" : "") + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
     }
 
     NBC.ajax({

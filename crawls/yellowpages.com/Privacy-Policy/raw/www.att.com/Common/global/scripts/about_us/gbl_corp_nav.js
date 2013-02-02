@@ -11,8 +11,7 @@ document.write('<div class="top-content" style="height:45px;"><ul class="more_li
 						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
 						 + '4q12/master_4q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
 						 + '4q12/master_4q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
-						 + '<li class="last" style="clear:both;padding:5px 0 0;width:95% !important;">NEW: Prior quarter segment results reflecting FORM 8-K filed 01/17/2013: <a href="/Investor/8K/prior_quarter_results_8k_011713.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/8K/prior_quarter_results_8k_011713.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
-						 						 + '</ul></div>');
+						 + '</ul></div>');
 }
 
 /* earnings */

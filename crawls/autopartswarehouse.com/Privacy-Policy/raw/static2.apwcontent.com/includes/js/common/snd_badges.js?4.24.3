@@ -1,0 +1,105 @@
+var learnMoreToolTip = '<div class="new-tooltip-box">'+
+           '<div class="new-tooltip-cont">'+
+                '<a href="#" class="new-tooltip-close">x</a>'+
+                '<strong>We will deliver your parts between 6pm and 3am.</strong>'+
+                '<p class="new-tooltip-p">For your security, we can only deliver to addresses where the packages can be left at your front door.</p>'+
+                '<p class="new-tooltip-p">We can not deliver parts to:</p>'+
+                '<ul class="tooltip-u">'+
+                    '<li class="tooltip-list">Business addresses.</li>'+
+                    '<li class="tooltip-list">Gated communities.</li>'+
+                    '<li class="tooltip-list">Gated apartment buildings.</li>'+
+                    '<li class="tooltip-list">PO Boxes.</li>'+
+                    '<li class="tooltip-list">Properties that put our drivers\' safety at risk.</li>'+
+                '</ul>'+
+                '<p class="new-tooltip-p delivery_messaging"></p>'+
+            '</div>'+                
+           '</div>';
+
+$sndTooltipMessage = "<span class='tip'>Learn more</span>" +
+                    learnMoreToolTip;
+                    
+$sndDetailsNotEligible = "<div class='pdp-cont pdp-cent'>" +
+                    "<h3>Get it tonight</h3>" +
+                    "<span> <a href='javascript:void(0);' class='nlb' rel='#sndlbWidget'>Check for Same Night Delivery</a></span>" +
+                    "<div class='new-tooltip pdp-cent-tooltip'>" +
+                    $sndTooltipMessage +
+                    "</div>" +
+                    "</div>";
+$sndDetailsEligible = "<div class='pdp-cont'>" +
+                    "<h3>Same Night Delivery</h3>" +
+                    "<span>Order in the next <strong><span class='countDownHours'></span></strong> and choose the Same Night option at Checkout.</span>" +
+                    "<div class='new-tooltip'>" +
+                    $sndTooltipMessage +
+                    "</div>" +
+                    "</div>";
+                    
+var toolTipContent = '<div class="new-tooltip">'+
+		'<span class="tip">Learn more</span>'+
+		learnMoreToolTip +
+	'</div>';
+
+var sndNotEligibleContent = '<div class="plp-check-cont clearfix"><span><a href="javascript:void(0);" class="nlb" rel="#sndlbWidget">Check for Same Night Delivery availability.</a>'+toolTipContent+'</span></div>';
+
+var sndEligibleContent = '<div class="plp-check-cont clearfix"><span class="avail-check"></span><div class="avail-cont"><span><strong>Same Night Delivery</strong> Available'+toolTipContent+'</span></div></div>';
+    
+
+function sndBadgesSkuEligible(countDownHours,countDownMinutes,page_section){
+    
+    /* Hide "Anticipated Ship Out Time" attribute when user eligible for SND */
+    if($('.shipoutinfo').length) {
+        $('.shipoutinfo').hide();
+    }
+    
+    var count_hours =  countDownHours;  
+    var count_minutes = countDownMinutes;
+
+    countDownMessageForHours = (count_hours > 0 ) ?  count_hours + " hour(s) and "   : "";
+    countDownMessageForMinutes 	=  count_minutes + " minute(s)";
+    
+    countDownMessage	= countDownMessageForHours + countDownMessageForMinutes;
+    
+    $(".sndDetails").html($sndDetailsEligible);
+    $(".countDownHours").text(countDownMessage);
+    $(".delivery_messaging").html(DELIVERY_MESSAGING);
+    
+    if(typeof page_section === 'undefined' && page_section == 'details'){
+        $(".pdp-cont").addClass('pdp-cont seo-details');
+    }
+}
+
+function sndBadgesSkuNotEligible(){
+    
+    /* Displays "Anticipated Ship Out Time" attribute when user isn't eligible  for SND */
+    if($('.shipoutinfo').length) {
+        $('.shipoutinfo').show();
+    }
+    
+    $(".sndDetails").html($sndDetailsNotEligible);
+    $(".delivery_messaging").html(DELIVERY_MESSAGING);
+}
+
+	
+function setBadgePlpEligibleContent(){
+    /* Hide "Anticipated Ship Out Time" attribute when user eligible for SND */
+    if($('.shipoutinfo').length) {
+        $('.shipoutinfo').hide();
+    }
+    
+    if ( $(".sndBadgesContainer").length ) {
+        $(".sndBadgesContainer").html(sndEligibleContent);
+        $(".delivery_messaging").html(DELIVERY_MESSAGING);
+    }
+}
+
+function setBadgePlpNotEligibleContent(){
+
+    /* Displays "Anticipated Ship Out Time" attribute when user isn't eligible  for SND */
+    if($('.shipoutinfo').length) {
+        $('.shipoutinfo').show();
+    }
+    
+    if ( $(".sndBadgesContainer").length ) {
+        $(".sndBadgesContainer").html(sndNotEligibleContent);
+        $(".delivery_messaging").html(DELIVERY_MESSAGING);
+    }
+}

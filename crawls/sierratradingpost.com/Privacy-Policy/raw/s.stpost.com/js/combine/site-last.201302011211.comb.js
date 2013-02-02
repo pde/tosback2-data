@@ -1,0 +1,2 @@
+/* sitewide-last.min.js */
+"use strict";var sitewideLast=(function(){function a(){var b=document.createElement("script"),c;b.type="text/javascript";b.async=true;b.src="https://apis.google.com/js/plusone.js";c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}$(document).ready(function(){a()});if(!stpTools.IsIE7()){(function(f,b,g){var e,c=f.getElementsByTagName(b)[0];if(f.getElementById(g)){return}e=f.createElement(b);e.id=g;e.src="//connect.facebook.net/en_US/all.js#xfbml=1";c.parentNode.insertBefore(e,c)}(document,"script","facebook-jssdk"))}}());

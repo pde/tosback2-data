@@ -122,9 +122,9 @@ CE.Config = {
 	defaultFontSize: 12,
 	defaultMobileFontSize: 15,
 	fontSizes: {
-		large: 17,
-		medium: 15,
-		small: 12
+	    large: 17, //17
+	    medium: 15, //15
+	    small: 12 //12
 	},
 	hoverOptions: {    
 	    sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)    
@@ -348,9 +348,15 @@ CE.Menu.Primary = (function () {
     }
 
     function scale(e, em) {
-        scalefactor = Math.min(1, CE.Config.defaultFontSize / em);
-        $topnav.css({ marginLeft: Math.floor(scalefactor * basemargin) + "px" });
-        $topnavspan.css({ paddingLeft: Math.floor(scalefactor * basepadding) + "px", paddingRight: Math.floor(scalefactor * basepadding) + "px" });
+        scalefactor = Math.min(5, CE.Config.defaultFontSize / em);
+	    $topnav.css({ marginLeft: Math.floor(scalefactor * basemargin) + "px" });
+	    //$topnavspan.css({ paddingLeft: Math.floor(scalefactor * basepadding) + "px", paddingRight: Math.floor(scalefactor * basepadding) + "px" });
+	    $topnavspan.css({ paddingLeft: "12px", paddingRight: "12px" });
+	}
+
+    //fix menu font size
+    function fixFontSize(e, em) {
+        $topnavspan.css({ fontSize: (CE.Config.defaultFontSize * CE.Util.cookie("fontSize") / em) + "px" });  //lineHeight: (CE.Config.alertLineHeight * CE.Util.cookie("fontSize") / em) + "px" 
     }
 
     function handleMenuFocus() {
@@ -397,6 +403,10 @@ CE.Menu.Primary = (function () {
             // removed because font resize overridden for nav
             $(document).bind("fontresize", scale);
             scale(null, jQuery.onFontResize.initialSize);
+
+            // ensure alert content font size stays fixed to allow consistent scrolling of message text
+            $(document).bind("fontresize", fixFontSize);
+            fixFontSize(null, jQuery.onFontResize.initialSize);
         }
     }
 })();

@@ -3957,33 +3957,31 @@ $(document).ready(function(){
 	var timeout = new Date();
 	timeout.setMinutes(timeout.getMinutes()+30);
 	timeout = timeout.getTime();
-	
-	if(typeof config.getPreferenceCheckClasses == 'undefined' || typeof Storage == 'undefined' || typeof config.getNiagaraActivityHomeURL == 'undefined') return;
+	//check to see if the language settings are changing over time
+	if(typeof Storage == 'undefined' || typeof config.getNiagaraActivityHomeURL == 'undefined') return;
 	var lang = localStorage.getItem('_lang');
 	if(lang != null){
 		langtime = lang.split('|');
 		if(langtime.length == 2){
 			var testDate = new Date();
 			testDate.setTime(langtime[1]);
-			if(testDate > new Date()) return;
-		}
-	}
-	var preferenceFinder = config.getPreferenceCheckClasses();
-	if($(preferenceFinder).length > 0){
-		var found=true;
-		$(preferenceFinder).each(function(){
-			if($(this).height() > 0){
-				found=false;
+			if(testDate > new Date()){
+				if(langtime[0] == 'EN-US'){
+					$(document).trigger('H.E.M.');
+				}
+				return;
 			}
-		});
-		if(found){
-			localStorage.setItem('_lang','EN-US|'+timeout);
-			$.ajax({url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{site:window.location.hostname,lang:'EN-US'}});
-		}else{
-			localStorage.setItem('_lang','EN|'+timeout);
-			$.ajax({url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{site:window.location.hostname,lang:'EN'}});
 		}
 	}
+	//in case we need to support flash videos by language
+	$.ajax({ url:"http://140cc.v.fwmrm.net/ad/l/1?s=",dataType:'html',error:function(){
+		localStorage.setItem('_lang','EN-US|'+timeout);
+		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN-US' } });
+		$(document).trigger('H.E.M.');
+	},success:function(){
+		localStorage.setItem('_lang','EN|'+timeout);
+		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN' } });
+	} });
 });/* overlay.js */
 /**
  * Crabapple Entertainment Overlay Code
@@ -7827,9 +7825,11 @@ $(function() {
 /* grid.js */
 /*  grid.js */
 
-$(document).ready(function(){
+$(document).ready(function() {
+	
 	if($('.grid').length) {
-	// Masonry corner stamp modifications
+		var cornerStamp = $('.ad_300x250').length ? '.ad_block' : '';
+		// Masonry corner stamp modifications 
 	$.Mason.prototype.resize = function() {
 		this._getColumns();
 		this._reLayout();
@@ -7859,11 +7859,12 @@ $(document).ready(function(){
 		$('.grid').masonry({
 			itemSelector : '.box',
 			isAnimated: false,
-			cornerStampSelector: '.ad_block'
+			cornerStampSelector: cornerStamp
 		});
 
 	}
-});/* instagram.js */
+});
+/*-*//* instagram.js */
 /**
  * @package:    CC Studios 2012 M12 Instagram 300
  * @module:     M12 Instagram 300 JavaScript

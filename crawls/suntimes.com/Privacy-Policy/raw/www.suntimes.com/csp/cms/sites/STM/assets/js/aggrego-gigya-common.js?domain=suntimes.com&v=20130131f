@@ -1,0 +1,1437 @@
+var Aggrego = Aggrego || {};
+
+if(!Aggrego.log) {
+  Aggrego.log = function(o) {
+    //log to console if exists
+    if(typeof console != "undefined") {
+      console.log(o);
+    }
+  }
+
+}
+
+//Requires: jQuery 1.9.0 and jQuery.cookie (see jquery-cookie-plugin.js)
+Aggrego.Gigya = function($, pubName, pubFullName, domain, options) {
+  options = $.extend({}, defaultOptions(), options);
+  
+  var log = options.debug ? Aggrego.log : function() {};
+  
+  var isLoggedIn = false;
+
+  gigya.accounts.addEventHandlers({ //accounts fires second
+    onLogin: function(e) {
+      fireAggregoEvent('accounts.onLogin', e);
+
+      //set ui
+      var profile = e.profile;
+      var data = e.data;
+      showUser(profile);
+      showLoggedIn();
+
+      //set cookies
+      var now = new Date();
+      var expiresDate = new Date();
+      expiresDate.setDate(now.getDate() + 14);
+      $.cookie('gigyaLoggedIn', 1,  { expires: expiresDate, path: '/', domain: '.'+domain });
+
+      //store event
+      var c = getContext();
+      var d = {};
+      d.lastLogin = {
+        url: c.url
+        ,timestamp: c.timestamp
+      };
+      d.subscribe = true;
+      d.newsletters = newsletters.isNewsletterSubscriber(data);
+
+      if( undefined == data.registration || null == data.registration ) { //this is a registration
+
+        //registration url
+        d.registration = {
+          url: c.url
+          ,timestamp: c.timestamp
+        };
+        d.cid = c.cid;
+      }
+
+      gigya.accounts.setAccountInfo({
+        data: d
+        ,cid: c.cid
+        ,context: c
+        ,callback:function(r) {
+  //log("reg/login URLs stored");
+          //log(r);
+
+          $.cookie('gigyaCookieCntr', null, { path: '/' });
+          $.cookie('gigyaCookieCID', null, { path: '/' });
+
+          var restore = getParameterByName("restore");
+  //log("restore",restore);
+          if( '' != restore && restore ) {
+  //log(data);
+            if( undefined != data.start ) {
+              window.location = data.start;
+            } else {
+              window.location.reload(true);
+            }
+          } else if (options.onLoginRefresh) {
+            window.location.reload(true);
+          }
+        }
+      });
+    }
+    ,onLogout: function(e) {
+      //use this event to do any cleanup after user is logged out
+      //log(e); //debug event object
+
+      //clear cookies
+      $.cookie('gigyaLoggedIn', null, { path: '/', domain: '.'+domain });
+      $.cookie('gigyaCookieCntr', null, { path: '/', domain: '.'+domain });
+      $.cookie('gigyaCookieCID', null, { path: '/', domain: '.'+domain });
+
+      //set ui
+      showLoggedOut();
+    }
+  });
+
+  gigya.socialize.addEventHandlers({ //socialize fires first
+    onLogin: function(e) {
+      log("socialize.onLogin event fired");
+
+      //track event
+      fireAggregoEvent('socialize.onLogin', e);
+    }
+    ,onLogout: function(e) {
+      //track event
+      fireAggregoEvent('socialize.onLogout', e);
+    }
+  });
+
+  ///////////////////
+  // HANDLE LOGIN BAR
+  gigya.socialize.getUserInfo({
+    cacheTimeout: true
+    ,callback: function(r) {
+      //log(r);
+
+      if( 0 == r.errorCode) {
+        isLoggedIn = ( r.user.UID && r.user.UID != '');
+      }
+
+        if( isLoggedIn ) {
+          /////////////////////////////////
+          // Display login bar
+          log("user is logged in");
+
+          //track event
+          fireAggregoEvent('socialize.getUserInfo', r);
+
+					jQuery(function($) {
+          	showUser(r.user);
+          	showLoggedIn();
+						showConnections();
+          	showGigyaLoginBox();
+					});
+
+          //set cookies
+          var now = new Date();
+          var expiresDate = new Date();
+          expiresDate.setDate(now.getDate() + 14);
+          $.cookie('gigyaLoggedIn', 1,  { expires: expiresDate, path: '/', domain: '.'+domain });
+
+        } else {
+          log("user not logged in");
+					jQuery(function($) {
+						showLoggedOut();
+						showConnections();
+						showGigyaLoginBox();
+					});
+
+          var restore = getParameterByName("deleteRedirectCookie");
+          //log("restore",restore);
+
+          if('' != restore && restore) {
+            //log("showing email login...");
+            showEmailLogin();
+          }
+        }
+        //showGigyaLoginBox();
+        //showLoginShortcut();
+        //showConnections();
+    }
+  });
+
+  $(function($) {
+    $(options.loginLinkSelector).on('click.gigya', showLogin);
+    $(options.registrationLinkSelector).on('click.gigya', showRegistration);
+    $(options.profileLinkSelector).on('click.gigya', showProfile);
+    $(options.logoutLinkSelector).on('click.gigya', logout);
+    //TODO: see showNewsletters method. Link loaded as part of screenset.
+    //$(options.newslettersLinkSelector).on('click.gigya', showNewsletters);
+
+    //Set up comments, if present.
+    (function() {
+      var containerId = 'gigyaComments';
+      var element = $('#' + containerId);
+      if(element.length > 0) {
+        var context = getContext();
+
+        var params = {
+          categoryID: element.data('gigya-category-id')
+          ,streamID: element.data('gigya-stream-id') //limited to 150 characters
+          ,containerID: containerId
+          ,enabledShareProviders: options.enabledProviders
+          ,enabledProviders: options.enabledProviders
+          ,cid:context.cid
+          ,scope: 'both'
+          ,privacy: 'public'
+          ,feedID: context.cid
+          ,width: 572
+          ,useSiteLogin: true
+          ,onSiteLoginClicked: function(r) {
+            showLogin();
+          }
+          ,onLoad: function(e) {
+            if( document.createStyleSheet ) { //for IE
+              document.createStyleSheet('/csp/cms/sites/STM/assets/css/gigya.css');
+            } else {
+              $('head').append( $('<link href="/csp/cms/sites/STM/assets/css/gigya.css" media="screen" rel="stylesheet" type="text/css" />') );
+            }
+          }
+          ,onCommentSubmitted: function(e) {
+            fireAggregoEvent('showCommentsUI.onCommentSubmitted', e);
+          }
+        }
+        gigya.socialize.showCommentsUI(params);
+      }
+    })();
+
+    //Set up activity widget, if present.
+    (function() {
+      var elementId = 'gigyaActivityWidget';
+      var element = $('#' + elementId);
+      if (element.length > 0) {
+        var context = getContext();
+        var params = {
+          containerID: elementId
+          ,width: element.data('gigya-width') || 300 //used to be '%' on HermesCommunity
+          ,height: 300
+          ,siteName: pubFullName
+          ,tabOrder: 'everyone,friends,me'
+          ,initialTab: 'everyone'
+          ,feedID: context.cid
+          ,enabledProviders: options.enabledProviders
+          ,loginUI: 'default'
+          ,context: context
+          ,cid: context.cid
+        };
+
+        gigya.socialize.showFeedUI(params);
+      }
+    })();
+
+    showShareBarUI('gigyaShareBar', {});
+  });
+  
+  function getContext() {
+    var d = new Date();
+    var unixtime = Math.floor(d.getTime() / 1000);
+    return {
+      cid: window.location.hostname
+      ,url: window.location.href
+      ,timestamp: unixtime
+    };
+  }
+  
+  function defaultOptions() {
+    return {
+      loginLinkSelector: '.gigya-login-link',
+      registrationLinkSelector: '.gigya-registration-link',
+      profileLinkSelector: '.gigya-profile-link',
+      logoutLinkSelector: '.gigya-logout-link',
+      newslettersLinkSelector: '.gigya-newsletters-link',
+      pressPlusDivSelector: 'pressPlusLoginDiv',
+      deinternalInitbug: false,
+      onLoginRefresh: false,
+      enabledProviders: 'facebook,google,twitter,aol,linkedin,messenger',
+      emailProviders: 'google,yahoo',
+      debug: true,
+      shareBar: {
+        userAction: new gigya.socialize.UserAction()
+      }
+    };
+  }
+
+  function showShareBarUI(elementId, params) {
+    var element = $('#' + elementId);
+    if (element.length > 0) {
+      var streamId = element.data('gigya-stream-id');
+      var shareBarParams = getShareBarParams(element, streamId, params);
+
+      gigya.socialize.showShareBarUI(shareBarParams);
+    }
+  }
+
+  function logout() {
+    log("logout() called...");
+    //set ui
+    showLoggedOut();
+
+    //clear cookies
+    $.cookie('gigyaLoggedIn', null, { path: '/', domain: '.'+domain });
+    $.cookie('gigyaCookieCntr', null, { path: '/', domain: '.'+domain });
+
+    var context = getContext();
+    context.event = "logout";
+    var d = {};
+    d.lastLogout = {
+      url: context.url
+      ,timestamp: context.timestamp
+    }
+    //store event
+    gigya.accounts.setAccountInfo({
+      data: d
+      ,cid: context.cid
+      ,context: context
+      ,callback:function(r) {
+        //log(r);
+//log("logout url stored");
+
+        //logout of gigya
+        gigya.accounts.logout({
+          context: context
+          ,cid: context.cid
+          ,forceProvidersLogout: false
+          ,callback:function(r) {
+log("...logged out");
+          }
+        });
+      }
+    });
+    return false;
+  }
+
+  //TODO: bind to a lower-level element for efficiency (events bubble up): will require identifying that element
+  function fireAggregoEvent(name, gigyaEvent) {
+    log("event fired: aggrego.gigya."+name);
+    //log(gigyaEvent);
+    var event = $.Event('aggrego.gigya.' + name);
+    event.gigya_event = gigyaEvent;
+    $('body').trigger(event);
+  }
+
+  function showScreenSet(screenSet, mobileScreenSet, startScreen, context, callbacks) {
+
+    function safeInvoke(method, param) {
+      if(method) {
+        method(param);
+      }
+    }
+
+    var options = {
+      screenSet: screenSet,
+      mobileScreenSet: mobileScreenSet,
+      startScreen: startScreen,
+      context: context,
+      cid: context.cid
+    };
+
+    var standardCallbacks = {
+      onError:function(e) {
+        //log(e);
+
+        fireAggregoEvent('showScreenSet.onError', e);
+      }
+      ,onBeforeScreenLoad:function(e) {
+
+        onBeforeScreenLoadHandler(e);
+        fireAggregoEvent('showScreenSet.onBeforeScreenLoad', e);
+      }
+      ,onAfterSubmit: function(e) {
+
+        onAfterSubmitHandler(e);
+        fireAggregoEvent('showScreenSet.onAfterSubmit', e);
+      }
+    }
+
+    var combinedCallbacks = {
+      onError: function(e) {
+        standardCallbacks.onError(e);
+        safeInvoke(callbacks.onError, e);
+      },
+      onBeforeScreenLoad: function(e) {
+        standardCallbacks.onBeforeScreenLoad(e);
+        safeInvoke(callbacks.onBeforeScreenLoad, e);
+      },
+      onAfterSubmit: function(e) {
+        standardCallbacks.onAfterSubmit(e);
+        safeInvoke(callbacks.onAfterSubmit, e);
+      }
+    };
+
+    var merged_options = $.extend(
+      {}, options, combinedCallbacks
+    );
+
+    gigya.accounts.showScreenSet(merged_options);
+  }
+
+  function setGigyaRedirectCookie() {
+//log("setGigyaRedirectCookie called...");
+    var now = new Date();
+    var expiresDate = new Date();
+    var cookieURL = window.location.protocol+'/'+'/'+window.location.host+window.location.pathname+"?restore=1";
+//log("cookieURL: "+cookieURL);
+    expiresDate.setDate(now.getDate() + 14);
+    $.cookie('gigyaRedirectURL', cookieURL,  { expires: expiresDate, path: '/', domain: '.'+domain });
+//log('You have set the cookie: '+ $.cookie('gigyaRedirectURL'));
+  }
+
+  function onAfterSubmitHandler(e) {
+   log(e);
+   var c = getContext();
+
+   if( undefined != e.screen ) {
+     switch( e.screen ) {
+       case 'newsletters-suntimes':
+       case 'newsletters-pioneer':
+       case 'newsletters-dailies':
+         var d = {
+           newsletters: newsletters.isNewsletterSubscriber(e.data)
+         };
+         gigya.accounts.setAccountInfo({
+           data: d
+           ,cid: c.cid
+           ,context: c
+           ,callback:function(r) {
+             log(r);
+           }
+         });
+         break;
+       }
+    }
+  }
+  
+  function onBeforeScreenLoadHandler(e) {
+    //log(e);
+    var context = getContext();
+
+    // This stuff polls for presence of elements in the screenset so that action can be taken after it's loaded.
+    if( undefined != e.nextScreen ) {
+      switch(e.nextScreen) {
+
+        case 'newsletters-inserts':
+        case 'newsletters-pioneer':
+        case 'newsletters-dailies':
+          var f = function() {
+            setTimeout(function() {
+              if( 0 != $(".pubFullName") ) {
+                $(".pubFullName").html(pubFullName);
+                $("."+pubName).show();
+              } else {
+                f();
+              }
+            },200);
+          }
+          f();
+          break;
+
+        case 'gigya-update-profile-screen':
+          var f = function() {
+            setTimeout(function() {
+              if( 0 != $(".pubFullName") ) {
+                $(".pubFullName").html(pubFullName);
+              } else {
+                f();
+              }
+            },200);
+          }
+          f();
+          break;
+
+        case 'gigya-complete-registration-screen':
+        case 'gigya-complete-registiration-screen':
+          if( undefined !== e.response && undefined !== e.response.profile.email ) {
+            var f = function() {
+              setTimeout(function() {
+                var email = $("#divEmail input[name=email]").val();
+                if( '' != email ) {
+                  //hide
+                  $("#divEmail").hide();
+                } else {
+                  //populate
+                  $("#divEmail input[name=email]").val(e.response.profile.email);
+                  f();
+                }
+              }, 200);
+            }
+            f();
+          } else {
+            $("#divEmail").show();
+          }
+
+        case 'gigya-register-screen':
+          var g = function() {
+            setTimeout(function() {
+              if( 0 != $("#newsletterOptions") ) {
+                $("#newsletterOptions").html(newsletters.getNewsletterOptionsHTML());
+              } else {
+                g();
+              }
+            },200);
+          }
+          g();
+          var h = function() {
+            setTimeout(function() {
+              if( 0 != $('.browser-agent') || 0 != $('.registration-url') ) {
+                $('.browser-agent').val(navigator.userAgent);
+                $('.registration-url').val(context.url);
+              } else {
+                h();
+              }
+            },200);
+          }
+          h();
+          break;
+
+        case 'gigya-login-screen':
+          var html = "Already a paid online subscriber to Sun-Times and related publications? <a href=\"#\" id=\"pressPlusLogin\" onClick=\"gigya.accounts.hideScreenSet({screenSet:'Login-web'});$.pressplus.f.pop('login');return false;\">Click Here</a> to login";
+          var f = function() {
+            setTimeout(function() {
+              if( 0 != $(options.pressPlusDivSelector) ) {
+                $(options.pressPlusDivSelector).html(html);
+              } else {
+                f();
+              }
+            },200);
+          }
+          //f();
+          break;
+
+      }
+    }
+  }
+
+  function showUser(user) {
+    log("showUser() called...");
+    $(".userFirstName").html(user.firstName);
+    $(".userLastName").html(user.lastName);
+    if( undefined != user.thumbnailURL && null != user.thumbnailURL ){
+      $(".userThumbnail").attr("src", user.thumbnailURL);
+      $(".userThumbnail").show();
+    }
+    if( undefined != user.photoURL && null != user.photoURL ){
+      $(".userPhoto").attr("src", user.photoURL);
+      $(".userPhoto").show();
+    }
+  }
+
+  function showLoginShortcut(){
+    gigya.socialize.showLoginUI({
+          containerID: 'gigyaLoginShortcuts'
+          ,width: 110
+          ,height: 25
+          ,showTermsLink: false
+          ,hideGigyaLink: true
+          ,UIConfig: '<config><body><controls><snbuttons buttonsize="25" /></controls></body></config>'
+          ,enabledProviders: options.enabledProviders
+          //,connectWithoutLoginBehavior: 'alwaysLogin' //set globally for desktop vs ipad config
+          ,onButtonClicked: function(e) {
+            fireAggregoEvent('showLoginUI.onButtonClicked', e);
+          }
+    });
+  }
+
+  function showLoggedIn() {
+    log("ShowLoggedIn called...");
+    $(".gigya-logged-out").hide();
+    $(".gigya-logged-in").show();
+  }
+  
+  function showLoggedOut() {
+    log("ShowLoggedOut called...");
+    $(".gigya-logged-in").hide();
+    $(".userThumbnail").hide();
+    $(".userPhoto").hide();
+    $(".gigya-logged-out").show();
+  }
+  
+  function showConnections() {
+    gigya.socialize.showAddConnectionsUI({
+      containerID: 'gigyaConnections'
+      ,width: 110
+      ,height: 25
+      ,showTermsLink: false
+      ,hideGigyaLink: true
+      ,showEditLink: false
+      ,UIConfig: '<config><body><controls><snbuttons buttonsize="25" /></controls></body></config>'
+      ,enabledProviders: options.enabledProviders
+      ,onButtonClicked: function(e) {
+        fireAggregoEvent('showAddConnectionsUI.onButtonClicked', e);
+      }
+      ,onConnectionAdded: function(e) {
+        fireAggregoEvent('showAddConnectionsUI.onConnectionAdded', e);
+      }
+    });
+  }
+
+  function showGigyaLoginBox() {
+    log('showGigyaLoginBox() called...');
+    $('.gigyaLoginBox').removeClass('hidden');
+		$('.gigyaLoginBox').show();
+  }
+
+  function showLogin() {
+    log("showLogin() called...");
+    var context = getContext();
+    context.event = "login";
+    
+    showScreenSet('Login-web', 'Login-mobile', 'gigya-login-screen', context, {});
+    
+    return false;
+  }
+  
+  function showEmailLogin() {
+    log("showEmailLogin() called...");
+    
+    fireAggregoEvent('showEmailLogin', { eventName: "email-activation" });
+    
+    var context = getContext();
+    context.event = "login-email";
+    
+    showScreenSet('Login-web', 'Login-mobile', 'gigya-email-login-screen', context, {});
+
+    return false;
+  }
+  
+  function showRegistration() {
+    log("showRegistration() called...");
+    
+    var context = getContext();
+    context.event = "registration";
+    
+    showScreenSet('Login-web', 'Login-mobile', 'gigya-register-screen', context, {
+     onAfterSubmit: function(e) {
+       //TODO: check to make sure this is only being called for the registration screen
+       // (if user opens register screen but then clicks login, this callback shouldn't still be active)
+       //SET COOKIE HERE FOR POST EMAIL ACTIVATION
+       setGigyaRedirectCookie();
+     }
+    });
+  
+    return false;
+  }
+  
+  function showProfile() {
+    log("showProfile() called...");
+    
+    var context = getContext();
+    context.event = "profile";
+    
+    showScreenSet('Profile-web', 'Profile-mobile', 'gigya-update-profile-screen', context, {});
+    return false;
+  }
+
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if(results == null) {
+      return "";
+    } else {
+      return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+  }
+
+  var newsletters = (function() {
+    var newsletterNames = {
+      //////////////
+      // suntimes //
+      //////////////
+       'newsletter-special-offers'    : '<strong>New!</strong> Membership Insider'
+      ,'newsletter-marin-report'      : '<strong>New!</strong> Midday Report'
+      ,'newsletter-morning-tip-sheet' : 'Morning Tip Sheet'
+      ,'newsletter-pm-edition'        : 'Evening Rush'
+      ,'newsletter-sports-headlines'  : 'Sports Headlines'
+      ,'newsletter-morning-update'    : 'Breaking News Alerts'
+
+      ,'newsletter-bears-insider' : 'Bears Insider'
+      ,'newsletter-bulls-insider' : 'Bulls Insider'
+      ,'newsletter-cubs-insider'  : 'Cubs Insider'
+      ,'newsletter-hawks-insider' : 'Hawks Insider'
+      ,'newsletter-olympics'      : 'Olympics'
+      ,'newsletter-sox-insider'   : 'Sox Insider'
+
+      ,'newsletter-lynn-sweet'             : 'Lynn Sweet'
+      ,'newsletter-msebert'                : 'MsEbert'
+      ,'newsletter-roger-ebert-newsletter' : 'Roger Ebert Newsletter'
+      ,'newsletter-search-chicago-autos'   : 'Search Chicago Autos'
+
+      ,'newsletter-splash-newsletter' : 'Splash News'
+      ,'newsletter-splash-events'     : 'Splash Events'
+
+      ,'newsletter-cstbiz'            : 'Grid News'
+
+
+      ///////////////////
+      // pioneer local //
+      ///////////////////
+      ,'newsletter-pioneer-press' : 'Pioneer Local'
+      ,'newsletter-alert-pioneer' : 'Pioneer Local Alerts'
+
+      ,'newsletter-barrington'               : 'Barrington'
+      ,'newsletter-alert-pioneer-barrington' : 'Barrington Alerts'
+
+      ,'newsletter-buffalo-grove'               : 'Buffalo Grove'
+      ,'newsletter-alert-pioneer-buffalo-grove' : 'Buffalo Grove Alerts'
+
+      ,'newsletter-burr-ridge'               : 'Burr Ridge'
+      ,'newsletter-alert-pioneer-burr-ridge' : 'Burr Ridge Alerts'
+
+      ,'newsletter-clarendon-hills'               : 'Clarendon Hills'
+      ,'newsletter-alert-pioneer-clarendon-hills' : 'Clarendon Hills Alerts'
+
+      ,'newsletter-deerfield'               : 'Deerfield'
+      ,'newsletter-alert-pioneer-deerfield' : 'Deerfield Alerts'
+
+      ,'newsletter-elmwood-park'               : 'Elmwood Park'
+      ,'newsletter-alert-pioneer-elmwood-park' : 'Elmwood Park Alerts'
+
+      ,'newsletter-evanston'               : 'Evanston'
+      ,'newsletter-alert-pioneer-evanston' : 'Evanston Alerts'
+
+      ,'newsletter-franklin-park'               : 'Franklin Park'
+      ,'newsletter-alert-pioneer-franklin-park' : 'Franklin Park Alerts'
+
+      ,'newsletter-glencoe'               : 'Glencoe'
+      ,'newsletter-alert-pioneer-glencoe' : 'Glencoe Alerts'
+
+      ,'newsletter-glenview'               : 'Glenview'
+      ,'newsletter-alert-pioneer-glenview' : 'Glenview Alerts'
+
+      ,'newsletter-highland-park'               : 'Highland Park'
+      ,'newsletter-alert-pioneer-highland-park' : 'Highland Park Alerts'
+
+      ,'newsletter-hinsdale'               : 'Hinsdale'
+      ,'newsletter-alert-pioneer-hinsdale' : 'Hinsdale Alerts'
+
+      ,'newsletter-la-grange'               : 'La Grange'
+      ,'newsletter-alert-pioneer-la-grange' : 'La Grange Alerts'
+
+      ,'newsletter-lake-forest'               : 'Lake Forest'
+      ,'newsletter-alert-pioneer-lake-forest' : 'Lake Forest Alerts'
+
+      ,'newsletter-lake-zurich'               : 'Lake Zurich'
+      ,'newsletter-alert-pioneer-lake-zurich' : 'Lake Zurich Alerts'
+
+      ,'newsletter-libertyville'               : 'Libertyville'
+      ,'newsletter-alert-pioneer-libertyville' : 'Libertyville Alerts'
+
+      ,'newsletter-lincolnshire'               : 'Lincolnshire'
+      ,'newsletter-alert-pioneer-lincolnshire' : 'Lincolnshire Alerts'
+
+      ,'newsletter-lincolnwood'               : 'Lincolnwood'
+      ,'newsletter-alert-pioneer-lincolnwood' : 'Lincolnwood Alerts'
+
+      ,'newsletter-morton-grove'               : 'Morton Grove'
+      ,'newsletter-alert-pioneer-morton-grove' : 'Morton Grove Alerts'
+
+      ,'newsletter-mundelein'               : 'Mundelein'
+      ,'newsletter-alert-pioneer-mundelein' : 'Mundelein Alerts'
+
+      ,'newsletter-niles'               : 'Niles'
+      ,'newsletter-alert-pioneer-niles' : 'Niles Alerts'
+
+      ,'newsletter-norridge'               : 'Norridge'
+      ,'newsletter-alert-pioneer-norridge' : 'Norridge Alerts'
+
+      ,'newsletter-northbrook'               : 'Northbrook'
+      ,'newsletter-alert-pioneer-northbrook' : 'Northbrook Alerts'
+
+      ,'newsletter-oak-brook'               : 'Oak Brook'
+      ,'newsletter-alert-pioneer-oak-brook' : 'Oak Brook Alerts'
+
+      ,'newsletter-oak-park'               : 'Oak Park'
+      ,'newsletter-alert-pioneer-oak-park' : 'Oak Park Alerts'
+
+      ,'newsletter-park-ridge'               : 'Park Ridge'
+      ,'newsletter-alert-pioneer-park-ridge' : 'Park Ridge Alerts'
+
+      ,'newsletter-river-forest'               : 'River Forest'
+      ,'newsletter-alert-pioneer-river-forest' : 'River Forest Alerts'
+
+      ,'newsletter-skokie'               : 'Skokie'
+      ,'newsletter-alert-pioneer-skokie' : 'Skokie Alerts'
+
+      ,'newsletter-vernon-hills'               : 'Vernon Hills'
+      ,'newsletter-alert-pioneer-vernon-hills' : 'Vernon Hills Alerts'
+
+      ,'newsletter-western-springs'               : 'Western Springs'
+      ,'newsletter-alert-pioneer-western-springs' : 'Western Springs Alerts'
+
+      ,'newsletter-wilmette'               : 'Wilmette'
+      ,'newsletter-alert-pioneer-wilmette' : 'Wilmette Alerts'
+
+      ,'newsletter-winnetka'               : 'Winnetka'
+      ,'newsletter-alert-pioneer-winnetka' : 'Winnetka Alerts'
+
+
+      /////////////
+      // dailies //
+      /////////////
+      ,'newsletter-beacon-news'  : 'Beacon News' // beaconnews (aurora)
+      ,'newsletter-alert-beacon' : 'Beacon News Alerts'
+
+
+      ,'newsletter-courier-news'  : 'Courier News' // couriernews (elgin)
+      ,'newsletter-alert-courier' : 'Courier News Alerts'
+
+      ,'newsletter-herald-news'  : 'Herald News' // heraldnews (joliet)
+      ,'newsletter-alert-herald' : 'Herald News Alerts'
+
+      ,'newsletter-naperville-sun'       : 'Naperville Sun' // napervillesun (naperville)
+      ,'newsletter-alert-naperville-sun' : 'Naperville Sun Alerts'
+
+      ,'newsletter-news-sun'       : 'Lake County News Sun' // newssun (lake county)
+      ,'newsletter-alert-news-sun' : 'Lake County News Sun Alerts'
+
+      ,'newsletter-southtown-newsletter' : 'Southtown' // southtownstar
+      ,'newsletter-alert-southtown'      : 'Southtown Alerts'
+
+      ,'newsletter-post-tribune'   : 'Post Tribune' // posttrib (post tribune)
+      ,'newsletter-alert-posttrib' : 'Post Tribune Alerts'
+
+
+      //////////
+      // misc //
+      //////////
+      ,'newsletter-alert-yourseason' : 'Yourseason Alerts'
+
+      ,'newsletter-centerstage-crumb'                 : 'Centerstage CRUMB'
+      ,'newsletter-centerstage-festivals'             : 'Centerstage Festivals'
+      ,'newsletter-centerstage-marketing-ad-specials' : 'Centerstage Marketing Ad Specials'
+      ,'newsletter-centerstage-writers-giglist'       : 'Centerstage Writers GigList'
+
+      ,'newsletter-reader-classifieds-newsletter'     : 'Reader Classifieds Newsletter'
+      ,'newsletter-reader-early-warnings'             : 'Reader Early Warnings'
+      ,'newsletter-reader-food-and-drink'             : 'Reader Food and Drink'
+      ,'newsletter-reader-real-deal'                  : 'Reader Real Deal'
+      ,'newsletter-reader-recommends'                 : 'Reader Recommends'
+
+      ,'newsletter-the-straight-dope-mailing-list'    : 'The Straight Dope mailing list'
+
+      ,'newsletter-yourseason-newsletters-fb'         : 'Yourseason Newsletters FB'
+    };
+
+    function getDefaultNewsletters(pub) {
+      switch(pub) {
+        //
+        // Pioneer Local
+        //
+        case 'pioneerlocal':
+          return {
+            'newsletter-pioneer-press'  : true
+            ,'newsletter-alert-pioneer' : false
+          };
+        case 'barrington':
+          return {
+            'newsletter-barrington'                : true
+            ,'newsletter-alert-pioneer-barrington' : false
+          };
+        case 'buffalogrove':
+          return {
+            'newsletter-buffalo-grove'                : true
+            ,'newsletter-alert-pioneer-buffalo-grove' : false
+          };
+        case 'burrridge':
+          return {
+            'newsletter-burr-ridge'                : true
+            ,'newsletter-alert-pioneer-burr-ridge' : false
+          };
+        case 'clarendonhills':
+          return {
+            'newsletter-clarendon-hills'                : true
+            ,'newsletter-alert-pioneer-clarendon-hills' : false
+          };
+        case 'deerfield':
+          return {
+            'newsletter-deerfield'                : true
+            ,'newsletter-alert-pioneer-deerfield' : false
+          };
+        case 'elmwoodpark':
+          return {
+            'newsletter-elmwood-park'                : true
+            ,'newsletter-alert-pioneer-elmwood-park' : false
+          };
+        case 'evanston':
+          return {
+            'newsletter-evanston'                : true
+            ,'newsletter-alert-pioneer-evanston' : false
+          };
+        case 'franklinpark':
+          return {
+            'newsletter-franklin-park'                : true
+            ,'newsletter-alert-pioneer-franklin-park' :   false
+          };
+        case 'glencoe':
+          return {
+            'newsletter-glencoe'                : true
+            ,'newsletter-alert-pioneer-glencoe' : false
+          };
+        case 'glenview':
+          return {
+            'newsletter-glenview'               : true
+            ,'newsletter-alert-pioneer-glenview': false
+          };
+        case 'highlandpark':
+          return {
+            'newsletter-highland-park'                : true
+            ,'newsletter-alert-pioneer-highland-park' : false
+          };
+        case 'hinsdale':
+          return {
+            'newsletter-hinsdale'                : true
+            ,'newsletter-alert-pioneer-hinsdale' : false
+          };
+          break;
+
+        case 'lagrange':
+          return {
+            'newsletter-la-grange'                : true
+            ,'newsletter-alert-pioneer-la-grange' : false
+          };
+          break;
+
+        case 'lakeforest':
+          return {
+            'newsletter-lake-forest'                : true
+            ,'newsletter-alert-pioneer-lake-forest' : false
+          };
+          break;
+
+        case 'lakezurich':
+          return {
+            'newsletter-lake-zurich'                : true
+            ,'newsletter-alert-pioneer-lake-zurich' : false
+          };
+          break;
+
+        case 'libertyville':
+          return {
+            'newsletter-libertyville'                : true
+            ,'newsletter-alert-pioneer-libertyville' : false
+          };
+          break;
+
+        case 'lincolnshire':
+          return {
+            'newsletter-lincolnshire'                : true
+            ,'newsletter-alert-pioneer-lincolnshire' : false
+          };
+          break;
+
+        case 'lincolnwood':
+          return {
+            'newsletter-lincolnwood'                : true
+            ,'newsletter-alert-pioneer-lincolnwood' : false
+          };
+          break;
+
+        case 'mortongrove':
+          return {
+            'newsletter-morton-grove'                : true
+            ,'newsletter-alert-pioneer-morton-grove' : false
+          };
+          break;
+
+        case 'mundelein':
+          return {
+            'newsletter-mundelein'                : true
+            ,'newsletter-alert-pioneer-mundelein' : false
+          };
+          break;
+
+        case 'niles':
+          return {
+            'newsletter-niles'                : true
+            ,'newsletter-alert-pioneer-niles' : false
+          };
+          break;
+
+        case 'norridge':
+          return {
+            'newsletter-norridge'                : true
+            ,'newsletter-alert-pioneer-norridge' : false
+          };
+          break;
+
+        case 'northbrook':
+          return {
+            'newsletter-northbrook'                : true
+            ,'newsletter-alert-pioneer-northbrook' : false
+          };
+          break;
+
+        case 'oakbrook':
+          return {
+            'newsletter-oak-brook'                : true
+            ,'newsletter-alert-pioneer-oak-brook' : false
+          };
+          break;
+
+        case 'oakpark':
+          return {
+            'newsletter-oak-park'                : true
+            ,'newsletter-alert-pioneer-oak-park' : false
+          };
+          break;
+
+        case 'parkridge':
+          return {
+            'newsletter-park-ridge'                : true
+            ,'newsletter-alert-pioneer-park-ridge' : false
+          };
+          break;
+
+        case 'riverforest':
+          return {
+            'newsletter-river-forest'                : true
+            ,'newsletter-alert-pioneer-river-forest' : false
+          };
+          break;
+
+        case 'skokie':
+          return {
+            'newsletter-skokie'                : true
+            ,'newsletter-alert-pioneer-skokie' : false
+          };
+          break;
+
+        case 'vernonhills':
+          return {
+            'newsletter-vernon-hills'                : true
+            ,'newsletter-alert-pioneer-vernon-hills' : false
+          };
+          break;
+
+        case 'westernsprings':
+          return {
+            'newsletter-western-springs'                : true
+            ,'newsletter-alert-pioneer-western-springs' : false
+          };
+          break;
+
+        case 'wilmette':
+          return {
+            'newsletter-wilmette'                : true
+            ,'newsletter-alert-pioneer-wilmette' : false
+          };
+          break;
+
+        case 'winnetka':
+          return {
+            'newsletter-winnetka'                : true
+            ,'newsletter-alert-pioneer-winnetka' : false
+          };
+          break;
+
+        //
+        // Dailies
+        //
+        // heraldnews    //joliet
+        case 'heraldnews':
+          return {
+            'newsletter-herald-news'   : true
+            ,'newsletter-alert-herald' : false
+          };
+          break;
+
+        // beaconnews    //aurora
+        case 'beaconnews':
+          return {
+            'newsletter-beacon-news'   : true
+            ,'newsletter-alert-beacon' : false
+          };
+          break;
+
+        // couriernews   //elgin
+        case 'couriernews':
+          return {
+            'newsletter-courier-news'   : true
+            ,'newsletter-alert-courier' : false
+          };
+          break;
+
+        // napervillesun //naperville
+        case 'napervillesun':
+          return {
+            'newsletter-naperville-sun'        : true
+            ,'newsletter-alert-naperville-sun' : false
+          };
+          break;
+
+        // newssun       //lake county
+        case 'newssun':
+          return {
+            'newsletter-news-sun'        : true
+            ,'newsletter-alert-news-sun' : false
+          };
+          break;
+
+        // southtownstar
+        case 'southtownstar':
+          return {
+            'newsletter-southtown-newsletter' : true
+            ,'newsletter-alert-southtown'     : false
+          };
+          break;
+
+        // posttrib      //post tribune
+        case 'posttrib':
+          return {
+            'newsletter-post-tribune'    : true
+            ,'newsletter-alert-posttrib' : false
+          };
+          break;
+
+        //
+        // Sun-Times
+        //
+        /*
+        New! Membership Insider - Special Offers
+        New! Marin Report - Marin Report
+        Morning Tip Sheet - Morning Tip Sheet
+        Evening Rush - PM Edition
+        Business News - CSTBiz
+        Sports Headlines - Sports Headlines
+        Breaking News Alerts - Morning Updates
+        */
+        case 'dev':
+        case 'www':
+        default:
+          return {
+             'newsletter-special-offers'    : true
+            ,'newsletter-marin-report'      : true
+            ,'newsletter-morning-tip-sheet' : false
+            ,'newsletter-pm-edition'        : false
+            ,'newsletter-cstbiz'            : false
+            ,'newsletter-sports-headlines'  : false
+            ,'newsletter-morning-update'    : false
+          };
+          break;
+
+        case 'splash':
+          return {
+            'newsletter-splash-newsletter' : true
+            ,'newsletter-splash-events'    : true
+          };
+          break;
+
+        case 'grid':
+          return {
+            'newsletter-cstbiz' :true
+          };
+          break;
+      }
+    }
+
+
+    return {
+      getGroup: function(pub) {
+        switch(pub) {
+          //pioneer press (local)
+          case 'pioneerlocal':
+          case 'barrington':
+          case 'buffalogrove':
+          case 'burrridge':
+          case 'clarendonhills':
+          case 'deerfield':
+          case 'elmwoodpark':
+          case 'evanston':
+          case 'franklinpark':
+          case 'glencoe':
+          case 'glenview':
+          case 'highlandpark':
+          case 'hinsdale':
+          case 'lagrange':
+          case 'lakeforest':
+          case 'lakezurich':
+          case 'libertyville':
+          case 'lincolnshire':
+          case 'lincolnwood':
+          case 'mortongrove':
+          case 'mundelein':
+          case 'niles':
+          case 'norridge':
+          case 'northbrook':
+          case 'oakbrook':
+          case 'oakpark':
+          case 'parkridge':
+          case 'riverforest':
+          case 'skokie':
+          case 'vernonhills':
+          case 'westernsprings':
+          case 'wilmette':
+          case 'winnetka':
+            return "pioneer";
+
+          //dailies
+          case 'scn':
+          case 'beaconnews':    //aurora
+          case 'couriernews':   //elgin
+          case 'heraldnews':    //joliet
+          case 'newssun':       //lake county
+          case 'napervillesun': //naperville
+          case 'posttrib':      //post tribune
+          case 'southtownstar':
+            return "dailies";
+
+          //misc
+          case 'splash':
+          case 'grid':
+            return 'inserts';
+
+          //suntimes
+          case 'suntimes':
+          default:
+            return pub;
+        }
+      }
+      ,isNewsletterSubscriber: function(data) {
+        var isSubscriber = false;
+
+        //TODO: no need for looping?
+        $.each(newsletterNames,function(index,value) {
+          if( index in data && null != data[index] ) {
+            isSubscriber = isSubscriber || data[index];
+          }
+
+          return !isSubscriber; //break if subscription found
+        });
+
+        return isSubscriber;
+      }
+      ,getNewsletterOptionsHTML: function() {
+        var html = '<p style="margin-bottom:0">Newsletter settings - send the following updates:</p>';
+
+        var newsletters = getDefaultNewsletters(pubName);
+        $.each(newsletters,function(index,value) {
+          var checked = (true == value) ? 'checked="checked"' : '';
+          var name = '';
+          if( undefined != newsletterNames[index] && null != newsletterNames[index] ) {
+            name = newsletterNames[index];
+          } else {
+            name = pubFullName+'&nbsp;Newsletter';
+          }
+
+          html += ''
+          +'<div class="gigya-composite-control gigya-composite-control-checkbox" style="display: block;">'
+          +'<input name="data.'+index+'" class="gigya-input-checkbox" data-display-name="" data-gigya-name="data.'+index+'" type="checkbox" '+checked+' />'
+          +'<label class="gigya-label"><span class="gigya-label-text">'
+          +name
+          +'</span></label></div>';
+
+        });
+
+        return html;
+      }
+    }
+  })();
+
+  return {
+    defaultOptions: defaultOptions
+    // PUBLIC:
+    ,showRegistrationWall: function(screenSet, startScreen, containerId) {
+      options.onLoginRefresh = true;
+      var context = getContext();
+          context.event = "registration";
+
+      //TODO: refactor duplicate code
+      gigya.accounts.showScreenSet({
+        screenSet:screenSet
+        ,startScreen:startScreen
+        ,containerID:containerId
+        ,onError:function(e) {
+
+          jQuery(function($) {
+            fireAggregoEvent('showScreenSet.onError', e);
+          });
+        }
+        ,onBeforeScreenLoad:function(e) {
+
+          jQuery(function($) {
+            onBeforeScreenLoadHandler(e);
+            fireAggregoEvent('showScreenSet.onBeforeScreenLoad', e);
+          });
+        }
+        ,onAfterSubmit:function(e) {
+          //debug.log(e);
+          jQuery(function($) {
+            onAfterSubmitHandler(e);
+            fireAggregoEvent('showScreenSet.onAfterSubmit', e);
+            //SET COOKIE HERE FOR POST EMAIL ACTIVATION
+            setGigyaRedirectCookie();
+          });
+        }
+      });
+    }
+    // PUBLIC (link in screenset is currently calling this method directly)
+    ,showNewsletters: function() {
+      log("showNewsletters("+pubName+") called...");
+      var group = newsletters.getGroup(pubName);
+      var startScreen = 'newsletters-' + group;
+
+      var context = getContext();
+      context.event = "newsletters";
+
+      showScreenSet('Profile-web', 'Profile-web', startScreen, context, {});
+    }
+    //PUBLIC
+    ,logout: function() {
+      logout();
+    },
+    showShareBarUI: function(containerId, params) {
+      showShareBarUI(containerId, params);
+    }
+    ,getShareBarUIParams: function(streamId,customParams) {
+      var shareButtons = [
+        { provider: 'Facebook-Like' },
+        { provider: 'Twitter-Tweet' },
+        { provider: 'Pinterest' },
+        { provider: 'LinkedIn' },
+        { provider: 'google-plusone' },
+        {
+          provider: 'Share',
+          iconOnly: 'false'
+        },
+        {
+          provider: 'comments',
+          categoryID: pubName,
+          streamID: streamId
+        },
+        { provider: 'Print' }
+      ];
+      var context = getContext();
+      var defaultParams = {
+        containerID: 'sharebarDiv'
+        ,shareButtons: shareButtons
+        ,iconsOnly: 'true'
+        ,userAction: options.shareBar.userAction
+        ,enabledProviders: options.enabledProviders
+        ,cid: context.cid
+        ,scope: 'both'
+        ,privacy: 'public'
+        ,feedID: context.cid
+        ,showEmailButton: true
+        ,emailProviders: options.emailProviders
+        ,operationMode: 'autoDetect'
+        ,showMoreButton: false
+        ,onShareButtonClicked: function(e) {
+          switch(e.shareItem.provider) {
+            case 'comments':
+              $('#commentsWrapper').show();
+               document.getElementById('commentsWrapper').scrollIntoView();
+              break;
+
+            case 'print':
+              window.location = "?print=true";
+              break;
+          }
+        }
+        ,onSendDone: function(e) {
+          fireAggregoEvent('showShareBarUI.onSendDone', e);
+        }
+        ,onLoad: function(e) {
+          $(".gigya-sharebar").show();
+        }
+      };
+
+      return $.extend({}, defaultParams, customParams);
+    }
+    ,getFeedParams: function() {
+      var context = getContext();
+      var params = {
+        containerID: 'gigyaFeed'
+        ,width:300
+        ,height:300
+        ,siteName: pubFullName
+        ,tabOrder: 'everyone,friends,me'
+        ,initialTab: 'everyone'
+        ,feedID: context.cid
+        ,enabledProviders: options.enabledProviders //'facebook,twitter,linkedin,google,yahoo,messenger'
+        ,loginUI: 'default' //'custom'
+        ,context: context
+        ,cid: context.cid
+      };
+ 
+      return params;
+    }
+    ,showFeedUI: function(newparams) {
+      var params = this.getFeedParams();
+      if( undefined != newparams && null != newparams ) {
+        params = newparams;
+      }
+      gigya.socialize.showFeedUI(params);
+    }
+    ,getCommentsParams: function(csspath) {
+      var href = (csspath && '' != csspath) ? csspath : '/csp/cms/sites/STM/assets/css/gigya.css';
+      var context = getContext();
+      var params = {
+        categoryID: pubName
+        ,streamID: ''
+        ,containerID: 'commentsDiv'
+        ,enabledShareProviders: options.enabledProviders
+        ,enabledProviders: options.enabledProviders
+        ,cid:context.cid
+        ,scope: 'both'
+        ,privacy: 'public'
+        ,feedID: context.cid
+        ,width: 572
+        ,useSiteLogin: true
+        ,onSiteLoginClicked: function(r) {
+          showLogin();
+        }
+        ,onLoad: function(e) {
+          if( document.createStyleSheet ) { //for IE
+            document.createStyleSheet(href);
+          } else {
+            $('head').append( $('<link href="'+href+'" media="screen" rel="stylesheet" type="text/css" />') );
+          }
+        }
+        ,onCommentSubmitted: function(e) {
+          fireAggregoEvent('showCommentsUI.onCommentSubmitted', e);
+        }
+      }
+ 
+      return params;
+    }
+    //PUBLIC (for now)
+    ,showCommentsUI: function(newparams) {
+      var params = this.getCommentsParams();
+      if( undefined != newparams && null != newparams ) {
+        params = newparams;
+      }
+      gigya.socialize.showCommentsUI(params);
+    }
+  };
+};
+
+
+// Client-side
+//g = Aggrego.Gigya.defaultOptions();
+
+//ua = new gigya.socialize.UserAction();
+
+//gigyaUI = new Aggrego.Gigya(jQuery, pubName, pubFullName, { shareBar: { userAction: ua } });
+
+//gigyaUI.showRegistrationWall(screenSet, startScreen, containerId);
+
+// shareBarParams = {};
+//gigyaUI.showShareBarUI(containerId, shareBarParams);
+
+//Need to adjust to work this way:
+// Get comment settings from HTML element attributes
+// <div id="gigyaComments" data-gigya-category-id="lagrange" data-gigya-stream-id="dsaflsdjk">
+// <div id="gigyaShareBar" data-gigya-stream-id="saldfkjlke">
+// <div id="gigyaActivityWidget" data-gigya-width="%">

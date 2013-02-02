@@ -751,7 +751,52 @@ We thank you for your business.</div>
 
             </script>
             <!-- END GOOGLE ANALYTICS CODE -->
-        <script type="text/javascript">eaTagging.eventPatterns = {"NoResultsPageFollowOnClick":{"RequestAction":"logsurvey","sessionid":"","customer":{"customer_action":"NORESULTSEARCH","dxp":"DXPEcomm","ip":"","customer_id":"","first_search":"","next_click":"NEXTCLICK\/security-and-privacy-policy"}}};</script><script type="text/javascript">eaTagging.initUrl = "http:\/\/ea.harborfreight.com:9100\/EasyAsk\/apps\/Log.jsp?disp=XML&engine=c";</script><script type="text/javascript">
+        <script type="text/javascript">eaTagging.eventPatterns = {"NoResultsPageFollowOnClick":{"RequestAction":"logsurvey","sessionid":"","customer":{"customer_action":"NORESULTSEARCH","dxp":"DXPEcomm","ip":"","customer_id":"","first_search":"","next_click":"NEXTCLICK\/security-and-privacy-policy"}}};</script><script type="text/javascript">eaTagging.initUrl = "http:\/\/ea.harborfreight.com:9100\/EasyAsk\/apps\/Log.jsp?disp=XML&engine=c";</script><style> 
+    #search{ font-family: arial,helvetica,sans-serif; color: dark-gray;}
+    #search-suggest{ border: 1px solid #CCC !important;border-top-color: #D9D9D9 !important;box-shadow: 0 2px 4px rgba(0,0,0,0.2)!important;-webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.2)!important;cursor: default;width: 375px!important;margin-top:5px!important;font-family: "HelveticaNeueW01-57Cn"!important; line-height: 1.5em!important;color: dark-gray;}
+    .ea-sug-normal { background-color: white; padding: 0px 3px;} 
+    .ea-sug-select { background-color: #d5e2ff; padding: 0px 3px;} .ea-sug-text {} .ea-sug-match { font-style: italic; }
+</style>
+<script type="text/javascript" src=" https://ea.harborfreight.com:9143/EasyAsk/js/eascriptcomplete.js"> </script>
+<script type="text/javascript"> 
+    function initAutoComplete(){
+        document.getElementById('search_mini_form').onsubmit = trimResultCount;
+        EAComplete.init({
+            url : 'https://ea.harborfreight.com:9143/EasyAsk/AutoComplete.jsp',
+            id: 'searchInputField',
+            dict: 'Ecomm',            
+            num: 10,
+            submitFctn: function() { submitSearchForm(); } });
+        }
+        
+        if(document.getElementById('search_mini_form') != null){
+            if (window.attachEvent) window.attachEvent('onload',initAutoComplete); else window.addEventListener("load",initAutoComplete,false);
+        }
+        function submitSearchForm(){
+            trimResultCount();
+            document.getElementById('search_mini_form').submit();
+        }
+        
+        function trimResultCount(){
+            var searchText = document.getElementById('searchInputField').value;
+            var searchTextArray = searchText.split(" ");
+            if(searchTextArray.length > 1 || searchText.indexOf('\t') != -1){
+
+                searchText = searchText.replace('\t','');
+                searchText = searchText.replace('\t',' ');
+                searchArray = searchText.split(" ");
+                if(isNumeric(searchArray[searchArray.length-1])){
+                    searchArray.pop();
+                    var newSearchText = searchArray.join(" ");
+                    document.getElementById('search').value = newSearchText;
+                }
+            }
+        }
+    
+    function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+</script><script type="text/javascript">
     var $j = jQuery.noConflict();
     jQuery(function($j) {
         if (!$j.cookie('hftref') && findcjparam(document.URL)) {

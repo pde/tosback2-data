@@ -46,12 +46,20 @@
 					if(k == 'prnpage' && v == '' ){ v='home';}
 					if(k.indexOf('misc') > 0  && v != '' ){
 						if(v.indexOf('=') >= 0 ){
-							 var elms = v.split("=");
-							 k = elms[0];
-							 v = elms[1];
+							 var keypairs = v.split(";");
+							 $.each(keypairs, function(l,p){
+								 if(p != ''){
+									 var elms = p.split("=");
+									 if(elms.length ){
+										 rt += elms[0]+'='+elms[1]+';';
+										 rta += elms[0]+'*'+elms[1]+'!';
+									 }
+								 }
+							 });
+							 v = '';
 						}
 					}
-					if(v != ''){						
+					if(v != '' ){
 						rt += k+'='+v+';';
 						rta += k+'*'+v+'!';
 					}

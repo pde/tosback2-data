@@ -538,11 +538,11 @@ jQuery(window).bind('resizeShim', function() {
 								+	'<div class="_sb_badgeEarnTitle">New High Score</div>'
 								+	'<div class="_sb_badgeEarnText">';
 								
-							if(p_data.rankings[x].type_id == 'weeklyType1'){
+							if(p_data.rankings[x].type_id == 'weeklyType1' || p_data.rankings[x].type_id == '9e08d676-25f8-4022-9957-b41d53a9412f'){
 								leaderboardHtml[x] += leaderboardText.weekly;
-							} else if (p_data.rankings[x].type_id == 'allTimeType1' && p_data.rankings[x].personal == true){
+							} else if (p_data.rankings[x].type_id == 'allTimeType1' || p_data.rankings[x].type_id == '3979c350-307d-49e4-be77-5d0c6be14bfe' && p_data.rankings[x].personal == true){
 								leaderboardHtml[x] += leaderboardText.personal;
-							} else if (p_data.rankings[x].type_id == 'allTimeType1' && p_data.rankings[x].personal == false){
+							} else if (p_data.rankings[x].type_id == 'allTimeType1' || p_data.rankings[x].type_id == '3979c350-307d-49e4-be77-5d0c6be14bfe' && p_data.rankings[x].personal == false){
 								leaderboardHtml[x] += leaderboardText.allTime;
 							}	 	
 							

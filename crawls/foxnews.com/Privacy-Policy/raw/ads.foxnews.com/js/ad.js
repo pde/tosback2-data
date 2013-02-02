@@ -495,19 +495,27 @@
 	    },
 		adBlade: {
 			isAdBlade : function(qu_id) {
-				return (qu_id == "qu_story_1" && (	$('meta[name="prism.section"]').attr("content") == "world" || $('meta[name="prism.section"]').attr("content") == "us")	) ? true : false;
+				var section = $('meta[name="prism.section"]').attr("content");
+				return (qu_id == "qu_story_1" && (	section === "world" || section === "us" || section === "politics" )	) ? true : false;
 			},
 			init : function() {
-				if( $('#qu_story_1').size() > 0 && $('meta[name="prism.section"]').attr("content") == "world" ){
+				var section = $('meta[name="prism.section"]').attr("content");
+				
+				if( $('#qu_story_1').size() > 0 && section === "world" ){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=1291-1494141695&output=html";
 					$('#qu_story_1').append(ifr);
 				}
-				if( $('#qu_story_1').size() > 0 && $('meta[name="prism.section"]').attr("content") == "us" ){
+				if( $('#qu_story_1').size() > 0 && section === "us" ){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=1978-2998053441&output=html";
 					$('#qu_story_1').append(ifr);
-				}				
+				}	
+				if( $('#qu_story_1').size() > 0 && section === "politics" ){
+					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
+					ifr.src = "http://web.adblade.com/impsc.php?cid=2082-3105684236&output=html";
+					$('#qu_story_1').append(ifr);
+				}					
 			}
 		},
 		optimizely: {
@@ -1033,7 +1041,9 @@
 				"registration-start": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event7";window.omtr.events="event7";window.omtr.tl('','o', "registration start");},
 				"logins": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event8";window.omtr.events="event8";window.omtr.tl('','o', "login");},
 				"profile-updates": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event48";window.omtr.events="event48";window.omtr.tl('','o','profile update');},
-				"comment-post": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event21";},
+				"comment-post": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event21";window.omtr.events="event21";omtr.tl();},
+				"comment-load": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event39";window.omtr.events="event39";omtr.tl();},
+				"comment-read": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event25";window.omtr.events="event25";omtr.tl();},	
 				"fb-share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.tl();},
 				"twttr-follow": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";window.omtr.tl('','o','follow');},
 				"email-sign-up-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event52";window.omtr.events="event52";window.omtr.tl('','o','email-sign-up-success');},	
@@ -1208,6 +1218,8 @@
 				"logins": function(obj){$.ad.omni.load({"logins": obj});},
 				"profile-updates": function(obj){$.ad.omni.load({"profile-updates": obj});},
 				"comment-post": function(obj){$.ad.omni.load({"comment-post": obj});},
+				"comment-load": function(obj){$.ad.omni.load({"comment-load": obj});},
+				"comment-read": function(obj){$.ad.omni.load({"comment-read": obj});},
 				"fb-share": function(obj){$.ad.omni.load({"fb-share": obj});},
 				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},		
 				"email-sign-up-success": function(obj){$.ad.omni.load({"email-sign-up-success": obj});},	

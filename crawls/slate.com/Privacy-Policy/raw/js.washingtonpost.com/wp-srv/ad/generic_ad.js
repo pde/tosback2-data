@@ -927,6 +927,10 @@ var wpAd, placeAd2;
         return wpAd.briefcase.pos;
       },
       poe: function () {
+        if(wpAd.briefcase.delivery === 'ajax'){
+          return ['no'];
+        }
+
         return wpAd.cache.hasOwnProperty('poe') ? wpAd.cache.poe : (function () {
           var name = wpAd.constants.site + '_poe',
             cookieVal = wpAd.tools.getCookie(name);

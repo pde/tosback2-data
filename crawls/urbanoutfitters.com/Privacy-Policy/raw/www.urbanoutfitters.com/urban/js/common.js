@@ -776,6 +776,20 @@ function setSelectedSizeForShopBySize(pProductId,pSizeName,isLeaderProduct){
 		}
 	}
 }
+
+// get cookies, assign 
+var getCookies = function(){
+  var pairs = document.cookie.split(";");
+  var pairsLength = pairs.length;
+  var cookies = {};
+  for (var i=0; i<pairsLength; i++){
+    var pair = pairs[i].split("=");
+    pair[0] = jQuery.trim( pair[0] );
+    cookies[pair[0]] = unescape(pair[1]);
+  }
+  return cookies;
+}
+
 //End of Code added for Trac 1997.
 /*
 (function($) {

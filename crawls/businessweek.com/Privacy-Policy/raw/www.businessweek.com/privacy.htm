@@ -23,7 +23,7 @@
   //]]>
 </script>
 
-<script src="../static.btrd.net/assets/buckets-3f18571b3231d1da5059d42e490144e8.js" type="text/javascript"></script>
+<script src="../static.btrd.net/assets/buckets-d84e1f4dcb5b5442542ec0a4b3fb1865.js" type="text/javascript"></script>
 <meta charset='utf-8'>
 <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
 <link href="../static.btrd.net/assets/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
@@ -72,13 +72,27 @@
       Krux.segments = retrieve('segs') ? retrieve('segs').split(',') : [];
     
       Krux.injectDartKeyValues = function(url) {
-        // 1. inject kuid as "kx" sub-parameter of "U" parameter after the "sz" sub-parameter
+        // 1a. inject kuid as "kx" sub-parameter of "u" parameter after the "sz" sub-parameter,
+        var u_sub_params = [];
+    
         if(Krux.user) {
-          url = url.replace(/(U=[^;]*sz=.*?\|)/, "$1kx=" + Krux.user + "|");
+          u_sub_params.push("kx=" + Krux.user);
         }
-        // 2. add segments
-        for (var i = 0; i < Krux.segments.length; i++ ) {
-          url += ';ksgmnt=' + Krux.segments[i];
+    
+        // 1b. followed by ksgmnt sub-parameters.
+        if(Krux.segments.length) {
+          u_sub_params.push("ksgmnt=" + Krux.segments.join(','));
+        }
+    
+        if(u_sub_params.length) {
+          url = url.replace(/(u=[^;]*sz=.*?\|)/i,
+              "$1" + u_sub_params.join('|') + "|" );
+        }
+    
+        // 2. Also add segments as their own parameters before the rsi parameter.
+    
+        if(Krux.segments.length) {
+          url = url.replace(/(;rsi=)/i, ';ksgmnt=' + Krux.segments.join(';ksgmnt=') + "$1");
         }
         return url;
       };
@@ -127,7 +141,7 @@
     }
   /*]]>*/
 </style>
-<link href="../static.btrd.net/assets/application-ee35581f7cc2ef81ed3941d86ae889e2.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="../static.btrd.net/assets/application-a08ff01cd8e6fe12d457cce5aacbf5e1.css" media="screen" rel="stylesheet" type="text/css" />
 <link href="../static.btrd.net/assets/bschools-2ef04c80e3224236932b3ff3211ae182.css" media="screen" rel="stylesheet" type="text/css" />
 <link href="../static.btrd.net/assets/printer_friendly-7dec9c2832e028328c83174cf3113ecc.css" media="print" rel="stylesheet" type="text/css" />
 
@@ -168,7 +182,6 @@
     var google_ad_channel = "6537084077 3231123392";
     var discus_car, lead_module_interval;
     var NEGATIVE_AD_CATEGORIES = "";
-    var KRUX_KEY_VALUES   = window.Krux.dartKeyValues ? window.Krux.dartKeyValues : ""
     
     
     var googletag = googletag || {};
@@ -272,7 +285,7 @@ Sign in with Facebook
 </span>
 <span class='login'>Or use your Businessweek account</span>
 <div class='login_form'>
-<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="rYDA0J0D7OucNGmUgGtncC3sbr8fQ9fgmNIXh4SM7wQ=" /></div>
+<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="mT4dzTO7Kzz9Tdvp/iKNCXMQgwe1IyHIMUaTEhCC3aI=" /></div>
 <label class="for_email" for="user_form_email">Email</label>
 <input class="" id="user_form_email" name="user_form[email]" size="30" type="text" />
 <label class="password" for="user_form_password">Password</label>
@@ -496,10 +509,10 @@ Don't have an account?
 <div class='current_issue module clearfix'>
 <h3>Get Businessweek Delivered</h3>
 <a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08" id='cover_image_thumbnail'>
-<img alt="The Design Issue" height="155" src="../images.businessweek.com/cms/2013-01-24/1305cov_110x155.jpg" width="110" />
+<img alt="Can Lawyers Save the NFL?" height="155" src="../images.businessweek.com/cms/2013-01-31/1306cov_110x155.jpg" width="110" />
 </a>
 <h6>
-<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">The Design Issue</a>
+<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Can Lawyers Save the NFL?</a>
 </h6>
 <a class='subscribe_button' href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Subscribe</a>
 </div>
@@ -524,7 +537,7 @@ Don't have an account?
 
 </div>
 
-<script src="../static.btrd.net/assets/application-ca27598ed028177e49e1a6692d907f9f.js" type="text/javascript"></script>
+<script src="../static.btrd.net/assets/application-db53c3db24626a0f11b6378fb1e5aa90.js" type="text/javascript"></script>
 <script src="../static.btrd.net/assets/jquery.bloomberg_hat-40820ecd724303b0cc5cdc9f27815360.js" type="text/javascript"></script>
 
 
@@ -810,7 +823,7 @@ Don't have an account?
 
 
 
-<!-- Last Update: 2013-01-30 08:08:11 -0500 -->
+<!-- Last Update: 2013-02-02 08:15:07 -0500 -->
 
 <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
 NREUMQ.push(["load",new Date().getTime()]);
@@ -823,5 +836,5 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848",138689,"c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,61,new Date().getTime(),"","","","",""]);</script></body>
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848",138689,"c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,213,new Date().getTime(),"","","","",""]);</script></body>
 </html>

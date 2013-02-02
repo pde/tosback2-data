@@ -665,3 +665,13 @@ D.loadXML(F)
 }else{D=(new DOMParser()).parseFromString(F,"text/xml")
 }return D
 }})(jQuery);
+function navigateTo(A){self.location=A
+}function setCookie(C,D,E){if(E){var B=new Date();
+B.setTime(B.getTime()+(E*24*60*60*1000));
+var A="; expires="+B.toGMTString()
+}else{var A=""
+}document.cookie=C+"="+D+A+"; path=/"
+}function delete_cookie(B){var A=new Date();
+A.setTime(A.getTime()-(1*24*60*60*1000));
+document.cookie=B+"=; expires="+A.toGMTString()+"; path=/; domain=.intel.com"
+};

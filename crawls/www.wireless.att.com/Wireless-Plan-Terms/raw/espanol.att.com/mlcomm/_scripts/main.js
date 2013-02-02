@@ -563,6 +563,11 @@ function renderLatestReleases() {
 document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
+document.write('<div class="rc-release-box">'); 
+document.write('<p>7 de enero de 2013<br />');
+document.write('<a href="/newsroom/news_releases/puede_esperar_1_7_13.html?id=' + state + '" title="AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013">AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013</a></p>');
+document.write('</div>');
+
 document.write('<div class="rc-release-box">');
 document.write('<p>19 de diciembre del 2012<br />');
 document.write('<a href="/newsroom/news_releases/business_traveler_12_19_12.html?id=' + state + '" title="Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial">Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial</a></p>');
@@ -586,16 +591,6 @@ document.write('</div>');
 document.write('<div class="rc-release-box">'); 
 document.write('<p>17 de septiembre de 2012<br />');
 document.write('<a href="/newsroom/news_releases/iphone5_preorder_release_9-17-12.html?id=' + state + '" title="AT&amp;T bate record de ventas con el iPhone 5">AT&amp;T bate record de ventas con el iPhone 5</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">'); 
-document.write('<p>12 de septiembre de 2012<br />');
-document.write('<a href="/newsroom/news_releases/iphone5_release_9-12-12.html?id=' + state + '" title="AT&amp;T ofrecer&aacute; el iPhone 5 en la red 4G m&aacute;s grande del pa&iacute;s a partir del 21 de septiembre">AT&amp;T ofrecer&aacute; el iPhone 5 en la red 4G m&aacute;s grande del pa&iacute;s a partir del 21 de septiembre</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">'); 
-document.write('<p>15 de agosto	 de 2012<br />');
-document.write('<a href="/newsroom/news_releases/twd_8-15-12.html?id=' + state + '" title="Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir">Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir</a></p>');
 document.write('</div>');
 
 

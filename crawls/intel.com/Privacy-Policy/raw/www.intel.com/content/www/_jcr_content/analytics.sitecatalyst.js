@@ -54,14 +54,15 @@ return true;
 CQ_Analytics.Sitecatalyst = {
 events: [],
 getBaseMappings: function() {
-s['login'] = CQ_Analytics.PageDataMgr.data['login'];
 s['systemType'] = CQ_Analytics.PageDataMgr.data['systemType'];
+s['login'] = CQ_Analytics.PageDataMgr.data['login'];
 s['rmetricscampaign'] = CQ_Analytics.PageDataMgr.data['metricscampaign'];
 s['lifeCycleL2'] = CQ_Analytics.PageDataMgr.data['lifeCycleL2'];
 s['lifeCycleL1'] = CQ_Analytics.PageDataMgr.data['lifeCycleL1'];
 s['language'] = CQ_Analytics.PageDataMgr.data['language'];
-s['rmetricssegment'] = CQ_Analytics.PageDataMgr.data['metricssegment'];
 s['resourceType'] = CQ_Analytics.PageDataMgr.data['resourceType'];
+s['rmetricssegment'] = CQ_Analytics.PageDataMgr.data['metricssegment'];
+s['intelplatform'] = CQ_Analytics.PageDataMgr.data['intelplatform'];
 s['programLevel'] = CQ_Analytics.PageDataMgr.data['programLevel'];
 s['topicL2'] = CQ_Analytics.PageDataMgr.data['topicL2'];
 s['topicL1'] = CQ_Analytics.PageDataMgr.data['topicL1'];
@@ -75,10 +76,11 @@ s['intelProductL3'] = CQ_Analytics.PageDataMgr.data['intelProductL3'];
 s['intelTechnology'] = CQ_Analytics.PageDataMgr.data['intelTechnology'];
 s['location'] = CQ_Analytics.PageDataMgr.data['location'];
 s['intelProductL2'] = CQ_Analytics.PageDataMgr.data['intelProductL2'];
-s['localCode'] = CQ_Analytics.PageDataMgr.data['localCode'];
 s['intelProductL4'] = CQ_Analytics.PageDataMgr.data['intelProductL4'];
 s['docID'] = CQ_Analytics.PageDataMgr.data['docId'];
+s['localCode'] = CQ_Analytics.PageDataMgr.data['localCode'];
 s['loadScript'] = '';
+s['applications'] = CQ_Analytics.PageDataMgr.data['applications'];
 s['targetAudience'] = CQ_Analytics.PageDataMgr.data['targetAudience'];
 s['trackGoogleAnalytics'] = true;
 s['vps'] = CQ_Analytics.PageDataMgr.data['vps'];

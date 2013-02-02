@@ -104,6 +104,35 @@ function createSBRef (options) {
 		createCookie('promo', params.prm, null, domain);
 		createCookie('thispromo', params.prm, null, domain);
 	}
+	if(document.referrer && !(new RegExp('^https?:\\\/\\\/(|[^\\\/\\.]+)+' + domain + '(|\\\/.*)$', 'i')).test(document.referrer)) {
+        var existing_cookie = readCookie('ShoebuyEntryExt');
+        var data;
+        if (existing_cookie) {
+            var decoded = base64_decode(existing_cookie);
+            data = JSON.parse(decoded);
+        } else {
+            data = [];
+        }
+		var new_data = { ref_domain : document.referrer, entry_url: window.location.href , entry_qry: {} };
+        var exists = false;
+        for (var i in data) {
+            if (data[i]['ref_domain'] == new_data['ref_domain'] && data[i]['entry_url'] == new_data['entry_url']) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            for(var i in options.qry_args) {
+                if(params[options.qry_args[i]]) {
+                    new_data['entry_qry'][options.qry_args[i]] = params[options.qry_args[i]];
+                }
+            }
+            data.push(new_data);
+            var json_str = JSON.stringify(data);
+            var encoded = base64_encode(json_str);
+            createCookie('ShoebuyEntryExt', encoded, null, domain);
+        }
+	}
 
 	var payload;
 	if(asyncs.length > 0) {

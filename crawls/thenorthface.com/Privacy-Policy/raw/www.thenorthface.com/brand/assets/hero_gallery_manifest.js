@@ -187,9 +187,11 @@ var Class = (function() {
   };
 })();
 (function() {
+
   $.TNF || ($.TNF = {
     BRAND: {}
   });
+
 }).call(this);
 (function($) {
 
@@ -734,10 +736,14 @@ var Class = (function() {
       $targetCont: the element the video is getting injected into.
       ratio: what the video ratio should be. for 16:9 this should be 0.5625
     */
+
       var that = this;
       // if not set, default to 16:9
       ratio                 = ratio || 0.5625;
       this.embedCode        = $actionElm.attr("data-embed-code");
+
+      if (typeof this.embedCode === 'undefined' || this.embedCode === '') return;
+
       this.$targetCont      = $targetCont;
       this.heroCont         = $(".hero", this.$targetCont);
       this.targetImage      = $("img", this.$targetCont);
@@ -869,1324 +875,1648 @@ var Class = (function() {
   };
 
 }(jQuery));
-(function($) {
+(function() {
+  var AutoRotator,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  /* The main Hero Gallery class.. it requires specific markup, so check the
-   * specs to see what that markup should look like.
-   *
-   * @element - a jQuery element object (eg. $('#element').first())
-   */
+  AutoRotator = (function() {
 
-  var Gallery = Class.create({
-    element: null,
-    items: [],
-    currentPage: 0,
+    AutoRotator.prototype.timerDuration = 7000;
 
-    initialize: function(element) {
+    function AutoRotator(options) {
+      this.stop = __bind(this.stop, this);
+
+      this.resume = __bind(this.resume, this);
+
+      this.pause = __bind(this.pause, this);
+
+      this.rotate = __bind(this.rotate, this);
+      this.rotatable = options.rotatable;
+      this.controlElement = options.controlElement;
+      if (typeof this.rotatable.rotate !== 'function') {
+        throw 'AutoRotator expects an object that responds to #rotate';
+      }
+      this.bindEvents();
+      this.start();
+    }
+
+    AutoRotator.prototype.bindEvents = function() {
+      this.controlElement.bind('mouseover', this.pause);
+      this.controlElement.bind('mouseout', this.resume);
+      return this.controlElement.bind('click', this.stop);
+    };
+
+    AutoRotator.prototype.start = function() {
+      this.timer = setInterval(this.rotate, this.timerDuration);
+      return this.resume();
+    };
+
+    AutoRotator.prototype.rotate = function() {
+      if (!this.paused) {
+        return this.rotatable.rotate();
+      }
+    };
+
+    AutoRotator.prototype.pause = function() {
+      return this.paused = true;
+    };
+
+    AutoRotator.prototype.resume = function() {
+      return this.paused = false;
+    };
+
+    AutoRotator.prototype.stop = function() {
+      clearInterval(this.timer);
+      return this.timer = null;
+    };
+
+    return AutoRotator;
+
+  })();
+
+  $.TNF.BRAND.AutoRotator = AutoRotator;
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.HeroGallery = (function() {
+    var DATA_ATTR, FLYOUT_CLOSED_EVENT, FLYOUT_OPENED_EVENT, ITEM_LOADED_EVENT, POPUP_CLOSED_EVENT, POPUP_OPENED_EVENT;
+
+    DATA_ATTR = 'hero_gallery';
+
+    ITEM_LOADED_EVENT = 'loaded_TNF_heroSpot';
+
+    POPUP_OPENED_EVENT = 'hero_gallery_popup_opened';
+
+    POPUP_CLOSED_EVENT = 'hero_gallery_popup_closed';
+
+    FLYOUT_OPENED_EVENT = 'hero_gallery_flyout_opened';
+
+    FLYOUT_CLOSED_EVENT = 'hero_gallery_flyout_closed';
+
+    function HeroGallery(element) {
       this.element = element;
+      this._countDownHeroSpotLoaders = __bind(this._countDownHeroSpotLoaders, this);
 
-      this.shortClass = 'tall';
-      if (this.element.hasClass('short') == true) {
-        this.shortClass = 'short';
+      this._buildItem = __bind(this._buildItem, this);
+
+      this.focus = __bind(this.focus, this);
+
+      if (this.element.hasClass('tabbed-hero-gallery')) {
+        return;
       }
+      this._setup();
+    }
 
-      // remove any instances of HeroGallery on the element, then set it
-      if (this.element.data('hero_gallery')) {
-        this.element.data('hero_gallery').dispose();
-      }
-      this.element.data('hero_gallery', this);
+    HeroGallery.prototype.rotate = function() {
+      return this.paginator.next();
+    };
 
-      this.build();
-      this.setupObservers();
-      this.autoRotate();
-    },
+    HeroGallery.prototype.append = function(content) {
+      return this.element.append(content);
+    };
 
-    autoRotate: function() {
-      this.autoRotationPaused = false;
-      this.autoRotateInterval = setInterval(function() {
-        if(this.autoRotationPaused !== true) {
-          this.nextPage();
+    HeroGallery.prototype.width = function() {
+      return this.element.width();
+    };
+
+    HeroGallery.prototype.stopAutoRotation = function() {
+      return this.autoRotator.stop();
+    };
+
+    HeroGallery.prototype.focus = function(e) {
+      var element;
+      try {
+        element = $(e.target);
+        if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
+          return this.body.trigger('hero_gallery_paged', {
+            page: this.paginator.currentPage
+          });
         }
-      }.bind(this), 7000);
-    },
+      } catch (e) {
 
-    stopAutoRotation: function() {
-      clearInterval(this.autoRotateInterval);
-      this.autoRotateInterval = null;
-    },
+      }
+    };
 
-    build: function() {
-      // find all the items that we can page through
-      var items = this.element.find('div.hero-gallery-item');
+    HeroGallery.prototype.jumpToPage = function(page) {
+      return this.paginator.jumpToPage(page);
+    };
 
-      // So that we can reliably interact with any gallery's API, we fire an
-      // event once we've heard back from all HeroSpots (via an event each
-      // fires) that they are all finished loading
-      this.heroSpotLoadCountdown = items.length;
-      this.element.bind('loaded_TNF_heroSpot', this.countDownHeroSpotLoaders.bind(this));
+    HeroGallery.prototype.dispose = function() {
+      var item, _i, _len, _ref, _results;
+      this.autoRotator.stop();
+      this.element.data(DATA_ATTR, null);
+      this.ui.release();
+      this.element = null;
+      _ref = this.items;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        _results.push(item.dispose());
+      }
+      return _results;
+    };
 
-      this.items = [];
+    HeroGallery.prototype._setup = function() {
+      this.body = $('body');
+      this._setDataAttribute();
+      this._buildItems();
+      this._buildPaginator();
+      this._buildViewPort();
+      this._buildUI();
+      this._setupObservers();
+      return this._setupAutoRotator();
+    };
 
-      this.width = this.element.width();
-      items.each(function(i, element) {
-        var type = $(element).data('type');
+    HeroGallery.prototype._setupAutoRotator = function() {
+      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
+        rotatable: this,
+        controlElement: this.element
+      });
+    };
 
-        // It shouldn't be possible to get undefined if the data is accurate,
-        // but data is unlikely to be accurate on integration - opting to make
-        // the implementation less brittle.
-        var object = (type === 'standard' || type == 'linked-carousel' || type === undefined) ? $.TNF.BRAND.HeroGallery.Standard : $.TNF.BRAND.HeroGallery.Rotator;
-        this.items.push(new object.Item($(element)));
-      }.bind(this));
+    HeroGallery.prototype._setDataAttribute = function() {
+      if (this.element.data(DATA_ATTR)) {
+        this.element.data(DATA_ATTR).dispose();
+      }
+      return this.element.data(DATA_ATTR, this);
+    };
 
-      // REFACTOR: The "linkedCarousel" is actually another carousel - the
-      // concept of a Carousel deserves an abstraction of its own -AN
-      this.linkedCarousel = false;
+    HeroGallery.prototype._buildItem = function(index, element) {
+      var object, type;
+      if (arguments.length === 1) {
+        element = index;
+      }
+      type = $(element).data('type');
+      if (type === 'standard' || type === 'linked-carousel' || type === void 0) {
+        object = $.TNF.BRAND.HeroGallery.Standard;
+      } else {
+        object = $.TNF.BRAND.HeroGallery.Rotator;
+      }
+      return this.items.push(new object.Item($(element)));
+    };
+
+    HeroGallery.prototype._buildUI = function() {
+      var itemWidth, secondaryViewport, viewportElement;
       if (this.element.hasClass('linked-carousel')) {
-        this.linkedCarousel = true;
-        this.alternateScroller = $('.hero-gallery-mini-scroller');
-
-        // Given a scroller with n visible items,
-        // A standard scroller needs to be wide enough to fit n items
-        // An infinite scroller needs to be wide enough to fit n+1 items
-        var alternateScrollerItems = this.alternateScroller.find('.linked-carousel-mini-item'),
-            altItemWidth = alternateScrollerItems.width(),
-            slotCount = alternateScrollerItems.length + 1;
-
-        // Need to take margin into account to appropriately size the scroller
-        // container.
-        //
-        // REFACTOR: (MAGIC NUMBER) Research cross-browser-compatible method of
-        // reliably calculating margins, in a way that takes units into
-        // account instead of hard-coding based on the current known
-        // implementation.
-        var itemMargin = 4;
-        this.alternateScroller.width((altItemWidth * slotCount) + (itemMargin * slotCount));
-
-        // Make sure that a cloned item is available when scrolling.
-        var clone = alternateScrollerItems.first().clone();
-        this.alternateScroller.append(clone);
-
-        // Make sure that the first item is hidden.
-        this.alternateScroller.css('left', '-478px');
-
-        // Memoize list of items
-        this.alternateScrollerItems = alternateScrollerItems.add(clone);
+        viewportElement = $('.hero-gallery-mini-scroller');
+        itemWidth = viewportElement.find('.linked-carousel-mini-item').width();
+        secondaryViewport = new $.TNF.BRAND.HeroGallery.Viewport(viewportElement, itemWidth);
+        return new $.TNF.BRAND.LinkedCarousel(this.viewport, secondaryViewport);
       } else {
-        // REFACTOR: pagination controller can be its own object
-        // add in the markup we'll need for pagination
-        this.paginatable = this.items.length > 1;
-        if (this.paginatable) {
-          this.element.append('\
-                 <a class="hero-gallery-arrow-left arrow-box-left ' + this.shortClass + '"><div class="arrow"></div></a>\
-                 <a class="hero-gallery-arrow-right arrow-box ' + this.shortClass + '"><div class="arrow"></div></a>');
-          this.element.append('<div class="hero-gallery-paginator"><em></em>' + (new Array(this.items.length + 1).join('<a></a>')) + '</div>');
-        }
-
-        // find the elements we'll use for pagination
-        this.prevButton = this.element.find('a.hero-gallery-arrow-left');
-        this.nextButton = this.element.find('a.hero-gallery-arrow-right');
-        this.paginator = this.element.find('div.hero-gallery-paginator');
-        this.pageIndicator = this.element.find('div.hero-gallery-paginator em');
-
-        // center the paginator
-        this.paginator.css('left', (this.width / 2) - (this.paginator.outerWidth() / 2));
+        this.ui = new $.TNF.BRAND.HeroGallery.UI(this.paginator);
+        this.append(this.ui.elements());
+        return this.ui.centerPageIndicator();
       }
+    };
 
-      this.scroller = this.element.find('div.hero-gallery-scroller');
-      this.itemWidth = this.element.find('div.hero-gallery-item').width();
+    HeroGallery.prototype._buildViewPort = function() {
+      var itemWidth, viewportElement;
+      itemWidth = this.element.find('div.hero-gallery-item').width();
+      viewportElement = this.element.find('div.hero-gallery-scroller');
+      this.viewport = new $.TNF.BRAND.HeroGallery.Viewport(viewportElement, itemWidth);
+      return this.viewport.setWidth(itemWidth * this.items.length);
+    };
 
-      // size the scroller
-      this.scroller.width(this.itemWidth * this.items.length);
-    },
+    HeroGallery.prototype._buildPaginator = function() {
+      if (this.items.length > 1) {
+        return this.paginator = new $.TNF.BRAND.Paginator(this);
+      }
+    };
 
-    setupObservers: function() {
-      this.element.hover(
-        // mouseenter
-        function(e) {
-          this.autoRotationPaused = true;
-        }.bind(this),
+    HeroGallery.prototype._buildItems = function() {
+      var items;
+      items = this.element.find('div.hero-gallery-item');
+      this.heroSpotLoadCountdown = items.length;
+      this.element.bind('loaded_TNF_heroSpot', this._countDownHeroSpotLoaders);
+      this.items = [];
+      return items.each(this._buildItem);
+    };
 
-        // mouseleave
-        function(e) {
-          this.autoRotationPaused = false;
-        }.bind(this)
-      );
+    HeroGallery.prototype._countDownHeroSpotLoaders = function() {
+      this.heroSpotLoadCountdown -= 1;
+      if (this.heroSpotLoadCountdown < 1) {
+        this.element.trigger('loaded_TNF_heroGallery');
+        return this.fullyLoaded = true;
+      }
+    };
 
-      // clicking on the background
-      this.element.click(function(e) {
-        this.stopAutoRotation();
-        try{
-          var element = $(e.target);
-          if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
-            $("body").trigger('hero_gallery_paged', {page: this.currentPage});
-          }
-        } catch (e) {}
-      }.bind(this));
+    HeroGallery.prototype._setupObservers = function() {
+      this.element.bind('click', this.focus);
+      if (this.ui) {
+        this.body.bind('hero_gallery_popup_opened', this.ui.hide);
+        this.body.bind('hero_gallery_flyout_opened', this.ui.hide);
+        this.body.bind('hero_gallery_popup_closed', this.ui.show);
+        return this.body.bind('hero_gallery_flyout_closed', this.ui.show);
+      }
+    };
 
-      // REFACTOR: I can has polymorphism?
-      if (this.linkedCarousel) {
-        this.alternateScrollerItems.bind('click', this.activateMiniCarouselItem.bind(this));
+    return HeroGallery;
+
+  })();
+
+}).call(this);
+(function() {
+
+  $.TNF.BRAND.HeroGallery.Button = (function() {
+    var SHORT, TALL;
+
+    SHORT = 'short';
+
+    TALL = 'tall';
+
+    function Button(responder) {
+      this.responder = responder;
+      this.className = this.responder.element.hasClass(SHORT) ? SHORT : TALL;
+    }
+
+    Button.prototype.show = function() {
+      this.element.show();
+      return this.element.animate({
+        opacity: 1
+      }, 200, 'easeInOutSine');
+    };
+
+    Button.prototype.hide = function() {
+      var _this = this;
+      return this.element.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.element.hide();
+      });
+    };
+
+    Button.prototype.render = function() {
+      return this.element;
+    };
+
+    Button.prototype.release = function() {
+      return this.element.remove();
+    };
+
+    return Button;
+
+  })();
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery.NextButton = (function(_super) {
+
+    __extends(NextButton, _super);
+
+    function NextButton() {
+      NextButton.__super__.constructor.apply(this, arguments);
+      this.element = $("<a class='hero-gallery-arrow-right arrow-box " + this.className + "'><div class='arrow'></div></a>");
+    }
+
+    NextButton.prototype.render = function() {
+      this.element.bind('click', this.responder.next);
+      return NextButton.__super__.render.apply(this, arguments);
+    };
+
+    return NextButton;
+
+  })($.TNF.BRAND.HeroGallery.Button);
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery.PrevButton = (function(_super) {
+
+    __extends(PrevButton, _super);
+
+    function PrevButton() {
+      PrevButton.__super__.constructor.apply(this, arguments);
+      this.element = $("<a class='hero-gallery-arrow-left arrow-box-left " + this.className + "'><div class='arrow'></div></a>");
+    }
+
+    PrevButton.prototype.render = function() {
+      this.element.bind('click', this.responder.previous);
+      return PrevButton.__super__.render.apply(this, arguments);
+    };
+
+    return PrevButton;
+
+  })($.TNF.BRAND.HeroGallery.Button);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.HeroGallery.PageIndicator = (function() {
+
+    function PageIndicator(responder) {
+      var item, _i, _ref;
+      this.responder = responder;
+      this.showPageAtIndex = __bind(this.showPageAtIndex, this);
+
+      this.jumpToPage = __bind(this.jumpToPage, this);
+
+      this.pageCount = this.responder.itemCount();
+      $('body').bind('hero_gallery_paged', this.showPageAtIndex);
+      this.currentPageElement = $('<em></em>');
+      this.el = $("<div class='hero-gallery-paginator'></div>");
+      this.el.append(this.currentPageElement);
+      for (item = _i = 1, _ref = this.pageCount; 1 <= _ref ? _i <= _ref : _i >= _ref; item = 1 <= _ref ? ++_i : --_i) {
+        this.el.append($('<a></a>'));
+      }
+    }
+
+    PageIndicator.prototype.jumpToPage = function(event) {
+      var targetPageIndex;
+      targetPageIndex = $(event.target).prevAll('a').length;
+      this.showPageAtIndex({
+        page: targetPageIndex
+      });
+      return this.responder.jumpToPage(targetPageIndex);
+    };
+
+    PageIndicator.prototype.showPageAtIndex = function(event, data) {
+      var index;
+      if (arguments.length === 1) {
+        index = event.page;
       } else {
-        // left and right pagination
-        this.prevButton.click(this.prevPage.bind(this));
-        this.nextButton.click(this.nextPage.bind(this));
-
-        // page indicator pagination
-        this.paginator.find('a').click(function(e) {
-          this.jumpToPage($(e.target).prevAll('a').length);
-        }.bind(this));
-
-        // REFACTOR: Paginator, flyout, nextButton & prevButton are all
-        // candidates for separate objects
-        $("body").bind('hero_gallery_popup_opened', function(e) {
-          this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
-        }.bind(this));
-
-        $("body").bind('hero_gallery_popup_closed', function(e) {
-          this.paginator.show();
-          this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
-        }.bind(this));
-
-        // if the flyout opens or closes, we should move our paging arrow
-        $("body").bind('hero_gallery_flyout_opened', function(e) {
-          this.nextButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.nextButton.hide(); }.bind(this));
-          this.prevButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.prevButton.hide(); }.bind(this));
-          this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
-        }.bind(this));
-
-        $("body").bind('hero_gallery_flyout_closed', function(e) {
-          this.nextButton.show();
-          this.prevButton.show();
-          this.paginator.show();
-          this.nextButton.animate({opacity: 1}, 200, 'easeInOutSine');
-          this.prevButton.animate({opacity: 1}, 200, 'easeInOutSine');
-          this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
-        }.bind(this));
+        index = data.page;
       }
-    },
+      return this.currentPageElement.animate({
+        left: index * 19
+      }, 500, 'easeInOutSine');
+    };
 
-    // Internal: Responds to Linked Carousel item click behavior.
-    //
-    // event - jQuery event
-    //
-    activateMiniCarouselItem: function(event) {
+    PageIndicator.prototype.show = function() {
+      this.el.show();
+      return this.el.animate({
+        opacity: 1
+      }, 200, 'easeInOutSine');
+    };
+
+    PageIndicator.prototype.hide = function() {
+      var _this = this;
+      return this.el.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.el.hide();
+      });
+    };
+
+    PageIndicator.prototype.render = function() {
+      this.el.find('a').bind('click', this.jumpToPage);
+      return this.el;
+    };
+
+    PageIndicator.prototype.center = function() {
+      return this.el.css('left', (this.responder.width() / 2) - (this.el.outerWidth() / 2));
+    };
+
+    PageIndicator.prototype.release = function() {
+      return this.el.release();
+    };
+
+    return PageIndicator;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.HeroGallery.UI = (function() {
+
+    function UI(paginator) {
+      this.hide = __bind(this.hide, this);
+
+      this.show = __bind(this.show, this);
+      this.nextButton = new $.TNF.BRAND.HeroGallery.NextButton(paginator);
+      this.prevButton = new $.TNF.BRAND.HeroGallery.PrevButton(paginator);
+      this.pageIndicator = new $.TNF.BRAND.HeroGallery.PageIndicator(paginator);
+    }
+
+    UI.prototype.show = function() {
+      this.nextButton.show();
+      this.prevButton.show();
+      return this.pageIndicator.show();
+    };
+
+    UI.prototype.hide = function() {
+      this.nextButton.hide();
+      this.prevButton.hide();
+      return this.pageIndicator.hide();
+    };
+
+    UI.prototype.elements = function() {
+      return this.nextButton.render().add(this.prevButton.render().add(this.pageIndicator.render()));
+    };
+
+    UI.prototype.release = function() {
+      this.nextButton.release();
+      this.prevButton.release();
+      return this.pageIndicator.release();
+    };
+
+    UI.prototype.centerPageIndicator = function() {
+      return this.pageIndicator.center();
+    };
+
+    return UI;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.HeroGallery.Viewport = (function() {
+
+    Viewport.prototype.itemMargin = 4;
+
+    function Viewport(el, itemWidth) {
+      this.el = el;
+      this.itemWidth = itemWidth;
+      this.jumpToPage = __bind(this.jumpToPage, this);
+
+      this._bindEvents();
+    }
+
+    Viewport.prototype.setWidth = function(width) {
+      return this.el.width(width);
+    };
+
+    Viewport.prototype.prepend = function(elements) {
+      return this.el.prepend(elements);
+    };
+
+    Viewport.prototype.append = function(elements) {
+      return this.el.append(elements);
+    };
+
+    Viewport.prototype.jumpToPage = function(event, data) {
+      var page;
+      if (this.el.is(':animated')) {
+        return false;
+      }
+      if (arguments.length === 1) {
+        page = event.page;
+      } else {
+        page = data.page;
+      }
+      return this.el.animate({
+        left: -(page * this.itemWidth)
+      }, 500, 'easeInOutSine');
+    };
+
+    Viewport.prototype._bindEvents = function() {
+      return $('body').bind('hero_gallery_paged', this.jumpToPage);
+    };
+
+    return Viewport;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.LinkedCarousel = (function() {
+
+    function LinkedCarousel(primaryViewport, secondaryViewport) {
+      this.primaryViewport = primaryViewport;
+      this.secondaryViewport = secondaryViewport;
+      this.activateItem = __bind(this.activateItem, this);
+
+      this._prepareSecondaryViewport();
+    }
+
+    LinkedCarousel.prototype._prepareSecondaryViewport = function() {
+      var clone, items, total;
+      this.itemWidth = this.secondaryViewport.itemWidth;
+      this.itemMargin = this.secondaryViewport.itemMargin;
+      items = this.secondaryViewport.el.find('.linked-carousel-mini-item');
+      clone = items.first().clone();
+      this.secondaryViewport.append(clone);
+      this.items = items.add(clone);
+      total = this.items.length;
+      this.secondaryViewport.setWidth((this.itemWidth * total) + (this.itemMargin * total));
+      this.secondaryViewport.el.css('left', "-" + this.itemWidth + "px");
+      return this.items.bind('click', this.activateItem);
+    };
+
+    LinkedCarousel.prototype.activateItem = function(event) {
+      var selectedItem, targetElement, targetIndex;
       if (typeof event.preventDefault === 'function') {
         event.preventDefault();
       }
+      selectedItem = $(event.target);
+      targetElement = selectedItem.attr('href');
+      targetIndex = $(targetElement).index();
+      this.primaryViewport.jumpToPage(targetIndex);
+      return this.selectMiniCarouselIndex(selectedItem);
+    };
 
-      // prevent hyper-clicking
-      if (this.alternateScroller.is(':animated')) {
-        return false;
+    LinkedCarousel.prototype.selectMiniCarouselIndex = function(selectedElement) {
+      var cloneMethod, deletedItemFilter, firstItem, index, lastItem, pixelsToLeft,
+        _this = this;
+      firstItem = this.items.eq(0);
+      lastItem = this.items.eq(this.items.length - 1);
+      index = selectedElement.index();
+      if (index === 1) {
+        pixelsToLeft = "-=" + this.itemWidth + "px";
+        deletedItemFilter = ':eq(0)';
+        cloneMethod = 'append';
+      } else if (index === 2) {
+        pixelsToLeft = "+=" + this.itemWidth + "px";
+        deletedItemFilter = ":eq(" + (this.items.length - 1) + ")";
+        cloneMethod = 'prepend';
       }
-
-      // Trigger the "main" hero gallery to scroll
-      var targetElement = $(event.target).attr('href'),
-          targetIndex   = $(targetElement).index();
-
-      this.jumpToPage(targetIndex);
-    },
-
-    // Internal: Updates "mini" scroller to activate element specified by
-    // selectedElement
-    //
-    // - selectedElement - jQuery element that should be selected
-    //
-    // REFACTOR: Code Smell Alert! This next bit of code is what makes
-    // the "mirrored" or "mini" carousel animate and update. Had to
-    // plow my way through this and resist refactoring, so here's some
-    // documentation in hopes that it will help.
-    //
-    // Usage
-    //
-    // How It Works:
-    // -------------
-    //
-    // Given a scroll container (this.alternateScroller) with n items
-    // (this.alternateScrollerItems), the scroll container is given a width
-    // to accomodate n+1 items.
-    //
-    // An extra clone of the first item is appended to the container so that
-    // it is ready to show if the carousel moves in that direction.
-    //
-    // When an item is selected, it must be "dismissed" from view, as its
-    // absence indicates active state. To do so, the container moves one
-    // "space" to the left or right, hiding the selected item and revealing
-    // another.
-    //
-    // To cleanup, it removes the DOM element that has been pushed furthest
-    // out-of-view and prepares a new clone.
-    //
-    // A visual might help:
-    // --------------------
-    //
-    //    Initial state:
-    //
-    //    |x|.|.|x|
-    //
-    //    |x| = Hidden DOM element
-    //    |.| = Visible DOM element
-    //
-    //    After clicking left-most visible element:
-    //
-    //    Initial state:                 |x|.|.|x|
-    //    Slide to the left:           |x|x|.|.|
-    //    Remove "extra" node:           |x|.|.|
-    //    Append clone:                  |x|.|.|x|
-    //
-    //    After clicking right-most visible element:
-    //
-    //    Initial state:                 |x|.|.|x|
-    //    Slide to the right:              |.|.|x|x|
-    //    Remove "extra" node:             |.|.|x|
-    //    Append clone:                  |x|.|.|x|
-    //
-    // REFACTOR: Magic numbers:
-    //           - left-css value hard-coded to width of 1 "mini" linked carousel item (478)
-    //           - animation duration in milliseconds (500) -- consider using animation libs
-    // REFACTOR: non-scalable implementation (might not work w/ more items)
-    selectMiniCarouselIndex: function(selectedElement) {
-      var firstItem     = this.alternateScrollerItems.eq(0),
-          lastItem      = this.alternateScrollerItems.eq(this.alternateScrollerItems.length - 1);
-          miniIndex     = selectedElement.index();
-
-      // Shift in a direction
-      if (miniIndex == 1) {
-        var pixelsToLeft      = '-=478px',
-            deletedItemFilter = ':eq(0)',
-            cloneMethod       = 'append';
-      } else if (miniIndex == 2) {
-        var pixelsToLeft      = '+=478px',
-            deletedItemFilter = ':eq(' + (this.alternateScrollerItems.length - 1) + ')',
-            cloneMethod       = 'prepend';
-      }
-
-      this.alternateScroller.animate({'left': pixelsToLeft}, 500, 'easeInOutSine', function() {
-        // Remove item at index 0 or n (where n is number of items - 1)
-        // REFACTOR: Not sure why, but it seems we can't use jQuery's remove
-        // method directly, or at least it doesn't seem to behave as I would
-        // expect.
-        //
-        // wanted this:
-        // this.alternateScrollerItems = this.alternateScrollerItems.remove('eq(' + deletedItemIndex + ')');
-        var deletedItem = this.alternateScrollerItems.filter(deletedItemFilter);
-            deletedItem.remove();
-        this.alternateScrollerItems = this.alternateScrollerItems.not(deletedItemFilter);
-
-        // Make a clone at index 0 or n+1
-        var clone = selectedElement.clone();
-
-        // Activate the clone's click behavior
-        clone.bind('click', this.activateMiniCarouselItem.bind(this));
-
-        // Attach clone to the DOM
-        this.alternateScroller[cloneMethod](clone);
-
-        // Update reference to include the clone
-        this.alternateScrollerItems = this.alternateScrollerItems.add(clone);
-
-        // Reset "viewport"
-        this.alternateScroller.css('left', '-478px');
-      }.bind(this));
-    },
-
-    countDownHeroSpotLoaders: function() {
-      this.heroSpotLoadCountdown -= 1;
-
-      if(this.heroSpotLoadCountdown < 1) {
-        this.element.trigger('loaded_TNF_heroGallery');
-        this.fullyLoaded = true;
-      }
-    },
-
-    prevPage: function() {
-      this.jumpToPage(this.currentPage - 1);
-    },
-
-    nextPage: function() {
-      this.jumpToPage(this.currentPage + 1);
-    },
-
-    // REFACTOR: Make this implementation more robust. Currently, this accepts
-    // an index (integer) - methods that invoke this message could be cleaned
-    // up by allowing this to accept EITHER an index OR an element (if passed
-    // an element, this method would then be responsible for determining the
-    // index) -AN
-    jumpToPage: function(page) {
-      // do nothing if asked to jump to same page as current
-      if (page == this.currentPage) return;
-
-      if (page > this.items.length - 1) page = 0;
-      if (page < 0) page = this.items.length - 1;
-      this.currentPage = page;
-
-      // trigger an event so items can clean themselves up
-      $(".hero-gallery").trigger('hero_gallery_paged', {page: page});
-
-      // move the scroller and the page indicator
-      this.scroller.animate({'left': -(page * this.itemWidth)}, 500, 'easeInOutSine');
-
-      // REFACTOR: Make polymorphic!
-      if (this.pageIndicator) {
-        // REFACTOR: Extract magic number (19)
-        this.pageIndicator.animate({'left': (page * 19)}, 500, 'easeInOutSine');
-      }
-
-      // REFACTOR: Make polymorphic!
-      if (this.linkedCarousel) {
-        // get index of matching linkedCarousel
-        // OPTIMIZE: requerying here when we shouldn't need to
-        var items = this.element.find('div.hero-gallery-item'),
-            itemId = items.eq(this.currentPage).attr('id'),
-            matchingMini = this.alternateScrollerItems.filter('[href="#' + itemId + '"]');
-
-        this.selectMiniCarouselIndex(matchingMini);
-      }
-    },
-
-    dispose: function() {
-      this.element.data('hero_gallery', null);
-
-      if (this.linkedCarousel) {
-        this.prevButton.unbind('click').remove();
-        this.nextButton.unbind('click').remove();
-        this.paginator.remove();
-
-        for (var item in this.items) {
-          this.items[item].dispose();
-        }
-      } else {
-        this.alternateScroller.remove();
-        this.alternateScrollerItems.remove();
-      }
-
-      this.element = null;
-      delete(this); // no idea if this works
-    }
-  });
-
-  var AbstractItemLogic = {
-
-    videoInterfaceContainer: null,
-    element: null,
-    flyoutVisible: false,
-
-    initialize: function(element) {
-      this.element = element;
-      this.id = this.element.attr('id').split('herospot-')[1]
-
-      this.build();
-
-      this.buildCtas();
-      this.buildHotRegions();
-
-      this.setupObservers();
-      this.gallery = $(this.element).parent().parent('.hero-gallery');
-      this.galleryHeight = this.gallery.outerHeight();
-      this.videoInterfaceContainer = $('.hero-gallery-video-interface', this.gallery );
-      this.embedCode = '';
-    },
-
-    // Adds a newly-initialized cta to collection of ctas
-    //
-    // Arguments:
-    //  - index (optional) - Accepts index argument only to conform to iterator
-    //                       callback expected signature.
-    //  - element          - DOM element from which to build the cta.
-    //
-    addCta: function(index, el) {
-      if (arguments.length == 1) { el = arguments[0]; }
-      this.ctas.push(el);
-      return el;
-    },
-
-    // Adds a newly-initialized HotRegion to collection of HotRegions
-    //
-    // Arguments:
-    //  - index (optional) - Accepts index argument only to conform to iterator
-    //                       callback expected signature.
-    //  - element          - DOM element from which to build the HotRegion.
-    //
-    addHotRegion: function(index, el) {
-      if (arguments.length == 1) { el = arguments[0]; }
-      this.hotRegions.push(el);
-      return el;
-    },
-
-    activateCtaRollover: function() {
-      var ctas = $(this.element).find('.hero-cta a');
-
-      ctas.bind('mouseover', this.handleCtaRollover);
-      ctas.bind('mouseout', this.handleCtaRollout);
-    },
-
-    handleCtaRollover: function(event) {
-      var anchor = $(event.target).parent(),
-          color  = anchor.data('text-color-rollover');
-
-      anchor.find('.hero-text').css('color', color);
-    },
-
-    handleCtaRollout: function(event) {
-      var anchor = $(event.target).parent(),
-          color  = anchor.data('text-color');
-
-      anchor.find('.hero-text').css('color', color);
-    },
-
-    activateRollover: function() {
-      if ((rolloverImageSrc = this.element.attr('data-rollover-image')) !== undefined) {
-        // preload the image
-        var rolloverImage = new Image();
-            rolloverImage.src = rolloverImageSrc;
-
-        this.rolloverImage = 'url(' + rolloverImageSrc + ')';
-        this.defaultImage  = this.element.css('background-image');
-
-        $(rolloverImage).load(this.setupRolloverObservers.bind(this));
-      }
-    },
-
-    setupRolloverObservers: function() {
-      this.element.bind('mouseover', this.revealRolloverImage.bind(this));
-      this.element.bind('mouseout', this.restoreDefaultImage.bind(this));
-    },
-
-    revealRolloverImage: function(event) {
-      this.element.css('background-image', this.rolloverImage);
-    },
-
-    restoreDefaultImage: function(event) {
-      this.element.css('background-image', this.defaultImage);
-    },
-
-    showFlyoutIEBranch: function() {
-      if ($.browser.msie && parseInt($.browser.version, 10) <= 7) {
-        this.content.hide();
-      } else {
-        this.content.animate({'opacity': 0}, 200, 'easeInOutSine', function() {
-          this.content.css('display', 'none');
-        }.bind(this));
-      }
-    },
-
-    hideFlyoutIEBranch: function() {
-      if ($.browser.msie && parseInt($.browser.version, 10) <= 7) {
-        this.content.show();
-      } else {
-        this.content.css('display', 'block');
-        this.content.animate({'opacity': 1}, 200, 'easeInOutSine');
-      }
-    },
-
-    hideVideo: function() {
-      var self = this;
-      self.videoInterface.pause();
-      this.videoInterfaceContainer.fadeOut(function(){
-        self.adjustVideoSpace();
+      return this.secondaryViewport.el.animate({
+        left: pixelsToLeft
+      }, 500, 'easeInOutSine', function() {
+        var clone, deletedItem;
+        deletedItem = _this.items.filter(deletedItemFilter);
+        deletedItem.remove();
+        _this.items = _this.items.not(deletedItemFilter);
+        clone = selectedElement.clone();
+        clone.bind('click', _this.activateItem);
+        _this.secondaryViewport[cloneMethod](clone);
+        _this.items = _this.items.add(clone);
+        return _this.secondaryViewport.el.css('left', "-" + _this.itemWidth + "px");
       });
-    },
+    };
 
-    showVideo: function() {
-      var self = this;
+    return LinkedCarousel;
 
-      this.videoInterfaceContainer.append('<a class="video-interface-close"></a>');
-      $('a.video-interface-close', this.videoInterfaceContainer).click(function(e) {
-        e.preventDefault();
-        self.hideVideo();
-        if (TNF.ipad){
-          // don't like this 
-          self.videoInterfaceContainer.animate({"padding-top": '0px'});
-          $('a.video-interface-close').css({"border-radius": '0 0 0 10px'});
-        }
-      });
-      if (TNF.ipad){
-        this.videoInterfaceContainer.animate({"padding-top": '35px'});
-        $('a.video-interface-close').css({"border-radius": '10px 10px 0 0'});
-      }
-      self.videoInterface.play();
+  })();
 
-    },
+}).call(this);
 
-    unloadVideo: function() {
-      $(this.videoInterfaceContainer).children().unbind();
-      $(this.videoInterfaceContainer).empty();
-    },
+$.TNF.BRAND.HeroGallery.Standard = {};
 
-    loadVideo: function() {
-      var self = this;
-      this.videoInterfaceContainer.css({"z-index": 9120, 'display': 'block', "visibility": 'visible'});
+(function() {
 
-      this.videoInterface = $.TNF.BRAND.videoInterface.factory({
-        container: $(this.videoInterfaceContainer),
-        width: 956,
-        height: 538,
-        embedCode: this.embedCode,
-        onLoad: function() {
-          self.showVideo();
-        }
-      });
-    },
+  $.TNF.BRAND.HeroGallery.Callout = (function() {
 
-    adjustVideoSpace:function(insert) {
-      var that = this,
-          videoHeight = 538,
-          playerCont = $('.player-container', that.gallery );
+    function Callout() {}
 
-      if (TNF.ipad) {
-        videoHeight = videoHeight + 35;
-      }
+    Callout.prototype.element = null;
 
-      if (insert) {
-        $(that.element).parent().fadeOut('fast', function() {
-          that.gallery.animate({height: videoHeight}, 1000, function() {
-            that.loadVideo();
-            if (TNF.ipad) {
-              playerCont.animate({'padding-top': '0px' });
-              $('a.video-interface-close', playerCont).css({"border-radius": '0 0 0 10px'});
-            }
-          });
-        });
-      } else {
-        that.gallery.animate({height: that.galleryHeight}, 1000, function() {
-          contentBox = $(this).closest('.content-box');
-          oldPosition = contentBox.css('position');
+    Callout.prototype.showing = false;
 
-          contentBox.css({ position: 'relative' })
-                    .css({ position: oldPosition });
-
-          $(that.element).parent().fadeIn('fast', function() {
-            that.unloadVideo();
-            if (TNF.ipad) {
-              playerCont.animate({'padding-top': '0px' });
-              $('a.video-interface-close', playerCont).css({"border-radius": '0 0 0 10px'});
-            }
-          });
-        });
-      }
-    },
-
-    dispose: function() {
-      this.element.find('a.arrow-box').unbind('click');
-      this.element.find('a.hero-gallery-flyout-close').remove();
-
-      for (var callout in this.callouts) {
-        this.callouts[callout].dispose();
-      }
-
-      this.element = null;
-      delete(this); // no idea if this works
-    },
-
-    // Find all the callouts and instantiate them
-    //
-    buildCallouts: function() {
-      var callouts = this.element.find('div.hero-gallery-callout');
-      this.callouts = [];
-      callouts.each(this.addCallout.bind(this));
-    },
-
-    // Find all the HotRegions and instantiate them
-    //
-    buildHotRegions: function() {
-      var hotRegions = this.element.find('.hot-region');
-      this.hotRegions = [];
-      hotRegions.each(this.addHotRegion.bind(this));
-    },
-
-    // Find all the ctas and instantiate them
-    //
-    buildCtas: function() {
-      var ctas = this.element.find('.hero-cta');
-      this.ctas = [];
-      ctas.each(this.addCta.bind(this));
-    }
-
-  };
-
-  var AbstractCalloutLogic = {
-    element: null,
-    showing: false,
-
-    activateMarker: function() {
+    Callout.prototype.activateMarker = function() {
       this.markerIndicator.addClass('active');
-      this.markerCircle.animate({top: 0, left: 0, width: this.markerSize, height: this.markerSize}, 200, 'easeInOutSine')
-    },
+      return this.markerCircle.animate({
+        top: 0,
+        left: 0,
+        width: this.markerSize,
+        height: this.markerSize
+      }, 200, 'easeInOutSine');
+    };
 
-    deactivateMarker: function() {
+    Callout.prototype.deactivateMarker = function() {
       this.markerIndicator.removeClass('active');
-      this.markerCircle.animate({top: this.markerSize / 2, left: this.markerSize / 2, width: 0, height: 0}, 200, 'easeInOutSine')
-    }
-  };
+      return this.markerCircle.animate({
+        top: this.markerSize / 2,
+        left: this.markerSize / 2,
+        width: 0,
+        height: 0
+      }, 200, 'easeInOutSine');
+    };
 
-  // exposed for traditional usage patterns and specs
-  $.TNF.BRAND.HeroGallery = Gallery;
-  $.TNF.BRAND.HeroGallery.AbstractItemLogic = AbstractItemLogic;
-  $.TNF.BRAND.HeroGallery.AbstractCalloutLogic = AbstractCalloutLogic;
+    return Callout;
 
-}(jQuery));
+  })();
 
-(function($) {
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  var Standard = {};
+  $.TNF.BRAND.HeroGallery.Standard.Callout = (function(_super) {
 
-  //********************************************************//
-  /* Hero Galleries contain many Items.  This is for them.  Items have specific
-   * markup, so check specs to see what that markup should look like.
-   *
-   * Items can have flyouts, and any number of callouts.
-   *
-   * @element - a jQuery element object (eg. $('#element').first())
-   */
-  //********************************************************//
+    __extends(Callout, _super);
 
-  Standard.Item = {
-
-    build: function() {
-      this.content = this.element.find('div.hero-gallery-item-content');
-
-      // find the flyout
-      this.flyout = this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right').first();
-      if (this.flyout.length) {
-        this.flyout.append('<a class="hero-gallery-flyout-close"></a>');
-
-        this.flyoutWidth = parseInt(this.flyout.attr('data-width'));
-        setTimeout(function() {
-          this.flyout.css('background-image', 'url(' + this.flyout.attr('data-background') + ')');
-        }.bind(this), 1000);
-        this.flyoutSide = this.flyout.hasClass('hero-gallery-flyout-left') ? 'left' : 'right';
-      }
-
-      this.buildCallouts();
-      this.element.trigger('loaded_TNF_heroSpot', this);
-    },
-
-    // Adds a newly-initialized callout to collection of callouts
-    //
-    // Arguments:
-    //  - index (optional) - Accepts index argument only to conform to iterator
-    //                       callback expected signature.
-    //  - element          - DOM element from which to build the callout.
-    //
-    addCallout: function(index, el) {
-      if (arguments.length == 1) { el = arguments[0]; }
-      var callout = new Standard.Callout($(el));
-      this.callouts.push(callout);
-      return callout;
-    },
-
-    setupObservers: function() {
-      this.activateRollover();
-      this.activateCtaRollover();
-
-      // make the call to action open the flyout
-      $('.hot-region, .cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
-        var element = $(e.currentTarget);
-        if (element.data('embed-code')) {
-          e.preventDefault();
-          this.embedCode = element.data('embed-code');
-          this.adjustVideoSpace(true);
-        } else if (element.data('flyout-link')) {
-          e.preventDefault();
-          this.showFlyout();
-        }
-      }.bind(this));
-
-      this.element.find('a.hero-gallery-flyout-close').click(function() {
-        this.hideFlyout();
-      }.bind(this));
-
-      $("body").bind('hero_gallery_popup_opened', function() {
-        if (this.flyoutVisible) this.hideFlyout();
-      }.bind(this));
-
-      // listen for pagination, so we can hide our flyout etc.
-      $("body").bind('hero_gallery_paged', function() {
-        if (this.flyoutVisible) this.hideFlyout(true);
-      }.bind(this));
-    },
-
-    showFlyout: function() {
-      if (!this.flyout) return;
-      $("body").trigger({type: 'hero_gallery_flyout_opened', item: this});
-
-      var animation = {};
-      animation[this.flyoutSide] = 0;
-
-      this.showFlyoutIEBranch();
-
-      this.flyout.css(this.flyoutSide, -this.flyoutWidth).width(this.flyoutWidth).css('display', 'block');
-      this.flyout.animate(animation, 200, 'easeInOutSine');
-      this.flyoutVisible = true;
-    },
-
-    hideFlyout: function(instant) {
-      if (!this.flyout) return;
-      $("body").trigger({type: 'hero_gallery_flyout_closed', item: this, instant: instant});
-
-      var animation = {};
-      animation[this.flyoutSide] = -this.flyoutWidth;
-
-      this.hideFlyoutIEBranch();
-
-      this.flyout.animate(animation, 200, 'easeInOutSine', function() {
-        this.flyout.hide();
-      }.bind(this));
-
-      this.flyoutVisible = false;
-    }
-  };
-
-  Standard.Item = Class.create($.extend(Standard.Item, $.TNF.BRAND.HeroGallery.AbstractItemLogic));
-
-  /* Items contain many Callouts.  Callouts are simply divs with some content,
-   * a top and left, and the rest of the markup is built for you.
-   *
-   * @element - a jQuery element object (eg. $('#element').first())
-   */
-
-  Standard.Callout = {
-
-    initialize: function(element) {
+    function Callout(element) {
       this.element = element;
+      this.fadePopup = __bind(this.fadePopup, this);
 
-      // get the parent element and it's width/height for positioning popups
-      this.parentElement = element.parent();
+      this.showPopup = __bind(this.showPopup, this);
+
+      this.body = $('body');
+      this.parentElement = this.element.parent();
       this.containerWidth = this.parentElement.width();
       this.containerHeight = this.parentElement.height();
-
       this.build();
       this.setupObservers();
-    },
+    }
 
-    build: function() {
+    Callout.prototype.build = function() {
       this.position = this.element.position();
-
-      // add the marker
       this.parentElement.append('<div class="hero-gallery-callout-marker"><em></em><a></a></div>');
-
-      // add the popup
-      this.parentElement.append('\
-        <div class="hero-gallery-callout-popup">\
-          <div class="hero-gallery-callout-popup-content"></div>\
-          <a class="hero-gallery-callout-popup-close"></a>\
-          <div class="hero-gallery-callout-popup-arrow"></div>\
-        </div>');
-
-      // find the marker and get it's width
+      this.parentElement.append("<div class=\"hero-gallery-callout-popup\">\n  <div class=\"hero-gallery-callout-popup-content\"></div>\n  <a class=\"hero-gallery-callout-popup-close\"></a>\n  <div class=\"hero-gallery-callout-popup-arrow\"></div>\n</div>");
       this.marker = this.parentElement.find('div.hero-gallery-callout-marker:last');
       this.markerCircle = this.marker.find('em');
       this.markerIndicator = this.marker.find('a');
-
-      // find the popup
       this.popup = this.parentElement.find('div.hero-gallery-callout-popup:last');
-
-      // get the size of the marker and where it's center is
       this.markerSize = this.marker.width();
-
-      // position the marker
-      this.marker
-        .css('top', this.position['top'] - (this.markerSize / 2))
-        .css('left', this.position['left'] - (this.markerSize / 2));
-
-      // position the marker circle
-      this.markerCircle
-        .css('top', this.markerSize / 2)
-        .css('left', this.markerSize / 2);
-
-      // fill the popup and position it
+      this.marker.css('top', this.position['top'] - (this.markerSize / 2)).css('left', this.position['left'] - (this.markerSize / 2));
+      this.markerCircle.css('top', this.markerSize / 2).css('left', this.markerSize / 2);
       this.contentElement = this.element.clone().css('top', 0).css('left', 0).css('visibility', 'visible').css('position', 'static');
       this.popup.find('div.hero-gallery-callout-popup-content').append(this.contentElement);
-      this.positionPopup();
-    },
+      return this.positionPopup();
+    };
 
-    setupObservers: function() {
-      $("body").bind('hero_gallery_popup_opened', this.fadePopup.bind(this));
-      $("body").bind('hero_gallery_flyout_opened', this.fadePopup.bind(this));
-      $("body").bind('hero_gallery_paged', this.fadePopup.bind(this));
-
+    Callout.prototype.setupObservers = function() {
+      var _this = this;
+      this.body.bind('hero_gallery_popup_opened', this.fadePopup);
+      this.body.bind('hero_gallery_flyout_opened', this.fadePopup);
+      this.body.bind('hero_gallery_paged', this.fadePopup);
       this.markerIndicator.bind('mouseover', function() {
-        this.markerCircle.animate({top: 0, left: 0, width: this.markerSize, height: this.markerSize}, 100, 'easeInOutSine')
-      }.bind(this));
-
+        return _this.markerCircle.animate({
+          top: 0,
+          left: 0,
+          width: _this.markerSize,
+          height: _this.markerSize
+        }, 100, 'easeInOutSine');
+      });
       this.markerIndicator.bind('mouseout', function() {
-        if (this.showing) return;
-        this.deactivateMarker();
-      }.bind(this));
+        if (_this.showing) {
+          return;
+        }
+        return _this.deactivateMarker();
+      });
+      this.markerIndicator.bind('click', this.showPopup);
+      return this.popup.find('a.hero-gallery-callout-popup-close').click(this.fadePopup);
+    };
 
-      this.markerIndicator.bind('click', this.showPopup.bind(this));
-      this.popup.find('a.hero-gallery-callout-popup-close').click(this.fadePopup.bind(this));
-    },
-
-    positionPopup: function() {
-      var popupWidth = this.popup.outerWidth(),
-          popupHeight = this.popup.outerHeight(),
-          markerSpacing = (this.markerSize / 2),
-          threshold = 10,
-          left = 0,
-          top = 0;
-
-      // REFACTOR: Mixing of concerns
-      // REFACTOR: WAY too much branching logic
+    Callout.prototype.positionPopup = function() {
+      var left, markerSpacing, popupHeight, popupWidth, threshold, top;
+      popupWidth = this.popup.outerWidth();
+      popupHeight = this.popup.outerHeight();
+      markerSpacing = this.markerSize / 2;
+      threshold = 10;
+      left = 0;
+      top = 0;
       if (this.element.parents('.linked-carousel').length > 0) {
-        // Default "textured" callouts to the left
-        top  = this.position['top'] - (popupHeight / 2);
+        top = this.position['top'] - (popupHeight / 2);
         left = this.position['left'] - popupWidth;
-
-        // 2nd choice for "textured" callouts is to the right
-        if (left < threshold) { left = this.position['left']; }
-        if (top <= threshold) { top = threshold; }
-
+        if (left < threshold) {
+          left = this.position['left'];
+        }
+        if (top <= threshold) {
+          top = threshold;
+        }
       } else {
-        // find the top, and adjust if there isn't enough room
         top = this.position['top'] - popupHeight - markerSpacing;
-
         if (top <= threshold) {
           top = this.position['top'] + markerSpacing;
-
-          // not enough room below, so move to the right
           if (top + popupHeight + markerSpacing > this.containerHeight) {
-
             top = (this.containerHeight - popupHeight) / 2;
             if (top <= threshold) {
               top = threshold;
             }
             left = this.position['left'] + markerSpacing;
-
-            // not enough room on the right, so move to the left
             if (left + popupWidth + markerSpacing > this.containerWidth) {
-
               top = (this.containerHeight - popupHeight) / 2;
               if (top <= threshold) {
                 top = threshold;
               }
               left = this.position['left'] - popupWidth - markerSpacing;
-
               this.popup.addClass('hero-gallery-callout-popup-left');
               this.setArrowTop(top);
             } else {
               this.popup.addClass('hero-gallery-callout-popup-right');
               this.setArrowTop(top);
             }
-
           } else {
             left = this.positionPopupLeft(popupWidth);
             this.popup.addClass('hero-gallery-callout-popup-bottom');
           }
-
         } else {
           left = this.positionPopupLeft(popupWidth);
           this.popup.addClass('hero-gallery-callout-popup-top');
         }
       }
+      return this.popup.css('top', top).css('left', left).css('display', 'none');
+    };
 
-      // position the popup
-      this.popup.css('top', top).css('left', left).css('display', 'none');
-    },
+    Callout.prototype.setArrowTop = function(top) {
+      var arrowTop;
+      arrowTop = (this.position['top'] - top) - 8;
+      return this.popup.find('div.hero-gallery-callout-popup-arrow').css('top', arrowTop);
+    };
 
-    setArrowTop: function(top) {
-      var arrowTop = (this.position['top'] - top) - 8;
-      this.popup.find('div.hero-gallery-callout-popup-arrow').css('top', arrowTop);
-    },
-
-    positionPopupLeft: function(width) {
-      var left = this.position['left'] - (width / 2);
-      if (left <= 10) left = 10;
-      if (left + width >= this.containerWidth - 10) left = this.containerWidth - width - 10;
-
-      var arrowLeft = (this.position['left'] - left) - 8;
-      if (arrowLeft < 6) arrowLeft = 6;
+    Callout.prototype.positionPopupLeft = function(width) {
+      var arrowLeft, left;
+      left = this.position['left'] - (width / 2);
+      if (left <= 10) {
+        left = 10;
+      }
+      if (left + width >= this.containerWidth - 10) {
+        left = this.containerWidth - width - 10;
+      }
+      arrowLeft = (this.position['left'] - left) - 8;
+      if (arrowLeft < 6) {
+        arrowLeft = 6;
+      }
       this.popup.find('div.hero-gallery-callout-popup-arrow').css('left', arrowLeft);
-
       return left;
-    },
+    };
 
-    showPopup: function() {
+    Callout.prototype.showPopup = function() {
       if (this.showing) {
         this.hidePopup();
         return;
       }
-
-      $("body").trigger({type: 'hero_gallery_popup_opened', callout: this});
+      this.body.trigger({
+        type: 'hero_gallery_popup_opened',
+        callout: this
+      });
       this.activateMarker();
-
       this.popup.css('opacity', 0).css('display', 'block');
-      this.popup.animate({opacity: 1}, 200, 'easeInOutSine');
-      this.showing = true;
-    },
+      this.popup.animate({
+        opacity: 1
+      }, 200, 'easeInOutSine');
+      return this.showing = true;
+    };
 
-    hidePopup: function() {
-      $("body").trigger({type: 'hero_gallery_popup_closed', callout: this});
-
+    Callout.prototype.hidePopup = function() {
+      var _this = this;
+      this.body.trigger({
+        type: 'hero_gallery_popup_closed',
+        callout: this
+      });
       this.deactivateMarker();
-      this.popup.animate({opacity: 0}, 200, 'easeInOutSine', function() {
-        this.popup.css('display', 'none');
-      }.bind(this));
-      this.showing = false;
-    },
+      this.popup.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.popup.css('display', 'none');
+      });
+      return this.showing = false;
+    };
 
-    fadePopup: function() {
-      if (!this.showing) return;
-
-      $("body").trigger({type: 'hero_gallery_popup_closed', callout: this});
+    Callout.prototype.fadePopup = function() {
+      var _this = this;
+      if (!this.showing) {
+        return;
+      }
+      this.body.trigger({
+        type: 'hero_gallery_popup_closed',
+        callout: this
+      });
       this.deactivateMarker();
-      this.popup.animate({opacity: 0}, 200, 'easeInOutSine', function() {
-        this.popup.css('display', 'none');
-      }.bind(this));
-      this.showing = false;
-    },
+      this.popup.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.popup.css('display', 'none');
+      });
+      return this.showing = false;
+    };
 
-    dispose: function() {
+    Callout.prototype.dispose = function() {
       this.marker.remove();
       this.popup.remove();
+      return this.element = null;
+    };
 
-      this.element = null;
-      delete(this); // no idea if this works
+    return Callout;
+
+  })($.TNF.BRAND.HeroGallery.Callout);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.HeroGallery.Item = (function() {
+
+    Item.prototype.videoInterfaceContainer = null;
+
+    Item.prototype.element = null;
+
+    Item.prototype.flyoutVisible = false;
+
+    function Item(element) {
+      this.element = element;
+      this.adjustVideoSpace = __bind(this.adjustVideoSpace, this);
+
+      this.showVideo = __bind(this.showVideo, this);
+
+      this.restoreDefaultImage = __bind(this.restoreDefaultImage, this);
+
+      this.revealRolloverImage = __bind(this.revealRolloverImage, this);
+
+      this.setupRolloverObservers = __bind(this.setupRolloverObservers, this);
+
+      this.handleCtaRollout = __bind(this.handleCtaRollout, this);
+
+      this.handleCtaRollover = __bind(this.handleCtaRollover, this);
+
+      this.addHotRegion = __bind(this.addHotRegion, this);
+
+      this.addCta = __bind(this.addCta, this);
+
+      this.id = this.element.attr('id').split('herospot-')[1];
+      this.build();
+      this.buildCtas();
+      this.buildHotRegions();
+      this.setupObservers();
+      this.gallery = $(this.element).parent().parent('.hero-gallery');
+      this.galleryHeight = this.gallery.outerHeight();
+      this.videoInterfaceContainer = $('.hero-gallery-video-interface', this.gallery);
+      this.embedCode = '';
     }
-  };
 
-  Standard.Callout = Class.create($.TNF.BRAND.HeroGallery.AbstractCalloutLogic, Standard.Callout);
+    Item.prototype.addCta = function(index, el) {
+      if (arguments.length === 1) {
+        el = arguments[0];
+      }
+      this.ctas.push(el);
+      return el;
+    };
 
-  // exposed for traditional usage patterns and specs
-  $.TNF.BRAND.HeroGallery.Standard = {Item: Standard.Item, Callout: Standard.Callout};
+    Item.prototype.addHotRegion = function(index, el) {
+      if (arguments.length === 1) {
+        el = arguments[0];
+      }
+      this.hotRegions.push(el);
+      return el;
+    };
 
-}(jQuery));
-(function($) {
+    Item.prototype.activateCtaRollover = function() {
+      var ctas;
+      ctas = $(this.element).find('.hero-cta a');
+      ctas.bind('mouseover', this.handleCtaRollover);
+      return ctas.bind('mouseout', this.handleCtaRollout);
+    };
 
-  var Rotator = {};
+    Item.prototype.handleCtaRollover = function(event) {
+      var anchor, color;
+      anchor = $(event.target).parent();
+      color = anchor.data('text-color-rollover');
+      return anchor.find('.hero-text').css('color', color);
+    };
 
-  //********************************************************//
-  /* Hero Galleries contain many Items.  This is for them.  Items have specific
-   * markup, so check specs to see what that markup should look like.
-   *
-   * Items can have flyouts, and any number of callouts.
-   *
-   * @element - a jQuery element object (eg. $('#element').first())
-   */
-  //********************************************************//
+    Item.prototype.handleCtaRollout = function(event) {
+      var anchor, color;
+      anchor = $(event.target).parent();
+      color = anchor.data('text-color');
+      return anchor.find('.hero-text').css('color', color);
+    };
 
-  Rotator.Item = {
+    Item.prototype.activateRollover = function() {
+      var rolloverImage, rolloverImageSrc;
+      rolloverImageSrc = this.element.attr('data-rollover-image');
+      if (rolloverImageSrc != null) {
+        rolloverImage = new Image();
+        rolloverImage.src = rolloverImageSrc;
+        this.rolloverImage = "url(" + rolloverImageSrc + ")";
+        this.defaultImage = this.element.css('background-image');
+        return $(rolloverImage).load(this.setupRolloverObservers);
+      }
+    };
 
-    build: function() {
-      this.images = $.parseJSON(this.element.attr('data-image-paths'));
-      this.totalFrames = this.images.length;
+    Item.prototype.setupRolloverObservers = function() {
+      this.element.bind('mouseover', this.revealRolloverImage);
+      return this.element.bind('mouseout', this.restoreDefaultImage);
+    };
+
+    Item.prototype.revealRolloverImage = function(event) {
+      return this.element.css('background-image', this.rolloverImage);
+    };
+
+    Item.prototype.restoreDefaultImage = function(event) {
+      return this.element.css('background-image', this.defaultImage);
+    };
+
+    Item.prototype.showFlyoutIEBranch = function() {
+      var _this = this;
+      if ($.browser.msie && parseInt($.browser.version, 10) <= 7) {
+        return this.content.hide();
+      } else {
+        return this.content.animate({
+          'opacity': 0
+        }, 200, 'easeInOutSine', function() {
+          return _this.content.css('display', 'none');
+        });
+      }
+    };
+
+    Item.prototype.hideFlyoutIEBranch = function() {
+      if ($.browser.msie && parseInt($.browser.version, 10) <= 7) {
+        return this.content.show();
+      } else {
+        this.content.css('display', 'block');
+        return this.content.animate({
+          'opacity': 1
+        }, 200, 'easeInOutSine');
+      }
+    };
+
+    Item.prototype.hideVideo = function() {
+      this.videoInterface.pause();
+      return this.videoInterfaceContainer.fadeOut(this.adjustVideoSpace);
+    };
+
+    Item.prototype.showVideo = function() {
+      var _this = this;
+      this.videoInterfaceContainer.append('<a class="video-interface-close"></a>');
+      $('a.video-interface-close', this.videoInterfaceContainer).click(function(e) {
+        e.preventDefault();
+        _this.hideVideo();
+        if (TNF.ipad) {
+          _this.videoInterfaceContainer.animate({
+            "padding-top": '0px'
+          });
+          return $('a.video-interface-close').css({
+            "border-radius": '0 0 0 10px'
+          });
+        }
+      });
+      if (TNF.ipad) {
+        this.videoInterfaceContainer.animate({
+          "padding-top": '35px'
+        });
+        $('a.video-interface-close').css({
+          "border-radius": '10px 10px 0 0'
+        });
+      }
+      return this.videoInterface.play();
+    };
+
+    Item.prototype.unloadVideo = function() {
+      $(this.videoInterfaceContainer).children().unbind();
+      return $(this.videoInterfaceContainer).empty();
+    };
+
+    Item.prototype.loadVideo = function() {
+      this.videoInterfaceContainer.css({
+        zIndex: 9120,
+        display: 'block',
+        visibility: 'visible'
+      });
+      return this.videoInterface = $.TNF.BRAND.videoInterface.factory({
+        container: $(this.videoInterfaceContainer),
+        width: 956,
+        height: 538,
+        embedCode: this.embedCode,
+        onLoad: this.showVideo
+      });
+    };
+
+    Item.prototype.adjustVideoSpace = function(insert) {
+      var playerCont, videoHeight,
+        _this = this;
+      videoHeight = 538;
+      playerCont = $('.player-container', this.gallery);
+      if (TNF.ipad) {
+        videoHeight = videoHeight + 35;
+      }
+      if (insert) {
+        return $(this.element).parent().fadeOut('fast', function() {
+          return _this.gallery.animate({
+            height: videoHeight
+          }, 1000, function() {
+            _this.loadVideo();
+            if (TNF.ipad) {
+              playerCont.animate({
+                paddingTop: '0px'
+              });
+              return $('a.video-interface-close', playerCont).css({
+                "border-radius": '0 0 0 10px'
+              });
+            }
+          });
+        });
+      } else {
+        return this.gallery.animate({
+          height: this.galleryHeight
+        }, 1000, function() {
+          var contentBox, oldPosition;
+          contentBox = _this.gallery.closest('.content-box');
+          oldPosition = contentBox.css('position');
+          contentBox.css({
+            position: 'relative'
+          });
+          contentBox.css({
+            position: oldPosition
+          });
+          return $(_this.element).parent().fadeIn('fast', function() {
+            _this.unloadVideo();
+            if (TNF.ipad) {
+              playerCont.animate({
+                'padding-top': '0px'
+              });
+              return $('a.video-interface-close', playerCont).css({
+                "border-radius": '0 0 0 10px'
+              });
+            }
+          });
+        });
+      }
+    };
+
+    Item.prototype.dispose = function() {
+      var callout, _i, _len, _ref;
+      this.element.find('a.arrow-box').unbind('click');
+      this.element.find('a.hero-gallery-flyout-close').remove();
+      _ref = this.callouts;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        callout = _ref[_i];
+        this.callouts[callout].dispose();
+      }
+      return this.element = null;
+    };
+
+    Item.prototype.buildCallouts = function() {
+      var callouts;
+      callouts = this.element.find('div.hero-gallery-callout');
+      this.callouts = [];
+      return callouts.each(this.addCallout);
+    };
+
+    Item.prototype.buildHotRegions = function() {
+      var hotRegions;
+      hotRegions = this.element.find('.hot-region');
+      this.hotRegions = [];
+      return hotRegions.each(this.addHotRegion);
+    };
+
+    Item.prototype.buildCtas = function() {
+      var ctas;
+      ctas = this.element.find('.hero-cta');
+      this.ctas = [];
+      return ctas.each(this.addCta);
+    };
+
+    return Item;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery.Standard.Item = (function(_super) {
+
+    __extends(Item, _super);
+
+    function Item() {
+      this.handleCtaClick = __bind(this.handleCtaClick, this);
+
+      this.addCallout = __bind(this.addCallout, this);
+      return Item.__super__.constructor.apply(this, arguments);
+    }
+
+    Item.prototype.build = function() {
       this.content = this.element.find('div.hero-gallery-item-content');
+      this.flyout = new $.TNF.BRAND.HeroGallery.Flyout(this, this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right').first());
+      this.buildCallouts();
+      return this.element.trigger('loaded_TNF_heroSpot', this);
+    };
 
-      // add the flyout
-      this.flyout = this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right', this.element).first();
-      this.flyoutClose = $('<a>', {'class': 'hero-gallery-flyout-close'}).appendTo(this.flyout);
+    Item.prototype.addCallout = function(index, el) {
+      var callout;
+      if (arguments.length === 1) {
+        el = arguments[0];
+      }
+      callout = new $.TNF.BRAND.HeroGallery.Standard.Callout($(el));
+      this.callouts.push(callout);
+      return callout;
+    };
 
-      this.flyoutWidth = parseInt(this.flyout.attr('data-width')) || 660;
-      this.flyoutSide = this.flyout.hasClass('hero-gallery-flyout-left') ? 'left' : 'right';
-
-      var rotatorContainer = $('.hero-gallery-rotator-container', this.element);
-      this.rotator = $('.hero-gallery-rotator', rotatorContainer);
-      this.loader = $('.hero-gallery-rotator-loading', rotatorContainer);
-      this.image = $('img', this.rotator);
-      this.activeIndex = 0;
-
-      // preloading calls through to finishLoading when it's complete
-      this.preload();
-    },
-
-    setupObservers: function() {
+    Item.prototype.setupObservers = function() {
       this.activateRollover();
       this.activateCtaRollover();
+      return $('.hot-region, .cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(this.handleCtaClick);
+    };
 
-      // make the call to action open the flyout
-      $('.cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
-        var element = $(e.currentTarget);
-        if (element.data('embed-code')) {
-          e.preventDefault();
-          this.embedCode = element.data('embed-code');
-          this.adjustVideoSpace(true);
-        } else if (element.data('flyout-link')) {
-          e.preventDefault();
-          this.showFlyout();
-        }
-      }.bind(this));
-
-      this.element.find('a.hero-gallery-flyout-close').click(function() {
-        this.hideFlyout();
-      }.bind(this));
-
-      this.element.bind('mousedown', function(e) {
-        this.gallery.data('hero_gallery').stopAutoRotation();
-        this.isTracking(e, true);
-      }.bind(this));
-      this.element.bind('mouseup', function(e) { this.isTracking(e, false); }.bind(this));
-      this.element.bind('mousemove', function(e) { this.tracking(e); }.bind(this));
-    },
-
-    finishLoading: function() {
-      this.stepDistance = 30;
-      this.buildCallouts()
-      this.loader.hide();
-      this.element.trigger('loaded_TNF_heroSpot', this);
-    },
-
-    // Adds a newly-initialized callout to collection of callouts
-    //
-    // Arguments:
-    //  - index (optional) - Accepts index argument only to conform to iterator
-    //                       callback expected signature.
-    //  - element          - DOM element from which to build the callout.
-    //
-    addCallout: function(index, el) {
-      if (arguments.length == 1) { el = arguments[0]; }
-
-      var center = this.image.width() / 2,
-          element = $(el),
-          rotator = new Rotator.Callout(element, center, this);
-
-      element.css({top: '', left: '', visibility: 'visible', display: 'none'});
-
-      this.callouts.push(rotator);
-
-      return rotator;
-    },
-
-    isTracking: function(e, b) {
-      if (b) e.preventDefault();
-      this.mouseTracking = b;
-      this.startingPageX = e.pageX;
-    },
-
-    tracking: function(e) {
-      e.preventDefault();
-
-      if (!this.mouseTracking) return;
-
-      var moved = this.startingPageX - e.pageX;
-      var direction = moved > 0 ? -1 : 1;
-      if (Math.abs(moved) >= this.stepDistance) {
-        this.startingPageX = e.pageX;
-        this.activeIndex += direction;
-
-        if (this.activeIndex >= this.images.length) {
-          this.activeIndex = 0;
-        } else if (this.activeIndex < 0) {
-          this.activeIndex = this.images.length - 1;
-        }
-
-        this.image.attr('src', this.images[this.activeIndex]);
-
-        for (var i = 0, length = this.callouts.length; i < length; i += 1) {
-          this.callouts[i].position(this.activeIndex);
-        }
+    Item.prototype.handleCtaClick = function(e) {
+      var element;
+      element = $(e.currentTarget);
+      if (element.data('embed-code')) {
+        e.preventDefault();
+        this.embedCode = element.data('embed-code');
+        return this.adjustVideoSpace(true);
+      } else if (element.data('flyout-link')) {
+        e.preventDefault();
+        return this.flyout.show();
       }
-    },
+    };
 
-    preload: function() {
-      var loadedImages = 0;
-      var imageErrors = 0;
-      var imageQueue = [];
+    return Item;
 
-      for (var i = 1, length = this.images.length; i < length; i += 1) {
-        var image = $(new Image());
-        image.bind('load', (function(scope) {
-          return function() {
-            loadedImages += 1;
-            imageQueue.push($(this));
+  })($.TNF.BRAND.HeroGallery.Item);
 
-            if (loadedImages === scope.images.length - 1) {
-              scope.finishLoading();
-              scope.cleanupImages(imageQueue);
-            }
-          };
-        })(this));
+}).call(this);
 
-        image.bind('error', (function(scope) {
-          return function() {
-            imageQueue.push($(this));
-            imageErrors += 1;
-            if (imageErrors === 2) {
-              //TODO
-            }
-          };
-        })(this));
+$.TNF.BRAND.HeroGallery.Rotator = {};
 
-        image.attr({src: this.images[i]});
-      }
-    },
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-    cleanupImages: function(images) {
-      for (var i = 0, length = images.length; i < length; i += 1) {
-        images[i].unbind();
-        delete(images[i]);
-      }
-    },
+  $.TNF.BRAND.HeroGallery.Rotator.Callout = (function(_super) {
 
-    showFlyout: function(activeCallout) {
+    __extends(Callout, _super);
 
-      if (this.activeCallout && this.activeCallout == activeCallout) {
-        return false;
-      } else if (this.activeCallout && this.activeCallout != activeCallout) {
-        this.activeCallout.hide();
-      }
-
-      if (activeCallout) {
-        this.activeCallout = activeCallout;
-        activeCallout.show();
-      }
-
-      if (this.flyoutVisible) return;
-
-      $("body").trigger({type: 'hero_gallery_flyout_opened', item: this});
-
-      var animation = {};
-      animation[this.flyoutSide] = -32;
-
-      this.showFlyoutIEBranch();
-
-      this.flyout.css(this.flyoutSide, -this.flyoutWidth).width(this.flyoutWidth).css('display', 'block');
-      this.flyout.animate(animation, 200, 'easeInOutSine', function() {
-        this.flyoutClose.fadeIn(200);
-      }.bind(this));
-
-      this.flyoutVisible = true;
-    },
-
-    hideFlyout: function(instant) {
-      if (!this.flyoutVisible) return;
-
-      if (this.activeCallout) {
-        this.activeCallout.hide();
-        this.activeCallout = false;
-      }
-
-      $("body").trigger({type: 'hero_gallery_flyout_closed', item: this, instant: instant});
-
-      var animation = {};
-      animation[this.flyoutSide] = -this.flyoutWidth - 32;
-
-      this.content.css('display', 'block');
-
-      this.hideFlyoutIEBranch();
-
-      this.flyoutClose.hide();
-      this.flyout.animate(animation, 200, 'easeInOutSine');
-
-      this.flyoutVisible = false;
-    }
-  };
-
-  Rotator.Item = Class.create($.extend(Rotator.Item, $.TNF.BRAND.HeroGallery.AbstractItemLogic));
-
-  /* Items contain many Callouts.  Callouts are simply divs with some content,
-   * a top and left, and the rest of the markup is built for you.
-   *
-   * @element - a jQuery element object (eg. $('#element').first())
-   */
-
-  Rotator.Callout = {
-
-    initialize: function(element, center, item) {
+    function Callout(element, center, item) {
       this.element = element;
       this.item = item;
-
       this.radius = Math.abs(center - parseInt(this.element.css('left'), 10));
       this.center = center;
       this.totalFrames = this.item.images.length;
       this.rotator = this.item.rotator;
       this.y = this.element.css('top');
-
       this.build();
       this.setupObservers();
-    },
+    }
 
-    build: function() {
+    Callout.prototype.build = function() {
       this.initialPosition = this.element.position();
-
-      // add the marker
       this.rotator.append('<div class="hero-gallery-callout-marker"><em></em><a></a></div>');
       this.rotator.append('<div class="hero-gallery-callout-marker-interaction"></div>');
-
-      // find the marker and get it's width
       this.marker = this.rotator.find('div.hero-gallery-callout-marker:last');
       this.markerCircle = this.marker.find('em');
       this.markerIndicator = this.marker.find('a');
-
-      // get the size of the marker and where it's center is
       this.markerSize = this.marker.width();
+      this.markerInteraction = this.rotator.find('div.hero-gallery-callout-marker-interaction:last').css({
+        zIndex: 30,
+        top: this.initialPosition['top'] - (this.markerSize / 2)
+      }).css({
+        left: this.initialPosition['left'] - (this.markerSize / 2),
+        width: 30,
+        height: 30
+      }).css({
+        position: 'absolute'
+      });
+      this.marker.css('top', this.initialPosition['top'] - (this.markerSize / 2)).css('left', this.initialPosition['left'] - (this.markerSize / 2));
+      return this.markerCircle.css('top', this.markerSize / 2).css('left', this.markerSize / 2);
+    };
 
-      this.markerInteraction = this.rotator.find('div.hero-gallery-callout-marker-interaction:last')
-          .css({zIndex: 30, top: this.initialPosition['top'] - (this.markerSize / 2)})
-          .css({left: this.initialPosition['left'] - (this.markerSize / 2), width: 30, height: 30})
-          .css({position: 'absolute'});
-
-      // position the marker
-      this.marker
-        .css('top', this.initialPosition['top'] - (this.markerSize / 2))
-        .css('left', this.initialPosition['left'] - (this.markerSize / 2));
-
-      // position the marker circle
-      this.markerCircle
-        .css('top', this.markerSize / 2)
-        .css('left', this.markerSize / 2);
-    },
-
-    setupObservers: function() {
+    Callout.prototype.setupObservers = function() {
+      var _this = this;
       this.markerInteraction.bind('mouseover', function() {
-        this.markerCircle.animate({top: 0, left: 0, width: this.markerSize, height: this.markerSize}, 100, 'easeInOutSine');
-      }.bind(this));
-
+        return _this.markerCircle.animate({
+          top: 0,
+          left: 0,
+          width: _this.markerSize,
+          height: _this.markerSize
+        }, 100, 'easeInOutSine');
+      });
       this.markerInteraction.bind('mouseout', function() {
-        if (this.showing) return;
-        this.deactivateMarker();
-      }.bind(this));
+        if (_this.showing) {
+          return;
+        }
+        return _this.deactivateMarker();
+      });
+      return this.markerInteraction.bind('click', function() {
+        return _this.item.showFlyout(_this);
+      });
+    };
 
-      this.markerInteraction.bind('click', function() {
-        this.item.showFlyout(this);
-      }.bind(this));
-    },
-
-    show: function(instant) {
+    Callout.prototype.show = function(instant) {
       this.showing = true;
       this.activateMarker();
-      this.element.fadeIn();
-    },
+      return this.element.fadeIn();
+    };
 
-    hide: function(instant) {
+    Callout.prototype.hide = function(instant) {
       this.showing = false;
       this.deactivateMarker();
-      this.element.fadeOut();
-    },
+      return this.element.fadeOut();
+    };
 
-    position: function(frameIndex) {
-      var x = Math.floor(this.radius * Math.cos(2 * Math.PI * frameIndex / this.totalFrames));
-      var y = Math.floor(this.radius * Math.sin(2 * Math.PI * frameIndex / this.totalFrames));
-      var called;
-      var callback = function() {
-        var z = (y * -1) <= 0 ? 1 : 20;
-        this.marker.css({zIndex: z});
-      }.bind(this);
-
+    Callout.prototype.position = function(frameIndex) {
+      var callback, called, x, y,
+        _this = this;
+      x = Math.floor(this.radius * Math.cos(2 * Math.PI * frameIndex / this.totalFrames));
+      y = Math.floor(this.radius * Math.sin(2 * Math.PI * frameIndex / this.totalFrames));
+      callback = function() {
+        var z, _ref;
+        z = (_ref = (y * -1) <= 0) != null ? _ref : {
+          1: 20
+        };
+        return _this.marker.css({
+          zIndex: z
+        });
+      };
       if (y < 0) {
         callback();
         called = true;
       }
+      this.markerInteraction.css({
+        left: this.center + x - (this.markerSize / 2)
+      });
+      return this.marker.stop(false, true).animate({
+        left: this.center + x - (this.markerSize / 2)
+      }, 100, function() {
+        if (!called) {
+          return callback();
+        }
+      });
+    };
 
-      this.markerInteraction.css({left: this.center + x - (this.markerSize / 2)});
-      this.marker.stop(false, true).animate({left: this.center + x - (this.markerSize / 2)}, 100, (function(y) {
-        return function () { if (!called) callback(); }
-      })(y));
+    return Callout;
+
+  })($.TNF.BRAND.HeroGallery.Callout);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery.Rotator.Item = (function(_super) {
+
+    __extends(Item, _super);
+
+    function Item() {
+      this.hideFlyout = __bind(this.hideFlyout, this);
+
+      this.handleImageLoadError = __bind(this.handleImageLoadError, this);
+
+      this.loadImage = __bind(this.loadImage, this);
+
+      this.tracking = __bind(this.tracking, this);
+
+      this.isTracking = __bind(this.isTracking, this);
+
+      this.addCallout = __bind(this.addCallout, this);
+
+      this.handleArrowBoxClick = __bind(this.handleArrowBoxClick, this);
+      return Item.__super__.constructor.apply(this, arguments);
     }
-  };
 
-  Rotator.Callout = Class.create($.TNF.BRAND.HeroGallery.AbstractCalloutLogic, Rotator.Callout);
+    Item.prototype.build = function() {
+      var rotatorContainer, _ref;
+      this.images = $.parseJSON(this.element.attr('data-image-paths'));
+      this.totalFrames = this.images.length;
+      this.content = this.element.find('div.hero-gallery-item-content');
+      this.flyout = this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right', this.element).first();
+      this.flyoutClose = $('<a>', {
+        'class': 'hero-gallery-flyout-close'
+      }).appendTo(this.flyout);
+      this.flyoutWidth = parseInt(this.flyout.attr('data-width')) || 660;
+      this.flyoutSide = (_ref = this.flyout.hasClass('hero-gallery-flyout-left')) != null ? _ref : {
+        'left': 'right'
+      };
+      rotatorContainer = $('.hero-gallery-rotator-container', this.element);
+      this.rotator = $('.hero-gallery-rotator', rotatorContainer);
+      this.loader = $('.hero-gallery-rotator-loading', rotatorContainer);
+      this.image = $('img', this.rotator);
+      this.activeIndex = 0;
+      return this.preload();
+    };
 
-  // exposed for traditional usage patterns and specs
-  $.TNF.BRAND.HeroGallery.Rotator = {Item: Rotator.Item, Callout: Rotator.Callout};
+    Item.prototype.setupObservers = function() {
+      var _this = this;
+      this.activateRollover();
+      this.activateCtaRollover();
+      $('.cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).bind('click', this.handleArrowBoxClick);
+      this.element.find('a.hero-gallery-flyout-close').bind('click', this.hideFlyout);
+      this.element.bind('mousedown', function(e) {
+        _this.gallery.data('hero_gallery').stopAutoRotation();
+        return _this.isTracking(e, true);
+      });
+      this.element.bind('mouseup', function(e) {
+        return _this.isTracking(e, false);
+      });
+      return this.element.bind('mousemove', function(e) {
+        return _this.tracking(e);
+      });
+    };
 
-}(jQuery));
+    Item.prototype.handleArrowBoxClick = function(e) {
+      var element;
+      element = $(e.currentTarget);
+      if (element.data('embed-code')) {
+        e.preventDefault();
+        this.embedCode = element.data('embed-code');
+        return this.adjustVideoSpace(true);
+      } else if (element.data('flyout-link')) {
+        e.preventDefault();
+        return this.showFlyout();
+      }
+    };
+
+    Item.prototype.finishLoading = function() {
+      this.stepDistance = 30;
+      this.buildCallouts();
+      this.loader.hide();
+      return this.element.trigger('loaded_TNF_heroSpot', this);
+    };
+
+    Item.prototype.addCallout = function(index, el) {
+      var center, element, rotator;
+      if (arguments.length === 1) {
+        el = arguments[0];
+      }
+      center = this.image.width() / 2;
+      element = $(el);
+      rotator = new Rotator.Callout(element, center, this);
+      element.css({
+        top: '',
+        left: '',
+        visibility: 'visible',
+        display: 'none'
+      });
+      this.callouts.push(rotator);
+      return rotator;
+    };
+
+    Item.prototype.isTracking = function(e, b) {
+      if (b) {
+        e.preventDefault();
+      }
+      this.mouseTracking = b;
+      return this.startingPageX = e.pageX;
+    };
+
+    Item.prototype.tracking = function(e) {
+      var callout, direction, moved, _i, _len, _ref, _ref1, _results;
+      e.preventDefault();
+      if (!this.mouseTracking) {
+        return;
+      }
+      moved = this.startingPageX - e.pageX;
+      direction = (_ref = moved > 0) != null ? _ref : -{
+        1: 1
+      };
+      if (Math.abs(moved) >= this.stepDistance) {
+        this.startingPageX = e.pageX;
+        this.activeIndex += direction;
+        if (this.activeIndex >= this.images.length) {
+          this.activeIndex = 0;
+        } else if (this.activeIndex < 0) {
+          this.activeIndex = this.images.length - 1;
+        }
+        this.image.attr('src', this.images[this.activeIndex]);
+        _ref1 = this.callouts;
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          callout = _ref1[_i];
+          _results.push(callout.position(this.activeIndex));
+        }
+        return _results;
+      }
+    };
+
+    Item.prototype.preload = function() {
+      var image, _i, _len, _ref, _results,
+        _this = this;
+      this.loadedImages = 0;
+      this.imageErrors = 0;
+      this.imageQueue = [];
+      _ref = this.images;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        image = _ref[_i];
+        _results.push((function(image) {
+          image = $(new Image());
+          image.bind('load', _this.loadImage);
+          image.bind('error', _this.handleImageLoadError);
+          return image.attr({
+            src: _this.images[_i]
+          });
+        })(image));
+      }
+      return _results;
+    };
+
+    Item.prototype.loadImage = function(image) {
+      this.loadedImages += 1;
+      this.imageQueue.push($(image));
+      if (loadedImages === this.images.length - 1) {
+        this.finishLoading();
+        return this.cleanupImages();
+      }
+    };
+
+    Item.prototype.handleImageLoadError = function(image) {
+      this.imageQueue.push($(image));
+      return this.imageErrors += 1;
+    };
+
+    Item.prototype.cleanupImages = function() {
+      var image, _i, _len, _ref, _results;
+      _ref = this.imageQueue;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        image = _ref[_i];
+        _results.push((function(image) {
+          return image.unbind();
+        })(image));
+      }
+      return _results;
+    };
+
+    Item.prototype.showFlyout = function(activeCallout) {
+      var animation,
+        _this = this;
+      if (this.activeCallout && this.activeCallout === activeCallout) {
+        return false;
+      } else if (this.activeCallout && this.activeCallout !== activeCallout) {
+        this.activeCallout.hide();
+      }
+      if (activeCallout) {
+        this.activeCallout = activeCallout;
+        activeCallout.show();
+      }
+      if (this.flyoutVisible) {
+        return;
+      }
+      $("body").trigger({
+        type: 'hero_gallery_flyout_opened',
+        item: this
+      });
+      animation = {};
+      animation[this.flyoutSide] = -32;
+      this.showFlyoutIEBranch();
+      this.flyout.css(this.flyoutSide, -this.flyoutWidth).width(this.flyoutWidth).css('display', 'block');
+      this.flyout.animate(animation, 200, 'easeInOutSine', function() {
+        return _this.flyoutClose.fadeIn(200);
+      });
+      return this.flyoutVisible = true;
+    };
+
+    Item.prototype.hideFlyout = function(instant) {
+      var animation;
+      if (!this.flyoutVisible) {
+        return;
+      }
+      if (this.activeCallout) {
+        this.activeCallout.hide();
+        this.activeCallout = false;
+      }
+      $("body").trigger({
+        type: 'hero_gallery_flyout_closed',
+        item: this,
+        instant: instant
+      });
+      animation = {};
+      animation[this.flyoutSide] = -this.flyoutWidth - 32;
+      this.content.css('display', 'block');
+      this.hideFlyoutIEBranch();
+      this.flyoutClose.hide();
+      this.flyout.animate(animation, 200, 'easeInOutSine');
+      return this.flyoutVisible = false;
+    };
+
+    return Item;
+
+  })($.TNF.BRAND.HeroGallery.Item);
+
+}).call(this);
+(function() {
+  var Flyout,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Flyout = (function() {
+
+    function Flyout(element, item) {
+      this.element = element;
+      this.item = item;
+      this.hide = __bind(this.hide, this);
+
+      this.setBackgroundImage = __bind(this.setBackgroundImage, this);
+
+      if (this.element.length > 0) {
+        this.setup();
+      }
+    }
+
+    Flyout.prototype.setup = function() {
+      this.body = $('body');
+      this.element.append('<a class="hero-gallery-flyout-close"></a>');
+      this.closeButton = this.element.find('.hero-gallery-flyout-close');
+      this.width = parseInt(this.element.attr('data-width'));
+      setTimeout(this.setBackgroundImage, 1000);
+      if (this.element.hasClass('hero-gallery-flyout-left')) {
+        this.side = 'left';
+      } else {
+        this.side = 'right';
+      }
+      return this.setupObservers();
+    };
+
+    Flyout.prototype.setupObservers = function() {
+      var _this = this;
+      this.closeButton.bind('click', this.hide);
+      this.body.bind('hero_gallery_popup_opened', this.hide);
+      return this.body.bind('hero_gallery_paged', function() {
+        return _this.hide(true);
+      });
+    };
+
+    Flyout.prototype.setBackgroundImage = function() {
+      return this.element.css('background-image', "url(" + (this.element.attr('data-background')) + ")");
+    };
+
+    Flyout.prototype.hide = function(instant) {
+      var animationOptions,
+        _this = this;
+      if (!this.visible) {
+        return;
+      }
+      this.body.trigger({
+        type: 'hero_gallery_flyout_closed',
+        item: this,
+        instant: instant
+      });
+      animationOptions = {};
+      animationOptions[this.side] = -this.width;
+      this.element.animate(animationOptions, 200, 'easeInOutSine', function() {
+        return _this.element.hide();
+      });
+      return this.visible = false;
+    };
+
+    Flyout.prototype.show = function() {
+      var animationOptions;
+      this.body.trigger({
+        type: 'hero_gallery_flyout_opened',
+        item: this.item
+      });
+      animationOptions = {};
+      animationOptions[this.side] = 0;
+      this.element.css(this.side, -this.width);
+      this.element.width(this.width).css('display', 'block');
+      this.element.animate(animationOptions, 200, 'easeInOutSine');
+      return this.visible = true;
+    };
+
+    return Flyout;
+
+  })();
+
+  $.TNF.BRAND.HeroGallery.Flyout = Flyout;
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.Paginator = (function() {
+
+    function Paginator(responder) {
+      this.responder = responder;
+      this.next = __bind(this.next, this);
+
+      this.previous = __bind(this.previous, this);
+
+      this.items = this.responder.items;
+      this.element = this.responder.element;
+      this.width = this.responder.width;
+      this.currentPage = 0;
+    }
+
+    Paginator.prototype.itemCount = function() {
+      return this.items.length;
+    };
+
+    Paginator.prototype.previous = function() {
+      return this.jumpToPage(this.currentPage - 1);
+    };
+
+    Paginator.prototype.next = function() {
+      return this.jumpToPage(this.currentPage + 1);
+    };
+
+    Paginator.prototype.jumpToPage = function(page) {
+      if (page === this.currentPage) {
+        return;
+      }
+      if (page > this.itemCount() - 1) {
+        page = 0;
+      }
+      if (page < 0) {
+        page = this.itemCount() - 1;
+      }
+      this.currentPage = page;
+      return this.element.trigger('hero_gallery_paged', {
+        page: page
+      });
+    };
+
+    return Paginator;
+
+  })();
+
+}).call(this);
 
 (function($) {
 
-  var heroGallery = $('.hero-gallery')
+  var heroGallery = $('.hero-gallery').first();
 
   if (heroGallery.length > 0) {
     new $.TNF.BRAND.HeroGallery(heroGallery);
   }
 
 }(jQuery));
+
 
