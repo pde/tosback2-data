@@ -118,7 +118,7 @@ function closePopup(){
 	//if($.browser.msie && ($.browser.version < 7)){$("select").css("visibility","hidden");}
  }
 
-  function PC_Pop(pH,pW,pT,pL,pS,pID,pST,pTP,pSC,pMD){
+  function PC_Pop(pH,pW,pT,pL,pS,pID,pST,pTP,pSC){
 	this.pHeight=pH;
 	this.pWidth=pW;
 	this.pTop=pT;

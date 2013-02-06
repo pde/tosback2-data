@@ -1,0 +1,256 @@
+/*
+ Functions for MyATC messaging - please be aware that this effects both the Legacy Site and the JSF site (myatc_header_msg.jspf / .xhtml)
+ TODO:finish refactoring this && replace Prototype setStyle calls with jQuery .show
+ TODO - WRAP All of this in a namespace so we don't pollute the global NS (per code review).
+*/
+
+/* LEGACY TODO: this needs to move elsewhere, since this file is not included in every page anymore. */
+function getUrl(form) {
+    if (form.myatcPage.selectedIndex > 0) {
+        parent.self.location = form.myatcPage.options[i].value;
+    } else {
+        parent.self.location = "/myatc/my_summary.xhtml";
+    }
+
+}
+
+function changeButtonHref(form) {
+    if (form.myatcPage.selectedIndex > 0) {
+        document.getElementById('my-atc-go-button').href = form.myatcPage.options[i].value;
+    } else {
+        document.getElementById('my-atc-go-button').href = '/myatc/my_summary.xhtml';
+    }
+}
+
+function saveSearchForm(form, toURL) {
+    var searchParm = '', i, name, value, type;
+
+    for (i = 0; i < form.elements.length; i++) {
+        name = form.elements[i].name;
+        value = form.elements[i].value;
+        type = form.elements[i].type;
+        if ((name != null) && (value != null) &&
+            (name != "") && (value != "") && ((type != 'radio') && (type != 'checkbox') ) || form.elements[i].checked) {
+            searchParm += "%252526" + form[i].name + "%25253D" + form.elements[i].value;
+        }
+    }
+
+    toURL += searchParm;
+
+    if (top.location != location) {
+        self.window.location = toURL;
+    } else {
+        window.location = toURL;
+    }
+}
+/* END LEGACY */
+
+
+//TEMP - will refactor into jQuery, with a namespace and make this much more slick later.  Just trying to get it working now!
+var STATUS_MESSAGE_GENERAL_ERROR = "We're sorry, My AutoTrader.com is temporarily unavailable. Please check back in a few minutes.  We're working to resolve this issue as quickly as possible and appreciate your patience.";
+
+/**
+ * shared functionaly between JSF & JSP - logging and HTML manipulation.
+ */
+function dialogOpened(){
+    asisQ("/no_cache/ac/myatc_notifications_click.asis");
+    resetDialog();  //always show the default state when we re-open the dialog.
+}
+
+/**
+ * toggles a confirmation screen on or off
+ * I used jQuery b/c it doesn't have the limitations of Prototype for items hidden with rules from stlyesheets vs inline styles - http://www.prototypejs.org/api/element/toggle
+ * @param confirmElementId - the confirmation screen you want to show or hide
+ */
+function toggleConfirmationScreen(confirmElementId){
+    confirmElementId = $j.trim(confirmElementId).indexOf("#") == 0 ? confirmElementId : "#" + confirmElementId;
+
+    $j(confirmElementId).toggle();
+    $j("#invalidEmailMessage").toggle();
+    $j('#generalMessages').toggle();
+    $j('#close-dialog-button').toggleClass("hidden");
+}
+
+function logChangeEmail(){
+    asisQ("/nocache/ac/myatc_changeemail_click.asis");
+}
+
+/**
+ * resets the dialog to the default state - as if the user had just opened it for the first time.
+ * This also clears the confirmation messages after the dialog is closed and reopened in the case where we have undeliverable alerts and general messagses / notifications
+ * on the JSF + A4J side of things - we're using JS to show / hide elements to keep from making a server request for every click (state of the dialog), and to stay consistent with the JSP side.
+ */
+function resetDialog(){
+    $j("#MyATCMessageUpdates").html('').removeClass('primaryContent error');
+    $j("#cancelAlertsConfirmation").hide();
+    $j("#changeEmailForm").hide();
+    $j("#invalidEmailMessage").show();
+    $j('#close-dialog-button').removeClass("hidden");
+    hideGeneralMessages(false);
+}
+
+/**
+ * shows or hides the general messages.
+ * @param hide - boolean  - hide general messages if true
+ */
+function hideGeneralMessages(hide){
+    if (hide){
+        $j('#generalMessages').hide();
+    }
+    else {
+        $j('#generalMessages').show();
+    }
+}
+
+function isValidEmail(emailAddress) {
+    //at least one word, followed by @ followed by a-z and underscore, then a period, then a-z for 2 to 6 digits (.info, .travel, .store, etc).
+    return /(\w+@[a-z_]+?\.[a-z]{2,6})/i.test(emailAddress);
+}
+
+/**
+ * abstracted to log on both JSF & JSP
+ */
+function logSubmitChangeEmail(){
+    asisQ("/no_cache/ac/myatc_savechanges_click.asis");
+}
+
+function submitEmail() {
+    logSubmitChangeEmail(); //JSP only.
+    var errorMsgList = [];
+
+    //IE won't allow chaining .trim here...
+    var old_email = $j.trim($j("#old_email").val());
+    var new_email = $j.trim($j("#new_email").val());
+    var confirm_email = $j.trim($j("#confirm_email").val());
+    var cms = $j.trim($j("#cmsResource").val());
+    var pwd = $j.trim($j("#password").val());
+
+    //console.log("Old Email: %o, new email: %o, confirm email: %o, cms: %o, pwd: %o",old_email,new_email,confirm_email,cms,pwd);
+    
+    if ("" == new_email) {
+        errorMsgList.push('Please enter your new email address to change your current email address.');
+    }
+
+    else if ("" == confirm_email) {
+        errorMsgList.push('Please confirm your new email address before saving your change.');
+    }
+
+    else if ("" == pwd) {
+        errorMsgList.push('Please enter your password to save your new email address.');
+    }
+
+    else if (!isValidEmail(new_email)) {
+        errorMsgList.push('Please enter a valid email address format. (Example: emailaddress@domain.com)');
+    }
+
+    else if (new_email.toLowerCase() != confirm_email.toLowerCase()) {
+        errorMsgList.push('The email addresses entered do not match. Please double-check your email address and confirmation entries before saving your change.');
+    }
+    
+    if (errorMsgList.length > 0) {
+        displayErrors(errorMsgList);
+    } else {
+        document.getElementById('pageLoading').style.display = 'block';
+        UserMsgController.updateEmail(old_email, new_email, pwd, cms, updateEmailCallBack);
+    }
+}
+
+function displayErrors(errorMsgList) {
+    var errorTxt = '';
+    if (errorMsgList.length > 0) {
+        errorTxt += '<ul>';
+        for (var i = 0; i < errorMsgList.length; i++) {
+            errorTxt += '<li>' + errorMsgList[i] + '</li>';
+        }
+        errorTxt += '</ul>';
+    } else {
+        errorTxt += errorMsgList[0] + '<br />';
+    }
+    document.getElementById('errorContainer').style.display = 'inline';
+    document.getElementById('errorContainer').style.color = '#f00';
+    document.getElementById('errorMsg').innerHTML = errorTxt;
+}
+
+/**
+ * both AJAX callbacks for cancel alerts and update email need this similar functionality.
+ * @param dialogMessage - the confirmation message you wish to present to the user.
+ * @param numberOfMessages - int - number of general messages - used to update the global header.
+ */
+function updateMyATCMessaging(dialogMessage, numberOfMessages){
+    var dialogConfirmationArea = $('MyATCMessageUpdates');
+    dialogConfirmationArea.update(dialogMessage);
+    dialogConfirmationArea.addClassName('primaryContent');
+    updateHeaderNotificationsMessage(numberOfMessages);
+    removeInvalidEmailMessages();
+    $j('#close-dialog-button').removeClass("hidden");
+}
+
+var updateEmailCallBack = function (response) {
+    if (response) {
+
+        $('pageLoading').hide();
+
+        //error state
+        if (isNaN(response)) {
+            var errorMsgList = new Array();
+            errorMsgList[errorMsgList.length] = response;
+            displayErrors(errorMsgList);
+        }
+
+        else {
+            if (parseInt(response) == -1) {
+                $('MyATCMessageUpdates').update(STATUS_MESSAGE_GENERAL_ERROR);
+            }
+            else {
+                // Successly updated email address
+                var confirmationMessage = '<p><strong>Thank you.</strong></p> <p>Your email address has been changed to ' + $F('new_email') +'.  We will now send alerts to this address.';
+                updateMyATCMessaging(confirmationMessage, parseInt(response));
+            }
+        }
+    }
+};
+
+function updateHeaderNotificationsMessage(numberOfNotifications){
+    if (numberOfNotifications > 0){
+        var msg = 'notifications';
+        if (numberOfNotifications == 1){
+            msg = 'notification';
+        }
+        $('notificationsMessage').update('You have <a href="javascript:void(0)" onclick="dialogOpened();" id="notificationsDialogTrigger">' + numberOfNotifications + ' ' + msg + '</a>');
+    }
+    else {
+        //remove it out if there are no notifications.
+        $('notificationsMessage').remove();
+    }
+}
+
+function cancelAlerts() {
+    var cms = $F("cmsResource");
+    $('pageLoading').show();
+    UserMsgController.cancelAlerts(cms, cancelAlertsCallBack);
+}
+
+var cancelAlertsCallBack = function (response) {
+    if (response) {
+        $('pageLoading').hide();
+        if (parseInt(response) == -1) {
+            $('MyATCMessageUpdates').update(STATUS_MESSAGE_GENERAL_ERROR);
+            $('MyATCMessageUpdates').addClassName('error');
+        }
+        else {
+            var confirmationMessage = '<p><strong>Thank You.</strong></p><p>Your alerts are canceled. If you change your mind you can <a href="/myatc/my_profile.xhtml">go to your profile page</a> to change your email address.</p>';
+            updateMyATCMessaging(confirmationMessage,parseInt(response));
+        }
+    }
+};
+
+/**
+ * destroy the update email message & form if the update was sucessful, or if alerts were canceled.
+ * JS Errors are suppressed if the element doesn't exist - since not all elements are present on both the JSF & JSP versions.
+ */
+function removeInvalidEmailMessages(){
+    hideGeneralMessages(false);
+    $j('#invalidEmailMessage').remove();
+    $j('#changeEmailForm').remove();
+    $j('#cancelAlertsConfirmation').remove(); //TODO: move this to a more logical place for cancelAlerts.
+}

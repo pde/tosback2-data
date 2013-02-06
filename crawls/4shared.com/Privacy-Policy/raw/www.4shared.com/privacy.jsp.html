@@ -90,9 +90,9 @@
   Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
   Config.isRTLLanguage = false;
   Config.isReplaceSearchNameForSeo = false;
-  Config.revisionNum = 29398;
+  Config.revisionNum = 29578;
   Config.syncDomain = 'https://www.4sync.com/';
-  Config.cdDomain = '//dc428.4shared.com/';
+  Config.cdDomain = '//dc219.4shared.com/';
   Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
   Config.isMobile = false;
   Config.isIpad = false;
@@ -313,7 +313,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=3321667283"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=4095092871"></script>
 
 
 
@@ -394,7 +394,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=1313459142.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=4160740659.css"/>
 
 
   <!--[if lt IE 7]>
@@ -485,7 +485,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=264309964.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=3829439795.css"/>
 
 
 
@@ -549,6 +549,8 @@
 </head>
 <body>
 <div id="fstickcontainer"><div id="fstickcontent">
+
+
 
 
 
@@ -1092,7 +1094,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=3106028653"></script>
+<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=2669743209"></script>
 
 
 
@@ -1442,7 +1444,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=1542212179"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=358823964"></script>
 
 
 
@@ -1525,7 +1527,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=2403686003.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=3505608313.css"/>
 
 
 
@@ -1771,7 +1773,7 @@
             
 
             
-            ,sId : 'xVf4xh08x50VzsP3'
+            ,sId : 'iEivtQCioUMQSgmf'
             
           },
           function(){
@@ -2534,13 +2536,13 @@
                 
                   <a href="http://www.4shared.com/premium.jsp?ref=nheader" class="pr gaClick" data-element="h17">Premium</a>
                 
-                <a href="javascript:return;" id="changeLang" class="gaClick" data-element="h18" onclick="return iNHSelectLanguage()"><span class="floatLeft">Language</span><span
+                <a href="privacy.jsp.html#" id="changeLang" class="gaClick" data-element="h18" onclick=" $('.settings .gear').click(); return iNHSelectLanguage()"><span class="floatLeft">Language</span><span
                   class="pr floatRight paddingR5" >en</span></a>
                 <div class="v-div"></div>
                 <a href="http://www.4shared.com/faq.jsp"  class="clear gaClick" data-element="h19">FAQ</a>
                 <a href="http://www.4shared.com/help/index.jsp" class="gaClick" data-element="h20">Help</a>
                 
-                <a href="javascript:reportAbuse2();" class="gaClick" data-element="h22">Report abuse</a>
+                <a href="privacy.jsp.html#" onclick="reportAbuse2(); $('.settings .gear').click()" class="gaClick" data-element="h22">Report abuse</a>
               <!--a href="">Tour</a-->
 
 
@@ -2577,7 +2579,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc328, rev=29398"
+    title : "Title = dc517, rev=29578"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2602,126 +2604,6 @@
 <script type="text/javascript">
 
     
-
-
-  function showShortNotification(){
-    $('#nloader').show();
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: "/web/notification/showshort",
-        success: function(data) {
-          var fullhtml="";
-          var list=data.infolist;
-          var unreadCount=0;
-
-          if (list.length>0) {
-            $('#nonotifications').hide();
-            $('#ncontent').show();
-          }
-
-          for (var i=0; i<list.length; i++) {
-            var event = list[i];
-            var eventType = event.type;
-            var avatar = event.fromUserAvatarLink;
-            if (eventType=="SHARE_FILE" || eventType=="SHARE_FOLDER") {
-              eventType="tshare";
-            }
-            else if (eventType=="COMMENT") {
-              eventType="tcomment";
-            } else if (eventType=="BACKGROUND_FILE_TASK") {
-              eventType="tbgtask";
-              var ext = event.iFileName.split('.').pop()
-              if(ext == 'zip') avatar="http://static.4shared.com/icons/32x32/zip.png?ver=655479399"
-              else if (ext == 'b1') avatar="http://static.4shared.com/icons/32x32/b1.png?ver=703417425"
-              else if (ext == 'torrent') avatar="http://static.4shared.com/icons/32x32/torrent.png?ver=1628575404"
-              event.fromUserName = "Your file is ready for download:"
-            } else if(eventType=="CHAT_MESSAGE"){
-              eventType="tmessage";
-            }
-            var unread="";
-            if (event.status=='NEW') {
-              unread = "unread";
-              unreadCount++;
-            }
-
-            if (avatar == "default")
-              avatar = "http://static.4shared.com/images/user2.png";
-            var info2Text = "";
-            if (event.info2 != ""){
-                 info2Text =  "<br /><i class='f9 paddingT5'>"+event.info2+"</i>";
-            }
-            var html = "<div onclick=\"doAction('"+event.actionLink+"')\" class='nitem "+unread+" clear paddingLR5'>"+
-                "<div class='uPhoto floatLeft'><img id='userAvatarImage' src='http://www.4shared.com/&quot;+avatar+&quot;' width='32' height='32'></div>"+
-                "<div class='descr floatLeft f11 marginL10 ffshadow'>"+
-                  "<span class='eventUserName'>"+event.fromUserName+"</span> "+
-                  event.info1+" "+
-                  "<span class='eventFileName'>"+event.iFileName+"</span>. "
-                  +info2Text+
-                "</div>"+
-                "<div class='type floatLeft sprite1 "+eventType+"'></div>"+
-              "</div>";
-            fullhtml = fullhtml + html;
-          }
-          $('#nloader').hide();
-          $("#nscroll").html(fullhtml);
-          $(".ncounter").text(unreadCount);
-          if (unreadCount>0) {
-            $(".ncounter").show();
-          }
-          if($("#nscroll").height() > 199) {
-            if (Config.isMobile || Config.isIpad) $('#nscroll').css({overflowY: "auto", height:'200px'})
-            else $("#nscroll").slimScroll({height: '200px'})
-          }
-        },
-        error: function() {
-            $('#nloader').hide();
-            $('#ncontent').hide();
-            $(".ncounter").hide();
-            $('#nonotifications').show();
-        }
-    })
-  }
-
-
-  function showFullNotification(page) {
-    location.href = "/web/notification/showall?page=" + page;
-  }
-
-  function doAction(link) {
-    location.href = link;
-  }
-
-  function getNotificationCount() {
-    if($(".cnotifications").css("display")=="block")
-      return;
-
-    $.ajax({
-      type: 'get',
-      dataType: 'json',
-      url: "/web/notification/count",
-      success: function(data) {
-        if (data.unread>0) {
-          $(".ncounter").text(data.unread);
-          $(".ncounter").show();
-          Events.fireEvent("new.notification");
-        }
-      },
-      error: function() {
-        //console.log("Error. includeNewHeader.jsp -> getNotificationCount()")
-      }
-    })
-  }
-
-  $(document).click(function(event) {
-    if($(".cnotifications").css("display")=="block") {
-      $(".ncounter").text("0");
-      $(".ncounter").hide();
-    }
-  })
-
-
-  setInterval('getNotificationCount();', 600000);
 </script>
      
 
@@ -3143,7 +3025,7 @@
 <div class="copy">
     <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc328, rev=29398'>&copy;</span> 2005-2013 4shared.com 
+             Copyright <span title='dc517, rev=29578'>&copy;</span> 2005-2013 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             
@@ -3193,7 +3075,7 @@
 
 
 
-<!-- www.currDcID=328 -->
+<!-- www.currDcID=517 -->
 
 
 

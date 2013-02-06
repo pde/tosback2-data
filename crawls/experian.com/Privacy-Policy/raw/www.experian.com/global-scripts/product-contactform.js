@@ -27,6 +27,7 @@ function initAjaxForm(jCurrentForm){
 	
 	postToUrl = "/forms/submit.form";
 	
+
 	if (jCurrentForm.hasClass('enableValidation')){
 		jCurrentForm.find('.submitButton').hover(function(){
 			$(this).addClass('cursor');
@@ -100,6 +101,7 @@ function initAjaxForm(jCurrentForm){
 	}
 	
 	populateForm();
+	
 } 
 
 function submitAjaxForm (jCurrentForm, postToUrl, expFormName){	  
@@ -117,6 +119,7 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 			jCurrentForm.find('#StreetAddress__label').attr('for','street_address'); // correct for legacy form
 			jCurrentForm.find('#StreetAddress_input').attr('name','street_address'); // correct for legacy form
 			jCurrentForm.append('<input type="hidden" name="enc" value="&#153;">'); // forces IE to submit form as UTF8
+			
 			
 			// Append campaign values for experian.com
 			//if(document.URL.match(/[local|stg1|www].experian.com/)){ 
@@ -207,9 +210,35 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 			displayFormSummary(jCurrentForm);
 		}
 		else{
+		// appending sitecat tags as a hidden fields to the form when it gets submitted
+		if(typeof expProductGrp != "undefined" ){
+			jCurrentForm.append('<input type="hidden" name="product_group" value="'+expProductGrp+'">');
+			}
+			else if(typeof expProductGrp == null ){
+			return false;
+			}
+			if (typeof expBUSegment != "undefined"){
+			jCurrentForm.append('<input type="hidden" name="business_segment" value="'+expBUSegment+'">');
+			}
+			else if(typeof expBUSegment == null){
+			return false;
+			}
+			if (typeof expBUPartner != "undefined"){
+			jCurrentForm.append('<input type="hidden" name="business_unit" value="'+expBUPartner+'">');
+			}
+			else if(typeof expBUPartner == null){
+			return false;
+			}
+			if(typeof expChannel != "undefined"){
+			jCurrentForm.append('<input type="hidden" name="channel" value="'+expChannel+'">');
+			}
+			else if(typeof expChannel == null){
+			return false;
+			}
 			postform();
 		}
 	}
+			
 }
 
 // form validation functions begin

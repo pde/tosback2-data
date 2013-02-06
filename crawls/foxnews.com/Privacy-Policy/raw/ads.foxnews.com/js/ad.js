@@ -761,12 +761,30 @@
 					if($("meta[name='prism.section']").attr("content") != "politics" && obj.qid == "channel_7" ){
 						root.addGoogleObjFunc();
 						root.config(obj);				
-					document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');
+						document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');
 						
-				}			
+					}			
 				}				
 			},
-			pre: function(){}
+			tracking: {
+				init : function(d){
+					var self = this, channelRoot= d.channel.split("/")[0];
+					
+					if(channelRoot ==="fbn" || channelRoot ==="fsb"){
+						self.firePixel();
+					}	
+				},
+				firePixel : function(){
+					window._gaq = window._gaq || []; 
+				  	_gaq.push(['_setAccount', 'UA-38070095-1']); 
+				  	_gaq.push(['_setDomainName', 'foxbusiness.com']); 
+				  	_gaq.push(['_trackPageview']);
+				
+				    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; 
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; 
+				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);	
+				}
+			}
 		},
 		omni: {
 			pre: function(d) {
@@ -1767,8 +1785,7 @@
 
 				//nielsen
 				$.ad.niel.pre(d);
-	 			//google
-				$.ad.goog.pre(d);
+
 				//chartbeat
 				$.ad.chart.pre(d);
 				//omniture				
@@ -1792,7 +1809,10 @@
 			$.ad.tynt.init(d);			
 
 			//$.ad.visrev.init();
-				
+
+			//google pix
+			$.ad.goog.tracking.init(d);				
+			
 			$.ad.wordnik.init(d);			
 			
 			$.ad.adBlade.init();

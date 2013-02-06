@@ -1207,9 +1207,9 @@ TSC.reporting.hasRepObj=function(args){
 };
 
 TSC.reporting.makeCall=function(){
-   try{
-      var s_code=s.t();if(s_code)document.write(s_code);
-   }catch(e){}	
+  // try{
+    //  var s_code=s.t();if(s_code)document.write(s_code);
+   //}catch(e){}	
    
    
 //var pageTracker = _gat._getTracker("UA-6534317-1");

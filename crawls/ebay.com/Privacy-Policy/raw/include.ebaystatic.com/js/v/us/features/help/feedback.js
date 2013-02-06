@@ -199,4 +199,4 @@ var d=oDoc.doc,aAnchs=d.links,sPagePath=d.location.href,len=aAnchs.length;histor
 {var oAnch=aAnchs[i];if((!oAnch.onclick)&&!oAnch.pathname.is("")&&sPagePath.has(oAnch.pathname))
 oAnch.onclick=function()
 {history.iAnchClickCounts=history.iAnchClickCounts-1;return true;}}}
-// b=15738214 -->
+// b=15750728 -->

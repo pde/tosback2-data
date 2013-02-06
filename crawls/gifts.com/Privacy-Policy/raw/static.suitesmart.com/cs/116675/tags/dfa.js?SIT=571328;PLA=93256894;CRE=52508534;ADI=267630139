@@ -1,0 +1,58 @@
+var jsTagArr = document.getElementsByTagName('script');
+var stackTag = jsTagArr[jsTagArr.length - 1];
+
+var isFTG = (stackTag.src.indexOf('suitesmart') > -1);
+
+if ( isFTG ) {
+  ftgTag = stackTag;
+} else {
+  for (i=0;i<jsTagArr.length;i++ ) {
+      if ( jsTagArr[i].src.indexOf('suitesmart') > -1 ) {
+        ftgTag = jsTagArr[i];
+        break;
+        }
+    }
+}
+function _FTGTag() 
+{
+    this.ftgTag  = ftgTag;
+    var _Param = new Array();
+    _Param['SIT'] = null;
+    _Param['CRE'] = null;
+    _Param['PLA'] = null;
+    _Param['ADI'] = null;
+    this.params = _Param;
+    this.ftParam = _FTGetParam;
+    this.Render  = _FTRenderTag;
+	  this.noPop   = '';
+	  this.trGID   = null;
+}
+function _FTGetParam() 
+{
+    if ( this.ftgTag.src.indexOf('?') > -1 ) {
+        bits = this.ftgTag.src.toString().split('?');
+        var _tagQ = bits[1].split(/;|&/);
+          for (var i in _tagQ){
+             var t = _tagQ[i].toString().split('=');
+             this.params[t[0]] = t[1];
+             var j = 1;
+             while (t[++j])  this.params[t[0]] += '='+ t[j];
+        }
+    }
+}
+function _FTRenderTag() 
+{
+	var samExpGID 	= [ this.s2g[this.params['SIT']] , this.trGID ];
+	var pFlag 		= ( (typeof(this.s2g[this.params['SIT']]) != 'undefined') && (this.noPop.indexOf(this.params['PLA']) == -1) ) ? 0:1;
+
+	this.GID = samExpGID[pFlag];
+	var ftgStr    = '<SCR'+'IPT LANGUAGE="JavaScript" SRC="http://as1.suitesmart.com/'+this.SID+'/G'+this.GID+'.js" ID="FTG" GID="'+this.GID+'" CRE="'+ this.params['CRE']+'" PLA="'+ this.params['PLA']+'" ADI="'+ this.params['ADI']+'"></SCR'+'IPT>';
+	document.write(ftgStr);
+}
+
+var FTag = new _FTGTag();
+FTag.SID   = 116675; 
+FTag.trGID = 29509;
+FTag.s2g = {};
+FTag.ftParam();
+FTag.Render();

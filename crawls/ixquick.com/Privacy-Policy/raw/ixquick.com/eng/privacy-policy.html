@@ -1282,13 +1282,14 @@ function makeHomePage (obj, page_url) {
  }
  else {
          // for version greater than or equal to 19 
-         if(BrowserDetect.version >= 19) {
-         out_str += '<ol><li>Go to the Wrench icon <img src="https://ixquick.com/eng/\'/graphics/chrome_toolsmenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
-         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         if( (BrowserDetect.version >= 19) && (BrowserDetect.version < 23) ) {
+         out_str += '<ol><li>Go to the Wrench icon <img src="https://ixquick.com/eng/\'/graphics/chrome_toolsmenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';}
+         else {          if(BrowserDetect.version >= 23) {         out_str += '<ol><li>Go to the settings icon <img src="https://ixquick.com/eng/\'/graphics/chrome_settingMenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
+ } 
+}         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
          out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
          out_str += '<li>Click OK.</li>';
-         } 
- } 
+         }
  } else {
          //  check for windows OS 
          if (BrowserDetect.OS.indexOf('Window') != -1) {
@@ -1306,13 +1307,14 @@ function makeHomePage (obj, page_url) {
          }
  } else {
          // for version greater than 18 
-         if(BrowserDetect.version >= 19) {
+         if( (BrowserDetect.version >= 19) && (BrowserDetect.version < 23) ) {
          out_str += '<ol><li>Go to the Wrench icon <img src="https://ixquick.com/eng/\'/graphics/chrome_toolsmenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
-         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         } else {         if(BrowserDetect.version >= 23) {         out_str += '<ol><li>Go to the settings icon <img src="https://ixquick.com/eng/\'/graphics/chrome_settingMenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
+} 
+}         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
          out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
          out_str += '<li>Click OK.</li>';
-         } 
- }
+         }
  } else {
           // checking for Linux OS 
          if(BrowserDetect.version >= 3 && BrowserDetect.version <= 18) {
@@ -1331,13 +1333,14 @@ function makeHomePage (obj, page_url) {
          out_str += '<li>Close Preferences tab.</li>';
          } 
  } else {
-         if(BrowserDetect.version >= 19) {
-         out_str += '<ol><li>Go to the Wrench icon <img src="https://ixquick.com/eng/\'/graphics/chrome_toolsmenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
-         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
+         if( (BrowserDetect.version >= 19) && (BrowserDetect.version < 23) ) {
+         out_str += '<ol><li>Go to the Wrench icon <img src="https://ixquick.com/eng/\'/graphics/chrome_toolsmenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';}
+         else {         if(BrowserDetect.version >= 23) {         out_str += '<ol><li>Go to the settings icon <img src="https://ixquick.com/eng/\'/graphics/chrome_settingMenu.gif\'" height="25" style="position:absolute;"/> <span style="padding-left:28px;">-> Settings</span>.</li>';
+} 
+}         out_str += '<li>Click on "Set pages" in the "On startup" section.</li>';
          out_str += '<li>Enter <!--HOME-->/eng/<!--/HOME--> in the "Add a new page" text field.</li>';
          out_str += '<li>Click OK.</li>';
-         } 
- }
+         }
  } 
  }
          out_str += '</ol></font><br></body></html>';

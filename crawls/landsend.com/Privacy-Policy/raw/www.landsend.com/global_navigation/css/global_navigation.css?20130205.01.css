@@ -1,0 +1,4250 @@
+
+@charset "utf-8";
+
+/*
+ * OOCSS
+ * http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/oocss/stubbornella-oocss-d4c6914/core/grid/grids.css
+ */
+.line:after,
+.lastUnit:after {
+	clear:both;
+	display:block;
+	visibility:hidden;
+	overflow:hidden;
+	height:0 !important;
+	line-height:0;
+	font-size:xx-large;
+	content:" x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";
+}
+.line {*zoom:1;}
+.unit {float:left;}
+.size1of1 {float:none;}
+.size1of2 {width:50%;}
+.size1of3 {width:33.33333%;}
+.size2of3 {width:66.66666%;}
+.size1of4 {width:25%;}
+.size3of4 {width:75%;}
+.size1of5 {width:20%;}
+.size2of5 {width:40%;}
+.size3of5 {width:60%;}
+.size4of5 {width:80%;}
+.lastUnit {
+	display:table-cell;
+	float:none;
+	width:auto;
+	*display:block;
+	*zoom:1;
+	_position:relative;
+	_left:-3px;
+	_margin-right:-3px;
+}
+/*
+ * media (requires mod.css) 
+ * http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/oocss/stubbornella-oocss-d4c6914/core/media/media.css
+ */
+.media {
+	margin: 10px;
+}
+.media:after, .bd:after {
+	clear:both;
+	display:block;
+	visibility:hidden;
+	overflow:hidden;
+	height:0 !important;
+	line-height:0;
+	font-size:xx-large;
+	content:" x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";
+}
+.media .bd {display:table-cell;zoom:1;}
+.media .bd > :first-child {margin-top:0;}
+.media .bd > :last-child {margin-bottom:0;}
+.media .img {float:left;}
+.media .img img {display:block;}
+.media .imgExt {float:right;}
+
+/** 
+ * Spacing classes 
+ * Should be used to modify the default spacing between objects (not between nodes of the same object)
+ * Please use judiciously. You want to be using defaults most of the time, these are exceptions! 
+ * <type><location><size>
+ */
+ /* ====== Default spacing ====== */
+/* - Removing due to Base.css conflicts 
+h1, h2, h3, h4, h5, h6, ul, ol,dl, p,blockquote, .media {margin:10px;}
+h1, h2, h3, h4, h5, h6,img{padding-bottom:0px;}
+pre{margin: 10px;}
+table h1,table h2,table h3, table h4, table h5, table h6, table p, table ul, table ol, table dl{padding:0;}
+*/
+/* spacing helpers
+p,m = padding,margin
+a,t,r,b,l,h,v = all,top,right,bottom,left,horizontal,vertical
+s,m,l,n = small(5px),medium(10px),large(20px),none(0px)
+*/
+
+.ptn,.pvn,.pan{padding-top:0px}
+.pts,.pvs,.pas{padding-top:5px}
+.ptm,.pvm,.pam{padding-top:10px}
+.ptl,.pvl,.pal{padding-top:20px}
+.prn,.phn,.pan{padding-right:0px}
+.prs,.phs,.pas{padding-right:5px}
+.prm,.phm,.pam{padding-right:10px}
+.prl,.phl,.pal{padding-right:20px}
+.pbn,.pvn,.pan{padding-bottom:0px}  
+.pbs,.pvs,.pas{padding-bottom:5px}
+.pbm,.pvm,.pam{padding-bottom:10px}
+.pbl,.pvl,.pal{padding-bottom:20px}
+.pln,.phn,.pan{padding-left:0px}
+.pls,.phs,.pas{padding-left:5px}
+.plm,.phm,.pam{padding-left:10px}
+.pll,.phl,.pal{padding-left:20px}
+.mtn,.mvn,.man{margin-top:0px}
+.mts,.mvs,.mas{margin-top:5px}
+.mtm,.mvm,.mam{margin-top:10px}
+.mtl,.mvl,.mal{margin-top:20px}
+.mrn,.mhn,.man{margin-right:0px}
+.mrs,.mhs,.mas{margin-right:5px}
+.mrm,.mhm,.mam{margin-right:10px}
+.mrl,.mhl,.mal{margin-right:20px}
+.mbn,.mvn,.man{margin-bottom:0px}  
+.mbs,.mvs,.mas{margin-bottom:5px}
+.mbm,.mvm,.mam{margin-bottom:10px}
+.mbl,.mvl,.mal{margin-bottom:20px}
+.mln,.mhn,.man{margin-left:0px}
+.mls,.mhs,.mas{margin-left:5px}
+.mlm,.mhm,.mam{margin-left:10px}
+.mll,.mhl,.mal{margin-left:20px}
+/* **************** TEMPLATE ***************** */
+/* ====== Page Head, Body, and Foot ====== */
+body{_text-align:center;}/* IE5.5 */
+.main{display:table-cell;*display:block;width:auto;}
+.body,.main{*zoom:1;}
+.body:after,.main:after{clear:both;display:block;visibility:hidden;overflow:hidden;height:0 !important;line-height:0;font-size:xx-large;content:" x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";}
+.page{margin:0 auto;width:950px;_text-align:left;} /* wraps other template elems to set width */ /* text-align IE5.5 */
+/* "old school" and "liquid" extend page to allow for different page widths */
+.oldSchool{width:750px;}
+.gs960{width:960px;}
+.liquid{width:auto;margin:0;}
+/* ====== Columns ====== */
+.leftCol{float:left;width:250px;_margin-right:-3px;}
+.rightCol{float:right;width:300px;_margin-left:-3px;}
+/* extend columns to allow for common column widths */
+.gMail{width:160px;}
+.gCal{width:180px;}
+.yahoo{width:240px;}
+.myYahoo{width:300px;}
+/*=============================================================
+
+Template Skin
+
+-------------------------------------------------------------*/
+
+.le-left-nav {
+	width:197px;
+}.l-line:after,
+.l-lastUnit:after {
+	clear:both;
+	display:block;
+	visibility:hidden;
+	overflow:hidden;
+	height:0 !important;
+	line-height:0;
+	font-size:xx-large;
+	content:" x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";
+}
+.l-line {*zoom:1;}
+.l-unit {float:left;}
+
+.l-line, .l-unit, .l-lastUnit {
+	position: relative;
+}
+
+.size1of12 {
+	width:08.3334%;
+}
+
+.size2of12,
+.size1of6 {
+	width:16.6667%;
+}
+
+.size1of5 {
+	width:20%;
+}
+
+.size3of12,
+.size1of4 {
+	width:25%;
+}
+
+.size4of12,
+.size1of3 {
+	width:33.3334%;
+}
+
+.size2of5 {
+	width:40%;
+}
+
+.size5of12 {
+	width:41.6667%;
+}
+
+.size6of12,
+.size1of2 {
+	width:50%;
+}
+
+.size7of12 {
+	width:58.3334%;
+}
+
+.size3of5 {
+	width:60%;
+}
+
+.size8of12,
+.size2of3 {
+	width:66.6667%;
+}
+
+.size9of12,
+.size3of4 {
+	width:75%;
+}
+
+.size4of5 {
+	width:80%;
+}
+
+.size10of12,
+.size5of6 {
+	width:83.3334%;
+}
+
+.size11of12 {
+	width:91.6667%;
+}
+
+.size12of12,
+.size1of1 {
+	float:none;
+}
+
+.push1of12 {
+	left:08.3334%;
+	*margin-left:-.05%;
+}
+
+.push2of12,
+.push1of6 {
+	left:16.6667%;
+	*margin-left:-.05%;
+}
+
+.push1of5 {
+	left:20%;
+	*margin-left:-.05%;
+}
+
+.push3of12,
+.push1of4 {
+	left:25%;
+	*margin-left:-.05%;
+}
+
+.push4of12,
+.push1of3 {
+	left:33.3334%;
+	*margin-left:-.05%;
+}
+
+.push2of5 {
+	left:40%;
+	*margin-left:-.05%;
+}
+
+.push5of12 {
+	left:41.6667%;
+	*margin-left:-.05%;
+}
+
+.push6of12,
+.push1of2 {
+	left:50%;
+	*margin-left:-.05%;
+}
+
+.push7of12 {
+	left:58.3334%;
+	*margin-left:-.05%;
+}
+
+.push3of5 {
+	left:60%;
+	*margin-left:-.05%;
+}
+
+.push8of12,
+.push2of3 {
+	left:66.6667%;
+	*margin-left:-.05%;
+}
+
+.push9of12,
+.push3of4 {
+	left:75%;
+	*margin-left:-.05%;
+}
+
+.push4of5 {
+	left:80%;
+	*margin-left:-.05%;
+}
+
+.push10of12,
+.push5of6 {
+	left:83.3334%;
+	*margin-left:-.05%;
+}
+
+.push11of12 {
+	left:91.6667%;
+	*margin-left:-.05%;
+}
+
+
+.pull1of12 {
+	left:-08.3334%;
+}
+
+.pull2of12,
+.pull1of6 {
+	left:-16.6667%;
+}
+
+.pull1of5 {
+	left:-20%;
+}
+
+.pull3of12,
+.pull1of4 {
+	left:-25%;
+}
+
+.pull4of12,
+.pull1of3 {
+	left:-33.3334%;
+}
+
+.pull2of5 {
+	left:-40%;
+}
+
+.pull5of12 {
+	left:-41.6667%;
+}
+
+.pull6of12,
+.pull1of2 {
+	left:-50%;
+}
+
+.pull7of12 {
+	left:-58.3334%;
+}
+
+.pull3of5 {
+	left:-60%;
+}
+
+.pull8of12,
+.pull2of3 {
+	left:-66.6667%;
+}
+
+.pull9of12,
+.pull3of4 {
+	left:-75%;
+}
+
+.pull4of5 {
+	left:-80%;
+}
+
+.pull10of12,
+.pull5of6 {
+	left:-83.3334%;
+}
+
+.pull11of12 {
+	left:-91.6667%;
+}
+
+
+.is-mobile{
+	display:none;
+}.blocks {
+	display:block;
+	clear:both;
+	margin-left:-16px;
+	list-style:none;
+}
+.blocks:after {
+	display:block;
+	clear:both;
+	content:"";
+}
+.no-generatedcontent .blocks {
+	overflow:hidden;
+}
+
+.blocks > div {
+	display:block;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+	clear:both;
+	padding:0 0 0 16px;
+	background:none;
+}
+.no-boxsizing .blocks > div {
+	padding:0;
+}
+.no-boxsizing .blocks-wrap {
+	margin:0 0 0 16px;
+}
+
+/* Start Merged Responisve Code */
+
+.blocks > div{
+	clear:none;
+}
+
+.blocks-four-up > div,
+.blocks-five-up > div,
+.blocks-six-up > div{
+	float:left;
+	width:50%;
+}
+
+.blocks-four-up > div:nth-child(2n+1),
+.blocks-five-up > div:nth-child(2n+1),
+.blocks-six-up > div:nth-child(2n+1){
+	clear:left;
+}
+
+.no-nthchild .blocks-start{
+	clear:left;
+}
+
+.no-nthchild .blocks-end{
+	float:none;
+	width:auto;
+	zoom:1;
+}
+
+.blocks-two-up > div,
+.blocks-three-up > div{
+	float:left;
+	width:50%;
+}
+
+.blocks-five-up > div,
+.blocks-six-up > div{
+	width:33.333333%;
+}
+
+.blocks-five-up > div:nth-child(2n+1),
+.blocks-six-up > div:nth-child(2n+1){
+	clear:none;
+}
+
+.blocks-two-up > div:nth-child(2n+1),
+.blocks-three-up > div:nth-child(2n+1),
+.blocks-five-up > div:nth-child(3n+1),
+.blocks-six-up > div:nth-child(3n+1){
+	clear:left;
+}
+
+.blocks img{
+	width:auto;
+}
+
+.blocks-three-up > div{
+	width:33.333333%;
+}
+
+.blocks-four-up > div{
+	width:25%;
+}
+
+.blocks-five-up > div{
+	width:20%;
+}
+
+.blocks-six-up > div{
+	width:16.666667%;
+}
+
+.blocks-three-up > div:nth-child(2n+1),
+.blocks-four-up > div:nth-child(2n+1),
+.blocks-five-up > div:nth-child(2n+1),
+.blocks-five-up > div:nth-child(3n+1),
+.blocks-six-up > div:nth-child(3n+1){
+	clear:none;
+}
+
+.blocks-three-up > div:nth-child(3n+1),
+.blocks-four-up > div:nth-child(4n+1),
+.blocks-five-up > div:nth-child(5n+1),
+.blocks-six-up > div:nth-child(6n+1){
+	clear:left;
+}
+
+/* Skin for Blocks */
+.blocks > div{
+padding-left:0px;
+}
+.blocks img {
+width:100%;
+}
+
+.no-boxsizing .blocks > div {
+padding:0}
+.no-boxsizing .blocks-wrap {
+margin:0}
+
+/* Content Blocks */
+.block-content {
+	display:block;
+	position:relative;
+	zoom: 1;
+	width: auto;
+	color: #333;
+	padding: 0px 15px 0px 15px;
+	border-left:1px solid #FFF;
+}
+
+
+
+
+.block-content-title {
+	font-size: 14px;
+	letter-spacing: 0.06em;
+	margin: 7px 0px 5px 0px;
+}
+
+.block-content-description{
+	margin-bottom:5px;
+	font-size:12px;
+	line-height:1.25em;
+}
+
+.block-content-img{
+	cursor: pointer;
+}
+
+.block-content-link-cta {
+	font-weight: bold;
+	text-decoration:none;
+	color: #336699;
+}
+
+.block-content-link-cta .arrow-closed-right {
+	background-position: -232px -18px;
+}
+
+
+/*skins for display*/
+.blocks-template,
+.blocks-template-landing-page,
+.blocks-template-tab-page{
+	overflow:hidden;
+	position: relative;
+}
+ 
+.blocks-template-landing-page{
+	width:1000px;
+}
+.blocks-template-tab-page{
+	width:808px;
+}
+
+.blocks-template-landing-page .blocks{
+	width:103.2%;
+
+}
+
+.blocks-template-tab-page .blocks{
+	width:104.0841584%;
+
+}
+
+.product-description-page{
+	width:340px;
+}
+
+
+/* Blocks Single Stacked */
+.blocks-single-stacked{
+	width:192px;
+}
+.blocks-single-stacked .block-content{
+	padding-bottom:15px;
+}
+.blocks-single-stacked .blocks-group-1 .block-content{
+	border-bottom:1px solid #CCC;
+}
+.blocks-single-stacked .blocks-group-2 .block-content{
+	padding-top:15px;
+}
+
+/* Blocks with Dividers Only */
+.blocks-with-dividers .block-content{
+	border-left:1px solid #CCC;
+}
+
+/* Blocks with Intersectig Dividers */
+.blocks-intersecting-dividers .blocks{
+	width:auto;
+	margin-left:-1px;
+}
+.blocks-intersecting-dividers .block-content{
+	border-left:1px solid #CCC;
+	padding-bottom:15px;
+}
+
+.blocks-intersecting-dividers .blocks-group-1{
+	border-bottom:1px solid #CCC;
+}
+
+.blocks-intersecting-dividers .blocks-group-2 .block-content{
+	padding-top:15px;
+}
+
+
+/*=============================================================
+
+Helper Classes
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/objects/global/utility/main.css
+
+-------------------------------------------------------------*/
+
+.oo .ir {
+	display: block;
+	text-indent: -999em;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	text-align: left;
+	direction: ltr;
+}
+.oo .hidden {
+	display: none;
+	visibility: hidden; 
+}
+.oo .visuallyhidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+.oo .visuallyhidden.focusable:active,
+.oo .visuallyhidden.focusable:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
+.oo .invisible {
+	visibility: hidden;
+}
+.oo .clearfix:before,
+.oo .clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+.oo .clearfix:after {
+	clear: both;
+}
+.oo .clearfix {
+	zoom: 1;
+}
+
+/*=============================================================
+
+Border Styling
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/le/borders/main.css
+
+-------------------------------------------------------------*/
+
+/*
+ * border styling
+ b = border
+ a,t,r,b,l,h,v = all,top,right,bottom,left,horizontal,vertical
+ s,m,l,n = small(1px),medium(2px),large(3px),none(0px);
+ */
+
+.bdtn, .bdvn, .bdan {border-top:0px}
+.bdts, .bdvs, .bdas {border-top:1px solid #000;}
+.bdtm, .bdvm, .bdam {border-top:2px solid #000;}
+.bdtl, .bdvl, .bdal {border-top:3px solid #000;}
+.bdrn, .bdhn, .bdan {border-right:0px;}
+.bdrs, .bdhs, .bdas {border-right:1px solid #000;}
+.bdrm, .bdhm, .bdam {border-right:2px solid #000;}
+.bdrl, .bdhl, .bdal {border-right:3px solid #000;}
+.bdbn, .bdvn, .bdan {border-bottom:0px;}
+.bdbs, .bdvs, .bdas {border-bottom:1px solid #000;}
+.bdbm, .bdvm, .bdam {border-bottom:2px solid #000;}
+.bdbl, .bdvl, .bdal {border-bottom:3px solid #000;}
+.bdln, .bdhn, .bdan {border-left:0px;}
+.bdls, .bdhs, .bdas {border-left:1px solid #000;}
+.bdlm, .bdhm, .bdam {border-left:2px solid #000;}
+.bdll, .bdhl, .bdal {border-left:3px solid #000;}
+
+/*=============================================================
+
+Page Level Styling
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/le/page/main.css
+
+-------------------------------------------------------------*/
+/* text alignment
+	txta = text align
+	l = left
+	r = right
+	c = center
+	j = justify
+*/
+.txtal{text-align: left;}
+.txtar{text-align: right;}
+.txtac{text-align: center;}
+.txtaj{text-align: justify;}
+
+/* text transform
+	txtt = text text transform
+	u = uppercase
+	c = capatalize
+	l = lowercase
+	n = none
+*/
+.txttu, a.txttu{text-transform:uppercase;}
+.txttc, a.txttc{text-transform:capitalize;}
+.txttl, a.txttl{text-transform:lowercase;}
+.txttn, a.txttn{text-transform:none;}
+
+/* text decoration 
+	txtd = text decoration
+	b = blink
+	i = inherit
+	l = line-through
+	n = none
+	o = overline
+	u = underline
+   nn = none/none
+
+*/
+.txtdb, a.txtdb{text-decoration: blink;}
+.txtdi, a.txtdi{text-decoration: inherit;}
+.txtdl, a.txtdl{text-decoration: line-through;}
+.txtdn, .txtdn a, a.txtdn{text-decoration: none;}
+.txtdn a:hover, a.txtdn:hover{text-decoration: underline;}
+.txtdnn a, a.txtdnn, a.txtdnn:hover{text-decoration: none;}
+.txtdo, a.txtdo{text-decoration: overline;}
+.txtdu, a.txtdu{text-decoration: underline;}
+
+/*=============================================================
+
+Form Objects
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/le/form/main.css
+
+-------------------------------------------------------------*/
+
+/*Form Elements 
+	.oo-fe = object form element
+*/
+.oo-fe{
+	font-family: 'Arial', Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 1.62em;
+    display: inline-block;
+    vertical-align: text-bottom;
+}
+
+.oo-fe .first-child{
+    display: block;
+}
+
+.oo-fe button,
+.oo-fe input[type=password],
+.oo-fe input[type=text],
+.oo-fe textarea,
+.oo-fe a,
+.oo-fe a:visited,
+.oo-fe a:hover {
+    border: medium none;
+    display: block;
+    margin: 0;
+    background-color: transparent;
+    font-size: 93%;
+    line-height: 2;
+    min-height: 2em;
+    padding-top:0px;
+    padding-right:4px;
+    padding-bottom:0px;
+    padding-left:4px;
+	text-decoration:none;
+	font-family:inherit;
+}
+.oo-fe input[type=password],
+.oo-fe input[type=text],
+.oo-fe textarea{
+	width:94%;
+	cursor:text !important;
+}
+
+.oo-fe textarea{
+	overflow-y: auto;
+	resize: none;
+}
+
+/*Button Elements 
+	.oo-btn = object button element.  Depends on .oo-fe
+*/
+.oo-btn {
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px 0;
+}
+
+.oo-btn .first-child {
+    border-style: solid;
+    border-width: 0 1px;   
+    /* margin: 0 -1px; - subtle rounded corners */
+}
+
+.oo-btn .first-child a {
+    *padding-top:.075em; 
+	/* *padding-top: .138em; /* for font-size > 17 */
+    *padding-bottom:.2em; 
+	/* *padding-bottom: .250em; /* for font-size > 17 */
+}
+
+.oo-btn .first-child button {
+    overflow:visible;
+    width: auto;
+    _width: 1px;
+    background: none;
+    border: none;
+}
+
+/*text input Elements 
+	.oo-txt = object text input element.  Depends on .oo-fe
+*/
+.oo-txt {
+	width:100%;
+    border-style: solid;
+    border-width: 1px 0;
+}
+
+.oo-txt .first-child {
+    border-style: solid;
+    border-width: 0 1px;
+    /*margin:0 -1px; - subtle rounded corners */
+}/* .oo-fence-post */
+
+.oo-fence-post{
+	overflow:hidden;
+	*padding-bottom:2%;
+}
+
+.oo-fence-post ul:before,
+.oo-fence-post ul:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+.oo-fence-post ul:after {
+	clear: both;
+}
+.oo-fence-post ul {
+	display:block;
+	zoom: 1;
+	margin:0px;
+	margin-left:-2%;
+}
+.oo-fence-post ul li{
+	float:left;
+	margin-left:2%;
+	margin-bottom:2%;
+}
+
+
+/*=============================================================
+
+scroller object
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/lib/le/scroller/main.css
+
+-------------------------------------------------------------*/
+
+.scroller {
+	position: relative;	
+	z-index: 0;
+}
+.scroller .navigation{
+	position: absolute;
+	cursor: pointer;
+	z-index: 3;
+	top: 35%;
+	display:none;
+}
+.scroller .next {
+	right: 2%;
+}
+.scroller .prev {
+	left: 2%;
+}
+.scroller .slide-mask {
+	position: absolute;
+	overflow: hidden;
+}
+.scroller .slide-mask .scroll {	
+	position: absolute;
+	width: 99999px;
+	z-index: 2;
+}
+.scroller .slide-mask .scroll .item {
+	float: left;
+}
+
+/*=============================================================
+
+Page
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/page/main.css
+
+-------------------------------------------------------------*/
+
+html, body {
+    background-image: none !important;
+    font-family: "Arial", Helvetica, sans-serif !important;
+}
+
+
+#bd{
+	padding-bottom:15px;
+}
+#index-page .paginationInterface{
+	_width:500px;
+	_height:20px;
+}
+#index-page .paginationDisplayBottom{
+	padding:6px 0px 6px 0px;
+	*padding-bottom:3px;
+	_position:relative;
+	_width:804px;
+	_height:20px;
+	_z-index:15;
+}
+#product-page #bd{
+	border-top:1px solid #969696;
+	width:1000px !important;
+	padding-left:0px !important;
+	padding-right:0px !important;
+	padding-bottom:0px;
+	border-top:none !Important;
+}
+#product-page .globalNavFooter{
+	margin-top:0px;
+	padding-top:0px;
+}
+.productGrids{
+	width:750px;
+	margin-left:125px;
+	_margin-left:62; /*ie 6 double margin issue */
+}
+#home-page #bd{ /* update spacing on home page beneath nav due to larger canvas icon */
+	padding-top:9px;
+	_padding-top:0px;
+	padding-bottom:10px;
+}
+
+/*=============================================================
+
+START UPDATES for
+OOCSS - OVERRIDES
+
+-------------------------------------------------------------*/
+
+
+/* pulled out from reset-min.css file */
+.oo ul li {
+	list-style: none outside none;	
+}
+
+/* Object - Fonts - EM Defaults*/
+.oo em {
+	font-weight:700;
+	font-style:normal;
+}
+
+/* media object overrides */
+.oo .media a:hover {
+	text-decoration:none;
+}
+
+.oo .media h5 {
+	font-weight:normal;
+/* TODO: normalize via a Reset File */
+}
+
+/* skin - Navigation /* TODO - move these into navigation object, not really a skin*/
+.oo ul.navigation li {
+	font-size: inherit;
+}
+
+
+/*=============================================================
+
+Font Sizes
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/fonts/main.css
+
+-------------------------------------------------------------*/
+
+/* f = Fonts 
+ s = small(10px)
+ sm = small/medium(11px)
+ m = medium(12px)
+ ml = medium/large(13px)
+ l = large(14px)
+ lx = large/extra(15px)
+ xl = extra large(16px)
+*/
+.fss{font-size:10px;}
+.fssm{font-size:11px;}
+.fsm{font-size:12px;}
+.fsml{font-size:13px;}
+.fsl{font-size:14px;}
+.fslx{font-size:15px;}
+.fsxl{font-size:16px;}
+
+@font-face {
+    font-family: "Copse";
+    src: url("http://www.landsend.com/global_navigation/css/fonts/Copse-Regular-webfont.eot");
+    src: url("fonts/Copse-Regular-webfont.eot") format("embedded-opentype"),
+         url("fonts/Copse-Regular-webfont.woff") format("woff"),
+         url("fonts/Copse-Regular-webfont.ttf") format("truetype"),
+         url("fonts/Copse-Regular-webfont.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+/*=============================================================
+
+Color Classes
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/colors/main.css
+
+-------------------------------------------------------------*/
+
+/* coloring
+ c= color
+ d = default = #FFF
+ lt = light = #EEE
+ ltm = light/medium = #CCC
+ mm = medium = #999
+ mdk = medium/dark = #666
+ dk = dark = #000
+ le = Lands' End Blue = #002B5C;
+ sale = sale color = #990000;
+ warning = FF6600
+ error = CC0000
+ */
+
+/* bg = Backgrounds */
+.bgcn{background: none;}
+.bgcd{background:#FFF;}
+.bgclt {background:#EEE;}
+.bgcltm, .bgclel {background:#CCC;}
+.bgcmm {background:#999;}
+.bgcmdk, .bgclem {background:#666;}
+.bgcled {background:#333;}
+.bgcdk {background:#000;}
+.bgcle{background:#002B5C;}
+.bgcsale{background:#990000;}
+.bgccta{background:#336699;}
+.bdcwarning{background:#FF6600;}
+.bdcerror{background:#CC0000;}
+
+
+/* bd = Borders */
+.bdcd{border-color:#FFF;}
+.bdclt {border-color:#EEE;}
+.bdcltm, .bgclel {border-color:#CCC;}
+.bdcmm {border-color:#999;}
+.bdcmdk,, .bgclem {border-color:#666;}
+.bdcled {border-color:#333;}
+.bdcdk {border-color:#000;}
+.bdcle{border-color:#002B5C;}
+.bdcsale{border-color:#990000;}
+.bdccta{border-color:#336699;}
+.bdcwarning{border-color:#FF6600;}
+.bdcerror{border-color:#CC0000;}
+
+
+/* fc = Font color*/
+.fcd, .fcd a, .fcd a:link, .fcd a:hover, .fcd a:visited, .fcd a:active, a.fcd, a.fcd:link, a.fcd:hover, a.fcd:visited, a.fcd:active  {color:#FFF;}
+.fclt, .fclt a, .fclt a:link, .fclt a:hover, .fclt a:visited, .fclt a:active, a.fclt, a.fclt:link, a.fclt:hover, a.fclt:visited, a.fclt:active  {color:#eee;}
+.fcltm, .fcltm a, .fcltm a:link, .fcltm a:hover, .fcltm a:visited, .fcltm a:active, a.fcltm, a.fcltm:link, a.fcltm:hover, a.fcltm:visited, a.fcltm:active,
+.fclel, .fclel a, .fclel a:link, .fclel a:hover, .fclel a:visited, .fclel a:active, a.fclel, a.fclel:link, a.fclel:hover, a.fclel:visited, a.fclel:active  {color:#ccc;}
+.fcm, .fcm a, .fcm a:link, .fcm a:hover, .fcm a:visited, .fcm a:active, a.fcm, a.fcm:link, a.fcm:hover, a.fcm:visited, a.fcm:active  {color:#999;}
+.fcmdk, .fcmdk a, .fcmdk a:link, .fcmdk a:hover, .fcmdk a:visited, .fcmdk a:active, a.fcmdk, a.fcmdk:link, a.fcmdk:hover, a.fcmdk:visited, a.fcmdk:active,
+.fclem, .fclem a, .fclem a:link, .fclem a:hover, .fclem a:visited, .fclem a:active, a.fclem, a.fclem:link, a.fclem:hover, a.fclem:visited, a.fclem:active {color:#666;}
+.fcled, .fcled a, .fcled a:link, .fcled a:hover, .fcled a:visited, .fcled a:active, a.fcled, a.fcled:link, a.fcled:hover, a.fcled:visited, a.fcled:active  {color:#333;}
+.fcdk, .fcdk a, .fcdk a:link, .fcdk a:hover, .fcdk a:visited, .fcdk a:active, a.fcdk, a.fcdk:link, a.fcdk:hover, a.fcdk:visited, a.fcdk:active  {color:#000;}
+.fcle, .fcle a, .fcle a:link, .fcle a:hover, .fcle a:visited, .fcle a:active, a.fcle, a.fcle:link, a.fcle:hover, a.fcle:visited, a.fcle:active {color:#002B5C;}
+.fcsale, .fcsale a, .fcsale a:link, .fcsale a:hover, .fcsale a:visited, .fcsale a:active{color:#990000 !important;}
+.fccta, .fccta a, .fccta a:link, .fccta a:hover, .fccta a:visited, .fccta a:active, a.fccta, a.fccta:link, a.fccta:hover, a.fccta:visited, a.fccta:active {color: #336699;}
+.fcwarning, .fcwarning a, .fcwarning a:link, .fcwarning a:hover, .fcwarning a:visited, .fcwarning a:active, a.fcwarning, a.fcwarning:link, a.fcwarning:hover, a.fcwarning:visited, a.fcwarning:active {color: #FF6600;}
+.fcerror, .fcerror a, .fcerror a:link, .fcerror a:hover, .fcerror a:visited, .fcerror a:active, a.fcerror, a.fcerror:link, a.fcerror:hover, a.fcerror:visited, a.fcerror:active {color: #CC0000 ;}
+
+/* Holiday Red 2012 */
+.bgchld{background:#B31622;}
+.bdchld{border-color:#B31622;}
+.fchld, .fchld a, .fchld a:link, .fchld a:hover, .fchld a:visited, .fchld a:active, a.fchld, a.fchld:link, a.fchld:hover, a.fchld:visited, a.fchld:active {color: #B31622;}
+
+/*=============================================================
+
+Arrows Skins
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/arrows/main.css
+
+-------------------------------------------------------------*/
+
+/* Arrows */
+.arrow-open-right{
+	background: url("images/arrows/arrows.gif%3F20130205.01") no-repeat -22px -20px;
+	width: 4px;
+	height: 8px;
+	display:inline-block;
+}
+
+.arrow-closed-right{
+	background: url("images/arrows/arrows.gif%3F20130205.01") no-repeat -112px -19px;
+	width: 4px;
+	padding-right:5px;
+	height:9px;
+	display:inline-block;
+}
+
+.arrow-small-closed-le{
+	background:url("images/arrows/arrows.gif%3F20130205.01") no-repeat -142px -19px;
+}
+
+/* Carats */
+.carat-open-up {
+	width:17px;
+	height:9px;
+	background:transparent url("images/arrows/arrows.gif%3F20130205.01") no-repeat -276px -78px;
+}
+
+.link-cta {
+	font-weight: bold;
+	text-decoration:none;
+}
+
+/*=============================================================
+
+Button Skins
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/buttons/main.css
+
+-------------------------------------------------------------*/
+
+
+
+
+/* Skin - Button
+	.btnp = primary button
+	.btns = secondary button
+	.btnt = tertiary button
+	.btnd = disabled button
+	
+	.btn-large = large button
+	.btn-small = small button
+*/
+
+
+.no-cssgradients .oo-btn {
+	background-image: url(images/buttons/button_background.jpg);
+}
+
+
+/*
+	primary buttons
+*/
+.btnp {
+	vertical-align: middle;
+	border-color: #4a6197;
+		background: #4a6197; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRhNjE5NyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iIzNlNTY5MiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjM1JSIgc3RvcC1jb2xvcj0iIzNiNTQ4ZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc4JSIgc3RvcC1jb2xvcj0iIzIyM2Q4MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxYTM3N2IiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #4a6197 0%, #3e5692 30%, #3b548d 35%, #223d80 78%, #1a377b 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4a6197), color-stop(30%,#3e5692), color-stop(35%,#3b548d), color-stop(78%,#223d80), color-stop(100%,#1a377b)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #4a6197 0%,#3e5692 30%,#3b548d 35%,#223d80 78%,#1a377b 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #4a6197 0%,#3e5692 30%,#3b548d 35%,#223d80 78%,#1a377b 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #4a6197 0%,#3e5692 30%,#3b548d 35%,#223d80 78%,#1a377b 100%); /* IE10+ */
+	background: linear-gradient(top,  #4a6197 0%,#3e5692 30%,#3b548d 35%,#223d80 78%,#1a377b 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#4a6197", endColorstr="#1a377b",GradientType=0 ); IE6-8 */
+}
+.btnp .first-child {
+    border-color: #4a6197;
+    margin:0px -1px;
+}
+.btnp button,
+.btnp a,
+.btnp a:visited,
+.btnp a:hover, 
+.btnp a:active  {
+    color: #FFFFFF !important;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding:0px 10px 0px 10px;
+    text-decoration: none !important;
+}
+.btnp button:hover,
+.btnp a:hover {
+    cursor: pointer;
+	text-decoration: none !important;
+	webkit-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	moz-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	ms-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	o-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+}
+.btnp:active{
+	position:relative;
+	top:1px;
+}
+.btnp button:active,
+.btnp a:active {
+	webkit-box-shadow: none;
+	moz-box-shadow: none;
+	ms-box-shadow: none;
+	o-box-shadow: none;
+	box-shadow: none;
+}
+
+.no-cssgradients .btnp {
+	background-position-y: -245px;
+
+}
+
+
+
+
+/* 
+	secondary buttons
+*/
+.btns {
+	vertical-align: middle;
+	border-color: #39405d;
+	background: #39405d; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzM5NDA1ZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjM5JSIgc3RvcC1jb2xvcj0iIzJjMzM1MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc4JSIgc3RvcC1jb2xvcj0iIzFhMjEzZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNDFiMzgiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #39405d 0%, #2c3350 39%, #1a213e 78%, #141b38 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#39405d), color-stop(39%,#2c3350), color-stop(78%,#1a213e), color-stop(100%,#141b38)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #39405d 0%,#2c3350 39%,#1a213e 78%,#141b38 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #39405d 0%,#2c3350 39%,#1a213e 78%,#141b38 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #39405d 0%,#2c3350 39%,#1a213e 78%,#141b38 100%); /* IE10+ */
+	background: linear-gradient(top,  #39405d 0%,#2c3350 39%,#1a213e 78%,#141b38 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#39405d", endColorstr="#141b38",GradientType=0 ); IE6-8 */
+}
+.btns .first-child {
+    border-color: #336699;
+    margin:0px -1px;
+}
+.btns button,
+.btns a,
+.btns a:visited,
+.btns a:hover, 
+.btns a:active  {
+    color: #FFFFFF !important;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding:0px 10px 0px 10px;
+    text-decoration: none !important;
+}
+.btns button:hover,
+.btns a:hover {
+    cursor: pointer;
+	text-decoration: none !important;
+	webkit-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	moz-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	ms-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	o-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+}
+.btns:active{
+	position:relative;
+	top:1px;
+}
+.btns button:active,
+.btns a:active {
+	webkit-box-shadow: none;
+	moz-box-shadow: none;
+	ms-box-shadow: none;
+	o-box-shadow: none;
+	box-shadow: none;
+}
+
+.no-cssgradients .btns {
+	background-position-y: -295px;
+
+}
+
+
+
+/* 
+	tertiary buttons
+*/
+.btnt {
+	vertical-align: middle;
+	border-color: #e7eaef;
+	background: #e7eaef; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2QxZDhlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlN2VhZWYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #e7eaef 0%, #d1d8e0 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e7eaef), color-stop(100%,#d1d8e0)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #e7eaef 0%, #d1d8e0 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e7eaef 0%, #d1d8e0 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e7eaef 0%, #d1d8e0 100%); /* IE10+ */
+	background: linear-gradient(top,  #e7eaef 0%, #d1d8e0 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#e7eaef", endColorstr="#d1d8e0",GradientType=0 ); IE6-8 */
+}
+.btnt .first-child {
+    border-color: #e7eaef;
+    margin:0px -1px;
+}
+.btnt button,
+.btnt a,
+.btnt a:visited,
+.btnt a:hover, 
+.btnt a:active  {
+    color: #000000 !important;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding:0px 10px 0px 10px;
+    text-decoration: none !important;
+}
+.btnt button:hover,
+.btnt a:hover {
+    cursor: pointer;
+	text-decoration: none !important;
+	webkit-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	moz-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	ms-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	o-box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+	box-shadow: 0px 2px 6px rgba(50, 50, 50, 0.35);
+}
+.btnt:active{
+	position:relative;
+	top:1px;
+}
+.btnt button:active,
+.btnt a:active {
+	webkit-box-shadow: none;
+	moz-box-shadow: none;
+	ms-box-shadow: none;
+	o-box-shadow: none;
+	box-shadow: none;
+}
+
+.no-cssgradients .btnt {
+	background-position-y: -345px;
+
+}
+
+
+
+/* 
+	disabled buttons
+*/
+.btnd {
+	vertical-align: middle;
+	cursor: default;
+	border-color: #ECECEC;
+	background: #ECECEC; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2EyYTJhMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4ZThlOGUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #ECECEC 0%, #CDCDCD  100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ECECEC), color-stop(100%,#CDCDCD )); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ECECEC 0%,#CDCDCD  100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ECECEC 0%,#CDCDCD  100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ECECEC 0%,#CDCDCD  100%); /* IE10+ */
+	background: linear-gradient(top,  #ECECEC 0%,#CDCDCD  100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ECECEC", endColorstr="#CDCDCD ",GradientType=0 ); IE6-8 */
+}
+.btnd .first-child {
+    border-color: #ECECEC;
+    margin:0px -1px;
+}
+
+.btnd button,
+.btnd a,
+.btnd a:visited,
+.btnd a:hover, 
+.btnd a:active  {
+	cursor: default;
+    color: #858585 !important;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding:0px 10px 0px 10px;
+    text-decoration: none !important;
+}
+
+.no-cssgradients .btnd {
+	background-position-y: -220px;
+
+}
+
+
+/* 
+	Large Buttons
+*/
+
+.btn-large button,
+.btn-large a,
+.btn-large a:visited,
+.btn-large a:hover, 
+.btn-large a:active  {
+    font-size:14px;
+}
+
+
+.no-cssgradients .oo-btn.btn-large{
+	background-image: url(images/buttons/button_background_large.jpg);
+}	
+
+/* Primary */
+.no-cssgradients .btnp.btn-large{
+    background-position-y: -286px;
+}
+.no-cssgradients .btnp.btn-large button:hover,
+.no-cssgradients .btnp.btn-large a:hover {
+	background-position-y: -322px;
+}
+/* Secondary */
+.no-cssgradients .btns.btn-large{
+    background-position-y: -358px;
+}
+.no-cssgradients .btns.btn-large button:hover,
+.no-cssgradients .btns.btn-large a:hover {
+	background-position-y: -394px;
+}
+/* Tiertary */
+.no-cssgradients .btnt.btn-large{
+    background-position-y: -430px;
+}
+.no-cssgradients .btnt.btn-large button:hover,
+.no-cssgradients .btnt.btn-large a:hover {
+	background-position-y: -466px;
+}
+/* Disabled */
+.no-cssgradients .btnd.btn-large{
+    background-position-y: -250px;
+}
+
+
+/* 
+	Small Buttons
+*/
+.btn-small button,
+.btn-small a,
+.btn-small a:visited,
+.btn-small a:hover, 
+.btn-small a:active  {
+    letter-spacing: 0.2em;
+    font-size:8px;
+    padding:1px 5px 0px 5px;
+}
+
+/*=============================================================
+
+Text Inputs
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/inputs-text/main.css
+
+-------------------------------------------------------------*/
+
+
+
+/*Skin - Text input
+	.txtp = primary input
+	.txts = secondary input
+	.txtt = tertiary input
+	.txte = error input
+	.txtwp = watermark primary
+	.txtws = text width small
+	.txtwm = text width medium
+	.txtwl = text width large
+	.txtwb = text width is set to block
+
+*/
+
+
+.txtp{
+	vertical-align: middle; 
+    border-color: #CCCCCC;
+    border-style: solid;
+	background: #ffffff; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY0JSIgc3RvcC1jb2xvcj0iI2ZlZmVmZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc0JSIgc3RvcC1jb2xvcj0iI2Y4ZjhmOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg3JSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYmRiZGIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #ffffff 0%, #fefefe 64%, #f8f8f8 74%, #ededed 87%, #dbdbdb 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(64%,#fefefe), color-stop(74%,#f8f8f8), color-stop(87%,#ededed), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* IE10+ */
+	background: linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#dbdbdb",GradientType=0 );  IE6-8 */
+}
+.txtp .first-child{
+    border-color: #CCCCCC;
+    margin:0px -1px;
+    margin:auto\9; /*IE 8 or lower */
+}
+.txtp input{
+	color:#666666;
+}
+
+
+/*
+	Additional States - #TODO needs additional work
+*/
+.txtp input{}
+.txtp input:active{}
+.txtp input:hover{}
+.txtp input:focus{}
+
+
+/*
+	Watermark Text Inputs
+*/
+.txtwp{
+	position:relative;
+}
+.txtwp label{
+	position: absolute;
+	left: 5px;
+	bottom: 5%;
+	color:#666666;
+	font-size: 93%;
+	cursor:text;
+}
+.txtwp input{
+	position:relative;
+}
+.txtwp label{
+	width:auto !important;
+}
+
+/* active states of watermarks. */
+.watermark-field-set label,
+.watermark-field-set span.watermark {
+	height:1px;
+	width:1px;
+	overflow:hidden;
+	text-indent:101%;
+}
+
+
+/* 
+	Width Options
+*/
+.txtws{width:150px;}
+.txtwm{width:175px;}
+.txtwl{width:200px;}
+.txtwb{width:100%;}
+
+/*=============================================================
+
+Inputs - Checkbox
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/inputs-checkbox/main.css
+
+-------------------------------------------------------------*/
+
+
+
+/* Description
+	This skin is designed to bring a closer alignment between
+	the different browsers and how they align checkbox type buttons.
+*/
+
+.oo-checkbox {
+	vertical-align: top;
+	position: relative;
+}
+.oo-checkbox input[type="checkbox"]{
+    position: relative;
+    top: -4px;
+    vertical-align:bottom;
+	cursor:pointer;
+}
+.oo-checkbox a.checkbox{
+	text-decoration:none;
+}
+
+
+/* Overlay Skin */
+.le-checkbox-overlay{
+	display: inline-block;
+}
+.le-checkbox-overlay:after,
+.le-checkbox-overlay:after {
+	clear:both;
+	display:block;
+	visibility:hidden;
+	overflow:hidden;
+	height:0 !important;
+	line-height:0;
+	font-size:xx-large;
+	content:" x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";
+}
+.le-checkbox-overlay .text {
+	display:table-cell;
+	zoom:1;
+    line-height: 1.25;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.le-checkbox-overlay span.checkbox,
+.le-checkbox-overlay a.checkbox .img{
+	display:block;
+	float:left;
+	height: 20px;
+	width: 20px;
+	margin-right:5px;
+	text-indent: -30px;
+	overflow: hidden;
+}
+a.checkbox .img{
+	background: url(http://www.landsend.com/global_navigation/css/images/checkbox/checkbox.gif) no-repeat 0px -21px;
+}
+.le-checkbox-overlay span.checkbox .img{
+	background: url(http://www.landsend.com/global_navigation/css/images/checkbox/checkbox.gif) no-repeat 0px -21px;
+	position:absolute;
+	height: 20px;
+	width: 20px;
+	top:0px;
+	left:0px;
+	display:block;
+}
+
+/* If IE8 or less 
+.le-checkbox-overlay span.checkbox .img{
+	display:none;
+}
+.le-checkbox-overlay input[type="checkbox"]{
+	display: block;
+	float:left;
+	margin-right:5px;
+	margin-top: 7px;
+	vertical-align: top;
+}
+*/
+
+.le-checkbox-overlay input[type=checkbox]:checked ~ .img{
+	background: url(http://www.landsend.com/global_navigation/css/images/checkbox/checkbox.gif) no-repeat 0px 0px;
+}
+.le-checkbox-overlay.is-checked a.checkbox .img{
+	background: url(http://www.landsend.com/global_navigation/css/images/checkbox/checkbox.gif) no-repeat 0px 0px;
+}
+.oo-fe .le-checkbox-overlay a,
+.oo-fe .le-checkbox-overlay a:hover{
+	line-height: 1.62em;
+	min-height: 1.62em;
+	font-size: 100%;
+	padding:0px;
+	color:#333;
+}
+.oo-fe .le-checkbox-overlay.is-disabled{
+	zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+.oo-fe .le-checkbox-overlay.is-disabled a{
+	cursor: default;
+}
+.le-checkbox-overlay.is-checked a.check-only .img,
+.le-checkbox-overlay a.check-only:hover .img{
+	background: url(http://www.landsend.com/global_navigation/css/images/checkbox/checkbox.gif) no-repeat -20px 0px;
+}
+.le-checkbox-overlay a.check-only .img{
+	background: none;
+}
+
+/*=============================================================
+
+Inputs - Radio 
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/inputs-radio/main.css
+
+-------------------------------------------------------------*/
+
+
+
+/* Description
+	This skin is designed to bring a closer alignment between
+	the different browsers and how they align radio type buttons.
+*/
+
+.oo-fe .oo-radio {
+	vertical-align:middle;
+}
+.oo-fe .oo-radio input[type="radio"]{
+	position: relative;
+	top: -3px;
+	vertical-align:bottom;
+	cursor:pointer;
+}
+.oo-fe label.oo-disabled-input span{
+	zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+/*=============================================================
+
+Textarea
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/textarea/main.css
+
+-------------------------------------------------------------*/
+
+
+
+/*Skin - Textarea
+	.txtarea = textarea
+*/
+
+.txtarea {
+vertical-align: middle; 
+    border-color: #CCCCCC;
+    border-style: solid;
+	background: #ffffff; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY0JSIgc3RvcC1jb2xvcj0iI2ZlZmVmZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc0JSIgc3RvcC1jb2xvcj0iI2Y4ZjhmOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg3JSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYmRiZGIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #ffffff 0%, #fefefe 64%, #f8f8f8 74%, #ededed 87%, #dbdbdb 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(64%,#fefefe), color-stop(74%,#f8f8f8), color-stop(87%,#ededed), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* IE10+ */
+	background: linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#dbdbdb",GradientType=0 );  IE6-8 */
+}
+
+.txtarea .first-child {
+    border-color: #CCCCCC;
+    margin:0px -1px;
+    margin:auto\9; /*IE 8 or lower */
+}
+
+.txtarea textarea {
+	color:#666666;
+}
+
+/*=============================================================
+
+Notification Skins
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/notifications/main.css
+
+-------------------------------------------------------------*/
+
+
+
+/* Skin - Notifications
+	.error - error states
+	.warning - warning states
+*/
+
+
+/*
+	Notification
+*/
+.oo .notification{
+	margin: 10px 0;
+	border-style: solid;
+	border-width: 1px;
+}
+.oo .notification div{
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding: 10px 15px 10px 40px;
+}
+
+
+
+/*
+	Error
+*/
+.oo .error{
+	border-color:#CC0000;
+	color:#CC0000;
+}
+.oo .error div{
+	background-image:url(../../images/notifications/warnBorderRed.gif);
+}
+.oo .error label{
+	color:#CC0000;
+	background: none;
+}
+.oo-fe .error label{
+	color:#CC0000;
+}
+
+
+
+/*
+	Warning
+*/
+.oo .warning{
+	border-color:#FF6600;
+	color:#FF6600;
+}
+.oo .warning div{
+	background-image:url(../../images/notifications/noticeBorderOrange.gif);
+}
+
+
+
+/*
+	Error for a Text input or textarea
+*/
+.oo-fe .error .txtp,
+.oo .error .txtp {
+	border-color: #CC0000;
+	border-style: solid;
+	background: #ffd9da; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZDlkYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY0JSIgc3RvcC1jb2xvcj0iI2ZlZDhkOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg3JSIgc3RvcC1jb2xvcj0iI2VkY2FjYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYmJhYmIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #ffd9da 0%, #fed8d9 64%, #edcacb 87%, #dbbabb 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd9da), color-stop(64%,#fed8d9), color-stop(87%,#edcacb), color-stop(100%,#dbbabb)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffd9da 0%,#fed8d9 64%,#edcacb 87%,#dbbabb 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffd9da 0%,#fed8d9 64%,#edcacb 87%,#dbbabb 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffd9da 0%,#fed8d9 64%,#edcacb 87%,#dbbabb 100%); /* IE10+ */
+	background: linear-gradient(top,  #ffd9da 0%,#fed8d9 64%,#edcacb 87%,#dbbabb 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffd9da", endColorstr="#dbbabb",GradientType=0 ); IE6-8 */
+}
+.oo-fe .error .txtp .first-child ,
+.oo .error .txtp .first-child {
+	border-color: #CC0000;
+}
+.oo-fe .error .txtp input,
+.oo .error .txtp input {
+	color:#666666;
+}
+
+
+
+/*
+	Error specific to a text input or textarea
+*/
+.txte
+ {
+	border-color: #CC0000;
+	border-style: solid;
+	background: #ffffff; /* Old browsers */
+	/* IE9 SVG, needs conditional override of "filter" to "none" */
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY0JSIgc3RvcC1jb2xvcj0iI2ZlZmVmZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc0JSIgc3RvcC1jb2xvcj0iI2Y4ZjhmOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg3JSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYmRiZGIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #ffffff 0%, #fefefe 64%, #f8f8f8 74%, #ededed 87%, #dbdbdb 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(64%,#fefefe), color-stop(74%,#f8f8f8), color-stop(87%,#ededed), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* IE10+ */
+	background: linear-gradient(top,  #ffffff 0%,#fefefe 64%,#f8f8f8 74%,#ededed 87%,#dbdbdb 100%); /* W3C */
+/*	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#dbdbdb",GradientType=0 ); IE6-8 */
+}
+.txte .first-child {
+	border-color: #CC0000;
+}
+.txte input {
+	color:#666666;
+}
+.txte label{
+	color:#CC0000;
+}#overlay {
+	position:absolute;
+	z-index:999999997;
+	top:0;
+	left:0;
+	min-width:100%;
+	_width:100%;
+	min-height:100%;
+	_height:100%;
+}
+.overlay-hidden {
+	overflow:hidden;
+}
+#overlay-filter {
+	cursor:pointer;
+	opacity:0;
+	position: absolute;
+	z-index:999999998;
+	top:0;
+	left:0;
+	background:#FFF;
+	min-width:100%;
+	_width:100%;
+	min-height:100%;
+	_height:100%;
+	border:#FFF;
+}
+#overlay-window {
+	position:absolute;
+	top: 120px;
+	left: 50%;
+	z-index:999999999;
+	display:none;
+}
+#close-window {
+	width:30px;
+	height:30px;
+	display:block;
+	position:absolute;
+	right:37px;
+	top:37px;
+	/*background:#F00;*/
+	background:url(../images/overlay/close_button.png) no-repeat top right;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/close_button.png?20130205.01",sizingMethod="scale");
+	_background:url(../images/overlay/close_button.gif) no-repeat top right;	
+	z-index:999999999;
+	cursor:pointer;
+}
+
+#overlay-content {
+	padding:43px;
+	position:relative;
+	z-index:9999999;
+
+}
+#overlay-content .head {
+	font-size:128%;
+	font-weight:bold;
+	text-transform:uppercase;
+	text-align:left;
+	color:#444;
+	background:#FFF;
+	padding:5px 0px 5px 22px;
+	_border:1px solid #CCC;
+	_border-bottom:0px;
+	display:none;
+}
+#overlay-content .body, #overlay-content .foot {
+	padding:25px 25px 25px 25px;
+	background:#FFF;
+	_border:4px solid #CCC;
+	text-align:justify;
+}
+#overlay-content .body p{
+	line-height:40px;
+	letter-spacing:.025em;
+}
+#overlay-content .body p a{
+	color:#666;
+	text-transform:uppercase;
+}
+#overlay-content .body p a.btn-opa{
+	text-decoration:none;
+	color:#FFF;
+	font-weight:normal;
+}
+#overlay-content .body p.nav{
+	margin-bottom:0px;
+}
+#overlay-content .body p.nav a{
+	text-decoration:none;
+	text-transform:uppercase;
+	font-size:12px;
+	color:#FFF;
+	font-weight:normal;
+}
+#overlay-content .body p.nav a.btn-spa{
+		background:#333333 url(../images/global_navigation/2010.05.21_btn_secondary.gif);
+		margin-right:10px;
+}
+#overlay-content .body p.nav a.btn-opa{
+		background:#333333 url(../images/global_navigation/2010.05.20_btn_primary.gif);
+}
+#overlay-content .body h4{
+	text-transform:uppercase;
+	color:#003366;
+	letter-spacing:.05em;
+	font-size:1.25em;
+	margin:10px auto 10px auto;
+	text-align:center;
+}
+#overlay-content .body p span{
+	line-height:normal;
+	font-size:10px;
+}
+#overlay-content .body p img{
+	font-size:1.5em;
+	color:#05173D;
+}
+#overlay-content .foot {
+	_border:1px solid #EEE;
+	_border-top:0px;
+	display:none;	
+}
+.simple-overlay {
+	top:200px;
+	width:450px;
+	background:none;
+	color:#999;
+	font-size:150%;
+	text-align:center;
+}
+.simple-overlay p {
+	padding-bottom:10px;
+}
+.overlay-window-shadow {
+	position:relative;
+}
+.overlay-window-n {
+	height:43px;
+	position:absolute;
+	top:0;
+	left:43px;
+	background:url(../images/overlay/n.png) repeat-x;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/n.png?20130205.01",sizingMethod="scale");
+	_background:none;
+}
+.overlay-window-ne {
+	width:43px;
+	height:43px;
+	background:url(../images/overlay/ne.png) no-repeat;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/ne.png?20130205.01",sizingMethod="scale");	
+	position:absolute;
+	top:0;
+	right:0;
+	_background:none;
+}
+.overlay-window-e {
+	position:absolute;
+	background:url(../images/overlay/e.png) repeat-y;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/e.png?20130205.01",sizingMethod="scale");	
+	top:43px;
+	right:0px;
+	width:43px;
+	_background:none;
+}
+.overlay-window-se {
+	width:43px;
+	height:43px;
+	background:url(../images/overlay/se.png) no-repeat;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/se.png?20130205.01",sizingMethod="scale");	
+	position:absolute;
+	bottom:0;
+	right:0;
+	_background:none;
+}
+.overlay-window-s {
+	position:absolute;
+	background:url(../images/overlay/s.png) repeat-x;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/s.png?20130205.01",sizingMethod="scale");	
+	bottom:0px;
+	left:43px;
+	height:43px;
+	_background:none;
+}
+.overlay-window-sw {
+	width:43px;
+	height:43px;
+	background:url(../images/overlay/sw.png) no-repeat;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/sw.png?20130205.01",sizingMethod="scale");	
+	position:absolute;
+	bottom:0;
+	left:0;
+	_background:none;
+}
+.overlay-window-w {
+	position:absolute;
+	background:url(../images/overlay/w.png) repeat-y;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/w.png?20130205.01",sizingMethod="scale");	
+	top:43px;
+	left:0px;
+	width:43px;
+	_background:none;
+}
+.overlay-window-nw {
+	width:43px;
+	height:43px;
+	background:url(../images/overlay/nw.png) no-repeat;
+	filter:	progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/global_navigation/images/overlay/nw.png?20130205.01",sizingMethod="scale");	
+	position:absolute;
+	top:0;
+	left:0;
+	_background:none;
+}/*******************************
+START - Promotional Information
+*******************************/
+#promotional-info-banner{
+/*	position:absolute;
+	min-width:100%;
+	top:0px;
+	left:0px;
+	*/
+	padding:10px 0px 10px 0px;
+	margin:0px;
+	color:#FFF;
+	font-size:1.25em;
+	background:#05173D;/* default color of promobanner*/
+}
+#promotional-info-banner div{
+	width:1000px;
+	margin:0px auto 0px auto;
+}
+#promotional-info-banner img{
+	vertical-align:bottom;
+}
+#promotional-info-banner a{
+	color:#FFF;
+}
+
+/*******************************
+END - Promotional Information
+*******************************//*******************************START - Mix bag Shopping bag*******************************/.shoppingBag{	padding-top:35px;	/* Adds a little padding to the top so that content navigation and headings are not covered up */	/*margin-left:0px;	 Adjusts CORE to align left. */	width:608px;			/* sets the width to the actual shopping bag area */}#mainCenteredDiv .pageContent{ /* IE6 Fix due to irregularities in the shopping bag page */	_width:780px;}.productDivider, .solid_spacer{			/* So in the design instead of using a border bottom or border top we decided to use a specific div for dividers */	height:0px;				/* Reset to 0 height, so that it doesn't add extra spacing in IE */	*background:#fff;		/* Set its background to white due to IE still adding uncontrollable spacing */	padding:0px;			/* Clears out random padding issues */	margin:0px;				/* Clears out random margin issues */	width:607px;			/* keeps the divider in line with the containing div */	_display:inline;}.pageContent .rightColumn form{	width:100px;			/* set width to 100px so that it doesn't take the width of its parent container. */	margin-top:30px;		/* pushes the form down slightly to align with the page heading */}.rightColumn{	width:115px;			/* sets the width of the right column that contains all the fun little pieces of security and privacy */}.shipping_item_pad{	padding:0px;}.ship_recap{	padding:6px 0px;}.ship_recap_pad{	padding-top:0px; /* clears the height on the top of the recap area */}.shipmentBlock{	width:606px; /* set the width for the parent product blocks notice this width is slightly differnt from the .ship_recap_pad */		padding:0px; /* Clears out random padding issues */}.productImage{	padding-left:24px; /* allows for the product image to be shifted to the left to allow the "store type" tab display to not overlap. */	background:none;	/* replaces the white background to none, to allow for the core or canvas logo to appear. */}.productBlock{	/*width:618px;*/}.shipping_item_pad .productBlock{	width:604px;}.productBlockLeft{	width:275px;}/*** ADDED 2010.01.11 ***/.productBlock, .core-product, .canvas-product {	width: 603px;		/* Sets the width of the product dispaly to align more according to the layout. */}.core-product .sbItemAlert,.canvas-product .sbItemAlert,.canvas-product .sbItemWarning,.core-product .sbItemWarning{    margin-left:47px;	/* adjusts the warnings and alerts to be poistioned to the left and not cover up the brand icons in the shopping bag */}/* Start just the icon piece */.core-product{		background:url(images/shopping-bag/090826_LE_shop_tab.gif);}.canvas-product{		background:url(images/shopping-bag/090826_CV_shop_tab.gif);}.core-product, .canvas-product{	background-repeat:no-repeat;	background-position:left;	_border:1px solid #ffffff;	margin:0px;	padding:0px;	display:inline-block;	_border-bottom:1px solid #999;}.core-product .productImage,.canvas-product .productImage{	padding-left:46px; /* allows for the product image to be shifted to the left to allow the "store type" tab display to not overlap. */	background:none;	/* replaces the white background to none, to allow for the core or canvas logo to appear. */}/*******************************END - Mix bag Shopping bag*******************************//*******************************START - global header masthead*******************************/#hd{	font-family: "Arial", Helvetica, sans-serif;	font-size: 12px;	line-height: 1.62em;}a.accessible-nav{	text-indent:101%;	overflow:hidden;	width:0px;	height:0px;	display:block;	color:#FFF;}.masthead{	z-index:101; /* this is due to tab-navigation overlapping in IE7*/}/* Utility */.site-utility {	border-bottom:1px solid #002B5C;	margin-bottom:10px;}.site-utility-customer-service {	color:#333333;	padding:10px 0;}.site-utility-customer-service .divider{	padding-left: 5px;	padding-right: 5px;}.site-utility-customer-service a {	color:#333333;	text-decoration:none;}.site-utility-customer-service a:hover {	color:#000;	text-decoration: underline;}.site-utility-nav {	text-align:right;	padding:10px 10px 10px 0px;}.site-utility-nav a {	color:#333;	text-decoration:none;}.site-utility-nav a:hover {	color:#000;	text-decoration: underline;}.site-utility-nav  .divider {	padding-left: 5px;	padding-right: 5px;}.site-utility-shopping-bag{	white-space:nowrap;	text-align: right;}.site-utility-shopping-bag > a{	display:inline-block;	vertical-align: middle;	color:#336699;	font-weight:bold;	text-transform:uppercase;	text-decoration:none;	padding:10px 4px 10px 23px;	background:transparent url("images/masthead_sprites/masthead_sprites.gif%3F20130205.01") no-repeat -22px -280px;}.site-utility-shopping-bag > a:hover{	text-decoration:underline;}.site-utility-shopping-bag .site-utility-shopping-bag-items,.site-utility-shopping-bag .site-utility-shopping-bag-items a,.site-utility-shopping-bag .site-utility-shopping-bag-items a:hover{	background:#e0e0e0;	color:#336699 !important;}/* Masthead section */.masthead-logo {	display:block;	width:312px;	height:34px;	padding: 22px 0px 0px 0px;	margin: 0 auto 8px auto;}.family-sites > a {	color:#333;	text-decoration:none;	vertical-align: text-top;}.family-sites > a:hover{	color:#000;	text-decoration: underline;}.family-sites .arrow-open-right{	padding-right:5px;}.family-sites .family-sites-container {	position:absolute;	z-index:101; /* this is +1 above .tab-navigation*/	padding-top:0.417em;	display:none;	left:0px;	top:20px;}.family-sites .family-sites-container .carat-open-up {	position:absolute;	top:0;	left:30px;	z-index:22;}.family-sites .family-sites-content {	position:relative;	top:3px;	z-index:21;	width:318px;	background-color:#fff;	box-shadow:0px 0px 3px rgba(0,0,0,0.25);	border:1px solid #ccc;	padding:20px 20px 15px 20px;}.family-sites .family-sites-content h4{	color:#333;	padding-bottom:5px;	margin:0;}.family-sites .family-sites-brands{	list-style:none;	padding: 5px 0px 0px 0px;	border-top:1px solid #ccc;	margin:0px 20px 0px 0px;}.family-sites .family-sites-brands .family-sites-logo {	display:block;	width:100%;	height:30px;	padding:10px 0;	border-bottom:1px solid #CCC;	background: url("images/masthead_sprites/masthead_sprites.gif%3F20130205.01") no-repeat 0px 0px;}.family-sites .family-sites-brands .lands-end{	background-position: -156px -72px;} .family-sites .family-sites-brands .lands-end-canvas{	background-position: -425px -123px;} .family-sites .family-sites-brands .lands-end-outfitters{	background-position: -158px -184px;} .family-sites .family-sites-international {	list-style:none;	padding: 15px 0px 0px 0px;	border-top:1px solid #ccc;	margin:0;}.family-sites .family-sites-international .family-sites-flag {	display:block;	color:#002B5C;	text-decoration:none;	padding:4px 0 5px 0px;	vertical-align: top;}.family-sites .family-sites-international .family-sites-flag:hover{	text-decoration: underline;}.family-sites .family-sites-international .family-sites-country{	background: #FFF url("images/masthead_sprites/masthead_sprites.gif%3F20130205.01") no-repeat 0px 0px;	position: relative;	top:2px;	width: 15px;	height: 15px;	display: inline-block;	padding-right: 15px;	text-decoration:none;}.family-sites .family-sites-international .family-sites-flag .austria-flag  {	background-position: -19px -86px;}.family-sites .family-sites-international .family-sites-flag .france-flag {	background-position: -19px -112px;}.family-sites .family-sites-international .family-sites-flag .germany-flag {	background-position: -19px -138px;}.family-sites .family-sites-international .family-sites-flag .japan-flag {	background-position: -19px -164px;}.family-sites .family-sites-international .family-sites-flag .uk-flag {	background-position: -19px -217px;}.masthead .site-search{	position:relative;}.masthead .site-search-form{	position:absolute;	top:0px;	right:0px;	white-space:nowrap;}.masthead .site-search-form .site-search-input{	width:140px;	margin-right:10px;}
+
+/*=============================================================
+
+Tab Navigation
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/tab-navigation/tab-navigation.css
+
+-------------------------------------------------------------*/
+
+/*******************************
+START - Tab Navigation
+*******************************/
+
+.tab-navigation {
+	border-bottom:2px solid #002B5C;
+	margin:0 0 10px 0;
+	position: relative;
+	z-index: 100;
+}
+
+/* Cleans up all LIs */
+.tab-navigation li {
+	list-style:none;
+	padding:0;
+	margin:0;	
+}
+
+.tab-navigation .departments {
+	width:960px;
+	white-space: nowrap;
+	margin:0 auto;
+}
+
+.tab-navigation .first-level-item {
+	float:left;
+}
+
+.tab-navigation .first-level-title{
+	margin:0;
+	padding:0 0 10px 0;
+	font-weight: normal;
+}
+
+.tab-navigation .first-level-title-link {
+	font-family: "Copse", serif;
+	display:block;
+	color:#002B5C;
+	text-decoration:none;
+	/* without the gift tab
+		padding: 10px 8px 0 8px; 
+	*/
+	padding: 10px 10px 0 10px; 
+	font-size: 15px;
+	background:#FFFFFF;
+}
+
+.tab-navigation .first-level-item:hover .first-level-title-link,
+.tab-navigation .is-active {
+	color:#336699;
+} 
+
+/* Canvas Tab */
+.tab-navigation .tab-canvas .img {
+	display:block;
+	overflow: hidden;
+	text-indent: 101%;
+	width:95px;
+	height:26px;
+	position:relative;
+	top:7px;
+	background: url("images/masthead_sprites/masthead_sprites.gif%3F20130205.01") no-repeat -321px -141px;
+	padding:0;
+}
+
+.tab-navigation .tab-canvas .img:hover {
+	background-position: -191px -141px
+}
+
+/* Lebo Tab */
+.tab-navigation .tab-lebo .img {
+	display: block;
+	overflow: hidden;
+	text-indent: 101%;
+	width: 97px;
+	height: 26px;
+	position: relative;
+	top: 7px;
+	background: url("images/masthead_sprites/masthead_sprites.gif%3F20130205.01") no-repeat -190px -248px;
+	padding: 0;
+}
+
+.tab-navigation .tab-lebo .img:hover {
+	background-position: -319px -248px
+}
+
+
+.tab-navigation .second-level-menu,
+.tab-navigation .second-level-menu-group {
+	display:none;
+	position:absolute; 
+	width:210px;
+	width:195px;
+	background-color:#FFFFFF;
+	padding:10px 0;
+	margin:0 0 0 -12px;
+	box-shadow:0 0 3px rgba(0,0,0,0.25);
+	border:1px solid #CCCCCC;
+	z-index:10;
+}
+
+.tab-navigation .first-level-item:hover .second-level-menu,
+.tab-navigation .first-level-item:hover .second-level-menu-group  {
+	display:block;
+}
+
+/* Carat */
+.tab-navigation .carat-open-up {
+	position:absolute;
+	left: 20px;
+	top: -9px;
+	z-index: 20;
+	width: 10%;
+	height: 20px;
+}
+
+.tab-navigation .second-level-item{
+	position: relative;
+	white-space: normal;
+}
+
+.tab-navigation .second-level-item a.is-active{
+	background-color:#D8E3ED;
+}
+.tab-navigation .second-level-link{
+	display:block;
+	color:#002B5C;
+	text-decoration:none;
+	padding:5px 15px 5px 15px;
+	line-height:14px;
+}
+
+.tab-navigation .second-level-item .is-active {
+	display:block;
+}
+
+
+.tab-navigation .third-level-menu {
+	display:none;
+	position:absolute;
+	z-index:10;
+	top:-11px;
+	margin:0 0 0 177px;
+	width:120px;
+	background-color:#3C6EA4;
+	padding: 5px 0;
+	box-shadow:0 0 3px rgba(0,0,0,0.25);
+	white-space: nowrap;
+}
+
+.no-box-shadow .tab-navigation .third-level-menu {
+	border:1px solid #CCCCCC;
+}
+
+.tab-navigation .third-level-link{
+	display:block;
+	color:#FFFFFF;
+	text-decoration:none;
+	background-color:#3C6EA4;
+	padding: 0 15px 0 15px;	
+}
+
+.tab-navigation .third-level-link:hover{
+	text-decoration:underline;
+}
+
+
+.tab-navigation .second-level-menu-group{
+	width:399px;
+	padding:0 0 10px 0;
+}
+
+.tab-navigation .second-level-menu-group .second-level-menu{
+	width:200px;
+	display:block;
+	position: relative;
+	box-shadow: none;
+	border:none;
+	padding:0;
+	margin:0px;
+}
+
+/* Hover State of second-level-menu-group */
+.tab-navigation .second-level-menu-group:hover .second-level-menu-item .second-level-menu,
+.tab-navigation .second-level-menu-group:hover .second-level-menu-item .second-level-menu-title{
+	opacity: .25;
+}
+
+.tab-navigation .second-level-menu-group .second-level-menu-item:hover .second-level-menu,
+.tab-navigation .second-level-menu-group .second-level-menu-item:hover .second-level-menu-title{
+	opacity: 1;
+}
+
+.tab-navigation .second-level-menu-group .menu-carat:hover + .second-level-menu-item .second-level-menu,
+.tab-navigation .second-level-menu-group .menu-carat:hover + .second-level-menu-item .second-level-menu-title,
+.tab-navigation .second-level-menu-group .menu-carat:hover + .second-level-menu-item .second-level-menu + .second-level-menu-item .second-level-menu,
+.tab-navigation .second-level-menu-group .menu-carat:hover + .second-level-menu-item .second-level-menu + .second-level-menu-item .second-level-menu-title{
+	opacity: 1;
+}
+
+.tab-navigation .second-level-menu-group .second-level-menu-item{
+	display:inline-block;
+	*display: inline;	/* IE7 hack for inline block; */
+	zoom: 1; 			/* IE7 hack for inline block; */
+	padding: 10px 0 0 0;
+	margin: 0 0 10px 0;
+	position: relative;
+	top:10px;
+	width:199px;
+	vertical-align: top;
+	z-index: 1;
+}
+
+.tab-navigation .second-level-menu-group .third-level-menu{
+	margin-left:180px;
+}
+.tab-navigation .second-level-menu-group .menu-item-a{
+	z-index:3;
+
+}
+
+.tab-navigation .second-level-menu-group .menu-item-b{
+	z-index:1;
+	left:-2px;
+}
+.tab-navigation .second-level-menu-group .menu-item-b .second-level-menu{
+	width:199px;
+}
+.tab-navigation .second-level-menu-group .menu-item-divider{
+	width: 1px;
+	height: 100%;
+	position: absolute;
+	right: 198px;
+	z-index: 2;
+	overflow: hidden;
+	padding: 0px;
+	margin:0px;
+	top: 15px;
+}
+.tab-navigation .second-level-menu-group .menu-item-divider div{
+	width: 1px;
+	height: 100%;
+	margin: 0px;
+	position: relative;
+	top: 0px;
+	background: #CCC;
+	margin-top: -25px;
+}
+
+.tab-navigation .second-level-menu-group .second-level-menu-title {
+	font-size: 17px;
+	margin:0 0 5px 0;
+	padding:0px;
+}
+
+.tab-navigation .second-level-menu-group .second-level-menu-title-link{
+	text-decoration: none;
+	display: block;
+	color:#002B5C;
+	padding: 0 15px 0 15px;
+}
+
+.tab-navigation .second-level-menu-group .arrow-open-right {
+	margin: 0 0 0 5px;
+	width: 8px;
+	height: 8px;
+}
+
+/* Offset the sale tab menu to the left 
+.tab-navigation .departments .tab-sale .second-level-menu {
+	margin: 0 0 0 -110px;
+}
+
+.tab-navigation .departments .tab-sale .menu-carat{
+	left:134px;
+}
+*/
+
+
+
+
+/* Mobile Navigation */
+.tab-navigation .departments-dropdown {
+	display:none;
+	float:left;
+	width:90px;
+	padding:0;
+	margin:0 auto;
+}
+
+
+.tab-navigation .departments-dropdown .toggle .title {
+	float:left;
+	width:57px;
+	background-color:#002B5C;
+	border:1px solid #002B5C;
+	border-right:1px solid #FFFFFF;
+	-moz-border-radius:0.417em 0 0 0.417em;
+	-webkit-border-radius:0.417em 0 0 0.417em;
+	border-radius:0.417em 0 0 0.417em;
+}
+
+.tab-navigation .departments-dropdown .toggle .title > div {
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+.tab-navigation .departments-dropdown .toggle .button {
+	float:left;
+	width:30px;
+	background-color:#002B5C;
+	-moz-border-radius:0 0.417em 0.417em 0;
+	-webkit-border-radius:0 0.417em 0.417em 0;
+	border-radius:0 0.417em 0.417em 0;
+}
+
+.tab-navigation .departments-dropdown .toggle .button > div {
+	text-align:center;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:6px;
+}
+
+.tab-navigation .departments-dropdown .menu {
+	display:none;
+	position:absolute;
+	z-index:10;
+	width:100%;
+	list-style:none;
+	padding:0;
+	margin:0 0 0 -0.417em;
+	border:none;
+}
+
+.tab-navigation .departments-dropdown .menu ul {
+	padding:0;
+	margin:0;
+}
+
+.tab-navigation .departments-dropdown .menu li {
+	float:left;
+	width:50%;
+	list-style:none;
+}
+
+.tab-navigation .departments-dropdown .menu li a {
+	display:block;
+	color:#002B5C;
+	font-weight:bold;
+	background-color:#FFFFFF;
+	padding:0.833em;
+	margin:0 auto;
+	text-decoration:none;
+	text-transform:uppercase;
+	border-right:1px solid #CCCCCC;
+	border-bottom:1px solid #CCCCCC;
+}
+
+.tab-navigation .departments-dropdown.open .toggle .title {
+	background-color:#FFFFFF;
+	border-right:1px solid #002B5C;
+	-moz-border-radius:0.417em 0 0 0;
+	-webkit-border-radius:0.417em 0 0 0;
+	border-radius:0.417em 0 0 0;
+}
+
+.tab-navigation .departments-dropdown.open .toggle .title > div {
+	color:#002B5C;
+}
+
+.tab-navigation .departments-dropdown.open .toggle .button {
+	-moz-border-radius:0 0.417em 0 0;
+	-webkit-border-radius:0 0.417em 0 0;
+	border-radius:0 0.417em 0 0;
+}
+
+
+/*=============================================================
+
+Footer
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/footer/main.css
+
+-------------------------------------------------------------*/
+
+#ft{
+	font-family: "Arial", Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 1.62em;
+	padding-top:10px;
+}
+
+.customer-aquisition{
+	padding-bottom: 10px;
+}
+
+/*Email Signup */
+.email-aquisition{
+	position:relative;
+	white-space: nowrap;
+}
+
+.email-aquisition .email-aquisition-header{
+	background: url("images/footer_sprites/footer_sprites.gif%3F20130205.01") no-repeat -24px -288px;
+	padding:4px 0px 5px 20px;
+	margin:0px;
+	color: #05173D;
+	font-weight: bold;
+}
+.email-aquisition .email-aquisition-body{
+	margin-left:10px;
+}
+
+.email-aquisition-button{
+	margin-left:10px;
+}
+.email-aquisition-input{
+	width:155px;
+}
+
+/* Mobile */
+.mobile-aquisition{
+	text-align: center;	
+}
+.mobile-aquisition a,
+.mobile-aquisition a:hover{
+	color: #05173D;
+	text-decoration:none;
+}
+.mobile-aquisition a:hover{
+	text-decoration: underline;
+}
+.mobile-aquisition span{
+	background: url("images/footer_sprites/footer_sprites.gif%3F20130205.01") no-repeat -24px -348px;
+	padding:4px 0px 5px 20px;
+	top:2px;
+	position: relative;
+	font-weight: bold;
+}
+
+
+/*Social Media */
+.social-media-aquisition {
+	text-align:right;
+	white-space: nowrap;
+}
+
+
+
+
+/* Customer Assistance */
+.customer-assistance {
+	border-top:1px solid #CCC;
+	border-bottom:1px solid #CCC;
+}
+
+.customer-assistance .arrow-open-right{
+	padding-right:5px;
+}
+
+/* Help Links */
+.customer-assistance .help-links {
+	margin:10px 1.666em 10px 0;
+}
+
+.customer-assistance .help-links ul {
+	margin:0 0 1.666em 0;
+	padding:0;
+}
+
+.customer-assistance .help-links a {
+	line-height:1.333em;
+	color:#666;
+	text-decoration:none;
+	vertical-align: text-top;
+	font-size: 15px;
+}
+.customer-assistance .help-links a:hover{
+	text-decoration: underline;
+}
+
+.customer-assistance .help-links .registration-mark{
+	font-size: 9px;
+	position: relative;
+	top: -5px;
+	left:2px;
+	display: inline-block;
+}
+
+
+/* Live Help Links */
+.customer-assistance .live-help-links {
+	color:#666;
+	margin:10px 30px 10px 0px;
+}
+
+.customer-assistance .live-help-links h3 {
+	font-size:16px;
+	margin-bottom:0px;
+	color:#333;
+}
+
+.customer-assistance .live-help-links p {
+	margin-bottom:15px;
+	line-height: 16px;
+	margin-top: 0px;
+}
+.customer-assistance .live-help-links p span{
+	display:block;
+	font-size:16px;
+	margin-top:15px;
+}
+
+
+/* Service Links */
+.customer-assistance .service-links{
+	margin-right:25px;
+	padding:10px 0px 10px 25px;
+	border-left:1px solid #CCC;
+	border-right:1px solid #CCC;
+}
+
+.customer-assistance .service-links .block{
+	padding-left:0px;
+	*width:49.9% /* IE7 Hack due to content block breaking */
+}
+
+.customer-assistance .service-links .service-links-title {
+	color:#333;
+	text-transform:uppercase;
+	margin:0;
+	font-size:11px;
+}
+
+.customer-assistance .service-links .service-links-list {
+	margin:0;
+	padding:0 10px 10px 0;
+}
+
+.customer-assistance .service-links .service-link-item{
+	font-size:12px;
+	color: #666;
+	text-decoration: none;
+}
+.customer-assistance .service-links .service-link-item:hover{
+	text-decoration: underline;
+}
+
+
+/* Promo Links */
+.customer-assistance .promo-links {
+	margin:0;
+}
+
+.customer-assistance .promo-links .media {
+	margin:10px 0 10px 0;
+	clear:both;
+}
+
+.customer-assistance .promo-links .media .img {
+	margin:4px 13px 15px 0;
+}
+.customer-assistance .promo-links .media .bd h4{
+	text-transform:uppercase;
+	margin:0;
+	font-size:11px;
+}
+
+.customer-assistance .promo-links .media .bd h4 a {
+	color:#333;
+	text-decoration: none;
+}
+.customer-assistance .promo-links .media .bd h4 a:hover{
+	text-decoration: underline;
+}
+
+.customer-assistance .promo-links .media .bd p {
+	color:#666;
+	margin:0;
+	padding-left:10px;
+	line-height: 16px;
+}
+
+
+/* Footer Utility */
+.partner-links {
+	margin:10px 0 0 0;
+}
+
+.partner-links a{
+	background:url("images/footer_sprites/footer_sprites.gif%3F20130205.01") no-repeat;
+	display:inline-block;
+	overflow: hidden;
+	text-indent: -99%;
+	margin-right:20px;
+}
+.partner-links .partner-link-sears{
+	background-position: -20px -81px;
+	width: 62px;
+	height: 28px;
+}
+.partner-links .partner-link-kmart{
+	background-position: -23px -139px;
+	width: 84px;
+	height: 28px;
+}
+.toggle-mobile{
+	text-align:right;	
+	margin:10px 0 0 0;
+}
+.toggle-mobile a,
+.copyright {
+	color:#666;
+	text-align:right;
+	white-space:nowrap;
+	text-decoration: none;
+}
+.toggle-mobile a{
+	font-weight: bold;
+}
+.toggle-mobile a:hover{
+	text-decoration: underline;
+}
+
+
+
+
+/*=============================================================
+
+Bread Crumbs
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/breadcrumbs/main.css
+
+-------------------------------------------------------------*/
+
+.breadcrumbs {
+	font-size:1.0em;
+	margin: 15px 0px
+}
+.breadcrumbs a,
+.lastBreadCrumb {
+    padding: 15px 8px;
+}
+.breadcrumbs a:first-child {
+    padding-left:0px;
+}
+.breadcrumbs a:link {
+	font-weight:normal;
+}
+.breadcrumbs a:active {
+	font-weight:normal;
+}
+.breadcrumbs a:hover {
+	font-weight:normal;
+}
+.breadcrumbs a:visited {
+	font-weight:normal;
+}	
+
+.breadcrumbs,
+.breadcrumb,
+.breadCrumb,
+.breadCrumb h3,
+.breadCrumb a:link, 
+.breadCrumb a:visited, 
+.breadCrumb a:active, 
+.breadcrumbs a:link, 
+.breadcrumbs a:visited, 
+.breadcrumbs a:active{
+	color:#666666;
+}
+
+.breadCrumb {
+	clear:both;
+	padding-left:0px;
+}
+
+.breadCrumb h3 {
+	color:#666666;
+	padding:0px;
+	margin:0px;
+	font-size:11px;
+	font-weight:normal;
+}
+
+.breadCrumb a, .breadCrumb a:visited, .breadCrumb a:hover{
+	color:#666666;
+	cursor:pointer;
+	text-decoration:underline;
+}
+
+/*=============================================================
+
+Left Navigation
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/left-navigation/main.css
+
+-------------------------------------------------------------*/
+
+/*=============================================================
+START: leftNavigation classes
+-------------------------------------------------------------*/
+.leftNavigation{
+	float:left;
+	width:164px;
+	font-size:11px;
+}
+.tabLabel{
+	padding:1px 8px 6px 8px;
+	display:none;
+}
+.tabLabel a{
+	font-weight:bold;
+	color:#05173D;
+	text-decoration:none;
+}
+.tabLabel a:hover{
+	font-weight:bold;
+	color:#05173D;
+	text-decoration:underline;
+}
+/*=================================================
+START: categories
+-------------------------------------------------*/
+.leftNavigationCategoryDivision{
+	clear:both;
+	border:none;
+	margin:0px 0px 0px 0px;
+}
+.leftNavigationLabel{
+	border:none;
+	display:block;
+	padding:5px 0px 5px 0px;
+	margin-bottom: 5px;
+	text-decoration:none;
+    cursor: pointer;
+}
+.leftNavigationLabel:hover{
+	display:block;
+	background-color:transparent;
+	padding:5px 0px 5px 0px;
+	text-decoration:none;
+	cursor:pointer;
+}
+.leftNavigationLabel .leftNavigationLabelTitle{
+	display:inline;
+	font-weight:normal;
+	font-size:1.1em;
+	color:#05173D;
+}
+.leftNavigationLabel:hover .leftNavigationLabelTitle{
+	display:inline;
+	font-weight:normal;
+	font-size:1.1em;
+	color:#05173D;
+	text-decoration:underline;
+}
+.leftNavigationLabelSubText{
+	display:none;
+}
+.leftNavigationLabelDefault{
+	border:none;
+	border-top:  1px dashed #ccc;
+	display:block;
+	padding:10px 0px 5px 0px;
+	margin:10px 0px 2px 0px;
+	text-decoration:none;
+}
+.leftNavigationLabelDefault .leftNavigationLabelTitle{
+	font-weight:bold;
+	font-size:1.1em;
+	display: block;
+	color:#333333;
+	text-transform:uppercase;
+}
+
+.leftNavigationLabelSelected{
+	border-top:1px solid #999999;
+	border-right:1px solid #999999;
+	border-left:1px solid #999999;
+	border:1px solid #CCCCCC;
+	border-bottom:none;/* special */
+	display:block;
+	background-color:#DBE4ED;
+	padding:6px 7px 7px 7px;
+	text-decoration:none;
+}
+.leftNavigationLabelSelected .leftNavigationLabelTitle{
+	display:block;
+	font-weight:bold;
+	font-size:1.1em;
+	color:#05173D;
+}
+.leftNavigationLabelSelectedPrevious{
+	display:block;
+	padding:6px 7px 7px 7px;
+	background-color:#FFFFFF;
+	text-decoration:none;
+	cursor:pointer;
+	border-top:1px solid #999999;
+	border-right:1px solid #999999;
+	border-left:1px solid #999999;
+	border:1px solid #CCCCCC;
+	border-bottom:none;/* special */
+	}
+.leftNavigationLabelSelectedPrevious:hover{
+	display:block;
+	padding:6px 7px 7px 7px;
+	background-color:#DBE4ED;
+	text-decoration:none;
+	cursor:pointer;
+}
+.leftNavigationLabelSelectedPrevious .leftNavigationLabelTitle{
+	display:block;
+	font-weight:bold;
+	font-size:1.1em;
+	color:#05173D;
+}
+.leftNavigationLabelSelectedPrevious:hover .leftNavigationLabelTitle{
+	display:block;
+	font-weight:bold;
+	font-size:1.1em;
+	color:#05173D;
+	text-decoration:underline;
+}
+
+.leftNavigationCategoryDivision div:last-child span a {
+	border-bottom: 0px !important;
+	margin-bottom: 0px !important;
+	display:block;
+	font-weight:normal;
+	font-size:1.1em;
+	color:#666666;
+	text-decoration:none;
+}
+
+.lev0_leftNavigationOption,
+.lev1_leftNavigationOption,
+.lev2_leftNavigationOption,
+.lev3_leftNavigationOption,
+.lev4_leftNavigationOption{
+	margin-bottom: 5px;
+}	
+
+
+/*========================================
+START: lev0
+----------------------------------------*/
+.lev0_leftNavigationOption a{
+	display:block;
+	text-decoration:none;
+	padding:5px 0px 5px 0px;
+	color:#666666;
+	font-size: 1.1em;
+	font-weight:normal;
+}
+.lev0_leftNavigationOption a:hover{
+	display:block;
+	text-decoration:underline;
+	padding:5px 0px 5px 0px;
+	color:#666;
+	background-color:transparent;
+}
+.lev0_leftNavigationOptionSel a{
+	display:block;
+	text-decoration:none;
+	padding:5px 0px 5px 0px;
+	font-size: 1.1em;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#000000;
+	background-color:transparent;
+}
+div.lev0_leftNavigationOption span[style] a{
+	font-size: 1.1em;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#000000;
+}
+
+/*----------------------------------------
+END: lev0
+========================================*/
+
+/*========================================
+START: lev1
+----------------------------------------*/
+.lev1_leftNavigationOption a{
+	display:block;
+	text-decoration:none;
+	font-size:1.1em;
+	padding:5px 0px 5px 10px;
+	color:#666666;
+	font-weight:normal;
+}
+.lev1_leftNavigationOption a:hover{
+	display:block;
+	text-decoration:underline;
+	padding:5px 0px 5px 10px;
+	color:#666666;
+	background-color:transparent;
+}
+.lev1_leftNavigationOptionSel a{
+	display:block;
+	text-decoration:none;
+	font-size:1.1em;
+	padding:5px 0px 5px 10px;
+	color:#666666;
+	font-weight:normal;
+	background-color:transparent;
+}
+/*----------------------------------------
+END: lev1
+========================================*/
+
+/*========================================
+START: lev2
+----------------------------------------*/
+.lev2_leftNavigationOption a{
+	display:block;
+	text-decoration:none;
+	padding:5px 0px 5px 20px;
+	font-weight:normal;
+	color:#666666;
+	font-size:1.1em;
+}
+.lev2_leftNavigationOption a:hover{
+	display:block;
+	text-decoration:underline;
+	padding:5px 0px 5px 20px;
+	color:#666666;
+	background-color:transparent;
+}
+.lev2_leftNavigationOptionSel a{
+	display:block;
+	text-decoration:none;
+	padding:5px 0px 5px 20px;
+	font-weight:normal;
+	color:#666666;
+	font-size:1.1em;
+	background-color:transparent;
+}
+/*----------------------------------------
+END: lev2
+========================================*/
+
+/*========================================
+START: lev3
+----------------------------------------*/
+.lev3_leftNavigationOption a{
+	display:block;
+	text-decoration:none;
+	padding:5px 8px 5px 30px;
+	font-size: 1.1em;
+	color:#666666;
+}
+.lev3_leftNavigationOption a:hover{
+	display:block;
+	text-decoration:underline;
+	padding:5px 8px 5px 30px;
+	font-size: 1.1em;
+	color:#666666;
+	background-color:transparent;
+}
+.lev3_leftNavigationOptionSel a{
+	display:block;
+	text-decoration:none;
+	padding:5px 8px 5px 30px;
+	font-size: 1.1em;
+	color:#666666;
+	font-weight:normal;
+	background-color:transparent;
+}
+/*----------------------------------------
+END: lev3
+========================================*/
+
+/*========================================
+START: lev4
+----------------------------------------*/
+.lev4_leftNavigationOption a{
+	display:block;
+	text-decoration:none;
+	padding:5px 8px 5px 40px;
+	color:#444444;
+}
+.lev4_leftNavigationOption a:hover{
+	display:block;
+	text-decoration:underline;
+	padding:5px 8px 5px 40px;
+	color:#05173D;
+	background-color:#DBE4ED;
+}
+.lev4_leftNavigationOptionSel a{
+	display:block;
+	text-decoration:none;
+	padding:5px 8px 5px 40px;
+	color:#444444;
+	background-color:transparent;
+}
+/*----------------------------------------
+END: lev4
+========================================*/
+
+/*-------------------------------------------------
+END: categories
+=================================================*/
+
+/*========================================
+START: horizontal line
+----------------------------------------*/
+.horizontalLine {
+	margin-top: 15px;
+	border: thin dashed #CCC;
+}
+
+/*========================================
+END: horizontal line
+----------------------------------------*/
+
+
+/*========================================
+START: widget
+----------------------------------------*/
+
+.widgetMarketing {
+	border-top:  1px dashed #ccc;
+	padding:10px 0px 5px 0px;
+	margin:10px 0px 2px 0px;
+}
+
+.widgetMarketingHeader {
+	border-top:  none;
+}
+
+/*========================================
+END: widget
+----------------------------------------*/
+
+/*========================================
+START: refinements
+----------------------------------------*/
+.refinementsHeader{
+	clear:both;
+	padding:10px 0px 6px 0px;
+	margin:0px 8px 0px 8px;
+	border-top:1px dashed #999999;
+	font-size:1.3em;
+	color:#05173D;
+}
+.refinement{
+	padding:0px 0px 9px 8px;
+}
+.refinementLabel{
+	font-size:1.1em;
+	padding:0px 2px 1px 1px;
+}
+.refinementText{
+	color:#444444;
+	font-weight:normal;
+}
+.refinementTextSel{
+	color:#05173D;
+	font-weight:bold;
+}
+.refinementHint{
+	color:#555555;
+	padding:1px 2px 2px 2px;
+}
+.selectedRefinement{
+	padding:0px 8px 10px 8px;
+}
+.selectedRefinementLabel{
+	font-size:1.1em;
+}
+.selectedRefinementText{
+	font-weight:bold;
+	white-space:nowrap;
+}
+.selectedRefinementLink a{
+	text-decoration:none;
+	color:#444444;
+}
+.selectedRefinementLink a:hover{
+	text-decoration:underline;
+	color:#444444;
+}
+.refinements h3 {
+	border-top:  1px dashed #ccc;
+	padding:10px 0px 5px 0px;
+	margin:10px 0px 2px 0px;
+	text-transform:uppercase;
+	font-size: 1.1em;	
+}
+
+.refinements li {
+	margin-bottom: 5px;
+}
+
+
+/*========================================
+END: refinements
+----------------------------------------*/
+
+
+/*========================================
+START: overstocks
+----------------------------------------*/
+
+.overstocksSearchLabel{
+	background-color: transparent;
+    color: #000000;
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 5px 0;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.overstocksSearchField{
+	padding:0px;
+}
+.overstocksSearchField Form{
+	float:left;
+}
+.overstocksSearch{
+	padding:0px 0px 12px 0px;
+	margin:0px 0px 15px 0px;
+	border-bottom: 1px dashed #ccc;
+	border-top:none;
+}
+.overstocksSearchField .searchInput{
+	color:#666666;
+	font-size:10px;
+	width:112px;
+	background-color: transparent;
+    border: 1px solid #CCC;
+    font-size: 93%;
+    line-height: 2;
+    margin: 0;
+    min-height: 2em;
+    padding: 0 3px;
+    text-decoration: none;
+	text-transform:uppercase;
+}
+.overstocksSearchField .searchButton{
+	padding:0px;
+}
+/*========================================
+END: overstocsk
+----------------------------------------*/
+/****************************
+	Hover Card Object
+===========================*/
+.hc{
+    position:absolute;
+    display:none;
+    z-index: 510; /* need to check against z-index catalog */
+	_background-color:#fff; /*png transparency override for ie6*/
+	_border: 1px solid #ccc; /*png transparency override for ie6*/
+}
+.hc .hct,
+.hc .hcm,
+.hc .hcb{
+    position:relative;
+}
+.hcs,
+.hcn{
+    display:block;
+    width:100%;
+}
+.hce, .hcw{
+   display:block;
+   min-height:100%;
+   position:absolute;
+   top:0px;
+}
+.hce{
+   right:0px;
+}
+.hcw{
+   left:0px;
+}
+.hcc{
+	background:#FFF;
+	overflow: hidden;
+	_background-color:#fff;
+}
+
+
+
+/****************************
+	Shadow Skins
+===========================*/
+.hc{
+	top:10px;
+    left:250px;
+}
+
+
+/*size small*/
+.hc-shadow-small .hct,
+.hc-shadow-small .hcb,
+.hc-shadow-small .hcc{
+	margin:0px 5px 0px 5px;
+}
+
+.hc-shadow-small .hcn,
+.hc-shadow-small .hcs{
+    height:5px;
+}
+.hc-shadow-small .hcw,
+.hc-shadow-small .hce{
+	width:5px;
+
+}
+.hc-shadow-small .hct .hce,
+.hc-shadow-small .hcb .hce{
+	height:5px;
+	right:-5px;
+}
+.hc-shadow-small .hct .hcw,
+.hc-shadow-small .hcb .hcw{
+	left:-5px;
+}
+
+/*skin*/
+.hc-shadow-small .hct{background:url("images/hovercard/small/hc_s_n.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hcb{background:url("images/hovercard/small/hc_s_s.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hce{background:url("images/hovercard/small/hc_s_e.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hcw{background:url("images/hovercard/small/hc_s_w.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hct .hcw{background:url("http://www.landsend.com/global_navigation/css/images/hovercardsmall/hc_s_nw.png?20130205.01") no-repeat scroll left top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hcb .hcw{background:url("images/hovercard/small/hc_s_sw.png%3F20130205.01") no-repeat scroll left bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hct .hce{background:url("images/hovercard/small/hc_s_ne.png%3F20130205.01") no-repeat scroll right top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-small .hcb .hce{background:url("images/hovercard/small/hc_s_se.png%3F20130205.01") no-repeat scroll right bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+
+
+/*size medium*/
+.hc-shadow-medium .hct,
+.hc-shadow-medium .hcb,
+.hc-shadow-medium .hcc{
+	margin:0px 10px 0px 10px;
+}
+
+.hc-shadow-medium .hcn,
+.hc-shadow-medium .hcs{
+    height:10px;
+}
+.hc-shadow-medium .hcw,
+.hc-shadow-medium .hce{
+	width:10px;
+
+}
+.hc-shadow-medium .hct .hce,
+.hc-shadow-medium .hcb .hce{
+	height:10px;
+	right:-10px;
+}
+.hc-shadow-medium .hct .hcw,
+.hc-shadow-medium .hcb .hcw{
+	left:-10px;
+}
+
+/*skin*/
+.hc-shadow-medium .hct{background:url("images/hovercard/medium/hc_m_n.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hcb{background:url("images/hovercard/medium/hc_m_s.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hce{background:url("images/hovercard/medium/hc_m_e.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hcw{background:url("images/hovercard/medium/hc_m_w.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hct .hcw{background:url("images/hovercard/medium/hc_m_nw.png%3F20130205.01") no-repeat scroll left top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hcb .hcw{background:url("images/hovercard/medium/hc_m_sw.png%3F20130205.01") no-repeat scroll left bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hct .hce{background:url("images/hovercard/medium/hc_m_ne.png%3F20130205.01") no-repeat scroll right top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-medium .hcb .hce{background:url("images/hovercard/medium/hc_m_se.png%3F20130205.01") no-repeat scroll right bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+
+
+/*size large*/
+.hc-shadow-large .hct,
+.hc-shadow-large .hcb,
+.hc-shadow-large .hcc{
+	margin:0px 20px 0px 20px;
+}
+
+.hc-shadow-large .hcn,
+.hc-shadow-large .hcs{
+    height:20px;
+}
+.hc-shadow-large .hcw,
+.hc-shadow-large .hce{
+	width:20px;
+
+}
+.hc-shadow-large .hct .hce,
+.hc-shadow-large .hcb .hce{
+	height:20px;
+	right:-20px;
+}
+.hc-shadow-large .hct .hcw,
+.hc-shadow-large .hcb .hcw{
+	left:-20px;
+}
+/*skin*/
+.hc-shadow-large .hct{background:url("images/hovercard/large/hc_l_n.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hcb{background:url("images/hovercard/large/hc_l_s.png%3F20130205.01") repeat-x scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hce{background:url("images/hovercard/large/hc_l_e.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hcw{background:url("images/hovercard/large/hc_l_w.png%3F20130205.01") repeat-y scroll transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hct .hcw{background:url("images/hovercard/large/hc_l_nw.png%3F20130205.01") no-repeat scroll left top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hcb .hcw{background:url("images/hovercard/large/hc_l_sw.png%3F20130205.01") no-repeat scroll left bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hct .hce{background:url("images/hovercard/large/hc_l_ne.png%3F20130205.01") no-repeat scroll right top transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+.hc-shadow-large .hcb .hce{background:url("images/hovercard/large/hc_l_se.png%3F20130205.01") no-repeat scroll right bottom transparent;_background:url(global_navigation.css%3F20130205.01.css);}
+
+
+
+/* 
+ * recs only certona skin - minimal 
+ */
+
+.certona-recs ul{
+	margin:0;
+}
+ul.certona-recs li,
+.certona-recs li{
+	list-style:none;
+}
+
+.certona-recs a{
+	height: 100%;
+	display:block;
+	text-decoration:none;
+	color:#000;
+	font-size:11px;
+	*text-indent:1px;
+}
+
+.certona-recs a li{
+	padding:5px 0px 0px 0px;
+	font-weight:bold;
+}
+.certona-recs a li .action-item{
+	color:#666;
+	background:url("images/icons/01242011_right_arrow.gif%3F20130205.01") no-repeat -4px 1px;
+	padding-left:8px;
+	font-weight:normal;
+}
+
+.certona-recs a img{
+	text-align: center;
+	max-width: 100%;
+	width:100%;
+	*width: auto !important;
+}
+.certona-recs a li i{
+	font-style:normal;
+	color: #990000;
+}
+.certona-recs a li s{
+	color:#666;
+	padding:0px 5px 0px 0px;
+	font-weight:normal; 
+}
+.certona-recs a li b{
+	color:#990000;
+}
+.certona-recs a{
+	display:block;
+	height:100%;
+	*float:left;
+}
+ul.certona-recs ul{
+	display:none;
+}
+
+/*
+ * these are more generic objects
+ */
+
+ul.vertical-list,
+ul.horizontal-list{
+	clear: both;
+	float: none;
+}
+
+ul.horizontal-list li {
+	float:left;
+	padding-left:10px;
+}
+
+ul.horizontal-list * li {
+	float:none;
+	padding-left:0px;
+}
+
+
+ul.horizontal-list li:first-child{
+	padding-left:0px;
+}
+
+ul.vertical-list li{
+	padding-top:10px;
+	clear: both;
+	display: table-cell;
+	float: left;
+}
+
+ul.vertical-list * li{
+	padding-top:0px;
+	clear:none;
+	display:block;
+	float:none;
+}
+
+ul.vertical-list li:first-child{
+	padding-top:0px;
+}
+
+ul.expanded li {
+	padding-left:20px;
+}
+
+ul.expanded * li {
+	float:none;
+	padding-left:0px;
+}
+
+ul.expanded li:first-child{
+	padding-left:0px;
+}
+
+ul.expanded li img{
+	padding-left:1px;
+}
+
+
+/* 
+ * recs and reviews certona skin - minimal 
+ */
+
+div.recs-reviews-wrapper {
+	width: 808px;
+	text-align:left;
+	border:none;	
+}
+
+.bannerMarketingElement div.recs-reviews-wrapper {
+	width: 798px;
+}
+
+div.recs-reviews-inner {
+	padding: 0px 15px 15px 15px;
+}
+
+div.recs-reviews-inner h2{
+	text-indent:-9999px;
+	background: url(images/titles/recs-and-reviews.gif) no-repeat top left;
+	display:block;
+}
+
+ul.recs-reviews li {
+	width: 33%;
+	margin-bottom:0;
+}
+
+ul.recs-reviews li a img{
+	text-align: center;
+	max-width: auto;
+	width:auto;
+	float:left;
+	*width: auto !important;
+}
+
+ul.recs-reviews li div.rec-img {
+	width: 145px;
+}
+
+ul.recs-reviews li div.rec-img img {
+	border: 1px solid #ccc;
+}
+
+ul.recs-reviews li div.rec-content {
+	padding-top: 10px;
+}
+
+ul.recs-reviews li.recs-reviews a {
+	font-style: italic;
+	text-decoration: underline;
+	color: #036;
+}
+
+ul.recs-reviews ul.reviews0 {
+	display:none;
+}
+
+ul.recs-reviews * ul {
+	display:block;
+	width:100%;
+	zoom: 1;
+}
+
+ul.recs-reviews * li {
+	width:auto;
+	float:none;
+	margin:0px;
+	padding:0px;
+	color: #444;
+}
+
+ul.recs-reviews * li.recs-desc {
+	margin-bottom:5px;
+}
+
+ul.recs-reviews * li.recs-ratings {
+	height:14px;
+}
+
+ul.recs-reviews * li.recs-ratings img{
+	float:none;
+	width:80px;
+}
+
+ul.recs-reviews * li.recs-ratings {
+	margin-top:5px;
+	margin-bottom:15px;
+}
+
+ul.recs-reviews * li i {
+	font-style:normal;
+	color: #990000;
+}
+
+.tabMask {
+	overflow:visible;
+}
+
+
+/*
+ * index style recs and reviews
+ */
+ 
+.recs-index {
+	text-align:left;
+	border:none;	
+}
+
+.recs-index .recs-inner {
+	width: 808px;
+}
+
+.recs-index ul.recs-list {
+	width: 120%;
+	margin-left: 0px;
+}
+ 
+.recs-index ul.recs-list > li {
+	padding-left: 0px;
+	padding-right: 40px;
+	width: 172px;
+	height: 380px;
+	margin-left:2px;
+}
+
+.recs-index ul.recs-list ul {
+	display:block;
+}
+
+
+/*
+ * landing page recs and reviews
+ */
+
+.recs-landing {
+	overflow:visible;
+}
+
+.recs-landing .recs-inner {
+	width: 100%;
+}
+
+.recs-landing ul.recs-list {
+	width: 120%;
+}
+ 
+.recs-landing ul.recs-list > li {
+	padding-right: 33px;
+}
+ 
+/*
+ * tab page recs and reviews
+ */
+
+.recs-tab {
+	overflow:visible;
+}
+
+.recs-tab .recs-inner {
+	width: 100%;
+}
+
+.recs-tab ul.recs-list {
+	width: 120%;
+}
+ 
+.recs-landing ul.recs-list > li {
+	padding-right: 33px;
+}
+
+ 
+ 
+ 
+/*location specific styling*/
+#inline_bag_rr.certona-recs li {
+	width: 80px;
+}
+
+#inline_bag_rr.certona-recs * li {
+	width:auto;
+}
+
+
+/*=============================================================
+
+pdp-social-ratings skin
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/pdp-social-ratings/main.css
+
+-------------------------------------------------------------*/
+
+
+.pdp-social-ratings{
+	overflow:visible;
+	border-top:1px solid #d6d6d6;
+	height:40px;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.pdp-social-ratings ul {
+	height:100%;
+}
+
+.pdp-social-ratings ul li.social-item{
+	padding-top:9px;
+	padding-bottom:9px;
+	height: 24px;
+}
+
+.pdp-social-ratings ul li.social-fb {
+    padding-left: 5px;
+    position: relative;	/* fixes FB like button z-index issue */
+    width: 15%;
+}
+
+.pdp-social-ratings li.social-bv {
+    width: 45%;
+}
+
+.pdp-social-ratings li.social-bv .pp-reviews {
+	padding: 0px !important;
+}
+
+.pdp-social-ratings li.social-google {
+	padding-left: 4px;
+	position:relative; /* fixes +1 button z-index issue */
+}
+
+social-item social-pinit {
+	margin-left: 15px;	/* Part of Pinterest styling */
+}
+			
+/* Bazarre Voice Overrides or updates ?????*/
+#BVCustomerRatings{
+	width:auto !important;
+}
+#BVCustomerRatings .BVRRRatingOverall{
+	line-height:normal !important;
+}
+
+#BVCustomerRatings .BVDI_SBFacebookLikeButtonContainer,
+#BVCustomerRatings .BVRRRatingSummaryNoReviewsWriteImageLink {
+	display:none;
+}
+
+#BVCustomerRatings .BVRRRatingNormalLabel {
+	padding-top:2px !important;
+}
+
+#BVCustomerRatings .BVRRRatingsHistogramButton {
+margin-left: -10px !important;
+}
+
+#BVCustomerRatings .BVRRRatingSummary .BVRROverallRatingContainer .BVRRLabel {
+padding-right: 2px !important;
+}
+
+/*=============================================================
+
+product index - product skin skin
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/product-index
+
+-------------------------------------------------------------*/
+
+.product .product-overlay {
+	border: 0 solid #CCCCCC;
+    position: absolute;
+    text-indent: -999px;
+	line-height:0;
+	font-size:0;
+    top: 0;
+	left: 0;
+}
+
+.product .new-product {
+	background:url(images/product/new-product-icon.gif) no-repeat top left;
+    width: 33px;
+	height: 33px;
+}
+
+.product .warm-product {
+	background:url(global_navigation.css%3F20130205.01.css);
+}   
+
+.product-name a,
+.product-name a:link,
+.product-name a:active,
+.product-name a:visited {
+	text-decoration:none;
+}
+
+.product-name a:hover {
+	text-decoration:underline;
+}/*=============================================================pdp-social-ratings skinhttp://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/perma-footer/perma-footer.css-------------------------------------------------------------*//* helper classes */.perma-footer-spacer{	height:40px; /* this matches the amount of space needed for the permafooter to not overlap the content of the page*/}#shopping-bag-checkout #perma-footer{	display:none;}/* iPad fix */.b-iPad #perma-footer{	position: static;	width: 110%;	margin-left: -50px;}#perma-footer {	background-color: #061d4e;	color: #fff;	width: 100%;	position:fixed;	bottom:0px;	left:0px;	z-index:500;/*this put the perma footer just behind the modal overlay*/	box-shadow: 0px -1px 8px rgba(0, 0, 0, 0.80);	font-size: 10px;/* this font size seems pretty small */}#perma-footer .bd {	position: relative;	width: 1000px;	margin: 0 auto;}#perma-footer .content {	margin: 0px;	padding: 0px;	height: 30px;	line-height: 1.16em}#perma-footer .control-list {	position: absolute;	width: 100%;	height: 100%;	bottom: 0px;	margin: 0px;	padding: 0px;}#perma-footer .control-list li {	float:left;	display:block;	position: relative;	line-height: 30px;}#perma-footer li span.delimeter{	border-right: 1px solid #fff;	margin: 2px 10px;}#perma-footer li#pf-promo,#perma-footer li#pf-message {	float:right;}#perma-footer li#pf-promo{	display:none;	width: 446px;}/*skin for welcome and message*/#pf-welcome{	padding:0px 0px 0px 57px;}#pf-welcome span a,#pf-message span a{	color:#FFF;	text-decoration: underline;}#pf-welcome .pf-giftcard{	background:url("images/perma-footer/gift_card_non_holiday.png%3F20130205.01") no-repeat;	position:absolute;	width:73px;	height:53px;	top:-18px;	left:-20px;}#perma-footer li#pf-message .padded-link-right {	padding-right: 10px;	border-right: 1px solid #fff;	margin-right: 10px;}/* styles for the levee */.pf-levee{	float:left;	position: relative;	width:425px;	text-align: right;}.pf-levee a.promo-title:hover,.pf-levee a.promo-title:hover span{	text-decoration: underline;}.pf-levee .promo-title{	text-transform: uppercase;	cursor: pointer;} .pf-levee .promo-title span{	background-color: #061d4e;	position: absolute;	right:0;	top:0;}.pf-water {	padding:10px 10px 0px 10px;	overflow: hidden;	position: relative;	width:425px;	left:35%;	text-align:left;}.pf-water .promo-panel{	color:#666;	padding:10px 15px 10px 15px;	box-shadow: 0px -1px 8px rgba(0, 0, 0, 0.80);	line-height: 18px;	background: #FFFFFF;	}.pf-water span.arrow{	position: relative;	background: #FFF;	display:block;	padding-top:10px;	margin-bottom:-10px;	box-shadow: 0px -1px 8px rgba(0, 0, 0, 0.80);}.pf-water span.arrow span{	position: absolute;	width:11px;	height:7px;	top:-6px;	left:10%;}.pf-water span.arrow span{	background:url("images/perma-footer/blue_arrow_up.png%3F20130205.01") no-repeat;}.pf-water h1{	margin-top:0px;	margin-bottom:5px;	font-size: 114%;}.pf-water h1 span{	display:none;}.pf-water a.more,.pf-water a.less{	display:block;	position: relative;	background:#FFF;	color:#666;    text-align: right;    line-height: normal;    padding:4px 25px 5px 0px;}.pf-close{	width:30px;	height:30px;	background:url(images/perma-footer/close_button.png) no-repeat;	position: absolute;	right:0px;	top:0px;	text-align: center;	overflow: hidden;	text-indent: -999px;}
+
+/*=============================================================
+
+oo-levee
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/levee/main.css
+
+-------------------------------------------------------------*/
+div.oo-levee
+	a.oo-dam{
+	cursor: pointer;
+}
+div.oo-levee
+	div.oo-water{
+	display:none;
+}
+
+/*animation skins*/
+.oo-open-up,
+.oo-open-down,
+.oo-open-left,
+.oo-open-right{
+	position: relative;
+}
+.oo-open-up .oo-water{
+    position: absolute;
+	z-index:2;
+	bottom:100%;
+}
+
+/*=============================================================
+
+Highlights
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/default/highlights
+
+-------------------------------------------------------------*/
+
+
+.depth-down-sm {	
+	box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.80);
+	margin-bottom: 12px;
+}/*skin*/
+.oo-fence-wire {
+	border-bottom:1px solid #CCC;
+}
+.oo-fence-wire ul{
+	margin-left: -3.96667px;
+}
+.oo-fence-wire ul li{
+	margin-left: 2.55px;
+}
+
+/*=============================================================
+
+Order Tracking Skin
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/order-tracking/order-tracking.css
+
+-------------------------------------------------------------*/
+
+
+#order-tracking .notification{
+	display: none;
+}
+
+#order-tracking p {
+	line-height: 1.618em;
+}
+
+/*=============================================================
+
+Product Page Gift Message
+http://svn/developers/ux_frontend/trunk/external-sites/shared/css/skins/core/dev/default/pdp-gift-message/pdp_gift_message.css
+
+-------------------------------------------------------------*/
+/*Removing for the build, but is a nice to have for local developmennt*/
+/*.pdp-gift-message{width:476px;}*/
+
+.pdp-gift-message p label{
+	position:relative;
+	top:2px;
+}
+
+.pdp-gift-message .pdp-gm-checked{
+	background:url("../../pps/r15900/images/productview/core/divider.gif%3F20130205.01") repeat-x scroll left top transparent
+}
+
+.pdp-gift-message .pdp-gm-checked .pdp-gm-collection{
+	display:block;
+}
+.pdp-gift-message .pdp-gm-checked .pdp-gm-collection label.error  span{
+	display:inline;
+}
+.pdp-gift-message .pdp-gm-collection,
+.pdp-gift-message .pdp-gm-collection label span{
+	display:none;
+}.pp-swatch-selector .pp-unavailable .pp-swatch-unavailable {	background-image: url(images/notifications/swatch_unavailable.png);}.swatches {	margin-top: 10px;}.swatchHeight {	margin: 0px 6px 10px 0px;}.pp-product-description strong {
+	font-weight: bold
+}.sc-table {
+	border: 1px solid #e3e3e3;
+	color: #616161;
+}
+.sc-table th {
+	border: 1px solid #e3e3e3;
+	display: table-cell;
+}
+.sc-table td {
+	border-left: 1px solid #e3e3e3;
+}
+.sc-table td,
+.sc-table th {
+	background-color: #fff;
+	vertical-align: top;
+	text-align: left;
+	font-weight: 300;
+	width: 95px;
+}
+.sc-table th:first-child {
+	background-color: #e5e5e5;
+}
+.sc-table td {
+	box-shadow: inset -4px 0px white, inset 4px 0px white;
+}
+.sc-table th {
+	box-shadow: inset -4px 4px white, inset 4px -4px white;
+}
+.sc-table tr:first-child td {
+	box-shadow: inset -4px 0px white, inset 4px 0px white, inset 0px 4px white;
+}
+.sc-table tr:last-child td {
+	box-shadow: inset -4px 0px white, inset 4px 0px white, inset 0px -4px white;
+}
+.sc-table .row-header {
+	background-color: #e5e5e5;
+}
+.sc-table .selected-col {
+	background-color: #e5e5e5;
+}
+.sc-table tr:hover th,
+.sc-table tr:hover td {
+	background-color: #e5e5e5;
+}
+.sc-table th.selected-col {
+	background-color: #cce2f4;
+}
+.sc-table tr:hover td.row-header {
+	background-color: #cce2f4;
+}
+.sc-table p {
+	padding: 4px;
+	margin: 0 4px 0;
+	background-color: none;
+}
+.sc-table .data p:hover {
+	background-color: #cce2f4;
+}
+.sc-table th div.cell-container {
+	border: solid 1px #fff;
+}
+.sc-table td .cell-container:hover p:hover {
+	font-weight: 600;
+	color: #000;
+}
+.sc-table th:hover {
+	background-color: #cce2f4 !important;
+	font-weight: 600;
+	color: #000;
+}
+.sc-table td.row-header:hover {
+	background-color: #cce2f4 !important;
+	font-weight: 600;
+	color: #000;
+}
+
+/* These add insets to the top and bottom ps to compensate for not having override:hidden available */
+.sc-table tr:first-child td p:first-child {
+	box-shadow: inset 0px 4px white;
+}
+.sc-table tr:last-child td p:last-child {
+	box-shadow: inset 0px -4px white;
+}
+.sc-table tr:last-child td.row-header p:last-child { /* Keeps the row-headers from being outlined */
+	box-shadow: none;
+}
+
+ /* All pre-defined widths should be added like this */
+
+.sc-table .cell-width-s { width: 100px; }
+.sc-table .cell-width-m { width: 120px; }
+.sc-table .cell-width-l { width: 140px; }
+.sc-table .cell-width-xl { width: 180px; }
+
+/* Canvas styles are all under ".sc-table-cv" classes */
+
+.sc-table-cv .cell-width-s { width: 100px; }
+.sc-table-cv .cell-width-m { width: 120px; }
+.sc-table-cv .cell-width-l { width: 140px; }
+.sc-table-cv .cell-width-xl { width: 180px; }
+
+.sc-table-cv {
+       color: #808080;
+       font-size: 1.05em;
+}
+
+.sc-table-cv th,
+.sc-table-cv td{
+       vertical-align: top;
+       text-align: left;
+       font-weight: 300;
+       vertical-align: middle;
+       width: 95px;
+}
+
+.sc-table-cv th,
+.sc-table-cv .row-header {
+       font-weight: 600;
+}
+
+.sc-table-cv th:last-child {
+       width: 50%;
+}
+
+.sc-table-cv tr:nth-child(odd) { background-color: #f1f1f1; }
+
+.sc-table-cv thead tr { background: none !important; }
+
+.sc-table-cv p {
+       padding: 4px;
+       margin: 0 4px 0;
+       background-color: none;
+}.pp-tab-selector a  {
+	color: #333;
+}.pdp-social-ratings ul li.social-sywr {
+	float:right;
+	position:relative;
+	top:-6px;
+	width:32px;
+}
+
+.pdp-social-ratings ul li.social-sywr a {
+	cursor:pointer;
+}
+
+.pdp-social-ratings ul li.social-sywr .social-sywr-tooltip {
+	background-color:#FFF;
+	border:1px solid #CCC;
+	box-shadow:0 0 3px rgba(0,0,0,0.25);
+	display:none;
+	line-height:16px;
+	position:absolute;
+	right:0;
+	top:57px;
+	width:350px;
+}
+
+.pdp-social-ratings ul li.social-sywr .social-sywr-tooltip h4 {
+	line-height:24px;
+}
+
+.pdp-social-ratings ul li.social-sywr .social-sywr-tooltip .tooltip-carat {
+	background:transparent url(images/arrows/arrows.gif) no-repeat -276px -78px;
+	height:10px;
+	position:absolute;
+	right:5px;
+	top:-9px;
+	width:20px;
+}
+
+/*=============================================================
+
+Left Navigation Customer Service
+http://svn/developers/ux_frontend/trunk/shared/css/sites/dev/core/default/cutomer-service-site-nav-bd-left-content/site-nav-bd-left-content.css
+
+-------------------------------------------------------------*/
+
+#video-chat-widg {
+    padding-top:10px;
+}
+
+#bd .navigation-categories{
+    margin-right:20px;
+    border-top:#CCC double;
+    border-bottom:#CCC double;
+    font-size:12px;
+    font-family:"Arial", Helvetica, sans-serif;
+    line-height: 1.62em;
+    margin-bottom:20px;
+}
+
+#bd .navigation-categories ul{
+    margin:0px;
+}
+#bd .navigation-categories ul li{
+    list-style: none;
+}
+#bd .navigation-categories ul li a{
+    border-bottom:#CCC double;
+    margin:0px;
+    padding:5px 0px 5px 10px;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1em;
+    font-weight: lighter;
+    display: block;
+
+}
+#bd .navigation-categories ul li a{
+    color:#333;
+    text-decoration: none;
+}
+#bd .navigation-categories ul li ul {
+    border-bottom:none;
+    margin:0;
+    padding:0;
+    display:block;
+    margin:5px 0px 5px 0px;
+
+}
+#bd .navigation-categories ul li ul li a{
+    border-bottom:none;
+    padding:0px;
+    margin:0px;
+    font-family:"Arial", Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 2em;
+    text-transform: none;
+}
+#bd .navigation-categories ul li ul li a:link, 
+#bd .navigation-categories ul li ul li a:visited, 
+#bd .navigation-categories ul li ul li a:hover, 
+#bd .navigation-categories ul li ul li ul li a:link, 
+#bd .navigation-categories ul li ul li ul li a:visited, 
+#bd .navigation-categories ul li ul li ul li a:hover, 
+#bd .navigation-categories ul li ul li ul li ul li a:link, 
+#bd .navigation-categories ul li ul li ul li ul li a:visited, 
+#bd .navigation-categories ul li ul li ul li ul li a:hover {
+    font-weight:normal;
+    text-decoration:none;
+    margin:0;
+    color:#336699;
+    display:block;
+
+}
+#bd .navigation-categories ul li ul li > a{
+    border-bottom:1px solid #CCC;
+    padding:0px 0px 0px 10px;
+}
+#bd .navigation-categories ul li ul li > a:last-child{
+    border-bottom:none;
+}
+#bd .navigation-categories ul li ul li a:hover {
+    background-color: #D8E3ED;
+    color:#002B5C;
+}
+/* sub categories */
+
+#bd .navigation-categories ul li ul li ul,
+#bd .navigation-categories ul li ul li ul li{
+    border:none;
+    display:block;
+    line-height: 1.65em;
+}
+#bd .navigation-categories ul li ul li ul{
+    padding: 5px 0px 10px 0px;
+    border-bottom:1px solid #CCC;
+}
+#bd .navigation-categories ul li ul li ul li a:link, 
+#bd .navigation-categories ul li ul li ul li a:visited, 
+#bd .navigation-categories ul li ul li ul li a:hover {
+    line-height: 1.25em;
+    padding: 4px 0px 4px 20px;
+    background: none;
+    border-bottom:none;
+}
+#bd .navigation-categories ul li ul li ul li a:hover {
+    text-decoration: underline;
+}
+/* third level categories */
+
+#bd .navigation-categories ul li ul li ul li ul li a:link, 
+#bd .navigation-categories ul li ul li ul li ul li a:visited, 
+#bd .navigation-categories ul li ul li ul li ul li a:hover {
+    line-height: 1.25em;
+    padding: 4px 0px 4px 30px;
+}
+/* highlighted link for selected page */
+
+
+#bd .navigation-categories ul li ul li ul li a.selected:link, 
+#bd .navigation-categories ul li ul li ul li a.selected:visited, 
+#bd .navigation-categories ul li ul li ul li a.selected:hover {
+    font-weight:bold;
+    color:#002B5C;
+    background: none;
+    display:block;!important
+}

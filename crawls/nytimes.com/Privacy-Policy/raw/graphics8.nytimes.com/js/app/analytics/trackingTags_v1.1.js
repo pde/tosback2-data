@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 119809 2013-01-24 19:34:39Z richard.pinales $
+* $Id: trackingTags_v1.1.js 120233 2013-01-31 07:02:49Z pmdl $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -161,7 +161,7 @@ document.getElementsByTagName('head').item(0).appendChild(customRevSci);
         "business - smallbusiness" : "smallbusiness",
         "your-money" : "your_money",
         "Business Day - Economy" : "economix",
-        "Business - Media and Advertising" : "mediacoder",
+        "Business - Media and Advertising" : "mediadecoder",
         "Business Day - Small Business" : "boss",
         "Business Day - Your Money" : "bucks",
         "Business - Markets" : "markets",
@@ -172,7 +172,44 @@ document.getElementsByTagName('head').item(0).appendChild(customRevSci);
         "Technology - bits" : "bits",
         "Technology - Personal Tech" : "gadgetwise",
         "Technology - pogue" : "pogue",
-        "General - open" : "open"
+        "General - open" : "open",
+        "style" : "style",
+        "fashion" : "fashion",
+        "dining" : "dining",
+        "garden" : "garden",
+        "fashion - weddings" : "weddings",
+        "t-magazine" : "t_magazine",
+        "T:Style - tmagazine" : "t_style",
+        "Style - Dining" : "dinersjournal",
+        "Style - Fashion" : "runway",
+        "Style - parenting" : "parenting",
+        "arts" : "arts",
+        "arts - design" : "design",
+        "books" : "books",
+        "arts - dance" : "dance",
+        "movies" : "movies",
+        "arts - music" : "music",
+        "arts - television" : "television",
+        "theater" : "theater",
+        "arts - video-games" : "video_games",
+        "Arts - Event Search" : "event_search",
+        "Arts - artsbeat" : "artsbeat",
+        "Movies - carpetbagger" : "carpetbagger",
+        "health" : "health",
+        "health - research" : "research",
+        "health - nutrition" : "nutrition",
+        "health - policy" : "policy",
+        "health - views" : "views",
+        "Health - Health Guide" : "health_guide",
+        "Health - well" : "well",
+        "Health - newoldage" : "newoldage",
+        "Health - consults" : "consults",
+        "science" : "science",
+        "science - earth" : "earth",
+        "science - space" : "space",
+        "Science - Environment" : "green",
+        "Science - scientistatwork" : "scientistatwork",
+        "Opinion - dotearth" : "dotearth"
     };
 
     if (cgMetaTags.length > 0) {

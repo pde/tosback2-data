@@ -19,6 +19,6 @@ e.log=h(j.info,j);e.debug=h(j.debug,j);e.info=h(j.info,j);e.warn=h(j.warn,j);e.e
 b.callOnDOMLoaded,!1)):(setTimeout(function(){var a=window.document;(function(){try{if(!document.body)throw"continue";a.documentElement.doScroll("left")}catch(b){setTimeout(arguments.callee,15);return}window[ensightenOptions.ns].callOnDOMParsed()})()},1),window.attachEvent("onload",function(){window[ensightenOptions.ns].callOnDOMLoaded()}));window.setInterval(b.testAll,c.options.interval);return b}(ensightenOptions);
 
 	
-callback50639=Bootstrapper.new_fArray();callback10327=Bootstrapper.new_fArray();callback50603=Bootstrapper.new_fArray();try{Bootstrapper.setCurrentRuleId(14945);var init=true;;}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='14945';
+callback50639=Bootstrapper.new_fArray();callback10327=Bootstrapper.new_fArray();callback50603=Bootstrapper.new_fArray();try{Bootstrapper.setCurrentRuleId(14945);var init=true;;}catch(e){Bootstrapper.reportException(e);}try{Bootstrapper.setCurrentRuleId(50246);Bootstrapper.__trackClicksFlag=true;Bootstrapper.__trackClick=function(){if(Bootstrapper.__trackClicksFlag){}};;}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='14945;50246';
 	Bootstrapper.getServerComponent();
 }

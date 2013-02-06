@@ -1675,7 +1675,7 @@ $(document).ready(function() {
  * http://bassistance.de/jquery-plugins/jquery-plugin-validation/
  * http://docs.jquery.com/Plugins/Validation
  *
- * Copyright (c) 2006 - 2011 JÃ¶rn Zaefferer
+ * Copyright (c) 2006 - 2011 J????rn Zaefferer
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php

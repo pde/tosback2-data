@@ -233,9 +233,7 @@ var changes = document.getElementById(element_id).value.split(",")
 		
 	}
 }
-	var loc = location.pathname; 
-	if (loc == '/businesscenter/built-for-business/mobile-device-management.jsp')
-	{
+
     var _elqQ = _elqQ || [];
     _elqQ.push(['elqSetSiteId', '2789']);
     _elqQ.push(['elqTrackPageView']);
@@ -249,4 +247,4 @@ var changes = document.getElementById(element_id).value.split(",")
         if (window.addEventListener) window.addEventListener('DOMContentLoaded', async_load, false);
         else if (window.attachEvent) window.attachEvent('onload', async_load); 
     })();
-	}
+

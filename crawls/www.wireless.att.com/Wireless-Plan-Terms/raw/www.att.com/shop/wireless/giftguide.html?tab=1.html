@@ -1,0 +1,2780 @@
+<!DOCTYPE HTML> 
+<html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = 'http://giftguide.attmobilephones.mobi'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
+<head> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+<script type="text/javascript"> 
+(function SSLredirect(){ 
+	if(window.location.protocol != "http:"){return} 
+	var globalNavCookie; 
+	var allCookies = document.cookie.split('; '); 
+	var httpsPort = ""; 
+	for (var i=0;i<allCookies.length;i++) { 
+		var cookiePair = allCookies[i].split('='); 
+		var cookieName = cookiePair[0]; 
+		cookiePair.shift(); 
+		var cookieValue = cookiePair.join('='); 
+		if(cookieName == "GNSESS"){globalNavCookie = new Function("return " + cookieValue)()} 
+	} 
+	if(typeof globalNavCookie == "object" && typeof globalNavCookie.ENC != "undefined" && globalNavCookie.ENC != ""){ 
+		var newUrl = document.createElement('a'); 
+		if(httpsPort != ""){newUrl.port = httpsPort} 
+		newUrl.href = window.location.href; 
+		newUrl.protocol = "https"; 
+		window.location.href = newUrl.href; 
+	} 
+})(); 
+</script> 
+	<title> 
+            Valentine's Day Gift Center 
+	</title> 
+    <meta name="description" content="Use the AT&amp;T Gift Guide to shop for mobile devices, cell phones &amp; gifts like iPhone, Android phones, Windows Phones &amp; wireless accessories from AT&amp;T." >	 
+	<meta name="keywords" content="AT&amp;T Gifts, Gift Guide, Gift Center, Cell Phone Shopping, Phone Shopping, Smartphone Shopping, Wireless Gifts, Mobile Phone Shopping, Cell Phone Shopping Guide, iPhones, Android Phones, Windows Phone" > 
+    <meta name="robots" content="INDEX,FOLLOW" /> 
+	<link rel="canonical" href="http://www.att.com/shop/wireless/giftguide.html"/>  
+	<meta NAME="DCSext.wtPN" CONTENT="HRock Valentine's Day Gift Center"/> 
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<!--[if IE 7]> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<![endif]--> 
+	    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/styles/shop-styles.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/media/cms/shop/styles/cr1329.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/media/cms/homepage/styles/featuredItemTile.css"/> 
+	<!-- Global JS files --> 
+	<script type="text/javascript"> 
+CQURLInfo = { 
+    "contextPath": null, 
+    "requestPath": '/content/att/shop/en/wireless/giftguide', 
+    "selectorString": null, 
+    "selectors": [], 
+    "extension": 'html', 
+    "suffix": null 
+};</script> 
+<script type="text/javascript" src="../../shopcms/shopetc/clientlibs/foundation/jquery.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+	<!-- what is it: check for page url that includes plan, package or service --> 
+</head> 
+<!-- Add author only code below --> 
+<body class="consumer"> 
+	<div class="clickstreamcloud"> 
+<script type="text/javascript"> 
+CQURLInfo = { 
+    "contextPath": null, 
+    "requestPath": '/content/att/shop/en/wireless/giftguide/jcr:content/clickstreamcloud', 
+    "selectorString": null, 
+    "selectors": [], 
+    "extension": 'html', 
+    "suffix": null 
+};</script> 
+<script type="text/javascript" src="../../shopcms/shopetc/clientlibs/foundation/shared.js"></script> 
+<script type="text/javascript" src="../../shopcms/libs/cq/personalization/clientlib.js"></script> 
+<div class="analytics"> 
+</div> 
+<script type="text/javascript">       
+	atgProfileDataReady = jQuery.Deferred(); 
+	var atgProfileDataTimer = setTimeout(function() { 
+		atgProfileDataReady.reject();  
+	}, 2000); 
+    $CQ.ajax({ url: '/shop/wireless/giftguide/_jcr_content.atgprofile.xhr.json', cache: false, dataType: 'text', success: function(data){ 
+		var json = jQuery.parseJSON(data);	 
+		$CQ.each(json, function(key, val) {       
+			   var value = val; 
+			   if(typeof val=="boolean"){ 
+                  value = val.toString(); 
+               } 
+			    if(value.indexOf("|")>0){ 
+                   value = value.replace(/[|]/g,"~"); 
+               } 
+			    if (key === 'region_code') { 
+                    key = 'state'; 
+                } 
+				if (key === 'zip') { 
+                    value = value.substring(0,5); 
+                } 
+                if (key === 'network') { 
+                    if (val === 'att') { 
+                        key = 'existDSL'; 
+                        value = 'true'; 
+                        CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'false'); 
+                    } else { 
+                        key = 'existDSL'; 
+                        value = 'false'; 
+                        CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+              CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
+		}); 
+        clearTimeout(atgProfileDataTimer); 
+        atgProfileDataReady.resolve(data); 
+	}});                               
+</script> 
+<script type="text/javascript" src="../../shopcms/shopetc/segmentation.segment.js"></script> 
+<div id="clickstreamcloud-gui"></div> 
+</div> 
+	<!-- Global Nav header --> 
+<script type="text/javascript"> 
+	var globalNavDefaultSelections = { 
+		"urls":{ 
+			"navService":"/navservice/navservlet", 
+			"store":"http://www.wireless.att.com", 
+			"www":"http://www.att.com", 
+			"olam":"https://www.att.com", 
+			"myAtt":"https://www.att.com", 
+			"urlMap":{} 
+		}, 
+		"useDefaultJSONSource": true, 
+		"locale":"en_US", 
+		"global":"Personal", 
+		"primary": "010000", 
+		"secondary":"" 
+	}; 
+	var customGlobalNavResources = { 
+		"userInfo": 
+							templateSelector('user_info.xhr'), 
+		"segmentationMenu": "/globalnav/includes/segmentation_menu.jsp", 
+		"menuJSON": globalNavDefaultSelections.urls.navService, 
+		"failSafeJSON": "/globalnav/resources/json/GlobalnavLinksInJsonString.txt" 
+	}; 
+	var globalNavResourceParams = {'globalItem': 'Personal','render': '010000','primaryItem': '010000','platform': 'shop','p_linkChangeClass': 'openModal localModal'}; 
+</script> 
+<div id="globalNav" class="en_US hardRock"> 
+	<div id="globalNavInterface" class="ecom"> 
+				<div id="segMenuBar"> 
+				<div id="segMenuContainer" > 
+					<a href="giftguide.html%3Ftab=1.html#wrapper" id="pageID" rel="res">Skip navigation</a> 
+					<div id="segcenterSpan"></div> 
+					<ul class="segMenu" id="leftSegMenu"> 
+						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../../index.html"><span>Personal</span></a></li> 
+						<li> 
+							<a id="segMenuItemBusiness" class="segMenuItem " href="../../gen/general%3Fpid=11627.html"><span>Business</span></a> 
+							<div class="segSubMenu" > 
+								<ul> 
+											<li><a href="../../gen/landing-pages%3Fpid=9213.html">Small Business</a></li> 
+											<li><a href="../../gen/landing-pages%3Fpid=9214.html">Enterprise Business</a></li> 
+											<li><a href="../../gen/general%3Fpid=11624.html">Wholesale</a></li> 
+											<li><a href="../../gen/general%3Fpid=11625.html">Government</a></li> 
+								</ul> 
+							</div> 
+						</li> 
+						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="../../gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
+					</ul> 
+					<ul class="segMenu" id="rightSegMenu"> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li> 
+						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="http://www.att.com/storelocator/"><span>Find a Store</span></a></li> 
+						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="giftguide.html%3Ftab=1.html#"><span> 
+									Language 
+								</span></a> 
+							<div class="segSubMenu"> 
+								<ul> 
+															<li><a href="http://www.att.com/shop/es/wireless/giftguide.html?locale=es_US&amp;tab=1"><span lang="es_US">P&aacute;gina en Espa&ntilde;ol</span></a></li> 
+													<li><a href="../../../espanol.att.com/index.html" target="_blank"><span>Sitio en Espa&ntilde;ol</span></a></li> 
+											<li><div class="segSubMenuDivider">&nbsp;</div></li> 
+													<li><a href="../../../world.att.com/index.html" target="_blank"><span>Other Language Sites</span></a></li> 
+								</ul> 
+							</div> 
+						</li> 
+					</ul> 
+					<div id="segClearFloat"></div> 
+				</div> 
+				</div> 
+				<div id="globalNavUserInfo"> 
+				</div> 
+				<div id="tieredNav"> 
+					<div id="primaryMenu"> 
+						<ul> 
+							<li id="primary_ATTLogo"> 
+										<a class="primaryMenuItem" title="AT&amp;T Home" href="../../index.html">&nbsp;</a> 
+							</li> 
+								<li class=" selected"><a href="../index.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a> 
+										<ul id="secondaryMenu_Shop" class="secondaryMenu"> 
+												<li> 
+													<a class="secondaryMenuItem" href="../wireless.html" name="Shop_Wireless" >Wireless</a> 
+														<div class="trayContentItem trayFiveCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Phones &amp; Devices</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="devices.html" name="Shop_Wireless_Shop By Category" >Shop By Category</a></li> 
+																				<li><a href="devices/smartphones.html" name="Shop_Wireless_Smartphones" >Smartphones</a></li> 
+																				<li><a href="devices/tablets.html" name="Shop_Wireless_Tablets and Internet Devices" >Tablets and Internet Devices</a></li> 
+																				<li><a href="gophone.html" name="Shop_Wireless_Prepaid GoPhone&reg;" >Prepaid GoPhone&reg;</a></li> 
+																				<li><a href="devices/cellphones.html" name="Shop_Wireless_View All Cell Phones" >View All Cell Phones</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Plans &amp; Services</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="plans.html" name="Shop_Wireless_Voice, Data &amp; Messaging Plans" >Voice, Data &amp; Messaging Plans</a></li> 
+																				<li><a href="data-plans.html#tab2" name="Shop_Wireless_Mobile Share Plans" >Mobile Share Plans</a></li> 
+																				<li><a href="data-plans.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li> 
+																				<li><a href="international.html" name="Shop_Wireless_International Plans" >International Plans</a></li> 
+																				<li><a href="services.html" name="Shop_Wireless_Services" >Services</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>More...</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="accessories.html" name="Shop_Wireless_Accessories" >Accessories</a></li> 
+																				<li><a href="services.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li> 
+																				<li><a href="../apps.html" name="Shop_Wireless_Apps &amp; Ringtones" >Apps &amp; Ringtones</a></li> 
+																				<li><a href="giftguide.html%3Ftab=1.html" name="Shop_Wireless_Valentine's Gift Guide" >Valentine's Gift Guide</a></li> 
+																				<li><a href="../../../www.wireless.att.com/coverageviewer/index.html#?type=voice" name="Shop_Wireless_Coverage Maps" >Coverage Maps</a></li> 
+																				<li><a href="../../network/index.html" name="Shop_Wireless_Network" >Network</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="upgradephone.html" name="Shop_Wireless_Upgrade Phone" >Upgrade Phone</a></li> 
+																				<li><a href="addaline.html" name="Shop_Wireless_Add a Line to My Account" >Add a Line to My Account</a></li> 
+																				<li><a href="../../olam/loginAction.olamexecute%3Ftarget=CRP.html" name="Shop_Wireless_Change Rate Plan" >Change Rate Plan</a></li> 
+																				<li><a href="../../olam/passthroughAction.myworld%3FactionType=ManageFeatures.html" name="Shop_Wireless_Add or Change Services" >Add or Change Services</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../bundles.html" name="Shop_Bundles" >Bundles</a> 
+														<div class="trayContentItem trayFourCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Bundles with U-verse</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/shop/index.jsp.html" name="Shop_Bundles_Popular U-verse Bundles" >Popular U-verse Bundles</a></li> 
+																				<li><a href="../../u-verse/shop/index.jsp%3FshopFilterId=100003.html" name="Shop_Bundles_U-verse TV and Internet" >U-verse TV and Internet</a></li> 
+																				<li><a href="../../u-verse/shop/index.jsp%3FshopFilterId=200001.html" name="Shop_Bundles_U-verse TV, Internet and Phone" >U-verse TV, Internet and Phone</a></li> 
+																				<li><a href="../../u-verse/shop/customize.jsp.html#vucbbb" name="Shop_Bundles_Build My Own U-verse Bundle" >Build My Own U-verse Bundle</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Bundles without U&#8209;verse</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=res_globnav_popular_bundles.html" name="Shop_Bundles_Popular Bundles" >Popular Bundles</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=res_globnav_build_bundles.html" name="Shop_Bundles_Build My Own Bundle" >Build My Own Bundle</a></li> 
+																				<li><a href="../../gen/general%3Fpid=11122.html" name="Shop_Bundles_Compare Bundles" >Compare Bundles</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../accounts/index.html%3Fsource=IC4425j4900s2000.html" name="Shop_Bundles_Change My Service" >Change My Service</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_globnav_move_service.html" name="Shop_Bundles_Move My Service" >Move My Service</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
+														<div class="trayContentItem trayFourCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Plans &amp; Channels</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../tv/index.html" name="Shop_Digital TV_U-verse TV" >U-verse TV</a></li> 
+																				<li><a href="../../u-verse/shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Line-up" >U-verse Channel Line-up</a></li> 
+																				<li><a href="../tv/directv.html" name="Shop_Digital TV_DIRECTV&reg; Programming Packages" >DIRECTV&reg; Programming Packages</a></li> 
+																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Line-up (PDF)" >DIRECTV&reg; Channel Line-up (PDF)</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Equipment</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../remotes.html" name="Shop_Digital TV_U-verse Remotes" >U-verse Remotes</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_Digital TV_Change My Plan" >Change My Plan</a></li> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_Digital TV_Add Receivers" >Add Receivers</a></li> 
+																				<li><a href="../../../uversetv.att.yahoo.com/index.html" name="Shop_Digital TV_Access My DVR" >Access My DVR</a></li> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_Digital TV_Upgrade to HD" >Upgrade to HD</a></li> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_Digital TV_Add or Remove Channels" >Add or Remove Channels</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../internet/index.html" name="Shop_Internet" >Internet</a> 
+														<div class="trayContentItem trayFiveCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Plans</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/explore/internet-landing.jsp.html" name="Shop_Internet_U-verse Internet" >U-verse Internet</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_globnav_dsl_plans.html" name="Shop_Internet_DSL High Speed Internet" >DSL High Speed Internet</a></li> 
+																				<li><a href="../../dsl/shop/plansDirect.jsp%3Fref_from=shop.html" name="Shop_Internet_Internet Without a Phone Line" >Internet Without a Phone Line</a></li> 
+																				<li><a href="../../gen/general%3Fpid=9212.html" name="Shop_Internet_Internet Broadband via Satellite" >Internet Broadband via Satellite</a></li> 
+																				<li><a href="../../gen/general%3Fpid=10974.html" name="Shop_Internet_Dial-Up" >Dial-Up</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Equipment</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../internet/index.html#tab3" name="Shop_Internet_U-verse Internet Equipment" >U-verse Internet Equipment</a></li> 
+																				<li><a href="../../equipment/index.html" name="Shop_Internet_DSL Equipment" >DSL Equipment</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Extras</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../../att.net/iss.html" name="Shop_Internet_Internet Security Suite" >Internet Security Suite</a></li> 
+																				<li><a href="../../gen/general%3Fpid=5949.html" name="Shop_Internet_AT&amp;T Wi-Fi" >AT&amp;T Wi-Fi</a></li> 
+																				<li><a href="../../../buy-connectech.att.com/ctcomm/catalog/index.jsp%3FcatId=cat30030.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_globnav_move_service.html" name="Shop_Internet_Move My DSL Service" >Move My DSL Service</a></li> 
+																				<li><a href="../../dsl.1.html" name="Shop_Internet_Change My Plan" >Change My Plan</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
+														<div class="trayContentItem trayFourCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Plans</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/explore/phone-landing.jsp%3FwtSlotClick=1-001SNC-0-1&amp;WT.svl=calltoaction.html" name="Shop_Home Phone_AT&amp;T U-verse Voice" >AT&amp;T U-verse Voice</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_homephone_services.html" name="Shop_Home Phone_Home Phone Plans" >Home Phone Plans</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_long_distance_landing.html" name="Shop_Home Phone_Long Distance Plans" >Long Distance Plans</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_lifeline.html" name="Shop_Home Phone_Lifeline" >Lifeline</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Equipment</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../equipment/index.jsp.html" name="Shop_Home Phone_Home Phone Equipment" >Home Phone Equipment</a></li> 
+																				<li><a href="../home-phone/index.html#tab3" name="Shop_Home Phone_AT&amp;T U-verse Voice Equipment" >AT&amp;T U-verse Voice Equipment</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=accountmanager.html" name="Shop_Home Phone_Change My Plan" >Change My Plan</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fltype=res&amp;prod-snip=res_globnav_move_service.html" name="Shop_Home Phone_Move My Service" >Move My Service</a></li> 
+																				<li><a href="../../../localization.att.com/loc/controller%3Fprod-snip=accountmanager.html" name="Shop_Home Phone_Manage Features" >Manage Features</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../u-verse.html" name="Shop_U-verse" >U-verse</a> 
+														<div class="trayContentItem trayFiveCol"> 
+															<div class="firstColumn"> 
+																<div class="columnContent"> 
+																	<img src='http://0.ecom.attccc.com/media/att/2012/global/nav/uverse_189x200.png' alt='U-verse' /> 
+																</div> 
+															</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Digital TV</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/explore/tv-landing.jsp.html" name="Shop_U-verse_U-verse TV" >U-verse TV</a></li> 
+																				<li><a href="../../u-verse/shop/channel-lineup.jsp.html" name="Shop_U-verse_Channel Line-up" >Channel Line-up</a></li> 
+																				<li><a href="../../remotes.html" name="Shop_U-verse_TV Remotes" >TV Remotes</a></li> 
+																				<li><a href="../../u-verse/explore/wireless-receiver.jsp.html" name="Shop_U-verse_Wireless TV Receivers" >Wireless TV Receivers</a></li> 
+																				<li><a href="../../u-verse/shop/index.jsp.html" name="Shop_U-verse_U-verse Bundles" >U-verse Bundles</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Internet</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/explore/internet-landing.jsp.html" name="Shop_U-verse_U-verse Internet" >U-verse Internet</a></li> 
+																				<li><a href="../internet/index.html#tab3" name="Shop_U-verse_Internet Equipment" >Internet Equipment</a></li> 
+																				<li><a href="../../u-verse/shop/index.jsp.html" name="Shop_U-verse_U-verse Bundles" >U-verse Bundles</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Home Phone</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../u-verse/explore/phone-landing.jsp%3FwtSlotClick=1-001SNC-0-1&amp;WT.svl=calltoaction.html" name="Shop_U-verse_U-verse Voice" >U-verse Voice</a></li> 
+																				<li><a href="../home-phone/index.html#tab3" name="Shop_U-verse_Voice Equipment" >Voice Equipment</a></li> 
+																				<li><a href="../../u-verse/shop/index.jsp.html" name="Shop_U-verse_U-verse Bundles" >U-verse Bundles</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+																<div class="secondColumn "> 
+																	<div class="columnContent"> 
+																			<h3>Existing Customers</h3> 
+																		<ul class="trayNoBullet"> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_U-verse_Change My Plan" >Change My Plan</a></li> 
+																				<li><a href="../../olam/loginAction.olamexecute%3FcustomerType=U.html" name="Shop_U-verse_Add Receivers" >Add Receivers</a></li> 
+																				<li><a href="../../../uversetv.att.yahoo.com/index.html" name="Shop_U-verse_Access My DVR" >Access My DVR</a></li> 
+																				<li><a href="../../u-verse/move-service/index.jsp.html" name="Shop_U-verse_Move My Service" >Move My Service</a></li> 
+																		</ul> 
+																	</div> 
+																</div> 
+														</div> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../special-offers.html" name="Shop_Special Offers" >Special Offers</a> 
+												</li> 
+												<li> 
+													<a class="secondaryMenuItem" href="../help.html" name="Shop_Shopping Help" >Shopping Help</a> 
+												</li> 
+										</ul> 
+								</li> 
+								<li class=""><a href="../../olam/passthroughAction.myworld%3FactionType=Manage.html" id="primary_MyATT" name="MyATT" class="primaryMenuItem">MyATT<span></span></a> 
+								</li> 
+								<li class=""><a href="../../esupport/index.jsp.html" id="primary_Support" name="Support" class="primaryMenuItem">Support<span></span></a> 
+								</li> 
+							<li id="primary_Search"> 
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" > 
+									<fieldset> 
+										<input type="hidden" name="App_ID" value="HOME"/> 
+										<input type="hidden" name="autoSuggest" value=""/> 
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/> 
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" /> 
+										<button type="button">Submit</button> 
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div> 
+									</fieldset> 
+								</form> 
+							</li> 
+						</ul> 
+					</div> 
+								<ul id="secondaryMenu_Shop" class="secondaryMenu selected" style="display:block;clear:left;"> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../wireless.html" name="Shop_Wireless" >Wireless</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../bundles.html" name="Shop_Bundles" >Bundles</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../internet/index.html" name="Shop_Internet" >Internet</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../u-verse.html" name="Shop_U-verse" >U-verse</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../special-offers.html" name="Shop_Special Offers" >Special Offers</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../help.html" name="Shop_Shopping Help" >Shopping Help</a> 
+										</li> 
+								</ul> 
+					<div id="trayContent" style="display:block;height:0px;"></div> 
+				</div> 
+	</div> 
+	<div id="globalNavShadows" style="height:15px;*height:40px;" ></div> 
+</div> 
+<!-- social media  --> 
+<div class="socialmedia"> 
+	<script type="text/javascript"> 
+		function setMeteorKeys(){ 
+			meteor.tracking.track('00d78e1f-01f0-45cd-9f9c-79e690335b05', { 
+				'url_storage_source':'hash', 
+				'query_string_tag_key':['mtag', 'source'] 
+			}); 
+			meteor.sharing.configure('00d78e1f-01f0-45cd-9f9c-79e690335b05'); 
+		} 
+		jQuery(document).ready(function(){ 
+			jQuery.getScript('//cdnt.meteorsolutions.com/metsol.js', function(){setMeteorKeys()},true); 
+		}); 
+	</script> 
+	<style type="text/css"> 
+		#socialMedia { 
+			height:207px; 
+			position: relative; 
+			margin-bottom:-140px; 
+			margin-top:27px; 
+			width: 41px; 
+			float: right; 
+			z-index: 3; 
+		} 
+		.socialmedia { 
+			min-width: 1060px; 
+			height: 0px; 
+			margin: 0 auto; 
+		} 
+	</style> 
+	<map name="sharemap"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,10,42,45" title="Twitter" alt="Twitter" href="http://www.twitter.com" onclick="this.href=meteor.sharing.href('Twitter' );"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,45,38,76" title="Facebook" alt="Facebook" href="http://www.facebook.com" onclick="this.href=meteor.sharing.href('Facebook');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,75,42,103" title="LinkedIn" alt="LinkedIn" href="http://www.linkedin.com" onclick="this.href=meteor.sharing.href('Linkedin' );"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,104,42,133" title="digg" alt="digg" href="http://www.digg.com" onclick="this.href=meteor.sharing.href('Digg');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,132,42,161" title="del.icio.us" alt="del.icio.us" href="http://del.icio.us" onclick="this.href=meteor.sharing.href('del.icio.us');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,164,42,200" title="email" alt="email" href="mailto:" onclick="this.href=meteor.sharing.href('Email' );"> 
+	</map> 
+	<img id="socialMedia" src="../../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
+</div> 
+<div  id="underNav"> 
+	<div id="undernav-right"> 
+	    <div id="lpButtonDiv" style="display:inline;"></div> 
+	    <div id="mini-cart-link-container" style="display:inline;"> 
+	        <a id="minicart-link" href="giftguide.html%3Ftab=1.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content;2013035">My Wireless Cart  
+	            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+	            <span id="minicart-count"></span> 
+	        </a><br/> 
+	        <div id="cart-preview-container" style="display:none;float:right;"></div> 
+	        <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+	    </div> 
+	    <div class="clear"></div> 
+	</div> 
+</div> 
+	<!-- main content of page --> 
+	<div id="wrapper"> 
+		<div id="main-container"> 
+<div class="bg-top-shadow"></div>  
+    <div class="bg-mid-shadow">  
+        <div id="content"> 
+            <div style="display:inline;margin-top:5px;"> 
+                <div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
+                <div class="clear"></div> 
+            </div> 
+            <div class="primary-content-full"> 
+            	<div id="breadcrumbs-and-facebook-like-container"> 
+					<div style="" id="breadcrumbs-container"> 
+						<!--  --> 
+						<div class="base-bread-crumb" style="padding-left:10px;"><div class="basebreadcrumb breadcrumb"> 
+    		<a href="../wireless.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/breadcrumb">Wireless</a> 
+    &nbsp; / &nbsp; 
+    <label>Valentine's Day Gift Center</label></div> 
+</div> 
+					</div> 
+					<div align="right" id="facebook-like-container"> 
+		            	<div class="likebutton"> 
+	<div id="faceBookLikeButtonDiv" class="topMar10"> 
+	</div> 
+	<script id="faceBookLikeButtonMarkup" type="text/html"><iframe title="facebook" src="../../../www.facebook.com/plugins/like.php%3Fhref=http:%252F%252Fwww.att.com%252Fshop%252Fwireless%252Fgiftguide.htmlValentine's%2520Day%2520Gift%2520Center&amp;send=false&amp;layout=stan.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:230px; height:35px;" allowTransparency="true"></iframe></script> 
+	<script type="text/javascript">jQuery(window).load(function(){jQuery("#faceBookLikeButtonDiv").html(jQuery("#faceBookLikeButtonMarkup").html())});</script> 
+	<div class="clear"></div> 
+</div> 
+					</div> 
+					<br class="clear"> 
+				</div> 
+                <div class="base admgr marqueePromo"> 
+<div class="page-title-container"> 
+	    <div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
+<script type="text/javascript"> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/valentines_day_hub", 
+	"panel": [{ 
+		"alt": "Use the AT&amp;T Gift Guide to shop for mobile devices, cell phones &amp; gifts like iPhone, Android phones, Windows Phones &amp; wireless accessories from AT&amp;T.", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/974x280/144482-V-day-marquee-974x614.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/valentines_hub", 
+		"name": "valentines_hub", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"isVideo": "1", 
+			"name": "animation", 
+			"preload": "1", 
+			"source": "http://www.wireless.att.com/home/video_progressive/video_marquees/144482-V-day-marquee-974x614.flv", 
+			"type": "Media", 
+			"x": "0", 
+			"y": "0" 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"974", height:"615"}); 
+</script> 
+</div> 
+</div></div> 
+                <div class="row-seamless"> 
+                    <div class="FlexibleWidthLoBT LoBT"> 
+        <div class="tabLinks"> 
+            <ul class="tabs"> 
+                    <li style="min-height:37px;" id="lobTab1" class="top-round">  
+                        <a href="giftguide.html%3Ftab=1.html#tab1" class="tab-overview current" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT;2013031">Phones & Tablets</a>  
+                    </li> 
+                    <li style="min-height:37px;" id="lobTab2" class="top-round">  
+                        <a href="giftguide.html%3Ftab=1.html#tab2" class="tab-features " data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT;2013031">Apple Products</a>  
+                    </li> 
+                    <li style="min-height:37px;" id="lobTab3" class="top-round">  
+                        <a href="giftguide.html%3Ftab=1.html#tab3" class="tab-equipment " data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT;2013031">Accessories</a>  
+                    </li> 
+            </ul> 
+        </div> 
+        <div  class="tab-group"> 
+                    <div class="tabcontent clear"> 
+                       <div class="parsys teasertab1"><div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="mainPromoLayout"> 
+	   <div class="pageLevel">  
+            <h2>Make a love connection <br></h2> 
+       </div>  
+<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/img-intro-SamsngCaptivate-948x415-v2.jpg') no-repeat scroll left bottom transparent;"> 
+	<div class="h450"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   SAMUSUNG CAPTIVATE™ GLIDE<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Get it done faster with 4G</h4>  
+    <p><p></p> 
+<p><a href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html?tab=3&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratincapgldgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup/one-up/TallPromo1/titleplustext_1;2013031"><img height="11px" alt="4.3 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-and-half-stars.jpg"></a><a href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html?tab=3&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratincapgldgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup/one-up/TallPromo1/titleplustext_1;2013031" height="16px" alt="There are 200 reviews for this product.">&nbsp; (200)</a></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p><b>&quot;...I love this phone and I recommend it to anyone and everyone.&quot;</b></p> 
+<p><b>- Sandralove1810</b><br> 
+<br> 
+Strike the perfect balance of speed and power so you can go further in work and life. With the side-slide QWERTY keyboard, you can write long emails, post updates, and send text messages fast. The 4&quot; Super AMOLED™ display allows you to easily view content. Plus, the Android™ OS and 1 GHz dual-core processor give you all the speed you need to multitask your day-to-day.</p> 
+<p></p> 
+<p></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="pricewithcta section"> 
+<div class="price-and-button"> 
+        	<div class="left-text"> 
+				<div class="PriceNote price"> 
+<p class="priceNote"><br></p> 
+<p class="price orange">99¢*</p> 
+<p class="detail"></p> 
+<div class="clear"></div> 
+</div> 
+            </div> 
+            <div> 
+            	 <div class="CTA cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup/one-up/TallPromo1/pricewithcta_1/CTA;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-142x40.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+            </div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab1/textimage_2/image.img.gif/1354755570857.gif"><br></div><div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<div style="text-align: center;"><h2>&nbsp;</h2> 
+<h2>Best deals</h2> 
+<p><br> 
+Love is priceless but deals come pretty close<br> 
+<br> 
+</p> 
+</div> 
+</div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/Pantech-Flex-280x210.jpg" alt="PANTECH FLEX™"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >PANTECH FLEX™</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/pantech/flex-gray.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinflexgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth1/titleplustext;2013032"><img height="12px" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/5-stars.jpg" alt="4.9 out of 5 stars"></a><a href="http://www.att.com/shop/wireless/devices/pantech/flex-gray.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinflexgg" alt="There are 10 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth1/titleplustext;2013032">&nbsp;(10)</a></p> 
+<p style="text-align: center;">Browse the Web on the 4.3” qHD Super AMOLED display.<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">99¢*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/pantech/flex-gray.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth1/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu29.gif" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/Nokia-Lumia-900-280x210.jpg" alt="NOKIA LUMIA 900"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >NOKIA LUMIA 900</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinlumia900gg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth2/titleplustext;2013032"><img height="12px" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-stars.jpg" alt="3.8 out of 5 stars"></a><a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinlumia900gg" alt="There are 39 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth2/titleplustext;2013032">&nbsp; (39)</a></p> 
+<p style="text-align: center;">Includes Carl Zeiss® optics and a 4.3” ClearBlack™ screen.<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">99¢*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth2/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu29.gif" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/Pantech-Burst-280x210.jpg" alt="PANTECH BURST™"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >PANTECH BURST™</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/pantech/burst-ruby-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinburstgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth3/titleplustext;2013032"><img height="12px" alt="3.7 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/3-and-half-stars.jpg"></a><a href="http://www.att.com/shop/wireless/devices/pantech/burst-ruby-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinburstgg" alt="There are 20 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth3/titleplustext;2013032">&nbsp; (20)</a></p> 
+<p style="text-align: center;">Includes Android™ OS and a 4” Super AMOLED™ screen.<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">99¢*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/pantech/burst-ruby-red.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup/thirdwidth3/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="parbase textimage section"><div class="text"><p>&nbsp;</p> 
+<p>&nbsp;</p> 
+</div><div class="clear"></div></div> 
+<div class="optionalfiveup parbase image section"> 
+<div class="row-container five-column" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/img-best-deals-948x435.jpg') no-repeat scroll left top transparent; height: 440px;"> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html#fbid=gaumUw08ZUM.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/HTC-OneX-Gray-160x160.jpg" alt="HTC ONE™ X – GRAY" title="HTC ONE™ X – GRAY"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">HTC ONE™ X – GRAY</div> 
+        <p>Play games, listen to music, and hear every detail with Beats Audio™. †</p> 
+        <div class="price orange">99¢*</div> 
+        <a href="http://www.att.com/shop/wireless/devices/htc/one-x-gray.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/devices/samsung/focus-s-black.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/Samsung-Focus-S-160x160.jpg" alt="SAMSUNG FOCUS™ S" title="SAMSUNG FOCUS™ S"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">SAMSUNG FOCUS™ S</div> 
+        <p>The 4.3” Super AMOLED™ screen is perfect for viewing the Web.</p> 
+        <div class="price orange">99¢*</div> 
+        <a href="http://www.att.com/shop/wireless/devices/samsung/focus-s-black.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border"> 
+                <a href="http://www.att.com/shop/wireless/devices/motorola/atrix-hd-titanium.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/best-deals/Moto-Atrix-HD-160x160.jpg" alt="SAMSUNG FOCUS™ S" title="MOTOROLA ATRIX™ HD"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">MOTOROLA ATRIX™ HD</div> 
+        <p>Made KEVLAR® strong and scratch resistant.<br><br></p> 
+        <div class="price orange">$49.99*</div> 
+        <a href="http://www.att.com/shop/wireless/devices/motorola/atrix-hd-titanium.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border"> 
+        <br /> 
+    </div> 
+    <div class="device-container-no-border last"> 
+        <br /> 
+    </div> 
+    <br class="clear" /> 
+</div></div> 
+<div class="parbase textimage section"><div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentRight520" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/img-Samsung_Galaxy-Tab-8-9.jpg') no-repeat scroll left top transparent;"> 
+	<div class="h450"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	       SAMUSUNG GALAXY TAB™ 8.9<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >$100 off tablet sale</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinggalxtabgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_0/one-up/TallPromo1/titleplustext;2013032"><img height="12px" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-and-half-stars.jpg" alt="4.3 out of 5 stars"></a><a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinggalxtabgg" alt="There are 147 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_0/one-up/TallPromo1/titleplustext;2013032">&nbsp; (147)</a></p> 
+<p><b>&quot;The display is great, good resolution and nice and bright.&quot;</b></p> 
+<p><b>-Milehighflyer</b><br> 
+<br> 
+Buy any tablet with a new 2-year data plan and get $100 off. ***</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="devices/tablets.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_0/one-up/TallPromo1/calltoaction_0/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu40.gif" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentLeftDefault" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/img-Samsung-Galaxy-Note2.jpg') no-repeat scroll right center transparent;"> 
+	<div class="h525"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   SAMSUNG GALAXY NOTE® II<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Tablet power in a smartphone</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratingnote2gg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_2/one-up/TallPromo1/titleplustext;2013032"><img height="12px" alt="4.7 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-and-half-stars.jpg"></a><a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratingnote2gg" alt="There are 72 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_2/one-up/TallPromo1/titleplustext;2013032">&nbsp; (72)</a></p> 
+<p><b>&quot;I love this phone for so many reasons, but the main one is speed.&quot;</b></p> 
+<p><b>-BNMan13</b><br> 
+<br> 
+The Samsung Galaxy Note® II brings together the latest innovations to provide you with a tablet experience in a smartphone. Capture every detail and add your own personal touch with the enhanced S Pen™.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="pricewithcta section"> 
+<div class="price-and-button"> 
+        	<div class="left-text"> 
+				<div class="PriceNote price"> 
+<p class="priceNote"><br></p> 
+<p class="price orange">$299.99*</p> 
+<p class="detail"></p> 
+<div class="clear"></div> 
+</div> 
+            </div> 
+            <div> 
+            	 <div class="CTA cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/oneup_2/one-up/TallPromo1/pricewithcta/CTA;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-142x40.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+            </div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="parbase textimage section"><div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<div style="text-align: center;"><h2>Mobile favorites<br> 
+</h2> 
+<p><br> 
+Find the one for your special someone</p> 
+<br> 
+</div> 
+</div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/Samsung-Galaxy-S3-280x210.jpg" alt="Vew Details"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SAMSUNG GALAXY S<sup>®</sup> III</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratings3gg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth1/titleplustext;2013032"><img height="12px" alt="4.7 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-and-half-stars.jpg"></a> <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratings3gg" alt="There are 1307 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth1/titleplustext;2013032">&nbsp; (1307)</a></p> 
+<p>Voice commands and movements make this smartphone smarter.<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">$199.99*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth1/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/Windows-Phone-8X-280x210.jpg" alt="View Details"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >WINDOWS® PHONE 8X BY HTC<sup>®</sup></h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarrating8xgg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth2/titleplustext;2013032"><img height="12px" alt="4.7 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/4-and-half-stars.jpg"></a> <a href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarrating8xgg" alt="There are 28 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth2/titleplustext;2013032">&nbsp; (28)</a></p> 
+<p>Slim design, 4G LTE speed, 4.3” screen, and Beats Audio™. †<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">$99.99*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html?" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth2/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   <br> 
+<br> 
+<br> 
+	</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/Nokia-Lumia-920-280x210.jpg" alt="View Details"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >NOKIA LUMIA 920</h4>  
+    <p><p><a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinnok920gg" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth3/titleplustext;2013032"><img height="12px" alt="5 out of 5 stars" src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/stars/5-stars.jpg"></a> <a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html?tab=4&amp;source=ICHG250010000000L&amp;wtExtndSource=valstarratinnok920gg" alt="There are 72 reviews for this product." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth3/titleplustext;2013032">&nbsp; (72)</a></p> 
+<p>Features Windows® Phone 8 and 8MP camera.<br> 
+</p> 
+<p style="text-align: center;"><span class="pricing orange">$99.99*</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/homepagethreeup_3/thirdwidth3/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="optionalfiveup parbase image section"> 
+<div class="row-container five-column" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/img-mobile-favorites-948x480.jpg') no-repeat scroll left top transparent; height: 430px;"> 
+    <h2><br><br></h2> 
+    <div class="device-container-no-border"> 
+        <br /> 
+    </div> 
+    <div class="device-container-no-border"> 
+        <br /> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/Lenovo-IdeaTab-160x160.jpg" alt="LENOVO IDEATAB A2107" title="LENOVO IDEATAB A2107"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">LENOVO IDEATAB A2107</div> 
+        <p>Includes a 7” display plus front- and rear-facing cameras. ***</p> 
+        <div class="price orange">$99.99*</div> 
+        <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/Sony-Xperia-160x160.jpg" alt="SONY XPERIA™ TL" title="SONY XPERIA™ TL"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">SONY XPERIA™ TL</div> 
+        <p>Watch and share HD content across multiple devices.  <br></p> 
+        <div class="price orange">$49.99*</div> 
+        <a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border last"> 
+                <a href="http://www.att.com/shop/wireless/devices/att/fusion-2-black-prepaid.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/phones-tablets/mobile-favorites/ATT-Fusion-2-160x160.jpg" alt="AT&T FUSION™ 2" title="AT&T FUSION™ 2"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">AT&T FUSION™ 2</div> 
+        <p>Prepaid GoPhone® Android™ smartphone loaded with social apps.</p> 
+        <div class="price orange">$99.99</div> 
+        <a href="http://www.att.com/shop/wireless/devices/att/fusion-2-black-prepaid.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab1/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <br class="clear" /> 
+</div></div> 
+<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab1/textimage_5/image.img.gif/1353524553471.gif"><br></div><div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   <p><b><br> 
+ Warranty and additional information</b></p> 
+<p>Limited 4G LTE availability in select markets. 4G LTE device and data plan required. LTE is registered trademark of ETSI.<br> 
+</p> 
+<p>*New 2-yr agreement with qualifying voice and data plan required.</p> 
+<p>***Offer ends Feb. 14, 2013. New 2-yr agreement with qualified data or Mobile Share plan req'd. Other charges and restrictions apply.</p> 
+<p>  †BEATS AUDIO and THE B LOGO, are trademarks of Beats Electronics, LLC. Beats Audio is only active with compatible headphones or accessories. This is to ensure the best possible audio quality.</p> 
+<p>  &amp;nbsp;</p> 
+<p>  AT&amp;T is neither responsible nor does it endorse the contents of any user generated product reviews listed on att.com. The views presented in these reviews represent participants' personal opinions, and do not necessarily represent the views of AT&amp;T.</p> 
+	</div> 
+<div class="clear"></div></div> 
+</div> 
+                    </div> 
+                    <div class="tabcontent clear"> 
+                       <div class="parsys teasertab2"><div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Apple-products/iPhone5-948x395-new.jpg') no-repeat scroll left bottom transparent;"> 
+	<div class="h450"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   iPHONE<sup>®</sup> 5 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Starting at $199.99* <br /> 16GB | 32GB | 64GB </h4>  
+    <p><p>iPhone 5 features a 4-inch Retina® display, the powerful A6 chip, an 8MP iSight® camera with panorama, ultrafast wireless, iOS® 6, and iCloud®. Yet it's the thinnest, lightest iPhone ever. Furthermore, only AT&amp;T’s network lets you talk and surf at the same time on your iPhone 5.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/oneup/one-up/TallPromo1/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2011/global/btn/btn-en-viewdetails-blu40.gif" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/apple-lightning=280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >APPLE LIGHTNING TO 30-PIN ADAPTER</h4>  
+    <p><p>Connect your iPhone 5 with a compatible adapter.<br> 
+<br> 
+<span class="pricing orange">$29.00</span><br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/data-memory/sku6300329.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup/thirdwidth1/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/carved-wood-skin-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >CARVED WOOD SKIN</h4>  
+    <p><p style="text-align: center;">Protect your iPhone 5 from nicks with an exotic wood skin.<br> 
+<br> 
+<span class="pricing orange">$45.00</span><br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/cases/sku6370271.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup/thirdwidth2/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/car-charger-usb-port-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >CAR CHARGER WITH USB PORT 2 AMP</h4>  
+    <p><p>Quickly charge your iPhone 5 or iPad mini.<br> 
+<br> 
+<span class="pricing orange">$30.00</span><br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/chargers/sku6360341.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup/thirdwidth3/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentLeftDefault" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/img-ipad-mini-948x480.jpg') no-repeat scroll right center transparent;"> 
+	<div class="h525"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   <br> 
+<br> 
+IPAD® MINI<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Starting at $359.99**</h4>  
+    <p><p>iPad mini features a beautiful 7.9-inch display, iSight and FaceTime® cameras, the A5 chip, ultrafast wireless, and up to 10 hours of battery life. And over 275,000 apps on the App StoreSM made for iPad also work with iPad mini. So it’s an iPad in every way, shape, and slightly smaller form. ***<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/oneup_0/one-up/TallPromo1/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Apple-products/ipad_retina_948x510.jpg') no-repeat scroll left bottom transparent;"> 
+	<div class="h500"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   IPAD® WITH RETINA DISPLAY<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Starting at $529.99**</h4>  
+    <p><p>iPad features a stunning Retina display, iSight and FaceTime cameras, the all-new A6X chip, and ultrafast wireless. And with access to over 275,000 apps on the App Store, you can do more than ever. ***<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/oneup_2/one-up/TallPromo1/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+	<div class="legal"> 
+	   <br> 
+<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="parbase textimage section"><div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+<div class="clear"></div></div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/karaoke-pro-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >KAROAKE PRO KARAOKE SYSTEM</h4>  
+    <p><p>A complete karaoke system for your smartphone or tablet.</p> 
+<p style="text-align: center;"><span class="pricing orange">$99.99</span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6280698.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_0/thirdwidth1/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/mophie-power-station-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >MOPHIE POWERSTATION BATTERY</h4>  
+    <p><p>Easily charge your USB-enabled device.<br> 
+</p> 
+<div style="text-align: center;"><span style="text-align: center;"><span class="pricing orange">$80.00</span></span></div> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/batteries/sku6020243.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_0/thirdwidth2/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/speck-plaid-fitfolio-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SPECK PLAID TYRION FITFOLIO</h4>  
+    <p><p>Protect your iPad mini with this fashion-friendly case.</p> 
+<p style="text-align: center;"><span class="pricing orange">$48.00</span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/cases/sku6400329.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_0/thirdwidth3/onethird/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="legal text parbase section"> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentLeftDefault" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/img-iphone-4S-948x500.jpg') no-repeat scroll right center transparent;"> 
+	<div class="h525"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   iPHONE 4S 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Starting at $99.99*</h4>  
+    <p><p>iPhone 4S has an 8-megapixel iSight camera with<br> 
+&nbsp;panorama, the A5 chip, iOS 6, and iCloud. And it comes<br> 
+&nbsp;with Siri—the intelligent assistant that lets you use your<br> 
+&nbsp;voice to get things done.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/oneup_1/one-up/TallPromo1/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+<div class="clear"></div></div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/mophie-camera-mount-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >MOPHIE CAMERA & MOUNTING SYSTEM</h4>  
+    <p><p>This case turns your iPhone into<br> 
+the ultimate sports camera.</p> 
+<p style="text-align: center;"><span class="pricing orange">$150.00</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/en/wireless/accessories/cases/sku6400349.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_1/thirdwidth1/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/speck-candyshell-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SPECK CANDYSHELL</h4>  
+    <p><p style="text-align: center;">Protect your phone with<br> 
+this stylish case.</p> 
+<p style="text-align: center;"><span class="pricing orange">$35.00</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/cases/sku5250242.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_1/thirdwidth2/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   <br> 
+<br> 
+	</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/ion-audio-game-controller-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >ION AUDIO ICADE GAME CONTROLLER</h4>  
+    <p><p style="text-align: center;">Play games the way they<br> 
+were meant to be played.</p> 
+<p style="text-align: center;"><span class="pricing orange">$51.75</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/appcessories/sku6230326.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/homepagethreeup_1/thirdwidth3/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="twoup parbase section"> 
+<div class="promotwoup parbase two-up"> 
+<style type="text/css"> 
+.tile p.price { 
+	font-size: 24px; 
+	color:#f27d00; 
+	padding:6px 0 0 0; 
+	margin:0; 
+} 
+</style> 
+<div class="twoUp">  
+            <div class="box w463"> 
+                <div class="promotwoup1 parbase promovalueTile"> 
+<div style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/img-callout-iphone4-451x206.jpg') no-repeat scroll 0% 0% transparent;" class="tile h222">  
+	<div class="textLeft">  
+		<h3>iPHONE® 4</h3> 
+		<h4><b>Only 99¢*</b></h4> 
+		<p>iPhone 4 features a Retina<br> 
+display, 5MP iSight camera, FaceTime video<br> 
+calling, long battery life, iOS 6, and iCloud.<br> 
+</p> 
+		<div class="cta1 homepagecta cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/twoup/two-up/promotwoup1/cta1;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-90x24.jpg" alt="View Details "/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+				<a class="openModal modal705" onclick="" href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/twoup/two-up/promotwoup1;2013031"> 
+				</a> 
+	</div>  
+</div>   
+<div class="clear"></div> 
+</div> 
+            </div> 
+            <div class="box w463"> 
+                <div class="promotwoup2 parbase promovalueTile"> 
+<div style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/apple/img-callout-ipad2-451x206.jpg') no-repeat scroll 0% 0% transparent;" class="tile h222">  
+	<div class="textLeft">  
+		<h3>iPAD 2® with Wi-Fi</h3> 
+		<h4><b>Only $529.99**</b></h4> 
+		<p>iPad 2 features a 9.7-inch Multi-Touch™<br> 
+display, front and back cameras, up to 10<br> 
+ hours of battery life, and apps.***<br> 
+</p> 
+		<div class="cta1 homepagecta cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/twoup/two-up/promotwoup2/cta1;2013032"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-view-details-90x24.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+				<a class="openModal " onclick="" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab2/twoup/two-up/promotwoup2;2013030"> 
+				</a> 
+	</div>  
+</div>   
+<div class="clear"></div> 
+</div> 
+            </div> 
+ </div>     
+<div class="clear"></div></div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="sectionDivider"></div>    
+<div class="clear"></div> 
+</div> 
+<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab2/textimage_0/image.img.gif/1352931417086.gif"><br></div><div class="clear"></div></div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   <p><b><br> 
+ Warranty and additional information</b></p> 
+<p>Limited 4G LTE availability in select markets. 4G LTE device and data plan required. LTE is registered trademark of ETSI.<br> 
+</p> 
+<p>  Apple, the Apple logo, and iPad are trademarks of Apple Inc., registered in the U.S. and other countries.</p> 
+<p>  *New 2-yr agreement with qualifying voice and data plan required.</p> 
+<p>  **Month to Month pricing requires new activation and qualifying monthly data plan. Activation fee may apply.</p> 
+<p>  ***Offer ends Feb. 14, 2013. New 2-yr agreement with qualified data or Mobile Share plan req'd. Other charges and restrictions apply.</p> 
+	</div> 
+<div class="clear"></div></div> 
+</div> 
+                    </div> 
+                    <div class="tabcontent clear"> 
+                       <div class="parsys teasertab3"><div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="mainPromoLayout"> 
+	   <div class="pageLevel">  
+            <h2>Commitment-free gifts <br></h2> 
+       </div>  
+<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/img-intro-otterbox-cases-948x400.jpg') no-repeat scroll left center transparent;"> 
+	<div class="h380"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase titleplustext section"> 
+    <h4 >Complete the package</h4>  
+    <p><p>Dress up your sweetie’s wireless gift with a few accessories to really seal the deal. Didn’t buy a tablet or smartphone for your loved one? Don’t fret! Our accessories come packaged a la carte, so you can choose whatever your heart desires.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+<div class="text parbase eyebrow section"> 
+	<div class="eyebrow"> 
+	   SWEETEN THE DEAL<br> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="text parbase titleplustext section"> 
+    <h4 >Buy one case and get 25% off <br>any car charger <sup>‡</sup></h4>  
+    <p></p> 
+<div class="clear"></div>                  
+</div> 
+<div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/cases.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/oneup/one-up/TallPromo1/calltoaction/callToAction1;2013035"> 
+<img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/buttons/btn-shop-cases-142x40.jpg" alt="Shop Cases"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab3/textimage_1/image.img.gif/1353367389444.gif"><br></div><div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<div style="text-align: center;"><h2><br> 
+Bluetooth®<br> 
+<br> 
+</h2> 
+<p>The perfect travel partner</p> 
+</div> 
+<div style="text-align: center;">&nbsp;</div> 
+<div style="text-align: center;">&nbsp;</div> 
+</div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/bluetooth/Polaroid-zinc-printer-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >POLAROID ZINC GL 10 PRINTER</h4>  
+    <p><p>Print wirelessly from a wide range<br> 
+of smartphones.</p> 
+<p style="text-align: center;"><span class="pricing orange"></span></p> 
+<p style="text-align: center;"><span class="pricing orange">$129.00</span></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6230324.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup/thirdwidth1/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/bluetooth/mono-plantronics-headset-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >MONO HEADSET – PLANTRONICS MARQUE</h4>  
+    <p><p>Communicate hands-free with the<br> 
+voice-controlled headset.</p> 
+<p style="text-align: center;"><span class="pricing orange">$60.00</span></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/bluetooth/sku6060247.html#fbid=fSahcgyRwWY" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup/thirdwidth2/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<p><br> 
+<br> 
+</p> 
+</div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/bluetooth/Microsoft-wedge-mouse-280x210.jpg" alt="View Details"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >MICROSOFT® WEDGE TOUCH MOUSE</h4>  
+    <p><p style="text-align: center;">A compact mouse that fits a<br> 
+mobile lifestyle.</p> 
+<p style="text-align: center;"><span class="pricing orange">$70.00</span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/bluetooth/sku6280703.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup/thirdwidth3/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="optionalfiveup parbase image section"> 
+<div class="row-container five-column" style="background: url('../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/appcessories/img-appcessories-948x435.jpg') no-repeat scroll left top transparent;"> 
+    <h2><br />Accessories</h2> 
+    <h3>Accessories that work with the assistance of an app on your compatible smartphone or tablet</h3> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/appcessories/sku6370236.html#fbid=2Mt1FxTtBMo.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/appcessories/cookoo-watch-160x160.png" alt="COOKOO WATCH" title="COOKOO WATCH<br><br>"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">COOKOO WATCH<br><br></div> 
+        <p>A smartwatch that manages your phone, apps, and networks.</p> 
+        <div class="price orange">$129.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/appcessories/sku6370236.html#fbid=2Mt1FxTtBMo.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6320372.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/appcessories/scosche-driving-system-160x160.png" alt="SCOSCHE SAFE DRIVNG SYSTEM" title="SCOSCHE SAFE DRIVNG SYSTEM"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">SCOSCHE SAFE DRIVNG SYSTEM</div> 
+        <p>Disables phone usage while driving. <br><br></p> 
+        <div class="price orange">$74.25</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6320372.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/health-and-fitness/sku6330295.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/appcessories/fitbit-tracker-160x160.png" alt="FITBIT ONE™ ACTIVITY TRACKER" title="FITBIT ONE™ ACTIVITY TRACKER"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">FITBIT ONE™ ACTIVITY TRACKER</div> 
+        <p>Track your journey from the device to your online account.</p> 
+        <div class="price orange">$99.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/health-and-fitness/sku6330295.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border"> 
+        <br /> 
+    </div> 
+    <div class="device-container-no-border last"> 
+        <br /> 
+    </div> 
+    <br class="clear" /> 
+</div></div> 
+<div class="parbase textimage section"><div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<div style="text-align: center;"><h2><br> 
+Audio<br> 
+</h2> 
+<p><br> 
+Make my heart skip a beat<br> 
+<br> 
+</p> 
+</div> 
+</div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/audio/Beats-Solo-Headphones-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >BEATS™ SOLO™ HD HEADPHONES</h4>  
+    <p><p>Experience HD sound as well as hands-free calling.</p> 
+<p style="text-align: center;"><span class="pricing orange">$200.00</span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/audio/sku6260229.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup_0/thirdwidth1/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/audio/Skullcandy-earbuds-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SKULLCANDY RIFF STEREO EARBUDS</h4>  
+    <p><p>Listen to music without<br> 
+ambient noise.</p> 
+<p style="text-align: center;"><span class="pricing orange">$20.00 </span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/audio/sku6300302.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup_0/thirdwidth2/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/audio/Nokia-Playup-speaker-280x210.jpg" alt=""/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >NOKIA-JBL PLAYUP PORTABLE SPEAKER</h4>  
+    <p><p style="text-align: center;">Enjoy music wherever you go with this wireless stereo speaker.<br> 
+<span class="pricing orange">$149.00</span></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="CallToAction section"> 
+<style type="text/css"> 
+    .textcta {padding-bottom: 15px;} 
+</style> 
+<div style="width:auto;padding:1px;"> 
+	<div class="callToAction1 cta"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/accessories/audio/sku6390254.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/homepagethreeup_0/thirdwidth3/onethird/calltoaction/callToAction1;2013032"> 
+<img src="../../shopcms/media/att/2012/shop/wireless/promotions/BackToSchool/btn-ViewDetails-115x29.jpg" alt="View Details"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="parbase textimage section"><div class="text"><p><br> 
+<br> 
+</p> 
+</div><div class="clear"></div></div> 
+<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab3/textimage_5/image.img.gif/1353696483270.gif"><br></div><div class="clear"></div></div> 
+<div class="text tiletext parbase section"> 
+<p>&nbsp;</p> 
+<div style="text-align: center;"><h2>Specialty<br> 
+</h2> 
+<p><br> 
+A little something extra</p> 
+</div> 
+</div> 
+<div class="optionalfiveup parbase image section"> 
+<div class="row-container five-column" style=""> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/data-memory/sku6300278.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/specialty/Samsung-wifi-adapter-160x160.jpg" alt="SAMSUNG WI-FI ADAPTER" title="SAMSUNG WI-FI ADAPTER"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">SAMSUNG WI-FI ADAPTER</div> 
+        <p>Mirror content directly from your phone or tablet to your HDTV.</p> 
+        <div class="price orange">$99.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/data-memory/sku6300278.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/data-memory/sku6090234.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/specialty/Sandisk-memory-card-160x160.jpg" alt="SANDISK MEMORY CARD" title="SANDISK MEMORY CARD"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">SANDISK MEMORY CARD</div> 
+        <p>Store 16GB of photos, videos, and music on your phone.</p> 
+        <div class="price orange">$39.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/data-memory/sku6090234.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/global-search/search.jsp?App_ID=HOME&amp;GS_Form_Src=true&amp;autoSuggest=FALSE&amp;q=grandoe#!/Shop/Wireless/Accessories/.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/specialty/Grandoe-gloves-160x160.jpg" alt="GRANDOE GLOVES" title="GRANDOE GLOVES"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">GRANDOE GLOVES</div> 
+        <p>Use your phone or tablet while wearing gloves.<br><br></p> 
+        <div class="price orange">$17.00-$43.00</div> 
+        <a href="http://www.att.com/global-search/search.jsp?App_ID=HOME&amp;GS_Form_Src=true&amp;autoSuggest=FALSE&amp;q=grandoe#!/Shop/Wireless/Accessories/.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-with-border"> 
+                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6260270.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/specialty/Joby-Gorillapod-160x160.jpg" alt="JOBY® GORILLAPOD " title="JOBY<sup>®</sup> GORILLAPOD"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">JOBY<sup>®</sup> GORILLAPOD</div> 
+        <p>Tripod mount supports most phones with or without a case.</p> 
+        <div class="price orange">$29.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6260270.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <div class="device-container-no-border last"> 
+                <a href="http://www.att.com/shop/wireless/accessories/bluetooth/sku6280702.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"> 
+            <img src="../../shopcms/media/att/2013/Shop/wireless/promotions/Valentines-Gift-Center-2013/accessories/specialty/Microsoft-keyboard-160x160.jpg" alt="MICROSOFT KEYBOARD" title="MICROSOFT KEYBOARD"/> 
+            </a> 
+        <br /> 
+        <div class="eyebrow">MICROSOFT KEYBOARD</div> 
+        <p>A full-sized, Bluetooth-enabled, and portable keyboard.</p> 
+        <div class="price orange">$80.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/bluetooth/sku6280702.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_0;2013035"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+    </div> 
+    <br class="clear" /> 
+</div></div> 
+<div class="oneup parbase section"> 
+    <div class="legal text parbase"> 
+	<div class="legal"> 
+	   <p><b>Additional information</b></p> 
+<p>‡Offer ends Feb. 14, 2013. While promotional supplies last. Discount will be automatically applied to shopping cart.<br> 
+</p> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="clear"></div></div> 
+</div> 
+                    </div> 
+        </div> 
+ <div class="clear"></div> 
+</div> 
+                </div> 
+                <div class="clear"></div> 
+                  <div class="fullwidthwarrantyinfo">  
+                 <!-- Warranty Info --> 
+                 <div class="parbase warranty reference"></div> 
+                  </div> 
+                <div class="clear"></div> 
+                <div id="linkFarm" class="fiveCol"> 
+                    <div class="parbase lnkfrm teaser"> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm","name":"New_ShopWireless_Default_Linkfarm","campainName":"campaign","id":"campaign_New_ShopWireless_Default_Linkfarm","segments":[],"tags":[]}], "first", "_content_att_shop_en_wireless_giftguide_jcr_content_lnkfrm", "false", null);  }</script> 
+         <div id="_content_att_shop_en_wireless_giftguide_jcr_content_lnkfrm" class="campaign campaign-campaign"> 
+                <div class="page teaserpage"> 
+<div data-teaserId="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content;2012318" style="visibility:hidden;"> 
+	<div class="linkfarmteaser parbase LoBTabs"> 
+		    <div class="parsys lnkfrmteaser"><div id="linkFarm" class="fiveCol section"> 
+                        <div id="linkFarmTopAndMain"> 
+                            <div id="linkFarmTopLinks"> 
+                                <p> 
+                                        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="../index.html" data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm;2012318">Shop</a> 
+                                    &nbsp;&nbsp;|&nbsp;&nbsp;Wireless 
+                                </p> 
+                            </div> 
+                            <div id="fiveColumnFormat"> 
+                                <div class="linkFarmSectionWithImg"> 
+                                    <div class="leftImg"> 
+                                        <div class="linkFarmCol"> 
+                                            <div class="linkFarmSectionWithImg"> 
+                                                <span class="leftImg"> 
+                                                    <img src="../../shopcms/media/att/2011/shop/common/footer-wireless.gif" alt=""/> 
+                                                </span> 
+                                                <div class="titleAndList"> 
+                                                    <h4>PHONES &amp; DEVICES</h4> 
+                                                    <ul> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/0" href="devices/cellphones.html" target="">All Phones</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/1" href="devices/smartphones.html" target="">Smartphones</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/2" href="http://www.att.com/shop/wireless/devices/cellphones.html?sortDeviceBy=lowToHigh" target="">Phones Under $1</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/3" href="http://www.att.com/shop/wireless/devices/apple/iphone.html" target="">iPhone 5</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/4" href="http://www.att.com/shop/wireless/devices/prepaidphones.html" target="">Prepaid GoPhones®</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/5" href="http://www.att.com/shop/wireless/devices/refurbishedphones.html" target="">Refurbished Phones</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/6" href="devices/tablets.html" target="">Tablets</a></li> 
+                                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist1/7" href="http://www.att.com/shop/wireless/packages.html" target="">Packages & Deals</a></li> 
+                                                    </ul> 
+                                                </div> 
+                                            </div> 
+                                        </div>  
+                                    </div> 
+                                </div> 
+                                <div class="linkFarmCol"> 
+                                    <div class="linkFarmSection"> 
+                                        <h4>PLANS &amp; SERVICES</h4> 
+                                        <ul> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/0" href="http://www.att.com/shop/wireless/plans/individualplans.html" target="">Individual Voice Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/1" href="http://www.att.com/shop/wireless/plans/familyplans.html" target="">Family Voice Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/2" href="http://www.att.com/shop/wireless/services/messaginglist.html" target="">Messaging Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/3" href="http://www.att.com/shop/wireless/plans/dataplans.html" target="">Individual Data Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/4" href="data-plans.html#tab2" target="">Shared Data Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/5" href="http://www.att.com/shop/wireless/plans/prepaidplans.html" target="">Prepaid Plans</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/6" href="../../network/index.html" target="">AT&T's Network</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist2/7" href="http://www.att.com/coverageviewer/" target="">Coverage Viewer</a></li> 
+                                        </ul> 
+                                    </div> 
+                                </div> 
+                                <div class="linkFarmCol"> 
+                                    <div class="linkFarmSection"> 
+                                        <h4>MOBILE EXTRAS</h4> 
+                                        <ul> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/0" href="accessories.html" target="">Accessories</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/1" href="../apps.html" target="">Apps & Ringtones</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/2" href="http://www.att.com/att/smartsolutions/" target="">Safety & Security</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/3" href="http://www.att.com/att/smartsolutions/" target="">Family Essentials</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/4" href="http://www.att.com/att/smartsolutions/" target="">Backup & Storage</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/5" href="http://www.att.com/shop/apps/isis-mobile-wallet.html" target="">ISIS Mobile Wallet ™</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist3/6" href="http://www.wireless.att.com/learn/articles-resources/consumer-code.jsp?" target="">CTIA Consumer Code</a></li> 
+                                        </ul> 
+                                    </div> 
+                                </div> 
+                                <div class="linkFarmCol"> 
+                                    <div class="linkFarmSection"> 
+                                        <h4>WIRELESS SUPPORT</h4> 
+                                        <ul> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/0" href="http://www.att.com/esupport/main.jsp?cv=820" target="">Support Home</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/1" href="http://www.att.com/esupport/welcome.jsp" target="">Setup & How-to's</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/2" href="http://www.att.com/learningcenter/" target="">Use my Phone/Device</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/3" href="http://www.att.com/esupport/billAndAccount.jsp" target="">Billing & Account</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/4" href="http://www.att.com/esupport/travelAndIntl.jsp" target="">Travel & International</a></li> 
+                                            <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist4/5" href="http://forums.att.com/t5/AT-T-Wireless-Community/ct-p/attwireless" target="">AT&T Communities</a></li> 
+                                        </ul> 
+                                    </div> 
+                                </div>  
+                                <div class="clear"></div> 
+                            </div> 
+                        </div> 
+                        <div id="linkFarmOther"> 
+                            <div class="linkFarmCol"> 
+                                <div class="linkFarmSection"> 
+                                    <h4>OTHER AT&amp;T OFFERINGS</h4> 
+                                    <ul> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/0" href="../tv/index.html" target="">Digital TV</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/1" href="../internet/index.html" target="">Internet</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/2" href="../bundles.html" target="">Bundles</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/3" href="../home-phone/index.html" target="">Home Phone</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/4" href="http://localization.att.com/loc/controller?prod-snip=support-lp2-BillingAccount" target="">Billing</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/5" href="../special-offers.html" target="">Special Offers</a></li> 
+                                        <li><a data-cqpath="/content/campaigns/att/en/Wireless/link-farm/campaign/New_ShopWireless_Default_Linkfarm/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm/linklist5/6" href="http://www.att.com/esupport/" target="">Support</a></li> 
+                                    </ul> 
+                                </div> 
+                            </div>  
+                        </div> 
+                        <div class="clear"></div></div> 
+</div> 
+			<div class="clear"></div></div> 
+</div></div> 
+         </div><div class="clear"></div> 
+</div> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+		</div> 
+		<div id="fiveColLinkFarm">  
+             <div class="bg-gr-bottom-shadow"></div>  
+        </div> 
+        <!-- Global Legal   
+        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
+			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/wireless/giftguide/jcr:content/legal"> 
+<div class="clear"></div></span></div> 
+		</div>--> 
+		<!-- legal footer --> 
+	</div>	 
+	<!-- Global Footer  --> 
+	<div class="globalfooter"> 
+		<div class="parsys sessionexpire modal"> 
+<div id="sessionExpire" style="display:none;">  
+	<div class="inlineModalHeader" title="SessionExpireModal"> 
+<style type="text/css"> 
+	.fauxH1 { 
+		font-size: 2em; 
+		font-weight: normal; 
+		color: #333333; 
+		line-height:1.7em; 
+		padding: 0 0 0 25px; 
+	} 
+</style>" 
+<div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
+<div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 unauthExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
+<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" class="closeModal authWarn unauthWarn scenarioContent" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire">Close</a> 
+<a href="../wireless.html" class="closeModal unauthExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire">Close</a> 
+<a href="../../accounts/index.html%3Fsource=IC4425j4900s2000.html" class="closeModal authExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire">Close</a> 
+	</div> 
+	<div class="inlineModalContent"> 
+<div style="border-bottom:1px solid #E3E3E3;"> 
+	<div class="authWarn scenarioContent"><p>As a security measure, your session will end in 5 minutes.<br /><br />If you need more time, select Continue to extend your session.</p></div> 
+	<div class="unauthWarn scenarioContent"><p>As a security measure, your session will end in 5 minutes.<br /><br />If you need more time, select Save Cart to return at a later time or select Continue to extend your session.</p></div> 
+	<div class="authExpire scenarioContent"><p>Your myAT&T session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to login to myAT&T.</p></div> 
+	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
+</div>  
+<div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire"><img src="http://3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+</div> 
+<div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+</div> 
+<div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a href="../wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+</div> 
+<div class="clear"></div> 
+	</div> 
+</div></div> 
+		<!-- FOOTER --> 
+				<div id="footer"> 
+					<div class="padding"> 
+                        <div id="attonweb"> 
+                            <div class="attOnWeb"> 
+									AT&amp;T on the Web 
+								</div> 
+                            <div class="attCom" style=""><a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">att.com</a><br/> 
+									Shop, Service, Support. 
+								</div> 
+                            <div class="attNet" style=""><a href="../../../www.att.net/index.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">att.net</a><br/> 
+									E-mail - News - Weather &amp; More 
+								</div>                             
+                        </div> 
+                    </div>					 
+					<div class="copyright constrained"> 
+                        <div class="bottomLinks"> 
+												<a href="../../privacy/index.html" style="padding-left:0px;" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Privacy Policy</a> 
+												 | 
+												<a href="../../../www.att.jobs/index.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Careers</a> 
+												 | 
+													<a href="../../econtactus/index.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Contact Us</a> 
+													 | 
+												<a href="../../gen/general%3Fpid=11561.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Terms of Use</a> 
+												 | 
+												<a href="../../sitemap/index.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Site Map</a> 
+												 | 
+												<a href="../../gen/general%3Fpid=10190.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Accessibility </a> 
+												 | 
+												<a href="../../gen/public-affairs%3Fpid=20107.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Wireless Emergency Alerts</a> 
+												 | 
+												<a href="../../internal/adchoices.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Advertising Choices</a> 
+												 | 
+												<a href="../../internal/broadbandinfo.html" style="" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">Broadband Information</a> 
+								</div> 
+								<a href="../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter">&copy;2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+						</div> 
+					<div class="logoBlock"> 
+								<a target="_blank" href="../../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../www.bbb.org/online/consumer/cks.aspx%3Fid=110020911221.html" class="logoLink bbb" title="Click to verify BBB accreditation and to see a BBB report." data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../clicktoverify.truste.com/pvr.php%3Fpage=validate&amp;companyName=AT%2526T&amp;sealid=101.html" class="logoLink truste" title="This site is certified by TRUSTe" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../www.yellowpages.com/index.html" class="logoLink yellowpages" title="YELLOWPAGES.COM" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../www.realpageslive.com/index.html" class="logoLink realpages" title="Digital White and Yellow Pages" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../www.att.net/teamusa.html" class="logoLink olympics" title="USA Proud Sponsor of the U.S. Olympic Team" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+					</div> 
+				</div> 
+		<!-- WebTrends Base Tag : include only at end of page --> 
+		<!-- Webtrend global params --> 
+		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
+		 <!--X-Renderer: 45807733277201226010609402114033448848 --> 
+		<!-- /FOOTER -->  
+		</div> 
+	<!-- Page Level JS files --> 
+	    <script type="text/javascript">  
+        jQuery(document).ready(function() { 
+            var pathname = window.location.pathname; 
+            if( pathname.indexOf("upgrade-advantage.html") > -1 ){ 
+                jQuery("div.marquee.tile.base").css('height','525px'); 
+                jQuery('div.row-seamless').each(function(){ 
+                    if (jQuery.trim(jQuery(this).text()) == '') { 
+                        jQuery(this).hide(); 
+                    } 
+                });                 
+            }  
+        });  
+    </script>  
+    <script src="../../media/cms/shop/scripts/wirelessCarousels.js" type="text/javascript"></script> 
+	<!-- Webtrend global --> 
+<script> 
+//<![CDATA[ 
+	ATT.globalVars.wtCartState =  'E';  
+ATT.globalVars.statuscode = ""; 
+ATT.globalVars.custType = ""; 
+ATT.globalVars.ban = ""; 
+ATT.globalVars.flowIndicator = ""; 
+ATT.globalVars.buyflow = "NEW"; 
+ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.zip = function (){ 
+	var wtzip; 
+	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
+		wtzip = ATT.globalVars.cartContents.userZip; 
+	} else if (ATT.util.attPLCookie()) { 
+		wtzip = (document.cookie.match(/attPersistantLocalization.*zip=(\d{5})/)||[])[1]; 
+	} else if (ATT.globalVars.ckavailUserZip)	{ 
+	   wtzip = ATT.globalVars.ckavailUserZip; 
+	} 
+	else { 
+		wtzip =""; 
+	} 
+	return wtzip; 
+}; 
+ATT.globalVars.buyflowCheck = function () { 
+	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
+		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
+	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
+		flowType = ATT.globalVars.cartContents.flowIndicator; 
+	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
+		flowType = ATT.globalVars.cartContents.buyFlowType; 
+	} else { 
+		flowType ="NEW"; 
+	} 
+	return flowType; 
+ }; 
+ATT.globalVars.wtFull = function(){ 
+	var urival = location.pathname.split('/'), href = location.href, wtsku, $ = jQuery,   
+    	regnolist = /\/login\.html|\/bundles\.html|\/wireless\.html|\/internet\.html|\/availability\.html|\/cellphone|\/tablets|\/mobilebroadband|\/packageslist|\/individualplans|\/familyplans|\/prepaidplans|\/dataplans|\/serviceslist|\/cartsummary|\/accessorieslist|\/checkout\//, 
+       teaserid = function () { 
+                var $r = jQuery("div[data-teaserid]"), teaser =[], 
+                	i = $r.length, href = location.href,temp, 
+                	prodid, urlpart1, urlpart2, fullurl, fullpath; 
+                while(i--){ 
+                    teaser[i] = $($r[i]).data('teaserid');// jQuery($r[i]).data('cqpath'); 
+                } 
+                ATT.log("teaser length:" + teaser.length); 
+             teaser = teaser.join('|'); 
+             ATT.log(teaser); 
+             return (teaser || ''); 
+        }; 
+        $('<meta/>', {name: 'DCSext.wtCQDynId', content: teaserid()}).appendTo('head'); 
+        ATT.log('regex block'); 
+        if(~href.indexOf('/accessorieslist') && ~href.indexOf('.prod')){ 
+        	temp = location.pathname.split('/').slice(-1).join('').split('.'); 
+        	prodid = temp[1]; 
+        	urlpart1 = temp[0]; 
+        	fullurl = urlpart1+'.html'; 
+        	fullpath = location.pathname.split('/').slice(0,-1).join('/')+'/' + fullurl; 
+        	$('<meta/>', {name: 'DCS.dcsuri', content:fullpath}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtFullUri', content:location.href}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtProdId', content:prodid}).appendTo('head'); 
+        } 
+        if ($('meta[name*=detailPage]').length){ 
+        	if($('meta[name*=detailPage]').attr('content') === 'package' || $('meta[name*=detailPage]').attr('content') === 'service'){ 
+        		$('<meta/>', {name: 'DCS.dcsuri', content:urival.slice(0,-1).join('/')}).appendTo('head'); 
+        	}else{ 
+            	$('<meta/>', {name: 'DCS.dcsuri', content:urival.slice(0,-2).join('/')}).appendTo('head'); 
+        	} 
+            $('<meta/>', {name: 'DCSext.wtFullUri', content:location.pathname}).appendTo('head'); 
+            $('<meta/>', {name: 'DCSext.wtSku', content:jQuery("div[data-sku]").data('sku')? jQuery("div[data-sku]").data('sku') : ""}).appendTo('head'); 
+        } 
+}; 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+	// reporting.appname = 'shop'; 
+	if ('') { 
+		reporting.errors.push(''); 
+	} else if(''){ 
+		reporting.errors.push('');	 
+	}else{ 
+		reporting.errors.push(''); 
+	} 
+	reporting.capture([ 
+	    {selector:'head', type:'wtmeta', name:'wtCustType', value:"Consumer"},               
+	    {selector:'head', type:'wtmeta', name:'wtBuyFlowCode', value: function () { 
+	    	var flowCodeck = ATT.globalVars.buyflowCheck() ? ATT.globalVars.buyflowCheck() :  
+	    				     window.localStorage ?  window.localStorage.getItem('buyflowCode') : ''; 
+	    	ATT.globalVars.flowcode = ["HR", flowCodeck,"~W", flowCodeck,"~U","~H", 
+	    	                           "~I","~D","~BW"].join(''); 
+	    	return ATT.globalVars.flowcode; 
+	    }},                
+	    {selector:'head', type:'wtmeta', name:'wtZipCode', value: function () { 
+	    	return ATT.globalVars.zip(); 
+	    }},  
+	    {selector:'head', type:'wtmeta', name:'wtCity', value: function () { 
+	    	var wtCity; 
+	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
+	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
+	    	} else { 
+	    		wtCity = ""; 
+	    	} 
+	    	return wtCity; 
+	    }}, 
+	    {selector:'head', type:'wtmeta', name:'wtState', value: function () { 
+	    	var wtState; 
+	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
+	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
+	    	} else { 
+	    		wtState = ""; 
+	    	} 
+	    	return wtState; 
+	    }}	    
+	]); 
+	reporting.tag.perform('inline'); 
+}); 
+//]]> 
+</script> 
+<script> 
+//<![CDATA[ 
+if (window.webTrendTag_unprototype) webTrendTag_unprototype(); 
+//]]> 
+</script> 
+<script> 
+//<![CDATA[ 
+	ATT.namespace("DCSSignals"); 
+	ATT.DCSSignals = (function(){ 
+		var dfd = new jQuery.Deferred(); 
+		setTimeout(function(){ dfd.resolve(); }, 15000); 
+		return { 
+			"dcs_ready_promise" : dfd.promise(), 
+			"resolveDCSFuncs" : dfd.resolve 
+		}; 
+	}()); 
+    // Use any event to append the code 
+    jQuery(document).ready(function(){ 
+        jQuery.when(reporting_ready).then(function() { 
+        	setTimeout(function () { 
+	        	ATT.globalVars.wtFull(); 
+	        	ATT.checkPromo(); 
+	            ATT.log('dcs injection block'); 
+	            var s = document.createElement("script"); 
+	            s.type = "text/javascript"; 
+	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
+	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+	            // Use any selector 
+	            jQuery("head")[0].appendChild(s); 
+				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+				if (window.JSAM) 
+				JSAM.Stat.reportReady(); 
+        	}, 3000);     
+        }); 
+    }); 
+  //]]> 
+</script> 
+<script src="http://www.att.com/media/cms/shop/scripts/ATT.cqWebtrend.js" type="text/javascript"></script> 
+	<!-- C2C --> 
+	<div class="parbase chat"> 
+<script> 
+//<![CDATA[ 
+//minimal set of configuration setting to set up connection to liveperson server  
+var lpMTagConfig = lpMTagConfig || {}; 
+	lpMTagConfig.vars = lpMTagConfig.vars || []; 
+    ATT.globalVars.custName = ["",""].join(' '); 
+    ATT.globalVars.customerItemsOwned = ATT.util.filter(['','','',''], function(n){return n;}).join('|'); 
+lpMTagConfig.lpServer = "sales.liveperson.net"; 
+lpMTagConfig.lpTagSrv = lpMTagConfig.lpServer; 
+lpMTagConfig.lpNumber = "26709415";	 
+if(~location.href.indexOf('/international')){ 
+	lpMTagConfig.deploymentID = "international"; 
+	jQuery('#lpButtonDiv-2').css('top', '20px'); 
+}else{ 
+	lpMTagConfig.deploymentID = "att"; 
+} 
+if(~location.href.indexOf('/u-verse')){ 
+	lpMTagConfig.vars.push(["page","unit","uverse-residential"]); 
+}else if(~location.href.indexOf('/wireless.html')){ 
+	lpMTagConfig.vars.push(["page","unit","wireless"]); 
+}else if(~location.href.indexOf('/special-offers')){ 
+	lpMTagConfig.vars.push(["page","unit","att"]); 
+}else if(~location.href.indexOf('/international')){ 
+	lpMTagConfig.vars.push(["page","unit","international"]); 
+}else{ 
+	lpMTagConfig.vars.push(["page","unit","supern22"]); 
+} 
+lpMTagConfig.vars.push(["session","language","english"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","hTPpRRLYsCngp07XG4D5GsqM!1229320442!1360120760457"]); 
+lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
+lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
+lpMTagConfig.vars.push(["visitor","customerZip",""]); 
+lpMTagConfig.vars.push(["visitor","customerCity",""]); 
+lpMTagConfig.vars.push(["visitor","customerState",""]); 
+lpMTagConfig.vars.push(["visitor","customerAccountInfo", '']); 
+lpMTagConfig.vars.push(["visitor","customerItemsOwned", ATT.globalVars.customerItemsOwned]); 
+lpMTagConfig.vars.push(["visitor","customerQualification",""]); 
+lpMTagConfig.vars.push(["page","applicationName","shop"]); 
+lpMTagConfig.vars.push(["page","departmentName",""]); 
+lpMTagConfig.vars.push(["visitor","customerLocalization",ATT.globalVars.zip()]); 
+lpMTagConfig.vars.push(["session","clickAction",""]); 
+lpMTagConfig.vars.push(["page","errorName",""]); 
+if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){ 
+	lpMTagConfig.vars.push(["page","ChatEligibility","On"]); 
+}else{ 
+	lpMTagConfig.vars.push(["page","ChatEligibility","Off"]); 
+} 
+//]]> 
+</script> 
+    <script src="http://www.att.com/media/cms/shop/scripts/ATT.c2c.js" type="text/javascript"></script> 
+    <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/mtagconfig.js"></script> 
+</div> 
+	<!-- atlastag -->	 
+<script> 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+    reporting.capture([ 
+       // {selector: '#submitButtonField .enabledButton', type: 'wtsubmit', name: 'HRock_Check_Avail_Submit', params: 'wtUserResp'}, 
+       // {selector: 'head:page(internet)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+        {selector: 'head:page(freewifidevice.html)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+		//{selector: 'a[href*=/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.html]', type: 'wtparam', name: 'dcsuri', value: '/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.htm'} 
+    ]); 
+}); 
+</script> 
+	<!-- OPTIMOST --> 
+</body> 
+</html> 

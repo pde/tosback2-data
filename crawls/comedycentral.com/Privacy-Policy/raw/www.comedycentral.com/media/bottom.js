@@ -9436,7 +9436,7 @@ $(function () {
 $(function() {
 	if ($(".module.video_showcase").length) {
 		
-		$Crabapple('select[name=seasons]').selectboxx({
+		$Crabapple("select[name=seasons]").selectboxx({
 			init:function(){},
 			onChange: function (val, inst) {
 				var seasonId = val;
@@ -9456,7 +9456,21 @@ $(function() {
 				$(".module.video_showcase .pagination_wrap ul li:first a").trigger("click");
 			}
 		});
+		$(".video_showcase .sorting span").live('click',function(){
+			if($(this).hasClass("active")) {
+				return false;
+			}
+			
+			var sortBy = $(this).data("sort"),
+				$paginationContainer = $(".module.video_showcase .pagination_wrap"),
+				$currentPageLink = $paginationContainer.find(".current"),
+				sortingHref = $currentPageLink.attr("href") +'&sortBy=' + sortBy;
+
+			$(this).addClass("active").siblings().removeClass("active");
+			$currentPageLink.attr("href", sortingHref).click();
+		});
 	}
+
 });
 /* visible_header.js */
 $(function () {

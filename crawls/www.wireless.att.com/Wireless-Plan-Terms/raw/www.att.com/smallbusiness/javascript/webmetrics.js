@@ -56,6 +56,18 @@ WebMetrics = {
 		});
 		
 		return rv.replace(/ /g,'');
+	},
+	
+	getPageName: function() {
+		var rv="";
+		var mName="";
+		$("meta").each(function(){
+			mName = $(this).attr('name');
+			if(mName == 'DCSext.wtPN') {
+				rv = $(this).attr("content");
+			}
+		});
+		return rv;
 	}
 }
 

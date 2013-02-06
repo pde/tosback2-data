@@ -313,7 +313,31 @@
         
         
         
-        /*DARIO*/
+        /***** HELPER FUNCTIONS3 ****/
+url = document.location.href;
+url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
+url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
+alias = url.substring(url.lastIndexOf("/") + 1, url.length);
+domain = url.split(/\/+/g)[1]; 
+
+/***** CUSTOM TRACKING ***/
+if(domain=="free.avg.com"){
+s.eVar1 = "fs_"+alias;
+}else{s.eVar1="ws_"+alias;}
+
+
+if(s.pageName){
+
+/***** remove parameters from URL begin ******/
+                       
+if (document.location.href.indexOf('?') >= 0) s.pageName=document.location.href.substring(0,document.location.href.indexOf('?'));
+                                                                                                  
+if (document.location.href.indexOf('#') >= 0) s.pageName=document.location.href.substring(0,document.location.href.indexOf('#'));                                                 
+                      
+/***** remove parameters from URL end ******/        
+
+}
+
 s.usePlugins=true; //do not modify
 
 /**Note: add your custom JS plugins inside the s_doPlugins function below**/
@@ -344,6 +368,7 @@ if(b)
 s.wd[v] = ""; // Blank out the global variable for ajax requests
 return r;
 }
+s.tnt=s.trackTNT();
 /*********************** Test&Target Plugin End *************************/
 
 /*

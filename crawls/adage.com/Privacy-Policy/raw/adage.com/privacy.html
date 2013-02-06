@@ -15,7 +15,7 @@
 <link rel="search" type="application/opensearchdescription+xml" href="http://adage.com/xml/AdAge_OpenSearch.php" title="Advertising Age" />
 
 <link href="https://plus.google.com/101792368055128831913/" rel="publisher" />
-<link href="css/style.css%3F1358970404.css" media="all" rel="stylesheet" type="text/css" /><link href="css/1140.css%3F1358970404.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="css/style.css%3F1360086979.css" media="all" rel="stylesheet" type="text/css" /><link href="css/1140.css%3F1358970404.css" media="screen" rel="stylesheet" type="text/css" />
 
 <!--[if lt IE 9]>
 <link href="http://adage.com/css/ie.css?1356963860" media="all" rel="stylesheet" type="text/css" />
@@ -55,7 +55,7 @@
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = '';
+OAS_listpos = ',x32';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -149,7 +149,7 @@ function OAS_AD(pos) {
 	<ul class="sf-menu">
 		<li><a href="http://adage.com/index.php">Home</a></li><li><a href="http://adage.com/current-issue">This Week's Issue</a><ul>
 	<li class="home_menu">
-		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1359371369" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
+		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1359949783" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
 	</li>
 </ul>
 </li><li><a href="http://adage.com/article/news/ad-age-s-mobile-app-iphone-android-blackberry-wp7/228530/">Mobile App</a></li><li><a href="http://www.adage.com/ipad">iPad App</a></li>
@@ -203,7 +203,7 @@ menu item
 --><li>
 	<a href="http://adage.com/channel/media/1" class="bottom_menu">Media</a>
 	<ul>
-	<li><a href="http://adage.com/channel/media/1">Latest News</a></li>						<li><a href="http://adage.com/article/special-report-super-bowl/buying-super-bowl-2013/238489/">Super Bowl Ad Chart</a></li>						<li><a href="http://adage.com/special-reports/superbowl/148">Complete Super Bowl Coverage</a></li>						<li><a href="http://adage.com/section/the-media-guy/269">The Media Guy</a></li>						<li><a href="http://adage.com/section/trending-topics/732">Social TV and Trending Topics</a></li>						<li><a href="http://adage.com/section/tuning-in/779">Tuning in</a></li>						
+	<li><a href="http://adage.com/channel/media/1">Latest News</a></li>						<li><a href="http://adage.com/article/special-report-super-bowl/search-2013-super-bowl-spots-place/239485/">All the Super Bowl Ads in One Place</a></li>						<li><a href="http://adage.com/special-reports/superbowl/148">Complete Super Bowl Coverage</a></li>						<li><a href="http://adage.com/section/the-media-guy/269">The Media Guy</a></li>						<li><a href="http://adage.com/section/trending-topics/732">Social TV and Trending Topics</a></li>						<li><a href="http://adage.com/section/tuning-in/779">Tuning in</a></li>						
 </ul>
 
 </li>
@@ -290,6 +290,84 @@ menu item
 
 
 		
+<script type="text/javascript">
+Interstitial = {
+	parentId:'home',
+	id:'interstitial',
+	ad_id:'interstitial-ad',
+	timer:null,
+
+	setOpacity:function(id, opacity) {
+    	el=document.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+
+				if(end == i) {
+					setTimeout("Interstitial.destroy()", time);
+				}
+			}
+			clearTimeout(this.timer);
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+			clearTimeout(this.timer);
+		}
+	},
+
+	hide:function() {
+		if(document.getElementById(this.id)) {
+			// this.fade(this.id, 100, 0, 300);
+			this.destroy();
+		}
+	},
+
+	destroy:function() {
+		var hpto = document.getElementById(this.id);
+		hpto.removeChild(document.getElementById(this.ad_id));
+		hpto.style.visibility='hidden';
+		hpto.style.display='none';
+	}
+}
+
+Interstitial.timer = setTimeout('Interstitial.hide()', 9*1000);
+
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
+
+<div id="interstitial">
+	<div id="interstitial-head">
+		<div id="interstitial-logo">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
+		</div>
+		<div id="interstitial-skip">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
+		</div>
+	</div>
+
+	<div id="interstitial-ad">
+		<!-- OAS Interstitial AD POSITION -->
+		<script language="JavaScript">
+			OAS_AD('x32');
+		</script>
+	</div>
+</div>
+
 	</div>
 </div>
 
@@ -436,23 +514,23 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
     <div class="rss_col">
 	<div class="logo_auto"></div>
     <ul><li>
-<a href="http://www.autonews.com/article/20130201/BLOG06/130209995/lincolns-super-bowl-sign-of-the-alpacalypse" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Lincoln\&#039;s Super Bowl sign of the \&#039;alpacalypse\&#039;', 'http://www.autonews.com/article/20130201/BLOG06/130209995/lincolns-super-bowl-sign-of-the-alpacalypse']);" target="_new">
-Lincoln's Super Bowl sign of the 'alpacalypse'
+<a href="http://www.autonews.com/article/20130205/RETAIL03/130209946/chrysler-takes-patriotic-road-with-popular-super-bowl-ads" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Chrysler takes patriotic road with popular Super Bowl ads', 'http://www.autonews.com/article/20130205/RETAIL03/130209946/chrysler-takes-patriotic-road-with-popular-super-bowl-ads']);" target="_new">
+Chrysler takes patriotic road with popular Super Bowl ads
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20130201/OEM01/130209990/ford-adds-lincoln-mkz-inspectors-to-speed-launch" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ford adds Lincoln MKZ inspectors to speed launch', 'http://www.autonews.com/article/20130201/OEM01/130209990/ford-adds-lincoln-mkz-inspectors-to-speed-launch']);" target="_new">
-Ford adds Lincoln MKZ inspectors to speed launch
+<a href="http://www.autonews.com/article/20130205/RETAIL03/130209936/chevy-ss-to-debut-in-daytona-on-feb-16" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Chevy SS to debut in Daytona on Feb. 16', 'http://www.autonews.com/article/20130205/RETAIL03/130209936/chevy-ss-to-debut-in-daytona-on-feb-16']);" target="_new">
+Chevy SS to debut in Daytona on Feb. 16
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20130201/RETAIL03/302019814/toyota-tops-car-brands-in-u-s-consumer-perception-survey-says" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Toyota tops car brands in U.S. consumer perception, survey says', 'http://www.autonews.com/article/20130201/RETAIL03/302019814/toyota-tops-car-brands-in-u-s-consumer-perception-survey-says']);" target="_new">
-Toyota tops car brands in U.S. consumer perception, survey says
+<a href="http://www.autonews.com/article/20130205/OEM06/302059850/ford-gm-turbo-engine-benefits-overstated-consumers-reports-says" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ford, GM turbo engine benefits overstated, Consumers Reports says', 'http://www.autonews.com/article/20130205/OEM06/302059850/ford-gm-turbo-engine-benefits-overstated-consumers-reports-says']);" target="_new">
+Ford, GM turbo engine benefits overstated, Consumers Reports says
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20130131/RETAIL03/130139957/automakers-super-bowl-spots-rule-youtube" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Automakers\&#039; Super Bowl spots rule YouTube', 'http://www.autonews.com/article/20130131/RETAIL03/130139957/automakers-super-bowl-spots-rule-youtube']);" target="_new">
-Automakers' Super Bowl spots rule YouTube
+<a href="http://www.autonews.com/article/20130204/BLOG06/130209951/how-twitter-verse-viewed-the-auto-industry-s-super-bowl-spots" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'How Twitter-verse viewed the auto industry\&#039;s Super Bowl spots', 'http://www.autonews.com/article/20130204/BLOG06/130209951/how-twitter-verse-viewed-the-auto-industry-s-super-bowl-spots']);" target="_new">
+How Twitter-verse viewed the auto industry's Super Bowl spots
 </a>
 </li>
   <ul>
@@ -461,6 +539,16 @@ Automakers' Super Bowl spots rule YouTube
     <div class="rss_col">
 	<div class="logo_b2b"></div>
     <ul><li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130205/ADVERTISING01/302049993/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'GoDaddy.com combines \&#039;sexy\&#039; with \&#039;smart\&#039; to showcase technology in Super Bowl spots', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130205/ADVERTISING01/302049993/1429/rss998&rssfeed=rss998']);" target="_new">
+GoDaddy.com combines 'sexy' with 'smart' to showcase technology in Super Bowl spots
+</a>
+</li>
+<li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130204/STRATEGY02/301319990/1687/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'IBM\&#039;s John Kennedy focuses on more interconnected, intelligent world', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130204/STRATEGY02/301319990/1687/rss998&rssfeed=rss998']);" target="_new">
+IBM's John Kennedy focuses on more interconnected, intelligent world
+</a>
+</li>
+<li>
 <a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130131/EMAIL/301319998/1085/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Tips on choosing the right ESP', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130131/EMAIL/301319998/1085/rss998&rssfeed=rss998']);" target="_new">
 Tips on choosing the right ESP
 </a>
@@ -470,34 +558,29 @@ Tips on choosing the right ESP
 What should marketers consider when deciding between HTML, text emails?
 </a>
 </li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130129/ADVERTISING01/301259993/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Web miniseries brings Serena\&#039;s software to the C-suite', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130129/ADVERTISING01/301259993/1429/rss998&rssfeed=rss998']);" target="_new">
-Web miniseries brings Serena's software to the C-suite
-</a>
-</li>
   <ul>
   </div>
   <!-- close rss column -->
     <div class="rss_col">
 	<div class="logo_cnn"></div>
     <ul><li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/WcrInuzRctI/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Dutch bank rescue shows Europe\&#039;s problems continue', 'http://rss.cnn.com/~r/rss/money_latest/~3/WcrInuzRctI/index.html']);" target="_new">
-Dutch bank rescue shows Europe's problems continue
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/W2-eewTNtCE/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Eco-friendly iPad cases start to pay off', 'http://rss.cnn.com/~r/rss/money_latest/~3/W2-eewTNtCE/index.html']);" target="_new">
+Eco-friendly iPad cases start to pay off
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/Ek3W4Sbfoik/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Auto makers post strong sales in January', 'http://rss.cnn.com/~r/rss/money_latest/~3/Ek3W4Sbfoik/index.html']);" target="_new">
-Auto makers post strong sales in January
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/OMX982Ue_bM/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Debt collection horror stories', 'http://rss.cnn.com/~r/rss/money_latest/~3/OMX982Ue_bM/index.html']);" target="_new">
+Debt collection horror stories
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/jrksyXm7R5k/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Google stock hits all-time high', 'http://rss.cnn.com/~r/rss/money_latest/~3/jrksyXm7R5k/index.html']);" target="_new">
-Google stock hits all-time high
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/YyOgD3DCjwE/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks: Earnings continue to draw focus', 'http://rss.cnn.com/~r/rss/money_latest/~3/YyOgD3DCjwE/index.html']);" target="_new">
+Stocks: Earnings continue to draw focus
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/aiOxIoRscrY/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Construction jobs are difficult to fill', 'http://rss.cnn.com/~r/rss/money_latest/~3/aiOxIoRscrY/index.html']);" target="_new">
-Construction jobs are difficult to fill
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/Pbi55X4JHyQ/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'RBS braces for hefty Libor penalties', 'http://rss.cnn.com/~r/rss/money_latest/~3/Pbi55X4JHyQ/index.html']);" target="_new">
+RBS braces for hefty Libor penalties
 </a>
 </li>
   <ul>
@@ -506,23 +589,23 @@ Construction jobs are difficult to fill
     <div class="rss_col">
 	<div class="logo_crain"></div>
     <ul><li>
+<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/T2PbedLX0H0/" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Greg David on NY: More on NY tech hype', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/T2PbedLX0H0/']);" target="_new">
+Greg David on NY: More on NY tech hype
+</a>
+</li>
+<li>
+<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/aGLTPd1u2M4/130209969" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Sirius 4Q earnings more than double', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/aGLTPd1u2M4/130209969']);" target="_new">
+Sirius 4Q earnings more than double
+</a>
+</li>
+<li>
+<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/9s64OGWNNQU/130209977" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Ravens\&#039; Super Bowl win sets likely ratings record', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/9s64OGWNNQU/130209977']);" target="_new">
+Ravens' Super Bowl win sets likely ratings record
+</a>
+</li>
+<li>
 <a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/W_fZH_vyaDo/130209985" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'NBC News President Steve Capus will step down', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/W_fZH_vyaDo/130209985']);" target="_new">
 NBC News President Steve Capus will step down
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/f89_WpCbCQM/130139971" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Consumers fall out of love with Valentines', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/f89_WpCbCQM/130139971']);" target="_new">
-Consumers fall out of love with Valentines
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/wj39ayNu1PU/130139978" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Viacom adjusted profit falls in fiscal 1Q', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/wj39ayNu1PU/130139978']);" target="_new">
-Viacom adjusted profit falls in fiscal 1Q
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/v9JO0unxzZM/130139990" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Time Inc. cuts some 500 jobs', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/v9JO0unxzZM/130139990']);" target="_new">
-Time Inc. cuts some 500 jobs
 </a>
 </li>
   <ul>
@@ -531,23 +614,23 @@ Time Inc. cuts some 500 jobs
     <div class="rss_col">
 	<div class="logo_msn"></div>
     <ul><li>
-<a href="http://www.nbcnews.com/business/dow-closes-above-14-000-first-time-2007-1B8216322" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Dow closes above 14,000 for first time since 2007', 'http://www.nbcnews.com/business/dow-closes-above-14-000-first-time-2007-1B8216322']);" target="_new">
-Dow closes above 14,000 for first time since 2007
+<a href="http://www.nbcnews.com/business/economywatch/america-wasting-billions-sitting-soul-crushing-traffic-1B8251555" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Americans are wasting billions sitting in traffic', 'http://www.nbcnews.com/business/economywatch/america-wasting-billions-sitting-soul-crushing-traffic-1B8251555']);" target="_new">
+Americans are wasting billions sitting in traffic
 </a>
 </li>
 <li>
-<a href="http://lifeinc.today.com/_news/2013/02/01/16804921-bar-refaelis-super-bowl-ad-kiss-too-steamy-for-tv?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Is this Super Bowl ad kiss too steamy for TV?', 'http://lifeinc.today.com/_news/2013/02/01/16804921-bar-refaelis-super-bowl-ad-kiss-too-steamy-for-tv?lite']);" target="_new">
-Is this Super Bowl ad kiss too steamy for TV?
+<a href="http://lifeinc.today.com/_news/2013/02/05/16839876-happy-birthday-modern-tax-system-100-toasts-and-roasts?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Happy birthday, modern tax system: 100 toasts and roasts', 'http://lifeinc.today.com/_news/2013/02/05/16839876-happy-birthday-modern-tax-system-100-toasts-and-roasts?lite']);" target="_new">
+Happy birthday, modern tax system: 100 toasts and roasts
 </a>
 </li>
 <li>
-<a href="http://lifeinc.today.com/_news/2013/02/01/16759028-touchdown-10-man-caves-perfect-for-watching-the-super-bowl" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', '10 man caves for watching the Super Bowl', 'http://lifeinc.today.com/_news/2013/02/01/16759028-touchdown-10-man-caves-perfect-for-watching-the-super-bowl']);" target="_new">
-10 man caves for watching the Super Bowl
+<a href="http://www.nbcnews.com/business/sexist-business-logo-lands-florida-hot-water-1B8255394" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Florida on&lsquo;sexist&rsquo; logo: &lsquo;It&rsquo;s just a cartoon&rsquo;', 'http://www.nbcnews.com/business/sexist-business-logo-lands-florida-hot-water-1B8255394']);" target="_new">
+Florida on‘sexist’ logo: ‘It’s just a cartoon’
 </a>
 </li>
 <li>
-<a href="http://lifeinc.today.com/_news/2013/02/01/16744067-taste-test-budget-beers-for-the-super-bowl?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Best budget beers for the Super Bowl', 'http://lifeinc.today.com/_news/2013/02/01/16744067-taste-test-budget-beers-for-the-super-bowl?lite']);" target="_new">
-Best budget beers for the Super Bowl
+<a href="http://www.nbcnews.com/business/pc-giant-dell-24-4-billion-deal-go-private-1B8246436" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'PC giant Dell in $24.4 billion deal to go private', 'http://www.nbcnews.com/business/pc-giant-dell-24-4-billion-deal-go-private-1B8246436']);" target="_new">
+PC giant Dell in $24.4 billion deal to go private
 </a>
 </li>
   <ul>
@@ -617,7 +700,7 @@ Best budget beers for the Super Bowl
 		<a href="http://www.crain.com/">Crain Communications</a> | <a href="privacy.html">Privacy Statement</a> | <a href="http://adage.com/terms/">Terms of Use</a> | <a href="http://adage.com/help/faq#contactus">Contact Us</a>
 	</div>
 </div>
-<!-- Total time: 2.21537685394 -->
+<!-- Total time: 0.205685138702 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->

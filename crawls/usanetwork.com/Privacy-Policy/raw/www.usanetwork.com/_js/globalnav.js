@@ -694,18 +694,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "THE GAME PLAN",
-							"subtitle" : "SATURDAY FEBRUARY 2 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gameplan.png"
-						},
-						{
-							"title" : "THE BREAK-UP",
-							"subtitle" : "SUNDAY FEBRUARY 3 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thebreakup.png"
-						},
-						{
 							"title" : "COUPLES RETREAT",
 							"subtitle" : "SATURDAY FEBRUARY 9 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -716,6 +704,18 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY FEBRUARY 10 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_itscomplicated.png"
+						},
+						{
+							"title" : "THE BACK-UP PLAN",
+							"subtitle" : "SATURDAY FEBRUARY 9 6/5C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
+						},
+						{
+							"title" : "OCEAN’S THIRTEEN",
+							"subtitle" : "SUNDAY FEBRUARY 17 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_oceansthirteen.png"
 						}
 					]
 				}

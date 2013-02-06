@@ -40,8 +40,8 @@ $(function() {
     function setActiveMenuItems(path, highlight_subnav_link) {
         var menu_active = {'/download': '#download-nav-link',
                         '/instructions': '#download-nav-link',
+                        '/pricing': '#pricing-nav-link',
                         '/how-it-works': '#learn-nav-link',
-                        '/pricing': '#learn-nav-link',
                         '/developers': '#learn-nav-link',
                         '/about': '#about-nav-link',
                         '/careers': '#about-nav-link',
@@ -137,6 +137,10 @@ $(function() {
         } else if (platform == 'Android') {
             var platformMessage = platform;
             var downloadLink = '/download/' + platformLower;;
+        } else if (platform == 'iOS') {
+            var platformMessage = platform + ' coming soon';
+            var downloadLink = 'https://itunes.apple.com/us/app/Bitcasa/id588282093?mt=8';
+            var overlayDownloadLink = '/download/';
         } else {
             var platformMessage = platform + ' coming soon';
             var downloadLink = '#';
@@ -152,14 +156,14 @@ $(function() {
         }
         $('.download-button').attr('onClick', "_gaq.push(['_trackEvent', 'Download', '" + platform + "', '" + titleCasePath + "']);");
         if (platform == 'Mac') {
-            $('.download-button').text('New Mac App Coming Soon');
-            $('.download-button').attr('href', '#');
-            $('.download-button').after('<div style="margin-top: 10px;">In the meantime, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Mac Legacy\', \'Download\']);" href="/download/mac">download the legacy Mac client</a></div>');
+            $('.download-button').text('Download');
+            $('.download-button').attr('href', '/download/mac');
+            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Mac Legacy\', \'Download\']);" href="/download/maclegacy">download the legacy Mac client</a></div>');
         } else if (platform == 'Windows') {
             $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Win Legacy\', \'' + titleCasePath + '\']);" href="/download/windowslegacy">download the legacy Windows client</a></div>');
         } else if (platform == 'Linux') {
-            $('.download-button').text('New Linux Client Coming Soon');
-            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Linux\', \'' + titleCasePath + '\']);" href="/download-linux">try the legacy alpha version</a></div>');
+            $('.download-button').text('Linux client under development');
+            $('.download-button').after('<div style="margin-top: 10px;">in the meantime, try out out our <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Linux\', \'' + titleCasePath + '\']);" href="/download-linux">Linux alpha client</a></div>');
         } else if (platform == 'Android') {
             $('.download-button').attr('id', 'android-download-button');
             $('.download-button').addClass('mobile-download-button');
@@ -167,7 +171,8 @@ $(function() {
         } else if (platform == 'iOS') {
             $('.download-button').attr('id', 'ios-download-button');
             $('.download-button').addClass('mobile-download-button');
-            $('.download-button').html('<span>Coming to the</span>App Store');
+            $('.download-button').html('<span>Available on the</span>App Store');
+
 
         } else {
             $('.download-button').text('Download for ' + platformMessage);
@@ -176,7 +181,7 @@ $(function() {
         //$('.overlayDownload').attr('href', overlayDownloadLink);
         $.each(otherVersions, function(index, value){
             if (value == 'Linux') {
-                otherLink = '/download-' + value.toLowerCase();
+                otherLink = "";
             } else if (value == 'Windows Store') {
                 otherLink = '/download/metro';
             } else {
@@ -185,7 +190,7 @@ $(function() {
             var linkText = '<a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'' + value + '\', \'' + titleCasePath + '\']);" class="download otherDownload" href="' + otherLink  + '">' + value + '</a>, ';
             if ($.inArray(value, ['Android', 'Windows Store', 'iOS']) > -1) {
                 otherMobileVersionHTML += linkText;
-            } else if ($.inArray(value, ['Linux', 'Mac', 'Windows']) > -1) {
+            } else if ($.inArray(value, [ 'Mac', 'Windows']) > -1) {
                 otherDesktopVersionHTML += linkText;
             }
             otherVersionHTML += linkText;
@@ -299,4 +304,19 @@ $(function() {
             triggerSearch();
         }
     });*/
+
+    $('.email').click(function(event) {
+        $(this).toggleClass('active');
+        $('#account-dropdown').toggle();
+        $('#accout-subnav').show();
+        event.preventDefault();
+    });
+
+    $(document).mouseup(function (e) {
+        var container = $("a.email");
+        if ($.inArray(e.target, container) == -1) {
+            container.removeClass('active');
+            $('#account-dropdown').hide();
+        }
+    });
 });

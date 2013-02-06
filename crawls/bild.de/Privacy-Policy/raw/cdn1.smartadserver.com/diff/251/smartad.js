@@ -3,7 +3,7 @@ var adakey = ''; // Adprobe keyword - important: has to be outside if clause... 
 
 //if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
    // Adprobe
-   var wlCus = "13115,13116,13118,13120,13121,13122,13123,13133,13134,13135";
+   var wlCus = "13115,13116,13118,13120,13121,13122,13123,13132,13133,13134,13135";
    var wlOrd = new Date().getTime();
    try { document.write('<scr' + 'ipt src="http://req.connect.wunderloop.net/AP/1627/6657/13115/js?cus=' + wlCus + '&ord=' + wlOrd + '"></scr'+'ipt>');}
    catch(err) { }
@@ -48,6 +48,10 @@ function SmartAdServer(sas_pageid,sas_formatid,sas_target) {
          if (wl13134camp > 0){
             adakey += ';ada3650xsk';
          }
+      }
+      // billboard
+      if (sas_formatid == 5419 && wl13132camp > 0) {
+         adakey += ';ada5419bb';
       }
       // medium rectangle, halfpage ad
       if (sas_formatid == 4459) {

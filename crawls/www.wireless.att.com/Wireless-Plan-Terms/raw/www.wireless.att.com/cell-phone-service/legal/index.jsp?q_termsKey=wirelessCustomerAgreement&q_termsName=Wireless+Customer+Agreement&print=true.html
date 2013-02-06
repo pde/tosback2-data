@@ -634,9 +634,9 @@ groups or email use by others; use of the service as a substitute or backup for 
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
 ATT.globalVars.ban = ""; 
-ATT.globalVars.flowIndicator = "AL"; 
+ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "11590"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -647,15 +647,15 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="11590"; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "AL"){ 
-		flowType ="AL"; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
@@ -729,7 +729,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "WESTBURY"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -738,7 +738,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "NY"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -802,7 +802,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","B1MGRNRLyx2r1wqLlLmMF2bv!159607785!1359810955354"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","bn1nRRLSGWZMYWgYmRgLQ2zL!1012408672!1360120690158"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

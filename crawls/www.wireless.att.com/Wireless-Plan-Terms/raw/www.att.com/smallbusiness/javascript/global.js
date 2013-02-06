@@ -836,12 +836,12 @@ $(document).ready(function() {
                     $('#flowType').val("");
                 }
             };
-            $('.SaveCartButton',$('#miniCartLightBox')).myplugin({
+            $('.SaveCartButton',$('#miniCart')).myplugin({
                 'backDropId'    : 'SeviceEligibiltyBackDrop',
                 'lightBoxId'    : 'SeviceEligibiltyLightBox'
             },saveCartHandlers);
     }init_savecartOverlay();
-    
+
     /*ajax call for marquee*/
     
     function init_loadMarquee(){
@@ -1021,8 +1021,8 @@ $(document).ready(function() {
 					var pipString = pipelinedString.join().replace(/,/g, "|");
 					
 					//code Added for reporting
-					var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
-					dcsMultiTrack('DCSext.wtPN', wtPN + 'Overlay Mutual Exclusivity Pg',
+					var wtPN = WebMetrics.getPageName();
+					dcsMultiTrack('DCSext.wtPN', wtPN + ' Overlay Mutual Exclusivity Pg',
 							      'DCSext.wtB2BMultiRecConflictingSku',pipString,
 							      'DCSext.wtNoHit' ,'1'
 							      );
@@ -1200,10 +1200,12 @@ function sessionTimeOut(){
                 if(counter === 0) {
                 	clearInterval(timer);
                     running = false;
-                    var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN')+'_CartExpired';
-                    dcsMultiTrack(
-							'DCSext.wtPN',wtPN
-					);
+                    var wtPN = WebMetrics.getPageName();
+                    if(wtPN != null && wtPN != '') {
+	                    dcsMultiTrack(
+								'DCSext.wtPN',wtPN + " CartExpired"
+						);
+                    }
                     $('#logoutButton').trigger("click");
                 } else {
                     $('#sessionTimeoutCountdownId').html(counter);

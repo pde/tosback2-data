@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,1,2,13,13,41,0);
+var tvgServerTimeUTC = new Date(2013,1,6,13,15,12,0);
 
-var dServerET = new Date(2013,1,2,8,13,41,0);
+var dServerET = new Date(2013,1,6,8,15,12,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,1,2);
-dSrvrTime.setUTCHours(13,13,41,0);
+dSrvrTime.setUTCFullYear(2013,1,6);
+dSrvrTime.setUTCHours(13,15,12,0);
 
-var dLocalTime = new Date(2013,1,2,8,13,41,0);
-var dGridStart = new Date(2013,1,2,8,0,0,0);
+var dLocalTime = new Date(2013,1,6,8,15,12,0);
+var dGridStart = new Date(2013,1,6,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= cd52720e33e6525026b5849babd215482899596c 1359810821';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 019bf22935262845a4dce028f2a2fbcd89d0f85f 1360156512';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,28 +50,28 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 2/2/2013 1:00:00 PM GMT */
+/* TVGSVC02 2/6/2013 1:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-02-02)*/
+/* Listings: In-Grid and Close-Up Ads (2013-02-06)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/TVG_770x26_Top_MM.jpg";
-var magicBotImage = "/listings/images/topchan/TVG_770x25_Bottom_Thru_Feb2_MM.jpg";
-var magicLogo = "/listings/images/topchan/TVG_125x41_1.25.jpg";
-var magicLink = "http://ad.doubleclick.net/clk;267502968;92823927;a";
+var magicTopImage = "/listings/images/topchan/Jenny_770x26_Static_v3_01_Top_FRI.jpg";
+var magicBotImage = "/listings/images/topchan/Jenny_770x26_Static_v3_02_Bottom_FRI.jpg";
+var magicLogo = "/listings/images/topchan/Jenny_125x41_Static_v3_03_Logo_FRI.jpg";
+var magicLink = "http://ad.doubleclick.net/clk;267860203;93733144;h";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
-var magicLeftOffset = 520;
-var magicSources = [427];
+var magicLeftOffset = 650;
+var magicSources = [1275];
 var magicIDtype = 0;
 var magicRepeat = true;
 var magicHpImage = "";
 var magicHpBkgnd = "#FFFFFF";
-var magicTrackingPixel = "http://ad.doubleclick.net/ad/N6305.6478.TVGUIDEONLINE/B7267179.4;sz=1x1;ord=[timestamp]?";
+var magicTrackingPixel = "http://ad.doubleclick.net/ad/N5408.6478.TVGUIDE/B7288341.43;sz=1x1;ord=[timestamp]?";
 var magicChannelLocation = "bottom";
 
 /* New! Franchise Channel Check-Ins */

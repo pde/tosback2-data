@@ -454,32 +454,9 @@ samCookie            = getCookie("tmg_pid");
 //////////////////////////////////////////////////
 // document ready
 //////////////////////////////////////////////////
-
-$(document).ready(function() {
-
-	if (typeof service == "undefined" && window.location.host.indexOf('telegraph.co.uk') !== -1) {
-		document.domain = "telegraph.co.uk";
-	}
-
-	if (typeof (plink) == "undefined") {
-		plink = "";
-	}
-
-	$("#sitesButton").live('click', function () {
-		window.location = "" + cpcLink;
-	});
-
-	$("#samLogOutButton").live('click', function () {
-		window.location = "" + logOutLink;
-	});
-
-	$("#subscribeButton").live('click', function () {
-		window.location = "" + samSubscribeLink;
-	});
-
-	$("#privacyPolicyButton").live('click', function () {
-		window.location = "" + privacyPolicyLink;
-	});
+if (typeof (plink) == "undefined") {
+	plink = "";
+}
 
 	$("body").prepend("<div id='tmgMenu-z1'></div>");
 
@@ -539,6 +516,30 @@ $(document).ready(function() {
 	samSubInfoMenu.setContent("<div class='innerLogin'><iframe id='guestFrame1' style='visibility:hidden;' onload='this.style.visibility=\"visible\";' frameborder='0' allowtransparency='true' background-color='transparent' name='guestFrame1' width='960px' height='200px' frameborder='0' src='" + samDomain + "/sam-ui/subinfocapture.htm?logintype=lite&plink=" + plink + "' scrolling='no'></iframe></div>");
 
 	samReloadMenu();
+
+$(document).ready(function() {
+
+	if (typeof service == "undefined" && window.location.host.indexOf('telegraph.co.uk') !== -1) {
+		document.domain = "telegraph.co.uk";
+	}
+
+
+
+	$("#sitesButton").live('click', function () {
+		window.location = "" + cpcLink;
+	});
+
+	$("#samLogOutButton").live('click', function () {
+		window.location = "" + logOutLink;
+	});
+
+	$("#subscribeButton").live('click', function () {
+		window.location = "" + samSubscribeLink;
+	});
+
+	$("#privacyPolicyButton").live('click', function () {
+		window.location = "" + privacyPolicyLink;
+	});
 
 	//logout button event handler
 	$("#logOutButton").live('click', function () {

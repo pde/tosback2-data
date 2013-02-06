@@ -129,7 +129,7 @@ var g_Name = '';
 <ul class="col2">
 <li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.yScreen&amp;redirecturl=http://screen.yahoo.com/" title="Yahoo! Screen" data-ct="att|masthead|dropNav|yScreen">Yahoo! Screen</a></li>
 <li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.yShine&amp;redirecturl=http://shine.yahoo.com/" title="Yahoo! Shine" data-ct="att|masthead|dropNav|yShine">Yahoo! Shine</a></li>
-<li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.attOffers&amp;redirecturl=http://www.att.net/products" title="AT&amp;T Offers" data-ct="att|masthead|dropNav|attOffers">AT&amp;T Offers</a></li>
+<li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.attOffers&amp;redirecturl=http://www.att.net/products" title="AT&amp;T Essentials" data-ct="att|masthead|dropNav|attOffers">AT&amp;T Essentials</a></li>
 <li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.attGames&amp;redirecturl=http://games.att.net/" title="AT&amp;T Games" data-ct="att|masthead|dropNav|attGames">AT&amp;T Games</a></li>
 <li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.attSoftwareCenter&amp;redirecturl=http://att.software.yahoo.com/" title="AT&amp;T Sofware Center" data-ct="att|masthead|dropNav|attSoftwareCenter">AT&amp;T Software Center</a></li>
 <li><a href="http://att.net/s/context.dll?id=135&amp;type=clickthru&amp;name=att.masthead.dropNav.watchEspn&amp;redirecturl=http://att.net/ESPN3" title="Watch ESPN" data-ct="att|masthead|dropNav|WatchEspn">Watch ESPN</a></li>
@@ -166,6 +166,8 @@ var temp_loc = 'http://www.att.net';
 var Cond1 = temp_loc.search('http://portalmigration.att.net/');
 var Cond2 = temp_loc.search('http://admin.stage.att.net/');
 //alert(temp_loc);
+//alert('staging: ' + Cond1 + ' RA: ' + Cond2);
+//alert('http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal');
 if(document.getElementById("url_login") != null)
 {				
 if(Cond1 == -1 && Cond2 == -1)
@@ -181,15 +183,17 @@ document.getElementById("url_login").href = '/s/context.dll?type=clickthru&id=13
 if(document.getElementById("url_logout") != null)
 {
 if (Cond1 == -1 && Cond2 == -1) {
-var strReturnURL = window.location.href;
+var strReturnURL = window.location.href;								
 var strSearchString = "test=success";
 var strSearchResult = strReturnURL.search(strSearchString);
 if (strSearchResult != -1) {
 strReturnURL = strReturnURL.substring(0, strSearchResult + strSearchString.length);
 }
-document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal&returnurl=' + strReturnURL;
+//document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal&returnurl=' + strReturnURL;
+document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal&returnurl=http://www.att.net/s/s.dll?ep=473727&ch=signedout';
 }
 else if (Cond1 == 0 || Cond2 == 0)
+//document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal';
 document.getElementById("url_logout").href = 'http://www.att.net/s/context.dll?type=clickthru&id=56789&name=pclogin&userid=1&userpw=.&uh=1,0,&clientlogout=1&redirecturl=https://cprodx.att.net/apiserver/igate_web_dlom/logOut.do?style=yportal';
 }
 </script>
@@ -362,7 +366,7 @@ AT&amp;T and the AT&amp;T logo are trademarks of AT&amp;T Intellectual Property.
 </footer>
 <div id="adminLinks" class="adminChannelWrapper floatfix">
 <span class="srvInfo">
-srv24 CNC4
+srv26 CNC4
 </span>
 <br />
 </div>

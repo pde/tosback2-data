@@ -961,7 +961,7 @@ var wpAd, placeAd2;
         }
         
         //this needs to be before the dcopt check in keyvalues:
-        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
+        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
           keys.push('interstitial');
         }
         

@@ -156,6 +156,10 @@
       tempcase.where += '/hp' + (wpAd.flags.hpRefresh ? 'refresh' : '');
     }
 
+    if(tempcase.what === 'leaderboard' && tempcase.where === 'homepage'){
+      tempcase.where += '/lb' + (wpAd.flags.hpRefresh ? 'refresh' : '');
+    }
+
     //18477-CD-CRITEO implementation
     if(win.crtg_content){
       tempcase.keyvalues.onTheFly += win.crtg_content;

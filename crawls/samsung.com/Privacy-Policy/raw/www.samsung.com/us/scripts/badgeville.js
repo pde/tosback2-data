@@ -458,8 +458,16 @@ function onloadBadgevilleInit() {
 		// 2013 New Year Resolution
 		if (typeof(badgev_isNewyear) != 'undefined' && badgev_isNewyear){
 			badgev_params.category = 'newyear';
-			console.log('newyear');
+			// console.log('newyear');
 			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);
+
+		}
+
+		// 2013 valentine
+		if (typeof(badgev_isValentine) != 'undefined' && badgev_isValentine){
+			badgev_params.category = 'valentine';
+			// console.log('valentine');
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
 
 		}
 

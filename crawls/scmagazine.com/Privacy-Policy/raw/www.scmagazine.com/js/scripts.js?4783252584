@@ -1,0 +1,547 @@
+
+var dc_tile = 1;
+var axel = Math.random() + "";
+var ord = axel * 1000000000000000000;
+
+function popWin(url) { // popup script copyright h1Web. We rule all!
+    w = window.open(url, "w", "resizable=1,scrollbars=0,width=815,height=600")
+    if (w) { w.focus() } // IF put in to prevent JS errors on browsers with popup blockers
+}
+
+
+function DisplayUrl(w, id) {
+    window.status = w;
+    return true;
+}
+
+function HideUrl() {
+    window.status = "";
+}
+
+function setCookie(cookiename, value, expiredays) {
+    var exdate = new Date();
+    //if (cookiename == ("CustomModalRegistrationSwitch13" || "CustomModalRegistrationSwitch6") && expiredays) {
+    exdate.setTime(exdate.getTime());
+    expiredays = expiredays * 1000 * 3600;
+    var expire_date = new Date(exdate.getTime() + (expiredays)); 
+    //console.log(cookiename);
+
+    // } else {
+    //exdate.setDate(exdate.getDate());
+    //var expire_date = new Date(exdate.getDate() + (expiredays));
+    //}
+
+    document.cookie = cookiename + "=" + escape(value) + ";path=/" +
+    ((expiredays == null) ? "" : ";expires=" + expire_date.toGMTString());
+}
+
+
+function deleteCookie(cookiename) {
+    var exdate = new Date();
+    exdate.setTime(exdate.getTime() - 1);
+    document.cookie = cookiename += "=;path=/;expires=" + exdate.toGMTString();
+}
+function getCookie(visited) {
+    var results = document.cookie.match('(^|;) ?' + visited + '=([^;]*)(;|$)');
+    if (results) {
+        return (unescape(results[2]));
+
+    }
+    else {
+        return null;
+    }
+}
+
+$(function() {
+    $('#btnCustomModalCustomize').click(function() {
+        var value = $('#customModalSections').find("input:checked").val();
+        setCookie(customModalCookieName, 0, customModalExpireDays);
+        setCookie(customModalSectionCookieName, value, 20 * 365);
+        var url = $('#customModalSections').find("input:checked").attr('SectionName');
+        window.location = url;
+        $.fancybox.close();
+    });
+
+    $('#btnCustomModalNoThanks').click(function() {
+        setCookie(customModalCookieName, 0, customModalExpireDays);
+        $.fancybox.close();
+    });
+
+    $('#customDialog a').click(function() {
+        setCookie(customModalCookieName, 0, customModalExpireDays);
+        $.fancybox.close();
+    });
+
+    $('#hrefResetHomePage').click(function() {
+        deleteCookie(customModalSectionCookieName);
+    });
+
+    //Outcome Survey Accordion
+    $("#activityDetailsCollapse").live("click", function() {
+
+        $(this).toggleClass("open");
+        $(this).parent().parent().next().slideToggle(300);
+    });
+
+});
+
+
+/*Navbar menu javascript */
+sfHover = function () {
+
+    var primaryNavMenu = document.getElementById("primaryNavMenu");
+    if (primaryNavMenu != null) {
+        var sfEls = primaryNavMenu.getElementsByTagName("LI");
+        for (var i = 0; i < sfEls.length; i++) {
+            sfEls[i].onmouseover = function () {
+                this.className += " sfhover";
+            }
+            sfEls[i].onmouseout = function () {
+                this.className = this.className.replace(new RegExp(" sfhover\\b"), "");
+            }
+        }
+    }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+
+function google_ad_request_done(google_ads) {
+    /*
+    * This function is required and is used to display
+    * the ads that are returned from the JavaScript
+    * request. You should modify the document.write
+    * commands so that the HTML they write out fits
+    * with your desired ad layout.
+    */
+    var s = '';
+    var i;
+    /*
+    * Verify that there are actually ads to display.
+    */
+    if (google_ads.length == 0)
+        return;
+    /*
+    * If an image or Flash ad is returned, display that ad.
+    * If a rich media ad is returned, display that as "as is."
+    * Otherwise, build a string containing all of the ads and
+    * then use a document.write() command to print that string.
+    */
+    if (google_ads[0].type == "image") {
+        s += '<a href="' + google_ads[0].url +
+'" target="_top" title="go to ' + google_ads[0].visible_url +
+'"><img border="0" src="' + google_ads[0].image_url +
+'"width="' + google_ads[0].image_width +
+'"height="' + google_ads[0].image_height + '"></a>';
+    }
+    else if (google_ads[0].type == "flash") {
+        s += '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' +
+' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"' +
+' WIDTH="' + google_ad.image_width +
+'" HEIGHT="' + google_ad.image_height + '">' +
+'<PARAM NAME="movie" VALUE="' + google_ad.image_url + '">' +
+'<PARAM NAME="quality" VALUE="high">' +
+'<PARAM NAME="AllowScriptAccess" VALUE="never">' +
+'<EMBED src="' + google_ad.image_url +
+'" WIDTH="' + google_ad.image_width +
+'" HEIGHT="' + google_ad.image_height +
+'" TYPE="application/x-shockwave-flash"' +
+' AllowScriptAccess="never" ' +
+' PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED></OBJECT>';
+    }
+    else if (google_ads[0].type == "html") {
+        s += google_ads[0].snippet;
+    }
+    else if (google_ads[0].type == "text") {
+        s += '<div class="googleTextAds"><div class="googleTextAdsByGoogle"><a href="' + google_info.feedback_url + '">Ads by Google</a></div>';
+        if (google_ads.length == 1) {
+            /*
+            * Partners should adjust text sizes
+            * so ads occupy the majority of ad space.
+            */
+            s += '<div class="GoogleAd"><a href="' + google_ads[0].url + '" ' +
+'onmouseout="window.status=\'\'" ' +
+'onmouseover="window.status=\'go to ' +
+google_ads[0].visible_url + '\';return true;" ' +
+'style="text-decoration:none">' +
+'<span style="text-decoration:underline;font-size:20pt">' +
+'<b>' + google_ads[0].line1 + '</b><br></span>' +
+'<span style="color:#000000;font-size:16pt">' +
+google_ads[0].line2 + ' ' +
+google_ads[0].line3 + '<br></span>' +
+'<span style="color:#008000;font-size:14pt">' +
+google_ads[0].visible_url + '</span></a></div>';
+        }
+        else if (google_ads.length > 1) {
+            /*
+            * For text ads, append each ad to the string.
+            */
+            for (i = 0; i < google_ads.length; ++i) {
+                s += '<div class="GoogleAd"><a href="' + google_ads[i].url + '" ' +
+	'onmouseout="window.status=\'\'" ' +
+	'onmouseover="window.status=\'go to ' +
+	google_ads[i].visible_url + '\';return true;" ' +
+	'style="text-decoration:none">' +
+	'<span class="GoogleAdLink">' +
+	google_ads[i].line1 + '</span></a><br>' +
+	'<span class="GoogleAdText">' + google_ads[i].line2 + ' ' +
+	google_ads[i].line3 + '<br></span>' +
+	'<span class="GoogleAdURL">' +
+	'<a href="' + google_ads[i].url + '" ' +
+	'onmouseout="window.status=\'\'" ' +
+	'onmouseover="window.status=\'go to ' +
+	google_ads[i].visible_url + '\';return true;" ' +
+	'style="text-decoration:none">' +
+	google_ads[i].visible_url + '</a></span></div>';
+            }
+        }
+        s += '</div>';
+    }
+    document.write(s);
+    return;
+}
+
+function getParameterByName(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search); //get query string value
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));  //return query string value and decode URL
+}
+
+function callGetParameterByName() {
+    var queryS = getParameterByName("s"); //call getParameter Function and assign return value to variable   
+    if (queryS != null) {
+        var linkHref = $(".appendQuery").attr("href"); //get current link URL
+        $('.appendQuery').attr("href", linkHref + "&s=" + queryS); //append S parameter to current link URL
+    }
+}
+
+/*JQuery Functions*/
+
+$(document).ready(function () {
+
+    $(".appendQuery").live("click", function () {
+        callGetParameterByName();
+    });
+
+    /*hide/show search box watermark*/
+    $(".defaultText").focus(function (srcc) {
+        if ($(this).val() == $(this)[0].title) {
+            $(this).removeClass("defaultTextActive");
+            $(this).val("");
+        }
+    });
+
+    $(".defaultText").blur(function () {
+        if ($(this).val() == "") {
+            $(this).addClass("defaultTextActive");
+            $(this).val($(this)[0].title);
+        }
+    });
+
+    $(".defaultText").blur();
+
+    /*hide/show password watermark*/
+    $(".headerLoginUser").focus(function (srcc) {
+        if ($(this).val() == $(this)[0].title) {
+            $(this).removeClass("defaultTextActive");
+            $(this).val("");
+        }
+    });
+
+    $(".headerLoginUser").blur(function () {
+        if ($(this).val() == "") {
+            $(this).addClass("defaultTextActive");
+            $(this).val($(this)[0].title);
+        }
+    });
+
+    $(".headerLoginUser").blur();
+
+
+    /*Hide/show Search Facet More content*/
+    $('.moreFacetsLink').click(function () {
+        $(this).siblings('div').toggle();
+    });
+    $('.hideMoreFacets').click(function () {
+        $('.moreFacets').hide();
+    });
+
+    /*mycme expand collapse*/
+    $('.expandCollapse').click(function () {
+        $(this).parent().next('div').slideToggle("slow");
+    });
+
+    /*mycme expand collapse*/
+    $('.showhide').click(function () {
+        $(this).parent().next('p').slideToggle("slow");
+    });
+
+    /*Article Tools Resize*/
+    var $articleBodyText = $('div.articleBody');
+    var $reviewBodyText = $('div.reviewBody');
+    $('#smallText').click(function () {
+        $articleBodyText.css("font-size", "1em");
+        $reviewBodyText.css("font-size", "1em");
+    });
+
+    $('#mediumText').click(function () {
+        $articleBodyText.css("font-size", "1.1em");
+        $reviewBodyText.css("font-size", "1.1em");
+    });
+
+    $('#largeText').click(function () {
+        $articleBodyText.css("font-size", "1.2em");
+        $reviewBodyText.css("font-size", "1.2em");
+    });
+
+    /*ecommerce cvv expand collapse*/
+    $('.ccvwhat').click(function () {
+        $('#securityDetails').toggle();
+    });
+    $('.ecommCartVerifyCodeClose').click(function () {
+        $('#securityDetails').toggle();
+    });
+
+    /*lightbox variations*/
+    $("a.iframe").fancybox({
+        'width': 812,
+        'height': 600,
+        'type': 'iframe',
+        'scrolling': 'no'
+    });
+
+    $("a.email-iframe").fancybox({
+        'width': 620,
+        'height': 620,
+        'type': 'iframe'
+
+    });
+
+    $("a.user-iframe").fancybox({
+        'width': 800,
+        'height': 500,
+        'type': 'iframe'
+    });
+}
+);
+
+
+
+function ShowHideWatermarkedTextBox(watermarkedTextBoxName, passwordTextBoxName, showWatermarkedTextBox) {
+    watermarkedTextBox = document.getElementById(watermarkedTextBoxName);
+    passwordTextBox = document.getElementById(passwordTextBoxName);
+
+    if (showWatermarkedTextBox) {
+        if (passwordTextBox.value == '') {
+            watermarkedTextBox.style.display = 'inline';
+            passwordTextBox.style.display = 'none';
+        }
+    }
+    else {
+        if (watermarkedTextBox.value == 'Password') {
+            watermarkedTextBox.style.display = 'none';
+            passwordTextBox.style.display = 'inline';
+            passwordTextBox.focus();
+        }
+    }
+}
+
+function ChangeAllStatus(boxes) {
+    var Control;
+    Control = document.getElementById(boxes).getElementsByTagName("input");
+    var isChecked = 0;
+
+    if (eval(Control)) {
+        for (var i = 0; i < Control.length; i++) {
+            if (Control[i].checked) { isChecked = 1 } // See if any of the boxes are checked (other than All)
+        }
+    }
+
+    if (isChecked)
+    { Control[0].checked = 0; } // If so, uncheck the All box
+    else
+    { Control[0].checked = 1; } // else, check it.
+}
+
+function CheckAllBoxes(boxes, checkStatus) { // Check or uncheck all boxes at once
+    var Control;
+    Control = document.getElementById(boxes).getElementsByTagName("input");
+
+    if (eval(Control)) {
+        for (var i = 1; i < Control.length; i++) { // boxes must have the same name
+            Control[i].checked = 0
+        }
+    }
+    else { Control.checked = checkStatus }
+}
+
+
+/**
+* jQuery SHA1 hash algorithm function
+* 
+* 	<code>
+* 		Calculate the sha1 hash of a String 
+* 		String $.sha1 ( String str )
+* 	</code>
+* 
+* Calculates the sha1 hash of str using the US Secure Hash Algorithm 1.
+* SHA-1 the Secure Hash Algorithm (SHA) was developed by NIST and is specified in the Secure Hash Standard (SHS, FIPS 180).
+* This script is used to process variable length message into a fixed-length output using the SHA-1 algorithm. It is fully compatible with UTF-8 encoding.
+* If you plan using UTF-8 encoding in your project don't forget to set the page encoding to UTF-8 (Content-Type meta tag).
+* This function orginally get from the WebToolkit and rewrite for using as the jQuery plugin.
+* 
+* Example
+* 	Code
+* 		<code>
+* 			$.sha1("I'm Persian."); 
+* 		</code>
+* 	Result
+* 		<code>
+* 			"1d302f9dc925d62fc859055999d2052e274513ed"
+* 		</code>
+* 
+* @alias Muhammad Hussein Fattahizadeh < muhammad [AT] semnanweb [DOT] com >
+* @link http://www.semnanweb.com/jquery-plugin/sha1.html
+* @see http://www.webtoolkit.info/
+* @license http://www.gnu.org/licenses/gpl.html [GNU General Public License]
+* @param {jQuery} {sha1:function(string))
+* @return string
+*/
+
+(function ($) {
+
+    var rotateLeft = function (lValue, iShiftBits) {
+        return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
+    }
+
+    var lsbHex = function (value) {
+        var string = "";
+        var i;
+        var vh;
+        var vl;
+        for (i = 0; i <= 6; i += 2) {
+            vh = (value >>> (i * 4 + 4)) & 0x0f;
+            vl = (value >>> (i * 4)) & 0x0f;
+            string += vh.toString(16) + vl.toString(16);
+        }
+        return string;
+    };
+
+    var cvtHex = function (value) {
+        var string = "";
+        var i;
+        var v;
+        for (i = 7; i >= 0; i--) {
+            v = (value >>> (i * 4)) & 0x0f;
+            string += v.toString(16);
+        }
+        return string;
+    };
+
+    var uTF8Encode = function (string) {
+        string = string.replace(/\x0d\x0a/g, "\x0a");
+        var output = "";
+        for (var n = 0; n < string.length; n++) {
+            var c = string.charCodeAt(n);
+            if (c < 128) {
+                output += String.fromCharCode(c);
+            } else if ((c > 127) && (c < 2048)) {
+                output += String.fromCharCode((c >> 6) | 192);
+                output += String.fromCharCode((c & 63) | 128);
+            } else {
+                output += String.fromCharCode((c >> 12) | 224);
+                output += String.fromCharCode(((c >> 6) & 63) | 128);
+                output += String.fromCharCode((c & 63) | 128);
+            }
+        }
+        return output;
+    };
+
+    $.extend({
+        sha1: function (string) {
+            var blockstart;
+            var i, j;
+            var W = new Array(80);
+            var H0 = 0x67452301;
+            var H1 = 0xEFCDAB89;
+            var H2 = 0x98BADCFE;
+            var H3 = 0x10325476;
+            var H4 = 0xC3D2E1F0;
+            var A, B, C, D, E;
+            var tempValue;
+            string = uTF8Encode(string);
+            var stringLength = string.length;
+            var wordArray = new Array();
+            for (i = 0; i < stringLength - 3; i += 4) {
+                j = string.charCodeAt(i) << 24 | string.charCodeAt(i + 1) << 16 | string.charCodeAt(i + 2) << 8 | string.charCodeAt(i + 3);
+                wordArray.push(j);
+            }
+            switch (stringLength % 4) {
+                case 0:
+                    i = 0x080000000;
+                    break;
+                case 1:
+                    i = string.charCodeAt(stringLength - 1) << 24 | 0x0800000;
+                    break;
+                case 2:
+                    i = string.charCodeAt(stringLength - 2) << 24 | string.charCodeAt(stringLength - 1) << 16 | 0x08000;
+                    break;
+                case 3:
+                    i = string.charCodeAt(stringLength - 3) << 24 | string.charCodeAt(stringLength - 2) << 16 | string.charCodeAt(stringLength - 1) << 8 | 0x80;
+                    break;
+            }
+            wordArray.push(i);
+            while ((wordArray.length % 16) != 14) wordArray.push(0);
+            wordArray.push(stringLength >>> 29);
+            wordArray.push((stringLength << 3) & 0x0ffffffff);
+            for (blockstart = 0; blockstart < wordArray.length; blockstart += 16) {
+                for (i = 0; i < 16; i++) W[i] = wordArray[blockstart + i];
+                for (i = 16; i <= 79; i++) W[i] = rotateLeft(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+                A = H0;
+                B = H1;
+                C = H2;
+                D = H3;
+                E = H4;
+                for (i = 0; i <= 19; i++) {
+                    tempValue = (rotateLeft(A, 5) + ((B & C) | (~B & D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+                    E = D;
+                    D = C;
+                    C = rotateLeft(B, 30);
+                    B = A;
+                    A = tempValue;
+                }
+                for (i = 20; i <= 39; i++) {
+                    tempValue = (rotateLeft(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+                    E = D;
+                    D = C;
+                    C = rotateLeft(B, 30);
+                    B = A;
+                    A = tempValue;
+                }
+                for (i = 40; i <= 59; i++) {
+                    tempValue = (rotateLeft(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+                    E = D;
+                    D = C;
+                    C = rotateLeft(B, 30);
+                    B = A;
+                    A = tempValue;
+                }
+                for (i = 60; i <= 79; i++) {
+                    tempValue = (rotateLeft(A, 5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
+                    E = D;
+                    D = C;
+                    C = rotateLeft(B, 30);
+                    B = A;
+                    A = tempValue;
+                }
+                H0 = (H0 + A) & 0x0ffffffff;
+                H1 = (H1 + B) & 0x0ffffffff;
+                H2 = (H2 + C) & 0x0ffffffff;
+                H3 = (H3 + D) & 0x0ffffffff;
+                H4 = (H4 + E) & 0x0ffffffff;
+            }
+            var tempValue = cvtHex(H0) + cvtHex(H1) + cvtHex(H2) + cvtHex(H3) + cvtHex(H4);
+            return tempValue.toUpperCase();
+        }
+    });
+})(jQuery);
+
+

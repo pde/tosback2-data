@@ -26,6 +26,9 @@ mistats.tyntid      = "user=bEaj-KbiCr37wJadbiUzgI&s=121"; 			// Tynt ID
 // Call custom .js file for sites use (uncomment to use)
 //document.write("\n<" + "script type='text/javascript' src='http://media.mcclatchyinteractive.com/mistats/custom.js'>" + "</" + "script>");
 
+mistats.mediahostname = (new String(mistats.sitefile)).match(new RegExp('https*://[^/]+/', 'i'));
+document.write('<scr' + 'ipt type="text/javascript" src="' + mistats.mediahostname + 'mistats/mitnt_common.js"></scr' + 'ipt>');
+
 // Yahoo Site Variables
 if( typeof(miyahoo) != 'undefined' ) {
         miyahoo.ads.live.yahoo.request_type = "fc";

@@ -4767,24 +4767,30 @@ m.metricsParams.label=document.title+" _ "+s;
 mb.metrics.trackInteraction(m.metricsParams)
 })
 };
-m.facebook=function(z){mb.logger.log("mb.siteshare.shareFacebook()");
-if(typeof z=="undefined"){var z=new Object()
-}var q=z.url?z.url:e,C=z.title?z.title:f,D=z.description?z.description:d,t=z.shortDescription?z.shortDescription:i;
-if(h.browser.msie&&h.browser.version<9&&D.length>150){D=t
-}var u=z.image?z.image:o,w=z.asset?z.asset:p,A=z.assetType?z.assetType:a,B=z.assetTitle?z.assetTitle:l,r=z.shareSection?z.shareSection:"",s=C.replace(k,""),y=D.replace(k,"");
+m.facebook=function(A){mb.logger.log("mb.siteshare.shareFacebook()");
+if(typeof A=="undefined"){var A=new Object()
+}var q=A.url?A.url:e,D=A.title?A.title:f,E=A.description?A.description:d,t=A.shortDescription?A.shortDescription:i;
+if(h.browser.msie&&h.browser.version<9&&E.length>150){E=t
+}var u=A.image?A.image:o,w=A.asset?A.asset:p,B=A.assetType?A.assetType:a,C=A.assetTitle?A.assetTitle:l,r=A.shareSection?A.shareSection:"",s=D.replace(k,""),z=E.replace(k,"");
 m.metricsParams.action="Facebook Start";
-m.metricsParams.label=document.title+" _ "+B;
+m.metricsParams.label=document.title+" _ "+C;
 mb.metrics.trackInteraction(m.metricsParams);
-var x={metricsParams:m.metricsParams,content:z};
-mb.broadcaster.dispatchEvent(mb.siteshare.events.FACEBOOK_START,"Facebook Start",x);
-if(typeof FB!="undefined"){FB.ui({method:"stream.publish",attachment:{name:s,caption:document.domain,description:y,href:encodeURI(q),media:[{type:A,href:encodeURI(q),src:u}]},action_links:[{text:"MBUSA.com",href:"http://"+document.domain}],user_prompt_message:C},function(E){if(E&&E.post_id){m.metricsParams.action="Facebook Complete";
+var y={metricsParams:m.metricsParams,content:A};
+mb.broadcaster.dispatchEvent(mb.siteshare.events.FACEBOOK_START,"Facebook Start",y);
+if(typeof FB!==undefined){var x={method:"feed",link:encodeURI(q),picture:u,name:s,caption:document.domain,description:z};
+FB.ui(x,function(F){if(F&&F.post_id){m.metricsParams.action="Facebook Complete";
 mb.metrics.trackInteraction(m.metricsParams);
 m.metricsSocialParams.network="facebook";
 m.metricsSocialParams.socialAction="share";
 mb.metrics.trackInteraction(m.metricsSocialParams)
 }})
-}else{var v="http://www.facebook.com/sharer.php?u=";
+}else{var v="https://www.facebook.com/dialog/feed?app_id="+__MB_FB_APPID+"&link=";
 v+=encodeURI(q);
+v+="&picture="+encodeURI(u);
+v+="&name="+escape(D);
+v+="&caption="+document.domain;
+v+="&description="+escape(E);
+v+="&redirect_uri="+encodeURI(q);
 b(v)
 }};
 m.twitter=function(s){mb.logger.log("mb.siteshare.shareTwitter()");

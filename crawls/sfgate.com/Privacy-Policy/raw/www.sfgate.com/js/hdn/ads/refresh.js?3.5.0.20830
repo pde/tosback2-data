@@ -1,0 +1,94 @@
+// Slideshow Refresh for Ads and Omniture
+// js/hdn/slideshow/refresh.js
+
+if (!HDN) {
+	var HDN={};
+}
+
+HDN.dfpTimer = 0; // placeholder for the timer for DFP ad refreshes
+HDN.iframeurl = "/tmpl/slideshow_iframe.php";
+HDN.refresh = function(type,value,refreshAds) {
+	
+	if (typeof refreshAds == "undefined") {
+		refreshAds = true;
+	}
+	
+	if (HDN.doRefresh == 1) {
+
+		// Ad Refreshing
+		if(refreshAds) {
+			if (window.hearstRefreshAds) {
+                // Clear dfpTimer if it exists:
+                if (this.dfpTimer)
+                    clearTimeout(this.dfpTimer);
+
+                // set the new dfpTimer
+                this.dfpTimer = setTimeout(function() {
+                    // if hearstRefreshAds returns false
+                    if (!hearstRefreshAds()) {
+                        // reload the iframe for ads
+                        var riframe = document.getElementById('galleryrefresher');
+                        riframe.setAttribute("src",HDN.iframeurl);
+                    }
+                }, 3000); // 3 second timeout
+			} else {
+				// reload the iframe for ads
+				var riframe = document.getElementById('galleryrefresher');
+				riframe.setAttribute("src",HDN.iframeurl);
+			}
+			//ysm ads
+			var ysmFrame=jQuery("div.hst-ysm iframe:first").get(0);
+			if (typeof ysmFrame != "undefined") {
+				//force refresh
+				ysmFrame.src = ysmFrame.src;
+			}
+		}
+	}
+}
+
+/*
+  Created to support refreshing specific positions on demand
+  type ( right now is slideshow )
+  value ( position )
+
+*/
+HDN.position_iframeurl = "/tmpl/";
+HDN.refreshAdPosition = function(type,value,elementID) {
+	
+	//get a reference to the target element
+	var targetElement=jQuery('#'+elementID);
+	
+	//empty it
+	targetElement.empty();
+	
+	//append the ad container
+	targetElement.append('<div id="'+value+'"></div>')
+
+	//place the ad	
+	hearstPlaceAd(value);
+}
+
+/*
+  Created to support refreshing specific positions on demand
+  When done with a dynamic ad position we should dispose of it.  This prevents full page refresh
+  from trying to use an old ad position.
+  
+  type ( right now is slideshow )
+  value ( position )
+
+*/
+HDN.disposeAdPosition = function(type,value,elementID) {
+	//get a reference to the target element
+	var targetElement=jQuery('#'+elementID);
+	
+	//empty it
+	targetElement.empty();	
+}
+
+// monkey patch showid to hook in ad/omniture refresh
+hstrot.prototype.origshowid = hstrot.prototype.showid;
+hstrot.prototype.showid = function(id) {
+	HDN.refresh('photo',id);
+	return this.origshowid(id);
+};
+// end js/hdn/slideshow/refresh.js

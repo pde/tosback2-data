@@ -979,7 +979,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "02/02/2013 08:08 AM",
+            DATE_IN_USE: "02/06/2013 08:08 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -4663,6 +4663,40 @@ if( location.pathname == '/profile/account_summary.do' ) {
 </script>
 <!-- end CNOV-31 -->
 
+<!-- Begin CNOV-32 -->
+<script type="text/javascript" >
+if (typeof(checkout) != "undefined") { 
+  Object.extend(
+     checkout.controller.modules.registration, {
+       setRegistrationResponse:function(responseVo) {
+         if (responseVo.modules.registration.guest && responseVo.modules.shipping.shippingOptionsRo == null) {
+           var checkoutData = checkout.model.data;
+           checkoutData.action = "initCheckout";
+           checkout.controller.moduleManager.isDataRequestInProgress = true;
+           checkout.controller.dataLoadManager.getRequest(checkoutData,
+             {
+               responseHandler: function(response) {
+                 responseVo.modules.shipping.shippingOptionsRo = response.modules.shipping.shippingOptionsRo;
+                 responseVo.modules.shipping.selectedShippingOptionRo = response.modules.shipping.selectedShippingOptionRo;
+                 responseVo.modules.shipping.selectedShippingOptionDTLId = response.modules.shipping.selectedShippingOptionDTLId;
+                 if (responseVo.modules.registration.completeRo) {
+                   _checkoutFlowStateMachine.setState(_checkoutFlowStateMachine.GUEST_CUSTOMER);
+                 }
+                 checkout.controller.utils.setStandardResponse(responseVo);
+               }
+             });
+         } else  {
+           if (responseVo.modules.registration.completeRo) {
+             _checkoutFlowStateMachine.setState(_checkoutFlowStateMachine.GUEST_CUSTOMER);
+           }
+           checkout.controller.utils.setStandardResponse(responseVo);
+         }
+       }
+     });
+  }
+</script>
+<!-- End CNOV-32 -->
+
 
 <!-- END Content Item File: /content/0006/018/319/cn6018319.html -->
 
@@ -5534,7 +5568,7 @@ if (location.hostname.indexOf(".app.gidapps.com") != -1) {
 
 
 <!-- container 11 -->
-<!-- BEGIN Content Item File: /content/0005/976/009/cn5976009.html -->
+<!-- BEGIN Content Item File: /content/0005/976/050/cn5976050.html -->
 
 <!-- GOL ENHANCED ZOOM OVERRIDE 3/357/325 -->
 <script type="text/javascript">
@@ -5626,7 +5660,7 @@ if (window['ProductImages']) {
 <!-- End Override 78 v2-->
 
 
-<!-- Guest Checkout A/B 1/25 code -->
+<!-- Guest Checkout A/B 2/5 code -->
 <script type="text/javascript">
 /*
 	Universal Cookie Cutter
@@ -5663,8 +5697,8 @@ if (window['ProductImages']) {
 			this.CookieUsed = CookieUsedName;
 			this.CookieValueBase = CookieValueBase;
 			this.SegBreakdown = SegmentBreakdown.split("-");
-			this.DoesTheCookieExist = clientStateManagementService.api.retrieve(this.CookieUsed, this.CookieVariableName);
-			this.RetrievedCookieValue = clientStateManagementService.api.retrieve(this.CookieUsed, this.CookieVariableName);
+			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
 			this.QuickSegment = '';
 			this.piperlimeException = plExcept;
 			this.userNeedsSync = false;
@@ -5702,7 +5736,7 @@ if (window['ProductImages']) {
 			}
 			
 			
-			clientStateManagementService.api.persist(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
 			if (this.EvarToUse) {
 				
 				this.setABTestVariable(this.UserSegment);
@@ -5763,7 +5797,7 @@ if (window['ProductImages']) {
 					
 			}
 			
-			clientStateManagementService.api.persist(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
 	
 			if (this.EvarToUse) {
 				this.setABTestVariable(this.UserSegment);
@@ -5786,11 +5820,11 @@ if (window['ProductImages']) {
 	
 	if (browserService.controller.managers.mobileBrowserManager.model.isMobileBrowser) {
 		var mobileValue = "0125GCOSEGC"
-		clientStateManagementService.api.persist("mktUniversalPersist","2012GuestCheckout",mobileValue);
+		gidLib.setCookieVar("mktUniversalPersist","2012GuestCheckout",mobileValue);
 		ABTestVariables['eVar36'] = mobileValue;
 	}
 
-var GuestChekoutCookieCutter = new universalCookieCutter("gcoMode","mktUniversalPersist","0125GCOSEG","gcoForceMode","0-100","36","none");
+var GuestChekoutCookieCutter = new universalCookieCutter("gcoMode","mktUniversalPersist","0125GCOSEG","gcoForceMode","10-90","36","none");
 
 Event.observe(document, "dom:loaded", function () {
   var gcoModeValue = clientStateManagementService.api.retrieve('mktUniversalPersist', 'gcoMode'); 
@@ -5802,10 +5836,10 @@ Event.observe(document, "dom:loaded", function () {
   }
   clientStateManagementService.api.persist('gcoMode', 'seg', gcoSegmentLetter);
 });
-	
+
 </script>
 
-<!-- END Content Item File: /content/0005/976/009/cn5976009.html -->
+<!-- END Content Item File: /content/0005/976/050/cn5976050.html -->
 
 
 
@@ -6426,7 +6460,7 @@ if (shoppingBagUrls.include(location.pathname)){
 				if(usersUserAgent.indexOf("MSIE 7") < 0) {
 					vliContainers[j].insert("<p style='float:right;padding:2px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
 				} else {
-					vliContainers[j].insert("<p style='float:right;padding:2px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/082/246/assets/closewindow.png'/></a></p>");
+					vliContainers[j].insert("<p style='float:right;padding:2px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/082/246/assets/closebutton.png'/></a></p>");
 				}
 				vliContainers[j].insert(vliImages[j]);
 //alert("big image inserted");
@@ -7268,13 +7302,68 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
-<div id="contentItemContainer10000395" class="4281898" >
+    	<!-- BEGIN Content Item File: /content/0006/103/100/cn6103100.html -->
+<div id="contentItemContainer10000395" class="6103100" >
 
+<style type="text/css">
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+	color: #000745;
+}
+
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000745;
+	text-decoration: none;
+}
+
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
+
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+.promoCode {
+	background-color: #000745;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerText {
+	padding-top: 6px;
+}
+</style>
+
+<div id="globalBanner">
+
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/103/100/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			SUPER! <span class="promoPercent">20% OFF</span> YOUR PURCHASE!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
+	</div><!-- /Global Banner Text -->
+
+</div>
 
 
 </div>
-<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
+<!-- END Content Item File: /content/0006/103/100/cn6103100.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8475,7 +8564,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,4281898,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6103100,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>
