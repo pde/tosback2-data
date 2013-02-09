@@ -272,17 +272,17 @@ function ch_decision(response, render) {
         w.ch_mobile_padding = response["hover"]["padding"];
         if (response["hover"]["type"] === 'hover-iphone2' ||
             response["hover"]["type"] === 'hover-iphone-call') {
-            ch_add_script('http://labs.chitika.com/sandbox/m.js');
+            ch_add_script('http://maps-static.chitika.net/js/m.js');
         } else if (response["hover"]["type"] === 'hover-ipad') {
-            ch_add_script('http://labs.chitika.com/sandbox/m.js');
+            ch_add_script('http://maps-static.chitika.net/js/m.js');
         } else if (response["hover"]["type"] === 'hover-pc') {
             ch_add_script('http://scripts.chitika.net/mobile/js/pc.js');
         } else {
-            ch_add_script('http://labs.chitika.com/sandbox/m.js');
+            ch_add_script('http://maps-static.chitika.net/js/m.js');
             var mobileCSS = document.createElement('link');
             mobileCSS.type = 'text/css';
             mobileCSS.rel = 'stylesheet';
-            mobileCSS.href = 'http://labs.chitika.com/sandbox/m.css';
+            mobileCSS.href = 'http://maps-static.chitika.net/misc/m.css';
             ch_pg_head.appendChild(mobileCSS);
         }
     }

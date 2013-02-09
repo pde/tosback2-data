@@ -1,4 +1,5 @@
 ﻿//document.writeln("<script type='text/javascript' src='http://rt.legolas-media.com/lgrt?ci=2&ti=21322&pbi=10962'></script>");
+document.writeln("<script> async_load(); </script>");
 var ANALYTICS_USER_TOKEN = "ANALYTICS_USER_TOKEN"; var BASE_SERVICE_URL = "http://analytics.newsinc.com/"
 String.format = function(text) {
     if (arguments.length <= 1) { return text; }
@@ -57,6 +58,7 @@ function getLegolasCookie(name)
 { 
 	var cookies = document.cookie; 
 	if (cookies.indexOf(name) != -1) { 
+		console.log(name + "called : ");
 		var startpos = cookies.indexOf(name)+name.length+1; 
 		var endpos = cookies.indexOf(";",startpos)-1; 
 		if (endpos == -2) endpos = cookies.length; 
@@ -67,14 +69,17 @@ function getLegolasCookie(name)
 } 
 
 function getDart(){
-	
+	console.log("getDart called");
 	var lsg_cookie = getLegolasCookie('lsg'); 
 	var dart = ''; 
 	if (lsg_cookie) { 
+		console.log("getDart lsg cooke: true:" + lsg_cookie);	
 		var cookie_tokens = lsg_cookie.split('s'); 
 		for(var i=0;i<cookie_tokens.length;i++) { 
 			dart+= ('lsg='+cookie_tokens[i]+';'); 
 		} 
+	}else{
+		console.log("getDart lsg cooke: false:" + lsg_cookie);	
 	}
 	
 	//var dart = '';
@@ -84,3 +89,17 @@ function sendLegalos(dart) {
 	getSwfId("flashcontent").sendLegalos(dart);
 }
 jsonp("http://pixel.quantserve.com/api/segments.json?a=p-573scDfDoUH6o&callback=qc_results");
+function async_load(){
+	var tTitles = document.getElementsByTagName('title');
+	var tTitle =  tTitles[0].innerHTML;
+	if( tTitle == 'Inline300' || tTitle == 'Inline590'){
+	}else{
+		var s = document.createElement('script');
+        s.type = 'text/javascript';
+		s.id = 'legalos';
+        s.async = true;
+        s.src = 'http://rt.legolas-media.com/lgrt?ci=2&ti=21322&pbi=10962';
+        var x = document.getElementsByTagName('script')[0];
+	    x.parentNode.insertBefore(s, x);
+	}
+}

@@ -21,17 +21,23 @@ return this;
 /* Encironment object to ensure that the right url by environment is used*/
 var spEnvironment = {
 prodDomains : ["www.superpages.com","yellowpages.superpages.com","cars.superpages.com","mapserver.superpages.com","maps.superpages.com","shopping.superpages.com","coupons.superpages.com","www.superguarantee.com","blackfriday.superpages.com","cybermonday.superpages.com"],
-testDomains : ["spdev.superpages.com","sptest.superpages.com","gypsyhome.superpages.com","gypsy-test.superpages.com","gypsy-test2.superpages.com","jt1.superpages.com","jt2.superpages.com","jt3.superpages.com","jt4.superpages.com","jt5.superpages.com","labsjt02.superpages.com","spyptst01-zone1.superpages.com","spyptst02-zone1.superpages.com","swbdtst01.superpages.com","yptest3.superpages.com","sys-csg.supermedia.com","victor.superpages.com","shopping.localhost","cars-test.superpages.com","shopping-dev.superpages.com","shopping-test.superpages.com","blackfriday-dev.superpages.com","blackfriday-test,superpages.com","cybermonday-dev.superpages.com","cybermonday-test.superpages.com"],
-cfitDomains : ["gypsy-cfit1.superpages.com","gypsy-cfit2.superpages.com","jt6.superpages.com","jt8.superpages.com","jt10.superpages.com","sptest2.superpages.com","sptest3.superpages.com"],
-pmDomains : ["gypsy-pm1.superpages.com","gypsy-pm2.superpages.com","jt2.superpages.com","jt7.superpages.com","jt9.superpages.com","gypsy-test3.superpages.com","jt3.superpages.com","sptest5.superpages.com","sptest6.superpages.com","sptest4.superpages.com"],
+ppt1Domains : ["spdev.superpages.com","sptest.superpages.com","gypsyhome.superpages.com","gypsy-test.superpages.com","jt1.superpages.com","jt4.superpages.com","labsjt02.superpages.com","spyptst01-zone1.superpages.com","spyptst02-zone1.superpages.com","yptest3.superpages.com","sys-csg.supermedia.com","victor.superpages.com","shopping.localhost","cars-test.superpages.com","shopping-dev.superpages.com","shopping-test.superpages.com","blackfriday-dev.superpages.com","blackfriday-test,superpages.com","cybermonday-dev.superpages.com","cybermonday-test.superpages.com"],
+ppt2Domains : ["gypsy-test3.superpages.com","jt3.superpages.com","sptest4.superpages.com","shopping-test2.superpages.com","blackfriday-test2,superpages.com","cybermonday-test2.superpages.com"],
+cfit1Domains : ["gypsy-cfit1.superpages.com","jt6.superpages.com","sptest2.superpages.com","shopping-cfit1.superpages.com","blackfriday-cfit1.superpages.com","cybermonday-cfit1.superpages.com"],
+cfit2Domains : ["gypsy-cfit2.superpages.com","jt8.superpages.com","jt10.superpages.com","sptest3.superpages.com","shopping-cfit2.superpages.com","blackfriday-cfit2.superpages.com","cybermonday-cfit2.superpages.com"],
+pm1Domains : ["gypsy-pm1.superpages.com","jt7.superpages.com","sptest5.superpages.com","shopping-pm1.superpages.com","swbdtst05.superpages.com","blackfriday-pm1.superpages.com","cybermonday-pm1.superpages.com"],
+pm2Domains : ["gypsy-pm2.superpages.com","jt2.superpages.com","jt9.superpages.com","sptest6.superpages.com","shopping-pm2.superpages.com","blackfriday-pm2.superpages.com","cybermonday-pm2.superpages.com"],
 devDomains : ["utpalsmac.supermedia.com"],
 //mapsApp : ["mapserver.superpages.com","yptest3.superpages.com","maps.superpages.com","victor.superpages.com"],
 mapsApp : ["disabled."],
 checkEnvironment : function() {
 if ($.inArray(document.domain,this.prodDomains) > -1) {return "prod";}
-else if ($.inArray(document.domain,this.testDomains) > -1) {return "test";}
-else if ($.inArray(document.domain,this.cfitDomains) > -1) {return "cfit";}
-else if ($.inArray(document.domain,this.pmDomains) > -1) {return "pm";}
+else if ($.inArray(document.domain,this.ppt1Domains) > -1) {return "ppt1";}
+else if ($.inArray(document.domain,this.ppt2Domains) > -1) {return "ppt2";}
+else if ($.inArray(document.domain,this.cfit1Domains) > -1) {return "cfit1";}
+else if ($.inArray(document.domain,this.cfit2Domains) > -1) {return "cfit2";}
+else if ($.inArray(document.domain,this.pm1Domains) > -1) {return "pm1";}
+else if ($.inArray(document.domain,this.pm2Domains) > -1) {return "pm2";}
 else {return "dev";}
 },
 resolveUrl : function(urlType) {
@@ -59,16 +65,28 @@ switch(env){
 case 'prod':
 returnUrl = "http://yellowpages.superpages.com";
 break;
-case 'test':
+case 'ppt1':
 returnUrl = "http://gypsy-test.superpages.com";
 //returnUrl = "http://jt0.superpages.com:9080";
 break;
-case 'cfit':
+case 'ppt2':
+returnUrl = "http://gypsy-test3.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
+break;
+case 'cfit1':
 returnUrl = "http://gypsy-cfit1.superpages.com";
 //returnUrl = "http://jt0.superpages.com:9080";
 break;
-case 'pm':
+case 'cfit2':
+returnUrl = "http://gypsy-cfit2.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
+break;
+case 'pm1':
 returnUrl = "http://gypsy-pm1.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
+break;
+case 'pm2':
+returnUrl = "http://gypsy-pm2.superpages.com";
 //returnUrl = "http://jt0.superpages.com:9080";
 break;
 case 'dev':

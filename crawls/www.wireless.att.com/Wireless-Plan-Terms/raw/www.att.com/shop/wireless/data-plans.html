@@ -31,7 +31,7 @@ function setOrderSourceABSplit(){
 var mobile = getURLParam('mobile'); 
 var mobileView; 
 var fullSiteView; 
-var mRedirectURL = ''; 
+var mRedirectURL = '//m.att.com/shopmobile/wireless/data-plans.html'; 
 //Check URL for mobile=false. Set FulSiteView=True if found. 
 //commenting below if condition . 
 //As Mobile HardRock footer jsp setting the value 
@@ -161,11 +161,11 @@ CQURLInfo = {
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
-				<!-- OPTIMOST ATTRIBUTE CODE --> 
-				<script language="javascript1.1" type="text/javascript"> 
-					var opPage = "/shop/wireless/data-plans.html"; 
-				</script> 
-				<script type="text/javascript" src="../../media/cms/shop/scripts/optimost/optimostCode.min.js"></script> 
+            <!-- OPTIMOST ATTRIBUTE CODE --> 
+            <script language="javascript1.1" type="text/javascript"> 
+                var opPage = "opPage"; 
+            </script> 
+            <script type="text/javascript" src="../../media/cms/shop/scripts/optimost/optimostCode.min.js"></script> 
 </head> 
 <!-- Add author only code below --> 
 <body class="consumer"> 
@@ -213,6 +213,14 @@ CQURLInfo = {
                         key = 'existDSL'; 
                         value = 'false'; 
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
                     } 
                 } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
@@ -683,7 +691,7 @@ CQURLInfo = {
 	<div id="undernav-right"> 
 	    <div id="lpButtonDiv" style="display:inline;"></div> 
 	    <div id="mini-cart-link-container" style="display:inline;"> 
-	        <a id="minicart-link" href="data-plans.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content;2013010">My Wireless Cart  
+	        <a id="minicart-link" href="data-plans.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content;2013036">My Wireless Cart  
 	            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
 	            <span id="minicart-count"></span> 
 	        </a><br/> 
@@ -798,6 +806,8 @@ CQURLInfo = {
 	}] 
 }; 
    JSAM.create({json:JSAM_JSON, width:"974", height:"615"}); 
+   var parentNode = document.getElementById("marqueeHolder").parentNode; 
+   parentNode.style.height = "503px"; 
 </script> 
 </div> 
 </div></div> 
@@ -1803,12 +1813,29 @@ online - it's just that simple!<br>
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/wireless/data-plans/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
+			<!-- legal footer --> 
+			<div class="appspecific_footer_content" ><!-- $Revision$, $Date$ and $Author$ --> 
+<div class="gn_prefooter"> 
+<!-- legal footer - note: need to remove inline style and add to shop-styles.css in static cluster -->	 
+<style type="text/css"> 
+	.consumer #wrapper .gn_prefooter a { 
+	 color:#3381B7; 
+	} 
+</style> 
+	<a href="../../wirelesslegal.html">Wireless Legal Site</a> | 
+	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list">Wireless Customer Agreement</a> | 
+	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html">Cell Phone Records Security</a> 
+		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges">Other Monthly Charges</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank">Plan Terms</a>| 
+			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice">Online Pricing</a>| 
+			<div class='secondRow'> 
+				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html">Returns Policy &amp; Early Termination Fee</a>| 
+				<a class="postPaidLegalLink" href="../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank">Additional  
+Messaging &amp; Data Charges</a>| 
+				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation">Shipping Information</a> 
+			</div> 
+</div> 
+</div> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -1823,7 +1850,7 @@ online - it's just that simple!<br>
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1914,7 +1941,7 @@ online - it's just that simple!<br>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 280823633920745177289139710173435247718 --> 
+		 <!--X-Renderer: 176176443101592098223306364607888341977 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -2121,7 +2148,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","4zsPRRCPnwgdVKvLskpk7p3W!2074152488!1360118447296"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","cgYZRVyQBk8V53SbTWlCzpZT!-59188380!1360373936274"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -2157,16 +2184,13 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
-	<!-- B2C-120711 Place Optimost Code on att.com pages -->  				 
-	<!-- OPTIMOST UNIVERSAL MODULE --> 
-	<script language="javascript" type="text/javascript"><!-- 
-	if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
-		for(var i=0;i<opModulesArray.length;i++){ 
-			optimost.displayModule(opModulesArray[i]); 
-		} 
-	} 
-	//--></script> 
+<script language="javascript" type="text/javascript"><!-- 
+if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
+       for(var i=0;i<opModulesArray.length;i++){ 
+               optimost.displayModule(opModulesArray[i]); 
+       } 
+} 
+//--></script> 
 </body> 
 </html> 
 </span></span> 

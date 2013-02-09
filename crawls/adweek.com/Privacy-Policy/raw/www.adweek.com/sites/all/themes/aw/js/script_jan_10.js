@@ -107,21 +107,37 @@ var adweek = function(){
         $("#main .inner h1").each(function() {
           $(this).html($(this).html().replace("”", '"'));
           $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("’", "'"));
+          $(this).html($(this).html().replace("‘", "'"));
+          $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("”", '"'));
         });
 
         $("#main .inner h2").each(function() {
           $(this).html($(this).html().replace("”", '"'));
           $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("’", "'"));
+          $(this).html($(this).html().replace("‘", "'"));
+          $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("”", '"'));
         });
 
         $("#main .inner p").each(function() {
           $(this).html($(this).html().replace("”", '"'));
           $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("’", "'"));
+          $(this).html($(this).html().replace("‘", "'"));
+          $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("”", '"'));
         });
 
         $("#main .inner span").each(function() {
           $(this).html($(this).html().replace("”", '"'));
           $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("’", "'"));
+          $(this).html($(this).html().replace("‘", "'"));
+          $(this).html($(this).html().replace("“", '"'));
+          $(this).html($(this).html().replace("”", '"'));
         });
     });
 

@@ -222,7 +222,6 @@ $(window).load(function() {
 });
 /*Top position for tophat localize and non-localize banner */
 
-
 function getInternetExplorerVersion()
 // Returns the version of Windows Internet Explorer or a -1
 // (indicating the use of another browser).
@@ -290,7 +289,15 @@ $(function () {
     
 
 	/*Ipad flyout hiding fix*/
-		$("ul#hd-deptNav li .item").removeClass("active"); 
+		// $("ul#hd-deptNav li .item").removeClass("active"); 
+        $("#hd-deptNav li .item").hover(function(){
+            $("#hd-deptNav li .item").removeClass("flyoutClose"); 
+            // console.log("Hover close Flyout");
+        });
+        $("#closeFlyout a.icon-close").click(function(){
+             $("#hd-deptNav li.item").addClass("flyoutClose");
+             // console.log("Clicked close Flyout");
+        })
 	/*Ipad flyout hiding fix*/
 
     //Checks to see which is cliked then pushes page as necessary
@@ -417,13 +424,12 @@ $(function () {
 
                    category_name = $.trim(category_name);              
                    category_name = category_name. toUpperCase();
-
                    //Populating the values from the hidden field to the local variable
                    
                    var selectedVal = document.getElementById('encodedNVal').value;/*pxk8554*/
-                   
-                  if(category_name !== "SEARCH ALL"){
-                        
+
+                    if(category_name !== "SEARCH ALL"){
+                       
                         var category_value = "5yc1vZ"+selectedVal;
                         var omnivalue = encodeURIComponent(encodeURIComponent(encodeURIComponent(category_name))); //Triple encoding
                         
@@ -442,7 +448,7 @@ $(function () {
                         var urlParams = 'keyword='+ encodeURIComponent(strSearchValue)+'&Ns=None&Ntpr=1&Ntpc=1&selectedCatgry='+ selectedCategory;
                         formActionURL = searchUrl+urlParams;
                     }
-                    
+                    formActionURL = formActionURL.replace('%20', '+');
                     window.location.href = formActionURL;
                     return false;
             }else{

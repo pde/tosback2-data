@@ -59,6 +59,10 @@ function submitForm(searchTerm)
 	$("#question").val(searchTerm);
     $("#question_").val(searchTerm);
     $("#currentSelection").val("");
+    if(window.WebMetrics){
+    	WebMetrics.DCSext.wtB2BSearchTerm = searchTerm;
+    	WebMetrics.dispatchReport("SMBID_SearchResultsPg_Search");
+    }
     $("#searchButton").trigger("click");
     
 }

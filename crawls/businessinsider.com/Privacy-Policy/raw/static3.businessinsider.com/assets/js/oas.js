@@ -41,8 +41,8 @@ BI.OAS = (function(w,undefined) {
 			var container = $('#'+scriptID).parent();
 			if (container.length === 0) { return; }
 			var img = container.find('img');
-			if (img.length > 0 && img.attr('src').indexOf('empty.gif') !== -1) {				
-				$(function() {container.remove()});
+			if (img.length > 0 && img.attr('src').indexOf('empty.gif') !== -1) {
+				$(function() { container.remove(); });
 			}
 		},
 		renderAd: function(position) {
@@ -86,28 +86,29 @@ BI.OAS = (function(w,undefined) {
 				OAS_sitepage += '/'+url;
 			}
 
+			var postType = typeof post !== 'undefined' ? post : undefined;
             // todo post is a BAD name its really pagetype since we use it below for targeting
-			if (typeof post != 'undefined' && post === 'story') {
-				post = 'post';
-			} 
+			if (typeof postType != 'undefined' && postType === 'story') {
+				postType = 'post';
+			}
 
             // custom targeting rules for specific page types:
             // if url is bi.com/category/BLAH then make the page type /category BI-496
             if (window.location.pathname.substring(0, 9) == '/category'){
-				post = 'category';
+				postType = 'category';
             } else if (window.location.pathname.substring(0, 21) == "/trending_on_linkedin"){
-				post = 'linkedin';
+				postType = 'linkedin';
             }
-        
-            switch (typeof post){
+
+            switch (typeof postType){
                 case 'object':
-			        OAS_sitepage += '/post';
+					OAS_sitepage += '/post';
                     break;
                 case 'string':
-			        OAS_sitepage += '/' + post;
+					OAS_sitepage += '/' + postType;
                     break;
                 default:
-			        OAS_sitepage += '/homepage';
+					OAS_sitepage += '/homepage';
                     break;
             }
 		},
@@ -119,8 +120,8 @@ BI.OAS = (function(w,undefined) {
             }
             var html = '<script src="' + ad_call_url + '"></script>';
             if (OAS_listpos.length) {
-	            document.write(html);
-	        }
+				document.write(html);
+			}
         }
 	};
 })(window);

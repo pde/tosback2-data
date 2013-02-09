@@ -42,7 +42,14 @@ NPR.metrics.mostPopular=function(linkType){try{NPR.metrics.event({'network':'NPR
 NPR.metrics.newComment=function(){try{NPR.metrics.event({network:'NPR Site',category:'Disqus',action:'New Comment'});}catch(e){NPR.messaging.exception(e,'NPR.metrics.newComment',NPR.messaging.constants.METRICS_ERROR);}}
 NPR.metrics.getViewportGroup=function(){try{var viewportSize=$(window).width();var viewportGrouping='1760 and higher';if(viewportSize<481){viewportGrouping='0 - 480';}else if(viewportSize<768){viewportGrouping='481 - 767';}else if(viewportSize<1000){viewportGrouping='768 - 999';}else if(viewportSize<1201){viewportGrouping='1000 - 1200';}else if(viewportSize<1760){viewportGrouping='1201 - 1759';}return viewportGrouping;}catch(e){NPR.messaging.exception(e,'NPR.metrics.getViewportGroup',NPR.messaging.constants.METRICS_ERROR);}
 return'0';}
-$(document).ready(function(){NPR.ga.fetchgaq();$('[data-metrics]').on('mousedown.metrics',function(){try{NPR.metrics.event($(this).data('metrics'));}catch(e){NPR.messaging.exception(e,'NPR.metrics.data-metrics.mousedown',NPR.messaging.constants.METRICS_ERROR);}});$('body').bind('orientationchange',function(event){var orientation='portrait';if(window.orientation==90||window.orientation==-90){orientation='landscape';}
+$(document).ready(function(){NPR.ga.fetchgaq();$('[data-metrics], [data-metrics-all] a').on('mousedown.metrics',function(){try{var metricsObj=$(this).data('metrics');if(typeof metricsObj!=='object'){metricsObj={};}
+if(!metricsObj.category)
+{var categoryElm=$(this).parents('[data-metrics-category]');if(categoryElm.length>0){metricsObj.category=categoryElm.data('metrics-category');}}
+if(!metricsObj.action)
+{var actionElm=$(this).parents('[data-metrics-action]');if(actionElm.length>0){metricsObj.action=actionElm.data('metrics-action');}}
+if(!metricsObj.label)
+{metricsObj.label=$(this).attr('href');}
+NPR.metrics.event(metricsObj);}catch(e){NPR.messaging.exception(e,'NPR.metrics.data-metrics.mousedown',NPR.messaging.constants.METRICS_ERROR);}});$('body').bind('orientationchange',function(event){var orientation='portrait';if(window.orientation==90||window.orientation==-90){orientation='landscape';}
 NPR.ga.event({'network':'NPR Site','category':'Orientation Check','action':orientation});});});$(window).resize(function(){try{if(typeof NPR.metrics.viewportGroup==='undefined'){return;}
 var currentViewportGroup=NPR.metrics.getViewportGroup();if(currentViewportGroup!=NPR.metrics.viewportGroup){var direction='Shrink viewport';if(parseInt(NPR.metrics.viewportGroup)<parseInt(currentViewportGroup)){direction='Expand viewport';}
 NPR.ga.event({'network':'NPR Site','category':'Viewport Resize','action':direction,'label':currentViewportGroup,'noninteraction':true});NPR.metrics.viewportGroup=currentViewportGroup;}}catch(e){NPR.messaging.exception(e,'NPR.metrics.windowResize',NPR.messaging.constants.METRICS_ERROR);}});

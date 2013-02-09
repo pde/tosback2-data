@@ -1,4 +1,19 @@
 $(document).ready(function(){
+
+	// Append classes for MSIE
+	if ( $.browser.msie ) {
+		$('html').addClass('MSIE');
+		var ieVer = parseInt($.browser.version, 10);
+		if (ieVer > 9) {
+			$('html').addClass('IE10');
+		} else if (ieVer == 9) {
+			$('html').addClass('IE9');
+		} else if (ieVer == 8) {
+			$('html').addClass('IE8');
+		} else if (ieVer == 7) {
+			$('html').addClass('IE7');          
+		}
+	}
 	
 	$('.mainNav li.last').hover(
 		function(){

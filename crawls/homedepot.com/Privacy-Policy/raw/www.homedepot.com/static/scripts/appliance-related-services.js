@@ -190,14 +190,14 @@ function checkDepotDirectProduct(ddSelectionKey,which){
 		pedKeys=ddTypes[2].split('#');
 	}
 		
-		if(iceKeys !=null && iceKeys.length >=1 && iceKeys[0]!='' && dojo.indexOf(iceKeys,which.value)>=0){  // selected is ice
+		if(iceKeys !=null && iceKeys.length >=1 && iceKeys[0]!='' && iceKeys.indexOf(which.value)>=0){  // selected is ice
 		//alert(1 +' ice '+ iceKeys );
 			updateTarget(which,iceKeys,true,ddSelectionKey);
-		}else if(stackKeys !=null && stackKeys.length >=1 && stackKeys[0]!='' && dojo.indexOf(stackKeys,which.value)>=0){
+		}else if(stackKeys !=null && stackKeys.length >=1 && stackKeys[0]!='' && stackKeys.indexOf(which.value)>=0){
 		//alert(2 +' st '+  stackKeys);
 			doDeselectLogic(which,stackKeys,pedKeys);
 			updateTarget(which,stackKeys,false,ddSelectionKey);
-		}else if(pedKeys !=null && pedKeys.length >=1 && dojo.indexOf(pedKeys,which.value)>=0){
+		}else if(pedKeys !=null && pedKeys.length >=1 && pedKeys.indexOf(which.value)>=0){
 		//alert(3 +' pd '+ pedKeys );
 			doDeselectLogic(which,stackKeys,pedKeys);
 			updateTarget(which,pedKeys,false,ddSelectionKey);
@@ -249,21 +249,21 @@ function updateTarget(which,keys,isIce,ddSelectionKey){
 		//alert(install+"--" +product +"  which "+ which.value);
 		if(isIce) {// its ice maker
 			if(which.value == install){ // user selected icemaker INSTALL!!!
-				target=document.getElementById('optional_checkbox_'+product);
+				target=document.getElementById('optional_checkbox_'+install);
 				if(target.checked){return;} // nothing to update target is already checked.
 				else{target.checked=which.checked;}
 				
 			}else if(which.value == product){ // user selected icemaker
-				target=document.getElementById('optional_checkbox_'+install);
+				target=document.getElementById('optional_checkbox_'+product);
 				if(! which.checked && target.checked){
 					target.checked=false;
 				}else {return;} // no need to update cost; 
 			}
 		}else{ // pedestal /staking kit/
 			if(which.value == install){ // user selected INSTALL!!!
-				target=document.getElementById('optional_checkbox_'+product);
-			}else{ // user selected product
 				target=document.getElementById('optional_checkbox_'+install);
+			}else{ // user selected product
+				target=document.getElementById('optional_checkbox_'+product);
 			}
 			target.checked=which.checked;
 		}

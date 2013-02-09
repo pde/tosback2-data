@@ -17,14 +17,15 @@
 
 
 
-<!-- cmdversionid=473 -->
+<!-- cmdversionid=474 -->
  <!-- GTM CORE Display String -->
 <!-- Begin Redesign Content Area -->
 <!-- cmdversionid=471 -->
 <!-- Begin Redesign Content Area -->
 <!-- cmdversionid=441 -->
 <!-- ENT BUSINESS [9214] -->
-<!-- Revised 2013-01-30  PP -->
+<!-- Revised 08-02-2013 RK -->
+
 <title>AT&amp;T Business Services, Enterprise Networking Solutions, Wireless Networking for Business | AT&amp;T</title>
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -1559,7 +1560,7 @@ document.write('<'+'script type="text/javascript" src="'+w[opname].url+'?D_ds='+
 <!--Marquee banner  -->                         
  <div id="marqueeHolder" class="zindexclass" > </div>
      <script type="text/javascript">
-                                    JSAM.createMarquee('/Common/enterprise/homepage/xml/enterprise_landing-marquee_m.xml', {width:983, height:300, origin:'http://www.att.com/'});
+                                    JSAM.createMarquee('/Common/enterprise/homepage/xml/enterprise_landing-marquee_n.xml', {width:983, height:300, origin:'http://www.att.com/'});
                         </script> 
  
 </div>
@@ -1727,9 +1728,9 @@ InitializeBlog(topicName,blogFeedURL,feedLimit,false,pageID);
 <script> 
  
  
-var f_page = "ATT"; 
-var t_page = "ATT"; 
- 
+//var f_page = "ATT"; 
+//var t_page = "ATT"; 
+ var t_page = "attbusiness";
 function add_commas(number) {
             if (number.length > 3) {
                         var mod = number.length % 3;
@@ -1750,32 +1751,46 @@ function add_commas(number) {
 // when document is ready load the counts
 jQuery(document).ready(function(){
             // grab from facebook
-            jQuery.getJSON('https://graph.facebook.com/'+f_page+'?callback=?', function(data) {
+       /**     jQuery.getJSON('https://graph.facebook.com/'+f_page+'?callback=?', function(data) {
             var fb_count = data['likes'].toString();
             fb_count = add_commas(fb_count);
             jQuery('#fb_count').html(fb_count);
-});
+});**/
  
 // grab from twitter
-TWT =78;
+
 jQuery.getJSON('http://api.twitter.com/1/users/show.json?screen_name='+t_page+'&callback=?', function(data) {
             twit_count = data['followers_count'].toString();
-            twit_count = add_commas(twit_count);
-            jQuery('#twitter_count').html(twit_count);
+			twit_count = add_commas(twit_count);
+         //   jQuery('#twitter_count').html(twit_count);
+		jQuery('#social-share-footer #share-counts .social-service .follower-counter .follower-mid #twitter_count').html(twit_count);
             });
             
+		
+			
+			
  
  
-// grab from twitter
+// grab from You_tube
+jQuery.getJSON('http://gdata.youtube.com/feeds/api/users/ShareATT?alt=json&callback=?', function(data) {
+       		you_count = data['entry']['yt$statistics']['subscriberCount'].toString();
+        	you_count = add_commas(you_count);
+			
+        	jQuery('#youtube_count').html(you_count);
+	});
+
+
+
             
 });
- 
+
+/**
 function youtubeFeedCallback( data ) {
             document.writeln( data.entry[ "yt$statistics" ].viewCount );
             var yc = add_commas(data.entry[ "yt$statistics" ].viewCount);
             jQuery('#yt_count').html(yc);
 }
- 
+**/
 </script>
 <div id="social-share-footer">
 <span id="share-description">Follow us to connect with fresh news, expert insights and special offers.</span>
@@ -1785,8 +1800,9 @@ function youtubeFeedCallback( data ) {
 <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
 <script type="IN/FollowCompany" data-id="1052" data-url="http://www.linkedin.com" data-counter="right"></script>
 </div>-->
-<div class="social-service" >
-<a onClick="javascript:dcsMultiTrack('DCSext.wtATTPage','ent_landing_page_9214','DCSext.wtATTAtrib3','twitter','DCSext.wtATTAtrib2', 'link');" href="http://twitter.com/attbusiness" ><img src="../Common/enterprise/homepage/images/twitter-bird-light-bgs-16.png"  /></a>
+<div class="social-service">
+<a onClick="javascript:dcsMultiTrack('DCSext.wtATTPage','ent_landing_page_9214','DCSext.wtATTAtrib3','twitter','DCSext.wtATTAtrib2', 'link');" href="http://twitter.com/attbusiness" >
+<!--a href="http://twitter.com/attbusiness"--><img src="../Common/enterprise/homepage/images/twitter-bird-light-bgs-16.png"  /></a>
 <div class="follower-counter">
 <div class="follower-cap">
 </div>
@@ -1801,9 +1817,9 @@ function youtubeFeedCallback( data ) {
  
 </div>
 </div>
-<div class="social-service" >
+<!-- div class="social-service" >
 <a href="https://www.facebook.com/ATTSmallBiz"  onClick="javascript:dcsMultiTrack('DCSext.wtATTPage','ent_landing_page_9214','DCSext.wtATTAtrib3','facebook','DCSext.wtATTAtrib2', 'link');">
-<img src="../Common/enterprise/homepage/images/facebook.png"/></a>
+<img src="/Common/enterprise/homepage/images/facebook.png"/></a>
 <div class="follower-counter">
 <div class="follower-cap">
 </div>
@@ -1813,16 +1829,17 @@ function youtubeFeedCallback( data ) {
 <div class="follower-end">
 </div>
 </div>
-</div>
+</div-->
 <div class="social-service" >
-<a href="http://www.youtube.com/user/ATTEnterprise" onClick="javascript:dcsMultiTrack('DCSext.wtATTPage','ent_landing_page_9214','DCSext.wtATTAtrib3','youtube','DCSext.wtATTAtrib2', 'link');return false;" ><img src="../Common/enterprise/homepage/images/youtube.png"/></a>
-<div class="follower-counter">
+<a href="http://www.youtube.com/user/ATTEnterprise" onClick="javascript:dcsMultiTrack('DCSext.wtATTPage','ent_landing_page_9214','DCSext.wtATTAtrib3','youtube','DCSext.wtATTAtrib2', 'link');return false;" >
+<!--a href="http://www.youtube.com/user/ATTEnterprise"-->
+<img src="../Common/enterprise/homepage/images/youtube.png"/></a>
+<div class="follower-counter" >
  
 <div class="follower-cap">
 </div>
 <div class="follower-mid">
-<span id="yt_count">
-<script type="text/javascript" src="../../gdata.youtube.com/feeds/api/videos/eOkpuP1XuT4%3Fv=2&amp;alt=json-in-script&amp;callback=youtubeFeedCallback"></script>
+<span id="youtube_count">
 </span>
 </div>
 <div class="follower-end">

@@ -3132,7 +3132,6 @@ getNiagaraResultsURL : function(){return 'http://internal.niagara.comedycentral.
 getNiagaraRegisterURL : function(){return 'http://activities.niagara.comedycentral.com/register/comedycentral/';},
 getNiagaraMasterResultsURL : function(){return 'http://internal.niagara.comedycentral.com/results/';},
 getNiagaraActivityURL : function(){return 'http://user.niagara.comedycentral.com/activity/comedycentral/3';},
-getNiagaraActivityHomeURL : function(){return 'http://activities.niagara.comedycentral.com/';},
 getNiagaraUrl : function(){return 'http://niagara.comedycentral.com/';},
 getNiagaraSiteName : function(){return 'comedycentral_aggregate';},
 getNiagaraPopularityURL : function(){return 'http://internal.niagara.comedycentral.com/feeds/popularity/comedycentral_aggregate/';},
@@ -3150,6 +3149,5 @@ getTwitterBaseHref : function(){return 'http://search.twitter.com/search.json';}
 getGigyaApiKey : function(){return '';},
 getTweetRiverUrl : function(){return 'http://tweetriver.com/';},
 getTweetRiverFeed : function(){return 'tomgreenpoint/comedycentral';},
-getTweetRiverType : function(){return 'json';},
-getPreferenceCheckClasses : function(){return '.ad_728x90,.ad_300x250';}
+getTweetRiverType : function(){return 'json';}
 };

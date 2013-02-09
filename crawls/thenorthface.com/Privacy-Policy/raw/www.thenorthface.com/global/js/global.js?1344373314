@@ -3125,7 +3125,10 @@ if(ay.arrowScrollOnHover){ax.bind("mouseover.jsp",aD(-1,0,ax));x.bind("mouseover
     MERCHANDISER_IMG: TNF.env.S7.get('isRoot') + 'TheNorthFace/130x130/Product-<productId>_<variation>_hero.jpg',
     MERCHANDISER_HOPUP: '/webapp/wcs/stores/servlet/TNFQuickView?partNumber=<productId>&iframe=true&height=352&width=819',
 	COMPARE_MERCHANDISER_JSON: '/webapp/wcs/stores/servlet/TNFCompareScrollerJson',
-	EMAIL_SIGNUP: '/webapp/wcs/stores/servlet/TNFEmailSubscribe?URL=/webapp/wcs/stores/servlet/TNFEmailPreferencesHopUp&errorView=TNFEmailPreferencesHopUp'
+	EMAIL_SIGNUP: '/webapp/wcs/stores/servlet/TNFEmailSubscribe?URL=/webapp/wcs/stores/servlet/TNFEmailPreferencesHopUp&errorView=TNFEmailPreferencesHopUp',
+    // DEV NOTE: The value below should be updated to be the hopups expected host name.
+    // The format is: protocol + host of the hopup
+    SIGNIN_HOPUP_URL: 'http://' + window.location.host 
   });
 
   TNF.lang = new TNF.models.settings({});
@@ -3726,6 +3729,16 @@ TNF.minicart = {
 	
 };
 
+/*
+ * jQuery postMessage - v0.5 - 9/11/2009
+ * http://benalman.com/projects/jquery-postmessage-plugin/
+ * 
+ * Copyright (c) 2009 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+(function($){var g,d,j=1,a,b=this,f=!1,h="postMessage",e="addEventListener",c,i=b[h]&&!$.browser.opera;$[h]=function(k,l,m){if(!l){return}k=typeof k==="string"?k:$.param(k);m=m||parent;if(i){m[h](k,l.replace(/([^:]+:\/\/[^\/]+).*/,"$1"))}else{if(l){m.location=l.replace(/#.*$/,"")+"#"+(+new Date)+(j++)+"&"+k}}};$.receiveMessage=c=function(l,m,k){if(i){if(l){a&&c();a=function(n){if((typeof m==="string"&&n.origin!==m)||($.isFunction(m)&&m(n.origin)===f)){return f}l(n)}}if(b[e]){b[l?e:"removeEventListener"]("message",a,f)}else{b[l?"attachEvent":"detachEvent"]("onmessage",a)}}else{g&&clearInterval(g);g=null;if(l){k=typeof m==="number"?m:typeof k==="number"?k:100;g=setInterval(function(){var o=document.location.hash,n=/^#?\d+&/;if(o!==d&&n.test(o)){d=o;l({data:o.replace(n,"")})}},k)}}}})(jQuery);
+
 TNF.assisted_search = {
 	_widget: false,
 	_emptyValue : $('#nav .search-input').val(),
@@ -3798,6 +3811,8 @@ TNF.assisted_search = {
 		
 		// Add the handler for focus and blur default value
 		if( ! TNF.assisted_search._emptyValue ) {
+		    /*ZCG: Added changes to remove spaces if a user enters to the start or end of a searchTerm 
+		     and not allow space being passed as a searchTerm to EasyAsk*/
 			TNF.assisted_search._emptyValue = $.trim($('#nav .search-input').val());
 		}
 		$('#nav .search-input').bind('focus', function(event){
@@ -3842,6 +3857,8 @@ TNF.assisted_search = {
 		});
 	},
 	gotoSearchPage: function() {
+		/*ZCG: Added changes to remove spaces if a user enters to the start or end of a searchTerm 
+		     and not allow space being passed as a searchTerm to EasyAsk*/
 		if ( $.trim(TNF.assisted_search._widget.val()).length > 0 && TNF.assisted_search._widget.val() != TNF.assisted_search._emptyValue ) {
 			/** ZCG: encode search term to prevent truncation when special characters like & are included */
 			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+encodeURIComponent($.trim(TNF.assisted_search._widget.val()));
@@ -3982,10 +3999,15 @@ TNF.email_drawer = {
    		TNF.email_drawer.link = $('.email-dropdown', TNF.toolbar);
     	TNF.email_drawer.drawer = $('.email-dropdown-drawer', TNF.toolbar);
     	TNF.email_drawer.close = $('.close', TNF.email_drawer.drawer);
-
+    try {
     	TNF.email_drawer.bindHovers();
     	TNF.email_drawer.close.click(TNF.email_drawer.closeHandler);
-		TNF.email_drawer.drawer.css('left', TNF.email_drawer.link.position().left - 100);
+
+    	TNF.email_drawer.drawer.css('left', TNF.email_drawer.link.position().left - 100);
+    }
+    catch(e) {
+      TNF.ECOM.log(e.message);
+    }
   	},
 
   	bindHovers: function() {
@@ -4121,6 +4143,26 @@ $(function(){
       }
     });
   };
+  
+    // Setup hopup for header sign-in
+    $('.sign-in-header').each(function(i, e) {
+        var self = $(e),
+            signInHref = self.attr('href');
+  
+        self.colorbox({
+            iframe: true, 
+            title: '&nbsp;&nbsp;' + self.attr('title'),
+            height: self.data('height'), 
+            width: self.data('width'),
+            transition: 'none'
+        });
+
+      	if(signInHref.indexOf("?") >= 0 ) {
+            self.attr('href', signInHref + "&hopupParent=" + encodeURIComponent(window.location));
+      	}else{
+            self.attr('href', signInHref + "?hopupParent=" + encodeURIComponent(window.location));
+      	}
+    });
 
   new TNF.setupToggleDropdowns();
 
@@ -4131,4 +4173,44 @@ $(function(){
   TNF.email_drawer.init();
   new TNF.email_updates('#subscribe form');
   new TNF.email_updates('.email-dropdown-drawer form');
+
+    // Receive message for postMessage for sign-in hopup
+    // Only needed for https hopup
+    $.receiveMessage(
+        function(e){
+            // Get data from the sender and parse
+            var data = $.parseJSON(e.data);
+			
+            // Execute the action requested by the sender
+            switch(data.action) {
+                // Close the hopup
+                case 'close':
+                    parent.$.colorbox.close();
+                    break;
+
+                // Resize the hopup
+                case 'resize':
+                    parent.$.colorbox.resize({
+                        innerWidth: data.width,
+                        innerHeight: data.height 
+					});
+                    break;
+                // Refresh the parent window
+                case 'refresh':
+                    parent.window.location.href = parent.window.location.href;
+                    break;
+
+                // Redirect the parent window
+                case 'redirect':
+                    parent.window.location = data.url;
+                    break;
+
+                // Change the title of the hopup
+                case 'changeTitle':
+                    $('#cboxTitle').html('&nbsp;&nbsp;' + data.title);
+                    break;
+            }
+        },
+        TNF.env.URL.get('SIGNIN_HOPUP_URL')
+    );
 });

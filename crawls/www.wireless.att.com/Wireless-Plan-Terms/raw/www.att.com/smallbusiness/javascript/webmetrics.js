@@ -6,10 +6,15 @@ WebMetrics = {
 	},
 	
 	DCSext: {
-		
+		wtNoHit: "1",
+		wtSuccessFlag: "1"
 	},
 	
 	init: function() {
+		var wtSuccessFlag = WebMetrics.getMetaTagValue("wtSuccessFlag");
+		if(wtSuccessFlag != "")
+			WebMetrics.DCSext.wtSuccessFlag = wtSuccessFlag;
+		
 		$('a').each(function(){
 			var href = $(this).attr('href');
 			var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
@@ -19,6 +24,33 @@ WebMetrics = {
 				$(this).attr('href', href.replace(/wtPN/g,wtPN));
 			}
 		});
+		
+		$('a.externalLink',$('div#trayContent')).click(function(){
+    		if(window.WebMetrics){
+    			var pageName = WebMetrics.getMetaTagValue('DCSext.wtPN');
+    			dcsMultiTrack('DCSext.wtLinkLoc' , pageName+'_TerNav',
+						'DCSext.wtLinkName' ,pageName + "_" + $(this).attr('rel'),
+						'DCSext.svl' ,'1');
+			}
+    	});
+		
+		$('a',$('.SocialMedia')).click(function(){
+    		if(window.WebMetrics){
+    			var pageName = WebMetrics.getMetaTagValue('DCSext.wtPN');
+    			dcsMultiTrack('DCSext.wtLinkLoc' , pageName+'_SocialMedia',
+						'DCSext.wtLinkName' ,pageName + "_" + $(this).attr('rel'),
+						'DCSext.svl' ,'2');
+			}
+    	});
+		
+		$('a.externalLink',$('.linkFarmContainer')).click(function(){
+    		if(window.WebMetrics){
+    			var pageName = WebMetrics.getMetaTagValue('DCSext.wtPN');
+    			dcsMultiTrack('DCSext.wtLinkLoc' , pageName+'_GlobalLinks',
+						'DCSext.wtLinkName' ,pageName + "_" + $(this).attr('rel'),
+						'DCSext.svl' ,'2');
+			}
+    	});
 	},
 	
 	dispatchReport: function(wtEvent) {
@@ -38,13 +70,11 @@ WebMetrics = {
 		
 		execute = "dcsMultiTrack(" + wtArgs.substr(0,wtArgs.length-2) + ")";
 		
-		var timeoutInterval = setTimeout(function() {
-			jQuery.globalEval(execute);
-			clearTimeout(timeoutInterval)
-		},500);
+		jQuery.globalEval(execute);
 		
 	},
 	
+	//REQUEST PROCESSED PAGE NAME
 	getMetaTagValue: function(pName) {
 		var rv="";
 		var mName="";
@@ -58,6 +88,7 @@ WebMetrics = {
 		return rv.replace(/ /g,'');
 	},
 	
+	//REQUEST UNPROCESSED PAGE NAME
 	getPageName: function() {
 		var rv="";
 		var mName="";

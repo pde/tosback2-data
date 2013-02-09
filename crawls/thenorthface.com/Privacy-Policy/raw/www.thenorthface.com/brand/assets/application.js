@@ -254,7 +254,7 @@ var Class = (function() {
 	}
 
 	// Handles "data-method" on links such as:
-	// <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+	// <a href="/en_US/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
 	function handleMethod(link) {
 		var href = link.attr('href'),
 			method = link.data('method'),
@@ -3958,10 +3958,10 @@ $.fn.tnfBrandItemBuilder = function () {
     }
 
     $.fn.extend({
-      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/$2\">$2</a>"),
+      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/en_US/$2\">$2</a>"),
       // Support various latin1 (\u00**) and arabic (\u06**) alphanumeric chars
       linkHash: replacer(/(?:^| )[\#]+([\w\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0600-\u06ff]+)/gi,
-                         ' <a href="http://'+s.twitter_search_url+'/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
+                         ' <a href="http://'+s.twitter_search_url+'/en_US/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
       capAwesome: replacer(/\b(awesome)\b/gi, '<span class="awesome">$1</span>'),
       capEpic: replacer(/\b(epic)\b/gi, '<span class="epic">$1</span>'),
       makeHeart: replacer(/(&lt;)+[3]/gi, "<tt class='heart'>&#x2665;</tt>")
@@ -4674,10 +4674,18 @@ $.support.transition = (function(){
 
     function HeroGalleryTab(element) {
       this.element = element;
+      this._enableIfOpen = __bind(this._enableIfOpen, this);
+
+      this.enable = __bind(this.enable, this);
+
+      this.disable = __bind(this.disable, this);
+
       this.select = __bind(this.select, this);
 
       this.renderStrategy = HeroGalleryTabRenderStrategy.factory(this.element);
-      this.element.click(this.select);
+      this.element.bind('click', this.select);
+      this.element.bind('mouseenter', this._enableIfOpen);
+      this.element.bind('mousemove', this._enableIfOpen);
     }
 
     HeroGalleryTab.prototype.isActive = function() {
@@ -4685,10 +4693,11 @@ $.support.transition = (function(){
     };
 
     HeroGalleryTab.prototype.select = function(event) {
+      this.enable();
       if (event != null) {
         event.preventDefault();
       }
-      this.element.trigger(SELECTION_EVENT, this.renderStrategy);
+      this.element.trigger(SELECTION_EVENT);
       return this.renderStrategy.select();
     };
 
@@ -4697,7 +4706,21 @@ $.support.transition = (function(){
     };
 
     HeroGalleryTab.prototype.enable = function() {
+      this._disableAfterDelay();
       return this.renderStrategy.enable();
+    };
+
+    HeroGalleryTab.prototype._disableAfterDelay = function() {
+      if (this.disableTimer != null) {
+        clearInterval(this.disableTimer);
+      }
+      return this.disableTimer = setTimeout(this.disable, 3000);
+    };
+
+    HeroGalleryTab.prototype._enableIfOpen = function() {
+      if (this.element.hasClass(OPEN_TAB_CLASS_NAME)) {
+        return this.enable();
+      }
     };
 
     return HeroGalleryTab;
@@ -4740,13 +4763,11 @@ $.support.transition = (function(){
     };
 
     HeroGalleryTabRenderStrategy.prototype.enable = function() {
-      this.element.removeClass(DISABLED_CLASS_NAME);
-      return this.panel.removeClass(DISABLED_CLASS_NAME);
+      return this.element.removeClass(DISABLED_CLASS_NAME);
     };
 
     HeroGalleryTabRenderStrategy.prototype.disable = function() {
-      this.element.addClass(DISABLED_CLASS_NAME);
-      return this.panel.addClass(DISABLED_CLASS_NAME);
+      return this.element.addClass(DISABLED_CLASS_NAME);
     };
 
     return HeroGalleryTabRenderStrategy;
@@ -4765,6 +4786,7 @@ $.support.transition = (function(){
     }
 
     HeroGalleryTabJSRenderStrategy.prototype.select = function(event) {
+      HeroGalleryTabJSRenderStrategy.__super__.select.apply(this, arguments);
       this.showTab();
       return this.panel.fadeIn(400, this.constructor.__super__.select.bind(this));
     };
@@ -4780,23 +4802,31 @@ $.support.transition = (function(){
     };
 
     HeroGalleryTabJSRenderStrategy.prototype.disable = function() {
-      this.collapseTab();
-      return this.panel.find('img, .hero-cta').fadeTo(400, 0, this.constructor.__super__.disable.bind(this));
+      return this.collapseTab();
     };
 
     HeroGalleryTabJSRenderStrategy.prototype.collapseTab = function() {
-      return this.element.animate({
-        width: 31
-      }).find('span').animate({
+      return this.animate({
+        width: 31,
         left: 0
       });
     };
 
     HeroGalleryTabJSRenderStrategy.prototype.showTab = function() {
-      return this.element.animate({
-        width: 187
-      }).find('span').animate({
+      return this.animate({
+        width: 187,
         left: 156
+      });
+    };
+
+    HeroGalleryTabJSRenderStrategy.prototype.animate = function(options) {
+      if (this.element.is(':animated')) {
+        return;
+      }
+      return this.element.animate({
+        width: options.width
+      }).find('span').animate({
+        left: options.left
       });
     };
 

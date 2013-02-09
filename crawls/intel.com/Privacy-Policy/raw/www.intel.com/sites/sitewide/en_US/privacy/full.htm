@@ -15,7 +15,7 @@
         <meta name="robots" content="noarchive"/>
         <meta name="language" content="en"/>
         <meta name="location" content="us"/>
-        <meta name="X-Server" content="PRD1PCQAPP03"/>
+        <meta name="X-Server" content="PRD1PCQAPP07"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
         <meta property="og:title" content="Intel® Online Privacy Notice"/>
         <meta property="og:type" content="company"/>
@@ -340,7 +340,7 @@ function processHPResult(resultStr)
 function onSubmitHps() {
     var boxVal = document.getElementById("searchBox").value,
             hpsForm = document.getElementById("hpsform");
-    var searchText = 'What can we help you find today?';
+    var searchText = 'Search';
     waTrackSearch(document.getElementById(boxVal, 'text', '')); //analytic tracking - do not remove
     if(boxVal==searchText){
         var action = '/content/www/us/en/search.advanced.html';
@@ -433,7 +433,7 @@ $(function (){var custEnc=function(){$('#searchBox').val(custCharRplHps($('#sear
 
 <div class="component" data-component="homepagesearch" data-component-id="1">
     <form class="intel-search" name="hpsform" id="hpsform" action="http://www.intel.com/content/www/us/en/search.html"/>
-    <input autocomplete="off" id="searchBox" name="keyword" type="text" value="What can we help you find today?" title="What can we help you find today?" class="input clearOnFocus" onkeyup="showHPResult(this.value)"/>
+    <input autocomplete="off" id="searchBox" name="keyword" type="text" value="Search" title="Search" class="input clearOnFocus" onkeyup="showHPResult(this.value)"/>
     
     <input type="submit" class="submit" value="Search" onclick="onSubmitHps()"/>
     <div class="predictive-search hideme" id="predictive-search">
@@ -760,6 +760,13 @@ else{
              }
              });
              // ]]>
+             function loadAsyncScript(httpUrl, httpsUrl)  { $(function() {
+                 $(function(){
+                     var url =  (window.parent.document.location.protocol == "http:") ? httpUrl : httpsUrl;
+                     console.log("Loading Script: " + url);
+                     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;  po.src = url;  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);});
+             });
+             }
         </script>           
         <noscript>
           <h4>
@@ -809,16 +816,11 @@ else{
                           //<![CDATA[
                          var locationCountry = "en_US";
                          var locationCountryOverride="";
-							if (locationCountryOverride.length!=0)
-								{
-								locationCountry= locationCountryOverride;
-								}
-
-                             if (window.parent.document.location.protocol == "http:"){
-                                    document.write('<script src="http://connect.facebook.net/' + locationCountry + '/all.js#appId=186774301373559&amp;xfbml=1" type="text/javascript"><\/script>');
-                             }else if ((window.parent.document.location.protocol == "https:") ){
-                                    document.write('<script src="../../../../../connect.facebook.net/'&#32;+&#32;locationCountry&#32;+&#32;'/all.js#appId=186774301373559&amp;xfbml=1" type="text/javascript"><\/script>');
-                             }
+						 if (locationCountryOverride.length != 0)
+						 {
+							locationCountry = locationCountryOverride;
+						 }
+                         loadAsyncScript("http://connect.facebook.net/" + locationCountry + "/all.js#appId=186774301373559&xfbml=1", "https://connect.facebook.net/" + locationCountry + "/all.js#appId=186774301373559&xfbml=1");
                              // ]]>
                      </script>
                      <fb:like href="http%3A%2F%2Fwww.intel.com%2Fcontent%2Fwww%2Fus%2Fen%2Fprivacy%2Fintel-online-privacy-notice.html" layout="button_count"  width="120" show_faces="false" action="recommend"></fb:like>
@@ -826,7 +828,13 @@ else{
              </li>
           
             <li style="float: left;" class="function gplus">
-                <!--[if gt IE 6]><!--><div class="googleplus" ><script>//<![CDATA[if (window.parent.document.location.protocol == "http:"){document.write('<script src="http://apis.google.com/js/plusone.js" type="text/javascript"><\/script>');}else if ((window.parent.document.location.protocol == "https:") ){document.write('<script src="../../../../../apis.google.com/js/plusone.js" type="text/javascript"><\/script>');}// ]]></script><g:plusone callback="waTrackPlusOne_vote" href="http://www.intel.com/content/www/us/en/privacy/intel-online-privacy-notice.html"></g:plusone></div><!--<![endif]-->
+                <!--[if gt IE 6]><!--><div class='googleplus'>
+<script>
+//<![CDATA[
+loadAsyncScript('http://apis.google.com/js/plusone.js', 'https://apis.google.com/js/plusone.js');
+// ]]>
+</script>
+<g:plusone callback="waTrackPlusOne_vote" href="http://www.intel.com/content/www/us/en/privacy/intel-online-privacy-notice.html"></g:plusone></div><!--<![endif]-->
 
             </li>
             
@@ -1485,7 +1493,7 @@ $(document).ready( function () {
     jQuery(document).ready(function(){
         var pageEntry = {
             'pageName':  '/content/www/us/en/privacy/intel-online-privacy-notice'.substr( '/content/www/us/en/privacy/intel-online-privacy-notice'.lastIndexOf('/') + 1),
-            'visitDate': '02-06-2013 04-40',
+            'visitDate': '02-09-2013 02-07',
             'pageTags': 'Topic%2FCorporate+Information%2FPolicy',
             'contentAttribute' : ''
           };
@@ -1538,13 +1546,7 @@ $(document).ready( function () {
     
 });</script>
 <!-- End of cookie creation for Recommended For Members. -->
-      <script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
+
 </html>
 		<!-- loading clickstreamcloud late to improve performance -->
 <div class="clickstreamcloud">
@@ -2052,7 +2054,7 @@ More info available at http://www.omniture.com -->
 <!--
 More detailed timing info is available by uncommenting some code in the timing.jsp component
 Timing chart URL:
-http://chart.apis.google.com/chart?chtt=intel-online-privacy-notice.html+%283074ms%29&cht=bhs&chxt=x&chco=c6d9fd,4d89f9&chbh=a&chds=0,3074,0,3074&chxr=0,0,3074&chd=t:15,31,31,31,31,47,47,47,47,47,62,62,62,62,62,62,62,78,78,78,78,78,109,109,109,109,125,140,140,140,140,140,140,140,156,156,156,156,156,156,156,156,156,171,171,171,171,171,171,171,171,749,749,2902,2902,2918,2918,2918,2918,2918,2918,2934,2934,3058,3074,3074,3074,3074|16,0,0,0,0,0,0,15,62,62,0,0,0,0,0,16,16,0,0,31,31,31,0,0,31,2809,0,0,0,0,0,16,31,31,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,578,0,2153,0,16,0,0,0,0,156,156,0,0,16,0,0,0,0&chly=head.jsp|gomez.jsp|headlibs.jsp|init.jsp|headcustom.jsp|header.html%29|logo.html%29|logo.jsp|uheader.jsp|header.jsp|uheadernavigationtitle...|mainmenutitle.jsp|homepagesearch.jsp|uheaderlinks.html%29|uheaderlinks.jsp|unavmyintel.jsp|unavmyintel.jsp|savedcontents.jsp|globalnav2.out.html%29|newmenu.jsp|out.jsp|Page.jsp|oldbrowsersdialog.jsp|redirect.jsp|detailedtemplatebackbu...|content.jsp|detailedtemplatetagged...|intelparsys.jsp|masthead.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|intelparsys.jsp|main.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|org.apache.sling.servl...|intelparsys.jsp|intelparsys.jsp|videofilmstripgallery.jsp|relatedbladevideos2.jsp|related.jsp|related2.jsp|conversations.jsp|disclaimers.jsp|clickstreamcloud.jsp|sitecatalyst.jsp|analytics.jsp|globalfooter.html%29|footer.jsp|footer.jsp|proactivechat.jsp|footersocial.jsp|footertools.jsp|footerlinks.html%29|footerlinks.jsp|mvt_stats.jsp|stats.jsp&chs=600x500
+http://chart.apis.google.com/chart?chtt=intel-online-privacy-notice.html+%282422ms%29&cht=bhs&chxt=x&chco=c6d9fd,4d89f9&chbh=a&chds=0,2422,0,2422&chxr=0,0,2422&chd=t:0,62,62,62,62,62,62,62,62,62,78,78,78,78,78,78,78,93,93,93,93,93,125,125,125,125,125,140,140,140,156,156,156,156,156,156,156,156,156,172,172,172,172,172,172,172,172,172,172,187,187,593,593,2234,2234,2234,2234,2234,2250,2250,2250,2250,2250,2422,2422,2422,2422,2422|62,0,0,0,0,0,0,16,63,63,0,0,0,0,0,15,15,0,0,32,32,32,0,0,15,15,2109,0,0,47,0,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,15,0,406,0,1641,0,0,0,16,16,0,0,15,172,172,0,0,0,0,0&chly=head.jsp|gomez.jsp|headlibs.jsp|init.jsp|headcustom.jsp|header.html%29|logo.html%29|logo.jsp|uheader.jsp|header.jsp|uheadernavigationtitle...|mainmenutitle.jsp|homepagesearch.jsp|uheaderlinks.html%29|uheaderlinks.jsp|unavmyintel.jsp|unavmyintel.jsp|savedcontents.jsp|globalnav2.out.html%29|newmenu.jsp|out.jsp|Page.jsp|oldbrowsersdialog.jsp|redirect.jsp|detailedtemplatetagged...|detailedtemplatebackbu...|content.jsp|intelparsys.jsp|masthead.jsp|main.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|intelparsys.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|org.apache.sling.servl...|intelparsys.jsp|intelparsys.jsp|videofilmstripgallery.jsp|relatedbladevideos2.jsp|related.jsp|related2.jsp|conversations.jsp|disclaimers.jsp|clickstreamcloud.jsp|sitecatalyst.jsp|analytics.jsp|globalfooter.html%29|proactivechat.jsp|footersocial.jsp|footer.jsp|footer.jsp|footertools.jsp|footerlinks.html%29|footerlinks.jsp|mvt_stats.jsp|stats.jsp&chs=600x500
 -->
 
 </div>

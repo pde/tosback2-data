@@ -10,7 +10,7 @@ metric.certonaISBActive = true; // set to true if you want certona activated on 
 
 metric.eGainActive = true;     // set to true if you want eGain activated for lestore
 metric.eGainActiveCanvas = true; //set to true if you want eGain activated for canvas 
-metric.criteoActive = true;    // set to true if you want Criteo activated for lestore
+metric.criteoActive = false;    // set to true if you want Criteo activated for lestore
 metric.criteoActiveCanvas = false;    // set to true if you want Criteo activated for canvas
 metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated

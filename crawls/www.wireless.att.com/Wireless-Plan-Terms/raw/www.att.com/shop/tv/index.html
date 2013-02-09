@@ -210,6 +210,14 @@ CQURLInfo = {
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
                     } 
                 } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
+                    } 
+                } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
 		}); 
         clearTimeout(atgProfileDataTimer); 
@@ -707,7 +715,7 @@ for life.<br>
         <div id="content"> 
             <div style="display:inline;margin-top:5px;"> 
 				<div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear"></div> 
+                <div class="clear" style="display:inline"></div> 
             </div>             
             <div class="primary-content-full"> 
                 <div class="LoBT"> 
@@ -733,7 +741,7 @@ for life.<br>
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/DigitalTV/overview/campaign/red","name":"red","campainName":"campaign","id":"campaign_red","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uversegreen-iptv-notavailable","/shopcms/shopetc/segmentation/UF/segmnts/uverse-red-22state","/shopcms/shopetc/segmentation/UF/segmnts/ipdsl22","/shopcms/shopetc/segmentation/UF/segmnts/red-nodsl-22"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/overview/campaign/green","name":"green","campainName":"campaign","id":"campaign_green","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/overview/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_tv_jcr_content_LoBT_teasertab1", "false", null);  }</script> 
          <div id="_content_att_shop_en_tv_jcr_content_LoBT_teasertab1" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content;2013028" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content;2013038" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="oneup parbase section"> 
 <div class="one-up parbase fullwidthoneup"> 
@@ -982,8 +990,8 @@ tive new features you can only get with AT&amp;T.</p>
     <div class="mediaLinkAndCaption double" style="float:left;">  
         <div class="media1 video"> 
     <div class="mediaLink double">  
-        <a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/Remote_Access.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content/LoBTabs/LobTab1/oneup_1/one-up/TallPromo1/videobox/media1;2012173"> 
-          <img src="../../media/gvp/video_resources/thumb/gvp_Windows7-Connect-To-PC-And-More_110x62.jpg" alt="Learn About Accessing U-verse Remotely" class="gvpThumbnail "/> 
+        <a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-19-Mobile_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content/LoBTabs/LobTab1/oneup_1/one-up/TallPromo1/videobox/media1;2013038"> 
+          <img src="../../media/gvp/video_resources/thumb/gvp_Uverse-19-Mobile_110x62.jpg" alt="Learn About Accessing U-verse Remotely" class="gvpThumbnail "/> 
           <div class="thumbHover "></div> 
           <!--[if IE 7]><div class="thumbHoverIE "></div><![endif]--> 
         </a>  
@@ -996,14 +1004,14 @@ tive new features you can only get with AT&amp;T.</p>
     <div class="mediaLinkAndCaption double" style="float:left;">  
         <div class="media2 video"> 
     <div class="mediaLink double">  
-        <a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Voice-VoIP_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content/LoBTabs/LobTab1/oneup_1/one-up/TallPromo1/videobox/media2;2012173"> 
+        <a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Voice-VoIP_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/DigitalTV/overview/campaign/default/jcr:content/LoBTabs/LobTab1/oneup_1/one-up/TallPromo1/videobox/media2;2013038"> 
           <img src="../../media/gvp/video_resources/thumb/gvp_Uverse-Voice-VoIP_110x62.jpg" alt="Learn About VoIP" class="gvpThumbnail "/> 
           <div class="thumbHover "></div> 
           <!--[if IE 7]><div class="thumbHoverIE "></div><![endif]--> 
         </a>  
     </div>  
     <div class="mediaText double"> 
-    <p class="caption double">Learn About VoIP</p>  
+    <p class="caption double">Learn About U-verse Voice</p>  
     </div> 
 <div class="clear"></div></div> 
     </div> 
@@ -1173,9 +1181,6 @@ jQuery(document).ready(function() {
 </div> 
 <div class="clear"></div></div> 
     <div class="legal text parbase"> 
-	<div class="legal"> 
-	   *test disclaimer<br> 
-	</div> 
 <div class="clear"></div></div> 
 <div class="clear"></div></div> 
 </div> 
@@ -2142,12 +2147,6 @@ from AT&amp;T U-verse.</p>
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/tv/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -2162,7 +2161,7 @@ from AT&amp;T U-verse.</p>
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -2253,7 +2252,7 @@ from AT&amp;T U-verse.</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 48847222121769193039496623962462451106 --> 
+		 <!--X-Renderer: 211491180122934724796442477323179114501 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -2265,23 +2264,23 @@ from AT&amp;T U-verse.</p>
 	<meta name="DCSext.wt_aka_georegion" content="285" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
 <meta name="DCSext.wt_aka_region_code" content="TX" /> 
-<meta name="DCSext.wt_aka_city" content="HOUSTON" /> 
-<meta name="DCSext.wt_aka_dma" content="618" /> 
-<meta name="DCSext.wt_aka_pmsa" content="3360" /> 
-<meta name="DCSext.wt_aka_msa" content="3362" /> 
-<meta name="DCSext.wt_aka_areacode" content="713+281" /> 
-<meta name="DCSext.wt_aka_county" content="HARRIS" /> 
-<meta name="DCSext.wt_aka_fips" content="48201" /> 
-<meta name="DCSext.wt_aka_lat" content="29.7181" /> 
-<meta name="DCSext.wt_aka_long" content="-95.4241" /> 
+<meta name="DCSext.wt_aka_city" content="RICHARDSON" /> 
+<meta name="DCSext.wt_aka_dma" content="623" /> 
+<meta name="DCSext.wt_aka_pmsa" content="1920" /> 
+<meta name="DCSext.wt_aka_msa" content="1922" /> 
+<meta name="DCSext.wt_aka_areacode" content="972" /> 
+<meta name="DCSext.wt_aka_county" content="DALLAS" /> 
+<meta name="DCSext.wt_aka_fips" content="48113" /> 
+<meta name="DCSext.wt_aka_lat" content="32.9482" /> 
+<meta name="DCSext.wt_aka_long" content="-96.7295" /> 
 <meta name="DCSext.wt_aka_timezone" content="CST" /> 
-<meta name="DCSext.wt_aka_zip" content="77001-77099+77201-77210+77212-77213+77215-77231+77233-77238+77240-77245+77248-77249+77251-77259+77261-77263+77265-77275+77277+77279-77280+77282+77284+77287-77293+77297-77299" /> 
+<meta name="DCSext.wt_aka_zip" content="75080-75083+75085" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
-<meta name="DCSext.wt_aka_bw" content="1000" /> 
-<meta name="DCSext.wt_aka_network" content="verizon" /> 
-<meta name="DCSext.wt_aka_asnum" content="22394" /> 
-<meta name="DCSext.wt_aka_network_type" content="mobile" /> 
+<meta name="DCSext.wt_aka_bw" content="5000" /> 
+<meta name="DCSext.wt_aka_network" content="att" /> 
+<meta name="DCSext.wt_aka_asnum" content="7132" /> 
+<meta name="DCSext.wt_aka_network_type" content="uverse" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -2486,7 +2485,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","HfynRRCZDJDznTt2cbKG9VPy!1012408672!1360118457843"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","wPrhRVydTyTV3cQrxszsJLrs!-715917792!1360373949399"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -2522,6 +2521,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
 </body> 
 </html> 

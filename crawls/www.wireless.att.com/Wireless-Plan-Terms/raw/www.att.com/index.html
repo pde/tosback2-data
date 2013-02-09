@@ -280,6 +280,14 @@ CQURLInfo = {
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
                     } 
                 } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
+                    } 
+                } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
 		}); 
         clearTimeout(atgProfileDataTimer); 
@@ -680,27 +688,9 @@ CQURLInfo = {
 </div> 
 	<!-- undenav content --> 
 	<div id="underNav"> 
-<!--  
-commenting this out and rework so it wont make any ajax calls to reload the jquery.js and others. 
-<div class="parbase teaser homepagealertteaser alertTeaser"><span class="componentWrapper" id="/content/att/homepage/en/index/jcr:content/alertTeaser;2012165"> 
-<script type="text/javascript"> 
-	jQuery(document).ready(function() { 
-					jQuery.ajax({  
-						success: function(data, status, xhr) {  
-							if(data.indexOf('DOCTYPE') == -1) 
-							{ 
-								jQuery('#homepagealert').html(data); 
-								ShiftMarqueeDown(); 
-							} 
-						}, 
-						url: '/homepage/index/_jcr_content/alertTeaser.teaser.html'  
-					}); 
-		}) 
-	}); 
-</script> 
-<div id="homepagealert" ></div> 
-</span></div> 
---></div> 
+<div class="parbase teaser homepagealertteaser alertTeaser"> 
+</div> 
+</div> 
 	<style> 
 		.holidayWidgetDIV {background-color:transparent;position:absolute;float:left; left:0px; top:0px; z-index:5;}  
 	</style> 
@@ -714,7 +704,7 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 	<div id="marquee"> 
 		<div class="homepageMarqueePromo base"> 
 <div class="marquee parbase teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_122212","name":"HP_UG_DMA_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_122212","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR_122212","name":"HP_Default_OOR_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR_122212","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_Central_Lumia","name":"HP_UG_DMA_Central_Lumia","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_Central_Lumia","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SC_Region_UV_DMA"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_Southeast_Escape","name":"HP_UG_DMA_Southeast_Escape","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_Southeast_Escape","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SE_Region_UV_DMA"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Central_Lumia","name":"HP_Central_Lumia","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Central_Lumia","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SC_Region_All"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_SE_Escape","name":"HP_SE_Escape","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_SE_Escape","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SE_Region_All"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_122212","name":"HP_UG_DMA_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_122212","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR_122212","name":"HP_Default_OOR_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR_122212","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee" class="campaign campaign-admanager-marquee1"> 
          </div><div class="clear"></div> 
 </div> 
@@ -755,6 +745,8 @@ jQuery(document).ready(function(){
 		cookieRME = message.data.rme; 
 		cookieUID = message.data.uid; 
 		ATT.ssologin.LoginManager.cookieCheck(); 
+		//fix for jira ticket b2c12-4246   attuid ar5204 
+		ATT.ssologin.LoginManager.removePasswordFromIDField(); 
 	} 
 	if (window.attachEvent) 
 		window.attachEvent('onmessage', onMessage); 
@@ -839,7 +831,7 @@ jQuery(document).ready(function(){
 </style> 
 <div class="myLoginpaneBoxMiddleBGNew">  
     <div class="PadTop10 myLoginpaneBoxContent PadTop17IE"> 
-        <form id="ssoLoginForm" class="w180 myStyled_forms" method="post" action="accounts/index.html%3Fsource=IC4425j4900s2000.html"> 
+        <form id="ssoLoginForm" class="w180 myStyled_forms" autocomplete="off" method="post" action="accounts/index.html%3Fsource=IC4425j4900s2000.html"> 
             <img src="shopcms/media/att/2012/homepage/Input_Right_Focus.png" style="display:none"/> 
             <img src="shopcms/media/att/2012/homepage/Input_Left_Focus.png" style="display:none"/>  
             <div id="useridDiv" class="userIdContent PadBot14"> 
@@ -892,7 +884,7 @@ jQuery(document).ready(function(){
             <div class=" PadTop2 LoginButtonSection">  
                 <div> 
                     <div class=""> 
-                        <input type="image" id="tguardLoginButton" value="submit" src='shopcms/media/att/2012/homepage/login-new-bt.png' alt='Log In' title='Log In' onclick="expireCookie('SessionPersistence');" /> 
+                        <input type="image" id="tguardLoginButton" value="submit" src='shopcms/media/att/2012/homepage/login-new-bt.png' alt='Log In' title='Log In' onclick="expireCookie('SessionPersistence');ATT.ssologin.LoginManager.removePasswordFromIDField();" /> 
                     </div> 
                     <div class="PadTop5 MyRemember"> 
                         <div id="uniform-remMe" class="checker"> 
@@ -1010,7 +1002,7 @@ jQuery(document).ready(function(){
 		<div class="serviceItemsTile" style="float:left"><img class="vertSep" src="shopcms/media/att/2011/shop/common/bkd_div_vertical_197.gif" alt=""/></div> 
 		<div class="rightSide"><h4>My Account </h4> 
 			<ul> 
-                      <li><a class="homeproducttray_Unauth" href="https://www.att.com/olam/passthroughAction.myworld?actionType=ViewBillDetails&gnLinkId=t1002" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012326">Log in to view/pay bill</a></li><li><a class="homeproducttray_Both" href="https://www.att.com/eos/unauth/eosLogin" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012326">Check an order status</a></li><li><a class="homeproducttray_Both" href="https://www.att.com/olam/passthroughAction.myworld?actionType=WirelessProductLandingPage" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012326">Check Wireless usage</a></li> 
+                      <li><a class="homeproducttray_Unauth" href="https://www.att.com/olam/passthroughAction.myworld?actionType=ViewBillDetails&gnLinkId=t1002" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2013039">Log in to view/pay bill</a></li><li><a class="homeproducttray_Both" href="https://www.att.com/eos/unauth/eosLogin" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2013039">Check an order status</a></li><li><a class="homeproducttray_Both" href="https://www.att.com/olam/passthroughAction.myworld?actionType=WirelessProductLandingPage" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2013039">Check Wireless usage</a></li><li><a class="homeproducttray_Both" href="shop/wireless/addaline.html" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2013039">Add A Line</a></li> 
 			</ul> 
 		</div> 
 	</div> 
@@ -1020,75 +1012,202 @@ jQuery(document).ready(function(){
 		<div class="homepagefeatures parbase homepageftrs"> 
 <div id="homepageFeatures">     
     <div class="featureteaser parbase teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_EOY_UG_tiles","name":"Atrix_2_EOY_UG_tiles","campainName":"campaign","id":"campaign_Atrix_2_EOY_UG_tiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Holiday_Hub_UG_tiles1","name":"Holiday_Hub_UG_tiles1","campainName":"campaign","id":"campaign_Holiday_Hub_UG_tiles1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/UG_tiles","name":"UG_tiles","campainName":"campaign","id":"campaign_UG_tiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR","name":"Atrix_2_OOR","campainName":"campaign","id":"campaign_Atrix_2_OOR","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Holiday_Hub_OOR1","name":"Holiday_Hub_OOR1","campainName":"campaign","id":"campaign_Holiday_Hub_OOR1","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Default_OOR","name":"Default_OOR","campainName":"campaign","id":"campaign_Default_OOR","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/WBDefault","name":"WBDefault","campainName":"campaign","id":"campaign_WBDefault","segments":["/shopcms/shopetc/segmentation/UF/segmnts/justordered"],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_EOY_UG_tiles","name":"Atrix_2_EOY_UG_tiles","campainName":"campaign","id":"campaign_Atrix_2_EOY_UG_tiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR","name":"Atrix_2_OOR","campainName":"campaign","id":"campaign_Atrix_2_OOR","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content;2012348" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content;2013039" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
-        <div class="parsys LobTab1"><div class="parbase image section fourupwelcomeback"> 
-<style type="text/css"> 
-	#one-third-container-width650 {  
-		float: left; width: 650px;  
-	} 
-</style> 
-<!-- BEGIN: Fourup Welcome back  --> 
-<div id="homepageFeatureswelcomeback"> 
-	<div class="clear"></div> 
-	<div id="mainSlot1"> 
-				<div class="basicvalueTile parbase featuredItemTile"> 
-<div class="valueTile ">  
-        <img src="shopcms/media/att/2012/tiles/w324h170/clo-uverse.png" alt="" class="mainImg"/> 
-        <h4>Family Savings</h4> 
-	    <p>Add a $9.99 line to your FamilyTalk® <br> 
-plan&nbsp;and get a FREE phone.</p> 
+        <div class="parsys LobTab1"><div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2012/tiles/w324h170/clo-hp-WirelessOnlineDeals-324x170.png" alt="Online Deals"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >Online Deals</h4>  
+    <p><p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">Our online deals include exclusive offers, phones under $1, and<br> 
+free shipping.<br> 
+</p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="shop/wireless/devices/cellphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth1/onethird/homepagecta;2012348"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-OnlineDeals.gif" alt="Shop Now"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2013/tiles/w324h170/149835-FocusAAL-324x170.png" alt="Add A Line"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >Add A Line</h4>  
+    <p><p>Enjoy free overnight shipping and other exclusive online deals when you&nbsp;Add a Line.<br> 
+</p> 
 <p></p> 
-       <div class="valueTile-padding"></div> 
-        	<a class="arrowRt" href="https://www.att.com/olam/loginAction.olamexecute?pId=W_PassThru_Add_a_Line&source=IC01K1002bX00000O" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/featuredItemTile;2012121">Add a line</a> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
 </div> 
-<div class="clear"></div></div> 
-	</div> 
-	<div id="one-third-container-width650"> 
-		<div align="center" class="one-third-left-right">  
-			<div class="parbase columnItem2 welcomebackimagecolumn"> 
-<img src="shopcms/media/att/2012/global/nav/img-myATT-bundles.png" alt="My Order"/><br/> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2013032"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-AAL.gif" alt="Shop Now"/> 
+</a> 
 <div class="clear"></div> 
 </div> 
-		</div>  
-		<div id="one-third-center"> 
-			<div class="parbase columnItem3 welcomebacklinktile"> 
-<h4>My Order</h4> 
-<p>Here are some helpful links based on your recent order.</p> 
-<ul> 
-   <li><a href="https://www.att.com/eos/unauth/eosLogin?productType=wireless" cqpath="/columnItem3/linklist/0" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/0;2012109">Check order status</a></li> 
-   <li><a href="https://www.wireless.att.com/lnp/" cqpath="/columnItem3/linklist/1" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/1;2012109">Number transfer status</a></li> 
-   <li><a href="http://www.att.com/shop/wireless/deals/rewardsandrebates.jsp" cqpath="/columnItem3/linklist/2" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/2;2012109">Rebates & Rewards</a></li> 
-   <li><a href="http://www.att.com/esupport/article.jsp?sid=KB111103" cqpath="/columnItem3/linklist/3" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/3;2012109">Returns & Refunds</a></li> 
-   <li><a href="https://www.att.com/eos/unauth/eosLogin?productType=wireless" cqpath="/columnItem3/linklist/4" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/4;2012109">Track your shipment</a></li> 
-   <li><a href=" https://www.att.com/olam/viewCombinedLogin.myworld" cqpath="/columnItem3/linklist/5" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem3//columnItem3/linklist/5;2012109">Move Your Service</a></li> 
-  </ul> 
-<div class="clear"></div></div> 
-		</div>  
-		<div class="one-third-left-right"> 
-			<div class="parbase columnItem4 welcomebacklinktile"> 
-<h4>Getting Started</h4> 
-<p>Make the most of your new service.</p> 
-<ul> 
-   <li><a href="shop/wireless/accessories.html" cqpath="/columnItem4/linklist/0" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem4//columnItem4/linklist/0;2012068">Buy accessories</a></li> 
-   <li><a href="https://www.att.com/olam/loginAction.olamexecute?wtSlotClick=1-005VBO-0-1&target=UpgradePH" cqpath="/columnItem4/linklist/1" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem4//columnItem4/linklist/1;2012068">Check upgrade options</a></li> 
-   <li><a href="http://www.att.com/shop/apps/att-messages.html" cqpath="/columnItem4/linklist/2" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem4//columnItem4/linklist/2;2012068">Messaging data & more</a></li> 
-   <li><a href="shop/apps.html" cqpath="/columnItem4/linklist/3" onclick="" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/WBDefault/jcr:content/LoBTabs/LobTab1/fourupwelcomeback/columnItem4//columnItem4/linklist/3;2012068">Popular apps</a></li> 
-  </ul> 
-<div class="clear"></div></div> 
-	 	</div> 
-	 	<div class="clear"></div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   2 yr voice contract req'd. Other restrictions apply. 
 	</div> 
-	<div class="clear"></div> 
+<div class="clear"></div></div> 
+</div> 
+   </div> 
 </div> 
 <div class="clear"></div> 
-    <div class="legal text parbase"> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2013/tiles/w324h170/clo-Valentines-gift-center.png" alt="Yes! Yes! A Million Times Yes!"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >Yes! Yes! A Million Times Yes!</h4>  
+    <p><p>Find the gift you’ll love to give.<br> 
+<br> 
+<br> 
+</p> 
+<p></p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/giftguide.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth3/onethird/homepagecta;2013038"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-VDay.gif" alt="Shop Now"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
+<div class="homepagethreeup parbase section"> 
+ <!-- BEGIN: Home Page Three up  --> 
+	<div id="mainSlot1" style="float:left;width:auto;"> 
+        <div class="thirdwidth1 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2012/tiles/w324h170/clo-homepage_refurb_SIII_1X.png" alt="SAVE BIG ON REFURBS"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SAVE BIG ON REFURBS</h4>  
+    <p><p>Certified pre-owned phones at<br> 
+a fraction of the cost.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/refurbishedphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup_0/thirdwidth1/onethird/homepagecta;2013009"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-Refurb.gif" alt="Shop Now"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot2" style="float:left;width:auto;"> 
+        <div class="thirdwidth2 parbase onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2012/tiles/w324h170/clo_goPhone_newPlan_EN_324x170.png" alt="NEW GOPHONE® "/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >NEW GOPHONE<sup>&#174;</sup> SMARTPHONE PLAN</h4>  
+    <p><p>Get Unlimited Talk &amp; Text PLUS 1GB data only $65/mo.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/prepaidphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup_0/thirdwidth2/onethird/homepagecta;2013039"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-GoPhone.gif" alt="Shop Now"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div> 
+    <div id="mainSlot3" style="float:left;width:auto;"> 
+        <div class="parbase thirdwidth3 onethird"> 
+<div class="featuredItemTile" style="height:auto;"> 
+    <img src="shopcms/media/att/2013/tiles/w324h170/146033-920BOGO-324x170.png" alt="SPECIAL NOKIA LUMIA 920 OFFER"/> 
+   <div class="textSection"> 
+        <div class="text parbase titleplustext"> 
+    <h4 >SPECIAL NOKIA LUMIA 920 OFFER</h4>  
+    <p><p>The first is a deal. The second, a steal. Buy one, get one free!.<br> 
+</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+   </div> 
+   <div class="cta"> 
+       <div class="parsys onethird"><div class="homepagecta cta section"> 
+		<a class="cta" href="http://www.att.com/www.att.com/shop/wireless/devices/nokia/lumia-920-matte-black.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup_0/thirdwidth3/onethird/homepagecta;2013039"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Buy-BOGOLum.gif" alt="Buy Now"/> 
+</a> 
+<div class="clear"></div> 
+</div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   Ends Feb. 21, 2013. 2-yr agreement with voice &amp; data plans or Mobile Share plan req’d. on each. Other charges &amp; restr. apply.<br> 
+	</div> 
 <div class="clear"></div></div> 
-	<div class="clear"></div> 
- <!-- End: Welcome back --></div> 
+</div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    </div>     
+<div class="clear"></div> 
+ <!-- End: Home Page Three up --></div> 
 </div> 
         <div class="clear"></div> 
 </div> 
@@ -1275,7 +1394,7 @@ plan&nbsp;and get a FREE phone.</p>
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1366,7 +1485,7 @@ plan&nbsp;and get a FREE phone.</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 66383439211789729121791770265996406125 --> 
+		 <!--X-Renderer: 108751928394297894237287721120846934229 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1558,7 +1677,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","BRYfRRCFj0CjnZCczdsd2sMd!-1621783340!1360118437586"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","G4kwRVyp2l3TGh4H9G1lJxTG!-1486450154!1360373950375"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1583,6 +1702,20 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
         <script type="text/javascript" src="media/cms/homepage/scripts/combined.min.js"></script> 
 	<!-- atlastag --> 
 	<div class="atlastag"> 
+    <script type="text/javascript">  
+	jQuery(window).load(function(){  
+		var element = document.createElement('script');   
+		element.type='text/javascript';   
+		element.async = true;   
+		element.src="http://view.atdmt.com/jaction/cntcin_ATTcomVisitorUAT_1";   
+		document.body.appendChild(element);  
+	});  
+</script>  
+<noscript style="display:none">  
+	<iframe src="../view.atdmt.com/iaction/cntcin_ATTcomVisitorUAT_1.html"   
+		width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
+	</iframe>  
+</noscript>  
 </div> 
 	<script type="text/javascript"> 
 	jQuery(document).ready(function() { 

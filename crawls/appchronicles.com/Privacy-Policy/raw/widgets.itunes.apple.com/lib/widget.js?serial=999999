@@ -1,9 +1,11 @@
 var ITunesWidget = function() {
 	this.template = null
-	this.template_strings = null
+	this.template_strings = {}
+  this.currency = {}
 	this.filter = "all"
 	this.language = null
 	this.attributes = {
+    version: "2.0",
 		affiliate: null,
 		partner_id: null,
 		width: 250,
@@ -27,13 +29,17 @@ ITunesWidget.ITUNES_SEARCH_URL = _.template("http://itunes.apple.com/search?limi
 ITunesWidget.prototype = {
 	init: function() {
 		var that = this
-
+    
+    navigator.userAgent.match(/(iPad|iPhone|iPod)/i) ? $("body").addClass("ios") : false;
+    
 		if (_.isEmpty(this.getURLParameter("wtype"))) {
+		  this.version = "2.0"
 			this.widget_type = this.getURLParameter("wt") || "search"
 			this.media = this.getURLParameter("m") || "music"
 			this.entity = this.getURLParameter("e") || "song"
 			var ids = this.getURLParameter("ids")
 		} else {
+      this.version = "1.0"
 			switch (this.getURLParameter("wtype")) {
 			case "0":
 				this.widget_type = "discovery"
@@ -145,8 +151,8 @@ ITunesWidget.prototype = {
 			top_right_color: this.getURLParameter("trc") || this.getURLParameter("cur"),
 			bottom_right_color: this.getURLParameter("brc") || this.getURLParameter("cll"),
 			bottom_left_color: this.getURLParameter("blc") || this.getURLParameter("clr"),
-			playlist_title: unescape(this.getURLParameter("t")) || "",
-			playlist_description: unescape(this.getURLParameter("d")) || "",
+			playlist_title: this.getURLParameter("t") || "",
+			playlist_description: this.getURLParameter("d") || "",
 			itunes_items: this.fetchiTunesItems(ids, function() {
 				that.getCountryConfig(function() {
 					that.setTemplate()
@@ -154,7 +160,7 @@ ITunesWidget.prototype = {
 				})
 			})
 		})
-
+    
 	},
 
 	getCountryConfig: function(callback) {
@@ -164,10 +170,11 @@ ITunesWidget.prototype = {
 		var css_tag = _.template("<link href='/lib/widget_lang/stylesheets/<%= language %>.css' type='text/css' rel='stylesheet' media='screen' />")
 
 		$.getJSON(country_url(), function(country_data) {
-			that.language = _.find(country_data.countries, function(item) {
+      var country =  _.find(country_data.countries, function(item) {
 				return item.country_code === that.country
 			})
-				.language
+			that.language = country.language
+
 			$("head")
 				.append(css_tag({
 				language: that.language
@@ -179,9 +186,12 @@ ITunesWidget.prototype = {
 				that.template_strings = data
 				callback()
 			})
+      
+      _.extend(that.currency, {currency_format: country.currency_format, currency_seperator: country.currency_seperator, use_decimal: country.decimal, default_price: country.default_price})
+      
+      _paq.push(["trackPageView", 'widget/' + that.version + "/" + that.widget_type + '/' + that.entity + '/' + that.country])
+      
 		})
-
-
 	},
 
 	listen: function() {
@@ -292,8 +302,17 @@ ITunesWidget.prototype = {
 					self.linkToItunes($(this)
 						.attr("data-itunesid"))
 				})
+        
+        if($("body").hasClass("ios")) {
+					$("#results tbody tr.song td.index span.index")
+          .on("click", function() {
+					self.linkToItunes($(this).parent().parent()
+						.attr("id"))
+				})
+        } else {
+        
 				ITSMediaPlayer.insertMediaPlayer()
-
+          
 				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
 					click: "togglePlayState",
 					mousedown: "mousePressed"
@@ -302,6 +321,7 @@ ITunesWidget.prototype = {
 					mouseover: "rowMouseIn",
 					mouseout: "rowMouseOut"
 				}, true)
+      }
 
 				return this
 			},
@@ -364,21 +384,27 @@ ITunesWidget.prototype = {
 		} else {
 			switch (this.category) {
 			case ("macSoftware"):
+        this.template_strings.default_macapp.price = this.currency.default_price
 				return [new iTunesItem(this.template_strings.default_macapp)]
 				break
 			case ("software"):
+        this.template_strings.default_app.price = this.currency.default_price 
 				return [new iTunesItem(this.template_strings.default_app)]
 				break
 			case ("ebook"):
+        this.template_strings.default_book.price = this.currency.default_price
 				return [new iTunesItem(this.template_strings.default_book)]
 				break
 			case ("tvSeason"):
+        this.template_strings.default_tv.price = this.currency.default_price
 				return [new iTunesItem(this.template_strings.default_tv)]
 				break
 			case ("movie"):
+        this.template_strings.default_movie.price = this.currency.default_price
 				return [new iTunesItem(this.template_strings.default_movie)]
 				break
 			case ("album"):
+        this.template_strings.default_album.collectionPrice = this.currency.default_price
 				return [new iTunesItem(this.template_strings.default_album)]
 				break
 			}
@@ -405,7 +431,7 @@ ITunesWidget.prototype = {
 				.hide()
 				.html($(Handlebars.templates[this.template](_.extend(_.first(defaultItem), {
 				"formated_price": _.first(defaultItem)
-					.formatPrice(this.template_strings.currency_format)
+					.formatPrice(this.currency, this.template_strings.currency_format.currency_free)
 			}, this.template_strings.template_strings))))
 				.fadeIn("fast", function() {
 				$("#description")
@@ -436,23 +462,33 @@ ITunesWidget.prototype = {
 
 					_.each(_.rest(self.attributes.itunes_items), function(item) {
 						$('#results')
-							.append($(row_template(item))
+							.append($(row_template(item)).attr("data-itunesid", item.id)
 							.html(template(item)))
 					})
 
 					$("#search_results")
 						.tinyscrollbar_update()
 
-					ITSMediaPlayer.insertMediaPlayer()
+            if($("body").hasClass("ios")) {
+  						$("#results tbody tr.song td.index span.index")
+  						.on("click", function() {
+  						self.linkToItunes($(this).parent().parent()
+  							.attr("id"))
+  					})
+            } else {
+        
+    				ITSMediaPlayer.insertMediaPlayer()
 
-					its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
-						click: "togglePlayState",
-						mousedown: "mousePressed"
-					});
-					its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song", {
-						mouseover: "rowMouseIn",
-						mouseout: "rowMouseOut"
-					}, true)
+    				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
+    					click: "togglePlayState",
+    					mousedown: "mousePressed"
+    				});
+    				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song", {
+    					mouseover: "rowMouseIn",
+    					mouseout: "rowMouseOut"
+    				}, true)
+          }
+					
 				}
 			})
 			break
@@ -483,7 +519,15 @@ ITunesWidget.prototype = {
 			})
 
 			if (this.category === "song") {
+        if($("body").hasClass("ios")) {
+          $("#results tbody tr.song td.index span.index").on("click", function() {
+				self.linkToItunes($(this).parent().parent()
+					.attr("id"))
+			})
+        } else {
+        
 				ITSMediaPlayer.insertMediaPlayer()
+
 				its.registerElementBinding(ITSPlayMusicController, "#results tbody tr.song td.index div.circular-preview-control", {
 					click: "togglePlayState",
 					mousedown: "mousePressed"
@@ -492,6 +536,8 @@ ITunesWidget.prototype = {
 					mouseover: "rowMouseIn",
 					mouseout: "rowMouseOut"
 				}, true)
+      }
+				
 			}
 			break
 		}
@@ -640,11 +686,8 @@ ITunesWidget.prototype = {
 	},
 
 	getURLParameter: function(name) {
-		
-		return decodeURIComponent(
-        encodeURIComponent(unescape(
-		        (RegExp('[?|&]' + name + '=' + '(.+?)(&|$)').exec(location.search) || [,""])[1])
-		    ))
+    console.log(unescape( (RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1]))
+		return this.version == "1.0" ? unescape(unescape( (RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1])) : decodeURIComponent((RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1])
 	},
 
 	generateTemplate: function() {

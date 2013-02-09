@@ -30,6 +30,15 @@ String.prototype.toCharCode = function() {
  * @author T�nis Kevvai
  */
 function alertMessage(message, options) {
+    var messageString = "";
+    var errorString = "";
+    if(typeof message == 'string') {
+        messageString = message;
+        errorString = message;
+    } else {
+        messageString = message.message;
+        errorString = message.error;
+    }
     var type = 'notice';
     var addIns = '';
     if (options.type) {
@@ -45,13 +54,13 @@ function alertMessage(message, options) {
     }
 
     if (!$('.systemMessage')[0]) {
-        alert(message);
+        alert(errorString);
     } else {
         var alertMsg = $('.systemMessage');
         alertMsg.attr("class", type + "Message");
 
         var note = alertMsg.find(".messageBody");
-        note.html(message);
+        note.html(messageString);
 
         if (addIns != '') {
             note.append("&nbsp;" + addIns);
@@ -105,7 +114,7 @@ function validateMainLoginForm() {
  */
 function verifyMainLoginForm(response) {
     if (response.status == 'FAIL') {
-        alertMessage(response.error, { type: "error" });
+        alertMessage(response, { type: "error" });
         $('#main_password').val('');
         $('#main_username').focus().select();
     } else {

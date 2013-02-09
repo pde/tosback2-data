@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 	Purpose:
 		Global CSS Styles for the HomeDepot.com website
-	$Last Updated: 10-28-2012 3:35PM $alnoor
+	$Last Updated: 12-17-2012 3:43PM $darryl
 /*	----------------------------------------------------------------------------
 	Table Of Contents
 	1. Resets & Defaults
@@ -157,7 +157,7 @@ table.tablePod.tableWithBorder td, table.tablePod.tableWithBorder th{border-righ
 /*	----------------------------------------------------------------------------
 	(3) Generics */
 .thdOrange { color:#f96302 !important; }
-.b { font-weight: bold; }
+.b { font-weight: bold;}
 .i { font-style:italic;}
 .allCaps{text-transform:uppercase;}
 .titleCase{text-transform:capitalize;}
@@ -483,10 +483,11 @@ a.btn{padding:6px 15px 6px}
 .btn.disabled, .btn[disabled], .btn.disabled:hover, .btn[disabled]:hover{
 	background-image: none;
     box-shadow: none !important;
-    cursor: default;
+    cursor: not-allowed;
     opacity: 0.30;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    border:none;
+    text-decoration: none \9;
+    text-shadow:none \9;
 }
 
 
@@ -565,7 +566,10 @@ i[class^="icon-"],i[class*="icon-"],i[class|="icon-"]{
 .icon-grey-cal{background-position:left 2639px; height:4px !important;}
 .icon-info{background-position:left 2886px;}
 .icon-info-disabled{background-position:left 2913px;}
-
+.icon-orangex{background-position:right 3412px;}
+.icon-info-grey-bg{background-position:right 3472px;}
+.icon-questionmark{background-position:right 3444px;}
+.icon-refresh{background-position:right 3390px;}
 .icon-cart{background-position: right 3562px}
 .btn-orange .icon-cart{background-position: right 3531px;}
 .icon-carrot-grey-down{background-position: right 2962px; }
@@ -574,12 +578,14 @@ i[class^="icon-"],i[class*="icon-"],i[class|="icon-"]{
 .icon-localization-off{background-position: right 2989px; }
 .icon-search{background-position: right 3080px; }
 .icon-boss-bopis{background-position: right 3768px;}
+.icon-secureLock{background-position:right 3232px;}
 
 /*Default lefties*/
 .icon-bopis{background-position: left 510px;}
 .icon-plus-white.left-icon{background-position: left 12px;}
 .icon-shopping-cart {background-position: 35px 117px;}
 .icon-small-green-check{background-position:left 2056px;}
+.icon-certona-green-check{background-position:left 3796px;}
 
 /*Clear "buttons" */
 .icon-close{background-position: right 1917px;}
@@ -662,6 +668,7 @@ i[class^="icon-"],i[class*="icon-"],i[class|="icon-"]{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#ffffff',GradientType=0 );
    	text-decoration: none;
 	border:1px solid #ccc;
+	filter:chroma(color=#000000); /* Defect Fix for #25025 */
 }
 
 
@@ -808,12 +815,12 @@ h3.btn-clear a.btn-text{height:26px\9;}
 
 input[type=submit].btn,input[type=reset].btn,input[type=button].btn{height:auto; width:auto;}
 
-input[type=submit],input[type=reset],input[type=button],button[type=submit],button[type=reset],
+/*input[type=submit],input[type=reset],input[type=button],button[type=submit],button[type=reset],
 button.btn, input.btn,.btn:hover,.btn-orange,.btn-orange:hover,.btn-dark:hover,input[type=submit]:hover,
 input[type=reset]:hover,input[type=button]:hover,button[type=submit]:hover,button[type=reset]:hover,
 .btn-orange[type=submit], .btn-orange[type=submit]:hover, .btn-dark:hover, .btn-dark[type=submit]{
        filter:chroma(color=#000000);
-}  
+} Creates a button style conflict in IE9 - JNH 12-04-12 */ 
 
 
 /*	----------------------------------------------------------------------------
@@ -905,7 +912,6 @@ input[type=reset]:hover,input[type=button]:hover,button[type=submit]:hover,butto
 .fbClose {
     margin: 5px 15px 0 0;
     text-align: right;
-    display: none;
 }
 
 /* Fancybox-ed Video Player */
@@ -1054,5 +1060,50 @@ a#fancybox-close:hover{text-decoration:none;}
 a#fancybox-close:before{content:"CLOSE"; position: absolute; top:6px; left:-33px;}
 
 
+/*Add to cart model*/
+#atcmodal_rr .xlarge.item_price { margin:0;} 
+#atcmodal_rr .dynamic .item_description {margin:0; height:65px;} /* Changes Done for Defect 24775 */
+#atcmodal_rr .dynamic .content_image{width:100px; height:100px;margin-left: 15px; margin-right: 15px; padding: 0;}
+#atcmodal_rr .dynamic .content_image img{width:100px; height:100px;}
+#atcmodal_rr .container_30{width:640px;}
+#atcmodal_rr .container_30 .grid_6{width:160px}
+#atcmodal_rr .container_30 .row.withHeader{padding-bottom: 0px}
+#atcmodal_rr .container_30 .grid_24{width: 640px}
+#atcmodal_rr .container_30 h3.rowHeader{padding: 12px 0px 0px 18px;}
+#atcmodal_rr .row, #atcmodal_rr .pod, #atcmodal_rr .rail{border: none;}
+
 /*==================== Invalid Quantity error message (QC 16338) ====================*/
 .invalid_qty {display:none; float: right;overflow: hidden; padding: 0 10px 0 5px; color: #CD0001; font-size: 11px; font-weight: bold; *margin-top:-27px;}
+
+
+/*------Confiramtion Cart Modal-------------------*/
+.containerAddToCartModel{background-color:#FFF;width:640px;padding:20px 20px;} 
+.cartModelPageHeader{border-bottom:1px solid #DDD;color:#000;width:430px;padding:0 0 10px;}
+.cartModelPageHeader h2{margin-top: 0 !important;} 
+#cartModelProductDetail .cartModelProductsubModel{font-weight:700;float:left;padding:0 0 0 20px;} 
+#cartModelProductDetail .cartModelProductView{float:left;height:auto 9px;padding-top:20px;}
+#cartModelProductDetail .cartModelProductModel{float:left; padding:20px 0 0 20px; width: 310px; height: 75px;}
+#cartModelProductDetail .cartModelCurrentSummary{float:right;border:1px solid #DDD;width:186px;background-color:#FCFCFC;text-align:right;}
+.checkoutBtn{float:right;margin-top:12px; display: inline-block; *width: 330px}
+.checkoutBtn .controls {margin-left:0;}
+.checkoutBtnGryBtn{margin-right:8px;border: 1px solid #DDDDDD !important;  filter:chroma(color=#000000);border-radius:0px \0/IE9;} 
+.cartModelSmallSummary{font-size:14px;padding:20px; color:#333;}
+.cartModelBody2Link{color:#000;font-weight:700; width: 295px;}
+.cartModelBody1{font-size:14px;color:#000;font-weight:700;}
+.cartModelProductsubModel label{padding-top:0;}
+.cartModelBody2LinkGry{color:#777;font-weight:400;}
+.innerValuesCartDetailHead{border-bottom:1px solid #DDD;padding-bottom:10px;margin-bottom:10px;font-weight:700;color:#000;}
+.innerValuesCartDetailTotal span{padding-left:10px;color:#333;}
+.addToCartModel,#cartModelProductDetail{overflow:hidden;}
+.containerAddToCartModel.slider_controls .next{background-position: 125px 582px}
+.containerAddToCartModel.slider_controls .prev{background-position: 130px 434px}
+#atcmodal_rr{border-top: 1px solid #eee; margin-top: 25px;}
+.addCartConfirmBtn{margin-top: -25px;}
+.addedTocartLabel{display:inline-block; visibility: hidden; width: 140px; margin-top: 15px; position: absolute; left:8px;} 
+.addedTocartLabel span { float: left; margin-top: 3px; } 
+#errorAddToCart{display:none;}
+.atcModalFb #fancybox-close{margin-right: 10px;}
+#atcmodal_rr .reviews{ margin-bottom:10px !important;}
+.checkoutBtnGryBtn i {background-position: right 1496px;}
+/* IE7 Doc Mode Continue Shopping Button in the Add to Cart Modal*/
+.addToCartModel .checkoutBtn button,.addToCartModel .checkoutBtn button:hover{*width:170px;*padding-top:5px;*padding-bottom:5px;} 

@@ -16,23 +16,19 @@ return response
 };
 var contextPath=null;
 var SCRIPT_URL_REGEXP=/\/etc\/clientlibs\/foundation\/shared.*\.js$/;
-var ENCODE_PATH_REGEXP=/[^\w-\.!~\*'\(\)\/%;:@&=\$,]/;
-return{EXTENSION_HTML:".html",EXTENSION_JSON:".json",EXTENSION_RES:".res",HEADER_STATUS:"Status",HEADER_MESSAGE:"Message",HEADER_LOCATION:"Location",HEADER_PATH:"Path",PARAM_NO_CACHE:"cq_ck",get:function(url,callback,scope){url=CQ.shared.HTTP.externalize(url,true);
-if(typeof CQ_XHR_HOOK!="undefined"&&$CQ.isFunction(CQ_XHR_HOOK)){var p={url:url,method:"GET"};
-var out=CQ_XHR_HOOK(p);
-if(out){url=out.url
-}}if(callback!=undefined){return $CQ.ajax({type:"GET",url:url,complete:function(request,textStatus){var response=getResponseFromXhr(request);
+var ENCODE_PATH_REGEXP=/[^1\w-\.!~\*'\(\)\/%;:@&=\$,]/;
+return{EXTENSION_HTML:".html",EXTENSION_JSON:".json",EXTENSION_RES:".res",HEADER_STATUS:"Status",HEADER_MESSAGE:"Message",HEADER_LOCATION:"Location",HEADER_PATH:"Path",PARAM_NO_CACHE:"cq_ck",get:function(url,callback,scope){url=CQ.shared.HTTP.getXhrHookedURL(CQ.shared.HTTP.externalize(url,true));
+if(callback!=undefined){return $CQ.ajax({type:"GET",url:url,complete:function(request,textStatus){var response=getResponseFromXhr(request);
 callback.call(scope||this,this,textStatus=="success",response)
 }})
 }else{try{var request=$CQ.ajax({type:"GET",url:url,async:false});
 return getResponseFromXhr(request)
 }catch(e){return null
 }}},post:function(url,callback,params,scope){url=CQ.shared.HTTP.externalize(url,true);
-if(typeof CQ_XHR_HOOK!="undefined"&&$CQ.isFunction(CQ_XHR_HOOK)){var p={url:url,method:"POST",params:params};
-var out=CQ_XHR_HOOK(p);
-if(out){url=out.url;
-params=out.params
-}}if(callback!=undefined){return $CQ.ajax({type:"POST",url:url,data:params,complete:function(request,textStatus){var response=CQ.shared.HTTP.buildPostResponseFromHTML(request.responseText);
+var hook=CQ.shared.HTTP.getXhrHook(url,"POST",params);
+if(hook){url=hook.url;
+params=hook.params
+}if(callback!=undefined){return $CQ.ajax({type:"POST",url:url,data:params,complete:function(request,textStatus){var response=CQ.shared.HTTP.buildPostResponseFromHTML(request.responseText);
 callback.call(scope||this,this,textStatus=="success",response)
 }})
 }else{try{var request=$CQ.ajax({type:"POST",url:url,data:params,async:false});
@@ -159,7 +155,8 @@ if(end==-1){return url
 }return url.substring(0,end)
 }catch(e){return""
 }},getContextPath:function(){return contextPath
-},detectContextPath:function(){try{if(typeof CQ.CONTEXT_PATH!="undefined"){contextPath=CQ.CONTEXT_PATH
+},detectContextPath:function(){try{if(CQURLInfo.contextPath){contextPath=CQURLInfo.contextPath
+}else{if(typeof CQ.CONTEXT_PATH!="undefined"){contextPath=CQ.CONTEXT_PATH
 }else{if(typeof CQ_CONTEXT_PATH!="undefined"){contextPath=CQ_CONTEXT_PATH
 }else{var scripts=document.getElementsByTagName("script");
 for(var i=0;
@@ -171,7 +168,7 @@ path=path.substring(path.indexOf("/"));
 path=path.replace(SCRIPT_URL_REGEXP,"");
 contextPath=path;
 break
-}}}}}catch(e){}},externalize:function(url,encode){if(encode){url=CQ.shared.HTTP.encodePathOfURI(url)
+}}}}}}catch(e){}},externalize:function(url,encode){if(encode){url=CQ.shared.HTTP.encodePathOfURI(url)
 }try{if(url.indexOf("/")==0&&contextPath&&url.indexOf(contextPath+"/")!=0){url=contextPath+url
 }}catch(e){}return url
 },internalize:function(url,doc){if(!doc){doc=document
@@ -179,14 +176,19 @@ break
 var urlHost=CQ.shared.HTTP.getSchemeAndAuthority(url);
 if(docHost==urlHost){return url.substring(urlHost.length+(contextPath?contextPath.length:0))
 }else{return url
-}},getPath:function(url){url=url||window.location.href;
+}},getPath:function(url){if(!url){if(CQURLInfo.requestPath){return CQURLInfo.requestPath
+}}url=url||window.location.href;
 url=CQ.shared.HTTP.internalize(url);
 url=CQ.shared.HTTP.removeParameters(url);
 url=CQ.shared.HTTP.removeAnchor(url);
 var i=url.indexOf(".",url.lastIndexOf("/"));
 if(i!=-1){url=url.substring(0,url.indexOf(".",url.lastIndexOf("/")))
 }return url
-},getSelectors:function(url){var selectors=[];
+},getSuffix:function(){if(CQURLInfo.suffix){return CQURLInfo.suffix
+}return null
+},getSelectors:function(url){if(!url){if(CQURLInfo.selectors){return CQURLInfo.selectors
+}}var selectors=[];
+url=url||window.location.href;
 url=CQ.shared.HTTP.removeParameters(url);
 url=CQ.shared.HTTP.removeAnchor(url);
 var fragment=url.substring(url.lastIndexOf("/"));
@@ -195,7 +197,8 @@ if(split.length>2){for(var i=0;
 i<split.length;
 i++){if(i>0&&i<split.length-1){selectors.push(split[i])
 }}}}return selectors
-},getExtension:function(url){url=CQ.shared.HTTP.removeParameters(url);
+},getExtension:function(url){if(!url){if(CQURLInfo.extension){return CQURLInfo.extension
+}}url=CQ.shared.HTTP.removeParameters(url);
 url=CQ.shaerd.HTTP.removeAnchor(url);
 var pos=url.lastIndexOf(".");
 if(pos<0){return""
@@ -211,7 +214,7 @@ delim="#"
 }else{parts=[url]
 }}if(ENCODE_PATH_REGEXP.test(parts[0])){parts[0]=CQ.shared.HTTP.encodePath(parts[0])
 }return parts.join(delim)
-},encodePath:function(path){path=encodeURI(path);
+},encodePath:function(path){path=encodeURI(path).replace(/%5B/g,"[").replace(/%5D/g,"]");
 path=path.replace(/\+/g,"%2B");
 path=path.replace(/\?/g,"%3F");
 path=path.replace(/;/g,"%3B");
@@ -229,7 +232,18 @@ return path
 }catch(e){return false
 }},isOk:function(response){try{return CQ.shared.HTTP.isOkStatus(response.headers[CQ.shared.HTTP.HEADER_STATUS])
 }catch(e){return false
-}}}
+}},getXhrHook:function(url,method,params){method=method||"GET";
+if(typeof CQ_XHR_HOOK!="undefined"&&$CQ.isFunction(CQ_XHR_HOOK)){var p={url:url,method:method};
+if(params){p.params=params
+}return CQ_XHR_HOOK(p)
+}return null
+},getXhrHookedURL:function(url,method,params){var hook=CQ.shared.HTTP.getXhrHook(url,method,params);
+if(hook){return hook.url
+}return url
+},reloadHook:function(url){if(typeof CQ_RELOAD_HOOK!="undefined"&&$CQ.isFunction(CQ_RELOAD_HOOK)){if(CQURLInfo.selectorString!=""){url=CQ.shared.HTTP.addSelector(url,CQURLInfo.selectorString)
+}url=CQ_RELOAD_HOOK(url)||url
+}return url
+}}
 };
 CQ.shared.Util=new function(){return{reload:function(win,url,preventHistory){if(!win){win=window
 }if(!url){url=CQ.shared.HTTP.noCaching(win.location.href)

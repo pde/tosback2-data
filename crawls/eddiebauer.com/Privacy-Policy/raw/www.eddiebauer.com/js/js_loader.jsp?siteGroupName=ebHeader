@@ -1374,7 +1374,7 @@ if(options=="View Centimeters"){cmSrc=jQuery("#tabs-"+currentSelectedTabID);imgI
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the jquery.slides.js(192) ~~~~~~~~~~~~~~~~~~~~ */
 
 /* ~~~~~~~~~~~~~~~~~~~~ Starting the jquery.slider.js(190) ~~~~~~~~~~~~~~~~~~~~ */
-(function(jQuery) {	;
+(function(jQuery) {	
     jQuery.fn.layerSlider = function() {
 
      /* data attributes:
@@ -2356,7 +2356,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			var itemNumber = jQuery('.itemNumber .number');
 			var itemDataTitle = selectInput.attr('data-item-name');
 			var itemDataNumber = selectInput.attr('data-item-number');
-			if (itemDataNumber != undefined){
+			if (itemDataNumber != undefined) {
 				itemTitle.html(itemDataTitle + ' Item #: ');
 				itemNumber.html(itemDataNumber);
 			}
@@ -4043,7 +4043,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					//tab 4 mens pant hem styles
 					if (departId == "103"){
 						sections = "1";	
-						selectedSizeChartTab = 1;
+						selectedSizeChartTab = 3;
 						sizeChartName = "men."+siteFlag+".html";	
 						sizeChartUrl = sizeChartUrl + sizeChartName;
 						sizeChartFlag = true;
@@ -5744,7 +5744,7 @@ if(sZipCode==""&&sCity==""&&sState==""){}
 else if(sZipCode!=""){jQuery("#txtZipcode").val(sZipCode);StoreLocator.GoToLocation(sZipCode.replace("%20"," "));}
 else if(sCity!=""&&sState!=""){var sValue=sCity+", "+sState;jQuery("#State_Province").val(sState.replace("%20"," "));jQuery("#txtCity").val(sCity.replace("%20"," "));StoreLocator.GoToLocation(sValue);}
 else if(sState==""){StoreLocator.SearchString='';StoreLocator.NoRecordsFound();}
-else if(sCity==""){jQuery("#State_Province").val(sState.replace("%20"," "));StoreLocator.SearchString=', '+document.getElementById('State_Province').options[document.getElementById('State_Province').selectedIndex].text;StoreLocator.NoRecordsFound();}}},HandleInputEnterKey:function(){jQuery("#txtZipcode").keypress(function(event){if(event.which==13){StoreLocator.SearchByZip();}});jQuery("#txtCity").keypress(function(event){if(event.which==13){StoreLocator.SearchByCity();}});},SearchByZip:function(){var sValue=jQuery("#txtZipcode").val();if(sValue!=""){jQuery("#txtCity").val("");jQuery("#State_Province").val("");if(StoreLocator.ZipFlag==1){jQuery('#Postal_state').toggleClass('Postal_state_error','Postal_state');StoreLocator.ZipFlag=0;}
+else if(sCity==""){jQuery("#State_Province").val(sState.replace("%20"," "));StoreLocator.SearchString=', '+document.getElementById('State_Province').options[document.getElementById('State_Province').selectedIndex].text;StoreLocator.NoRecordsFound();}}},HandleInputEnterKey:function(){jQuery("#txtZipcode").keypress(function(event){if(event.which==13){StoreLocator.SearchByZip();event.preventDefault();}});jQuery("#txtCity").keypress(function(event){if(event.which==13){StoreLocator.SearchByCity();event.preventDefault();}});},SearchByZip:function(){var sValue=jQuery("#txtZipcode").val();if(sValue!=""){jQuery("#txtCity").val("");jQuery("#State_Province").val("");if(StoreLocator.ZipFlag==1){jQuery('#Postal_state').toggleClass('Postal_state_error','Postal_state');StoreLocator.ZipFlag=0;}
 StoreLocator.GoToLocation(sValue);}
 else{alert("Please enter a zip code or postal code.");jQuery('#Postal_state').toggleClass('Postal_state_error');StoreLocator.ZipFlag=1;}},TOU:function(){jQuery('.storelocator_content .column2').append('<div class="TOU"><a href="https://www.microsoft.com/maps/product/terms.html" target="_blank" rel="nofollow">Bing Maps TOU</a></div>');},SearchByCity:function(){var sCity=capitaliseFirstLetter(jQuery("#txtCity").val());var sState=document.getElementById('State_Province').options[document.getElementById('State_Province').selectedIndex].text;if(StoreLocator.ZipFlag==1){jQuery('#Postal_state').toggleClass('Postal_state_error','Postal_state');StoreLocator.ZipFlag=0;}
 if(sCity==""&&sState=="Select One"){alert("Please enter a City and select a State or Province.");return;}
@@ -8422,14 +8422,6 @@ YAHOO.ebauer.productUtils = function () {
             YAHOO.ebauer.productUtils.isSizeUpdatedonInventoryForSingleColor = false;
             YAHOO.ebauer.productUtils.isColorUpdatedforSelectedSize = false;
         },
-        
-        reloadItemNumber: function() {
-            if (jQuery('.column2 .wrap .itemNumber span').length > 0) {
-            	jQuery('.itemNumber').find('span').each(function(i, value) {	
-            		jQuery(this).replaceWith(jQuery(this).text());
-            	});
-        	}
-        },
 
         changeWeatheredgeCSS: function () {
             jQuery('div#dossier.PPL .infoModule .content .singleTab #tabs-1 ul').removeAttr('class');
@@ -9431,6 +9423,67 @@ jQuery(document).ready(function () {
 			jQuery(this).children().remove();
 			jQuery('#footer .footer_content_spacer').css('display', 'block');
 		});
+		var itemDataTitles = [];
+		var itemDataNumbers = [];
+		if (jQuery('.column2 .wrap .itemNumber span').length > 0) {
+        	jQuery('.productOptions .size').find('.text').each(function (i, value) {
+        		var result = '';
+        		var str = jQuery(this).html();
+        		var n = str.indexOf(',');
+        		result = str.substring(n + 1);
+        		itemDataTitles.push(result.trim());
+        	});
+        	var titleValue = jQuery(itemDataTitles).map(function(index, title) {
+        		return title;
+        	});
+        	jQuery('.itemNumber').find('span').each(function(i, text) {
+        		titleValue;
+        		titleValue[i] === '' ? titleValue[i] = 'One Size' : '';
+        		var eachNumber = jQuery(this).text();
+    			var allNumbers = eachNumber.replace(/^i/, 'I').split(/#/).join('\xa0#\xa0:');
+    			jQuery(this).replaceWith(titleValue[i] + ' ' + allNumbers);  
+        	});
+    	}
+		jQuery.fn.disable = function() {
+			return this.replaceWith( '<a href="javascript:internationalDelivery(' + 40 + ');">International Delivery Information</a>' );
+		}
+		jQuery.fn.disableDeliverFAQ = function() {
+			return this.replaceWith( '<a href="javascript:deliverySix(' + 6 + ');">Delivery</a>' );
+		}
+		
+		var browser = navigator.userAgent;
+		var isIE9 = (browser.indexOf( 'MSIE 9' ) !== -1) ? true : false;
+        if (isIE9) {
+        	jQuery(window).load(function() {
+        		jQuery.fn.disable = function() {
+        			return this.replaceWith( '<a href="javascript:internationalDelivery(' + 40 + ');">International Delivery Information</a>' );
+        		}
+        		jQuery.fn.disableDeliverFAQ = function() {
+        			return this.replaceWith( '<a href="javascript:deliverySix(' + 6 + ');">Delivery</a>' );
+        		}
+            	var deliverSix = jQuery('#orderSummary #delivery .label a');
+        		var deliver = jQuery('.international .container .note a');
+            	var ship = jQuery('body.CHECKOUT #middle #deliveryOptions #shipTo a');
+            	deliverSix.disableDeliverFAQ();
+            	ship.disable();
+            	deliver.disable();
+        	});
+        } else {
+        	var deliverSix = jQuery('#orderSummary #delivery .label a');
+        	var deliver = jQuery('.international .container .note a');
+        	var ship = jQuery('body.CHECKOUT #middle #deliveryOptions #shipTo a');
+        	deliverSix.disableDeliverFAQ();
+        	ship.disable();
+    		deliver.disable();
+        }
+        deliverySix = function(section) {
+        	var faqId = section;
+			fb.start('/assets/html/modalContent/faq/faq_' + faqId + '.html', 'type:ajax height:460 width:500 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr');
+        }
+		internationalDelivery = function(section) {			
+			var faqId = section;
+			fb.start('/assets/html/modalContent/faq/faq_' + faqId + '.html', 'type:ajax height:460 width:472 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr');
+		}
 	}
 });
 

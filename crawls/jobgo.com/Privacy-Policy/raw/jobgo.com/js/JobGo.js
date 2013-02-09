@@ -390,6 +390,7 @@ JobGo.Multiplier = function (original, modifiers, attributes) {
 
     this.clones = {};
     this.cloneCnt = 0;
+
     // Initialize sequence
     this.init();
 
@@ -432,6 +433,15 @@ $.extend(JobGo.Multiplier, {
                     }
                 });
             });
+        }
+    },
+    globalIndex: {
+        index: [],
+        getIndex: function(id) {
+            if(this.index[id] == undefined) {
+                this.index[id] = 0;
+            }
+            return this.index[id]++;
         }
     }
 });
@@ -531,8 +541,12 @@ $.extend(JobGo.Multiplier, {
                 }
                 return d;
             }
-            this.setIndex(gd('index', 0));
 
+            if(this.attributes['attributes']['globalIndex'] != undefined) {
+                this.setIndex(JobGo.Multiplier.globalIndex.getIndex(this.attributes['attributes']['globalIndex']));
+            } else {
+                this.setIndex(gd('index', 0));
+            }
 
         },
         doAppend: function() {
@@ -567,8 +581,6 @@ $.extend(JobGo.Multiplier, {
             return this;
         },
         getIndex: function() {
-           
-
             return parseInt(this.original.attr(this.ATTR_INDEX));
         },
         setIndex: function(index) {
@@ -601,8 +613,11 @@ $.extend(JobGo.Multiplier, {
         addClone: function(clone) {
             this.clones[this.cloneCnt] = clone;
             this.cloneCnt += 1;
-
-            this.setIndex(this.getIndex() + 1);
+            if(this.attributes['attributes']['globalIndex'] != undefined) {
+                this.setIndex(JobGo.Multiplier.globalIndex.getIndex(this.attributes['attributes']['globalIndex']));
+            } else {
+                this.setIndex(this.getIndex() + 1);
+            }
             return this;
         },
         append: function(container, clone) {
@@ -1172,8 +1187,16 @@ JobGo.Form = {
 
                     $e.click(function(evt) {
                         var $e = $(evt.target);
+                        var elContainer = $e.closest('.JobGoMultiplier-Clone').find('.Elements');
                         if ($e.attr('checked')) {
-                            elContainer.find('input, select').not('.COMPANY_ID').not('.StartDate').not('.EndDate').each(function(i, e) {
+                            elContainer.find('input, select')
+                                .not('.COMPANY_ID')
+                                .not("[name*='I_CURRENTLY_WORK_HERE']")
+                                .not('.ICurrentlyWorkHere')
+                                .not('.MultiplierItemIsDeleted')
+                                .not('.StartDate')
+                                .not('.EndDate')
+                                .each(function(i, e) {
                                 $(e).rules('add', {"required":true});
                                 //$(e).rules('add', {"valueNotAllowed":true});
                             });
@@ -2197,7 +2220,7 @@ function CandidateSearchJobId()
 
 function ParticipantSearch()
 {
-    var re = /wizardstep\/Participants/i;
+    var re = /wizardstep\/Participants\//i;
     if(re.test(window.location))
     {
         return true;

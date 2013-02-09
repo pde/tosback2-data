@@ -712,7 +712,7 @@ var commonFunc = new function () {
 				obj.style.height = obj.style.width = '100%';
 				obj.style.backgroundColor = 'black';
 				obj.style.filter = IE ? 'alpha(opacity=50)' : 'alpha(opacity=.5)';
-				obj.style.opacity = IE ? '50' : '.5';
+				obj.style.opacity = IE ? '' : '.5';
 			}
 			else {
 				obj.style.display = 'none';

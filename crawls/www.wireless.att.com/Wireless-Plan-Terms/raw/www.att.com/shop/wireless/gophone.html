@@ -131,7 +131,7 @@ var mRedirectURL = '';
             AT&T GoPhone - Prepaid Wireless from AT&T 
 	</title> 
     <meta name="description" content="With AT&amp;T GoPhone choose from a variety of prepaid cell phones or prepaid smartphones &amp; a prepaid cell phone plans that work for you. GoPhone from AT&amp;T." >	 
-	<meta name="keywords" content="GoPhone, Prepaid Cell Phones, prepaid smartphones, Go Phone, GoPhone Plans, prepaid Plans, Prepaid Wireless, AT&amp;T, AT&amp;T Wireless" > 
+	<meta name="keywords" content="" > 
     <meta name="robots" content="INDEX,FOLLOW" /> 
 	<link rel="canonical" href="gophone.html"/>  
 	<meta NAME="DCSext.wtPN" CONTENT="HRock GoPhone"/> 
@@ -208,6 +208,14 @@ CQURLInfo = {
                         key = 'existDSL'; 
                         value = 'false'; 
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
                     } 
                 } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
@@ -746,6 +754,8 @@ CQURLInfo = {
 	}] 
 }; 
    JSAM.create({json:JSAM_JSON, width:"650", height:"280"}); 
+   var parentNode = document.getElementById("marqueeHolder").parentNode; 
+   parentNode.style.height = "280px"; 
 </script> 
 </div> 
 		</div> 
@@ -806,7 +816,7 @@ set up Auto Refill.<br>
 		<div id="content"> 
 			<div style="display:inline;margin-top:5px;"> 
 				<div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear"></div> 
+                <div class="clear" style="display:inline"></div> 
             </div>  
 		    <div class="primary-content-full"> 
 		        <div class="parbase teaser mncont"> 
@@ -1128,12 +1138,29 @@ set up Auto Refill.<br>
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/wireless/gophone/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
+			<!-- legal footer --> 
+			<div class="appspecific_footer_content" ><!-- $Revision$, $Date$ and $Author$ --> 
+<div class="gn_prefooter"> 
+<!-- legal footer - note: need to remove inline style and add to shop-styles.css in static cluster -->	 
+<style type="text/css"> 
+	.consumer #wrapper .gn_prefooter a { 
+	 color:#3381B7; 
+	} 
+</style> 
+	<a href="../../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Wireless Legal Site</a> | 
+	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Wireless Customer Agreement</a> | 
+	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Cell Phone Records Security</a> 
+		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Other Monthly Charges</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Plan Terms</a>| 
+			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Online Pricing</a>| 
+			<div class='secondRow'> 
+				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Returns Policy &amp; Early Termination Fee</a>| 
+				<a class="postPaidLegalLink" href="../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Additional  
+Messaging &amp; Data Charges</a>| 
+				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation" data-cqpath="/content/att/shop/en/wireless/gophone/jcr:content;2013036">Shipping Information</a> 
+			</div> 
+</div> 
+</div> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -1148,7 +1175,7 @@ set up Auto Refill.<br>
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1239,7 +1266,7 @@ set up Auto Refill.<br>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 304717816311018320123763073805445381681 --> 
+		 <!--X-Renderer: 176176443101592098223306364607888341977 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1248,24 +1275,25 @@ set up Auto Refill.<br>
 <script src="../../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="285" /> 
+	<meta name="DCSext.wt_aka_georegion" content="275" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="TX" /> 
-<meta name="DCSext.wt_aka_city" content="TYLER" /> 
-<meta name="DCSext.wt_aka_dma" content="709" /> 
-<meta name="DCSext.wt_aka_msa" content="8640" /> 
-<meta name="DCSext.wt_aka_areacode" content="903" /> 
-<meta name="DCSext.wt_aka_county" content="SMITH" /> 
-<meta name="DCSext.wt_aka_fips" content="48423" /> 
-<meta name="DCSext.wt_aka_lat" content="32.3513" /> 
-<meta name="DCSext.wt_aka_long" content="-95.3006" /> 
-<meta name="DCSext.wt_aka_timezone" content="CST" /> 
-<meta name="DCSext.wt_aka_zip" content="75701-75713+75798-75799" /> 
+<meta name="DCSext.wt_aka_region_code" content="NC" /> 
+<meta name="DCSext.wt_aka_city" content="CHARLOTTE" /> 
+<meta name="DCSext.wt_aka_dma" content="517" /> 
+<meta name="DCSext.wt_aka_msa" content="1520" /> 
+<meta name="DCSext.wt_aka_areacode" content="704+910" /> 
+<meta name="DCSext.wt_aka_county" content="MECKLENBURG" /> 
+<meta name="DCSext.wt_aka_fips" content="37119" /> 
+<meta name="DCSext.wt_aka_lat" content="35.1907" /> 
+<meta name="DCSext.wt_aka_long" content="-80.6455" /> 
+<meta name="DCSext.wt_aka_timezone" content="EST" /> 
+<meta name="DCSext.wt_aka_zip" content="28201-28224+28226-28237+28241-28244+28246-28247+28250+28253-28256+28258+28260+28262+28265-28266+28269-28270+28272-28275+28277-28278+28280-28282+28284-28285+28287-28290+28296-28297+28299" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
 <meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_network" content="suddenlink" /> 
-<meta name="DCSext.wt_aka_asnum" content="19108" /> 
+<meta name="DCSext.wt_aka_network" content="roadrunner" /> 
+<meta name="DCSext.wt_aka_asnum" content="11426" /> 
+<meta name="DCSext.wt_aka_network_type" content="cable" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1470,7 +1498,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","sjQcRRCDvl10TLJ4wyLgSJ0Q!1639884890!1360118435782"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","Wx2JRVyQ214KYnhlpY2tTQvW!-59188380!1360373936839"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1522,6 +1550,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
 </body> 
 </html> 

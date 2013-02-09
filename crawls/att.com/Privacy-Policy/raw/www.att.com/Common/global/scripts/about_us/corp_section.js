@@ -1,5 +1,6 @@
+
 // JavaScript Document
-//second test for cache  [kd] 11/16/2012//
+// Last Update  [kd] 11/16/2012//
 //alert(document.documentMode + ' | ' + document.compatMode);
 
 jQuery(document).ready(function() {
@@ -14,7 +15,7 @@ if (document.domain == 'bargaining.att.com' ) {
 			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On September 13, AT&amp;T announced that AT&amp;T Mobility reached a tentative agreement with the Communications Workers of America in benefits negotiations covering all CWA bargained-for Mobility employees nationwide &ndash; more than 40,000 employees.</p><p style="font-size:14px;color:#000;">The tentative agreement is focused on benefits, including health care. Wages, pension and work rules for bargained-for Mobility employees are negotiated under separate contracts.</p><p style="font-size:14px;color:#000;">This website is designed to provide additional information to employees about the tentative agreement.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilityorange") != -1){
-			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On January 21, AT&amp;T and the Communications Workers of America began negotiations covering more than 20,000 Mobility employees in CWA Districts 1, 2-13, 4, 7, and 9. These units span the country, with the exception of the Southeast and Southwest regions, and Puerto Rico. Bargaining will focus on wages, pension and work rules.</p><p style="font-size:14px;color:#000;">Please be sure to check this website often for bargaining updates, Q&amp;A and other relevant information.</p></div>').insertAfter('#logoHeaderBA');
+			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">AT&amp;T and the Communications Workers of America are currently in contract negotiations covering more than 20,000 Mobility employees in CWA Districts 1, 2-13, 4, 7 and 9. These units span the country, with the exception of the Southeast and Southwest regions, and Puerto Rico. Bargaining will focus on wages, pension and work rules.</p><p style="font-size:14px;color:#000;">Please be sure to check this website often for bargaining updates, Q&amp;A and other relevant information.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else {
 		//no message;
@@ -29,7 +30,7 @@ else if (document.domain == 'preview.att.net' ) {
 			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On September 13, AT&amp;T announced that AT&amp;T Mobility reached a tentative agreement with the Communications Workers of America in benefits negotiations covering all CWA bargained-for Mobility employees nationwide &ndash; more than 40,000 employees.</p><p style="font-size:14px;color:#000;">The tentative agreement is focused on benefits, including health care. Wages, pension and work rules for bargained-for Mobility employees are negotiated under separate contracts.</p><p style="font-size:14px;color:#000;">This website is designed to provide additional information to employees about the tentative agreement.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilityorange") != -1){
-			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On January 21, AT&amp;T and the Communications Workers of America began negotiations covering more than 20,000 Mobility employees in CWA Districts 1, 2-13, 4, 7, and 9. These units span the country, with the exception of the Southeast and Southwest regions, and Puerto Rico. Bargaining will focus on wages, pension and work rules.</p><p style="font-size:14px;color:#000;">Please be sure to check this website often for bargaining updates, Q&amp;A and other relevant information.</p></div>').insertAfter('#logoHeaderBA');
+			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">AT&amp;T and the Communications Workers of America are currently in contract negotiations covering more than 20,000 Mobility employees in CWA Districts 1, 2-13, 4, 7 and 9. These units span the country, with the exception of the Southeast and Southwest regions, and Puerto Rico. Bargaining will focus on wages, pension and work rules.</p><p style="font-size:14px;color:#000;">Please be sure to check this website often for bargaining updates, Q&amp;A and other relevant information.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else {
 		//no message;

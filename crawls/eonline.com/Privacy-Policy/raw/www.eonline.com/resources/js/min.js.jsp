@@ -1361,7 +1361,7 @@ eol.create("page", function($) {
 //        	advertisement.push("http://ad4.liverail.com/?LR_PUBLISHER_ID=" + publisherId + "&LR_SCHEMA=vast2&LR_VERTICALS=" + dart.domain);
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "za") {
-        	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0");
+        	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0.1");
         	
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } 

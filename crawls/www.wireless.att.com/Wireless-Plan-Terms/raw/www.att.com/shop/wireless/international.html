@@ -131,7 +131,7 @@ var mRedirectURL = '';
             AT&T International Calling Plans, Rates, Packages, & Apps from AT&T 
 	</title> 
     <meta name="description" content="Get AT&amp;T's Wireless International Calling Plans, Calling Rates, International Packages, &amp; Calling Apps with long distance, roaming &amp; AT&amp;T travel guide from AT&amp;T" >	 
-	<meta name="keywords" content="international calling rates, international plans, international, apps, long distance, world connect, smartphone, smartphones, cell phones, LTE, 4G, AT&amp;T, AT&amp;T Wireless" > 
+	<meta name="keywords" content="" > 
     <meta name="robots" content="INDEX,FOLLOW" /> 
 	<link rel="canonical" href="international.html"/>  
 	<meta NAME="DCSext.wtPN" CONTENT="HRock International"/> 
@@ -208,6 +208,14 @@ CQURLInfo = {
                         key = 'existDSL'; 
                         value = 'false'; 
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
                     } 
                 } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
@@ -667,6 +675,8 @@ CQURLInfo = {
 	}] 
 }; 
    JSAM.create({json:JSAM_JSON, width:"650", height:"280"}); 
+   var parentNode = document.getElementById("marqueeHolder").parentNode; 
+   parentNode.style.height = "280px"; 
 </script> 
 </div> 
 		</div> 
@@ -725,7 +735,7 @@ CQURLInfo = {
 		<div id="content"> 
 			<div style="display:inline;margin-top:5px;"> 
 				<div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear"></div> 
+                <div class="clear" style="display:inline"></div> 
             </div>  
 		    <div class="primary-content-full"> 
 		        <div class="parbase teaser mncont"> 
@@ -1182,12 +1192,29 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/wireless/international/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
+			<!-- legal footer --> 
+			<div class="appspecific_footer_content" ><!-- $Revision$, $Date$ and $Author$ --> 
+<div class="gn_prefooter"> 
+<!-- legal footer - note: need to remove inline style and add to shop-styles.css in static cluster -->	 
+<style type="text/css"> 
+	.consumer #wrapper .gn_prefooter a { 
+	 color:#3381B7; 
+	} 
+</style> 
+	<a href="../../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Wireless Legal Site</a> | 
+	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Wireless Customer Agreement</a> | 
+	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Cell Phone Records Security</a> 
+		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Other Monthly Charges</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Plan Terms</a>| 
+			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Online Pricing</a>| 
+			<div class='secondRow'> 
+				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Returns Policy &amp; Early Termination Fee</a>| 
+				<a class="postPaidLegalLink" href="../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Additional  
+Messaging &amp; Data Charges</a>| 
+				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013036">Shipping Information</a> 
+			</div> 
+</div> 
+</div> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -1202,7 +1229,7 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1293,7 +1320,7 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 202214272475257865093654359219021406672 --> 
+		 <!--X-Renderer: 271420413361945172448724135596873737173 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1305,19 +1332,21 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 	<meta name="DCSext.wt_aka_georegion" content="289" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
 <meta name="DCSext.wt_aka_region_code" content="WA" /> 
-<meta name="DCSext.wt_aka_city" content="QUINCY" /> 
-<meta name="DCSext.wt_aka_dma" content="881" /> 
-<meta name="DCSext.wt_aka_areacode" content="509" /> 
-<meta name="DCSext.wt_aka_county" content="GRANT" /> 
-<meta name="DCSext.wt_aka_fips" content="53025" /> 
-<meta name="DCSext.wt_aka_lat" content="47.1872" /> 
-<meta name="DCSext.wt_aka_long" content="-119.8129" /> 
+<meta name="DCSext.wt_aka_city" content="SEATTLE" /> 
+<meta name="DCSext.wt_aka_dma" content="819" /> 
+<meta name="DCSext.wt_aka_pmsa" content="7600" /> 
+<meta name="DCSext.wt_aka_msa" content="7602" /> 
+<meta name="DCSext.wt_aka_areacode" content="206" /> 
+<meta name="DCSext.wt_aka_county" content="KING" /> 
+<meta name="DCSext.wt_aka_fips" content="53033" /> 
+<meta name="DCSext.wt_aka_lat" content="47.5010" /> 
+<meta name="DCSext.wt_aka_long" content="-122.358" /> 
 <meta name="DCSext.wt_aka_timezone" content="PST" /> 
-<meta name="DCSext.wt_aka_zip" content="98848" /> 
+<meta name="DCSext.wt_aka_zip" content="98101-98109+98111-98112+98114-98119+98121-98122+98124-98126+98129+98131-98134+98136+98138+98144-98146+98148+98151+98154-98155+98158+98160-98161+98164+98166+98168+98170-98171+98174+98177-98178+98181+98184-98185+98188+98190-98191+98195+98198-98199" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
 <meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_asnum" content="8069+8075" /> 
+<meta name="DCSext.wt_aka_asnum" content="32934" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1522,7 +1551,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","zMS2RRDfTBwKnyJhXPw3z28S!1152481290!1360118751266"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","n1vxRVyXpWgJQdlCdPHfPcMV!-1670602354!1360373975781"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1558,6 +1587,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
 </body> 
 </html> 

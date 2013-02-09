@@ -25,7 +25,7 @@ background:#000000;
 border:1px solid #cecece;
 z-index:1;
 }
-#popupAddList, #popupCreateNewList, #popupCreateNewList1, #popupSignIn, #popupDeleteList, #popupListToCart, #popupEmailList, #popupEmailConfirmation, #popupPartialList, #popupClearList{
+#popupListToCart, #popupPartialList{
 display:none;
 position:fixed;
 _position:absolute; /* hack for internet explorer 6*/
@@ -73,6 +73,10 @@ box-shadow: 0 0 10px #999;
 } /* removed for cursor mis-alignment */
 #popupCreateNewList, #popupDeleteList{
 width:340px !important;
+display:none;
+}
+#popupCreateNewList{
+padding:20px;
 }
 #popupAddList{
 padding: 20px 30px !important;
@@ -91,6 +95,31 @@ width:320px !important;
 #popupListToCart{
 width:390px !important;
 }
+#fancybox-content #popupSignIn,#fancybox-content  #popupAddList,#fancybox-content  #popupCreateNewList,#fancybox-content  #popupCreateNewList1,#fancybox-content #popupAddToYour, #fancybox-content #popupListToCart{
+display:block;
+position:relative;
+_position:relative; /* hack for internet explorer 6*/
+background:transparent;
+box-shadow: none;
+height:auto;
+}
+#popupDeleteList, #popupEmailList, #popupEmailConfirmation, #popupPartialList, #popupClearList{
+width:400px;
+display:none;
+padding:20px;
+font-size:13px;
+height:auto;
+}
+#fancybox-content #popupDeleteList,#fancybox-content #popupEmailList,#fancybox-content #popupEmailConfirmation,#fancybox-content #popupPartialList,#fancybox-content #popupClearList{
+display:block;
+}
+#fancybox-content  #popupCreateNewList .closeBtn, #fancybox-content #popupDeleteList .closeBtn,#fancybox-content #popupEmailList .closeBtn, #fancybox-content #popupEmailConfirmation .closeBtn, #fancybox-content #popupPartialList .closeBtn, #fancybox-content #popupClearList .closeBtn, #fancybox-content #popupAddList .closeBtn, #fancybox-content #popupCreateListFromCart .closeBtn, #fancybox-content #popupAddToYour .closeBtn{
+display:block;
+visibility:visible;
+}
+
+#popupAddToYour .closeBtn{ margin-top:10px}
+
 #popupSignIn{
 padding:30px!important;
 }
@@ -104,16 +133,8 @@ z-index:9999;
 margin-top:50px;
 }
 #popupAddToYour{
-display:none;
-position:fixed;
-_position:absolute; /* hack for internet explorer 6*/
-height:auto;
 width:370px;
-background:#FFFFFF;
-z-index:2;
 padding:12px;
-font-size:13px;
-border:1px solid black;
 }
 .popupAddListClose{
 font-size:14px;
@@ -129,6 +150,7 @@ font-weight:700;
 display:block;
 z-index:10000;
 }
+#fancybox-content #popupListToCart .closeBtn{display:block !important; visibility: visible !important;}
 .z-index-9999{
 z-index:9999 !important; 
 }
@@ -205,7 +227,7 @@ z-index:9999 !important;
 .mobile {background-image:url(../../images/mylists/mobile.gif); width:23px; height:23px; float:left; background-repeat:no-repeat; padding-right:5px; padding-top:0px!important;}
 .mobiTxt {padding:5px 0 0 0px; float:left; font-size:11px}
 .mobiPanel {margin-top:10px}
-.listIcon {background-image:url(../../images/mylists/list_ico.jpg); background-repeat:no-repeat; height:auto; padding:6px 0px 0px 30px !important}
+.listIcon {background-image:url(../../images/mylists/list_ico.jpg); background-repeat:no-repeat; height:auto; padding:6px 0px 4px 30px !important}
 .signinBtn {background-image:url(../../images/mylists/sign_in.jpg); width:85px; height:31px; cursor:pointer;}
 .createAcctBtn {background-image:url(../../images/mylists/create_account.jpg); width:151px;border:0px; height:31px; cursor:pointer;background-repeat:no-repeat;}
 .createAcctBtn {*background:url(../../images/mylists/create_account.jpg);}
@@ -251,20 +273,21 @@ z-index:9999 !important;
 .newTitle div{ float:left;}
 .mainLogonTitle div p{ padding-top:0px;padding-top:0px\9;padding-bottom:5px\9; margin:0px; font-weight:bold; font-size: 22px;}
 .data { height:auto; margin:0px 0px 10px 0px !important; clear:left }
-.item_list{font-family: Arial,Helvetica,sans-serif; color: #000; height:176px; overflow-y:auto; margin-top:10px}
+.item_list{font-family: Arial,Helvetica,sans-serif; color: #000; height:167px; overflow-y:auto; margin-top:10px}
 .newitem_list{font-family: Arial,Helvetica,sans-serif; color: #000; overflow:auto; padding-top:15px; padding-bottom:3px; *padding-bottom:15px;}
 .item_list .item{ padding:10px 0px 5px 0px !important; font-size:14px; color:#000; font-weight:bold; text-align:left; cursor:pointer;}
 .item_list .item:hover{text-decoration:underline;}
 .fadingBackground{opacity:0.7; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter: alpha(opacity=70);}
 a.model_window{text-decoration:none}
 .popButton { border-top: 1px solid #CCCCCC;margin-top: 15px !important; *margin-top:0px !important; text-align: justify !important;} 
+.popButton  div div.float_left{margin:17px 0px 0px 0px;margin:17px 0px 0px 0px\9 !important;}
 .createpopButton { margin:20px 0px 0px 0px; padding-top:2px;}
 .createButton {float:left;padding:15px 0px 10px 0px!important}
 .createButton input{height:25px; width:145px!important; color:#999;font-size:14px}
 .newpopButton { margin:0px; float:right; padding-right:45px!important}
 .error_msg{ font-family: Arial,Helvetica,sans-serif; color:#FF0000; font-size:12px; margin:15px 40px 10px 2px !important; display:none; text-align:left;}
 .error_msg img{padding:3px 10px 0px 0px;}
-.popButton input{margin-top:17px; width:235px !important; height:30px; border:1px solid #ccc; color:#999; padding-left:5px}
+.popButton input{width:235px !important; height:30px; border:1px solid #ccc; color:#999; padding-left:5px}
 #black-overlay { position:absolute; display:none; top:0; left:0; opacity:0.3; filter:alpha(opacity=30); -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; background:#fff; z-index:1000; }
 .float_left{float:left}
 .float_right{float:right}
@@ -437,8 +460,8 @@ div.deleteAsk {height:33px; margin:0 auto;} /*5-24 MG*/
 /*-------------------Email List CSS Ends------------------*/
 /*-------------------My cart page starts------------------*/
 .addToListFromCart{font-family: Arial,Helvetica,sans-serif; font-size:12px;padding-top: 0 !important; font-weight:bold; color:#333; width:100px; cursor:pointer; text-align:right; vertical-align:top !important}
-.cartPopup{display:none; z-index:10999; border:1px solid #ccc;
- box-shadow: 0 0 10px #999; /*5-24 MG*/  background-color:#FFF;
+/*.cartPopup{display:none; z-index:10999;
+ box-shadow: 0 0 10px #999;*/ /*5-24 MG*/  /*background-color:#FFF;*/
 /*filter:
 	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=1, Color=#C4C4C4),
 	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
@@ -449,16 +472,20 @@ div.deleteAsk {height:33px; margin:0 auto;} /*5-24 MG*/
 	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color=#C4C4C4),
 	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#C4C4C4),
 	progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=270, Color=#C4C4C4); */
- } /* removed for cursor mis-alignment */
+/* } */ /* removed for cursor mis-alignment */
  
-#popupCreateListFromCart{padding:23px 30px 19px; width:320px;position:absolute;}
+#popupCreateListFromCart{padding:23px 30px 19px; width:320px; /*position:absolute;*/}
+#addToListResponse #popupCreateListFromCart{padding:12px 30px 0px;}
+#addToListResponse #popupCreateListFromCart .createButton{padding:0 0 10px!important;}
+#addToListResponse #popupCreateListFromCart #createList_PIP{margin:0 0 0 10px;}
+
 .item_copied{color:black; font-family: Arial,Helvetica,sans-serif; font-size:12px; font-weight:bold; padding:0px 10px 20px 0px; text-align: right;}
 .item_copied img{padding-left:10px}
 .item_copied span{color:#E6781E;font-weight:bold;}
 .item_copied a{text-decoration:none}
 .ClosePopup{float:right; position:relative;z-index: 999;} 
 .mar_top20{margin-top:20px !important}
-#add_new_list.newName{font-size:14px; height:25px; padding:2px !important;width:185px !important;height:auto\9 !important;padding-top:12px\9 !important;}
+#add_new_list.newName{font-size:14px; height:25px; padding:2px !important; width:185px !important;height:auto\9 !important;padding-top:12px\9 !important;}
 #add_new_list {margin-right:10px\9 !important;}
 .height30{height:30px}
 #addToListResponse{z-index:9999;}
@@ -534,3 +561,8 @@ div.deleteAsk {height:33px; margin:0 auto;} /*5-24 MG*/
 .bulkPriceBlock {float: left; margin-top: 15px; width: 300px;}
 .blkImgBlk {background-image: url("../../images/mylists/bulkPricingInfo1.jpg"); background-repeat: no-repeat; float: left; height: 29px; padding-left: 0px; width: 30px;}
 .bulkPriceTxt {color: #333333; float: left; font-size: 12px; font-weight: bold; width: 225px;}
+
+/*Create list button alignment issues in create list modal*/
+#addToListResponse #popupCreateListFromCart .createButton{padding-top:15px\9!important;padding-top:14px\8!important; }
+
+*:first-child+html #addToListResponse #popupCreateListFromCart .createButton{padding-top:13px!important; }

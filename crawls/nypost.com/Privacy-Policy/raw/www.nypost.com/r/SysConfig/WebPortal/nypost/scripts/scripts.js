@@ -357,7 +357,7 @@ $(document).ready(function(){
 		e.after('<ul class="screen-pager"></ul>');
 		e.find('.story-list').addClass('trans');
 		setTimeout(function(){ 
-			for(var i = 0; i < s+1; i++){
+			for(var i = 0; i < s; i++){
 				$('.screen-pager').append('<li data-index="'+ i +'" class="p"></li>');
 			};
 			setTimeout(function(){

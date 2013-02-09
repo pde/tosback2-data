@@ -13,9 +13,9 @@
     <meta name="viewport" content="width=960,user-scalable=1,maximum-scale=1.0" >
 
     <meta name="google-site-verification" content="wVFhf5HVF0MXlvnoW9R3u4gUUVRBHp0LDTfoFWSMnWY">
-        <link rel="stylesheet" type="text/css" href="../../../s.brkmd.com/combres.axd/layoutCss/612212804/index.html.css"/>
+        <link rel="stylesheet" type="text/css" href="../../../s.brkmd.com/combres.axd/layoutCss/1712949279/index.html.css"/>
                 
-                     <link rel="stylesheet" type="text/css" href="../../../s.brkmd.com/combres.axd/legalCss/499821893/index.html.css"/>
+                     <link rel="stylesheet" type="text/css" href="../../../s.brkmd.com/combres.axd/legalCss/-989310556/index.html.css"/>
                 
         <style type="text/css">
             @font-face {
@@ -58,9 +58,48 @@
             }
         </style>
         <script src="../../../s.brkmd.com/Scripts/break/js/libs/modernizr-2.6.2-custom.min.js"></script>
-<script type="text/javascript" src="../../../s.brkmd.com/combres.axd/layoutTopJs/1444044616/index.html"></script>        <script>
+<script type="text/javascript" src="../../../s.brkmd.com/combres.axd/layoutTopJs/-2045831514/index.html"></script>        <script>
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-30790906-1']);
+
+            // create UX Test cookies and GA variables for ad test
+            //brkr-1611
+            if( !jQuery.cookie('adOff'))
+            {
+                var randomNum = getRandomInteger(1,100);
+                var cookieValue = 6;  //default value to always show ads.
+                if( randomNum >= 1 && randomNum <= 5 )
+                {
+                    cookieValue = 1;
+                }
+                else if( randomNum >= 6 && randomNum <= 10 )
+                {
+                    cookieValue = 2;
+                }
+                else if( randomNum >= 11 && randomNum <= 15 )
+                {
+                    cookieValue = 3;
+                }
+                else if( randomNum >= 16 && randomNum <= 20 )
+                {
+                    cookieValue = 4;
+                }
+                else if( randomNum >= 21 && randomNum <= 25 )
+                {
+                    cookieValue = 5;
+                }
+                jQuery.cookie('adOff',cookieValue,{ expires: 1, path: '/', domain: 'break.com' });
+            }
+
+            if (jQuery.cookie('adOff') != null)
+            {
+                var cookieValue = jQuery.cookie ('adOff');
+                if (cookieValue != 6) 
+                {
+                    _gaq.push(['_setCustomVar', 3, 'UX TestUser', cookieValue, 2]);
+                }
+            }
+
             // 30 min cookie to match __utmb "session" cookie
             var gaTimeout = 1800000;
             _gaq.push(['_setCampaignCookieTimeout', gaTimeout]);
@@ -334,10 +373,10 @@
 				    <li class="icon-parent"><h3><a href="http://www.break.com/pictures/" data-ga="Click_PageType:Masthead:Funny_Pictures">Funny Pictures</a></h3></li>
 				    <li class="icon-parent"><h3><a href="http://www.break.com/videos/newest/just-submitted/" data-ga="Click_PageType:Masthead:Just_Submitted">Just Submitted</a></h3><b>|</b></li>
                             
-                            <li><a href="http://www.break.com/commercial-break"><span data-ga="Click_PageType:Masthead:Superbowl">Superbowl</span></a></li>
-                            
-                            
                             <li><a href="http://www.break.com/topics?pos=1"><span data-ga="Click_PageType:Masthead:Hot_Topics">Hot Topics</span></a></li>
+                            
+                            
+                            <li><a href="http://www.break.com/corp/privacy/www,break.com/commercial-break"><span data-ga="Click_PageType:Masthead:Superbowl_Ads">Superbowl Ads</span></a></li>
                             
                             
                             <li><a href="http://www.break.com/action-unleashed?pos=3"><span data-ga="Click_PageType:Masthead:Action">Action</span></a></li>

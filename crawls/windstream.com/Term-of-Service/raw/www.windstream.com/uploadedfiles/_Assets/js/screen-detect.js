@@ -5,6 +5,7 @@ if (navigator && navigator.userAgent) {
     userAgent = navigator.userAgent.toLowerCase();
 }
 
+/*
 detectDeviceandSetViewport = (function() {
     //$viewport = $('meta[name="viewport"]'),
 
@@ -17,7 +18,7 @@ detectDeviceandSetViewport = (function() {
     else if (detectIPhone) {
         //$viewport.attr('content', 'width=device-width, initial-scale=0.67, maximum-scale=1.0, user-scalable=no');
     }
-})();
+}()); */
 
 function detectAndroid() {
     if (userAgent.search('android') > -1) {
@@ -89,6 +90,7 @@ funcsToRefire = function () {
     mobileSlideMenu();
     mobileUtilityLocation();
     normalizePlanHeight(refire=true);
+    mobileLogo();
 
     $('.mod-009').each(function () { mod9Height($(this)); });
     $('.mod-018').each(function () { modSlide($(this)); });
@@ -111,9 +113,14 @@ setViewport = function () {
     }
 
     if (isHiResMobile == true) {
-        if (viewportWidth < 1150) {
+        if (viewportWidth < 1024) {
             addBodyClass(320);
             funcsToRefire();
+
+            if ( detectAndroidPhone() && detectAndroidPhone() ){
+                $('body').addClass('android');
+            }
+
             return;
         }
         else {
@@ -133,6 +140,9 @@ setViewport = function () {
         else if (viewportWidth < 768) {
             addBodyClass(320);
             funcsToRefire();
+            if ( detectAndroidPhone() && detectAndroidPhone() ){
+                $('body').addClass('android');
+            }
         }
         else {
             addBodyClass(1024);
@@ -183,3 +193,14 @@ $(window).resize(function () {
         });
     }
 })(this);
+
+
+if (navigator.userAgent.match(/iPhone/i)) {
+  var viewportmeta = document.querySelector('meta[name="viewport"]');
+  if (viewportmeta) {
+    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0';
+    document.body.addEventListener('gesturestart', function() {
+      viewportmeta.content = 'width=device-width, minimum-scale=0.25, maximum-scale=1.6';
+    }, false);
+  }
+}

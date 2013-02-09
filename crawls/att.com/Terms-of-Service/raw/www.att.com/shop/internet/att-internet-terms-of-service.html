@@ -210,6 +210,14 @@ CQURLInfo = {
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
                     } 
                 } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
+                    } 
+                } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
 		}); 
         clearTimeout(atgProfileDataTimer); 
@@ -906,12 +914,6 @@ CQURLInfo = {
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -926,7 +928,7 @@ CQURLInfo = {
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1017,7 +1019,7 @@ CQURLInfo = {
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="../../media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 181897963915809645832817906444564719391 --> 
+		 <!--X-Renderer: 294357157520686540069644593770052475142 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1224,7 +1226,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","ZKFsRRGS5nv6C151t8vSw52W!245620702!1360118930375"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","NhHPRVNXB2QRZNRKmsWL1TGW!740948290!1360383479354"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1260,6 +1262,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
 </body> 
 </html> 

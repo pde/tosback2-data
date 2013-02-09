@@ -42,7 +42,7 @@ aa=aa.replace(/(%u201C|%u201D|%E2%80%9C|%E2%80%9D)/g,"%22");aa=aa.replace(/(%09|
 P.pageName=unescape(aa)}if(!P.d.URL.match(/(apple.com\/retail\/.+\/map\/|apple.com\/buy\/locator\/|discussions.apple.com|discussionsjapan.apple.com)/g)){P.setupDynamicObjectIDs()
 }if(window.devicePixelRatio>=2){P.prop5=navigator.platform+" 2x"}else{P.prop5=navigator.platform
 }tempVar1=P.getQueryParam("ref");if(tempVar1&&P.tcall){P.referrer=tempVar1}else{if(tempVar1&&!P.tcall){P.referrer=""
-}}P.server=P.getQueryParam("alias");if(!P.server){P.server="new approach"}if(!P.campaign){P.campaign=P.getQueryParam("cid");
+}}P.server=P.getQueryParam("alias");if(!P.server){P.server="old approach"}if(!P.campaign){P.campaign=P.getQueryParam("cid");
 P.setClickMapEmail("Email_PageName,Email_OID","Email_OT");if(P.campaign.match(/OAS-.+?-DOMAINS-/i)){var ab="http://"+P.campaign.replace(/OAS-.+?-DOMAINS-/i,"");
 P.referrer=(P.tcall)?ab:""}}P.campaign=P.getValOnce(P.campaign,"s_campaign",0);
 P.prop6=(!P.prop6)?('D="'+P.getQueryParam("cp").toLowerCase()+': "+pageName'):P.prop6;

@@ -130,7 +130,9 @@ var Sandbox = (function() {
                                         if(typeof failCb == 'function') failCb();
                                     },
                                     haloSuccess: function(response) {
-                                    			memberUpdatePending = false;
+                                    	memberUpdatePending = false;
+                                    	var ct = new Date();
+                                    	response.member.refreshDate = ct.setTime(ct.getTime() + 15*60000);
                                         Sandbox.setMember(response.member, null);
                                         $Halo.bigbro.notify('memberLoggedIn', response);
                                         
@@ -182,13 +184,24 @@ var Sandbox = (function() {
             }
             if (successCallback != null)
             {
-                if(member) {
-                    member = JSON.parse(member);
-    
+                if(member)
+                {
+                	member = JSON.parse(member);
+                	
+                    if((+(new Date())) > member.refreshDate && memberUpdatePending === false)
+                    {
+                    	Sandbox.setMember(false);
+                    	member = null;
+                    }
+                }
+                
+                if(member)
+                {
                     args[0] = member;
                     successCallback.apply(context, args);
                 }
-                else {
+                else
+                {
                     var hlmtCookie = cookieStorage.get('hlmt');
                     if (hlmtCookie != null)
                     {

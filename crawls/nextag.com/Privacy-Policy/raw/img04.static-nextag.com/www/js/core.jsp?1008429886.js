@@ -1756,7 +1756,29 @@ function getAjaxDealsAndCoupons(event, rowId, left, top, url, thiz) {
     }
     NextagUtils.stopEvent(event);
     return false;
-}var NextagUtils = new Object();
+}
+window.__mercLbName=undefined;
+window.setMerchLb = function(name){
+   window.__mercLbName=name;
+};
+window.__updateMerch = function(name) {
+    var titleDiv = document.getElementById("merchant-title");
+    var subTextDiv = document.getElementById("merchant-title");
+    if (titleDiv && subTextDiv) {
+        var title = titleDiv.innerHTML;
+        var subtext = subTextDiv.innerHTML;
+        title = title.replace("~mt~", name);
+        subtext = subtext.replace("~mt~", name);
+        titleDiv.innerHTML = title;
+        subTextDiv.innerHTML = subtext;
+        titleDiv.style.display='block';
+		subTextDiv.style.display='block';
+        var idleTitleDiv=document.getElementById("idle-title");
+        var idleSubTxtDiv=document.getElementById("idle-subtext");
+		if(idleTitleDiv) idleTitleDiv.style.display='none';
+		if(idleSubTxtDiv) idleSubTxtDiv.style.display='none';
+    }
+};var NextagUtils = new Object();
 NextagUtils.sVisibleDiv = null;
 NextagUtils.sVisibleDivToggleFlag = 0;
 

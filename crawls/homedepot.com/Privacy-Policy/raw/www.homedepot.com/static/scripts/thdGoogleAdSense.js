@@ -1,13 +1,13 @@
 /* Google AdSense request and callback functions */
 
- function construct_google_csa_request(pPage, googlepropsObj, adblockLeft, adblockBottom ){	 
+ function construct_google_csa_request(pPage, googlepropsObj, adblockBottom, adblockLeft ){	 
 	if(googlepropsObj != "" && (typeof google !== 'undefined')){
 		 // NoResultsPage has only one Ad Block at the bottom
 		 if(pPage == "NoResultsPage" &&  adblockBottom != ""){
 			 new google.ads.search.Ads(googlepropsObj, adblockBottom );
 		 } else {
 			 if(adblockLeft != "" && adblockBottom != ""){
-				 new google.ads.search.Ads(googlepropsObj, adblockLeft, adblockBottom );
+				 new google.ads.search.Ads(googlepropsObj, adblockBottom, adblockLeft );
 			 }
 		 }		
 	 }

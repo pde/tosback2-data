@@ -1108,6 +1108,12 @@ $(document).ready(function() {
 				}
 				
 	});
+	
+	$('.viewCartButton').click(function(){
+		var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
+		if(wtPN != undefined && wtPN!="")
+			WebMetrics.dispatchReport( wtPN + "_ViewCart");
+	});
 	/*$('.RemoveProductCancelReporting').click( function(e){
 		if(window.WebMetrics)
 				{

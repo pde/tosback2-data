@@ -12,7 +12,7 @@ More info available at http://www.omniture.com
      Plugins
 */
 
-var s_account="samclub3prod,samclubglobal3prod"; //"samclub3qa"; //"samclub3dev"; 
+var s_account="samclub3prod,samclubglobal3prod";//"samclub3qa"; //"samclub3dev"; 
 var s=s_gi(s_account);
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -633,11 +633,10 @@ changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
 s.visitorNamespace="samsclub"
 s.dc=112
-/*s.trackingServer="metric.samsclub.com"
+s.trackingServer="metric.samsclub.com"
 s.trackingServerSecure="metrics.samsclub.com"
 s.visitorMigrationKey="4F53B68E"
-s.visitorMigrationServer="samsclub.112.2o7.net"*/
-s.trackingServer="samsclub.112.2o7.net"
+s.visitorMigrationServer="samsclub.112.2o7.net"
 /****************************** MODULES *****************************/
 /* Module: Media */
 s.m_Media_c="var m=s.m_i('Media');if(m.completeByCloseOffset==undefined)m.completeByCloseOffset=1;if(m.completeCloseOffsetThreshold==undefined)m.completeCloseOffsetThreshold=1;m.cn=function(n){var m="

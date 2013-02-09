@@ -2,8 +2,9 @@
 //  This file is included on all pages (legacy & new) and will provide a
 //  collection of functions to be used throughout as well as auto run certain 
 //  functions.
-//  $Last Updated: 08/09/2011 12:27:52  $
+//  $Last Updated: 01/15/2013 $
 // Ensure the document.domain
+
 var docDomainParts = document.domain.split('.'),
 	docDomainPartsLen = docDomainParts.length;
 if (docDomainPartsLen > 2) {
@@ -99,12 +100,13 @@ overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
 	}
 });
 
-// DCTM Content Overlay
+// Quickview Overlay
 overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 	'autoDimensions':false,
 	'width' : 766,
 	'showCloseButton' : true,
 	"onComplete": function(currentArray, currentIndex, currentOpts) {
+		//alert('Complete!');
 
 		//To prevent the weirdness, show the preloader and hide the fancybox wrap until loaded. qc-14889
 		$.fancybox.showActivity();
@@ -158,22 +160,23 @@ function _EqualColHeights(parentElement, childElement) {
 // adjust the heights of all the pods.
 
 
-function fixPodHeights() {
-	$('.row').each(function(index) {
-		//first check to see if row has a rail
-		if ($(this).find('.rail').length > 0) {
-			var $rail = $(this).find('.rail'),
-				$mainC = $(this).find('.mainContent');
-			var railHeight = $rail.height(),
-				mainContentHeight = $mainC.height();
-			if (railHeight > mainContentHeight) {
-				$mainC.css('min-height', railHeight);
-			} else if (railHeight < mainContentHeight) {
-				$rail.css('min-height', mainContentHeight);
-			}
-
-		}
-	});
+	function fixPodHeights() {
+	 $('.row').each(function(index) {
+	  //first check to see if row has a rail
+	  if ($(this).find('.rail').length > 0) {
+	   var $rail = $(this).find('.rail'),
+		$mainC = $(this).find('.mainContent'); 
+		var railHeight = $rail.height(),
+		mainContentHeight = $mainC.height(); 
+		if($('div').hasClass('rail footerRail grid_6 alpha')){
+		 $rail.css('min-height', mainContentHeight);
+		}else{ if (railHeight > mainContentHeight) {
+		$mainC.css('min-height', railHeight);
+	   } else if (railHeight < mainContentHeight) {
+		$rail.css('min-height', mainContentHeight);
+	   }}
+	  }
+	 });
 
 	_EqualColHeights(".row", ".pod");
 	_EqualColHeights(".pod", ".pod");
@@ -227,7 +230,7 @@ function attachOverlays(context) {
 	});
 }
 
-//A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes
+//A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes 
 //an href value so that bopis modal won't degrade if clicked prior to doc ready.
 
 
@@ -330,14 +333,22 @@ $(window).load(function() {
 	attachQuickViewButtons();
 	stripedTables();
 	dynamicRatings();
+	//cartConfModal();
 	// Add the fancybox close catcher
 	$('.fbClose a').live('click', function() {
 		$.fancybox.close();
 		return false;
 	});
+	//Cart Modal Trigger.
+	$("body").delegate(".overlayCartTrigger", "click", function(event){
+    event.preventDefault();    
+	var setCartUrl = $(this).attr('href')+'&addToCartConfirmation=true';
+    var cartModelURL = $.extend({}, CartModelConfig);
+    	cartModelURL.href = setCartUrl;
+	$.fancybox(cartModelURL);
+	});
 
 });
-
 
 /* FED Cookie Generic Cookie handling code */
 
@@ -531,7 +542,12 @@ function f_getUrlParamsObj(inStr) {
 			tmpOP += '"' + n[0] + '":"' + unescape(n[1]).replace(/\\/g, '\\\\').replace(/\"/g, "\\\"").replace(/\'/g, "\\'") + '"';
 		}
 		tmpOP += '}'
-		retObj = eval("(" + tmpOP + ")");
+		 try{
+	            retObj = eval("(" + tmpOP + ")");
+	        }
+	        catch(err){
+	            return false;
+	        }
 	}
 	return retObj;
 }
@@ -584,3 +600,202 @@ function popup() {
     }
     document.emailsub.emailInput.value = '';
 }
+
+//----------appending value to citi card link-----------------//
+function  appendValueToCitiLink() {
+
+	var citiValue = getTHDTotalCartAmount().substr(1);
+	if(citiValue==''){
+	citiValue='0.00'
+	}
+	citiValue = citiValue.split(',').join('');
+    var ctLinks = document.links;
+	for (var ct=0; ct<ctLinks.length; ct++) {								  
+        if (ctLinks[ct].href.indexOf('www.citicards.com/cards/acq/Apply.do')!=-1) {        
+           ctLinks[ct].href = ctLinks[ct].href + "&SALE_AMT=" +citiValue;
+        }
+    }             
+}
+
+/*
+	New, Safe Logging Code, JNH 11-28-2012
+
+	Usage: THD.log('Message', variable);
+
+	To turn logging on or off just set THD.isLogging
+*/
+var THD = (THD || {});
+
+THD.isLogging = false;
+
+THD.log = (function () {
+	// Based on code from: https://github.com/cpatik/console.log-wrapper/blob/master/consolelog.js
+	// Tell IE9 to use its built-in console
+	if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log === 'object') {
+		if (Array.prototype.forEach) {
+			['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
+				console[method] = this.call(console[method], console);
+			}, Function.prototype.bind);
+		}
+	}
+
+	// Modern browsers
+	if (typeof console !== 'undefined' && typeof console.log === 'function') {
+		return function () {
+			if (THD.isLogging) {
+				// Single argument, which is a string
+				if ((Array.prototype.slice.call(arguments)).length === 1 && typeof Array.prototype.slice.call(arguments)[0] === 'string') {
+					console.log((Array.prototype.slice.call(arguments)).toString());
+				} else {
+					console.log(Array.prototype.slice.call(arguments));
+				}
+			}
+		};
+	}
+
+	// Check IE8 - Originally used !Function.prototype.bind && as well, but prevented logging in IE9 with 7 compat
+	if (typeof console !== 'undefined' && typeof console.log === 'object') {
+		return function () {
+			if (THD.isLogging) {
+				Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
+			}
+		};
+	}
+
+	// return an empty function
+	return (function() {});
+}());
+
+//---------CART CONFORMATION MODAL-------------------//
+
+CartModelConfig = {
+	//'href':setCartUrl,
+	'autoDimensions': true,
+	'autoScale': false,
+    'padding':0, 
+    'margin':0,        
+    'type': 'ajax',
+    'width': 640,
+    'height':595,
+    'overlayOpacity': 0.7,
+    'showCloseButton':true,
+    'centerOnScroll':false,
+    'transitionIn': 'none',
+	'transitionOut': 'none',
+    'overlayColor': '#000',
+    'onStart' :  function(){
+    	$('#fancybox-wrap').addClass('atcModalFb');
+    	if($('#fancybox-wrap').is(':visible')){
+    		isFBAopen = true;
+    	}else{
+    		isFBAopen = false;
+    	}
+    },
+    'onComplete'	:	function() {
+    	if(isFBAopen==false){
+    		atcCertonaRePos = setInterval(waitForATCCertona, 500)
+    	}	    	
+	}
+}
+
+var atcCertonaRePos;
+var atcCertonTimer = 0
+function waitForATCCertona(){
+	atcCertonTimer++;
+	if($('#atcmodal_rr').is(':visible')){
+		$.fancybox.center();
+		clearInterval(atcCertonaRePos)
+	}
+	if(atcCertonTimer==6){
+		clearInterval(atcCertonaRePos)
+	}
+}
+
+/* functions for form validations start */
+var thdValidate = {};
+
+//has at least one number returns true 1, otherwise false 0
+thdValidate.hasNumber = function(a) {
+	var b;
+	a = /\d/.test(a);
+	if (a === true){ b = 1; }else{b = 0;}
+	return b;
+};
+//has at least one letter returns true 1, otherwise false 0
+thdValidate.hasAlpha = function(a) {
+	var b;
+	a = /[a-zA-Z]/g.test(a);
+	if (a === true){ b = 1; }else{ b = 0; }
+	return b;
+};
+// test for valid zip code format. true 1 is 5 numbers, false 0 is not
+thdValidate.testZipCode = function(a) {
+	var b;
+	a = a.trimMe();
+	if (isNaN(a) === false && a.length === 5){ b = 1; }else{ b = 0; }
+	return b;
+};
+// test for valid name returns true 1, otherwise false 0
+thdValidate.testName = function(a) {
+	a = a.trimMe();
+	var b = a.match(/\d/);
+	if (b === null && a.length > 0){ b = 1; }else{ b = 0; }
+	return b;
+};
+// test for valid Address returns true 1, otherwise false 0
+thdValidate.testAddress = function(a) {
+	var b;
+	a = a.trimMe();
+	if (thdValidate.hasNumber(a) === 1 && thdValidate.hasAlpha(a) === 1 && a.length>3){ b = 1; }else{ b = 0; }
+	return b;
+};
+// test phone returns returns true 1, otherwise false 0
+// Sm = 3 digits, Med = 4 digits, Lg = 10-15 digits in one field
+thdValidate.testPhoneSm = function(a) {
+	var b;
+	a = a.trimMe();
+	if (isNaN(a) === false && a.length === 3){ b = 1; }else{ b = 0; }
+	return b;
+};
+thdValidate.testPhoneMed = function(a) {
+	var b;
+	a = a.trimMe();
+	if (isNaN(a) === false && a.length === 4){ b = 1; }else{ b = 0; }
+	return b;
+};
+thdValidate.testPhoneLg = function(a) {
+	var b;
+	a = a.trimMe();
+	//remove hypens
+	a = a.replace(/-/g,'');
+	if (isNaN(a) === false && a.length >= 10 && a.length <= 15 ){ b = 1; }else{ b = 0; }
+	return b;
+};
+thdValidate.testEmail = function(a) { 
+	var b;
+	a = /\S+@\S+\.\S+/.test(a);
+	if (a === true) { b = 1; }else{ b = 0; }
+	return b;
+};
+//trim method that actually works in IE and mobile, or use this one replace(/^\s+|\s+$/g, "");  ?
+String.prototype.trimMe = function () {
+	var regEx = /(^[\s\xA0]+|[\s\xA0]+$)/g,
+		a = this.replace(regEx, '');
+	return a;
+};
+// toTitleCase method - since js does not have one...
+String.prototype.toTitleCase = function () {
+	var A = this.toLowerCase().split(' '), B = [];
+	for (var i = 0; A[i] !== undefined; i++) {
+		B[B.length] = A[i].substr(0, 1).toUpperCase() + A[i].substr(1);
+	}
+	return B.join(' ');
+};
+// remove Spec Char
+String.prototype.removeSpec = function () {
+	var regEx = /[^A-Za-z0-9 ]/g,
+		a = this.replace(regEx,'');
+	return a;
+};
+/* functions for form validations end */
+

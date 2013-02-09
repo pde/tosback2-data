@@ -31,7 +31,7 @@ function setOrderSourceABSplit(){
 var mobile = getURLParam('mobile'); 
 var mobileView; 
 var fullSiteView; 
-var mRedirectURL = ''; 
+var mRedirectURL = '//m.att.com/shopmobile/wireless/devices.html'; 
 //Check URL for mobile=false. Set FulSiteView=True if found. 
 //commenting below if condition . 
 //As Mobile HardRock footer jsp setting the value 
@@ -163,11 +163,6 @@ CQURLInfo = {
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
-				<!-- OPTIMOST ATTRIBUTE CODE --> 
-				<script language="javascript1.1" type="text/javascript"> 
-					var opPage = "/shop/wireless/devices.html"; 
-				</script> 
-				<script type="text/javascript" src="../../media/cms/shop/scripts/optimost/optimostCode.min.js"></script> 
 </head> 
 <!-- Add author only code below --> 
 <body class="consumer"> 
@@ -215,6 +210,14 @@ CQURLInfo = {
                         key = 'existDSL'; 
                         value = 'false'; 
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
                     } 
                 } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
@@ -686,6 +689,52 @@ CQURLInfo = {
 		}] 
 	}, 
 	{ 
+		"alt": "AT&amp;T Unite", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq-149903_ATT-Unite-650x280_BG.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_att_unite", 
+		"description": "AT&amp;T Unite", 
+		"name": "devices_att_unite", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/tmb_149903-wifi-orange-44x44.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"antiAlias": "1", 
+			"cssClass": "size13,customcolor_333333,arial", 
+			"html": "1", 
+			"name": "Copy", 
+			"type": "Text", 
+			"x": "50", 
+			"y": "150", 
+			"label": [{ "Text": "Easily, securely, and affordably provide a Wi-Fi \r\nhotspot for up to 10 Wi-Fi–enabled devices." }] 
+		}, 
+		{ 
+			"html": "1", 
+			"name": "CTA_BTN", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "49", 
+			"y": "206", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "http://www.att.com/shop/wireless/devices/sierrawireless/att-unite-white.html?source=IC1nM3165il1894QO", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Buy Yours" }] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size10,customcolor_666666,arial", 
+			"html": "1", 
+			"name": "Legal", 
+			"type": "Text", 
+			"x": "186", 
+			"y": "209", 
+			"label": [{ "Text": "Requires new 2-yr contract \r\nwith minimum DataConnect 5GB or \r\nMobile Share plan. Activation fee applies." }] 
+		}] 
+	}, 
+	{ 
 		"alt": "Pantech Discover&#8482;", 
 		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq-144050-pantechDiscover-650x280_en-bg.jpg", 
 		"backgroundHorizontalPlacement": "left", 
@@ -750,80 +799,11 @@ CQURLInfo = {
 			"y": "257", 
 			"label": [{ "Text": "New 2-yr contract with qualifying voice & data plans or Mobile Share plan req’d." }] 
 		}] 
-	}, 
-	{ 
-		"alt": "Samsung Rugby&#174; III", 
-		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq-142137-Samsung-Rugby3-bg_650x280_en2.jpg", 
-		"backgroundHorizontalPlacement": "left", 
-		"backgroundVerticalPlacement": "top", 
-		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_Samsung_Rugby_3_Launch", 
-		"description": "Samsung Rugby&#174; III", 
-		"name": "devices_Samsung_Rugby_3_Launch", 
-		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb-142137-Samsung-Rubgy3_HoverIcons-44x44n.png", 
-		"useJSAM": "1", 
-		"asset": [{ 
-			"align": "left", 
-			"antiAlias": "1", 
-			"cssClass": "size13,customcolor_333333,arial", 
-			"html": "1", 
-			"name": "copy", 
-			"type": "Text", 
-			"width": "400", 
-			"x": "50", 
-			"y": "150", 
-			"label": [{ "Text": "Dustproof, shock & water resistant,\r\nwith enhanced Push-To-Talk service." }] 
-		}, 
-		{ 
-			"align": "left", 
-			"antiAlias": "1", 
-			"cssClass": "size34,customcolor_f17e04,arial", 
-			"html": "1", 
-			"name": "price", 
-			"type": "Text", 
-			"x": "50", 
-			"y": "206", 
-			"label": [{ "Text": "$99.99" }] 
-		}, 
-		{ 
-			"name": "line", 
-			"preload": "1", 
-			"source": "/shopcms/media/att/2012/global/JSAM-assets/overlays/img_price_pipe_1x42_AA000S1W.png", 
-			"type": "Media", 
-			"x": "159", 
-			"y": "205" 
-		}, 
-		{ 
-			"align": "center", 
-			"horizontalPlacement": "center", 
-			"html": "1", 
-			"name": "button", 
-			"styleLib": "Default", 
-			"type": "Button", 
-			"x": "170", 
-			"y": "206", 
-			"cta": [{ 
-				"action": "Browse", 
-				"trigger": "click", 
-				"url": "/shop/wireless/devices/samsung/rugby-iii-gray.html?Source=IC011i041ml0351QO", 
-				"webtrendsType": "clickThrough" 
-			}], 
-			"label": [{ "Text": "Buy Yours" }] 
-		}, 
-		{ 
-			"align": "left", 
-			"antiAlias": "1", 
-			"cssClass": "size10,Text,arial", 
-			"html": "1", 
-			"name": "legal", 
-			"type": "Text", 
-			"width": "500", 
-			"x": "51", 
-			"y": "252", 
-			"label": [{ "Text": "New 2-yr. contract with qualifying voice and data plans required. Meets U.S. Mil-STD \r\n810G for dust, humidity, rain, and shock. Waterproof based on IP67 rating." }] 
-		}] 
 	}] 
 }; 
    JSAM.create({json:JSAM_JSON, width:"650", height:"280"}); 
+   var parentNode = document.getElementById("marqueeHolder").parentNode; 
+   parentNode.style.height = "280px"; 
 </script> 
 </div> 
 		</div> 
@@ -882,7 +862,7 @@ shop packages &amp; deals.<br>
         <div id="content"> 
             <div style="display:inline;margin-top:5px;"> 
                 <div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear"></div> 
+                <div class="clear" style="display:inline"></div> 
             </div> 
             <div class="primary-content-full"> 
                 <div class="categoryLoBT LoBT"> 
@@ -981,54 +961,62 @@ shop packages &amp; deals.<br>
     .tilecopy h4 {font-size: 16px;} 
     .device-container-with-border h2 {font-weight: normal !important;} 
 </style> 
+       <style type="text/css"> 
+       .row-container h3 
+       { 
+           font-size: 16px; 
+           margin-bottom: 15px; 
+           color:#3381B7; 
+       } 
+       </style> 
         <div class="row-container section-divider-special"> 
             <h3 class="sub-header-not-underlined">Other Mobile Devices</h3> 
             <div align="center" class="device-container-with-border"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/ipad.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-iPad.jpg" alt="" title="iPad"/> 
-					</a> 
+                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-iPad.jpg" alt="" title="iPad"/> 
+                    </a> 
                 <br /> 
-                <h2>iPad</h2> 
+                <a href="http://www.att.com/shop/wireless/devices/apple/ipad.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>iPad</h3></a> 
                 <a href="http://www.att.com/shop/wireless/devices/apple/ipad.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div> 
             <div align="center" class="device-container-with-border"> 
-						<a href="devices/tablets.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-tablets.jpg" alt="" title="Tablets"/> 
-					</a> 
+                        <a href="devices/tablets.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-tablets.jpg" alt="" title="Tablets"/> 
+                    </a> 
                 <br /> 
-                <h2>Tablets</h2> 
+                <a href="devices/tablets.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>Tablets</h3></a> 
                 <a href="devices/tablets.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div> 
             <div align="center" class="device-container-with-border"> 
-						<a href="http://www.att.com/shop/wireless/devices/computers.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-computers.jpg" alt="" title="Computers"/> 
-					</a> 
+                        <a href="http://www.att.com/shop/wireless/devices/computers.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-computers.jpg" alt="" title="Computers"/> 
+                    </a> 
                 <br /> 
-                <h2>Computers</h2> 
+                <a href="http://www.att.com/shop/wireless/devices/computers.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>Computers</h3></a> 
                 <a href="http://www.att.com/shop/wireless/devices/computers.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div> 
             <div align="center" class="device-container-with-border"> 
-						<a href="http://www.att.com/shop/wireless/devices/hotspots.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-hotspot.jpg" alt="" title="Mobile Hotspots"/> 
-					</a> 
+                        <a href="http://www.att.com/shop/wireless/devices/hotspots.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-hotspot.jpg" alt="" title="Mobile Hotspots"/> 
+                    </a> 
                 <br /> 
-                <h2>Mobile Hotspots</h2> 
+                <a href="http://www.att.com/shop/wireless/devices/hotspots.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>Mobile Hotspots</h3></a> 
                 <a href="http://www.att.com/shop/wireless/devices/hotspots.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div> 
             <div align="center" class="device-container-with-border"> 
-						<a href="http://www.att.com/shop/wireless/devices/modems.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-usbModem.jpg" alt="" title="USB Modems"/> 
-					</a> 
+                        <a href="http://www.att.com/shop/wireless/devices/modems.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-usbModem.jpg" alt="" title="USB Modems"/> 
+                    </a> 
                 <br /> 
-                <h2>USB Modems</h2> 
+                 <a href="http://www.att.com/shop/wireless/devices/modems.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>USB Modems</h3></a> 
                 <a href="http://www.att.com/shop/wireless/devices/modems.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div> 
             <div align="center" class="device-container-with-border last"> 
-						<a href="http://www.att.com/shop/wireless/devices/mobile-electronics.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
-					<img src="../../shopcms/media/att/2012/shop/landing/shop-other6-mobileElectronics.jpg" alt="" title="Mobile Electronics"/> 
-					</a> 
+                        <a href="http://www.att.com/shop/wireless/devices/mobile-electronics.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"> 
+                    <img src="../../shopcms/media/att/2012/shop/landing/shop-other6-mobileElectronics.jpg" alt="" title="Mobile Electronics"/> 
+                    </a> 
                 <br /> 
-                <h2>Mobile Electronics</h2> 
+                <a href="http://www.att.com/shop/wireless/devices/mobile-electronics.html" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136"><h3>Mobile Electronics</h3></a> 
                 <a href="http://www.att.com/shop/wireless/devices/mobile-electronics.html" class="arrowRt" data-cqpath="/content/campaigns/att/en/devicescategory/Category-Teaser/Campaign/default/jcr:content/categoryteaser/attgeneral/sixup_0;2012136">Shop now</a> 
             </div>   
             <br class="clear" /> 
@@ -1490,34 +1478,6 @@ Learn more
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/wireless/devices/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
-			<div class="appspecific_footer_content" ><!-- $Revision$, $Date$ and $Author$ --> 
-<div class="gn_prefooter"> 
-<!-- legal footer -- note: need to remove inline style and add to shop-styles.css in static cluster -->	 
-<style type="text/css"> 
-	.consumer #wrapper .gn_prefooter a { 
-	 color:#3381B7; 
-	} 
-</style> 
-	<a href="../../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Wireless Legal Site</a> | 
-	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Wireless Customer Agreement</a> | 
-	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Cell Phone Records Security</a> 
-		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Plan Terms</a>| 
-			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Online Pricing</a>| 
-			<div class='secondRow'> 
-				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Returns Policy &amp; Early Termination Fee</a>| 
-				<a class="postPaidLegalLink" href="../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Additional  
-Messaging &amp; Data Charges</a>| 
-				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content;2012352">Shipping Information</a> 
-			</div> 
-</div> 
-</div> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -1532,7 +1492,7 @@ Messaging &amp; Data Charges</a>|
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1623,7 +1583,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 323321570784384125654963223160879338376 --> 
+		 <!--X-Renderer: 262761803127244175532323579953605541350 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1636,7 +1596,7 @@ ATT.globalVars.custType = "";
 ATT.globalVars.ban = ""; 
 ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "78261"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -1647,7 +1607,7 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="78261"; 
 	} 
 	return wtzip; 
 }; 
@@ -1729,7 +1689,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "SAN ANTONIO"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -1738,7 +1698,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "TX"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1816,7 +1776,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","tYgTRRCGzdp81K417vTpDFBx!-1983736552!1360118468245"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","hnnvRVyJnFXrg3QKfKyTBykY!334579498!1360373940788"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1852,15 +1812,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
-	<!-- B2C-120711 Place Optimost Code on att.com pages -->  				 
-	<!-- OPTIMOST UNIVERSAL MODULE --> 
-	<script language="javascript" type="text/javascript"><!-- 
-	if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
-		for(var i=0;i<opModulesArray.length;i++){ 
-			optimost.displayModule(opModulesArray[i]); 
-		} 
-	} 
-	//--></script> 
 </body> 
 </html> 

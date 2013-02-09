@@ -23,6 +23,7 @@ var awOmniDomain;
 var awOmniHeadline = "";
 var awOmniPageNumber = "";
 var awOmniPremiumStatus = "";
+var awOmniPremiumAuthStatus = "";
 var awOmniPremiumEndDate = "";
 var awOmniPubSource = "";
 var awOmniBoolPremiumEvent = false;
@@ -233,6 +234,12 @@ if(typeof(omni_premiumStatus)!="undefined"){
 }
 if(typeof(omni_premiumEndDate)!="undefined"){awOmniPremiumEndDate = omni_premiumEndDate;}
 if(typeof(omni_sourceSite)!="undefined"){awOmniPubSource = omni_sourceSite;}
+if(typeof(omni_paywallSite)!="undefined"){  // extra check to see if user is logged in (only if this is a paywall site)
+        awOmniPremiumAuthStatus = "Logged Out";
+        if(typeof(edbTokens)!="undefined" && edbTokens.productToken != null){
+                 awOmniPremiumAuthStatus = "Logged In";
+        }
+}
 
 // Process content type
 // Append content type to the end of the category structure where appropriate
@@ -345,6 +352,12 @@ if (awBoolIs404) {
 	// s.prop3 = awOmniSSL3; // (Site Section Level 3)
 	// s.prop4 = awOmniSSL4; // (Site Section Level 4)
 	s.prop5 = awOmniNumResults; // (# of Internal Search Results)
+        if(awOmniPremiumAuthStatus!="") {
+                s.prop7 = awOmniPremiumAuthStatus; // (User Logged In/Out to premium site)
+                if ( window.console!=undefined ){
+                        console.log("awOmniPremiumAuthStatus: "+awOmniPremiumAuthStatus);
+                }
+        }
 	s.prop6 = awOmniSearchTerms; // (Internal Search Terms)
 	s.prop16 = awOmniPrintContent; // (Print Content)
 	s.prop20 = awOmniAuthorTitle; // (Author Title)

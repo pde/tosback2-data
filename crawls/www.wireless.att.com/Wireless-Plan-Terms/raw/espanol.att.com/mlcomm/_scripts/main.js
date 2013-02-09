@@ -564,6 +564,16 @@ document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
 document.write('<div class="rc-release-box">'); 
+document.write('<p>31 de enero de 2013<br />');
+document.write('<a href="/newsroom/news_releases/seguridad_en_linea_1-31-13.html?id=' + state + '" title="Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet">Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
+document.write('<p>30 de enero de 2013<br />');
+document.write('<a href="/newsroom/news_releases/blackberry_10_1_30_13.html?id=' + state + '" title="AT&#38;T planea lanzar al mercado los equipos smartphone Blackberry Z10 y Blackberry Q10 con Blackberry 10 para clientes particulares y comerciales">AT&#38;T planea lanzar al mercado los equipos smartphone Blackberry Z10 y Blackberry Q10 con Blackberry 10 para clientes particulares y comerciales</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>7 de enero de 2013<br />');
 document.write('<a href="/newsroom/news_releases/puede_esperar_1_7_13.html?id=' + state + '" title="AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013">AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013</a></p>');
 document.write('</div>');

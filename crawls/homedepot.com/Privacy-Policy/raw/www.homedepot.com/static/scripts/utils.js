@@ -7,6 +7,8 @@
 	var cookieManager = null;
     var nbrOfItemsInCart;
 	var currentCookiedomain;
+	
+	
     
     // Onload methods BEGIN
     var HideThePrintLink = null;
@@ -151,6 +153,7 @@
 					+	"<crumb type=\"R\" alias=\"THD_LIVEPERSON_ERRORCOUNT\"   name=\"C35\"  exp=\"86400\"></crumb>"
 					+   "<crumb type=\"R\" alias=\"THD_GEOLOCATION_INFO\" name=\"C36\" exp=\"-1\"></crumb>"
 					+	"<crumb type=\"R\" alias=\"THD_AUTOLOCALIZED_SESSION\" name=\"C37\" exp=\"-1\"></crumb>"
+					+	"<crumb type=\"R\" alias=\"THD_LAYOUT\" name=\"C38\" exp=\"51840000\"></crumb>"
 					+"</crumbs>"
 				   +"</cookieJar>";
 		
@@ -713,7 +716,6 @@
 				var pathValue = "; path=" + this.path;
 			}
 			else {
-	
 				var pathValue = ";";
 			}		
 			
@@ -1162,7 +1164,7 @@
 	function goToLinkFromJS(nonRegisteredURL, RegisteredURL) {
 		var cmd = nonRegisteredURL;
 		// readCookie is located in utils.js file
-		var isLoggedOn = readCookie("THD_USERSTATUS") == '1';
+		var isLoggedOn = readCookie("THD_USERSTATUS") == '1';		
 		if(isLoggedOn) {
 			cmd = RegisteredURL;
 			document.location.href = cmd;
@@ -1178,56 +1180,31 @@
 				type:"POST", 		
 				data: postData,
 				success: function(data) {	 
-			//	$("#container").appendChild(data);
-								  
-				  var newdiv = document.createElement('div');
-
-				 newdiv.setAttribute('id','ajaxResponse');
-
-				  newdiv.innerHTML = data;
-				  document.body.appendChild(newdiv);
-				  
-				  $(".popupAddListClose").click(function(){
-				  					  if(popupStatus==1){
-				  					  $(".backgroundPopup").fadeOut("slow");
-				  					  popupStatus = 0;
-				  					  }
-					  });
-				 
-				loadPopup('popupSignIn'); 
-				$("#signIn").click(function(e){
-					e.preventDefault();	
-					var e = $("#email_id").attr('value');
-					var f = $(".backgroundPopup #password").attr('value'); 
-					var atpos=e.indexOf("@");
-					var dotpos=e.lastIndexOf(".");
-					 $("#email_id, .backgroundPopup #password").css('border','1px solid gray');
-					  if ((e.length==0 && f.length==0) ||((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) && f.length==0)) {
-						$(".signInError").css('display','none');
-						$("#email_id, .backgroundPopup #password").css('border','1px solid red');
-						$(".signInError").css({display:'block', color:'red'});
-						$(".signInError").html("The following field(s) are required: E-mail Address, Password.");
-					  }
-					  else if ((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) || e.length==0) {
-						$(".signInError").css('display','none');
-						$("#email_id").css('border','1px solid red');
-						$(".signInError").css({display:'block', color:'red'});
-						$(".signInError").html("The following field(s) are required: E-mail Address.");
-					  }
-							else if(f.length==0){
-							$(".backgroundPopup #password").css('border','1px solid red'); 
-							$(".signInError").css({display:'block', color:'red'});
-							$(".signInError").html("The following field(s) are required: Password.");
-					}
-					else {
-						$("#email_id").css('border','1px solid gray');
-						$(".signInError").css('display','none');
-						$("#userLogin").submit();
-						//makeAjaxCall(posn,10);	  
-					}
-				});
-
+				var fromPage = $('#fromPage').val(); 
+				loadFancyPopup(data, fromPage, 13); 
 			},
+	   complete: function (data, fromPage){
+	   var opCode = $('input[name="opCode"]').val();
+	   if (fromPage == "quickView" ) 
+			{
+			$('#fancybox-content', top.document).css({'width':'378px', 'height':'auto'});
+			$('#fancybox-content', top.document).children('div:first').css({'width':'378px', 'height':'auto'});	
+			$('.cartPopup', top.document).append('<div style="clear:both"></div>');
+			$('#popupSignIn', top.document).append('<div style="clear:both"></div>');
+			if(opCode==9){
+				$('#popupCreateNewList', top.document).css({'display':'none'});
+			}
+		}
+		else{
+			$('#fancybox-content').css({'width':'460px', 'height':'auto'});
+			$('#fancybox-content').children('div:first').css({'width':'460px', 'height':'auto'});	
+			$('#popupSignIn').append('<div style="clear:both"></div>');
+			$('.cartPopup').append('<div style="clear:both"></div>');
+			if(opCode==9){
+				$('#popupCreateNewList').css({'display':'none'});
+			}
+		}
+		},
 			error: function(data){
 			}});	
 
@@ -1235,11 +1212,10 @@
 			document.location.href = cmd;
 		}
 	}
-
 	function goToLinkFromJSForCatalog(nonRegisteredURL, registeredURL) {
 		var url = nonRegisteredURL;
 		// readCookie is located in utils.js file
-		var isLoggedOn = readCookie("THD_USERNAME") !== "";
+		var isLoggedOn = readCookie("THD_USERSTATUS") == '1';
 		if(isLoggedOn) {
 			url = registeredURL;
 		}
@@ -1247,45 +1223,40 @@
 	}
 	
 	/*MyAccount Rel2 - New method Added : Start*/
+	var qv_fromPage;
 	function displayModalWindow() {
 		// readCookie is located in utils.js file 
 		var isLoggedOn = readCookie("THD_USERSTATUS") == '1'; 
 		if(isLoggedOn) { 
 		fromPage = getURLParam('qv_frompage'); 
+		qv_fromPage = getURLParam('qv_frompage');
 		if(fromPage =='undefined' || fromPage ==''){ 
-		if(document.getElementById("fromPage") != null) 
-		var fromPage = document.getElementById("fromPage").value; 
-		if (fromPage == 'quickview'){
-		fromPage = 'quickView';
+			if(document.getElementById("fromPage") != null) 
+			var fromPage = $("#fromPage").val();
+				if (fromPage == 'quickview'){
+				fromPage = 'quickView';
 		}
-		document.getElementById("fromPage").value = fromPage;
+		$("#fromPage").val(fromPage);
 		} 
 		if(document.getElementById("clickAddToListButton")){ 
-		var click = document.getElementById("clickAddToListButton").value; 
+		var click = $("#clickAddToListButton").val(); 
 		} 
-		if(click =='undefined' || click ==''){ 
+		if(typeof click =='undefined' || click ==''){ 
 		click = getURLParam('clickaddtolistbutton'); 
-		document.getElementById("clickAddToListButton").value = click;
-
+		$("#clickAddToListButton").val(click);
 		} 
-		if(click !='' && click != 'false'){ 
+		if(click !='' && click != 'false' && click !='undefined'){
 		// Set the variable to false so that the ajaxcall doesnot run everytime on refresh 
 		$("#clickAddToListButton").val(false);
 		if(fromPage !='undefined' && fromPage !='' && fromPage == "shoppingCart") { 
 		if(document.getElementById("matchIndex") != null){ 
-		var matchIndex = document.getElementById("matchIndex").value; 
+		var matchIndex = $("#matchIndex").val(); 
 		} 
 		var catEntryId = document.getElementById("productId_" + matchIndex).value; 
 		makeAjaxCall('',9,'',catEntryId,'','','',matchIndex); 
 		} 
 		else if(fromPage !='undefined' && fromPage !='' && fromPage == 'productDetail'){ 
 		var catEntryId = $('input[name="productId"]').val(); 
-		var catEntFromURL = getURLParam('catentryid');
-		//Setting the supersku value that is fetched from url
-		if(catEntryId != catEntFromURL){
-			catEntryId = catEntFromURL;
-			$('input[name="productId"]').val(catEntryId);
-		}
 		makeAjaxCall('',9,'',catEntryId,'','','',1); 
 		} 
 		else if(fromPage !='undefined' && fromPage !='' && (fromPage == 'quickView' || fromPage == 'quickview')) { 
@@ -1293,32 +1264,32 @@
 		//var catEntryId = document.getElementById("QV_Login_ProductId").value;
 		if(catEntryId == '' || catEntryId == 'undefined'){ 
 			if(document.getElementById("productId_1"))
-			document.getElementById("productId_1").value = catEntryId;
+			$("#productId_1").val(catEntryId);
 			if(document.getElementById("QV_Login_ProductId"))
-			document.getElementById("QV_Login_ProductId").value = catEntryId;
+			$("#QV_Login_ProductId").val(catEntryId);
 		} 
 		
 		//For Create Account, Even if CatEntryId is empty, set the catEntryId from url.
 		if(catEntryId == '' || catEntryId == 'undefined'){ 
 			catEntryId = getURLParam('catentryid');
-			document.getElementById("QV_Login_ProductId").value = catEntryId;
+			$("#QV_Login_ProductId").val(catEntryId);
 			
 		}
 		var quantity = getURLParam('qv_login_quantiyid');
 		//var quantity = document.getElementById("QV_Login_QuantiyId").value; 
 		if(quantity == '' || quantity == 'undefined'){ 
 		if(document.getElementById("QV_Login_QuantiyId"))
-		document.getElementById("QV_Login_QuantiyId").value = quantity;
+		$("#QV_Login_QuantiyId").val(quantity);
 		} 
 			
 		//For Create Account, Even if quantity is empty, set the quantity as 1.
-		if(quantity == '' || quantity == 'undefined'){ 
+		/*if(quantity == '' || quantity == 'undefined'){ 
 			document.getElementById("QV_Login_QuantiyId").value = 1;
-		}
+		}*/
 		
 		var iFrame = 'http://' + getHostNameNonSecure() + '/webapp/wcs/stores/servlet/QuickViewService?storeId=';
 
-		var langId, catalogId, storeId;
+		var langId, catalogId, storeId, superSkuId;
 		if (document.getElementById("langId"))
 		langId = document.getElementById("langId").value;
 		else
@@ -1333,9 +1304,14 @@
 		else
 		storeId = getURLParam('storeid');
 		
+		superSkuId = getURLParam('superskuid');
 		
-		if(document.getElementById("iFrame"))
-		document.getElementById("iFrame").value = iFrame+ storeId +'&langId='+langId+'&catalogId='+catalogId+'&R='+catEntryId+'&catEntryId='+catEntryId;
+		iframeURL = iFrame+ storeId +'&langId='+langId+'&catalogId='+catalogId+'&R='+catEntryId+'&catEntryId='+catEntryId;
+			
+		if(superSkuId != '' && superSkuId != 'undefined'){ 
+			iframeURL = iframeURL+'&superSkuId='+superSkuId;
+		}
+		
 		makeAjaxCall('',9,'',catEntryId,quantity,'','',1); 
 		} 
 		} 
@@ -1986,9 +1962,7 @@
 				if ($('#searchFocus').attr('data-typeAheadMode') === 'SAYT') {
 					formActionURL += '&sayt=sayt';
 				}
-
 				document.location= formActionURL;
-				 return true;
 			}else{
 				searchTerm.value = searchFieldText;
 				return false;

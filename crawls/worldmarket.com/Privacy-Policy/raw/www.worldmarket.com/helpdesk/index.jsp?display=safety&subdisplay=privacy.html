@@ -88,18 +88,12 @@
 <script type="text/javascript">
 
 
-</script><link href="../mod/enhancedproductquickview/includes/themes/qve.css" rel="stylesheet" type="text/css"></link>
-<script src="../mod/enhancedproductquickview/includes/javascripts/jquery-ui-1.8.7.custom.min.js"></script>
-
-<script src="../mod/enhancedproductquickview/includes/javascripts/qve.js"></script>
-<script src="../mod/enhancedproductquickview/includes/javascripts/customqve.js"></script>
-
-<meta name="google-site-verification" content="DJiE4GlUhodrHekKYvsxdTQsh3VHXyZxV6L0k3flB8k" />
+</script><meta name="google-site-verification" content="DJiE4GlUhodrHekKYvsxdTQsh3VHXyZxV6L0k3flB8k" />
 <meta name="msvalidate.01" content="BAF4474277CCA4E90127099BFDF970B1" />
 
 <!-- sitewide includes -->
-<script type="text/javascript" src="../20130205-1/text/inc/wm_v1.js"></script>
-<link href="../20130201-3/text/inc/wm_v1.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="../20130208-1/text/inc/wm_v1.js"></script>
+<link href="../20130208-9/text/inc/wm_v1.css" type="text/css" rel="stylesheet">
 
 <!-- Optimizely -->
 <script src="../../cdn.optimizely.com/js/66336030.js"></script>
@@ -1157,7 +1151,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "5972912"
+  return "1654782"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>
@@ -1185,6 +1179,17 @@ height="1" width="1" border="0" alt="" /></a></noscript><!--/DO NOT REMOVE/-->
 <script type="text/javascript" src="../../assets.pinterest.com/js/pinit.js"></script>
 </body>
 <script type="text/javascript">
+
+// add GA tracking for ISPU
+// 
+if (typeof(getStores)==="function") {
+	var do_getStores = getStores;
+	getStores = function (skuCode, storeZipCode) {
+			_gaq.push(['_trackEvent', 'InStore_Availability', 'Entered_Zipcode',storeZipCode]); 
+			do_getStores(skuCode, storeZipCode);
+			}
+}
+
 runcheckoutpixels();
 
 /* _optimizely_evaluate=force */

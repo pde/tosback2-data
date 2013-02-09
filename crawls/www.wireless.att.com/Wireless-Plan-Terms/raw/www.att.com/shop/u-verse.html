@@ -210,6 +210,14 @@ CQURLInfo = {
                         CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
                     } 
                 } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
+                    } 
+                } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
 		}); 
         clearTimeout(atgProfileDataTimer); 
@@ -707,7 +715,7 @@ Hurry, limited time offer!<br>
         <div id="content"> 
             <div style="display:inline;margin-top:5px;"> 
 				<div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear"></div> 
+                <div class="clear" style="display:inline"></div> 
             </div>             
             <div class="primary-content-full"> 
                 <div class="LoBT"> 
@@ -727,7 +735,7 @@ Hurry, limited time offer!<br>
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/U-verse/overview/campaign/red","name":"red","campainName":"campaign","id":"campaign_red","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-red-22state","/shopcms/shopetc/segmentation/UF/segmnts/ipdsl22"],"tags":[]},{"path":"/shopcms/campaigns/att/en/U-verse/overview/campaign/green","name":"green","campainName":"campaign","id":"campaign_green","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/U-verse/overview/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_u-verse_jcr_content_LoBT_teasertab1", "false", null);  }</script> 
          <div id="_content_att_shop_en_u-verse_jcr_content_LoBT_teasertab1" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/U-verse/overview/campaign/default/jcr:content;2013031" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/U-verse/overview/campaign/default/jcr:content;2013037" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="oneup parbase section"> 
 <div class="one-up parbase fullwidthoneup"> 
@@ -836,12 +844,14 @@ Sign in for exclusive offers
     <div class="bgDiv">  
          <div class="basicvalueTile2 basicvalueTile parbase"> 
 <div class="valueTile ">  
-        <img src="../shopcms/media/att/2012/shop/u-verse/uv_img_why-switch.jpg" alt="Why switch?" class="mainImg"/> 
+        <img src="../shopcms/media/att/2012/shop/u-verse/landing/uv_img_why-switch-011813.jpg" alt="Why switch?" class="mainImg"/> 
         <h4>Why Switch?</h4> 
-	    <p><span style="font-size: 9.0pt; font-family: &quot;Arial&quot;,&quot;sans-serif&quot;; mso-fareast-font-family: &quot;Times New Roman&quot;; mso-bidi-font-family: &quot;Times New Roman&quot;; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; mso-no-proof: yes;">U-verse brings you digital home phone service, Internet, and TV; delivering innovative new features you can only get from AT&amp;T. Switch today to get the best value!</span></p> 
-<p></p> 
+	    <p>U-verse combines great services with innovative features you can only get from AT&amp;T. See how AT&amp;T <br> 
+U-verse turns one kid’s tree house into the coolest place in the neighborhood.<br> 
+</p> 
+<p>&nbsp;</p> 
        <div class="valueTile-padding"></div> 
-        	<a class="arrowRt" href="http://www.att.com/shop/video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/U-verse/overview/campaign/default/jcr:content/LoBTabs/LobTab1/threeup/t-up/basicvalueTile2;2013031">Play Video</a> 
+        	<a class="arrowRt" href="http://www.att.com/shop/video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/U-verse/overview/campaign/default/jcr:content/LoBTabs/LobTab1/threeup/t-up/basicvalueTile2;2013037">Play Video</a> 
 </div> 
 <div class="clear"></div></div> 
     </div>  
@@ -1069,7 +1079,7 @@ Learn more
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/U-verse/learning-center/campaign/green","name":"green","campainName":"campaign","id":"campaign_green","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/U-verse/learning-center/campaign/red","name":"red","campainName":"campaign","id":"campaign_red","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-red-22state","/shopcms/shopetc/segmentation/UF/segmnts/ipdsl22"],"tags":[]},{"path":"/shopcms/campaigns/att/en/U-verse/learning-center/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_u-verse_jcr_content_LoBT_teasertab2", "false", null);  }</script> 
          <div id="_content_att_shop_en_u-verse_jcr_content_LoBT_teasertab2" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content;2013031" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content;2013037" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="twoup parbase section"> 
 <div class="fullwidthtwocolumnoneup twocolumntwoup parbase two-up"> 
@@ -1130,15 +1140,15 @@ Learn more
 	        </div> 
 	        <div class="infotext"> 
 			    <h4>Why Switch to U-verse?</h4>  
-			    <p>See the advancements in Total Home DVR, interactive features, and technology that makes U-verse so much better than cable.</p> 
+			    <p>Learn about Total Home DVR®, interactive features, and the technology that makes U-verse so much better than cable.</p> 
                     <div class="btmLink"> 
-                        <a cqpath="/ctas/0" href="http://www.att.com/u-verse/explore/uverse-difference.jsp" onclick="$.colorbox({open:true,iframe:false,scrolling:false,width:500,overlayClose:false});" data-cqpath="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content/LoBTabs/LobTab1/twoup/two-up/twoupcol2/contenttile_0//ctas/0;2013031"> 
+                        <a cqpath="/ctas/0" href="http://www.att.com/u-verse/explore/uverse-difference.jsp" onclick="$.colorbox({open:true,iframe:false,scrolling:false,width:500,overlayClose:false});" data-cqpath="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content/LoBTabs/LobTab1/twoup/two-up/twoupcol2/contenttile_0//ctas/0;2013037"> 
                             Learn more 
                             <img src="../media/att/2011/global/btn/img_blue_arrow_9x13_AA000OM4.gif" alt="Learn more"/> 
                         </a> 
                       </div> 
                     <div class="btmLink"> 
-                        <a cqpath="/ctas/1" href="http://www.att.com/shop/video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content/LoBTabs/LobTab1/twoup/two-up/twoupcol2/contenttile_0//ctas/1;2013031"> 
+                        <a cqpath="/ctas/1" href="http://www.att.com/shop/video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml" onclick="gvp.showPopUp('', true, true, 'gvp', 'video_resources/xml/gvp_Uverse-Why-Switch-Playground-4300413_640x360.xml&gvpLgFormat'); return false;" data-cqpath="/content/campaigns/att/en/U-verse/learning-center/campaign/default/jcr:content/LoBTabs/LobTab1/twoup/two-up/twoupcol2/contenttile_0//ctas/1;2013037"> 
                             Play Video 
                             <img src="../media/att/2011/global/btn/img_blue_arrow_9x13_AA000OM4.gif" alt="Play Video"/> 
                         </a> 
@@ -1380,12 +1390,6 @@ Learn more
 		<div id="fiveColLinkFarm">  
              <div class="bg-gr-bottom-shadow"></div>  
         </div> 
-        <!-- Global Legal   
-        <div id="globalleagltext" style="margin-bottom: 5px; text-align: left;">        	 
-			<div class="legal text parbase"><span class="componentWrapper" id="/content/att/shop/en/u-verse/jcr:content/legal"> 
-<div class="clear"></div></span></div> 
-		</div>--> 
-		<!-- legal footer --> 
 	</div>	 
 	<!-- Global Footer  --> 
 	<div class="globalfooter"> 
@@ -1400,7 +1404,7 @@ Learn more
 		line-height:1.7em; 
 		padding: 0 0 0 25px; 
 	} 
-</style>" 
+</style> 
 <div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
 <div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
@@ -1491,7 +1495,7 @@ Learn more
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 56602160855145137384835061317208693505 --> 
+		 <!--X-Renderer: 25917606754898186578758893187908631167 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1500,25 +1504,24 @@ Learn more
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="245" /> 
+	<meta name="DCSext.wt_aka_georegion" content="264" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="AR" /> 
-<meta name="DCSext.wt_aka_city" content="LITTLEROCK" /> 
-<meta name="DCSext.wt_aka_dma" content="693" /> 
-<meta name="DCSext.wt_aka_msa" content="4400" /> 
-<meta name="DCSext.wt_aka_areacode" content="501" /> 
-<meta name="DCSext.wt_aka_county" content="PULASKI" /> 
-<meta name="DCSext.wt_aka_fips" content="05119" /> 
-<meta name="DCSext.wt_aka_lat" content="34.7425" /> 
-<meta name="DCSext.wt_aka_long" content="-92.2857" /> 
-<meta name="DCSext.wt_aka_timezone" content="CST" /> 
-<meta name="DCSext.wt_aka_zip" content="72201-72207+72209-72212+72214-72217+72219+72221-72223+72225+72227+72231+72295" /> 
+<meta name="DCSext.wt_aka_region_code" content="MI" /> 
+<meta name="DCSext.wt_aka_city" content="BAYCITY" /> 
+<meta name="DCSext.wt_aka_dma" content="513" /> 
+<meta name="DCSext.wt_aka_msa" content="6960" /> 
+<meta name="DCSext.wt_aka_areacode" content="517" /> 
+<meta name="DCSext.wt_aka_county" content="BAY" /> 
+<meta name="DCSext.wt_aka_fips" content="26017" /> 
+<meta name="DCSext.wt_aka_lat" content="43.5611" /> 
+<meta name="DCSext.wt_aka_long" content="-83.8386" /> 
+<meta name="DCSext.wt_aka_timezone" content="EST" /> 
+<meta name="DCSext.wt_aka_zip" content="48706-48708" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
-<meta name="DCSext.wt_aka_bw" content="2000" /> 
-<meta name="DCSext.wt_aka_network" content="att" /> 
-<meta name="DCSext.wt_aka_asnum" content="7132" /> 
-<meta name="DCSext.wt_aka_network_type" content="uverse" /> 
+<meta name="DCSext.wt_aka_bw" content="5000" /> 
+<meta name="DCSext.wt_aka_network" content="charter" /> 
+<meta name="DCSext.wt_aka_asnum" content="20115" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1723,7 +1726,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","5Z92RRCPKwn5NVGxwSQG52nT!-1920227680!1360118383713"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","F4k4RVyCpcGHCyj97vM1TfnT!-974016381!1360373922823"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1759,6 +1762,5 @@ jQuery.when(reporting_ready).then(function (reporting) {
     ]); 
 }); 
 </script> 
-	<!-- OPTIMOST --> 
 </body> 
 </html> 

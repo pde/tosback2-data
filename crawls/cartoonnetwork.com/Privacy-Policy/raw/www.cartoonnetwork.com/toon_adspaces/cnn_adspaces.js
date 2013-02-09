@@ -165,12 +165,6 @@ function cnnad_preview(cnnad_adstring) {
 		cnnad_adstring = cnnad_adstring.replace(new RegExp("ads\..*?\.com","gi"),"ads.turner.com");
 		cnnad_adstring = cnnad_adstring.replace(new RegExp("ads\..*?\.tv","gi"),"ads.turner.com");
 	}
-	var cnnad_ug = cnnad_readCookie("ug");
-	if (cnnad_ug) {
-		cnnad_adstring = cnnad_adstring + "&Params.User.UserID=" + cnnad_ug;
-	} else {
-		cnnad_adstring = cnnad_adstring + "&Params.User.UserID=";
-	}
 	return cnnad_adstring;
 }
 
@@ -237,6 +231,7 @@ function cnnad_createAdNoTileId(adId,cnnad_url,cnnad_height,cnnad_width,target) 
 	cnnad_createAdHelper(adId,cnnad_url,cnnad_height,cnnad_width,target,false);
 }
 
+/* Old Code, Disabled Brendellya 1/31/2013
 function cnnad_createAd(adId,cnnad_url,cnnad_height,cnnad_width,target) {
 	cnnad_url = cnnad_preview(cnnad_url);
 	cnnad_url = cnnad_statusCodeQA(cnnad_url);
@@ -244,6 +239,61 @@ function cnnad_createAd(adId,cnnad_url,cnnad_height,cnnad_width,target) {
 	cnnad_url += '&tile=' + cnnad_getDynamicTileID(cnnad_url) + '&domId=' + adId;
 	cnnad_createAdHelper(adId,cnnad_url,cnnad_height,cnnad_width,target,false);
 }
+*/
+
+/* New Code */
+var ads_register = [];
+function cnnad_createAd(adId,cnnad_url,cnnad_height,cnnad_width,target){
+	try {
+		if(SKIP_AD_CREATION!=='undefined' && SKIP_AD_CREATION==true)return;
+	}catch(err){}
+	cnnad_url = cnnad_preview(cnnad_url);
+	cnnad_url = cnnad_statusCodeQA(cnnad_url);
+	cnnad_url += "&transactionID=" + cnnad_getTransactionID();
+	cnnad_url += '&tile=' + cnnad_getDynamicTileID(cnnad_url) + '&domId=' + adId;
+	cnnad_createAdHelper(adId,cnnad_url,cnnad_height,cnnad_width,target,false);
+// ADM functionality
+	var adSize = new String();
+
+	if(cnnad_url.match("_position=") ){
+		adSize = cnnad_getParamValue(cnnad_url, "_position=", "_");
+	} else if(cnnad_url.match("_pos=")){
+		adSize = cnnad_getParamValue(cnnad_url, "_pos=", "_");
+	} else {
+		adSize = "";
+	}
+
+	if(typeof cnnad_calledURLs != 'undefined'){
+		cnnad_calledURLs[adSize] = cnnad_url;
+	}
+	var the_whole_id = "ad-" + adId;
+	ads_register.push(the_whole_id)
+// END ADM functionality
+}
+function repaint_ads(){
+	var bMatch = navigator.userAgent.match(/Firefox\/(.*)$/);
+	if (bMatch && bMatch.length > 1) {
+		var browser_version = bMatch[1]*1;
+		if(browser_version >= 17)
+		{
+			console.log("repainting...");
+			for(ea in ads_register)
+			{
+				el = document.getElementById(ads_register[ea]);
+				if(el)
+				{
+					console.log(ads_register[ea])
+					el.style.display = 'none';
+					el.offsetHeight;
+					el.style.display = 'block';
+				}
+			}
+		}
+	}
+}
+document.onload=setTimeout(repaint_ads,5000);
+/* New Code */
+
 
 function cnnad_writeAd(cnnad_callid,cnnad_url) {
         if(cnnad_enabled == true) {
@@ -556,11 +606,6 @@ function cnnad_haveCookie(name) {
 	return cnnad_readCookie(name);
 }
 
-function cnnad_ugsync() {
-        if (!cnnad_haveCookie('ugs')) {
-		document.write('<scr'+'ipt src="http://www.ugdt'+'urner.com/xd.sjs"></scr'+'ipt>');
-        }
-}
 
 // ----- THE CNN ADS OBJECT ----- //
 function cnnad_AdObject (id,width,height,type,url)

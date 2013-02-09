@@ -550,21 +550,8 @@ fs+="}\n";
 fs+="</script>\n";
 document.write(fs);
 }
-function runFetchBack(){
-var _58="";
-_58+="<img src='http://pixel.fetchback.com/serve/fb/uat;cat=,name=landing,sid=2103";
-if(location.href.indexOf("webquote/")!=-1){
-var _59=location.href.substring((location.href.indexOf("/webquote/")+10),(location.href.indexOf(".htm")));
-_58+=",browse_products="+_59;
-}
-_58+="' border='0' alt='' width='1' height='1'/>";
-document.write(_58);
-}
 function runEveryPageIncludes(){
 runGAcode();
-if(location.href.indexOf("order/confirm")==-1&&location.href.indexOf("order/order")==-1){
-runFetchBack();
-}
 runGoogleRemarketing();
 }
 function runGreyBarIncludes(){

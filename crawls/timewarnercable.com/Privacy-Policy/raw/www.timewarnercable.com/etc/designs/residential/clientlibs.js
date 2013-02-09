@@ -32,7 +32,6 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
             cookieName: 'twc-user-profile',
             cookie: {
                 path: '/',
-                /* domain: 'timewarnercable.com', */
                 expires: 365
             },
             geoLocationServletURI: '/bin/services/geolocation.json',
@@ -60,8 +59,14 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 if(inFootprint(geoLocation)) {
                     updateLocationHeader(buildLocationString(geoLocation));
                 }
-                else if(! $.cookie('locerrorclosed')) {
-                    showError("oof");
+                else {
+                    $('#locationText').val(geoLocation['postalCode']);
+                    updateLocationHeader($('#oof-header-text').html());
+                    $('#oof-error').removeClass('hidden').show();
+                    locationEl.addClass('error');
+                    if(! $.cookie('locerrorclosed')) {
+                        showError("oof");
+                    }
                 }
             }
             else {
@@ -82,6 +87,10 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
         }
 
         function handleChangeLocation() {
+            // Make sure we have at least some value populated for zip
+            if(! $('#locationText').val()) {
+                return;
+            }
             eraseCookie();
             fetchGeoLocationData();
         }
@@ -100,6 +109,7 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
             $.getJSON(options.geoLocationServletURI + '?zip=' + $('#locationText').val(), function(geoLocation) {
                 writeGeoLocationCookie(geoLocation);
                 updateGeoLocationProfile(geoLocation);
+                $.cookie('locerrorclosed', null, {path:'/'});
                 location.reload(); // reload page so geo-aware components can initialize properly.
             }).error(function() {
                 handleLocationChangeError();
@@ -152,9 +162,6 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
         }
 
         function showError(errorID) {
-            // Persist error window until closed manually
-            $.cookie('locerrorclosed', errorID, {expires: 365, path: '/'});
-
             locationEl.addClass('error');
             $('#twc-location-popup .message').addClass('hidden').hide();
             $('#' + errorID + '-error').removeClass('hidden').show();
@@ -1818,197 +1825,35 @@ function timerIncrement() {
     }
 
 }(jQuery, this));
-CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
-
-;(function($){
+/*jslint browser: true*/
+/*global $, jQuery*/
+function synchNow(epcDataSynchServletPath, buttonLabel, defaultFailureMsg) {
     "use strict";
-
-    $.fn.geolocation = function(opts) {
-        CQ_Analytics.ClientContextUtils.onStoreInitialized('profile', function() {
-            if(typeof ClientContext.get('/profile/zip') === "undefined" &&
-                typeof ClientContext.get('/profile/city') === "undefined" &&
-                typeof ClientContext.get('/profile/state') === "undefined" &&
-                typeof ClientContext.get('/profile/soaId') === "undefined" &&
-                typeof ClientContext.get('/profile/region') === "undefined"){
-                var geoLocation = getGeoLocationFromCookie();
-                updateGeoLocationProfile(geoLocation);
-            }
-        }, true);
-
-        var options = $.extend({
-            cookieName: 'twc-user-profile',
-            cookie: {
-                path: '/',
-                /* domain: 'timewarnercable.com', */
-                expires: 365
-            },
-            geoLocationServletURI: '/bin/services/geolocation.json',
-            updateOnLoad: true,
-            defaultGeoLocation: {
-                city:       'New York',
-                state:      'NY',
-                postalCode: '10019',
-                soaID:      'NYC.8150',
-                region:     'NYC'
-            }
-        }, opts);
-
-        /* Dyamically determine domain if not defined */
-        if(! options.cookie.domain && location.hostname.match(/[\w\-]+\.[\w\-]+$/)) {
-            options.cookie['domain'] = location.hostname.match(/[\w\-]+\.[\w\-]+$/)[0];
-        }
-
-        var locationEl = $(this).find('#twc-location-popup');
-
-        function setGeoLocation() {
-            var geoLocation = getGeoLocationFromCookie();
-
-            if(hasGeoLocationCookie()) {
-                if(inFootprint(geoLocation)) {
-                    updateLocationHeader(buildLocationString(geoLocation));
+    jQuery('#synch-button').html("PLEASE WAIT...");
+    jQuery.ajax({
+        type: "GET",
+        url: epcDataSynchServletPath,
+        dataType: "json",
+        success: function (data) {
+            if (data !== null) {
+                if (data.result === "success") {
+                    jQuery('#synch-message').html(data.message);
+                    jQuery('#synch-button').html(buttonLabel);
+                } else {
+                    jQuery('#synch-message').html(data.message);
+                    $("#synch-button").hide();
                 }
-                else if(! $.cookie('locerrorclosed')) {
-                    showError("oof");
-                }
+            } else {
+                jQuery('#synch-message').html(defaultFailureMsg);
+                $("#synch-button").hide();
             }
-            else {
-                geoLocation = options.defaultGeoLocation;
-                if(! $.cookie('locerrorclosed'))
-                    showError("noc");
-            }
-
-            CQ_Analytics.CCM.addListener('configloaded', function(){console.log('configloaded'); updateGeoLocationProfile(geoLocation)}, CQ_Analytics.ProfileDataMgr);
+        },
+        error: function () {
+            jQuery('#synch-message').html(defaultFailureMsg);
+            $("#synch-button").hide();
         }
-
-        function inFootprint(geoLocation) {
-            return(geoLocation && geoLocation.region && geoLocation.region.length > 0);
-        }
-
-        function hasGeoLocationCookie() {
-            return(getGeoLocationFromCookie());
-        }
-
-        function handleChangeLocation() {
-            eraseCookie();
-            fetchGeoLocationData();
-        }
-
-        function getGeoLocationFromCookie() {
-            var geoData = jQuery.parseJSON(getCookie());
-
-            if(geoData && typeof(geoData['city']) === 'string') {
-                geoData.city = geoData.city.replace(/\+/g, ' ');
-            }
-
-            return(geoData);
-        }
-
-        function fetchGeoLocationData() {
-            $.getJSON(options.geoLocationServletURI + '?zip=' + $('#locationText').val(), function(geoLocation) {
-                writeGeoLocationCookie(geoLocation);
-                updateGeoLocationProfile(geoLocation);
-                location.reload(); // reload page so geo-aware components can initialize properly.
-            }).error(function() {
-                handleLocationChangeError();
-            });
-        }
-
-        function handleLocationChangeError() {
-            showError("geo");
-        }
-
-        function buildLocationString(geoLocation) {
-            return(geoLocation ? geoLocation['city'] + ", " + geoLocation['state'] + " " + geoLocation['postalCode'] : "");
-        }
-
-        function updateLocationHeader(str) {
-            if(str) {
-                $('#twc-location').html(str);
-            }
-        }
-
-        function updateGeoLocationProfile(geoLocation) {
-            if(geoLocation) {
-                CQ_Analytics.ProfileDataMgr.setProperty('city', geoLocation['city']);
-                CQ_Analytics.ProfileDataMgr.setProperty('state', geoLocation['state']);
-                CQ_Analytics.ProfileDataMgr.setProperty('zip', geoLocation['postalCode']);
-                CQ_Analytics.ProfileDataMgr.setProperty('soaId', geoLocation['soaID']);
-                CQ_Analytics.ProfileDataMgr.setProperty('region', geoLocation['region']);
-            }
-        }
-
-        function writeGeoLocationCookie(locationData) {
-            setCookie(JSON.stringify(locationData));
-        }
-
-        function setCookie(data) {
-            $.cookie(options.cookieName, data, options.cookie);
-        }
-
-        function getCookie() {
-            return($.cookie(options.cookieName));
-        }
-
-        function eraseCookie() {
-            $.cookie(options.cookieName, null, options.cookie);
-        }
-
-        function hideErrors() {
-            locationEl.removeClass('error');
-            $('#twc-location-popup .message').addClass('hidden').hide();
-        }
-
-        function showError(errorID) {
-            // Persist error window until closed manually
-            $.cookie('locerrorclosed', errorID, {expires: 365, path: '/'});
-
-            locationEl.addClass('error');
-            $('#twc-location-popup .message').addClass('hidden').hide();
-            $('#' + errorID + '-error').removeClass('hidden').show();
-
-            $('ul.location li.last').addClass('hover');
-            $('#twc-location-popup').removeClass('hidden').show();
-        }
-
-        return this.each(function() {
-            $(this).data('initialized', true);
-
-            // Set the location text initially (on page reload)
-            setGeoLocation();
-
-            $(this).find('#locationText').on({
-                focus: function() {
-                    // Maintain the visible state of the drop-down while cursor focus is in the location input element
-                    jQuery.noop();
-                },
-                blur: function() {
-                    // Hide the change-location drop down when focus on input text element is lost
-                    jQuery.noop();
-                },
-                keydown: function(e) {
-                    // Listen for enter key...
-                    e.which === 13 ? handleChangeLocation() : false;
-                },
-                keyup: function(e) {
-                    // Hide error message if input element is cleared out
-                    if(!e.target.value) {
-                        hideErrors();
-                    }
-                }
-            });
-
-            $(this).find('button:first').on('click', handleChangeLocation);
-        });
-    }
-})(jQuery);
-
-$(document).ready(function(){
-    var locationEl = $('ul.location:first');
-    // Kludge because of multiple document.ready events :\
-    if(locationEl.data('initialized') !== true) {
-        locationEl.geolocation();
-    }
-});
+    });
+}
 $(document).ready(function () {
     if ($('.chatpromptadmin').length > 0) {
         if (!$('#globaldisable').is(":checked"))
@@ -13936,7 +13781,9 @@ console.log("click");
                 e.preventDefault();
                 parent.removeClass(hoverclass);
                 parent.find('input').blur();
-                $.cookie('locerrorclosed', '1', {expires: 365, path: '/'});
+                if(! ClientContext.get('/profile/region')) {
+                    $.cookie('locerrorclosed', '1', {path: '/'});
+                }
             });
         });
     };

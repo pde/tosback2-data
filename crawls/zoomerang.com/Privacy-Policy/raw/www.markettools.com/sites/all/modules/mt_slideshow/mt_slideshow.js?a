@@ -1,0 +1,140 @@
+
+var currentSlide = 0;
+var totalImages = 0;
+var fadeOutDelay = 500;
+var fadeInDelay = 750;
+var slideShowDelay = 5000;
+var slideShowOn = true;
+
+var ready = true;
+
+$(document).ready(function() {
+
+	$('.mt-slideshow').each(
+
+		function() {
+
+			totalImages++;
+		}
+	);
+
+	fadeInCaption(0);
+
+	//nextSlide();
+/*
+	setTimeout(
+		function() {
+			runSlideShow();
+		},
+		slideShowDelay
+	);
+*/
+
+});
+
+function runSlideShow() {
+
+	nextSlide();
+}
+
+
+
+function previousSlide() {
+
+	var fadeOutSlide = currentSlide;
+	var fadeInSlide;
+
+	currentSlide--;
+
+	if ( currentSlide < 0)
+	{
+		currentSlide = totalImages - 1;
+	}
+
+	fadeInSlide = currentSlide;
+
+	swapImages(fadeOutSlide, FadeInSlide);
+}
+
+function nextSlide() {
+
+	var fadeOutSlide = currentSlide;
+	var fadeInSlide;
+
+	currentSlide++;
+
+	if ( currentSlide >= totalImages)
+	{
+		currentSlide = 0;
+	}
+
+	fadeInSlide = currentSlide;
+
+	swapImages(fadeOutSlide, fadeInSlide);
+}
+
+function swapImages(fadeOutSlide, fadeInSlide) {
+
+	$('li#mt-slideshow-' + fadeOutSlide + ' div.caption').fadeOut(
+		300,
+		function() {
+			$('li#mt-slideshow-' + fadeOutSlide).fadeOut(
+				fadeOutDelay,
+				function() {
+					$('li#mt-slideshow-' + fadeOutSlide + ' div').hide();
+					$('li#mt-slideshow-' + fadeInSlide).fadeIn(
+						fadeInDelay,
+						function() {
+							
+							fadeInCaption(fadeInSlide)
+						}
+					);
+				}
+			);
+		}
+	)
+}
+
+function fadeInCaption(fadeInSlide) {
+
+	$('li#mt-slideshow-' + fadeInSlide + ' .caption').fadeIn(
+		750,
+		function() {
+			$('li#mt-slideshow-' + fadeInSlide + ' .title').fadeIn(
+				1000,
+				function() {
+					$('li#mt-slideshow-' + fadeInSlide + ' .body').fadeIn(
+						1000,
+						function() {
+
+							$('li#mt-slideshow-' + fadeInSlide + ' .learn-more').show('slide');
+
+							setTimeout(
+								function() {
+									//alert('test');			
+									nextSlide();
+								},
+								slideShowDelay
+							);
+
+							/*
+							$('li#mt-slideshow-' + fadeInSlide + ' .learn-more').fadeIn(
+								200,
+								function() {
+									setTimeout(
+										function() {
+											//alert('test');			
+											nextSlide();
+										},
+										slideShowDelay
+									);
+								}
+							);
+							*/
+						}
+					);
+				}
+			);
+		}
+	);
+}

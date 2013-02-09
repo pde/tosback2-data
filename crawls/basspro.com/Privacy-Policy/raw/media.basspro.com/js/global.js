@@ -620,5 +620,24 @@ function loop(x){
 });
 
 
+// ----------
+// Delayed Navigation
+// ----------
+$(document).ready(function(){	
+		$(".sublevel-navigation li").mouseenter(function() {
+			if ($(".sublevel-navigation li .dropdown").is(':visible')) {			
+				$(this).children(".dropdown").stop(true, true).fadeIn(10);
+			} else { 
+				$(this).children(".dropdown").stop(true, true).delay(350).fadeIn(100);
+			}
+		});
+
+		$(".sublevel-navigation li").mouseleave(function() {
+			$(this).children(".dropdown").stop(true, true).fadeOut(50);
+		});
+});
+
+
+
 
 

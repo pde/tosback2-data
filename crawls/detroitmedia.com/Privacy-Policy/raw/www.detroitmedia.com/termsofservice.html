@@ -92,6 +92,148 @@
 <div id="content-holder">
 
 
+<div class="isaimagetwo" style="position: relative; left: 0px; margin: 0 auto; width: 940px; ">
+<a href="http://detroitmp.eventbrite.com/"
+ onmouseover="intent('isatwo');" onmouseout="killIntent();" target="_new">
+ <img src="../cs.detroitmedia.com/creatives/13/ads/MMS/GannettLocalDRS_Sliding-Billboard.jpg" height="66" width="940" border="0"></a>
+   <div id="isatwo" style="position: relative; width: 940px; margin: 0 auto; height: 352px; top: 0px; z-index: 600; display: none;overflow:hidden;" onmouseover="slidedown('isatwo');" onmouseout="slideup('isatwo');">
+<div><a href="http://detroitmp.eventbrite.com/"
+target="_new"><img src="../cs.detroitmedia.com/creatives/13/ads/MMS/GLDRS-expanded.jpg" height="352" width="940" border="0"></a></div>
+</div>
+</div>
+<script language="javascript">
+var timerlen = 5;
+var slideAniLen = 250;
+
+var timerID = new Array();
+var startTime = new Array();
+var obj = new Array();
+var endHeight = new Array();
+var moving = new Array();
+var dir = new Array();
+var intent;
+var objname;
+function intent(obj){
+	hoverIntent = window.setTimeout(slidedown,1000);
+	objname = obj;
+}
+
+function killIntent(){
+	window.clearTimeout(hoverIntent);
+}
+
+function slidedown(){
+       if(moving[objname])
+               return;
+
+       if(document.getElementById(objname).style.display != "none")
+               return; // cannot slide down something that is already visible
+
+       moving[objname] = true;
+       dir[objname] = "down";
+       startslide(objname);
+}
+
+function slideup(objname){
+       if(moving[objname])
+               return;
+
+       if(document.getElementById(objname).style.display == "none")
+               return; // cannot slide up something that is already hidden
+
+       moving[objname] = true;
+       dir[objname] = "up";
+       startslide(objname);
+}
+
+function startslide(objname){
+       obj[objname] = document.getElementById(objname);
+
+       endHeight[objname] = parseInt(obj[objname].style.height);
+       startTime[objname] = (new Date()).getTime();
+
+       if(dir[objname] == "down"){
+               obj[objname].style.height = "1px";
+       }
+
+       obj[objname].style.display = "block";
+
+       timerID[objname] = setInterval('slidetick(\'' + objname + '\');',timerlen);
+}
+
+function slidetick(objname){
+       var elapsed = (new Date()).getTime() - startTime[objname];
+
+       if (elapsed > slideAniLen)
+               endSlide(objname)
+       else {
+               var d =Math.round(elapsed / slideAniLen * endHeight[objname]);
+               if(dir[objname] == "up")
+                       d = endHeight[objname] - d;
+
+               obj[objname].style.height = d + "px";
+       }
+
+       return;
+}
+
+function endSlide(objname){
+       clearInterval(timerID[objname]);
+
+       if(dir[objname] == "up")
+               obj[objname].style.display = "none";
+
+       obj[objname].style.height = endHeight[objname] + "px";
+
+       delete(moving[objname]);
+       delete(timerID[objname]);
+       delete(startTime[objname]);
+       delete(endHeight[objname]);
+       delete(obj[objname]);
+       delete(dir[objname]);
+
+       return;
+}
+
+
+
+function setCookie(name, value, expires, path, domain, secure)
+{
+var curCookie = name + "=" + escape(value) +
+  ((expires) ? "; expires=" + expires.toGMTString() : "") +
+  ((path) ? "; path=" + path : "") +
+  ((domain) ? "; domain=" + domain : "") +
+  ((secure) ? "; secure" : "");
+document.cookie = curCookie;
+}
+
+function getCookie(name)
+{
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+   begin = dc.indexOf(prefix);
+   if (begin != 0) return null;
+  } else
+   begin += 2;
+  var end = document.cookie.indexOf(";", begin);
+  if (end == -1)
+   end = dc.length;
+  return unescape(dc.substring(begin + prefix.length, end));
+}
+
+var cook = getCookie("pencil");
+if(!cook)
+{
+objname = 'isatwo';
+slidedown('isatwo');
+}
+var tomorrow=new Date();
+tomorrow.setDate(tomorrow.getDate()+1) ;
+setCookie("pencil","true", tomorrow);
+</script>
+
 
 
 

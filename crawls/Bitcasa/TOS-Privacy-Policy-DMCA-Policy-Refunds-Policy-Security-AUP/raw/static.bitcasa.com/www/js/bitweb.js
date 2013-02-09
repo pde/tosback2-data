@@ -130,10 +130,6 @@ $(function() {
             var platformMessage = platform;
             var downloadLink = '#';
             var overlayDownloadLink = downloadLink;
-        } else if (platform == 'Mac') {
-            var platformMessage = platform + ' coming soon';
-            var downloadLink = '#';
-            var overlayDownloadLink = '/download/';
         } else if (platform == 'Android') {
             var platformMessage = platform;
             var downloadLink = '/download/' + platformLower;;
@@ -155,13 +151,7 @@ $(function() {
             var titleCasePath = 'Homepage';
         }
         $('.download-button').attr('onClick', "_gaq.push(['_trackEvent', 'Download', '" + platform + "', '" + titleCasePath + "']);");
-        if (platform == 'Mac') {
-            $('.download-button').text('Download');
-            $('.download-button').attr('href', '/download/mac');
-            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Mac Legacy\', \'Download\']);" href="/download/maclegacy">download the legacy Mac client</a></div>');
-        } else if (platform == 'Windows') {
-            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Win Legacy\', \'' + titleCasePath + '\']);" href="/download/windowslegacy">download the legacy Windows client</a></div>');
-        } else if (platform == 'Linux') {
+        if (platform == 'Linux') {
             $('.download-button').text('Linux client under development');
             $('.download-button').after('<div style="margin-top: 10px;">in the meantime, try out out our <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Linux\', \'' + titleCasePath + '\']);" href="/download-linux">Linux alpha client</a></div>');
         } else if (platform == 'Android') {
