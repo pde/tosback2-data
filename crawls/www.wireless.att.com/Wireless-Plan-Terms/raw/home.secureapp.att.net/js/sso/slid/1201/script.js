@@ -61,8 +61,9 @@ $(document).ready(function() {
 	// TURNER DETECTION (in app experience)
 	if (!!agent.match(/iPad/i)) {
 		var referer = gup('REFERER');
-
-		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i)) {
+		
+		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i) || referer.match(/univision/i) || referer.match(/nick/i)) {
+			
 			var turnerURL = 0;
 
 			//For form sheet modal need to reset the meta tag

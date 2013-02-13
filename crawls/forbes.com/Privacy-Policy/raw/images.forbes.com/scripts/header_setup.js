@@ -1630,29 +1630,67 @@ var main_tab;
         document.write('</tr>');
 }
 
-var welcomeCookie = "undefined";
+
 var frequency;
 function firstHTML() {
         document.write('<div style="display:none;">');
-        OAS_AD('x5');
-        if(welcomeCookie != "undefined" && welcomeCookie != null) {
-                if ((document.cookie.indexOf(welcomeCookie)==-1) && (navigator.userAgent.indexOf("Mozilla")>-1) && (navigator.userAgent.indexOf("iPad;")==-1) && (this.location.host.indexOf("forbes.com")!=-1) && (document.referrer.indexOf("digg.com")==-1) && (this.location.search.indexOf("partner=yahoo")==-1) && (this.location.search.indexOf("partner=msn")==-1)&& (this.location.search.indexOf("partner=aol")==-1) && (this.location.search.indexOf("partner=compuserve")==-1) && (this.location.search.indexOf("partner=netscape")==-1) && (this.location.search.indexOf('nowelcome')==-1) && (this.location.search.indexOf("partner=Experian-RMX")==-1) && (this.location.search.indexOf("partner=acurapower")==-1) && (this.location.search.indexOf("partner=rolex400")==-1) && (this.location.search.indexOf("partner=powercouples")==-1) && (this.location.href.indexOf("members.forbes.com/bizviz")==-1)) {
-                        var tomorrow = new Date();
-                        
-                        if(frequency == "undefined" || frequency == null){
-                                frequency = 24*60*60*1000;
-                        }
-                        var nowPlus =  tomorrow.getTime() + frequency;
-                        tomorrow.setTime(nowPlus);
-                        document.cookie = welcomeCookie +'__welcome'+tomorrow.getTime()+'; path=/; domain=.forbes.com; expires=' + tomorrow.toGMTString();
+       
+       (function (){
+		
+			window.displayedChannel = '${ads_data.displayChannel!}';
+			window.displayedSection = '${ads_data.displaySection!}';		
+			
+			
+			var midnight = new Date();
+			//Keeping the EDT (-4) as it covers many cases and Time set is 1 am
+				if(midnight.getUTCHours() > 6)
+				midnight.setUTCDate(midnight.getUTCDate()+1);
+				
+				midnight.setUTCHours(06); // set UTC 6:00  that is EST 1 am and EDT 12 am
+				midnight.setUTCMinutes(00);
+				midnight.setUTCSeconds(00);
+			
+			
+			//Whatever is the current date in any time zone
+			var current_local_date = new Date();
+			var diff_in_ms = Math.abs(midnight-current_local_date);  // difference in milliseconds
+			var set_expiry_date = new Date();
+			set_expiry_date.setTime(set_expiry_date.getTime()+(diff_in_ms));
+			
+			var welcomeCookie = "welcomeAd=sessionCookie";
+			var tomorrow = new Date();
+			var month = tomorrow.getMonth();
+			var day = tomorrow.getDate();
 
-                        if (document.cookie.indexOf(welcomeCookie) != -1){
-                                document.cookie="toURL"+ "=" +escape(document.URL)+";path=/; domain=.forbes.com; expires="+tomorrow.toGMTString();
-                                this.location='http://www.forbes.com/fdc/welcome_mjx.shtml';
-                        }
-                }
-        }
+			var dailyWelcomeCookie = 'dailyWelcomeCookie=dailyCookie';
+			var expire  = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()+1, 0, 0, 0);
 
+			if ((document.cookie.indexOf(welcomeCookie)==-1 || document.cookie.indexOf(dailyWelcomeCookie) == -1)
+				&& (window.navigator.userAgent.indexOf("Mozilla")>-1)
+				&& (window.location.host.indexOf("forbes.com")!=-1)
+				&& (window.location.search.indexOf("partner=yahoo")==-1)
+				&& (window.location.search.indexOf("partner=msn")==-1)
+				&& (window.location.search.indexOf("partner=aol")==-1)
+				&& (window.location.search.indexOf("partner=omg")==-1)
+				&& (window.location.search.indexOf("partner=huffpo")==-1)
+				&& (window.location.search.indexOf('nowelcome')==-1)) {
+
+
+				if(document.cookie.indexOf(welcomeCookie) == -1 ){
+					document.cookie = welcomeCookie +'__welcome'+(month+1)+day+'; path=/; domain=.forbes.com';
+				}
+
+				if(document.cookie.indexOf(dailyWelcomeCookie) == -1){
+					document.cookie = dailyWelcomeCookie+'_forDate'+(month+1)+day+'; path=/; domain=.forbes.com; expires=' + set_expiry_date.toGMTString();
+				}
+
+				if (document.cookie.indexOf(welcomeCookie) != -1 || document.cookie.indexOf(dailyWelcomeCookie) != -1){
+					document.cookie="toURL"+ "=" +escape(document.URL)+";path=/; domain=.forbes.com";
+					document.cookie="refURL"+ "=" +escape(document.referrer)+";path=/; domain=.forbes.com";
+					this.location='http://www.forbes.com/fdc/welcome_mjx.shtml';
+				}
+			}
+		})();
         document.write('</div>');
 
         doOmniture();

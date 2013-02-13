@@ -1,0 +1,41 @@
+﻿//set akamai image path for secure and non-secure
+if (location.href.indexOf("https://") != -1) {
+    var akPath = "https://images.rakuten.com/buy_assets";
+} else {
+var akPath = "http://images.rakuten.com/buy_assets";
+}
+//set random number for rotating promos
+rnd.today = new Date();
+rnd.seed = rnd.today.getTime();
+
+function rnd() {
+    rnd.seed = (rnd.seed * 9301 + 49297) % 233280;
+    return rnd.seed / (233280.0);
+};
+
+function rand(number) {
+    return Math.ceil(rnd() * number);
+};
+
+
+var buyHeaderNum = rand(2);
+
+if (buyHeaderNum == 1) {
+    var header_slider_items =
+    [
+        { href: "http://www.rakuten.com/ct/aboutus.aspx", src: akPath + "/v9/header/slides/slide_welcome_min.png", onclick: "header_slider_welcome" },
+        { href: "http://sellonrakuten.com/\" target=\"_blank", src: akPath + "/v9/header/slides/slide_start_selling_min.png", onclick: "header_slider_SellMP" }
+    ];
+} else if (buyHeaderNum == 2) {
+    var header_slider_items =
+    [
+        { href: "http://www.rakuten.com/ct/aboutus.aspx", src: akPath + "/v9/header/slides/slide_welcome_min.png", onclick: "header_slider_welcome" },
+        { href: "http://sellonrakuten.com/\" target=\"_blank", src: akPath + "/v9/header/slides/slide_start_selling_min.png", onclick: "header_slider_SellMP" }
+    ];
+} else {
+    var header_slider_items =
+    [
+        { href: "http://www.rakuten.com/ct/aboutus.aspx", src: akPath + "/v9/header/slides/slide_welcome_min.png", onclick: "header_slider_welcome" },
+        { href: "http://sellonrakuten.com/\" target=\"_blank", src: akPath + "/v9/header/slides/slide_start_selling_min.png", onclick: "header_slider_SellMP" }
+    ];
+}

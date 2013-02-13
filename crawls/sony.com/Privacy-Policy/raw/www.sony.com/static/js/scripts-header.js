@@ -977,32 +977,32 @@ function s_doPlugins(s) {
 
     //store value of custom link for use in research intercept
     //s.eVar75=s.getPreviousValue(s.prop13,'gpv_p13','');
-    
+
     s.getPreviousValue(s.prop13,'gpv_p13','');
-    
+
     /* Add calls to plugins here */
     if (!s.campaign)
     s.campaign=s.getQueryParam('XID');
-    
+
     s.channelManager('XID');
     if(s._keywords)
     s.eVar4=s._referringDomain +":"+ s._keywords;
     s.eVar4=s.getValOnce(s.eVar4,'s_kw',30);
-    
+
     var ppvArray = s.getPercentPageViewed(s.pageName);
     s.prop14 = ppvArray[0]; //contains the previous page name
     s.prop15 = ppvArray[1]; //contains the total percent viewed
-    
+
     /*
     * 404 tracking
     */
-    s.eVar17=s.getPreviousValue(s.pageName,'gpv_v5',''); 
-    
+    s.eVar17=s.getPreviousValue(s.pageName,'gpv_v5','');
+
     //Lowercase all variables:
     s.manageVars("lowercaseVars")
-    
+
     s.tnt = s.trackTNT();
-    
+
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

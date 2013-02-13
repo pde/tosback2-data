@@ -260,19 +260,19 @@ var nav = (function(){
         $dropdownLinks,
         navTracker = 0,
         navHeight;
-    
+
     /****** public methods ******/
     return{
         init:function(obj){
             $nav = $('nav');
             $menuBtn = $('#menu-btn a');
             nav.btn = $menuBtn;
-            
+
             $menuBtn.click(function() {
                 var $this = $(this);
 
                 search.close();
-                
+
                 if($this.parent().hasClass("closed")){
                     nav.animateMenu("show");
                 }else{
@@ -280,15 +280,15 @@ var nav = (function(){
                 }
                 return false;
             });
-            
+
             buildNav();
         },
         animateMenu:function(showOrHide){
             if(showOrHide == 'show'){
                 $menuBtn.parent().removeClass('closed').addClass('open');
-                
+
                 $navContent.css({'left': 0});
-                
+
             }else if(showOrHide == 'hide'){
                 $menuBtn.parent().removeClass('open').addClass('closed');
                 $navContent.css({'left': 480});
@@ -301,7 +301,7 @@ var nav = (function(){
         $nav.find('.sub').each(function(){
             $(this).children('ul').prepend('<li class="title"><a href="#"><span>'+$(this).children('a').children('span').text()+'</span></a></li>');
         });
-        
+
         $navContent = $nav.children('.content'),
         $navList = $navContent.children('ul');
         $navListItems = $navList.children('li');
@@ -314,7 +314,7 @@ var nav = (function(){
         navHeight = $navList.height();
 
         $navList.addClass('current');
-        
+
         $allNavListItems.hover(
             function(){
                 if(controler.size != 's'){
@@ -330,12 +330,12 @@ var nav = (function(){
                     //adjustDropdown($(this).children('ul'));
                 }
         });
-        
+
         //add active class to links when clicked
         $allNavLinks.click(function(){
             var $this = $(this),
                 $parent = $this.parent();
-                
+
             //if ther is a sub menu
             if($parent.hasClass('sub')){
                 //if it is small view
@@ -355,27 +355,27 @@ var nav = (function(){
                     }
                 }
                 return false;
-                
+
             }else if($parent.hasClass('title') == true){
                 $this.html('title');
                 slideNav("back");
                 $parent.parent().parent().addClass('previous');
                 return false;
             }
-                
-            
+
+
         });
-        
+
         $(window).resize(function(){
             resize();
         });
-        
+
         if(controler.size == 's'){
             resize();
         }
-        
+
     };
-    
+
     function resize(){
         if(controler.size == 's'){
             var newWidth;
@@ -399,29 +399,29 @@ var nav = (function(){
                 $navList.attr('style','').removeAttr('style');
                 $dropdownList.attr('style','').removeAttr('style');
             }
-            
+
         }
     };
 
     function slideNav(direction){
         var contentWidth,
             navMargin = $navContent.css('left');
-        
+
         navMargin = parseInt(navMargin.replace('px',''));
-        
+
         if(controler.windowWidth > 480){
             contentWidth = 480;
         }else{
             contentWidth = controler.windowWidth;
         }
-         
-        if(direction == 'forward'){         
+
+        if(direction == 'forward'){
             navTracker++;
-            
+
             $navContent.stop().animate({
                 'left': navMargin - contentWidth
             }, 300, function(){
-                
+
             });
         }else if(direction == 'back'){
             navTracker--;
@@ -432,14 +432,14 @@ var nav = (function(){
             });
         }
     }
-    
+
     function activateDropdown(link){
         //alert('activateDropdown');
         var $link = $(link),
             $parent = $link.parent(),
             $siblings = $parent.siblings(),
             $activeChildren;
-        
+
         //if the clicked link is active
         if($link.hasClass('clicked')){
             //alert('has been clicked');
@@ -451,14 +451,14 @@ var nav = (function(){
             $clickedChildren = $parent.find('.clicked');
             $activeChildren.removeClass('hover');
             $clickedChildren.removeClass('clicked');
-            
+
         //if the clicked link is not active
         }else{
             //alert('does not have hover');
             //make it active
             $parent.addClass('hover');
             $link.addClass('clicked');
-            //remove active states from siblings 
+            //remove active states from siblings
             $siblings.each(function(){
                 var $this = $(this);
                 if($this.children('a').hasClass('clicked')){
@@ -469,21 +469,21 @@ var nav = (function(){
                     $clickedChildren.removeClass('clicked');
                 }
             });
-            
+
             //adjustDropdown($parent.children('ul'));
-            
+
         }
     };
     function deActivateDropdowns(){
         //alert('deActivateDropdowns');
         var $active = $navList.find('.hover'),
             $clicked = $navList.find('.clicked');
-        
+
         $active.removeClass('hover');
         $clicked.removeClass('clicked');
         $firstDropdownLists.css('left', -9999);
     };
-    
+
     function adjustDropdown(list){
         var $list = $(list),
             $activeTab = $navList.children('.hover'),
@@ -492,7 +492,7 @@ var nav = (function(){
             offset = $list.offset().left + 235,
             windowWidth = $(window).width(),
             currentLeft = parseInt($activeDropdown.css('left').replace('px',''));
-        
+
         $otherLists.css('left', -9999);
         /*
         if(offset > windowWidth){
@@ -500,7 +500,7 @@ var nav = (function(){
         }else{
             $activeDropdown.css('left', 'auto');
         }*/
-        
+
     };
 
 })();
@@ -617,6 +617,7 @@ function validForm(a) {
     return true
 }
 
+/*
 //Tabs
 var tabs = (function() {
     var c, b, h, f, a, i, g;
@@ -631,6 +632,7 @@ var tabs = (function() {
         b = $("#tab-nav");
         h = b.children(".current");
         f = b.children("li");
+
         b.addClass("length-" + f.length);
         c.children(".content").prepend('<div id="tab-dropdown"><p>Select category</p><div class="select"><select id="tab-select"></select></div></div>');
         g = c.children(".content").children("#tab-dropdown").find("select");
@@ -716,7 +718,7 @@ var tabs = (function() {
         })
     }
 })();
-
+*/
 //promos
 var promos = (function() {
     var i, g, j, h = false;

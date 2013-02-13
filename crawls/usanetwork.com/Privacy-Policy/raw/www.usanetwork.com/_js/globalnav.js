@@ -671,7 +671,7 @@ var usa_globalMenu = {
 						/* Featured Slot 2 */
 						{
 							"title" : "WATCH THE CHARACTERS UNITE PSA",
-							"url" : "http://www.charactersunite.com/programming/the-space-between/psa",
+							"url" : "http://www.charactersunite.com/initiatives/i-wont-stand-for/overview",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/featured_2.png"
 						},
 						/* Featured Slot 3 */
@@ -694,28 +694,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "COUPLES RETREAT",
-							"subtitle" : "SATURDAY FEBRUARY 9 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
-						},
-						{
-							"title" : "IT'S COMPLICATED",
-							"subtitle" : "SUNDAY FEBRUARY 10 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_itscomplicated.png"
-						},
-						{
-							"title" : "THE BACK-UP PLAN",
-							"subtitle" : "SATURDAY FEBRUARY 9 6/5C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
-						},
-						{
-							"title" : "OCEAN’S THIRTEEN",
+							"title" : "OCEAN'S THIRTEEN",
 							"subtitle" : "SUNDAY FEBRUARY 17 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_oceansthirteen.png"
+						},
+						{
+							"title" : "SCHINDLER'S LIST",
+							"subtitle" : "SATURDAY FEB 23 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_schindlerslist.png"
+						},
+						{
+							"title" : "NATIONAL TREASURE: BOOK OF SECRETS",
+							"subtitle" : "SAT FEB 23 11:12/10:12C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nationaltreasure2.png"
+						},
+						{
+							"title" : "QUANTUM OF SOLACE",
+							"subtitle" : "SUNDAY FEBRUARY 24 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_quantum.png"
 						}
 					]
 				}

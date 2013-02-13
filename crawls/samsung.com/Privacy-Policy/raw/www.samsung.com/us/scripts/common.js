@@ -1832,9 +1832,9 @@ $(document).ready(function(){
 	//galaxy note T-Mobile shop button change
 	if(urlValueSplit[6].match('SGH-T879ZBBTMB')){
 		
-		$('.flagship-cta').html('<a onclick="ss_link_click_track_2(\'\',\'event33, event20\',\'Cell Phones;SGH-T879ZBBTMB\',\'\',\'product header\',\'o\',\'buy now\');" class="lg-btn" href="https://samsungdirect.bbymsolutions.com/detail/1954?utm_source=SAM&utm_medium=link&utm_campaign=DeepLinks"><span>Buy Now</span></a>');
+		// $('.flagship-cta').html('<a onclick="ss_link_click_track_2(\'\',\'event33, event20\',\'Cell Phones;SGH-T879ZBBTMB\',\'\',\'product header\',\'o\',\'buy now\');" class="lg-btn" href="https://samsungdirect.bbymsolutions.com/detail/1954?utm_source=SAM&utm_medium=link&utm_campaign=DeepLinks"><span>Buy Now</span></a>');
 		
-		$('.nav-shop').hide();
+		// $('.nav-shop').hide();
 	}
 
 	//hide shop buttons for LH40SFWTGC 40" Microsoft Surface

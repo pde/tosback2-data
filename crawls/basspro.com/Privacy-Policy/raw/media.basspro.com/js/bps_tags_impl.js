@@ -7,7 +7,10 @@
  *  Commission Junction
  *  Disable Gun Categories
  *****************************/
-
+// ----------
+// BPS Test
+// 02-09-2013
+// ----------
 var js_filename = "bps_tags_impl.js";
 
 function debugObjMethods(obj, prefix)
@@ -437,7 +440,7 @@ OmnitureTag.prototype.setVariables = function()
             s.prop4 = PageTypes.SEARCH;
             s.prop5 = PageTypes.SEARCH;
             s.prop6 = PageTypes.SEARCH;
-            s.prop7 = PageTypes.SEARCH;		
+            s.prop7 = PageTypes.SEARCH;
 	}
 
         if(searchFirstPage)
@@ -2970,7 +2973,7 @@ function hideSelect()
 			{
 				var selections = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
 				clearSelector(selections);
-			
+
 				for(var i = 0; i < unselectedDropDowns.length && i < selections.length; i++)
 				{
 					var hasSelectedPreviousValue = false;
@@ -3024,7 +3027,7 @@ function hideSelect()
 	previousSelectedAttrNVPairs = selectedAttrNVPairs;
 	callResetSelection = true;
 
-	
+
    }
 }
 catch(error)

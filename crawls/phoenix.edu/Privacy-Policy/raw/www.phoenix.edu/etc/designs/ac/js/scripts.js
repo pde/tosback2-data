@@ -1307,7 +1307,7 @@ $(".header a#chatLive").live("click",function(){cmCreateManualLinkClickTag("?cm_
 if(typeof pageTracker==="function"){pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header")
 }var j="uopx",k="student",l=window.location.pathname;
 if($("body.homepageContEd").length||$("body.secondary").length||$("body.superHub").length||$("body.hub").length||$("body.certificates").length){k="Single_Course"
-}window.location="https://"+window.location.host+"/chat/chatNow?uri="+l+"&tenant="+j+"&queue="+k
+}window.location=window.location.protocol+"//"+window.location.host+"/chat/chatNow?uri="+l+"&tenant="+j+"&queue="+k
 })
 },bindEditModeHandlers:function(){$(".MainNav").find("li.flyoutNav").children("a").on("click",function(m){m.preventDefault();
 var k=$(this),l=k.prop("class"),j=l.slice(0,l.length-3);

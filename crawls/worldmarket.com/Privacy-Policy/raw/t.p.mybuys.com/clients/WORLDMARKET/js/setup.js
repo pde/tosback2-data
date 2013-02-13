@@ -51,6 +51,8 @@ function loadjQuery(callback) {
 function loadCarousel(callback) {
 	var url = 'http://w.p.mybuys.com/clients/WORLDMARKET/js/lib/jquery.mbcarousel.min.js';
 	loadScript(url, function() {
+		var element = document.getElementById("mb_wm_zone");
+		element.style.cssText = "display:block";
 		callback();
 	});
 }
@@ -146,7 +148,6 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.enableZones();
 
 
-
 	
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
 	mybuys.setStyle('.mblegend','text-align','left');
@@ -171,7 +172,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	// Landing page styling
 	mybuys.setStyle('ul#mbcarousel','width','3660px','overflow','hidden');
 
-	mybuys.setStyle('.mbslider_x4','width','600px','border','0','position','relative','padding','38px 60px 0px','overflow','hidden');
+	mybuys.setStyle('.mbslider_x4','width','600px','border','0','position','relative','padding','38px 60px 0px','overflow','hidden','display','none');
 	mybuys.setStyle('.mbslider_x4 .mbitem','width','180px','border','0','padding','5px 9px','margin-left','auto','margin-right','auto');
 	mybuys.setStyle('.mbslider_x4 .mbimgspan','margin-bottom','5px');
 	mybuys.setStyle('.mbslider_x4 .mbimg','border','1px none #e8e6d9 !important');
@@ -189,7 +190,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setStyle('.mbslider_x4 .mbcarousel-item','width','200px !important');
 
 	
-	mybuys.setStyle('.mbslider_x5','max-height','320px','width','925px','border','0','position','relative','padding','0px 18px','overflow','visible','background-color','#FFFFFF');
+	mybuys.setStyle('.mbslider_x5','max-height','320px','width','925px','border','0','position','relative','padding','0px 18px','overflow','visible','background-color','#FFFFFF','display','none');
 	mybuys.setStyle('.mbslider_x5 .mbitem','width','180px','border','0','padding','0px 2px');
 	mybuys.setStyle('.mbslider_x5 .mbimgspan','margin-bottom','5px');
 	mybuys.setStyle('.mbslider_x5 .mbimg','border','1px none #e8e6d9 !important');

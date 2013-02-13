@@ -1,14 +1,14 @@
 var _w=window;// Shorthand notation for window reference
+
 var _jsmd_default={
-	version: "si.195.2661.20121203",
-	release: "0",
+	version: "si.196.2661.20121217",
+	release: "5",
 	dictionary: {
 		init: {
 			/* ADBP Standards */
-
-			"business.name":					"si",									//pageName
-			"business.lob":						"sports",								//hier1
-			"business.brand":					"sports illustrated",					//hier1
+			"business.name":				"si",									//pageName
+			"business.lob":					"sports",								//hier1
+			"business.brand":				"sports illustrated",					//hier1
 			"business.friendly_name":			"si",									//prop30,eVar30,hier1
 			"page.clean_url":					"raw:gADBPURL|",						//prop26
 			"page.domain":						"raw:gADBPURL|domain",					//server,eVar29
@@ -30,7 +30,7 @@ var _jsmd_default={
 			nielsen: {
 				"video-census": {
 					clientid: "us-100120",
-					vcid: "c03",
+					vcid: "b03",
 					prod: "vc",
 					sfcode: "us"
 				}
@@ -54,8 +54,8 @@ var _jsmd_default={
 			"business.si.hplink":					"gQuery|sct",						//prop10,eVar10
 			"business.si.vid_category":				"",									//prop11,eVar11
 			"business.si.social_type":				"",									//prop24,eVar24
-			"business.si.gallery_info":				""									//prop25,eVar25
-
+			"business.si.gallery_info":				"",									//prop25,eVar25
+			"business.si.tcm_friendly_name":		"gJObj|cnn_metadata,page_headline"				//prop54,eVar54
 			,
 			/* Pre-Metadata Collection Routines */
 			preinit: function() {
@@ -64,7 +64,6 @@ var _jsmd_default={
 			},
 			/* Post-Metadata Translation Routines */
 			postinit: function() {
-
 				/* reformat template type and content type to match ADBP standard */
 				var tt=this.get("m:page.template_type"),ct=this.get("m:page.content_type");
 				if (tt!=null) {
@@ -194,7 +193,7 @@ var _jsmd_default={
 			*/
 			standard_nielsen: {
 				account: function() {
-					return ("us-204044h");
+					return ("us-100120");
 				}
 			},
 			si: {
@@ -221,6 +220,7 @@ var _jsmd_default={
 							accountName = "sidsi";
 						}
 					}
+					// accountName = "sidsidev"; // FOR TESTING ONLY :: TO DO - Develop a better solution
 					return accountName;
 				},
 				settings: {
@@ -228,7 +228,7 @@ var _jsmd_default={
 					"trackExternalLinks":				true,
 					"trackInlineStats":					true,
 					"linkDownloadFileTypes":			"exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls",
-					"linkInternalFilters":				"javascript:,sportsillustrated,.si.com,turner.com,twackle.com,apps.facebook.com,sifantasy.secondthought.com,st-sifantasy.staging.catalyticgroup.com,sportstechinc.com,amazonaws.com",
+					"linkInternalFilters":				"javascript:,sportsillustrated,.si.com,turner.com,twackle.com,apps.facebook.com,sifantasy.secondthought.com,st-sifantasy.staging.catalyticgroup.com,sportstechinc.com,amazonaws.com,extramustard.si.com,vbplayer",
 					"linkLeaveQueryString":				false,
 					"trackingServer":					"metrics.cnn.com",
 					"trackingServerSecure":				"smetrics.cnn.com",
@@ -257,6 +257,7 @@ var _jsmd_default={
 					"business.si.game.action":			["prop15","eVar15"],
 					"business.si.social_type":			["prop24","eVar24"],
 					"business.si.gallery_info":			["prop25","eVar25"],
+					"business.si.tcm_friendly_name":		["prop54","eVar54"],
 					"m:page.type":						["pageType"]
 				},
 				eventmap: {
@@ -284,7 +285,7 @@ var _jsmd_default={
 						this.v.eVar41 = this.v.prop29; this.v.prop29 = "";
 						this.v.prop2 = this.v.prop3 = this.v.prop10 = this.v.prop26 = this.v.prop28 = this.v.prop29 = this.v.prop32 = this.v.prop33 = this.v.prop35 = this.v.prop40 = this.v.prop41 = this.v.prop42 = "";
 						this.v.eVar10 = this.v.eVar26 = this.v.eVar27 = this.v.eVar28 = this.v.eVar32 = this.v.eVar33 = this.v.eVar40 = this.v.eVar44 = this.v.eVar45 = this.v.eVar46 = "";
-					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1)) {
+					} else if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("start") > -1) {
 						this.v.prop2 = this.v.prop3 = this.v.eVar26 = this.v.eVar28 = this.v.eVar40 = this.v.eVar44 = this.v.eVar45 = this.v.eVar46 = "";
 					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("fifty_percent") > -1 || this.config.map.isDynamic.indexOf("complete") > -1)) {
 						this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
@@ -401,6 +402,7 @@ var _jsmd_default={
 				},
 				eventmap: {
 					"video.fifty_percent":			["event1"],
+					"video.subsequent_start":			["event50"],
 					"video.start":					["event32"],
 					"video.complete":				["event33"],
 					"video.autostart":				["event34"],
@@ -437,37 +439,44 @@ var _jsmd_default={
 		},
 		/* prop6, eVar6 - video player location*/
 		gSIVidPlayerLoc:function() {
-			var path = window.location.pathname.substring(1);
+			var path = _w.location.pathname.substring(1);
 			var path_array = path.split("/");
 			var yearPattern = /\d+/;
+			var hostName = _w.location.hostname;
 			var swimsuitYear;
 			var swimRes;
 			var vidPlayerLoc;
-			if (path_array[0].match("swimsuit")) {
-				swimsuitYear = yearPattern.exec(path_array[0]);
-				swimRes = swimsuitYear+"_swimsuit";
-			}
-			switch(path_array[0]) {
-				case "video":
-					vidPlayerLoc = "video";
-					break;
-				case "behindthemic":
-					vidPlayerLoc = "behind the mic";
-					break;
-				case swimRes:
-				case "vault":
-				case "swimsuit":
-					vidPlayerLoc = "swimsuit";
-					break;
-				case "basketball":
-					vidPlayerLoc = "seth davis";
-					break;
-				case "":
-					vidPlayerLoc = "home";
-					break;
-				default:
-					vidPlayerLoc = path_array[0];
-					break;
+			if(/extramustard/.test(hostName) == true){
+				vidPlayerLoc = "extramustard";
+			} else if(/swimdaily/.test(hostName) == true){
+				vidPlayerLoc = "swimdaily";
+			} else {
+				if (path_array[0].match("swimsuit")) {
+					swimsuitYear = yearPattern.exec(path_array[0]);
+					swimRes = swimsuitYear+"_swimsuit";
+				}
+				switch(path_array[0]) {
+					case "video":
+						vidPlayerLoc = "video";
+						break;
+					case "behindthemic":
+						vidPlayerLoc = "behind the mic";
+						break;
+					case swimRes:
+					case "vault":
+					case "swimsuit":
+						vidPlayerLoc = "swimsuit";
+						break;
+					case "basketball":
+						vidPlayerLoc = "seth davis";
+						break;
+					case "":
+						vidPlayerLoc = "home";
+						break;
+					default:
+						vidPlayerLoc = path_array[0];
+						break;
+				}
 			};
 			return vidPlayerLoc;
 		},
@@ -523,6 +532,7 @@ var _jsmd_default={
 						this.vidStarted = false;
 						this.hasScrubbed = false;
 						this.isAuto = false;
+						this.isSubsequent = false;
 						this.isPaused = false;
 						this.isBuffering = false;
 						this.pastHalf = false;
@@ -1392,6 +1402,7 @@ var _jsmd_default={
 		"dynamic-page": function(data) {this.send();},
 		"flash-link": "alias:dynamic-link",
 		"flash-page": "alias:dynamic-page",
+		
 		"video-common": function(data,map) {
 			var v = data.video||{};
 			if (v.headline != null && v.category != null) {
@@ -1422,7 +1433,6 @@ var _jsmd_default={
 			var t=this.get("mb:video.player");
 			this.set("mb:video.player",v.video_player_name||t);
 		},
-		/*
 		"video-preroll": function(data, map) {
 			var v=data.video||{};
 			this.set("action","link");
@@ -1433,16 +1443,18 @@ var _jsmd_default={
 				sendComscoreVideoMetrixBeacon(v.id,2); // Ad-related comscore call
 			};
 		},
-		*/
 		"video-start": function(data, map) {
 			var v = data.video||{};
 			var cid = data.instance||"";
 			/* add new video player object */
 			var vc = (video_collection_created == false ? new _jsmd.plugin.gSIVideoCollection() : _jsmd.plugin.gSIVideoCollection());
 			this.set("action","link");
-			if (vc.get(cid,"isAuto") == true) {
+			if (v.isAuto == true) {
 				this.push("page.events","video.autostart");	//event34
 				this.set("link",{name: "video-autostart: "+ v.headline, type: "o"});
+			} else if(v.isSubsequent == true) {
+				this.push("page.events","video.subsequent_start");	//event50
+				this.set("link",{name: "video-subsequent_start: "+ v.headline, type: "o"});					
 			} else {
 				this.set("link",{name: "video-start: "+ v.headline, type: "o"});
 			}
@@ -1456,13 +1468,8 @@ var _jsmd_default={
 			}
 			vc.set(cid,"vidStarted",true);
 			vc.set(cid,"isAuto",true);
+			vc.set(cid,"isSubsequent",true);
 			video_collection_created = true;
-		},
-		"video-autofix": function(data, map) {	//called when the video is autostart to set the flag
-			var cid = data.instance||"";
-			var v = (data.video == null ? "" : data.video);
-			var vc = _jsmd.plugin.gSIVideoCollection();
-			vc.set(cid,"isAuto",v);
 		},
 		"video-fifty_percent": function(data,map) {
 			var v = data.video||{};
@@ -2468,7 +2475,7 @@ function sendVideoEvent(data, event, id){
 				video: currVidObj
 			}
 		});
-    } catch(e){}
+   } catch(e){}
 }
 
 function sendComscoreVideoMetrixBeacon(videoId,contentFlag) {
@@ -2481,6 +2488,7 @@ function sendComscoreVideoMetrixBeacon(videoId,contentFlag) {
 		}
 	);
 }
+
 function sendNielsenVideoCensusBeacon(config,state,videoId,videoTitle,duration) {
 	var url="http://secure-${sfcode}.imrworldwide.com/cgi-bin/m?ci=${clientid}&c6=${prod},${vcid}&cc=1&tl=${state}-${videoId}&rnd=${random}&cg=${videoTitle}",
 		nVC=(!config?null:config["video-census"]);
@@ -2691,3 +2699,4 @@ var NielsenHybridTag=function(){
 }();
 
 /* END Nielsen Online SiteCensus V6.0 */
+

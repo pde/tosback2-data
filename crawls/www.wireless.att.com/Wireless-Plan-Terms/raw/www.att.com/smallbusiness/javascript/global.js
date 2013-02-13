@@ -1020,11 +1020,17 @@ $(document).ready(function() {
 					$('#cartMEProducts').html(cartMEProductNames);
 					var pipString = pipelinedString.join().replace(/,/g, "|");
 					
+					pipString = pipString.replace('<span class=\"mark\">SM</span>',"(SM)");
+					pipString = pipString.replace(new RegExp('&reg;', 'g'),"(R)");
+					pipString = pipString.replace(new RegExp('&amp;', 'g'),"&");
+					pipString = pipString.replace(new RegExp('&trade;', 'g'),"(TM)");
+
 					//code Added for reporting
 					var wtPN = WebMetrics.getPageName();
 					dcsMultiTrack('DCSext.wtPN', wtPN + ' Overlay Mutual Exclusivity Pg',
 							      'DCSext.wtB2BMultiRecConflictingSku',pipString,
-							      'DCSext.wtNoHit' ,'1'
+							      'DCSext.wtNoHit' ,'1',
+							      'DCSext.wtSuccessFlag' ,'1'
 							      );
 					
 	                }
@@ -1060,10 +1066,16 @@ $(document).ready(function() {
 		 }
 		var productLink  = $(this).closest('td').find('.productDetailsLink');
 			if(productLink.length > '0' ){
+				var productName = productLink.html();
+				productName = productName.replace('<span class=\"mark\">SM</span>',"(SM)");
+				productName = productName.replace(new RegExp('&reg;', 'g'),"(R)");
+				productName = productName.replace(new RegExp('&amp;', 'g'),"&");
+				productName = productName.replace(new RegExp('&trade;', 'g'),"(TM)");
+				productName = productName.replace(new RegExp(' ', 'g'),"");
 				if(window.WebMetrics)
 				{
 					var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
-					WebMetrics.dispatchReport( wtPN + "_" + productLink.text() + btnText);
+					WebMetrics.dispatchReport( wtPN + "_" + productName + btnText);
 				}
 			}	
 	});
@@ -1280,6 +1292,20 @@ CompareTable = {
 			$('#CTABLE-' + slotId).append(viewLinkRow+"</tr>");
 			
 			$('#CTABLE-' + slotId + ' tr:odd').css('background-color','#F5F5F5')
+			
+			$(".view-details").click(function(){
+			    var productName = $("a.DETAILS-URL-" + slotId).html();
+			    productName = productName.replace('<span class=\"mark\">SM</span>',"(SM)");
+			    productName = productName.replace(new RegExp('&reg;', 'g'),"(R)");
+			    productName = productName.replace(new RegExp('&amp;', 'g'),"&");
+			    productName = productName.replace(new RegExp('&trade;', 'g'),"(TM)");
+			    productName = productName.replace(/ /g, '');
+			    var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
+				dcsMultiTrack('DCSext.wtLinkName', wtPN + '_'+ productName + '_ViewDetails',
+				'DCSext.wtLinkLoc', wtPN +'_Body',
+				'DCSext.svl','4'
+				);
+			})
 	    }
 	    
 	}

@@ -22,7 +22,7 @@ var ITunesWidget = function() {
 	this.init()
 }
 
-ITunesWidget.SERVER_URL = "http://widgets.itunes.apple.com"
+ITunesWidget.SERVER_URL = ""//"http://widgets.itunes.apple.com"
 ITunesWidget.ITUNES_LOOKUP_URL = _.template("http://itunes.apple.com/lookup?country=<%= country %>&id=<%= itunes_items %>&entity=<%= entity %>&callback=?")
 ITunesWidget.ITUNES_SEARCH_URL = _.template("http://itunes.apple.com/search?limit=<%= limit %>&country=<%= country %>&media=<%= media %>&entity=<%= entity %>&term=<%= term %>&callback=?")
 
@@ -33,7 +33,6 @@ ITunesWidget.prototype = {
     navigator.userAgent.match(/(iPad|iPhone|iPod)/i) ? $("body").addClass("ios") : false;
     
 		if (_.isEmpty(this.getURLParameter("wtype"))) {
-		  this.version = "2.0"
 			this.widget_type = this.getURLParameter("wt") || "search"
 			this.media = this.getURLParameter("m") || "music"
 			this.entity = this.getURLParameter("e") || "song"
@@ -686,7 +685,6 @@ ITunesWidget.prototype = {
 	},
 
 	getURLParameter: function(name) {
-    console.log(unescape( (RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1]))
 		return this.version == "1.0" ? unescape(unescape( (RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1])) : decodeURIComponent((RegExp('[?|&]' + name + '=' + '(.*?)(&|$)').exec(location.search) || [,""])[1])
 	},
 

@@ -17,8 +17,9 @@
 
 
 
-<!-- cmdversionid=75 -->
-<!-- ENT WHOLESALE pid=11624 modified on 01-15-2013 RK-->
+<!-- cmdversionid=76 -->
+<!-- ENT WHOLESALE pid=11624 modified on PP on 8-2-2013-->
+
 <title>AT&amp;T Wholesale Services, Wholesale Solutions</title>
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -172,7 +173,7 @@ border:1px solid #E8E8E8;
 }
 #social-share-footer #share-counts .social-service img {
     float: left;
-    margin: 0 -2px 0 18px;
+    margin: 0px -2px 0 18px;
     padding-top: 4px;
 }
 #social-share-footer #share-counts .linkedinDesktop {
@@ -187,11 +188,12 @@ border:1px solid #E8E8E8;
     padding-top: 3px;
 }
 #social-share-footer #share-counts .social-service .follower-counter .follower-cap {
-    background: url("http://www.att.com/gen/Common/enterprise/homepage/images/follower-count-left.png") no-repeat scroll 0 0 transparent;
+    background: url("../Common/enterprise/homepage/images/follower-count-left.png") no-repeat scroll 0 0 transparent;
     display: block;
     float: left;
     height: 18px;
     width: 11px;
+	
 }
 #social-share-footer #share-counts .social-service .follower-counter .follower-mid {
     background: url("../Common/enterprise/homepage/images/follower-count-middle.png") repeat-x scroll 0 0 transparent;
@@ -210,6 +212,7 @@ border:1px solid #E8E8E8;
 #social-share-footer #share-counts {
     color: #777777;
     font-size: 11px;
+	font-family: Arial !important;
 }
 .follower-counter2 {
     float: right;
@@ -554,9 +557,9 @@ document.write('<div id="spacer4">&nbsp;<\/div>');
 <script>
 
 
-var f_page = "ATT"; 
-var t_page = "ATT"; 
-
+//var f_page = "ATT"; 
+//var t_page = "ATT"; 
+ var t_page = "attbusiness";
 function add_commas(number) {
 	if (number.length > 3) {
 		var mod = number.length % 3;
@@ -576,27 +579,34 @@ function add_commas(number) {
 
 // when document is ready load the counts
 jQuery(document).ready(function(){
-	// grab from facebook
-	jQuery.getJSON('https://graph.facebook.com/'+f_page+'?callback=?', function(data) {
-	var fb_count = data['likes'].toString();
-	fb_count = add_commas(fb_count);
-	jQuery('#fb_count').html(fb_count);
-});
+	
+	// grab from twitter
 
-// grab from twitter
 jQuery.getJSON('http://api.twitter.com/1/users/show.json?screen_name='+t_page+'&callback=?', function(data) {
-	twit_count = data['followers_count'].toString();
-	twit_count = add_commas(twit_count);
-	jQuery('#twitter_count').html(twit_count);
+            twit_count = data['followers_count'].toString();
+			twit_count = add_commas(twit_count);
+         //   jQuery('#twitter_count').html(twit_count);
+		jQuery('#social-share-footer #share-counts .social-service .follower-counter .follower-mid #twitter_count').html(twit_count);
+            });
+   
+// grab from You_tube
+jQuery.getJSON('http://gdata.youtube.com/feeds/api/users/ShareATT?alt=json&callback=?', function(data) {
+       		you_count = data['entry']['yt$statistics']['subscriberCount'].toString();
+        	you_count = add_commas(you_count);
+			
+        	jQuery('#yt_count').html(you_count);
 	});
-});
 
+
+	
+});
+/**
 function youtubeFeedCallback( data ) {
 	document.writeln( data.entry[ "yt$statistics" ].viewCount );
 	var yc = add_commas(data.entry[ "yt$statistics" ].viewCount);
 	jQuery('#yt_count').html(yc);
 }
-
+**/
 </script>
 
 <div id="social-share-footer">
@@ -620,8 +630,8 @@ function youtubeFeedCallback( data ) {
 
 </div>
 </div>
-<div class="social-service">
-<a href="https://www.facebook.com/ATTSmallBiz" target="_blank"><img src="../Common/enterprise/homepage/images/facebook.png"/></a>
+<!--div class="social-service">
+<a href="https://www.facebook.com/ATTSmallBiz" target="_blank"><img src="/Common/enterprise/homepage/images/facebook.png"/></a>
 <div class="follower-counter">
 <div class="follower-cap">
 </div>
@@ -631,16 +641,16 @@ function youtubeFeedCallback( data ) {
 <div class="follower-end">
 </div>
 </div>
-</div>
+</div-->
 <div class="social-service">
-<a href="http://www.youtube.com/user/ATTEnterprise" target="_blank"><img src="../Common/enterprise/homepage/images/youtube.png"/></a>
+<a href="http://www.youtube.com/user/ATTEnterprise" ><img src="../Common/enterprise/homepage/images/youtube.png"/></a>
 <div class="follower-counter">
 
 <div class="follower-cap">
 </div>
 <div class="follower-mid">
 <span id="yt_count">
-<script type="text/javascript" src="../../gdata.youtube.com/feeds/api/videos/eOkpuP1XuT4%3Fv=2&amp;alt=json-in-script&amp;callback=youtubeFeedCallback"></script>
+<!--script type="text/javascript" src="http://gdata.youtube.com/feeds/api/videos/eOkpuP1XuT4?v=2&alt=json-in-script&callback=youtubeFeedCallback"></script-->
 </span>
 </div>
 <div class="follower-end">
@@ -725,7 +735,6 @@ var pageTracker = _gat._getTracker("UA-421350-2");
 pageTracker._trackPageview();
 } catch(err) {}</script>
 <!-- End Google Analytics Code -->
-
 
 
 

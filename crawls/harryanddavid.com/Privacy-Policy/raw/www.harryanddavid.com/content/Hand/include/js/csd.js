@@ -22,6 +22,8 @@ dojo.addOnLoad(function () {
     { id: 'FOREIGN',             title: 'Foreign Countries We Ship To'                                     },
     { id: 'FOODWINE',            title: 'Terms &amp; Conditions'                                           },
     { id: 'GC-Terms',            title: 'Gift Card Terms &amp; Conditions', name: 'GC_Terms'               },
+    { id: 'GreetingCardOffer',   title: 'Greeting Card Offer'                                              },
+    { id: 'GreetingCardOffer2',  title: 'Greeting Card Offer'                                              },
     { id: 'GUAR',                title: 'Our Guarantee'                                                    },
     { id: 'RIPENING',            title: 'Ripening and Storage'                                             },
     { id: 'SHIPTO',              title: 'Countries we ship to:'                                            },

@@ -444,7 +444,7 @@
       if((tempcase.what === 'leaderboard' || tempcase.what === 'flex_bb_hp') && wpAd.flags.hpRefresh){
         tempcase.where += 'refresh';
       }
-
+/*
       if(window.jQuery){
         if(tempcase.what === 'flex_bb_hp'){
           $(function(){
@@ -470,7 +470,7 @@
           });
         }
       }
-
+*/
       //20007-CD
       if(tempcase.what === 'pushdown'){
         var adi_push = doc.getElementById('wpni_adi_pushdown');

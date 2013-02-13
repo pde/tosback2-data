@@ -3976,11 +3976,11 @@ $(document).ready(function(){
 	//in case we need to support flash videos by language
 	$.ajax({ url:"http://140cc.v.fwmrm.net/ad/l/1?s=",dataType:'html',error:function(){
 		localStorage.setItem('_lang','EN-US|'+timeout);
-		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN-US' } });
+		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN-US' }, dataType:'script' });
 		$(document).trigger('H.E.M.');
 	},success:function(){
 		localStorage.setItem('_lang','EN|'+timeout);
-		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN' } });
+		$.ajax({ url:config.getNiagaraActivityHomeURL()+'feeds/events/preferences',method:'GET',data:{ site:window.location.hostname,lang:'EN' }, dataType:'script' });
 	} });
 });/* overlay.js */
 /**

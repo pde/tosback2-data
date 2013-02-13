@@ -1,0 +1,1231 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/madeleine-mccann-sightings-in-new-zealand-lead-to-dna-request.html",' +
+                '"title": "Madeleine McCann Sightings in New Zealand Lead to DNA Request",' +
+                '"rubric": "CRIME",' +
+                '"topic": "World",' +
+                '"urlHashCode": "8aeace875e66a5e1cf7260dc918473e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/04/the-14-best-super-bowl-2013-commercials-video.html",' +
+                '"title": "The 15 Best Super Bowl 2013 Commercials (VIDEO)",' +
+                '"rubric": "WINNERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ff6066f0b8f17cf7fa51111a400d1655"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/grammy-awards-2013-best-moments-taylor-swift-j-lo-more-video.html",' +
+                '"title": "Grammy Awards 2013 Best Moments: Taylor Swift, J.Lo &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "051f60550f1844cb57222a96e227658d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/03/beyonc-s-superbowl-dress-shocker.html",' +
+                '"title": "Beyonc&eacute;\'s Super Bowl Dress Shocker",' +
+                '"rubric": "What She Wore",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "35edd6ccf96d75fdb1725cc54d50fa8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/18/real-pilots-laugh-at-flight.html",' +
+                '"title": "Real Pilots Laugh at &lsquo;Flight&rsquo;",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "20f948340fbc3363318def6e2ea479ea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/grammy-awards-enforce-strict-dress-code-jennifer-lawrence-s-abercrombie-tales.html",' +
+                '"title": "Grammy Awards Enforce Strict Dress Code, Jennifer Lawrence&rsquo;s Abercrombie Tales",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "2983fdf28dd491349017765444b73400"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/john-brennan-and-the-drone-consensus.html",' +
+                '"title": "John Brennan and the Drone Consensus",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7e2e8014d26c6f9bbc3e46a9a4553f01"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/6-ways-tv-affects-your-brain-and-sperm.html",' +
+                '"title": "6 Ways TV Affects Your Brain and Sperm",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b6a0b95c3fdb57a680fc00ca67520329"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/06/18/shia-lebeouf-michael-fassbender-more-full-frontal-men-video.html",' +
+                '"title": "Shia LeBeouf, Michael Fassbender &amp; More Full-Frontal Men (VIDEO)",' +
+                '"rubric": "The Goods",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fe7fc0117658327c8c7f943aac7615d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/benghazi-bungle-obama-s-pass-the-buck-presidency.html",' +
+                '"title": "Benghazi Bungle: Obama&rsquo;s Pass-the-Buck Presidency",' +
+                '"rubric": "Who\'s in Charge?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "49ecefddeacdf901a6cae0c7107c1bf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/bush-family-hack-was-bush-league-say-cyber-security-experts.html",' +
+                '"title": "Bush Family Hack Was Bush League, Say Cyber-Security Experts",' +
+                '"rubric": "Unprotected Secrets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b08cbb12ee1536a0c833ba9e37c87ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/rogue-l-a-cop-s-facebook-manifesto-you-will-now-live-the-life-of-prey.html",' +
+                '"title": "Rogue L.A. Cop&rsquo;s Facebook Manifesto: &lsquo;You Will Now Live the Life of Prey&rsquo;",' +
+                '"rubric": "Chilling",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "0739f1032c45037c929f3ba844e3b83e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/the-gatekeepers-brooklyn-college-bds-forum-week-of-israel-debate.html",' +
+                '"title": "&lsquo;The Gatekeepers,&rsquo; Brooklyn College BDS Forum: Week of Israel Debate",' +
+                '"rubric": "DO WE DARE?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "471545cd81eb632641102d630c3765d7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/6-ways-tv-affects-your-brain-and-sperm.html",' +
+                '"title": "6 Ways TV Affects Your Brain and Sperm",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b6a0b95c3fdb57a680fc00ca67520329"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/the-gatekeepers-brooklyn-college-bds-forum-week-of-israel-debate.html",' +
+                '"title": "&lsquo;The Gatekeepers,&rsquo; Brooklyn College BDS Forum: Week of Israel Debate",' +
+                '"rubric": "DO WE DARE?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "471545cd81eb632641102d630c3765d7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/john-brennan-and-the-drone-consensus.html",' +
+                '"title": "John Brennan and the Drone Consensus",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7e2e8014d26c6f9bbc3e46a9a4553f01"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/a-new-gop-not-yet.html",' +
+                '"title": "A New GOP? Not Yet",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "214d3dc2862619eb01dd7ee41bee6b86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/max-factor-heir-andrew-luster-my-lawyer-made-me-do-it.html",' +
+                '"title": "Max Factor Heir Andrew Luster: My Lawyer Made Me Do It",' +
+                '"rubric": "Court Report",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "bf39d6be935339ceacf2ffd19277dc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/steven-seagal-takes-down-bad-guys-protects-kids.html",' +
+                '"title": "Steven Seagal Takes Down Bad Guys, Protects Kids",' +
+                '"rubric": "Hands Up",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "83322c63f11922cc9cb59635a4d8e027"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/what-mozart-really-looked-like-14-portraits-of-the-composer-photos-music.html",' +
+                '"title": "What Mozart Really Looked Like: 14 Portraits of the Composer (Photos and Music)",' +
+                '"rubric": "Amadeus",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "24d4cb0bfeadabe3b6f407087f220c97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/grammy-awards-2013-best-moments-taylor-swift-j-lo-more-video.html",' +
+                '"title": "Grammy Awards 2013 Best Moments: Taylor Swift, J.Lo &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "051f60550f1844cb57222a96e227658d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/american-household-gadget-exceptionalism.html",' +
+                '"title": "American Household Gadget Exceptionalism",' +
+                '"rubric": "Kitchen Corner",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6926db0945c8eb8f60af6f543d77ec0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/benghazi-bungle-obama-s-pass-the-buck-presidency.html",' +
+                '"title": "Benghazi Bungle: Obama&rsquo;s Pass-the-Buck Presidency",' +
+                '"rubric": "Who\'s in Charge?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "49ecefddeacdf901a6cae0c7107c1bf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/somalia-jails-woman-and-journalist-over-soldier-rape-claims.html",' +
+                '"title": "Somalia Jails Woman and Journalist Over Soldier Rape Claims",' +
+                '"rubric": "Women\'s Rights",' +
+                '"topic": "World",' +
+                '"urlHashCode": "029abea4ea0e161075c98a113338fba4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/washington-s-silly-plan-to-create-a-national-nurse.html",' +
+                '"title": "Washington\'s Silly Plan to Create a National Nurse",' +
+                '"rubric": "Say Ahh",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f7ea2597f1c177e3eaa0aee0fbcfb66a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/09/danish-agent-says-he-provided-intel-for-u-s-drone-attack-that-killed-anwar-al-awlaki.html",' +
+                '"title": "Danish Agent Says He Provided Intel for U.S. Drone Attack That Killed Anwar al-Awlaki",' +
+                '"rubric": "War on al-Qaeda",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b1a36f6073a561850af71034dd4c6046"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/david-s-bookclub-britain-s-war-machine-and-the-wages-of-destruction.html",' +
+                '"title": "Rethink Everything You Think You Know About World War II",' +
+                '"rubric": "David\'s Bookclub",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb8334189a951f658e5aa6fe3aeb7dc1"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/02/08/steven-seagal-takes-down-bad-guys-protects-kids.html",' +
+                '"title": "Steven Seagal Takes Down Bad Guys, Protects Kids",' +
+                '"rubric": "Hands Up",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "83322c63f11922cc9cb59635a4d8e027"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/02/08/can-social-media-disarm-syria-s-chemical-arsenal.html",' +
+                '"title": "Can Social Media Disarm Syria&rsquo;s Chemical Arsenal?",' +
+                '"rubric": "EXCLUSIVE",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a3099ca8ec9b5dad99b3bd6474789fcf"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/benghazi-bungle-obama-s-pass-the-buck-presidency.html",' +
+                '"title": "Benghazi Bungle: Obama&rsquo;s Pass-the-Buck Presidency",' +
+                '"rubric": "Who\'s in Charge?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "49ecefddeacdf901a6cae0c7107c1bf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/the-gatekeepers-brooklyn-college-bds-forum-week-of-israel-debate.html",' +
+                '"title": "&lsquo;The Gatekeepers,&rsquo; Brooklyn College BDS Forum: Week of Israel Debate",' +
+                '"rubric": "DO WE DARE?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "471545cd81eb632641102d630c3765d7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/what-mozart-really-looked-like-14-portraits-of-the-composer-photos-music.html",' +
+                '"title": "What Mozart Really Looked Like: 14 Portraits of the Composer (Photos and Music)",' +
+                '"rubric": "Amadeus",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "24d4cb0bfeadabe3b6f407087f220c97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/max-factor-heir-andrew-luster-my-lawyer-made-me-do-it.html",' +
+                '"title": "Max Factor Heir Andrew Luster: My Lawyer Made Me Do It",' +
+                '"rubric": "Court Report",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "bf39d6be935339ceacf2ffd19277dc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/john-brennan-and-the-drone-consensus.html",' +
+                '"title": "John Brennan and the Drone Consensus",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7e2e8014d26c6f9bbc3e46a9a4553f01"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/6-ways-tv-affects-your-brain-and-sperm.html",' +
+                '"title": "6 Ways TV Affects Your Brain and Sperm",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b6a0b95c3fdb57a680fc00ca67520329"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/steven-seagal-takes-down-bad-guys-protects-kids.html",' +
+                '"title": "Steven Seagal Takes Down Bad Guys, Protects Kids",' +
+                '"rubric": "Hands Up",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "83322c63f11922cc9cb59635a4d8e027"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/bush-family-hack-was-bush-league-say-cyber-security-experts.html",' +
+                '"title": "Bush Family Hack Was Bush League, Say Cyber-Security Experts",' +
+                '"rubric": "Unprotected Secrets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b08cbb12ee1536a0c833ba9e37c87ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/05/how-richard-iii-really-looked-and-sounded.html",' +
+                '"title": "How Richard III Really Looked - And Sounded",' +
+                '"rubric": "Brummie",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "092a866b9585c7ae9ddad8d6c7aea1d7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/behind-the-scenes-at-the-soup-joel-mchale-brian-williams-more.html",' +
+                '"title": "Behind the Scenes at &lsquo;The Soup&rsquo;: Joel McHale, Brian Williams &amp; More",' +
+                '"rubric": "BEHIND THE SCENES",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8cea5ff751813996d1a630a08a12158"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/destiny-s-child-a-gangnam-baby-malala-and-more-viral-videos.html",' +
+                '"title": "Destiny&rsquo;s Child, a Gangnam Baby, Malala and More Viral Videos",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "483a1e03b984722012e1bd17d375ffdc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/grammy-awards-2013-best-moments-taylor-swift-j-lo-more-video.html",' +
+                '"title": "Grammy Awards 2013 Best Moments: Taylor Swift, J.Lo &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "051f60550f1844cb57222a96e227658d"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/wheelchair-bound-blogger-warms-fashion-week-hearts.html",' +
+                '"title": "Wheelchair-bound Blogger Warms Fashion Week Hearts",' +
+                '"rubric": "Fashion Week",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9245e5de0a99f56d9d4baed76d00d78e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/tammy-duckworth-on-gun-control-women-in-combat.html",' +
+                '"title": "Tammy Duckworth on Gun Control, Women in Combat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "169c18aabf28835c88e1f7538e73c5e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/grammy-awards-2013-best-moments-taylor-swift-j-lo-more-video.html",' +
+                '"title": "Grammy Awards 2013 Best Moments: Taylor Swift, J.Lo &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "051f60550f1844cb57222a96e227658d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/07/grammy-nominees-in-90-seconds.html",' +
+                '"title": "Grammy Nominees In 90 Seconds",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "98350370a0cfeb8d67ba55dba0963ae5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/6-ways-tv-affects-your-brain-and-sperm.html",' +
+                '"title": "6 Ways TV Affects Your Brain and Sperm",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b6a0b95c3fdb57a680fc00ca67520329"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/bush-family-hack-was-bush-league-say-cyber-security-experts.html",' +
+                '"title": "Bush Family Hack Was Bush League, Say Cyber-Security Experts",' +
+                '"rubric": "Unprotected Secrets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b08cbb12ee1536a0c833ba9e37c87ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/max-factor-heir-andrew-luster-my-lawyer-made-me-do-it.html",' +
+                '"title": "Max Factor Heir Andrew Luster: My Lawyer Made Me Do It",' +
+                '"rubric": "Court Report",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "bf39d6be935339ceacf2ffd19277dc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/09/winter-wonderland.html",' +
+                '"title": "Winter Wonderland",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4011d41fa24d163e424bbda21200fd6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/rogue-l-a-cop-s-facebook-manifesto-you-will-now-live-the-life-of-prey.html",' +
+                '"title": "Rogue L.A. Cop&rsquo;s Facebook Manifesto: &lsquo;You Will Now Live the Life of Prey&rsquo;",' +
+                '"rubric": "Chilling",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "0739f1032c45037c929f3ba844e3b83e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/29/bang-with-friends-facebook-sex-app-creators-talk-controversial-product.html",' +
+                '"title": "Bang With Friends: Facebook Sex App Creators Talk Controversial Product",' +
+                '"rubric": "F*ck Buddies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "909b71ed10911133fa20673c5c863260"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/09/thundering-nemo.html",' +
+                '"title": "Thundering \'Nemo\'",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ef9ed9621114f00d7197bf7852841fde"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/somalia-jails-woman-and-journalist-over-soldier-rape-claims.html",' +
+                '"title": "Somalia Jails Woman and Journalist Over Soldier Rape Claims",' +
+                '"rubric": "Women\'s Rights",' +
+                '"topic": "World",' +
+                '"urlHashCode": "029abea4ea0e161075c98a113338fba4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/steven-seagal-takes-down-bad-guys-protects-kids.html",' +
+                '"title": "Steven Seagal Takes Down Bad Guys, Protects Kids",' +
+                '"rubric": "Hands Up",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "83322c63f11922cc9cb59635a4d8e027"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/05/introducing-the-first-lingerie-line-for-transgender-women.html",' +
+                '"title": "Introducing the First Lingerie Line for Transgender Women",' +
+                '"rubric": "Hidden Assets",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "05f8ba034fd1ed0c4188721047b3828c"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/a-new-gop-not-yet.html",' +
+                '"title": "A New GOP? Not Yet",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "214d3dc2862619eb01dd7ee41bee6b86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/the-gatekeepers-brooklyn-college-bds-forum-week-of-israel-debate.html",' +
+                '"title": "&lsquo;The Gatekeepers,&rsquo; Brooklyn College BDS Forum: Week of Israel Debate",' +
+                '"rubric": "DO WE DARE?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "471545cd81eb632641102d630c3765d7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/max-factor-heir-andrew-luster-my-lawyer-made-me-do-it.html",' +
+                '"title": "Max Factor Heir Andrew Luster: My Lawyer Made Me Do It",' +
+                '"rubric": "Court Report",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "bf39d6be935339ceacf2ffd19277dc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/6-ways-tv-affects-your-brain-and-sperm.html",' +
+                '"title": "6 Ways TV Affects Your Brain and Sperm",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "b6a0b95c3fdb57a680fc00ca67520329"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/john-brennan-and-the-drone-consensus.html",' +
+                '"title": "John Brennan and the Drone Consensus",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7e2e8014d26c6f9bbc3e46a9a4553f01"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/what-mozart-really-looked-like-14-portraits-of-the-composer-photos-music.html",' +
+                '"title": "What Mozart Really Looked Like: 14 Portraits of the Composer (Photos and Music)",' +
+                '"rubric": "Amadeus",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "24d4cb0bfeadabe3b6f407087f220c97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/steven-seagal-takes-down-bad-guys-protects-kids.html",' +
+                '"title": "Steven Seagal Takes Down Bad Guys, Protects Kids",' +
+                '"rubric": "Hands Up",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "83322c63f11922cc9cb59635a4d8e027"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/benghazi-bungle-obama-s-pass-the-buck-presidency.html",' +
+                '"title": "Benghazi Bungle: Obama&rsquo;s Pass-the-Buck Presidency",' +
+                '"rubric": "Who\'s in Charge?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "49ecefddeacdf901a6cae0c7107c1bf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/make-them-read-rand-a-scheme-in-idaho-to-put-objectivism-in-schools.html",' +
+                '"title": "Make Them Read Rand! A Scheme in Idaho to Put Objectivism in Schools",' +
+                '"rubric": "AYN EDUCATION",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "50378dbc77e066e5fc1921b6505df9cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/tammy-duckworth-on-gun-control-women-in-combat.html",' +
+                '"title": "Tammy Duckworth on Gun Control, Women in Combat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "169c18aabf28835c88e1f7538e73c5e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/massachusetts-republicans-missing-in-action-in-u-s-senate-race.html",' +
+                '"title": "Massachusetts Republicans Missing in Action in U.S. Senate Race",' +
+                '"rubric": "NO TAKERS?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9a807031cf92d21ebf65acde0602230"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/grammy-awards-2013-best-moments-taylor-swift-j-lo-more-video.html",' +
+                '"title": "Grammy Awards 2013 Best Moments: Taylor Swift, J.Lo &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "051f60550f1844cb57222a96e227658d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/05/how-richard-iii-really-looked-and-sounded.html",' +
+                '"title": "How Richard III Really Looked - And Sounded",' +
+                '"rubric": "Brummie",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "092a866b9585c7ae9ddad8d6c7aea1d7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/09/danish-agent-says-he-provided-intel-for-u-s-drone-attack-that-killed-anwar-al-awlaki.html",' +
+                '"title": "Danish Agent Says He Provided Intel for U.S. Drone Attack That Killed Anwar al-Awlaki",' +
+                '"rubric": "War on al-Qaeda",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b1a36f6073a561850af71034dd4c6046"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/republicans-push-back-as-rove-aims-to-appoint-himself-kingmaker.html",' +
+                '"title": "Republicans Push Back as Rove Aims to Appoint Himself Kingmaker",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5fcc0aea9fec696051666c556726d332"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/01/obama-realigns-the-gop-declines-the-new-political-paradigm.html",' +
+                '"title": "Obama Realigns, the GOP Declines: The New Political Paradigm",' +
+                '"rubric": "SWITCHEROO",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ed9e92c53004795b0699c9af223cac55"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/02/10/benghazi-bungle-obama-s-pass-the-buck-presidency.html",' +
+                '"title": "Benghazi Bungle: Obama&rsquo;s Pass-the-Buck Presidency",' +
+                '"rubric": "Who\'s in Charge?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "49ecefddeacdf901a6cae0c7107c1bf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/obama-must-fight-one-more-campaign-to-keep-senate-win-house-in-2014.html",' +
+                '"title": "Obama Must Fight One More Campaign: To Keep Senate &amp; Win House in 2014",' +
+                '"rubric": "THE 2014 BATTLE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f37a6419f863c76cf3843a4f392667ee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/jodi-arias-the-mormon-casey-anthony.html",' +
+                '"title": "Jodi Arias: The Mormon Casey Anthony",' +
+                '"rubric": "Blotter",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "25479d072bbe4234840bf66457368fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/with-plea-deal-jesse-jackson-jr-s-fall-from-grace-seems-complete.html",' +
+                '"title": "With Plea Deal, Jesse Jackson Jr.&rsquo;s Fall From Grace Seems Complete",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d7e78edb0f01e84ec20abd473e4c1baa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/gop-swears-it-s-not-stupid.html",' +
+                '"title": "GOP Swears It&rsquo;s Not Stupid",' +
+                '"rubric": "WE&rsquo;VE CHANGED!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "07a3b66001edae78fb0ae63ab33417bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/the-week-s-best-longreads-for-february-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for February 9, 2013",' +
+                '"rubric": "LONGREADS",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d1c0268a425443862e0187e63e95dd13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/10-juiciest-bits-from-ex-scientologist-s-tell-all-beyond-belief.html",' +
+                '"title": "10 Juiciest Bits From Ex-Scientologist&rsquo;s Tell-All &lsquo;Beyond Belief&rsquo;",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "374fc3e85f26e629d79341ac05d8ce82"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/cbs-is-right-to-ban-the-boobs-with-grammy-awards-wardrobe-advisory.html",' +
+                '"title": "CBS Is Right to Ban the Boobs With Grammy Awards &lsquo;Wardrobe Advisory&rsquo;",' +
+                '"rubric": "Grammy Dress Code",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "96111f88f2d1650714c27de2496be866"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/obama-s-smart-move-on-drones.html",' +
+                '"title": "Obama&rsquo;s Smart Move on Drones",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59353a617006e94dbeec5765ab7a6e36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/what-critics-are-saying-about-george-w-bush-s-hacked-paintings.html",' +
+                '"title": "What Critics Are Saying About George W. Bush&rsquo;s Hacked Paintings",' +
+                '"rubric": "Bush Leak",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7a60d64b343bdfe8e0ac6f4081a9ecf9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/06/why-is-barnes-and-noble-getting-out-of-the-bookstore-business.html",' +
+                '"title": "Why Is Barnes and Noble Getting Out of the Bookstore Business?",' +
+                '"rubric": "America\'s Retail Implosion",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "94f5c68fb534af76762f64bfd2d68396"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/07/a-new-gop-not-yet.html",' +
+                '"title": "A New GOP? Not Yet",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "214d3dc2862619eb01dd7ee41bee6b86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/the-gatekeepers-brooklyn-college-bds-forum-week-of-israel-debate.html",' +
+                '"title": "&lsquo;The Gatekeepers,&rsquo; Brooklyn College BDS Forum: Week of Israel Debate",' +
+                '"rubric": "DO WE DARE?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "471545cd81eb632641102d630c3765d7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/john-brennan-and-the-drone-consensus.html",' +
+                '"title": "John Brennan and the Drone Consensus",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7e2e8014d26c6f9bbc3e46a9a4553f01"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/08/winter-storm-nemo-bears-down-on-the-northeast.html",' +
+                '"title": "Winter Storm Nemo Blankets Northeast",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6467009115e093dfd187866a9d05d26c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/10/malice-without-cause-james-lasdun-s-memoir-of-being-stalked.html",' +
+                '"title": "Malice Without Cause: James Lasdun&rsquo;s Memoir of Being Stalked",' +
+                '"rubric": "Stalked",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "260ccd1c1f9864781c02149acad48b87"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/04/11/did-joe-pesci-s-ex-hire-a-hitman.html",' +
+                '"title": "Did Joe Pesci&rsquo;s Ex Hire a Hitman?",' +
+                '"rubric": "CRIME",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f16ff33ab96d0bb083c7564f3a3d6df1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/breastfeeding-shows-steady-growth-vs-formula-according-to-cdc.html",' +
+                '"title": "Breastfeeding Shows Steady Growth Vs. Formula, According to CDC",' +
+                '"rubric": "null",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "22a42975e81a768b1748cb15a43600a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/09/what-mozart-really-looked-like-14-portraits-of-the-composer-photos-music.html",' +
+                '"title": "What Mozart Really Looked Like: 14 Portraits of the Composer (Photos and Music)",' +
+                '"rubric": "Amadeus",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "24d4cb0bfeadabe3b6f407087f220c97"' +
+            '}' +
+        ']' +
+    '}'
+);

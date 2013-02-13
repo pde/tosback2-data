@@ -33,8 +33,6 @@ $Halo.Social.loadFbApi = $Halo.Social.loadFbApi || function(){
 
 $Halo.Social.baseHref = "http://" + window.location.host + "/index/index/mk/invite";
 $Halo.Social.enableFbLike = (typeof $Halo.Social.enableFbLike === 'undefined') ? 1 : 0;
-$Halo.Social.hidePlaxo = ($.browser.msie == true && $.browser.version.substr(0, 1) == "8");
-$Halo.Social.hidePlaxo = $Halo.Social.hidePlaxo || ($.browser.opera == true);
 $Halo.Social.shareTypes = {
 	catalog:{
 		popupText: 'Get a $10 credit each time a friend you invite makes their first purchase. Your message to friends will be, "#eventTitle is on sale at HauteLook!"',
@@ -173,27 +171,6 @@ $Halo.ShareBar.prototype.getOverlay = function(){
 	});
 };
 
-$Halo.ShareBar.prototype.loadPlaxo = function(){
-	if(!$Halo.Social.hidePlaxo){
-		var $pop = $(this.overlayContent);
-		$.getScript('/js/plaxoloader.js', function(){
-			$pop.find("#plaxo_container").bindOnce("click.social", function(){
-				try{
-					showPlaxoABChooser('invite_email_list', '/plaxo');
-				}
-				catch(e){
-					Halo.errors.add(e);
-				}
-				
-				if (typeof _haq !== "undefined") {
-					_haq.push(['_trackEvent', 'Invite popup', 'Plaxo']);
-				}
-				return true;
-			});
-		});
-	}
-}
-
 $Halo.ShareBar.prototype.resetOverlay = function(){
 	var $pop = $(this.overlayContent);
 	$pop.find(".invite_copy").html(this.popupText);
@@ -204,6 +181,7 @@ $Halo.ShareBar.prototype.resetOverlay = function(){
 		.bindOnce('click.social', function() {
 			if (typeof _haq !== "undefined") {
 				_haq.push(['_trackEvent', 'Invite popup', 'Twitter']);
+				_haq.push(['_trackSocial', 'twitter', 'invite popup']);
 			}
 		}
 	);
@@ -213,6 +191,7 @@ $Halo.ShareBar.prototype.resetOverlay = function(){
 		.bindOnce('click.social', function() {
 			if (typeof _haq !== "undefined") {
 				_haq.push(['_trackEvent', 'Invite popup', 'Facebook']);
+				_haq.push(['_trackSocial', 'facebook', 'invite popup']);
 			}
 		}
 	);
@@ -225,6 +204,7 @@ $Halo.ShareBar.prototype.resetOverlay = function(){
 	$pop.find(".invite_send").bindOnce("click.social", function() {
 		if (typeof _haq !== "undefined") {
 			_haq.push(['_trackEvent', 'Invite popup', 'Email']);
+			_haq.push(['_trackSocial', 'email', 'invite popup']);			
 		}
 		that.sendEmail(that);
 	});

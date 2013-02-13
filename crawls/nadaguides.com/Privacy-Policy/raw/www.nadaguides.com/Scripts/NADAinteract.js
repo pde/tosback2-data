@@ -1310,6 +1310,15 @@ var NADAjs = {
                 }
             })());
 
+            $(".legal_showlink").click(function() {
+                if ($(this).children('.legal_showhide').html() == "View Disclosures.") {
+                    $(this).children('.legal_showhide').html('Close Disclosures.');
+                } else {
+                    $(this).children('.legal_showhide').html('View Disclosures.');
+                }
+                $(this).parent().next('.legal_text').toggle('fast', 'swing');
+            });
+
         } //init
 
         var showZipTextBox = function() {
@@ -1527,6 +1536,12 @@ var NADAjs = {
                 hideLoanPmt();
             });
             $('#canAfford :input[type=text]').live("keyup", function() {
+                hideLoan();
+            });
+            $("#monthlypayment").find("#loanTerm2").val().live("change", function() {
+                hideLoanPmt();
+            });
+            $("#canAfford").find("#loanTerm").val().live("change", function() {
                 hideLoan();
             });
         } //init
@@ -1793,6 +1808,7 @@ var NADAjs = {
         var slideshowNext = function() {
             if (slideShowOn) {
                 next();
+                RefreshAllAds();
                 setPicCount();
                 setTimeout(function() { slideshowNext(); }, config.slideSpeed);
             }
@@ -2017,6 +2033,62 @@ var NADAjs = {
         this.pickIntColor = pickIntColor;
     }
 };
+
+
+function RefreshExtPicturesAds(adid) {
+    var adSponsor = document.getElementById('ad' + adid);
+    if (adSponsor) {
+        killsChildNodes(adSponsor);
+
+        $.getJSON('/Ad/GetRefreshedExtPicturesAd/', { adZoneId: adid }, function(data) {
+            //alert(data.ad);
+
+            var frame = document.createElement('iframe');
+
+            if (adid == 15) {
+                frame.setAttribute('width', '300');
+                frame.setAttribute('height', '262');
+            }
+            else if (adid == 20) {
+                frame.setAttribute('width', '728');
+                frame.setAttribute('height', '100');
+            }
+            frame.setAttribute('frameBorder', '0');
+            frame.setAttribute('marginWidth', '0');
+            frame.setAttribute('marginHeight', '0');
+            frame.setAttribute('scrolling', 'no');
+
+            if (adSponsor.childNodes.length == 0) {
+                adSponsor.appendChild(frame);
+            }
+
+
+            var iFrameDoc;
+
+            if (frame.contentDocument) {
+                iFrameDoc = frame.contentDocument;
+            }
+            else if (frame.contentWindow) {
+                iFrameDoc = frame.contentWindow.document;
+            }
+            else if (window.frames[iFrame.name]) {
+                iFrameDoc = window.frames[iFrame.name].document;
+            }
+
+            if (iFrameDoc) {
+                iFrameDoc.open();
+                iFrameDoc.write('<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><style type=\"text/css\">.smAdText_r{font-size:8px;line-height:10px;width:100%;text-align:right;color:#A8A8A8;font-family:Verdana;}</style></head><body><script type=\"text/javascript\" language=\"javascript\">function writeJSAd3(){ document.write(\'\')}</script>' + data.ad + '</body></html>');
+                iFrameDoc.close();
+            }
+
+            if (navigator.appVersion.indexOf("MSIE") > 0) {
+                frame.contentWindow.location.reload();
+            }
+
+        });
+    }
+
+} 
 
 
 function killsChildNodes(an_element) {

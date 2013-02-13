@@ -36,7 +36,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/NYDJ/Women-Denim-Jeans-Capri/_/N-174wlZz2qs/Rpp-1?cm_sp=womens-_-ddf-_-nydj+capris+4+020813">New Arrivals:NYDJ Capris</a></li>');
 	document.writeln('<li><a href="/content/women-spring-essentials?cm_sp=womens-_-ddf-_-spring+essentials+5+013013">Spring Essentials Trend Guide</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Gibson-Latimer/Women/_/N-174x6Zlfx6/Rpp-1?cm_sp=womens-_-ddpromo-_-gibson+latimer+020813" >EXCLUSIVELY OURS: NEW & ON-TREND PIECES FOR THE FASHION-CONCIOUS WOMAN FROM GIBSON & LATIMER</a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Gibson-Latimer/Women/_/N-174x6Zlfx6/Rpp-1?cm_sp=womens-_-ddpromo-_-gibson+latimer+020813" >EXCLUSIVELY OURS: NEW & ON-TREND PIECES FOR THE FASHION-CONSCIOUS WOMAN FROM GIBSON & LATIMER</a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Gibson-Latimer/Women/_/N-174x6Zlfx6/Rpp-1?cm_sp=womens-_-ddimage-_-gibson+latimer+020813"><img src="/images/endeca/dropdown/020813dropdown_gibson_lattimer.jpg"></a>');
@@ -308,14 +308,14 @@ function buildDropdown() {
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/product/Clarins-Double-Serum_301_-1_301_503696097?cm_sp=beauty-_-ddf-_-clarins+double+serum+1+020513">NEW! Clarins Double Serum</a></li>');
 	document.writeln('<li><a href="/content/beauty-garden-party?cm_sp=beauty-_-ddf-_-prom+beauty+2+020513">PROM Beauty: Get the LOOK</a></li>');
-	document.writeln('<li><a href="/shop/The-Edge-Shop/_/N-lg88?cm_sp=beauty-_-ddf-_-new+in+edge+beauty+3+012313">LOVE our EDGE Beauty Crushes & Craves</a></li>');
+	document.writeln('<li><a href="/product/Clinique-Repairwear-Laser-Focus-Wrinkle-UV-Damage-Corrector_301_-1_301_503703840?cm_sp=beauty-_-ddf-_-clinique+repairwear+laser+focus+sserum++3+021213">Visible Wrinkle-Reducing Power from Clinique</a></li>');
 	document.writeln('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg/Rpp-1?cm_sp=beauty-_-ddf-_-clarisonic+perfect+skin+4+020513">Perfect Skin Begins with CLARISONIC</a></li>');
 	document.writeln('<li><a href="/content/beauty-heart-your-valentine?cm_sp=beauty-_-ddf-_-heart+your+lips+eyes+skin+man+5+020513">Shop Products We LOVE!</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<div class="promo"><a href="/content/Valentines-day-gift-guide?cm_sp=beauty-_-ddpromo-_-valentine+gift+guide+1+012613" >Gifts from the heart - Shop the Valentine\'s Day Gift Guide ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Lancome/_/N-lg41?cm_sp=beauty-_-ddimage-_-lancome+online+serum+bonus+020313"><img src="/images/dropDownImages/020313_ddimage_lancome_super_serum_bonus.jpg"></a>');
+	document.writeln('<a href="/shop/Estee-Lauder/_/N-lg40?cm_sp=beauty-_-ddimage-_-estee+lauder+gift+with+purchase+021013"><img src="/images/dropDownImages/021113_ddimage_estee_lauder_free_gift_with_purchase.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -353,10 +353,10 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z15p/Rpp-1?cm_sp=mens-_-ddf-_-mens+new+arrivals+012313">NEW ARRIVALS in Men\'s</a></li>');
-	document.writeln('<li><a href="/shop/Men-Active-Wear/_/N-lgau/Rpp-1?cm_sp=mens-_-ddf-_-best+selling+active+wear+2+012613">BEST SELLING Activewear</a></li>');
+	document.writeln('<li><a href="/shop/Men-Big-Tall/_/N-ls51/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=mens-_-ddf-_-best+selling+active+wear+2+012613">NEW ARRIVALS Big & Tall</a></li>');
 	document.writeln('<li><a href="/content/mensaccessories?cm_sp=mens-_-ddf-_-watches+bags+accessories+3+111712">Watches, Sunglasses, Bags & Accessories</a></li>');
 	document.writeln('<li><a href="/shop/Men-Casual-Shirts-Polo-Shirts/_/N-yetm/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=mens-_-ddf-_-new+polo+shirts+4+011113">JUST IN: New Polo Shirts</a></li>');
-	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-p_tag/Ntt-Bold+Button-Downs/Nty-1?cm_sp=mens-_-ddf-_-bold+button+downs+5+011113">BOLD Button-Down Shirts</a></li>');
+	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-p_tag/Ntt-Modern+Fit+Pants+For+Men/Nty-1?cm_sp=mens-_-ddf-_-modern+fit+pants+jeans+5+011113">Modern Fit Pants and Jeans</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<div class="promo"><a href="/shop/Men-Underwear-Socks-Sleepwear/_/N-yymeZ1jl/Ntk-all/Ntt-gold+toe/Nty-1/Rpp-1?cm_sp=men-_-ddpromo-_-shop+gold+toe+socks+sale+event+020313" >Shop the Gold Toe Socks Sale Event Now</a></div>');
 	document.writeln('</div>');

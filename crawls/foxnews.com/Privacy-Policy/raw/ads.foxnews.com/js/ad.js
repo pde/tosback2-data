@@ -475,6 +475,8 @@
 				$('.ad.qu').each(function(){
 					var id=$(this).attr("id"); 
 					
+					if( $.ad.broadspring.isBS(id)){return;}
+					
 					if(	$.ad.adBlade.isAdBlade(id)){return;}
 
 					if( id === "qu_channel_7"){return;}		
@@ -496,7 +498,7 @@
 		adBlade: {
 			isAdBlade : function(qu_id) {
 				var section = $('meta[name="prism.section"]').attr("content");
-				return (qu_id == "qu_story_1" && (	section === "world" || section === "us" || section === "politics" )	) ? true : false;
+				return (qu_id == "qu_story_1" && (	section === "world" || section === "politics" )	) ? true : false;
 			},
 			init : function() {
 				var section = $('meta[name="prism.section"]').attr("content");
@@ -505,12 +507,12 @@
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=1291-1494141695&output=html";
 					$('#qu_story_1').append(ifr);
-				}
+				}/*
 				if( $('#qu_story_1').size() > 0 && section === "us" ){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=1978-2998053441&output=html";
 					$('#qu_story_1').append(ifr);
-				}	
+				}	*/
 				if( $('#qu_story_1').size() > 0 && section === "politics" ){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=2082-3105684236&output=html";
@@ -518,6 +520,30 @@
 				}					
 			}
 		},
+		broadspring : {
+			isBS : function(qu_id){
+				return (qu_id == "qu_story_1" && $('meta[name="prism.section"]').attr("content") == "us" ) ? true : false;
+			},
+			init : function(){
+				if( $('#qu_story_1').size() > 0 && $('meta[name="prism.section"]').attr("content") == "us" ){
+					(function() {
+				        var params =
+				        {
+				        	id: "339cb4ef-4bc5-45e8-b63c-03c8339d265e",
+				        	d:  "Zm94bmV3cy5jb20=",
+				        	wid: "3446"
+				        };
+
+				        var qs="";for(var key in params){qs+=key+"="+params[key]+"&"}qs=qs.substring(0,qs.length-1);
+						var s = document.createElement("script");
+						s.type= 'text/javascript';
+				    	s.src = "http://api.content.ad/Scripts/widget.js?" + qs;
+				    	s.async = true;
+						document.getElementById("qu_story_1").appendChild(s);
+				    })();
+				}	
+			}
+		},	
 		optimizely: {
 			init : function(d){	
 				var self = this;
@@ -589,6 +615,7 @@
 				if (typeof d.ptype != "undefined" && targetSections.indexOf(d.ptype.toLowerCase()) > -1){	
 					this.insert(d);
 				}
+
 			},
 			insert: function(d){
 				
@@ -841,11 +868,13 @@
 				(function(){
 					var sDomains = ["Mapquest.com", "Pawnation.com", "everydayhealth.com", "mandatory.com", "theboot.com", "techcrunch.com", "Pawnation.com", "everydayhealth.com", "mandatory.com", "theboot.com",
 					 "techcrunch.com", "engadget.com", "aol.sportingnews", "comicsalliance", "defense.aol", "defense.aol", "rssmix.com", "autoblog.com", "aol.com", "aoltv.com", "dailyfinance.com",
-					 "huffingtonpost.com", "popeater.com", "kitchendaily.com", "travel.aol", "energy.aol", "slashfood.com", "gadling.com", "weirdnews.aol", "aolnews.com"];
+					 "huffingtonpost.com", "popeater.com", "kitchendaily.com", "travel.aol", "energy.aol", "slashfood.com", "gadling.com", "weirdnews.aol", "aolnews.com", "stylelist.com"];
 
 
 					insertParam = function(linkElm,href){
 
+						if(href.indexOf("txtlnkusaolp00000058") > -1){return;}
+						
 						href += (href.indexOf("?") === -1)? "?ncid=txtlnkusaolp00000058" : "&ncid=txtlnkusaolp00000058";
 				
 						linkElm.attr("href", href)
@@ -1816,6 +1845,8 @@
 			$.ad.wordnik.init(d);			
 			
 			$.ad.adBlade.init();
+			
+			$.ad.broadspring.init();
 			
 			//$.ad.optimizely.init(d);
 			

@@ -51,6 +51,15 @@ WebMetrics = {
 						'DCSext.svl' ,'2');
 			}
     	});
+		
+		$('a.externalLink',$('#Support')).click(function(){
+    		if(window.WebMetrics){
+    			var pageName = WebMetrics.getMetaTagValue('DCSext.wtPN');
+    			dcsMultiTrack('DCSext.wtLinkLoc' , pageName+'_GlobalLinks',
+						'DCSext.wtLinkName' ,pageName + "_" + $(this).attr('rel'),
+						'DCSext.svl' ,'4');
+			}
+    	});
 	},
 	
 	dispatchReport: function(wtEvent) {
@@ -70,7 +79,11 @@ WebMetrics = {
 		
 		execute = "dcsMultiTrack(" + wtArgs.substr(0,wtArgs.length-2) + ")";
 		
-		jQuery.globalEval(execute);
+		window.eval(execute);
+		
+		//RESET ELIGIBLE VARIABLES FOR NEXT REPORT ON SAME PAGE.
+		WebMetrics.DCSext.LinkLoc = "";
+		WebMetrics.DCSext.LinkName = "";
 		
 	},
 	

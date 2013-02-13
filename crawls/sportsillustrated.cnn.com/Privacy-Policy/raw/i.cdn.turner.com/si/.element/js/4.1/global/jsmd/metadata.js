@@ -1081,11 +1081,28 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 		cnn_metadata.template_type = 'other:search results';
 		cnn_metadata.content_type = 'none';
 	} else if ( ( $pathname ).match( /^\/swimsuit\// ) || ( $pathname ).match(/^\/\d{4}_swimsuit/) ){
-		var swim_year_matches = cnn_omnitureData.pageType.match(/\d{4}/);
-		var swim_year = ( swim_year_matches ) ? swim_year_matches[0] : '';
-		cnn_metadata.section = [ 'swimsuit ' + swim_year, '' ];
-		cnn_metadata.template_type = 'other:swimsuit';
-		cnn_metadata.content_type = 'none';
+		if( document.cnnSwim13 ) {
+			var cnn_metadata_section_subsection = document.cnnSwim13.section;
+			switch( cnn_metadata_section_subsection ) {
+				case 'main': cnn_metadata_section_subsection = "home"; break;
+				case 'models': cnn_metadata_section_subsection = "models"; break;
+				case 'video': cnn_metadata_section_subsection = "video"; break;
+				case 'painting': cnn_metadata_section_subsection = "bodypaint"; break;
+				case 'athletes': cnn_metadata_section_subsection = "athletes"; break;
+				case 'onlocation': cnn_metadata_section_subsection = "onlocation"; break;
+				case 'more': cnn_metadata_section_subsection = "more"; break;
+				default: cnn_metadata_section_subsection = "other"; break;
+			}
+			cnn_metadata.section = [ 'swim2013', cnn_metadata_section_subsection ];
+			cnn_metadata.template_type = 'other:swimsuit';
+			cnn_metadata.content_type = 'none';
+		} else {
+			var swim_year_matches = cnn_omnitureData.pageType.match(/\d{4}/);
+			var swim_year = ( swim_year_matches ) ? swim_year_matches[0] : '';
+			cnn_metadata.section = [ 'swimsuit ' + swim_year, '' ];
+			cnn_metadata.template_type = 'other:swimsuit';
+			cnn_metadata.content_type = 'none';
+		}
 	} else if ( ( $pathname ).match( /^\/onlyvegas\// ) ) {
 		cnn_metadata.section = [ 'sweepstakes', 'onlyvegas' ];
 		cnn_metadata.template_type = 'other:sweepstakes';

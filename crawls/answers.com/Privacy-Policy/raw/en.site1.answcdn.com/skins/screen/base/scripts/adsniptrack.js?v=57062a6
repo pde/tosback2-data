@@ -1,0 +1,72 @@
+
+var gadUnitsCounter=1;var adSnipDbg="";var adSnipDbgDiv="";function resolvedStyle(el,sName){if(window.getComputedStyle){return window.getComputedStyle(el,'').getPropertyValue(sName);}
+else
+return el.currentStyle[sName];}
+function getChannelAndClient(el){var chan=getGInfo(el,"channel");var cli=getGInfo(el,"client");if(chan&&cli)
+return{"channel":chan,"client_id":cli};else
+return null;}
+function getGInfo(el,param){if(el){var pstr=param+"=([^&\"']+)";var p=new RegExp(pstr);if(p.test(el.innerHTML))
+return RegExp.$1;else{pstr=param+"\\s*:\\s*['\"]([^'\"]+)['\"]";p=new RegExp(pstr);if(p.test(el.innerHTML))
+return RegExp.$1;}}
+return"";}
+function adSnipAdData(adType,adValidator,adLocations,channelExtractor){var gel=document.getElementById(adValidator);if(gel){adSnipFeed(adType,adLocations,channelExtractor?channelExtractor(gel):null);}}
+function getAdLocForAdsnip(locPrefix,maxIndex){var gel,gadLoc='';var ii=0;for(ii=0;ii<=maxIndex;ii++){var id=locPrefix+ii;gel=document.getElementById(id);if(gel){if(ii>0)gadLoc+=", ";gadLoc+="#"+id;}}
+return gadLoc;}
+function adSnipFeed(k,v,addl){if(k=="metadata")
+Adsnip.config.metadata=v;else
+Adsnip.config.add_feed(k,v,addl);if(location.href.indexOf("gadebug=true")>0||location.href.indexOf("gadebug=1")>0){if(k=="metadata"){adSnipDbgDiv+="<u>Adsnip.config.metadata:</u><br>";adSnipDbgDiv+="adsnip script: "+jwgData.adSnipScript+"<br>";for(var key in v){adSnipDbgDiv+=key+": "+v[key]+"<br>";}}else{adSnipDbgDiv+=k+": "+v;if(addl){adSnipDbgDiv+=", {";for(var key in addl){adSnipDbgDiv+=key+":"+addl[key]+", ";}
+adSnipDbgDiv+="}";}
+adSnipDbgDiv+="<br>";}}}
+function shoAdsnipDebugInfo(){var temp=document.createElement('div');temp.id="adSnipDbg";temp.innerHTML=adSnipDbgDiv;var cont;cont=document.getElementById("ahead");if(cont)
+cont.appendChild(temp);else{cont=document.getElementById("header");if(cont)
+cont.appendChild(temp);else{cont=document.getElementById("contents");if(cont)
+cont.insertBefore(temp,cont.firstChild);}}}
+function initAdsnip(){if(typeof jwgData.adSnipStaging!="undefined"&&jwgData.adSnipStaging)Adsnip.config.testing=true;if(typeof ANSW=="undefined")ANSW=new Object();var gel,gadLoc,gaType;if(ANSW.site=="ra"){gel=document.getElementById("rlink2");if(gel&&typeof google_radlink_request_done!="undefined"){adSnipFeed('google_radlink','#top_radlinks, #rlink2',getChannelAndClient(gel));}else{if(typeof google_radlink_request_done!="undefined"){adSnipAdData('google_radlink','top_radlinks','#top_radlinks',getChannelAndClient);}}
+adSnipAdData('admeld_sky','ifba2758','#ba2758');adSnipAdData('admeld_sky','ifba_2','#ba_2');var admeldLoc="";if(document.getElementById("ifba2611")){admeldLoc="#ba2611";}
+if(document.getElementById("ifba_1")){admeldLoc="#ba_1";}
+if(document.getElementById("ifba2540")){if(admeldLoc)admeldLoc+=", ";admeldLoc+="#ba2540";}
+if(document.getElementById("ifba_3")){if(admeldLoc)admeldLoc+=", ";admeldLoc+="#ba_3";}
+if(admeldLoc)
+adSnipFeed('admeld_box',admeldLoc);var firstAd=-1;var d="";if(document.getElementById("h_ads0")&&resolvedStyle(document.getElementById("h_ads0"),"display")!="none")
+firstAd=0;else if(document.getElementById("h_ads1")&&resolvedStyle(document.getElementById("h_ads1"),"display")!="none")
+firstAd=1;if(firstAd>-1){var gadLoc="";var ii=firstAd;while(document.getElementById("h_ads"+ii)){if(ii>firstAd)gadLoc+=", ";gadLoc+="#h_ads"+ii++;}
+if(gadLoc){var adType="google_afc";if(ANSW.asPageType=="search"||(window.g5name.lid&&window.g5name.lid.indexOf("G_AFS")==0))
+adType="google_afs";if(window.g5name.jwgData&&window.g5name.jwgData.gadchannel)
+d={"channel":window.g5name.jwgData.gadchannel,"client_id":window.g5name.jwgData.gadclient};else if(jwgData.gadchannel)
+d={"channel":jwgData.gadchannel,"client_id":jwgData.gadclient};adSnipFeed(adType,gadLoc,d);}}
+if(document.getElementById("afc_ad")){if(jwgData.gadchannel)
+d={"channel":jwgData.gadchannel,"client_id":jwgData.gadclient};adSnipFeed('google_afc','#afc_ad',d);}
+else if(document.getElementById("googleAdSearch")){d={"channel":jwgData.gadchannel,"client_id":jwgData.gadclient};adSnipFeed('google_afs_mobile','#googleAdSearch, #googleAdSearch1',d);}}else if(typeof isAqua!='undefined'&&isAqua){gel=document.getElementById("ga_468x15");if(gel){adSnipFeed('google_radlink','#ga_468x15',getChannelAndClient(gel));}
+gadLoc=getAdLocForAdsnip('AFC_',3);if(jwgData.gadchannel)
+d={"channel":jwgData.gadchannel,"client_id":jwgData.gadclient};if(gadLoc.length>0){adSnipFeed('google_afc',gadLoc,d);}
+gadLoc=getAdLocForAdsnip('AFS_',3);if(gadLoc.length>0){adSnipFeed('google_afs',gadLoc,d);}
+if(jwgData.pageType!="home"){if(jwgData.isLoggedIn)
+adSnipFeed('admeld_sky','#admeldBoxAdleftMenuLoggedIn_after');else
+adSnipFeed('admeld_sky','#admeldBoxAdloginPod_after');if(typeof showRightbar!='undefined'&&showRightbar)
+adSnipFeed('admeld_box','#admeldBoxAdrightBar_first, #admeldBoxAdrightBar_last');}}else{gel=document.getElementById("ga_468x15");if(gel){adSnipFeed('google_radlink','#ga_468x15',getChannelAndClient(gel));}
+if(typeof jwgData.articleData.inputs!="undefined"&&(jwgData.articleData.inputs.template=="faqArticle.tpl"||jwgData.articleData.inputs.template=="faqDiscuss.tpl"||jwgData.articleData.inputs.template=="faqFAQ.tpl"||jwgData.articleData.inputs.template=="recentChanges.tpl"||jwgData.articleData.inputs.template=="contributors.tpl"||jwgData.articleData.inputs.template=="watchlistChanges.tpl"))
+adSnipFeed('admeld_sky','#dart_160x600iframe');if(typeof showRightbar!='undefined'&&showRightbar&&typeof jwgData.articleData.inputs!="undefined"&&jwgData.articleData.inputs.template!="faqFAQ.tpl"&&jwgData.articleData.inputs.template!="userBio.tpl"&&jwgData.articleData.inputs.template!="topics.tpl"&&jwgData.articleData.inputs.template!="homepage.tpl"&&jwgData.articleData.inputs.template!="unifiedHP.tpl")
+adSnipFeed('admeld_box','#ifrm_rightBarTopDart, #ifrm_rightBarBotDart');gel=document.getElementById("ga_300x250a");if(gel&&gel.innerHTML){adSnipFeed('google_afc','#ga_300x250a, #ga_300x250, #ga_300x250b',{"channel":jwgData.gadchannel,"client_id":jwgData.gadclient});}
+else{gel=document.getElementById("ga_300x250");if(gel){gaType=jwgData.isAFS?'google_afs':'google_afc';adSnipFeed(gaType,'#ga_300x250',{"channel":jwgData.gadchannel,"client_id":jwgData.gadclient});}}
+gel=document.getElementById("afs_mid");if(gel){adSnipFeed('google_afs','#afs_mid',{"channel":jwgData.gadchannel,"client_id":jwgData.gadclient});}}
+gel=document.getElementById("googleAd");if(gel){adSnipFeed('google_afmc_320x50_mb','#googleAd',getChannelAndClient(gel));}
+if(typeof googleAd1!="undefined"){gel=document.getElementById("googleAd1");adSnipFeed(googleAd1,'#googleAd1',getChannelAndClient(gel));}
+var adSnipCategories="";if(typeof jwgData.adSnipCategories!="undefined")adSnipCategories=jwgData.adSnipCategories;if(typeof adSnipCat!="undefined")
+adSnipCategories=adSnipCat;var asPageType="";if(typeof jwgData.pageType!="undefined")asPageType=jwgData.pageType;else if(typeof ANSW.asPageType!="undefined")asPageType=ANSW.asPageType;asPageType=asPageType==''?'General':asPageType;var subject="";if(ANSW.asSubject)
+subject=ANSW.asSubject;else if(asPageType=="TopicPage"){var patt2=/(^.*)(:.*from Answers.com.*$)/;patt2.test(document.title);subject=RegExp.$1;}else if(typeof ANSW.searchText!="undefined"){subject=ANSW.searchText.replace(/\+/g," ");}else if(asPageType=="Library Page"||asPageType=="Taxonomy Page"){subject=document.title.split("from Answers.com")[0];}else{patt1=/^((wiki)?(answers)?(\.com)?( Mobile)?[ ]?[-:]? ?(.+))/ig;if(patt1.test(document.title))
+subject=RegExp.$6;subject=subject.replace(/per cellulare:| - WikiAnswers|\? - Answers.com/,"");}
+if(document.getElementById("mobileHeaderLogo")&&asPageType.indexOf('mobile_')!=0)
+asPageType="mobile_"+asPageType;if(location.search.indexOf('print=true')>-1)
+asPageType="print_"+asPageType;var meta={'logged_in':((typeof jwgData.isLoggedIn!="undefined")?jwgData.isLoggedIn.toString():"false"),'question':subject,'page_type':asPageType,'category':adSnipCategories,'question_id':jwgData.questionId};if(typeof jwgData.adqVal!="undefined"&&jwgData.adqVal&&jwgData.adqVal!=-1)meta['adq']=jwgData.adqVal;if(typeof jwgData.user!="undefined"&&jwgData.user)meta['username']=jwgData.user;if(typeof jwgData.abFlavor!="undefined"&&jwgData.abFlavor)meta['flavor']=jwgData.abFlavor;if("undefined"!=typeof adSnipFeed){adSnipFeed("metadata",meta);}}
+function addAdsnipOnClick(feedname,el,ad_url,ad_domain){if(typeof Adsnip!="undefined"&&typeof Adsnip.on_click!="undefined"){if(location.href.indexOf("consolelog=true")>0||location.href.indexOf("consolelog=1")>0){console.log(el);console.log("feedname:"+feedname);console.log("ad_url:"+ad_url);console.log("ad_domain:"+ad_domain);console.log("ad_rank:"+gadUnitsCounter);}
+el.onclick=Adsnip.on_click(feedname,ad_url,ad_domain,gadUnitsCounter);}}
+function bindOnclickToAllLinks(feedname,adunitElement){var links=adunitElement.getElementsByTagName("a");var ad_url,m,ad_domain="";for(var i=0,max=links.length;i<max;i++){ad_url=links[i].getAttribute("href");if(m=ad_url.match(/adurl=(http\:\/\/)?([^\/&]*)/)){ad_domain=m[2];}
+addAdsnipOnClick(feedname,links[i],ad_url,ad_domain);}
+gadUnitsCounter++;}
+function HTMLtoDOM(feedname,htmlORelement){var container=htmlORelement;if(typeof htmlORelement!="object"&&typeof htmlORelement!="OBJECT"){container=document.createElement("div");container.innerHTML=htmlORelement;}
+var adunits=container.getElementsByTagName("tr");if(adunits.length==0)adunits=container.childNodes;for(var i=0,max=adunits.length;i<max;i++){if((adunits[i].nodeName.toLowerCase()=="div"||adunits[i].nodeName.toLowerCase()=="span"||adunits[i].nodeName.toLowerCase()=="tr")&&adunits[i].className!="sponsoredlinks"){bindOnclickToAllLinks(feedname,adunits[i]);}}
+return container;}
+if(typeof jwgData.sip!="undefined"){Adsnip.config.server_addr=jwgData.sip;}
+function handleAdsnipInit(){initAdsnip();if(location.href.indexOf("gadebug=true")>0||location.href.indexOf("gadebug=1")>0)
+shoAdsnipDebugInfo();if(typeof Adsnip!="undefined"){Adsnip.init();}}
+if(typeof isAqua!='undefined'&&isAqua){windowOnload(function(){handleAdsnipInit();});}else if(typeof jQuery!="undefined"){jQuery(window).load(function(){handleAdsnipInit();});}else{setTimeout('handleAdsnipInit()',0.1);}

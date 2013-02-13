@@ -184,7 +184,9 @@ if (decideExec)
     attachEventListener(window, "resize", checkBrowserWidth, false);
 
     // from master page
-    window.addEvent('domready', init);
+    //window.addEvent('domready', init);
+	jQuery(document).ready(init);
+	
     //window.addEvent('domready', loadPersonalNav);
 }
 

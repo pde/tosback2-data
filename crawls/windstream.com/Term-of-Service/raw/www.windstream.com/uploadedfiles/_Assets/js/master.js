@@ -700,13 +700,22 @@ var mobileSlideMenu = function () {
 };
 
 var mobileLogo = function () {
+    var $mainNav = $('.main-nav-bar');
     if (layoutWidth === 320) {
         var utilOffset = $('.utility-bar').offset(),
             utilOffsetL = utilOffset.left,
             newOffset = (utilOffsetL + 82);
-        return $('.main-nav-bar').offset({ left: newOffset });
+
+        if ( detectAndroidPhone() && detectAndroidPhone() ){
+            return setTimeout(function() {
+                $mainNav.offset({ left: newOffset });
+            }, 500);
+        } else {
+            return $mainNav.offset({ left: newOffset });
+        }
+
     } else {
-        return $('.main-nav-bar').css('left', 0);
+        return $mainNav.css('left', 0);
     }
 };
 
@@ -1362,7 +1371,7 @@ $(function () {
 
 function heroSlider() {
 
-    var 
+    var
     $slides = $('.mod-001 .slide'),
     $slideTracker = $('.mod-001 .slide-container'),
     totalSlides = $slides.length,
@@ -1521,12 +1530,17 @@ function heroSlider() {
         if ($slides.length <= 1)
             return;
         if (!$slideTracker.is(':animated')) {
-            var 
-            currentLeft = parseInt($slideTracker.offset().left, 10),
+            var currentLeft = parseInt($slideTracker.offset().left, 10),
             movePosition = (currentLeft - slideTotalWidth);
 
             if (layoutWidth === 320) {
-                movePosition = (currentLeft - 480);
+                var mobileOffset = $('.mod-001').find('.slide-wrapper').offset();
+                if ( mobileOffset.left > 0 ) {
+                    movePosition = (currentLeft - 480 - mobileOffset.left);
+                } else {
+                    movePosition = (currentLeft - 480);
+                }
+
             }
 
             if (slidePosition === totalSlides) {
@@ -1550,18 +1564,30 @@ function heroSlider() {
         if ($slides.length <= 1)
             return;
         if (!$slideTracker.is(':animated')) {
-            var 
+            var
             currentLeft = parseInt($slideTracker.offset().left, 10),
             movePosition = (currentLeft + slideTotalWidth);
 
             if (layoutWidth === 320) {
-                movePosition = (currentLeft + 480);
+                var mobileOffset = $('.mod-001').find('.slide-wrapper').offset();
+                if ( mobileOffset.left > 0 ) {
+                    movePosition = 0;
+                } else {
+                    movePosition = (currentLeft + 480);
+                }
             }
 
             if (slidePosition === 1) {
+
                 if (layoutWidth === 320) {
-                    resetToLastSlide = '-' + ((totalSlides * 480) - 480);
+                    var mobileOffset = $('.mod-001').find('.slide-wrapper').offset();
+                    if ( mobileOffset.left > 0 ){
+                        resetToLastSlide = '-' + ((totalSlides * 480) - 480 + mobileOffset.left);
+                    } else {
+                        resetToLastSlide = '-' + ((totalSlides * 480) - 480);
+                    }
                 }
+
                 $slides.fadeOut('fast');
                 pushSlides(resetToLastSlide);
                 bgMover('resetBack');
@@ -1627,18 +1653,20 @@ function heroSlider() {
         trackClick("Body:Carousel:right arrow");
     });
 
-    $('.snap-320 .mod-001 .slide').swipe({
-        swipeLeft: function () {
-            moveLeft();
-            killTimer = true;
-            clearHeroInterval();
-        },
-        swipeRight: function () {
-            moveRight();
-            killTimer = true;
-            clearHeroInterval();
-        }
-    });
+    if (totalSlides > 1) {
+        $('.snap-320 .mod-001 .slide').swipe({
+            swipeLeft: function () {
+                moveLeft();
+                killTimer = true;
+                clearHeroInterval();
+            },
+            swipeRight: function () {
+                moveRight();
+                killTimer = true;
+                clearHeroInterval();
+            }
+        });
+    }
 
     $('.slide-container').hover(
         function () {

@@ -8,40 +8,31 @@ jQuery(document).ready(function() {
 	//////////////////////////////////////////////////////////////////////////
 	// Mobile check
 	
-		var uaCheck = navigator.userAgent.toLowerCase();
-		var isAndroid = uaCheck.indexOf("android") > -1;
-		var isATab = uaCheck.indexOf("mobile") > -1;
-		
-		if (isAndroid == true && isATab == true) {
-			var isAndroidCheck = true;	
+		//  for all mobile devices, change the games link to the mobile games page
+		if(_gn.checkMobile()) {
+			jQuery("#gn_games").attr("href", "/mobile/index.html");		
 		}
-			
-//		if ((navigator.userAgent.match(/iPhone/i)) || isAndroidCheck ){
 
-/****** Disable mobile web  (rknopf:10/19/2012) NOTE: Let Jake know when reenabled for testing with SMAMP!
-
-
-		if ((navigator.userAgent.match(/iPhone/i)) ) {
-			
-				  var mMobilePref = readCookie("mobile_pref");
-				 if ((mMobilePref != null) && (mMobilePref != '')) {
+		/****** Disable mobile web  (rknopf:10/19/2012) NOTE: Let Jake know when reenabled for testing with SMAMP!
+		if ((navigator.userAgent.match(/iPhone/i)) || isAndroidCheck ){
+			if ((navigator.userAgent.match(/iPhone/i)) ) {
+				var mMobilePref = readCookie("mobile_pref");
+				if ((mMobilePref != null) && (mMobilePref != '')) {
 					if (mMobilePref = "full") { 
-					 } else if (mMobilePref = "mobile") {
+					
+					} else if (mMobilePref = "mobile") {
 						location.replace("http://www.cartoonnetwork.com/m");
-						
 					}
-						
 				} else {
-
-						location.replace("http://www.cartoonnetwork.com/m");
+					location.replace("http://www.cartoonnetwork.com/m");
 				}
-
+			}
 		}
- ******/
+	 	******/
 
 		
 	/////////////////////////////////////////////////////////////////////////
-	//  Auto Update the Copyright Year, hardcode year is currently stuck  at 2011.
+	//  Auto Update the Copyright Year, hardcoded year is currently stuck  at 2011.
 		var d				= new Date();
 		var legalcopy		= jQuery("#legalWrapper .legalSub").html() + " ";
 		if(legalcopy != "" && legalcopy.length > 10){
@@ -93,7 +84,7 @@ jQuery(document).ready(function() {
 	// rollover animation for the four main nav buttons
 	// only apply if the user is not on a mobile device
 
-		if(!isATab) {
+		if(!_gn.checkMobile()) {
 
 			/*  easing functions used for the rollovers  */
 			jQuery.extend( jQuery.easing, {
@@ -219,7 +210,7 @@ function GlobalNav() {
 
 		//////////  tooltip functionality  //////////
 
-			if(!(navigator.userAgent.toLowerCase().indexOf("mobile") > -1)){		// don't apply if it's a mobile device
+			if(!self.checkMobile()){		// don't apply if it's a mobile device
 				var tooltip = jQuery("#tooltip");
 				var containerWidth = jQuery("body").width();
 				var viewPortWidth = jQuery("#navSlider_viewPort").width();
@@ -279,6 +270,13 @@ function GlobalNav() {
 			self.loadedIcons.push(sendToLoaded);
 		}
 		self.updateSliderHTML();
+	}
+
+	// call this function when you need to know if user is on a mobile device
+	this.checkMobile = function() {
+		if( /android|iphone|ipad|ipod|phone|kindle|silk|touch/i.test(navigator.userAgent.toLowerCase()) ) {
+			return true;	
+		} else return false;
 	}
 
 }

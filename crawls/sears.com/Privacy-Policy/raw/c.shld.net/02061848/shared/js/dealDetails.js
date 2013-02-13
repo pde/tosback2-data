@@ -329,7 +329,7 @@ function trackOnLoadBMGMDealsForOmniture(){
 	var s = s_gi(omAcct);
 	s.linkTrackVars='prop15';
 	s.prop15="GlobalHeader::"+defaultDealType+":"+page+":WCS";
-	s.t();
+	s.tl(true,'o',s.prop15);
 
 }
 

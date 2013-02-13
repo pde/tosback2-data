@@ -45,11 +45,93 @@ if (typeof HauteLook === 'undefined') {
 
     })();
 
+
+    /**
+     * Google Analytics Ecommerce Client
+     *
+     * This is a wrapper around the Google Analytics pixels
+     *
+     */
+    HauteLook.Analytics.Client.GoogleAnalytics = (function() {
+
+        var
+
+        api = {};
+
+        api.trackTransactions = function (order, cartItems) {
+
+            addTrans(
+                order.orderId,
+                order.affiliations,
+                order.subtotal,
+                order.tax,
+                order.shippingAmount,
+                order.city,
+                order.state,
+                order.country
+            );
+
+            $.each(cartItems, function(index, item) {
+                addItem(
+                    order.orderId,
+                    item.productId,
+                    item.productName,
+                    item.brandName,
+                    item.price,
+                    item.quantity
+                );
+            });
+            
+            trackTrans();
+        }
+
+        //1. Create a transaction object
+        function addTrans(transactionId, affiliation, total, tax, shipping, city, state, country) {
+            if (typeof _haq !== "undefined") {
+                _haq.push(['_addTrans',
+                            transactionId,
+                            affiliation,
+                            total,
+                            tax,
+                            shipping,
+                            city,
+                            state,
+                            country            
+                ]);
+            }
+        };
+
+        //2. Add items to the transaction
+        function addItem(transactionId, sku, productName, category, unitPrice, quantity) {
+            if (typeof _haq !== "undefined") {                                    
+                _haq.push(['_addItem',
+                            transactionId,
+                            sku,
+                            productName,
+                            category,
+                            unitPrice,
+                            quantity
+                ]);
+            }
+        };
+        
+        //3. Submit the transaction to the Analytics servers.
+        function trackTrans() {
+            if (typeof _haq !== "undefined") {
+                _haq.push(['_trackTrans']);       
+            }     
+        };
+               
+        return api;
+         
+    })();
+
     /**
      * Application interface for analytics.
      *
      */
     HauteLook.Analytics.Controller = (function() {
+
         var
 
         api = {},
@@ -59,9 +141,15 @@ if (typeof HauteLook === 'undefined') {
             squelch = 1;
         };
 
-        api.loginEvent = function(memberId, sessionId) {
+        api.identifyAndAlias = function(memberId, sessionId) {
             HauteLook.Analytics.Client.KissMetrics.identifyUser(memberId);
             HauteLook.Analytics.Client.KissMetrics.aliasUser(memberId, sessionId);
+        };
+
+        api.loginEvent = function(triggeredBy) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Logged In', {
+            	"Triggered By": triggeredBy
+            });
         };
 
         api.catalogView = function(eventId, eventName) {
@@ -97,12 +185,15 @@ if (typeof HauteLook === 'undefined') {
             });
         };
 
-        api.purchase = function(orderId, total, subtotal) {
+        api.purchase = function(order, cartItems) {
+
             HauteLook.Analytics.Client.KissMetrics.recordEvent('Purchase', {
-                "Order ID": orderId,
-                "Order Total": total,
-                "Order Subtotal": subtotal
+                "Order ID": order.orderId,
+                "Order Total": order.total,
+                "Order Subtotal": order.subtotal
             });
+            
+            HauteLook.Analytics.Client.GoogleAnalytics.trackTransactions(order, cartItems);
         };
         
         api.inviteSent = function(emailAddress, source, result) {
@@ -165,7 +256,8 @@ if (typeof HauteLook === 'undefined') {
 
         member_id = loginResponse.member.member_id;
         session_id = Halo.getCookie('PHPSESSID');
-        HauteLook.Analytics.Controller.loginEvent(member_id, session_id);
+        HauteLook.Analytics.Controller.identifyAndAlias(member_id, session_id);
+        HauteLook.Analytics.Controller.loginEvent("Member Data Refresh");
     });
 
     Sandbox.getMemberAsync(function(member) {

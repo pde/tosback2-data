@@ -12,7 +12,7 @@ var ajaxKraftMaster='';
 
 var elcrecipe='<div class="image"><img src="/assets/recipe_images/Easy-Lemon-Chicken-Picatta-59239.jpg" alt="Easy Lemon-Chicken Piccata" width="175" height="103"></div><div class="copy"><div class="heading">Easy Lemon-Chicken Piccata</div>  Enjoy this delicious lemon chicken recipe which is sure to become a family favorite!  </div><div class="moreLink"><a href="/recipes/easy-lemon-chicken-piccata-122866.aspx"><img src="/assets/images/button/btn_more.png"  alt="more"></a></div></div>';
 var ofcballs='<div class="frame"><div class="image"><img src="/assets/recipe_images/Oreo-Football-Cookie-Balls-52162.jpg" alt="football party center" width="175" height="103"></div><div class="copy"><div class="heading">football party center</div>  Kick off your football party with our winning recipes. </div><div class="moreLink"><a href="/recipes/holidays-and-entertaining/entertaining/MVPFootballPartyPlanner.aspx"><img src="/assets/images/button/btn_more.png"  alt="more"></a></div></div>';
-var kraftcheesefb='<div class="image"><img src="/kraftcheese/PublishingImages//brand/thumbnails/CA_FreshTake_ChickenTomatoeSpinach_568-thumb.jpg" alt="Southwest Three Cheese Chicken" width="175" height="103"></div><div class="copy">Southwest Three Cheese Chicken   </div>';
+var kraftcheesefb='<div class="image"><img src="/kraftcheese/PublishingImages//brand/thumbnails/CA_FreshTake_ChickenTomatoeSpinach_568-thumb.jpg" alt="Southwest Three Cheese Chicken" width="175" height="103"></div><div class="copy">Southwest Three Cheese Chicken   </div><div class="moreLink"><a href="/kraftcheese/recipes/southwest-three-cheese-chicken.aspx"><img src="/assets/images/button/btn_more.png"  alt="more"></a></div>';
 var snackwellfb='<div class="image"><img src="/SiteCollectionImages/ImageRepository/KR_Redesign_2011/Products_MegaNav_Snackwells.jpg" alt="Be Bad. Snack Well." width="175" height="103"></div><div class="copy"><div class="heading">Be Bad. Snack Well.</div>  SnackWells has new pretzels and popcorn! Deliciously indulgent, perfectly portioned.   </div><div class="moreLink"><a href="http://www.nabiscoworld.com/snackwells/" target="_blank"><img src="/assets/images/button/btn_more.png"  alt="more"></a></div>';
 var barryfb='<div class="userPhoto"><img src="/SiteCollectionImages/ImageRepository/0/Community_Nav_Featured_3.jpg" alt="" width="45" height="45" border="0"></div> <div class="userStats"><div class="userName"><a href="http://www.kraftrecipes.com/community/persona.aspx?UID=0a5cfe86beb9d87b6544738640eee622&plckUserId=0a5cfe86beb9d87b6544738640eee622christinebarry">christinebarry</a></div><div class="userQuote">christinebarry loves to make Mozzarella Pasta Bake! </div></div><a href="http://www.kraftrecipes.com/community/persona.aspx?UID=0a5cfe86beb9d87b6544738640eee622&plckUserId=0a5cfe86beb9d87b6544738640eee622christinebarry"><img src="/assets/images/button/btn_more_link.png"  alt="more"></a> <a href="/registration/contextualsignuplogin.aspx"><img src="/assets/images/button/btn_join_now.png"  alt="join now"></a>';
 
@@ -30,6 +30,7 @@ function SetEmpty(ctrl)
 {
 	if (setemptyvalue == 0)
 	{
+                ctrl.style.color = "black"
 		ctrl.value='';
 	}
 	else if(setemptyvalue == 1)
@@ -84,14 +85,18 @@ function init() {
 }
 
 function handleModalboxClose(me) {
-	if (me){
+	if (me) {
 		if (me.href!="#" && me.href!=""){
 			window.location.href=me.href;
 		}
 	} else {
-		Modalbox.close();
+//		Modalbox.close();
+		if (jQuery("#mydiag").dialog( "isOpen" )===true) {
+			//true
+			jQuery("#mydiag").dialog("close");
+		}
+		
 	}
-
 	return false;
 }
 
@@ -101,14 +106,14 @@ function handleModalboxCloseNoReload(me) {
 			window.location.href=me.href;
 		}
 	} else {
-		Modalbox.closeNoReload();
+//		Modalbox.closeNoReload();
 	}
 
 	return false;
 }
 
 function resizeModalbox(h,w,cap) {
-	Modalbox.nextPage(h,w,cap);
+//	Modalbox.nextPage(h,w,cap);
 	return false;
 }
 
@@ -584,6 +589,20 @@ function resetTimer() {
     }
 }
 
+function hideCallOutToolTip(divid)
+{
+    divObj = document.getElementById(divid);
+    if (divObj != null)
+		divObj.style.display = 'none';
+}
+
+function showCallOutToolTip(divid)
+{
+    divObj = document.getElementById(divid);
+    if (divObj != null) 
+		divObj.style.display = 'block';
+}
+
 function showMegaNav(div, bDelay) {
 	if (bDelay) {
 		megaNavTimerHandle2 = setTimeout("reallyShowMegaNav('" + div + "', '" + bDelay + "');", 500);
@@ -726,22 +745,28 @@ function getMemberRecipePhotos()
 	var bCallServer = false;
 	var divArray = document.getElementsByTagName("img");
 	var intRecipeID;
-	var serpTool = new BallyhooClient();
+	try {
+		var serpTool = new BallyhooClient();
 
-	for (i = 0; i < divArray.length; i++) {
-		//alert(divArray.className);
-		if (divArray[i].className == 'MemberRecipeImage') {
-			intRecipeID = divArray[i].id.substring('RecipeID_'.length);
+		for (i = 0; i < divArray.length; i++) {
+			//alert(divArray.className);
+			if (divArray[i].className == 'MemberRecipeImage') {
+				intRecipeID = divArray[i].id.substring('RecipeID_'.length);
 
-			//pluckPhotoGrabber.enqueueRecipe(intRecipeID);
-			serpTool.addRecipe(intRecipeID);
+				//pluckPhotoGrabber.enqueueRecipe(intRecipeID);
+				serpTool.addRecipe(intRecipeID);
 
-			bCallServer = true;
+				bCallServer = true;
 
+			}
+		
 		}
-	
 	}
-
+	catch (err) 
+	{
+		//alert('Err Msg: ' + err.message + '  Desc: ' + err.description + ' Name:  ' + err.name);
+	}
+	
 	//pluckPhotoGrabber.go(setMemberRecipePhotos);
 	if (bCallServer == true) {
 		serpTool.callServer(setMemberRecipePhotos);
@@ -1072,6 +1097,157 @@ function removeHVTMouseOver(objDiv)
 		lnkLinks[i].style.textDecoration = '';
 	}
 }
+
+function setModalLinkGlobal(linkID) {
+
+	try {
+
+
+		var $link = jQuery('#' + linkID);
+		$link.unbind('click');
+		$link.click(function() {
+			try
+			{
+				
+				$dialog = jQuery('<div id="mydiag"><iframe id="ifrm" scrolling="no" style="width:100%; height: 100%; border:none" /></div>');
+				$dialog.dialog({
+							autoOpen: false,
+							modal: true,
+							title: $link.attr('title'),
+							draggable: false,
+							resizable: false,
+							dialogClass: 'popUpContainer curvyIgnore',
+							autoResize: false,
+							height: $link.attr('modalheight'),
+							width: $link.attr('modalwidth'),
+							open: function(){
+											jQuery('.ui-widget-overlay').bind('click',function(){
+															jQuery($dialog).dialog('close');            
+											}) 
+							}
+				});
+				var URL = $link.attr('href');
+
+				$dialog.find("#ifrm").attr('src',URL);
+
+				$dialog.dialog('open');
+				
+				jQuery('.ui-dialog').css('top','60px');
+				
+				window.scrollTo(0,0);
+				return false;
+			}
+			catch(err)
+			{
+				alert(err.message);
+			}
+		});
+	} catch(err) {
+		alert(err.message);
+	}
+
+}
+
+
+function setModalLink(linkID) {
+
+	try {
+		var $link = jQuery('#' + linkID);
+
+		var $dialog = jQuery('<div id="mydiag"><iframe id="ifrm" scrolling="no" style="width:100%; height: 100%; border:none" /></div>')
+					.dialog({
+							autoOpen: false,
+							modal: true,
+							title: $link.attr('title'),
+							draggable: false,
+							resizable: false,
+							dialogClass: 'popUpContainer curvyIgnore',
+							autoResize: false,
+							height: $link.attr('modalheight'),
+							width: $link.attr('modalwidth'),
+							open: function(){
+											jQuery('.ui-widget-overlay').bind('click',function(){
+															jQuery($dialog).dialog('close');            
+											}) 
+							}
+					});	
+		
+
+		$link.unbind('click');
+
+		$link.click(function() {
+						var URL = $link.attr('href');
+						//$dialog.attr('src',URL);
+						$dialog.find("#ifrm").attr('src',URL);
+						$dialog.dialog('open');
+						return false;
+		});
+	} catch(err) {
+		alert(err.message);
+	}
+
+}
+
+
+
+
+function emailsignupLink(linkID, modalwidth, modalheight)
+
+{
+          var username = readSessionCookie('username');
+          var isLoggedIn = readSessionCookie('loggedin');
+  
+
+               if (isLoggedIn.toLowerCase() == 'true') {
+                 if (username != '') {
+ 
+                     window.location = "/community/persona.aspx";
+        
+                   }
+                }
+
+                  else
+                 {
+		
+			try
+			{
+				
+				$dialog = jQuery('<div id="mydiag"><iframe id="ifrm" scrolling="no" style="width:100%; height: 100%; border:none" /></div>');
+				$dialog.dialog({
+							autoOpen: false,
+							modal: true,
+							title: 'hungry for mealtime inspiration? <br/> get kraft foods recipes by email.',
+							draggable: false,
+							resizable: false,
+							dialogClass: 'popUpContainer curvyIgnore',
+							autoResize: false,
+							height: modalheight,
+							width:  modalwidth,
+							open: function(){
+											jQuery('.ui-widget-overlay').bind('click',function(){
+															jQuery($dialog).dialog('close');            
+											}) 
+							}
+				});
+				var URL = linkID;
+				$dialog.find("#ifrm").attr('src',URL);
+				$dialog.dialog('open');
+				jQuery('.ui-dialog').css('top','60px');
+				window.scrollTo(0,0);
+				return false;
+			}
+			catch(err)
+			{
+				alert(err.message);
+			}
+                  
+                   }
+
+}
+
+
+
+
 function qParam(name){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";

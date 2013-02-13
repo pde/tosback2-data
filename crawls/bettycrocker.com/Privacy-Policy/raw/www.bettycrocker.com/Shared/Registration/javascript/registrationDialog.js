@@ -1,15 +1,13 @@
 ﻿(function ($) {
     $('[data-reg-popup]').live('click', function (e) {
-        $(this).click(function (e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            var urlParams = $(this).attr('data-url-params');
-            var jsonParams = {};
-            if (urlParams) {
-                jsonParams = $.parseJSON(urlParams);
-            }
-            reg.userRegistration.openRegistartionDialog(jsonParams);
-        });
+        var urlParams = $(this).attr('data-url-params');
+        var jsonParams = {};
+        if (urlParams) {
+            jsonParams = $.parseJSON(urlParams);
+        }
+        reg.userRegistration.openRegistrationDialog(jsonParams);
     });
 })(jQuery);
 
@@ -49,7 +47,7 @@ var reg = reg || {};
             };
 
             //Style, and Open registration dialog window
-            this.openRegistartionDialog = function (options) {
+            this.openRegistrationDialog = function (options) {
 
                 var modalUrl = self.registrationDialogDiv.attr('data-modal-url');
 
@@ -65,6 +63,10 @@ var reg = reg || {};
                 }
                 if ("returnUrl" in options) {
                     modalUrl = modalUrl + "&returnUrl=" + options.returnUrl;
+                }
+                if("RegAction" in options)
+                {
+                    modalUrl = modalUrl + "&RegAction=" + options.RegAction;
                 }
 
                 self.registrationDialogDiv.find('iframe').attr('src', modalUrl);
