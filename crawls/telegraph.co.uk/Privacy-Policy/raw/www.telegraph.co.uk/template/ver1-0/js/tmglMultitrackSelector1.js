@@ -294,10 +294,16 @@ $(".featuredVideoContainer a").click(function() {
 	menuSec = "topnewsvideo-"+ $('meta[name="DCSext.Channel"]').attr("content") ;
 	getNavPos($(this).attr("href"),menuSec);
 });
-$(".fiveTwelfths .summaryBig h3 a").click(function() { 
-	var menuSec = "headline-"+$('meta[name="DCSext.Channel"]').attr("content"); 
-	        getNavPos($(this).attr("href"),menuSec); 
+$(".summary h3 a").eq(0).click(function() {
+    var menuSec = "headline-"+$('meta[name="DCSext.Channel"]').attr("content"); 
+    getNavPos($(this).attr("href"),menuSec); 
 });
+
+$("#tmg-related-links a").click(function() {
+	var menuSec = "relatedlinks-"+$('meta[name="DCSext.Channel"]').attr("content"); 
+	getNavPos($(this).attr("href"),menuSec); 
+	});
+
 $("#div-TODAY a").click(function() {
 	getNavPos($(this).attr("href"), 'mostpop-today');
 });

@@ -1,10 +1,23 @@
-/* SiteCatalyst code version: H.24.3  *9/21/2012*
+/* SiteCatalyst code version: H.24.3  *10/08/2012*
 Copyright 1997-2012 Adobe, Inc. More info available at
 http://www.omniture.com */
 
 /* Specify the Report Suite ID(s) to track here */
 var s_account="coachprod"
 
+if(document.URL.indexOf('dev-na')>-1 || document.URL.indexOf('dev-na.coach.com')>-1 || document.URL.indexOf('azodlecomweb01')>-1) 
+	s_account="coachnewsitedev"
+else if(document.URL.indexOf('qa-na')>-1 || document.URL.indexOf('azoqlecomweb01')>-1 || document.URL.indexOf('qa-na.coach.com')>-1) 
+	s_account="coachusqa"
+else if(document.URL.indexOf('stage-na.coach.com')>-1||document.URL.indexOf('preprod.coach.com')>-1||document.URL.indexOf('stage-na')>-1||document.URL.indexOf('azoglecomweb01')>-1||document.URL.indexOf('stage-na.coach.com')>-1||document.URL.indexOf('www-new.coach.com')>-1||document.URL.indexOf('tstage.coach.com')>-1) 
+	s_account="coachcoachstage"
+else if(document.URL.indexOf('spq08http04a')>-1) 
+	s_account="coachnewsiteqa2"   
+else if(document.URL.indexOf('sps08http03a')>-1||document.URL.indexOf('stage2.coach.com')>-1) 
+	s_account="coachcoachstage2"
+else if(document.URL.indexOf('coach.com')>-1||document.URL.indexOf('t.coach.com')>-1)
+	s_account="coachprod"
+	
 var s=s_gi(s_account)
 
 /************************** CONFIG SECTION **************************/
@@ -15,7 +28,7 @@ s.trackExternalLinks=true;
 s.trackInlineStats=true;
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls";
 s.linkInternalFilters="javascript:,www.coach.com,scene7.com,dev-na,qa-na,stage-na.coach.com,preprod.coach.com,spq08http04a,sps08http03a,stage2.coach.com,stuzo.com,needle.com,stage.coach.com,qa.coach.com,dev.coach.com,red.coach.com,"
-	+"yellow.coach.com,black.coach.com,green.coach.com,blue.coach.com,neutral.coach.com,brown.coach.com,colortag.coach.com"
+	+"yellow.coach.com,black.coach.com,green.coach.com,blue.coach.com,neutral.coach.com,brown.coach.com,colortag.coach.com,tstage.coach.com,t.coach.com,.paypal.com"
 s.linkLeaveQueryString=false;
 s.linkTrackVars="None";
 s.linkTrackEvents="None";
@@ -42,6 +55,15 @@ s.usePlugins=true
 
 function s_doPlugins(s) 
 {
+	if (document.URL.indexOf('t.coach.com')>-1||document.URL.indexOf('tstage.coach.com')>-1){
+		s.eVar44='tablet site';
+		s.prop44='D=v44';
+	}
+	else {
+		s.eVar44='pc site';
+		s.prop44='D=v44';
+	}
+	
 	//Determine bounce rate for all visits
 	s.visitstart=s.getVisitStart('s_vs');
 	if(s.visitstart&&s.visitstart==1)
@@ -55,8 +77,13 @@ function s_doPlugins(s)
 		s.campaign=s.getQueryParam('CID');
 	if(!s.campaign)
 		s.campaign=s.getQueryParam('om_respcamp');
+	if(document.URL.indexOf('fb_action_types=og.likes')>-1&&document.URL.indexOf('cid=')==-1)  	// facebook like tracking not using cid parameter
+	{
+		s.campaign='SMCO0002';
+		s.pageURL=document.URL + '&cid=SMCO0002';
+	}
 	s.campaign=s.getValOnce(s.campaign,'s_campaign',30,'m');
-	
+		
 	// Banner Code Extraction
 	if(!s.eVar31)
 		s.eVar31=s.getQueryParam('bannerCode');
@@ -84,23 +111,23 @@ function s_doPlugins(s)
 	}
 	if(s.prop45)
 		s.eVar45=s.prop45;
-// Do not refire search events if the same search term (with/without refinements) is passed in more than once in a row
-var t_search=s.getValOnce(s.eVar6,'s_stv',0);
-if(t_search=='')
-{
-var a=s.split(s.events,',');
-var e='';
-for(var i = 0; i < a.length ; i++ )
-{
-if(a[i]=='event8'||a[i]=='event9')
-continue;
-else
-e += a[i]?a[i]+',':a[i];
-}
-s.events=e.substring(0,e.length-1);
-}		
+	// Do not refire search events if the same search term (with/without refinements) is passed in more than once in a row
+	var t_search=s.getValOnce(s.eVar6,'s_stv',0);
+	if(t_search=='')
+	{	
+		var a=s.split(s.events,',');
+		var e='';
+		for(var i = 0; i < a.length ; i++ )
+		{
+			if(a[i]=='event8'||a[i]=='event9')
+				continue;
+			else
+				e += a[i]?a[i]+',':a[i];
+		}
+		s.events=e.substring(0,e.length-1);
+	}
 	// Channel Manager Plugin
-	s.channelManager('cid,om_respcamp','','cmgvo','','s_dl');
+	s.channelManager('cid,om_respcamp','','cmgvo','','s_dl','14');
 	if(s._channel)
 	{
 		//trim down email domains
@@ -136,7 +163,6 @@ s.events=e.substring(0,e.length-1);
 		/* Find out the last five channels that brought a visitor to the site within the last 90 days */
 		s.eVar56=s.crossVisitParticipation(s.eVar51,'s_ccvp','90','5','>');
 	}
-	
 	/* Automate Product Finding Method eVar if not set */
 	/* Automate Finding Method eVar */
 	var internalFlag = false;
@@ -163,7 +189,7 @@ s.events=e.substring(0,e.length-1);
 		s.eVar45='D=v6';
 		s.eVar47='D=v17';
 	}
-	else if(s.campaign&&s.eVar17)   //campaign should not be considered finding method if landing on a content category page
+	else if(s.campaign&&s.eVar17&&s.eVar17!='non-browse')   //campaign should not be considered finding method if landing on a content category page
 	{
 		s.eVar18='browse';
 		s.eVar6='non-search';
@@ -183,7 +209,7 @@ s.events=e.substring(0,e.length-1);
 		s.eVar45='D=v6';
 		s.eVar47='D=v17';
 	}		
-	else if(document.referrer&&!internalFlag&&s.eVar17)   //natural referrer should not be considered finding method if landing on a category page
+	else if(document.referrer&&!internalFlag&&s.eVar17&&s.eVar17!='non-browse')   //natural referrer should not be considered finding method if landing on a category page
 	{	
 		s.eVar18='browse';
 		s.eVar6='non-search';
@@ -253,16 +279,16 @@ s.events=e.substring(0,e.length-1);
 			s.eVar47=s.eVar17 + ' - no refinement';
 	}
 	else if(s.eVar18)     
-	 {
-		 s.linkTrackVars=s.apl(s.linkTrackVars,'eVar6,eVar16,eVar17,eVar18,eVar19,eVar20,eVar45,eVar47',',',2);
-		 s.eVar6='non-search';
-		 s.eVar16='non-internal campaign';
-		 s.eVar17='non-browse';
-		 s.eVar19='non-cross sell';
-		 s.eVar20='D=v19';
-		 s.eVar45='D=v6';
-		 s.eVar47='D=v17';
-	 }
+	{
+		s.linkTrackVars=s.apl(s.linkTrackVars,'eVar6,eVar16,eVar17,eVar18,eVar19,eVar20,eVar45,eVar47',',',2);
+		s.eVar6='non-search';
+		s.eVar16='non-internal campaign';
+		s.eVar17='non-browse';
+		s.eVar19='non-cross sell';
+		s.eVar20='D=v19';
+		s.eVar45='D=v6';
+		s.eVar47='D=v17';
+	}
 	if(s.events&&(s.events.indexOf('purchase')>-1||s.events.indexOf('event26')>-1))
 	{	
 		s.eVar18='unknown at time of purchase';
@@ -573,42 +599,44 @@ s.getTimeToComplete=new Function("v","cn","e",""
 +"onds';}v=v*r/u;return (Math.round(v)/r)+' '+un;}}return '';");
 
 /*
- * channelManager v2.7 - Tracking External Traffic
+ * channelManager v2.8 - Tracking External Traffic
  */
-s.channelManager=new Function("a","b","c","d","e","f",""
-+"var s=this,g=new Date,h=0,i,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D"
-+",E,F,G,H,I,J,K,L,M,N,O,P,Q,R;g.setTime(g.getTime()+1800000);if(e){h"
-+"=1;if(s.c_r(e))h=0;if(!s.c_w(e,1,g))s.c_w(e,1,0);if(!s.c_r(e))h=0;}"
-+"i=s.referrer?s.referrer:document.referrer;i=i.toLowerCase();if(!i)j"
-+"=1;else {k=i.indexOf('?')>-1?i.indexOf('?'):i.length;l=i.substring("
-+"0,k);m=s.split(i,'/');n=m[2].toLowerCase();o=s.linkInternalFilters."
-+"toLowerCase();o=s.split(o,',');for(p=0;p<o.length;p++){q=n.indexOf("
-+"o[p])==-1?'':i;if(q)break;}}if(!q&&!j){r=i;t=u=n;v='Other Natural R"
-+"eferrers';w=s.seList+'>'+s._extraSearchEngines;if(d==1){l=s.repl(l,"
-+"'oogle','%');l=s.repl(l,'ahoo','^');i=s.repl(i,'as_q','*');}x=s.spl"
-+"it(w,'>');for(y=0;y<x.length;y++){z=x[y];z=s.split(z,'|');A=s.split"
-+"(z[0],',');for(B=0;B<A.length;B++){C=l.indexOf(A[B]);if(C>-1){if(z["
-+"2])D=u=z[2];else D=n;if(d==1){D=s.repl(D,'#',' - ');i=s.repl(i,'*',"
-+"'as_q');D=s.repl(D,'^','ahoo');D=s.repl(D,'%','oogle');}E=s.split(z"
-+"[1],',');for(F=0;F<E.length;F++){if(i.indexOf(E[F]+'=')>-1||i.index"
-+"Of('https://www.google.')==0)G=1;H=s.getQueryParam(E[F],'',i).toLow"
-+"erCase();if(G||H)break;}}if(G||H)break;}if(G||H)break;}}if(!q||f!='"
-+"1'){q=s.getQueryParam(a,b);if(q){u=q;if(D)v='Paid Search';else v='U"
-+"nknown Paid Channel';}if(!q&&D){u=D;v='Natural Search';}}if(j==1&&!"
-+"q&&h==1)r=t=u=v='Typed/Bookmarked';I=s._channelDomain;if(I&&n){J=s."
-+"split(I,'>');for(K=0;K<J.length;K++){L=s.split(J[K],'|');M=s.split("
-+"L[1],',');N=M.length;for(O=0;O<N;O++){P=M[O].toLowerCase();Q=n.inde"
-+"xOf(P);if(Q>-1){v=L[0];break;}}if(Q>-1)break;}}I=s._channelParamete"
-+"r;if(I){J=s.split(I,'>');for(K=0;K<J.length;K++){L=s.split(J[K],'|'"
-+");M=s.split(L[1],',');N=M.length;for(O=0;O<N;O++){Q=s.getQueryParam"
-+"(M[O]);if(Q){v=L[0];break;}}if(Q)break;}}I=s._channelPattern;if(I){"
-+"J=s.split(I,'>');for(K=0;K<J.length;K++){L=s.split(J[K],'|');M=s.sp"
-+"lit(L[1],',');N=M.length;for(O=0;O<N;O++){P=M[O].toLowerCase();Q=q."
-+"toLowerCase();R=Q.indexOf(P);if(R==0){v=L[0];break;}}if(R==0)break;"
-+"}}S=v?q+t+v+H:'';c=c?c:'c_m';if(c!='0')S=s.getValOnce(S,c,0);if(S){"
-+"s._campaignID=q?q:'n/a';s._referrer=r?r:'n/a';s._referringDomain=t?"
-+"t:'n/a';s._campaign=u?u:'n/a';s._channel=v?v:'n/a';s._partner=D?D:'"
-+"n/a';s._keywords=G?H?H:'Keyword Unavailable':'n/a';}"); 
+s.channelManager=new Function("a","b","c","d","e","f","g",""
++"var s=this,h=new Date,i=0,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E"
++",F,G,H,I,J,K,L,M,N,O,P,Q,R,S;h.setTime(h.getTime()+1800000);if(e){i"
++"=1;if(s.c_r(e))i=0;if(!s.c_w(e,1,h))s.c_w(e,1,0);if(!s.c_r(e))i=0;i"
++"f(f&&s.c_r('s_tbm'+f))i=0;}j=s.referrer?s.referrer:document.referre"
++"r;j=j.toLowerCase();if(!j)k=1;else {l=j.indexOf('?')>-1?j.indexOf('"
++"?'):j.length;m=j.substring(0,l);n=s.split(j,'/');o=n[2].toLowerCase"
++"();p=s.linkInternalFilters.toLowerCase();p=s.split(p,',');for(q=0;q"
++"<p.length;q++){r=o.indexOf(p[q])==-1?'':j;if(r)break;}}if(!r&&!k){t"
++"=j;u=v=o;w='Other Natural Referrers';x=s.seList+'>'+s._extraSearchE"
++"ngines;if(d==1){m=s.repl(m,'oogle','%');m=s.repl(m,'ahoo','^');j=s."
++"repl(j,'as_q','*');}y=s.split(x,'>');for(z=0;z<y.length;z++){A=y[z]"
++";A=s.split(A,'|');B=s.split(A[0],',');for(C=0;C<B.length;C++){D=m.i"
++"ndexOf(B[C]);if(D>-1){if(A[2])E=v=A[2];else E=o;if(d==1){E=s.repl(E"
++",'#',' - ');j=s.repl(j,'*','as_q');E=s.repl(E,'^','ahoo');E=s.repl("
++"E,'%','oogle');}F=s.split(A[1],',');for(G=0;G<F.length;G++){if(j.in"
++"dexOf(F[G]+'=')>-1||j.indexOf('https://www.google.')==0)H=1;I=s.get"
++"QueryParam(F[G],'',j).toLowerCase();if(H||I)break;}}if(H||I)break;}"
++"if(H||I)break;}}if(!r||g!='1'){r=s.getQueryParam(a,b);if(r){v=r;if("
++"E)w='Paid Search';else w='Unknown Paid Channel';}if(!r&&E){v=E;w='N"
++"atural Search';}}if(k==1&&!r&&i==1)t=u=v=w='Typed/Bookmarked';J=s._"
++"channelDomain;if(J&&o){K=s.split(J,'>');for(L=0;L<K.length;L++){M=s"
++".split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++){Q="
++"N[P].toLowerCase();R=o.indexOf(Q);if(R>-1){w=M[0];break;}}if(R>-1)b"
++"reak;}}J=s._channelParameter;if(J){K=s.split(J,'>');for(L=0;L<K.len"
++"gth;L++){M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0"
++";P<O;P++){R=s.getQueryParam(N[P]);if(R){w=M[0];break;}}if(R)break;}"
++"}J=s._channelPattern;if(J){K=s.split(J,'>');for(L=0;L<K.length;L++)"
++"{M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++"
++"){Q=N[P].toLowerCase();R=r.toLowerCase();S=R.indexOf(Q);if(S==0){w="
++"M[0];break;}}if(S==0)break;}}S=w?r+u+w+I:'';c=c?c:'c_m';if(c!='0')S"
++"=s.getValOnce(S,c,0);if(S){s._campaignID=r?r:'n/a';s._referrer=t?t:"
++"'n/a';s._referringDomain=u?u:'n/a';s._campaign=v?v:'n/a';s._channel"
++"=w?w:'n/a';s._partner=E?E:'n/a';s._keywords=H?I?I:'Keyword Unavaila"
++"ble':'n/a';if(f&&w!='Typed/Bookmarked'){h.setTime(h.getTime()+f*864"
++"00000);s.c_w('s_tbm'+f,1,h);}}");
 /* Top 130 - Grouped */
 s.seList="google.,googlesyndication.com|q,as_q|Google>yahoo.com,yahoo"
 +".co.jp|p,va|Yahoo!>bing.com|q|Bing>altavista.co,altavista.de|q,r|Al"

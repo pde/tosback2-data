@@ -1,0 +1,1 @@
+function showAnswer(a){$("#"+a).toggle()};

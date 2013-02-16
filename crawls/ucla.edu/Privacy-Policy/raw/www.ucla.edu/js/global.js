@@ -1,19 +1,89 @@
+/* :::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	GLOBAL SCRIPTS
+	
+:::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+
+// DROPDOWN MENU
+function dropDownMenu() {
+	
+	var dropdownLinks = $(".dropdown-link");
+	var dropdownWrapper = $(this).next(".dropdown-wrapper");
+	var dropdownSpacer = $("#dropdown-spacer");
+	
+	//if all dropdown menus are closed
+	if ( !($(dropdownLinks).hasClass("selected")) ) {
+		$(this).addClass("selected");
+		$(dropdownSpacer).animate({
+			height: "115"
+		}, "fast");
+		$(dropdownWrapper).slideDown("fast");
+	} 
+	//if $(this) dropdown menu is open
+	else if ( $(this).hasClass("selected") ) { 
+		$(this).removeClass("selected");
+		$(dropdownSpacer).animate({
+			height: "0"
+		}, "fast");
+		$(dropdownWrapper).slideUp("fast");
+	} 
+	//if another dropdown menu is open
+	else if ( $(dropdownLinks).not(this).hasClass("selected") ) { 
+		$(dropdownLinks).removeClass("selected");
+		$(this).addClass("selected");
+		$(".dropdown-wrapper").hide();
+		$(dropdownWrapper).show();
+	}
+	
+	//don't follow the link
+	return false;
+}
+
+
+
+
+/* :::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	DOM IS LOADED
+	
+:::::::::::::::::::::::::::::::::::::::::::::::::::*/
 $(document).ready(function() {
+	
+	
+	// MAIN NAV
+	$(".dropdown-link").bind("click",dropDownMenu); //bind dropdown menu function
+	
+	$(".close").click(function(){ //close menu
+		$('.selected').focus();
+		$(".dropdown-link").removeClass('selected');		
+		$(this).parents(".dropdown-wrapper").slideUp("fast");
+		$("#dropdown-spacer").animate({
+    		height: ""
+ 		}, "fast");
+ 		
+ 		return false;
+	});
+
+	
+	// HOME IMAGE SLIDESHOW
+	$('#main-slideshow').flexslider({animationDuration: 400, directionNav: false, controlsContainer: "#main-slideshow"});
 		
 	
-	//Brand moment
-	$('#main-slideshow').flexslider({animationDuration: 400, directionNav: false, controlsContainer: "#main-slideshow"});
-	
-	
-	//Home carousel
+	// FEATURED STORIES CAROUSEL
 	$('#featured-stories').tinycarousel({duration: 400});
 	
+	if ($('#logo a').css('display') == 'block') {
+		$('#featured-stories').clone().removeAttr('featured-stories').attr('id','featured-stories-mobile').insertAfter('#featured-stories');
+		$('#featured-stories-mobile .overview').width('105%');
+	}
 	
-	//Scale videos
+
+	// RESPONSIVE VIDEOS
 	$('#main-content').fitVids();
 	
 	
-	//Fancybox galleries
+	//::::: FANCYBOX GALLERIES
 	$('.gallery li a').fancybox({
 		scrolling : 'no',
 		helpers: {
@@ -27,109 +97,26 @@ $(document).ready(function() {
 	});
 	
 	
-	//Main nav
-	var activeTab;
-	$("#main-nav").idTabs();
-	$('#main-nav li a').removeClass('active');
-	
-	$("#main-nav li a").not(".link").click(function(e){
-		e.preventDefault();
-		var clicked = $(this);
-		if (activeTab && activeTab[0] == clicked[0]) {
-			activeTab = undefined;
-			$('#expand-menu').slideUp(300, function() {clicked.removeClass("active");});	
-		} else {
-			activeTab = clicked;			
-			$('#expand-menu').slideDown(300);	
-		}	
-	});
-	$('#close-menu').click(function(e){
-		e.preventDefault();
-		$('#expand-menu').slideUp(300);
-		$('#main-nav li a').removeClass('active');
-	});
-
-	
-	//Mobile nav drop-down
-	var $window = $(window);
-	var $open = 0;
-	
-	$('#nav-control').click(function(){
-		if ($open == 0){
-			$('#main-nav').slideDown(300);
-			$open = 1;
-		}
-		else {
-			$('#main-nav').slideUp(300);
-			$open = 0;
-		}	
-	});
-	
-	
-	//Responsive display of Main nav
-	/*
-	$(window).resize(function() {
-		if (($window.width() <= 767) && $open == 1) {
-			$('#main-nav').css('display', 'block');
-			//$('#main-nav li a').removeClass('active');
-			//$('#expand-menu').css('display', 'none');
-		}
-		else if (($window.width() >= 767) && $open == 0) {
-			$('#main-nav').css('display', 'block');
-		}
-		else if (($window.width() <= 767) && $open == 0) {
-			$('#main-nav').css('display', 'none');
-		}
-	});
-	*/
-	
-	
-	//Departments & Programs nav
+	// DEPARTMENTS & PROGRAMS NAVIGATION
 	$('.dept-list-group').each(function(key, value) {
 		var letter = $(this).text().toLowerCase();
 		$("#dept-list-" + letter).removeClass("dept-list-inactive").addClass("dept-list-active");
 	});
 	
 
-	//Audience nav drop-down
-	$('#audience-nav #students-btn').click(function(e){
-		e.preventDefault();
-		//$(this).toggleClass('active');
-		$('#audience-nav li ul').slideToggle(300);
-	});
-	
-	//stylesheet switcher
-	$("#mobile-full-site").click(function() { 
-		$("#main-stylesheet").attr("href",$(this).attr('rel'));
-		$.cookie("css",$(this).attr('rel'), {expires: 365, path: '/'});
-	});
+	// TABLE STRIPING
+	$(".stripe").find("tbody tr:odd").addClass("alt");
 	
 	
-	//Table row stripes
-	$(".stripe tbody tr:odd").addClass("alt");
-	
-	
-	//Searchbox
-	var searchbox = $("#searchbox-input");
-	$(searchbox).focus(function() {
-		$(this).addClass("focus");
-	});
-	$(searchbox).blur(function() {
-		if ( !searchbox.val() ) {
-			$(this).removeClass("focus");
+	// iOS4 DETECTION TO REMOVE FIXED FOOTER
+	if ( /iPad/i.test(navigator.userAgent) ) {
+		if ( /OS [2-4]_\d(_\d)? like Mac OS X/i.test(navigator.userAgent) ) {
+			$('#page-wrap').css('margin-bottom','-30px');
+			$('#footer').css('position','relative');
 		}
-	});
-	if ( searchbox.val() ) {
-		searchbox.addClass("focus");
 	}
 	
 	
-	//Searchbox function call
-	$("#searchform").submit(function() {
-		submitform();
-	});
-
-
 });
 
 

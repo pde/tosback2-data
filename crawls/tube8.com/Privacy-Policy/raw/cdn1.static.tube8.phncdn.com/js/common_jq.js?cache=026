@@ -1,4 +1,261 @@
+$(document).ready(function(){
+	$("#registContainer input[type=text], #registContainer input[type=password], #registContainer select").blur(function(e){
+		testField($(this).attr("id"))
+	});
+	$("#registContainer input[type=text], #registContainer input[type=password], #registContainer select").focus(function(e){
+		$(this).css("background-color", "white");
+		$("."+$(this).attr("id")+"Status").hide();
+		/*aFieldStatus[$(this).attr("id")] = 0;
+		manageDefinitions();*/
+	});
+	$("#sex, #birthyear").on("change", function(){
+		$("#"+$(this).attr("id")+" option").remove(":contains('Choose')");
+	});
+});
+/***************Registration Page Validation ******************/
+var aFieldStatus = new Array();
+aFieldStatus["email"] = 0;
+aFieldStatus["sex"] = 0;
+aFieldStatus["birthyear"] = 0;
+aFieldStatus["username"] = 0;
+aFieldStatus["password"] = 0;
+aFieldStatus["password2"] = 0;
 
+var aDefinitions = new Array();
+aDefinitions[0] = "good";
+aDefinitions[1] = "Please enter a valid email address.";
+aDefinitions[2] = "This email is already registered in our database.";
+aDefinitions[3] = "Please select a gender.";
+aDefinitions[4] = "Please select a birth year.";
+aDefinitions[5] = "Username must contain 4 to 16 characters (alphanumeric characters, '.' or '_' allowed).";
+aDefinitions[6] = "Username already used, please choose another username.";
+aDefinitions[7] = "Password must contain 6 to 20 characters.";
+aDefinitions[8] = "Password must be the same in both fields.";
+
+function testField(id){
+	switch(id){
+		case "email":
+			validateEmail();
+		break;
+		case "sex":
+			validateGender();
+		break;
+		case "birthyear":
+			validateBirth();
+		break;
+		case "username":
+			validateUsername();
+		break;
+		case "password":
+			validatePass();
+		break;
+		case "password2":
+			validateSamePass();
+		break;
+		case "all":
+			validateEmail();
+			validateGender();
+			validateBirth();
+			validateUsername();
+			validatePass();
+			validateSamePass();
+		break;
+	}
+}
+function manageDefinitions(){
+	var addHeight;
+	var html = "";
+
+	$("#pinkDiv").html("");
+	for(a in aFieldStatus){
+		if(aFieldStatus[a] != 0){
+			html += "<p>*"+aDefinitions[aFieldStatus[a]]+"</p>";
+		}
+	}
+	$containerHeight = parseInt($(".cont-form-user").attr("name"));
+	if(html != ''){
+		$("#pinkDiv").html(html);
+		$pinkDivHeight = $("#pinkDiv").outerHeight();
+		$(".cont-form-user").height($containerHeight + $pinkDivHeight);
+		$("#pinkDiv").show();
+	}
+	else{
+		$("#pinkDiv").hide();
+		$(".cont-form-user").height($containerHeight);
+	}
+}
+
+function validateEmail(){
+	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;
+	var valid;
+	if(emailReg.test($("#email").val())){
+		fieldGood('email');
+		valid = true;
+	}
+	else{
+		fieldBad('email');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["email"]= 0;
+	}
+	else{
+		aFieldStatus["email"]= 1;
+	}
+	manageDefinitions();
+}
+
+function validateGender(){
+	var optionSelected = $("#sex option:selected");
+	if(optionSelected.attr("value") == "1" || optionSelected.attr("value") == "2"){
+		fieldGood('sex');
+		valid = true;
+	}
+	else{
+		fieldBad('sex');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["sex"]= 0;
+	}
+	else{
+		aFieldStatus["sex"]= 3;
+	}
+	manageDefinitions();
+}
+
+function validateBirth(){
+	var optionSelected = $("#birthyear option:selected");
+	if(optionSelected.attr("value") != ""){
+		fieldGood('birthyear');
+		valid = true;
+	}
+	else{
+		fieldBad('birthyear');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["birthyear"]= 0;
+	}
+	else{
+		aFieldStatus["birthyear"]= 4;
+	}
+	manageDefinitions();
+}
+
+function validateUsername(){
+	var userReg = /^[.0-9a-z_]{4,16}$/i;
+	if(userReg.test($("#username").val())){
+		fieldGood('username');
+		valid = true;
+	}
+	else{
+		fieldBad('username');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["username"]= 0;
+	}
+	else{
+		aFieldStatus["username"]= 5;
+	}
+	manageDefinitions();
+}
+
+function validatePass(){
+	var passReg = /^\w{6,20}$/;
+	if(passReg.test($("#password").val())){
+		fieldGood('password');
+		valid = true;
+	}
+	else{
+		fieldBad('password');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["password"]= 0;
+	}
+	else{
+		aFieldStatus["password"]= 7;
+	}
+	manageDefinitions();
+}
+
+function validateSamePass(){
+	var pass1 = $("#password").val();
+	var pass2 = $("#password2").val();
+	if(pass1 == pass2 && pass1 != ''){
+		fieldGood('password2');
+		valid = true;
+	}
+	else{
+		fieldBad('password2');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["password2"]= 0;
+	}
+	else{
+		aFieldStatus["password2"]= 8;
+	}
+	manageDefinitions();
+}
+
+function fieldGood(id){
+	$("."+id+"Status").css("background-position", "0 0");
+	$("."+id+"Status").show();
+	$("#"+id).css("background-color", "white");
+}
+
+function fieldBad(id){
+	$("."+id+"Status").css("background-position", "-23px 0");
+	$("."+id+"Status").show();
+	$("#"+id).css("background-color", "#e3c7c7");
+}
+
+function userRegistration(containerHeight){
+	var message = "";
+	var pass = true;
+	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;  //  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+	if(!emailReg.test($("#email").val())){
+		pass = false;
+		message += "<p>*Your email is not valid.</p>";
+	}
+	if(pass){
+		$.post('/ajax/validate.php', {username: $('#username').val(), email: $('#email').val()}, function(resp){
+			var obj = $.parseJSON(resp);
+			var addHeight;
+			switch(obj.status){
+				case('ok'):
+					var signupform = $('#signupform');
+					signupform.prepend("<input type='hidden' name='iphash' value='" + obj.info + "' />");
+					signupform.prepend("<input type='hidden' name='timehash' value='" + obj.time + "' />");
+					signupform.submit();
+					break;
+				case('alert'):
+					if($("#pinkDiv").css("display")== "none"){addHeight = true;}
+					$("#pinkDiv").html("<p>*"+obj.info+"</p>");
+					$containerHeight = $(".cont-form-user").height();
+					$pinkDivHeight = $("#pinkDiv").outerHeight();
+					$("#pinkDiv").css("display", "block");
+					if(addHeight){
+						$(".cont-form-user").height($containerHeight + $pinkDivHeight);
+					}
+					break;
+			}
+		});
+	}
+	else{
+		$("#pinkDiv").html(message);
+		containerHeight? $containerHeightPx = 700 : $containerHeightPx = 635;
+		//$containerHeightPx = $(".cont-form-user").height();
+		$pinkDivHeight = $("#pinkDiv").outerHeight();
+		$("#pinkDiv").css("display", "block");
+		$(".cont-form-user").height($containerHeightPx + $pinkDivHeight);
+	}
+}
+/***************End of Registration Page Validation ******************/
 function noErrorMessages () { return true; }
 
 function bookmark(anchor){
@@ -56,7 +313,7 @@ function toggleDisplay (elId) {
 	cover_layer_h = Math.max(cover_layer_h, $j(document).height()-10);
 
 	$j('div.cover_layer').css("height" , cover_layer_h + "px");
-	var p = ['share_link', 'logindiv', 'reportdiv'];
+	var p = ['share_link', 'logindiv', 'reportdiv', 'AOLBrowserNotice'];
 	for (n in p)
 	{
 		if (elId != p[n]) {
@@ -514,12 +771,12 @@ $(function(){
 				 */
 				_event: function () {
 					var img;
-					// console.group(); 
+					// console.group();
 					// 	console.log("category => " + arguments[0]);
 					// 	console.log("action => " + arguments[1]);
 					// 	console.log("label => " + arguments[2]);
 					// 	console.log("value => " + arguments[3]);
-					// console.groupEnd(); 
+					// console.groupEnd();
 
 					(img = new Image(1, 1)).src = _url +
 						'site_id=' + _SITE_ID +

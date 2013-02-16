@@ -43,8 +43,8 @@ if (typeof TeaLeaf === "undefined") {
                                       secure: false
                                     },
 
-      "tlurl":                      "/online/handbags/TeaLeafView?storeId=10551&catalogId=10051",
-      "tlsecureurl":                "/online/handbags/TeaLeafView?storeId=10551&catalogId=10051",
+      "tlurl":                      "/online/handbags/TeaLeafView",
+      "tlsecureurl":                "/online/handbags/TeaLeafView",
       "xhrAsync":                   true,
       "xhrAsyncOnUnload":           false,
 

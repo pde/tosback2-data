@@ -2,7 +2,7 @@
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
-/* GameStop Implementation Version 6.6 (2012-09-05A) */
+/* GameStop Implementation Version 6.7 (2013-01-30A) */
 
 /* Specify the Report Suite ID(s) to track here */
 var s_account = 'gamestopdev'
@@ -135,6 +135,13 @@ function s_doPlugins(s) {
         gs.eVar72 = gs.c_r('omtd');
         gs.c_w('omtd', '', 0);
     }
+
+    /* EC - Automate OMTD Tracking */
+    if (!gs.eVar75 && s.p_fo('ev75') == 1) {
+        gs.eVar75 = gs.c_r('omtz');
+        gs.c_w('omtz', '', 0);
+    }
+
 
     /* EC - Automate TBYB Tracking */
     if (!gs.eVar57) {
@@ -706,6 +713,29 @@ function gs_setOMTC() {
                 }
             }
         }
+
+        /*
+        * Infosys change starts here for US1296
+        * this code is added to track the hero spot ad click
+        * When a hero spot ad is clicked then destination url will be tracked in evar75.
+        */
+        for (i = 0; i < divs.length; i++) {
+            if (divs[i].className.indexOf('omtz') > -1) {
+                var navigationUrl = divs[i].getElementsByTagName('a');
+                if (navigationUrl) {
+                    val = navigationUrl[0].href;
+                    if (divs[i].hasAttribute('onclick')) {
+                        divs[i].setAttribute('onclick', divs[i].getAttribute('onclick') + ';gs.c_w(\"omtz\",\"' + val + '\",0);');
+                    }
+                    else {
+                        divs[i].setAttribute('onclick', 'gs.c_w(\"omtz\",\"' + val + '\",0);');
+                    }
+                }
+            }
+        }
+        /*
+        * Infosys change ends here for US1296
+        */
         for (i = 0; i < divs.length; i++) {
             if (divs[i].className.indexOf('omtd') > -1) {
                 var anchors = divs[i].getElementsByTagName('a');

@@ -2002,7 +2002,7 @@ function O_GoT(_p) {
     _d.write('<a href=\'javascript:O_LC()\'>' + _p + '</a>');
     _fPe()
 }
-/* $Id: minicart.class.js 6333 2012-10-15 17:21:39Z dalee $ */
+/* $Id: minicart.class.js 7654 2013-02-06 23:48:02Z agatlab $ */
 
 // Requirements: 
 //	jQuery
@@ -2406,7 +2406,7 @@ function Minicart() {
 					
 					attr = document.createAttribute("src");
 					if(isPromoCard){
-						attr.value = "/img/holidayPromoCard.png";
+						attr.value = "/promoCardImg";
 					}else{
 						attr.value = "/skuimage/" + item.sku + "/80";
 					}
@@ -2422,7 +2422,7 @@ function Minicart() {
 					itemDiv.setAttributeNode(attr);
 					
 					if(isPromoCard){
-						itemDiv.appendChild(document.createTextNode("Holiday Promo Card"));
+						itemDiv.appendChild(document.createTextNode("Member Bonus Card"));
 					}else{
 						itemDiv.appendChild(document.createTextNode(skuDescription.firstLine));
 					}

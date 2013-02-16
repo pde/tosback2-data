@@ -4108,6 +4108,12 @@ td.warranty-60
     width: 420px;
 }
 
+#nvdp-pic-floorplan 
+{
+    margin: 40px auto;
+    width: 420px;
+}
+
 #nvdp-picture-sscontrols-wrap 
 {
     width:100%;
@@ -4652,7 +4658,10 @@ td.pricinglblnew-1195
     
 }
 
-
+#nvdp-content #nav-link
+{
+    width:100%; text-align:center;
+}
 
 /*==========================================
 	Vehicle Header
@@ -4671,7 +4680,14 @@ td.pricinglblnew-1195
     {
         width: 180px;
     }
-
+#nvdp-header .img-wrap-rv
+{
+    padding-right: 15px;
+}
+    #nvdp-header .img-wrap-rv img
+    {
+        width: 300px;
+    }
 #nvdp-header h1,
 #nvdp-header h2 
 {
@@ -4703,7 +4719,6 @@ a.nvdp-btn-noarrow
     display: block;
     font-weight: bold;
 }
-
 a.nvdp-btn-larrow:hover,
 a.nvdp-btn-rarrow:hover,
 a.nvdp-btn-noarrow:hover 
@@ -4727,6 +4742,24 @@ a.nvdp-btn-noarrow
     width: 107px;
     text-align: center;
 }
+a.nvdp-btn-noarrow-marine
+{
+    line-height: 26px;
+    height: 26px;
+    color: #2b4f92;
+    display: block;
+    font-weight: bold;
+    font-size:14px;
+}
+a.nvdp-btn-noarrow-floorplan
+{
+    line-height: 26px;
+    height: 26px;
+    color: #2b4f92;
+    display: block;
+    font-weight: bold;
+    font-size:14px;padding-left:120px;
+}
 
 /*vdp sprite positioning*/
 a.nvdp-btn-larrow { background-position: -336px 0; }
@@ -4735,7 +4768,10 @@ a.nvdp-btn-rarrow { background-position: -448px 0; }
 a.nvdp-btn-rarrow:hover { background-position: -224px 0; }
 a.nvdp-btn-noarrow { background-position: -560px 0; }
 a.nvdp-btn-noarrow:hover { background-position: 0 0; }
+a.nvdp-btn-noarrow-marine { background-position: -560px 0; }
+a.nvdp-btn-noarrow-marine:hover { background-position: 0 0; }
 
+#nvdp-header a.nvdp-btn-noarrow-marine,
 #nvdp-header a.nvdp-btn-larrow,
 #nvdp-header a.nvdp-btn-rarrow,
 #nvdp-header a.nvdp-btn-noarrow 
@@ -4752,12 +4788,14 @@ a.nvdp-btn-noarrow:hover { background-position: 0 0; }
 /*orange:#fbb034
 blue:#2a4e92*/
 #nvdp-nav,
-#nvdp-subnav 
+.nvdp-subnav,
+.nvdp-subnav.selected
 {
     width: 100%;
 }
 #nvdp-nav a,
-#nvdp-subnav a 
+.nvdp-subnav a,
+.nvdp-subnav.selected a
 {
     text-decoration: none;
     float: left;
@@ -4765,7 +4803,8 @@ blue:#2a4e92*/
 }
     
     #nvdp-nav .item:hover,
-    #nvdp-subnav .item:hover 
+    .nvdp-subnav .item:hover,
+    .nvdp-subnav.selected .item:hover 
     {
         text-decoration: underline;
     }
@@ -4790,7 +4829,8 @@ blue:#2a4e92*/
     {
         border-left: none;
     }
-    #nvdp-nav a.item-sel
+    #nvdp-nav a.item-sel,
+    #nvdp-nav a.hover
     {
         background-color: #fff;
         color: black;
@@ -4803,13 +4843,21 @@ blue:#2a4e92*/
         background-color: #fefed2;
     }
 
-#nvdp-subnav 
+.nvdp-subnav,
+.nvdp-subnav.selected
 {
     /*border: solid 1px #2a4e92;*/
     border: solid 1px #c8c1b9;
     background-color: #fefed2;
+    display: none;
 }
-    #nvdp-subnav a 
+.nvdp-subnav.selected
+{
+    display: block;   
+}
+
+    .nvdp-subnav a,
+    .nvdp-subnav.selected a
     {
         font-size: 13px;
         font-weight: bold;
@@ -4818,11 +4866,15 @@ blue:#2a4e92*/
         border-left: solid 1px #c8c1b9;
         color: #2a4e92;
     }
-    #nvdp-subnav a:first-child 
+    .nvdp-subnav a:first-child,
+    .nvdp-subnav.selected a:first-child 
     {
         border-left: none;
     }
-    #nvdp-subnav a.item-sel 
+    .nvdp-subnav a.item-sel,
+    .nvdp-subnav a:hover, 
+    .nvdp-subnav.selected a.item-sel,
+    .nvdp-subnav.selected a:hover 
     {
         color: black;
         font-weight: bold;
@@ -4848,7 +4900,7 @@ blue:#2a4e92*/
 {
     font-family: Tahoma, Verdana, Arial;
     padding-top: 15px;
-	color:#000;
+    color: #000;
 }
 
 #alsoconsider span 
@@ -4873,7 +4925,7 @@ blue:#2a4e92*/
 #alsoconsider a 
 {
     text-decoration: none;
-	color:#000;
+    color: #000;
 }
 
 /*==========================================
@@ -4915,7 +4967,7 @@ blue:#2a4e92*/
     float:left;
     width: 490px;
     font-size:inherit;
-    position: absolute;
+    /*position: absolute;*/
     bottom: 10%;
     height: auto;
 }
@@ -5211,9 +5263,47 @@ a.nvdp-btn-nextstep
         background-image: url('../../images.nadaguides.com/redesign/vdp/VDP-Next-research-another-car-hover-button.gif');
     }
 
+.nvdp-btn-nextstep-rv
+{
+    width:90px; height:32px;
+    text-decoration: none;
+    display: block;float:right;
+    background-image: url('../../images.nadaguides.com/redesign/vdp/next-green-button.gif');    
+}
+.nvdp-btn-nextstep-rv:hover
+{
+    background-image: url('../../images.nadaguides.com/redesign/vdp/next-grey-button.gif'); 
+}
+button.nextbtn
+{
+    height:35px;float:right;font-size:14px;background-color:#2a4e92;
+    border: none; font-family:Tahoma; font-weight:bold;color:#ffffff;
+    -moz-border-radius: 5px;-webkit-border-radius:5px;border-radius: 5px;
+}
+.ui-icon.white { background-image: url(images/ui-icons_ffffff_256x240.png); }
+button.nextbtn:hover
+{
+    background-color:#335eaf;
+}
+span.left
+{
+    float:left;padding-left:10px;
+}
 
-
-
+button.nvdp-nextstep-btntag
+{
+    background-color:#2a4e92;
+    font-size:14px;float:right;
+    font-family:Tahoma; font-weight:bold;color:#ffffff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius:5px;
+    height:35px;
+}
+button.nvdp-nextstep-btntag:hover
+{
+    background-color:#335eaf;
+}
 .nvdp-nocontent 
 {
     padding-top: 15px;
@@ -5423,7 +5513,8 @@ table.nvdp-list-secthead h4
 .nvdp-partner-links a
 {
    display:block;
-   color:#2a4e92;   
+   /*color:#2a4e92;   */
+   color:#000000;
    font-size:12px;
    line-height:17px;
    padding:2px 6px 2px 0;
@@ -5475,11 +5566,20 @@ table.nvdp-list-secthead h4
     float:left;
     padding:14px 0 14px 4px;
 }
+#ac-link-wrap-marine
+{
+    float:left;
+    padding:0px 0 14px 4px;
+}
+#ac-link-wrap-marine a,
 #ac-link-wrap a
 {
-    color:#2a4e92;   
-    font-size:14px;
+    /*color:#2a4e92;   */
+    color:#000000;
+    font-family:Tahoma;
+    font-size:13px;
 }
+#ac-link-wrap-marine a:hover,
 #ac-link-wrap a:hover
 {
     color:#656565;
@@ -8809,7 +8909,10 @@ h1.SellaboatH1
 	border-width:0px;
 	margin-right:3px;
 }
-
+div.vdpspaces
+{
+    height:40px;
+}
 .simedSmall
 {
 	
@@ -10368,33 +10471,34 @@ table#payment-calculator td.result div.pmt
 }
 .btn-calculate
 {
-    background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-Calculate-Orange-Button.gif);
+    background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-Calculatet-Orange-Button.gif);
     width:89px; 
     height:38px; 
     background-repeat:no-repeat;      
     border:none; 
     cursor:pointer;
+    float:right;
 }
 .btn-calculate:hover
 {
-   background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-Calculate-Orange-Button-hover.gif);
+   background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-Calculatet-Orange-Button-Hover.gif);
 }
 
 
 .btn-prequalify
 {
-    background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-GetPreQualified-Orange-Button.gif);
+    background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-GetPreQualified-Orange-Button_new.gif);
     width:152px; 
     height:38px; 
     background-repeat:no-repeat;      
     border:none; 
     cursor:pointer;
     padding-top: 20px;
-    float: right;
+    float:left;
 }
 .btn-prequalify:hover
 {
-   background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-GetPreQualified-Orange-hover-Button.gif);
+   background-image:url(../../images.nadaguides.com/redesign/vdp/VDP-GetPreQualified-Orange-Button-hover.gif);
 }
 
 
@@ -10573,7 +10677,8 @@ table#nvdp-payment-calculator td.nvdp-result div.nvdp-pmt div.nvdp-pmt-title
 }
 table.rebateTable
 {
-    border:solid 1px #DBDBDD;width:640px;margin-top:10px;
+    /*border:solid 1px #DBDBDD; */
+    width:640px;margin-top:10px;
 }
 table.rebateTable div
 {
@@ -10586,6 +10691,10 @@ table.rebateTable span.blue
 td.rebateTableOr
 {
     color:#2a4e92;font-size:13px;
+}
+td.nvdpRebateCategory
+{
+    padding-left:5px;font-family:Tahoma; font-weight:bold; font-size:14px; color:#353535;
 }
 span.rebateTableApr
 {
@@ -10612,6 +10721,7 @@ span.rebateTableDesc
 {
     font-size:11px;color:#656565;
 }
+
 /*temp */
 .accordion {
     padding-bottom:20px;

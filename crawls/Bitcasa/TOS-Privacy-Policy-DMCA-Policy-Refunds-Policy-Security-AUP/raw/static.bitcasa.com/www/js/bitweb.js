@@ -111,7 +111,7 @@ $(function() {
 
     function platformDownload(platform){
         var platformLower = platform.toLowerCase();
-        var otherVersions = removeByValue(['Mac', 'Windows', 'Linux', 'Android', 'Windows Store'], platform);
+        var otherVersions = removeByValue(['Mac', 'Windows', 'Android', 'iOS', 'Windows Store'], platform);
         var otherDesktopVersionHTML = 'Other versions: ';
         var otherMobileVersionHTML = 'Also available for ';
         var otherVersionHTML = 'Other versions: ';
@@ -130,6 +130,10 @@ $(function() {
             var platformMessage = platform;
             var downloadLink = '#';
             var overlayDownloadLink = downloadLink;
+        } else if (platform == 'Mac') {
+            var platformMessage = platform + ' coming soon';
+            var downloadLink = '#';
+            var overlayDownloadLink = '/download/';
         } else if (platform == 'Android') {
             var platformMessage = platform;
             var downloadLink = '/download/' + platformLower;;
@@ -151,7 +155,13 @@ $(function() {
             var titleCasePath = 'Homepage';
         }
         $('.download-button').attr('onClick', "_gaq.push(['_trackEvent', 'Download', '" + platform + "', '" + titleCasePath + "']);");
-        if (platform == 'Linux') {
+        if (platform == 'Mac') {
+            $('.download-button').text('Download');
+            $('.download-button').attr('href', '/download/mac');
+            $('.download-button').after('<div style="margin-top: 10px;">for MacOS 10.7+ (10.6 support coming soon)</div>');
+        } else if (platform == 'Windows') {
+            $('.download-button').after('<div style="margin-top: 10px;">for Windows 8, 7, Vista, and XP</div>');
+        } else if (platform == 'Linux') {
             $('.download-button').text('Linux client under development');
             $('.download-button').after('<div style="margin-top: 10px;">in the meantime, try out out our <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Linux\', \'' + titleCasePath + '\']);" href="/download-linux">Linux alpha client</a></div>');
         } else if (platform == 'Android') {

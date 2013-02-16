@@ -24,6 +24,21 @@ LEGOSiteStats = window.LEGOSiteStats || {};
 LEGOSiteStats.Settings = (function () {
     "use strict";
     return {
+        setExitXLinkTrackingEnabled: function (enabled) {
+            var sObj;
+            if (LEGOSiteStats.hasOwnProperty("s")) {
+                sObj = LEGOSiteStats.s;
+            }
+            else {
+                sObj = window.s;
+            }
+            // Always enable #xlink tracking by removing #xlink from the filter list
+            sObj.linkInternalFilters = sObj.linkInternalFilters.replace("#xlink,", "");
+            if (enabled === false) {
+                // Disable #xlink tracking by adding #xlink to the filter list
+                sObj.linkInternalFilters = "#xlink," + sObj.linkInternalFilters;
+            }
+        },
         setDownloadLinkTrackingEnabled: function (enabled) {
             var sObj;
             if (LEGOSiteStats.hasOwnProperty("s")) {
@@ -722,7 +737,7 @@ s.Media.monitor = function (s, media) {
             s._businessLogicDoPlugins(s);
         }
         s.Media.trackVars = "events,eVar3,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar12,eVar26,eVar27,eVar31,prop31,eVar32,eVar33,eVar38,eVar47,eVar50,eVar52";
-        s.Media.trackEvents = "event41,event42,event43,event44,event45,event46,event47,event62";
+        s.Media.trackEvents = "event41,event42,event43,event44,event45,event46,event47,event61";
         s.Media.track(media.name);
         s.eVar38 = "";
         s.events = "";
@@ -1070,6 +1085,14 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
         }
 
         // Exit link handler, enable eVar tracking
+        if (Object.prototype.hasOwnProperty.call(window, "LEGO")) {
+            if (window.LEGO.hasOwnProperty("GlobalHeader")) {
+                if (window.LEGO.GlobalHeader.hasOwnProperty("PopupVersion")) {
+                    // The popup is updated and handles exit link tracking on its own, therefore we now disable #xlink tracking on the page.
+                    LEGOSiteStats.Settings.setExitXLinkTrackingEnabled(false);
+                }
+            }
+        }
         exitLinkObject = s.exitLinkHandler("", "true");
         if (exitLinkObject) {
             s.linkTrackVars = LEGOSiteStats.GetDefaultLinkTrackingVars();

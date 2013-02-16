@@ -587,7 +587,8 @@ mistats.InteractionTracker = function ()
       };
 
       newVars[cPagename] = s.pageName;
-      newVars[cChannel]  = s.channel;
+      newVars[cChannel]  = (mistats.bizunit || '').match(/MAC/) ? (s.prop16 + ': ' + s.prop17) : s.channel;
+//      newVars[cChannel]  = s.channel;
 
       includeOptionalVars(newVars, true);
       clearStoredStats();

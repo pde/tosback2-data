@@ -1,4 +1,4 @@
-// UNPACKED VERSION NA 4.0.1.31.13
+// UNPACKED VERSION NA 4.0.2.15.13
 // Optimization and rewrite for updated layouts
 
 function rrGetCMTag(thisLink){
@@ -37,50 +37,52 @@ function rrGetCMTag(thisLink){
 function populatePrices(a) {
     var b;
     for(b=0,d=a.prices.length;b<d;b++){
-        pid = a.prices[b].pid; // get the pid from the data prices object
-        thisItem = 'rrItemInfoId-' + a.prices[b].pid; // get the item id from the data object placeholder from the item iteration
-        rrCT = rrItemInfo[thisItem].ct;     // customize tag
-        rrUOM = rrItemInfo[thisItem].uom;   // unit of measure
-        rrLink = rrItemInfo[thisItem].link; // link
-        rrItemInfo[thisItem].pid = a.prices[b].pid;
-        rrItemInfo[thisItem].pidForDisplay = a.prices[b].pidForDisplay;
-        
-        var item_suffix;
-        for (i in rrItemInfo[thisItem].placements){
-            if (a.prices[b].valid !== "true") continue;
-            rrPlacement = rrItemInfo[thisItem].placements[i];
-            item_suffix = a.prices[b].pid + "_" + rrPlacement;
-            if (document.getElementById("rrRating" + item_suffix) != null) {
-                var rating = a.prices[b].rating;
-                if (rating > 0){
-                    document.getElementById("rrRating" + item_suffix).className += " bv" + (rating*10);
-                    document.getElementById("rrReview" + item_suffix).innerHTML = "(" + a.prices[b].reviewCount + ")";
-                } else {
-                    document.getElementById("rrRatingBox" + item_suffix).innerHTML = '<a href="' + rrLink +'%23reviewTab" class="underline">Write the first review</a>';
+        pid = a.prices[b].pid; // pid from the data prices object; used for referencing DOM elements, should match RR externalID passed in
+        thisItem = 'rrItemInfoId-' + pid;
+        if (typeof rrItemInfo[thisItem] != "undefined"){
+            rrCT = rrItemInfo[thisItem].ct;     // customize tag
+            rrUOM = rrItemInfo[thisItem].uom;   // unit of measure
+            rrLink = rrItemInfo[thisItem].link;
+            rrItemInfo[thisItem].pid = a.prices[b].pid;
+            rrItemInfo[thisItem].pidForDisplay = a.prices[b].pidForDisplay;
+            
+            var item_suffix;
+            for (i in rrItemInfo[thisItem].placements){
+                if (a.prices[b].valid !== "true") continue;
+                rrPlacement = rrItemInfo[thisItem].placements[i];
+                item_suffix = a.prices[b].pid + "_" + rrPlacement;
+                if (document.getElementById("rrRating" + item_suffix) != null) {
+                    var rating = a.prices[b].rating;
+                    if (rating > 0){
+                        document.getElementById("rrRating" + item_suffix).className += " bv" + (rating*10);
+                        document.getElementById("rrReview" + item_suffix).innerHTML = "(" + a.prices[b].reviewCount + ")";
+                    } else {
+                        document.getElementById("rrRatingBox" + item_suffix).innerHTML = '<a href="' + rrLink +'%23reviewTab" class="underline">Write the first review</a>';
+                    }
+                    $("#rrRatingBox" + item_suffix).show();
+                    
+                    if (a.prices[b].mapPrice !== '$0.00') { 
+                        var ele = document.getElementById("rrMapMessage" + item_suffix);
+                        ele.className += ' map_pricing_block';
+                        ele.innerHTML = '<li><a href="'+rrLink+'" class="map_title" style="text-align: left;">See Sale Price in Cart</a></li>';
+                        $("#rrMapMessage" + item_suffix).show();
+                        document.getElementById("rrPriceElement" + item_suffix).innerHTML = '<span class="main_price" style="float:left; clear:both;"><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span>' + rrUOM + '</span></span>';
+                    } else if (a.prices[b].price !== undefined) { 
+                        document.getElementById("rrPriceElement" + item_suffix).innerHTML = '<span class="main_price" style="float:left; clear:both;">' + a.prices[b].price + rrUOM + '</span></span>';
+                    }
+                } 
+                if (document.getElementById("rrInput" + item_suffix) != null){
+                    var bulkStr = (a.prices[b].hasBulkPricingAvailable === "true") ? rrStr.asLowAs :  rrStr.yourPrice;
+                    var rrPriceBlock = ['<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>'];
+                    if (a.prices[b].mapPrice !== '$0.00') { 
+                        rrPriceBlock.push('<span class="main_price"><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span> <br/> ' + rrUOM + '</span></span>');
+                    } else if (a.prices[b].price !== undefined) {                        
+                        rrPriceBlock.push('<span class="main_price">' + a.prices[b].price + ' <br/> ' + rrUOM + '</span></span>');
+                    }
+                    document.getElementById("rrPriceElement" + item_suffix).innerHTML = rrPriceBlock.join('');
+                    document.getElementById("item_atc_rrSKU" + item_suffix).innerHTML = a.prices[b].pidForDisplay;
+                    $("ul.rrAddCartBtn" + a.prices[b].pid).show(); // show the add to cart button
                 }
-                $("#rrRatingBox" + item_suffix).show();
-                
-                if (a.prices[b].mapPrice !== '$0.00') { 
-                    var ele = document.getElementById("rrMapMessage" + item_suffix);
-                    ele.className += ' map_pricing_block';
-                    ele.innerHTML = '<li><a href="'+rrLink+'" class="map_title" style="text-align: left;">See Sale Price in Cart</a></li>';
-                    $("#rrMapMessage" + item_suffix).show();
-                    document.getElementById("rrPriceElement" + item_suffix).innerHTML = '<span class="main_price" style="float:left; clear:both;"><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span>' + rrUOM + '</span></span>';
-                } else if (a.prices[b].price !== undefined) { 
-                    document.getElementById("rrPriceElement" + item_suffix).innerHTML = '<span class="main_price" style="float:left; clear:both;">' + a.prices[b].price + rrUOM + '</span></span>';
-                }
-            } 
-            if (document.getElementById("rrInput" + item_suffix) != null){
-                var bulkStr = (a.prices[b].hasBulkPricingAvailable === "true") ? rrStr.asLowAs :  rrStr.yourPrice;
-                var rrPriceBlock = ['<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>'];
-                if (a.prices[b].mapPrice !== '$0.00') { 
-                    rrPriceBlock.push('<span class="main_price"><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span> <br/> ' + rrUOM + '</span></span>');
-                } else if (a.prices[b].price !== undefined) {                        
-                    rrPriceBlock.push('<span class="main_price">' + a.prices[b].price + ' <br/> ' + rrUOM + '</span></span>');
-                }
-                document.getElementById("rrPriceElement" + item_suffix).innerHTML = rrPriceBlock.join('');
-                document.getElementById("item_atc_rrSKU" + item_suffix).innerHTML = a.prices[b].pidForDisplay;
-                $("ul.rrAddCartBtn" + a.prices[b].pid).show(); // show the add to cart button
             }
         }
     }
@@ -88,16 +90,17 @@ function populatePrices(a) {
 }
           
 function rrSetLink(pid) {
+    var pid, pidForDisplay; 
+    var link = rrItemInfo['rrItemInfoId-' + pid].link;
+    var ct = rrItemInfo['rrItemInfoId-' + pid].ct;
     if (typeof(rrItemInfo['rrItemInfoId-' + pid].pid) !== "undefined") {
         pid = rrItemInfo['rrItemInfoId-' + pid].pid;
         pidForDisplay = rrItemInfo['rrItemInfoId-' + pid].pidForDisplay;
-        ct = rrItemInfo['rrItemInfoId-' + pid].ct;
-        link = rrItemInfo['rrItemInfoId-' + pid].link;
         link = link.replace('id%3D' + pid, 'id%3D' + pidForDisplay);
-        if (ct !== "") {
-            link += "%26configurableItemType%3D" + ct;
-        }
-        link += "%26cm_cat%3D" + rrGetCMTag(link);
-        return link;
     }
+    if (ct !== "") {
+        link += "%26configurableItemType%3D" + ct;
+    }
+    link += "%26cm_cat%3D" + rrGetCMTag(link);
+    return link;
 }

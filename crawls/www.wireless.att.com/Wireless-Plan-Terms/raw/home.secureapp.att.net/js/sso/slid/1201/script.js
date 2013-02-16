@@ -62,7 +62,7 @@ $(document).ready(function() {
 	if (!!agent.match(/iPad/i)) {
 		var referer = gup('REFERER');
 		
-		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i) || referer.match(/univision/i) || referer.match(/nick/i)) {
+		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i) || referer.match(/univision/i) || referer.match(/nick/i) || referer.match(/espn/i) || referer.match(/disney/i)) {
 			
 			var turnerURL = 0;
 

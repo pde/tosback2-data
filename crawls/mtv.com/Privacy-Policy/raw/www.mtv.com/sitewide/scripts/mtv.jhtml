@@ -963,7 +963,55 @@ document.write("<script src='" + path + "'><\/script>");
 }
 };
 
-document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://btg.mtvnservices.com/aria/device/index.html\"> </scr"+"ipt>"); 
+
+	
+	
+	
+
+
+		
+   
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+   
+
+     
+
+
+//Device detection 
+(function(){
+	var _h = location.hostname;
+	var _d = /^www./.test(_h) ? _h.substring(4) : _h;
+	if(document.cookie.indexOf("btg_device=") == -1){
+		document.cookie = "btg_device="
+			+ "m:" + (+false)
+			+ ",t:" + (+false)
+			+ ";path=/; expires=" + (new Date("December 31, 2038")).toUTCString() 
+			+ ";domain=" + _h;
+	}
+})();
+
 
 //Including Coda 3 config from CODA/sites/mtv.com/config.js
 
@@ -972,7 +1020,7 @@ if(typeof btg=='undefined')var btg = {};
 btg.config={
 version: '3',
 defferedAdLoading: false,
-enablePOE: true,
+enablePOE: false,
 backwardCompatibility: true,
 hasReporting: true,
 hasAds: true,
@@ -4117,7 +4165,7 @@ else if (typeof($j(".flux4Widget").flux4) == "function") $j(".flux4Widget").flux
 }
 
 MTV.load6x6POE = function() {
-$j.getScript(mtvn.btg.Controller.getAdUrl({size: "6x6" , contentType:"adj"}));
+mtvn.btg.Controller.placeAd({size:'6x6'});
 }
 
 function postedDateTime(postedDateTime) {

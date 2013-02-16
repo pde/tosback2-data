@@ -1410,11 +1410,13 @@ report : function(aObj){
 var linkurl = aObj.href;
 var linkname = aObj.name;
 var strReport = '';
-strReport = "GlobalNav : " + linkname + " : " + linkurl;
+//strReport = "GlobalNav : " + linkname + " : " + linkurl;
+strReport = "GLOBAL_NAV - " + linkname + " : " + linkurl;
 // getting error on blog
 // test for the reporting function before calling
-if(typeof(sendLinkCall)=='function')
-sendLinkCall(strReport);
+//if(typeof(sendLinkCall)=='function')
+//sendLinkCall(strReport);
+btg.Controller.sendLinkEvent({linkType:'o',linkName:strReport});
 },
 init : function(){
 this.findMatch(this.path);
@@ -1661,7 +1663,17 @@ if (document.images){
 name.src = off[number].src;
 }
 }
+jQuery(document).ready(function(){
+jQuery('#menu-bar #nav_generic #socialIcons a').click(function(){
+var linkName = 'UPPER DECK - ' + $j(this).text();
+btg.Controller.sendLinkEvent({linkType:'o',linkName:linkName});
+});
 
+jQuery('#mama-bar #sites-menu a').click(function(){
+var linkName = 'UPPER DECK - ' + $j(this).text();
+btg.Controller.sendLinkEvent({linkType:'o',linkName:linkName});
+});
+});
 var isLayer;
 // will look for versions 25 and under -this should last us a few years
 var maxVersion = 25;

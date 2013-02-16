@@ -1091,6 +1091,7 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 				case 'athletes': cnn_metadata_section_subsection = "athletes"; break;
 				case 'onlocation': cnn_metadata_section_subsection = "onlocation"; break;
 				case 'more': cnn_metadata_section_subsection = "more"; break;
+				case 'party': cnn_metadata_section_subsection = "party"; break;
 				default: cnn_metadata_section_subsection = "other"; break;
 			}
 			cnn_metadata.section = [ 'swim2013', cnn_metadata_section_subsection ];

@@ -116,6 +116,10 @@ function send_payoff(place)
 		if (!type || type=='webmoney') 
 			$('#pt_payza').attr('checked', true);
 	}
+	else if(info.match(/\d{3}-\d{6}/)) {
+		if (!type || type!='epayments')
+			$('#pt_epayments').attr('checked', true);
+	}
 	else {
 		$('input[name=payoff_info]').focus();
 		$('#error').show();

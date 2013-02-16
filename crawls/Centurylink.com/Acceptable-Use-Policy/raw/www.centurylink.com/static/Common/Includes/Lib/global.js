@@ -59,7 +59,7 @@ function initTargetWindow() {
 function targetWindow() {
 	targetWidth=parseInt($(this).attr('targetwidth'));
 	targetHeight=parseInt($(this).attr('targetHeight'));
-	var windowFeatures = "scrollbars,resizable" + (targetWidth > 0 ? ',width='+targetWidth:'') + (targetHeight > 0 ? ',width='+targetHeight:'');
+	var windowFeatures = "scrollbars,resizable" + (targetWidth > 0 ? ',width='+targetWidth:'') + (targetHeight > 0 ? ',height='+targetHeight:'');
 	var win = window.open(this.href,this.target,windowFeatures);
 	return false;
 }

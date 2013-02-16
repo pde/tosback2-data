@@ -1,6 +1,101 @@
 (function($){
 /* Global Nav Holiday Text */
 $('#sub-nav > .holder > .nav > li > a').filter(':contains("Valentine\'s Day")').css('color','#c9000d');
+/* Defect fix for the Jewelry Category flyout issue Starts*/
+	$(".nav").children().each(function (index) {
+	// Get count of columns inside of the dropdowns in order to set the width of the dropdown menu.
+	var y = $(this).children("a").siblings().children("li").children(".dropDown_new").children(".col").size();
+	var posL = $(this).position().left;
+	// Also determines the placement of the dropdowns depending on the number of columns 
+	if (y == 3) {
+		$(this).children("a").siblings().children("li").children(".dropDown_new").css("width","530px");
+	}
+	if (y == 2) {
+		$(this).children("a").siblings().children("li").children(".dropDown_new").css("width","400px");
+	}
+	if (y == 1) {
+		$(this).children("a").siblings().children("li").children(".dropDown_new").css("width","190px");
+	}
+	if (posL == 0) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","0px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","0px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","0px");
+		}
+     } 
+	if (posL >= 2 && posL < 100) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-60px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","0px");
+		}
+    } 
+	if (posL >= 100 && posL < 200) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-100px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-100px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}
+    } 
+	if (posL >= 200 && posL < 300) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-180px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-150px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}        
+    }
+	if (posL >= 300 && posL < 400) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-260px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-150px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}
+	}
+	if (posL >= 400 && posL < 500) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-340px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-250px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}
+	}
+	if (posL >= 500 && posL < 600) {
+		if (y == 3) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-440px");
+		}
+		if (y == 2) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-300px");
+		}
+		if (y == 1) {
+			$(this).children("a").siblings("ul").children("li").children(".dropDown_new").css("left","-50px");
+		}
+      }
+});
+
+/* Defect fix for the Jewelry Category flyout issue  Ends*/
 
 /* Run of Site Banners: Valentine's Day */
 try{

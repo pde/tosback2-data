@@ -2,8 +2,8 @@ function com_brulant_coach_Coach(){
   var $wnd_0 = window, $doc_0 = document, $stats = $wnd_0.__gwtStatsEvent?function(a){
     return $wnd_0.__gwtStatsEvent(a);
   }
-  :null, scriptsDone, loadDone, bodyDone, base = '', metaProps = {}, values = [], providers = [], answers = [], onLoadErrorFunc, propertyErrorFunc;
-  $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'bootstrap', millis:(new Date()).getTime(), type:'begin'});
+  :null, $sessionId_0 = $wnd_0.__gwtStatsSessionId?$wnd_0.__gwtStatsSessionId:null, scriptsDone, loadDone, bodyDone, base = '', metaProps = {}, values = [], providers = [], answers = [], softPermutationId = 0, onLoadErrorFunc, propertyErrorFunc;
+  $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'begin'});
   if (!$wnd_0.__gwt_stylesLoaded) {
     $wnd_0.__gwt_stylesLoaded = {};
   }
@@ -13,7 +13,8 @@ function com_brulant_coach_Coach(){
   function isHostedMode(){
     var result = false;
     try {
-      result = $wnd_0.external && ($wnd_0.external.gwtOnLoad && $wnd_0.location.search.indexOf('gwt.hybrid') == -1);
+      var query = $wnd_0.location.search;
+      return (query.indexOf('gwt.codesvr=') != -1 || (query.indexOf('gwt.hosted=') != -1 || $wnd_0.external && $wnd_0.external.gwtOnLoad)) && query.indexOf('gwt.hybrid') == -1;
     }
      catch (e) {
     }
@@ -35,19 +36,12 @@ function com_brulant_coach_Coach(){
         ;
       }
       com_brulant_coach_Coach = null;
-      frameWnd.gwtOnLoad(onLoadErrorFunc, 'com.brulant.coach.Coach', base);
-      $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date()).getTime(), type:'end'});
+      frameWnd.gwtOnLoad(onLoadErrorFunc, 'com.brulant.coach.Coach', base, softPermutationId);
+      $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'end'});
     }
   }
 
   function computeScriptBase(){
-    var thisScript, markerId = '__gwt_marker_com.brulant.coach.Coach', markerScript;
-    $doc_0.write('<script id="' + markerId + '"><\/script>');
-    markerScript = $doc_0.getElementById(markerId);
-    thisScript = markerScript && markerScript.previousSibling;
-    while (thisScript && thisScript.tagName != 'SCRIPT') {
-      thisScript = thisScript.previousSibling;
-    }
     function getDirectoryOfFile(path){
       var hashIndex = path.lastIndexOf('#');
       if (hashIndex == -1) {
@@ -61,70 +55,125 @@ function com_brulant_coach_Coach(){
       return slashIndex >= 0?path.substring(0, slashIndex + 1):'';
     }
 
-    ;
-    if (thisScript && thisScript.src) {
-      base = getDirectoryOfFile(thisScript.src);
-    }
-    if (base == '') {
-      var baseElements = $doc_0.getElementsByTagName('base');
-      if (baseElements.length > 0) {
-        base = baseElements[baseElements.length - 1].href;
+    function ensureAbsoluteUrl(url){
+      if (url.match(/^\w+:\/\//)) {
       }
        else {
-        base = getDirectoryOfFile($doc_0.location.href);
+        var img = $doc_0.createElement('img');
+        img.src = url + 'clear.cache.gif';
+        url = getDirectoryOfFile(img.src);
       }
+      return url;
     }
-     else if (base.match(/^\w+:\/\//)) {
+
+    function tryMetaTag(){
+      var metaVal = __gwt_getMetaProperty('baseUrl');
+      if (metaVal != null) {
+        return metaVal;
+      }
+      return '';
     }
-     else {
-      var img = $doc_0.createElement('img');
-      img.src = base + 'clear.cache.gif';
-      base = getDirectoryOfFile(img.src);
+
+    function tryNocacheJsTag(){
+      var scriptTags = $doc_0.getElementsByTagName('script');
+      for (var i = 0; i < scriptTags.length; ++i) {
+        if (scriptTags[i].src.indexOf('com.brulant.coach.Coach.nocache.js') != -1) {
+          return getDirectoryOfFile(scriptTags[i].src);
+        }
+      }
+      return '';
     }
-    if (markerScript) {
-      markerScript.parentNode.removeChild(markerScript);
+
+    function tryMarkerScript(){
+      var thisScript;
+      if (typeof isBodyLoaded == 'undefined' || !isBodyLoaded()) {
+        var markerId = '__gwt_marker_com.brulant.coach.Coach';
+        var markerScript;
+        $doc_0.write('<script id="' + markerId + '"><\/script>');
+        markerScript = $doc_0.getElementById(markerId);
+        thisScript = markerScript && markerScript.previousSibling;
+        while (thisScript && thisScript.tagName != 'SCRIPT') {
+          thisScript = thisScript.previousSibling;
+        }
+        if (markerScript) {
+          markerScript.parentNode.removeChild(markerScript);
+        }
+        if (thisScript && thisScript.src) {
+          return getDirectoryOfFile(thisScript.src);
+        }
+      }
+      return '';
     }
+
+    function tryBaseTag(){
+      var baseElements = $doc_0.getElementsByTagName('base');
+      if (baseElements.length > 0) {
+        return baseElements[baseElements.length - 1].href;
+      }
+      return '';
+    }
+
+    var tempBase = tryMetaTag();
+    if (tempBase == '') {
+      tempBase = tryNocacheJsTag();
+    }
+    if (tempBase == '') {
+      tempBase = tryMarkerScript();
+    }
+    if (tempBase == '') {
+      tempBase = tryBaseTag();
+    }
+    if (tempBase == '') {
+      tempBase = getDirectoryOfFile($doc_0.location.href);
+    }
+    tempBase = ensureAbsoluteUrl(tempBase);
+    base = tempBase;
+    return tempBase;
   }
 
   function processMetas(){
     var metas = document.getElementsByTagName('meta');
     for (var i = 0, n = metas.length; i < n; ++i) {
-      var meta = metas[i], name_0 = meta.getAttribute('name'), content;
+      var meta = metas[i], name_0 = meta.getAttribute('name'), content_0;
       if (name_0) {
+        name_0 = name_0.replace('com.brulant.coach.Coach::', '');
+        if (name_0.indexOf('::') >= 0) {
+          continue;
+        }
         if (name_0 == 'gwt:property') {
-          content = meta.getAttribute('content');
-          if (content) {
-            var value, eq = content.indexOf('=');
+          content_0 = meta.getAttribute('content');
+          if (content_0) {
+            var value, eq = content_0.indexOf('=');
             if (eq >= 0) {
-              name_0 = content.substring(0, eq);
-              value = content.substring(eq + 1);
+              name_0 = content_0.substring(0, eq);
+              value = content_0.substring(eq + 1);
             }
              else {
-              name_0 = content;
+              name_0 = content_0;
               value = '';
             }
             metaProps[name_0] = value;
           }
         }
          else if (name_0 == 'gwt:onPropertyErrorFn') {
-          content = meta.getAttribute('content');
-          if (content) {
+          content_0 = meta.getAttribute('content');
+          if (content_0) {
             try {
-              propertyErrorFunc = eval(content);
+              propertyErrorFunc = eval(content_0);
             }
              catch (e) {
-              alert('Bad handler "' + content + '" for "gwt:onPropertyErrorFn"');
+              alert('Bad handler "' + content_0 + '" for "gwt:onPropertyErrorFn"');
             }
           }
         }
          else if (name_0 == 'gwt:onLoadErrorFn') {
-          content = meta.getAttribute('content');
-          if (content) {
+          content_0 = meta.getAttribute('content');
+          if (content_0) {
             try {
-              onLoadErrorFunc = eval(content);
+              onLoadErrorFunc = eval(content_0);
             }
              catch (e) {
-              alert('Bad handler "' + content + '" for "gwt:onLoadErrorFn"');
+              alert('Bad handler "' + content_0 + '" for "gwt:onLoadErrorFn"');
             }
           }
         }
@@ -174,101 +223,112 @@ function com_brulant_coach_Coach(){
       iframe.style.cssText = 'position:absolute;width:0;height:0;border:none';
       iframe.tabIndex = -1;
       $doc_0.body.appendChild(iframe);
-      $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date()).getTime(), type:'moduleRequested'});
-      iframe.contentWindow.location.replace(base + strongName);
+      $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'moduleRequested'});
+      iframe.contentWindow.location.replace(base + initialHtml);
     }
   }
 
   providers['locale'] = function(){
+    var locale = null;
+    var rtlocale = 'default';
     try {
-      var locale;
-      if (locale == null) {
-        var args = location.search;
-        var startLang = args.indexOf('locale=');
-        if (startLang >= 0) {
-          var language = args.substring(startLang);
-          var begin = language.indexOf('=') + 1;
-          var end = language.indexOf('&');
-          if (end == -1) {
-            end = language.length;
+      if (!locale) {
+        var queryParam = location.search;
+        var qpStart = queryParam.indexOf('locale=');
+        if (qpStart >= 0) {
+          var value = queryParam.substring(qpStart + 7);
+          var end = queryParam.indexOf('&', qpStart);
+          if (end < 0) {
+            end = queryParam.length;
           }
-          locale = language.substring(begin, end);
+          locale = queryParam.substring(qpStart + 7, end);
         }
       }
-      if (locale == null) {
+      if (!locale) {
         locale = __gwt_getMetaProperty('locale');
       }
-      if (locale == null) {
+      if (!locale) {
         locale = $wnd_0['__gwt_Locale'];
       }
-      if (locale == null) {
-        return 'default';
+      if (locale) {
+        rtlocale = locale;
       }
-      while (!__gwt_isKnownPropertyValue('locale', locale)) {
+      while (locale && !__gwt_isKnownPropertyValue('locale', locale)) {
         var lastIndex = locale.lastIndexOf('_');
-        if (lastIndex == -1) {
-          locale = 'default';
+        if (lastIndex < 0) {
+          locale = null;
           break;
         }
-         else {
-          locale = locale.substring(0, lastIndex);
-        }
+        locale = locale.substring(0, lastIndex);
       }
-      return locale;
     }
      catch (e) {
       alert('Unexpected exception in locale detection, using default: ' + e);
-      return 'default';
     }
+    $wnd_0['__gwt_Locale'] = rtlocale;
+    return locale || 'default';
   }
   ;
   values['locale'] = {'default':0, ja_JP:1, us:2, zh_CN:3};
-  providers['selectorCapability'] = function(){
-    if (document.querySelectorAll && /native/.test(document.querySelectorAll)) {
-      return 'native';
-    }
-    return 'js';
-  }
-  ;
-  values['selectorCapability'] = {js:0, 'native':1};
   providers['user.agent'] = function(){
     var ua = navigator.userAgent.toLowerCase();
     var makeVersion = function(result){
       return parseInt(result[1]) * 1000 + parseInt(result[2]);
     }
     ;
-    if (ua.indexOf('opera') != -1) {
+    if (function(){
+      return ua.indexOf('opera') != -1;
+    }
+    ())
       return 'opera';
-    }
-     else if (ua.indexOf('webkit') != -1) {
-      return 'safari';
-    }
-     else if (ua.indexOf('msie') != -1) {
-      if (document.documentMode >= 8) {
-        return 'ie8';
-      }
-       else {
-        var result_0 = /msie ([0-9]+)\.([0-9]+)/.exec(ua);
-        if (result_0 && result_0.length == 3) {
-          var v = makeVersion(result_0);
-          if (v >= 6000) {
-            return 'ie6';
+    if (function(){
+      return ua.indexOf('webkit') != -1 || function(){
+        if (ua.indexOf('chromeframe') != -1) {
+          return true;
+        }
+        if (typeof window['ActiveXObject'] != 'undefined') {
+          try {
+            var obj = new ActiveXObject('ChromeTab.ChromeFrame');
+            if (obj) {
+              obj.registerBhoIfNeeded();
+              return true;
+            }
+          }
+           catch (e) {
           }
         }
+        return false;
       }
+      ();
     }
-     else if (ua.indexOf('gecko') != -1) {
-      var result_0 = /rv:([0-9]+)\.([0-9]+)/.exec(ua);
-      if (result_0 && result_0.length == 3) {
-        if (makeVersion(result_0) >= 1008)
-          return 'gecko1_8';
-      }
-      return 'gecko';
+    ())
+      return 'safari';
+    if (function(){
+      return ua.indexOf('msie') != -1 && $doc_0.documentMode >= 9;
     }
+    ())
+      return 'ie9';
+    if (function(){
+      return ua.indexOf('msie') != -1 && $doc_0.documentMode >= 8;
+    }
+    ())
+      return 'ie8';
+    if (function(){
+      var result = /msie ([0-9]+)\.([0-9]+)/.exec(ua);
+      if (result && result.length == 3)
+        return makeVersion(result) >= 6000;
+    }
+    ())
+      return 'ie6';
+    if (function(){
+      return ua.indexOf('gecko') != -1;
+    }
+    ())
+      return 'gecko1_8';
     return 'unknown';
   }
   ;
-  values['user.agent'] = {gecko:0, gecko1_8:1, ie6:2, ie8:3, opera:4, safari:5};
+  values['user.agent'] = {gecko1_8:0, ie6:1, ie8:2, ie9:3, opera:4, safari:5};
   com_brulant_coach_Coach.onScriptLoad = function(){
     if (frameInjected) {
       loadDone = true;
@@ -278,72 +338,56 @@ function com_brulant_coach_Coach(){
   ;
   com_brulant_coach_Coach.onInjectionDone = function(){
     scriptsDone = true;
-    $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date()).getTime(), type:'end'});
+    $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date).getTime(), type:'end'});
     maybeStartModule();
   }
   ;
+  processMetas();
   computeScriptBase();
   var strongName;
+  var initialHtml;
   if (isHostedMode()) {
-    if ($wnd_0.external.initModule && $wnd_0.external.initModule('com.brulant.coach.Coach')) {
+    if ($wnd_0.external && ($wnd_0.external.initModule && $wnd_0.external.initModule('com.brulant.coach.Coach'))) {
       $wnd_0.location.reload();
       return;
     }
-    strongName = 'hosted.html?com_brulant_coach_Coach';
+    initialHtml = 'hosted.html?com_brulant_coach_Coach';
+    strongName = '';
   }
-  processMetas();
-  $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'bootstrap', millis:(new Date()).getTime(), type:'selectingPermutation'});
-  if (!strongName) {
+  $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'selectingPermutation'});
+  if (!isHostedMode()) {
     try {
-      unflattenKeylistIntoAnswers(['default', 'js', 'ie8'], 'A7FF8D3662AB314B3094B6D5A4AC53E9.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'ie8'], 'A7FF8D3662AB314B3094B6D5A4AC53E9.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'ie8'], 'E21101E13772D74DB6464B85FFD12446.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'ie8'], 'E21101E13772D74DB6464B85FFD12446.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'js', 'ie6'], '378FD6163A891D09C5394CDCB11C53D2.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'ie6'], '378FD6163A891D09C5394CDCB11C53D2.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'ie6'], '9412A976C9607B441DDF4F607A1E3B35.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'ie6'], '9412A976C9607B441DDF4F607A1E3B35.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'js', 'opera'], 'A29B6E3501C5D859F0FB496FFBD92D5A.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'opera'], 'A29B6E3501C5D859F0FB496FFBD92D5A.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'opera'], '71F8E83433DAC1DD792199B31BD2D813.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'opera'], '71F8E83433DAC1DD792199B31BD2D813.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'ie8'], '38D8433816F0D2E489EACDDED7B849BB.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'ie8'], '38D8433816F0D2E489EACDDED7B849BB.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'ie6'], '0814F0A27F15C8D779D8C70D463AD067.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'ie6'], '0814F0A27F15C8D779D8C70D463AD067.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'opera'], 'D0746F4C9C6DA4A52C2725C1F39B5A0A.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'opera'], 'D0746F4C9C6DA4A52C2725C1F39B5A0A.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'js', 'gecko1_8'], 'BC9CC96F971AF3B2345C9C7AD4EB174E.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'gecko1_8'], 'BC9CC96F971AF3B2345C9C7AD4EB174E.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'gecko1_8'], '2E20594E0DCD521817EB34B6C4631086.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'gecko1_8'], '2E20594E0DCD521817EB34B6C4631086.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'js', 'safari'], '4D5CDE8DCDEF9DB9902346A4D04058C2.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'safari'], '4D5CDE8DCDEF9DB9902346A4D04058C2.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'safari'], 'A0753DC89776110F8FE95AF7D78F3BC7.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'safari'], 'A0753DC89776110F8FE95AF7D78F3BC7.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'gecko1_8'], '877D9BD5A7F2E5B154C23FF8361397E4.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'gecko1_8'], '877D9BD5A7F2E5B154C23FF8361397E4.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'js', 'gecko'], '1AD6E761E8512996885122E6E2A78311.cache.html');
-      unflattenKeylistIntoAnswers(['default', 'native', 'gecko'], '1AD6E761E8512996885122E6E2A78311.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'js', 'gecko'], 'F84C31036CDB233B02992DF101343208.cache.html');
-      unflattenKeylistIntoAnswers(['zh_CN', 'native', 'gecko'], 'F84C31036CDB233B02992DF101343208.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'safari'], '452A14D530C9E4144406D8B10BFF17DF.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'safari'], '452A14D530C9E4144406D8B10BFF17DF.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'js', 'gecko'], '74360A3C289A5FF108AD4A6ACEA12044.cache.html');
-      unflattenKeylistIntoAnswers(['ja_JP', 'native', 'gecko'], '74360A3C289A5FF108AD4A6ACEA12044.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'ie8'], '4685A0CB9CB5220C1BBC818A2BAEC847.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'ie8'], '4685A0CB9CB5220C1BBC818A2BAEC847.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'ie6'], 'E60B422086D3C15E203877CBF54AE469.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'ie6'], 'E60B422086D3C15E203877CBF54AE469.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'opera'], '2E16FF8A6FEDE1842552F5ADEE82801A.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'opera'], '2E16FF8A6FEDE1842552F5ADEE82801A.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'gecko1_8'], 'B510849F1F951834C2BDC893B0D9B449.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'gecko1_8'], 'B510849F1F951834C2BDC893B0D9B449.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'safari'], '70DB87B9946F394B1F8B78E0BBACE286.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'safari'], '70DB87B9946F394B1F8B78E0BBACE286.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'js', 'gecko'], 'BE7A8509E389D9FE2161F1BEDB7CC75B.cache.html');
-      unflattenKeylistIntoAnswers(['us', 'native', 'gecko'], 'BE7A8509E389D9FE2161F1BEDB7CC75B.cache.html');
-      strongName = answers[computePropValue('locale')][computePropValue('selectorCapability')][computePropValue('user.agent')];
+      unflattenKeylistIntoAnswers(['zh_CN', 'gecko1_8'], '2462D7805DB79CF447A6D547EF8984EB');
+      unflattenKeylistIntoAnswers(['ja_JP', 'ie6'], '257DDBEBDE87CBF202B94C88F7ACC9F8');
+      unflattenKeylistIntoAnswers(['default', 'opera'], '354D317A87877B983DE131F748251E87');
+      unflattenKeylistIntoAnswers(['default', 'gecko1_8'], '452EB5ECDDEFBD1D829EBC203B11221F');
+      unflattenKeylistIntoAnswers(['ja_JP', 'safari'], '4954212E4E311DDF1106032824C03242');
+      unflattenKeylistIntoAnswers(['default', 'ie9'], '4EFF8C162F9DFD52E8A92B1796F42380');
+      unflattenKeylistIntoAnswers(['us', 'ie6'], '4F1A3E9B97452B16C12CDCC7C34E6FAE');
+      unflattenKeylistIntoAnswers(['ja_JP', 'gecko1_8'], '556B5F20EF20B2E0C51D009FD7028DA5');
+      unflattenKeylistIntoAnswers(['zh_CN', 'ie6'], '5B76F8407111928C20252AA3892876C5');
+      unflattenKeylistIntoAnswers(['us', 'ie9'], '60D653178FE2501BC545C928841422B1');
+      unflattenKeylistIntoAnswers(['zh_CN', 'ie8'], '810FF4B5E216D9D3291E14A1C486BD25');
+      unflattenKeylistIntoAnswers(['ja_JP', 'ie9'], '89A206253D308FE5C30061AFE996B85A');
+      unflattenKeylistIntoAnswers(['ja_JP', 'opera'], '8D0F2BCCE2288181D3DBB383CAD59793');
+      unflattenKeylistIntoAnswers(['zh_CN', 'safari'], '902A4471B002346D092AA6270C67AADB');
+      unflattenKeylistIntoAnswers(['default', 'safari'], '94E6F616530C72F8FE39CE6F00BAE213');
+      unflattenKeylistIntoAnswers(['us', 'opera'], '951435D611803DB766FDFF345F754D99');
+      unflattenKeylistIntoAnswers(['ja_JP', 'ie8'], 'AA179C59204DD4126A94A8ABDEFA4311');
+      unflattenKeylistIntoAnswers(['zh_CN', 'ie9'], 'ACBA610B7F36F1903703F89E0DC9E8DA');
+      unflattenKeylistIntoAnswers(['zh_CN', 'opera'], 'C61EEA6D113C2AB5D5428986EA5E87E7');
+      unflattenKeylistIntoAnswers(['us', 'gecko1_8'], 'D888152D48F0BFD2EB48D9051652F858');
+      unflattenKeylistIntoAnswers(['us', 'safari'], 'E588B79E66B0ECFDADCCCE6B40894FDE');
+      unflattenKeylistIntoAnswers(['default', 'ie6'], 'F23B1BADAF87903A8FB90F320ECFA3B7');
+      unflattenKeylistIntoAnswers(['us', 'ie8'], 'F5D49FF199EC32005F22D20158F78AEE');
+      unflattenKeylistIntoAnswers(['default', 'ie8'], 'FE90C6E529D2FC90D8153FD2CF0B9150');
+      strongName = answers[computePropValue('locale')][computePropValue('user.agent')];
+      var idx = strongName.indexOf(':');
+      if (idx != -1) {
+        softPermutationId = Number(strongName.substring(idx + 1));
+        strongName = strongName.substring(0, idx);
+      }
+      initialHtml = strongName + '.cache.html';
     }
      catch (e) {
       return;
@@ -353,13 +397,6 @@ function com_brulant_coach_Coach(){
   function onBodyDone(){
     if (!bodyDone) {
       bodyDone = true;
-      if (!__gwt_stylesLoaded['gwt-log.css']) {
-        var l = $doc_0.createElement('link');
-        __gwt_stylesLoaded['gwt-log.css'] = l;
-        l.setAttribute('rel', 'stylesheet');
-        l.setAttribute('href', base + 'gwt-log.css');
-        $doc_0.getElementsByTagName('head')[0].appendChild(l);
-      }
       maybeStartModule();
       if ($doc_0.removeEventListener) {
         $doc_0.removeEventListener('DOMContentLoaded', onBodyDone, false);
@@ -384,8 +421,8 @@ function com_brulant_coach_Coach(){
     }
   }
   , 50);
-  $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'bootstrap', millis:(new Date()).getTime(), type:'end'});
-  $stats && $stats({moduleName:'com.brulant.coach.Coach', subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date()).getTime(), type:'begin'});
+  $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'end'});
+  $stats && $stats({moduleName:'com.brulant.coach.Coach', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'loadExternalRefs', millis:(new Date).getTime(), type:'begin'});
   $doc_0.write('<script defer="defer">com_brulant_coach_Coach.onInjectionDone(\'com.brulant.coach.Coach\')<\/script>');
 }
 

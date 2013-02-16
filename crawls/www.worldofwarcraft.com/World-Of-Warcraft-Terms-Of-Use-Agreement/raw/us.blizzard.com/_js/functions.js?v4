@@ -729,3 +729,22 @@ function acceptTerms() {
 		$j("#terms-accpet").addClass('disable').removeAttr('href');
 	}		
 }
+
+/*
+* Append Tracking tag
+* @param url
+* @param $parent    optional jQuery wrapper parent element
+* */
+function appendTrackingTag(url, $parent) {
+
+    if(typeof url === 'undefined')
+        return;
+
+    $parent = $parent || $j('body');
+
+    if(jQuery.browser.msie) {
+        $parent.append('<iframe src="' + url + '" width="1" height="1" scrolling="no" frameborder="0" allowTransparency="true"></iframe>');
+    }else {
+        $parent.append('<object type="text/html" data="' + url + '" width="1" height="1"></object>');
+    }
+};

@@ -1076,6 +1076,11 @@ JY = {
                 e.preventDefault();
                 $('div#login-window').dialog('close');
             });
+            $('div#form-payment-opts input[type="checkbox"]').each(function(){
+                if ($(this).is(':checked')){
+                    $('div#payment-addr,div#process-continue').show();
+                }
+            });
             $('div.pay-choice').live('click', function(e) {
                 //console.log('clicked choice');
                 var theBox = $(this).find('input[type="checkbox"]').attr('id');
@@ -1133,6 +1138,7 @@ JY = {
                     $(this).find('input[type="checkbox"]').attr('checked', true);
                     $(this).find('label.prettyCheckbox').addClass('checked');
                 }
+                $('div#payment-addr,div#process-continue').show();
             });
         },
         jy_billing: function() {

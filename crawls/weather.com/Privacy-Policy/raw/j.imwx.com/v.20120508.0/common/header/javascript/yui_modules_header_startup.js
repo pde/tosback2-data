@@ -124,10 +124,6 @@ YAHOO.util.Attribute=function(B,A){if(A){this.owner=A;this.configure(B,true);}};
 		});
 	}
 	// wx.config.page should have been created in /WEB-INF/tags/global/pagemetaAdData.tag
-	// But, in case it has not generate an empty object tree. This handles weathergold errors
-	window.wx = window.wx || {};
-	wx.config = wx.config || {};
-	wx.config.page = wx.config.page || {};
 	wx.config.page.fv = fv; //Update value in PCO
 	
 	//Local Search
@@ -539,64 +535,6 @@ var intelliTrak = function(HASH){
      
     })();
 
-//Adding Back to functionality for legacy pages
-
-'TWC' in window || (window.TWC = {});
-(function($){
-	TWC.SetUserBackTo = function() {
-		//  added for Mini Header  - start
-		if (TWC.pco.get('user.backTo')==null || typeof (TWC.pco.get('user.backTo'))=="undefined")
-		{ 
-			TWC.pco.setUser('backTo', {});
-		}
-		var backURL = document.location.href;
-		var label,location,pageType,backTo;
-		backTo = TWC.pco.get('user.backTo');
-		backTo.url = backURL;
-		label = $.trim($("h1").html());
-		var city = TWC.pco.get("currloc.city");
-		var state = TWC.pco.get("currloc.state");
-		var locname = TWC.pco.get("currloc.locname");
-		var country = TWC.pco.get("currloc.country");
-		if((TWC.pco.get("currloc.locid")) && ((TWC.pco.get("currloc.country"))=="US")) {
-			if(locname != "undefined" && state != "undefined"){
-				location = locname + ", " + state;
-			} else if(city != "undefined" && state != "undefined"){
-				location = city + ", " + state;
-			} else {
-				location ="";
-			}			
-		} else {
-			if(locname != "undefined" && country != "undefined"){
-				location = locname + ", " + country;
-			} else if(city != "undefined" && country != "undefined"){
-				location = city + ", " + country;
-			} else {
-				location ="";
-			}
-		}
-		pagetype = (TWC.pco.get("metrics") && TWC.pco.get("metrics").level2) ? TWC.pco.get("metrics").level2 : "";
-		backTo.label = label;
-		backTo.location = location;
-		backTo.pagetype = pagetype;
-		TWC.pco.setUser('user.backTo', backTo); 
-		//  Mini Header Code - end
-
-	};
-	$(document).ready(function(){
-		$("body").on({click:function(){
-				TWC.SetUserBackTo();
-			},
-			keydown:function(){
-				TWC.SetUserBackTo();
-			}
-		},"a[from],span[from]");
-	});
-	
-
-})(jQuery);
-
-
     // Setup Click Handlers for Social Icons in Footer
   	(function() {
   		var Event = YAHOO.util.Event,
@@ -679,3 +617,10 @@ window["fsr$timer"]=setInterval(fsr$setAlive,1000)}})();
 Foresee survey code include for /foresee/foresee-alive.js - End
 */
 
+/*
+Vertical Acuity Tracker code
+*/
+YAHOO.util.Get.script("http://scripts.verticalacuity.com/vat/mon/vtw.js",{
+   onSuccess: function(){
+   }
+});

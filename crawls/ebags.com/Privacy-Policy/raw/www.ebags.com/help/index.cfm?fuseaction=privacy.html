@@ -3,19 +3,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
+    <meta name="google-site-verification" content="haEGRQ8p0gAH1TK-OubvZSbz7Qj_gu3u1jp0G2JhJZk" />    
+    <script src="../../cdn3.ebags.com/eBagsBundles/20.2.11.1/requirejs"></script>
+
+<script type="text/javascript">
+    require.config({
+        baseUrl: '//cdn3.ebags.com/eBagsBundles/20.2.11.1',
+        waitSeconds: 10
+    });
+    require.onError = function (err) {
+        console.log(err.requireType);
+        if (err.requireType === 'timeout') {
+            console.log('modules request timeout - increase requirejs config timeout: ' + err.requireModules);
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            var url = '/logme.cfm?message=requirejs-timeout-error-script-request-of-script-timed-out+' + '&machine=' + window.location.host;
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+
+        throw err;
+    };
+</script>
+
+
+    <script type="text/javascript">
+        require(['monetate']);
+    </script>    
+
+	<script type="text/javascript">
+	    require(['get!pageLocation/pageLocation'], function (pageLocation) {
+	        pageLocation.init();
+	    });
+	</script>
     
-    <script>
-        setPlCookie = function (value) {
-            document.cookie = 'pl=' + escape(value) + '; path=/;';
-        };
-        setPlCookie('0');
-    </script>
-
-    
-
-    <meta name="google-site-verification" content="haEGRQ8p0gAH1TK-OubvZSbz7Qj_gu3u1jp0G2JhJZk" />
-
-   
 
     <title></title>
     
@@ -38,11 +64,11 @@
     <link href="../../cdn2.ebags.com/img/Content/ebags/images/siteImages/icons/favicon.png" rel="icon" type="image/x-icon" />
     <link href="http://cdn2.ebags.com/img/Content/ebags/images/siteImages/icons/eBagsIcon.png" rel="apple-touch-icon" />
 
-    <link href="../../cdn3.ebags.com/eBagsBundles/20.1.1.22/main.css" rel="stylesheet"/>
+    <link href="../../cdn3.ebags.com/eBagsBundles/20.2.11.1/main.css" rel="stylesheet"/>
 
-        <link href="../../cdn3.ebags.com/eBagsBundles/20.1.1.22/eb_superstyle.css" rel="stylesheet"/>
+    <link href="../../cdn3.ebags.com/eBagsBundles/20.2.11.1/eb_superstyle.css" rel="stylesheet"/>
 
-    
+           
     
 
 
@@ -64,68 +90,124 @@
         <a name="backtotop"></a>
         
 <div id="fb-root"></div>
+<script type="text/javascript">
+	require(['jquery', 'get!core/eBags'], function ($, eBags) {
+	    window.fbAsyncInit = function () {
+	        FB._https = true;
+	        FB.init({
+	            appId: '',
+            xfbml: true,
+            status: false,
+            authResponse: false,
+            cookie: true,
+            oauth: true
+        });
 
-    <script>
-        window.fbAsyncInit = function () {
-            FB._https = true;
-            FB.init({
-                appId: '',
-                xfbml: true,
-                status: false,
-                authResponse: false,
-                cookie: true,
-                oauth: true
-            });
+	        function fbStatusResponse(response) {
+	            if (response) {
+	                postFBLoginStatusToServer(response);
+	            }
+	        }
 
-            function fbStatusResponse(response) {
-                if (response) {
-                    postFBLoginStatusToServer(response);
-                }
-            }
+	        function postFBLoginStatusToServer(response) {
+	            var iframe = document.createElement("iframe");
+	            iframe.style.display = "none";
+	            iframe.setAttribute("src", "https://" + window.location.host + "/facebook/poststatus/?url=" + top.location + "&responseData=" + JSON.stringify(response));
+	            document.body.appendChild(iframe);
+	        }
 
-            function postFBLoginStatusToServer(response) {
-                var iframe = document.createElement("iframe");
-                iframe.style.display = "none";
-                iframe.setAttribute("src", "https://" + window.location.host + "/facebook/poststatus/?url=" + top.location + "&responseData=" + JSON.stringify(response));
-                document.body.appendChild(iframe);
-            }
-
-            
-            FB.getLoginStatus(fbStatusResponse); //auto-login
-            
-            var fbEvents = [
+    
+	        FB.getLoginStatus(fbStatusResponse); //auto-login
+	        
+	        var fbEvents = [
                 { key: "/facebook/authPrompt", eventName: "auth.prompt" },
                 { key: "/facebook/like", eventName: "edge.create" },
                 { key: "/facebook/unlike", eventName: "edge.remove" },
                 { key: "/facebook/comment", eventName: "comment.create" },
                 { key: "/facebook/uncomment", eventName: "comment.remove" },
                 { key: "/facebook/send", eventName: "message.send" }
-            ];
-            // capture events
-            for (var i = 0, len = fbEvents.length; i < len; i++) {
-                eBags.capture(fbEvents[i].key, fbEvents[i].eventName, function (eventName, func) {
-                    FB.Event.subscribe(eventName, func);
-                });
-            }
+	        ];
+	        // capture events
+	        for (var i = 0, len = fbEvents.length; i < len; i++) {
+	            eBags.capture(fbEvents[i].key, fbEvents[i].eventName, function (eventName, func) {
+	                FB.Event.subscribe(eventName, func);
+	            });
+	        }
 
-            eBags.subscribe("/login/success", function (data) {
-                if (data && data.userId) {
-                    $.ajax({
-                        url: "/site/logevent?eventkey=/facebook/login&data=" + JSON.stringify(data),
-                        processData: false,
-                        type: "POST"
-                    });
-                }
-            });
+	        eBags.subscribe("/login/success", function (data) {
+	            if (data && data.userId) {
+	                $.ajax({
+	                    url: "/site/logevent?eventkey=/facebook/login&data=" + JSON.stringify(data),
+	                    processData: false,
+	                    type: "POST"
+	                });
+	            }
+	        });
 
-            
-
-            eBags.publish('/facebook/init/complete');
-        };
-    </script>
     
 
+	        eBags.publish('/facebook/init/complete');
+	    };
+
+	    (function () {
+	        var e = document.createElement('script');
+	        e.async = true;
+	        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+	        document.getElementById('fb-root').appendChild(e);
+	    }());
+
+    
+	        $('#spnLogin').addClass('fbLogin');
+	    
+	        $('.listPageItemSiActions').show();
+	    
+
+	    (function () {
+	        var e = document.createElement('script');
+	        e.async = true;
+	        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+	        document.getElementById('fb-root').appendChild(e);
+	    }());
+
+    
+	        $('#spnLogin').addClass('fbLogin');
+	    
+	        $('.listPageItemSiActions').show();
+        
+	});
+</script>
+
+
 <div id="pin-root"></div>
+
+<script type="text/javascript">
+    define("social/globalPin", ["get!social/pin"], function (pin) {
+        var globalPin = pin().init();
+        return globalPin;
+    });
+</script>
+
+
+<script type="text/javascript">
+	require(['get!core/janrain'], function (j) {
+	    janrain.settings.tokenUrl = 'https://www.ebags.com/account/createwithtoken';
+	    janrain.settings.appId = 'jdijaddhkopnkjjeenha';
+	    janrain.settings.appUrl = 'https://janrain.ebags.com';
+
+	    var e = document.createElement('script');
+	    e.type = 'text/javascript';
+	    e.id = 'janrainAuthWidget';
+
+	    if (document.location.protocol === 'https:') {
+	        e.src = 'https://rpxnow.com/js/lib/janrain.ebags.com/engage.js';
+        } else {
+            e.src = 'http://widget-cdn.rpxnow.com/js/lib/janrain.ebags.com/engage.js';
+        }
+
+	    var s = document.getElementsByTagName('script')[0];
+	    s.parentNode.insertBefore(e, s);
+	});
+</script>
 
 
 
@@ -604,13 +686,63 @@
   </div>
 </div>
 
+<script type="text/javascript">
+    require(["get!core/flyaway"], function (flyaway) {
+        flyaway('#subSitesMenu > li', {
+            timeout: 500,
+            menuHoverClass: 'menuItemhover',
+            menuItem: 'a.menuItem',
+            topLane: 'div.subNav-topLane',
+            container: 'div',
+            wrapper: 'div.subNavWrapper'
+        });
+    });
+</script> 
+
 
     </nav>
 </div>
 <header id="headerInnerContainer">
     
+<script type="text/javascript">
+    require(["jquery", "get!responsive/touchDetect"], function ($, touchDetect) {
+	    $(function () {
+	        var hoverContent = $('#divYourAccountHoverContent');
+	        if (hoverContent.length == 1) {
+	            if (touchDetect.isTouchSupported) {
+	                $('#AccountWrap_YourAccount').click(function (e) {
+	                    e.preventDefault();
+	                    hoverContent.toggle();
+	                    var isVis = hoverContent.is(":visible");
+	                    $('#txtSearchHeader')[isVis ? "blur" : "focus"]();
+	                }).add(hoverContent);
+	            } else {
+	                $('#AccountWrap_YourAccount').add(hoverContent).hover(function () {
+	                    hoverContent.show();
+	                    $('#txtSearchHeader').blur();
+	                }, function () {
+	                    hoverContent.hide();
+	                    $('#txtSearchHeader').focus();
+	                });
+	            }
+	        }
 
-
+	        $("#AccountWrap_NotYou").click(function (e) {
+	            e.preventDefault();
+	            var cookies = document.cookie.split(";");
+	            for (var i = 0; i < cookies.length; i++) {
+	                var cookie = cookies[i];
+	                var eqPos = cookie.indexOf("=");
+	                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+	                document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	                document.cookie = name + "=;path=/;domain=ebags.com;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	                document.cookie = name + "=;path=/;domain=.ebags.com;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	            }
+	            window.location.reload();
+	        });
+	    });
+	});
+</script>
 
     <div class="topSection">
         <div class="logoBox">
@@ -659,99 +791,92 @@
                 
 <form id="searchFormHeader" class="searchForm" action="http://www.ebags.com/search" method="GET"> 
     <!--[if !IE]> -->
-        <input type="text" name="term" id="termHeader" autocomplete="off" class="inputField" value="" />
+        <input type="text" name="term" id="txtSearchHeader" autocomplete="off" class="inputField" value="" />
     <!-- <![endif]-->
     <!--[if lte IE 8]>
-        <input type="text" name="term" id="termHeader" autocomplete="off" class="inputField_IE" value="" />
+        <input type="text" name="term" id="txtSearchHeader" autocomplete="off" class="inputField_IE" value="" />
     <![endif]-->
     <!--[if gte IE 9]>
-        <input type="text" name="term" id="termHeader" autocomplete="off" class="inputField" value="" />
+        <input type="text" name="term" id="txtSearchHeader" autocomplete="off" class="inputField" value="" />
     <![endif]-->
     <input type="submit" id="btnSubmitSearchHeader" class="submit" />
     <input type="hidden" name="pl" value="hdr_srch_sf_l1" />
 </form>
 <div id="divAutoCompleteTermListHeader" class="divAutoCompleteTermList"></div>
 
+<script type="text/javascript">
+	require(['get!core/searchForm'], function (search) {
+	    search.searchForm({ 
+	        searchFormSlctr: '#searchFormHeader',
+            formSelector: '#searchFormHeader',
+            termSlctr: '#txtSearchHeader',
+            searchTextSelector: '#textSearchHeader',
+            containerSelector: '#divAutoCompleteTermListHeader',
+            submitButton: '#btnSubmitSearchHeader',
+            defaultSearchTerm: '', 
+            site: 1,
+            pageArea: 'hdr'
+        }).init();
+	});
+</script>
 
-    
+
+
             </div>
         
             <div class="headerLiveChat">
                 <a class="helpLink" id="headerLiveChat" href="index.cfm%3Ffuseaction=privacy.html#"><img alt="Need Help?" src='../../cdn2.ebags.com/img/help/btn-needhelp.gif'></a>
-				<div style="display:none">
-					<div id="help-container">
-						<div class="contact-container">
-							
-	<script type="text/javascript">
-		$('#_lpChatBtn').click(function () {
-			$.lightbox.close();
-		});
-	</script>
-	<a id="A1" href='https://sales.liveperson.net/hc/16136262/?cmd=file&amp;file=visitorWantsToChat&amp;site=16136262' target='16136262' onclick="javascript:window.open('https://sales.liveperson.net/hc/16136262/?cmd=file&amp;file=visitorWantsToChat&amp;site=16136262&referrer='+escape(document.location),'Chat16136262','width=475,height=400,resizable=yes');return false;">
-		<span class="help-icon">
-			<div id="lp-Ebags-HelpCenter-div"><img src='../../cdn2.ebags.com/img/LivePerson/eBags/button/reponline.gif' name='' border=0 /></div>			
-		</span>
-		<span class="help-desc">
-			<h1>Live Chat</h1>
-			<p>The Quickest way to get help.</p>
-			<p class="faux-link"><span>Chat with a customer care agent</span></p>
-		</span>
-	</a>
-
-
-						</div>
-						<div class="hr"></div>
-						<div class="contact-container">
-							<span class="help-icon"><img src="../../cdn2.ebags.com/img/help/icon-helpPhone.png" width="70" height="47" border="0" alt="Call Us 24/7" /></span>
-							<span class="help-desc">
-								<h1>Call Us Toll Free 1-800-820-6126</h1>
-								<p><strong>We're available 7am to 10pm MST, Monday – Friday<br />9am to 5pm MST Saturday &amp; Sunday</strong></p>
-							</span>
-						</div>
-						<div class="hr"></div>
-						<div class="contact-container">
-							<a href="http://www.ebags.com/info/index.cfm?fuseaction=contact">
-								<span class="help-icon"><img src="../../cdn2.ebags.com/img/help/icon-helpEmail.png" width="70" height="50" border="0" alt="Email" /></span>
-								<span class="help-desc">
-									<h1>Email</h1>
-									<p>Send us an email. We will reply promptly within one business day.</p>
-									<p class="faux-link"><span>Email your question or comment</span></p>
-								</span>
-							</a>
-							<div class="hr"></div>
-							<div class="contact-container">
-								<a href="http://www.ebags.com/help">
-									<span class="help-icon"><img src="../../cdn2.ebags.com/img/help/icon-helpFAQ.png" width="70" height="56" border="0" alt="FAQ'S" /></span>
-									<span class="help-desc">
-										<h1>Customer Help Center</h1>
-										<p>Find information on Customer Service topics like how to place or track an order, how to return an item, and how to manage your eBags account.</p>
-										<p class="faux-link"><span>Visit our Customer Help Center</span></p>
-									</span>
-								</a>
-							</div>
-							<div class="hr"></div>
-							<div class="contact-container">
-								<a href="http://www.ebags.com/help/index.cfm?fuseaction=suggest&amp;HelpCenter_Link=Suggestions">
-								<span class="help-icon"><img src="../../cdn2.ebags.com/img/help/icon-helpSuggest.png" width="70" height="53" border="0" alt="Have a Suggestion?" /></span>
-								<span class="help-desc">
-									<h1>Have a Suggestion?</h1>
-									<p>Tell us what brands you'd like to see, or let us know how you think we can improve.</p>
-									<p class="faux-link"><span>Send us your suggestion</span></p>
-								</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
             </div>
+
+            <script type="text/javascript">
+                require(['jquery'], function ($) {
+                	$(".helpLink").colorbox({href: '/site/HeaderHelpPopup', close: '', opacity: 0.6, scrolling: false });
+                });
+
+                require(["get!core/lightbox"], function () {
+                    eBags.subscribe("/cart/itemCount", function (newItemCount) {
+                        var lnkHeaderCartItems = $("#lnkHeaderCartItems");
+                        var strCartItemCountText = 'Cart: ' + newItemCount + ' item';
+                        if (newItemCount > 1) {
+                            strCartItemCountText += 's';
+                        }
+                        lnkHeaderCartItems.html(strCartItemCountText);
+                    });
+
+                    eBags.subscribe("/cart/add", function handleQuickViewAddToCart(skuId) {
+                        // Update Count
+                        var lnkHeaderCartItems = $("#lnkHeaderCartItems");
+                        var strCartItemCountText = lnkHeaderCartItems.html();
+                        var strCurrentCount = strCartItemCountText.replace("Cart: ", "").replace(" items", "");
+                        var iCurrentCount = parseInt(strCurrentCount) + 1;
+
+                        strCartItemCountText = 'Cart: ' + iCurrentCount + ' item';
+
+                        if (iCurrentCount > 1) {
+                            strCartItemCountText += 's';
+                        }
+
+                        lnkHeaderCartItems.html(strCartItemCountText);
+
+                        // Track Action
+                        var trackingData = {
+                            events: [eBags.events.cart.add],
+                            pageName: 'QuickView : Add to Cart',
+                            channel: 'Shopping Cart',
+                            prop5: 'Shopping Cart',
+                            eVar8: 'Shopping Cart'
+                        };
+
+                        if (iCurrentCount === 1) {
+                            trackingData.events.push(eBags.events.cart.open);
+                        }
+
+                        eBags.trackPage(trackingData);
+                    });
+                });
+            </script>
             
             
-    <div id="headerDealOfTheDay">
-        <a title="eBags Steal of the Day - one incredible deal, every day" id="lnkDealOfDay" href="index.cfm%3Ffuseaction=privacy.html#"><img  alt="Steal of the Day" src='../../cdn2.ebags.com/img/header/btn_dealoftheday.gif'></a>
-    </div>
-    
-    
-    
 
             <div class="headerRewards">
                 <a title="eBags Blog - Get the scoop on eBags &amp; the bags we sell" class="headerLinkStyle" id="headerRewards_Blog" href="http://blog.eBags.com">Blog</a>
@@ -772,40 +897,62 @@
         
     </div>
 </header>
+<script type="text/javascript">
+	(function () {
+	    var yourDiv = document.getElementById("YourAccountNav");
+	    var accountDiv = document.getElementById("AccountWrap_YourAccount");
+	    var hoverDiv = document.getElementById("divYourAccountHoverContent");
+	    hoverDiv.style.left = ((yourDiv.offsetWidth - accountDiv.offsetWidth) - 5) + "px";
+	}());
+</script>
 
 
 
 <div id="dealbar" class="dealbar" style="position: relative;">
     
-            <img src="../../cdn2.ebags.com/img/sourceids/CP_IMG_BANNER_87361447_20132718445.gif" alt="20% OFF* + Free Shipping on orders over $99! Offer Expires Friday" width="960" height="40"/>
+            <img src="../../cdn2.ebags.com/img/sourceids/CP_IMG_BANNER_29973920_2013215112016.gif" alt="Presidents' Day Sale - 25% OFF* + FREE SHIPPING over $75! Offer Expires Monday, 2/18" width="960" height="40"/>
             
         <div style="position: absolute; right: 0px; top: 15px; width: 200px; height: 25px;">
             <a class="ndbLink" id="ndbLink" style="z-index: 100; position: relative; width: 200px; height: 25px;" href="index.cfm%3Ffuseaction=privacy.html#">
                 <img style="z-index: 100; position: relative; width: 200px; height: 25px; background-color: white;
                     opacity: 0; filter: alpha(opacity=0);" src="../../cdn2.ebags.com/img/spacer.gif"></a>
         </div>
-        
+
+	    <script type="text/javascript">
+	        require(['get!core/lightbox'], function (lightbox) {
+	            lightbox("#ndbLink", {
+	                closeImage: '//cdn2.ebags.com/img/lightbox/btn_lightbox_close.gif',
+                    href: "/help/nondiscountablebrandspopup",
+                    windowLeft: 0
+                });
+	        });
+	    </script>
 
             
 </div>
 
+
 <script type="text/javascript">
-    var navCon = document.getElementById("subSitesMenu");
-    var navTar = document.getElementById("mainNavWrap");
+    require(["jquery"], function($){
+        var navCon = document.getElementById("subSitesMenu");
+        var navTar = document.getElementById("mainNavWrap");
 
-    function fixNavWidth() {
-        navTar.style.opacity = "0";
-        navTar.style.visibility = "hidden";
-        navTar.style.width = "2000px";
+        function fixNavWidth() {
+            navTar.style.opacity = "0";
+            navTar.style.visibility = "hidden";
 
-        navTar.style.width = (navCon.offsetWidth + 1) + "px";
-        navTar.style.opacity = "1";
-        navTar.style.visibility = "visible";
-    }
+            navTar.style.width = (navCon.offsetWidth + 1) + "px";
+            navTar.style.opacity = "1";
+            navTar.style.visibility = "visible";
+        }
 
-    fixNavWidth();
+        fixNavWidth();
+
+        $(function () {
+            $(window).resize(fixNavWidth);
+        });
+    });
 </script>
-
 
 
 
@@ -963,8 +1110,14 @@
 		</p>
 		<p>We always enjoy hearing from you and appreciate your business.</p>
 	</div>
+
+	<script type="text/javascript">
+	    require(['jquery'], function ($) {
+	        $("#lnkPrivacyPolicyVerisign").colorbox({ href: 'https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.ebags.com&lang=en', close: '', opacity: 0.6, scrolling: false });
+	    });
+	</script>
 	
-    
+
 
                 
     
@@ -988,17 +1141,19 @@
             <p>
                 Get exclusive offers, and be the first to hear about new brands, styles and more!</p>
             <div id="email-signup">
-                <form name="quicksignup" action="http://www.ebags.com/members/index.cfm">
-                <input type="Hidden" name="fuseaction" value="generic_customer_insert">
-                <input type="Hidden" name="cust_origin_cd" value="PAGEEND">
-                <input type="Hidden" name="destination" value="emailsignup">
-                <input id="efield" type="text" name="email" value="Enter email address..." onfocus="this.value=''"
-                    size="30">
-                <div id="btn-email-signup">
-                    <input type="image" src="../../cdn2.ebags.com/img/btn-emailSubmit.png" id="submit"
-                        alt="Join Now" /></div>
-                <input type="Hidden" name="em" value="signupnew">
+                
+                    <form name="quicksignup" action="http://www.ebags.com/members/index.cfm">
+                    <input type="Hidden" name="fuseaction" value="generic_customer_insert">
+                    <input type="Hidden" name="cust_origin_cd" value="PAGEEND">
+                    <input type="Hidden" name="destination" value="emailsignup">
+                    <input id="efield" type="text" name="email" value="Enter email address..." onfocus="this.value=''"
+                        size="30">
+                    <div id="btn-email-signup">
+                        <input type="image" src="../../cdn2.ebags.com/img/btn-emailSubmit.png" id="submit"
+                            alt="Join Now" /></div>
+                    <input type="Hidden" name="em" value="signupnew">
                 </form>
+                
             </div>
             <div id="socialnet">
                 <ul>
@@ -1086,102 +1241,51 @@
                 site are the property of their respective owners.
                 <br />
                 eBags USA &copy; 1999 - 2013 eBags, Inc. All rights reserved.<br />
-                W-2013-02-13<br />
+                W-2013-02-16<br />
             </div>
         </div>
         <!-- / footernav -->
     </div>
 </div>
 
-
-
+<script type="text/javascript">
+    require(["jquery"], function () {
+        $("#eb_verisign").click(function (e) {
+            e.preventDefault();
+            window.open('https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.ebags.com&lang=en&toobar=no', '', 'width=525,height=450,resizable=no,scrollbars=yes,status=no,left=111,top=111');
+        });
+    });
+</script>
 
 </div>
 
+<script type="text/javascript">
+    require(['get!microCart/microCart', "get!responsive/touchDetect", 'get!core/certonaRecommender', 'get!core/certonaTracker', "certona"], function (microCart, touchDetect) {
+        microCart({ url: '/cart/AddToPersistentCart' });
+        if (touchDetect.isTouchSupported) {
+            $('body').addClass('touchEnabled');
+        }
+    });
+</script>
 
 
 
 
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/eBags.unified.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Scripts/eBags.pin.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Scripts/eBags.janrain.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/jquery.bgiframe.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Scripts/Catalog/SearchForm.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/jquery.colorbox.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/eBags.lightbox.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/eBags.dropbox.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Utils/JAVASCRIPT/eBags.easyToolTip.min.js%3Fv=1302061300'></script>
-<script src='../../cdn3.ebags.com/Scripts/eBags.microCart.Wombat.min.js%3Fv=1302061300'></script>
-<script>
-eBags(function(){(function($,eBags){eBags.pageLocation=function(){var self={};self.init=function(){$('a[data-pl], input[data-pl]').live('click',function(e){var plValue=self.buildPlValue('data-pl',this);setPlCookie(plValue);});$('a[data-pl-share]').live('click',function(e){var value=$(this).closest('[data-pl-root]');$('[data-pl-share='+$(this).attr('data-pl-share')+']').attr('data-pl-share',value.attr('data-pl-root'));if(value.length>0){var plValue=self.buildPlValue('data-pl-share',this);setPlCookie(plValue);}});};self.buildPlValue=function(name,thisObject){var plValue=$(thisObject).attr(name);if($(thisObject).attr("data-pl-no-index")==undefined){var i=$('['+name+'='+plValue+']').index(thisObject);plValue+=(i+1);}
-return plValue;};return self;};return self;})(jQuery,eBags);eBags.pageLocation().init();(function(){var e=document.createElement('script');e.async=true;e.src=document.location.protocol+'//connect.facebook.net/en_US/all.js';document.getElementById('fb-root').appendChild(e);}());(function($){$('#spnLogin').addClass('fbLogin');})(jQuery);(function($){$('.listPageItemSiActions').show();})(jQuery);eBags.currentPin=eBags.pin().init();janrain.settings.tokenUrl='https://www.ebags.com/account/createwithtoken';janrain.settings.appId='jdijaddhkopnkjjeenha';janrain.settings.appUrl='https://janrain.ebags.com';var e=document.createElement('script');e.type='text/javascript';e.id='janrainAuthWidget';if(document.location.protocol==='https:'){e.src='https://rpxnow.com/js/lib/janrain.ebags.com/engage.js';}else{e.src='http://widget-cdn.rpxnow.com/js/lib/janrain.ebags.com/engage.js';}
-var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(e,s);eBags.flyAway('#subSitesMenu li',{timeout:500,menuHoverClass:'menuItemhover',menuItem:'a.menuItem',topLane:'div.subNav-topLane',container:'div',wrapper:'div.subNavWrapper'});$(function(){var hoverContent=$('#divYourAccountHoverContent');if(hoverContent.length==1){var touchSupported="ontouchend"in document;if(touchSupported){$('#AccountWrap_YourAccount').click(function(e){e.preventDefault();hoverContent.toggle();var isVis=hoverContent.is(":visible");$('#termHeader')[isVis?"blur":"focus"]();}).add(hoverContent);}else{$('#AccountWrap_YourAccount').add(hoverContent).hover(function(){hoverContent.show();$('#termHeader').blur();},function(){hoverContent.hide();$('#termHeader').focus();});}}
-$("#AccountWrap_NotYou").click(function(e){e.preventDefault();var cookies=document.cookie.split(";");for(var i=0;i<cookies.length;i++){var cookie=cookies[i];var eqPos=cookie.indexOf("=");var name=eqPos>-1?cookie.substr(0,eqPos):cookie;document.cookie=name+"=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";document.cookie=name+"=;path=/;domain=ebags.com;expires=Thu, 01 Jan 1970 00:00:00 GMT";document.cookie=name+"=;path=/;domain=.ebags.com;expires=Thu, 01 Jan 1970 00:00:00 GMT";}
-window.location.reload();});});eBags.catalog.searchForm({searchFormSlctr:'#searchFormHeader',formSelector:'#searchFormHeader',termSlctr:'#termHeader',searchTextSelector:'#termHeader',containerSelector:'#divAutoCompleteTermListHeader',submitButton:'#btnSubmitSearchHeader',defaultSearchTerm:'',site:1,pageArea:'hdr'}).init();$(".helpLink").colorbox({inline:true,href:'#help-container',close:'',opacity:0.6,scrolling:false});eBags.subscribe("/cart/itemCount",function(newItemCount){var lnkHeaderCartItems=$("#lnkHeaderCartItems");var strCartItemCountText='Cart: '+newItemCount+' item';if(newItemCount>1){strCartItemCountText+='s';}
-lnkHeaderCartItems.html(strCartItemCountText);});eBags.subscribe("/cart/add",function handleQuickViewAddToCart(skuId){var lnkHeaderCartItems=$("#lnkHeaderCartItems");var strCartItemCountText=lnkHeaderCartItems.html();var strCurrentCount=strCartItemCountText.replace("Cart: ","").replace(" items","");var iCurrentCount=parseInt(strCurrentCount)+1;strCartItemCountText='Cart: '+iCurrentCount+' item';if(iCurrentCount>1){strCartItemCountText+='s';}
-lnkHeaderCartItems.html(strCartItemCountText);var trackingData={events:[eBags.events.cart.add],pageName:'QuickView : Add to Cart',channel:'Shopping Cart',prop5:'Shopping Cart',eVar8:'Shopping Cart'};if(iCurrentCount===1){trackingData.events.push(eBags.events.cart.open);}
-eBags.trackPage(trackingData);});eBags.dropbox('#lnkDealOfDay',{cookie:{name:'dotdId',value:'4696',domain:'www.ebags.com',days:1},autoShowConfig:false,autoCloseSeconds:8,relativeToElem:'#headerDealOfTheDay',container:'.topSection',url:'/Catalog/DealOfTheDayPopup',docWidth:700,subscribe:{linkId:'#lnkSubscribe',serviceUrl:'/WebService/EmailSubscription.asmx',serviceEmailMethod:'ModifyEmailSubscriptionByEmail',serviceCustIdMethod:'ModifyEmailSubscriptionByCustomerId',emailTextbox:'#txtEmail',submitButton:'#btnDotdSubmit',subscribeDivId:'#divEmailSubscription',completeDivId:'#divEmailSubscribeComplete',customerId:'',subscribeType:7,subscribeStatus:3,websiteId:1}},'dotdDefaults');var yourDiv=document.getElementById("YourAccountNav");var accountDiv=document.getElementById("AccountWrap_YourAccount");var hoverDiv=document.getElementById("divYourAccountHoverContent");hoverDiv.style.left=((yourDiv.offsetWidth-accountDiv.offsetWidth)-5)+"px";eBags.lightbox("#ndbLink",{closeImage:'//cdn2.ebags.com/img/lightbox/btn_lightbox_close.gif',href:"/help/nondiscountablebrandspopup",windowLeft:0});$(document).ready(fixNavWidth);$(window).resize(fixNavWidth);$("#lnkPrivacyPolicyVerisign").colorbox({href:'https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.ebags.com&lang=en',close:'',opacity:0.6,scrolling:false});eBags.microCart({url:'/cart/AddToPersistentCart'});if("ontouchend"in document){$('body').addClass('touchEnabled');}
-if($.browser.msie&&$.browser.version==="6.0"){$.colorbox({href:"/site/browserupgrade",close:'',opacity:0.6});}
-function createCookie(name,value,days){var expires;if(days){var date=new Date();date.setTime(date.getTime()+(days*24*60*60*1000));expires="; expires="+date.toGMTString();}
-else expires="";document.cookie=name+"="+value+expires+"; path=/";}
-function readCookie(name){var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0)return c.substring(nameEQ.length,c.length);}
-return null;}
-function eraseCookie(name){createCookie(name,"",-1);}
-function areCookiesEnabled(){var testCookieName="check1";createCookie(testCookieName,"test",1);if(readCookie(testCookieName)!=null){eraseCookie(testCookieName);return true;}
-return false;}
-function logWTV(){var hasCookies=areCookiesEnabled();var visitorId="{NULL}";if(hasCookies){visitorId=readCookie("__VisitorId");if(!visitorId)visitorId="{NULL}";}
-var data=[{WebTrackedVisitor:encodeURIComponent(visitorId)},{CookiesEnabled:encodeURIComponent(hasCookies.toString().toUpperCase())}];eBags.saveUserData(data);}
-logWTV();});
-var lpMTagConfig={'lpServer':'sales.liveperson.net','lpNumber':'16136262','lpProtocol':(document.location.toString().indexOf('https:')==0)?'https':'http','lpTagLoaded':false,'lpTagSrv':'sr2.liveperson.net','pageStartTime':(new Date()).getTime(),'deploymentID':'1'};lpMTagConfig.deploymentConfigPath=lpMTagConfig.lpServer+'/visitor/addons/deploy.asp';lpMTagConfig.lpLoadScripts=function()
-{lpAddMonitorTag(lpMTagConfig.lpProtocol+'://'+lpMTagConfig.deploymentConfigPath+'?site='+lpMTagConfig.lpNumber+'&d_id='+lpMTagConfig.deploymentID);};function lpAddMonitorTag(src)
-{if(!lpMTagConfig.lpTagLoaded)
-{if(typeof(src)=='undefined'||typeof(src)=='object')
-{if(lpMTagConfig.lpMTagSrc)
-{src=lpMTagConfig.lpMTagSrc;}
-else
-{if(lpMTagConfig.lpTagSrv)
-{src=lpMTagConfig.lpProtocol+'://'+lpMTagConfig.lpTagSrv+'/hcp/html/mTag.js';}
-else
-{src='/hcp/html/mTag.js';};};};if(src.indexOf('http')!=0)
-{src=lpMTagConfig.lpProtocol+'://'+lpMTagConfig.lpServer+src+'?site='+lpMTagConfig.lpNumber;}
-else
-{if(src.indexOf('site=')<0)
-{if(src.indexOf('?')<0){src=src+'?';}else{src=src+'&';}
-src=src+'site='+lpMTagConfig.lpNumber;};};var s=document.createElement('script');s.setAttribute('type','text/JavaScript');s.setAttribute('charset','iso-8859-1');s.setAttribute('src',src);document.getElementsByTagName('head').item(0).appendChild(s);}};lpMTagConfig.calculateSentPageTime=function()
-{var t=(new Date()).getTime()-lpMTagConfig.pageStartTime;lpAddVars('page','pageLoadTime',Math.round(t/1000)+' sec');};if(typeof(lpMTagConfig.pageVar)=='undefined'){lpMTagConfig.pageVar=[];}
-if(typeof(lpMTagConfig.sessionVar)=='undefined'){lpMTagConfig.sessionVar=[];}
-if(typeof(lpMTagConfig.visitorVar)=='undefined'){lpMTagConfig.visitorVar=[];}
-if(typeof(lpMTagConfig.onLoadCode)=='undefined'){lpMTagConfig.onLoadCode=[];}
-if(typeof(lpMTagConfig.dynButton)=='undefined'){lpMTagConfig.dynButton=[];}
-if(typeof(lpMTagConfig.ifVisitorCode)=='undefined'){lpMTagConfig.ifVisitorCode=[];}
-function lpAddVars(scope,name,value)
-{if(name.indexOf('OrderTotal')!=-1||name.indexOf('OrderNumber')!=-1)
-{if(value==''||value==0)return;else{lpMTagConfig.sendCookies=false;}}
-value=lpTrimSpaces(value.toString());if(name.length>50){name=name.substr(0,50);}
-if(value.length>50){value=value.substr(0,50);}
-switch(scope)
-{case'page':lpMTagConfig.pageVar[lpMTagConfig.pageVar.length]=escape(name)+'='+escape(value);break;case'session':lpMTagConfig.sessionVar[lpMTagConfig.sessionVar.length]=escape(name)+'='+escape(value);break;case'visitor':lpMTagConfig.visitorVar[lpMTagConfig.visitorVar.length]=escape(name)+'='+escape(value);break;}};function onloadEMT()
-{var LPcookieLengthTest=document.cookie;alert(LPcookieLengthTest.length());if(lpMTag.lpBrowser=='IE'&&LPcookieLengthTest.length>1000)
-{lpMTagConfig.sendCookies=false;}};function lpTrimSpaces(stringToTrim)
-{return stringToTrim.replace(/^\s+|\s+$/g,'');};function lpSendData(varscope,varname,varvalue)
-{if(typeof(lpMTag)!='undefined'&&typeof(lpMTag.lpSendData)!='undefined')
-{lpMTag.lpSendData(varscope.toUpperCase()+'VAR!'+varname+'='+varvalue,true);}};try
-{if(typeof(lpUnit)=='undefined'){var lpUnit='Sales';}
-if(typeof(lpAddVars)!='undefined'){lpAddVars('page','unit',lpUnit);}
-if(typeof(lpLanguage)=='undefined'){var lpLanguage='English';}
-if(typeof(lpAddVars)!='undefined'){lpAddVars('page','language',lpLanguage);}
-lpMTagConfig.defaultInvite='chat'+'-'+lpUnit;}
-catch(e){}
-lpMTagConfig.onLoadCode[lpMTagConfig.onLoadCode.length]=onloadEMT;lpMTagConfig.onLoadCode[lpMTagConfig.onLoadCode.length]=function()
-{if(typeof(lpMTagConfig.dynButton)!='undefined')
-{for(var i=0;i<lpMTagConfig.dynButton.length;++i)
-{if(typeof(lpMTagConfig.dynButton[i].pid)!='undefined'&&document.getElementById(lpMTagConfig.dynButton[i].pid)==null)
-{lpMTagConfig.dynButton.splice(i,1);}}}};lpMTagConfig.onLoadAll=function()
-{lpMTagConfig.calculateSentPageTime();lpMTagConfig.lpLoadScripts();};if(window.attachEvent)
-{window.attachEvent('onload',lpMTagConfig.onLoadAll);}
-else
-{window.addEventListener('load',lpMTagConfig.onLoadAll,false);}
-lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-WorldClassService","pid":"lp-Ebags-WorldClassService-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-SignIn","pid":"lp-Ebags-SignIn-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-ShippingAddress","pid":"lp-Ebags-ShippingAddress-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-Cart","pid":"lp-Ebags-Cart-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-PaymentMethod","pid":"lp-Ebags-PaymentMethod-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-ShowConfirm","pid":"lp-Ebags-ShowConfirm-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-HelpCenter","pid":"lp-Ebags-HelpCenter-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-BillingAddress","pid":"lp-Ebags-BillingAddress-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-GiftCertificate","pid":"lp-Ebags-GiftCertificate-div"};lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Sales-English","pid":"lp-Sales-English-div"};$("#eb_verisign").click(function(e){e.preventDefault();window.open('https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.ebags.com&lang=en&toobar=no','','width=525,height=450,resizable=no,scrollbars=yes,status=no,left=111,top=111');});</script>
+
+<script type="text/javascript">
+    require(["jquery"], function ($) {
+        if ($.browser.msie && $.browser.version === "6.0") {
+            $.colorbox({ href: "/site/browserupgrade", close: '', opacity: 0.6 });
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    require(["get!core/webTrackedVisitor"], function (webTrackedVisitor) {
+        webTrackedVisitor.log();
+    });
+</script>
 
 	<!-- Begin TellApart -->
 	<div id="__cmbDiv" style="display:none"></div>
@@ -1200,8 +1304,7 @@ lpMTagConfig.dynButton[lpMTagConfig.dynButton.length]={"name":"Ebags-WorldClassS
         appendChild(a)}catch(i){}})();
 	</script>
 	<!-- End TellApart -->	
- 
-    
+
     <img src="../../tracking.searchmarketing.com/welcome.asp%3FSMCID=261&amp;x=" width=1 height=1 border="0" >
 
 
@@ -1227,9 +1330,13 @@ s.parentNode.insertBefore(gts, s);
 
     <script type="text/javascript">
         var _gaq = _gaq || [];
+        var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+
+        _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
         _gaq.push(['_setAccount', 'UA-218344-1']);
         _gaq.push(['_setDomainName', 'ebags.com']);
         _gaq.push(['_setCampSourceKey', 'sourceid']);
+
         _gaq.push(['_trackPageview']);
 
         
@@ -1240,7 +1347,9 @@ s.parentNode.insertBefore(gts, s);
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-<link href="../Bundles/20.1.1.22/Content/css/a.css%3FDateTime=2013-02-13T06:12:00.2222431&amp;VisitorId=7BD80843E60EEB4F86A9671E252FB206.css" rel="stylesheet" type="text/css" />
+<link href="../Bundles/20.2.11.1/Content/css/a.css%3FDateTime=2013-02-16T06:08:21.3286757&amp;VisitorId=F975A663E2732B45A2F75E9263B34F49.css" rel="stylesheet" type="text/css" />
+    
+
 
 </body>
 </html>

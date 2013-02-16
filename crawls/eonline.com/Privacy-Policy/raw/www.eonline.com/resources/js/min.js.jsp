@@ -1175,6 +1175,7 @@ eol.create("page", function($) {
         "dart" :  { 
             "site" : "home",
             "zone" : "home", 
+            "networkId" : "",
             "zone2" : "", 
             "keywords" : "", 
             "wid" : "",
@@ -1327,10 +1328,18 @@ eol.create("page", function($) {
         dart.domain = dart.domain || "eonline";
 
         var adEdition = _s.context.locale.advertisements;
+        
+        if(adEdition == "us") {
+        	dart.networkId = "N2620";
+        } else if (adEdition == "au") {
+        	dart.networkId = "";
+        } else {
+        	dart.networkId = "N4295";
+        }
        
         if( !(dart.type || "").match(/^pfadx$/) || (adEdition === "us" || adEdition === "ca" || adEdition === "nz") ) { 
 	        //not used for pfadx ad calls unless the adEdition is us, ca, OR nz
-        	advertisement.push("http://ad.doubleclick.net" + "/" + dart.type + "/" + dart.site + "." + adEdition + "." + dart.domain + "/" + dart.zone );
+        	advertisement.push("http://ad.doubleclick.net" + "/" + (dart.networkId.length > 0 ? dart.networkId + "/" : "") + dart.type + "/" + dart.site + "." + adEdition + "." + dart.domain + "/" + dart.zone );
 	        if ( parseInt(dart.tile,10) === 1 ) {
 	            advertisement.push("dcopt=ist");
 	        }         
@@ -1339,26 +1348,18 @@ eol.create("page", function($) {
 	        advertisement.push("sz=" + dart.sz );
 	        
 	        advertisement.push("akw=" + dart.keywords.replace(" ","").split(",").join(";akw="));
-//	        advertisement.push("akw=" + dart.keywords.replace(" ",""));
 	        advertisement.push("wid=" + dart.wid);
 	        advertisement.push("!category=" + dart.notCategory.split(",").join(";!category=") );
 	        if ( window.__nbcudigitaladops_dtparams ) {
 	            advertisement.push( window.__nbcudigitaladops_dtparams );
 	        }
-	
-	
-	        advertisement.push("u=" + $.map( advertisement.join(";").replace(/^.*?;/g, "").match(/((.*?=).*?;((\2).*?[;$])+)|(.*?[;$])/g), function( e, i ) {
-	            var tmp = e.replace(/(;.*?=)/g, ",").replace("=","*");        
-	            return /(\*;?$)|(^pm\*.*?)|(^dcopt\*.*?)/.test(tmp) ? null : tmp;
-	        }).join("^").replace(/;/g,""));
+
 	        advertisement.push("ord=" + dart.ord);
 	        retVal = advertisement.join(";").replace(/\;\;/,";") + "?";
-	        retVal = retVal.toLowerCase();
         } else if (adEdition === "au") {
         	var publisherId = "7293";
 
         	advertisement.push("http://cdn-static.liverail.com/swf/v4/plugins/pdk/LiveRailPlugin446.swf|LR_PUBLISHER_ID=" + publisherId + "|LR_SCHEMA=vast2|LR_VERTICALS="+dart.domain);
-//        	advertisement.push("http://ad4.liverail.com/?LR_PUBLISHER_ID=" + publisherId + "&LR_SCHEMA=vast2&LR_VERTICALS=" + dart.domain);
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "za") {
         	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0.1");
@@ -1469,7 +1470,7 @@ eol.create("page", function($) {
         $(document).ready(function() {
             $("div.eol-modalwrap, div.eol-modaldropshadow").remove();
             if ( defaults.show ) {
-                $("body").append("<div class='eol-modaldropshadow'>&nbsp;</div><div class='eol-modalwrap' >" + defaults.html + "</div>");
+                $("body").append("<div class='eol-modaldropshadow'> </div><div class='eol-modalwrap' >" + defaults.html + "</div>");
                         
                 $("div.eol-modaldropshadow").css({
                     height: $(document).height() + "px"
@@ -1548,8 +1549,7 @@ eol.create("page", function($) {
 	        }
         } else {
         	$('#HHeader').append('<div id="Skin_Left" class="split_skin ' + args.config.skinScroll + '"></div><div id="Skin_Right" class="split_skin ' + args.config.skinScroll + '"></div>');
-        	//"scroll" selected in template (i.e. the skin "follows" as one scrolls down)
-        	if(args.config.skinScroll === "scroll"){
+        	if(args.config.skinScroll === "fixed"){
         		$('body').css('overflow-x','hidden');
         		$('#Skin_Left').css({'position':'fixed','margin-top':'-95px','margin-left':'-260px'})	
         		$('#Skin_Right').css({'position':'fixed','margin-top':'-95px'});

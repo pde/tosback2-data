@@ -748,7 +748,8 @@ if(e.type=="mouseover"){pX=ev.pageX;pY=ev.pageY;$j(ob).bind("mousemove",track);i
 {var vars=[],hash;var hashes=window.location.href.slice(window.location.href.indexOf('?')+1).split('&');for(var i=0;i<hashes.length;i++)
 {hash=hashes[i].split('=');vars.push(hash[0]);vars[hash[0]]=hash[1];}
 return vars;}
-var params={};var params_rel=$j(this).attr('rel');if(params_rel){params=eval('('+params_rel+')');};var hashidx=getUrlVars()["selectedIndex"];var wrapper=$j('<div class="wrapper"></div>');var pager=$j('<div class="controller"></div>');var span1=$j('<span class="current-slide"></span>');var span3=$j('<span class="static-of"></span>').html("of");var span2=$j('<span class="total-slides"></span>');var controls=$j('<div class="controls"></div>');var leftPaddle=$j('<a name="slideshow:leftpaddle" class="paddle-left" href="javascript:void(0)"> </a>');var rightPaddle=$j('<a name="slideshow:rightpaddle" class="paddle-right" href="javascript:void(0)"> </a>');var slideContainer=this.children('div.slides');var slides=this.children('div.slides').children('div');var allslides=$j('div.slideshow span.total-slides').html(slides.length);var auto=true;if(params.idx){}else{var idx=0;}
+var params={};var params_rel=$j(this).attr('rel');if(params_rel){params=eval('('+params_rel+')');};var hashidx=getUrlVars()["selectedIndex"];var wrapper=$j('<div class="wrapper"></div>');var pager=$j('<div class="controller"></div>');var span1=$j('<span class="current-slide"></span>');var span3=$j('<span class="static-of"></span>').html("of");var span2=$j('<span class="total-slides"></span>');var controls=$j('<div class="controls"></div>');var leftPaddle=$j('<a name="slideshow:leftpaddle" class="paddle-left" href="javascript:void(0)"> </a>');var rightPaddle=$j('<a name="slideshow:rightpaddle" class="paddle-right" href="javascript:void(0)"> </a>');var slideContainer=this.children('div.slides');var slides=this.children('div.slides').children('div');var allslides=$j('div.slideshow span.total-slides').html(slides.length);var auto=true;if(jQuery(this).hasClass('everest')){var auto=false;}
+if(params.idx){}else{var idx=0;}
 if(hashidx){var idx=parseInt(hashidx);auto=false;}
 var idx2=0;var SlideContent='';var hoverStopSlide=params.hoverStopSlide;if(hoverStopSlide=='undefined'||hoverStopSlide==='undefined'||hoverStopSlide==undefined||hoverStopSlide===undefined){hoverStopSlide='true';};if(hoverStopSlide=='false'){slideContainer.mouseover(function(){auto=false;clearTimeout(timeOut);});}
 slides.each(function(index){var slide=jQuery(this);var VarInfo=slide.find('var');if(VarInfo){var ContentURL=jQuery.trim(VarInfo.html());if(ContentURL!=""){slide.load(ContentURL,function(responseText,statusText,xhr){if(statusText=="error")
@@ -4500,7 +4501,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						.embedSWF(
 								"http://www.youtube.com/v/"
 										+ videoId
-										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0&ts="
+										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0&showinfo=0&ts="
 										+ timestamp, objectPlaceholder, "640",
 								"385", "8", null, null, params, atts);
 			}

@@ -26,14 +26,14 @@ body {
 a,a:active,a:visited{color: #3381B7;text-decoration:none;}
 a:hover{text-decoration:underline;}
 .hrGray {
-    background: url(assets/horizontalbar.gif) no-repeat scroll center top transparent;
+    background: url(assets/Default/horizontalbar.gif) no-repeat scroll center top transparent;
     height: 1px;
     margin: 13px auto 0;
     width: 720px;
 }
 
 .closeWidgetModal {
-    background: url(assets/closeModal.png) no-repeat scroll 100% 50% transparent;
+    background: url(assets/common/closeModal.png) no-repeat scroll 100% 50% transparent;
     display: block;
     line-height: 20px;
     padding: 0 25px 0 0 !important;
@@ -65,7 +65,7 @@ a:hover{text-decoration:underline;}
 	height:194px; /***** with sweepstakes height height:194px; no sweeps 163px; ****/
 	float: left;
 	margin: 0;
-	background:url(assets/leftNavbg.png) no-repeat left bottom;
+	background:url(assets/Default/leftNavbg.png) no-repeat left bottom;
 }
 #navList li {
 	list-style: none;
@@ -74,7 +74,7 @@ a:hover{text-decoration:underline;}
 	float: left;
 }
 #navList > li > a {
-	background:url(assets/leftNavPassive.png) no-repeat 95% 52%;
+	background:url(assets/Default/leftNavPassive.png) no-repeat 95% 52%;
 	text-decoration: none;
 	color:#3381B7;
 	padding: 6px 0 5px 20px;
@@ -88,7 +88,7 @@ a:hover{text-decoration:underline;}
 #hidden{font: 17px Arial, Helvetica, sans-serif !important;}
 
 #navList > li > a:hover {
-	background:url(assets/leftNavActive.png) no-repeat left top;
+	background:url(assets/Default/leftNavActive.png) no-repeat left top;
 	z-index:102;
 	position:relative;
 	color:#333;
@@ -98,10 +98,16 @@ a:hover{text-decoration:underline;}
 	position: absolute;
 	top: -18px;
 	left: 170px;
-	background:url(assets/traybg.png) no-repeat left top;
 	width:749px;
 	height:547px;
 }
+#navList li > ul {
+background:url(assets/Default/traybg.png) no-repeat left top;
+}
+#navList li > ul.twoup {
+ background:url(assets/Default/traybg2up.png) no-repeat left top !important;
+}
+
 .listTab {
 	z-index: 100;
 	position:absolute;
@@ -111,6 +117,9 @@ a:hover{text-decoration:underline;}
 	margin:4px 0px 0px 11px;
 	height:525px;
 	width:708px;
+	}
+.listTabContent2up{
+	height:325px;
 	}
 	
 .sweepstakes{
@@ -137,7 +146,7 @@ a:hover{text-decoration:underline;}
 	display: block;
 }
 #opener{
-	background: url(assets/giftcentersprite.png) no-repeat scroll 0 0 transparent;
+	background: url(assets/Default/giftcentersprite.png) no-repeat scroll 0 0 transparent;
     height: 68px;
     width: 183px;
 	text-align:left !important;
@@ -191,7 +200,7 @@ a:hover{text-decoration:underline;}
     text-align: left;
 }
 .leftLineCTA {
-    background: url(assets/verticalbar.gif) no-repeat scroll left top transparent;
+    background: url(assets/Default/verticalbar.gif) no-repeat scroll left top transparent;
 }
 .leftLineCTA .pricesCTA{padding-left:8px !important;}
 .pricesCTA {
@@ -254,7 +263,7 @@ sup.tm, sup.sm {
     font-size: 54%;
     top: -0.6em;
 }
-.legalgeneral{position:relative;left:40px;top:5px;color:#999;clear:both;}
+.legalgeneral{position:relative;left:40px;top:5px;color:#999;clear:both;width: 620px;}
 </style>
 
 <!--[if lte IE 8]>
@@ -315,14 +324,14 @@ sup.tm, sup.sm {
 		$('#navList li').hover(function() { 
 			clearTimeout(timeoutwidget);
 			$(this).find('ul:first').show();
-			$(this).find('a:first').css({background:'url(assets/leftNavActive.png) no-repeat left top'});
+			$(this).find('a:first').css({background:'url(assets/Default/leftNavActive.png) no-repeat left top'});
 			$(this).find('a:first').css({color:'#333'});
 			jQuery('.holidayWidgetDIV iframe',top.document).width(900);
 			jQuery('.holidayWidgetDIV iframe',top.document).height(900);
 			
   		}, function() {
     		$(this).find('ul:first').hide();
-			$(this).find('a:first').css({background: 'url(assets/leftNavPassive.png) no-repeat 85% 52%'});
+			$(this).find('a:first').css({background: 'url(assets/Default/leftNavPassive.png) no-repeat 85% 52%'});
 			
 			$('#hidden').html($(this).find('a:first').text());
 			$(this).find('a:first').css({backgroundPosition: $('#hidden').width()+26});
@@ -341,7 +350,7 @@ sup.tm, sup.sm {
 		
 		$('#navList li > a').focusin(function(){
 			$(this).parent().parent().find('ul.listTab').hide();
-			$(this).parent().parent().find('li > a').css({background: 'url(assets/leftNavPassive.png) no-repeat 95% 52%'});
+			$(this).parent().parent().find('li > a').css({background: 'url(assets/Default/leftNavPassive.png) no-repeat 95% 52%'});
 			$('#navList > li').each(function(){
 				$('#hidden').html($(this).find('a:first').text());
 				$(this).find('a:first').css({backgroundPosition: $('#hidden').width()+26});
@@ -351,7 +360,7 @@ sup.tm, sup.sm {
 			jQuery('.holidayWidgetDIV iframe',top.document).width(900);
 			jQuery('.holidayWidgetDIV iframe',top.document).height(900);
 			$(this).parent().find('ul:first').show();
-			$(this).parent().find('a:first').css({background:'url(assets/leftNavActive.png) no-repeat left top'});
+			$(this).parent().find('a:first').css({background:'url(assets/Default/leftNavActive.png) no-repeat left top'});
 			$(this).parent().find('a:first').css({color:'#333'});
 		});
 	});
@@ -367,12 +376,14 @@ sup.tm, sup.sm {
 				}
 			}
 			preload(
-				//'assets/sweepstakes/sweepstakes-background.jpg',
-				'assets/traybg.png',
-				'assets/leftNavbg.png',
-				'assets/leftNavActive.png',
-				'assets/leftNavPassive.png',
-				'assets/giftcentersprite.png'
+				//Theme is Default Shopping Express
+				'assets/Default/giftcentersprite.png',
+				'assets/Default/leftNavbg.png',
+				'assets/Default/traybg2up.png',
+				'assets/Default/traybg.png',
+				'assets/Default/leftNavActive.png',
+				'assets/Default/leftNavPassive.png'
+				
 			);
 	</script>
     <script src="../../../../1.ecom.attccc.com/webtrends/scripts/dcs_tag_TOP.js" type="text/javascript"></script>
@@ -408,10 +419,10 @@ sup.tm, sup.sm {
               <a onclick="return false" class="closeWidgetModal" href="index.html#Close">Close</a>
                 
                 <div class="graphicTitle" style="width:234px;height:90px;">
-                    <div><img alt="Share the love" src="assets/1-Apple/headline-apple.jpg"></div>
-                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Give your sweetheart a heartfelt gift.</p></div> 
+                    <div><img alt="The search is over" src="assets/1-Apple/headline-apple.jpg"></div>
+                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Find your favorite Apple&reg; phones and tablets.</p></div> 
                     <div class="ctabuttonimagebottom" style="position:relative;top:20px;"> 
-                        <a target="_top" class="pricesCTA appleShopGifts" href="http://www.att.com/shop/en/wireless/giftguide.html?source=ICHG250010000000L&wtExtndSource=valapple&tab=2" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetApplePg','DCSext.wtLinkName','Shop Apple Gifts','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Apple" src="assets/common/btn-shop-Apple-grn29.gif"></a> 
+                        <a target="_top" class="pricesCTA appleShopGifts" href="http://www.att.com/shop/wireless/devices/apple.html?source=ICHG250010000000L&wtExtndSource=febapple" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetApplePg','DCSext.wtLinkName','Shop Apple','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Apple" src="assets/common/btn-shop-Apple-grn29.gif"></a> 
                     </div> 
                 </div>
                 
@@ -419,12 +430,12 @@ sup.tm, sup.sm {
                 <div class="pricesTileWrapper"> 
                     <div class="pricesTile" style="top:30px;position:relative"> 
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink" style="font-size:22px">iPhone<sup>&reg;</sup> 5</div> 
-                            <div class="pricesTileText"><p>Features a 4-inch Retina<sup>&trade;</sup> display, an 8-megapixel camera, iOS 6, and iCloud.</p></div> 
+                            <div class="pricesTileHeadlineNoLink" style="font-size:22px">iPhone<sup>&reg;</sup> 5</div>
+                            <div class="pricesTileText"><p>Features a 4-inch Retina<sup>&reg;</sup> display, an 8MP camera, iOS 6<sup>&reg;</sup>, and iCloud<sup>&reg;</sup>.</p></div> 
                             <div class="startingFrom">Starting at</div> 
                             <div class="pricesTilePrice">$199.99<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA" > 
-                                <a target="_top" class="pricesCTA iPhone5" href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html?source=ICHG250010000000L&wtExtndSource=valiphone5" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetApplePg','DCSext.wtLinkName','Shop Now iPhone 5','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA iPhone5" href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html?source=ICHG250010000000L&wtExtndSource=valiphone5" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetApplePg','DCSext.wtLinkName','Shop Now iPhone 5','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
@@ -433,17 +444,17 @@ sup.tm, sup.sm {
                 <div style="clear:both" class="clear"></div> 
                 <div class="hrGray"></div>
                 <div class="promo1Box">
-                    <img src="assets/apple/promo1-iPad-mini.jpg" alt="iPad Mini">
+                    <img src="assets/1-Apple/promo1-iPad-mini.jpg" alt="iPad Mini">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                         <div class="linkBlock">  
                             <div class="pricesTileHeadlineNoLink"><br/>iPad<sup>&reg;</sup> Mini </div> 
-                            <div class="pricesTileText"><p>Combines a 7.9-inch display, iSight&reg;, and FaceTime&reg; cameras.<br /><br /></p></div> 
+                            <div class="pricesTileText"><p>Combines a 7.9-inch display, iSight<sup>&reg;</sup>, and FaceTime<sup>&reg;</sup> cameras.<br /><br /></p></div> 
                            <div class="startingFrom" style="height:10px;">Starting at</div> 
                             <div class="pricesTilePrice">$359.99<sup>**</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html?source=ICHG250010000000L&wtExtndSource=valipadmini" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetApplePg','DCSext.wtLinkName','Shop Now iPad Mini','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html?source=ICHG250010000000L&wtExtndSource=valipadmini" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetApplePg','DCSext.wtLinkName','Shop Now iPad Mini','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
@@ -457,10 +468,10 @@ sup.tm, sup.sm {
                         <div class="linkBlock"> 
                             <div class="pricesTileHeadlineNoLink"><br />iPhone 4</div> 
                             <div class="pricesTileText"><p>Includes a high-resolution Retina display, 5MP iSight camera, iOS 6, and iCloud.</p></div>
-                            <div class="startingFrom" style="height:10px;">Starting at</div> 
+                            <div class="startingFrom" style="height:10px;">Only</div> 
                             <div class="pricesTilePrice">99&cent;<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA iPhone4S" href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html?source=ICHG250010000000L&wtExtndSource=valiphone4" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetApplePg','DCSext.wtLinkName','Shop Now iPhone 4','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                                <a target="_top" class="pricesCTA iPhone4S" href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html?source=ICHG250010000000L&wtExtndSource=valiphone4" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetApplePg','DCSext.wtLinkName','Shop Now iPhone 4','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
                                 <img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif">
                                 </a> 
                             </div> 
@@ -471,6 +482,7 @@ sup.tm, sup.sm {
                 <div class="legalgeneral" style="top:0px;">
                 *New 2-yr agreement with qualifying voice and data plan required.<br/>
 				**Month to Month pricing. Req. new activation and qualifying monthly data plan. Activation fee may apply.
+
                 </div>
             </div>
             <!--/subnav content-->
@@ -487,31 +499,27 @@ sup.tm, sup.sm {
               <a onclick="return false" class="closeWidgetModal" href="index.html#Close">Close</a>
                 
                 <div class="graphicTitle" style="width:234px;height:90px;">
-                    <div><img alt="Must-loved finds" src="assets/2-Best-Deals/headline-best-deals.jpg"></div>
-                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Find our sweetest deals all in one place.</p></div> 
+                    <div><img alt="Don't miss out" src="assets/2-Best-Deals/headline-best-deals.jpg"></div>
+                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Pick up our best deals all in one place.</p></div> 
                     <div class="ctabuttonimagebottom" style="position:relative;top:20px;"> 
-                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/en/wireless/giftguide.html?source=ICHG250010000000L&wtExtndSource=valdeals&tab=1" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetBestDealsPg','DCSext.wtLinkName','Shop Best Deals','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
-                        <img alt="Shop Phone Deals" src="assets/common/btn-shop-best-deals-grn29.gif">
+                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/special-offers.html?source=ICHG250010000000L&wtExtndSource=febbestdeals" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetBestDealsPg','DCSext.wtLinkName','Shop Best Deals','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                        <img alt="Shop Best Deals" src="assets/2-Best-Deals/btn-shop-best-deals-grn29.gif">
                         </a> 
                     </div> 
                 </div>
                 
-                <div class="heroImage"><img src="assets/2-Best-Deals/hero-SAM-Captivate-Glide.jpg" alt="Samsung Captivate Glide"></div>
+                <div class="heroImage"><img src="assets/2-Best-Deals/hero-htc-one-vx-red.jpg" alt="HTC One VX Red"></div>
                 <div class="pricesTileWrapper"> 
                     <div class="pricesTile" style="top:30px;position:relative"> 
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLinkRating" style="font-size:22px">Samsung Captivate<sup>&trade;</sup> Glide</div> 
-                            <div class="starRating">
-                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html?tab=3&source=ICHG250010000000L&wtExtndSource=valstarratincapglide"><img border="0" alt="There are 200 reviews for this product" src="assets/star-rating/hm-widget-star-pink-4-half.jpg" /></a>
-                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html?tab=3&source=ICHG250010000000L&wtExtndSource=valstarratincapglide" class="ratingTxt">(200)</a>
-                               
-                            </div>
-                            <div style="clear:both" class="clear"></div>
-                            <div class="pricesTileTextRating"><p>Features a Super AMOLED<sup>&trade;</sup> display, QWERTY keyboard, and fast processor.</p></div>  
+                            <div class="pricesTileHeadlineNoLink" style="font-size:22px">HTC One<sup>&trade;</sup> VX - Red</div> 
+                            
+                            
+                            <div class="pricesTileText"><p>5MP camera with HTC ImageSense<sup>&trade;</sup> and VideoPic for taking photos even while shooting video.</p></div>  
                             <div class="startingFrom">&nbsp;</div> 
                             <div class="pricesTilePrice">99&cent;<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/samsung/captivate-glide-black.html?source=ICHG250010000000L&wtExtndSource=valglide" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetBestDealsPg','DCSext.wtLinkName','Shop Now Samsung Captivate','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/htc/one-vx-red.html?source=ICHG250010000000L&wtExtndSource=valhtcredvx" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetBestDealsPg','DCSext.wtLinkName','Shop Now HTC One VX - Red','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
@@ -521,17 +529,17 @@ sup.tm, sup.sm {
                 <div class="hrGray"></div>
                 
                 <div class="promo1Box">
-                    <img src="assets/2-Best-Deals/promo1-LG-Xpression.jpg" alt="LG Xpression">
+                    <img src="assets/2-Best-Deals/promo1-Pan-Burst.jpg" alt="Pantech Burst">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink"><br />LG Xpression<sup>&trade;</sup></div>
-                            <div class="pricesTileText"><p>Features slide-out QWERTY keyboard for fast texting and email.<br/><br/><br/></p></div> 
+                            <div class="pricesTileHeadlineNoLink"><br />Pantech Burst<sup>&trade;</sup></div>
+                            <div class="pricesTileText"><p>Combines Android<sup>&trade;</sup> OS, 4G LTE capability, and a 4&quot; Super AMOLED<sup>&trade;</sup> screen.</p></div> 
                             <div class="startingFrom">&nbsp;</div> 
                             <div class="pricesTilePrice">99&cent;<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/lg/xpression-red.html?source=ICHG250010000000L&wtExtndSource=valexpression" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetBestDealsPg','DCSext.wtLinkName','Shop Now LG Xpression','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/pantech/burst-ruby-red.html?source=ICHG250010000000L&wtExtndSource=valburst" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetBestDealsPg','DCSext.wtLinkName','Shop Now Pantech Burst','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                             
                         </div>  
@@ -540,18 +548,18 @@ sup.tm, sup.sm {
                 </div>
                 
                 <div class="promo2Box">
-                	<img src="assets/2-Best-Deals/promo2-htc-one-vx-red.jpg" alt="HTC One VX - Red">
+                	<img src="assets/2-Best-Deals/promo2-LG-Xpression.jpg" alt="LG Xpression">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                     
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink"><br />HTC One<sup>&trade;</sup> VX - Red</div> 
-                            <div class="pricesTileText"><p>5MP camera with HTC ImageSense<sup>&trade;</sup> and VideoPic for taking photos even while shooting video.</p></div> 
+                            <div class="pricesTileHeadlineNoLink"><br />LG Xpression<sup>&trade;</sup></div> 
+                            <div class="pricesTileText"><p>Features slide-out QWERTY keyboard for fast texting and email.<br/><br/></p></div> 
                             <div class="startingFrom">&nbsp;</div> 
                             <div class="pricesTilePrice">99&cent;<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/htc/one-vx-red.html?source=ICHG250010000000L&wtExtndSource=valhtcredvx" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetBestDealsPg','DCSext.wtLinkName','Shop Now HTC One VX - Red','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/lg/xpression-red.html?source=ICHG250010000000L&wtExtndSource=valexpression" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetBestDealsPg','DCSext.wtLinkName','Shop Now LG Xpression','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
                                 	<img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif">
                                 </a> 
                             </div> 
@@ -577,21 +585,21 @@ sup.tm, sup.sm {
               <a onclick="return false" class="closeWidgetModal" href="index.html#Close">Close</a>
                 
                 <div class="graphicTitle" style="width:234px;height:90px;">
-                    <div><img alt="Turn on the charm" src="assets/3-Accessories/headline-acessories.jpg"></div>
-                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Treat your one and only to more than one accessory.</p></div> 
+                    <div><img alt="Complete the look" src="assets/3-Accessories/headline-acessories.jpg"></div>
+                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Browse our selection of top-rated accessories.</p></div> 
                     <div class="ctabuttonimagebottom" style="position:relative;top:20px;"> 
-                        <a target="_top" class="pricesCTA accessoriesShopGifts" href="http://www.att.com/shop/en/wireless/giftguide.html?source=ICHG250010000000L&wtExtndSource=valaccessories&tab=3" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetAccessoriesPg','DCSext.wtLinkName','Shop Accessory Gifts','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Accessories" src="assets/common/btn-shop-accessories-grn29.gif"></a> 
+                        <a target="_top" class="pricesCTA accessoriesShopGifts" href="http://www.att.com/shop/wireless/accessories.html?source=ICHG250010000000L&wtExtndSource=febaccys" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetAccessoriesPg','DCSext.wtLinkName','Shop Accessories','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Accessories" src="assets/3-Accessories/btn-shop-accessories-grn29.gif"></a> 
                     </div> 
                 </div>
                 
-                <div class="heroImage"><img src="assets/3-Accessories/hero-Otter-Box.jpg" alt="Otterbox Case"></div>
+                <div class="heroImage"><img src="assets/3-Accessories/hero-buy3-access.jpg" alt="Buy 3 Accessories"></div>
                 <div class="pricesTileWrapper"> 
                     <div class="pricesTile" style="top:30px;position:relative"> 
                     	<div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink" style="font-size:22px">Sweeten the deal</div> 
-                            <div class="pricesTileText"><p>Buy any case and get 25% off any car charger.***</p></div>
+                            <div class="pricesTileHeadlineNoLink" style="font-size:22px">Save more. <br/>Pay less.</div> 
+                            <div class="pricesTileText"><p>Buy 3 accessories and save <br/>20% off! *</p></div>
                             
-                            <a style="top:28px;" target="_top" href="http://www.att.com/shop/wireless/accessories/cases.html?source=ICHG250010000000L&wtExtndSource=valaccyoffer" class="pricesCTA noPrice" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Accessories Offer','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                            <a style="top:28px;" target="_top" href="http://www.att.com/shop/wireless/accessories/cases.html?source=ICHG250010000000L&wtExtndSource=febaccyoffer" class="pricesCTA noPrice" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Accessories Offer','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
                             	<img src="assets/common/btn-shop-now-blu24.gif" alt="Shop Now" />
                             </a> 
                         </div>
@@ -602,41 +610,43 @@ sup.tm, sup.sm {
                 <div style="clear:both" class="clear"></div> 
                 <div class="hrGray"></div>
                 <div class="promo1Box">
-                    <img src="assets/3-Accessories/promo1-Cookoo-Watch.jpg" alt="iFrogz Boost Near Field Audio Speaker">
+                    <img src="assets/3-Accessories/promo1-iPhone-access.jpg" alt="iPhone Accessories">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink"><br/>CooKoo Watch</div> 
-                            <div class="pricesTileText"><p>A smartwatch that manages your phone, apps, and social networks.</p></div> 
-                            <div class="startingFrom">&nbsp;</div> 
-                            <div class="pricesTilePrice">$129.00</div> 
-                            <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA ifrogsBoost" href="http://www.att.com/shop/wireless/accessories/appcessories/sku6370236.html?source=ICHG250010000000L&wtExtndSource=valcookoo" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Cookoo Watch','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                            <div class="pricesTileHeadlineNoLink"><br/>iPhone Accessories</div> 
+                            <div class="pricesTileText" style=""><p>Add some mobile flair to your iPhone.*<br /></p>
+                            	<a style="top:36px;" target="_top" href="http://www.att.com/shop/wireless/accessories/iphone-accessories.html?source=ICHG250010000000L&wtExtndSource=iphoneaccy" class="pricesCTA noPrice" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Tablet Sale','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                            	<img src="assets/common/btn-shop-now-blu24.gif" alt="Shop Now" />
+                               </a>
                             </div> 
+                            
+                            
                         </div>  
                         <div class="clear"></div> 
                     </div> 
                 </div>
                 
-                <div class="promo2Box"><img src="assets/3-Accessories/promo2-Skullcandy-Merge-earbud.jpg" alt="Skullcandy Merge Stereo Earbuds"></div>
+                <div class="promo2Box"><img src="assets/3-Accessories/promo2-Jawbone-Jambox.jpg" alt="Bluetooth Speaker – Jawbone Jambox"></div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                     
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink">Skullcandy Merge<br /> Stereo Earbuds</div> 
-                            <div class="pricesTileText"><p>Features multiple, in-canal ear bud tip sizes, to fit any ear.</div> 
+                            <div class="pricesTileHeadlineNoLink">Bluetooth<sup>&reg;</sup> Speaker - Jawbone Jambox</div> 
+                            <div class="pricesTileText"><p>Experience stunning hi-fi audio in a portable wireless speaker.</div> 
                             <div class="startingFrom">&nbsp;</div> 
-                            <div class="pricesTilePrice">$30.00</div> 
+                            <div class="pricesTilePrice">$129.99</div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA scoscheRevolt" href="http://www.att.com/shop/wireless/accessories/audio/sku6200412.html?source=ICHG250010000000L&wTExtndSource=valsteroearbuds" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Skullcandy Earbuds','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA scoscheRevolt" href="http://www.att.com/shop/wireless/accessories/audio/sku6290223.html?source=ICHG250010000000L&wtExtndSource=jawboneaccy" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetAccessoriesPg','DCSext.wtLinkName','Shop Now Jawbone Jambox','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
                     </div> 
                 </div>
                 <div class="legalgeneral" style="top:10px;">
-                ***Offer ends 2/14/2013. While promotional supplies last. Discount will be automatically applied to shopping cart.
+                *Savings reflected in the cart when all qualifications are met. Qualifying items include cases, screen protectors, and chargers. While supplies last. Offer subject to Change. Offer available online only.
+                
 
                 </div> 
             </div>
@@ -653,16 +663,16 @@ sup.tm, sup.sm {
               <a onclick="return false" class="closeWidgetModal" href="index.html#Close">Close</a>
                 
                 <div class="graphicTitle" style="width:234px;height:90px;">
-                    <div><img alt="Tablet for two" src="assets/4-Tablets/headline-tablet.jpg"></div>
-                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Connect with the ones you love.</p></div> 
+                    <div><img alt="Meet your match" src="assets/4-Tablets/headline-tablet.jpg"></div>
+                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Find the tablet that's right for you.</p></div> 
                     <div class="ctabuttonimagebottom" style="position:relative;top:20px;"> 
-                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/wireless/devices/tablets.html?source=ICHG250010000000L&wtExtndSource=valtablets" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTabletsPg','DCSext.wtLinkName','Shop Tablet Gifts','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
-                        <img alt="Shop Tablets" src="assets/common/btn-shop-tablets-grn29.gif">
+                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/wireless/devices/tablets.html?source=ICHG250010000000L&wtExtndSource=febtablets" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTabletsPg','DCSext.wtLinkName','Shop Tablet Gifts','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                        <img alt="Shop Tablets" src="assets/4-Tablets/btn-shop-tablets-grn29.gif">
                         </a> 
                     </div> 
                 </div>
                 
-                <div class="heroImage"><img src="assets/4-Tablets/hero-Lenovo-Idea-Tab.jpg" alt="$99.99**"></div>
+                <div class="heroImage"><img src="assets/4-Tablets/hero-Lenovo-Idea-Tab.jpg" alt="Lenovo IdeaTab A2107"></div>
                 <div class="pricesTileWrapper"> 
                     <div class="pricesTile" style="top:30px;position:relative"> 
                         <div class="linkBlock">  
@@ -671,7 +681,7 @@ sup.tm, sup.sm {
                             <div class="startingFrom">&nbsp;</div> 
                             <div class="pricesTilePrice">$99.99<sup>**</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html?source=ICHG250010000000L&wtExtndSource=vallenovojack" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTabletsPg','DCSext.wtLinkName','Shop Now Lenovo IdeaTab','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html?source=ICHG250010000000L&wtExtndSource=feblenovojack" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTabletsPg','DCSext.wtLinkName','Shop Now Lenovo IdeaTab','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
@@ -682,19 +692,19 @@ sup.tm, sup.sm {
                 
                 
                 <div class="promo1Box">
-                    <img src="assets/4-Tablets/promoX-SAM-Galaxy-2-10-1.jpg" alt="Tablets">
+                    <img src="assets/4-Tablets/promo1-SAM-Galaxy-2-10-1.jpg" alt="Samsung Galaxy Tab 2">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
-                        <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink"><br/>$100 Off Tablet Sale</div> 
-                            <div class="pricesTileText" style=""><p>Buy any tablet with a new 2-year data plan and get $100 off. ***<br /></p>
-                            	<a style="top:36px;" target="_top" href="http://www.att.com/shop/wireless/devices/tablets.html?source=ICHG250010000000L&wtExtndSource=valtabletoffer" class="pricesCTA noPrice" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTabletsPg','DCSext.wtLinkName','Shop Now Tablet Sale','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
-                            	<img src="assets/common/btn-shop-now-blu24.gif" alt="Shop Now" />
-                               </a>
+                    
+                        <div class="linkBlock"> 
+                            <div class="pricesTileHeadlineNoLink"><br/>Samsung Galaxy Tab<sup>&reg;</sup> 2</div> 
+                            <div class="pricesTileText"><p style="width:225px;">Features a 10.1&quot; touchscreen, and 1.5 GHz dual-core processor.</p></div> 
+                            <div class="startingFrom">&nbsp;</div> 
+                            <div class="pricesTilePrice">$399.99<sup>**</sup></div> 
+                            <div class="ctabuttonimagebottom leftLineCTA"> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html?source=ICHG250010000000L&wtExtndSource=febgx2101tab" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTabletsPg','DCSext.wtLinkName','Shop Now Pantech Element','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
-                            
-                            
                         </div>  
                         <div class="clear"></div> 
                     </div> 
@@ -705,23 +715,22 @@ sup.tm, sup.sm {
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
-                    
-                        <div class="linkBlock"> 
-                            <div class="pricesTileHeadlineNoLink"><br/>Pantech Element<sup>&trade;</sup></div> 
-                            <div class="pricesTileText"><p style="width:225px;">This slim waterproof tablet design features an 8&quot; HD display.</p></div> 
-                            <div class="startingFrom">&nbsp;</div> 
-                            <div class="pricesTilePrice">$199.99<sup>**</sup></div> 
-                            <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/pantech/element-black.html?source=ICHG250010000000L&wtExtndSource=valpantech" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTabletsPg','DCSext.wtLinkName','Shop Now Pantech Element','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                        <div class="linkBlock">  
+                            <div class="pricesTileHeadlineNoLink"><br/>$100 Off Tablet Sale</div> 
+                            <div class="pricesTileText" style=""><p>Buy any tablet with a new 2-year data plan and get $100 off. ***<br /></p>
+                            	<a style="top:36px;" target="_top" href="http://www.att.com/shop/wireless/devices/tablets.html?source=ICHG250010000000L&wtExtndSource=feb100tablets" class="pricesCTA noPrice" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTabletsPg','DCSext.wtLinkName','Shop Now Tablet Sale','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                            	<img src="assets/common/btn-shop-now-blu24.gif" alt="Shop Now" />
+                               </a>
                             </div> 
+                            
+                            
                         </div>  
                         <div class="clear"></div> 
                     </div> 
                 </div>
                 <div class="legalgeneral" style="top:10px;">
                 **2-yr contract and month-to-month pricing require new activation and qualifying monthly data plan. Activation fee applies.<br/>
-				***Offer ends Feb. 14, 2013. New 2-yr agreement with qualified data or Mobile Share plan req'd. Other charges and restrictions apply.
-
+				***Price effective Feb. 15, 2013.
                 </div> 
             </div>
             <!--/subnav content-->
@@ -739,23 +748,23 @@ sup.tm, sup.sm {
               <a onclick="return false" class="closeWidgetModal" href="index.html#Close">Close</a>
                 
                 <div class="graphicTitle" style="width:234px;height:90px;">
-                    <div><img alt="To: You From: Me" src="assets/5-Top-Picks/headline-top-picks.jpg"></div>
-                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Find the gift you'll love to give.</p></div> 
+                    <div><img alt="Mobile must-haves" src="assets/5-Top-Picks/headline-top-picks.jpg"></div>
+                    <div class="pricesTileText" style="text-align: left;width: 197px;"><p class="marginal">Shop our collection of phones and tablets.</p></div> 
                     <div class="ctabuttonimagebottom" style="position:relative;top:20px;"> 
-                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/en/wireless/giftguide.html?source=ICHG250010000000L&wtExtndSource=valphones&tab=1" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTopPicksPg','DCSext.wtLinkName','Shop Top Picks','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
-                        <img alt="Shop Phones &amp; Tablet Gifts" src="assets/common/btn-shop-top-picks-grn29.gif">
+                        <a target="_top" class="pricesCTA phonesTabletsShopGifts" href="http://www.att.com/shop/wireless/devices/smartphones.html?source=ICHG250010000000L&wtExtndSource=febtoppicks" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTopPicksPg','DCSext.wtLinkName','Shop Top Picks','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                        <img alt="Shop Top Picks" src="assets/5-Top-Picks/btn-shop-top-picks-grn29.gif">
                         </a> 
                     </div> 
                 </div>
                 
-                <div class="heroImage"><img src="assets/5-Top-Picks/hero-samsung-galaxy-s-III.jpg"></div>
+                <div class="heroImage"><img alt="Samsung Galaxy S III" src="assets/5-Top-Picks/hero-samsung-galaxy-s-III.jpg"></div>
                 <div class="pricesTileWrapper"> 
                     <div class="pricesTile" style="top:30px;position:relative"> 
                         <div class="linkBlock">  
                             <div class="pricesTileHeadlineNoLinkRating" style="font-size:22px">Samsung <br/>Galaxy S<sup>&reg;</sup> III</div>
                             <div class="starRating">
-                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&source=ICHG250010000000L&wtExtndSource=valstarratings3"><img alt="There are 1307 reviews for this product" style="float:left" border="0" src="assets/star-rating/hm-widget-star-pink-4-half.jpg"></a>
-                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&source=ICHG250010000000L&wtExtndSource=valstarratings3" class="ratingTxt">(1307)</a>
+                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&source=ICHG250010000000L&wtExtndSource=valstarratings3"><img alt="There are 1441 reviews for this product" style="float:left" border="0" src="assets/star-rating/hm-widget-star-pink-4-half.jpg"></a>
+                                <a style="float:left" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?tab=4&source=ICHG250010000000L&wtExtndSource=valstarratings3" class="ratingTxt">(1441)</a>
                                
                             </div>
                             <div style="clear:both" class="clear"></div>
@@ -763,7 +772,7 @@ sup.tm, sup.sm {
                             <div class="startingFrom">&nbsp;</div> 
                             <div class="pricesTilePrice">$199.99<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?source=ICHG250010000000L&wtExtndSource=valsamsunggalx3" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTopPicksPg','DCSext.wtLinkName','Shop Now Galaxy S III','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
+                                <a target="_top" class="pricesCTA" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-s-iii-garnet-red.html?source=ICHG250010000000L&wtExtndSource=valsamsunggalx3" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTopPicksPg','DCSext.wtLinkName','Shop Now Galaxy S III','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');"><img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif"></a> 
                             </div> 
                         </div>  
                         <div class="clear"></div> 
@@ -780,11 +789,11 @@ sup.tm, sup.sm {
                     
                         <div class="linkBlock">  
                             <div class="pricesTileHeadlineNoLink">Samsung <br/>Galaxy Note<sup>&reg;</sup> II</div> 
-                            <div class="pricesTileText"><p>Do even more with the Android<sup>&trade;</sup> 4.1 OS at 4G LTE speeds.</p></div> 
+                            <div class="pricesTileText"><p>Do even more with the Android<sup>&trade;</sup> 4.1 OS at 4G LTE speeds.<br/><br/></p></div> 
                             <div class="startingFrom" style="height:15px;">&nbsp;</div> 
                             <div class="pricesTilePrice">$299.99<sup>*</sup></div> 
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html?source=ICHG250010000000L&wtExtndSource=valnote2" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTopPicksPg','DCSext.wtLinkName','Shop Now Galaxy Note II','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html?source=ICHG250010000000L&wtExtndSource=valnote2" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTopPicksPg','DCSext.wtLinkName','Shop Now Galaxy Note II','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
                                 	<img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif" />
                                 </a> 
                             </div> 
@@ -794,18 +803,18 @@ sup.tm, sup.sm {
                 </div>
                 
                 <div class="promo2Box">
-                	<img src="assets/5-Top-Picks/promo2-HTC-8x.jpg" alt="Windows Phone 8X by HTC">
+                	<img src="assets/5-Top-Picks/promo2-Nokia-Lumia920.jpg" alt="Nokia Lumia 920">
                 </div>
                 <div class="pricesTileWrapper smallerBox"> 
                     <div class="pricesTile"> 
                     
                         <div class="linkBlock">  
-                            <div class="pricesTileHeadlineNoLink">Windows<sup>&reg;</sup> Phone<br/> 8X by HTC<sup>&reg;</sup></div> 
-                            <div class="pricesTileText"><p>Includes 4G LTE speed, a 4.3&quot; screen, and Beats Audio<sup>&trade;</sup>.</p></div> 
+                            <div class="pricesTileHeadlineNoLink"><br/>Nokia Lumia 920</div> 
+                            <div class="pricesTileText"><p>Features Windows<sup>&reg;</sup> 8 and 8.7MP camera to capture and relive every moment.</p></div> 
                             <div class="startingFrom" style="height:15px;">&nbsp;</div> 
-                            <div class="pricesTilePrice">$49.99<sup>*</sup></div>  
+                            <div class="pricesTilePrice">$99.99<sup>*</sup></div>  
                             <div class="ctabuttonimagebottom leftLineCTA"> 
-                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html?source=ICHG250010000000L&wtExtndSource=valwindowsphone" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ValentinesWidgetTopPicksPg','DCSext.wtLinkName','Shop Now HTC 8X','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
+                                <a target="_top" class="pricesCTA attFusion2" href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-matte-black.html?source=ICHG250010000000L&wtExtndSource=feblumia920" onclick="dcsMultiTrackTop('DCS.dcsdat','1350340910816','DCS.dcssip','www.att.com','DCS.dcsuri','/media/standalone/giftcenter/index.html','DCSext.wtEventType','User','DCS.dcsref',window.location.href,'DCSext.wtPN','','DCSext.wtLinkLoc','ExpressWidgetTopPicksPg','DCSext.wtLinkName','Shop Now Lumia 920','DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');">
                                 	<img alt="Shop Now" src="assets/common/btn-shop-now-blu24.gif">
                                 </a> 
                             </div> 

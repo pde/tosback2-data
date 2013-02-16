@@ -1637,10 +1637,6 @@ function firstHTML() {
        
        (function (){
 		
-			window.displayedChannel = '${ads_data.displayChannel!}';
-			window.displayedSection = '${ads_data.displaySection!}';		
-			
-			
 			var midnight = new Date();
 			//Keeping the EDT (-4) as it covers many cases and Time set is 1 am
 				if(midnight.getUTCHours() > 6)
@@ -1657,24 +1653,32 @@ function firstHTML() {
 			var set_expiry_date = new Date();
 			set_expiry_date.setTime(set_expiry_date.getTime()+(diff_in_ms));
 			
-			var welcomeCookie = "welcomeAd=sessionCookie";
 			var tomorrow = new Date();
 			var month = tomorrow.getMonth();
 			var day = tomorrow.getDate();
-
+			
+			var welcomeCookie = "welcomeAd=sessionCookie";			
+			var user_logged_in = "fuid";
 			var dailyWelcomeCookie = 'dailyWelcomeCookie=dailyCookie';
 			var expire  = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()+1, 0, 0, 0);
 
-			if ((document.cookie.indexOf(welcomeCookie)==-1 || document.cookie.indexOf(dailyWelcomeCookie) == -1)
+			if(((document.cookie.indexOf(welcomeCookie)==-1 || document.cookie.indexOf(dailyWelcomeCookie) == -1)&& (document.cookie.indexOf(user_logged_in) ==-1))
 				&& (window.navigator.userAgent.indexOf("Mozilla")>-1)
 				&& (window.location.host.indexOf("forbes.com")!=-1)
+				&& (window.navigator.userAgent.indexOf("iPad;")==-1)
+				&& (window.document.referrer.indexOf("digg.com")==-1)
+				&& (window.location.search.indexOf("partner=compuserve")==-1)
+				&& (window.location.search.indexOf("partner=netscape")==-1)
+				&& (window.location.search.indexOf("partner=Experian-RMX")==-1)
+				&& (window.location.search.indexOf("partner=acurapower")==-1)
+				&& (window.location.search.indexOf("partner=rolex400")==-1)
+				&& (window.location.search.indexOf("partner=powercouples")==-1)
 				&& (window.location.search.indexOf("partner=yahoo")==-1)
 				&& (window.location.search.indexOf("partner=msn")==-1)
 				&& (window.location.search.indexOf("partner=aol")==-1)
 				&& (window.location.search.indexOf("partner=omg")==-1)
 				&& (window.location.search.indexOf("partner=huffpo")==-1)
 				&& (window.location.search.indexOf('nowelcome')==-1)) {
-
 
 				if(document.cookie.indexOf(welcomeCookie) == -1 ){
 					document.cookie = welcomeCookie +'__welcome'+(month+1)+day+'; path=/; domain=.forbes.com';

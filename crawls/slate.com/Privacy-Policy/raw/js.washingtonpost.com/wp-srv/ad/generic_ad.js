@@ -449,7 +449,7 @@ var wpAd, placeAd2;
         return wpAd.flags.dcnode;
       },
       dcUrl: function () {
-        return 'http://ad.doubleclick.net/' + (wpAd.flags.network_id ? wpAd.flags.network_id + '/' : '') + wpAd.tools.dcFileType() + '/' + wpAd.constants.site + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
+        return 'http://ad.doubleclick.net/' + (wpAd.flags.network_id ? wpAd.flags.network_id : 'N701') + '/' + wpAd.tools.dcFileType() + '/' + wpAd.constants.site + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
       },
       debug: function () {
         if(wpAd.flags.debug) {

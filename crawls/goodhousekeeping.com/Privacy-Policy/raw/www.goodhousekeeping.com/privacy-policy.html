@@ -70,71 +70,11 @@
 		<!-- before anything else is called to load any css or js, mobile detect must happen -->
 		<!--XS_mobile_mobiledetect-->
 <script id="mobdskdtct" domain=".goodhousekeeping.com">
-var full_site_prefix = ".goodhousekeeping.com";
-if(full_site_prefix.indexOf("goodhousekeeping") === 1)
-{
-	var mrgetCookie = function(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		var i;
-		for(i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)===' ') {c = c.substring(1,c.length);}
-			if (c.indexOf(nameEQ) === 0) {
-				var result = c.substring(nameEQ.length,c.length);
-				return result;
-			}
-		}
-		return null;
-	}
-
-	var mrsetCookie = function(name,value,options) {
-		if (typeof value !== 'undefined') { // name and value given, set cookie
-			options = options || {};
-			if (value === null) {
-				value = '';
-				options.expires = -1;
-			}
-			var expires = '';
-			if (options.expires && (typeof options.expires === 'number' || options.expires.toUTCString)) {
-				var date;
-				if (typeof options.expires === 'number') {
-					date = new Date();
-					date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
-				} else {
-					date = options.expires;
-				}
-				expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
-			}
-			var path = options.path ? '; path=' + (options.path) : '';
-			var domain = options.domain ? '; domain=' + (options.domain) : '';
-			var secure = options.secure ? '; secure' : '';
-			document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
-		}
-	}
-
-	var redirectHandle = mrgetCookie("FullSiteRedirect");
-	if (redirectHandle === null){
-		var mydomain = "";
-		mrsetCookie("FullSiteRedirect","true",{expires: new Date().getTime()+60000,path:"/",domain:mydomain});
-		if (Math.random() > .1){ 
-			try{(function(a,d){(/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(a.substr(0,
-			4))) && !(/ipad/i.test(a)) && d()})(navigator.userAgent||navigator.vendor||window.opera,function(){var a=function(a,e,b){if("undefined"!==typeof e){b=b||{};null===e&&(e="",b.expires=-1);var c="";if(b.expires&&("number"===typeof b.expires||b.expires.toUTCString))"number"===typeof b.expires?(c=new Date,c.setTime(c.getTime()+864E5*b.expires)):c=b.expires,c="; expires="+c.toUTCString();var d=b.path?"; path="+b.path:"",f=b.domain?"; domain="+b.domain:"",b=b.secure?"; secure":"";document.cookie=[a,"=",encodeURIComponent(e),c,
-			d,f,b].join("")}};a("mobile_redir_referrer",document.referrer,{expires:(new Date).getTime()+6E4,path:"/",domain:""});var d=function(a){var a=a+"=",d=document.cookie.split(";"),b;for(b=0;b<d.length;b++){for(var c=d[b];" "===c.charAt(0);)c=c.substring(1,c.length);if(0===c.indexOf(a))return c.substring(a.length,c.length)}return null}("HDMviewmode");"desktop"!=d&&"mobile"!=d?(a=document.location,/^\/sweepstakes\/\w+/.test(a.pathname)?
-			a.replace(a.href.replace(/\/sweepstakes\//,"/sweepstakes/_mobile/")):/^\/archive\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archive\//,"/archive/_mobile/"))):/^\/archives\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archives\//,"/archives/_mobile/"))):/^\/_mobile\//.test(a.pathname)?console.error("[mobdetect: mobile url detected but on desktop site]"):(console.log("[mobile redirect] MOBILE VIEW: redirecting to: "+
-			a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash),document.location.replace(a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash))):"mobile"==d?(console.log("[mobile redirect"+d+"] DESKTOP VIEW ENABLED: temporary"),a("HDMviewmode","mobile",{expires:-1,path:"/",domain:".goodhousekeeping.com"})):console.log("[mobile redirect:"+viewdmode+"] DESKTOP VIEW ENABLED: session")})}catch(e$$8){};
-		}
-	}
-}
-else
-{
-	try{
-	(function(a,d){(/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(a.substr(0,
-	4))) && !(/ipad/i.test(a)) && d()})(navigator.userAgent||navigator.vendor||window.opera,function(){var a=function(a,e,b){if("undefined"!==typeof e){b=b||{};null===e&&(e="",b.expires=-1);var c="";if(b.expires&&("number"===typeof b.expires||b.expires.toUTCString))"number"===typeof b.expires?(c=new Date,c.setTime(c.getTime()+864E5*b.expires)):c=b.expires,c="; expires="+c.toUTCString();var d=b.path?"; path="+b.path:"",f=b.domain?"; domain="+b.domain:"",b=b.secure?"; secure":"";document.cookie=[a,"=",encodeURIComponent(e),c,
-	d,f,b].join("")}};a("mobile_redir_referrer",document.referrer,{expires:(new Date).getTime()+6E4,path:"/",domain:""});var d=function(a){var a=a+"=",d=document.cookie.split(";"),b;for(b=0;b<d.length;b++){for(var c=d[b];" "===c.charAt(0);)c=c.substring(1,c.length);if(0===c.indexOf(a))return c.substring(a.length,c.length)}return null}("HDMviewmode");"desktop"!=d&&"mobile"!=d?(a=document.location,/^\/sweepstakes\/\w+/.test(a.pathname)?
-	a.replace(a.href.replace(/\/sweepstakes\//,"/sweepstakes/_mobile/")):/^\/archive\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archive\//,"/archive/_mobile/"))):/^\/archives\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archives\//,"/archives/_mobile/"))):/^\/_mobile\//.test(a.pathname)?console.error("[mobdetect: mobile url detected but on desktop site]"):(console.log("[mobile redirect] MOBILE VIEW: redirecting to: "+
-	a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash),document.location.replace(a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash))):"mobile"==d?(console.log("[mobile redirect"+d+"] DESKTOP VIEW ENABLED: temporary"),a("HDMviewmode","mobile",{expires:-1,path:"/",domain:".goodhousekeeping.com"})):console.log("[mobile redirect:"+viewdmode+"] DESKTOP VIEW ENABLED: session")})}catch(e$$8){};
-}
+try{(function(a,d){(/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(a.substr(0,
+4))) && !(/ipad/i.test(a)) && d()})(navigator.userAgent||navigator.vendor||window.opera,function(){var a=function(a,e,b){if("undefined"!==typeof e){b=b||{};null===e&&(e="",b.expires=-1);var c="";if(b.expires&&("number"===typeof b.expires||b.expires.toUTCString))"number"===typeof b.expires?(c=new Date,c.setTime(c.getTime()+864E5*b.expires)):c=b.expires,c="; expires="+c.toUTCString();var d=b.path?"; path="+b.path:"",f=b.domain?"; domain="+b.domain:"",b=b.secure?"; secure":"";document.cookie=[a,"=",encodeURIComponent(e),c,
+d,f,b].join("")}};a("mobile_redir_referrer",document.referrer,{expires:(new Date).getTime()+6E4,path:"/",domain:""});var d=function(a){var a=a+"=",d=document.cookie.split(";"),b;for(b=0;b<d.length;b++){for(var c=d[b];" "===c.charAt(0);)c=c.substring(1,c.length);if(0===c.indexOf(a))return c.substring(a.length,c.length)}return null}("HDMviewmode");"desktop"!=d&&"mobile"!=d?(a=document.location,/^\/sweepstakes\/\w+/.test(a.pathname)?
+a.replace(a.href.replace(/\/sweepstakes\//,"/sweepstakes/_mobile/")):/^\/archive\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archive\//,"/archive/_mobile/"))):/^\/archives\/\w+/.test(a.pathname)?(alert(/^\/archives\/\w+/.test(a.pathname)),a.replace(a.href.replace(/\/archives\//,"/archives/_mobile/"))):/^\/_mobile\//.test(a.pathname)?console.error("[mobdetect: mobile url detected but on desktop site]"):(console.log("[mobile redirect] MOBILE VIEW: redirecting to: "+
+a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash),document.location.replace(a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash))):"mobile"==d?(console.log("[mobile redirect"+d+"] DESKTOP VIEW ENABLED: temporary"),a("HDMviewmode","mobile",{expires:-1,path:"/",domain:".goodhousekeeping.com"})):console.log("[mobile redirect:"+viewdmode+"] DESKTOP VIEW ENABLED: session")})}catch(e$$8){};
 </script>
 <!--XS_mobile_mobiledetect -->
 	
@@ -287,9 +227,9 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
 						<li class="item channel1"><a href="http://www.goodhousekeeping.com/recipes/"><span class="corner"></span>Food &amp Recipes</a>
 							<div class="subnav">
 								
-									<a class="feature" href="http://www.goodhousekeeping.com/about/super-bowl-recipe-ideas">
-										<img width="120" height="120" src="cm/goodhousekeeping/images/Wh/ghk-macaroni-and-cheese-1007-smn.jpg" />
-										<p>Pintastic! Top 10 Most Pinned Super Bowl Recipes</p>
+									<a class="feature" href="http://www.goodhousekeeping.com/about/new-chicken-recipes">
+										<img width="120" height="120" src="cm/goodhousekeeping/images/ey/0113-maple-glazed-chicken-smn.jpg" />
+										<p>A Twist on Classic Chicken Recipes</p>
 										<span>Read More!</span>
 									</a>
 								
@@ -426,9 +366,9 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
 						<li class="item channel4"><a href="http://www.goodhousekeeping.com/beauty/">Beauty &amp; Anti-Aging</a>
 							<div class="subnav">
 								
-									<a class="feature" href="http://www.goodhousekeeping.com/about/beauty-resolutions-2013">
-										<img width="120" height="120" src="cm/goodhousekeeping/images/bv/1-ghk-beauty-resolutions-applying-sunscreen-smn.jpg" />
-										<p>Best Beauty Resolutions</p>
+									<a class="feature" href="http://www.goodhousekeeping.com/about/best-beauty-products-2013">
+										<img width="120" height="120" src="cm/goodhousekeeping/images/7j/1-ghk-favorite-new-beauty-products-2013-nexus-hydra-light-conditioner-smn.jpg" />
+										<p><b>Must-Have Beauty</b> for 2013</p>
 										<span>Read More!</span>
 									</a>
 								
@@ -773,15 +713,15 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
 				<li>
 					
 						<figure class="listFigure">
-							<a href="http://www.goodhousekeeping.com/recipes/super-bowl-recipe-ideas">
-								<img src="cm/goodhousekeeping/images/Wh/ghk-macaroni-and-cheese-1007-smn.jpg" width="120" height="120" class="promoImg" alt="" title="" />
+							<a href="http://www.goodhousekeeping.com/recipes/everyday-meals/new-chicken-recipes">
+								<img src="cm/goodhousekeeping/images/ey/0113-maple-glazed-chicken-smn.jpg" width="120" height="120" class="promoImg" alt="" title="" />
 								<figcaption class="listCaption"><span>Food <br />&amp; Recipes</span></figcaption>
 							</a>
 						</figure>
-						<a class="stories" href="http://www.goodhousekeeping.com/recipes/super-bowl-recipe-ideas">
-							<p class="title">Pintastic! Top 10 Most Pinned Super Bowl Recipes</p>
+						<a class="stories" href="http://www.goodhousekeeping.com/recipes/everyday-meals/new-chicken-recipes">
+							<p class="title">A Twist on Classic Chicken Recipes</p>
 						</a>
-						<p class="teaser">We know you'll love these Super Bowl snack ideas &#151; because you pinned them!</p>
+						<p class="teaser">Try these delicious twists on classic dishes</p>
 					
 				</li>
 				<li>
@@ -815,15 +755,15 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
 				<li>
 					
 						<figure class="listFigure">
-							<a href="http://www.goodhousekeeping.com/beauty/anti-aging/beauty-resolutions-2013">
-								<img src="cm/goodhousekeeping/images/bv/1-ghk-beauty-resolutions-applying-sunscreen-smn.jpg" width="120" height="120" class="promoImg" alt="" title="" />
+							<a href="http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013">
+								<img src="cm/goodhousekeeping/images/7j/1-ghk-favorite-new-beauty-products-2013-nexus-hydra-light-conditioner-smn.jpg" width="120" height="120" class="promoImg" alt="" title="" />
 								<figcaption class="listCaption"><span>Beauty <br />&amp; Anti-Aging</span></figcaption>
 							</a>
 						</figure>
-						<a class="stories" href="http://www.goodhousekeeping.com/beauty/anti-aging/beauty-resolutions-2013">
-							<p class="title">Best Beauty Resolutions</p>
+						<a class="stories" href="http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013">
+							<p class="title"><b>Must-Have Beauty</b> for 2013</p>
 						</a>
-						<p class="teaser">9 simple steps to look and feel gorgeous in the new year</p>
+						<p class="teaser">Amazing new products hand-picked by our beauty editor</p>
 					
 				</li>
 				<li>
@@ -884,19 +824,19 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
          <ul>
 		 
 		 	      
-            <li><a href="http://www.goodhousekeeping.com/product-reviews/about-good-housekeeping-seal">About the Good Housekeeping Seal</a></li>
+            <li><a href="http://www.goodhousekeeping.com/product-reviews/history/about-good-housekeeping-seal">About the Good Housekeeping Seal</a></li>
 			
          
 		 	      
-            <li><a href="http://www.goodhousekeeping.com/product-reviews/welcome-gh-seal">Welcome to the Good Housekeeping Seal</a></li>
+            <li><a href="http://www.goodhousekeeping.com/product-reviews/history/welcome-gh-seal">Welcome to the Good Housekeeping Seal</a></li>
 			
          
 		 	      
-            <li><a href="http://www.goodhousekeeping.com/product-reviews/good-housekeeping-research-institute-timeline">The Good Housekeeping Research Institute Timeline</a></li>
+            <li><a href="http://www.goodhousekeeping.com/product-reviews/history/good-housekeeping-research-institute-timeline">The Good Housekeeping Research Institute Timeline</a></li>
 			
          
 		 	      
-            <li><a href="http://www.goodhousekeeping.com/product-reviews/about-green-good-housekeeping-seal">About the Green Good Housekeeping Seal</a></li>
+            <li><a href="http://www.goodhousekeeping.com/product-reviews/history/about-green-good-housekeeping-seal">About the Green Good Housekeeping Seal</a></li>
 			
          
 		 	      
@@ -1045,9 +985,9 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.goodhousekeeping.com/cm/shar
 			<div class="toutSection">
 				<h2>Good Housekeeping Smart Touts</h2>
 				<ul>
-					<li><a href="http://www.goodhousekeeping.com/beauty/hair/celebrity-hairstyles-pixie?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/hair/celebrity-hairstyles-pixie-SMT-GHK">Gorgeous Pixie Cuts </a></li>
-					<li><a href="http://www.goodhousekeeping.com/home/decorating-ideas/decor-ideas-master-bedroom?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/decorating-ideas/decor-ideas-master-bedroom-SMT-GHK">70+ Ideas for Your Bedroom </a></li><li><a href="http://www.goodhousekeeping.com/home/decorating-ideas/home-decor-trends-2013?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/decorating-ideas/home-decor-trends-2013-SMT-GHK">Home Decor Trends for 2013</a></li><li><a href="http://www.goodhousekeeping.com/family/marriage-sex/science-happy-marriage?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/family/marriage-sex/science-happy-marriage-SMT-GHK">Recipe for a Successful Marriage </a></li><li><a href="http://www.goodhousekeeping.com/product-reviews/healthy-kitchen-gadgets?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/product-reviews/healthy-kitchen-gadgets-SMT-GHK">Kitchen Gadgets That Improve Your Health </a></li><li><a href="http://www.goodhousekeeping.com/home/decorating-ideas/home-decor-for-less?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/decorating-ideas/home-decor-for-less-SMT-GHK">Create a Beautiful Home on a Budget</a></li><li><a href="http://www.goodhousekeeping.com/holidays/valentines-day-ideas/chocolate-dessert-recipes?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/holidays/valentines-day-ideas/chocolate-dessert-recipes-SMT-GHK">Amazing Chocolate Desserts </a></li><li><a href="http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013-SMT-GHK">Must-Have Beauty Products </a></li>
-					<li><a href="http://www.goodhousekeeping.com/health/fitness/exercise-tone-body?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/health/fitness/exercise-tone-body-SMT-GHK">8 Moves to Slim Down </a></li><li><a href="http://www.goodhousekeeping.com/recipes/healthy/healthy-dinner-recipes?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/recipes/healthy/healthy-dinner-recipes-SMT-GHK">Healthy, No-Hassle Dinners </a></li><li><a href="http://www.goodhousekeeping.com/beauty/fashion/how-to-look-slimmer?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/fashion/how-to-look-slimmer-SMT-GHK">How to Dress Slimmer </a></li><li><a href="http://www.redbookmag.com/health-wellness/advice/foods-to-avoid?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.redbookmag.com/health-wellness/advice/foods-to-avoid-SMT-GHK" target="_blank">The 9 Foods Never to Eat </a></li><li><a href="http://www.cosmopolitan.com/hairstyles-beauty/celeb-hairstyles-with-bangs?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.cosmopolitan.com/hairstyles-beauty/celeb-hairstyles-with-bangs-SMT-GHK" target="_blank">The Best Hairstyles with Bangs </a></li><li><a href="http://www.womansday.com/food-recipes/healthy-recipes/10-healthiest-snacks-104257?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.womansday.com/food-recipes/healthy-recipes/10-healthiest-snacks-104257-SMT-GHK" target="_blank">Good-for-You Snacks </a></li><li><a href="http://www.cosmopolitan.com/hairstyles-beauty/skin-care-makeup/night-out-beauty-essentials?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.cosmopolitan.com/hairstyles-beauty/skin-care-makeup/night-out-beauty-essentials-SMT-GHK" target="_blank">Beauty Essentials </a></li><li><a href="http://www.womansday.com/food-recipes/10-tasty-ground-turkey-recipes-107455?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.womansday.com/food-recipes/10-tasty-ground-turkey-recipes-107455-SMT-GHK" target="_blank">Tasty Ground Turkey Recipes </a></li>
+					<li><a href="http://www.goodhousekeeping.com/home/decorating-ideas/decor-ideas-master-bedroom?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/decorating-ideas/decor-ideas-master-bedroom-SMT-GHK">70+ Ideas for Your Bedroom </a></li>
+					<li><a href="http://www.goodhousekeeping.com/home/cleaning-organizing/double-duty-household-items?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/cleaning-organizing/double-duty-household-items-SMT-GHK">Double-Duty Tips for Household Items </a></li><li><a href="http://www.goodhousekeeping.com/recipes/healthy/salmon-recipes?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/recipes/healthy/salmon-recipes-SMT-GHK">Sensational Salmon Recipes </a></li><li><a href="http://www.goodhousekeeping.com/recipes/desserts/easy-cupcake-decorating-ideas?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/recipes/desserts/easy-cupcake-decorating-ideas-SMT-GHK">Cupcake Decorating Ideas for Any Occasion</a></li><li><a href="http://www.goodhousekeeping.com/home/cleaning-organizing/organize-your-entryway?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/home/cleaning-organizing/organize-your-entryway-SMT-GHK">How to Organize Your Entrance Way</a></li><li><a href="http://www.goodhousekeeping.com/beauty/fashion/how-to-wear-cardigans?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/fashion/how-to-wear-cardigans-SMT-GHK">Chic At Any Size: Color-Block Cardigan </a></li><li><a href="http://www.goodhousekeeping.com/beauty/hair/best-haircuts?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/hair/best-haircuts-SMT-GHK">10 Perfect Hairstyles </a></li><li><a href="http://www.goodhousekeeping.com/family/celebrity-interviews/citizens-of-hope-goodhousekeeping?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/family/celebrity-interviews/citizens-of-hope-goodhousekeeping-SMT-GHK">Citizens for City of Hope </a></li>
+					<li><a href="http://www.goodhousekeeping.com/recipes/easy/one-dish-supper-recipes?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/recipes/easy/one-dish-supper-recipes-SMT-GHK">Delicious One-Dish Meals </a></li><li><a href="http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/beauty/makeup/best-beauty-products-2013-SMT-GHK">Must-Have Beauty for 2013</a></li><li><a href="http://www.goodhousekeeping.com/product-reviews/electronics-computers/smart-phone-reviews/free-diet-apps?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.goodhousekeeping.com/product-reviews/electronics-computers/smart-phone-reviews/free-diet-apps-SMT-GHK">Our Favorite Free Diet Apps </a></li><li><a href="http://www.redbookmag.com/health-wellness/advice/foods-to-avoid?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.redbookmag.com/health-wellness/advice/foods-to-avoid-SMT-GHK" target="_blank">The 9 Foods Never to Eat </a></li><li><a href="http://www.cosmopolitan.com/hairstyles-beauty/celeb-hairstyles-with-bangs?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.cosmopolitan.com/hairstyles-beauty/celeb-hairstyles-with-bangs-SMT-GHK" target="_blank">The Best Hairstyles with Bangs </a></li><li><a href="http://www.cosmopolitan.com/sex-love/relationship-advice/how-to-be-attractive?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.cosmopolitan.com/sex-love/relationship-advice/how-to-be-attractive-SMT-GHK" target="_blank">Weird Reasons Why We Fall in Love </a></li><li><a href="http://www.redbookmag.com/beauty-fashion/tips-advice/anti-aging-spa-secrets?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.redbookmag.com/beauty-fashion/tips-advice/anti-aging-spa-secrets-SMT-GHK" target="_blank">Anti-Aging Tricks from Spa Experts </a></li><li><a href="http://www.womansday.com/health-fitness/nutrition/6-stomach-friendly-foods-105795?click=smart&kw=ist&src=smart&mag=GHK&link=http://www.womansday.com/health-fitness/nutrition/6-stomach-friendly-foods-105795-SMT-GHK" target="_blank">Stomach-Friendly Foods </a></li>
 				</ul>
 			</div>
 		</div>

@@ -3332,8 +3332,8 @@ return element;
 },
 fire: function(element, eventName, memo) {
 element = $(element);
-// if (element == document && document.createEvent && !element.dispatchEvent)
-// element = document.documentElement;
+if (element == document && document.createEvent && !element.dispatchEvent)
+element = document.documentElement;
 if (document.createEvent) {
 var event = document.createEvent("HTMLEvents");
 event.initEvent("dataavailable", true, true);
@@ -3344,7 +3344,7 @@ event.eventType = "ondataavailable";
 event.eventName = eventName;
 event.memo = memo || { };
 if (document.createEvent) {
-// element.dispatchEvent(event);
+element.dispatchEvent(event);
 } else {
 element.fireEvent(event.eventType, event);
 }

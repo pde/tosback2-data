@@ -11,8 +11,7 @@ table { border-collapse: separate; border-spacing: 0px; }
 input, textarea { margin: 0px; padding: 1px 6px 1px;  outline: 0px; font-size: 100%; font-family: Arial, Helvetica, sans-serif; color: #000; }
 select { margin: 0px; padding: 0px 0px 0px 3px; border: 1px solid #ccc; outline: 0px; font-size: 100%; font-family: Arial, Helvetica, sans-serif; color: #000; }
 	select option { padding-right: 10px; }/*so text isn't hidden by drop down in selects with only 2 characters*/
-button { margin: 0px; }
-
+button,greybutton,sizebutton,add2button { margin: 0px; }
 ol, ul { list-style: none; }
 
 /* default links */
@@ -313,6 +312,7 @@ div.wSpots{clear:both;}
 .viewPane {padding:13px 23px;}
 
 .views {float:left;width:264px; margin-top:14px;}
+.prodviews {float:left;width:264px; margin-top:13px;}
 .views .alternateViews li {float:left;padding-left:2px;}
 .views .alternateViews li.first {padding-left:0;}
 .views dl {padding-top:20px;}
@@ -323,8 +323,11 @@ div.wSpots{clear:both;}
 a.chartLink{float:right;display:block;padding-right:115px;}
 
 .details {float:right; width:542px;padding-left:23px; margin-top:14px;padding-top:23px;}
+.proddetails {float:right; width:542px;padding-left:23px; }
 
 div.info {width:338px;float:left;}
+div.prodinfo {float: left;width: 400px;}
+
 div.cost {float:left;padding-left:23px;}
 
 .socialwidget {margin-top:20px;}
@@ -336,8 +339,8 @@ div.cost {float:left;padding-left:23px;}
 
 .productOptions {height:auto;width:338px;padding-top:6px;margin-top:3px;padding-bottom:12px;}
 .productOptions .spot {margin:0 14px;clear:both;padding-top:6px;position:relative;}
-.productOptions .spot label {width:118px;display:block;float:left;padding-top:3px;}
-.productOptions .spot select {width:187px;display:block;float:left;height:20px;}
+.productOptions .spot label {width:118px;display:block;float:left;padding-top:3px; margin-left: -14px;}
+.productOptions .spot select {width:187px;display:block;float:left;height:20px;margin-right: -14px;}
 
 
 .tool_tip {left: -99999px; position: absolute; z-index: 5; width: 200px;}
@@ -369,6 +372,7 @@ div.cost {float:left;padding-left:23px;}
 .addInfo .tabs li {height:24px;display:block;float:left;padding:0 21px;margin-right:1px;}
 .addInfo .tabs li a {padding-top:4px;display:block;}
 .addInfo .tabBody {clear:both;margin-top:1px;padding:17px 22px;}
+.addInfo .prodtabBody {clear:both;margin-top:1px;padding:17px 22px;}
 .addInfo strong {margin-bottom:12px;display:inline;}
 .addInfo .itemSection {margin-top:20px;}
 .addInfo .itemSection strong {margin-bottom:3px;}
@@ -526,7 +530,7 @@ div.pagination ul.sort_by li {float: left;margin-left:3px;}
 
 
 /********************************** START :: Buttons ************************/
-.button, .buttonClose, .secondary, .secondaryClose, .tertiary, .tertiaryClose { 
+.button,.greybutton,.sizebutton,.add2button, .buttonClose, .secondary, .secondaryClose, .tertiary, .tertiaryClose { 
   border:0; 
   cursor:pointer; 
   font-family: Arial, Helvetica, sans-serif;
@@ -545,7 +549,7 @@ div.pagination ul.sort_by li {float: left;margin-left:3px;}
   text-align:center;
   width:82px;
 }
-.button span, .buttonClose span, .secondary span, .tertiary span, .secondaryClose span, .tertiaryClose span { 
+.button span,.greybutton span,.sizebutton span,.add2button span,  .buttonClose span, .secondary span, .tertiary span, .secondaryClose span, .tertiaryClose span { 
   position:relative; 
   display:block; 
   white-space:nowrap; 
@@ -651,6 +655,7 @@ a.button, a.buttonClose, a.secondary, a.tertiary, a.secondaryClose, a.tertiaryCl
 .sideByside .infoRow .zoomImg {float:left;}
 .sideByside .infoRow .moreDeets {float:right; padding-top:15px;}
 .sideByside .colorSwatch {width: 35px; height: 14px;}
+.prodcolorSwatch {border: 2px solid #FFFFFF;cursor: pointer;width: 60px;}
 .sideBysideH {padding-top:10px;}
 
 .quickView {padding-left:22px; padding-right:22px; padding-bottom:20px;}
@@ -1184,6 +1189,48 @@ ul.style_nav, ul.style_nav a, ul.style_nav a:hover, ul.style_nav a:visited, ul.s
 	background:url(../images/global/buttons/btn_primary_l_over_bg.png) left no-repeat; 
 }
 
+/*Add2Cart button  */
+.add2button { 
+  background:url(../images/global/buttons/btn_addcart_r_up_bg.png) right no-repeat; 
+}
+.add2button span { 
+  background:url(../images/global/buttons/btn_addcart_l_up_bg.png) left no-repeat;
+}
+.add2button:hover {
+	background:url(../images/global/buttons/btn_addcart_r_over_bg.png) right no-repeat; 
+}
+.add2button:hover span {
+	background:url(../images/global/buttons/btn_addcart_l_over_bg.png) left no-repeat; 
+	}
+
+/* grey buttons */
+
+.greybutton { 
+  background:url(../images/global/buttons/btn_secondaryround_r_up_bg.png) right no-repeat; 
+}
+.greybutton span { 
+  background:url(../images/global/buttons/btn_secondaryround_l_up_bg.png) left no-repeat;
+}
+.greybutton:hover {
+	background:url(../images/global/buttons/btn_secondaryround_r_over_bg.png) right no-repeat; 
+}
+.greybutton:hover span {
+	background:url(../images/global/buttons/btn_secondaryround_l_over_bg.png) left no-repeat; 
+}
+/* size buttons */
+
+.sizebutton { 
+  background:url(../images/global/buttons/btn_tertiaryround_r_up_bg.png) right no-repeat; 
+}
+.sizebutton span { 
+  background:url(../images/global/buttons/btn_tertiaryround_l_up_bg.png) left no-repeat;
+}
+.sizebutton:hover {
+	background:url(../images/global/buttons/btn_tertiaryround_r_up_bg.png) right no-repeat; 
+}
+.sizebutton:hover span {
+	background:url(../images/global/buttons/btn_tertiaryround_r_up_bg.png) left no-repeat; 
+}
 .buttonClose { 
   background:url(../images/global/buttons/btn_close_primary_r_up_bg.png) right no-repeat;
 }
@@ -1338,7 +1385,7 @@ ul.pagination_bottom{border-top:1px solid #dfdfdf;}
 
 .views,.details {border-top:solid 1px #bfbfbf;}
 
-.productOptions {background:#fff url(../images/product_detail/product_options_bg.png) repeat-x top left;border-top:solid 1px #cdcdcd;border-bottom:solid 1px #cdcdcd;}
+.productOptions {border-bottom:solid 1px #cdcdcd;}
 
 
 
@@ -1368,6 +1415,7 @@ ul.pagination_bottom{border-top:1px solid #dfdfdf;}
 .addInfo .tabs li.active {background:url(../images/product_detail/activeTab_bg.gif) repeat-x top left;}
 
 .addInfo .tabBody {background:url(../images/product_detail/tabBody_bg.gif) repeat-x top left; border:solid 1px #cdcdcd;}
+.addInfo .prodtabBody { border-top: solid 1px #cdcdcd;border-bottom: solid 1px #cdcdcd;}
 .addInfo .itemSection .item {border-top:solid 1px #cdcdcd;}
 
 /************************* START :: STATIC TEMPLATES ******************/
@@ -1502,6 +1550,7 @@ input.frm_error {padding: 2px 7px;}
 
 .colorSwatch {cursor: pointer;}
 .border_on {border: 1px solid black; pointer: arrow;}
+.prod_border_on {border: 2px solid #DBD8CF;}
 
 /* start text*/
 
@@ -1513,7 +1562,7 @@ h3{font-size:17px;}
 strong {font-weight:bold;}
 .strike {text-decoration:line-through;}
 
-a.button, a.buttonClose, a.secondary, a.tertiary, a.button:hover, a.secondary:hover, a.tertiary:hover, a.secondaryClose, a.tertiaryClose, a.buttonClose:hover, a.secondaryClose:hover, a.tertiaryClose:hover{text-decoration: none !important;}
+a.button,a.greybutton,a.sizebutton,a.greybutton:hover,a.buttonClose, a.secondary, a.tertiary, a.button:hover, a.secondary:hover, a.tertiary:hover, a.secondaryClose, a.tertiaryClose, a.buttonClose:hover, a.secondaryClose:hover, a.tertiaryClose:hover{text-decoration: none !important;}
 
 /****************************** START :: BRANDING **********************/
 #branding ul {font-size:14px;}
@@ -1594,6 +1643,7 @@ ul.style_nav, ul.style_nav a:link, ul.style_nav a:hover, ul.style_nav a:visited 
 .cost .regpromo {color:#000;}
 
 div.info a {color:#666;}
+div.prodinfo a {color:#666;}
 .productOptions label, .qty label {color:#333;}
 .tooltip .toolTip-body strong {font-size:1.1em;}
 .invMsg0 {color:#000000;font-weight:bold}
@@ -2040,4 +2090,51 @@ div.coupon{
     font-size: 0;
     height: 0;
     visibility: hidden;
+}
+.tp_focus{
+background-color:transparent;
+border: 0px solid;
+height:25px;
+width:70px;
+text-align:center;
+text-decoration:underline;
+}
+
+.socialButton{
+
+float:left;
+width:100px;
+
+}
+.prodName{
+
+font-size: 1.64em;
+margin-left: -15px;
+margin-top: -15px;
+}
+.bottom-left .prodviews{
+    margin-top: -9px;
+}
+
+.top-right .proddetails{
+    margin-right: 9px;
+    width: 394px;
+}
+
+.top-left .prodviews{
+    width: 394px;
+}
+    
+.productOptions{
+    margin-top: 10px;
+}
+
+
+.info .addInfo p{
+    margin-right: -15px;
+    width: 390px;
+}
+
+.info .addinfo p.rating{
+    margin-left: -15px;
 }

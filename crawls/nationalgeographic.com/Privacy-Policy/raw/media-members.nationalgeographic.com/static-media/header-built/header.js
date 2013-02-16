@@ -1,4 +1,4 @@
-(function() {
+(function(globalVar) {
 var _mmdbHeaderRequire;(function () { if (typeof _mmdbHeaderRequire === 'undefined') {
 _mmdbHeaderRequire = {};
 /** vim: et:ts=4:sw=4:sts=4
@@ -2193,7 +2193,9 @@ _mmdbHeaderRequire.define("header/init", function(){});
             zxcvbn: 'header/lib/zxcvbn',
             'cors-patch': 'header/lib/jquery.cors-patch',
             json2: 'header/lib/json2',
-            livefyreManager: 'header/livefyre/livefyre_manager'
+            livefyreManager: 'header/livefyre/livefyre_manager',
+            'quick-cookies': 'header/lib/quick_cookies',
+            'page-scroller': 'header/page_scroller'
         },
         map: {
             '*': {
@@ -12775,6 +12777,28 @@ function($,
             return formData;
         },
 
+        getLocation: function() {
+            return window.location;
+        },
+
+        setLocation: function(href) {
+            var loc = this.getLocation();
+            loc.href = href;
+        },
+
+        reloadLocation: function() {
+            this.getLocation().reload(true);
+        },
+
+        getHash: function() {
+            return this.getLocation().hash;
+        },
+
+        setHash: function(hash) {
+            var loc = this.getLocation();
+            loc.hash = hash;
+        },
+
         pageLoaded: pageLoadedDfd.promise(),
 
         globalCallbackHandler: new GlobalCallbackHandler(),       
@@ -14935,14 +14959,14 @@ function($,
     function applyErrorProcessing(jqXHR) {
         var dfd = new $.Deferred();
         $.when(jqXHR)
-         .done(function(data) {
+         .done(function(data, jqXHR) {
              // Allow the possibility of receiving an ok http response code with
              // an error object
              if (data && 'error' in data) {
-                 dfd.reject(makeError(data.error));
+                 dfd.reject(makeError(data.error), jqXHR);
              }
              else {
-                 dfd.resolve(data);
+                 dfd.resolve(data, jqXHR);
              }
          })
          // This fail handler will try and JSON-deserialize the body and send an
@@ -14960,7 +14984,7 @@ function($,
              catch (e) {
              }
 
-             dfd.reject(error);
+             dfd.reject(error, jqXHR);
          });
 
         return dfd.promise();
@@ -15025,6 +15049,11 @@ function($,
         ajax: function(settings) {
             if (!settings || !settings.url) {
                 throw new Error("You must specify a url for the ajax request!");
+            }
+
+            if (settings.success || settings.error) {
+                throw new Error("The request module doesn't support success "+
+                        "and error callbacks! Use promise handlers instead.");
             }
 
             var ajaxFunc = getAjaxFunc(settings.url);
@@ -15225,8 +15254,8 @@ return {
 });
 
 // This is our base member center model.
-_mmdbHeaderRequire.define('models/base-model',['backbone', 'jquery'],
-function(Backbone, $) {
+_mmdbHeaderRequire.define('models/base-model',['backbone', 'jquery', 'underscore', 'request'],
+function(Backbone, $, _, Request) {
     return Backbone.Model.extend({
         // This custom constructor will just take out the context object from
         // options and attach it directly to the view instance
@@ -15241,6 +15270,69 @@ function(Backbone, $) {
             Backbone.Model.apply(this, arguments); 
         },
 
+        // A stripped down version of Backbone's default sync method.  This
+        // method uses our own Request module to properly handle cross domain
+        // requests
+        sync: function(method, model, options) {
+            // Unfortunately, Backbone doesn't bother to expose these for external
+            // use so we have to duplicate them.
+            var methodMap = {
+                'create': 'POST',
+                'update': 'PUT',
+                'delete': 'DELETE',
+                'read':   'GET'
+            };
+            var getValue = function(object, prop) {
+                if (!(object && object[prop])) return null;
+                return _.isFunction(object[prop]) ? object[prop]() : object[prop];
+            };
+
+            var type = methodMap[method];
+
+            // Default options, unless specified.
+            options || (options = {});
+
+            // Default JSON-request options.
+            var params = {type: type, dataType: 'json'};
+
+            // Ensure that we have a URL.
+            if (!options.url) {
+                params.url = getValue(model, 'url');
+                if (!params.url) {
+                    throw new Error('A "url" property or function must be specified');
+                }
+            }
+
+            // Ensure that we have the appropriate request data.
+            if (!options.data && model && (method == 'create' || method == 'update')) {
+                params.contentType = 'application/json';
+                params.data = JSON.stringify(model.toJSON());
+            }
+
+            // We have to manually handle success/error callbacks because the
+            // Request module doesn't support them.
+            var successCB = options.success,
+                errorCB = options.error;
+
+            delete options.success;
+            delete options.error;
+
+            return Request.ajax(_.extend(params, options))
+                    .done(function(data, jqXHR) {
+                        if (successCB) {
+                            successCB(data, jqXHR.statusText, jqXHR);
+                        }
+                    })
+                    .fail(function(error, jqXHR) {
+                        if (errorCB) {
+                            errorCB(jqXHR, "error", jqXHR.statusText);
+                        }
+                    });
+        },
+
+        // A custom fetch method that disallows multiple simultaneous fetches.
+        // The promise of the currently executing fetch will be returned if it
+        // exists, otherwise a new fetch will be initiated.
         fetch: function() {
             var self = this;
             if (this._fetchPromise && this._fetchPromise.state() === 'pending') {
@@ -15253,6 +15345,34 @@ function(Backbone, $) {
                 });
             }
         },
+
+        // Override the set method to provide a promise interface
+        //set: function() {
+            //var args = Array.prototype.slice.call(arguments, 0);
+            //var options = args[args.length],
+                //originalError = null,
+                //dfd = new $.Deferred();
+
+            //if (options && options.error) {
+                //originalError = options.error;
+                //delete options.error;
+            //}
+            //options.error = function(model, error, options) {
+                //if (originalError && typeof originalError === 'function') {
+                    //originalError.apply(this, arguments);
+                //}
+                //dfd.reject(model, error, options);
+            //};
+
+            //this.constructor.__super__.prototype.set.apply(this, args);
+
+            //// If the above call to reject is called upon calling the
+            //// original set method, then this call to resolve will have no
+            //// effect.
+            //dfd.resolve();
+
+            //return dfd;
+        //},
 
     });
 });
@@ -15290,6 +15410,12 @@ return {
         return _.extend({}, fields, {code: code});
     },
 
+    createValidationError: function(fieldErrors) {
+        return this.createError(this.fromCode('INVALID_INPUT'), {
+                fieldErrors: fieldErrors,
+            });
+    },
+
     addErrorCode: function(code) {
         if (code in this.codes) {
             throw new Error("Code already exists: " + code);
@@ -15297,30 +15423,41 @@ return {
         this.codes[code] = code;
     },
 
+    fromCode: function(code) {
+        if (!(code in this.codes)) {
+            throw new Error("Code does not exist: " + code);
+        }
+        return this.codes[code];
+    },
+
     codes: { SERVER_ERROR: "SERVER_ERROR",
-CLIENT_GIGYA_LOGIN_FAILED: "CLIENT_GIGYA_LOGIN_FAILED",
-LOGIN_REQUIRED: "LOGIN_REQUIRED",
-USER_EMAIL_NOT_VERIFIED: "USER_EMAIL_NOT_VERIFIED",
-INVALID_USER_AUTH: "INVALID_USER_AUTH",
-BAD_PASSWORD_RESET_CONFIRMATION_CODE: "BAD_PASSWORD_RESET_CONFIRMATION_CODE",
-FILE_TOO_BIG: "FILE_TOO_BIG",
-FORBIDDEN: "FORBIDDEN",
 NO_GIGYA_DATA_IN_SESSION: "NO_GIGYA_DATA_IN_SESSION",
-TOO_YOUNG: "TOO_YOUNG",
-GIGYA_SIGNATURE_INVALID: "GIGYA_SIGNATURE_INVALID",
-INVALID_PASSWORD_MATCH: "INVALID_PASSWORD_MATCH",
-UNKNOWN_USER: "UNKNOWN_USER",
-PROFANE_LAST_NAME: "PROFANE_LAST_NAME",
-USER_BANNED: "USER_BANNED",
-PROFANE_FIRST_NAME: "PROFANE_FIRST_NAME",
-PROFANE_MIDDLE_NAME: "PROFANE_MIDDLE_NAME",
-INVALID_DATE: "INVALID_DATE",
-USER_EXISTS: "USER_EXISTS",
-INVALID_IMAGE_SIZE: "INVALID_IMAGE_SIZE",
-INVALID_INPUT: "INVALID_INPUT",
-CAPTCHA_INVALID: "CAPTCHA_INVALID",
 NO_AVATAR_IN_SESSION: "NO_AVATAR_IN_SESSION",
-INVALID_PASSWORD: "INVALID_PASSWORD" },
+CAPTCHA_INVALID: "CAPTCHA_INVALID",
+CLIENT_GIGYA_LOGIN_FAILED: "CLIENT_GIGYA_LOGIN_FAILED",
+FORBIDDEN: "FORBIDDEN",
+LOGIN_REQUIRED: "LOGIN_REQUIRED",
+BAD_PASSWORD_RESET_CONFIRMATION_CODE: "BAD_PASSWORD_RESET_CONFIRMATION_CODE",
+USER_EMAIL_NOT_VERIFIED: "USER_EMAIL_NOT_VERIFIED",
+TOO_YOUNG: "TOO_YOUNG",
+FILE_TOO_BIG: "FILE_TOO_BIG",
+GIGYA_SIGNATURE_INVALID: "GIGYA_SIGNATURE_INVALID",
+INVALID_IMAGE_SIZE: "INVALID_IMAGE_SIZE",
+USER_BANNED: "USER_BANNED",
+INVALID_DATE: "INVALID_DATE",
+INVALID_PASSWORD_MATCH: "INVALID_PASSWORD_MATCH",
+USER_EXISTS: "USER_EXISTS",
+UNKNOWN_USER: "UNKNOWN_USER",
+INVALID_USER_AUTH: "INVALID_USER_AUTH",
+INVALID_INPUT: "INVALID_INPUT",
+INVALID_PASSWORD: "INVALID_PASSWORD",
+PROFANITY: "PROFANITY",
+REQUIRED: "REQUIRED",
+TOO_SHORT: "TOO_SHORT",
+INVALID: "INVALID",
+TOO_LARGE: "TOO_LARGE",
+TOO_LONG: "TOO_LONG",
+TOO_SMALL: "TOO_SMALL" },
 };
 
 });
@@ -15629,17 +15766,21 @@ function($,
             });
         },
 
-        sync: function(method, model, options) {
-            if (method === 'read') {
-                return Request.jsonp(Urls['user-detail']({id: this.get('id')}), {}, {
-                                    success: options.success,
-                                    error: options.error
-                                });
-            }
-            else {
-                throw new Error("Updating not allowed for header user model!");
-            }
+        url: function() {
+            return Urls['user-detail']({id: this.get('id')});
         },
+
+        //sync: function(method, model, options) {
+            //if (method === 'read') {
+                //return Request.jsonp(Urls['user-detail']({id: this.get('id')}), {}, {
+                                    //success: options.success,
+                                    //error: options.error
+                                //});
+            //}
+            //else {
+                //throw new Error("Updating not allowed for header user model!");
+            //}
+        //},
 
         //fetch: function() {
             //var self = this;
@@ -15806,7 +15947,7 @@ function($,
                     .toString();
         },
 
-        doNativeLogin: function(context, username, password, recaptchaData, firstLogin) {
+        doNativeLogin: function(context, username, password, recaptchaData, redirectToLandingPage) {
             var self = this;
             return Request.post(Urls['native-login'](), {
                     username: username,
@@ -15820,7 +15961,7 @@ function($,
                     }, {context: context});
 
                     user._loggedIn = true;
-                    context.setUserFromLogin(user, firstLogin);
+                    context.setUserFromLogin(user, redirectToLandingPage);
 
                     return context.getUser();
                 })
@@ -15831,7 +15972,7 @@ function($,
 
         // This method just logs in to the memcen given the user's gigya
         // info
-        doSocialLogin: function(context, uid, signature, timestamp, email, isSiteUID, firstLogin) {
+        doSocialLogin: function(context, uid, signature, timestamp, email, isSiteUID, redirectToLandingPage) {
             var self = this;
             return $.when(Request.post(Urls['gigya-login'](), {
                             uid: uid,
@@ -15854,10 +15995,11 @@ function($,
 
                     user._loggedIn = true;
 
-                    context.setUserFromLogin(user, firstLogin);
+                    context.setUserFromLogin(user, redirectToLandingPage);
                     return context.getUser();
                 })
                 .fail(function(error) {
+                    return error;
                 });
         },
 
@@ -15875,12 +16017,8 @@ function($,
                             dfd.resolve(user, gigyaUser, uidSignature, timestamp, uid);
                         })
                         .fail(function(error) {
-                            //error.gigyaUser = gigyaUser;
-                            //error.uidSignature = uidSignature;
-                            //error.timestamp = timestamp;
-                            //error.uid = uid;
+                            GigyaHelper.logoutUser();
                             dfd.reject(error, gigyaUser, uidSignature, timestamp, uid); 
-                            //dfd.reject(error);
                         });
                     return dfd.promise();
                 }, function(code, message, details) {
@@ -15895,34 +16033,168 @@ function($,
     });
 });
 
+_mmdbHeaderRequire.define('jQuery-cookie',['jquery'], function (jQuery) {
+(function(a,b,c){function e(a){return a}function f(a){return decodeURIComponent(a.replace(d," "))}var d=/\+/g,g=a.cookie=function(d,h,i){if(h!==c){if(i=a.extend({},g.defaults,i),null===h&&(i.expires=-1),"number"==typeof i.expires){var j=i.expires,k=i.expires=new Date;k.setDate(k.getDate()+j)}return h=g.json?JSON.stringify(h):h+"",b.cookie=[encodeURIComponent(d),"=",g.raw?h:encodeURIComponent(h),i.expires?"; expires="+i.expires.toUTCString():"",i.path?"; path="+i.path:"",i.domain?"; domain="+i.domain:"",i.secure?"; secure":""].join("")}for(var l=g.raw?e:f,m=b.cookie.split("; "),n=0,o=m.length;o>n;n++){var p=m[n].split("=");if(l(p.shift())===d){var q=l(p.join("="));return g.json?JSON.parse(q):q}}return null};g.defaults={},a.removeCookie=function(b,c){return null!==a.cookie(b)?(a.cookie(b,null,c),!0):!1}})(jQuery,document);
+});
+/*
+ *  Quick Cookies
+ *   
+ *  This module provides a centralized place to use quick
+ *  session cookies for things that have to be remembered
+ *  after a page refresh.
+ *
+ *  Example: When a user registers from an action, like an
+ *  attempt to comment, once they login for the first time,
+ *  they must be scrolled back to the comment stream where
+ *  they originally tried to comment.
+ *
+ *  This module does not allow specifying expiration or
+ *  path information for the cookie.  It's intended to
+ *  be tied to the page it was created on and be a 
+ *  "session cookie" - lost when the browser is closed.
+ *
+ *  set: store a value in a session cookie.
+ *
+ *  remove: remove the session cookie.
+ *
+ *  getThenRemove: check if a cookie exists.  If so,
+ *      get the value, then destroy it.  Otherwise,
+ *      return false.
+ *
+ */
+
+_mmdbHeaderRequire.define('quick-cookies',[
+        'jquery', 
+        'jQuery-cookie'
+       ], 
+function($) {
+    var QC = {
+        get: function(name) {
+            return $.cookie(name);
+        },
+
+        set: function(name, value, path) {
+            var options = {};
+
+            if (path) {
+                options.path = path;
+            }
+
+            return $.cookie(name, value, options);
+        },
+
+        remove: function(name) {
+            return $.removeCookie(name);
+        },
+
+
+        getThenRemove: function (name) {
+            var val = this.get(name);
+
+            if (val) {
+                this.remove(name);
+            } 
+            
+            return val;
+        },
+    };
+
+    return QC;
+});
+
+/*
+ * Page Scroller
+ *
+ * This module provides a centralized place in case we need to scroll
+ * to a specific portion of a page after a page refresh. 
+ *
+ * setScrollTo: pass the vertical position of the scroll bar, it
+ *      will be stored in a session cookie
+ *
+ * unsetScrollTo: destroy the session cookie
+ *
+ * checkScrollTo: If session cookie exists with a value, scroll
+ * to it and destroy the session cookie.
+ *
+ */
+
+_mmdbHeaderRequire.define('page-scroller',[
+        'jquery', 
+        'quick-cookies'
+       ], 
+function($, 
+         QuickCookies
+       ) {
+
+var pageScroller = (function () {
+
+    var cookieName = "scrolltop";
+
+    setScrollTo = function(position) {
+        return QuickCookies.set(cookieName, position);
+    },
+
+    unsetScrollTo = function() {
+        return QuickCookies.remove(cookieName);
+    },
+
+    checkScrollTo = function() {
+        position = QuickCookies.getThenRemove(cookieName);
+        if(position) {
+            $(window).scrollTop(position);
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    return {
+        setScrollTo: setScrollTo,
+        unsetScrollTo: unsetScrollTo,
+        checkScrollTo: checkScrollTo
+    };
+}());
+
+return pageScroller;
+});
+
 _mmdbHeaderRequire.define('header/context',[
         'module',
         'sprintf',
+        'util',
         'jquery',
         'urls',
         'request',
         './models/user',
         'backbone',
         'underscore',
-        'header/gigya-helper'
+        'header/gigya-helper',
+        'page-scroller'
        ],
 function(module,
          sprintf,
+         Util,
          $,
          Urls,
          Request,
          User,
          Backbone,
          _,
-         GigyaHelper
+         GigyaHelper,
+         pageScroller
         ) {
-    var config = module.config();
+
+    var USER_LOGIN_EVENT = 'user-logged-in',
+        USER_LOGOUT_EVENT = 'user-logged-out',
+        USER_REGISTERED_EVENT = 'user-registered',
+        MODAL_CLOSED_EVENT = 'modal-closed';
+
     function Context(serverContext) {
         this.sc = serverContext || {};
 
         this._user = null;
         this._alerts = null;
-        
+
         if ('alerts' in this.sc) {
             this._alerts = this.sc.alerts;
         }
@@ -15938,8 +16210,9 @@ function(module,
         },
 
         getStaticUrl: function() {
-            if (config.staticUrl) {
-                return config.staticUrl;
+            var staticUrl = module.config().staticUrl;
+            if (staticUrl) {
+                return staticUrl;
             }
             else {
                 return this.sc.staticUrl;
@@ -15967,6 +16240,46 @@ function(module,
             }
         },
 
+        _initializeUser: function() {
+            var self = this;
+            return $.when(GigyaHelper.getCurrentUserInfo())
+             .pipe(function(userInfo) {
+                 if (userInfo.isLoggedIn && userInfo.isSiteUID) {
+                     self._user = new User({
+                         id: userInfo.UID,
+                     }, {context: this});
+                     
+                     if ('user' in self.sc && parseInt(self.sc.user.id) === parseInt(userInfo.UID)) {
+                         self._user._serverData = self.sc.user;
+                         self.checkRedirect();
+                         //self.triggerLogin();
+                     }
+                     else {// if (config.serverSideLogin) {
+                         return self.doServerSideLogin(userInfo.UIDSignature, userInfo.signatureTimestamp)
+                             .pipe(function() {
+                                 return self._getFetchedUser();
+                             }, function() {
+                                 return null;
+                             });
+                     }
+                     return self._getFetchedUser();
+                 }
+                 else if ('user' in self.sc) {
+                     return $.when(Request.post(Urls['logout']())).pipe(function() {
+                         Util.reloadLocation();
+                         return null;
+                     });
+                 }
+
+                 return null;
+             })
+             .fail(function(code, message, details) {
+                 console.error(sprintf(
+                     "Could not get gigya user info: %s (%s): %s", code,
+                     message, details));
+             });
+        },
+
         getUser: function() {
             var self = this;
             if (this._userInitPromise && this._userInitPromise.state() == 'pending') {
@@ -15976,44 +16289,8 @@ function(module,
                 return this._getFetchedUser();
             }
             else {
-                this._userInitPromise = 
-                    $.when(GigyaHelper.getCurrentUserInfo())
-                     .pipe(function(userInfo) {
-                         self._userInitPromise = null;
-                         if (userInfo.isLoggedIn && userInfo.isSiteUID) {
-                             self._user = new User({
-                                 id: userInfo.UID,
-                             }, {context: this});
-                             
-                             if ('user' in self.sc && parseInt(self.sc.user.id) === parseInt(userInfo.UID)) {
-                                 self._user._serverData = self.sc.user;
-                                 self.checkRedirect();
-                                 //self.triggerLogin();
-                             }
-                             else {// if (config.serverSideLogin) {
-                                 return self.doServerSideLogin(userInfo.UIDSignature, userInfo.signatureTimestamp)
-                                 .pipe(function() {
-                                     return self._getFetchedUser();
-                                 }, function() {
-                                     return null;
-                                 });
-                             }
-                             return self._getFetchedUser();
-                         }
-                         else if ('user' in self.sc) {
-                             return $.when(Request.post(Urls['logout']())).pipe(function() {
-                                 location.reload(true);
-                                 return null;
-                             });
-                         }
-                     })
-                     .fail(function(code, message, details) {
-                         self._userInitPromise = null;
-                         console.error(sprintf(
-                             "Could not get gigya user info: %s (%s): %s", code,
-                             message, details));
-                     });
-                 return this._userInitPromise;
+                this._userInitPromise = this._initializeUser();
+                return this._userInitPromise;
             }
 
         },
@@ -16022,66 +16299,73 @@ function(module,
             return this._alerts;
         },
 
+
         triggerLogin: function() {
             this._user._loggedIn = true;
-            this.trigger('user-logged-in');
+            this.trigger(USER_LOGIN_EVENT);
         },
 
         onUserLoggedIn: function(callback) {
             //if (this.isLoggedIn()) {
                 //callback(this._user);
             //}
-            this.bind('user-logged-in', callback);
+            this.bind(USER_LOGIN_EVENT, callback);
         },
 
         onUserLoggedOut: function(callback) {
-            this.bind('user-logged-out', callback);
+            this.bind(USER_LOGOUT_EVENT, callback);
         },
 
         onUserRegistered: function(callback) {
-            this.bind('user-registered', callback);
+            this.bind(USER_REGISTERED_EVENT, callback);
+        },
+
+        triggerLogout: function() {
+            this.trigger(USER_LOGOUT_EVENT);
         },
 
         triggerUserRegistered: function() {
-            this.trigger("user-registered");
+            this.trigger(USER_REGISTERED_EVENT);
         },
 
         triggerModalClosed: function() {
-            this.trigger('modal-closed');
+            this.trigger(MODAL_CLOSED_EVENT);
         },
 
         onModalClosed: function(callback) {
-            this.bind('modal-closed', callback);
+            this.bind(MODAL_CLOSED_EVENT, callback);
         },
 
         setUser: function(u) {
             this._user = u;
         },
 
-        setUserFromLogin: function(u, firstLogin) {
+        setUserFromLogin: function(u, redirectToLandingPage) {
             var self = this;
             this._user = u;
-            // We need to do a gigya call here to get the GAC cookie recognized
-            // before it expires.
-            //$.when(GigyaHelper.getCurrentUserInfo()).done(function() {
-            //GigyaHelper.ensureCookie();
             
-            if (firstLogin === true) {
+            if (redirectToLandingPage === true) {
                 if (Urls['memcen-host'] == "") {
-                    document.location = "/";
+                    Util.setLocation('/');
                 } else {
-                    document.location = Urls['memcen-host'];
+                    Util.setLocation(Urls['memcen-host']);
                 }
                 return;
             }
             
             self.checkRedirect();
-            if (config.refreshOnLogin) {
-                location.reload(true);
+
+            if (module.config().refreshOnLogin) {
+                Util.reloadLocation();
+            } else {
+                // If we're here, the user logged in and the page
+                // wasn't refreshed.
+                // Check if we're supposed to scroll to a certain part 
+                // of the page after login
+                pageScroller.checkScrollTo();
             }
 
             self.triggerLogin();
-            //});
         },
 
         isLoggedIn: function() {
@@ -16103,7 +16387,7 @@ function(module,
                     // the login modal window.  Otherwise, leave them
                     // on the page they're at.
 
-                    uri = new Uri(location.toString());
+                    uri = new Uri(Util.getLocation().toString());
                     //uri = new Uri(sharedHeaderConfig['memcenHost']);
                     uri.setAnchor(''); // remove #logout
                     
@@ -16111,7 +16395,8 @@ function(module,
                         uri.setPath('/');
                     }
 
-                    window.location = uri.toString();
+                    Util.setLocation(uri.toString());
+                    self.triggerLogout();
                 })
             }
             this._user = null;
@@ -16120,54 +16405,61 @@ function(module,
         // This will bring up the login modal to prompt the user to log in.
         // Accepts two parameters: a callback function on success, and a 
         // callback function if the window was closed (either by clicking the "x"
-        // or pressing "Cancel".  Currently this method is only used for
-        // livefyre.
+        // or pressing "Cancel".  
+        //
+        // This is currently only used by Livefyre, but other apps (such as Your Shot)
+        // will be integrated in the site in the future.  When people try to perform an
+        // action, such as commenting on a LiveFyre stream or a YourShot photo, this method
+        // should be called to log them in.
+        //
+        // According to MEM-1762, people registering from actions should NOT be redirected 
+        // to the main Member Center landing page upon successful registration.  Instead, 
+        // they should be returned to the page they registered from.
         requestLogin: function(loggedInCallBack, modalClosedCallBack) {
+
+            this.setCalledFromAction(true);
+            this.onModalClosed(this.requestLoginClosed);
+            pageScroller.setScrollTo($(window).scrollTop());
+
             this.onUserLoggedIn(loggedInCallBack);
             this.onModalClosed(modalClosedCallBack);
             this.onUserRegistered(modalClosedCallBack);
             Backbone.history.navigate("login", true);
         },
 
+        setCalledFromAction: function(isCalledFromAction) {
+            this._loginRegCalledFromAction = isCalledFromAction;
+        },
+
+        getCalledFromAction: function() {
+            return this._loginRegCalledFromAction;
+        },
+
+        requestLoginClosed: function() {
+            this.setCalledFromAction(false);
+            pageScroller.unsetScrollTo();
+        },
+
+        // Checks to see if the user needs to be redirected to a page that
+        // requires authentication, based on the presence of certain query
+        // parameters in the page url.  This is generally called immediately
+        // after some sort of authentication has succeded.
         checkRedirect: function() {
-            uri = new Uri(document.location.toString());
+            uri = new Uri(Util.getLocation().toString());
 
             if(uri.query().getParamValue('next')) {
                 uri.setPath(uri.query().getParamValue('next'));
                 uri.setQuery('');
                 uri.setAnchor('');
-                window.location = uri.toString();
+                Util.setLocation(uri.toString());
             }
             else {
+                var curHash = Util.getHash();
                 // blindly resetting the location.hash to "" sends IE9 into an infinite loop
-                if(window.location.hash !== '#' && window.location.hash !== ''){
-                    window.location.hash = "";
+                if(curHash !== '#' && curHash !== ''){
+                    Util.setHash("");
                 }
             }
-        },
-
-        getRegistrationData: function() {
-
-            // initial data
-            data = {
-               "regReferrer":document.referrer,
-               "regUrl":document.location.toString()
-            }
-
-            // additional data, if available
-            uri = new Uri(document.location.toString());
-
-            if(uri.query().getParamValue('rptregsrc')) {
-                data["regSource"] = uri.query().getParamValue('rptregsrc');
-            }
-            if(uri.query().getParamValue('rptregcta')) {
-                data["regCTA"] = uri.query().getParamValue('rptregcta');
-            }
-            if(uri.query().getParamValue('rptregcampaign')) {
-                data["regCampaign"] = uri.query().getParamValue('rptregcampaign');
-            }
-
-            return data;
         },
 
         doServerSideLogin: function(signature, timestamp) {
@@ -16182,8 +16474,8 @@ function(module,
              .done(function() {
                  self.checkRedirect();
 
-                 if (config.refreshOnLogin) {
-                     location.reload(true);
+                 if (module.config().refreshOnLogin) {
+                     Util.reloadLocation();
                  }
                  else {
                      self.triggerLogin();
@@ -16197,11 +16489,40 @@ function(module,
     return Context;
 });
 
-_mmdbHeaderRequire.define('handlebars',[], function() {
-// lib/handlebars/base.js
-var Handlebars = {};
+_mmdbHeaderRequire.define('handlebars',[],function() {
+/*
 
-Handlebars.VERSION = "1.0.beta.6";
+Copyright (C) 2011 by Yehuda Katz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+// lib/handlebars/base.js
+
+/*jshint eqnull:true*/
+var Handlebars = {};
+//this.Handlebars = {};
+
+(function(Handlebars) {
+
+Handlebars.VERSION = "1.0.rc.2";
 
 Handlebars.helpers  = {};
 Handlebars.partials = {};
@@ -16240,29 +16561,71 @@ Handlebars.registerHelper('blockHelperMissing', function(context, options) {
     return inverse(this);
   } else if(type === "[object Array]") {
     if(context.length > 0) {
-      for(var i=0, j=context.length; i<j; i++) {
-        ret = ret + fn(context[i]);
-      }
+      return Handlebars.helpers.each(context, options);
     } else {
-      ret = inverse(this);
+      return inverse(this);
     }
-    return ret;
   } else {
     return fn(context);
   }
 });
 
+Handlebars.K = function() {};
+
+Handlebars.createFrame = Object.create || function(object) {
+  Handlebars.K.prototype = object;
+  var obj = new Handlebars.K();
+  Handlebars.K.prototype = null;
+  return obj;
+};
+
+Handlebars.logger = {
+  DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3, level: 3,
+
+  methodMap: {0: 'debug', 1: 'info', 2: 'warn', 3: 'error'},
+
+  // can be overridden in the host environment
+  log: function(level, obj) {
+    if (Handlebars.logger.level <= level) {
+      var method = Handlebars.logger.methodMap[level];
+      if (typeof console !== 'undefined' && console[method]) {
+        console[method].call(console, obj);
+      }
+    }
+  }
+};
+
+Handlebars.log = function(level, obj) { Handlebars.logger.log(level, obj); };
+
 Handlebars.registerHelper('each', function(context, options) {
   var fn = options.fn, inverse = options.inverse;
-  var ret = "";
+  var i = 0, ret = "", data;
 
-  if(context && context.length > 0) {
-    for(var i=0, j=context.length; i<j; i++) {
-      ret = ret + fn(context[i]);
+  if (options.data) {
+    data = Handlebars.createFrame(options.data);
+  }
+
+  if(context && typeof context === 'object') {
+    if(context instanceof Array){
+      for(var j = context.length; i<j; i++) {
+        if (data) { data.index = i; }
+        ret = ret + fn(context[i], { data: data });
+      }
+    } else {
+      for(var key in context) {
+        if(context.hasOwnProperty(key)) {
+          if(data) { data.key = key; }
+          ret = ret + fn(context[key], {data: data});
+          i++;
+        }
+      }
     }
-  } else {
+  }
+
+  if(i === 0){
     ret = inverse(this);
   }
+
   return ret;
 });
 
@@ -16289,21 +16652,26 @@ Handlebars.registerHelper('with', function(context, options) {
   return options.fn(context);
 });
 
-Handlebars.registerHelper('log', function(context) {
-  Handlebars.log(context);
+Handlebars.registerHelper('log', function(context, options) {
+  var level = options.data && options.data.level != null ? parseInt(options.data.level, 10) : 1;
+  Handlebars.log(level, context);
 });
+
+}(Handlebars));
 ;
 // lib/handlebars/utils.js
+
+var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
+
 Handlebars.Exception = function(message) {
   var tmp = Error.prototype.constructor.apply(this, arguments);
 
-  for (var p in tmp) {
-    if (tmp.hasOwnProperty(p)) { this[p] = tmp[p]; }
+  // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
+  for (var idx = 0; idx < errorProps.length; idx++) {
+    this[errorProps[idx]] = tmp[errorProps[idx]];
   }
-
-  this.message = tmp.message;
 };
-Handlebars.Exception.prototype = new Error;
+Handlebars.Exception.prototype = new Error();
 
 // Build out our basic SafeString type
 Handlebars.SafeString = function(string) {
@@ -16315,6 +16683,7 @@ Handlebars.SafeString.prototype.toString = function() {
 
 (function() {
   var escape = {
+    "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
@@ -16322,7 +16691,7 @@ Handlebars.SafeString.prototype.toString = function() {
     "`": "&#x60;"
   };
 
-  var badChars = /&(?!\w+;)|[<>"'`]/g;
+  var badChars = /[&<>"'`]/g;
   var possible = /[&<>"'`]/;
 
   var escapeChar = function(chr) {
@@ -16343,11 +16712,7 @@ Handlebars.SafeString.prototype.toString = function() {
     },
 
     isEmpty: function(value) {
-      if (typeof value === "undefined") {
-        return true;
-      } else if (value === null) {
-        return true;
-      } else if (value === false) {
+      if (!value && value !== 0) {
         return true;
       } else if(Object.prototype.toString.call(value) === "[object Array]" && value.length === 0) {
         return true;
@@ -16404,7 +16769,7 @@ Handlebars.VM = {
   },
   noop: function() { return ""; },
   invokePartial: function(partial, name, context, helpers, partials, data) {
-    options = { helpers: helpers, partials: partials, data: data };
+    var options = { helpers: helpers, partials: partials, data: data };
 
     if(partial === undefined) {
       throw new Handlebars.Exception("The partial " + name + " could not be found");
@@ -16413,7 +16778,7 @@ Handlebars.VM = {
     } else if (!Handlebars.compile) {
       throw new Handlebars.Exception("The partial " + name + " could not be compiled when running in runtime-only mode");
     } else {
-      partials[name] = Handlebars.compile(partial);
+      partials[name] = Handlebars.compile(partial, {data: data !== undefined});
       return partials[name](context, options);
     }
   }
@@ -16421,7 +16786,6 @@ Handlebars.VM = {
 
 Handlebars.template = Handlebars.VM.template;
 ;
-
 return Handlebars;
 });
 
@@ -16561,8 +16925,22 @@ _mmdbHeaderRequire.define('header/hbs-helpers',['handlebars', 'underscore', 'rec
 function(Handlebars, _, Recaptcha) {
 if (!window._ngs_handlebars_header_registered) {
 
+    Handlebars.registerHelper('checkerror', function(context, options) {
+        var fieldName = context,
+            error = this.error,
+            fieldError = error.getFieldError(fieldName);
+
+        if (fieldError) {
+            var data = Handlebars.createFrame(options.data || {});
+            data.errorText = fieldError;
+            return options.fn(this, {data: data});
+        }
+        else {
+            return options.inverse(this);
+        }
+    });
+
     Handlebars.registerHelper('renderBanner', function(bannerName) {
-        debugger;
         return new Handlebars.SafeString(_mmdbHeaderRequire.require('header/templates')[bannerName]);
     });
 
@@ -17037,141 +17415,64 @@ function program21(depth0,data) {
   return buffer;}
 
 ),
-"verify": template(function (Handlebars,depth0,helpers,partials,data) {
+"alert-base": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  
+
+
+  return "<div class=\"alert banner\">\n    <div class=\"banner-wrap\">\n        <div class=\"alert-child\">\n\n        </div>\n        <a id=\"close-banner\" href=\"#close-banner\">&times;</a>\n    </div>\n</div>\n";}
+
+),
+"alert-activation-reminder": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n	<div class=\"errorTop\">\n	    ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n	</div>\n	";
+  buffer += "\n            ";
+  stack1 = depth0.emailResent;
+  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        ";
   return buffer;}
-
-function program3(depth0,data) {
+function program2(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n<div class=\"errorTop\">\n    ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n\n        ";
-  stack1 = depth0.showResendActivationLink;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        ";
-  stack1 = depth0.disabledAccount;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n";
-  return buffer;}
+  
+  return "\n                <b>Thank you for joining.</b> To activate your account, please click the email activation link we sent you.<br>\n            ";}
+
 function program4(depth0,data) {
   
   
-  return "\n        <div id=\"resend-activation-link\"> </div>\n        ";}
+  return "\n            To activate your account, please click the email activation link we send you.\n        ";}
 
 function program6(depth0,data) {
   
   
-  return "\n        <div id=\"disabled-account\"> </div>\n        ";}
+  return "\n        <div id=\"resend-activation-link\"> </div>\n    ";}
 
-function program8(depth0,data) {
-  
-  var buffer = "", stack1, foundHelper;
-  buffer += "\n<div class=\"noticeTop\">\n    ";
-  foundHelper = helpers.notice;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.notice; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\n</div>\n";
+  buffer += "  <div>\n    <div>\n      <span class=\"text_555\">\n\n        ";
+  stack1 = depth0.showResendLink;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      </span>\n    </div>\n\n    ";
+  stack1 = depth0.showResendLink;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </div>\n\n";
   return buffer;}
 
-function program10(depth0,data) {
-  
-  
-  return " error";}
+),
+"banner": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
-function program12(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
-  return buffer;}
 
-function program14(depth0,data) {
-  
-  
-  return " error";}
-
-function program16(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
-  return buffer;}
-
-  buffer += "<div class=\"content_50 black_bg\">\n    <h1 class=\"title_gold\">Account Verification</h1>\n    <h1 class=\"title_FFF\">Your account has been<br/>created successfully,<br/>please sign in to access your profile and account settings.</h1>\n</div><div class=\"content_50 white_bg\">\n<!-- 	";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " -->\n";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  stack1 = depth0.notice;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<h1 class=\"title_333\">Member sign in</h1>\n	<hr class=\"dotted\"/>\n	<form class=\"login\" action=\"#\" autocomplete=\"on\" id=\"login-form\">\n	    <input type=\"email\" name=\"username\" placeholder=\"Email Address\" value=\"";
-  stack1 = depth0.fieldsToKeep;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" maxlength=\"62\"/>\n	    ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	    <div class=\"password_wrap\">\n	    	<input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"text_555 password";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" maxlength=\"30\"/>\n	    </div>\n	    ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	    <!--<input class=\"submit\" type=\"submit\" value=\"Login\"/>-->\n	    ";
-  stack1 = depth0.needsRecaptcha;
-  foundHelper = helpers.show_recaptcha;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "show_recaptcha", stack1, {hash:{}});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	    <a id=\"login-native-button\" href=\"#\" class=\"submit\">Sign in</a>\n	</form>\n	<a id=\"forgotlink\" class=\"forgot text_blue\" href=\"#forgot-password\">Forgot your password?</a>\n	<div class=\"bottom\"><span class=\"text_555\">Not a member?&nbsp;</span><a id=\"reglink\" class=\"text_blue\" href=\"#";
-  foundHelper = helpers.registerRoute;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\">Join now.</a></div>\n</div>\n";
+  buffer += "<div class=\"banner\">\n	<div class=\"banner-wrap\">\n        ";
+  stack1 = depth0.bannerName;
+  foundHelper = helpers.renderBanner;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "renderBanner", stack1, {hash:{}});
+  buffer += escapeExpression(stack1) + "\n		<a id=\"close-banner\" href=\"#close-banner\">&times;</a>\n	</div>\n</div>\n";
   return buffer;}
 
 ),
@@ -17533,6 +17834,14 @@ function program11(depth0,data) {
   return buffer;}
 
 ),
+"alert-disabled-account": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div>\n  <div>\n    <span class=\"text_555\">\n      <b>Disabled Account</b>\n    </span>\n  </div>\n</div>\n\n\n";}
+
+),
 "disabled-account": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
@@ -17742,23 +18051,14 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n    ";
-  stack1 = depth0.isAlertHeader;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n    If you need the email resent, click \"Resend.\" <a id=\"resend-activation-link-button\">Resend</a>\n  ";
-  return buffer;}
-function program4(depth0,data) {
   
-  
-  return "\n    <b>Thank you for joining.</b> To activate your account, please click the email activation link we sent you.<br/>\n    ";}
+  return "\n    If you need the email resent, click \"Resend.\" <a id=\"resend-activation-link-button\">Resend</a>\n  ";}
 
-  buffer += "<span class=\"text_555\">\n\n  ";
+  buffer += "<span class=\"text_555\">\n  ";
   stack1 = depth0.sent;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n</span>\n";
+  buffer += "\n</span>\n";
   return buffer;}
 
 ),
@@ -17800,21 +18100,8 @@ function program1(depth0,data) {
   return buffer;}
 
 ),
-"banner": template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div class=\"banner\">\n	<div class=\"banner-wrap\">\n        ";
-  stack1 = depth0.bannerName;
-  foundHelper = helpers.renderBanner;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "renderBanner", stack1, {hash:{}});
-  buffer += escapeExpression(stack1) + "\n		<a id=\"close-banner\" href=\"#close-banner\">&times;</a>\n	</div>\n</div>\n";
-  return buffer;}
-
-),
 "native-reg-p1": template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
+  helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, stack3, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
@@ -17822,7 +18109,7 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n<div class=\"errorTop\">\n    ";
   stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.topError;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n</div>\n";
   return buffer;}
@@ -17845,12 +18132,10 @@ function program5(depth0,data) {
 function program7(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.firstName;
+  buffer += "\n        <span class=\"error\">";
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
+  buffer += escapeExpression(stack1) + "</span>\n    ";
   return buffer;}
 
 function program9(depth0,data) {
@@ -17871,12 +18156,10 @@ function program11(depth0,data) {
 function program13(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.middleName;
+  buffer += "\n        <span class=\"error\">";
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
+  buffer += escapeExpression(stack1) + "</span>\n    ";
   return buffer;}
 
 function program15(depth0,data) {
@@ -17897,12 +18180,10 @@ function program17(depth0,data) {
 function program19(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.lastName;
+  buffer += "\n        <span class=\"error\">";
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
+  buffer += escapeExpression(stack1) + "</span>\n    ";
   return buffer;}
 
 function program21(depth0,data) {
@@ -17923,12 +18204,10 @@ function program25(depth0,data) {
 function program27(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthdate;
+  buffer += "\n            <span class=\"error\">";
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>";
+  buffer += escapeExpression(stack1) + "</span>\n        ";
   return buffer;}
 
 function program29(depth0,data) {
@@ -17950,9 +18229,7 @@ function program33(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.email;
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
@@ -17966,398 +18243,369 @@ function program37(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = data.errorText;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
 
   buffer += "<div class=\"top_bar_gold\"><span class=\"text_555\">Create a new account</span></div>\n";
   stack1 = depth0.error;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.topError;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n<h1 class=\"title_333\">Join the National Geographic Community</h1>\n<hr class=\"dotted\"/>\n<form autocomplete=\"on\" id=\"native-reg-start-form\">\n    <!--{% csrf_token %}-->\n    <div class=\"max_50\">\n        <span class=\"required\">\n            <input class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.firstName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "firstName", {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data}) : helperMissing.call(depth0, "checkerror", "firstName", {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += " trimspace\" type=\"input\" name=\"firstName\" id=\"firstName\" placeholder=\"First Name\" maxlength=\"50\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.firstName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "/>\n        </span>\n        ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.firstName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
+  buffer += "/>\n        </span>\n    ";
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "firstName", {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data}) : helperMissing.call(depth0, "checkerror", "firstName", {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <input class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.middleName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "middleName", {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data}) : helperMissing.call(depth0, "checkerror", "middleName", {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += " trimspace\" type=\"input\" name=\"middleName\" id=\"middleName\" placeholder=\"Middle Name\" maxlength=\"50\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.middleName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(11, program11, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "/>\n        ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.middleName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(13, program13, data)});
+  buffer += "/>\n    ";
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "middleName", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data}) : helperMissing.call(depth0, "checkerror", "middleName", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <span class=\"required\"><input class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.lastName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(15, program15, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "lastName", {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data}) : helperMissing.call(depth0, "checkerror", "lastName", {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += " trimspace\" type=\"input\" name=\"lastName\" id=\"lastName\" placeholder=\"Last Name\" maxlength=\"50\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.lastName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(17, program17, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "/></span>\n        ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.lastName;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(19, program19, data)});
+  buffer += "/></span>\n    ";
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "lastName", {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data}) : helperMissing.call(depth0, "checkerror", "lastName", {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <div class=\"text_with_input whats-this\">\n            <span class=\"text_555 \">Birthdate</span>\n            <div class=\"tooltip_wrap\">\n                <span class=\"text_555\">?</span>\n                <div class=\"tool_tip tool_tip_bottom\">\n                    <ul>\n                        <li class=\"whats-this\"><div class=\"arrow\"></div>Providing your birthday helps ensure you get the right National Geographic experience. This information will not be displayed to others.</li>\n                    </ul>        \n                </div>\n            </div>\n        </div>\n        <span class=\"required datePicker\">\n            <select class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthdate;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(21, program21, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "birthDate", {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data}) : helperMissing.call(depth0, "checkerror", "birthDate", {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" name=\"birthMonth\">\n                <option value=\"null\">Month</option>\n                <option value=\"1\"";
+  buffer += "\" name=\"birthMonth\">\n                <option value=\"\">Month</option>\n                <option value=\"1\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 1, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 1, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 1, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 1, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">January</option>\n                <option value=\"2\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 2, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 2, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 2, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 2, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">February</option>\n                <option value=\"3\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 3, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 3, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 3, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 3, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">March</option>\n                <option value=\"4\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 4, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 4, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 4, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 4, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">April</option>\n                <option value=\"5\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 5, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 5, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 5, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 5, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">May</option>\n                <option value=\"6\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 6, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 6, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 6, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 6, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">June</option>\n                <option value=\"7\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 7, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 7, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 7, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 7, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">July</option>\n                <option value=\"8\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 8, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 8, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 8, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 8, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">August</option>\n                <option value=\"9\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 9, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 9, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 9, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 9, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">September</option>\n                <option value=\"10\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 10, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 10, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 10, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 10, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">October</option>\n                <option value=\"11\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 11, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 11, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 11, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 11, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">November</option>\n                <option value=\"12\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthMonth;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 12, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 12, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 12, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 12, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">December</option>\n            </select>\n            <select class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthdate;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(23, program23, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "birthDate", {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data}) : helperMissing.call(depth0, "checkerror", "birthDate", {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" name=\"birthDay\">\n                <option value=\"null\">Day</option>\n                <option value=\"1\"";
+  buffer += "\" name=\"birthDay\">\n                <option value=\"\">Day</option>\n                <option value=\"1\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 1, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 1, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 1, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 1, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">1</option>\n                <option value=\"2\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 2, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 2, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 2, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 2, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">2</option>\n                <option value=\"3\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 3, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 3, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 3, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 3, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">3</option>\n                <option value=\"4\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 4, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 4, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 4, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 4, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">4</option>\n                <option value=\"5\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 5, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 5, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 5, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 5, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">5</option>\n                <option value=\"6\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 6, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 6, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 6, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 6, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">6</option>\n                <option value=\"7\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 7, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 7, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 7, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 7, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">7</option>\n                <option value=\"8\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 8, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 8, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 8, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 8, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">8</option>\n                <option value=\"9\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 9, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 9, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 9, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 9, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">9</option>\n                <option value=\"10\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 10, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 10, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 10, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 10, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">10</option>\n                <option value=\"11\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 11, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 11, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 11, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 11, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">11</option>\n                <option value=\"12\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 12, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 12, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 12, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 12, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">12</option>\n                <option value=\"13\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 13, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 13, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 13, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 13, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">13</option>\n                <option value=\"14\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 14, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 14, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 14, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 14, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">14</option>\n                <option value=\"15\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 15, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 15, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 15, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 15, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">15</option>\n                <option value=\"16\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 16, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 16, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 16, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 16, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">16</option>\n                <option value=\"17\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 17, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 17, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 17, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 17, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">17</option>\n                <option value=\"18\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 18, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 18, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 18, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 18, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">18</option>\n                <option value=\"19\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 19, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 19, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 19, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 19, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">19</option>\n                <option value=\"20\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 20, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 20, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 20, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 20, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">20</option>\n                <option value=\"21\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 21, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 21, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 21, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 21, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">21</option>\n                <option value=\"22\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 22, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 22, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 22, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 22, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">22</option>\n                <option value=\"23\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 23, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 23, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 23, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 23, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">23</option>\n                <option value=\"24\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 24, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 24, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 24, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 24, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">24</option>\n                <option value=\"25\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 25, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 25, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 25, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 25, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">25</option>\n                <option value=\"26\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 26, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 26, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 26, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 26, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">26</option>\n                <option value=\"27\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 27, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 27, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 27, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 27, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">27</option>\n                <option value=\"28\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 28, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 28, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 28, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 28, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">28</option>\n                <option value=\"29\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 29, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 29, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 29, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 29, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">29</option>\n                <option value=\"30\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 30, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 30, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 30, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 30, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">30</option>\n                <option value=\"31\"";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthDay;
   foundHelper = helpers.option_selected;
-  stack1 = foundHelper ? foundHelper.call(depth0, 31, stack1, {hash:{}}) : helperMissing.call(depth0, "option_selected", 31, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, 31, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "option_selected", 31, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">31</option>\n            </select>\n            <select class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthdate;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(25, program25, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "birthDate", {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data}) : helperMissing.call(depth0, "checkerror", "birthDate", {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" name=\"birthYear\" id=\"yeardropdown\">\n                <option value=\"null\">Year</option>\n                ";
+  buffer += "\" name=\"birthYear\" id=\"yeardropdown\">\n                <option value=\"\">Year</option>\n                ";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthYear;
   stack2 = depth0.maxYear;
   stack3 = depth0.minYear;
   foundHelper = helpers.year_options;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack3, stack2, stack1, {hash:{}}) : helperMissing.call(depth0, "year_options", stack3, stack2, stack1, {hash:{}});
+  stack1 = foundHelper ? foundHelper.call(depth0, stack3, stack2, stack1, {hash:{},data:data}) : helperMissing.call(depth0, "year_options", stack3, stack2, stack1, {hash:{},data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </select>\n            ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.birthdate;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(27, program27, data)});
+  buffer += "\n            </select>\n        ";
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "birthDate", {hash:{},inverse:self.noop,fn:self.program(27, program27, data),data:data}) : helperMissing.call(depth0, "checkerror", "birthDate", {hash:{},inverse:self.noop,fn:self.program(27, program27, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </span>\n    </div>\n    <div class=\"max_50\">\n        <span class=\"required\">\n            <input class=\"text_555";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.email;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(29, program29, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "email", {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data}) : helperMissing.call(depth0, "checkerror", "email", {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" type=\"email\" name=\"email\" placeholder=\"Email Address\" maxlength=\"62\" ";
   stack1 = depth0.formData;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.email;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(31, program31, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(31, program31, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "/>\n        </span>\n        ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.email;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(33, program33, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "email", {hash:{},inverse:self.noop,fn:self.program(33, program33, data),data:data}) : helperMissing.call(depth0, "checkerror", "email", {hash:{},inverse:self.noop,fn:self.program(33, program33, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <div class=\"required tooltip_wrap\">\n            <input class=\"text_555 password";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(35, program35, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "password", {hash:{},inverse:self.noop,fn:self.program(35, program35, data),data:data}) : helperMissing.call(depth0, "checkerror", "password", {hash:{},inverse:self.noop,fn:self.program(35, program35, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" type=\"password\" name=\"password\" placeholder=\"Password\" maxlength=\"30\"/>\n            <div class=\"tool_tip tool_tip_bottom\">\n                <ul>\n                    <li class=\"pass_length\"><div class=\"arrow\"></div>At least 8 characters</li>\n                    <li class=\"pass_number\">Contains a number and a letter</li>\n                    <!-- <li class=\"pass_case\">Must contain an uppercase character</li> -->\n                    <li class=\"pass_strength\">Password does not meet requirements</li>\n                </ul>\n            </div>\n        </div>\n        ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(37, program37, data)});
+  foundHelper = helpers.checkerror;
+  stack1 = foundHelper ? foundHelper.call(depth0, "password", {hash:{},inverse:self.noop,fn:self.program(37, program37, data),data:data}) : helperMissing.call(depth0, "checkerror", "password", {hash:{},inverse:self.noop,fn:self.program(37, program37, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <input type=\"hidden\" id=\"icaptcha\" name=\"icaptcha\"/>\n        <input type=\"hidden\" id=\"utc-offset\" name=\"utc_offset\" value=\"";
   foundHelper = helpers.utc_offset;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.utc_offset; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "\"/>\n        <input type=\"hidden\" id=\"tz-name\" name=\"tz_name\" value=\"";
   foundHelper = helpers.tz_name;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.tz_name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "\"/>\n        <input type=\"hidden\" id=\"bot\" name=\"bot\"/>\n        <span class=\"text_555 already\">Already a member?&nbsp;</span><a id=\"signlink\" class=\"text_blue\" href=\"#login\">Sign in.</a>\n        <a class=\"text_blue\" href=\"http://help.nationalgeographic.com/customer/portal/articles/757556\" target=\"_blank\">Why am I joining?</a><span class=\"text_555\">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a class=\"text_blue reg_previous_user\" href=\"http://help.nationalgeographic.com/customer/portal/articles/884025\" target=\"_blank\">Previous site user?</a>\n        <span class=\"text_555 required\">Required fields</span>\n    </div>\n</form>\n<hr class=\"dotted\"/>\n<span class=\"text_999_small tos\">By signing up, you agree to our <a href=\"http://www.nationalgeographic.com/community/terms/\" target=\"_blank\">Terms of Service</a>, <a href=\"http://www.nationalgeographic.com/community/privacy/\" target=\"_blank\">Privacy Policy</a>, and <a href=\"http://www.nationalgeographic.com/community/community-rules/\" target=\"_blank\">Community Rules</a></span>\n<a id=\"continue-button\" class=\"submit\">Continue</a><a id=\"cancel-button\" class=\"submit submit-cancel\" href=\"#close-modal\">Cancel</a>\n<div class=\"reg_loading\">\n    <img class=\"reg_loading_spinner\" src=\"";
   foundHelper = helpers.staticUrl;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.staticUrl; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "images/ajax-loader.gif\" alt=\"Loading\" />\n    <span class=\"reg_loading_text\">Processing...</span>\n</div>\n";
   return buffer;}
@@ -18387,7 +18635,7 @@ function program5(depth0,data) {
   var buffer = "", stack1;
   buffer += "value=\"";
   stack1 = depth0.formData;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.location_name;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.locationName;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\"";
   return buffer;}
@@ -18398,7 +18646,7 @@ function program7(depth0,data) {
   buffer += "<span class=\"error\">";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.location_name;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.locationName;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
@@ -18414,18 +18662,18 @@ function program7(depth0,data) {
   buffer += escapeExpression(stack1) + "</span><br />\n        <span class=\"text_555\">Upload a profile photo.<br />\n        You can always change it later.</span>\n    </p>\n</div>\n<div class=\"max_50\">\n    <form autocomplete=\"on\" id=\"native-reg-final-form\">\n        <span class=\"text_555\">Please provide some additional information</span>\n        <div class=\"required whats-this\">\n            <input class=\"text_555";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.location_name;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.locationName;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" type=\"input\" id=\"location-name\"\n            name=\"location_name\" placeholder=\"City, State, Country\" ";
+  buffer += "\" type=\"input\" id=\"location-name\"\n            name=\"locationName\" placeholder=\"City, State, Country\" ";
   stack1 = depth0.formData;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.location_name;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.locationName;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "/>\n            <div class=\"tooltip_wrap\">\n                <span class=\"text_555\">?</span>\n                <div class=\"tool_tip\">\n                    <ul>\n                        <li class=\"whats-this\"><div class=\"arrow\"></div>Why are we asking for your location? Your geographic location will provide valuable context to the stories you may share with us! In addition, we want to provide our community easy ways to connect with other members in their area.</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        ";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.location_name;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.locationName;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <span class=\"text_555 required\">Required fields</span>\n    </form>\n</div>\n<hr class=\"dotted\"/>\n<a id=\"continue-button\" class=\"submit\">Continue</a><a id=\"cancel-button\" class=\"submit submit-cancel\" href=\"#close-modal\">Cancel</a>\n<div class=\"reg_loading\">\n    <img class=\"reg_loading_spinner\" src=\"";
@@ -18452,15 +18700,202 @@ function program7(depth0,data) {
   buffer += escapeExpression(stack1) + "\" class=\"slider\">\n	    </div>-->\n	    <a id=\"closereg\" href=\"#close-modal\">&times;</a>\n	</div>\n</div>";
   return buffer;}
 
+),
+"verify": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n	<div class=\"errorTop\">\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n	</div>\n	";
+  return buffer;}
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n<div class=\"errorTop\">\n    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n\n        ";
+  stack1 = depth0.showResendActivationLink;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  stack1 = depth0.disabledAccount;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</div>\n";
+  return buffer;}
+function program4(depth0,data) {
+  
+  
+  return "\n        <div id=\"resend-activation-link\"> </div>\n        ";}
+
+function program6(depth0,data) {
+  
+  
+  return "\n        <div id=\"disabled-account\"> </div>\n        ";}
+
+function program8(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n<div class=\"noticeTop\">\n    ";
+  foundHelper = helpers.notice;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.notice; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\n</div>\n";
+  return buffer;}
+
+function program10(depth0,data) {
+  
+  
+  return " error";}
+
+function program12(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "<span class=\"error\">";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>";
+  return buffer;}
+
+function program14(depth0,data) {
+  
+  
+  return " error";}
+
+function program16(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "<span class=\"error\">";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>";
+  return buffer;}
+
+  buffer += "<div class=\"content_50 black_bg\">\n    <h1 class=\"title_gold\">Account Verification</h1>\n    <h1 class=\"title_FFF\">Your account has been<br/>created successfully,<br/>please sign in to access your profile and account settings.</h1>\n</div><div class=\"content_50 white_bg\">\n<!-- 	";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += " -->\n";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  stack1 = depth0.notice;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	<h1 class=\"title_333\">Member sign in</h1>\n	<hr class=\"dotted\"/>\n	<form class=\"login\" action=\"#\" autocomplete=\"on\" id=\"login-form\">\n	    <input type=\"email\" name=\"username\" placeholder=\"Email Address\" value=\"";
+  stack1 = depth0.fieldsToKeep;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"text_555";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" maxlength=\"62\"/>\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <div class=\"password_wrap\">\n	    	<input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"text_555 password";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" maxlength=\"30\"/>\n	    </div>\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <!--<input class=\"submit\" type=\"submit\" value=\"Login\"/>-->\n	    ";
+  stack1 = depth0.needsRecaptcha;
+  foundHelper = helpers.show_recaptcha;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "show_recaptcha", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <a id=\"login-native-button\" href=\"#\" class=\"submit\">Sign in</a>\n	</form>\n	<a id=\"forgotlink\" class=\"forgot text_blue\" href=\"#forgot-password\">Forgot your password?</a>\n	<div class=\"bottom\"><span class=\"text_555\">Not a member?&nbsp;</span><a id=\"reglink\" class=\"text_blue\" href=\"#";
+  foundHelper = helpers.registerRoute;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\">Join now.</a></div>\n</div>\n";
+  return buffer;}
+
+),
+"alert-registration-complete": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div>\n  <div>\n    <span class=\"text_555\">\n        Your email ";
+  foundHelper = helpers.email;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + " was verified, your registration it is completed\n    </span>\n  </div>\n</div>\n\n\n";
+  return buffer;}
+
 ), }
 });
 
 _mmdbHeaderRequire.define('views/base-view',['require', 'backbone', 'underscore', 'jquery', 'templates'],
 function(require, Backbone, _, $, Templates) {
+    function FormErrors() {
+        this.reset();
+    }
+
+    FormErrors.prototype = {
+        reset: function() {
+            this.topError = null;
+            this.fieldErrors = {};
+        },
+
+        applyErrors: function(errors) {
+            this.topError = errors.topError;
+            for (var field in errors.fieldErrors) {
+                this.fieldErrors[field] = errors.fieldErrors[field];
+            }
+        },
+
+        getTopError: function() {
+            return this.topError;
+        },
+
+        setTopError: function(topError) {
+            this.topError = topError;
+        },
+
+        getFieldError: function(field) {
+            return this.fieldErrors[field];
+        },
+
+        setFieldError: function(field, err) {
+            this.fieldErrors[field] = err;
+        },
+    };
+
     return Backbone.View.extend({
         // This custom constructor will just take out the context object from
         // options and attach it directly to the view instance
         constructor: function(options) {
+            this.formErrors = new FormErrors();
+
             if ('context' in options) {
                 this.context = options.context;
             }
@@ -18469,10 +18904,8 @@ function(require, Backbone, _, $, Templates) {
             // prototype that will fill in any unspecified options.
             options = _.extend({}, this.defaultOptions || {}, options || {});
 
-            Backbone.View.apply(this, arguments); 
+            arguments.callee.__super__.constructor.apply(this, arguments); 
         },
-
-        //templateModule: 'templates',
 
         show: function() {
             this.$el.show();
@@ -18681,9 +19114,6 @@ function($,
     })
 });
 
-_mmdbHeaderRequire.define('jQuery-cookie',['jquery'], function (jQuery) {
-(function(a,b,c){function e(a){return a}function f(a){return decodeURIComponent(a.replace(d," "))}var d=/\+/g,g=a.cookie=function(d,h,i){if(h!==c){if(i=a.extend({},g.defaults,i),null===h&&(i.expires=-1),"number"==typeof i.expires){var j=i.expires,k=i.expires=new Date;k.setDate(k.getDate()+j)}return h=g.json?JSON.stringify(h):h+"",b.cookie=[encodeURIComponent(d),"=",g.raw?h:encodeURIComponent(h),i.expires?"; expires="+i.expires.toUTCString():"",i.path?"; path="+i.path:"",i.domain?"; domain="+i.domain:"",i.secure?"; secure":""].join("")}for(var l=g.raw?e:f,m=b.cookie.split("; "),n=0,o=m.length;o>n;n++){var p=m[n].split("=");if(l(p.shift())===d){var q=l(p.join("="));return g.json?JSON.parse(q):q}}return null};g.defaults={},a.removeCookie=function(b,c){return null!==a.cookie(b)?(a.cookie(b,null,c),!0):!1}})(jQuery,document);
-});
 _mmdbHeaderRequire.define('session-augment',['jquery', 'jQuery-cookie'], function(jQuery) {
     (function(window, $) {
         
@@ -18761,193 +19191,28 @@ function($,
     });
 });
 
-_mmdbHeaderRequire.define('header/views/resend-activation-link',['jquery',
-        './base-view',
-        'errors',
-        'urls',
-        'request'
-],
-function($,
-         BaseView,
-         Errors,
-         Urls,
-         Request
-        ) {
-    return BaseView.extend({
-
-        template: 'resend-activation-link',
-
-        events: {
-            "click #resend-activation-link-button":"resend",
-        },
-
-        initialize: function(options) {
-            this.sent = false;
-            this.email = options.email;
-            this.isAlertHeader = options.isAlertHeader;
-        },
-
-        toggleState: function() {
-            if(!this.sent)
-            {
-                this.sent=true;
-            }
-            this.render();
-        },
-
-        resend: function(e) {
-
-            if(this.sent) {
-                return;
-            }
-
-            uri = new Uri(document.location.toString());
-            uri.setAnchor('login/verify'); // removes all other fragments and just includes this, show the verification message
-            nextPage = uri.toString();
-
-            var self = this;
-            $.when(Request.post(Urls['resend-activation-link']({}), {
-                    email: this.email,
-                    nextpage: nextPage
-                }))
-                .done(function(data) {
-                    self.toggleState();
-                })
-                .fail(function(error) {
-                    error = error;
-                });
-
-            return false;
-        },
-
-        render: function() {
-            return this.renderTemplate({
-                sent: this.sent,
-                email: this.email,
-                isAlertHeader : this.isAlertHeader
-            });
-        }
-    })
-});
-
-_mmdbHeaderRequire.define('header/views/disabled-account',['jquery',
-        './base-view',
-        'request'
-],
-function($,
-         BaseView,
-         Request
-        ) {
-    return BaseView.extend({
-
-        template: 'disabled-account',
-
-        render: function() {
-            return this.renderTemplate({
-            });
-        }
-    })
-});
-
-_mmdbHeaderRequire.define('header/views/alert-header',['jquery',
-        './base-view',
-        'request',
-        'errors',
-        './resend-activation-link',
-        './disabled-account'
-       ],
-function($,
-         MCView,
-         Request,
-         Errors,
-         ResendActivationLinkView,
-         DisabledAccountView
-        ) {
-    return MCView.extend({
-        template: 'alert',
-        events: {
-            "click #close-banner" : "closeBanner"
-        },
-
-        //id: 'headeralertverification',
-        //
-        showBanner: function() {
-
-        },
-
-        closeBanner: function() {
-            this.$el.remove();
-        },
-
-        setMessage: function(boldMessage, message, showResendActivationLink, disabledAccount) {
-            showResendActivationLink = showResendActivationLink || false;
-            disabledAccount = disabledAccount || false;
-            this.boldMessage = boldMessage;
-            this.alertMessage = message;
-
-            if(showResendActivationLink) {
-                this.showResendActivationLink = true;
-
-                this.resendActivationLinkView = new ResendActivationLinkView({
-                    context: self.context,
-                    email: this.model.attributes.email,
-                    isAlertHeader: true
-                });
-            } else {
-                this.showResendActivationLink = false;
-            }
-
-            if(disabledAccount) {
-                this.disabledAccount = true;
-                this.disabledAccountView = new DisabledAccountView({
-                      context: self.context
-                });
-
-            } else {
-                this.disabledAccount = false;
-            }
-
-        },
-
-        render: function(alertmessage) {
-
-            var self = this;
-
-            return $.when(this.renderTemplate({
-                boldMessage : this.boldMessage,
-                alertmessage: this.alertMessage,
-                showResendActivationLink : this.showResendActivationLink,
-                disabledAccount : this.disabledAccount,
-            })).done(function() {
-                if(self.showResendActivationLink) {
-                    self.resendActivationLinkView.render();
-                    self.$('#resend-activation-link').append(self.resendActivationLinkView.el);
-                }
-
-                if(self.disabledAccount) {
-                    self.disabledAccountView.render();
-                    self.$('#disabled-account').append(self.disabledAccountView.el)
-                }
-            });
-
-        }
-    });
-});
-
 _mmdbHeaderRequire.define('header/models/reg-manager',[
         'jquery',
         'models/base-model',
+        'util',
         'urls',
+        'errors',
         'request',
-        'underscore'
+        'underscore',
+        'quick-cookies'
        ],
 function(
          $,
          BaseModel,
+         Util,
          Urls,
+         Errors,
          Request,
-         _
+         _,
+         QuickCookies
         ) {
+
+    var TOO_YOUNG_COOKIE_NAME = 'too_young';
     
     return BaseModel.extend({
         sync: function() { throw new Error("Sync disabled!"); },
@@ -18957,6 +19222,20 @@ function(
             // present this will give an error.  We are binding these so we can
             // use them as callbacks in the 'doRegister' method.
             _.bindAll(this, 'registerFinished', 'registerError');
+
+            this.set(this._getRegMetadata());
+        },
+
+        _getRegMetadata: function() {
+            var uri = new Uri(Util.getLocation().toString());
+
+            return {
+                regReferrer: document.referrer,
+                regUrl: uri.toString(),
+                regSource: uri.query().getParamValue('rptregsrc'),
+                regCTA: uri.query().getParamValue('rptregcta'),
+                regCampaign: uri.query().getParamValue('rptregcampaign'),
+            }
         },
 
         doRegister: function() {
@@ -18965,10 +19244,10 @@ function(
                                 "registration managers!");
             }
 
-            var self = this;
-            // This is actually posting in the regular form encoding, 'toJSON'
-            // just converts the model to a plain JS object.
-            var dfd = Request.post(this.url(), this.toJSON());
+            var self = this,
+                data = this.toJSON();
+
+            var dfd = Request.post(this.url(), data);
 
             $.when(dfd).then(self.registerFinished, self.registerError);
 
@@ -18990,17 +19269,53 @@ function(
         // Done callback params: nothing
         // Fail callback params: the error explaining why the user cannot
         //                       register.
-        canRegister: function() {
-            return Request.get(Urls['can-register'](), {
-                email: this.get('email'),
-                birthYear: this.get('birthYear'),
-                birthMonth: this.get('birthMonth'),
-                birthDay: this.get('birthDay'),
-                firstName: this.get('firstName'),
-                middleName: this.get('middleName'),
-                lastName: this.get('lastName')
-            });
-        }
+        canRegister: function(regData) {
+            var dfd = new $.Deferred();
+
+            if (this._isBlocked()) {
+                dfd.reject(Errors.createError('TOO_YOUNG'));
+            }
+            else {
+                var valid = this.set(regData, {
+                    error: function(model, fieldErrors) {
+                        var error = Errors.createValidationError(fieldErrors);
+                        dfd.reject(error);
+                    }
+                });
+
+                if (valid) {
+                    Request.get(Urls['can-register'](), {
+                        email: regData.email,
+                        birth_year: regData.birthYear,
+                        birth_month: regData.birthMonth,
+                        birth_day: regData.birthDay,
+                        first_name: regData.firstName,
+                        middle_name: regData.middleName,
+                        last_name: regData.lastName,
+                    }).done(function() {
+                        dfd.resolve();
+                    }).fail(function(error) {
+                        dfd.reject(error);
+                    });
+                }
+            }
+
+            return dfd.promise();
+        },
+
+        // Prevents the user from being able to register for the duration of the
+        // browser session.  Generally used for when a minor tries to register,
+        // for legal reasons.
+        blockFutureRegistration: function() {
+            QuickCookies.set(TOO_YOUNG_COOKIE_NAME, 'true', { path: '/' });
+        },
+
+        // Checks if the user is currently blocked from registration for the
+        // curent browser session.
+        _isBlocked: function() {
+            return !!QuickCookies.get(TOO_YOUNG_COOKIE_NAME);
+        },
+
     });
 });
 
@@ -19034,14 +19349,333 @@ function(
     });
 });
 
+/*
+ * Alert Header Base
+ *
+ * This is a base view class for all header alerts.  Really,
+ * it's job is to create the frame that all header alerts will
+ * live inside.  This class's template includes an "x" to close
+ * the alert, and also specifies the id of the div tag that
+ * all alert views should live inside.
+ *
+ * This view is extremely basic.  Currently no alert views extend
+ * it directly.  Instead, they extend the alert-header-child class.
+ *
+ */
+
+_mmdbHeaderRequire.define('header/views/alert-header-base',['jquery',
+        './base-view'
+       ],
+function($,
+         MCView
+        ) {
+    return MCView.extend({
+
+        template: 'alert-base',
+
+        events: {
+            "click #close-banner" : "closeBanner"
+        },
+
+        initialize: function(options) {
+
+            if($('#navigation_tophat_container').length) {
+                $('#navigation_tophat_container').after(this.$el)
+            } else {
+                $('header:first').after(this.$el);
+            }
+
+            // This is the class of the div element set up in the
+            // alert-base template, to which alert-header-child view
+            // classes will attach.
+            this.childDivClass = 'alert-child';
+
+        },
+
+        closeBanner: function() {
+            this.$el.remove();
+        },
+
+        render: function(alertmessage) {
+            return this.renderTemplate();
+        }
+    });
+});
+
+/*
+ * Alert Header Child
+ *
+ * This is the view that all alert views currently extend.
+ * It extends the alert-header-base view class, which provides 
+ * the frame with the "x" to close the alerts.  It also provides
+ * a standard means of rendering child views with data passed to
+ * them and the templates defined by them, and attaching that
+ * rendered HTML to the div tag provided by the alert-header-base
+ * template.
+ *
+ */
+
+_mmdbHeaderRequire.define('header/views/alert-header-child',['jquery',
+        'templates',
+        './alert-header-base'
+       ],
+function($,
+         Templates,
+         AlertBaseView
+        ) {
+    return AlertBaseView.extend({
+
+        
+        initialize: function(options) {
+
+            // apply inialization from AlertBaseView first.
+            AlertBaseView.prototype.initialize.apply(this, arguments);
+
+            this.childData = {}; // see applyData function below
+            this.childTemplate = null;  // defined by extending view
+
+            if(options) {
+                if(options.model) {
+                    this.model = options.model;
+                }
+            }
+
+        },
+
+        applyData: function(data) {
+
+            // Each alert view has its own template, and many of these templates
+            // require data passed to them, such as a username or email or something.
+            // The function provides a standard way to pass data into any
+            // alert view.  The data is then passed to the template.
+            //
+            // "data" is expected to be a JSON object of key-value pairs.
+            this.childData = data;
+        },
+
+        getTemplateRenderedHtml: function(templateName, data) {
+
+            // This returns the alert view's template-rendered HTML
+
+            if (!this.childTemplate) {
+                throw new Error("You must either pass a template to 'renderTemplate'"+
+                            "or set the 'template' attribute on the instantiated"+
+                            "child view");
+            }
+
+            if (!(this.childTemplate in Templates)) {
+                throw new Error("The specified template does not exist: " + this.childTemplate);
+            }
+
+            return Templates[this.childTemplate](this.childData);
+
+        },
+
+        render: function() {
+
+            var self = this;
+
+            // extending AlertBaseView's render method to append the child view's rendered HTML:
+            return $.when(AlertBaseView.prototype.render.apply(this, arguments)).done(function() {
+
+                // attach to the specified div tag
+                // childDivClass is defined in the alert-header-base view.
+                self.$('.' + self.childDivClass).html(self.getTemplateRenderedHtml(
+                    self.childTemplate,
+                    self.childData
+                ));
+            });
+        }
+    })
+})
+;
+_mmdbHeaderRequire.define('header/views/resend-activation-link',['jquery',
+        './base-view',
+        'errors',
+        'urls',
+        'request'
+],
+function($,
+         BaseView,
+         Errors,
+         Urls,
+         Request
+        ) {
+    return BaseView.extend({
+
+        template: 'resend-activation-link',
+
+        events: {
+            "click #resend-activation-link-button":"resend",
+        },
+
+        initialize: function(options) {
+            this.sent = false;
+            this.email = options.email || null;
+        },
+
+        toggleState: function() {
+            if(!this.sent)
+            {
+                this.sent=true;
+            }
+            this.render();
+        },
+
+        resend: function(e) {
+
+            if(this.sent) {
+                return;
+            }
+
+            uri = new Uri(document.location.toString());
+
+            if(this.context.getCalledFromAction()) {
+                uri.setAnchor('login/verify/from-action'); // removes all other fragments and just includes this, show the verification message
+            } else {
+                uri.setAnchor('login/verify'); // removes all other fragments and just includes this, show the verification message
+            }
+            nextPage = uri.toString();
+
+            var self = this;
+            $.when(Request.post(Urls['resend-activation-link']({}), {
+                    email: this.email,
+                    nextpage: nextPage
+                }))
+                .done(function(data) {
+                    self.trigger('activation-link-resent');
+                    self.toggleState();
+                })
+                .fail(function(error) {
+                    error = error;
+                });
+
+            return false;
+        },
+
+        render: function() {
+            return this.renderTemplate({
+                sent: this.sent,
+                email: this.email
+            });
+        }
+    })
+});
+
+_mmdbHeaderRequire.define('header/views/alert-activation-reminder',['jquery',
+        'templates',
+        './alert-header-child',
+        './resend-activation-link'
+       ],
+function($,
+         Templates,
+         AlertChildView,
+         ResendActivationLinkView
+        ) {
+    return AlertChildView.extend({
+
+        initialize: function(options) {
+
+            AlertChildView.prototype.initialize.apply(this, arguments);
+
+            this.childTemplate = 'alert-activation-reminder';
+
+            this.childData = {
+                "emailResent": false,
+                "showResendLink": options.showResendLink || false
+            }; 
+
+
+
+            if(this.childData.showResendLink) {
+
+                // This sub-view only presend after registration.  During login,
+                // if the user hasn't verified their email, this reminder doesn't 
+                // show the resend link in the wireframes, so it's optional:
+
+                var self = this;
+
+                this.resendView = new ResendActivationLinkView({
+                    context: this.context,
+                    email: this.model.attributes.email
+                });
+
+                this.resendView.on('activation-link-resent', function() {
+                    self.childData.emailResent=true;
+                    self.render();
+                });
+                this.resendView.render();
+            }
+
+        },
+
+        render: function() {
+
+            // overriding AlertChildView's render method.  Unnecessary unless you need to 
+            // have custom functionality in the render method, it will usually suffice to
+            // specify the template name in initialize and then pass in data the template
+            // needs in applyData().  Overridden here to attach the resend email sub view.
+
+            var self = this;
+
+            return $.when(AlertChildView.prototype.render.apply(this, arguments))
+            .done(function() {
+                
+                if(self.childData.showResendLink) {
+                    $('#resend-activation-link').append(self.resendView.el);
+                }
+            });
+        }
+
+    })
+})
+;
+_mmdbHeaderRequire.define('header/views/alert-disabled-account',['jquery',
+        'templates',
+        './alert-header-child',
+       ],
+function($,
+         Templates,
+         AlertChildView
+        ) {
+    return AlertChildView.extend({
+
+        initialize: function(options) {
+            AlertChildView.prototype.initialize.apply(this, arguments);
+            this.childTemplate = 'alert-disabled-account';
+        }
+
+    })
+})
+;
+_mmdbHeaderRequire.define('header/views/disabled-account',['jquery',
+        './base-view',
+        'request'
+],
+function($,
+         BaseView,
+         Request
+        ) {
+    return BaseView.extend({
+
+        template: 'disabled-account',
+
+        render: function() {
+            return this.renderTemplate({
+            });
+        }
+    })
+});
+
 _mmdbHeaderRequire.define('header/views/login-start',['jquery',
         './base-view',
         'util',
         'errors',
         '../models/user',
         'recaptcha',
-        './alert-header',
         '../models/social-reg-manager',
+        './alert-activation-reminder',
+        './alert-disabled-account',
         './resend-activation-link',
         './disabled-account'
        ],
@@ -19051,8 +19685,9 @@ function($,
          Errors,
          User,
          Recaptcha,
-         AlertHeader,
          SocialRegManager,
+         ActivationReminderAlert,
+         DisabledAccountAlert,
          ResendActivationLinkView,
          DisabledAccountView
         ) {
@@ -19080,7 +19715,7 @@ function($,
 
             this.disabledAccount = false;
 
-            this.firstLogin = false;
+            this.redirectToLandingPage = false;
 
         },
 
@@ -19136,15 +19771,13 @@ function($,
                                 challenge: Recaptcha.get_challenge(), 
                                 response: Recaptcha.get_response() 
                             },
-                            this.firstLogin
+                            this.redirectToLandingPage
                 ))
                 .done(function(user) {
                     self.trigger('login-complete', user);
                 })
                 .fail(function(error) {
                     var formError = {};
-                    var boldMessage;
-                    var alertmessage;
 
                     if (!error) {
                         error = {};
@@ -19158,41 +19791,41 @@ function($,
                         formError['formErrors'] = 'Authentication failed: invalid username or password specified.';
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_EMAIL_NOT_VERIFIED')) {
-                        formError['formErrors'] = 'Please verify your email';
-                        boldMessage = "";
-                        alertmessage = "To activate your account, please click the email activation link we sent you.";
 
+                        formError['formErrors'] = 'Please verify your email';
+
+                        // Show reminder alert to activate, don't include a link to resend verification email
+                        // Why isn't this view showing up?
+                        var view = new ActivationReminderAlert({ 
+                            context: self.context, 
+                            showResendLink: false});
+                        view.render();
+
+
+                        // Show link to resend verification email in the error section of the login modal window (see render below)
                         self.showResendActivationLink = true;
                         self.resendActivationLinkView = new ResendActivationLinkView({
                             context: self.context,
-                            email: formObj.username,
-                            isAlertHeader: false
+                            email: formObj.username
                         });
 
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_BANNED')) {
 
+
+                        formError['formErrors'] = 'Disabled account';
+
+                        // Show alert that the account was disabled
+                        var view = new DisabledAccountAlert({context: self.context});
+                        view.render();
+
+
+                        // Show disabled account message in the error section of the login modal window (see render below)
+                        // Note: This is not an alert message, dont' get mixed up, the alert is right above this.
                         self.disabledAccount = true;
                         self.disabledAccountView = new DisabledAccountView({
                             context: self.context,
                         });
-
-                       formError['formErrors'] = 'Disabled account';
-                        boldMessage="Disabled Account";
-                        alertmessage = "";
-                        // XXX: alternative message
-                        //alertmessage = "Your account is not available at this time";
-                    }
-
-                    if(alertmessage || boldMessage) {
-                        var alertView = new AlertHeader({context: this.context});
-                        alertView.setMessage(boldMessage, alertmessage, false, self.disabledAccount);
-                        alertView.render();
-                        if($('#navigation_tophat_container').length) {
-                            $('#navigation_tophat_container').after(alertView.el)
-                        } else {
-                            $('header').after(alertView.el);
-                        }
 
                     }
 
@@ -19211,7 +19844,7 @@ function($,
                     //self.trigger('gigya-login-complete');
                 })
                 .fail(function(error, gigyaUser, uidSignature, timestamp, uid) {
-                //.fail(function(error) {
+
                     if (Errors.isCodeEqual(error.code, 'UNKNOWN_USER')) {
                         self.error['formErrors'] = 'You must register this facebook account first!';
                         //var regManager = new SocialRegManager({
@@ -19228,25 +19861,17 @@ function($,
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_BANNED')) {
 
+
+                        self.error['formErrors'] = 'Disabled account';
+
+                        // Show alert that the account was disabled
+                        var view = new DisabledAccountAlert({context: self.context});
+                        view.render();
+
                         self.disabledAccount = true;
                         self.disabledAccountView = new DisabledAccountView({
                             context: self.context,
                         });
-
-                        self.error['formErrors'] = 'Disabled account';
-                        boldMessage="Disabled Account";
-                        alertmessage = "";
-
-                        if(alertmessage || boldMessage) {
-                            var alertView = new AlertHeader({context: this.context});
-                            alertView.setMessage(boldMessage, alertmessage, false, self.disabledAccount);
-                            alertView.render();
-                            if($('#navigation_tophat_container').length) {
-                                $('#navigation_tophat_container').after(alertView.el)
-                            } else {
-                                $('header').after(alertView.el);
-                            }
-                        }
 
 
                     }
@@ -19887,6 +20512,7 @@ function($,
          jstz,
          zxcvbn
         ) {
+
     return BaseView.extend({
         template: 'native-reg-p1',
 
@@ -19895,7 +20521,7 @@ function($,
 
         events: {
             "click #continue-button": "forward",
-            "keyup input.password": "validate",
+            "keyup input.password": "updatePasswordStrength",
             "change input.trimspace": "removespace"
         },
 
@@ -19929,7 +20555,7 @@ function($,
 
         },
 
-        validate: function( e ) {
+        updatePasswordStrength: function( e ) {
             var self = e.currentTarget,
                 value = $(self).val(),
                 toolTip = $(self).siblings('.tool_tip'),
@@ -19969,10 +20595,53 @@ function($,
             }
         },
 
+        _processErrors: function(error) {
+            this.formErrors.reset();
+            if (Errors.isCodeEqual(error.code, 'USER_EXISTS')) {
+                this.formErrors.setFieldError('email', 'This email address is already registered.');
+            }
+            else if (Errors.isCodeEqual(error.code, 'TOO_YOUNG')) {
+                this.formErrors.setTopError('Sorry, you are not able to register at this time.');
+                this.model.blockFutureRegistration();
+            }
+            else if (Errors.isCodeEqual(error.code, 'INVALID_INPUT')) {
+                this.formErrors.setTopError('Please fix the fields in red');
+
+                for (var field in error.fieldErrors) {
+                    var field_name_to_text = {
+                        firstName: 'first name',
+                        lastName: 'last name',
+                    };
+
+                    if (Errors.isCodeEqual(error.fieldErrors[field], 'PROFANITY')) {
+                        this.formErrors.setFieldError(field,
+                                  sprintf('Your %s contains profanity.', field_name_to_text[field]));
+                    }
+
+                    if (Errors.isCodeEqual(error.fieldErrors[field], 'REQUIRED')) {
+                        this.formErrors.setFieldError(field, "This field is required.");
+                    }
+
+                    if (Errors.isCodeEqual(error.fieldErrors[field], 'INVALID')) {
+                        this.formErrors.setFieldError(field, "Invalid input.");
+                    }
+                }
+
+                // else {
+                //     error.fieldErrors.email = "";
+                //     error.formErrors = passwordError;
+                //     error.fieldErrors.password = passwordError;
+                // }
+                //this.render();
+                this.error = {};
+            }
+            else {
+                this.formErrors.setTopError('Unknown Server Error');
+            }
+        },
+
         forward: function(e) {
             var self = this;
-
-            //document.location.hash = "#native-reg-2";
 
             $( '.reg_loading' ).css( 'display', 'block' );
 
@@ -19980,66 +20649,14 @@ function($,
 
             var formData = Util.formToObject(this.$('#native-reg-start-form'));
 
-            this.model.set('regSourceData', this.context.getRegistrationData());
-
-            this.model.set(formData, {
-                // This error call back will catch any model validation errors
-                // when you set the values.
-                  error: function(model, error) {
-                      self.formData = formData;
-                      self.error = error;
-                      self.model.attributes = {};
-                      self.model.attributes['email'] = self.formData['email'];
-                      self.render();
-                  }});
-
-            $.when(this.model.canRegister())
+            $.when(this.model.canRegister(formData))
                 .done(function() {
                     self.trigger("complete");
                 })
                 .fail(function(error) {
-                    // console.log(error);
-                    // passwordError = "";
-                    // if(formData.password.length == 0) {
-                    //     passwordError = "Password is too short.";
-                    // }
-                    self.error = self.error || {};
-                    self.error.fieldErrors = self.error.fieldErrors || {};
-                    self.error.formErrors = self.error.formErrors || {};
+                    self._processErrors(error);
                     self.formData = formData;
-
-                    if (error) {
-                        self.error.formErrors = 'Please fix the fields in red';
-
-                        if(Errors.isCodeEqual(error.code, 'USER_EXISTS')) {
-                            self.error.fieldErrors['email'] = 'This email address is already registered.';
-                        }
-
-                        if(Errors.isCodeEqual(error.code, 'INVALID_DATE')) {
-                            self.error.fieldErrors['birthdate'] = 'Birthdate contains errors.';
-                        }
-                        if(Errors.isCodeEqual(error.code, 'TOO_YOUNG')) {
-                            self.error.fieldErrors['birthdate'] = 'Birthdate contains errors.';
-                        }
-
-                        if(Errors.isCodeEqual(error.code, 'PROFANE_FIRST_NAME')) {
-                            self.error.fieldErrors['firstName'] = 'Your first name contains profanity.';
-                        }
-                        if(Errors.isCodeEqual(error.code, 'PROFANE_MIDDLE_NAME')) {
-                            self.error.fieldErrors['middleName'] = 'Your middle name contains profanity.';
-                        }
-                        if(Errors.isCodeEqual(error.code, 'PROFANE_LAST_NAME')) {
-                            self.error.fieldErrors['lastName'] = 'Your last name contains profanity.';
-                        }
-
-                        // else {
-                        //     error.fieldErrors.email = "";
-                        //     error.formErrors = passwordError;
-                        //     error.fieldErrors.password = passwordError;
-                        // }
-                        self.render();
-                        self.error = {};
-                    }
+                    self.render();
                 });
 
             //return false;
@@ -20054,7 +20671,6 @@ function($,
             if ( supported ) {
                 $('input').focus(function() {
                     if( this.hasClass('password_fix') ){
-                        alert('hey');
                         this.style('display', 'none');
                         this.siblings('.password').addClass('focus');
                     } else {
@@ -20114,14 +20730,16 @@ function($,
             return $.when(this.renderTemplate({
                 utc_offset: jstz.offset(),
                 tz_name: jstz.determine().name(),
-                error: this.error,
+                error: this.formErrors,
                 formData: this.formData,
                 minYear: 1905,
-                maxYear: new Date().getFullYear() - 13,
+                maxYear: new Date().getFullYear(),
                 staticUrl: self.context.getStaticUrl()
             })).done(function(){
                 setTimeout(function(){
-                    if( !self.placeholderIsSupported() )self.placeholderAddSupport();
+                    if (!self.placeholderIsSupported()) {
+                        self.placeholderAddSupport();
+                    }
                 }, 0);
             });
         }
@@ -20246,7 +20864,7 @@ function($,
         },
 
         doSuggest: function(query) {
-            return Request.jsonp(Urls['places-suggest']({query: query}));
+            return Request.get(Urls['places-suggest']({query: query}));
         },
 
         getLocationData: function() {
@@ -22585,7 +23203,7 @@ _mmdbHeaderRequire.define('header/views/native-reg-p2',['jquery',
         'errors',
         './location-input',
         './edit-custom-avatar',
-        './alert-header'
+        './alert-activation-reminder'
        ],
 function($,
          BaseView,
@@ -22593,7 +23211,7 @@ function($,
          Errors,
          LocationInputView,
          EditCustomAvatarView,
-         AlertHeader
+         ActivationReminderAlert
         ) {
     return BaseView.extend({
         template: 'native-reg-p2',
@@ -22645,34 +23263,23 @@ function($,
                     var view, $header, $wpfHeader;
                     
                     self.trigger("complete");
-                    /* display a special header alert in order to remainder email verification */
                     document.location.hash = "finished";
-                    boldMessage = "";
-                    alertmessage = "";
-                    showResendActivationLink = true;
-                    if(showResendActivationLink !== ""){
 
-                        // for now, specifically passing in model because we can't always get it from
-                        // context (in current scope, user is not yet logged in, but we'll need the ID just
-                        // created in case they request the Email resent.
-                        
-                        view = new AlertHeader({context: self.context, model:self.model});
-                        view.setMessage(boldMessage, alertmessage, showResendActivationLink);
-                        view.render();
-
-                        $wpfHeader = $('#navigation_tophat_container');
-                        $header = ($wpfHeader.length) ? $wpfHeader : $('header').first();
-                        $header.after(view.el);
-                    }
+                    // Alert reminding to activation, show resend link:
+                    var view = new ActivationReminderAlert({ 
+                        context: self.context, 
+                        model: self.model,
+                        showResendLink: true});
+                    view.render();
 
                 }).fail(function(error) {
                     self.error = error || {};
 
                     if (self.error && Errors.isCodeEqual(self.error.code, 'INVALID_INPUT')) {
 
-                        if(self.error.fieldErrors && self.error.fieldErrors.location_reference){
+                        if(self.error.fieldErrors && self.error.fieldErrors.locationReference){
                             self.error.formErrors = 'Please fix the fields in red ';
-                            self.error.fieldErrors.location_name="This is not a valid location.";
+                            self.error.fieldErrors.locationName="This is not a valid location.";
                         }
                         if ( error.fieldErrors.password == "TOO_SHORT" ) {
                             self.error.formErrors += "Password is too short ";
@@ -22895,8 +23502,6 @@ function($,
             formData.location_id = locData.id;
             formData.location_reference = locData.reference;
 
-            this.model.set('regSourceData', this.context.getRegistrationData());
-
             this.model.set(formData);
 
             $.when(this.model.doRegister())
@@ -22965,7 +23570,7 @@ function($,
                 });
                 self.customAvatarView.render();
                 self.$('#reg-avatar-container').append(self.customAvatarView.el);
-                setTimeout(function(){
+                setTimeout(function() {
                     if( !self.placeholderIsSupported() )self.placeholderAddSupport();
                 }, 0);
             });
@@ -23196,13 +23801,16 @@ function($,
 });
 
 _mmdbHeaderRequire.define('header/models/native-reg-manager',[
+        'jquery',
         'underscore',
         'urls',
+        'errors',
         './reg-manager'
        ],
-function(
+function($,
          _,
          Urls,
+         Errors,
          RegManager
         ) {
     return RegManager.extend({
@@ -23211,135 +23819,85 @@ function(
 
         validate: function( formData ) {
 
-            var error = {},
-            formErrors = [],
-            fieldErrors = {},
-            formErrors = {},
+            var fieldErrors = {},
             wordsUsed = [],
             wordsSend = [],
-            profaneWords = [], //should look like = ['foo', 'bar']
-
-            checkProfanity = function() {
-                firstName = firstName || "";
-                lastName = lastName || "";
-                middleName = middleName || "";
-                wordsUsed[0] = [], wordsUsed[1] = [], wordsUsed[2] = [];
-                for( var i = 0; i < profaneWords.length; i++){
-                    if( formData.firstName.indexOf(profaneWords[i]) > -1){
-                        wordsUsed[0].push(profaneWords[i]);
-                    }
-                    if( formData.middleName.indexOf(profaneWords[i]) > -1){
-                        wordsUsed[1].push(profaneWords[i]);
-                    }
-                    if( formData.lastName.indexOf(profaneWords[i]) > -1){
-                        wordsUsed[2].push(profaneWords[i]);
-                    }
-                }
-                if( wordsUsed[0].length ){
-                    fieldErrors.firstName= fieldErrors.firstName || Array();
-                    fieldErrors.firstName += 'First Name Can\'t contain profanity.';
-                    wordsSend.push(wordsUsed[0]);
-                }
-                if( wordsUsed[1].length ){
-                    wordsSend.push(wordsUsed[1]);
-                }
-                if( wordsUsed[2].length ){
-                    wordsSend.push(wordsUsed[2]);
-                }
-            },
 
             checkLengths = function() {
-                if( formData.firstName.length < 1 ){
-                    fieldErrors.firstName = fieldErrors.firstName ? fieldErrors.firstName + ' First name is required.' : 'First name is required.';
-                }
-                else if( formData.firstName.length > 50 ){
-                    fieldErrors.firstName = fieldErrors.firstName ? fieldErrors.firstName + ' Cannot be longer than 50 characters.' : 'Cannot be longer than 50 characters';
-                }
-                if( formData.lastName.length < 1 ){
-                    fieldErrors.lastName = fieldErrors.lastName ? fieldErrors.lastName + ' Last name is required.' : 'Last name is required.';
-                }
-                else if( formData.lastName.length > 50 ){
-                    fieldErrors.lastName = fieldErrors.lastName ? fieldErrors.lastName + ' Cannot be longer than 50 characters' : 'Cannot be longer than 50 characters';
-                }
-                if( formData.middleName.length > 50 ){
-                    fieldErrors.middleName = fieldErrors.middleName ? fieldErrors.middleName + ' Cannot be longer than 50 characters' : 'Cannot be longer than 50 characters';
-                }
+                $.each(['firstName', 'middleName', 'lastName'], function(i, f) {
+                    if( formData[f].length > 50 ){
+                        fieldErrors[f] = Errors.fromCode('TOO_LONG');
+                    }
+                });
+                $.each(['firstName', 'lastName'], function(i, f) {
+                    if( formData[f].length < 1 ){
+                        fieldErrors[f] = Errors.fromCode('REQUIRED');
+                    }
+                });
             },
 
             checkSpecialCharacters = function() {
-                var ck_specialch = /[^a-z\s-]/gi;
+                var regularCharsRegex = /[a-z\s-]*/gi;
 
-                if (formData.firstName.match(ck_specialch) && formData.firstName.length > 0) {
-                    fieldErrors.firstName = fieldErrors.firstName ? fieldErrors.firstName + ' Contains special characters.' : 'Contains special characters.';
-                }
-
-                if (formData.middleName.match(ck_specialch) && formData.middleName.length > 0) {
-                    fieldErrors.middleName = fieldErrors.middleName ? fieldErrors.middleName + ' Contains special characters.' : 'Contains special characters.';
-                }
-
-                if (formData.lastName.match(ck_specialch) && formData.lastName.length > 0) {
-                    fieldErrors.lastName = fieldErrors.lastName ? fieldErrors.lastName + ' Contains special characters.' : 'Contains special characters.';
-                }
+                $.each(['firstName', 'middleName', 'lastName'], function(i, f) {
+                    if (!formData[f].match(regularCharsRegex)) {
+                        fieldErrors[f] = Errors.fromCode('INVALID');
+                    }
+                });
             },
 
             checkSpaces = function() {
-                var ck_spaces = /\s{2,}/;
+                var wideSpacesRegex = /\s{2,}/;
 
-                if (formData.firstName.match(ck_spaces) && formData.firstName.length > 0) {
-                    fieldErrors.firstName = fieldErrors.firstName ? fieldErrors.firstName + ' Contains too many spaces.' : 'Contains too many spaces.';
-                }
-
-                if (formData.middleName.match(ck_spaces) && formData.middleName.length > 0) {
-                    fieldErrors.middleName = fieldErrors.middleName ? fieldErrors.middleName + ' Contains too many spaces.' : 'Contains too many spaces.';
-                }
-
-                if (formData.lastName.match(ck_spaces) && formData.lastName.length > 0) {
-                    fieldErrors.lastName = fieldErrors.lastName ? fieldErrors.lastName + ' Contains too many spaces.' : 'Contains too many spaces.';
-                }
+                $.each(['firstName', 'middleName', 'lastName'], function(i, f) {
+                    if (formData[f].match(wideSpacesRegex)) {
+                        fieldErrors[f] = Errors.fromCode('INVALID');
+                    }
+                });
             },
 
             checkBirthdate = function() {
-                if( isNaN(formData.birthMonth) || isNaN(formData.birthDay) || isNaN(formData.birthYear) ){
-                    fieldErrors.birthdate = 'Birthdate contains errors.';
-                }
-                if ( !isNaN(formData.birthYear) && formData.birthYear > new Date().getFullYear()-13){
-                    fieldErrors.birthdate = 'Birthdate contains errors.';
+                var day = formData.birthDay,
+                    month = formData.birthMonth,
+                    year = formData.birthYear;
+
+                if ((!day || day < 1 || day > 31) ||
+                        (!month || month < 1 || month > 12) ||
+                        (!year || year < 1900 || year > new Date().getFullYear())) {
+                    fieldErrors.birthDate = Errors.fromCode('REQUIRED');
                 }
             },
 
             checkEmail = function() {
                 pattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/gi;
-                if( !formData.email.length ){
-                    fieldErrors.email = 'Email is required.';
-                } else if( !formData.email.match(pattern) ){
-                    fieldErrors.email = 'Email is not properly formatted.';
+                if (!formData.email.length) {
+                    fieldErrors.email = Errors.fromCode('REQUIRED');
+                } 
+                else if (!formData.email.match(pattern)) {
+                    fieldErrors.email = Errors.fromCode('INVALID');
                 }
             },
 
             checkPassword = function() {
                 if( !formData.password.length ){
-                    fieldErrors.password = 'Password is required.';
-                } else {
-
-                    if( formData.password.length < 8 ){
-                        fieldErrors.password = 'Password contains errors.';
-                    }
-                    if( !formData.password.match(/(?=[\s\S]*\d)(?=[\s\S]*[A-Z])/gi) ){
-                        fieldErrors.password = 'Password contains errors.';
-                    }
+                    fieldErrors.password = Errors.fromCode('REQUIRED');
                 }
-
+                else if( formData.password.length < 8 ){
+                    fieldErrors.password = Errors.fromCode('TOO_SHORT');
+                }
+                else if( !formData.password.match(/(?=[\s\S]*\d)(?=[\s\S]*[A-Z])/gi) ){
+                    fieldErrors.password = Errors.fromCode('INVALID');
+                }
             },
 
             checkLocation = function() {
-                if( !formData.location_name.length ){
-                    fieldErrors.location_name = 'Location is required.';
+                if( !formData.locationName.length ){
+                    fieldErrors.locationName = Errors.fromCode('REQUIRED');
                 }
             };
 
             if( 'firstName' in formData || 'lastName' in formData){
                 checkLengths();
-                //checkProfanity();
                 checkSpecialCharacters();
                 checkSpaces();
             }
@@ -23353,16 +23911,16 @@ function(
             if( 'password' in formData ){
                 checkPassword();
             }
-            if( 'location_name' in formData ){
+            if( 'locationName' in formData ){
                 checkLocation();
             }
 
-            if( formErrors.length || _.keys(fieldErrors).length){
-                //error.formErrors = formErrors;
-                error.formErrors = 'Please fix the fields in red';
-                error.fieldErrors = fieldErrors;
-                return error;
-            }
+            //if( formErrors.length || _.keys(fieldErrors).length){
+                //return error;
+            //}
+            return (_.keys(fieldErrors).length > 0)
+                    ? fieldErrors 
+                    : null;
         }
     });
 });
@@ -23381,12 +23939,69 @@ function(Request,
 
         initialize: function(options) {
             LoginView.prototype.initialize.apply(this, arguments);
-            this.firstLogin = true;
+            this.redirectToLandingPage = true;
         },
 
     });
 });
 
+_mmdbHeaderRequire.define('header/views/verification-from-action',['request',
+        './login-start',
+        'page-scroller'
+       ],
+function(Request,
+         LoginView,
+         pageScroller
+        ) {
+    return LoginView.extend({
+        template: 'verify',
+
+        id: 'APP200',
+        className: 'regwrap',
+
+        initialize: function(options) {
+            LoginView.prototype.initialize.apply(this, arguments);
+            this.redirectToLandingPage = false;
+
+            // We have to set a session cookie to record where to scroll
+            // to after page refresh when a user registers from an action.
+            //
+            // In main.js, we check for the value in this cookie, scroll
+            // to that position, then remove the cookie.
+            //
+            // In the path leading to this part of the code, a user has
+            // clicked on a link in the email, come back to the site,
+            // main.js already scrolled them, so that scroll to value is
+            // gone.  However, after they log in the page will refresh, and 
+            // they should be scrolled "again" to that position.  Since
+            // that only happens here, this is where we set the scroll-to
+            // cookie again.
+
+            pageScroller.setScrollTo($(window).scrollTop());
+        },
+    });
+});
+
+_mmdbHeaderRequire.define('header/views/alert-registration-complete',['jquery',
+        'templates',
+        './alert-header-child',
+       ],
+function($,
+         Templates,
+         AlertChildView
+        ) {
+    return AlertChildView.extend({
+
+        initialize: function(options) {
+            AlertChildView.prototype.initialize.apply(this, arguments);
+            this.childTemplate = 'alert-registration-complete';
+
+            email = options.email || null;
+            this.applyData({"email":email});
+        }
+    })
+})
+;
 _mmdbHeaderRequire.define('header/views/login-reg-modal',[
         'jquery',
         './base-view',
@@ -23403,7 +24018,8 @@ _mmdbHeaderRequire.define('header/views/login-reg-modal',[
         '../models/user',
         '../gigya-helper',
         './verification',
-        './alert-header',
+        './verification-from-action',
+        './alert-registration-complete',
         'uriLib'
     ],
 function($,
@@ -23421,7 +24037,8 @@ function($,
          User,
          GigyaHelper,
          VerificationView,
-         AlertHeader,
+         VerificationFromActionView,
+         RegistrationCompleteAlert,
          Uri
         ) {
     var childContainerId = 'container-block';
@@ -23500,16 +24117,26 @@ function($,
 
                 regManager.on('complete', function(userId) {
                     self.triggerOnReg();
+
+
                     // Here we want to actually log the user into the site
                     $.when(GigyaHelper.getCurrentUserInfo())
                         .done(function(gigyaUser) {
+
+                            if(self.context.getCalledFromAction()) {
+                                redirectToLandingPage = false;
+                            } else {
+                                redirectToLandingPage = true;
+                            }
+
                             User.doSocialLogin(self.context,
                                                gigyaUser.UID,
                                                gigyaUser.UIDSignature,
                                                gigyaUser.signatureTimestamp,
                                                gigyaUser.email,
                                                gigyaUser.isSiteUID,
-                                               true);
+                                               redirectToLandingPage);
+
                         });
 
 
@@ -23525,7 +24152,13 @@ function($,
             var self = this;
 
             uri = new Uri(document.location.toString());
-            uri.setAnchor('login/verify'); // removes all other fragments and just includes this, show the verification message
+
+            if(self.context.getCalledFromAction()) {
+                uri.setAnchor('login/verify/from-action'); // removes all other fragments and just includes this, show the verification message
+            } else {
+                uri.setAnchor('login/verify'); // removes all other fragments and just includes this, show the verification message
+            }
+
             nextPage = uri.toString();
 
             var regManager = new NativeRegManager(
@@ -23589,19 +24222,30 @@ function($,
             self.showView(view);
         },
 
+        showVerificationFromAction: function(retry) {
+            var self = this;
+            var view = new VerificationFromActionView({context: this.context});
+            if(retry){
+                view.message = "Retry message";
+            }
+            else{
+                view.message = "Welcome message";
+            }
+            self.showView(view);
+        },
+
         showEmailVerifiedAlert: function() {
-            /*
-             * Use it instead of html tempalte to display alerts
-             * in other case remove this function
-             */
-            var view = new AlertHeader({context: this.context});
 
             $.when(this.context.getUser())
                 .done(function(user) {
                     if(user!== null && user.attributes.isEmailVerified) {
-                        view.setMessage('Your email '+user.attributes.email+' was verified, your registration it is completed');
+
+                        var view = new RegistrationCompleteAlert({
+                            context: this.context, 
+                            email: user.attributes.email
+                        });
                         view.render();
-                        $('body').after(view.el);
+
                     }
                 });
         },
@@ -23631,6 +24275,7 @@ _mmdbHeaderRequire.define('header/routers/header',[
         'module', // Special Dep for config
         'jquery',
         'backbone',
+        'util',
         '../models/user',
         '../views/header',
         '../views/header-controls',
@@ -23639,6 +24284,7 @@ _mmdbHeaderRequire.define('header/routers/header',[
 function(module,
          $,
          Backbone,
+         Util,
          UserModel,
          HeaderView,
          HeaderControlsView,
@@ -23653,11 +24299,12 @@ function(module,
             "register": "register",
             "native-reg": "nativeReg",
             "close-modal": "closeModal",
-            "close-banner": "closeModal",
+            //"close-banner": "closeModal",
             "forgot-password": "forgotPassword",
             "reset-password": "resetPassword",
             "verify": "verify",
             "login/:verify": "verify",
+            "login/:verify/:from-action": "verifyFromAction",
             "login/:verify/:retry": "verify",
             "email-verified-alert": "emailVerifiedAlert"
         },
@@ -23686,7 +24333,7 @@ function(module,
             $('body').append(this.loginRegModal.el);
 
             this.loginRegModal.on('user-registered', function() {
-                window.location.hash = "";
+                Util.setHash("");
             });
         },
 
@@ -23716,8 +24363,13 @@ function(module,
         },
 
         verify: function(verify, retry){
-            var attemp = (typeof retry === 'undefined') ? false : true;
-            this.loginRegModal.showVerification(attemp);
+            var attempt = (typeof retry === 'undefined') ? false : true;
+            this.loginRegModal.showVerification(attempt);
+        },
+
+        verifyFromAction: function(verify, retry){
+            var attempt = (typeof retry === 'undefined') ? false : true;
+            this.loginRegModal.showVerificationFromAction(attempt);
         },
 
         forgotPassword: function() {
@@ -23865,7 +24517,6 @@ function(
 
                 //LANDING PAGE
                 // Won't this track on more than just the landing page?
-                $('a', '.carousel').on('click', function(e){ trackEvent( 'Membership', 'MEM Landing Page', 'Explore_' +  ($(this).parent().parent().children().index($(this).parent()) + 1) ); });
                 $('a', '.news_list').on('click', function(e){ trackEvent( 'Membership', 'MEM Landing Page', 'News_' +  ($(this).parent().parent().children().index($(this).parent()) + 1) ); });
                 $('a', '.shop_subscribe_donate').on('click', function(e){ trackEvent( 'Membership', 'MEM Landing Page', $(this).children('h4').text() ); });
                 $(document).on('click', '.track_event', function(e) {
@@ -24069,7 +24720,8 @@ _mmdbHeaderRequire.define('header/main',[
         './routers/header',
         'server-context-data',
         'analytics',
-        'livefyreManager'
+        'livefyreManager',
+        'page-scroller'
        ],
 function($,
          Util,
@@ -24079,7 +24731,8 @@ function($,
          HeaderRouter,
          serverContextData,
          Analytics,
-         LivefyreManager
+         LivefyreManager,
+         pageScroller
         ) {
     var context = new HeaderContext(serverContextData);
 
@@ -24090,6 +24743,8 @@ function($,
 
         var analytics = new Analytics(context)
         var livefyreManager = new LivefyreManager(context);
+
+        pageScroller.checkScrollTo();
 
         Backbone.history.start();
     });
@@ -24624,12 +25279,18 @@ function($) {
 
         console.log("Ajax request received");
         $.ajax(msgData.ajaxSettings)
-         .done(function(data) {
+         .done(function(data, statusText, jqXHR) {
             console.log("Ajax success");
              source.postMessage(JSON.stringify({
                      handler: "done",
                      data: data,
-                     callId: msgData.callId
+                     jqXHR: {
+                         responseText: jqXHR.responseText,
+                         status: jqXHR.status,
+                         statusText: jqXHR.statusText,
+                         readyState: jqXHR.readyState,
+                     },
+                     callId: msgData.callId,
                  }), origin);
          })
          .fail(function(jqXHR) {
@@ -24640,7 +25301,7 @@ function($) {
                          responseText: jqXHR.responseText,
                          status: jqXHR.status,
                          statusText: jqXHR.statusText,
-                         readyState: jqXHR.readyState
+                         readyState: jqXHR.readyState,
                      },
                      callId: msgData.callId
                  }), origin);
@@ -24750,7 +25411,7 @@ function($,
 
                     try {
                         if (data.handler == 'done') {
-                            dfd.resolve(data.data);
+                            dfd.resolve(data.data, data.jqXHR);
                         }
                         else if (data.handler == 'fail') {
                             dfd.reject(data.jqXHR);
@@ -24886,5 +25547,5 @@ function($,
 
     });
 });
-_mmdbHeaderInit();console.log('done');
-})();
+_mmdbHeaderInit();globalVar._mmdbHeaderRequire = _mmdbHeaderRequire;console.log('done');
+})(this);

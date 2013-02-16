@@ -14,11 +14,14 @@ function bnNavSetBodyClass(){
 	if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
 	 var bnIEversion=new Number(RegExp.$1) // capture x.x portion and store as a number
 	 	if (!(bnIEversion>=7)) { //test less than version 7
-	   	 	$('body').addClass("IE6");	
-		}else{
-			$('body').addClass("IE"+bnIEversion);	
-		};
-	};		
+	   	 	$('body').addClass("IE6 ");	
+		}else if (bnIEversion==7) {
+			$('body').addClass("IE6 IE7");	
+		} else {
+            $('body').addClass("IE"+bnIEversion);   
+        };
+	};	
+   	
 	var BNuagent = navigator.userAgent.toLowerCase();		
 	 if (BNuagent.indexOf('iphone') > -1) {
 		 $('body').addClass("iphone");					 

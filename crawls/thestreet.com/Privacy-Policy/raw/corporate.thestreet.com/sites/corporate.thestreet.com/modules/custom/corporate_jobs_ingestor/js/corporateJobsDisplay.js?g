@@ -1,0 +1,36 @@
+
+jQuery(document).ready(function() {
+  //******  When user clicks on a header
+  $(".headline").click(function()
+  {
+    $(this).children(".content").toggle();
+    $(this).children(".content-full").toggle();
+  });
+
+  //******  When user selects a "search by" field
+  $("#job-type-top").change(function() {
+//  $(id^="job-type").change(function() {
+    var search_by = $("#job-type-top option:selected").text().replace( / /g, "-").toLowerCase();
+    var i = 0;
+    $(".job").each( function()
+    {
+      if ($(this).find("#department").hasClass( search_by)) {
+        $(this).children("#full-description").hide();
+        $(this).children("#teaser").show();
+        $("#no-jobs").hide();
+        $(this).show();
+        i += 1;
+      }
+      else
+      {
+        $(this).hide();
+      }
+      if (i == 0)
+      {
+        $("#no-jobs").show();
+      }
+    });
+  });
+
+
+});

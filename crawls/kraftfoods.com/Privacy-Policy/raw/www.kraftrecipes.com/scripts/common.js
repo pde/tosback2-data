@@ -1120,11 +1120,6 @@ function setModalLinkGlobal(linkID) {
 							autoResize: false,
 							height: $link.attr('modalheight'),
 							width: $link.attr('modalwidth'),
-							open: function(){
-											jQuery('.ui-widget-overlay').bind('click',function(){
-															jQuery($dialog).dialog('close');            
-											}) 
-							}
 				});
 				var URL = $link.attr('href');
 
@@ -1165,11 +1160,6 @@ function setModalLink(linkID) {
 							autoResize: false,
 							height: $link.attr('modalheight'),
 							width: $link.attr('modalwidth'),
-							open: function(){
-											jQuery('.ui-widget-overlay').bind('click',function(){
-															jQuery($dialog).dialog('close');            
-											}) 
-							}
 					});	
 		
 
@@ -1223,11 +1213,6 @@ function emailsignupLink(linkID, modalwidth, modalheight)
 							autoResize: false,
 							height: modalheight,
 							width:  modalwidth,
-							open: function(){
-											jQuery('.ui-widget-overlay').bind('click',function(){
-															jQuery($dialog).dialog('close');            
-											}) 
-							}
 				});
 				var URL = linkID;
 				$dialog.find("#ifrm").attr('src',URL);

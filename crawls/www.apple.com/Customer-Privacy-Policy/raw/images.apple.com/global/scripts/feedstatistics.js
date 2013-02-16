@@ -39,16 +39,15 @@ var r;var w=v.length;var n;var o;var p;var q;var t;for(r=0;r<w;r+=1){var m=v[r].
 AC.addEvent(m[0],"mousedown",function(b){n=this;var c=(!n.attributes)?n.position:n.getAttribute("position"),a=(!n.attributes)?n.href:n.getAttribute("href");
 if(c&&a){o=c;q=a}i.udpateResultActivity(o,q);return false});AC.addEvent(m[1],"mousedown",function(a){n=this;
 if(n.attributes.position&&n.attributes.href){p=n.attributes.position.value;t=n.attributes.href.value
-}i.udpateResultActivity(p,t);return false})}}catch(u){if(typeof window.console!=="undefined"){console.log("Error: "+u)
-}}};FeedStatistics.prototype.getStorageItem=function(d){var c=AC.Storage.getItem("feedStats");
+}i.udpateResultActivity(p,t);return false})}}catch(u){}};FeedStatistics.prototype.getStorageItem=function(d){var c=AC.Storage.getItem("feedStats");
 if((typeof(c)!=="undefined")&&(c!==null)){if(typeof(c[d])!=="undefined"){return c[d]
 }else{return null}}};FeedStatistics.prototype.updateStorageItem=function(h,i){var j={};
 j[h]=i;var g=AC.Storage.getItemObject("feedStats");if((typeof(g)!=="undefined")&&(g!==null)){if(g.hasOwnProperty("value")){var f=Object.extend(g.value,j);
 AC.Storage.setItem("feedStats",f,this.storageDays)}else{return}}else{AC.Storage.setItem("feedStats",j,this.storageDays)
 }};FeedStatistics.prototype.sendRequest=function(f){var d=this.generateStatisticsUri(f);
 if(d.indexOf(location.protocol+"//"+location.host)===0){var e;if(window.XMLHttpRequest){e=new XMLHttpRequest()
-}else{e=new ActiveXObject("Microsoft.XMLHTTP")}e.open("GET",d,false);e.send();if(typeof window.console!=="undefined"){console.log(f.feedType+" | "+d)
-}}};FeedStatistics.prototype.generateStatisticsUri=function(f){function e(a){a=unescape(a);
+}else{e=new ActiveXObject("Microsoft.XMLHTTP")}e.open("GET",d,false);e.send()}};
+FeedStatistics.prototype.generateStatisticsUri=function(f){function e(a){a=unescape(a);
 a=a.replace(/^\s+/g,"").replace(/\s+$/g,"").replace(/\s\s+/g," ");a=escape(a);return a
 }f.feedQuery=e(f.feedQuery);var d=this.hostUri+"?feedType="+f.feedType+"&query="+f.feedQuery+"&locale="+f.locale+"&model="+f.model;
 if(f.feedType){switch(f.feedType){case"notviewed":break;case"searched":d=d+"&hasResults="+f.hasResults+"&lastSuggestions="+f.feedLastSuggestions;

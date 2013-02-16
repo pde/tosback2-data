@@ -334,6 +334,11 @@ $(document).ready(function(){
 							// Wishlist link
 							$('#qlWishListLink').live('click',function(){
 								e.preventDefault();
+								if (document.qlDetailOrderForm.quantity.value == 0)
+								{
+									alert('Please enter a quantity before adding this item to your Wish List.');
+									return false;
+								}
 								$('#qlWishList').val('1');
 								//$('#qlDetailOrderForm').die('submit.ql_ajax');
 								document.qlDetailOrderForm.submit(); // This appears to by-passes the jQuery Event.

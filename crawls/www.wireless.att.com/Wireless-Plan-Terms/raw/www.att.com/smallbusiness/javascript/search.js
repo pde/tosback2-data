@@ -52,10 +52,9 @@ function hideFilter(facetType){
 
 function submitForm(searchTerm)
 {  	var searchTerm = searchTerm;
-	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""]]
+	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""],[/:/g,""],[/;/g,""],[/'/g,""]];
 	for(var item in findReplace)
-		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1]);
-	
+		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1] , findReplace[item][2],findReplace[item][3],findReplace[item][4],findReplace[item][5]);
 	$("#question").val(searchTerm);
     $("#question_").val(searchTerm);
     $("#currentSelection").val("");
@@ -69,12 +68,11 @@ function submitForm(searchTerm)
 
 function validateQuestion()
 
-{ 
-	searchTerm=$("#question_").val();
+{   searchTerm=$("#question_").val();
 	var searchTerm = searchTerm;
-	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""]]
+	var findReplace = [[/</g, ""], [/>/g, ""], [/"/g, ""],[/:/g,""],[/;/g,""],[/'/g,""]];
 	for(var item in findReplace)
-		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1]);
+		searchTerm = searchTerm.replace(findReplace[item][0], findReplace[item][1] , findReplace[item][2],findReplace[item][3],findReplace[item][4],findReplace[item][5]);
 	$("#question").val(searchTerm);
     $("#question_").val(searchTerm);
     $("#currentSelection").val("");

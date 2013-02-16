@@ -116,6 +116,29 @@
         hardcode: '<div style="height:30;background-color:rgb(243,243,243);text-align:center;"><a href="http://topratedlawyers.washingtonpost.com" target="_blank" style="font-size:1.2em;line-height:30px;">Click Here to view the Area\'s Top-Rated Lawyers</a></div>'
       };
     }
+
+    //sponsorship for surface 2/14/13-2/28/13 - JH
+    if(((!wpAd.flags.is_homepage && win.estNowWithYear >= 201302140000 && /^201302/.test(win.estNowWithYear)) || /testads\=surface_sponsor/.test(location.search)) && win.jQuery){
+      $(function(){
+        $.ajax({
+          cache: true,
+          dataType: 'script',
+          crossDomain: true,
+          url: 'http://js.washingtonpost.com/wp-srv/ad/ghost.js',
+          timeout: 2000,
+          error: function(err){
+            if(wpAd.flags.debug){
+              try{win.console.log('ghost.js timeout error:', err);}catch(e){}
+            }
+          },
+          success: function(data){
+            if(wpAd.flags.debug){
+              try{win.console.log('ghost.js', 'loaded:');}catch(e){}
+            }
+          }
+        });
+      });
+    }
   };
 
   //called via wpAd.cache.init:
@@ -280,6 +303,7 @@
           url: wpAd.textlinks.config_url,
           dataType: 'json',
           timeout: 2000,
+          crossDomain: true,
           cache: true,
           success: function(data){
             wpAd.textlinks.templates = data.templates;

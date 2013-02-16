@@ -9,7 +9,7 @@ $(function() {
 		$('h4', $(this)).attr('style', 'margin-top:'+ captionDividedHeight +'px;');
 	});
 	
-	if ($('.homepage').length > 0) {
+	if ($('.homepage,.microsite-hotpics').length > 0) {
 		$('#hot-pics #hot-pics-content #slider').scrollable({
 			keyboard:false,
 			circular:true
