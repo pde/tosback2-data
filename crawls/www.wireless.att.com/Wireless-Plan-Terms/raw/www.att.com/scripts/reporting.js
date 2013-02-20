@@ -406,7 +406,12 @@ reporting.tag.log = function (wtMap) {
 	var wtPN_param = wtMap.findParam('wtPN');
 	var wtEvent_param = wtMap.findParam('wtEvent');
 	var wtLinkName_param = wtMap.findParam('wtLinkName');
-	
+	if(wtMap[wtLinkName_param])
+	{
+		wtMap['DCSext$wtStatusCode']='';
+		wtMap['DCSext$wtSuccessFlag']='';
+		wtMap['DCSext$wtEventType']='';
+	}
 	if (wtMap && (wtMap[wtEvent_param] || wtMap[wtPN_param] || wtMap[wtLinkName_param])) {
 		reporting.tag.clear();
 		//if (wtMap[wtLinkName_param] && ~wtLinkName_param['DCS$dcsqry'].indexOf('wtSlotClick')) return;

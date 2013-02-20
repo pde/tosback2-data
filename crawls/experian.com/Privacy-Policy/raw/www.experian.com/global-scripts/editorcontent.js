@@ -864,3 +864,22 @@ function getDynamicElement(srcUrl,srcId,destId,fetchtype){
 			}
 	}
 }
+
+//$.getScript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js");
+$.getScript("http://www.experian.com/global-scripts/jquery-1.8.23.min.js");
+// checks the "media" parameter in the window url and pops up the video modal
+$(document).ready(function () {
+    if(window.location.href.match(/\media=/i))  {
+       var query=window.location.search.substring(1);
+var x = query.split("media=");
+$("#"+x[1]).modal({
+	onShow:function(dialog){
+		initMediaPlayer(medias[x[1]]);
+		initMediaTxt(medias[x[1]]);
+	}
+});
+$(".modalTitleBar").css("cursor","move");
+$("#simplemodal-container").css("top","20px");
+$("#simplemodal-container").draggable();
+    }
+});

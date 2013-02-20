@@ -53,6 +53,8 @@
 						+' src="'+htmlescape(decodeURIComponent(p[2]))+'"'
 						+('img'===p[1] ? "\/>" : "><\/script>")
 					);
+				}else if(3 == p.length && p[0] === 'passthru'){
+					passthru[p[1]] = decodeURIComponent(p[2]);
 				}else if(4 == p.length && p[0] === 'passthru'){
 					passthru[p[1]][decodeURIComponent(p[2])] = decodeURIComponent(p[3]);
 				}

@@ -1003,6 +1003,10 @@ var Class = (function() {
       return this.paginator.jumpToPage(page);
     };
 
+    HeroGallery.prototype.currentItem = function() {
+      return this.items[this.paginator.currentPage];
+    };
+
     HeroGallery.prototype.dispose = function() {
       var item, _i, _len, _ref, _results;
       this.autoRotator.stop();

@@ -1,6 +1,6 @@
 (function($){
 /* Global Nav Holiday Text */
-$('#sub-nav > .holder > .nav > li > a').filter(':contains("Valentine\'s Day")').css('color','#c9000d');
+$('#sub-nav > .holder > .nav > li').last().prev().children('a').css('color','#c9000d');
 /* Defect fix for the Jewelry Category flyout issue Starts*/
 	$(".nav").children().each(function (index) {
 	// Get count of columns inside of the dropdowns in order to set the width of the dropdown menu.
@@ -96,18 +96,6 @@ $('#sub-nav > .holder > .nav > li > a').filter(':contains("Valentine\'s Day")').
 });
 
 /* Defect fix for the Jewelry Category flyout issue  Ends*/
-
-/* Run of Site Banners: Valentine's Day */
-try{
-  var categories=['1240.cp','1628.cp','1900101.cp','1900103.cp','1261.cp'];
-  var url=location.href;
-
-  url=url.match(/\/(\d+\.cp)/i)[1];
-
-  if ($.inArray(url,categories)>-1){
-    $('#productMainContent').find('.twoCol-product-seasonalPromo').eq(0).prepend('<div style="width:530px;height:100px;margin-bottom:10px;margin-top:20px;"><a href="http://www.samsclub.com/sams/pagedetails/content.jsp?pageName=valentinesDay&cid=INT_CC68"><img src="http://s7d2.scene7.com/is/image/samsclub/Valentines_530x100?wid=530&fmt=jpg&qlt=90" width="530" height="100"></a></div>');
-  }
-}catch(e){}
 
 /* Category and Product Page: Michelin Promise Plan Bug */
 $('.fourThinB .michelinPromisePlan').each(function(){

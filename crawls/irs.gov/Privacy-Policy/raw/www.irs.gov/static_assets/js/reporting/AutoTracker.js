@@ -2,7 +2,7 @@
 function addLinkerEvents(){
 	var as = document.getElementsByTagName("a");
 	var extTrack = ["irs.gov", "javascript:void(0)"];
-	var extDoc = [".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".ppt", ".pptx", ".exe", ".zip", ".pdf", ".js", ".txt", ".rss", ".mobi", ".epub", ".mp3", ".wmv", ".asx", ".smi"];
+	var extDoc = [".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".ppt", ".pptx", ".exe", ".zip", ".pdf", ".txt", ".rss", ".mobi", ".epub", ".mp3", ".wmv", ".asx", ".smi"];
 		
 	for (var i = 0; i < as.length; i++) {
 		var flag = 0;
@@ -32,7 +32,7 @@ function addLinkerEvents(){
 		}
 
 //================================================================================================================
-// Tracking Downloads - .doc, .docx, .xls, .xlsx, .xlsm, .ppt, .pptx, .exe, .zip, .pdf, .js, .txt
+// Tracking Downloads - .doc, .docx, .xls, .xlsx, .xlsm, .ppt, .pptx, .exe, .zip, .pdf, .txt
 //================================================================================================================
 		
 		for (var j = 0; j < extDoc.length; j++) {

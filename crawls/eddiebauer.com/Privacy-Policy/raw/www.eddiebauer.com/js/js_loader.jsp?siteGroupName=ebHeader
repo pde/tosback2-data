@@ -4447,7 +4447,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 										+ outerContainer
 										+ '" style="display: none;"><div id="'
 										+ href
-										+ '" style="width: 664px; height: 448px; background-image: url('
+										+ '" style="width: 664px; height: 448px; z-index:999999; background-image: url('
 										+ bgImage
 										+ ');"><div style="position: absolute; padding-left: 550px; padding-top: 12px; width: 105px;"><div style="position: absolute; top: 50px; left: 12px;"><div class="'
 										+ objectWrapper
@@ -4460,8 +4460,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			jQuery('.floatbox').bind(
 					'click',
 					function() {
+						console.log('inside click');
 						var applyModalData = jQuery(this).closest(
 								'.product_youtube_video');
+						
 						var videoId = applyModalData.attr('data-link-videoid');
 						var fName = applyModalData.attr('data-link-fname');
 						var playerObjId = applyModalData
@@ -4491,11 +4493,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					ytplayer.addEventListener("onStateChange",
 							"onytplayerStateChange");
 				}
-				triggerStopVideo = function() {
-					var ytplayer = document.getElementById(playerObjId);
-					ytplayer.stopVideo();
-					jQuery(objectWrapper).removeClass('selected').css(
-							'display', 'none');
+				var isIE = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+				if (isIE) {
+				} else {
+					triggerStopVideo = function() {
+						var ytplayer = document.getElementById(playerObjId);
+						ytplayer.stopVideo();
+						jQuery(objectWrapper).removeClass('selected').css(
+								'display', 'none');
+					}
 				}
 				swfobject
 						.embedSWF(

@@ -21,7 +21,7 @@ if( queryParamValue )
 }
 
 function linkCode(obj,title) {
-	s.linkTrackVars='None';
+	s.linkTrackVars='prop3,prop4,prop5,prop21';
 	s.linkTrackEvents='None';
 	s.tl(obj,'o',title);
 }

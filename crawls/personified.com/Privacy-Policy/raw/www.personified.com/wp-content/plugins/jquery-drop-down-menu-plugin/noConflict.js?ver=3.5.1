@@ -1,0 +1,1 @@
+	var noCon = jQuery.noConflict();

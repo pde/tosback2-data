@@ -30,7 +30,6 @@
 <!-- START IMPORT: tagman.jsp -->
 	<script language="JavaScript" type="text/javascript">
 		var tmEnabled = true;
-		dojo.require("bec.vendors.TagMan");
 	</script>
 	
 
@@ -121,8 +120,7 @@ tmParams = {
 <!-- BEGIN CoremetricsBase.jspf -->
 
 <script language="javascript1.1" src="../../../libs.coremetrics.com/eluminate.js" type="text/javascript"></script>
-<script language="javascript1.1" src="../../wcsstore/CommonAssets/javascript/cmcustom.js" type="text/javascript"></script>
-<script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/bec/analytics/Coremetrics/Common.js"></script>
+
 <script language="javascript1.5" type="text/javascript"><!-- 
 	var cmCommon = new bec.analytics.Coremetrics.Common();
 	var becCoremetrics = null;
@@ -143,10 +141,8 @@ tmParams = {
 	var cmAttributes = "";
 	var rememberMeShopper = false;
 	
-	// Initialize Coremetrics
-	dojo.addOnLoad(function() {
-		becCoremetrics = new bec.analytics.Coremetrics();		
-	});
+	//Suppress DDX head file request
+	CM_DDX.headScripts = false;
 	
 	cmSetClientID("90047110",false,"1.harryanddavid.com","harryanddavid.com");
 //--></script>	
@@ -154,21 +150,12 @@ tmParams = {
 <script type="text/javascript" src="../../content/common/scripts/csd.js"></script>
 <script type="text/javascript" src="../../content/Hand/include/js/csd.js"></script>
 
-    <script type="text/javascript">
-        if(window.location.protocol == 'http:')
-        {
-            console.debug('Including the SLI css file');
-            document.write("<link rel='stylesheet' href='http://www.harryanddavid.com/h/view/&quot;&#32;+&#32;window.location.protocol&#32;+&#32;&quot;//assets.resultspage.com/autosuggest/autosuggest.css' media='screen' type='text/css' />");
-        }
-    </script>
-
 <link href="../../content/Hand/images/favicon.ico" rel="shortcut icon">
 <!-- START IMPORT: liveperson.jspf -->
 <script language="JavaScript" type="text/javascript">
 	var lpEnabled = false;  //Default
 </script>
 	<script language="JavaScript" src="../../wcsstore/CommonAssets/javascript/liveperson/mtagconfig.js" type="text/javascript"></script><script language="JavaScript" type="text/javascript">
-		dojo.require("bec.chat.LivePerson");		
 		lpEnabled = true;
 		
 		/* The following information should be set on all pages for chat/monitoring - i.e. tagged page */
@@ -189,9 +176,16 @@ tmParams = {
             becJanrain.setEngageJSHttps('https://rpxnow.com/js/lib/jrlogin.harryanddavid.com/engage.js');
 		});
 	</script>
-<!-- END: janrainconfig --><!--  BEGIN Content Spot espotHTMLHead --><meta http-equiv="content-language" content="en-us"><!--  END Content Spot espotHTMLHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHead -->
-<script type="text/javascript" src="../../content/Hand/include/js/IQ-SEOTag.js"></script>
-
+<!-- END: janrainconfig -->
+	<link href="../../../assets.resultspage.com/js/rac/sli-rac.0.4.css" rel="stylesheet" media="screen" type="text/css" />
+	<link href="../../../harryanddavid.resultspage.com/rac/sli-rac.css" rel="stylesheet" media="screen" type="text/css" />	
+	
+	<script language="javascript" type="text/javascript">
+		dojo.addOnLoad(function(){
+			dojo.io.script.get({url: "//harryanddavid.resultspage.com/rac/sli-rac.config.js"});
+		});
+	</script>
+<!--  BEGIN Content Spot espotHTMLHead --><meta http-equiv="content-language" content="en-us"><!--  END Content Spot espotHTMLHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHead -->
 <script type="text/javascript">
 dojo.addOnLoad(function(){try{
     /* _______________ can edit below this line _______________ */                              
@@ -381,8 +375,8 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 			<div id="espotHeaderBanner" class="genericESpot">
 				<div class="caption" style="display:none">[espotHeaderBanner]</div>
 		
-    <span id="espotHeaderBanner_144334_contHDSWbbPresDaySale">
-<a id="banner" href="http://www.harryanddavid.com/h/gift-on-sale/gifts-on-sale?cm_sp=sitewide-_-bb-_-presdaysale"><img src="../../images/espots/belt/130214-pres-day.jpg"/></a>
+    <span id="espotHeaderBanner_145835_contHDSWbbFreeCard">
+<a id="banner" href="http://www.harryanddavid.com/h/gourmet-gift-giving/top-rated-gifts?cm_sp=sitewide-_-bb-_-freegreetingcard"><img src="../../images/espots/belt/130120-free-greeting-card.jpg"/></a>
 
     </span>
 
@@ -416,125 +410,127 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
         <td><img src="http://www.harryanddavid.com/content/Hand/images/spacer.gif" width="10" height="10"/></td>
     </tr>
     </table>
-<!-- End of main content --><!-- Start Footer.jsp -->
-<div id="footer">
-	
-		<div class="banners cleafix">
-			<!-- No espot named espotFooterBanner1 found. -->
-					<div class="spacer"><img src="../../content/common/images/spacer.gif" /></div>
-				<!-- No espot named espotFooterBanner2 found. -->
-					<div class="spacer"><img src="../../content/common/images/spacer.gif" /></div>
-				<!-- No espot named espotFooterBanner3 found. -->
-			<div class="clear"></div>
-			<div class="banner">
-				<!-- BEGIN: Espot [espotFooterBanner] -->
-			<div id="espotFooterBanner" class="genericESpot">
-				<div class="caption" style="display:none">[espotFooterBanner]</div>
-		
-    <span id="espotFooterBanner_10284_contFooterBanner">
-<strong>Need help?</strong> &nbsp; 877 322 1200 | Every Harry &amp; David gift is backed by <a href="http://www.harryanddavid.com/h/view/custserv-guarantee">the strongest guarantee in the business.</a>
-    </span>
-
-		</div>	
-		<!-- END: Espot [espotFooterBanner] -->
-			</div>
-		</div>
-	<!-- START INCLUDE FILE: B2CFooter.jsp -->
-<div class="links clearfix">
-  <ul>
-    <li class="first">
-      <h4><a href="http://www.harryanddavid.com/h/view/customerserv">Customer Services</a></h4>
-      <ul>
-		
-			<li><a href="https://www.harryanddavid.com/gifts/store/BECOnlineOrderHistory?authType=Normal&catalogId=10002&langId=-1&storeId=10455">Order Tracking</a></li>
-		
-        <li><a href="http://www.harryanddavid.com/h/view/custserv-handling">Shipping &amp; Processing</a></li>
-	    <li><a href="https://www.harryanddavid.com/gifts/store/BECDisplayCustomerPreferences?preferencecenter=1&catalogId=10002&langId=-1&storeId=10455">Email &amp; Catalog<br/>Preferences</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/harry-david-affiliate-program">Affiliate Program</a></li>
-        <li><a href="http://www.harryanddavid.com/gifts/store/BECContactUsView?catalogId=10002&langId=-1&storeId=10455">Contact Us</a></li>		
-        <li class="more"><a href="http://www.harryanddavid.com/h/view/customerserv">&gt; more</a></li>
-      </ul>
-    </li>
-    <li>
-      <h4><a href="http://www.harryanddavid.com/h/view/gift-services">Shopping Services</a></h4>
-      <ul>
-      	
-      	<li><a href="http://www.harryanddavid.com/h/view/worldwide">International Gifts</a></li>
-        <li><a href="http://www.harryanddavid.com/gifts/store/BECCatalogRequestView?catalogId=10002&langId=-1&storeId=10455">Catalog Request</a></li>
-		<li><a href="'&#32;+&#32;tm&#32;+&#32;'.html#catalogQuickOrder" onclick="catalogQuickOrder.openCQOFrame();return false;">Catalog Quick Shop</a></li>            
-        
-	        <li><a href="http://www.harryanddavid.com/h/view/ecatalog">View Catalog Online</a></li>
-	    <!--  BEGIN Content Spot espotGiftCardsFooter --><li>
-    <a href="http://www.harryanddavid.com/h/view/gc-giftcardland">Gift Cards &amp; eGift Cards</a>
-</li><!--  END Content Spot espotGiftCardsFooter -->
-        <li><a href="http://www.harryanddavid.com/h/view/harry-david-coupons">Harry and David Coupons</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/sausage-cheese-gifts">Cheese and Sausage Gifts</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/chocolate-dipped-fruit">Chocolate Dipped Fruit</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/edible-fruit-gifts">Edible Fruit Gifts</a></li>  
-        <li class="more"><a href="http://www.harryanddavid.com/h/view/gift-services">&gt; more</a></li>     
-      </ul>
-    </li>
-    <li>
-      <h4><a href="http://www.harryanddavid.com/h/view/s-event-calendar">In Our Stores</a></h4>
-      <ul>
-        <li><a href="http://www.harryanddavid.com/h/view/storefront">Store Locator</a></li>
-        
-        <li class="more"><a href="http://www.harryanddavid.com/h/view/storefront">&gt; more</a></li>
-      </ul>
-    </li>
-    <li>
-      <h4><a href="http://www.harryanddavid.com/h/view/corporategifts">Corporate Gifts</a></h4>
-      <ul>
-        <li><a href="http://www.harryanddavid.com/h/view/corporategifts">Large Order Services</a></li>
-        <li><a href="http://www.harryanddavid.com/h/business-corporate-gifts/favorite-business-corporate-gifts">Shop Business Gifts</a></li>
-        <li class="more"><a href="http://www.harryanddavid.com/h/view/corporategifts">&gt; more</a></li>
-      </ul>
-    </li>
-    <li class="last">
-      <h4><a href="http://www.harryanddavid.com/h/view/information">Community Information</a></h4>
-      <ul>
-        
-        	<li><a href="http://blog.harryanddavid.com">Harry &amp; David Blog</a></li>
-        
-        <li><a href="http://www.harryanddavid.com/h/view/s-recipe">Recipes</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/harvest-report">Harvest Report &amp; Club<br/>Arrival Updates</a></li>
-		<li><a href="http://www.harryanddavid.com/h/view/about01">About Us</a></li>
-		<li><a href="http://www.harryanddavid.com/h/view/a-career">Career Opportunities</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/a-investor-relations">Investor Information</a></li> 
-	    <li><a href="http://www.harryanddavid.com/h/sitemap">Site Map</a></li>
-	   	<li class="more"><a href="http://www.harryanddavid.com/h/view/information">&gt; more</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
-<!-- END INCLUDE FILE: B2CFooter.jsp --><div class="clearfix">
-	  	<div class="social"><!--  BEGIN Content Spot espotFooterSocial --><!--  END Content Spot espotFooterSocial --></div>		  	
-	  	<div class="copyright"><!--  BEGIN Content Spot espotFooterCopyright --><!--  END Content Spot espotFooterCopyright --></div>
- 	</div>
- 	<div class="brands clearfix"><!--  BEGIN Content Spot espotFooterBrands --><!--  END Content Spot espotFooterBrands --></div>
- 	<div class="partners clearfix"><!--  BEGIN Content Spot espotFooterPartners --><div class="left social">
-  <a class="sprite-social-facebook" href="http://www.facebook.com/HarryandDavid" target="_blank"></a>
-  <a class="sprite-social-twitter" href="http://www.twitter.com/HarryandDavid" target="_blank"></a>
-</div>
-
-<div class="left copyright">
-  &copy; 2013, Harry and David, LLC. All Rights Reserved.
-  <a href="http://www.harryanddavid.com/h/view/custserv-termsofuse" class="norm">Terms of Use</a> | 
-  <a href="../../gifts/store/view__10455_10002_custserv-security.html" class="norm">Privacy Policy</a>
-  <div class="mobile" style="margin-bottom: 20px"><a class="btn btn-big" href="http://www.harryanddavid.com/h/home?devicePref=MOBILE&amp;cm_sp=Footer-_-MobileSiteLink-_-GoToMobileSite">Go To Mobile Site</a> &nbsp; <a class="btn btn-big" href="http://t.harryanddavid.com?cm_sp=Footer-_-TabletSiteLink-_-GoToTabletSite">Go To Tablet Site</a></div>
-</div>
-
-<div class="right verisign">
-  <a href="https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.harryanddavid.com&lang=en"
-     class="sprite-verisign-normal"
-     tabindex="-1"
-     onclick="return vrsn_splash(this);"
-     target="VRSN_Splash"
-  ></a>
-  <br />
-  <a href="http://www.verisign.com/ssl-certificate/" target="_blank"  style="color: #000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing: .5px; text-align: center; margin: 0; padding: 0;">ABOUT SSL CERTIFICATES</a>
-</div><!--  END Content Spot espotFooterPartners --></div>
- 	<!-- BEGIN: cmCreateTag.jsp -->
+<!-- End of main content --><!-- Start Footer.jsp --><div id="fb-root"></div>
+    <div id="footer">
+      <div class="columns clearfix">
+        <div class="column-links clearfix">
+          <div class="left">
+            <div class="heading">Customer Service</div>
+            <a href="http://www.harryanddavid.com/h/view/customerserv">Customer Service Center</a><br/>
+            <a href="https://www.harryanddavid.com/gifts/store/BECOnlineOrderHistory?authType=Normal&catalogId=10002&langId=-1&storeId=10455">Order Status</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/custserv-handling">Shipping Information</a><br/>
+            <a href="https://www.harryanddavid.com/gifts/store/BECDisplayCustomerPreferences?preferencecenter=1&catalogId=10002&langId=-1&storeId=10455">Email &amp; Catalog Preferences</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/harvest-report">Harvest Report</a><br/>
+            <a href="http://www.harryanddavid.com/gifts/store/BECCatalogRequestView?catalogId=10002&langId=-1&storeId=10455">Catalog Request</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/custserv-faq">Customer Care FAQs</a><br/>
+            <a href="http://www.harryanddavid.com/gifts/store/BECContactUsView?catalogId=10002&langId=-1&storeId=10455">Contact Us</a>
+            
+            <div class="heading">Business Gifts</div>
+            <a href="http://www.harryanddavid.com/h/view/corporategifts">Business Gifting Services</a><br/>
+            <a href="http://www.harryanddavid.com/h/business-corporate-gifts/favorite-business-corporate-gifts">Shop Top Business Gifts</a>
+            
+            <div class="heading">About Us</div>
+            <a href="http://www.harryanddavid.com/h/view/about01">Our Story</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/a-career">Careers</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/a-investor-relations">Investor Relations</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/harry-david-affiliate-program">Affiliate Program</a>
+          </div>
+          <div class="right">
+            <div class="heading">Shop With Us</div>
+            <a href="http://www.harryanddavid.com/h/view/worldwide">International Gifts</a><br/>
+            <a href="http://www.harryanddavid.com/h/gift-baskets-tower-boxes/fruit-baskets">Fruit Baskets</a><br/>
+            <a href="http://www.harryanddavid.com/h/gift-baskets-tower-boxes/gift-baskets">Gift Baskets</a><br/>
+            <a href="http://www.harryanddavid.com/h/gift-baskets-tower-boxes/gourmet-gift-ideas">Gifting Favorites</a><br/>
+            <a href="http://www.harryanddavid.com/h/gourmet-foods/wine-gifts">Wine Gifts</a><br/>
+            <a href="http://www.harryanddavid.com/h/fruit-gift/fruit-and-cheese-gift-baskets">Fruit and Cheese Gifts</a><br/>
+            <a href="http://www.harryanddavid.com/h/chocolates-sweets-candy/chocolate-dipped-fruit">Chocolate Dipped Fruit</a><br/>
+            <a href="http://www.harryanddavid.com/h/chocolates-sweets-candy/chocolate-gifts">Chocolate Gifts</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/edible-fruit-gifts">Edible Fruit Gifts</a><br/>
+            <a href="http://www.harryanddavid.com/h/flowers-plants/flower-arrangements-bouquets">Fresh Cut Flowers</a><br/>
+            <a href="http://www.harryanddavid.com/h/fruit-gift/comice-pears">Royal Riviera Pears</a><br/>
+            <a href="http://www.harryanddavid.com/h/chocolates-sweets-candy/popcorn-gifts">Moose Munch Popcorn</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/ecatalog">Online Catalog</a><br/>
+            <a href="http://www.harryanddavid.com/h/view/harry-david-coupons">Coupons and Promotion Codes</a>
+            
+            <div class="heading">Shop Our Other Brands</div>
+            <a href="http://www.wolfermans.com">Wolferman’s</a><br/>
+            <a href="http://www.honeybell.com">Cushman’s</a>
+          </div>
+        </div>
+        <div class="column-misc clearfix">
+          <div class="row social">
+            <div class="links clearfix">
+              <a href="http://www.facebook.com/HarryandDavid" class="icon icon-facebook"></a>
+              <a href="http://www.twitter.com/HarryandDavid" class="icon icon-twitter"></a>
+              <a href="http://pinterest.com/harryanddavid" class="icon icon-pintrest"></a>
+              <a href="http://blog.harryanddavid.com" class="text">Blog</a>
+              <a href="http://www.harryanddavid.com/h/view/s-recipe" class="text">Recipes</a>
+            </div>
+            <div data-show-faces="true" data-width="418" data-send="true" data-href="http://www.facebook.com/harryanddavid" class="fb-like"></div>
+          </div>
+          <div class="row email">
+            <div class="heading">
+              Sign up for email updates
+            </div>
+            <div class="description">
+              We give you the heads up on <b>daily deals</b> and <b>special events</b>.<br>
+              So you’re always in the know.
+            </div>
+            <form method="post" action="https://r.harryanddavid.com/pub/rf">
+              <input type="hidden" name="_ri_" value="X0Gzc2X%3DWQpglLjHJlYQGkqzczfazcgaCmCE3sofk5bk4zczdvRVwjpnpgHlpgneHmgJoXX0Gzc2X%3DWQpglLjHJlYQGnW23EtTbUsAJio4zgIzgzgWDlkFf">
+              <input type="hidden" name="HD_SUBSCRIBER" value="IN">
+              <input type="hidden" name="NEWSLETTER" value="HWEB">
+              <input type="hidden" name="HD_WELCOME_EX" value="1">
+              <input type="email" placeholder="Enter your email address" value="" maxlength="100" autocomplete="off" id="EMAIL_ADDRESS_" name="EMAIL_ADDRESS_">
+              <span class="button green" style="cursor: pointer;">Sign Up</span>
+            </form>
+          </div>
+          <div class="row clearfix">
+            <div class="cell left gift-cards">
+              <div class="icon icon-gift-card"></div>
+              <div class="heading">Gift Cards</div>
+              <div class="description">Always the perfect gift.</div>
+              <a href="http://www.harryanddavid.com/h/view/gc-giftcardland">Send a Gift Card <span class="icon icon-arrow-link"></span></a>
+            </div>
+            <div class="cell right store-locator">
+              <div class="icon icon-store-locator"></div>
+              <div class="heading">Store Locator</div>
+              <div class="description">
+                Find a Harry &amp; David store near you.
+              </div>
+              <form action="http://www.harryanddavid.com/h/view/storefront">
+                <input type="text" placeholder="Enter a city, state, or ZIP" name="location">
+                <span class="button green" style="cursor: pointer;"><span class="icon icon-magnifying-glass"></span></span>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="guarantee">
+        Backed by the strongest guarantee in the business.
+      </div>
+      <div class="footing clearfix">
+        <div class="device mobile">
+          <a href="http://www.harryanddavid.com/h/home?cm_sp=Footer-_-MobileSiteLink-_-GoToMobileSite&devicePref=MOBILE">
+            <span class="icon icon-device-mobile"></span> Mobile Site <span class="icon icon-arrow-emphasize"></span>
+          </a>
+        </div>
+        <div class="device tablet">
+          <a href="http://t.harryanddavid.com/?cm_sp=Footer-_-TabletSiteLink-_-GoToTabletSite">
+            <span class="icon icon-device-tablet"></span> Tablet Site <span class="icon icon-arrow-emphasize"></span>
+          </a>
+        </div>
+        <div class="secure">
+          <a href="https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=www.harryanddavid.com&lang=en" class="icon icon-secure"></a>
+        </div>
+        <div class="copyright">
+          &copy; 2013, Harry and David. All Rights Reserved.<br>
+          <a href="http://www.harryanddavid.com/h/view/custserv-termsofuse">Terms of Use</a> |
+          <a href="../../gifts/store/view__10455_10002_custserv-security.html">Privacy Policy</a> |
+          <a href="http://www.harryanddavid.com/h/sitemap">Site Map</a>
+        </div>
+      </div>
+    </div><!-- BEGIN: cmCreateTag.jsp -->
 <script language="javascript" type="text/javascript"><!--
 	try 
 	{	
@@ -662,21 +658,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		if(cmPassCoremetrics != 'OFF'){cmCreateManualLinkClickTag(cmHref, cmLinkName, cmPageName);	}
 	}
 </script>
-<!-- END: cmInitiateTags.jsp -->
-</div>
-</div>
-
-
-	<script language="javascript" type="text/javascript">
-		var sliJsProtocol = (("https:" == document.location.protocol) ? "https:" : "http:");
-		var sliURL = sliJsProtocol + '//harryanddavid.resultspage.com/search?ts=rac&w=';
-		console.debug("sliJsProtocol: " + sliJsProtocol);
-		document.write(unescape('%3Clink rel="stylesheet" type="text/css" href="' + sliJsProtocol + '//assets.resultspage.com/js/rac/sli-rac.0.4.css" /%3E'));
-		document.write(unescape('%3Clink rel="stylesheet" type="text/css" href="' + sliJsProtocol + '//harryanddavid.resultspage.com/rac/sli-rac.css" /%3E'));	
-		document.write(unescape('%3Cscript src="' + sliJsProtocol + '//harryanddavid.resultspage.com/rac/sli-rac.config.js" type="text/javascript"%3E%3C/script%3E'));
-	</script>
-
-</div> <!--  BEGIN Content Spot espotFooterSiteWide --><!--  END Content Spot espotFooterSiteWide --><!--  BEGIN Partner Feed PartnerFeedSiteWideFooter -->
+<!-- END: cmInitiateTags.jsp --><!--  BEGIN Content Spot espotFooterSiteWide --><!--  END Content Spot espotFooterSiteWide --><!--  BEGIN Partner Feed PartnerFeedSiteWideFooter -->
 	<script>
 		var footLinks = dojo.query("#footer .links li a");
 		

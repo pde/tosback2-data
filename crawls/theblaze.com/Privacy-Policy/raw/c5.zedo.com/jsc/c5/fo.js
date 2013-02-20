@@ -46,7 +46,7 @@ var q4=new Array('d1','d2','d3','d4','d5','d6','d7','d8','d9','da','db','dc','dd
 return q4;
 }
 var n0=0;var w8='';var e1=0;var e1=0;var e12;var i13;var v11;var r12;var n10;var w10;var a12='';var e0='0';var i0=0;var y6='';var y2='';var zd_$='';var p0=0;var r1='';var o2='';var w2='';var a2="";
-var n4='';var v4='';var z1=new Array();var w0='';var c6=0;var i3='';var z3="";var o11='';var d15="2146,2147,996,647,1962,876,1241,480";var o14=d15.split(",");var i14=false;
+var n4='';var v4='';var z1=new Array();var w0='';var c6=0;var i3='';var z3="";var o11='';var d15="2148,2170,2146,2147,996,647,1962,876,1241,480";var o14=d15.split(",");var i14=false;
 if(typeof zflag_nid!='undefined'){
 n0=zflag_nid;
 }

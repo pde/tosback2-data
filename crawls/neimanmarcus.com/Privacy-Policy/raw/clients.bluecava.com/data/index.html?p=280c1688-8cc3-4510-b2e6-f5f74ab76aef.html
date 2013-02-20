@@ -1,0 +1,88 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <script type="text/javascript" src="../../ds.bluecava.com/v50/AL/BCLDDOMReady5.js"></script>
+    <script type="text/javascript" src="../../ds.bluecava.com/v50/AC/BCAC5.js"></script>
+    <script type="text/javascript">
+        var xhr = (
+            (
+                window.XMLHttpRequest &&
+                (window.location.protocol !== "file:" || !window.ActiveXObject)
+            ) ?
+            function() {
+                return new window.XMLHttpRequest();
+            } :
+            function() {
+                try {
+                    return new window.ActiveXObject("Microsoft.XMLHTTP");
+                } catch(e) {}
+            }
+        );
+        
+        function submit(ss, wm, er) {
+            var request = xhr();
+            wm = wm || "";
+            er = er || "";
+            
+            request.open('POST', "Complete.aspx", false);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.send("tsid=960bc58c-c2fc-414c-84f8-50461b05b25d&ts=634969632026279250&rid=5f3d0ac8-b2bd-4856-8f6c-4803ee25cb23&p=280c1688-8cc3-4510-b2e6-f5f74ab76aef&pp=http%3a%2f%2fwww.neimanmarcus.com%2fassistance%2fassistance.jsp&cm=&cp=&cs=1&ipbl=0" + "&ss=" + encodeURIComponent(ss) + "&wm=" + encodeURIComponent(wm) + "&er=" + encodeURIComponent(er));
+
+            var div = document.getElementById("BCLDcontent");
+            
+                    if (div) {
+                        div.innerHTML = request.responseText;
+
+                        var scripts = div.getElementsByTagName("script");
+                        if (scripts) {
+                            var len = scripts.length;
+
+                            for (var x = 0; x < len; x++) {
+                                var s = scripts[x].innerHTML;
+                                
+                                if (s.length != 0) {
+                                    eval(s);
+                                } else {
+                                    var headID = document.getElementsByTagName("head")[0];         
+                                    var newScript = document.createElement('script');
+                                    newScript.type = 'text/javascript';
+                                    newScript.src = scripts[x].src;
+                                    headID.appendChild(newScript);
+                                }
+                            }
+                    }
+            }
+        }
+        function sFx(ss, wm) {
+            submit(ss, wm, "");
+        }
+        function eFx(er) {
+            submit("", "", er);
+        }
+
+        BCLDReady(function () {
+        
+            BCLD.getSnapshotLocal(sFx, eFx, { "a": "64.147.188.8", "b": "bh4S6hhryUJqYiffYvQm8l33BCY=", "c": "", "d": "N3bYacZVMKjjww0iV+k5RVoXZlg=", "e": "", "f": "5124cd828a6d87333000472d$BC01", "g": "1PIaKeMEOcQ+pB1Iv74AlB6JA/U=", "i": "09ebf304-9270-411e-8fee-ba3381b1d5bf|2013-02-20 13:20:02Z", "j": "f0c19eaf-9f49-48be-a260-166a632ef43e" });
+        
+        });
+    </script>
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" /><meta http-equiv="Cache-control" content="no-cache" /><meta http-equiv="pragma" content="no-cache" /><meta http-equiv="EXPIRES" content="0" />
+    <noscript>
+        <meta name="refresh" http-equiv="refresh" content="0; URL=http://clients.bluecava.com/data/NoScript.aspx?rid=5f3d0ac8-b2bd-4856-8f6c-4803ee25cb23&amp;p=280c1688-8cc3-4510-b2e6-f5f74ab76aef&amp;pp=http%3a%2f%2fwww.neimanmarcus.com%2fassistance%2fassistance.jsp&amp;tsid=960bc58c-c2fc-414c-84f8-50461b05b25d&amp;ts=634969632026279250" />
+    </noscript>
+<title>
+
+</title></head>
+<body>
+    
+    <div id="BCLDGuidDiv" style="width: 0px; height: 0px;">
+    </div>
+    <div id="BCLDflashplayer" style="width: 0px; height: 0px;">
+    </div>
+    <div id="BCLDcontent" style="width: 100%; height: 0px;">
+    </div>
+    
+</body>
+</html>

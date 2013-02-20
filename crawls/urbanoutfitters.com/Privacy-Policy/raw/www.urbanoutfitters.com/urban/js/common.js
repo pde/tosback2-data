@@ -791,20 +791,33 @@ var getCookies = function(){
 }
 
 //End of Code added for Trac 1997.
-/*
-(function($) {
-    $.fn.getURLParameter = function(name, url) {
-        if (url == null) {
-            url = window.location.search;
-        }
-        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-        name = "[\\?&]" + name + "=([^&#]*)";
-        var regexp = new RegExp(name);
-        var value = regexp.exec(url);
-        if (value == null) {
-            return "";
-        }
-        return value[1];
+
+
+var getURLParameter = function(name, url) {
+    if (url == null) {
+        url = window.location.search;
     }
-})(jQuery);
-*/
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    name = "[\\?&]" + name + "=([^&#]*)";
+    var regexp = new RegExp(name);
+    var value = regexp.exec(url);
+    if (value == null) {
+        return "";
+    }
+    return value[1];
+}
+
+function getMetaValue( meta_name ) {
+
+	var my_arr=document.getElementsByTagName("META");
+
+	for (var counter=0; counter<my_arr.length; counter++) {
+
+		if (my_arr[counter].name.toLowerCase() == meta_name.toLowerCase()) {
+			return my_arr[counter].content;
+		}
+	}
+	
+	return "N/A";
+
+}

@@ -113,7 +113,7 @@ function send_payoff(place)
 			$('#pt_webmoney').attr('checked', true);
 	}		
 	else if (info.match(/.+@.+\.[\w]+/)) {
-		if (!type || type=='webmoney') 
+		if (!type || type!='payza')
 			$('#pt_payza').attr('checked', true);
 	}
 	else if(info.match(/\d{3}-\d{6}/)) {

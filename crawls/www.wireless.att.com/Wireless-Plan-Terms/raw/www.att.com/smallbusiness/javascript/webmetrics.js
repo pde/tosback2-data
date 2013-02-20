@@ -112,6 +112,11 @@ WebMetrics = {
 			}
 		});
 		return rv;
+	},
+	
+	overlayLoadPage: function(pn){
+		/*dcsMultiTrack("DCSext.wtPN",pn,"DCSext.wtLinkName",ln,"DCSext.wtLinkLoc",ll);*/
+		dcsMultiTrack("DCSext.wtPN",pn);
 	}
 }
 

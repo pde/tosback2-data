@@ -3455,7 +3455,7 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 			if (config.getMediaFreewheelNID()) {
 				configParams += escape("&nid=" + config.getMediaFreewheelNID());	
 			} 
-			if (typeof(siteSectionId) == 'undefined') { siteSectionId = 'The_Daily_Show_Home'; }
+			if (typeof(siteSectionId) == 'undefined') { siteSectionId = 'Unknown_ComedyCentral'; }
 		
 			var flashvars = { sid:siteSectionId, autoPlay:autoPlay, endCapAutoPlay:endCapAutoPlay, configParams:configParams };
 		
@@ -3489,7 +3489,8 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 					onMediaEnd:this.onMediaEnd,
 					onPlayheadUpdate:this.onPlayheadUpdate,
 					onStateChange:this.onStateChange,
-					onPlaylistComplete:this.onPlaylistComplete
+					onPlaylistComplete:this.onPlaylistComplete,
+					onFullScreenChange:this.onFullScreenChange
 				}		
 				
 
@@ -3506,7 +3507,8 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 		onMediaEnd:function(event){},		
 		onPlayheadUpdate:function(event){},	
 		onStateChange:function(event){},
-		onPlaylistComplete:function(event){}
+		onPlaylistComplete:function(event){},
+		onFullScreenChange:function(event){}
 	});
 
 	$.pluginize('player', $Crabapple.Player, $Crabapple);

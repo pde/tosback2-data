@@ -90,9 +90,9 @@
   Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
   Config.isRTLLanguage = false;
   Config.isReplaceSearchNameForSeo = false;
-  Config.revisionNum = 29900;
+  Config.revisionNum = 30108;
   Config.syncDomain = 'https://www.4sync.com/';
-  Config.cdDomain = '//dc533.4shared.com/';
+  Config.cdDomain = '//dc679.4shared.com/';
   Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
   Config.isMobile = false;
   Config.isIpad = false;
@@ -102,11 +102,14 @@
       //lets detect touch device
       try{
           document.createEvent("TouchEvent");
+        if (!/Opera Mobi/.test(navigator.userAgent) && !/Opera Mini/.test(navigator.userAgent)) $("body").addClass("notTouch");
       } catch(e){
           $("body").addClass("notTouch");
       }
   });
 </script>
+
+  
 
 
 
@@ -278,7 +281,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/header.js%3Fver=2215294150"></script>
+<script type="text/javascript" src="../static.4shared.com/js/header.js%3Fver=3516196813"></script>
 
 
 
@@ -313,7 +316,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=4095092871"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=508293964"></script>
 
 
 
@@ -442,7 +445,6 @@
   </style>
   <![endif]-->
 
-  
 
 
 
@@ -450,42 +452,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" src="../static.4shared.com/js/modernizr.custom.js%3Fver=3043848000"></script>
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=3829439795.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=3340423605.css"/>
 
 
 
@@ -849,7 +816,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/login_fnc.js%3Fver=2090621026"></script>
+<script type="text/javascript" src="../static.4shared.com/js/login_fnc.js%3Fver=3411175366"></script>
 
 
 
@@ -1444,7 +1411,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=358823964"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=3370945089"></script>
 
 
 
@@ -1595,8 +1562,6 @@
           postUpload()
           $('form.openid:eq(0)').openid();
           activateFieldForInput(params);
-          iePlaceholder('#signupForm');
-          iePlaceholder('#loginForm');
         }
     );
     return false;
@@ -1618,7 +1583,7 @@
     var sp = escape(JSON.stringify(params));
     Cookies.create('jsParams', sp, -1, '/', '.4shared.com', false);
     if(params.returnTo){
-      Cookies.create('returnTo', params.returnTo, -1, '/', '.4shared.com', false);
+      Cookies.create('returnTo', escape(params.returnTo), -1, '/', '.4shared.com', false);
     }
   }
 
@@ -1647,7 +1612,8 @@
         password: password,
         remember: false,
         doNotRedirect: 1,
-        successUrl: unescape(paramsObj.returnTo),
+        successUrl: paramsObj.returnTo == undefined ? $('input[name="fpRedirParam"]').val() || '' : unescape(paramsObj.returnTo),
+        jsCallback: paramsObj.actionsAfterSignup == undefined ? null : paramsObj.actionsAfterSignup.toString(),
         couponcode: paramsObj.couponcode
     };
     document.body.style.cursor = 'wait';
@@ -1671,6 +1637,12 @@
              loginFnc.redirect(data.redirectUrl || loginFnc.getLocation());
           }
         }else{
+          if (data.limitAccess) {
+            var $limitAccessForm = $('<form method="post"/>').attr('action', data.limitAccess.url)
+            for (var p in data.limitAccess.params)
+              $('<input type="hidden">').attr('name', p).attr('value', data.limitAccess.params[p]).appendTo($limitAccessForm)
+            $limitAccessForm.hide().appendTo($('body')).submit()
+          }
           $('#loginreg-div #loginErrorMsg').html(data.rejectReason).show();
         }
       },
@@ -1773,7 +1745,7 @@
             
 
             
-            ,sId : 'i0UvR4peZABSMnZn'
+            ,sId : 'GR6RisyuoPplvmRg'
             
           },
           function(){
@@ -1985,7 +1957,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.placeholder.patch.js%3Fver=3412900527"></script>
+<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.placeholder.patch.js%3Fver=855887223"></script>
 
 
 
@@ -2020,7 +1992,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.outerhtml.js%3Fver=2856790532"></script>
+
 
 
 
@@ -2073,11 +2045,6 @@
 
 
 <script type="text/javascript">
-  function iePlaceholder(form) {
-    if (Modernizr.input.placeholder) return
-    $('input[placeholder]', form).placeholder()
-  }
-
   $(window).bind("load", function() {
       addCapsChecking()
 
@@ -2099,9 +2066,12 @@
 
   function iapHiddenFrameOnload() {
     if (window.langSelectorChangeCalled) {
-      location.reload();
+      
+        location.reload();
+      
     }
   }
+
 
   
 
@@ -2579,7 +2549,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc517, rev=29900"
+    title : "Title = dc329, rev=30108"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2595,10 +2565,6 @@
       })
     }
   });
-
-  iePlaceholder('#login_form')
-  iePlaceholder('#search')
-  iePlaceholder('#signup_head')
 </script>
 
 <script type="text/javascript">
@@ -3021,24 +2987,11 @@
 
 
 
-    <!-- BEGIN TAG - DO NOT MODIFY -->
-<script type="text/javascript">
-    <!--
-    epom_key = "d26904080fbfb1f15d49dc5db6b4a0c6";
-    epom_code_format = "ads-sync.js";
-    epom_click = "";
-    epom_custom_params = {};
-
-    document.write("<script type='text\/javascript' src='"+(location.protocol == 'https:' ? 'https:' : 'http:') + "//www.adshost1.com\/js/show_ads.js'><\/script>");
-    //-->
-</script>
-<!-- END TAG -->
-
 
 <div class="copy">
     <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc517, rev=29900'>&copy;</span> 2005-2013 4shared.com 
+             Copyright <span title='dc329, rev=30108'>&copy;</span> 2005-2013 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             
@@ -3088,7 +3041,7 @@
 
 
 
-<!-- www.currDcID=517 -->
+<!-- www.currDcID=329 -->
 
 
 

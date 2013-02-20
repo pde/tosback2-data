@@ -1741,4 +1741,23 @@ function ValidateRequestPasswordFormInput() {
         shareEmbedEmail("#Launch-Webisode");
     });
 
+	// Call this in the Ajax success callback function to initialize addthis in lightbox
+    function ReinitializeAddThis() {
+       	
+       	var script_url = 'http://s7.addthis.com/js/250/addthis_widget.js#domready=1';
+       	if (window.addthis) {
+			window.addthis = null;
+			window._adr = null;
+			window._atc = null;
+			window._atd = null;
+			window._ate = null;
+			window._atr = null;
+			window._atw = null;
+		}
+		$("#at20mc").remove();
+		$.getScript(script_url, function () {
+			addthis.init();
+		});
+	 }
+
   

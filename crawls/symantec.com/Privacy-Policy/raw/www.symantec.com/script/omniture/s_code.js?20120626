@@ -4,18 +4,16 @@ Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com
 
 
-Changes 2011-04-01: Added Survey tool; Changes 2011-10-31: Added ges.symantec.com domain, Dynamic variable, new plug in getPreviousValue_v1.0, - manageVars plug in, Previous Page Feature,- took out event41 tracking,set eVar68 to page name and to visit, - default value "n/a" to standard variables,set prop33 to null;
 Changes 2011-12-13: Added new h-code at bottom (Version 15)
-Changes 2012-2-1: Update to Dynamic variables,
 Changes 2012-3-1: prop59/evar59 page name without lg/ct
 Changes 2012-4-10: Removing Norton,verisign domains from internalfilters. Needed for reporting.
 Changes 2012-7-12: evar15 changed to evar63
 Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
 Changes 2012-11-14: Combined audience and audience_segment in demandbase and added .rpm to the list of linkDownloadFileTypes
 Changes 2012-11-28: Demandbase fixes.
-Changes 2012-12-23: tracking every user in demandbase no matter where they land.
 Changes 2013-01-02: Re-instating check for en/us for demandbase tracking
 Changes 2013-01-11: incorporating Sam Jackson's re-write.
+Changes 2013-02-05: evar57 Visitor ID and Support
 */
 
 var s_account=metaData['repsuite']
@@ -105,11 +103,14 @@ function s_doPlugins(s) {
 	s.pageName=((s.pageName == "none") || (s.pageName == "") || (s.pageName == undefined)) ? "" : s.pageName;
 	if(s.pageName.substr(2,1) == "/") s.prop59 = s.pageName.substr(7,255);
 
-	// KK 20111101 for support
+	// Support Knowledgebase Tracking
 	if(s.prop41=='Support') s.prop65 = s.getQueryParam('question_box');
-
-	// KK 2012021 for support
 	if(s.prop41=='Support') s.prop66 = s.getQueryParam('wizardid');
+	if(s.prop41=='Support') s.prop67 = s.getQueryParam('productselectorkey');
+	if(s.prop41=='Support') s.prop68 = s.getQueryParam('product_finder');
+
+
+	
 
 	// KK 20111031 set via dymanic variables
 	if(s.prop21) s.prop35 = '> ' + s.prop21 + ' ' + s.prop35;
@@ -170,7 +171,8 @@ function s_doPlugins(s) {
 
 
 	s.eVar18  = "D=pageName";
-	s.eVar68  = "D=pageName" ;
+	s.eVar68  = "D=pageName";
+	s.eVar57 = "D=s_vi";
 
 	s.eVar29  = "D=channel" ;
 	if(s.prop2 != "n/a")  s.eVar27 = "D=c2" ;
@@ -186,31 +188,12 @@ function s_doPlugins(s) {
 
 	/***** KK 20111031 added for reviousvalue tacking *****/
 	s.prop60=s.getPreviousValue(s.pageName,'s_gpv','');
-	/********************/
-	/********************/
-	/********************/
-	/********************/
+
 
 	/***** cross visit participation *****/
 	// Campaign stacking - 0712 - moved from evar15 to evar63
 	s.eVar63=s.crossVisitParticipation(s.campaign,'s_eVar15','90','10',',','purchase',0);
 
-    /* Site Section Stacking - 012013 Removed
-	if(s.prop41 != "n/a") s.eVar72=s.crossVisitParticipation(s.prop41,'s_eVar72','1','20',',','purchase',0);
-
-	/*Connect Community Stacking - 07-12 commented out 61&62, have enough data to analyze
-	if(s.prop49 != "n/a") s.prop61=s.crossVisitParticipation(s.prop49,'s_prop61','1','20',',','purchase',0);
-
-	//Connect Utility Stacking does not capture prefix
-	s.prop18=((s.prop18 == "none") || (s.prop18 == "") || (s.prop18 == undefined)) ? "" : s.prop18;
-	if(s.prop18.substr(0,17) == "connect_utility: ")
-	s.prop62=s.crossVisitParticipation(s.prop18.substr(17,100),'s_prop62','1','20',',','purchase',0);
-	*/
-
-
-	/* Internal Parameter Stacking
-	s.eVar4=s.crossVisitParticipation(s.eVar21,'s_eVar4','90', '10',',','purchase',0);
-	*/
 
 	/***** KK added for repeat visitor *****/
 	 /* First Time Visitor  */
@@ -615,12 +598,15 @@ fireDemandBaseTracking = function(){
 	if(typeof(metaData['page_name'])!= "undefined"){
 		var myPageName = metaData['page_name'];
 	// if we're not en/us and not specifically on symantec.com, we're done
-		if(myPageName.indexOf('en/us')<0 && validUrl === true){
+		if(myPageName.indexOf('en/us')<0 || validUrl === false){
 			return false;
 		}
 		else{
 			return true;
 		}
+	}
+	else{
+		return false;
 	}
 }
 

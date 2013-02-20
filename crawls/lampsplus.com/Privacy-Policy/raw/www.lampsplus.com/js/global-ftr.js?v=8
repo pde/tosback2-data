@@ -168,16 +168,17 @@ GetPortfolioItemCount();
 
         //default options
         var defaults = {
-            onInit: false,              //should modal open when code is initialized?
-            fullScreen: false,          //should we fill the whole screen?
-            width: 560,                 //width of modal popup
-            height: 470,                //height for modal popup
-            content: $("#content"),     //html element that contains content on page
-            bgColor: "#fff",            //background color of modal
-            src: "",                    //url source of iframe to be embedded
-            openEvt: function(){},      //function to be run when modal opens
-            closeEvt: function(){}      //function to be ran after close has been run
-        }
+            onInit: false,                      //should modal open when code is initialized?
+            fullScreen: false,                  //should we fill the whole screen?
+            width: 560,                         //width of modal popup
+            height: 470,                        //height for modal popup
+            content: $("#content"),             //html element that contains content on page
+            bgColor: "#fff",                    //background color of modal
+            src: "",                            //url source of iframe to be embedded
+            openEvt: function(){},              //function to be run when modal opens
+            preCloseEvt: function(){return 1;}, //function to be run before close, returns boolean
+            closeEvt: function(){}              //function to be ran after close has been run
+        };
 
         //combine defaults and passed in options
         var o = $.extend(defaults, options);
@@ -188,18 +189,12 @@ GetPortfolioItemCount();
 
                 var modalTemplate = "<div id='lpModal'><a href='#' id='lpModalClose'></a><div id='lpModalContent'></div></div><div id='lpModalBackdrop'></div>";
 
-                //if we're using content on the page
-                if (o.src.length == 0) {
-                    //if there is a form tag on the page
-                    if ($('form').length > 0) {
-                        //append template to form
-                        $('form').append(modalTemplate);
-                        //if there is no form on the page
-                    } else {
-                        //append template to body
-                        $('body').append(modalTemplate);
-                    }
-                    //if we're using an iframe
+                //if we're using content on the page and there is a form tag on the page
+                if (o.src.length == 0 && $('form').length > 0) {
+                    //append template to body
+                    $('form').append(modalTemplate);
+                    
+                //if we're using an iframe
                 } else {
                     //append template to body
                     $('body').append(modalTemplate);
@@ -210,7 +205,6 @@ GetPortfolioItemCount();
                     modalContent     = $("#lpModalContent"),
                     closeBtn         = $("#lpModalClose"),
                     backdrop         = $("#lpModalBackdrop"),
-                    htmlBody         = $("html, body"),
                     modalOuterWidth  = Math.floor(modal.outerWidth(true)),
                     modalOuterHeight = Math.floor(modal.outerHeight(true)),
                     windowWidth      = Math.floor($(window).width()),
@@ -241,9 +235,15 @@ GetPortfolioItemCount();
 
                 //if modal is using on page content
                 if(o.src.length == 0){
+                    //replace the content with a placeholder for easy return after close, if it's already on the page
+                    if(o.content.parents('body').length){
+                        o.content.after($('<div id="lpModalContentPlaceholder" />').addClass('hidden'));
+                    }
+
+                    //place content in modalContent
                     modalContent.append(o.content.show());
 
-                    //if modal is embedding an iframe
+                //if modal is embedding an iframe
                 } else {
                     //enable scrolling an iFrame in a modal on a touch device
                     $("<iframe width='100%' height='100%' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
@@ -295,19 +295,21 @@ GetPortfolioItemCount();
 
                 //close modal functionality
                 function closeModal() {
+                    if( o.preCloseEvt() ){
+                        //fade out backdrop and modal popup
+                        modal.fadeOut(300, function () {
+                            backdrop.fadeOut(200);
+                        });
 
-                    //fade out backdrop and modal popup
-                    modal.fadeOut(300, function () {
-                        backdrop.fadeOut(200);
-                    });
-
-                    //using setTimeout so div removal happens AFTER popup fades out
-                    setTimeout(function () {
-                        modal.remove();
-                        backdrop.remove();
-                        o.closeEvt();
-                    }, 500);
-
+                        //using setTimeout so div removal happens AFTER popup fades out
+                        setTimeout(function () {
+                            //replace the placeholder with the modal content
+                            $('#lpModalContentPlaceholder').after(o.content.hide()).remove();
+                            modal.remove();
+                            backdrop.remove();
+                            o.closeEvt();
+                        }, 500);
+                    }
                 }
 
                 //close button and backdrop click
