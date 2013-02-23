@@ -24,6 +24,7 @@ bam.extend({
 
         // Activate BAM URL lib
         bam.loadSync(bam.homePath + "bam.url.js");
+        bam.loadSync(bam.homePath + "bam.cookies.js");
 
         // Return media singleton
         return {
@@ -78,22 +79,32 @@ bam.extend({
                     }
 
                 }
-
+                
                 if (typeof bam.mp4_config === "undefined") { // load config, if not loaded
                     bam.loadSync("/shared/scripts/bam.mp4_config.js");
                 }
-
+                
+                
+                
                 // if calendar_event_id is unavailable, try to play in old player
                 if (!props.calendar_event_id) {
-                    playMedia2(props);
-                    return;
+                	if ((""+props.source).toUpperCase() === "WBC"){
+                		window.open(this.getWbcAdobePassUrl(), "mp4", "height=" + bam.mp4_config.height + ",width=" + bam.mp4_config.width + ",resizable=0");
+                		return;
+                	} else {
+                		playMedia2(props);
+                		return;
+                	}
                 }
 
-                // play 2011 MEDIA_ON streams in Gameday 
+                // play Gameday Audio MEDIA_ON streams in Gameday
+                // commented out for Spring Training
+                /*
                 if (props.media_type && props.media_type === "audio" && props.gid) {
                     location.href = "/mlb/gameday/index.jsp?gid=" + props.gid + "&mode=audio" + ( !! props.feed_code ? "&feed_code=" + props.feed_code : "") + ( !! props.c_id ? "&c_id=" + props.c_id : "");
                     return;
                 }
+                */
 
                 // get clickOrigin if available
                 if (bam.tracking && bam.tracking.clickOrigin) {
@@ -142,7 +153,7 @@ bam.extend({
                         _psStartDate = new Date("2012/10/04"),  // start of post-season
                         _psEndDate = new Date("2012/11/03"),  // end of post-season
                         _calIdDate   = new Date(_y+"/"+_m+"/"+_d),                        
-                        _todayDate = bam.getFlipDisplayDate() || new Date(),
+                        _todayDate = (bam.getFlipDisplayDate) ? bam.getFlipDisplayDate() : new Date(),
                         _isGameLive = false,
                         _gameProps; // will contain game params from multi-angle-epg, if game is live
                     // @TODO pull this out after postseason		
@@ -263,19 +274,41 @@ bam.extend({
 						_mediaProps['environment'] = 'beta';
 					}
 				}
-
-                _fullPlayerUrl = _mp4_baseurl + bam.mp4_config.url + "?" + $.param(_mediaProps);
-
-                // adjust height for chrome/mac
-                if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1 && navigator.platform.toLowerCase().indexOf('mac') > -1) {
-                    bam.mp4_config.height = parseInt(bam.mp4_config.height, 10) + 55;
+                
+                
+                var launchUrlWithoutParams = _mp4_baseurl + bam.mp4_config.url;
+                
+                //redirect the user to the WBC Adobe pass flow if they're 
+                //trying to access a WBC stream and they haven't authenticated yet
+                if (_mediaProps.source === "WBC") {
+	                var wbc_ipid = bam.cookies.get('wbc_ipid'),
+	            		wbc_fprt = bam.cookies.get('wbc_fprt');
+	                if (wbc_ipid === null || wbc_fprt === null){
+	                	launchUrlWithoutParams = this.getWbcAdobePassUrl();
+	                }
+	                else
+	                {
+						_mediaProps['appAccountName'] = 'wbc';
+	                }
                 }
+                
+                _fullPlayerUrl = launchUrlWithoutParams + "?" + $.param(_mediaProps);
 
                 // showtime!
                 window.open(_fullPlayerUrl, "mp4", "height=" + bam.mp4_config.height + ",width=" + bam.mp4_config.width + ",resizable=0");
             },
 
-
+            getWbcAdobePassUrl : function(){
+            	var wbcAdobePassFlowBaseUrl;
+            	if (bam.env.host.isQA){
+            		wbcAdobePassFlowBaseUrl = "https://qasecure.mlb.com";
+            	} else if (bam.env.host.isBeta){
+            		wbcAdobePassFlowBaseUrl = "https://betasecure.mlb.com";
+            	} else {
+            		wbcAdobePassFlowBaseUrl = "https://secure.mlb.com";
+            	}
+            	return wbcAdobePassFlowBaseUrl + "/shared/media/player/adobepass/MLBN.html";
+            },
 
             /**
              * Launches mini-interstitial presenting the user with .tv options.
@@ -299,7 +332,7 @@ bam.extend({
                 
 
                 bam.loadCSS("/style/media/mp4_mini_interstitial.css");
-					var _miniIntHtml = '' + '<div id="mini-int">' + '<div id="mini-int-mlbtv" class="mp-option">' + '<h5>International Users - MLB.TV</h5>' + '<p>Watch ALL live Postseason games with MLB.TV.</p><p><strong><em>Live games NOT available in the U.S. and Canada.  Full game archives available approximately 90 minutes after each game.</em></strong></p>' + '<a href="/mlb/subscriptions/index.jsp?product=mlbtv" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' + '</div>' + '<div id="mini-int-pstv" class="mp-option">' + '<h5>U.S./Canada Users - Postseason.TV *</h5>' + '<p>Watch live online companion coverage of the Wild Card &amp; Division Series, plus the AL Championship Series (no blackout restrictions).</p><p><strong>Wild Card - AL & NL<br />Division Series - ALDS & NLDS<br />League Championship Series - ALCS only</strong></p>' 
+					var _miniIntHtml = '' + '<div id="mini-int">' + '<div id="mini-int-mlbtv" class="mp-option">' + '<h5>International Users - MLB.TV</h5>' + '<p>Watch ALL live Postseason games with MLB.TV.</p><p><strong><em>Live games NOT available in the U.S. and Canada.  Full game archives available approximately 90 minutes after each game.</em></strong></p>' + '<a href="/mlb/subscriptions/index.jsp?product=mlbtv" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' + '</div>' + '<div id="mini-int-pstv" class="mp-option">' + '<h5>U.S./Canada Users - Postseason.TV *</h5>' + '<p>Watch live online companion coverage of the Division Series and the AL Championship Series (no blackout restrictions).</p><p><strong>Division Series - ALDS & NLDS<br />League Championship Series - ALCS only</strong></p>' 
 					+ '<a href="/mlb/subscriptions/index.jsp" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' 
 					+ '</div>' +  '<p class="mp-legalese">* Postseason multi-angle coverage is presented in conjuction with TBS and MLB Network as a companion to the live broadcast feed.</p><p class="mp-legalese">All broadcasts subject to blackout restrictions. <a href="/mlb/subscriptions/index.jsp">Learn More</a></p></div>';
 
@@ -1196,7 +1229,12 @@ bam.extend({
                 bam.tracking.clickOrigin = "";
             });
         }
-    };
+    }; 
+    
+    if (typeof $.browser === "undefined"){
+    	jQuery.browser = {};
+    	jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
+    }
 
     if ($.browser.msie) {
         $(window).load(monitorClickOrigin);

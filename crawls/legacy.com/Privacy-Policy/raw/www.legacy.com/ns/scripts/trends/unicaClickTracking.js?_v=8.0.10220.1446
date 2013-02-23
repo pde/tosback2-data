@@ -1,0 +1,36 @@
+﻿jQuery(document).on("click", "[lgyev]", function (e)
+{
+    for (var j = 0; j < 10; j++)
+    {
+        var tag = GetAttrTag(j);
+        var ev = jQuery(this).attr(tag);
+        if (ev != undefined)
+        {
+            ev = ev.toLowerCase();
+            var prefix = tag + "_";
+            var altPrefix = ev + "_";
+            var eventString = 'ev=' + ev;
+            jQuery.each(jQuery(this)[0].attributes, function (i, attribute)
+            {
+                if (attribute.nodeName.startsWith(prefix)) { eventString += "&" + attribute.nodeName.substring((prefix.length)) + "=" + attribute.value; }
+                else if (attribute.nodeName.startsWith(altPrefix)) { eventString += "&" + attribute.nodeName.substring((altPrefix.length)) + "=" + attribute.value; }
+            });
+
+            ntptEventTag(eventString);
+        }
+    }
+
+    function GetAttrTag(i)
+    {
+        if (i <= 0)
+        {
+            return "lgyev";
+        }
+        else
+        {
+            return "lgyev" + i;
+        }
+    }
+});
+
+if (typeof String.prototype.startsWith != 'function') { String.prototype.startsWith = function (str) { return this.indexOf(str) == 0; }; }

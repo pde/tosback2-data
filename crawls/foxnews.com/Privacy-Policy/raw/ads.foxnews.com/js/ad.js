@@ -78,7 +78,9 @@
 							this.dcopt(tile), "cmn=fn", "comp=" + this.adv(window.location, true),
 							"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid,
 							"url=" + url,
-							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,",").replace("300x100","300x251,300x100"), "tile=" + tile + this.u(data, id) + "|",
+							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,",").replace("300x100","300x251,300x100"), "tile=" + tile ,
+							"dc_ref="+ encodeURIComponent("http://www.foxnews.com"),	
+							this.u(data, id) + "|",													
 							"ord=" + $.ad.ord + "?"
 						]);
 						
@@ -93,7 +95,9 @@
 						this.dcopt(tile), "comp=" + this.adv(window.location, true),
 						"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid, 
 						"url=" + url,
-						this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,","), "tile=" + tile + this.u(data, id) + "|",
+						this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,","), "tile=" + tile,
+						"dc_ref="+ encodeURIComponent("http://www.foxnews.com"),
+						this.u(data, id) + "|",	
 						"ord=" + $.ad.ord + "?"
 					]);
 					
@@ -290,8 +294,6 @@
 				var pnam = "";
 				
 				
-				
-				
 				if(typeof $.ad._meta["classificationISA"] == "string"){
 					var c = $.ad._meta["classificationISA"];
 					c = c.replace(/[ ]/g,"");
@@ -301,8 +303,8 @@
 					//u=ptype|adv|ctype|pos|url 
 					var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url];
 				}	   
-				   
-			    var p = ";u=";
+			   
+			    var p = "u=";
 				
 				thisObj._u[idd] = a.join('|');
 		
@@ -856,9 +858,9 @@
 				window.s_account = s_account;
 
 				if(window.isBeta){
-					$.ad.util.include("http://beta.ads.foxnews.com/js/omtr_code.js",1);				
+					$.ad.util.include("//beta.ads.foxnews.com/js/omtr_code.js",1);				
 				}else{
-					$.ad.util.include("http://ads.foxnews.com/js/omtr_code.js",1);						
+					$.ad.util.include("//ads.foxnews.com/js/omtr_code.js",1);						
 				}
 							
 			},

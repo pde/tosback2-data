@@ -1408,10 +1408,10 @@ return {x:left, y:top};
 report : function(aObj){
 // aObj is the link obj
 var linkurl = aObj.href;
-var linkname = aObj.name;
+var linkname = jQuery(aObj).text().replace(/["']/g, "");
 var strReport = '';
-//strReport = "GlobalNav : " + linkname + " : " + linkurl;
-strReport = "GLOBAL_NAV - " + linkname + " : " + linkurl;
+
+strReport = "GLOBAL_NAV - " + linkname;
 // getting error on blog
 // test for the reporting function before calling
 //if(typeof(sendLinkCall)=='function')

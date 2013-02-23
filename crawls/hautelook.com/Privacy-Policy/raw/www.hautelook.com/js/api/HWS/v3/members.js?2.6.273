@@ -1,0 +1,287 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.member = {};
+HWS.v3.member.invitations = {};
+HWS.v3.member.share = {};
+HWS.v3.member.promotions = {};
+
+HWS.v3.member.invitations.post = function(params) {
+    // Constant defining the number of emails per batch
+    var BATCH_THRESHOLD = 100;
+    
+    var batch = function(emails, personal_message) {
+        var batches = [];
+        var invitations = [];
+        
+        for (var i = 0; i < emails.length; i += BATCH_THRESHOLD) {
+            var slice = emails.slice(i, i + BATCH_THRESHOLD);
+            batches.push(slice);
+        }
+        
+        for (var j = 0; j < batches.length; j++) {
+            var invitation = {};
+            invitation.invitations = {};
+            invitation.invitations.emails = batches[j];
+            invitation.invitations.personal_message = personal_message;
+            invitations.push(invitation);
+        }
+        
+        return invitations;
+    };
+    
+    var handle_completion = function() {
+        var decode_400s = function(failure) {
+            var messages = failure[0].error.messages;
+            var invitations = [];
+            
+            for (var i = 0; i < messages.length; i++) {
+                var invitation = {
+                    'invitation': messages[i].message.invitation
+                };
+                
+                invitations.push(invitation);
+            }
+            
+            return invitations;
+        };
+        
+        var successes = batch_responses.successes;
+        var failures = batch_responses.failures;
+        var response = {
+            'invitations': []
+        };
+        
+        for (var i = 0; i < successes.length; i++) {
+            $.merge(response.invitations, successes[i].invitations);
+        }
+        
+        for (var j = 0; j < failures.length; j++) {
+            var invitations = decode_400s(failures[j]);            
+            $.merge(response.invitations, invitations);
+        }
+        
+        if (failures.length > 0) {
+            params.onFailure(response);
+        } else {
+            params.onSuccess(response);
+        }
+    };
+    
+    var check_completion_status = function() {
+        num_completed_batches++;
+        
+        if (num_completed_batches == batches.length) {
+            handle_completion();
+        }
+    };
+    
+    var handle400s = function(response, status, XHR) {
+        batch_responses.failures.push(response);
+        check_completion_status();
+    };
+    
+    var handle200s = function(response, status, XHR) {
+        batch_responses.successes.push(response);
+        check_completion_status();
+    };
+    
+    var data = JSON.parse(params.data);
+    var num_completed_batches = 0;
+    var batches = batch(data.invitations.emails, data.invitations.personal_message);
+    var batch_responses = {
+        successes: [],
+        failures: []
+    };
+    
+    for (var i = 0; i < batches.length; i++) {
+        $.ajax({
+            url: '/v3/member/' + params.member_id + '/invitations',
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(batches[i]),
+            useREST: true,
+            haloHandleAjaxResponse: true,
+            
+            haloFail: handle400s,
+            
+            haloSuccess: handle200s
+        });
+    }
+};
+
+HWS.v3.member.share.post = function(params) {
+    // Constant defining the number of emails per batch
+    var BATCH_THRESHOLD = 100;
+
+    var batch = function(data) {
+        var batches = [];
+        var invitations = [];
+
+        for (var i = 0; i < data.emails.length; i += BATCH_THRESHOLD) {
+            var slice = data.emails.slice(i, i + BATCH_THRESHOLD);
+            batches.push(slice);
+        }
+
+        for (var j = 0; j < batches.length; j++) {
+            var invitation = {};
+            invitation.emails = batches[j];
+            invitation.personal_message = data.personal_message;
+            invitation.type = data.type;
+            invitation.event_id = data.event_id;
+            invitation.brand_name = data.brand_name;
+            invitation.url = data.url;
+            invitations.push(invitation);
+        }
+        
+        return invitations;
+    };
+
+    var handle_completion = function() {
+        var decode_400s = function(failure) {
+            var messages = failure[0].error.messages;
+            var invitations = [];
+
+            for (var i = 0; i < messages.length; i++) {
+                var invitation = {
+                    'invitation': messages[i].message.invitation
+                };
+
+                invitations.push(invitation);
+            }
+
+            return invitations;
+        };
+
+        var successes = batch_responses.successes;
+        var failures = batch_responses.failures;
+        var response = {
+            'invitations': []
+        };
+
+        for (var i = 0; i < successes.length; i++) {
+            $.merge(response.invitations, successes[i].invitations);
+        }
+
+        for (var j = 0; j < failures.length; j++) {
+            var invitations = decode_400s(failures[j]);
+            $.merge(response.invitations, invitations);
+        }
+
+        if (failures.length > 0) {
+            params.onFailure(response);
+        } else {
+            params.onSuccess(response);
+        }
+    };
+
+    var check_completion_status = function() {
+        num_completed_batches++;
+
+        if (num_completed_batches == batches.length) {
+            handle_completion();
+        }
+    };
+
+    var handle400s = function(response, status, XHR) {
+        batch_responses.failures.push(response);
+        check_completion_status();
+    };
+
+    var handle200s = function(response, status, XHR) {
+        batch_responses.successes.push(response);
+        check_completion_status();
+    };
+
+    var data = JSON.parse(params.data);
+    var num_completed_batches = 0;
+    var batches = batch(data);
+    var batch_responses = {
+        successes: [],
+        failures: []
+    };
+
+    for (var i = 0; i < batches.length; i++) {
+        $.ajax({
+            url: '/v3/member/' + params.member_id + '/share',
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(batches[i]),
+            useREST: true,
+            haloHandleAjaxResponse: true,
+
+            haloFail: handle400s,
+
+            haloSuccess: handle200s
+        });
+    }
+};
+
+HWS.v3.member.promotions.get = function(params) {
+    $.ajax({
+        url: '/v3/member/' + params.member_id + '/promotions',
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFail,
+
+        haloSuccess: function(response, status, XHR) {
+            if (typeof params.onSuccess === 'function') {
+                var promotions = HWS.v3.member.promotions.translate(response);
+                params.onSuccess(promotions);
+            }
+        }
+    });
+};
+
+HWS.v3.member.promotions.translate = function(response) {
+    var promotions = [];
+
+    var translate = function(promo) {
+        var collapseTabs = function(event_tabs) {
+            var tabs = [];
+
+            for (var i = 0; i < event_tabs.length; i++) {
+                var tab = event_tabs[i].event_tab.name.toLowerCase();
+
+                if (tab == 'all events') {
+                    tab = 'all';
+                }
+
+                tabs.push(tab);
+            }
+
+            return tabs;
+        };
+
+        var promotion  = new HWS.models.promotion();
+
+        promotion.start_date = promo.start_date;
+        promotion.end_date = promo.end_date;
+        promotion.modified_date = promo.modified_date;
+        promotion.section = promo.promo_section;
+        promotion.placement = promo.promo_placement;
+        promotion.resource = promo.promo_resource;
+        promotion.type = promo.promo_type;
+        promotion.sort = promo.promo_placement_sort;
+
+        promotion.event_tabs = collapseTabs(promo.event_tabs);
+
+        return promotion;
+    };
+    response = response.promotions;
+
+    for (var i = 0; i < response.length; i++) {
+        var promotion = translate(response[i].promotion);
+        promotions.push(promotion);
+    }
+
+    return promotions;
+}

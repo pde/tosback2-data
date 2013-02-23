@@ -1,29 +1,18 @@
-/***************Registration Page Validation ******************/
 $(document).ready(function(){
-	$("#registContainer input[type=password], #registContainer select").blur(function(e){
+	$("#registContainer input[type=text], #registContainer input[type=password], #registContainer select").blur(function(e){
 		testField($(this).attr("id"))
 	});
 	$("#registContainer input[type=text], #registContainer input[type=password], #registContainer select").focus(function(e){
 		$(this).css("background-color", "white");
 		$("."+$(this).attr("id")+"Status").hide();
+		/*aFieldStatus[$(this).attr("id")] = 0;
+		manageDefinitions();*/
 	});
 	$("#sex, #birthyear").on("change", function(){
 		$("#"+$(this).attr("id")+" option").remove(":contains('Choose')");
 	});
-	$("#email, #username").keypress(function(){
-		var fieldId = $(this).attr("id");
-		if(timerAjax){
-			clearTimeout(timerAjax);
-		}
-		timerAjax = setTimeout(function(){ajaxVerify(fieldId);}, 2000);
-	}).blur(function(e){
-		ajaxVerify($(this).attr("id"));
-	});
-	$("#btn_submit").click(validateForm);
 });
-
-var timerAjax, timerValidateAll, emailAjaxPass = false, userAjaxPass = false;
-
+/***************Registration Page Validation ******************/
 var aFieldStatus = new Array();
 aFieldStatus["email"] = 0;
 aFieldStatus["sex"] = 0;
@@ -31,8 +20,6 @@ aFieldStatus["birthyear"] = 0;
 aFieldStatus["username"] = 0;
 aFieldStatus["password"] = 0;
 aFieldStatus["password2"] = 0;
-aFieldStatus["termsOfUse"] = 0;
-aFieldStatus["recaptcha"] = 0;
 
 var aDefinitions = new Array();
 aDefinitions[0] = "good";
@@ -44,13 +31,11 @@ aDefinitions[5] = "Username must contain 4 to 16 characters (alphanumeric charac
 aDefinitions[6] = "Username already used, please choose another username.";
 aDefinitions[7] = "Password must contain 6 to 20 characters.";
 aDefinitions[8] = "Password must be the same in both fields.";
-aDefinitions[9] = "You must certify that you are over 18 years old, and agree to our Terms of Use.";
-aDefinitions[10] = "Please try to enter the characters displayed in the image again.";
 
 function testField(id){
 	switch(id){
 		case "email":
-			ajaxVerify("email");
+			validateEmail();
 		break;
 		case "sex":
 			validateGender();
@@ -59,7 +44,7 @@ function testField(id){
 			validateBirth();
 		break;
 		case "username":
-			ajaxVerify("username");
+			validateUsername();
 		break;
 		case "password":
 			validatePass();
@@ -68,17 +53,14 @@ function testField(id){
 			validateSamePass();
 		break;
 		case "all":
-			ajaxVerify("email");
+			validateEmail();
 			validateGender();
 			validateBirth();
-			ajaxVerify("username");
+			validateUsername();
 			validatePass();
 			validateSamePass();
-			validateTermsOfUse();
-			validateRecaptcha();
 		break;
 	}
-	manageDefinitions();
 }
 function manageDefinitions(){
 	var addHeight;
@@ -105,72 +87,98 @@ function manageDefinitions(){
 
 function validateEmail(){
 	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;
+	var valid;
 	if(emailReg.test($("#email").val())){
 		fieldGood('email');
-		aFieldStatus["email"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('email');
-		aFieldStatus["email"]= 1;
-		return false;
+		valid = false;
 	}
+	if(valid){
+		aFieldStatus["email"]= 0;
+	}
+	else{
+		aFieldStatus["email"]= 1;
+	}
+	manageDefinitions();
 }
 
 function validateGender(){
 	var optionSelected = $("#sex option:selected");
 	if(optionSelected.attr("value") == "1" || optionSelected.attr("value") == "2"){
 		fieldGood('sex');
-		aFieldStatus["sex"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('sex');
-		aFieldStatus["sex"]= 3;
-		return false;
+		valid = false;
 	}
+	if(valid){
+		aFieldStatus["sex"]= 0;
+	}
+	else{
+		aFieldStatus["sex"]= 3;
+	}
+	manageDefinitions();
 }
 
 function validateBirth(){
 	var optionSelected = $("#birthyear option:selected");
 	if(optionSelected.attr("value") != ""){
 		fieldGood('birthyear');
-		aFieldStatus["birthyear"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('birthyear');
-		aFieldStatus["birthyear"]= 4;
-		return false;
+		valid = false;
 	}
+	if(valid){
+		aFieldStatus["birthyear"]= 0;
+	}
+	else{
+		aFieldStatus["birthyear"]= 4;
+	}
+	manageDefinitions();
 }
 
 function validateUsername(){
 	var userReg = /^[.0-9a-z_]{4,16}$/i;
 	if(userReg.test($("#username").val())){
 		fieldGood('username');
-		aFieldStatus["username"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('username');
-		aFieldStatus["username"]= 5;
-		return false;
+		valid = false;
 	}
+	if(valid){
+		aFieldStatus["username"]= 0;
+	}
+	else{
+		aFieldStatus["username"]= 5;
+	}
+	manageDefinitions();
 }
 
 function validatePass(){
 	var passReg = /^\w{6,20}$/;
 	if(passReg.test($("#password").val())){
 		fieldGood('password');
-		aFieldStatus["password"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('password');
-		aFieldStatus["password"]= 7;
-		return false;
+		valid = false;
 	}
+	if(valid){
+		aFieldStatus["password"]= 0;
+	}
+	else{
+		aFieldStatus["password"]= 7;
+	}
+	manageDefinitions();
 }
 
 function validateSamePass(){
@@ -178,51 +186,19 @@ function validateSamePass(){
 	var pass2 = $("#password2").val();
 	if(pass1 == pass2 && pass1 != ''){
 		fieldGood('password2');
-		aFieldStatus["password2"]= 0;
-		return true;
+		valid = true;
 	}
 	else{
 		fieldBad('password2');
+		valid = false;
+	}
+	if(valid){
+		aFieldStatus["password2"]= 0;
+	}
+	else{
 		aFieldStatus["password2"]= 8;
-		return false;
 	}
-}
-function validateTermsOfUse(){
-	if($("#over_18").is(":checked")){
-		fielGood('over_18');
-		aFieldStatus["termsOfUse"] = 0;
-		return true;
-	}
-	else{
-		fieldBad('over_18');
-		aFieldStatus["termsOfUse"] = 9;
-		return false;
-	}
-}
-function validateRecaptcha(){
-	if($("#recaptchaError").val() == ""){
-		aFieldStatus["recaptcha"] = 0;
-		return true;
-	}
-	else{
-		aFieldStatus["recaptcha"] = 10;
-		return false;
-	}
-}
-function validateForm(){
-	testField("all");
-	timerValidateAll = setInterval(function(){
-		if(emailAjaxPass && userAjaxPass){
-			clearInterval(timerValidateAll);
-			emailAjaxPass = false;
-			userAjaxPass = false;
-			manageDefinitions();
-			if(!$("#pinkDiv").is(":visible")){
-				$("#signupform").submit();
-			}
-		}
-	},100);
-
+	manageDefinitions();
 }
 
 function fieldGood(id){
@@ -237,59 +213,46 @@ function fieldBad(id){
 	$("#"+id).css("background-color", "#e3c7c7");
 }
 
-function ajaxVerify(field){
-	var fieldValue = $("#"+field).val();
-	var functionToCall;
+function userRegistration(containerHeight){
+	var message = "";
+	var pass = true;
+	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;  //  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
-	if(field == 'email'){
-		functionToCall = validateEmail;
-		emailAjaxPass = true;
+	if(!emailReg.test($("#email").val())){
+		pass = false;
+		message += "<p>*Your email is not valid.</p>";
 	}
-	else if(field == 'username'){
-		functionToCall = validateUsername;
-		usernameAjaxPass = true;
-	}
-
-	if(functionToCall(field)){
-		$.get('/ajax/validateField.php?field='+field+'&value='+fieldValue, function(resp){
-			if(resp.success == false){
-				if(field == 'username'){
-					switch(resp.msg){
-						case "Username already exists":
-							aFieldStatus["username"] = 6;
-						break;
-						case "Username cannot be empty":
-						case "Username did not meet our syntax requirements":
-						default:
-							aFieldStatus["username"] = 5;
-						break;
+	if(pass){
+		$.post('/ajax/validate.php', {username: $('#username').val(), email: $('#email').val()}, function(resp){
+			var obj = $.parseJSON(resp);
+			var addHeight;
+			switch(obj.status){
+				case('ok'):
+					var signupform = $('#signupform');
+					signupform.prepend("<input type='hidden' name='iphash' value='" + obj.info + "' />");
+					signupform.prepend("<input type='hidden' name='timehash' value='" + obj.time + "' />");
+					signupform.submit();
+					break;
+				case('alert'):
+					if($("#pinkDiv").css("display")== "none"){addHeight = true;}
+					$("#pinkDiv").html("<p>*"+obj.info+"</p>");
+					$containerHeight = $(".cont-form-user").height();
+					$pinkDivHeight = $("#pinkDiv").outerHeight();
+					$("#pinkDiv").css("display", "block");
+					if(addHeight){
+						$(".cont-form-user").height($containerHeight + $pinkDivHeight);
 					}
-				}
-				else if(field == 'email'){
-					switch(resp.msg){
-						case "Email already exists":
-							aFieldStatus["email"] = 2;
-						break;
-						case "Email cannot be empty":
-						case "Email address provided is invalid":
-						default:
-							aFieldStatus["email"] = 1;
-						break;
-					}
-				}
-				fieldBad(field);
+					break;
 			}
-			else{
-				aFieldStatus[field] = 0;
-				fieldGood(field);
-			}
-			if(field == "email"){emailAjaxPass = true;}
-			else if (field == "username"){userAjaxPass = true;}
-			manageDefinitions();
-		}, "json");
+		});
 	}
 	else{
-		manageDefinitions();
+		$("#pinkDiv").html(message);
+		containerHeight? $containerHeightPx = 700 : $containerHeightPx = 635;
+		//$containerHeightPx = $(".cont-form-user").height();
+		$pinkDivHeight = $("#pinkDiv").outerHeight();
+		$("#pinkDiv").css("display", "block");
+		$(".cont-form-user").height($containerHeightPx + $pinkDivHeight);
 	}
 }
 /***************End of Registration Page Validation ******************/
@@ -1123,30 +1086,3 @@ function del_cookie(name) {
 	};
 
 } )( jQuery );
-
-/*------- function for the follow button  ------------------*/
-
-function userSubscriptionsFollow(vUrl, vFollower, vFollow, vAction, vHash, isMyPage, location) {
-	$j.ajax({
-		type: 'POST',
-		cache: false,
-		data: { follower: vFollower, follow: vFollow, action: vAction, hash: vHash},
-		url: vUrl,
-		success: function(resp){
-			if (isMyPage) {
-				window.location.replace(location);
-			} else {
-				if(vAction){
-						$j('#fButton').removeClass("follow-user");
-						$j('#fButton').addClass("following-user");
-						vAction = 0;
-				}
-				else {
-						$j('#fButton').removeClass("following-user");
-						$j('#fButton').addClass("follow-user");
-						vAction = 1;
-				}
-			}
-		}
-	});
-}

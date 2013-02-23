@@ -8,11 +8,12 @@ if($('#order-now').is('.lightboxon')) {
 	 currentLocation = '.att.com/Common/world/' + setLanguage + '/order_form.html';
 	 stateID = ' ';
 	 linkTitle = "Order Now";
-	  	  $('#lang-title h3').hide();
+	 $('#lang-title h3').hide();
 	 $('#lang-title2 h3').hide();
 	 $('#lang-title-order').show();
 	  $('#lang-list').hide();
 	  $('#lang-list-order').show();
+	
  }
 
 if($('#chinese-drop').is('.lightboxon') || $('#chinese-drop1').is('.lightboxon') || $('#chinese-drop2').is('.lightboxon')) {
@@ -166,7 +167,7 @@ if($('#telephone').is('.lightboxon')) {
 	 stateID = ' ';
 	 linkTitle = "Advanced Television";
 	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();	 
+	 $('#lang-title2 h3').show();
  }
 if($('#contact').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/contact_us.html';
@@ -378,8 +379,34 @@ if($('#quickDTVProg').is('.lightboxon')) {
 	 $('#lang-title h3').hide();
 	 $('#lang-title2 h3').show();
  }
+ /* Added for New Legal Terms Landing Page */
+ if($('#quickLegal_auto').is('.lightboxon')) {
+	 currentLocation = '.att.com/legal_terms/index.html';
+	 stateID = ' ';
+	 linkTitle = "AT&T Promotions";
+	 $('#lang-title h3').hide();
+	 $('#lang-title2 h3').show();
+	 $('#english-box').show();
+ }
 
 	//DO NOT CHANGE THE ORDER OF THIS LIST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  WHEN ADDING A NEW STATE, PLEASE BE AWARE THAT THE STATES POPULATE HORIZONTALLY ACROSS THE SCREEN
+	
+	//if(setLanguage == 'english') {
+//	var allStatesEn  = {  
+//									'all-states-en' : 'All States',
+//									}
+//									$.each(allStatesEn, function(index, value) {  
+//									   if(($('#state-display').text() != index)) {$('#state-display').text('')}
+//									  $('#englishmenu').append('<li id="'+ index + '"></li>');
+//									});
+//								  
+//									 $.each(allStatesEn, function(index, value) {    
+//									 a = index.split('-');
+//									 stateID = a[0];
+//									  $('#englishmenu li#' + index).html('<a href="/legal_terms/english.html" class="ss-close-en">' + value + '</a>');
+//									}); 
+//	 
+//	}
 	
 	if(setLanguage == 'chinese') {
 	var allStatesZh  = {  

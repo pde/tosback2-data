@@ -111,9 +111,10 @@ a.protocol+"//"+a.host+"/_mobile"+a.pathname+a.search+a.hash),document.location.
 </script>
 
 <!-- END Login/Comments -->
-	
-	   <script src="cm/shared/scripts/jquery-1.4.2.min.js" language="javascript" type="text/javascript"></script>
 
+	<script src="cm/shared/scripts/jquery-1.6.min.js"></script>	
+
+	<script type="text/javascript" src="cm/redbook/scripts/global.js"></script>
 <script type="text/javascript" src="cm/shared/scripts/modernizr-1.7.min.js"></script>
 
 <script defer type="text/javascript" src="cm/redbook/scripts/site_prv1.js"></script>
@@ -690,15 +691,14 @@ ul.privacy_ul li{display:block!important;}
 		<span id="ams_rbk_social_ad"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_rbk_social_ad);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_rbk_social_ad);int=window.clearInterval(int);}},50);}</script></span>
 	</div>
 </div>
-<script src="cm/shared/social/social_tools.js"></script>
+<script src="cm/shared/social/social_tools-LL.js" type="text/javascript"></script>
 
 <div id="rr_social_tooltip" hsocial="modal">
 	<div id="rr_social_tooltip_fb" hsocial="facebook_modal">
 		<div class="tooltip_head">
 		</div>
 		<div class="tooltip_body">
-			<fb:like-box href="http://www.facebook.com/REDBOOK" width="310" height="257" header="false" stream="false" show_face="true"></fb:like-box>
-			<div class="button_connect_with_fb"><fb:login-button autologoutlink="true" onlogin="">Connect <span>with</span> Facebook</fb:login-button></div>
+			<div id="overlayFB"></div>
 		</div>
 		<div class="tooltip_footer">
 		</div>
@@ -706,28 +706,21 @@ ul.privacy_ul li{display:block!important;}
 	<div id="rr_social_tooltip_tw" class="module300" hsocial="twitter_modal">
 		<div class="tooltip_head"></div>
 		<div class="tooltip_body">
-			<div class="image"><img width="60" height="80" alt="Redbook on Twitter" title="Redbook on Twitter" src="../subscribe.hearstmags.com/circulation/redbook/images/rbk_cvr-thumb.jpg" /></div>
-			<div>REDBOOK on Twitter</div>
-			<a class="tw_3" href="https://twitter.com/redbookmag">@RedbookMag</a>
-			<iframe class="tw_4" allowtransparency="true" frameborder="0" scrolling="no" src="../platform.twitter.com/widgets/follow_button.html%3Fscreen_name=redbookmag&amp;show_screen_name=false.html"></iframe>
-			<div class="clear"></div>
+			<div id="overlayTW"></div>
 		</div>
 		<div class="tooltip_footer"></div>
 	</div>
 	<div id="rr_social_tooltip_pi" class="module300" hsocial="pinterest_modal">
 		<div class="tooltip_head"></div>
 		<div class="tooltip_body">
-			<div class="image"><img width="60" height="80" alt="Redbook on Pinterest" title="Redbook on Pinterest" src="../subscribe.hearstmags.com/circulation/redbook/images/rbk_cvr-thumb.jpg" /></div>
-			<div id="redbookPin">REDBOOK on Pinterest</div>
-			<a data-pin-do="buttonFollow" href="http://pinterest.com/redbookmag/">Redbook Magazine</a>
-			<div class="clear"></div>
+			<div id="overlayPIN"></div>
 		</div>
 		<div class="tooltip_footer"></div>
 	</div>
 	<div id="rr_social_tooltip_go" hsocial="googlep_modal">
 		<div class="tooltip_head"></div>
 		<div class="tooltip_body">
-			<div class="g-plus" data-href="https://plus.google.com/116654974018680866807?rel=publisher" data-width="320" data-height="131" data-theme="light"></div>
+			<div id="overlayGOOGLE"></div>
 		</div>
 		<div class="tooltip_footer"></div>
 	</div>
@@ -1578,7 +1571,10 @@ pageTracker._trackPageview();
 </script>
 
 
-<script type="text/javascript" src="../assets.pinterest.com/js/pinit.js"></script>
+
+<!-- only enable in article types so this is lazyloaded normally -->
+ <script type="text/javascript" src="../assets.pinterest.com/js/pinit.js"></script>
+
 
 	
     </div>

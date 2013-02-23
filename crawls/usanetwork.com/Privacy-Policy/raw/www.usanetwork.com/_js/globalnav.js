@@ -452,7 +452,7 @@ var usa_globalMenu = {
 							"title" : "Suits",
 							"url" : usa_baseUrlDomain + "/series/suits/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
-							"tuneIn" : "THURSDAYS 10/9C"
+							"tuneIn" : "NEW SEASON THIS SUMMER"
 						},
 						/* Featured Slot 3 */
 						{
@@ -463,9 +463,9 @@ var usa_globalMenu = {
 						},
 						/* Featured Slot  - LAST */
 						{
-							"title" : "NECESSARY ROUGHNESS",
-							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
+							"title" : "PSYCH",
+							"url" : usa_baseUrlDomain + "/series/psych/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_psych.png",
 							"tuneIn" : "WEDNESDAYS 10/9C"
 						}
 
@@ -590,14 +590,14 @@ var usa_globalMenu = {
 					"title" : "Exclusives",
 					"items" : [
 						{
+							"title" : "THE S#CIAL SECTOR",
+							"url" : "http://socialsector.usanetwork.com/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/socialsector_nav.png"
+						},
+						{
 							"title" : "SUITS MOVIE TRIVIA",
 							"url" : "http://www.usanetwork.com/series/suits/games/videotrivia/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_suitsmovietrivia.png"
-						},
-						{
-							"title" : "MATT'S FIT TIPS",
-							"url" : "http://www.usanetwork.com/series/necessaryroughness/features/fittips/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_mattsfittips.png"
 						},
 						{
 							"title" : "REAL LIFE CRIMES",

@@ -231,7 +231,7 @@ var club      = "mlb",
     pageid    = "privacy_policy",
     dc_keyVal = "",
     dc_lang   = "en",
-    sysdate	  = "201302200821";
+    sysdate	  = "201302230636";
 </script>
 
 <!--[if lte IE 7 ]>
@@ -308,7 +308,7 @@ var club      = "mlb",
   };
   bam.EASTERN_TIME = bam.getEasternDate();
   var flips = {
-    global: '02/20/2013 11:00 AM GMT-500'
+    global: '02/23/2013 11:00 AM GMT-500'
   };
 
   bam.getFlipDate = function (club) {
@@ -317,11 +317,10 @@ var club      = "mlb",
 
   bam.getFlipDisplayDate = function (club) {
     var flip = bam.getFlipDate(club);
-    var flipDisplay = bam.EASTERN_TIME;
-    if (new Date("02/20/2013 08:21 AM GMT-500") < flip) {
-      flipDisplay.setDate(flipDisplay.getDate() - 1);
+    if (new Date() < flip) {
+      flip.setDate(flip.getDate() - 1);
     }
-    return $.floorDate('day', flipDisplay);
+    return $.floorDate('day', flip);
   };
 
 })(jQuery, bam);
@@ -796,7 +795,7 @@ height="1" width="1" border="0" alt="" /></a></noscript><!--/DO NOT REMOVE/-->
 			
 			
 			<li class="value-menu-link value-menu-item" id="nav-standings" data-section="standings" data-panel-url="/components/global/header/panels.jsp?section=standings&c_id=mlb">
-				<a class="value-menu-section" href="http://mlb.mlb.com/mlb/standings/index.jsp?tcid=mm_mlb_standings
+				<a class="value-menu-section" href="http://mlb.mlb.com/mlb/standings/exhibition.jsp?tcid=mm_mlb_standings
 ">Standings</a>
 				
 			</li>
@@ -970,6 +969,16 @@ $(document).ready(function(){
 
 
 
+
+
+
+
+
+
+
+
+
+
 <ul id="section_navigation_links">
 
   <li>
@@ -1124,6 +1133,8 @@ $(document).ready(function(){
 
 </li>
 </ul>
+
+
 	          <script type="text/javascript">
 	            (function($) {
 	              $('#section_navigation_links').accessibleNav({ selectedItem: 'sn_' + page_id });

@@ -1,0 +1,42 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.returns = {};
+
+/**
+ * This method creates the initial return
+ *
+ * @param {object} params - Object containing optional onFailure, onSuccess,
+ * and complete callbacks.
+ *
+ * @return void
+ */
+
+HWS.v3.returns.get = function(params) {
+    $.ajax({
+        url: '/v3/returns/' + params.return_id,
+        type: 'get',
+        success: params.onSuccess,
+        error: params.onFailure,
+        complete: params.complete
+    });
+}
+
+HWS.v3.returns.post = function(params) {
+	$.ajax({
+		url: '/member/process-return',  
+        type: 'get',
+        dataType: 'json',
+        data: params.data,
+        success: params.onSuccess,
+        
+        error: params.onFailure,
+        
+        complete: params.complete
+	});
+};

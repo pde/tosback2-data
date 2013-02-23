@@ -1,0 +1,6 @@
+var DELL=window.DELL||{};DELL.com=DELL.com||{};DELL.com.articleTools=DELL.com.articleTools||{};(function($){(function(){initLinks=function(){$("a[name='mailtoLinkType']").unbind("click").bind("click",function(e){e.preventDefault();var emailSubject=$(this).find("span[id='emailSubjectText']").text();var emailBody=$(this).find("h2[id='mastheadPageCategory']").text()+' '+$(this).find("h3[id='mastheadPageTitle']").text();if(emailBody===" ")
+emailBody=self.document.title;var plang=Dell.Global.lwp.l;if(plang=="ja"||plang=="zh"||plang=="ko")
+self.location.href='mailto:?body='+encodeURIComponent(self.location.href);else
+self.location.href='mailto:?body='+encodeURIComponent(emailBody)+'  '+encodeURIComponent(self.location.href)+'&subject='+encodeURI(emailSubject);});$(".pageTools a[name='printLinkType'], .articleUserTools a[name='printLinkType'], #mastheadToolsLinksSimple .print, .uif_mhToolsWrap .print").unbind("click").bind("click",function(e){e.preventDefault();if(window.print())
+window.print();});}
+$(document).ready(function(){initLinks();});}).call(DELL.com.articleTools)})(jQuery);

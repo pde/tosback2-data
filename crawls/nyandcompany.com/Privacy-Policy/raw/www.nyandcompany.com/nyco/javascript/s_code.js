@@ -2,7 +2,7 @@
 Copyright 1996-2013 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
-/*Last Update 1.28.2013 DD*/
+/*Last Update 2.20.2013 DD*/
 
 /* Specify the Report Suite ID(s) to track here */
 if(!s_account)
@@ -29,7 +29,7 @@ s.linkTrackEvents="None"
 /************************** PLUGIN CONFIG  **************************/
 /* Channel Manager Config */
 s._channelDomain='Social Media Organic|facebook.com,flickr.com,twitter.com,youtube.com,myspace.com,blogspot.com,pinterest.com,plus.google.com,wordpress.com,tumblr.com,t.co>';
-s._channelPattern="Email|em>Affiliates|afl>Affiliates|aff_>Display|dis>Display|dsp_>Social Networks|soc>Comparison Shopping|cse>Social Media|sm_>Paid Search|PS>Paid Search|sem_";
+s._channelPattern="Email|em>Affiliates|afl>Affiliates|aff_>Display|dis>Display|dsp_>Social Networks|soc>Comparison Shopping|cse>Social Media|sm_>Paid Search|PS>Paid Search|sem_>Google Catalog|org_feed";
 
 s.usePlugins=true
 function s_doPlugins(s) 

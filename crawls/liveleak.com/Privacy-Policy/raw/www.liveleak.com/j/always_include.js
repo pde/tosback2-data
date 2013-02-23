@@ -38,7 +38,7 @@ $(document).ready(function(){
 	$(document).ajaxComplete(function() { $("a[rel^='prettyPhoto']").prettyPhoto({allow_resize: false}); });
  });
  $.getScript("http://edge.liveleak.com/80281E/u/u/ll2_j/jquery.ba-bbq.min.js", function(data, textStatus, jqxhr) {
-   try { execute_bbq_code(); } catch(exception) {;}
+	 if(typeof execute_bbq_code == 'function')execute_bbq_code();
  });
 
  load_document_ready_functions();

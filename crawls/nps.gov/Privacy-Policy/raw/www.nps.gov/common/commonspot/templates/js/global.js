@@ -742,7 +742,7 @@ NPS.gallery = {
 	photoGallery: function() {
 		if(jQuery('.gallery-views').length) {
 			var buildControl = jQuery('<div id="gallery-controls"><ul class="view-controls"><li class="active"><a href="#" class="list-view">List View</a></li><li><a href="#" class="grid-view">Grid View</a></li></ul></div>');
-			jQuery('#.gallery-views #gallery-top').append(buildControl);
+			jQuery('.gallery-views #gallery-top').append(buildControl);
 			NPS.gallery.galleryControls();
 		}
 		jQuery('#photo-gallery .description h3 a').click(function(e) {

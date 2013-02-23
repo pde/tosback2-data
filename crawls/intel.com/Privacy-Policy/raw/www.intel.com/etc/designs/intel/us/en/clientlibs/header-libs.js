@@ -1614,7 +1614,7 @@ C.animate({left:-920},500);
 B.animate({left:0},500,function(){$(A).find(".carousel-item").not(B).removeClass("active").css({left:$(A).innerWidth()});
 B.addClass("active")
 })
-}}function prevCarousel(A,E){if($(A).find(".carousel-item.active").length>0){$(A).find(".carousel-item").not(".active").css({left:-$(A).innerWidth()});
+}}function prevCarousel(A,E){if($(A).find(".carousel-item.active").length>0){$(A).find(".carousel-item").not(".active").css({left:-($(A).innerWidth()+11)});
 var C=$(A).find(".carousel-item.active");
 C.css({left:0});
 var D=$(E).find(".carousel-dot.active").prev(".carousel-dot");
@@ -1630,7 +1630,7 @@ if($(E).find(".carousel-dot.active").prev(".carousel-dot").length==0){$(E).find(
 }$(A).find(".carousel-item").css("z-index","0").removeClass("active");
 B.css("z-index","1");
 C.animate({left:920},500);
-B.animate({left:0},500,function(){$(A).find(".carousel-item").not(B).removeClass("active").css({left:-$(A).innerWidth()});
+B.animate({left:0},500,function(){$(A).find(".carousel-item").not(B).removeClass("active").css({left:-($(A).innerWidth()+11)});
 B.addClass("active")
 })
 }}function scrollTicker(){if((stopTicker!=undefined&&stopTicker)||scrolling){return false

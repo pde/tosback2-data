@@ -1,4 +1,45 @@
-var s_ver='|oocommon|20121120',_ud="undefined",s_live=false,ntc="ntc";
+/* START New namespaced code */
+var webmd;
+if(!webmd){ webmd = {}; }
+
+webmd.omniture = {
+
+	/* 
+	 * Scoped function with which we can get to current aiq value out of cookie if it exists
+	 *
+	 * @returns String with a value if the cookie exists and false if the cookie does not exist
+	 *
+	 */
+	aiqGet : function(){
+		// get value out of cookie using omniture global function below since we don't want to be dependent on webmd.cookie
+		var _aiq = window._readC("aiq");
+
+		// if there is no cookie, go straight to 999
+		if(_aiq === '') {
+			_aiq = false; 
+		}
+		else {
+			// decode cookie since _readC doesn't do it for us
+			_aiq = decodeURIComponent(_aiq);
+
+			// check to see if a real user id exists
+			var knownUser = _aiq.split("|")[2] || '';
+
+			// it's a known user with a segment, so let's return the user id
+			if (knownUser === 'y') {
+				_aiq = _aiq.replace(/\|(.*)/g,'');
+			}
+			// not known user, so we'll return 99999
+			else {
+				_aiq = '99999'; 
+			}
+		}
+		return _aiq;	
+	}
+};
+/* END New Namespaced code */
+
+var s_ver='|oocommon|20130219',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -13,7 +54,7 @@ try{if (s_not_pageview) {if (s_not_pageview!="n") {s_not_pageview="y";}} else {s
 s_md.cookieDomainPeriods="3";s_md.jsCookieDomainPeriods="2";s_md.charSet="ISO-8859-1";s_md.currencyCode="USD";s_md.trackDownloadLinks=true;
 s_md.trackExternalLinks=true;s_md.trackInlineStats=true;s_md.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls";s_md.linkInternalFilters="javascript:,"+s_domain;
 s_md.linkLeaveQueryString=false;
-s_md.linkTrackVars="prop50";all_linkTrackVars="products,events,prop15,prop20,prop21,prop32,prop48,prop50,eVar46";
+s_md.linkTrackVars="prop3,prop50";all_linkTrackVars="products,events,prop3,prop15,prop20,prop21,prop32,prop48,prop50,eVar46";
 s_md.linkTrackEvents="";s_md.visitorNamespace="webmd";s_md.usePlugins=true;
 function s_md_doPlugins(s){if (!s_md.pageName){s_md.pageName=location.protocol + "//" + location.host + location.pathname;}}
 s_md.doPlugins=s_md_doPlugins
@@ -107,7 +148,7 @@ function wmdGetPVCandidate() {
 function locateCall (defunctFunction) {
 	var _linkTrackVars = s_md.linkTrackVars;
 	var _pn=s_md.pageName;
-	s_md.linkTrackVars = "prop50";
+	s_md.linkTrackVars = "prop3,prop50";
 	var _link = "w-debug-" + defunctFunction + "_" + s_md.prop20;
 	s_md.pageName=_link;
 	void(s_md.tl(true, 'o', _link));
@@ -121,6 +162,7 @@ function wmdPageLink(link)
 	var s_md;
 	try{link=link.toLowerCase();}catch(e){}
 	s_md=s_gi(s_account);
+
 	s_md.prop32="";
 	var s_orig_events=s_md.events;
 	s_md.events="";
@@ -137,7 +179,7 @@ function wmdPageLink(link)
 
 	s_md.linkTrackVars=all_linkTrackVars;
 	void(s_md.tl(true, 'o', link));
-	s_md.linkTrackVars="prop50";
+	s_md.linkTrackVars="prop3,prop50";
 	s_md.prop15="";
 	if(typeof s_new_reg!=_ud&& s_new_reg!="") s_new_reg="";
 	s_md.events=s_orig_events;
@@ -482,13 +524,25 @@ if(typeof s_tug!=_ud&& s_tug!="" && s_md.prop45!=ntc)
 	s_md.prop45=s_tug+"_"+s_md.prop45;
 }
 s_md.prop46=(typeof s_page_state!=_ud&& s_page_state!="")? s_page_state.toLowerCase():"";
-if((_haiq=="")||(_haiq=="99999")){
+if(((_haiq==="")||(_haiq==="99999"))){
 	s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
 }
+
+// adding prop47 aiq logic per WR. If aiq is set to a non 99999 value, we want to suppress prop47 (setting to ntc per above suppression code)
+if(webmd.omniture.aiqGet() && webmd.omniture.aiqGet() != '99999') {
+	s_md.prop47 = ntc;
+}
+
 try{s_md.prop49=s_visitor;}catch(e){}
 s_md.eVar46=_haiq;
 var ca = document.cookie.split(';');
 try{s_md.prop24=s_pageview_id;}catch(e){}
+
+// if there is an aiq value, drop it into prop69
+if (webmd.omniture.aiqGet()) {
+	s_md.prop69 = webmd.omniture.aiqGet();
+}
+
 s_md.prop71 = (Math.ceil(ca.length/5)*5).toString();
 s_md.prop72 = (Math.ceil(document.cookie.length/250)*250).toString();
 try{
@@ -505,11 +559,9 @@ try{s_md.server=((typeof s_md.server==_ud||s_md.server=="")?ntc:s_md.server)+s_v
 
 if(typeof s_light_reg!=_ud&& s_light_reg!="") s_md.events+=","+s_light_reg.toLowerCase();
 else if(typeof s_new_reg!=_ud&& s_new_reg!="") {s_md.events+=","+s_new_reg.toLowerCase(); s_new_reg="";}
-
 s_md.trackingServer="std.o.webmd.com"
 s_md.trackingServerSecure="ssl.o.webmd.com"
 s_md.dc="122"
-
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.23.8';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""

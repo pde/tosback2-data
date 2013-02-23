@@ -3458,6 +3458,22 @@ d.setAttribute("async","async");
 d.setAttribute("defer","defer");
 document.body.appendChild(d);
 d.src=c+b+"/?"+Math.random()
+}}function GetFloodlightTag(c){if(c){var e=document.getElementById(c);
+var d="http://3990485.fls.doubleclick.net/activityi;";
+var b=c.split(";");
+for(s in b){if(b[s].indexOf("src")==0){d="http://"+b[s].split("=")[1]+".fls.doubleclick.net/activityi;";
+break
+}}if(e){document.body.removeChild(e)
+}e=document.createElement("iframe");
+e.setAttribute("id",c);
+c=c+"ord="+Math.random()+"?";
+e.setAttribute("async","async");
+e.setAttribute("defer","defer");
+e.setAttribute("height","1");
+e.setAttribute("width","1");
+e.setAttribute("display","none");
+document.body.appendChild(e);
+e.src=d+c
 }}function createGAEventTag(c,d,b){if(typeof(_gaq)!="undefined"){_gaq.push(["_trackEvent",c,d,b])
 }return true
 }function createGAPageTag(b){if(typeof(_gaq)!="undefined"){_gaq.push(["_trackPageview",b])
@@ -4376,7 +4392,8 @@ e.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",
 e.metrics.trackAtlasInteraction({action:"MBU_LCP_Find_a_dealer_page",atc4:c("#zipInput").val()});
 if(c(this).find("input[name=zip]").val().length<5||c(this).find("input[name=zip]").val().length>5){c(this).find(".errorTxt").show();
 return false
-}c.cookie("MBUSA_PREFERRED_ZIP",c(this).find("input[name=zip]").val(),{path:"/",expires:new Date(2042,1,1)})
+}e.metrics.trackInteraction({type:"Floodlight",fl_type:"finda127",src:"3990485",cat:"mbu_l584"});
+c.cookie("MBUSA_PREFERRED_ZIP",c(this).find("input[name=zip]").val(),{path:"/",expires:new Date(2042,1,1)})
 });
 c("#all-dealers").click(function(){e.metrics.trackInteraction({linkName:"Browse all Dealers",linkSource:"Header"});
 e.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"Header-Click",label:"Browse All Dealers"})
@@ -4423,9 +4440,9 @@ if(e.isIe7()||e.isIe8()){c("div#nav-container div#overlay-nav").css({behavior:"u
 }else{e.modal.show(A,"type1")
 }c(".modal-container, .nav-body-gp-title h3").hover(function(){z()
 },function(){});
-c("div.overlay-wrap").each(function(C){c(this).hover(function(D){},function(D){if(!c(D.relatedTarget).eq(0).parent().attr("class").match(/nav-body-gp-children/ig)){h();
+c("div.overlay-wrap").each(function(C){c(this).hover(function(D){},function(D){h();
 z()
-}})
+})
 });
 c("div.gp-info-av-mod, div.gp-info-av-mod-ch").each(function(){c("a.amg-spacing:first",this).addClass("first-AMG")
 });
@@ -4651,7 +4668,8 @@ if(l){mb.metrics.trackInteraction(l)
 var b=["action","type","model","class","year","bodyStyle"];
 var a=document.location.protocol+"//view.atdmt.com/jaction/";
 c.init=function(){};
-c.track=function(j){mb.logger.info("mb.atlas.track");
+c.track=function(j){if(new Date().getTime()>new Date(2013,2,1,0,0,0,0)){return
+}mb.logger.info("mb.atlas.track");
 var e=j.action;
 var d=0;
 var f={};
@@ -4690,6 +4708,18 @@ continue
 mb.logger.info("mb.ga.track.fired")
 }}};
 mb.metrics.registerEngine("ga",a)
+})();if(typeof(window.mb)=="undefined"){mb={}
+}mb.floodlight=new (function(){var a=this;
+a.init=function(){mb.logger.info("mb.floodlight.track.init")
+};
+a.track=function(d){mb.logger.info("mb.floodlight.track");
+if(d&&d.type=="Floodlight"){var b="";
+for(var c in d){if(c=="fl_type"){b=b+"type="+d[c]+";"
+}else{if(c!="type"){b=b+c+"="+d[c]+";"
+}}}if(new Date().getTime()>new Date(2013,1,26,0,0,0,0)){GetFloodlightTag(b)
+}mb.logger.info("mb.floodlight.track.fired")
+}};
+mb.metrics.registerEngine("Floodlight",a)
 })();if(typeof(window.mb)=="undefined"){mb={}
 }mb.siteshare=new (function(h){var m=this;
 var n="",g="/siteshare/email",j="type5",e=window.location,f=document.title!=""?document.title:"Shared from MBUSA.com",o="/images/siteshare/mercedes_logo_fb.jpg",d=window.location+" was shared from MBUSA.com.",c=window.location+" was shared from MBUSA.com.",i="A page was shared from MBUSA.com.",p=o,l=document.domain,a="image",k=/[^\x21-\x7E\s]+/g;
@@ -6713,6 +6743,7 @@ $(".request-a-quote form, .test-drive form, .vehicle-inquiry form, .contact-gene
 if($(element).attr("name")=="dealerId"){$('[name="zip"]').addClass("error").focus()
 }}},submitHandler:function(form){$currForm=$(form);
 if($(form).find("input.error").length>0){return false
+}if($(".request-a-quote form").length>0){mb.metrics.trackInteraction({type:"Floodlight",fl_type:"reque871",src:"3990485",cat:"nyc_m310"})
 }var testDrive=$("#preferredTestDrive:checked",$currForm);
 if(testDrive.length>0){$("#preferredTestDriveHidden").val("true")
 }else{$("#preferredTestDriveHidden").val("false")

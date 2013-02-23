@@ -443,7 +443,7 @@ fastCo.welcome = (function() {
 		    //If the isMobile function is defined and the client is not a mobile(excluding ipads) then take them 
 		    //to the welcome page. If isMobile function is not defined(sequence of js loads) then FC_Helper will 
 		    //do the proper redirection
-		    if ( (typeof isMobile === 'function') && !isMobile() && ( !settings.ipadOnly  || (settings.ipadOnly && _isiPad()) ) ){
+		    if ( (typeof fastCo.redirect.isMobile === 'function') && !fastCo.redirect.isMobile() && ( !settings.ipadOnly  || (settings.ipadOnly && _isiPad()) ) ){
 		        window.location.assign("/welcome.html?destination=" + encodeURI(window.location.href));
 		    }
 		}
@@ -1797,142 +1797,153 @@ fastCo.headerMessages = fastCo.headerMessages || {};
 
 fastCo.headerMessages = (function() {
 
-    var defaults = {
-        site_name: 'Fast Company'
-    },
+	var defaults = {
+		site_name: 'Fast Company'
+	},
 
-        settings = {},
+	settings = {},
 
-        container = $('#drupal-messages'),
-        cookie_key = 'drupal_messages',
-        cookie_plugin = false,
+	container = $('#drupal-messages'),
+	cookie_key = 'drupal_messages',
+	cookie_plugin = false,
 
-        init = function(options) {
-            settings = $.extend({}, defaults, options);
-            place();
-        },
+	init = function(options) {
+	settings = $.extend({}, defaults, options);
+	place();
+	},
 
-        // Get the messages from cookie
-        get = function() {
-            return (_testCookie() ? $.cookie(cookie_key) : false);
-        },
-
-
-        // Set the messages in a cookie
-        set = function(message) {
-            var origin_msg = get();
-            if(!origin_msg) {
-                // if cookie val is empty (first set on cookie)
-                $.cookie(cookie_key, message, {
-                    path: '/',
-                    expires: 365 * 10
-                });
-            } else {
-                // if cookie val already has string
-                $.cookie(cookie_key, origin_msg + "|" + message, {
-                    path: '/',
-                    expires: 365 * 10
-                });
-            }
-
-            return _testCookie();
-        },
+	// Get the messages from cookie
+	get = function() {
+		return (_testCookie() ? $.cookie(cookie_key) : false);
+	},
 
 
-        // Unset cookie holding messages
-        unset = function() {
-            // kill cookie with expiration date
-            $.cookie(cookie_key, "", {
-                path: '/',
-                expires: -(365 * 10)
-            });
-            return(!_testCookie());
-        },
+	// Set the messages in a cookie
+	set = function(message) {
+		var origin_msg = get();
+		if(!origin_msg) {
+			// if cookie val is empty (first set on cookie)
+			$.cookie(cookie_key, message, {
+			path: '/',
+			expires: 365 * 10
+			});
+		} else {
+			// if cookie val already has string
+			$.cookie(cookie_key, origin_msg + "|" + message, {
+				path: '/',
+				expires: 365 * 10
+			});
+		}
+
+		return _testCookie();
+	},
 
 
-        // Append to DOM (container)
-        place = function() {
-            if(_testCookie()) {
-                // get our messages from cookie and split into array
-                var messages = (get()).split("|");
-                for(i = 0; i < messages.length; i++) {
-                    // output each element into the drupal messages container
-                    container.append('<div>' + messages[i] + '</div>');
-                }
-                // unset the cookie after placing
-                // it in the DOM
-                unset();
-            }
-        },
+	// Unset cookie holding messages
+	unset = function() {
+		// kill cookie with expiration date
+		$.cookie(cookie_key, "", {
+			path: '/',
+			expires: -(365 * 10)
+		});
+		return(!_testCookie());
+	},
 
 
-        // Test the cookie is set
-        _testCookie = function() {
-            return Boolean($.cookie(cookie_key));
-        };
+	// Append to DOM (container)
+	place = function() {
+		if(_testCookie()) {
+			// get our messages from cookie and split into array
+			var messages = (get()).split("|");
+			for(i = 0; i < messages.length; i++) {
+				// output each element into the drupal messages container
+				container.append('<div>' + messages[i] + '</div>');
+			}
+			// unset the cookie after placing
+			// it in the DOM
+			unset();
+		}
+	},
 
 
-    return {
-        init: init,
-        set: set
-    };
+	// Test the cookie is set
+	_testCookie = function() {
+		return Boolean($.cookie(cookie_key));
+	};
+
+
+	return {
+		init: init,
+		set: set
+	};
 
 
 }());;
-/**
- * Copyright 2009 Crisp Wireless Inc.
- */
-function isMobile() {
+var fastCo = fastCo || {};
+fastCo.redirect = fastCo.redirect || {};
 
-    // adding back iphone and ipod for sold mobile advertising
-    var mobiles = [];
-    mobiles[0] = "iphone";
-    mobiles[1] = "ipod";
-    mobiles[2] = "smartphone";
-    mobiles[3] = "playstation";
-    mobiles[4] = "wap";
-    mobiles[5] = "windows ce";
-    mobiles[6] = "wm5 pie";
-    mobiles[7] = "iemobile";
-    mobiles[8] = "series60";
-    mobiles[9] = "symbian";
-    mobiles[10] = "series60";
-    mobiles[11] = "series70";
-    mobiles[12] = "hiptop";
-    mobiles[13] = "series80";
-    mobiles[14] = "series90";
-    mobiles[15] = "blackberry";
-    mobiles[16] = "android";
-    mobiles[17] = "midp";
-    mobiles[18] = "wml";
-    mobiles[19] = "brew";
-    mobiles[20] = "palm";
-    mobiles[21] = "xiino";
-    mobiles[22] = "blazer";
-    mobiles[23] = "pda";
-    mobiles[24] = "nitro";
-    mobiles[25] = "netfront";
-    mobiles[26] = "sonyericsson";
-    mobiles[27] = "ericsson";
-    mobiles[28] = "sec-sgh";
-    mobiles[29] = "docomo";
-    mobiles[30] = "kddi";
-    mobiles[31] = "vodafone";
-    mobiles[32] = "opera mini";
-    mobiles[33] = "motorola";
-    mobiles[34] = "nokia";
-  
-    var uagent = navigator.userAgent.toLowerCase();
-    for(i=0; i<mobiles.length; i++) {
-       if(uagent.search(mobiles[i]) > -1) {
-            return true;
-       }
-    }
+fastCo.redirect = (function() {
 
-    return false;
-}
+    var 
 
-if ( isMobile() ) {
+    isMobile = function() {
+        /**
+         * Copyright 2009 Crisp Wireless Inc.
+         */
+        // adding back iphone and ipod for sold mobile advertising
+        var mobiles = [];
+        mobiles[0] = "iphone";
+        mobiles[1] = "ipod";
+        mobiles[2] = "blackberry";
+        mobiles[3] = "android";
+        mobiles[4] = "motorola";
+      
+        var uagent = navigator.userAgent.toLowerCase();
+        for(i=0; i<mobiles.length; i++) {
+           if(uagent.search(mobiles[i]) > -1) {
+                return true;
+           }
+        }
+
+        return false;
+    },
+
+    createCookie = function(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    },
+
+    readCookie = function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    },
+
+    eraseCookie = function(name) {
+        createCookie(name,"",-1);
+    };
+
+    return {
+        isMobile: isMobile,
+        createCookie: createCookie,
+        readCookie: readCookie,
+        eraseCookie: eraseCookie
+    };
+
+}());
+
+
+if ( fastCo.redirect.isMobile() ) {
     var uri = window.location.href;
     var tokens = uri.match(/http:\/\/(.[^/?]+)/);
 
@@ -1949,7 +1960,7 @@ if ( isMobile() ) {
             window.location = moburl;
         }
         // redirect just in case we are not passing the fullsite key or when _nored cookie is not present
-        else if ( uri.toLowerCase().indexOf('fullsite')===-1 && $.cookie('_nored')==null ) {
+        else if ( uri.toLowerCase().indexOf('fullsite')===-1 && fastCo.redirect.readCookie('_nored')==null ) {
             var patterns = [
                 /\/\d{5,}$/gi,     // match /3002074 at the end of the url (minimum 5 digits)
                 /\/\d{5,}\//gi,    // match /3002074/ at any place (minimum 5 digits)
@@ -1965,8 +1976,8 @@ if ( isMobile() ) {
         }
         // don't redirect to the mobile site for 1 day
         else if ( uri.toLowerCase().indexOf('fullsite')>-1 ) {
-            if ( $.cookie('_nored')==null ) {
-                $.cookie('_nored', '1', { expires: 1 } );
+            if ( fastCo.redirect.readCookie('_nored')==null ) {
+                fastCo.redirect.createCookie('_nored', '1', 1 );
             }
         }
         // Other cases do nothing. We can't redirect to the mobile site 
@@ -2043,14 +2054,15 @@ Drupal.behaviors.DART = function() {
         var result = regex.exec($(this).attr('class'));
         var scriptTag = Drupal.DART.tag(Drupal.DART.settings.loadLastTags[result[1]]);
 
+        //This fix was specific for a dyson ad, but they're not running now, putting this back fixes dell ad
         //If user is IE
         //If the script doesn't contain the word imu_ then do standard writecapture, else use ProxyGetElementByID option hack. This was put in place for certain ads that refuse to show up in IE, and to limit applying this hack on IMU only so other units wouldn't be affected.
-        if ((navigator.userAgent.toLowerCase().indexOf("msie") != -1 ) && (result[1].indexOf("imu_") != -1)){
-          $(this).writeCapture().append(scriptTag,{proxyGetElementById:true}).addClass('dart-processed');
-        }
-        else {
+       // if ((navigator.userAgent.toLowerCase().indexOf("msie") != -1 ) && (result[1].indexOf("imu_") != -1)){
+       //   $(this).writeCapture().append(scriptTag,{proxyGetElementById:true}).addClass('dart-processed');
+       // }
+       // else {
           $(this).writeCapture().append(scriptTag).addClass('dart-processed');
-        }
+       // }
       }
     });
   }
@@ -2095,13 +2107,15 @@ Drupal.behaviors.sidebarVideo = function(context) {
 };
 
 Drupal.behaviors.galleria = function(context) {
+
   Drupal.galleria.init({
       'container': '.inline-galleria'
   });
 
   // on paging event - send current slide index to omniture
 
-  if (typeof(Galleria) !== 'undefined') {
+  if (typeof Galleria !== 'undefined') {
+
     Galleria.on('image', function(e) {
 
       // if first slide - disregard
@@ -2114,18 +2128,24 @@ Drupal.behaviors.galleria = function(context) {
         }
 
         // refresh ads
-        if (typeof(fastCo.ads) !== 'undefined') {
+        if (typeof fastCo.ads !== 'undefined') {
           fastCo.ads.refreshTheseAds([
             {
               "selector": "#block-dart-dart-tag-leaderboard .dart-name-leaderboard",
               "ad_unit":  "leaderboard"
+            }, {
+              "selector": "#block-dart-dart-tag-imu_1 .dart-name-imu_1",
+              "ad_unit":  "imu_1"
             }
           ]);
         }
 
       } else {
+
         $(this).data({'galleria_triggered': 'triggered'});
+
       }
+
     });
   }
 };
@@ -2138,6 +2158,7 @@ Drupal.galleria = (function() {
     $container = {},
 
     init = function(options) {
+
         config = $.extend(config, options);
 
         $container = $(config.container);
@@ -2148,14 +2169,16 @@ Drupal.galleria = (function() {
         }
 
         $container.each(function() {
+
             $(this).galleria({
-                //_toggleInfo: false,
+                // _toggleInfo: false,
                 showCounter: false,
 
                 dataConfig: function(img) {
                     return {
-                        description: $(img).parent().siblings('.galleria-desc').html(),
-                        credit: $(img).parent().siblings('.galleria-credit').html(),
+                        title:			$(img).parent().siblings('.galleria-title').html(),
+                        description:	$(img).parent().siblings('.galleria-desc').html(),
+                        credit:			$(img).parent().siblings('.galleria-credit').html(),
                     };
                 }
             });
@@ -2172,6 +2195,14 @@ Drupal.galleria = (function() {
 
 
 $(document).ready(function(){
+
+	// this could probably be done better
+	// Tie into galleria?
+	if (typeof Galleria !== "undefined") {
+		Galleria.ready(function(){
+			$('.galleria-info-link').trigger("click");
+		});
+	}
 
     // DRUPAL MESSAGES HANDLER
     $(window).bind('scroll.drupalMessages', function(){
@@ -2210,7 +2241,80 @@ $(document).ready(function(){
         $(this).animate({
             'left': "-" + ($(this).width() - 10) + "px"
         }, 300);
+    }).find('.messages').click(function(e){
+      e.preventDefault();
+      $(this).animate({'opacity': 0}, 300, function(){
+        $(this).hide(300);
+      })
+    });
+
+
+    $("#sharebar_icons_button").hoverIntent(
+    function(){
+      $("#sharebar_fixed_social .sharebar_buttons").stop().animate(
+        {width: "150px"},
+        300,
+        function(){$(this).addClass("open")}
+        );
+    }, 
+    function(){
+        $("#sharebar_fixed_social .sharebar_buttons").stop().animate(
+        {width: "0"},
+        300,
+        function(){$(this).removeClass("open")}
+        );
+    });
+
+    $("#sharebar_fixed_button").click(function(){
+      if( $(this).is(".off") ){ // show it
+        $("#sharebar_icons_button").stop().removeClass("hidden").animate({backgroundPosition: "-1px 0px"}, 500);
+        $(this).removeClass("off");
+      }
+      else {
+        $("#sharebar_icons_button").stop().animate({backgroundPosition: '-1px 123px'}, 500, function(){
+          $(this).addClass("hidden")
+        });
+        $(this).addClass("off");
+      }
+      
+      return false;
     });
 
 });
+
+// for firefox 
+// http://nelsonwells.net/2012/08/using-bgpos-js-with-jquery-18/
+// http://stackoverflow.com/questions/5518834/jquery-animate-background-position-firefox
+/**
+ * @author Alexander Farkas
+ * v. 1.02
+ *
+ * Edited by Nelson Wells for jQuery 1.8 compatibility
+ */
+(function($) {
+    $.extend($.fx.step,{
+        backgroundPosition: function(fx) {
+            if (fx.pos === 0 && typeof fx.end == 'string') {
+                var start = $.css(fx.elem,'backgroundPosition');
+                start = toArray(start);
+                fx.start = [start[0],start[2]];
+                var end = toArray(fx.end);
+                fx.end = [end[0],end[2]];
+                fx.unit = [end[1],end[3]];
+            }
+            var nowPosX = [];
+            nowPosX[0] = ((fx.end[0] - fx.start[0]) * fx.pos) + fx.start[0] + fx.unit[0];
+            nowPosX[1] = ((fx.end[1] - fx.start[1]) * fx.pos) + fx.start[1] + fx.unit[1];
+            fx.elem.style.backgroundPosition = nowPosX[0]+' '+nowPosX[1];
+ 
+           function toArray(strg){
+               strg = strg.replace(/left|top/g,'0px');
+               strg = strg.replace(/right|bottom/g,'100%');
+               strg = strg.replace(/([0-9\.]+)(\s|\)|$)/g,"$1px$2");
+               var res = strg.match(/(-?[0-9\.]+)(px|\%|em|pt)\s(-?[0-9\.]+)(px|\%|em|pt)/);
+               return [parseFloat(res[1],10),res[2],parseFloat(res[3],10),res[4]];
+           }
+        }
+    });
+})(jQuery);
 ;

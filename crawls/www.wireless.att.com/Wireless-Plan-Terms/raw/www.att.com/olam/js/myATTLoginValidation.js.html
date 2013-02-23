@@ -547,7 +547,11 @@ function checkFormValues(formObj)
 	{
 		var txtObj = iphonePasswordRtnType[0].text;
 		var passObj = iphonePasswordRtnType[0].pass;
-		realPass = trim(txtObj.attr("real"));
+		if(txtObj.attr("real")==null || txtObj.attr("real")==undefined){
+			realPass = "";
+		}else{
+			realPass = trim(txtObj.attr("real"));
+		}
 		passObj.val(realPass);
 		iphonePassForm.iphoneOptions.pass.val(realPass);
 		password = realPass;

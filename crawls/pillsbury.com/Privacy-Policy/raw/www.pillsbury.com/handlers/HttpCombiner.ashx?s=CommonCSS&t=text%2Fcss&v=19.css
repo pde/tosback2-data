@@ -87,8 +87,8 @@ input, textarea{color:#434242; padding:0 3px;}
 .headerContent    { width:970px; height:108px; margin: 0 auto; }
 .navContainer     { width:100%; background:url(../images/TopNav/nav_bg.gif) repeat-x top left; border-bottom:solid 1px #ccc;}
 .navContent       { width:970px; margin: 0 auto; }
-.pageContainer    { width:970px; margin: 0 auto; }
-.pageContent      { width:970px; /*position: relative;*/ }
+/*.pageContainer    { width:970px; margin: 0 auto; }
+.pageContent      { width:970px; /*position: relative; }*/
 .footerContainer  { width:970px; margin: 30px auto 40px; }
 
 /* One Column */
@@ -581,7 +581,7 @@ html[xmlns] .clearfix {display: block;}
 /* Modal Login */
 #LogOnModal{padding:15px 0 0 27px;overflow:hidden;width:555px; display:block;height:auto;min-height: 462px;background: #4caefb url(../~/media/PB/Images/NotSoSecretClub/notsosecretclubkdgwide.png) no-repeat left top;}
 #LogOnModalForm {float: left; width:280px; margin-left: 200px;}
-#LogOnModal .ui-dialog-titlebar-close .ui-icon { position: absolute; margin-left:630px; background: url(../images/Registration/closeImgNew.png) no-repeat; width:34px; height:32px;z-index:999999; top: -7px; right: -16px;}
+/*#LogOnModal .ui-dialog-titlebar-close .ui-icon { position: absolute; margin-left:630px; background: url(/images/Registration/closeImgNew.png) no-repeat; width:34px; height:32px;z-index:999999; top: -7px; right: -16px;}*/
 #ui-dialog-title-jq_frame_memberlogin_target{ padding: 0px;}
 #LogOnModal .ui-widget-header{height: 0px;}
 #modalIframeIdLogin body{ background-color:transparent;}
@@ -2930,19 +2930,632 @@ ul.shareButtons{display: none; background: #dbdbdb; border-top: 2px solid #fff; 
 ul.shareButtons{display: none; background: #dbdbdb; border-top: 1px solid #fff; position: absolute; top:52px; left:0px; z-index: 9999999;  width: 220px; height: 50px;}
 .shareButtonsLookBook{ background: #dbdbdb; border-top: 1px solid #fff; position: absolute; top:52px; left:228px; z-index: 9999999;  width: 220px; height: 50px;}
 .shareButtonsLookBookPage{ background: #dbdbdb; border-top: 1px solid #fff; position: absolute; top:50px; left:0px; z-index: 9999999;  width: 220px; height: 50px;}
-li:hover ul, li.over ul {display: block;}.deadclass{}
+li:hover ul, li.over ul {display: block;}/* Index & TOC
+   --------------------------------------------------
 
-.memberBenefits {width:375px; height:257px; background: transparent url(../images/rolloverWindowMedium.png) no-repeat; background-position: left top; margin:-13px 0 0 -45px; position:absolute; _top:80px; _left: -45px; _margin: auto; display:none; z-index: 999;}
-.memberBenefits ul li { font-size:11pt; line-height: 20px;}
-.memberBenefits a, .memberBenefits_closeButton a:visited, .memberBenefits a:link, .memberBenefits a:hover{color: #000; position:absolute; right: 18px; top:15px; }
-.memberBenefits img {text-decoration: none;	margin: 0 0 0 2px; vertical-align:middle; background-image: url(../images/buttons/btn_closewindow.png); height: 13px; width: 14px; }
-.wrapperBar{position:relative;float:left;clear:both;width: 949px;height: 31px;background-color: #90775a;z-index: -1;}
-.wrapperBarSample{position:relative;float:left;clear:both;width: 329px;	height: 31px;background-color: #90775a;}
-.newsletterSample{position: absolute;width:346px;height:465px;text-align:center;overflow: auto;	border: 1px solid #000;	top: 25px;left: 350px;background: #FFF;
-	display:none;z-index:999999;
+   0. Gobal Styles
+   1. Reset & Assets Framework 
+   2. Fonts
+   3. Modules (X-Large)
+   4. Modules (Large)
+   5. Modules (Medium)
+   6. Modules (Small)
+   --------------------------------------------------*/
+@-ms-viewport  {
+  width: device-width;
 }
-.boxError{background-color:#F5E9E9;	border:1px solid #CB093B;}
-.SubHeadline {font-size: 12px; }
+@-o-viewport  {
+  width: device-width;
+}
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.full_clear {
+  clear: both;
+  display: block;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+.left {
+  float: left;
+}
+.hide-text {
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+/* =================================
+	Text Helpers
+   ================================= */
+/* =================================
+	Link Helpers
+   ================================= */
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  width: 100%;
+  *zoom: 1;
+}
+body:before,
+body:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+body:after {
+  clear: both;
+}
+.white {
+  color: #ffffff;
+}
+.ui-dialog {
+  color: #000000;
+  text-align: left;
+  position: fixed;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  height: 27px;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  right: 14px;
+  top: 7px;
+  width: 27px;
+}
+.ui-dialog .ui-dialog-titlebar-close ui-state-hover .ui-icon {
+  font-size: 0px;
+  text-indent: -99999px;
+}
+.ui-dialog .ui-dialog-titlebar-close .ui-icon {
+  background-image: url("../images/Registration/closeImgNew.png");
+  display: block;
+  height: 34px;
+  position: absolute;
+  top: -5px;
+  right: -19px;
+  text-indent: -99999px;
+  width: 34px;
+  font-size: 0px;
+  top: -1px;
+}
+.ui-dialog .ui-dialog-titlebar {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+}
+.ui-dialog .ui-dialog-titlebar .ui-icon {
+  background-image: url("../images/Registration/closeImgNew.png");
+  display: block;
+  height: 34px;
+  position: absolute;
+  right: -30px;
+  text-indent: -99999px;
+  width: 34px;
+  font-size: 0px;
+}
+.ui-widget {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+.ui-helper-clearfix {
+  display: block;
+}
+.ui-helper-clearfix:after {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+.ui-widget-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  opacity: .50;
+  filter: alpha(opacity=50);
+}
+.progressBarStep {
+  float: left;
+}
+.RegistrationFlowContainer {
+  width: 800px;
+  float: left;
+  background: #4caefb;
+  padding: 10px;
+  font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.RegistrationFlowContainer p {
+  margin: 0px;
+  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif bold;
+  color: #224269;
+}
+.RegistrationFlowContainer h2 {
+  font: 18px "Helvetica Neue", Helvetica, Arial, sans-serif bold;
+  color: #224269;
+  margin: 15px 0 15px 0;
+}
+.RegistrationFlowContainer fieldset {
+  border: none;
+  margin: 0px padding: 0px;
+  margin-left: -10px;
+  margin-top: 10px;
+}
+.RegistrationFlowContainer .bg_flood_db {
+  background-color: #224269;
+  color: #ffffff;
+  padding: 10px;
+  margin-top: 10px;
+}
+.RegistrationFlowContainer .Login,
+.RegistrationFlowContainer .Submit,
+.RegistrationFlowContainer .Sign,
+.RegistrationFlowContainer .Next,
+.RegistrationFlowContainer .Subscribe {
+  background: url("../images/buttons/sd_btn_left.gif") no-repeat scroll 0 0 transparent;
+  display: inline-block;
+  line-height: 30px;
+  padding: 0 17px 0 20px;
+  text-align: center;
+  border: none;
+  color: #ffffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin-top: 10px;
+  cursor: Pointer;
+}
+.RegistrationFlowContainer .registrationStep .registrationViewForm {
+  display: inline-block;
+}
+.RegistrationFlowContainer .registrationStep .registrationStepCTA {
+  display: inline-block;
+}
+.RegistrationFlowContainer .progressBar .progressBarStep {
+  /* Safari 4+, Chrome 1-9 */
+
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2a74b4), to(#2f588b));
+  /* Safari 5.1+, Mobile Safari, Chrome 10+ */
+
+  background-image: -webkit-linear-gradient(top, #2a74b4, #2f588b);
+  /* Firefox 3.6+ */
+
+  background-image: -moz-linear-gradient(top, #2a74b4, #2f588b);
+  /* IE 10+ */
+
+  background-image: -ms-linear-gradient(top, #2a74b4, #2f588b);
+  /* Opera 11.10+ */
+
+  background-image: -o-linear-gradient(top, #2a74b4, #2f588b);
+  border: #83929f 1px solid;
+  margin-left: -2px;
+  margin-bottom: 15px;
+  height: 12px;
+}
+.RegistrationFlowContainer .progressBar .futureStep {
+  /* Safari 4+, Chrome 1-9 */
+
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#92d0f2), to(#91d0da));
+  /* Safari 5.1+, Mobile Safari, Chrome 10+ */
+
+  background-image: -webkit-linear-gradient(top, #92d0f2, #91d0da);
+  /* Firefox 3.6+ */
+
+  background-image: -moz-linear-gradient(top, #92d0f2, #91d0da);
+  /* IE 10+ */
+
+  background-image: -ms-linear-gradient(top, #92d0f2, #91d0da);
+  /* Opera 11.10+ */
+
+  background-image: -o-linear-gradient(top, #92d0f2, #91d0da);
+}
+.RegistrationFlowContainer .RememberMe-Checkbox span input {
+  width: 30px;
+  float: left;
+  margin: 0;
+}
+.RegistrationFlowContainer .alert-error {
+  color: #d92a01;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: -5px;
+}
+.RegistrationFlowContainer .registrationStepCTA {
+  float: left;
+  width: 25%;
+}
+.RegistrationFlowContainer .registrationViewForm {
+  float: right;
+  width: 43%;
+}
+.RegistrationFlowContainer .loginViewForm {
+  width: 35%;
+  float: right;
+}
+.RegistrationFlowContainer .legalAgeView {
+  padding: 100px 0 100px 200px;
+}
+.RegistrationFlowContainer .loginViewCTA {
+  width: 65%;
+  float: left;
+}
+.RegistrationFlowContainer label {
+  /*width: 100%; 
+						display: block;
+						margin: 10px 0 5px 0;*/
+
+}
+.RegistrationFlowContainer ul {
+  padding: 0;
+  list-style-type: none;
+}
+.RegistrationFlowContainer li {
+  margin-left: 0px;
+}
+.RegistrationFlowContainer input {
+  width: 100%;
+  display: block;
+  margin: 1px 0 10px;
+  border: none;
+}
+.RegistrationFlowContainer select {
+  margin: 0 10px 10px 0px;
+}
+.RegistrationFlowContainer input:required {
+  box-shadow: none;
+}
+.RegistrationFlowContainer input:invalid {
+  -moz-box-shadow: none;
+}
+.RegistrationFlowContainer .BirthDate-DateOfBirth label {
+  display: block;
+  width: 100%;
+}
+.RegistrationFlowContainer .legal-text {
+  margin-top: 10px;
+  display: block;
+}
+.RegistrationFlowContainer .legal-text-above-buttons {
+  display: none;
+}
+.RegistrationFlowContainer .legal-text-beside-buttons {
+  display: none;
+}
+.RegistrationFlowContainer .PostalCode-TextBox {
+  width: 120px;
+}
+.RegistrationFlowContainer .PillsburyListNewQA-CheckBox input,
+.RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox input,
+.RegistrationFlowContainer .PillsburyCookingforTwoNewQA-CheckBox input {
+  float: left;
+  width: 20px;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+.RegistrationFlowContainer .PillsburyListNewQA-CheckBox {
+  border-top: 1px solid #FFFFFF;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  padding-top: 10px;
+}
+.RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+.RegistrationFlowContainer .PillsburyListNew-CheckBox input,
+.RegistrationFlowContainer .PillsburyDailyListNew-CheckBox input,
+.RegistrationFlowContainer .PillsburyCookingforTwoNew-CheckBox input {
+  float: left;
+  width: 20px;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+.RegistrationFlowContainer .PillsburyListNew-CheckBox {
+  border-top: 1px solid #FFFFFF;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  padding-top: 10px;
+}
+.RegistrationFlowContainer .PillsburyDailyListNew-CheckBox {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+.CustomRegistration {
+  position: relative;
+  background: none repeat scroll 0 0 #438FDB!important;
+  float: left!important;
+  font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  padding: 0px!important;
+  width: 100%;
+}
+.CustomRegistration fieldset {
+  border: none;
+  margin: 0px padding: 0px;
+  margin-left: 0px;
+}
+.CustomRegistration h2 {
+  color: #252A6B;
+  font-size: 22px;
+  font-weight: bold;
+  position: relative;
+  top: 0;
+  margin: 0px;
+}
+.CustomRegistration .legal-text {
+  font-size: 10px;
+  line-height: 12px;
+  margin-top: 10px;
+  display: block;
+}
+.CustomRegistration .legal-text-above-buttons {
+  display: none;
+}
+.CustomRegistration .legal-text-beside-buttons {
+  display: none;
+}
+.CustomRegistration .PostalCode-TextBox {
+  margin-bottom: 20px;
+}
+.CustomRegistration .PillsburyListNewQA-CheckBox input,
+.CustomRegistration .PillsburyDailyListNewQA-CheckBox input {
+  float: left;
+  width: 20px;
+  display: inline-block;
+}
+.CustomRegistration .PillsburyListNewQA-CheckBox:before {
+  border-top: 1px solid #fff;
+}
+.CustomRegistration .PillsburyDailyListNewQA-CheckBox {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+.CustomRegistration .PillsburyListNew-CheckBox input,
+.CustomRegistration .PillsburyDailyListNew-CheckBox input {
+  float: left;
+  width: 20px;
+  display: inline-block;
+}
+.CustomRegistration .PillsburyListNew-CheckBox:before {
+  border-top: 1px solid #fff;
+}
+.CustomRegistration .PillsburyDailyListNew-CheckBox {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+.CustomRegistration .Submit {
+  margin-top: 20px;
+}
+.CustomRegistration input {
+  margin-top: 0px;
+}
+.CustomRegistration .previewLink {
+  position: inline-block;
+}
+.CustomRegistration .loginViewForm {
+  background: none repeat scroll 0 0 #78BFF7;
+  float: right;
+  margin: 20px 15px 0 5px;
+  padding: 15px;
+  width: 28%;
+}
+@media (max-width: 1200px) {
+  
+}
+@media (max-width: 800px) {
+  
+}
+@media (max-width: 500px) {
+  
+}
+ @charset "utf-8";
+
+ /* Global Styles */
+ body, h1, h2, h3, h4, h5, h6, p, a, div{font-family:"Arial", Tahoma;padding:0px;margin:0px;}
+.hide{display:none;}
+.FL{float:left;}
+.FR{float:right;}
+.clear{clear:both;}
+
+
+/*Registration Popup Control CSS Starts*/
+.frm_block{overflow:hidden;padding-bottom:15px; font-size: 12px;}
+#registrationDialogDiv{padding:0;margin:0; font: 11px 'Arial', Tahoma, Helvetica, sans-serif;}
+#proxyIframe{display:none;}
+#bt_signup_form.wrapper{display:block;height:auto;padding:0 20px; /* background: #4caefb url(/Shared/Registration/Images/notsosecretclubkdg.png) no-repeat left top;*/}
+.contentBlock{clear:both;padding-top:5px; margin-left: 190px;}
+.pageTitleBlock{color:#272b67;font:bold 21px 'Arial', Tahoma, Helvetica, sans-serif;padding:15px 0 20px 0;}
+.title, .subTitle, .stepTitle, .stepSubTitle{color:#000;font:bold 11px 'Arial', Tahoma, Helvetica, sans-serif;margin:0;padding:0;} 
+.stepTitle, .stepSubTitle{color: #272b67;font-size:18px; position: absolute; top: 15px;}
+.stepTitleTwo, .stepSubTitleTwo{color: #272b67;font-size:18px;}
+.frm_wrapper{overflow:hidden;padding:0px;width:350px;}
+/*Form element Style Starts*/
+.formInputHolder{/*clear:both;overflow:hidden;*/}
+.frm_label, .frm_lebel{	color:#000000;font: 12px/14px 'Arial', Helvetica, sans-serif;padding:10px 2px 2px 0px;text-align:left; width: 155px;float:left;}
+.frm_mand{float:left;padding:12px 0 0 2px;}
+.emailId, .password, .common, .zipcode, .dobdd, .dobmm, .dobyyyy{background:none;border:none;color:#000;font:normal 13px/20px 'Arial', Helvetica, sans-serif;height:20px;padding:2px 5px;width:331px;outline: medium none;}
+.zipcode {width:108px;}
+.frm_date .dateOfBirth{background:none;border:none;	height:25px;}
+.frm_date .type{color:#000 !important;}
+.frm_date .dobdd, .frm_date .dobmm {color:#c6c7c7;width:30px;}
+.frm_date .dobyyyy{color:#c6c7c7;width:65px;}
+.frm_input, .frm_date{/*clear:both;*/color:#000;/*overflow:hidden;padding:4px 0;*/ float: left;}
+.checkboxlist label{padding-left:10px}
+.frm_input .inputBgLeft, .frm_date .inputBgLeft{/*background:url('/Shared/Registration/Images/inputFieldBackground.png') left top no-repeat;*/ background: #fff;border:0 none; float:left;	margin-right:4px;padding:0 0 0 2px;}
+.frm_input .inputBgLeft .inputBgRight, .frm_date .inputBgLeft .inputBgRight{/*background:url('/Shared/Registration/Images/inputFieldBackground.png') right bottom no-repeat;*/    background: #fff;border:0 none;	height:25px;padding:0;}
+.frm_input .inputBgLeft .inputBgRight select, .frm_date .inputBgLeft .inputBgRight select{color:#000;font-size:13px;padding:2px;}
+div.frm_error{clear:both;display:none;padding:5px 0;}
+div.frm_error div{/*border:#cc0000 1px solid;	*/ color:#cc0000;font:bold 12px 'Arial', Helvetica, sans-serif; width:326px;}
+.errorMsg, #ajaxErrorContainer {border:1px solid #ff0000;clear:both;display:none;padding:8px;width:326px;}
+.errorMsg  ul{list-style:disc outside;margin:0;padding:0 0 0 15px;}
+#ajaxErrorContainer h3{display:block;padding-bottom:10px;font:bold 16px/20px 'Arial', Helvetica, sans-serif;color:#ff0000;}
+.errorMsg  ul li, #ajaxErrorContainer p{color:#ff0000;font:normal 12px/15px 'Arial', Helvetica, sans-serif;	margin:0;padding:0 0 5px 0;}
+.frm_button{background:url('../Shared/Registration/Images/btn_background.png') 0 0 repeat-x;cursor:pointer;display:inline;float:left;height:24px;font-size:0;margin:10px 0 5px 1px; text-align: center; border-radius: 1px; -moz-border-radius: 1px; -webkit-border-radius: 1px;}
+/*.frm_button .nextfrm, .frm_button .closefrm{background:url('/Shared/Registration/Images/regButtonBgNew.png') right bottom no-repeat;padding:0 21px 0 0;height:40px;font-size:0;	line-height:40px;}*/
+.frm_button .nextfrm, .frm_button .closefrm { text-align:center; font-size:0; }
+.frm_button .nextfrm, .frm_button .closefrm a  {cursor:pointer; display: inline-block; font-size:12px;  text-align:center;}
+/*.frm_button .nextfrm, .frm_button .closefrm a  {visibility: hidden;}*/
+/*.frm_button span { visibility: hidden;}*/
+.frm_button .nextfrm a, .frm_button .closefrm a{color:#ffffff;font:11px/25px 'Arial', Helvetica, sans-serif;text-decoration:none; padding: 0 10px; }
+.frm_button .nextfrm a:hover, .frm_button .closefrm a:hover{ text-decoration:none;}
+.checkbox{float:left;width:18px;/*padding-top:1px;*/}
+.checkbox input{margin:0;padding:0; width:13px;height:13px;}
+.checkBoxLabel{width:85%;float:left;}
+.checkBoxLabel .frm_lebel{padding:0;width:auto;}
+.checkBoxLabel .checkBoxLink{color: #005daa;/*clear:both;*/ font-size: 12px; margin-left: 5px; }
+.frm_calcel_button{	float:left;padding:10px 0 15px 5px;}
+.frm_calcel_button a{color:#cc0000;text-decoration:none;}
+.frm_calcel_button a:hover{text-decoration:underline;}
+.radiobuttonlist{clear:both;}
+.stepFooter{/*padding:23px 0 11px 0;*/}
+.stepFooter .textData, .stepFooter .textData p{color:#000; font-size: 11px;	text-align:left;width:350px;}
+.stepFooter .textData p{margin-bottom:10px;}
+.stepFooter a{color:#cc0000;text-decoration:none;}
+.stepFooter a:hover{text-decoration:underline;}
+.stepBtn{padding:0 15px;}
+.btnRight{background:url(http://www.pillsbury.com/Shared/Registration/Images/btn-bg-right.png) no-repeat right top;	height:45px;padding-right:15px;}
+.btnLeft{background:url(http://www.pillsbury.com/Shared/Registration/Images/btn-bg-left.png) no-repeat left top;height:45px;padding-left:15px;}
+/*Not Eligible User Message*/
+.sorryHeading{color: #272B67;font-size: 18px; margin-left: 190px;}
+
+.notEligibleUser{padding:15px 0 0 27px;width:575px; display:block;height:auto;height: 450px;background: #4caefb url(../~/media/PB/Images/NotSoSecretClub/notsosecretclubkdgwide.png) no-repeat left top;}
+.notEligibleUser .sorryMessage{padding:10px 0 25px 0;width:300px;color: #fff; margin-left: 190px;}
+.notEligibleUser .sorryMessage p{color:#fff;font-size:14px;padding-bottom:7px;}
+.notEligibleUser .frm_button{/*background-image: url("/Shared/Registration/Images/btn_continue.png"); width: 100px; height: 34px;*/  margin-left: 190px;}
+/*Subscription Block Style Starts*/
+.subscriptionLeftBlock {width:330px; margin-right:20px; position: absolute; left: 10px; font-size: 12px;}
+.subscriptionLeftBlock, .subscriptionRightBlock{/*font-family:Arial;*/font-size:12px;margin:0px 0 10px;padding:0;}
+.subscriptionRightBlock{margin:15px 0 10px;}
+.subscriptionRightBlock .hintText{ color: #000; font-size: 12px;}
+.subscriptionLeftBlock h3, .subscriptionRightBlock h3{color:#000;font: 16px 'Arial',Tahoma,Helvetica,sans-serif !important;	padding:0 0 5px 0;}
+.subscriptionRightBlock {padding-left:20px;width:280px;  background: #b4dbf2; position: absolute; right: 50px; top:10px;}
+.subscriptionRightBlockTwo {padding-left:20px;width:280px;  background: #b4dbf2; position: absolute; right: 10px; top:10px;}
+.subscriptionRightBlock h3.light{color:#000; font-size:16px}
+.subscriptionPoints{list-style:disc inside;margin:10px 0 0 0;padding:0;color:#333;}
+.subscriptionPoints li{	padding:0 0 5px 0;}
+.subscriptionOptions {list-style:none;margin:15px 0 5px 0;padding:0;}
+.subscriptionOptions li{color:#000;padding:0 0 5px 0;}
+.subscriptionOptions li a{color:#005daa;text-decoration:none;}
+.subscriptionOptions li a:hover{text-decoration:underline;}
+.stepLegal{margin-top: 10px; font-size: 10px; line-height: 12px;}
+/*Progress Bar Style Starts*/
+.progressBar{padding-bottom:1px; margin-top: 10px;  display: none;}
+.prog_bar{padding-left:0px;	margin-left: 190px;}
+.prog_barTwo{padding-left:0px;}
+.prog_bar_lt{/*height:21px;width:5px; background-position:left; background-repeat:no-repeat*/ visibility: hidden;}
+.prog_bar_block{height: 21px; width: 194px;}
+.prog_bar_completed_Step{cursor:pointer;height:21px;background-position:right;background-repeat:no-repeat}
+.prog_bar_current_Step{	height:21px;background-position:right;background-repeat:no-repeat}
+.prog_bar_current_last_Step{height:21px;background-position:right;background-repeat:no-repeat}
+.prog_bar_future_mid_Step{height:21px; background-position:right;background-repeat:no-repeat}
+.prog_bar_future_Step{height:21px; background-position:right; background-repeat:no-repeat}
+.footerNotes{color:#666;font-size:12px;padding:5px 20px 20px 20px;}
+.checkBtn{clear:both;color:#000;font-size:13px;padding:5px 0 5px 0px;}
+.checkBtn a, .checkBtn a:hover{	color:#000;text-decoration:none; font-weight:normal}
+.checkBtn IMG{border:none;	vertical-align:middle;}
+.cancel{padding-left:10px;	}
+.cancel a{color:#3399cc;font-size:14px;	font-weight:bold;}
+.btn_hand{cursor:pointer;}
+.hintText{color:#666666;font-size:11px;}
+.bk_btn{padding-right:5px}
+.pdLt5{padding-left:5px}
+.VariableWidth .ui-dialog-content {padding: 0;}
+img.prog_bar_current_last_Step{height:auto !important}
+/*.registrationDialogClass .ui-dialog-titlebar-close .ui-icon {background: url("/images/Registration/closeImgNew.png") no-repeat scroll 0 0 transparent; font-size: 0;height: 34px;
+    width: 34px;}*/
+h2.subscriptionHeading{font:bold 18px 'Arial', Tahoma, Helvetica, sans-serif; color: #272b67;}
+.subscriptionLeftBlock p{font:normal 13px 'Arial', Tahoma, Helvetica, sans-serif;}
+.subscriptionOptions li{font:normal 13px 'Arial', Tahoma, Helvetica, sans-serif;}
+.subscriptionOptions li .checkbox{/*margin-top: 3px;*/}
+.subscriptionLeftBlock ul{margin:30px 0 0 26px}
+/*.subscriptionLeftBlock ul li{margin:5px 0}*/
+.registrationWrapper{width:575px; min-height: 462px; position: relative; background: #4caefb url(../~/media/PB/Images/NotSoSecretClub/notsosecretclubkdgwide.png) no-repeat left top;}
+.subscriptionWrapper{width:820px}
+.subscriptionFrmWrapper{width:580px;}
+.fullPageRegWrap .subscriptionHeading{margin-top:25px}
+.fullPageRegWrap .frm_wrapper {width:600px}
+.fullPageRegWrap .stepFooter .textData, .stepFooter .textData p{width:auto}
+iframe.registrationDialogIframe div.fullPageRegWrap div.frm_wrapper{width:350px;}
+.fullPageRegWrap .newsletterTitle{background: url("../~/media/Images/Shared/Registration/starBig.gif") no-repeat scroll 0 0 transparent;color: #727272;padding: 0 0 0 38px;margin:20px 0;clear:both;font: normal 25px Times New Roman,Serif;}
+.bracketed { background: url("../~/media/Images/Shared/Registration/brackets_left.ashx") no-repeat scroll 0 0 transparent;height: 34px;padding-left: 20px;font:12px "Arial","Helvetica",sans-serif;margin-bottom:30px;color: #666666;}
+.bracketed img {float: right;padding-left: 5px;}
+.formTips{ font-size:12px;font-weight:normal; color: #666666; margin:10px 0;}
+.mRht5{ margin-right:10px;}
+div.frm_input input:-webkit-autofill {background-color:none !important; background-image:none !important;}
+.frm_input select{outline: medium none;}
+.checkboxChck{background:url('http://www.pillsbury.com/Shared/Registration/Images/checkbox-checked.png') no-repeat;padding-left:20px}
+.checkboxunChk{background:url('http://www.pillsbury.com/Shared/Registration/Images/checkbox-unchecked.png') no-repeat;padding-left:20px}
+/*.btnBckDisabled{ background:url('/Shared/Registration/Images/back_d.gif') no-repeat; width:59px; height:19px; display:inline-block; margin-top:2px}
+.btnBckEnabled{ background:url('/Shared/Registration/Images/back_e.gif') no-repeat; width:59px; height:19px; display:inline-block; cursor:pointer; margin-top:2px}
+.mandatorystar{background:url('/Shared/Registration/Images/blue_asterisk.gif') no-repeat right; width:12px; height:12px; margin-left:3px; padding:0; margin-top: 8px;}*/
+.regFlowFooterText{padding:5px 0 10px 2px}
+
+.subscriptionWrapper {background-image: url("../~/media/PB/Images/NotSoSecretClub/subscriptionbkdg.png"); min-height: 240px;}
+.subscriptionWrapper .subTitle{position: absolute; top: 20px; left: 10px;}
+.subscriptionWrapper .frm_wrapper{width:100%;}
+.subscriptionWrapper .frm_input, .frm_date{width:100%;}
+/*.subscriptionWrapper .frm_button { width: 100px; height: 34px; position: absolute; top: 190px; left: 508px;}*/
+.subscriptionWrapper .frm_button {    /*background-image: url("/Shared/Registration/Images/btn_continue.png");height: 34px;*/ left: 510px; position: absolute; top: 180px; width: 100px;}
+.subscriptionWrapper ul { list-style-type: none; margin: 10px 0 10px;}
+
+.frm_content{min-height: 200px;}
+.textDarkBlue { color:#272b67 !important; }
+.textSixteen { font-size:16px !important;}
+.textEighteen { font-size:18px !important; }
+.bottomSpacerTen { padding-bottom:10px; }
+.indentMinusTen {margin-left: -10px !important;}
+
+
+/* CUSTOM REGISTRATION  */ 
+#customRegistration .sorryHeading{color: #272B67;font-size: 18px; color:#c90000;font:bold 12px/14px 'Arial', Helvetica, sans-serif;width:326px;margin: 5px 0px 0px 0px; }
+#customRegistration #couponRegistration .sorryHeadingPassword{color: #272B67;font-size: 14px; border:#cc0000 1px solid;	color:#cc0000;font:bold 12px/14px 'Arial', Helvetica, sans-serif;padding:1px;width:250px;margin-left: 5px; }
+#customRegistration .sign_button {background: url('../images/buttons/button_signup.png') 0 0 no-repeat; display: inherit; cursor: pointer;float: left;height: 30px;width: 89px;font-size: 0; padding: 0 0 0 10px;}
+#customRegistration #couponRegistration{ width: 100%; /*height:550px;*/ background-color: #9ac53e; font-size:12px;}
+#customRegistration #couponImagePanel{ float: left; width: 45%; }
+#customRegistration #couponFieldsPanel{ float: right; width: 47%; background: #c8df95; margin: 20px 25px 0px 5px;}
+#customRegistration .stepTitle {font-size: 22px; color: #252a6b; position: relative; top: 0;}
+#customRegistration .rule {width: 100%; border-bottom: 1px solid #fff; margin: 10px 0;}
+#customRegistration #notsosecretRegistration{ width: 100%; /*height:550px;*/ background-color: #438fdb; font-size:12px;}
+#customRegistration #notsosecretImagePanel{ float: left; width: 45%; }
+#customRegistration #notsosecretFieldsPanel{ float: right; width: 385px; background: #78bff7; margin: 20px 25px 0px 5px;}
+#customRegistration .sorryHeadingTwo {font-size: 22px; color: #252a6b; }
+.NeedHelpPanel{margin-top: 10px;}
+
+.registrationDialogClass .ui-dialog-titlebar-close.ui-state-hover .ui-icon
+{
+    display: inline;
+    font-size: 0px;
+    height: 34px;
+    width: 34px;
+    text-indent: 0px;
+    overflow: visible;
+}.SubHeadline {font-size: 12px; }
 .SubHeadlineBold {font-size: 12px; font-weight: bold;}
 .readMoreLink {color: #ffcc35; text-align: right;}
 
@@ -2992,23 +3605,6 @@ ol.unorderedListWithLowerCase, ul.unorderedListWithLowerCase {list-style-type:lo
 .recipeSummary .footer .share_item a.sprite_trans { margin:0 14px 2px 15px; }
 .recipeSummary .footer .rb_item { width:70px; text-align:center; font-size:10px; }
 .recipeSummary .footer img { width:20px; height:20px; }
-.ui-dialog {color: #000;  text-align: left; position: fixed; }
-/*.ui-dialog .ui-dialog-title{ float: left; margin: 10px;}*/
-.ui-dialog .ui-dialog-titlebar-close{ height: 27px; padding: 0;margin: 0; position: absolute; right: -5px; top: 7px; width: 27px;}
-.ui-dialog-titlebar{ color: #fff; font-size: 18px; font-weight: bold; display: block;}
-.ui-dialog-titlebar .ui-icon{ height: 34px; width:34px; text-indent: -99999px; background-image: url('../images/Registration/closeImgNew.png'); display: block;}
-.VariableWidth-ui-dialog {}
-.VariableWidth .ui-dialog-content{ padding:10px;}
-.VariableWidth .ui-dialog-title{ margin: 0;}
-.VariableWidth .ui-dialog-titlebar{color: #000;}
-.VariableWidth .ui-dialog-titlebar-close{ height: 32px; right: -6px; top: -6px; width: 32px;}
-/*.VariableWidth .ui-icon{ background: url('/images/Registration/closeImgNew.png') no-repeat; height: 32px; width: 32px;}*/
-.VariableWidth .ui-widget-header {background-attachment: scroll; background-clip: border-box; background-color: #FFF; background-image: none; background-origin: padding-box;    background-position: 0 0; background-repeat: repeat; background-size: auto auto; font-size: 1px; height: 0;}
-.ui-widget { font-family: Arial,sans-serif; font-size: 12px;}
-.ui-helper-clearfix { display: block;}
-.ui-helper-clearfix:after { clear: both;content: "."; display: block; height: 0; visibility: hidden;}
-/*.ui-widget-header{ height: 40px; width: 390px; padding: 0px;}*/
-.ui-widget-overlay{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fff; opacity: .50; filter: Alpha(Opacity=50);}
 .media-tabs{padding-right: 7px;cursor: pointer; color: #005daa; text-decoration: none;}
 .media-tabs:hover{ text-decoration: underline;}
 

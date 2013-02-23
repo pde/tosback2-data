@@ -125,7 +125,9 @@
 				}
 			else
 				{
-					$('#priceMultiLine_'+productId).html('$'+Number($('#MRC_'+productId).html()).toFixed(2));
+					mrcPrice = $('#MRC_'+productId).html();
+					mrcPrice = Number(mrcPrice) * Number(checkedBoxesLinecount[productId]);
+					$('#priceMultiLine_'+productId).html('$'+Number(mrcPrice).toFixed(2));
 				}
             }else{
             	var displayName = $('#name_'+ productId).html();
@@ -809,6 +811,11 @@ $(document).ready(function() {
         timeout:100, 
         over: function() {
         	showMiniCart();
+        	if(window.WebMetrics)
+				{
+					var wtPN = WebMetrics.getMetaTagValue('DCSext.wtPN');
+					WebMetrics.dispatchReport( wtPN + "_MiniCart_View");
+				}
         }, 
         out: function() { 
         	} 

@@ -1,6 +1,6 @@
 // Bam.js library is a product of MLB.com / MLB Advanced Media Inc.
 // Any use of this code base outside or w/o written permission of MLB.com is prohibited
-var bam = (typeof(bam)==="object")?bam:(function(window, document, $, undefined) {
+(function(window, document, $, undefined) {
 	
 	//jQuery Global Compatibility Settings
 	$.ajaxSettings.traditional = true;
@@ -746,6 +746,7 @@ var bam = (typeof(bam)==="object")?bam:(function(window, document, $, undefined)
         isAndroid: !!_userAgent.match(/Android/i),
         isTouchpad: !!_userAgent.match(/hp-tablet.*wOSBrowser.*534.6 TouchPad.*/i),
         isVizio: !!_userAgent.match(/Vizio/i),
+        isKindle: !!_userAgent.match(/Kindle/i),
         isWapDevice: !!_userAgent.match(/Android[^\ ]|Android\ [^3]|Android$|Kindle|Blazer|Blackberry|Windows\ CE.\ PPC|phone|IEMobile|Sprint:PPC|^LG|^MOT|^HTC|up.browser|netfront|midp|au- mic|webOS|Bada.*Mobile/i)
       };
       
@@ -909,6 +910,11 @@ var bam = (typeof(bam)==="object")?bam:(function(window, document, $, undefined)
     );
   };
   
-	return _bam;
+	//return _bam;
+
+	// If window.bam already exists, preserve the properties already on it.
+	// This allows required.js to be before this file, making the transition
+	// to a modular codebase possible.
+	window.bam = $.extend( _bam, window.bam || {} );
 	
 })(this, this.document, jQuery);

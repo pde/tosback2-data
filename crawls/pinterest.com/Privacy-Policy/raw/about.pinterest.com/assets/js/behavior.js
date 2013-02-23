@@ -125,37 +125,39 @@
               // element
               var el = $.s[a.id];
 
-              var offsetTop = $.f.getPos(el).top;
-              // top of element
-              var middleOfElement = offsetTop + (el.offsetHeight / 2);
-              var delta = middleOfElement - aim.y;
-              var min = scrollY + minRange;
-              var max = scrollY + maxRange
-              var t = 0, o = null;
-              if (min < delta && max > delta) {
-                if (a.className) {
-                  el.className = a.className;
-                } else {
-                  if (max - delta < delta - min) {
-                    t = max - delta;
-                    o = t / a.t * a.mod;
+              if (el) {
+                var offsetTop = $.f.getPos(el).top;
+                // top of element
+                var middleOfElement = offsetTop + (el.offsetHeight / 2);
+                var delta = middleOfElement - aim.y;
+                var min = scrollY + minRange;
+                var max = scrollY + maxRange
+                var t = 0, o = null;
+                if (min < delta && max > delta) {
+                  if (a.className) {
+                    el.className = a.className;
                   } else {
-                    t = delta - min;
-                    o = t / a.b * a.mod;
+                    if (max - delta < delta - min) {
+                      t = max - delta;
+                      o = t / a.t * a.mod;
+                    } else {
+                      t = delta - min;
+                      o = t / a.b * a.mod;
+                    }
                   }
                 }
-              }
-              if (typeof o !== 'number' && a.failover) {
-                o = a.failover;
-              }
-              if (o) {
-                if (a.abs) {
-                  o = Math.abs(o);
+                if (typeof o !== 'number' && a.failover) {
+                  o = a.failover;
                 }
-                if (a.units) {
-                  o = o + a.units;
+                if (o) {
+                  if (a.abs) {
+                    o = Math.abs(o);
+                  }
+                  if (a.units) {
+                    o = o + a.units;
+                  }
+                  el.style[a.p] = o;
                 }
-                el.style[a.p] = o;
               }
             }   
           }       

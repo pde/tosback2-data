@@ -19223,7 +19223,7 @@ function(
             // use them as callbacks in the 'doRegister' method.
             _.bindAll(this, 'registerFinished', 'registerError');
 
-            this.set(this._getRegMetadata());
+            this.set("regSourceData", this._getRegMetadata());
         },
 
         _getRegMetadata: function() {

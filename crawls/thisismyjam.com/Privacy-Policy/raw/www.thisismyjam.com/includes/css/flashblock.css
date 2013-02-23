@@ -9,8 +9,8 @@
     * set relative or absolute here, and don't touch it later or bad things will happen (see below comments.)
     */
   position: absolute;
-  width:0;
-  height: 0;
+  width: 1px;
+  height: 100px;
 /* screw IE 6, just make it display nice */
 }
 #sm2-container object,
@@ -21,27 +21,18 @@
   * changing display: or position: or overflow: here or on parent can cause SWF reload or other weird issues after unblock
   * e.g., SM2 starts but strange errors, no whileplaying() etc.
   */
-  width: 100%;
-  height: 100%;
+  width: 48px;
+  height: 48px;
 /* some flash blockers may also respect this rule */
   max-width: 48px;
   max-height: 48px;
 }
-#sm2-container.swf_timedout,
-#sm2-container.high_performance.swf_timedout{
-    position: relative;
-    width:300px;
-    height: 70px;
-    top:auto;
-    left:auto;
-    background:black;
-    margin:10px auto;
-    box-shadow:1px 1px 8px #333;
-    display: none;
-
-
-}
+#sm2-container.swf_timedout {
 /* expand to show the timed-out SWF content */
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
 #sm2-container.swf_timedout,
 #sm2-container.swf_timedout object,
 #sm2-container.swf_timedout embed {
@@ -69,17 +60,12 @@
 /* when there is a fatal error (flash loaded, but SM2 failed) */
   display: none;
 }
-/*
 #sm2-container.high_performance,
 #sm2-container.high_performance.swf_timeout {
-/* "high performance" case: keep on-screen at all times *
+/* "high performance" case: keep on-screen at all times */
   position: absolute;
   position: fixed;
-}*/
-
-
-
-
+}
 #sm2-container.high_performance {
   overflow: hidden;
   _top: -9999px;
@@ -98,7 +84,6 @@
   left: 100px;
   width: 0;
   height: 0;
-    /*border: 1px solid #ffa500;*/
 }
 #sm2-container.high_performance.swf_loaded,
 #sm2-container.high_performance.swf_unblocked {
@@ -127,11 +112,10 @@
 #sm2-container.high_performance.swf_unblocked object,
 #sm2-container.high_performance.swf_unblocked embed {
 /* high-performance case must stay on-screen */
-    z-index: 100;
   left: auto;
   top: auto;
 }
 #sm2-container.high_performance.swf_timedout {
-  /*z-index: 99;*/
+  z-index: 99;
 /* try to stay on top */
 }

@@ -94,9 +94,12 @@ document.write('<script type="text/javascript" src="/static/Common/Includes/Lib/
 /*** Tealeaf tracking code ***/
 document.write('<script type="text/javascript" src="/static/Common/Includes/Lib/Metrix/CTL/TeaLeaf.js"></'+'script>');
 
-/*** Opinionlab - Inject the Opinionlab Feedback link into the global footer ***/
-document.write('<script language="javascript" src="/static/Common/Includes/Lib/Metrix/CTL/oo_engine.js"></'+'script>');
-$('#footer>.support>.nav>li:first').removeClass('first').parent().prepend('<li class="first"><a href="javascript:O_LC();">Feedback<img src="/static/Common/Includes/Lib/Metrix/CTL/sm_oo.gif" style="margin-left:6px;border:0"/></a></li>');
+<!-- Start OpinionLab -->
+document.write('<link rel="stylesheet" type="text/css" href="/common/3rdparty/opinionlab/5/oo_style.css"></'+'script>');
+document.write('<script language="javascript" type="text/javascript" charset="windows-1252" src="/common/3rdparty/opinionlab/5/oo_engine.min.js"></'+'script>');
+document.write('<script language="javascript" type="text/javascript" charset="windows-1252" src="/common/3rdparty/opinionlab/5/oo_conf_inline.js"></'+'script>');
+$('#footer>.support>.nav>li:first').removeClass('first').parent().prepend('<li class="first"><a href="javascript:void(0);" onClick="oo_feedback.show()"><img src="/common/3rdparty/opinionlab/5/oo_icon.gif" border="0" title="Feedback"> Feedback</a></li>');
+<!-- End OpinionLab -->
 
 /** This appears to fix a jquery-ui problem. Your guess is as good as anybody's. **/
 document.write('&nbsp;');

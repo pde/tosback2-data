@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.32.13";
+        var acVersion = "4.33.1";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -2309,19 +2309,23 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
   
 
 
+    
+    
+          
+    
+
+
+
+
   <script type="text/javascript" src="../etc/designs/common/js/s_code.js"></script>
   <script type="text/javascript">
-
-
-
-
-
     if(typeof(sc) !== 'object') var sc = {};
     sc.init = function(){
       s.channel = 'mktg';
-      s.server='cq02.dc3.aptimus.net';
+      s.server='cq03.dc3.aptimus.net';
 
-      s.pageName='mktg:' + (document.title.indexOf(" - University") > -1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase());
+      s.pageName = 'privacy policy' === '' ? 'mktg:' + (document.title.indexOf(" - University") > -1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase()) : 'mktg:privacy policy'
+      s.pageName='mktg:privacy policy';
       if(document.location.pathname === "/") s.pageName = "mktg:home page";
       if(s.pageName.indexOf('page not found') !== -1){ //error page
         s.pageType = "errorPage";
@@ -2383,31 +2387,61 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
       var sOffset = new Date().getTimezoneOffset();
       return sDay + '|' + sHours + ':' + sMins + '|' + sOffset;
     }
-  sc.trackCustomLink = function(n,a,t){
-    //n = link name
-    //a = object name if undefined a = true
-    //t = link type, if undefined defaults to 'o' (custom)
-    try{
-      if(typeof(n) === 'undefined') return;
-      if(typeof(a) === 'undefined') a = true;
-      if(typeof(t) === 'undefined') t = 'o';
-      s.linkTrackVars='prop27';
-      s.prop27 = n;
-      s.tl(a,t,n);
-    }catch(e){}
-
-  }
-  //delay pageview tracking until search  ajax returns with search results
-  //delay pageview on login lightbox
-  if(document.location.pathname.indexOf('/search.html') !== -1 || document.location.pathname.indexOf('/lightboxLogin.html') !== -1){
-    sc.delay = true;
-  }
-  if(sc.delay !== true){
-     sc.init();
-     var s_code = s.t(); if(s_code)document.write(s_code);//-->
-  }
-
-</script>
+    sc.trackCustomLink = function(n,a,t){
+      //n = link name
+      //a = object name if undefined a = true
+      //t = link type, if undefined defaults to 'o' (custom)
+      try{
+        if(typeof(n) === 'undefined') return;
+        if(typeof(a) === 'undefined') a = true;
+        if(typeof(t) === 'undefined') t = 'o';
+        s.linkTrackVars='prop27';
+        s.prop27 = n;
+        s.tl(a,t,n);
+      }catch(e){}
+    }
+    /*track video function, currently integrated with flow player*/
+    /*accepts values of 'open', 'start', 'stop', 'close' in the mode field*/
+    /*accepts the clip object from flowplayer*/
+    sc.trackVideo = function(mode,clip,settings){
+      try{
+        var title,category,flvName,flvId;
+        currentClip = clip.getClip();
+        url = currentClip.url;
+        duration = parseInt(Math.round(currentClip.fullDuration));
+        clipTime = parseInt(Math.round(clip.getTime()));
+        //clipTimeTenthSecond = Math.round(clip.getTime() * 10);
+        flvName = COMMON_flowPlayer.getFLVName(url);
+        if(typeof(settings) === 'object' && typeof(settings.flvId) != 'undefined') flvId = settings.flvId;
+        if(typeof(COMMON_flowPlayer) != 'undefined' && typeof(COMMON_flowPlayer.getFLVName) === 'function') flvName = COMMON_flowPlayer.getFLVName(url); 
+        if(typeof(settings) != 'undefined' && typeof(settings.videoTitle) != 'undefined') title = settings.videoTitle != '' ? settings.videoTitle : '';
+        if(typeof(settings) != 'undefined' && typeof(settings.videoCategory) != 'undefined') category = settings.videoCategory != '' ? settings.videoCategory : '';
+        if(title == '' && flvName != 'undefined') title = flvName;
+        if(typeof(flvId) === 'string') title += ' | ' + flvId;
+        //if(settings)console.info(settings);
+        if (mode == 'open'){//s.Media.open & s.Media.play
+          s.Media.open(title,duration,url);
+          s.Media.play(title,0);
+        }else if(mode == 'play'){//s.Media.play
+          s.Media.play(title,clipTime);
+        }else if(mode == 'stop'){//s.Media.stop
+          s.Media.stop(title,clipTime);
+        }else if(mode == 'close'){//s.Media.stop & s.Media.close
+          s.Media.stop(title,clipTime);
+          s.Media.close(title);
+        }
+      }catch(e){};
+    }
+    //delay pageview tracking until search  ajax returns with search results
+    //delay pageview on login lightbox
+    if(document.location.pathname.indexOf('/search.html') !== -1 || document.location.pathname.indexOf('/lightboxLogin.html') !== -1){
+      sc.delay = true;
+    }
+    if(sc.delay !== true){
+       sc.init();
+       var s_code = s.t(); if(s_code)document.write(s_code);//-->
+    }
+  </script>
 
 <script language="JavaScript" type="text/javascript"><!--
 if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
@@ -2442,7 +2476,6 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
       });
     }
   }catch(e){}
-  
   /*CTA Tracking*/
   try{
     $('.headerConsole div.buttons').on('click','a',function (e){
@@ -2450,8 +2483,8 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
     });
   }catch(e){}
 
-
-</script>  
+</script>
+  
 
   
   <!-- Google -->
@@ -2516,7 +2549,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
   
   </body>
 <!--
-[Instance=cq02.dc3.aptimus.net; Elapsed=0 ms; Last Generated=Tue Feb 19 23:57:19 GMT 2013; ]
+[Instance=cq03.dc3.aptimus.net; Elapsed=1 ms; Last Generated=Fri Feb 22 23:53:58 GMT 2013; ]
 -->
 
 

@@ -487,7 +487,7 @@ siNav.load({
 	],
 	"boxmma" : [
 		{ "u": "/mma/news/20130117/mma-schedule-results/?eref=sinav",			"l":"MMA Schedules &amp; Results" },
-		{ "u": "/2012/mma/boxing/schedule/?eref=sinav",			"l":"Boxing Schedules &amp; Results" },
+		{ "u": "/mma/news/20130206/upcoming-boxing-schedule/?eref=sinav",			"l":"Boxing Schedules &amp; Results" },
 		{ "u": "/2011/mma/boxing/pound-for-pound-ratings/index.html",			"l":"Pound-for-Pound Ratings" }
 	],
 	"tennis" : [
@@ -523,7 +523,7 @@ siNav.load({
 	],
 	"video" : [
 		{ "u": "/basketball/ncaa/seth-davis/fresh-takes/?eref=sinav",			"l":"Fresh Takes" },
-		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
+		{ "u": "/2013_swimsuit/video/?eref=sinav",			"l":"Swimsuit" },
 		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }
 	]
 });

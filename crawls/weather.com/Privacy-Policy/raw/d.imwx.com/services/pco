@@ -672,16 +672,28 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 		prvlgd.setUser("flash", $.browser);
 		
 		prvlgd.set("page.fv", fv);
-		var partner=$.cookie("partner");
+		var partnerValueBeforeSet=$.cookie("partner");
 		
-		if (partner == null || typeof(partner) =="undefined"){
+		if (partnerValueBeforeSet == null || typeof(partnerValueBeforeSet) =="undefined"){
 			// MFW Changes for partner cookie
 			try {
 				if(document && document.referrer && document.referrer.indexOf("//www.facebook.com/") > 0) {
-					$.cookie("partner", "MFWShare", {
-						domain  : '.weather.com',
-						path    : '/'
-					});
+					var params = window.location.search.substring(1);
+					var partnerParam = '';
+					paramArray = params.split("&");
+					for(var i=0,l=paramArray.length;i<l;i++){
+						if(paramArray[i].match(/partner/) && paramArray[i].split("=").length > 1){
+							partnerParam = paramArray[i].split("=")[1];
+							break;
+						}
+					}
+					
+					if(partnerParam.length > 0) {
+						$.cookie("partner", partnerParam, {
+							domain  : '.weather.com',
+							path    : '/'
+						});
+					}
 				}
 			}
 			catch(err) {
@@ -689,6 +701,7 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 			}
 		}
 		
+		var partner=$.cookie("partner");
 		if (partner!=null && typeof(partner)!="undefined") {
 			prvlgd.setUser("cobrand", partner);
 		}
@@ -1029,6 +1042,8 @@ try{console.log()}catch(e){}
 			prvlgd.set("user.preferredDeclarationFamily", val);
 		}else if(node=="backTo"){
 			prvlgd.set("user.backTo",val);
+		}else if(node=="androidPopUp"){			
+			prvlgd.set("user.androidPopUp",val);
 		}else if(node=="parStr"){			
 			prvlgd.set("user.parStr",val);
 		}else if(node=="siteStr"){			
@@ -1310,8 +1325,7 @@ try{console.log()}catch(e){}
 						    fhr : "tempHR",
 						    flr : "tempLR",
 						    fsnw: "fsnw",
-						    cwsh: "cwsh",
-						    cwsl: "cwsl"
+						    cws: "cws"
 						  };
 	
 				var fcstCondKeymap={
@@ -1320,7 +1334,12 @@ try{console.log()}catch(e){}
 						    fc3 : "fc3"
 				}
 	
-				
+				var fcstPrcpKeymap = {
+					prcp_d1 : "prcp_d1",
+					prcp_n1 : "prcp_n1",
+					prcp_d2 : "prcp_d2",
+					prcp_n2 : "prcp_n2"
+				}
 				
 				if (wx.temp || wx.tempR){
 					getKeywordValues(wxkeymap, wx);
@@ -1334,11 +1353,17 @@ try{console.log()}catch(e){}
 					}else{
 						getKeywordNulls(fcstCondKeymap);
 					}
+					if (wx.fcast.prcp){
+						getKeywordValues(fcstPrcpKeymap, wx.fcast.prcp);
+					}else{
+						getKeywordNulls(fcstPrcpKeymap);
+					}
 				}
 				else{
 					getKeywordNulls(wxkeymap);
 					getKeywordNulls(fcstKeymap);
 					getKeywordNulls(fcstCondKeymap);
+					getKeywordNulls(fcstPrcpKeymap);
 				}
 			}
 		}

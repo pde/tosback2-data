@@ -848,7 +848,8 @@ var $window = $(window),
                 if(status === google.maps.DistanceMatrixStatus.OK) {
                     var origins = response.originAddresses;
                     var outputDiv = document.getElementById(p.divName);
-                    outputDiv.innerHTML = '<b>' + pc.displayName + '</b><br/><b>Hours:</b> ' + pc.hours + '<br/>' + pc.address + ' - <a href="#mapper' + pc.id + '" class="openMap" title="' + pc.address + '">Open Map</a> - <a href="#mapperWrapper' + pc.id + '" class="openMap invokemap ' + pc.id + ' ' + pc.location.lat + ' ' + pc.location.lng + '" title="' + pc.address + '">Open Directions</a><br/><b>Notes:</b> ' + pc.notes + '<br/>';
+                    var encodedAddress = encodeURI(pc.address.replace("<br/>"," "));
+                    outputDiv.innerHTML = '<b>' + pc.displayName + '</b><br/><b>Hours:</b> ' + pc.hours + '<br/>' + pc.address + ' - <a href="http://maps.google.com/maps?z=12&t=m&q=' + encodedAddress + '" target="_blank">Get Directions</a><br/><b>Notes:</b> ' + pc.notes + '<br/>';
                     outputDiv.innerHTML += '<div class="payment-types"><b>Payment Types:</b></div> ' + buildPaymentTypes(pc.types);
                     outputDiv.innerHTML += '<b>Services:</b> ' + buildServices(pc.services);
 
@@ -1840,19 +1841,23 @@ function synchNow(epcDataSynchServletPath, buttonLabel, defaultFailureMsg) {
                     jQuery('#synch-message').html(data.message);
                     jQuery('#synch-button').html(buttonLabel);
                 } else {
-                    jQuery('#synch-message').html(data.message);
-                    $("#synch-button").hide();
+                    disableButton(defaultFailureMsg);
                 }
             } else {
-                jQuery('#synch-message').html(defaultFailureMsg);
-                $("#synch-button").hide();
+                disableButton(defaultFailureMsg);
             }
         },
         error: function () {
-            jQuery('#synch-message').html(defaultFailureMsg);
-            $("#synch-button").hide();
+            disableButton(defaultFailureMsg);
         }
     });
+}
+
+function disableButton(defaultFailureMsg) {
+    $('#synch-button').removeAttr("href");
+    $('#synch-button').removeAttr("onclick");
+    $('#synch-button').css('background','#C0C0C0');
+    $('#synch-button').html(defaultFailureMsg);
 }
 $(document).ready(function () {
     if ($('.chatpromptadmin').length > 0) {
@@ -17173,12 +17178,12 @@ $(document).ready(function () {
 })
 function getUrl() {
     var geoData;
-    var queryURI;
+    var queryURI = "/bin/miniclu.json?region=";
     if($.cookie('twc-user-profile')) {
         geoData = jQuery.parseJSON($.cookie('twc-user-profile'));
     }
-    if(geoData){
-        queryURI = "/bin/miniclu.json?region=" + geoData.region;
+    if(geoData) {
+        queryURI = queryURI + geoData.region;
     }
     return(queryURI);
 }
@@ -17201,7 +17206,7 @@ function buildModalTitles(titles) {
     var modalTitleStart = "<ul class=\"tabs\" persist=\"true\">";
     var modalTitleHTML = "";
     for(i=0; i<titles.length; i++){
-        modalTitleHTML += "<li><a href=\"#\" minirel=\"" + i + "\" onclick=\"showChannelTab(" + i + ")\">" + titles[i] + "</a></li>";
+        modalTitleHTML += "<li minirel=\"" + i + "\" onclick=\"showChannelTab(" + i + "); return false;\"><a href=\"#\">" + titles[i] + "</a></li>";
     }
     var modalTitleEnd = "</ul>";
     return modalTitleStart + modalTitleHTML + modalTitleEnd;
@@ -17218,8 +17223,8 @@ function buildModalTabContents(description, channels, bottomMessages, i) {
 */
 function showChannelTab(pos) {
      $('.miniCLUTVPlans li').removeClass('selected');
-    var rel = "a[minirel=" + pos + "]";
-    $(rel).parent().addClass('selected');
+    var rel = "li[minirel=" + pos + "]";
+    $(rel).addClass('selected');
     $($('.minitabcontent').hide()[pos]).show();
     $($('.miniButtomMessage').hide()[pos]).show();
 }
@@ -17242,7 +17247,7 @@ function showMiniCLU(pos) {
                 bottomMessages[i] = data[i].bottomMessage;
             }
             var modalHTML = buildModalHTML(titles, descriptions, channels, bottomMessages);
-            $.fancybox(modalHTML, {minWidth:500, maxWidth:1000});
+            $.fancybox(modalHTML, {'width': 775, 'height': 440, 'autoSize': false, 'scrolling': 'no'});
             showChannelTab(pos);
         });
     }
@@ -17272,7 +17277,7 @@ function showMiniCLUFromTVPage(packageName){
                 bottomMessages[i] = data[i].bottomMessage;
             }
             var modalHTML = buildModalHTML(titles, descriptions, channels, bottomMessages);
-            $.fancybox(modalHTML, {minWidth:500, maxWidth:1000});
+            $.fancybox(modalHTML, {'width': 778, 'height': 440, 'autoSize': false, 'scrolling': 'no'});
             showChannelTab(pos);
         });
     }

@@ -627,6 +627,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				}
 
 				var ratingImg = "/img/bv/small/rating-0_0.gif";
+				var alt_text_rating = "0";
 				if (ratings) {
 					var iRating = parseInt(ratings*10)/10;
 					ratings = iRating.toString();
@@ -636,6 +637,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 					}
 					
 					ratingImg = "/img/bv/small/rating-" + ratings.toString().replace(".","_") + ".gif";
+					alt_text_rating = ratings;
 				}
 				
 				var compareCatentryId = '';
@@ -661,13 +663,14 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				lines.push("<p class='price'>" + startingAt + " $" + parseFloat(price).toFixed(2) + "</p>");
 				
 				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews'>" + 
-						"<img src='" + ratingImg + "'>"+ "</a></span></div>");
+						"<img src='" + ratingImg + "' alt='" + alt_text_rating + " out of 5 stars'>"+ "</a></span></div>");
 				
 				if (!isModelThree) {
-					lines.push("<p><label for='compare-123abc'>" +
+					lines.push("<p><label class='ada-hide' for='check_" + compareCatentryId + "'>Compare</label>" +
 							"<input type='checkbox' id='check_" + compareCatentryId + "' name='checkboxid' " +
 							"onclick='JavaScript:categoryDisplayJS.Add2CompareAjax(\""+compareCatentryId+"\" , \""+thumbnailImg
-							+"\",\""+catEntryDisplayUrl+"\", \""+compareImageDescription+"\")'>&nbsp;Compare</label></p>");
+							+"\",\""+catEntryDisplayUrl+"\", \""+compareImageDescription+"\")'>" +
+							"&nbsp;Compare</p>");
 				}
 				if (labels != null && labels.indexOf("PREVIOUSLY OWNED") > -1) {
 					lines.push("<br/><span class='flag-name'><span alt='Previously Owned'>Previously Owned</span></span>");

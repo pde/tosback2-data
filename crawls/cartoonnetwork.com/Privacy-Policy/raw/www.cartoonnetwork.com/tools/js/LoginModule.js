@@ -288,6 +288,17 @@ LoginModule.onShowPrivacyPolicy = function (){
 
 LoginModule.showLoginWindow = function (oParams, p_menuView) {
 
+// dmandevi, 22 Feb 2013
+// hack for formula cartoon
+	if (parent.location.pathname.indexOf('formula-cartoon') > -1) {
+		if (document.getElementById('gameframe')) {
+			var idoc = parent.document.getElementById('gameframe').contentDocument || parent.document.getElementById('gameframe').contentWindow.document;
+			if(idoc.getElementById('KP')){
+				idoc.getElementById('KP').style.visibility = 'hidden';
+			}
+		}
+	}
+
 	if(oParams.visible){
 		LoginModule.onShowLoginWindow();
 
@@ -397,11 +408,18 @@ LoginModule.onShowLoginWindow = function () {
 	}
 	
 	if(document.getElementById('displayBlock')){
-		document.getElementById('displayBlock').style.visibility = "hidden";
+		if(typeof(unityPlayerMinimize) == undefined){
+			document.getElementById('displayBlock').style.visibility = "hidden";
+		}
 	}
 
 	if(document.getElementById('unityPlayer')){
-		document.getElementById('unityPlayer').style.visibility = "hidden";
+		if(unityPlayerMinimize){
+			document.getElementById('unityPlayer').style.height="50px";
+			document.getElementById('unityPlayer').style.width="50px";
+		}else{
+			document.getElementById('unityPlayer').style.visibility = "hidden";
+		}
 	}
 }
 
@@ -416,11 +434,18 @@ LoginModule.onHideLoginWindow = function () {
 	}
 	
 	if(document.getElementById('displayBlock')){
-		document.getElementById('displayBlock').style.visibility = "visible";
+		if(typeof(unityPlayerMinimize) == undefined){
+			document.getElementById('displayBlock').style.visibility = "visible";
+		}
 	}
 
 	if(document.getElementById('unityPlayer')){
-		document.getElementById('unityPlayer').style.visibility = "visible";
+		if(unityPlayerMinimize){
+			document.getElementById('unityPlayer').style.height="600px";
+			document.getElementById('unityPlayer').style.width="900px";
+		}else{
+			document.getElementById('unityPlayer').style.visibility = "visible";
+		}
 	}
 }
 

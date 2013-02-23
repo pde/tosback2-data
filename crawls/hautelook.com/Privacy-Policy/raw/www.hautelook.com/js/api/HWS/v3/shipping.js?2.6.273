@@ -1,0 +1,30 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.shipping = {};
+HWS.v3.shipping.shipping = {};
+
+HWS.v3.shipping.shipping.get = function(params) {
+    $.ajax({
+        url: '/v3/shipping/' + params.shipping_id,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+    		if (typeof params.onSuccess == 'function') {
+    			params.onSuccess(response.shipping, status, XHR);
+    		}
+        },
+
+        complete: params.complete
+    });
+};

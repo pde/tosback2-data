@@ -76,7 +76,7 @@ btg.config={
 		dartSite: 'vh1.mtvi',
 		isInternational: false,
 		isUnobtrusive: false,
-		allowMobile: false,
+		allowMobile: true,
 		enabledMobileAdDomain: false
 	},
 	International:{

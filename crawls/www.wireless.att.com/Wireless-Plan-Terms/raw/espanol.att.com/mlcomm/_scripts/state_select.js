@@ -217,7 +217,7 @@ function renderStateSelectMenu() {
 	 } 
 	else if($('#chooseState').is('.uverse_receptor')) {
 	 $.each(allStates, function(index, value) {  
-      $('#ssmenu li#' + index).html('<a href="/residential_customers/att_uverse/uverse_internet/receptor.html?id=' + index  + '" title="U-verse Internet" class="initCap">' + value + '</a>');
+      $('#ssmenu li#' + index).html('<a href="/residential_customers/att_uverse/uverse_tv/receptor.html?id=' + index  + '" title="U-verse Tv" class="initCap">' + value + '</a>');
     }); 
 	 } 
 	else if($('#chooseState').is('.uverse_help')) {

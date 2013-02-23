@@ -505,23 +505,217 @@ else if(api[command]){api[command].apply(api[command],args);}});return returned!
 else if('object'===typeof options||!arguments.length)
 {opts=sanitizeOptions($.extend(TRUE,{},options));return QTIP.bind.call(this,opts,event);}};QTIP.bind=function(opts,event)
 {return this.each(function(i){var options,targets,events,namespace,api,id;id=$.isArray(opts.id)?opts.id[i]:opts.id;id=!id||id===FALSE||id.length<1||usedIDs[id]?QTIP.nextid++:(usedIDs[id]=id);namespace='.qtip-'+id+'-create';api=init.call(this,id,opts);if(api===FALSE){return TRUE;}
-options=api.options;$.each(PLUGINS,function(){if(this.initialize==='initialize'){this(api);}});targets={show:options.show.target,hide:options.hide.target};events={show:$.trim(''+ options.show.event).replace(/ /g,namespace+' ')+ namespace,hide:$.trim(''+ options.hide.event).replace(/ /g,namespace+' ')+ namespace};if(/mouse(over|enter)/i.test(events.show)&&!/mouse(out|leave)/i.test(events.hide)){events.hide+=' mouseleave'+ namespace;}
-targets.show.bind('mousemove'+namespace,function(event){MOUSE={pageX:event.pageX,pageY:event.pageY,type:'mousemove'};api.cache.onTarget=TRUE;});function hoverIntent(event){function render(){api.render(typeof event==='object'||options.show.ready);targets.show.add(targets.hide).unbind(namespace);}
-if(api.cache.disabled){return FALSE;}
-api.cache.event=$.extend({},event);api.cache.target=event?$(event.target):[undefined];if(options.show.delay>0){clearTimeout(api.timers.show);api.timers.show=setTimeout(render,options.show.delay);if(events.show!==events.hide){targets.hide.bind(events.hide,function(){clearTimeout(api.timers.show);});}}
-else{render();}}
-targets.show.bind(events.show,hoverIntent);if(options.show.ready||options.prerender){hoverIntent(event);}});};PLUGINS=QTIP.plugins={Corner:function(corner){corner=(''+ corner).replace(/([A-Z])/,' $1').replace(/middle/gi,CENTER).toLowerCase();this.x=(corner.match(/left|right/i)||corner.match(/center/)||['inherit'])[0].toLowerCase();this.y=(corner.match(/top|bottom|center/i)||['inherit'])[0].toLowerCase();var f=corner.charAt(0);this.precedance=(f==='t'||f==='b'?Y:X);this.string=function(){return this.precedance===Y?this.y+this.x:this.x+this.y;};this.abbrev=function(){var x=this.x.substr(0,1),y=this.y.substr(0,1);return x===y?x:this.precedance===Y?y+ x:x+ y;};this.invertx=function(center){this.x=this.x===LEFT?RIGHT:this.x===RIGHT?LEFT:center||this.x;};this.inverty=function(center){this.y=this.y===TOP?BOTTOM:this.y===BOTTOM?TOP:center||this.y;};this.clone=function(){return{x:this.x,y:this.y,precedance:this.precedance,string:this.string,abbrev:this.abbrev,clone:this.clone,invertx:this.invertx,inverty:this.inverty};};},offset:function(elem,container){var pos=elem.offset(),docBody=elem.closest('body')[0],parent=container,scrolled,coffset,overflow;function scroll(e,i){pos.left+=i*e.scrollLeft();pos.top+=i*e.scrollTop();}
-if(parent){do{if(parent.css('position')!=='static'){coffset=parent.position();pos.left-=coffset.left+(parseInt(parent.css('borderLeftWidth'),10)||0)+(parseInt(parent.css('marginLeft'),10)||0);pos.top-=coffset.top+(parseInt(parent.css('borderTopWidth'),10)||0)+(parseInt(parent.css('marginTop'),10)||0);if(!scrolled&&(overflow=parent.css('overflow'))!=='hidden'&&overflow!=='visible'){scrolled=parent;}}}
-while((parent=$(parent[0].offsetParent)).length);if(scrolled&&scrolled[0]!==docBody){scroll(scrolled,1);}}
-return pos;},iOS:parseFloat((''+(/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent)||[0,''])[1]).replace('undefined','3_2').replace('_','.').replace('_',''))||FALSE,fn:{attr:function(attr,val){if(this.length){var self=this[0],title='title',api=$.data(self,'qtip');if(attr===title&&api&&'object'===typeof api&&api.options.suppress){if(arguments.length<2){return $.attr(self,oldtitle);}
-if(api&&api.options.content.attr===title&&api.cache.attr){api.set('content.text',val);}
-return this.attr(oldtitle,val);}}
-return $.fn['attr'+replaceSuffix].apply(this,arguments);},clone:function(keepData){var titles=$([]),title='title',elems=$.fn['clone'+replaceSuffix].apply(this,arguments);if(!keepData){elems.filter('['+oldtitle+']').attr('title',function(){return $.attr(this,oldtitle);}).removeAttr(oldtitle);}
-return elems;}}};$.each(PLUGINS.fn,function(name,func){if(!func||$.fn[name+replaceSuffix]){return TRUE;}
-var old=$.fn[name+replaceSuffix]=$.fn[name];$.fn[name]=function(){return func.apply(this,arguments)||old.apply(this,arguments);};});if(!$.ui){$['cleanData'+replaceSuffix]=$.cleanData;$.cleanData=function(elems){for(var i=0,elem;(elem=elems[i])!==undefined;i++){try{$(elem).triggerHandler('removeqtip');}
-catch(e){}}
-$['cleanData'+replaceSuffix](elems);};}
-QTIP.version='@VERSION';QTIP.nextid=0;QTIP.inactiveEvents='click dblclick mousedown mouseup mousemove mouseleave mouseenter'.split(' ');QTIP.zindex=15000;// Define configuration defaults
+options=api.options;$.each(PLUGINS,function(){if(this.initialize==='initialize'){this(api);}});targets={show:options.show.target,hide:options.hide.target};events={show:$.trim('' + options.show.event).replace(/ /g, namespace+' ') + namespace,
+            hide: $.trim('' + options.hide.event).replace(/ /g, namespace+' ') + namespace
+        };
+
+        /*
+        * Make sure hoverIntent functions properly by using mouseleave as a hide event if
+        * mouseenter/mouseout is used for show.event, even if it isn't in the users options.
+        */
+        if(/mouse(over|enter)/i.test(events.show) && !/mouse(out|leave)/i.test(events.hide)) {
+            events.hide += ' mouseleave' + namespace;
+        }
+
+        /*
+        * Also make sure initial mouse targetting works correctly by caching mousemove coords
+        * on show targets before the tooltip has rendered.
+        *
+        * Also set onTarget when triggered to keep mouse tracking working
+        */
+        targets.show.bind('mousemove'+namespace, function(event) {
+            MOUSE = { pageX: event.pageX, pageY: event.pageY, type: 'mousemove' };
+            api.cache.onTarget = TRUE;
+        });
+
+        // Define hoverIntent function
+        function hoverIntent(event) {
+            function render() {
+                // Cache mouse coords,render and render the tooltip
+                api.render(typeof event === 'object' || options.show.ready);
+
+                // Unbind show and hide events
+                targets.show.add(targets.hide).unbind(namespace);
+            }
+
+            // Only continue if tooltip isn't disabled
+            if(api.cache.disabled) { return FALSE; }
+
+            // Cache the event data
+            api.cache.event = $.extend({}, event);
+            api.cache.target = event ? $(event.target) : [undefined];
+
+            // Start the event sequence
+            if(options.show.delay > 0) {
+                clearTimeout(api.timers.show);
+                api.timers.show = setTimeout(render, options.show.delay);
+                if(events.show !== events.hide) {
+                    targets.hide.bind(events.hide, function() { clearTimeout(api.timers.show); });
+                }
+            }
+            else { render(); }
+        }
+
+        // Bind show events to target
+        targets.show.bind(events.show, hoverIntent);
+
+        // Prerendering is enabled, create tooltip now
+        if(options.show.ready || options.prerender) { hoverIntent(event); }
+    });
+};
+
+// Setup base plugins
+PLUGINS = QTIP.plugins = {
+    // Corner object parser
+    Corner: function(corner) {
+        corner = ('' + corner).replace(/([A-Z])/, ' $1').replace(/middle/gi, CENTER).toLowerCase();
+        this.x = (corner.match(/left|right/i) || corner.match(/center/) || ['inherit'])[0].toLowerCase();
+        this.y = (corner.match(/top|bottom|center/i) || ['inherit'])[0].toLowerCase();
+
+        var f = corner.charAt(0); this.precedance = (f === 't' || f === 'b' ? Y : X);
+
+        this.string = function() { return this.precedance === Y ? this.y+this.x : this.x+this.y; };
+        this.abbrev = function() {
+            var x = this.x.substr(0,1), y = this.y.substr(0,1);
+            return x === y ? x : this.precedance === Y ? y + x : x + y;
+        };
+
+        this.invertx = function(center) { this.x = this.x === LEFT ? RIGHT : this.x === RIGHT ? LEFT : center || this.x; };
+        this.inverty = function(center) { this.y = this.y === TOP ? BOTTOM : this.y === BOTTOM ? TOP : center || this.y; };
+
+        this.clone = function() {
+            return {
+                x: this.x, y: this.y, precedance: this.precedance,
+                string: this.string, abbrev: this.abbrev, clone: this.clone,
+                invertx: this.invertx, inverty: this.inverty
+            };
+        };
+    },
+
+    // Custom (more correct for qTip!) offset calculator
+    offset: function(elem, container) {
+        var pos = elem.offset(),
+            docBody = elem.closest('body')[0],
+            parent = container, scrolled,
+            coffset, overflow;
+
+        function scroll(e, i) {
+            pos.left += i * e.scrollLeft();
+            pos.top += i * e.scrollTop();
+        }
+
+        if(parent) {
+            // Compensate for non-static containers offset
+            do {
+                if(parent.css('position') !== 'static') {
+                    coffset = parent.position();
+
+                    // Account for element positioning, borders and margins
+                    pos.left -= coffset.left + (parseInt(parent.css('borderLeftWidth'), 10) || 0) + (parseInt(parent.css('marginLeft'), 10) || 0);
+                    pos.top -= coffset.top + (parseInt(parent.css('borderTopWidth'), 10) || 0) + (parseInt(parent.css('marginTop'), 10) || 0);
+
+                    // If this is the first parent element with an overflow of "scroll" or "auto", store it
+                    if(!scrolled && (overflow = parent.css('overflow')) !== 'hidden' && overflow !== 'visible') { scrolled = parent; }
+                }
+            }
+            while((parent = $(parent[0].offsetParent)).length);
+
+            // Compensate for containers scroll if it also has an offsetParent
+            if(scrolled && scrolled[0] !== docBody) { scroll( scrolled, 1 ); }
+        }
+
+        return pos;
+    },
+
+    /*
+    * iOS version detection
+    */
+    iOS: parseFloat(
+        ('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+        .replace('undefined', '3_2').replace('_', '.').replace('_', '')
+    ) || FALSE,
+
+    /*
+    * jQuery-specific $.fn overrides
+    */
+    fn: {
+        /* Allow other plugins to successfully retrieve the title of an element with a qTip applied */
+        attr: function(attr, val) {
+            if(this.length) {
+                var self = this[0],
+                    title = 'title',
+                    api = $.data(self, 'qtip');
+
+                if(attr === title && api && 'object' === typeof api && api.options.suppress) {
+                    if(arguments.length < 2) {
+                        return $.attr(self, oldtitle);
+                    }
+
+                    // If qTip is rendered and title was originally used as content, update it
+                    if(api && api.options.content.attr === title && api.cache.attr) {
+                        api.set('content.text', val);
+                    }
+
+                    // Use the regular attr method to set, then cache the result
+                    return this.attr(oldtitle, val);
+                }
+            }
+
+            return $.fn['attr'+replaceSuffix].apply(this, arguments);
+        },
+
+        /* Allow clone to correctly retrieve cached title attributes */
+        clone: function(keepData) {
+            var titles = $([]), title = 'title',
+
+            // Clone our element using the real clone method
+            elems = $.fn['clone'+replaceSuffix].apply(this, arguments);
+
+            // Grab all elements with an oldtitle set, and change it to regular title attribute, if keepData is false
+            if(!keepData) {
+                elems.filter('['+oldtitle+']').attr('title', function() {
+                    return $.attr(this, oldtitle);
+                })
+                .removeAttr(oldtitle);
+            }
+
+            return elems;
+        }
+    }
+};
+
+// Apply the fn overrides above
+$.each(PLUGINS.fn, function(name, func) {
+    if(!func || $.fn[name+replaceSuffix]) { return TRUE; }
+
+    var old = $.fn[name+replaceSuffix] = $.fn[name];
+    $.fn[name] = function() {
+        return func.apply(this, arguments) || old.apply(this, arguments);
+    };
+});
+
+/* Fire off 'removeqtip' handler in $.cleanData if jQuery UI not present (it already does similar).
+ * This snippet is taken directly from jQuery UI source code found here:
+ *     http://code.jquery.com/ui/jquery-ui-git.js
+ */
+if(!$.ui) {
+    $['cleanData'+replaceSuffix] = $.cleanData;
+    $.cleanData = function( elems ) {
+        for(var i = 0, elem; (elem = elems[i]) !== undefined; i++) {
+            try { $( elem ).triggerHandler('removeqtip'); }
+            catch( e ) {}
+        }
+        $['cleanData'+replaceSuffix]( elems );
+    };
+}
+
+// Set global qTip properties
+QTIP.version = '@VERSION';
+QTIP.nextid = 0;
+QTIP.inactiveEvents = 'click dblclick mousedown mouseup mousemove mouseleave mouseenter'.split(' ');
+QTIP.zindex = 15000;
+
+// Define configuration defaults
 QTIP.defaults = {
     prerender: FALSE,
     id: FALSE,

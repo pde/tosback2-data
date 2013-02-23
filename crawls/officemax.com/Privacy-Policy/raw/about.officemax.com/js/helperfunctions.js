@@ -146,11 +146,11 @@ AwardsRecognition1.src = "../images/awards_recognition_0.gif";
 AwardsRecognition2 = new Image();
 AwardsRecognition2.src = "../images/awards_recognition_1.gif";
 
-CompanyTimeline1 = new Image();
-CompanyTimeline1.src = "../images/company_timeline_0.gif";
+MergerInformation1 = new Image();
+MergerInformation1.src = "../images/merger_0.gif";
 
-CompanyTimeline2 = new Image();
-CompanyTimeline2.src = "../images/company_timeline_1.gif";
+MergerInformation2 = new Image();
+MergerInformation2.src = "../images/merger_1.gif";
 
 // Sub Menu 3 RollOvers
 CodeEthics1 = new Image();

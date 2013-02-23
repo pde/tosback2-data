@@ -1,0 +1,55 @@
+<html><head><script type="text/javascript">
+var anas = [1495,2186,1325,1345,1635,2738,2848,3078,1797,2067,2408,2418,2438,1215,1705,1907,1927,2106,1997,2508,1575,2156,2748,3158,2458,2146,3048,3058];
+var curCall = 0;
+var stop = 0;
+function loadNextPixel() {
+  if(curCall < anas.length && stop == 0) {
+    loadPixel(anas[curCall], curCall + 1);
+    curCall++;
+  }
+};
+function loadPixel(anaId, n) {
+  var elem = document.createElement('img');
+  if (elem.addEventListener) {
+    elem.addEventListener('load',loadNextPixel,false);
+    elem.addEventListener('error',loadNextPixel,false);
+  } else if (elem.attachEvent) {
+    elem.attachEvent('onload',loadNextPixel);
+    elem.attachEvent('onerror',loadNextPixel);
+  }
+  elem.border = '0';
+  elem.hspace = '0';
+  elem.vspace = '0';
+  elem.width = '1';
+  elem.height= '1';
+  elem.src = 'http://rc.rlcdn.com/366018.gif?n=' + n + '&ana=' + anaId + '&' + 'redirect=1&rl=815e976a1799d4dd';
+  document.body.appendChild(elem);
+};
+function extraCalls() {
+  loadNextPixel();
+  loadNextPixel();
+  loadNextPixel();
+  loadNextPixel();
+  loadNextPixel();
+}
+function stopCalls() {
+  stop = 1;
+}
+function extraCallsWithTimeout() {
+  window.setTimeout('extraCalls()',500);
+}
+if (window.addEventListener) {
+  window.addEventListener('load',extraCallsWithTimeout,false);
+} else if (window.attachEvent) {
+  window.attachEvent('onload',extraCallsWithTimeout);
+}
+</script></head>
+<body><img border='0' hspace='0' vspace='0' width='1' height='1' src='http://ib.adnxs.com/getuid?http%3A%2F%2Fidsync.rlcdn.com%2F52154.gif%3Fpartner_uid%3D%24UID' />
+
+<img border='0' hspace='0' vspace='0' width='1' height='1' src='http://sync.mathtag.com/sync/img?mt_exid=10017&redir=http%3A%2F%2Fidsync.rlcdn.com%2F47154.gif%3Fpartner_uid%3D%5BMM_UUID%5D' />
+
+<img border='0' hspace='0' vspace='0' width='1' height='1' src='http://tacoda.at.atwola.com/atx/sync/liveramp/lramp/default' />
+
+<img border='0' hspace='0' vspace='0' width='1' height='1' src='http://loadm.exelator.com/load/?p=204&g=450&rluid=5b8a86555036fae6af017b773192817e60cc8b24f73b49fd9645152752881d17f2fc7f7248dfd545&j=0' />
+
+<img border='0' hspace='0' vspace='0' width='1' height='1' src='http://dpm.demdex.net/ibs:dpid=477&dpuuid=cb8ab33fc3bf04d9e59be2ed53ff0a4c23df3f89008d26f448f383be6f06e346b0da87c991749652&redir=http%3A%2F%2Fidsync.rlcdn.com%2F362248.gif%3Fpartner_uid%3D%24%7BDD_UUID%7D' /></body></html>

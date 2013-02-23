@@ -469,30 +469,7 @@ function ms_openExternal(type, url) {
     window.open(url, type, "location=0,status=1,scrollbars=0,width=" + w + ",height=" + h); 
 }
 
-/**
- * Creates inline video player. Assumes Brightcove experience utils are loaded.
- * @param bcID Brightcove video id.
- */
-function ms_createVidPlayer(bcID) {
-    var config = new Array();
-    config["videoId"] = null; //the default video loaded into the player
-    config["videoRef"] = bcID; //the default video loaded into the player by ref id specified in console
-    config["lineupId"] = null; //the default lineup loaded into the player
-    config["playerTag"] = "ms embedded player"; //player tag used for identifying this page in brightcove reporting
-    config["autoStart"] = false; //tells the player to start playing video on load
-    config["preloadBackColor"] = "#ffffff"; //background color while loading the player
-    config["wmode"] = "opaque";
-    /*
-     * set the player's size using the parameters below
-     * to make this player dynamically resizable, set the width and height as a percentage (default is 486x412)
-     */
-    config["width"] = 320;
-    config["height"] = 271;
 
-    /* do not edit these config items */
-    config["playerId"] = 1412255508;
-    createExperience(config, 8);
-}
 
 // ===================== Polls ===================== 
 /**

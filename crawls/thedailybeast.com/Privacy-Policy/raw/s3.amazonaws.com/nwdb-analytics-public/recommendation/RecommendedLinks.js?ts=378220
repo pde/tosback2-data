@@ -1,0 +1,1563 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/17/meet-baauer-the-man-behind-the-harlem-shake.html",' +
+                '"title": "Meet Baauer, the Man Behind the Harlem Shake",' +
+                '"rubric": "Viral Sensation",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d47f8b415de7a07d06af70de205dcd25"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/18/downton-abbey-why-last-night-s-season-finale-has-fans-seeing-red.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: Why Last Night&rsquo;s Season Finale Has Fans Seeing Red",' +
+                '"rubric": "About Last Night",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "81b3d034cbae719558cd03fac3982928"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-s-bizarre-swag-bag-condoms-circus-training-and-more.html",' +
+                '"title": "Oscar&rsquo;s Bizarre Swag Bag: Condoms, Circus Training, and More",' +
+                '"rubric": "Freebies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e0f35bde8bb688b6f264e1eea93f970"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/america-s-new-mandarins.html",' +
+                '"title": "America&rsquo;s New Mandarins",' +
+                '"rubric": "Education and Earnings",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7bb74a795f3d77363eec5e31b8eb6785"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/15/hollywood-s-favorite-ex-porn-star-a-chat-with-sasha-grey.html",' +
+                '"title": "Hollywood&rsquo;s Favorite Ex&ndash;Porn Star: A Chat With Sasha Grey",' +
+                '"rubric": "Uncensored",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "46aee63a6c047b0808928aa0d8d52f11"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/how-to-give-the-perfect-oscar-speech-halle-berry-meryl-streep-more-video.html",' +
+                '"title": "How to Give the Perfect Oscar Speech: Halle Berry, Meryl Streep &amp; More (VIDEO)",' +
+                '"rubric": "Envelope Please ...",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f09f635181d1938409c72690501d01a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/ignore-the-fear-mongering-whooping-cough-vaccine-works.html",' +
+                '"title": "Ignore the Fear Mongering: Whooping Cough Vaccine Works",' +
+                '"rubric": "Ahem",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1927a1abf2b6e1150e89d2c14e156c4c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/in-washington-sexual-assault-victims-find-justice-elusive.html",' +
+                '"title": "In Washington, Sexual Assault Victims Find Justice Elusive",' +
+                '"rubric": "Women in the World",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "a53323f556b6255e3aafb91acf17612e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-s-bizarre-swag-bag-condoms-circus-training-and-more.html",' +
+                '"title": "Oscar&rsquo;s Bizarre Swag Bag: Condoms, Circus Training, and More",' +
+                '"rubric": "Freebies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e0f35bde8bb688b6f264e1eea93f970"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/louis-vuitton-and-kenzo-blankets-are-street-style-s-newest-trend.html",' +
+                '"title": "Guys Who Wear Blankets?",' +
+                '"rubric": "Blanket Boyz",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0965e1343fcfb2624d59786037cbd1e2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/america-s-new-mandarins.html",' +
+                '"title": "America&rsquo;s New Mandarins",' +
+                '"rubric": "Education and Earnings",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7bb74a795f3d77363eec5e31b8eb6785"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/02/20/al-qaeda-s-top-recruiting-tool-the-cia.html",' +
+                '"title": "Al Qaeda&rsquo;s Top Recruiting Tool: The CIA",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "920cc468588f377dd199c693477ab1bb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/l-a-hotel-scare-how-sick-will-you-get-from-a-corpse-in-water-supply.html",' +
+                '"title": "L.A. Hotel Scare: How Sick Will You Get From a Corpse in Water Supply?",' +
+                '"rubric": "Body in Hotel Tank",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "38411ad956cefa6f46b84faf52ccc77f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/al-qaeda-s-top-recruiting-tool-the-cia.html",' +
+                '"title": "Al Qaeda&rsquo;s Top Recruiting Tool: The CIA",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "920cc468588f377dd199c693477ab1bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/15/hollywood-s-favorite-ex-porn-star-a-chat-with-sasha-grey.html",' +
+                '"title": "Hollywood&rsquo;s Favorite Ex&ndash;Porn Star: A Chat With Sasha Grey",' +
+                '"rubric": "Uncensored",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "46aee63a6c047b0808928aa0d8d52f11"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/america-s-new-mandarins.html",' +
+                '"title": "America&rsquo;s New Mandarins",' +
+                '"rubric": "Education and Earnings",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7bb74a795f3d77363eec5e31b8eb6785"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/19/walmart-customers-have-disappeared-will-they-take-the-economy-with-them.html",' +
+                '"title": "Walmart Customers Have Disappeared.  Will They Take the Economy With Them?",' +
+                '"rubric": "The Great Recession",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "f8ab23c7187708b8d7524ccf279bc33c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/why-barack-obama-and-joe-biden-are-gambling-on-social-media.html",' +
+                '"title": "Why Barack Obama and Joe Biden Are Gambling on Social Media",' +
+                '"rubric": "Stiffing the Press?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "68d153b38b981c7fb7c32d3fd75d4b80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/louis-vuitton-and-kenzo-blankets-are-street-style-s-newest-trend.html",' +
+                '"title": "Guys Who Wear Blankets?",' +
+                '"rubric": "Blanket Boyz",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0965e1343fcfb2624d59786037cbd1e2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-s-bizarre-swag-bag-condoms-circus-training-and-more.html",' +
+                '"title": "Oscar&rsquo;s Bizarre Swag Bag: Condoms, Circus Training, and More",' +
+                '"rubric": "Freebies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e0f35bde8bb688b6f264e1eea93f970"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/u-s-not-ready-for-cyber-war-hostile-hackers-could-launch.html",' +
+                '"title": "U.S. Not Ready for Cyberwar Hostile Hackers Could Launch",' +
+                '"rubric": "Nightmare Scenario",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a58dca47e1f8e9d52bd40b5080a71cfb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/20/the-perfect-oscar-acceptance-speech.html",' +
+                '"title": "The Perfect Oscar Acceptance Speech",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6d6d6b67938fc3e276ab9eee383b1e66"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-s-bizarre-swag-bag-condoms-circus-training-and-more.html",' +
+                '"title": "Oscar&rsquo;s Bizarre Swag Bag: Condoms, Circus Training, and More",' +
+                '"rubric": "Freebies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e0f35bde8bb688b6f264e1eea93f970"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/how-to-give-the-perfect-oscar-speech-halle-berry-meryl-streep-more-video.html",' +
+                '"title": "How to Give the Perfect Oscar Speech: Halle Berry, Meryl Streep &amp; More (VIDEO)",' +
+                '"rubric": "Envelope Please ...",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f09f635181d1938409c72690501d01a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/20/conan-s-best-political-jokes.html",' +
+                '"title": "Conan\'s Best Political Jokes",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "05d5aa78e52bde74ba520c62d08a934e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/southland-television-s-most-underrated-drama.html",' +
+                '"title": "&lsquo;Southland&rsquo;: Television&rsquo;s Most Underrated Drama",' +
+                '"rubric": "THIN BLUE LINE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b8481ef99c649af71e1675ce81b14803"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/louis-vuitton-and-kenzo-blankets-are-street-style-s-newest-trend.html",' +
+                '"title": "Guys Who Wear Blankets?",' +
+                '"rubric": "Blanket Boyz",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0965e1343fcfb2624d59786037cbd1e2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/conservatives-try-to-retake-rape-debate-with-hashtag-liberaltips2avoidrape.html",' +
+                '"title": "Conservatives Try to Retake Rape Debate With Hashtag #LiberalTips2AvoidRape",' +
+                '"rubric": "#LIBERALTIPS2AVOIDRAPE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1e00c158dcc404f0a88825dad5d171a4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/america-s-new-mandarins.html",' +
+                '"title": "America&rsquo;s New Mandarins",' +
+                '"rubric": "Education and Earnings",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7bb74a795f3d77363eec5e31b8eb6785"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/share-your-story-why-i-choose-to-be-childless.html",' +
+                '"title": "Share Your Story: Why I Choose To Be Childless",' +
+                '"rubric": "YOUR STORY",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50d7fb25498a07bea9c169fa2db995fb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/18/downton-abbey-why-last-night-s-season-finale-has-fans-seeing-red.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: Why Last Night&rsquo;s Season Finale Has Fans Seeing Red",' +
+                '"rubric": "About Last Night",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "81b3d034cbae719558cd03fac3982928"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/in-washington-sexual-assault-victims-find-justice-elusive.html",' +
+                '"title": "In Washington, Sexual Assault Victims Find Justice Elusive",' +
+                '"rubric": "Women in the World",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "a53323f556b6255e3aafb91acf17612e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/l-a-hotel-scare-how-sick-will-you-get-from-a-corpse-in-water-supply.html",' +
+                '"title": "L.A. Hotel Scare: How Sick Will You Get From a Corpse in Water Supply?",' +
+                '"rubric": "Body in Hotel Tank",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "38411ad956cefa6f46b84faf52ccc77f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/louis-vuitton-and-kenzo-blankets-are-street-style-s-newest-trend.html",' +
+                '"title": "Guys Who Wear Blankets?",' +
+                '"rubric": "Blanket Boyz",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0965e1343fcfb2624d59786037cbd1e2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-s-bizarre-swag-bag-condoms-circus-training-and-more.html",' +
+                '"title": "Oscar&rsquo;s Bizarre Swag Bag: Condoms, Circus Training, and More",' +
+                '"rubric": "Freebies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e0f35bde8bb688b6f264e1eea93f970"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/15/conspiracy-theories-why-did-the-pope-really-quit.html",' +
+                '"title": "Conspiracy Theories: Why Did the Pope Really Quit?",' +
+                '"rubric": "GOSSIP",' +
+                '"topic": "World",' +
+                '"urlHashCode": "1f93a6828854ce1236c17d3e12b8369d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/why-barack-obama-and-joe-biden-are-gambling-on-social-media.html",' +
+                '"title": "Why Barack Obama and Joe Biden Are Gambling on Social Media",' +
+                '"rubric": "Stiffing the Press?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "68d153b38b981c7fb7c32d3fd75d4b80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/what-s-next-for-pope-benedict.html",' +
+                '"title": "Benedict XVI and the Perks of Being an Ex-Pope",' +
+                '"rubric": "OUTTA HERE",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d1bfc644ad952814d382471b66eba68b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/ignore-the-fear-mongering-whooping-cough-vaccine-works.html",' +
+                '"title": "Ignore the Fear Mongering: Whooping Cough Vaccine Works",' +
+                '"rubric": "Ahem",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1927a1abf2b6e1150e89d2c14e156c4c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/how-to-give-the-perfect-oscar-speech-halle-berry-meryl-streep-more-video.html",' +
+                '"title": "How to Give the Perfect Oscar Speech: Halle Berry, Meryl Streep &amp; More (VIDEO)",' +
+                '"rubric": "Envelope Please ...",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f09f635181d1938409c72690501d01a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/in-washington-sexual-assault-victims-find-justice-elusive.html",' +
+                '"title": "In Washington, Sexual Assault Victims Find Justice Elusive",' +
+                '"rubric": "Women in the World",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "a53323f556b6255e3aafb91acf17612e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/jimmy-kimmel-s-11-best-movies-he-never-saw.html",' +
+                '"title": "Jimmy Kimmel&rsquo;s 11 Best Movies He Never Saw (VIDEO)",' +
+                '"rubric": "The Curator",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8de9d049f8ad89cbfafc9591d588ea79"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/02/17/meet-baauer-the-man-behind-the-harlem-shake.html",' +
+                '"title": "Meet Baauer, the Man Behind the Harlem Shake",' +
+                '"rubric": "Viral Sensation",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d47f8b415de7a07d06af70de205dcd25"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/u-s-not-ready-for-cyber-war-hostile-hackers-could-launch.html",' +
+                '"title": "U.S. Not Ready for Cyberwar Hostile Hackers Could Launch",' +
+                '"rubric": "Nightmare Scenario",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a58dca47e1f8e9d52bd40b5080a71cfb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/america-s-new-mandarins.html",' +
+                '"title": "America&rsquo;s New Mandarins",' +
+                '"rubric": "Education and Earnings",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7bb74a795f3d77363eec5e31b8eb6785"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/michelle-laxalt-s-awful-secret-a-baby-with-pete-domenici.html",' +
+                '"title": "Michelle Laxalt&rsquo;s Awful Secret: A Baby With Pete Domenici",' +
+                '"rubric": "Hidden Baby",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "55708cc74c97ee7e2349967d7cd293a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/the-powerpoint-that-proves-it-s-not-obama-s-sequester-after-all.html",' +
+                '"title": "The PowerPoint That Proves It&rsquo;s Not Obama&rsquo;s Sequester After All",' +
+                '"rubric": "Blame Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa43253b405b52c1f6e47b1118c7a1cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/tim-tebow-s-hate-pastor-responds-to-quarterback-s-withdrawal.html",' +
+                '"title": "Tim Tebow&rsquo;s &lsquo;Hate&rsquo; Pastor Responds to Quarterback&rsquo;s Withdrawal",' +
+                '"rubric": "Don&rsquo;t Take a Knee",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "56df6016f3d70010928ea0e73a5b4610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/mother-of-slain-uva-student-fights-domestic-violence.html",' +
+                '"title": "Mother of Slain UVA Student Fights Domestic Violence",' +
+                '"rubric": "Domestic Violence",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa36a9ffe6cfeb8d53b1873ec0f8ce86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/why-did-prince-harry-and-cressida-come-out.html",' +
+                '"title": "Why Did Prince Harry and Cressida Come Out?",' +
+                '"rubric": "Snog Fest",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "406a1ea294876b9fbc92251012a86a15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/why-barack-obama-and-joe-biden-are-gambling-on-social-media.html",' +
+                '"title": "Why Barack Obama and Joe Biden Are Gambling on Social Media",' +
+                '"rubric": "Stiffing the Press?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "68d153b38b981c7fb7c32d3fd75d4b80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/jodi-arias-has-done-well-on-the-stand-can-she-keep-it-up.html",' +
+                '"title": "Jodi Arias&rsquo;s High-Wire Act",' +
+                '"rubric": "Court Report",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cbef8f6f5ad9142cff27c89820fb5af3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/britain-s-weight-crisis-almost-hits-u-s-proportions.html",' +
+                '"title": "Britain&rsquo;s Weight Crisis Almost Hits U.S. Proportions",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "eb57ecbf7303d88cec45f027a7cba49a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/19/walmart-customers-have-disappeared-will-they-take-the-economy-with-them.html",' +
+                '"title": "Walmart Customers Have Disappeared.  Will They Take the Economy With Them?",' +
+                '"rubric": "The Great Recession",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "f8ab23c7187708b8d7524ccf279bc33c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/should-sex-abuse-scandal-cardinals-be-allowed-to-vote-for-new-pope.html",' +
+                '"title": "Should Sex-Abuse-Scandal Cardinals Be Allowed to Vote for New Pope?",' +
+                '"rubric": "Picking the Pope",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fefab0eb2a8fbdb79eed4ce4ce21acf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/7-juicy-bits-from-clive-davis-s-memoir.html",' +
+                '"title": "7 Juicy Bits From Clive Davis&rsquo;s Memoir",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "73242bb4c98fefe87fc7c879b3ea79d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/oscar-pistorius-murder-case-seven-things-we-ve-learned-so-far.html",' +
+                '"title": "Oscar Pistorius Murder Case: What We&rsquo;ve Learned So Far",' +
+                '"rubric": "The Story So Far",' +
+                '"topic": "World",' +
+                '"urlHashCode": "80e227e84ddf7a7cffa90d852481f7d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/smoking-ban-here-s-where-cigarettes-are-still-allowed.html",' +
+                '"title": "Smoking Ban? Here\'s Where Cigarettes Are Still Allowed",' +
+                '"rubric": "FUMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dda76537a53aeb8484a848373b887f19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/is-bi-the-last-taboo-clive-davis-revives-a-bitter-debate.html",' +
+                '"title": "Is Bi the Last Taboo? Clive Davis Revives a Bitter Debate",' +
+                '"rubric": "Sex and the Music Mogul",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "911a055919badb0907f09d76cdfb3030"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/18/downton-abbey-why-last-night-s-season-finale-has-fans-seeing-red.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: Why Last Night&rsquo;s Season Finale Has Fans Seeing Red",' +
+                '"rubric": "About Last Night",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "81b3d034cbae719558cd03fac3982928"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/15/hollywood-s-favorite-ex-porn-star-a-chat-with-sasha-grey.html",' +
+                '"title": "Hollywood&rsquo;s Favorite Ex&ndash;Porn Star: A Chat With Sasha Grey",' +
+                '"rubric": "Uncensored",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "46aee63a6c047b0808928aa0d8d52f11"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/02/21/introducing-a-dress-that-becomes-transparent-when-you-get-aroused.html",' +
+                '"title": "This Dress Knows You\'re Horny",' +
+                '"rubric": "null",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "bb095f83e6d2431e0c0dad40af4ee5ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/southland-television-s-most-underrated-drama.html",' +
+                '"title": "&lsquo;Southland&rsquo;: Television&rsquo;s Most Underrated Drama",' +
+                '"rubric": "THIN BLUE LINE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b8481ef99c649af71e1675ce81b14803"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/priests-in-panties.html",' +
+                '"title": "Did a Cross-Dressing Priest Sex Ring Bring Down Benedict XVI?",' +
+                '"rubric": "Pope Problems",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a8e901ad34a1844411c2896f0ca1e7ce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/joe-biden-s-shotgun-approach-to-politics-good-for-obama-administration.html",' +
+                '"title": "Joe Biden&rsquo;s Shotgun Approach to Politics Good for Obama Administration",' +
+                '"rubric": "Double-Barrel Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6999ba1de37571306ef1afa55a7d3277"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/how-france-got-so-lazy.html",' +
+                '"title": "How France Got So Lazy",' +
+                '"rubric": "Mon Dieu",' +
+                '"topic": "World",' +
+                '"urlHashCode": "d88de433dea20283925593dfd66af284"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/share-your-story-why-i-choose-to-be-childless.html",' +
+                '"title": "Share Your Story: Why I Choose To Be Childless",' +
+                '"rubric": "YOUR STORY",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50d7fb25498a07bea9c169fa2db995fb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/the-bizarre-coincidences-surrounding-the-50m-diamond-heist-in-belgium.html",' +
+                '"title": "The Bizarre Coincidences Surrounding the $50M Diamond Heist in Belgium",' +
+                '"rubric": "$50 Million Heist",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e5d2a9cbdf0a45ae84abfd542bfec7ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/17/meet-baauer-the-man-behind-the-harlem-shake.html",' +
+                '"title": "Meet Baauer, the Man Behind the Harlem Shake",' +
+                '"rubric": "Viral Sensation",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d47f8b415de7a07d06af70de205dcd25"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/22/8-ways-the-sequester-could-ruin-your-life.html",' +
+                '"title": "Eight Ways the Sequester Could Ruin Your Life",' +
+                '"rubric": "Beware",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d8d2ae60626c13fb1c75d5a094ff8b00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/03/rick-santorum-s-dead-baby-ritual0.html",' +
+                '"title": "Rick Santorum&rsquo;s Dead-Baby Ritual",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "812926c937f14ed5f335f23146a792ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/louis-vuitton-and-kenzo-blankets-are-street-style-s-newest-trend.html",' +
+                '"title": "Guys Who Wear Blankets?",' +
+                '"rubric": "Blanket Boyz",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0965e1343fcfb2624d59786037cbd1e2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/21/ghost-of-mitt-romney-hanging-around-since-november-to-appear-at-cpac.html",' +
+                '"title": "Ghost of Mitt Romney, Hanging Around Since November, to Appear at CPAC",' +
+                '"rubric": "Back for CPAC!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b705cf6626a059090bfedbc66842a5be"' +
+            '}' +
+        ']' +
+    '}'
+);

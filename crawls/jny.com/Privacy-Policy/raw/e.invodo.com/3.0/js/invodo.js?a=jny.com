@@ -22,7 +22,7 @@ if(bl.src){bj.push(bl.src)
 }}}catch(bm){}return bj
 })(),an=w.document,aa=w.navigator,az=Object.prototype.toString,x,ae=w.Invodo||null,V,aX,aH="unknown",y="",U={},aA={},aT={},N={},bd={},a2={},a0,ar=w.location.hostname,aV=ar.split("."),ad=aV.length>1?"."+aV.slice(aV.length-2,aV.length).join("."):aV[0],Y=function(){Y=aN();
 return Y.apply(this,arguments)
-},j=w.jQuery,T=j&&j.fn&&j.fn.jquery,z=/(\d+)?(?:[.](\d+))?(?:[.](\d+))?(?:[.](\d+))?.*/,av=T&&a1(j.fn.jquery,[1,3,2]),al,E=new Date().getTime(),aS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split(""),a,v="invodoLogCookie",bb=7,aF=5,bc=10,aC,J,H=h(),a6,q=[],Z=0,P,at=2000,B=new Date().getTime(),a7=false,ah={podStart:[],podComplete:[],videoStart:[],videoPause:[],videoComplete:[]},A=[],Q=[],d=[],ak=[],au=[],aO={},bh="invodoVisitor",ac=90,am=30*24*60*60*1000,k=/http.*\/p\/(\w{8}).*/,n=/^\w+:\/\//,bf=/(?:^|&)([^&=]*)=?([^&]*)/g,ao="/3.0",be="13.1.1a.18",ag=false,ap=w.location.protocol==="https:"?"https:":"http:",s=ap+"//e.invodo.com",W=ap+"//log.invodo.com",X="rtmp://aoaef.invodo.com/",a3=ap+"//e.invodo.com/media/",aM="http://aoael.invodo.com/media/",ay="/s",aE="",D="/log",S="",C={jQuery:m(ap+"//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js","js",function(){V.$jq=ab.$jq=j=w.jQuery.noConflict(true)
+},j=w.jQuery,T=j&&j.fn&&j.fn.jquery,z=/(\d+)?(?:[.](\d+))?(?:[.](\d+))?(?:[.](\d+))?.*/,av=T&&a1(j.fn.jquery,[1,3,2]),al,E=new Date().getTime(),aS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split(""),a,v="invodoLogCookie",bb=7,aF=5,bc=10,aC,J,H=h(),a6,q=[],Z=0,P,at=2000,B=new Date().getTime(),a7=false,ah={podStart:[],podComplete:[],videoStart:[],videoPause:[],videoComplete:[]},A=[],Q=[],d=[],ak=[],au=[],aO={},bh="invodoVisitor",ac=90,am=30*24*60*60*1000,k=/http.*\/p\/(\w{8}).*/,n=/^\w+:\/\//,bf=/(?:^|&)([^&=]*)=?([^&]*)/g,ao="/3.0",be="13.2.1a.20",ag=false,ap=w.location.protocol==="https:"?"https:":"http:",s=ap+"//e.invodo.com",W=ap+"//log.invodo.com",X="rtmp://aoaef.invodo.com/",a3=ap+"//e.invodo.com/media/",aM="http://aoael.invodo.com/media/",ay="/s",aE="",D="/log",S="",C={jQuery:m(ap+"//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js","js",function(){V.$jq=ab.$jq=j=w.jQuery.noConflict(true)
 },false),iFixPng:m(O("ext/jquery.ifixpng"),"js",function(){j.ifixpng(b("/i/x.gif",S))
 },false),onePixelGif:m(b("/i/x.gif",S),"image",false,false),cta:m(O("cta.invodo"),"js",function(){var bi=w.Invodo.__CTA;
 bi.__tunnel(function(bj){ab.CTA=aG=bj;
@@ -380,7 +380,7 @@ i++){if(bi>=bl&&bi<(bl+bm[i].percentage)){return i
 }else{bl=bl+bm[i].percentage
 }}var bj=t("invodoVisitor");
 var bk=0;
-if(bj.length>22){bk=bj.substring(22);
+if(bj.length>22){bk=bj.substring(22,23);
 if(bk=="1"){bk=1
 }}if(bk){return 1
 }else{return"nv"

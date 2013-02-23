@@ -595,7 +595,14 @@
       }
 
       wpAd.tools.initVITest('#slug_' + tempcase.what);
+    }
 
+    //20892 - CW - WP plus pixel
+    if(!wpAd.wpPlusPixelAdded){
+      wpAd.wpPlusPixelAdded = true;
+      if(/^jobs/i.test(tempcase.where)){
+        wpAd.tools.loadScript('http://pixel.mathtag.com/event/js?mt_id=189665&mt_adid=109479&v1=&v2=&v3=&s1=&s2=&s3=');
+      }
     }
 
     return tempcase;

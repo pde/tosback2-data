@@ -981,7 +981,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "02/20/2013 08:11 AM",
+            DATE_IN_USE: "02/23/2013 08:10 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1255,7 +1255,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 <!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.businessCode.regionTop") -->
 
 <!-- container 1 -->
-<!-- BEGIN Content Item File: /content/0006/147/743/cn6147743.html -->
+<!-- BEGIN Content Item File: /content/0006/192/890/cn6192890.html -->
 
 
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!!  GOL LAYOUT: PERMANENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
@@ -1453,6 +1453,10 @@ body {
 	background-repeat:no-repeat;
 	background-position:top center;
 }
+
+/* begin override promo pricing expression coloration */
+.productCatItem span.mupSupMessage { color: #FF3300;font-weight:bold;} /*red and bold message under cat item*/
+/* end override promo pricing expression coloration */
 
 /* BEGIN pop-up containers background #FFF - added 2/12/13 JP  */
 body.popup, body.popup #bodyContainer {
@@ -1835,7 +1839,7 @@ if ( (location.pathname == "/browse/product.do") || (location.pathname == "/brow
 
 </script>
 
-<!-- END Content Item File: /content/0006/147/743/cn6147743.html -->
+<!-- END Content Item File: /content/0006/192/890/cn6192890.html -->
 
 
 
@@ -2864,14 +2868,6 @@ div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-foo
 		width: auto;
 	}
 /* End CNOV-12: Bottom tools line overflowing */
-/* VV override to hide print */
-	#printAllRewardsMessage {
-		display: none;
-	}
-	
-	.tail.item {
-		display: none;
-	}
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -4685,9 +4681,11 @@ if( location.pathname == '/profile/account_summary.do' ) {
 </script>
 <!-- end CNOV-31 -->
 
+
+
 <!-- Begin CNOV-32 -->
 <script type="text/javascript" >
-if (typeof(checkout) != "undefined") { 
+if (typeof(checkout) != "undefined" && checkout.controller && checkout.controller.modules && checkout.controller.modules.registration) { 
   Object.extend(
      checkout.controller.modules.registration, {
        setRegistrationResponse:function(responseVo) {
@@ -4719,70 +4717,12 @@ if (typeof(checkout) != "undefined") {
 </script>
 <!-- End CNOV-32 -->
 
-<!-- Begin CNOV-34: productSearchServiceLink XSS fix -->
-
-<script type="text/javascript">
-
-if (navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager) {
-
-	navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchData = navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchData.wrap(function (originalMethod,pageId, url) {
-		originalMethod(pageId, url);
-
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var model = categoryFacetedSearchManager.model;
-
-		var productSearchServiceLink = model.cachedElements.productSearchServiceLink;
-		if (productSearchServiceLink) {
-			if (categoryFacetedSearchManager.model.latestFacetRequestUrl) {
-				productSearchServiceLink.innerHTML = categoryFacetedSearchManager.model.latestFacetRequestUrl.escapeHTML();
-			} else {
-				productSearchServiceLink.innerHTML = "";
-			}
-		}
-	});
-
-	navigationService.controller.managers.categoryFacetedSearchManager.view.renderExceptionErrorMessage = navigationService.controller.managers.categoryFacetedSearchManager.view.renderExceptionErrorMessage.wrap(function (originalMethod) {
-	    originalMethod();
-
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var model = categoryFacetedSearchManager.model;
-
-		var productSearchServiceLink = model.cachedElements.productSearchServiceLink;
-		if (productSearchServiceLink) {
-			if (categoryFacetedSearchManager.model.latestFacetRequestUrl) {
-				productSearchServiceLink.innerHTML = categoryFacetedSearchManager.model.latestFacetRequestUrl.escapeHTML();
-			} else {
-				productSearchServiceLink.innerHTML = "";
-			}
-		}
-	});
-}
-</script>
-
-
-<!-- End CNOV-34: productSearchServiceLink XSS fix -->
-
 <!-- Begin CNOV-33: Fix for dummy size facet -->
 
-<style type="text/css">
-	div.facet .facetName {
-		padding: 8px 0px 5px 5px;
-		display: inline;
-		width: 50%;
-		line-height: 17px;
-	}
-
-
-	div.facet_dummySize div#dummySize_text {
-		padding-bottom: 13px;
-		padding-left: 6px;
-		font-style: italic;
-	}
-</style>
 
 <script type="text/javascript">
 
-if (navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager &&
+if (window.navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager &&
 navigationService.controller.managers.categoryFacetedSearchManager.controller && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers &&
 navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categoryDummySizeFacetManager) {
 
@@ -5019,12 +4959,69 @@ navigationService.controller.managers.categoryFacetedSearchManager.view.initiali
 						};
 
 
+						navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categoryDummySizeFacetManager.view.clearFacetOptionCache  = function(facet) {
+							var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+							var facetManager = categoryFacetedSearchManager.controller.facetManagers.categoryDummySizeFacetManager;
+							var facetModel = facetManager.model;
+							var cache = facetModel.cache;
+							
+							cache.LEFT_RAIL_CONTAINER = 'sizeFacetOptionLeftRailContainer';
+							cache.VARIANT_PANEL = 'size_variants';
+							
+							facetModel.isCached = false;
+						};
+
+
 
 }
 </script>
 
 
 <!-- End CNOV-33: Fix for dummy size facet -->
+
+<!-- Begin CNOV-34: productSearchServiceLink XSS fix -->
+
+<script type="text/javascript">
+
+if (window.navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager) {
+
+	navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchData = navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchData.wrap(function (originalMethod,pageId, url) {
+		originalMethod(pageId, url);
+
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+		var model = categoryFacetedSearchManager.model;
+
+		var productSearchServiceLink = model.cachedElements.productSearchServiceLink;
+		if (productSearchServiceLink) {
+			if (categoryFacetedSearchManager.model.latestFacetRequestUrl) {
+				productSearchServiceLink.innerHTML = categoryFacetedSearchManager.model.latestFacetRequestUrl.escapeHTML();
+			} else {
+				productSearchServiceLink.innerHTML = "";
+			}
+		}
+	});
+
+	navigationService.controller.managers.categoryFacetedSearchManager.view.renderExceptionErrorMessage = navigationService.controller.managers.categoryFacetedSearchManager.view.renderExceptionErrorMessage.wrap(function (originalMethod) {
+	    originalMethod();
+
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+		var model = categoryFacetedSearchManager.model;
+
+		var productSearchServiceLink = model.cachedElements.productSearchServiceLink;
+		if (productSearchServiceLink) {
+			if (categoryFacetedSearchManager.model.latestFacetRequestUrl) {
+				productSearchServiceLink.innerHTML = categoryFacetedSearchManager.model.latestFacetRequestUrl.escapeHTML();
+			} else {
+				productSearchServiceLink.innerHTML = "";
+			}
+		}
+	});
+}
+</script>
+
+
+<!-- End CNOV-34: productSearchServiceLink XSS fix -->
+
 
 
 <!-- VV override - contains content for VV disruptor -->
@@ -5048,11 +5045,15 @@ var wcd_VV = function() {
 				fireVVDisruptor();
 			} else {
 				Event.fire(document, "personalizationService:renderCustomerAttributes");
-				$("rewards").style.display = "block";		
+				if($("rewards")){
+					$("rewards").style.display = "block";		
+				}
 			}
 		} else {
 			Event.fire(document, "personalizationService:renderCustomerAttributes");
-			$("rewards").style.display = "block";
+			if($("rewards")){
+				$("rewards").style.display = "block";
+			}
 		}
 		// fire virtual value code
 
@@ -5135,7 +5136,7 @@ if (thisBrowser.indexOf("MSIE") != -1){ // if IE
 
 
 <!-- container 6 -->
-<!-- BEGIN Content Item File: /content/0005/646/507/cn5646507.html -->
+<!-- BEGIN Content Item File: /content/0006/211/786/cn6211786.html -->
 
 
 <style type="text/css">
@@ -5155,7 +5156,7 @@ if (thisBrowser.indexOf("MSIE") != -1){ // if IE
 
 var globalIntercept = {
 	model: {
-		wcdAssetPath:'/Asset_Archive/GPWeb/content/0005/646/507/assets/',
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/211/786/assets/',
 		businessUnit:'GP_US',
 		brandName:'Gap',
 		brandURL:'www.gap.com',
@@ -5381,7 +5382,78 @@ if( window['siteNavigation'] ) {
 
 </script>
 
-<!-- END Content Item File: /content/0005/646/507/cn5646507.html -->
+<!-- Global Gateway Euro/.co.uk display fix - to be removed with euro site launch -->
+<script type="text/javascript">
+
+if( window["shippingOptionsService"] ) {
+	if( shippingOptionsService && shippingOptionsService.view ) {
+		if( shippingOptionsService.view.regionAndCountrySelect ) {
+			shippingOptionsService.view.regionAndCountrySelect = shippingOptionsService.view.regionAndCountrySelect.wrap( function( om, nativeSize, globalSize ) {
+				om( nativeSize, globalSize );
+				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
+				var currentCountry = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+				if( euCountryCodeArray.include( currentCountry ) ) {
+					if( $('britishPoundText') ) $('britishPoundText').update('British Pounds');
+					if( $('orderProcessingPounds') ) $('orderProcessingPounds').hide();
+				}
+			});
+		}
+		
+		if( shippingOptionsService.view.countrySelected ) {
+			shippingOptionsService.view.countrySelected = shippingOptionsService.view.countrySelected.wrap( function( om ) {
+				om();
+				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
+				var currentCountry = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+				if( euCountryCodeArray.include( currentCountry ) ) {
+					if( $('britishPoundText') ) $('britishPoundText').update('British Pounds');
+					if( $('orderProcessingPounds') ) $('orderProcessingPounds').hide();
+				}
+			});
+		}
+		
+		if( shippingOptionsService.view.displayingBusinessUnits ) {
+			shippingOptionsService.view.displayingBusinessUnits = shippingOptionsService.view.displayingBusinessUnits.wrap( function( om, container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs ) {
+				om( container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs );
+				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
+				var currentCountry = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+				if( euCountryCodeArray.include( currentCountry ) ) {
+					if( $('gap_eu_ol_a') && $('gap_eu_ol_a').innerHTML.indexOf('.co.uk') > -1 ) $('gap_eu_ol_a').update('gap.eu');
+					if( $('br_eu_ol_a') && $('br_eu_ol_a').innerHTML.indexOf('.co.uk') > -1 ) $('br_eu_ol_a').update('bananarepublic.gap.eu');
+				}
+			});
+		}
+		
+		if( shippingOptionsService.view.constructUrlAndAddTid ) {
+			shippingOptionsService.view.constructUrlAndAddTid = shippingOptionsService.view.constructUrlAndAddTid.wrap( function( om, url, brandName, domainName ) {
+				om( url,brandName,domainName );
+				if( shippingOptionsService.model.brandURL.indexOf('.eu') > -1 && shippingOptionsService.model.brandURL.indexOf('tid=') == -1 ) {
+					if( shippingOptionsService.model.brandURL.indexOf('bananarepublic.gap.eu')  > -1 || shippingOptionsService.model.brandURL.indexOf('brol.app.gidapps.eu') > -1 || shippingOptionsService.model.brandURL.indexOf('brol.wip.gidapps.eu') > -1 ) {
+						shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL + '/?tid=BRINTLSHIP';
+					}
+					else if( shippingOptionsService.model.brandURL.indexOf('gap.eu')  > -1 || shippingOptionsService.model.brandURL.indexOf('gol.app.gidapps.eu') > -1 || shippingOptionsService.model.brandURL.indexOf('gol.wip.gidapps.eu') > -1 ) {
+						shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL + '/?tid=GOINTLSHIP';
+					}
+				}
+			});
+		}
+		
+		if( shippingOptionsService.controller && shippingOptionsService.controller.continuePressed ) {
+			shippingOptionsService.controller.continuePressed = shippingOptionsService.controller.continuePressed.wrap( function( om ) {
+				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
+				var countryCodeCheck = shippingOptionsService.view.shippingOptionsCountrySelect().getValue();
+				if( euCountryCodeArray.include( countryCodeCheck ) ) {
+					shippingOptionsService.model.brandButtonClicked = true;
+				}	
+				om();
+			});
+		}
+	}
+}
+
+</script>
+
+
+<!-- END Content Item File: /content/0006/211/786/cn6211786.html -->
 
 
 
@@ -5802,6 +5874,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 				'77431',
 				'6428',
 				'91808',
+				'71986',
 
 			'']),
 			// Toddler/Infant Boy categories, hidden dept facet
@@ -5865,6 +5938,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 				'36691',
 				'17851',
 				'91809',
+				'71988',
 				
 			'']),
 
@@ -6488,215 +6562,190 @@ if( (location.pathname == '/browse/product.do') ) {
 
 
 <!-- container 15 -->
-<!-- BEGIN Content Item File: /content/0006/133/858/cn6133858.html -->
+<!-- BEGIN Content Item File: /content/0006/176/769/cn6176769.html -->
 
 <script type="text/javascript">
 // VOLUME CONTROL TEST
 
 /*
-	Universal Cookie Cutter
-	Version 2.1
-	Created to streamline cross-brand A/B testing
-	New version modularizes variables
-	
-	instantiate new object:
-	
-	MyCookieCutter = new universalCookieCutterVolControl([CookieVarName],      // name of your cookie variable
-											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
-											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
-											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
-											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
-											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
-											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
-											   );
-	A sample instantiation:
-	
-	ONBRABCookieCutter = new universalCookieCutterVolControl("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
-											   
-	*/
-	
-	var universalCookieCutter = Class.create();
-	
-	
-	universalCookieCutter.prototype = {
-	
-		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-	
-			//Keeping it neat by having two discreet variables that check for and gather cookie information
-			this.EvarToUse = theEvar!= ""? theEvar: false;
-			this.CookieVariableName = CookieVarName;
-			this.CookieUsed = CookieUsedName;
-			this.CookieValueBase = CookieValueBase;
-			this.SegBreakdown = SegmentBreakdown.split("-");
-			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.QuickSegment = '';
-			this.piperlimeException = plExcept;
-			this.userNeedsSync = false;
-			this.ForcedModeBase = ForcedModeBaseName;
-			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
-			this.modeArray = new Array();
-			this.modeArray[0] = "a";
-			this.modeArray[1] = "b";
-			this.modeArray[2] = "c";
-			this.modeArray[3] = "d";
-			this.modeArray[4] = "e";
-			this.modeArray[5] = "f";
-			this.modeArray[6] = "g";
-			//alert(this.piperlimeException);
-			
-			
-			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-				this.forcedMode();
-			}else{
-				this.cookieScanner();
-			}
-		},
-	
-	
-		forcedMode:function() {
-			
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-			
-				//allow forced mode only to qa.
-				if (location.href.indexOf("gidapps.com") >= 1) {
-					if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-						//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
-						this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-					}
-				}
-				
-			}
-			
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			if (this.EvarToUse) {
-				
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			userNeedsSync = true;
-			
-			//alert("Forced: Cookie set.");
-			
+Universal Cookie Cutter
+Version 2.1
+Created to streamline cross-brand A/B testing
+New version modularizes variables
+
+instantiate new object:
+
+MyCookieCutter = new universalCookieCutterVolControl([CookieVarName],      // name of your cookie variable
+										   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
+										   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
+										   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
+										   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
+										   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
+										   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
+										   );
+A sample instantiation:
+
+ONBRABCookieCutter = new universalCookieCutterVolControl("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
+										   
+*/
+
+var universalCookieCutter = Class.create();
+
+universalCookieCutter.prototype = {
+
+	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+
+		//Keeping it neat by having two discreet variables that check for and gather cookie information
+		this.EvarToUse = theEvar!= ""? theEvar: false;
+		this.CookieVariableName = CookieVarName;
+		this.CookieUsed = CookieUsedName;
+		this.CookieValueBase = CookieValueBase;
+		this.SegBreakdown = SegmentBreakdown.split("-");
+		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.QuickSegment = '';
+		this.piperlimeException = plExcept;
+		this.userNeedsSync = false;
+		this.ForcedModeBase = ForcedModeBaseName;
+		this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
+		this.modeArray = new Array();
+		this.modeArray[0] = "a";
+		this.modeArray[1] = "b";
+		this.modeArray[2] = "c";
+		this.modeArray[3] = "d";
+		this.modeArray[4] = "e";
+		this.modeArray[5] = "f";
+		this.modeArray[6] = "g";
+		//alert(this.piperlimeException);
 		
-		},
-	
-		cookieScanner:function() {
-			
-			//If the cookie isn't available, bake one!
-			if (this.DoesTheCookieExist) {
-	
-				if (this.EvarToUse) {
-					this.setABTestVariable(this.RetrievedCookieValue);
-				}
-	
-				for (i = 0; i < this.ModeArrayIndex; i++) {
-					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-						break;
-					}
-				}
-	
-			} else {
-				this.tagManager();
-			}
-	
-		},
-	
-	
-		tagManager:function() {
-	
 		
-			//Breaking out the segmentation into specified percentages
-			
-			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-			//alert("Seg: " + this.Segmentation);	
-			this.FloorThreshold = 0;
-			this.TopThreshold = 0;
-			
-			for (i = 0; i < this.ModeArrayIndex; i++){
-	
-				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-	
-				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-					// put me in this segment
+		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+			this.forcedMode();
+		}else{
+			this.cookieScanner();
+		}
+	},
+
+
+	forcedMode:function() {
+		
+		for (i = 0; i < this.ModeArrayIndex; i++) {
+		
+			//allow forced mode only to qa.
+			if (location.href.indexOf("gidapps.com") >= 1) {
+				if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+					//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
 					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
 					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				} else {
-					// add top to floor and try next segment
-					this.FloorThreshold = this.TopThreshold;
 				}
-					
 			}
-			if(location.protocol == "http:") {
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			}
-	
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			//userNeedsSync = true;
-			//alert("Tag Manager: Cookie set.");
 			
-		},
-		
-			setABTestVariable: function(setValue) {
-			thisEvar = 'eVar' + this.EvarToUse;
-			ABTestVariables[thisEvar] = setValue;
 		}
-	
 		
-	}; 
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+		if (this.EvarToUse) {
+			
+			this.setABTestVariable(this.UserSegment);
+		}
+
+		userNeedsSync = true;
+		
+		//alert("Forced: Cookie set.");
+		
 	
+	},
+
+	cookieScanner:function() {
+		
+		//If the cookie isn't available, bake one!
+		if (this.DoesTheCookieExist) {
+
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.RetrievedCookieValue);
+			}
+
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				}
+			}
+
+		} else {
+			this.tagManager();
+		}
+
+	},
 
 
-GOLABCookieCutter = new universalCookieCutter("GOLBANNER022013","mktUniversalPersist","GOLBANNER022013SEG","gbvar","25-25-25-25","21","none");
-var GOLABCHATSegment = gidLib.getCookieVar("mktUniversalPersist", "GOLBANNER022013");   
+	tagManager:function() {
 
+	
+		//Breaking out the segmentation into specified percentages
+		
+		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+		//alert("Seg: " + this.Segmentation);	
+		this.FloorThreshold = 0;
+		this.TopThreshold = 0;
+		
+		for (i = 0; i < this.ModeArrayIndex; i++){
 
-//rename these variables specific to your test ex. GOLBANNER021913
-//GOLBANNER022013 is the cookie variable
-//GOLABCHATSegment will be the var holding the segment
-//GOLBANNER022013SEG segment will be appended to it: (GOLBANNER022013SEGA, GOLBANNER022013SEB, GOLBANNER022013SEGC, GOLBANNER022013SEGD)
-//41 is the evar
+			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
 
-//your functions
+			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+				// put me in this segment
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+				break;
+			} else {
+				// add top to floor and try next segment
+				this.FloorThreshold = this.TopThreshold;
+			}
+				
+		}
+		if(location.protocol == "http:") {
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+		}
+
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+
+		//userNeedsSync = true;
+		//alert("Tag Manager: Cookie set.");
+		
+	},
+	
+		setABTestVariable: function(setValue) {
+		thisEvar = 'eVar' + this.EvarToUse;
+		ABTestVariables[thisEvar] = setValue;
+	}
+
+}; 
+
+GOLABCookieCutter = new universalCookieCutter("GOLSKIMMER022113","mktUniversalPersist","GOLSKIMMER022113SEG","skimmerSeg","50-50","21","none");
+var GOLABSKIMMERSegment = gidLib.getCookieVar("mktUniversalPersist", "GOLSKIMMER022113");   
+
 function VolControlABTestMain() {
-if (GOLABCHATSegment == "GOLBANNER022013SEGA") {
-	if ($('GBBanner0220VolControlSEGA')){
-		$('GBBanner0220VolControlSEGA').setStyle({display:'block'});
-	}
-} else if (GOLABCHATSegment == "GOLBANNER022013SEGB") {
-	if ($('GBBanner0220VolControlSEGB')){
-		$('GBBanner0220VolControlSEGB').setStyle({display:'block'});
-	} 
-} else if (GOLABCHATSegment == "GOLBANNER022013SEGC") {
-	if ($('GBBanner0220VolControlSEGC')){
-		$('GBBanner0220VolControlSEGC').setStyle({display:'block'});
-	}
-} else if (GOLABCHATSegment == "GOLBANNER022013SEGD") {
-	if ($('GBBanner0220VolControlSEGD')){
-		$('GBBanner0220VolControlSEGD').setStyle({display:'block'});
-
-
-	}
-}else {
-	$('GBBanner0220VolControlSEGE').setStyle({display:'block'});
-	// I usually set up an empty div
+	var skimmerDiv = jQuery("#skimmer-container");
+	if (skimmerDiv) {
+		if (GOLABSKIMMERSegment == "GOLSKIMMER022113SEGA") {
+			jQuery("#skimmer-message-a").show();
+		} else if (GOLABSKIMMERSegment == "GOLSKIMMER022113SEGB") {
+			jQuery("#skimmer-message-b").show();
+		} else {
+			jQuery("#skimmer-message-b").show();
+		}
 	}
 }
 
-
-Event.observe(window, "load", function() {
-VolControlABTestMain();
+jQuery(document).ready(function() {
+	VolControlABTestMain();
 });
 </script>
 
-<!-- END Content Item File: /content/0006/133/858/cn6133858.html -->
+<!-- END Content Item File: /content/0006/176/769/cn6176769.html -->
 
 
 
@@ -7523,254 +7572,68 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/129/717/cn6129717.html -->
-<div id="contentItemContainer10000395" class="6129717" >
+    	<!-- BEGIN Content Item File: /content/0006/226/177/cn6226177.html -->
+<div id="contentItemContainer10000395" class="6226177" >
 
 <style type="text/css">
-#VolControlWrapper {
-		width: 635px;
-		height: 62px;
-		position: absolute;
-		display: block;
-	}
-	#GBBanner0220VolControlSEGA, #GBBanner0220VolControlSEGB, #GBBanner0220VolControlSEGC, #GBBanner0220VolControlSEGD, #GBBanner0220VolControlSEGE {
-		width: 635px;
-		height: 62px;
-	}
-	#flipA1, #flipB1, #flipC1, #flipD1, #flipE1 {
-		width: 635px;
-		height: 62px;
-		bottom: 0px;
-		position: absolute;
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+	color: #000745;
 }
 
-/* Text Banner CSS */
-#globalBanner, #globalBannerD { width: 635px; height: 62px; position: relative; display: block; font-size: 10pt; z-index: 50; color: #000745;}
-#globalBanner a:link, #globalBanner a:hover,#globalBanner a:visited, #globalBanner a:active { color: #000745; text-decoration: none;}
-.detailsLink { font-size: 8pt; text-decoration: underline;}
-.promoCode, .promoPercent { font-weight: bold;}
-.promoCode { background-color: #000745; color: white; padding: 2px 6px; font-size: 11px;}
-#globalBannerText, #globalBannerTextD { padding-top: 6px; }
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000745;
+	text-decoration: none;
+}
 
-#globalBannerDisruptor, #globalBannerDisruptorD { position: absolute; z-index: 999; top: 0; left: 0;}
-#globalBannerText.passive, #globalBannerTextD.passive { opacity: 0.25; filter: alpha(opacity = 25);}
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
+
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+.promoCode {
+	background-color: #000745;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerText {
+	padding-top: 6px;
+}
 </style>
 
+<div id="globalBanner">
 
-<div id="VolControlWrapper">		
-	<!--A20Evergreen-->
-	<div id="GBBanner0220VolControlSEGA" style="display:none;">
-			<div id="flipA1">
-				<!-- Start Text Banner -->
-				<div id="globalBanner">
-					<!-- Global Banner Text -->
-					<div id="globalBannerText">
-						<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-							SPRING FLING! <span class="promoPercent">20% OFF</span> YOUR PURCHASE!
-							<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
-							<br /><span class="detailsLink">DETAILS</span>
-						</a>
-					</div><!-- /Global Banner Text -->
-				</div>
-				<!-- End of Text Banner -->
-			</div>
-	</div>
-	
-	<!--A20EvergreenTreatment-->
-	<div id="GBBanner0220VolControlSEGB" style="display:none;"> 
-		<div id="flipB1">
-			<!-- Start Text Banner -->
-			<div id="globalBanner">
-				<!-- Global Banner Text -->
-				<div id="globalBannerText">
-					<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-						SPRING FLING! <span class="promoPercent" style="color: #d30c0c;">20% OFF</span> YOUR PURCHASE!
-						<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT" style="background: #d30c0c;">GAPGIFT</span>.
-						<br /><span class="detailsLink">DETAILS</span>
-					</a>
-				</div><!-- /Global Banner Text -->
-			</div>
-			<!-- End of Text Banner -->
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/226/177/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			SUPER! <span class="promoPercent">20% OFF</span> WOMEN'S AND MEN'S STYLES!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
+	</div><!-- /Global Banner Text -->
 
-		</div>
-	</div>
-
-	<!--A20BannerDisruptor-->
-	<div id="GBBanner0220VolControlSEGC" style="display:none;"> 
-		<div id="flipC1">
-			<!-- Start Banner with no Disruptor -->
-
-			<div id="globalBanner">
-				<!-- Global Banner Text -->
-				<div id="globalBannerText">
-					<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/129/717/assets/022013_ALL_ABSiteSweetener_HP_GB_US.png" alt="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" title="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" usemap="#gbMapC">
-					<map name="gbMapC">
-						<area class="noHideDisruptor" shape="rect" coords="0,0,635,62" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-					</map>
-				</div><!-- /Global Banner Text -->
-			</div>
-			<!-- End Banner with no Disruptor -->
-      
-		</div>
-	</div>
-
-	<!--A20BannerDisruptor-->
-	<div id="GBBanner0220VolControlSEGD" style="display:none;"> 
-		<div id="flipD1">
-			<!-- Start Banner with Disruptor -->
-			<div id="globalBannerD">
-				<!-- Global Banner Text -->
-				<div id="globalBannerTextD">
-					<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/129/717/assets/022013_ALL_ABSiteSweetener_HP_GB_US.png" alt="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" title="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" usemap="#gbMapD">
-					<map name="gbMapD">
-						<area class="noHideDisruptor" id="globalBannerActivatorD" shape="rect" coords="502,7,635,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
-						<area class="noHideDisruptor" shape="rect" coords="0,0,635,62" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-					</map>
-				</div><!-- /Global Banner Text -->
-
-				<!-- Global Banner Disruptor -->
-				<div id="globalBannerDisruptorD" style="display:none;">
-					<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/129/717/assets/022013_ALL_ABSiteSweetener_HP_DISR_US.gif" alt="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" title="Spring FLing! 20% off your purchase. Limited Time. Online only. Enter GAPGIFT" usemap="#disruptorMap">
-					<map name="disruptorMap">
-			        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/129/717/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
-			        </map>
-				</div><!-- /Global Banner Disruptor -->
-			</div>
-      		<!-- End Banner with Disruptor -->
-
-		</div>
-	</div>
-
-	<!--E empty-->
-	<div id="GBBanner0220VolControlSEGE" style="display:none;" class="clearfix">
-	</div>
 </div>
-
-<script type="text/javascript">
-	Event.observe(window, 'load', function() {
-			// Initiliaze disruptor object
-			globalBannerDisruptor.init('022013_GB');
-		});
-
-		// Hide disruptor when out of activation area
-		Event.observe(document.body, 'mouseover', function(event) 
-		{
-			var element = Event.findElement(event);
-			var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-			//var hasSeenDisruptor = 1;
-
-			if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-			{
-				globalBannerDisruptor.hide();
-			}
-		});
-
-		// globalBannerDisruptor object
-		var globalBannerDisruptor = {
-			
-			disruptorID: 'globalBannerDisruptorD',
-			activatorID: 'globalBannerActivatorD',
-			containerID: 'globalBannerTextD',
-			cookieName: '',
-			
-			init: function(cookieName) {
-			
-				globalBannerDisruptor.cookieName = cookieName;
-				var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-				//var hasSeenDisruptor = 1;
-
-				if(hasSeenDisruptor != "1")
-				{
-					globalBannerDisruptor.autoDisrupt();
-				}
-
-				globalBannerDisruptor.addDisruptBehaviour();
-				
-			},
-			
-			/* auto hides itself */
-			autoDisrupt: function() {
-
-				new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-				
-				gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-				var timerID = setTimeout(function() {
-					globalBannerDisruptor.hide();
-				}, 8000);
-
-			},
-			
-			hide: function() {
-				
-				var targetID = globalBannerDisruptor.disruptorID;
-				var target = $(targetID);
-
-				if(target.style.display != "none") {
-					new Effect.SlideUp(targetID,{
-						duration:.5, 
-						queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-						beforeFinish: function() {
-							$(globalBannerDisruptor.containerID).removeClassName('passive');
-						}
-					});
-					return false;
-				}
-				
-			},
-			
-			/* disrupts but does NOT auto hide iteself */
-			disrupt: function() {
-				
-				var targetID = globalBannerDisruptor.disruptorID;
-				var target = $(targetID);
-
-				if(target.style.display == "none") {
-					new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-						duration:.5,
-						queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-						beforeFinish: function() {
-							$(globalBannerDisruptor.containerID).addClassName('passive');
-						}
-					});
-					return false;
-				}
-
-				return true;
-			},
-
-			/* closes disruptor and prevents disrupt from firing prematurely */
-			close: function() {
-
-				globalBannerDisruptor.hide();
-				globalBannerDisruptor.removeDisruptBehaviour();
-
-				// Set a timer so disruptor doesn't get activated right away
-				var timerID = setTimeout(function() {
-					globalBannerDisruptor.addDisruptBehaviour();
-				}, 1000);
-
-			},
-
-			addDisruptBehaviour: function() {
-				// Show disruptor when mouseover #globalBannerActivator
-				$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-				{
-					globalBannerDisruptor.disrupt();
-				});
-			},
-
-			// Stop observing mouseover
-			removeDisruptBehaviour: function() {
-				$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-			}
-			
-		};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0006/129/717/cn6129717.html -->
+<!-- END Content Item File: /content/0006/226/177/cn6226177.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8971,7 +8834,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6129717,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6226177,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>
@@ -9917,7 +9780,7 @@ if ($('footer-links-container')) {
 <script type="text/javascript">
 // <![CDATA[
 
-if (navigationService.preview) {
+if (window.navigationService && navigationService.preview) {
 
     var previewSearchToggle = {
 	gidSearchCookieName :'searchMode',
@@ -9972,13 +9835,6 @@ if (navigationService.preview) {
 // ]]>
 </script>
 <!-- End CNOV-28 -->
-
-
-
-
-
-
-
 
 
 </div>

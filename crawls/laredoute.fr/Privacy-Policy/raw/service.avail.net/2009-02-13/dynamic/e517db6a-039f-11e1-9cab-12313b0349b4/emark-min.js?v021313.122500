@@ -4,7 +4,7 @@ var AI_SERVICE_HOST = "service.avail.net";
 var AI_DECORATE = 0;
 var AI_DECORATE_DEBUG = false;
 var AI_COOKIE_SYNC = true;
-var AI_SERVICE_PROTOCOL=ai_getProtocol();var AI_SERVICE_PATH="/2009-02-13/dynamic/";var AI_COOKIE_NAME="__avail_session__";var AI_COOKIE_EXPIRATION=180;var AI_DATA_COOKIE_NAME="__avail_data__";var AI_DEBUG=false;var AI_TESTING=false;if(AI_TESTING){AI_SERVICE_HOST="service.labs.avail.net";}
+var AI_SERVICE_PROTOCOL=ai_getProtocol();var AI_SERVICE_PATH="/2009-02-13/dynamic/";var AI_COOKIE_NAME="__avail_session__";var AI_DATA_COOKIE_NAME="__avail_data__";var AI_DEBUG=false;var AI_TESTING=false;if(AI_TESTING){AI_SERVICE_HOST="service.labs.avail.net"}
 var ai_load_lock=false;var __avail_ret;var AI_PID_ATTRIBUTE="data-productid";var AI_PIDS_ATTRIBUTE="data-productids";var AI_UID_ATTRIBUTE="data-userid";var AI_PHRASE_ATTRIBUTE="data-phrase";var AI_TEMPLATE_ATTRIBUTE="data-banner";var AI_DYNPARA_ATTRIBUTE="data-dynpara";var _AI_CLICK_FUNCTION="AI_CLICK_";var _AI_CART_FUNCTION="AI_CART_";var AI_NEW_SESSION_ID='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16);}).toUpperCase();function ResponseObj(){this.values=new Array('');this.trackingcode="";this.clickurls=new Array();this.carturls=new Array();this.products=new Array();this.valueOf=this.toSource=this.toString=function(){return this.values.toString();}
 this.update=function(v){this.values=v['values'].slice();if('trackingcode'in v){this.trackingcode=v['trackingcode'];ps=v['products'].slice();for(var i=0;i<ps.length;i++){url=ai_getSynchronousCallUrl("logClickedOn",["TrackingCode","Product"],[v['trackingcode'],ps[i]],"bounce")+"&u=";this.clickurls[i]=url;url=ai_getSynchronousCallUrl("logAddedToCart",["TrackingCode","Product"],[v['trackingcode'],ps[i]],"bounce")+"&u=";this.carturls[i]=url;this.products[i]=ps[i];}}}}
 function CallObj(method,args){this._method=ai_jesc(method);this._args=args;this.toQString=function(){var ret=new Array();ret[0]=this._method;ret[1]=this._args;return'['+ret.toString()+']';}
@@ -83,11 +83,11 @@ function ai_getSessionID(){var cookie=null;var querySessionId=ai_getQuerySession
 cookie=unescape(document.cookie.substring(start,end));var activeSessionId=new _AI_String(ai_jesc(cookie));if(querySessionId!=''&&queryTrackingId!=''&&querySessionId!=activeSessionId){try{var url=AI_SERVICE_PROTOCOL+AI_SERVICE_HOST+AI_SERVICE_PATH+AI_CUSTOMER_ID+"/scr?r=js&s="+cookie;var d=new _AI_Dic({});d.add('SessionIDFrom',new _AI_String(ai_jesc(querySessionId)));d.add('TrackingCode',new _AI_String(ai_jesc(queryTrackingId)));d.add('SessionIDTo',activeSessionId);url+=("&q={\"ret0\":[\"moveDisplayedProducts\","+d+"]}");var img=new Image();img.src=url;}
 catch(e){ai_log("Could not moveDisplayedProducts ('"+querySessionId+"','"+queryTrackingId+"','"+cookie+"')\nError message: "+e)}}
 }}
-if(cookie==null&&querySessionId!=''){cookie=querySessionId;}
-if(!cookie){cookie=AI_NEW_SESSION_ID;}
-ai_setCookie(cookie);return cookie;}
-function ai_setCookie(cookie){var exdate=new Date();exdate.setDate(exdate.getDate()+AI_COOKIE_EXPIRATION);if(AI_TOP_DOMAIN.indexOf("www.")==0){AI_TOP_DOMAIN=AI_TOP_DOMAIN.substring(3)}
+if(cookie==null&&querySessionId!=''){cookie=querySessionId;var exdate=new Date();exdate.setFullYear(exdate.getFullYear()+1);if(AI_TOP_DOMAIN.indexOf("www.")==0){AI_TOP_DOMAIN=AI_TOP_DOMAIN.substring(3)}
 document.cookie=AI_COOKIE_NAME+"="+escape(cookie)+("; expires="+exdate.toGMTString())+("; domain="+AI_TOP_DOMAIN)+("; path=/");}
+if(!cookie){cookie=AI_NEW_SESSION_ID;var exdate=new Date();exdate.setFullYear(exdate.getFullYear()+1);if(AI_TOP_DOMAIN.indexOf("www.")==0){AI_TOP_DOMAIN=AI_TOP_DOMAIN.substring(3)}
+document.cookie=AI_COOKIE_NAME+"="+escape(cookie)+("; expires="+exdate.toGMTString())+("; domain="+AI_TOP_DOMAIN)+("; path=/");}
+return cookie;}
 function ai_getQuerySession(){var results=new RegExp('[\\?&]__avail_ms=([^&#]*)').exec(window.location.href);if(!results){return'';}
 return results[1]||'';}
 function ai_getQueryTracking(){var results=new RegExp('[\\?&]__avail_tc=([^&#]*)').exec(window.location.href);if(!results){return'';}

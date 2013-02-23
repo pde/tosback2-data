@@ -149,11 +149,11 @@ var hsocial_tool = {
 							FBData = FBhtml;
 							$("#overlayFB").html(FBData);
 							$("#fbContent").show();
-							$("#twContent").hide();
-							$("#pinContent").hide();
-							$("#tumblrContent").hide();
-							$("#gpContent").hide();
-							$("#linkedinContent").hide();
+							$("#overlayFB").find("#twContent").hide();
+							$("#overlayFB").find("#pinContent").hide();
+							$("#overlayFB").find("#tumblrContent").hide();
+							$("#overlayFB").find("#gpContent").hide();
+							$("#overlayFB").find("#linkedinContent").hide();
 							hsocial_tool._vars.FBCounter++;
 
 					}
@@ -203,12 +203,12 @@ var hsocial_tool = {
 				function useTWData(TWhtml){
 							TWData = TWhtml;
 							$("#overlayTW").html(TWData);
-							$("#fbContent").hide();
+							$("#overlayTW").find("#fbContent").hide();
 							$("#overlayTW #twContent").show();
-							$("#pinContent").hide();
-							$("#tumblrContent").hide();
-							$("#gpContent").hide();
-							$("#linkedinContent").hide();
+							$("#overlayTW").find("#pinContent").hide();
+							$("#overlayTW").find("#tumblrContent").hide();
+							$("#overlayTW").find("#gpContent").hide();
+							$("#overlayTW").find("#linkedinContent").hide();
 							hsocial_tool._vars.TWCounter++;
 					}
 					
@@ -248,14 +248,13 @@ var hsocial_tool = {
 					function usePINData(PINhtml){
 							PINData = PINhtml;
 							$("#overlayPIN").html(PINData);
-							$("#fbContent").hide();
-							$("#twContent").hide();
+							$("#overlayPIN").find("#fbContent").hide();
+							$("#overlayPIN").find("#twContent").hide();
 							$("#overlayPIN #pinContent").show();
-							$("#tumblrContent").hide();
-							$("#gpContent").hide();
-							$("#linkedinContent").hide();
+							$("#overlayPIN").find("#tumblrContent").hide();
+							$("#overlayPIN").find("#gpContent").hide();
+							$("#overlayPIN").find("#linkedinContent").hide();
 							hsocial_tool._vars.PINCounter++;
-							
 					}
 					
 					if (hsocial_tool._vars.PINCounter === 0) {
@@ -300,12 +299,12 @@ var hsocial_tool = {
 				function useTUMBLRData(TUMBLRhtml){
 						TUMBLRData = TUMBLRhtml;
 						$("#overlayTUMBLR").html(TUMBLRData);
-						$("#fbContent").hide();
-						$("#twContent").hide();
-						$("#pinContent").hide();
-						$("#gpContent").hide();
-						$("#linkedinContent").hide();
-						$("#tumblrContent").show();
+						$("#overlayTUMBLR").find("#fbContent").hide();
+						$("#overlayTUMBLR").find("#twContent").hide();
+						$("#overlayTUMBLR").find("#pinContent").hide();
+						$("#overlayTUMBLR").find("#gpContent").hide();
+						$("#overlayTUMBLR").find("#linkedinContent").hide();
+						$("#overlayTUMBLR #tumblrContent").show();
 						hsocial_tool._vars.TUMBLRCounter++;
 						
 				}
@@ -343,11 +342,11 @@ var hsocial_tool = {
 				function useLINKEDINData(LINKEDINhtml){
 						LINKEDINData = LINKEDINhtml;
 						$("#overlayLINKEDIN").html(LINKEDINData);
-						$("#fbContent").hide();
-						$("#twContent").hide();
-						$("#pinContent").hide();
-						$("#tumblrContent").hide();
-						$("#gpContent").hide();
+						$("#overlayLINKEDIN").find("#fbContent").hide();
+						$("#overlayLINKEDIN").find("#twContent").hide();
+						$("#overlayLINKEDIN").find("#pinContent").hide();
+						$("#overlayLINKEDIN").find("#tumblrContent").hide();
+						$("#overlayLINKEDIN").find("#gpContent").hide();
 						$("#linkedinContent").show();
 						hsocial_tool._vars.LINKEDINCounter++;
 						
@@ -387,11 +386,11 @@ var hsocial_tool = {
 					function useGOOGLEData(GOOGLEhtml){
 							GOOGLEData = GOOGLEhtml;
 							$("#overlayGOOGLE").html(GOOGLEData);
-							$("#fbContent").hide();
-							$("#twContent").hide();
-							$("#pinContent").hide();
-							$("#tumblrContent").hide();
-							$("#linkedinContent").hide();
+							$("#overlayGOOGLE").find("#fbContent").hide();
+							$("#overlayGOOGLE").find("#twContent").hide();
+							$("#overlayGOOGLE").find("#pinContent").hide();
+							$("#overlayGOOGLE").find("#tumblrContent").hide();
+							$("#overlayGOOGLE").find("#linkedinContent").hide();
 							$("#gpContent").show();
 							hsocial_tool._vars.GOOGLEPCounter++;
 							
@@ -411,10 +410,24 @@ var hsocial_tool = {
 							 complete: function() {
 								//gapi.plusone.render('overlayGOOGLE');
 								var idGooglePlus = $();
-								gapi.plus.render('overlayGOOGLE', {
-									//Get the Google Plus Id
-									href: 'https://plus.google.com/' + $(hsocial_tool.pointer.googlep[0]).find('a').attr('href').split('/')[3].trim() + '?rel=publisher'
-								});
+								switch (sitePrefix)
+								{
+									case 'harpersbazaar':
+									case 'seventeen':
+										idGooglePlus = $(hsocial_tool.pointer.googlep[0]).attr('href');
+										break;
+									default:
+										idGooglePlus = $(hsocial_tool.pointer.googlep[0]).find('a').attr('href');
+									
+								}
+								if(idGooglePlus)
+								{
+									idGooglePlus = idGooglePlus.split('/')[3].replace(/^\s+|\s+$/g, '');
+									gapi.plus.render('overlayGOOGLE', {
+										//Get the Google Plus Id
+										href: 'https://plus.google.com/' + idGooglePlus + '?rel=publisher'
+									});
+								}
 							 }
 							});
 						});	

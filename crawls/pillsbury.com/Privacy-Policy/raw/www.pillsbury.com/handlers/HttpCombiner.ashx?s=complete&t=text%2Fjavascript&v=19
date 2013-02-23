@@ -1967,6 +1967,23 @@ Description: Validation Library for KnockoutJS
         return ko.toJSON(data).prettyJson();
     };
 
+    /* 
+        Custom binding to fire an event when the enter button is pressed.  This will be applied to a data-bind on an element that 
+        will passin the method to be called 
+    */
+    ko.bindingHandlers.enterKey = {
+        init: function (element, valueAccessor, allBindings, vm) {
+            ko.utils.registerEventHandler(element, "keyup", function (event) {
+                if (event.keyCode === 13) {
+                    ko.utils.triggerEvent(element, "change");
+                    valueAccessor().call(vm, vm); //set "this" to the data and also pass it as first arg, in case function has "this" bound
+                }
+
+                return true;
+            });
+        }
+    };
+
 
     // Knockout Validation Settings /////////////////////
 
@@ -5589,7 +5606,7 @@ function showLogInWindow(options) {
         }
     }
 
-    jQuery('#jq_frame_memberlogin_target').dialog({ autoOpen: false, modal: true, height: 270, width: 550, dialogClass: 'VariableWidth VariableWidth-ui-dialog registrationDialogClass' });
+    jQuery('#jq_frame_memberlogin_target').dialog({ autoOpen: false, modal: true, height: 270, width: 530, dialogClass: 'VariableWidth VariableWidth-ui-dialog registrationLoginDialogClass' });
     jQuery('#jq_frame_memberlogin_target').html('<iframe id="modalIframeIdLogin" width="530" height="462" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="no" ALLOWTRANSPARENCY="true" />').dialog("open");
 
 
@@ -5625,7 +5642,7 @@ function closeModalandOpenRegistration() {
     jQuery('#toolBarSignUp').click();
 }
 
-function openRegistartionDialog(options) {
+function openRegistrationDialog(options) {
     if (typeof options === 'undefined')
         options = {};
     var modalRegistration = jQuery('input[id$="hdnModalRegistrationUrl"]');
@@ -5642,8 +5659,8 @@ function openRegistartionDialog(options) {
     if (options.width != 'undefined') {
         params = { 'width':  + options.width };
     }
-    //bc.userRegistration.openRegistartionDialog(',');
-    reg.userRegistration.openRegistartionDialog(params); 
+    //bc.userRegistration.openRegistrationDialog(',');
+    reg.userRegistration.openRegistrationDialog(params); 
 }
 
 
@@ -5674,6 +5691,24 @@ if (window.addEventListener) {
     }, false);
 }
 
+
+function AjaxLogOut() {
+
+    ntptEventTag('ev=membertoolbar_logout_bt&ActionType=Other');
+    var logoutStatus = jQuery.parseJSON(jQuery.ajax({
+        url: "/Services/Profile/LogOffHandler.ashx",
+        async: false,
+        timeout: 3000
+    }).responseText);
+    if (logoutStatus.toUpperCase() == "S") {
+        //window.location.href = "/";
+        window.location.reload();
+    }
+    else {
+        //window.location.href = "/";
+        window.location.reload();
+    }
+}
 
 /*End of Main.js */// Trigger contentview Unica tag on all page loads other than recipe detail
 

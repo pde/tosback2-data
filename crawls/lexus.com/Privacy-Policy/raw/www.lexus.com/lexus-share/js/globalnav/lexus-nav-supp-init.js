@@ -1943,6 +1943,7 @@ function animationVehicles(e,callback) {
 		case "performance":
 		    LXSetTimeout("aniVehiclesC('performance','isf',20, 100)",50);
 			LXSetTimeout("aniVehiclesC('performance','lfa',40, 100)",100);
+			LXSetTimeout("aniVehiclesC('performance','performance',60, 100)",150);
 			lxShowPromo(e);
 		case "future":
 			LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
@@ -2031,6 +2032,7 @@ function animationVehicles1(e) {
 		case "performance":
 		    aniVehicles('performance','isf');
 			aniVehicles('performance','lfa');
+			aniVehicles('performance','performance');
 		case "performance":
 			aniVehicles('future','concept');
 			aniVehicles('future','lfcc');
