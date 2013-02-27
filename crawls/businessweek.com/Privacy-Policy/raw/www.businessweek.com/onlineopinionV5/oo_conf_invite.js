@@ -17,11 +17,15 @@ if (x > 2 && x < 6) {
 if (x > 5 && x < 9) {
   rp = '://invite3.businessweek.com';
 }
-
+var ref_pattern = new RegExp("http://([a-z]+).businessweek.com");
+var prodHost = '/onlineopinionV5/';
+if (ref_pattern.test(window.location.href) == true) {
+  prodHost = 'http://static.btrd.net' + prodHost;
+} 
 /* Run the Invitation instance */
 new OOo.Invitation({
 /* REQUIRED - Asset identification */
-	pathToAssets: '/onlineopinionV5/' // must correctly reference locally hosted HTML assets directory
+	pathToAssets: prodHost // must correctly reference locally hosted HTML assets directory
 /* OPTIONAL - Configuration */
 	, responseRate: 5
 	, repromptTime: 7776000 

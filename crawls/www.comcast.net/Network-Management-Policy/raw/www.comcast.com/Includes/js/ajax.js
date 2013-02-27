@@ -24,14 +24,14 @@
     }
 }
 
-function RemoteMethod(ScriptHandler, MethodName, Argument, SecureRequest) { 
+function RemoteMethod(ScriptHandler, MethodName, Argument, SecureRequest) {
     this.RemoteURL = ScriptHandler + '.cajax?SCRedirect=true';
     if (SecureRequest) {
         var url = location.href;
         if (url.indexOf('https://') != 0) {
             url = url.substring(0, url.lastIndexOf('/')+1);
             if (url.indexOf('http://') > -1)
-            url = 'https://' + url.substring(7);
+                url = 'https://' + url.substring(7);
             this.RemoteURL = url + this.RemoteURL;
         }
     }
@@ -47,6 +47,62 @@ RemoteMethod.prototype.Invoke = function() {
     if (req != null) {
         if (async) {
             req.onreadystatechange = function() {
+                // only if req shows "loaded"
+                if (req.readyState == 4) {
+                    // only if "OK"
+                    if (req.status == 200) {
+                        if (req.responseText) {
+                            pfnCallback(JSON.parse(req.responseText));
+                        }
+                        else {
+                            pfnCallback(null);
+                        }
+                    }
+                    else {
+                        pfnCallback(null);
+                        //alert("There was a problem retrieving the XML data:\n" + req.statusText);
+                    }
+                }
+            }
+        }
+        if (this.RemoteURL.indexOf('.asmx') > -1) {
+            var params = new String();
+            for (i = 0; i < this.RemoteArgs.length; i++) {
+                params += this.RemoteArgs[i][0] + '=' + escape(this.RemoteArgs[i][1]) + '&';
+            }
+            if (params.length > 0) {
+                params = params.substring(0, params.length - 1);
+            }
+            req.open(this.Protocol, this.RemoteURL, true);
+            if (this.Protocol == 'POST') {
+                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            }
+            req.send(params);
+        }
+        else {
+            req.open('POST', this.RemoteURL, true);
+            var obj = { Method: this.MethodName, Arg: JSON.stringify(this.Argument) };
+            var jsonStr = JSON.stringify(obj);
+            req.send(jsonStr);
+        }
+    }
+}
+
+function RemoteCMSMethod(ScriptHandler, MethodName, Argument) {
+    this.RemoteURL = ScriptHandler + '.cajax';
+    this.Protocol = 'GET';
+    this.MethodName = MethodName;
+    this.Argument = Argument;
+    this.LocalAction = null;
+}
+
+RemoteCMSMethod.prototype.Invoke = function () {
+    var req = GetAjaxRequest();
+    var pfnCallback = this.LocalAction;
+    var async = pfnCallback != null;
+    if (req != null) {
+        if (async) {
+            req.onreadystatechange = function () {
                 // only if req shows "loaded"
                 if (req.readyState == 4) {
                     // only if "OK"

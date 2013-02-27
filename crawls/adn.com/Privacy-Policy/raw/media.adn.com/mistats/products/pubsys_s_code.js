@@ -71,6 +71,8 @@ function s_doPlugins(s)
    {
       s.products = '';
       s.events = 'event7';
+      if (mistats.interactionTracker && mistats.interactionTracker.resetProps)
+         mistats.interactionTracker.resetProps();
    }, 50);
 }
 s.doPlugins=s_doPlugins;

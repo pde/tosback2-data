@@ -41,29 +41,4 @@
             autoRotateSpeed: 10000
         });
     }
-
-    /*
-    8/20/2010 DFR: replaced standard control with telerik control. This code no longer needed.
-    // Clear/restore the default value when entering/leaving the search field
-    jQuery('div.search-field input.search').focus(function () {
-    if (this.value == this.defaultValue) {
-    this.value = '';
-    }
-    }).blur(function () {
-    if (!this.value.length) {
-    this.value = this.defaultValue;
-    }
-    });
-
-    // Make sure you have valid data before submitting the search form
-    jQuery('div.search-field input.btn-go').click(function () {
-    var txtSearch = jQuery('div.search-field input.search');
-    if (txtSearch.val() == txtSearch.attr('defaultValue') || txtSearch.val() == '') {
-    alert('Please enter a search term.');
-    txtSearch.focus();
-    return false;
-    }
-    });
-    */
-
 });

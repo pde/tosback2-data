@@ -98,7 +98,6 @@
         var _ga_tracking_domains = ['blog.fitbit.com', 'help.fitbit.com'];
     }
 </script>
-
     <a name="top"></a>
     
     
@@ -2032,6 +2031,18 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 </script>
 
 <script type="text/javascript">
+    
+    (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+    b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
+    '//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';d=c.getElementsByTagName("script")[0];
+    d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){
+    var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+    Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?g=a[f]=[]:
+    f="mixpanel";g.people=g.people||[];h=['disable','track','track_pageview','track_links',
+    'track_forms','register','register_once','unregister','identify','alias','name_tag',
+    'set_config','people.set','people.increment','people.track_charge','people.append'];
+    for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.2;})(document,window.mixpanel||[]);
+
 	var mpq = [];
 	var mpqMasterPrj = "82d19845b298fcc8b8713861c9cf67c0";
     var mpqSignupPrj = "6d8c58bf820d35c347bf4c80b85dfa87";
@@ -2042,46 +2053,53 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
     var mpqWebsitePrj = "0c603dde37e11848bf8ba55a855f9d1a";
     var mpqSocialFeaturesPrj = "c7ba2a7fc10a15f9eb140af80c730653";
     var mpqCWPrj = "2a509160f60d33578a765e88afebee24";
-    
-    var mpqQAPrj = "45b3cbfc56ddb35a099bc7f38fc74f4c"; // QA Project 
-    
+
+    var mpqQAPrj = "45b3cbfc56ddb35a099bc7f38fc74f4c"; // QA Project
+
+    var mixpanelConfig = {
+        cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500, upgrade: true,
+        loaded: function(){
+            // Upgrade to new mixpanel, which does not use mpq variable
+            // If they don't equal each other
+            if (mpq != mixpanel) {
+                // Then we'll set the mpq items
+                var len = mpq.length, i = 0;
+                while(len--){
+                    mixpanel.push(mpq[i++]);
+                }
+
+                // And make mpq variable equal mixpanel, so future calls to mpq will just call mixpanel
+                mpq = mixpanel;
+            }
+        }
+    };
+
     
     if (document.location.host === "www.fitbit.com" || document.location.host === "api.fitbit.com") {
-        mpq.push(["init", mpqWebsitePrj]);
-        mpq.push(["set_config", { cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500 } ]);
+        mixpanel.init(mpqWebsitePrj, mixpanelConfig);
     } else {
-        mpq.push(["init", mpqQAPrj]);
-        mpq.push(["set_config", { cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500 } ]);
+        mixpanel.init(mpqQAPrj, mixpanelConfig);
+
         mpqMasterPrj = mpqSignupPrj = mpqDashboardPrj = mpqOrderPrj = mpqBadgesPrj = mpqDevicesPrj = mpqWebsitePrj = mpqSocialFeaturesPrj = mpqCWPrj = mpqQAPrj;
     }
-    
+
 	
     mpq.push(["register", {"age":"","city":"","country":"","gender":"","interface":"","member":"","state":"","timezone":"","Api Usage":"","City":"","State":"","Food Goal":"","Goal Primary":"","GoalFoodBudget":"","GoalFoodCalories":"","GoalPrimary":"","GoalWeight":"","Member":"","Tracker":""}, "all"]);
     mpq.push(["register", {"Locale": "US"}, "all", 90]);
     mpq.push(["register", {"LocaleLang": "en_US"}, "all", 90]);
     mpq.push(["register", {"CW": "no"}, "all", 90]);
     mpq.push(["register", {"LocaleReal": "US"}, "all", 90]);
-    
+
     
     fitbit.loadInlineScript(function () {
-    	
+
 	    
 	            mpq.push(["register", {"Loggedin": "False"}, "all", 90]);
 	        
-	    (function() {
-	        var b, a, e, d, c; b = document.createElement("script"); b.type="text/javascript"; b.async=true;
-	        b.src = "//api.mixpanel.com/site_media/js/api/mixpanel.js";
-	        a = document.getElementsByTagName("script")[0]; a.parentNode.insertBefore(b,a);
-	        e = function(f) { return function() { mpq.push([f].concat(Array.prototype.slice.call(arguments, 0))) }};
-	        d = ["init","track","track_links","track_forms","register","register_once","identify","name_tag","set_config"];
-	        for(c = 0; c < d.length; c++){ mpq[d[c]] = e(d[c]) }
-		})();
-	    
-	    
 	    $(function () {
             
 	        mpq.push(["track_links",
-		        $("a#mpq-link-cart-Header"),
+		        "a#mpq-link-cart-Header",
 		        "OrderCart: Start",
 		        {
 		            "!SOURCE": "Header",
@@ -2090,7 +2108,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 		        }
 	        ]);
 	        mpq.push(["track_links",
-		        $("a#mpq-link-cart-Footer"),
+		        "a#mpq-link-cart-Footer",
 		        "OrderCart: Start",
 		        {
 		            "!SOURCE": "Footer",
@@ -2099,7 +2117,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 		        }
 	        ]);
 	        mpq.push(["track_links",
-		        $("li.mpq-link-cart-MainMenu a"),
+		        "li.mpq-link-cart-MainMenu a",
 		        "OrderCart: Start",
 		        {
 		            "!SOURCE": "Main Menu",
@@ -2107,9 +2125,9 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 		            "token": mpqOrderPrj
 		        }
 	        ]);
-	        
+
 			
-	    
+
 	    });
 	    
     });
@@ -2154,7 +2172,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
     
     
     
-    	BOOMR.addVar("requestId", "web08.fitbit.com_1361624820774_06791");
+    	BOOMR.addVar("requestId", "web03.fitbit.com_1361970396736_27761");
     
     </script>
 

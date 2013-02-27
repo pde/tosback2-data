@@ -16017,7 +16017,7 @@ function($,
                             dfd.resolve(user, gigyaUser, uidSignature, timestamp, uid);
                         })
                         .fail(function(error) {
-                            GigyaHelper.logoutUser();
+                            //GigyaHelper.logoutUser();
                             dfd.reject(error, gigyaUser, uidSignature, timestamp, uid); 
                         });
                     return dfd.promise();

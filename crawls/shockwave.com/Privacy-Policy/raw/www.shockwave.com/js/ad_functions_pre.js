@@ -4,25 +4,12 @@
  */
 hideGame = function() {
 	// For IE we CAN'T toggle the visibility of the game and still access it
-	if ( ! jQuery.support.opacity ) {
-		$("#gameCanvas").css("position","absolute");
-		$("#gameCanvas").css("top","0");
-		$("#gameCanvas").css("left","-9999px");
-
-	// For other browsers we can just toggle the visibility
-	} else {
-		$("#gameCanvas").css("visibility","hidden");
-	}
+	$("#gameCanvas").css("left","-9999px");
 };
 showGame = function() {
 	// For IE we CAN'T toggle the visibility of the game and still access it
-	if ( ! jQuery.support.opacity ) {
-		$("#gameCanvas").css("position","static");
+	$("#gameCanvas").css("left","");
 
-	// For other browsers we can just toggle the visibility
-	} else {
-		$("#gameCanvas").css("visibility","visible");
-	}
 };
 
 /**

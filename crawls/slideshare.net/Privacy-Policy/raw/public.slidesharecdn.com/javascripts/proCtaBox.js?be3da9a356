@@ -1,0 +1,97 @@
+(function($){
+    private_upload_ab = function(){
+      // Javascript code to run our A/B test. Remove following code block to stop the experiment
+    };
+
+    init_fancybox_auth_token = function(){
+      if($("div.homepage_identifier").length > 0) {
+        //disable the button
+        $("button.upgradeNow").each(function() { $(this).removeClass('btn-primary').attr('disabled', 'disabled'); });
+        $.ajax({
+          url: 'account/get_form_authenticity_token',
+          dataType: 'json',
+          success: function(token){
+            window._auth_token = token.auth_token;
+            $("[name=authenticity_token]").each(function() { $(this).val(token.auth_token); });
+            //enable the button to upgrade when authenticity token is obtained
+            $("button.upgradeNow").each(function() { $(this).addClass('btn-primary').removeAttr('disabled', 'disabled'); });
+          }
+        });
+      }
+    };
+
+  $(document).ready(function(){
+    // $("a[href='#cta_fancybox']") // this doesnot work in IE6-7
+    // $("a[href='#cta_remove_ad_fancy']"). // this does not work in IE6-7
+    init_fancybox_auth_token();
+    if($(".j-cta_remove_ad_fancy").length > 0){
+      $(".j-cta_remove_ad_fancy").click( function(e) {
+          e.preventDefault();
+          $('.j-userDropDown').hide();
+          $('.j-userName').removeClass('userNameSelected');
+          var source_id = $(this).attr('id');
+          $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=remove_ads&cmp_src_from=' + source_id);
+          $('.j-cmp_src_from').val(source_id);
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed Remove Ads thickbox', {'From': source_id});
+          }
+          $('#cta_remove_ad_fancy').modal();
+      });
+    }
+
+    if($(".j-cta_conf_line_fancy").length > 0){
+      $(".j-cta_conf_line_fancy").fancybox({
+        'frameWidth'          : 575,
+        'frameHeight'         : 215,
+        'hideOnContentClick'  : false,
+        'enableEscapeButton'  : true,
+        'centerOnScroll'      : true,
+        'overlayOpacity'      : 0.85,
+        'overlayColor'        : "#000"
+      }).click( function(e) {
+          e.preventDefault();
+          $('.j-userDropDown').hide();
+          $('.j-userName').removeClass('userNameSelected');
+          $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=' + this.id);
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed ZipCast Conf Line thickbox');
+          }
+          return false;
+      });
+    }
+    if($(".j-cta_privateupload").length > 0){
+      $(".j-cta_privateupload").click( function(e) {
+        e.preventDefault();
+        private_upload_ab();
+        $('.j-know-more').attr('href', '/business/premium/plans?cmp_src=benefits&cmp_src_from=private_upload');
+        if (typeof mpq !="undefined"){
+          mpq.track('Viewed Private Uploads thickbox', {'From': 'private_upload'});
+          if(slideshare_object.user.loggedin && !slideshare_object.user.has_uploads){
+            mpq.track('No uploads user clicked upload+');
+          }
+        }
+      });
+    }
+
+    if($(".j-removeRelatedCTA").length > 0){
+      //Tracking using GA as KM is unavailable on slideview page
+      // Breaking defered JS load. to be fixed. 
+      //$('.j-removeRelatedCTA').evt_track('slideview', 'removeRelatedCTA');
+      $(".j-removeRelatedCTA").click( function(e) {
+          e.preventDefault();
+          if (typeof mpq !="undefined"){
+            mpq.track('Viewed Remove Related thickbox');
+          }
+          if(this.id != "j-removeRelatedCTA-right") {
+            $('#cta_removerelated img').attr("src", "/images/visual-removeRelated-alt.png");  
+          }
+      });
+    }
+
+    $(".upgradeNow").click(function(){
+        $(".h-upgradeForm").submit();
+    });
+
+  });
+
+})(jQuery);

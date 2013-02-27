@@ -349,3 +349,50 @@ function attachStickyView() {
         });
     }
 }
+
+/* adding  item level page promo functionality - lightbox */ 
+function showCustomLightbox(promoUrl, width, height) {
+	jQuery('<div/>', {
+		id: 'promo-lightbox',
+		style: 'display:none'
+	}).appendTo('body');
+	
+	jQuery('<iframe/>', {
+		id: 'promo-iframe',
+		src: '',
+		height: '100%',
+		width: '100%',
+		frameBorder: '0',
+		scrolling: 'no'
+	}).appendTo('#promo-lightbox');
+
+	// create container (last element of the body)
+
+	// set iframe source and width/height
+	jQuery('#promo-lightbox').css({ height: height + 'px', width: width + 'px' });
+	jQuery('#promo-iframe').attr('src', promoUrl);
+
+	// launch BlockUI lightbox
+	
+	// need to destroy #promo-lightbox on close
+	jQuery.blockUI({
+		baseZ: 2100,
+		message: jQuery('#promo-lightbox'),
+		css: {
+			top: (jQuery(window).height() - height) / 2 + 'px',
+			left: (jQuery(window).width() - width) / 2 + 'px',
+			height: height + 'px',
+			width: width + 'px'
+		}
+	});
+
+	// close overlay on click
+	
+	jQuery('.blockOverlay').click(function() {
+		jQuery.unblockUI({
+			onUnblock: function(){ jQuery("#promo-lightbox").remove(); }
+		});
+	}).css({ cursor: 'pointer' });
+
+	// close; parent.$.unblockUI() from lightbox
+}

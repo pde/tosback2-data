@@ -1,0 +1,64 @@
+$Halo.bigbro.subscribeOnce("overlays/shipping/shippingModalInitialized", function(){
+	Core.start("overlays/shipping/shippingModal");
+});
+
+Core.register({
+    name: "overlays/shipping/shippingModal",
+    group: false,
+    css: ['/css/app/modules/default/overlays/shipping/shippingModal.css'],
+    settings: {
+        domSelector: "#shipping_modal",
+        domLocation: "#shipping_modal_container",
+        insertionMethod: $.fn.prependTo,
+        isOverlay: true
+    },
+    obj: {
+    	priv: {
+    		html: null,
+    		closeOverlay: function() {
+    			$("#sb-container #sb-title-inner").removeClass("shippingModalTitle");
+    			
+    			$("#sb-container #sb-title-inner").css("margin-right", 0);
+    		},
+    		setupOverlay: function() {
+    			$("#sb-container #sb-title-inner").addClass("shippingModalTitle");
+    			
+    			marginRight = $("#sb-container #sb-title").css("padding-left");
+    			$("#sb-container #sb-title-inner").css("margin-right", marginRight);
+    		},
+    	    openOverlay: function() {
+    	    	var that = this;
+    	    	
+	    		$Halo.bigbro.subscribeOnce("overlays/shipping/shippingModalSetup", this.setupOverlay, that);
+	    		$Halo.bigbro.subscribeOnce("overlays/shipping/shippingModalClose", this.closeOverlay, that);
+	    		
+				Shadowbox.open({
+					content: that.html.html(),
+					player: 'html',
+					width: 326,
+					title: '<img src="images/shipping_icon.png" alt="X" /> <span>Free Shipping Guidelines</span>',
+					options: {
+						modalName: 'shippingModal',
+						onFinish: function() {
+							$Halo.bigbro.notify("overlays/shipping/shippingModalSetup");
+						},
+						onClose: function() {
+							$Halo.bigbro.notify("overlays/shipping/shippingModalClose");
+						}
+					}
+				});
+    	    }
+    	},
+    	pub: {
+    		init: function() {
+    			var that = this;
+    			
+    			$Halo.bigbro.subscribeOnce("overlays/shipping/shippingModalStarted", function(html) {
+    				that.html = html;
+    				
+    				$Halo.bigbro.subscribe("overlays/shipping/shippingModalOpen", that.openOverlay, that);
+    			});
+    		}
+    	}
+    }
+}, false);

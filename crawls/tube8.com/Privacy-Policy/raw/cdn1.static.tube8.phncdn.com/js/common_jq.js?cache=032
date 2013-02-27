@@ -1,0 +1,1099 @@
+/***************Registration Page Validation ******************/
+$(document).ready(function(){
+	$("#registContainer input[type=password], #registContainer select").blur(function(e){
+		if($(this).val() != ""){
+			testField($(this).attr("id"));
+			aFieldStatus[$(this).attr("id")] = 0;
+			manageDefinitions();
+		}
+		else{
+			$("."+$(this).attr("id")+"Status").hide();
+			$(this).css("background-color", "white");
+		}
+	});
+	$("#registContainer input[type=text], #registContainer input[type=password], #registContainer select").focus(function(e){
+		$(this).css("background-color", "white");
+		$("."+$(this).attr("id")+"Status").hide();
+	});
+	$("#sex, #birthyear").on("change", function(){
+		$("#"+$(this).attr("id")+" option").remove(":contains('Choose')");
+	});
+	$("#email, #username").keyup(function(){
+		var fieldId = $(this).attr("id");
+		if(timerAjax){
+			clearTimeout(timerAjax);
+		}
+		if($(this).val() != ""){
+			timerAjax = setTimeout(function(){ajaxVerify(fieldId);}, 2000);
+		}
+		else{
+			$("."+$(this).attr("id")+"Status").hide();
+			$(this).css("background-color", "white");
+			aFieldStatus[$(this).attr("id")] = 0;
+			manageDefinitions();
+		}
+	}).blur(function(e){
+		if($(this).val() != ""){
+			ajaxVerify($(this).attr("id"));
+			if (timerAjax) {
+				clearTimeout(timerAjax);
+			}
+		}
+		else{
+			$("."+$(this).attr("id")+"Status").hide();
+			$(this).css("background-color", "white");
+			aFieldStatus[$(this).attr("id")] = 0;
+			manageDefinitions();
+		}
+	});
+	$("#btn_submit").click(validateForm);
+	$("#over_18").change(function(){
+		validateTermsOfUse();
+		manageDefinitions();
+	});
+	validateRecaptcha();
+	manageDefinitions();
+});
+
+var timerAjax, timerValidateAll, emailAjaxPass = false, userAjaxPass = false;
+
+var aFieldStatus = new Array();
+aFieldStatus["email"] = 0;
+aFieldStatus["sex"] = 0;
+aFieldStatus["birthyear"] = 0;
+aFieldStatus["username"] = 0;
+aFieldStatus["password"] = 0;
+aFieldStatus["password2"] = 0;
+aFieldStatus["termsOfUse"] = 0;
+aFieldStatus["recaptcha"] = 0;
+
+var aDefinitions = new Array();
+aDefinitions[0] = "good";
+aDefinitions[1] = "Please enter a valid email address.";
+aDefinitions[2] = "This email is already registered in our database.";
+aDefinitions[3] = "Please select a gender.";
+aDefinitions[4] = "Please select a birth year.";
+aDefinitions[5] = "Username must contain 4 to 16 characters with no space(alphanumeric characters, '.' or '_' allowed).";
+aDefinitions[6] = "Username already used, please choose another username.";
+aDefinitions[7] = "Password must contain 6 to 20 alphanumeric characters.";
+aDefinitions[8] = "Password must be the same in both fields.";
+aDefinitions[9] = "You must certify that you are over 18 years old, and agree to our Terms of Use.";
+aDefinitions[10] = "The characters that you entered didn't match the word verification. Please try again.";
+
+function testField(id){
+	switch(id){
+		case "email":
+			ajaxVerify("email");
+		break;
+		case "sex":
+			validateGender();
+		break;
+		case "birthyear":
+			validateBirth();
+		break;
+		case "username":
+			ajaxVerify("username");
+		break;
+		case "password":
+			validatePass();
+		break;
+		case "password2":
+			validateSamePass();
+		break;
+		case "all":
+			ajaxVerify("email");
+			validateGender();
+			validateBirth();
+			ajaxVerify("username");
+			validatePass();
+			validateSamePass();
+			validateTermsOfUse();
+		break;
+	}
+	manageDefinitions();
+}
+function manageDefinitions(){
+	var addHeight;
+	var html = "";
+
+	$("#pinkDiv").html("");
+	for(a in aFieldStatus){
+		if(aFieldStatus[a] != 0){
+			html += "<p>*"+aDefinitions[aFieldStatus[a]]+"</p>";
+		}
+	}
+	$containerHeight = parseInt($(".cont-form-user").attr("name"));
+	if(html != ''){
+		$("#pinkDiv").html(html);
+		$pinkDivHeight = $("#pinkDiv").outerHeight();
+		$(".cont-form-user").height($containerHeight + $pinkDivHeight);
+		$("#pinkDiv").show();
+	}
+	else{
+		$("#pinkDiv").hide();
+		$(".cont-form-user").height($containerHeight);
+	}
+}
+
+function validateEmail(){
+	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;
+	if(emailReg.test($("#email").val())){
+		fieldGood('email');
+		aFieldStatus["email"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('email');
+		aFieldStatus["email"]= 1;
+		return false;
+	}
+}
+
+function validateGender(){
+	var optionSelected = $("#sex option:selected");
+	if(optionSelected.attr("value") == "1" || optionSelected.attr("value") == "2"){
+		fieldGood('sex');
+		aFieldStatus["sex"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('sex');
+		aFieldStatus["sex"]= 3;
+		return false;
+	}
+}
+
+function validateBirth(){
+	var optionSelected = $("#birthyear option:selected");
+	if(optionSelected.attr("value") != ""){
+		fieldGood('birthyear');
+		aFieldStatus["birthyear"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('birthyear');
+		aFieldStatus["birthyear"]= 4;
+		return false;
+	}
+}
+
+function validateUsername(){
+	var userReg = /^[.0-9a-z_]{4,16}$/i;
+	if(userReg.test($("#username").val())){
+		fieldGood('username');
+		aFieldStatus["username"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('username');
+		aFieldStatus["username"]= 5;
+		return false;
+	}
+}
+
+function validatePass(){
+	var passReg = /^\w{6,20}$/;
+	if(passReg.test($("#password").val())){
+		fieldGood('password');
+		aFieldStatus["password"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('password');
+		aFieldStatus["password"]= 7;
+		return false;
+	}
+}
+
+function validateSamePass(){
+	var pass1 = $("#password").val();
+	var pass2 = $("#password2").val();
+	if(pass1 == pass2 && pass1 != ''){
+		fieldGood('password2');
+		aFieldStatus["password2"]= 0;
+		return true;
+	}
+	else{
+		fieldBad('password2');
+		aFieldStatus["password2"]= 8;
+		return false;
+	}
+}
+function validateTermsOfUse(){
+	if($("#over_18").is(":checked")){
+		fieldGood('over_18');
+		aFieldStatus["termsOfUse"] = 0;
+		return true;
+	}
+	else{
+		fieldBad('over_18');
+		aFieldStatus["termsOfUse"] = 9;
+		return false;
+	}
+}
+function validateRecaptcha(){
+	if($("#recaptchaError").val() == ""){
+		aFieldStatus["recaptcha"] = 0;
+		return true;
+	}
+	else{
+		aFieldStatus["recaptcha"] = 10;
+		return false;
+	}
+}
+function validateForm(){
+	testField("all");
+	timerValidateAll = setInterval(function(){
+		if(emailAjaxPass && userAjaxPass){
+			clearInterval(timerValidateAll);
+			emailAjaxPass = false;
+			userAjaxPass = false;
+			manageDefinitions();
+			var submitForm = true;
+			for(var i in aFieldStatus){
+				if(!aFieldStatus[i] == 0 && i != "recaptcha"){submitForm = false;}
+			}
+			if(submitForm){
+				$("#signupform").submit();
+			}
+		}
+	},100);
+
+}
+
+function fieldGood(id){
+	$("."+id+"Status").css("background-position", "0 0");
+	$("."+id+"Status").show();
+	$("#"+id).css("background-color", "white");
+}
+
+function fieldBad(id){
+	$("."+id+"Status").css("background-position", "-23px 0");
+	$("."+id+"Status").show();
+	$("#"+id).css("background-color", "#e3c7c7");
+}
+
+function ajaxVerify(field){
+	var fieldValue = $("#"+field).val();
+	var functionToCall;
+
+	if(field == 'email'){
+		functionToCall = validateEmail;
+		emailAjaxPass = true;
+	}
+	else if(field == 'username'){
+		functionToCall = validateUsername;
+		usernameAjaxPass = true;
+	}
+
+	if(functionToCall(field)){
+		$.get('/ajax/validateField.php?field='+field+'&value='+fieldValue, function(resp){
+			if(resp.success == false){
+				if(field == 'username'){
+					switch(resp.msg){
+						case "Username already exists":
+							aFieldStatus["username"] = 6;
+						break;
+						case "Username cannot be empty":
+						case "Username did not meet our syntax requirements":
+						default:
+							aFieldStatus["username"] = 5;
+						break;
+					}
+				}
+				else if(field == 'email'){
+					switch(resp.msg){
+						case "Email already exists":
+							aFieldStatus["email"] = 2;
+						break;
+						case "Email cannot be empty":
+						case "Email address provided is invalid":
+						default:
+							aFieldStatus["email"] = 1;
+						break;
+					}
+				}
+				fieldBad(field);
+			}
+			else{
+				aFieldStatus[field] = 0;
+				fieldGood(field);
+			}
+			if(field == "email"){emailAjaxPass = true;}
+			else if (field == "username"){userAjaxPass = true;}
+			manageDefinitions();
+		}, "json");
+	}
+	else{
+		manageDefinitions();
+	}
+}
+/***************End of Registration Page Validation ******************/
+function noErrorMessages () { return true; }
+
+function bookmark(anchor){
+   if(window.external)
+   {
+	   window.external.AddFavorite(anchor.getAttribute('href'), anchor.getAttribute('title'));
+	   return false;
+   }
+   return true;
+}
+
+function gotoURL(url) {
+	document.location.href = url;
+}
+
+function changeThumb(index, i, path)
+{
+	if (changing_thumbs[index])
+	{
+		var src = path + i + '.jpg';
+
+		if (path.indexOf("{index}") != -1)
+		{
+			src = path.replace("{index}", i);
+		}
+
+		currentThumbnailFlip.attr('src', src);
+
+		var maxcnt = 16;
+
+		if($j('#' + index).attr('maxnum'))
+		{
+			maxcnt = parseInt($j('#' + index).attr('maxnum'));
+		}
+
+		if (++i > maxcnt) i=1;
+		changing_thumbs[index] = setTimeout("changeThumb('" + index + "'," + i + ",'" + path + "')", 600);
+	}
+}
+
+//check and uncheck all inputs in the filter menu
+function checkall(on){
+	 $j("input.delete_cb").each(function(cb, el){ el.checked = on; });
+}
+
+function endThumbChange(index)
+{
+	clearTimeout(changing_thumbs[index]);
+	currentThumbnailFlip.attr('src', first_thumbs[index]);
+	changing_thumbs[index] = false;
+}
+
+function toggleDisplay (elId) {
+	var cover_layer_h = $j('body').outerHeight() + 1;
+	cover_layer_h = Math.max(cover_layer_h, $j(document).height()-10);
+
+	$j('div.cover_layer').css("height" , cover_layer_h + "px");
+	var p = ['share_link', 'logindiv', 'reportdiv', 'AOLBrowserNotice'];
+	for (n in p)
+	{
+		if (elId != p[n]) {
+			$j('#' + p[n]).hide();
+		}
+	}
+	if ($j('#' + elId)) {
+		if ($j('#' + elId).css('display') == 'none') {
+			$j('#' + elId).show();
+		}
+		else {
+			$j('#' + elId).hide();
+		}
+	}
+}
+
+function goToSexual(changedValue, site_url) {
+	segmentCookie(changedValue.value);
+	if(changedValue.value == 0)
+		window.location = site_url;
+	if(changedValue.value == 1)
+		window.location = site_url + "gay/";
+	if(changedValue.value == 2)
+		window.location = site_url + "shemale/";
+}
+
+function needLogin(run, msg)
+{
+	if (loggedin)
+	{
+		eval(run);
+	}
+	else
+	{
+		showLogin(run, msg);
+	}
+}
+
+function segmentCookie(segm)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate()+ 7);
+	document.cookie="t8segm="+segm+";expires="+exdate.toUTCString() + ";path=/";
+}
+
+function showLogin(run, msg, ifurl)
+{
+	goUrl = ifurl ? ifurl: false;
+
+	var dv = $j('#logindiv');
+
+	$j('#loginmsg').html(msg);
+
+	if (dv.css('display') == 'none')
+	{
+		runal=run;
+		toggleDisplay(); // hide all other boxes
+		dv.show();
+		if($("#pusrpwd").val()!= ""){
+			$("#busrpwd").hide();
+		}
+		//$j('input[name$="username"]').focus(); place back if username input should be hidden
+	}
+	else
+	{
+		runal=false;
+		dv.hide();
+	}
+}
+
+function startThumbChange(index, path)
+{
+	changing_thumbs[index] = true;
+	changeThumb(index, 2, path);
+}
+
+function tryLogin(ajax_url)
+{
+	$j('#logindiv').hide();
+	user = $j('input[name$="username"]').val();
+	pass = $j('input[name$="password"]').val();
+
+	$j.post(ajax_url + "login.php",
+		{ username : user, password : pass },
+		function(response) {
+
+			var rts=response.split('|');
+			if (rts[0]==0)
+			{
+				showLogin(runal, rts[1], goUrl);
+			}
+			else if(rts[0]==2)
+			{
+				alert(rts[1]);
+			}
+			else
+			{
+				loggedin=1;
+
+				if (runal)
+				{
+					eval(runal);
+				}
+				else if(goUrl)
+				{
+					if(location.href == site_url + 'signin.html'){
+						window.location = location.href + "?notLogout=1";
+						return;
+					}
+					gotoURL(goUrl);
+				}
+				location.reload(true);
+
+			}
+		}
+	);
+
+}
+
+
+// Function is needed because using the desktop login function won't work.
+function ipadMenuLogin(ajax_url)
+{
+	user = $j('input[name$="menuUsername"]').val();
+	pass = $j('input[name$="menuPassword"]').val();
+
+	$j.post(ajax_url + "login.php",
+		{ username : user, password : pass },
+		function(response) {
+
+			var rts=response.split('|');
+			if (rts[0]==0)
+			{
+				showLogin(runal, rts[1], '/menu.html');
+			}
+			else
+			{
+				loggedin=1;
+				gotoURL('/menu.html');
+			}
+		}
+	);
+}
+
+// Remove HTML5 video controls when you display a popup with inputs in ipad.
+function toggleVideoControls()
+{
+	var video = document.getElementById('player-html5');
+
+	if(video) {
+		if (video.hasAttribute("controls")) {
+			video.removeAttribute("controls")
+		} else {
+			video.setAttribute("controls","controls")
+		}
+	}
+}
+
+$(function(){
+	// Input focus/blur for login section
+	$('#pusrname, #busrpwd').each( function () {
+		$(this).val($(this).attr('defaultVal'));
+		$(this).css({color:'grey'});
+	});
+	$('#pusrname').focus(function(){
+		if ( $(this).val() == $(this).attr('defaultVal') ){
+			$(this).val('');
+			$(this).css({color:'black'});
+		}
+	});
+	$('#pusrpwd').focus(function(){
+		$('#pusrpwd').css('background','white');
+	});
+	$('#pusrname').blur(function(){
+		if ( $(this).val() == '' ){
+			$(this).val($(this).attr('defaultVal'));
+			$(this).css({color:'grey'});
+		}
+	});
+	$('#pusrpwd').blur(function(){
+		if ( $(this).val() == '' ){
+			$(this).css('background','transparent');
+		}
+		else{}
+	});
+	//ie lte 8
+	$('#busrpwd').focus(function(){
+		$(this).hide();
+		$(this).prev('#pusrpwd').focus();
+		if ( $('#pusrpwd').val() == '' ){
+			$(this).show();
+		}
+	});
+
+	$('#pusrpwd').blur(function(){
+		if ( $(this).val() == '' ){
+			$(this).css('background','transparent');
+		}
+		else{}
+	});
+	//ie lte 8
+	$('#busrpwd').focus(function(){
+		$(this).hide();
+		$(this).prev('#pusrpwd').focus();
+		if ( $('#pusrpwd').val() == '' ){
+			$(this).show();
+		}
+	});
+
+});
+
+/**
+ * Contains statTracker for the tjadblocker
+ * @project statTracker
+ * @author Shahyar G
+ * @version 1.4.2-$Rev: 33 $
+**/
+(function (w, d) {
+	if (typeof StatTracker != 'undefined' && StatTracker) {
+		throw "statTracker already initialized.";
+	}
+
+	/**
+	 * Use its push method like you would with any array. StatTracker handles it (by rebinding push) on its own.
+	 * @see StatTracker
+	 * @example
+	 * _ST = window._ST || []; // makes sure it's an array, at least, to be used later. Usually only do this once in your page.
+	 * _ST.push(['_event', 'view', 'page']);
+	 */
+	_ST = w._ST || [];
+
+	var _url = d.location.href.charAt(4) == 's' ? 'https://etahub.com/track?' : 'http://etahub.com:8080/track?', t = 666, // defaults
+		_i = { }, // instances
+		_useTimer, _self = this, // refs
+		_e = encodeURIComponent || escape,
+		_OBU, _async, _asyncTimer;
+
+	/**
+	 * @internal
+	 */
+	function _rdate(c) {
+		var b = new Date();
+		b.setTime(b.getTime() + c * 864E5);
+		return b.toGMTString();
+	}
+	/**
+	 * @internal
+	 */
+	function _gCookie(c) {
+		var b = d.cookie, a = 0;
+		if (b) {
+			for (b = b.split("; "); a < b.length; a++) {
+				b[a] = b[a].split("=", 2);
+				if (unescape(b[a][0]) == c) {
+					return unescape(b[a][1]);
+				}
+			}
+		}
+		return null;
+	}
+	/**
+	 * @internal
+	 */
+	function _sCookie(c, b, a) {
+		var g, d = ["expires", "path", "domain", "secure"], e = d.length, f;
+		a = typeof a == "object" && a != null ? a : {};
+		g = escape(c) + "=" + escape(b);
+		if (typeof a.domain == "undefined") {
+			a.domain = "." + location.hostname.match(/([a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)[:0-9]*$/)[1];
+		}
+		if (typeof a.path == "undefined") {
+			a.path = "/";
+		}
+		if (a) {
+			for (;--e;) {
+				if (typeof(f = a[d[e]]) != "undefined") {
+					g += "; " + (d[e] == "secure" ? d[e] : d[e] == "expires" ? isNaN(f) ? f : _rdate(f) : d[e] + "=" + f);
+				}
+			}
+		}
+		d.cookie = g;
+		return _gCookie(c) == b;
+	}
+	/**
+	 * @internal
+	 */
+	function _rCookie(c) {
+		return !_sCookie(c, "", { domain: null, path: null, expires: -1 });
+	}
+
+
+	/**
+	 * @internal
+	 */
+	function _run(again) {
+		var fn = _ST.shift();
+		if (typeof fn == 'function') {
+			if (_ST.length && (typeof again != 'boolean' || !again)) {
+				_async(_run, 0);
+			}
+			fn();
+		} else if (fn) {
+			var fa = fn.shift(), dot = fa.indexOf('.'), prefix = dot > -1 ? fa.substr(0, dot) : 'a',
+				a = _i[prefix];
+			a = a ? a.methods : {};
+			try {
+				// initialize if nonexistant
+				(a.methods || statTracker(prefix))[fa.substr(dot + 1)].apply(_self, fn);
+			} catch (e) {
+				if (w.console) {
+					console.log("statTracker('" + prefix + "')." + fa.substr(dot + 1) + ".apply(_self, [" + fn.join(',') + "])")
+					(console.error || console.log)(e);
+				}
+			}
+			if (_ST.length && (typeof again != 'boolean' || !again)) {
+				_async(_run, 0);
+			}
+		}
+	}
+
+	if (w.addEventListener) {
+		/** @internal */
+		_OBU = function () {
+			while (_ST.length) {
+				_run();
+			}
+			removeEventListener('beforeunload', _OBU, false);
+			removeEventListener('message', _run, false);
+		};
+		addEventListener('beforeunload', _OBU, false);
+		addEventListener('message', _run, false);
+	} else if (w.attachEvent) {
+		/** @internal */
+		_OBU = function () {
+			while (_ST.length) {
+				_run();
+			}
+			detachEvent('onbeforeunload', _OBU);
+			detachEvent('onmessage', _run, false);
+		};
+		attachEvent('onbeforeunload', _OBU);
+		attachEvent('onmessage', _run, false);
+	} else {
+		_useTimer = true;
+	}
+
+	if (!_useTimer && w.postMessage && (!w.VBArray || d.querySelector || d.dMode)) { // if not IE or IE8+
+		/**
+		 * Posts asynchronously or setTimeout(fn, 0) if no postMessage
+		 * @private
+		 * @ignore
+		 */
+		_async = function () {
+			postMessage('_ST', '*');
+		};
+	} else {
+		_useTimer = true;
+	}
+
+	if (_ST.push.toString && _ST.push.toString().indexOf('_ST') == -1) {
+		_ST._stpush = _ST.push;
+		/**
+		 * Redefines push to automatically run fn async
+		 * @param {array} arguments
+		 * @example
+		 * For the default tracker (called 'a'), where FN is a function, like _event
+		 *   Usage: _ST.push(['FN', ...])) // async
+		 *   Usage: statTracker().FN(...) // sync
+		 * For having multiple trackers:
+		 *   Usage: _ST.push(['tracker_id.FN', ...]) // async
+		 *   Usage: statTracker('tracker_id').FN(...) // sync
+		 */
+		_ST.push = function () {
+			_ST._stpush.apply(_ST, arguments);
+			_async(_run, 0);
+		};
+	}
+	if (!_async || _useTimer || (!_ST.push.toString || _ST.push.toString().indexOf('_ST') == -1)) {
+		// Async failed, use a timer
+		_useTimer = true;
+		_async = setTimeout;
+		/**
+		 * @private
+		 * @ignore
+		 */
+		_asyncTimer = function () {
+			if (_ST.length) {
+				_run(true);
+			}
+			setTimeout(_asyncTimer, _ST.length ? 10 : 150);
+		};
+	}
+
+	/**
+	 * Used for synchronous access to StatTracker
+	 * @name statTracker
+	 * @function statTracker
+	 * @param {string} [_ID='a']
+	 * @return {StatTracker} A reference to a StatTracker instance's methods
+	 */
+	/**
+	 * These are the methods available for use in <a href="global.html#_ST">_ST</a> and <a href="global.html#statTracker">statTracker()</a>
+	 * @name StatTracker
+	 * @namespace StatTracker
+	 */
+	statTracker = function (_ID) {
+		if (!_ID) {
+			_ID = 'a';
+		}
+		if (!_i[_ID]) {
+			var _SITE_ID = 0, _UID = 0, _SUID = null;
+
+			var methods = /** @lends StatTracker# */ {
+				/**
+				 * @param {int} id
+				 * @example statTracker()._getSiteID()
+				 */
+				_getSiteID: function () {
+					return _SITE_ID;
+				},
+				/**
+				 * @param {int} id
+				 * @example _ST.push(['_setSiteID', id])
+				 */
+				_setSiteID: function (id) {
+					_SITE_ID = id;
+				},
+				/**
+				 * @param {int} id
+				 * @example _ST.push(['_setUID', id])
+				 */
+				_setUID: function (id) {
+					_UID = id;
+				},
+				/**
+				 * @param {string} id
+				 * @example _ST.push(['_setSUID', id])
+				 */
+				_setSUID: function (id) {
+					_SUID = id;
+				},
+
+				/**
+				 * Sends the requested parameters to the server.
+				 * Use _setUID and _setSUID to not have to pass these variables. If you need to pass DATA without UID or SUID, make sure you pass them as a non-string/non-number (ie. NULL).
+				 * @param {string} category
+				 * @param {string} action
+				 * @param {string} [label]
+				 * @param {int} [value=1]
+				 * @param {string} [uid]
+				 * @param {string} [suid]
+				 * @param {string} [data]
+				 * @example _ST.push(['_event', CATEGORY(string), ACTION(string), LABEL(string), VALUE(mixed)[, UID(string|number), SUID(string|number), DATA(string)]])
+				 * @return {Image} A reference to the Image to ETA
+				 */
+				_event: function () {
+					var img;
+					// console.group();
+					// 	console.log("category => " + arguments[0]);
+					// 	console.log("action => " + arguments[1]);
+					// 	console.log("label => " + arguments[2]);
+					// 	console.log("value => " + arguments[3]);
+					// console.groupEnd();
+
+					(img = new Image(1, 1)).src = _url +
+						'site_id=' + _SITE_ID +
+						'&r=' + (new Date()).getTime() +
+						'&category=' + _e(arguments[0]) +
+						'&action=' + _e(arguments[1]) +
+						(arguments.length > 2 ? '&label=' + _e(arguments[2]) : '') +
+						(arguments.length > 3 ? '&value=' + _e(arguments[3]) : '') +
+						(arguments.length > 4 && (typeof arguments[4] == 'string' || typeof arguments[4] == 'number') || _UID ? '&uid=' + _e(arguments.length > 4 && (typeof arguments[4] == 'string' || typeof arguments[4] == 'number') ? arguments[4] : _UID) : '') +
+						(arguments.length > 5 && (typeof arguments[5] == 'string' || typeof arguments[5] == 'number') || _SUID ? '&suid=' + _e(arguments.length > 5 && (typeof arguments[5] == 'string' || typeof arguments[5] == 'number') ? arguments[5] : _SUID) : '') +
+						(arguments.length > 6 && arguments[6] ? '&data=' + _e(arguments[6]) : '');
+						// Make sure 'uid' and 'suid' aren't NULL objects, because you may want to pass 'data' without 'uid' or 'suid'
+					return img;
+				},
+
+				/**
+				 * Like _event, except only executes if a random number (0-100) is below PERCENT (0-100).
+				 * Use _setUID and _setSUID to not have to pass these variables. If you need to pass DATA without UID or SUID, make sure you pass them as a non-string/non-number (ie. NULL).
+				 * @param {float} percent Chance between 0.0 to 100.0 that this will execute _event
+				 * @param {string} category
+				 * @param {string} action
+				 * @param {string} [label]
+				 * @param {int} [value=1]
+				 * @param {string} [uid]
+				 * @param {string} [suid]
+				 * @param {string} [data]
+				 * @example _ST.push(['_eventSample', PERCENT(float), CATEGORY(string), ACTION(string), LABEL(string), VALUE(mixed)[, UID(string|number), SUID(string|number), DATA(string)]])
+				 * @return {Image} img A reference to the image to ETA
+				 * @since 1.4.2
+				 */
+				_eventSample: function (percent) {
+					if (percent && Math.random() * 100 <= percent) {
+						return _i[_ID].methods._event.apply(this, [].splice.call(arguments, 1));
+					}
+				},
+
+				/**
+				  * Binds a cookie to this domain, and also other domains with cookie_setter if set.
+				  * @param {string} name Cookie name
+				  * @param {string} value Cookie value
+				  * @param {object} options Object with duration, path, etc.
+				  * @param {string|array of strings} [cookie_setter] URL to external cookie setter script, useful if cross-domain
+				  * TODO: Replace cookie_setters functionality
+				  */
+				_setCookie: function (name, value, options, cookie_setters) {
+					name = "st_" + name;
+					_sCookie(name, value, typeof options == 'object' && options ? options : {});
+
+					if (cookie_setters) {
+						if (typeof cookie_setters != 'object') {
+							cookie_setters = [cookie_setters];
+						}
+						for (var i = 0; i < cookie_setters.length; i++) {
+							(new Image(1, 1)).src = cookie_setters[i] +
+								(cookie_setters[i].indexOf('?') > -1 ? '&' : '?') +
+								'r=' + (new Date()).getTime() +
+								(_SITE_ID ? '&sid=' + _e(_SITE_ID) : '') +
+								(_UID ? '&uid=' + _e(_UID) : '') +
+								(_SUID ? '&suid=' + _e(_SUID) : '') +
+								'&cookie=' + _e(name) +
+								'&value=' + _e(value) +
+								'&duration=' + _e(options.duration ? options.duration : '0');
+						}
+					}
+				},
+
+				/**
+				 * Begins tracking a goal (to be tracked with _trackEvent) and triggers _event, but only if it hasn't already been started within DURATION.
+				 * @param {string} goal Cookie name and stat category name
+				 * @param {string} action Cookie value and stat action; used as action in _trackGoal
+				 * @param {float} duration Number of days to keep cookie and prevent overwrite
+				 * @param {string} [label] If not NULL, tracks a stat call to category=goal&action=action&label=label
+				 * @param {string|array of strings} [cookie_setter] URL to external cookie setter script, useful if cross-domain
+				 * @param {string} [data] data to pass to _event
+				 * TODO: Replace cookie_setters functionality
+				 * @return {Image} A reference to the image to ETA
+				 */
+				_startGoal: function (goal, action, duration, label, cookie_setters, data) {
+					if (!duration) {
+						duration = 1; // 1 day
+					}
+
+					var v = _gCookie("st_" + goal);
+					if (!v) { // Don't re-set cookie within duration
+						_i[_ID].methods._setCookie(goal, action, { duration: duration }, cookie_setters);
+
+						if (label) { // Track stat
+							return _i[_ID].methods._event(goal, action, label, 1, null, null, arguments.length > 5 ? data : null);
+						}
+					} else {
+						action = v;
+					}
+				},
+				/**
+				 * No action is passed to this function, it is pulled from the cookie set in _startGoal or _setGoalAction
+				 * @param goal string Cookie/category name
+				 * @param label string Stat label name
+				 * @param [value] int Defaults to 1
+				 * @param [once] object Defaults to none. {uid: bool true, duration: int 1}
+				 * @param [validator] function If set, if validator(goal, action) == true, tracks event
+				 *   If the goal cookie exists, it tracks an event to category=goal&action=goal_action&label=label
+				 *   Otherwise, it ignores the call.
+				 * @param [data] string data to pass to _event
+				 * @return {Image} A reference to the image to ETA
+				 */
+				_trackGoal: function (goal, label, value, once, validator, data) {
+					var action = _gCookie("st_" + goal);
+					if (typeof once == 'object' && once) {
+						if (_gCookie("st_" + goal + '_' + label + '_once' + (once.uid ? '_' + _UID : ''))) {
+							return;
+						}
+						_sCookie("st_" + goal + '_' + label + '_once' + (once.uid ? '_' + _UID : ''), 1, { duration: isNaN(once.duration) ? 0 : once.duration });
+					}
+					if ((typeof validator == 'function' && validator(goal, action)) || (typeof validator != 'function' && action)) {
+						// Track only if goal was started
+						return _i[_ID].methods._event(goal, action, label, typeof arguments[2] != 'object' || arguments[2] != null ? value : 1, null, null, arguments.length > 5 ? data : null);
+					}
+				},
+				/**
+				 * Overrides the action cookie previously set in _startGoal only if it exists.
+				 * @param {string} goal Cookie/category name
+				 * @param {string} action Cookie value and stat action; used as action in _trackGoal
+				 * @param {string|array of strings} [cookie_setter] URL to external cookie setter script, useful if cross-domain
+				 * TODO: Replace cookie_setters functionality
+				 */
+				_setGoalAction: function (goal, action, duration, cookie_setters) {
+					if (!duration) {
+						duration = 1; // 1 day
+					}
+
+					var v = _gCookie("st_" + goal);
+					if (v && action != v) { // Only change action if previously set, and not if already the same
+						_i[_ID].methods._setCookie(goal, action, { duration: duration }, cookie_setters);
+					} else {
+						action = v;
+					}
+				}
+			};
+
+			_i[_ID] = {methods: methods};
+		}
+
+		return _i[_ID].methods;
+	};
+
+	StatTracker = statTracker; // backwards-compatibility
+	w.statTracker = statTracker; // new way
+
+	// Monitor
+	_async(_asyncTimer || _run, 0);
+}(window, document));
+
+/**
+ *
+ * Cookie jQuery Plugin.
+ * To work with cookies.
+ *
+ */
+
+function setCookie(name, val) {
+	var limit = new Date();
+	limit.setFullYear(limit.getFullYear() + 10);
+	$.cookie(name, val, {expires: limit, path: '/'});
+	return val;
+}
+
+function getCookie(name) {
+	var key;
+	var cookies = document.cookie.split(";");
+	for(var i=0;i<cookies.length;i++) {
+		key=cookies[i].substr(0,cookies[i].indexOf("=")).replace(/^\s+|\s+$/g,"");
+		if( key == name ) {
+			return unescape( cookies[i].substr(cookies[i].indexOf("=")+1).replace(/^\s+|\s+$/g,"") );
+		}
+	}
+}
+
+function del_cookie(name) {
+	document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 UTC; path=/';
+}
+
+( function( $ ) {
+	var settings = {};
+	var callbacks = {
+		set: function(key, val, options ) {
+			$.extend(settings, typeof options == "object" ? options : {} );
+			if( typeof val == null || typeof val == "undefined" ) {
+				settings.expires = -1;
+			} else if( typeof settings.expires == "number" ) {
+				settings.expires = new Date();
+				settings.expires.setDate( settings.expires.getDate() + options.expires );
+			}
+			return (document.cookie = [
+				encodeURIComponent(key), '=',
+				settings.raw ? val : encodeURIComponent(val),
+				settings.expires ? '; expires=' + settings.expires.toUTCString() : '',
+				settings.path ? '; path=' + settings.path : '',
+				settings.domain ? '; domain=' + settings.domain : '',
+				settings.secure ? '; secure' : ''
+			].join(''));
+		},
+		get: function(key, options) {
+			$.extend(settings, typeof options == "object" ? options : {} );
+			var value = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)
+			return value ? ( settings.raw ? value[1] : decodeURIComponent(value[1]) ) : null;
+		}
+
+	};
+	$.cookie = function() {
+		if( typeof arguments[0] != "string" )  {
+			return null;
+		}
+		if( arguments.length > 1 && typeof arguments[1] != "object" ) {
+			return callbacks.set(arguments[0] , String(arguments[1]), arguments[2]);
+		} else {
+			return callbacks.get(arguments[0],arguments[1]);
+		}
+	};
+
+} )( jQuery );
+
+/*------- function for the follow button  ------------------*/
+
+function userSubscriptionsFollow(vUrl, vFollower, vFollow, vAction, vHash, isMyPage, location) {
+	$j.ajax({
+		type: 'POST',
+		cache: false,
+		data: { follower: vFollower, follow: vFollow, action: vAction, hash: vHash},
+		url: vUrl,
+		success: function(resp){
+			if (isMyPage) {
+				window.location.replace(location);
+			} else {
+				if(vAction){
+						$j('#fButton').removeClass("follow-user");
+						$j('#fButton').addClass("following-user");
+						vAction = 0;
+				}
+				else {
+						$j('#fButton').removeClass("following-user");
+						$j('#fButton').addClass("follow-user");
+						vAction = 1;
+				}
+			}
+		}
+	});
+}

@@ -449,84 +449,118 @@ mistats.AdTracker = function ()
 
 mistats.adTracker = new mistats.AdTracker();
 
-// Interaction Tracking object == 2012-01-31 JG
 mistats.InteractionTracker = function ()
 {
    var cEvent    = 'event21';
    var cPagename = 'eVar13';
    var cChannel  = 'eVar14';
 
-   var pending;
    var counts;
-   var sessionStorage;
    var listeners;
+   var pending;
+   var pendTimer;
    var types;
 
    types =
    {
-      'cs_vote':    {key: 'mi_css', product: 'Poll Votes'},
-      'cs_results': {key: 'mi_csr', product: 'Poll Results'},
-      'cs_details': {key: 'mi_csd', product: 'Poll Details'},
-      'cs_hover':   {key: 'mi_csh', product: 'Poll Hover'},
+      'cs_vote':    {product: 'Poll Votes'},
+      'cs_results': {product: 'Poll Results'},
+      'cs_details': {product: 'Poll Details'},
+      'cs_hover':   {product: 'Poll Hover'},
 
-      'dsq-like-thread':    {key: 'mi_dlp', product: 'Dsq Like Page'},
-      'dsq-dislike-thread': {key: 'mi_ddp', product: 'Dsq Dislike Page'},
-      'dsq-toolbar':        {key: 'mi_dcm', product: 'Dsq Community'},
-      'dsq-account':        {key: 'mi_dlg', product: 'Dsq Login'},
-      'dsq-collapse':       {key: 'mi_dhs', product: 'Dsq Hide/Show'},
-      'dsq-expand':         {key: 'mi_dhs', product: 'Dsq Hide/Show'},
-      'dsq-button':         {key: 'mi_dpo', product: 'Dsq Post'},
-      'dsq-sort':           {key: 'mi_dso', product: 'Dsq Sort'},
-      'dsq-like':           {key: 'mi_dlp', product: 'Dsq Like Post'},
-      'dsq-reply':          {key: 'mi_drp', product: 'Dsq Reply'},
-      'dsq-email':          {key: 'mi_dem', product: 'Dsq Email'},
-      'dsq-rss':            {key: 'mi_drs', product: 'Dsq RSS'},
-      'dsq-pagination':     {key: 'mi_dpg', product: 'Dsq Page'},
+      'dsq-like-thread':    {product: 'Dsq Like Page'},
+      'dsq-dislike-thread': {product: 'Dsq Dislike Page'},
+      'dsq-toolbar':        {product: 'Dsq Community'},
+      'dsq-account':        {product: 'Dsq Login'},
+      'dsq-collapse':       {product: 'Dsq Hide/Show'},
+      'dsq-expand':         {product: 'Dsq Hide/Show'},
+      'dsq-button':         {product: 'Dsq Post'},
+      'dsq-sort':           {product: 'Dsq Sort'},
+      'dsq-like':           {product: 'Dsq Like Post'},
+      'dsq-reply':          {product: 'Dsq Reply'},
+      'dsq-email':          {product: 'Dsq Email'},
+      'dsq-rss':            {product: 'Dsq RSS'},
+      'dsq-pagination':     {product: 'Dsq Page'},
 
-      'gallery_views': {key: 'mi_gvc', product: 'Gallery Views', eVar: 'eVar6'},
-      'gallery_panel': {key: 'mi_gpc', product: 'Gallery Panel Views'},
+      'gallery_views': {product: 'Gallery Views', eVar: 'eVar6'},
+      'gallery_panel': {product: 'Gallery Panel Views'},
 
-      'gcs_another':  {key: 'mi_gan', product: 'GCS Ask Another'},
-      'gcs_signup':   {key: 'mi_gsu', product: 'GCS Signup'},
-      'gcs_survey':   {key: 'mi_gsv', product: 'GCS Answered Survey'},
-      'gcs_abandon':  {key: 'mi_gas', product: 'GCS Exited Site'},
-      'gcs_navigate': {key: 'mi_gap', product: 'GCS Exited Page'},
+      'gcs_another':  {product: 'GCS Ask Another'},
+      'gcs_signup':   {product: 'GCS Signup'},
+      'gcs_survey':   {product: 'GCS Answered Survey'},
+      'gcs_abandon':  {product: 'GCS Exited Site'},
+      'gcs_navigate': {product: 'GCS Exited Page'},
 
-      'share_fb':    {key: 'mi_sfb', product: 'Share Facebook'},
-      'share_tw':    {key: 'mi_stw', product: 'Share Twitter'},
-      'share_gp':    {key: 'mi_sgp', product: 'Share Google+'},
-      'share_print': {key: 'mi_spr', product: 'Share Print'},
-      'share_email': {key: 'mi_sem', product: 'Share Email'},
-      'share_any':   {key: 'mi_san', product: 'Share Any'},
+      'share_fb':    {product: 'Share Facebook'},
+      'share_tw':    {product: 'Share Twitter'},
+      'share_gp':    {product: 'Share Google+'},
+      'share_print': {product: 'Share Print'},
+      'share_email': {product: 'Share Email'},
+      'share_any':   {product: 'Share Any'},
 
-      'view_more': {key: 'mi_vmc', product: 'View More Stories'},
+      'view_more': {product: 'View More Stories'},
 
-      'widget_show': {key: 'mi_wsc', product: 'Widget Show'},
-      'widget_hide': {key: 'mi_whc', product: 'Widget Hide'},
-      'widget_move': {key: 'mi_wmc', product: 'Widget Move'},
+      'widget_show': {product: 'Widget Show'},
+      'widget_hide': {product: 'Widget Hide'},
+      'widget_move': {product: 'Widget Move'},
 
-      'wgt_topjobs':    {key: 'mi_tjc', product: 'Trifecta Jobs'},
-      'wgt_cars':       {key: 'mi_tcc', product: 'Trifecta Cars'},
-      'wgt_homefinder': {key: 'mi_thc', product: 'Trifecta Homes'}
+      'wgt_topjobs':    {product: 'Trifecta Jobs'},
+      'wgt_cars':       {product: 'Trifecta Cars'},
+      'wgt_homefinder': {product: 'Trifecta Homes'}
    };
 
-   function clearStoredStats()
+   function resetCounts()
    {
       var type;
 
-      for (type in counts)
+      for (type in types)
       {
          counts[type] = 0;
-         sessionStorage.removeItem(types[type].key);
-
-         if (types[type].eVar && s[types[type].eVar])
-            s[types[type].eVar] = '';
+         sessionStorage[type] = null;
       }
+
+      pending = false;
+   };
+
+   function resetProps()
+   {
+      var type;
+
+      for (type in types)
+         if (types[type].eVar)
+            s[types[type].eVar] = '';
 
       s[cPagename] = '';
       s[cChannel] = '';
+   };
+
+   function save()
+   {
+      var type;
+
+      for (type in types)
+         sessionStorage[type] = counts[type] || null;
 
       pending = false;
+   };
+
+   function currentBeacon()
+   {
+      var beacons;
+      var i;
+      var index;
+
+      beacons = [];
+
+      for (i in window)
+         if (i.match(/s_i_\w+[_\d+]*$/))
+         {
+            index = i.match(/\d+$/);
+            index = index ? parseInt(index[0]) : 0;
+            beacons[index] = i.replace(/_\d+$/, '') + '_' + index;
+         }
+
+      return beacons.length ? beacons[beacons.length - 1] : null;
    };
 
    function includeOptionalVars(pObj)
@@ -569,13 +603,18 @@ mistats.InteractionTracker = function ()
 
    function sendCountsNow(pEvent)
    {
+      var beaconUrl;
+      var currBeacon;
       var evtStr;
+      var lastBeacon;
       var newVars;
       var type;
+      var xmlReq;
 
       if (!pending)
          return;
 
+      lastBeacon = currentBeacon();
       evtStr = generateEventsString();
 
       newVars =
@@ -588,19 +627,26 @@ mistats.InteractionTracker = function ()
 
       newVars[cPagename] = s.pageName;
       newVars[cChannel]  = (mistats.bizunit || '').match(/MAC/) ? (s.prop16 + ': ' + s.prop17) : s.channel;
-//      newVars[cChannel]  = s.channel;
 
       includeOptionalVars(newVars, true);
-      clearStoredStats();
+      resetCounts();
 
       if (newVars.products)
          s.tl(true, 'o', 'Interactions', newVars);
+
+      currBeacon = currentBeacon();
+      if (currBeacon !== lastBeacon && typeof XMLHttpRequest !== 'undefined')
+      {
+         beaconUrl = window[currBeacon].src || '';
+         window[currBeacon].src = '';
+         xmlReq = new XMLHttpRequest();
+         xmlReq.open('get', beaconUrl, false);
+         xmlReq.send(null);
+      }
    };
 
    function sendCountsOnPageView()
    {
-      var pollCount;
-      var pollPtr;
       var type;
 
       if (!pending || (typeof mitagsent !== 'undefined' && mitagsent))
@@ -608,7 +654,7 @@ mistats.InteractionTracker = function ()
 
       s.products = generateProductsString(true);
       if (!s.products)
-         return clearStoredStats();
+         return reset();
 
       s.events = generateEventsString();
 
@@ -616,35 +662,31 @@ mistats.InteractionTracker = function ()
       s[cChannel]  = s.c_r('mi_pch');
 
       includeOptionalVars(s);
+      resetCounts();
+   };
 
-      pollCount = 0;
-      pollPtr = setInterval(function ()
+   function setPending()
+   {
+      if (pendTimer)
+         clearTimeout(pendTimer);
+
+      pending = false;
+      pendTimer = setTimeout(function ()
       {
-         if (++pollCount >= 200)
-            clearInterval(pollPtr);
-
-         if (window['s_i_' + mistats.account])
-         {
-            clearStoredStats();
-            clearInterval(pollPtr);
-         }
-      }, 200);
+         pending = true;
+      }, 25);
    };
 
    function beforeUnload(pEvent)
    {
       var href;
+      var i;
       var thisObj;
 
       if (!pending)
          return;
 
-      if (pEvent.type === 'mouseout')
-         if (pEvent.clientX > 0 && pEvent.clientX < document.documentElement.clientWidth
-          && pEvent.clientY > 0 && pEvent.clientY < document.documentElement.clientHeight)
-            return;
-
-      if (pEvent.type === 'mousedown')
+      if (pEvent.type === 'mouseup')
       {
          thisObj = pEvent.srcElement || pEvent.target;
 
@@ -657,25 +699,11 @@ mistats.InteractionTracker = function ()
          if (!thisObj)
             return;
 
-         href = thisObj.getAttribute('href') || '';
-         if (href.match(/^javascript:\s*void\(/i))
-         {
-            thisObj.removeAttribute('href');
-            mistats.bind(thisObj, 'click', function setHref()
-            {
-               setTimeout(function ()
-               {
-                  if (thisObj && thisObj.setAttribute)
-                     thisObj.setAttribute('href', href);
-               }, 50);
-               mistats.unbind(thisObj, 'click', arguments.callee)
-            });
-         }
+         if ((thisObj.getAttribute('href') || '').match(/^$|^javascript:|^#|^mailto:/i) || ((thisObj.target || '').match(/_blank/i)))
+            return setPending();
 
-         if (!href || href.match(/^javascript:|^#/i) || href.match(/^mailto:/i)
-          || thisObj.href.toLowerCase().replace(/^https*:\/{2}/, '').split('/')[0] == location.hostname.toLowerCase()
-          || ((thisObj.getAttribute('target') || '').match(/_blank/i)))
-            pending = false;
+         if ((thisObj.href || '').toLowerCase().replace(/^https*:\/{2}/, '').split('/')[0] == location.hostname.toLowerCase())
+            return save();
       }
 
       sendCountsNow(pEvent);
@@ -683,44 +711,13 @@ mistats.InteractionTracker = function ()
 
    function setupEvents()
    {
-      var evtTest;
-
       if (listeners)
          return false;
 
-      if (window.addEventListener)
-      {
-         if (!('ontouchstart' in window))
-         {
-            evtTest = document.createElement('iframe');
-            evtTest.style.display = 'none';
-            document.getElementsByTagName('body')[0].appendChild(evtTest);
-            window.addEventListener('blur', beforeUnload, false);
-            window.addEventListener('mouseout', beforeUnload, false);
-            evtTest.contentWindow.addEventListener('beforeunload', function ()
-            {
-               window.removeEventListener('mouseout', beforeUnload, false);
-               window.removeEventListener('blur', beforeUnload, false);
-            }, false);
-            evtTest.contentWindow.location.reload(true);
-            setTimeout(function ()
-            {
-               evtTest.parentNode.removeChild(evtTest);
-            }, 0);
-         } else
-            window.addEventListener('pagehide', beforeUnload, false);
-
-         window.addEventListener('unload', beforeUnload, false);
-         window.addEventListener('beforeunload', beforeUnload, false);
-         window.addEventListener('mousedown', beforeUnload, false);
-      } else if (window.attachEvent)
-      {
-         if (window != top)
-            document.documentElement.attachEvent('ondeactivate', beforeUnload);
-         window.attachEvent('onunload', beforeUnload);
-         window.attachEvent('onbeforeunload', beforeUnload);
-         document.documentElement.attachEvent('onmousedown', beforeUnload);
-      }
+      mistats.bind(document.documentElement, 'mouseup', beforeUnload);
+      mistats.bind(window, 'beforeunload', beforeUnload);
+      if (window.addEventListener && 'ontouchstart' in window)
+         window.addEventListener('pagehide', beforeUnload, false);
 
       listeners = true;
 
@@ -732,54 +729,23 @@ mistats.InteractionTracker = function ()
       var tmpCount;
       var type;
 
+      if (!window.sessionStorage)
+         return;
+
       listeners = false;
       pending   = false;
       counts    = {};
 
-      if (typeof window.sessionStorage === 'object')
-         sessionStorage = window.sessionStorage;
-      else
-         sessionStorage =
-         {
-            getItem: function (pKey)
-            {
-               var c;
-               var crumbs;
-
-               crumbs = document.cookie.split('; ');
-
-               for (c = 0; c < crumbs.length; c++)
-                  if (crumbs[c].search(pKey) === 0)
-                     return crumbs[c].substring(crumbs[c].indexOf('=') + 1);
-
-               return null;
-            },
-
-            removeItem: function (pKey)
-            {
-               var date;
-
-               date = new Date();
-               date.setTime(date.getTime() - 86400000);
-               document.cookie = pKey + '=; expires=' + date.toGMTString() + '; path=/';
-            },
-
-            setItem: function (pKey, pValue)
-            {
-               document.cookie = pKey + '=' + pValue + '; path=/';
-            }
-         };
-
       for (type in types)
-      {
-         tmpCount = sessionStorage.getItem(types[type].key);
-         if (tmpCount && !isNaN(tmpCount))
+         if (sessionStorage[type])
          {
-            counts[type] = parseInt(tmpCount);
-            if (!pending)
+            tmpCount = sessionStorage[type];
+            if (tmpCount && !isNaN(tmpCount))
+            {
+               counts[type] = parseInt(tmpCount);
                pending = true;
+            }
          }
-      }
 
       sendCountsOnPageView();
 
@@ -793,24 +759,15 @@ mistats.InteractionTracker = function ()
       if (typeof console !== 'undefined')
          console.log(pType);
 
-      if (!(pType in types))
+      if (!types[pType])
          return false;
 
       if (!listeners)
          setupEvents();
 
-      if (counts[pType])
-         counts[pType]++;
-      else
-      {
-         tmp = sessionStorage.getItem(types[pType].key);
-         counts[pType] = (!tmp || isNaN(tmp)) ? 1 : tmp;
-      }
+      counts[pType] = (counts[pType] || 0) + 1;
 
-      sessionStorage.setItem(types[pType].key, counts[pType]);
-
-      if (!pending)
-         pending = true;
+      setPending();
 
       if (this.callout)
          this.callout();
@@ -823,7 +780,7 @@ mistats.InteractionTracker = function ()
       if (typeof console !== 'undefined')
          console.log(pType);
 
-      if (!(pType in types))
+      if (!types[pType])
          return false;
 
       if (!listeners)
@@ -831,10 +788,7 @@ mistats.InteractionTracker = function ()
 
       counts[pType] = pCount;
 
-      sessionStorage.setItem(types[pType].key, counts[pType]);
-
-      if (!pending)
-         pending = true;
+      setPending();
 
       if (this.callout)
          this.callout();
@@ -844,10 +798,12 @@ mistats.InteractionTracker = function ()
 
    this.getCount = function (pType)
    {
-      if (pType in types && counts[pType])
+      if (types[pType] && counts[pType])
          return counts[pType];
       return 0;
    };
+
+   this.resetProps = resetProps;
 
    init();
 

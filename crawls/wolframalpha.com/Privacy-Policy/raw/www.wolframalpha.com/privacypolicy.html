@@ -358,7 +358,12 @@ body #pageTitle {
 <script>
   lboxBindNotify("#follow .news");
 </script>
-<script src="Calculate/cookietest.jsp"></script>
+<script>
+/*  Replace relative URL with absolute URL on non-WolframAlpha domains */
+if(!(new RegExp("(?:^|;\\s*)" + escape("CookieWarning").replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie)){
+    document.write('\x3Cscr'+'ipt src="/input/cookietest.jsp" type="text/javascript">\x3C'+'/script>');
+}
+</script>
 
 
 <script src="javascript/index.js"></script>

@@ -473,13 +473,6 @@ btg.Cookie.set(d.cookieName,d.size)}}else btg.AdManager.placeAd(d)}}};(function(
 		
 							
 		
-			
-					//Attempting to include CODA/builds/3/QuantCast.js
-					btg.QuantCast=function(a){this.labels="";this.config=a;this.labels=this.config.labels};btg.QuantCast.prototype={sendPageCall:function(a){if(this.config.reportMode=="direct"){var b=btg.QuantCast.Ads;if(b.dependencies.hasDependency()){b.dependencies.addToCallQueue(this,this.sendPageCall,a);return}try{_qoptions={labels:this.labels};_qacct="p-94wNw88f65Rhk";quantserve()}catch(c){}}}};
-btg.QuantCast.Ads=new function(){this.dependencies=new btg.DependencyManager;this.dependencies.add("qc_script_load",function(){return typeof quantserve=="function"},100,true);this.setLabels=function(a,b){try{if(this.dependencies.hasDependency()){this.dependencies.addToCallQueue(this,this.setLabels,a,b);return}var c="",d="",e="",d=a.dartSite.replace(/\./g,"_"),e=b.replace(/^\//m,""),e=e.replace(/\//g,"."),c=btg.config.QuantCast.labels+",Viacom Global Digital Network.MTVN Digital Ad Sales.Content.Pages."+
-d+"."+e;_qoptions={labels:c};_qacct="p-94wNw88f65Rhk";quantserve()}catch(f){}};this.setCookieDemoTargetVal=function(a){for(var b=[],c=0,d=a.segments.length;c<d;c++)b[c]="demo="+a.segments[c].id;btg.Cookie.set("qcDemo",escape(b.join(";")))}};try{var _qCfg=btg.config.QuantCast;if(_qCfg.enabled)btg.DOM.loadScript(("https:"==document.location.protocol?"//secure":"//edge")+".quantserve.com/quant.js");if(_qCfg.enableDemoTargeting&&!btg.String.isDefined(btg.Cookie.read("qcDemo")))btg.DOM.loadScript("//pixel.quantserve.com/api/segments.json?a=p-94wNw88f65Rhk&callback=btg.QuantCast.Ads.setCookieDemoTargetVal")}catch(e$$2){};
-								
-		
 							
 		
 			
@@ -491,6 +484,29 @@ events:"event87",eVar59:a.widgetName,eVar61:b.ucid,eVar62:e+"; "+f})};this.onSig
 "DOMContentLoaded",function(){if(typeof Flux4=="undefined")return;Flux4.addEventListener("signUp",function(){a.Flux.onSignUp.apply(a.Flux,arguments)});Flux4.addEventListener("join",function(){a.Flux.onJoin.apply(a.Flux,arguments)});Flux4.addEventListener("signIn",function(){a.Flux.onSignIn.apply(a.Flux,arguments)});Flux4.addEventListener("onShared",function(){a.Flux.onShared.apply(a.Flux,arguments)});Flux4.addEventListener("onFollowed",function(){a.Flux.onFollowed.apply(a.Flux,arguments)});Flux4.addEventListener("onCommented",
 function(){a.Flux.onCommented.apply(a.Flux,arguments)})})}})(btg);
 								
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+			
+					//Attempting to include CODA/builds/3/QuantCast.js
+					btg.QuantCast=function(a){this.labels="";this.config=a;this.labels=this.config.labels};btg.QuantCast.prototype={sendPageCall:function(a){if(this.config.reportMode=="direct"){var b=btg.QuantCast.Ads;if(b.dependencies.hasDependency()){b.dependencies.addToCallQueue(this,this.sendPageCall,a);return}try{_qoptions={labels:this.labels};_qacct="p-94wNw88f65Rhk";quantserve()}catch(c){}}}};
+btg.QuantCast.Ads=new function(){this.dependencies=new btg.DependencyManager;this.dependencies.add("qc_script_load",function(){return typeof quantserve=="function"},100,true);this.setLabels=function(a,b){try{if(this.dependencies.hasDependency()){this.dependencies.addToCallQueue(this,this.setLabels,a,b);return}var c="",d="",e="",d=a.dartSite.replace(/\./g,"_"),e=b.replace(/^\//m,""),e=e.replace(/\//g,"."),c=btg.config.QuantCast.labels+",Viacom Global Digital Network.MTVN Digital Ad Sales.Content.Pages."+
+d+"."+e;_qoptions={labels:c};_qacct="p-94wNw88f65Rhk";quantserve()}catch(f){}};this.setCookieDemoTargetVal=function(a){for(var b=[],c=0,d=a.segments.length;c<d;c++)b[c]="demo="+a.segments[c].id;btg.Cookie.set("qcDemo",escape(b.join(";")))}};try{var _qCfg=btg.config.QuantCast;if(_qCfg.enabled)btg.DOM.loadScript(("https:"==document.location.protocol?"//secure":"//edge")+".quantserve.com/quant.js");if(_qCfg.enableDemoTargeting&&!btg.String.isDefined(btg.Cookie.read("qcDemo")))btg.DOM.loadScript("//pixel.quantserve.com/api/segments.json?a=p-94wNw88f65Rhk&callback=btg.QuantCast.Ads.setCookieDemoTargetVal")}catch(e$$2){};
+								
+		
+							
 		
 							
 		

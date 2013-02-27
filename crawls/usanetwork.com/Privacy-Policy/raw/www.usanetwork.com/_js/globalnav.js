@@ -694,28 +694,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "OCEAN'S THIRTEEN",
-							"subtitle" : "SUNDAY FEBRUARY 17 11/10C",
+							"title" : "G.I. JOE: THE RISE OF COBRA",
+							"subtitle" : "SAT MARCH 2 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_oceansthirteen.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
 						},
 						{
-							"title" : "SCHINDLER'S LIST",
-							"subtitle" : "SATURDAY FEB 23 8/7C",
+							"title" : "FAST & FURIOUS",
+							"subtitle" : "SAT MARCH 2 6:30/5:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_schindlerslist.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
 						},
 						{
-							"title" : "NATIONAL TREASURE: BOOK OF SECRETS",
-							"subtitle" : "SAT FEB 23 11:12/10:12C",
+							"title" : "BOOT CAMP",
+							"subtitle" : "SAT MARCH 2 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nationaltreasure2.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_bootcamp.png"
 						},
 						{
-							"title" : "QUANTUM OF SOLACE",
-							"subtitle" : "SUNDAY FEBRUARY 24 11/10C",
+							"title" : "RESIDENT EVIL: AFTERLIFE",
+							"subtitle" : "SUN MARCH 3 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_quantum.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
 						}
 					]
 				}

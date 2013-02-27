@@ -678,55 +678,56 @@ $(document).ready(function() {
 	    });
     }init_enableGoButton();
     
+    var locationOverlayHandlers = {
+            beforeOpen : function(e){
+            	if($("#wtZipCode").val() == ""){
+            		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg", 
+            									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_ChangeAddress",
+            									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_Body");*/
+            		
+            		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg");
+            	}else{
+            		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg", 
+							WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Go",
+							WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Body");*/
+            		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg");
+            	}
+                if($('#isCartEmpty').val() == 'false'){
+                    $('#addressOptions').hide();
+                    $('#errorContainer').hide();
+                    $('#attemptFailure').hide();
+                    $('#serviceAddress').show();
+                    $('#initSavedCartMsg').show();
+                    $('#savedCartMsg').hide();
+                    $('#serverReponse').html("");
+                    $('#changeAdreesEligibility').hide();
+                    $('#saveCartOverlay').hide();
+                    $('#warningSaveCart').show();
+                    $('#flowType').val("changeLocation");
+                    $('#macMsg').hide();
+                    $('#showphoneNumber').hide();
+                    $('#evaluateForBTNNumber').val("true");
+                }else{
+                    $('#addressOptions').hide();
+                    $('#errorContainer').hide();
+                    $('#attemptFailure').hide();
+                    $('#serviceAddress').show();
+                    $('#initSavedCartMsg').show();
+                    $('#savedCartMsg').hide();
+                    $('#serverReponse').html("");
+                    $('#changeAdreesEligibility').show();
+                    $('#saveCartOverlay').hide();
+                    $('#warningSaveCart').hide();
+                    $('#flowType').val("changeLocation");
+                    $('#macMsg').hide();
+                    $('#showphoneNumber').hide();
+                    $('#evaluateForBTNNumber').val("true");
+                }
+            }
+    }
     /*function to attach loaction overlay to "set loaction" */
     function init_attactLoactionOverlay() {
-        var locationOverlayHandlers = {
-                beforeOpen : function(e){
-                	if($("#wtZipCode").val() == ""){
-                		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg", 
-                									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_ChangeAddress",
-                									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_Body");*/
-                		
-                		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg");
-                	}else{
-                		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg", 
-								WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Go",
-								WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Body");*/
-                		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg");
-                	}
-                    if($('#isCartEmpty').val() == 'false'){
-                        $('#addressOptions').hide();
-                        $('#errorContainer').hide();
-                        $('#attemptFailure').hide();
-                        $('#serviceAddress').show();
-                        $('#initSavedCartMsg').show();
-                        $('#savedCartMsg').hide();
-                        $('#serverReponse').html("");
-                        $('#changeAdreesEligibility').hide();
-                        $('#saveCartOverlay').hide();
-                        $('#warningSaveCart').show();
-                        $('#flowType').val("changeLocation");
-                        $('#macMsg').hide();
-                        $('#showphoneNumber').hide();
-                        $('#evaluateForBTNNumber').val("true");
-                    }else{
-                        $('#addressOptions').hide();
-                        $('#errorContainer').hide();
-                        $('#attemptFailure').hide();
-                        $('#serviceAddress').show();
-                        $('#initSavedCartMsg').show();
-                        $('#savedCartMsg').hide();
-                        $('#serverReponse').html("");
-                        $('#changeAdreesEligibility').show();
-                        $('#saveCartOverlay').hide();
-                        $('#warningSaveCart').hide();
-                        $('#flowType').val("changeLocation");
-                        $('#macMsg').hide();
-                        $('#showphoneNumber').hide();
-                        $('#evaluateForBTNNumber').val("true");
-                    }
-                }
-        }
+       
         $('.locationOverlay').myplugin({
             'backDropId' : 'SeviceEligibiltyBackDrop',
             'lightBoxId' : 'SeviceEligibiltyLightBox'
@@ -881,9 +882,12 @@ $(document).ready(function() {
         	                 $.getScript("/smallbusiness/javascript/marquee.js").done(function(script, textStatus) {
         	                     autoRotate('hero1');
         	                 })
-        	                 .fail(function(jqxhr, settings, exception) {
-        	                     //handle Error if script load fails
-        	                 });  
+        	                 
+        	                 $('area.locationOverlay').myplugin({
+						        'backDropId' : 'SeviceEligibiltyBackDrop',
+						        'lightBoxId' : 'SeviceEligibiltyLightBox'
+						    },locationOverlayHandlers);
+        	                
                     	}
                     }
                 });
@@ -1177,7 +1181,7 @@ $(document).ready(function() {
 	    if($('#isAFLBundle').val() == 'true')
 	  	  {
 	    	$('#tollFreeNumber').html('1-888-533-8234');
-	  	  	$('#chatHours').html('M-F, 8am-6pm Eastern');
+	  	  	$('#chatHours').html('M-F, 8am-6pm<br/>Sat, 9am-5pm');
 	  	  }
 	    
 	}

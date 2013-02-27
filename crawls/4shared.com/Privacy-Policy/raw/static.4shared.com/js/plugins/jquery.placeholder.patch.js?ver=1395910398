@@ -9,6 +9,7 @@
 // AT LEAST BEFORE CHANGING CHECK HISTORY
 // CAUSE THIS PLUGIN CUSTOMIZED!!!
 (function($) {
+    if (typeof $.fn.placeholder === 'function') return
     function Placeholder(input) {
         this.input = input;
         if (input.attr('type') == 'password') {
@@ -59,7 +60,7 @@
         },
         handlePassword: function() {
             var input = this.input;
-            input.attr('realType', 'password');
+            input.attr('realtype', 'password');
             this.isPassword = true;
 
             if (/*$.browser.msie && */input.outerHTML()) {
@@ -115,5 +116,5 @@
 })(jQuery);
 
 $(function() {
-  $("input[placeholder]").placeholder()
+    $("[placeholder]").not('.dynamicPlaceholder').placeholder()
 })

@@ -134,9 +134,9 @@ var DFUtils = DFUtils || {};
 DFUtils.read_get_param = function(params_str, name) {
 	var result = '',
 		name_eq = name + '=',
-		params_arr = params_str.split('&'),
+		params_arr = decodeURIComponent(params_str).split('&'),
 		i, c;
-		
+	
 	for (i = 0; i < params_arr.length; i++) {
 		c = params_arr[i];
 		if (c.indexOf(name_eq) != -1) {

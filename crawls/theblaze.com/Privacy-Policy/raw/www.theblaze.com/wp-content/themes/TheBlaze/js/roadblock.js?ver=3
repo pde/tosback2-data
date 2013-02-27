@@ -18,6 +18,9 @@ jQuery(document).ready(function($) {
 		show_popup_at = 2,
 		reset_popup_at = 2000,
 		ckkie_exp = {expires:30, path: '/', domain: document.location.hostname.replace('www.','')};
+		if(roadblock_cookie_name === 'theblaze_roadblock_promo') {
+			show_popup_at = 1;
+		}
 		if(rdblck_ck == null || rdblck_ck == 'hide' ){ // remove rdblck_ck == 'hide' after a few weeks to allow for previews saved cookies to be clear;
 			$.cookie(roadblock_cookie_name, visit_count + '|' + this_visit, ckkie_exp); //create cookie first visit
 		}else{
@@ -27,7 +30,7 @@ jQuery(document).ready(function($) {
 			$.cookie(roadblock_cookie_name, visit_count + '|' + this_visit, ckkie_exp);
 		}
 		if(visit_count == show_popup_at ){
-			tb_show( '', '#TB_inline?width=730&height=475&modal=true' );
+			tb_show( '', '#TB_inline?width=730&height=500&modal=true' );
 			$('#TB_ajaxContent').css('overflow', 'hidden');
 			$.get(roadblock.ajax_url, {action: 'register'}, function(data) {
 				var res = wpAjax.parseAjaxResponse(data);

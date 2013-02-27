@@ -1,0 +1,304 @@
+//hoverIntent jquery plugin - used for the mouseover in main nav dropdowns and attribute dropdowns - http://cherne.net/brian/resources/jquery.hoverIntent.html
+(function($){$.fn.hoverIntent=function(f,g){var cfg={sensitivity:7,interval:100,timeout:0};cfg=$.extend(cfg,g?{over:f,out:g}:f);var cX,cY,pX,pY;var track=function(ev){cX=ev.pageX;cY=ev.pageY};var compare=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);if((Math.abs(pX-cX)+Math.abs(pY-cY))<cfg.sensitivity){$(ob).unbind("mousemove",track);ob.hoverIntent_s=1;return cfg.over.apply(ob,[ev])}else{pX=cX;pY=cY;ob.hoverIntent_t=setTimeout(function(){compare(ev,ob)},cfg.interval)}};var delay=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);ob.hoverIntent_s=0;return cfg.out.apply(ob,[ev])};var handleHover=function(e){var ev=jQuery.extend({},e);var ob=this;if(ob.hoverIntent_t){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t)}if(e.type=="mouseenter"){pX=ev.pageX;pY=ev.pageY;$(ob).bind("mousemove",track);if(ob.hoverIntent_s!=1){ob.hoverIntent_t=setTimeout(function(){compare(ev,ob)},cfg.interval)}}else{$(ob).unbind("mousemove",track);if(ob.hoverIntent_s==1){ob.hoverIntent_t=setTimeout(function(){delay(ev,ob)},cfg.timeout)}}};return this.bind('mouseenter',handleHover).bind('mouseleave',handleHover)}})(jQuery);
+
+//applies red background to main nav buttons when in relevant category
+function fncParentCategoryShowHoverState(strTopLevelCategory) {
+    $('#nav').find('#' + strTopLevelCategory).addClass('selected');
+}
+
+//main nav dropdown triggers
+var topNavSelectors = "#chandeliers, #ceilingLighting, #lamps, #wallLights, #outdoor, #fans, #furniture, #homeDecor, #others, #more";
+
+//main nav dropdown a tags which contain sprite
+var aTopNavSelectors = "#aChandeliers, #aCeilingLighting, #aLamps, #aWallLights, #aOutdoorLights, #aCeilingFans, #aFurniture, #aDecor, #aMore, #aOthers";
+
+//main nav dropdown divs which contain actual dropdowns
+var aTopNavSelectorsDiv = "#aChandeliers > div, #aCeilingLighting > div, #aLamps > div, #aWallLights > div, #aOutdoorLights > div, #aCeilingFans > div, #aFurniture > div, #aDecor > div, #aMore > div";
+
+//detects if device browsing site is iphone, ipod, or ipad
+function isIpad() {return ((navigator.userAgent.indexOf("iPhone") != -1) || (navigator.userAgent.indexOf("Android") != -1) || (navigator.userAgent.indexOf("iPod") != -1) || (navigator.userAgent.indexOf("iPad") != -1) || window.location.search.substring(1).indexOf("isIPad=true")>-1) ? true : false;}
+
+//executed on main nav hover over
+function navDropdownsOver() {
+    ThrowCMImpressionTag($(this).attr("id"));
+    $(this).addClass("hover");
+    $(this).children("div").show();
+}
+
+//executed on main nav hover out
+function navDropdownsOut() {
+    $(this).removeClass("hover");
+    $(this).children("div").hide();
+}
+
+//global variables for main nav functionality
+var idOfLastSelectedMenuItem = "",
+    idOfLastSelectedDropDownDiv = "",
+    boolSomethingIsSelected = false;
+
+//label overlay hide/show on input fields
+(function($){
+	$.fn.usableLabelField = function(options) {
+		var o               = $.extend(options),
+            labelIDSelector = $("#"+o.labelID),
+            btnIDSelector   = $("#"+o.btnID);
+		labelIDSelector.css("cursor", "text");
+		if ($(this).val() != "") {
+			labelIDSelector.hide();
+		}
+		$(this).focus(function () {
+            if ($(this).val() == "") {
+                labelIDSelector.fadeTo(200, 0.2);
+            }
+		});
+		$(this).blur(function () {
+			if ($(this).val() == "") {
+				labelIDSelector.fadeTo(500, 1);
+			}
+		});
+		$(this).keydown(function (e) {
+			if (e.keyCode == 13) {
+				return false;
+			}
+			else{labelIDSelector.hide();}
+		});
+		$(this).keyup(function (e) {
+			if (e.keyCode == 13) {
+				btnIDSelector.click();
+				return false;
+			}
+			else if ($(this).val() == "") {
+				labelIDSelector.fadeTo(500, 0.2);
+			}
+		});
+	};
+})(jQuery);
+
+$(function () {
+
+    // loads Portal Menu
+    if (typeof isKiosk === 'undefined') {
+        // variable is undefined
+        $.get('/includes/portal.html', function (d) {
+            $('.portal').append(d);
+        });
+    } else {
+        if (!isKiosk) {
+            $.get('/includes/portal.html', function (d) {
+                $('.portal').append(d);
+            });
+        } else {
+            $.get('/includes/portalKiosk.html', function (d) {
+                $('.portal').append(d);
+            });
+        }
+    }
+
+    //main nav functionality - contains itouch, iphone, ipad specific functionality
+    if (!isIpad()) {
+        $(topNavSelectors).hoverIntent({
+            interval: 200,
+            over: navDropdownsOver,
+            timeout: 400,
+            out: navDropdownsOut
+        });
+    } else {
+        $(topNavSelectors).children("a.aNavBtn").removeAttr("href");
+        $(aTopNavSelectors).click(function () {
+            if (this.id.toString() == idOfLastSelectedMenuItem && boolSomethingIsSelected == true) {
+                $(this).next("div").hide();
+                $(this).removeClass("hover");
+                boolSomethingIsSelected = false;
+            } else {
+                $(".CategoryDropDowns").hide();
+                $(this).next("div").show();
+                idOfLastSelectedMenuItem = this.id.toString();
+                boolSomethingIsSelected = true;
+            }
+        });
+    }
+
+    //On Click of Search Button
+    $("#searchBtn").click(function () {
+        var objSearchTextBox = $("#search");
+        var strSearchTerm = "";
+        if (objSearchTextBox != null) {
+            strSearchTerm = objSearchTextBox.val();
+            strSearchTerm = strSearchTerm.trim();
+            if (strSearchTerm != "keyword or item #" && strSearchTerm.length > 0) {
+                var p = /\//g;
+                strSearchTerm = fncReformatCatalogPrefix(strSearchTerm.replace(p, "!"));
+                strSearchTerm = strSearchTerm.replace(/^\s+/g, '').replace(/\s+$/g, '');
+                strSearchTerm = strSearchTerm.replace(/-/g, "@");
+                strSearchTerm = strSearchTerm.replace(/ /g, "-");
+                strSearchTerm = strSearchTerm.replace(/\$/g, "@@");
+                strSearchTerm = strSearchTerm.replace(/\./g, "@@@");
+                strSearchTerm = strSearchTerm.replace(/:/g, "@@@@@");
+                strSearchTerm = strSearchTerm.replace(/&/g, ",");
+                strSearchTerm = strSearchTerm.replace(/"/g, '');
+                strSearchTerm = strSearchTerm.replace(/'/g, '');
+                strSearchTerm = strSearchTerm.replace(/\*/g, '');
+                strSearchTerm = strSearchTerm.replace(/>/g, '');
+                strSearchTerm = strSearchTerm.replace(/</g, '');
+                window.location = "http://" + location.host + "/Products/__newsearch/s_" + strSearchTerm + "/?lpqsv_cid=114";
+            }
+        } else {
+            return;
+        }
+    });
+    $("#search").usableLabelField({
+        labelID: "searchLabel",
+        btnID: "searchBtn"
+    });
+
+    //On Click of update kiosk store number Button
+    $("#txtUpdateStoreNumber").click(function () {
+        var objStoreNumberTextBox = $("#txtStoreNumber");
+        var strKioskStoreNumber = "";
+        var redirectUrl;
+        if (objStoreNumberTextBox != null) {
+            strKioskStoreNumber = objStoreNumberTextBox.val();
+            strKioskStoreNumber = strKioskStoreNumber.trim();
+            window.location = secureSiteURL + "/secure/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + encodeURIComponent(document.location.href);
+        } else {
+            return;
+        }
+    });
+});
+
+//used for clearing and deleting LP professionals cookie
+function clearProfessionalsCookie() {    
+    DeleteProfessionalsCookie("professionalsonlineid");
+    document.location.replace("http://" + document.location.host);
+}
+function MakeProfessionalsCookie(strName, strVal, dtDays) {
+    if (dtDays) {
+        var date = new Date();
+        date.setTime(date.getTime() + (dtDays * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    } else
+    var expires = "";
+    document.cookie = strName + "=" + strVal + expires + "; path=/; domain=.lampsplus.com;";
+    document.cookie = strName + "=" + strVal + expires + "; path=/;";
+}
+function DeleteProfessionalsCookie(name) {
+    MakeProfessionalsCookie(name, "", -100);
+}
+
+//header search box functionality
+String.prototype.trim = function () {
+    return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");
+};
+
+//used for reformating catalog prefixes
+function fncReformatCatalogPrefix(strInput) {
+    var strUserInput;
+    var intUserInputLen = 0;
+    var boolInsertHyphen = false;
+    var strRetVal = "";
+    var chrSplitter = "-";
+    var arySplitInput;
+    strUserInput = strInput;
+    strRetVal = strUserInput;
+    arySplitInput = strUserInput.split(chrSplitter);
+    if (arySplitInput[0].length == 7) {
+        var strFirst2Characters = arySplitInput[0].substring(0, 2);
+        var strNext5Characters = arySplitInput[0].substring(2);
+        var reg1 = /[a-z]{2}/i;
+        var reg2 = /[0-9]{5}/i;
+        if (reg1.test(strFirst2Characters) && reg2.test(strNext5Characters)) {
+            strRetVal = strFirst2Characters + "-" + arySplitInput[0].substring(2);
+            for (var i = 1; i < arySplitInput.length; i++) {
+                strRetVal += (chrSplitter + arySplitInput[i]);
+            }
+        }
+    }
+    return strRetVal;
+}
+
+var LP = LP || {};
+
+LP.log = function(message) {
+    if (window.console)
+        console.log(message + ":" + new Date().toTimeString());
+};
+
+LP.isLocal = function () {
+    return document.location.hostname == "localhost";
+};
+
+LP.keepAlive = function () {
+    var aliveUrl = LP.isLocal() ? "/secure/keep-me-alive.ashx" : 'https://secure.lampsplus.com/secure/keep-me-alive.ashx';
+    var interval = 60 * 1000 * 10;
+    var that = {};
+    var alive = false;
+    var timer;
+
+    that.isActive = function () {
+        alive = true;
+    };
+
+    that.removeTrackingIframeIfPresent = function () {
+        var frame = document.getElementById('keep-alive-iframe');
+        if (frame) {
+            document.body.removeChild(frame);
+        }
+    };
+    that.sendKeepAlive = function () {
+        if (alive) {
+            that.removeTrackingIframeIfPresent();
+            var frame = document.createElement('iframe');
+            frame.setAttribute('src', aliveUrl);
+            frame.setAttribute('id', 'keep-alive-iframe');
+            frame.setAttribute('style', 'display:none');
+            document.body.appendChild(frame);
+
+            alive = false;
+        }
+    };
+
+    that.start = function () {
+        var allTextareas = $('textarea');
+        allTextareas.live('keyup', that.isActive);
+
+        var allLinks = $('a');
+        allLinks.live('click mouseover', that.isActive);
+
+        timer = setInterval(that.sendKeepAlive, interval);
+    };
+
+    return that;
+};
+
+LP.user = {};
+LP.user.isAuthenticated = function () {
+    var result = false;
+    var authCheckUrl = LP.isLocal() ? '/is-user-authenticated.ashx' : 'https://secure.lampsplus.com/is-user-authenticated.ashx';
+    $.ajax({
+        url: authCheckUrl,
+        type: 'POST',
+        async: false,
+        statusCode: {
+            200: function () {
+                result = true;
+            },
+            401: function () {
+                result = false;
+            }
+        }
+    });
+    return result;
+};
+
+var alive = LP.keepAlive();
+alive.start();
+
+function ReloadParent(){
+    var strHref = window.parent.location.href;
+    var noHash = strHref.indexOf('#');
+
+    // if url has hash, this will remove the hash and everything after it.
+    strHref = strHref.substring(0, noHash != -1 ? noHash : strHref.length);
+
+    window.parent.location = strHref;
+}

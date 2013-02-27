@@ -78,7 +78,7 @@ function buildDropdown() {
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/content/juniors-prom-style-guide-party-formal-dresses?cm_sp=juniors-_-ddf-_-prom+2013+1+012313">Prom 2013</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-p_tag/Ntt-Junior+Lace+Dresses/Nty-1?cm_sp=juniors-_-ddf-_-lace+dresses+2+010413">Lace Dresses</a></li>');
-	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-p_tag/Ntt-Homecoming-hi-low/Nty-1?cm_sp=juniors-_-ddf-_-hi+low+3+020113">Trending Now: Hi-low Dresses</a></li>');
+	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-hi+low+dresses/Nty-1?cm_sp=juniors-_-ddf-_-hi+low+3+020113">Trending Now: Hi-low Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-p_tag/Ntt-Juniors+Neutrals/Nty-1?cm_sp=juniors-_-ddf-_-neutrals+4+021513">Color Crush: Neutrals</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-juniors+spring+preview/Nty-1?cm_sp=juniors-_-ddf-_-top+spring+picks+5+020113">Top Picks For Spring</a></li>');
 	document.writeln('</ul>');
@@ -306,16 +306,16 @@ function buildDropdown() {
 	document.writeln('<li class="all"><a href="/brands/Beauty/_/N-lfxg?cm_sp=beauty-_-ddtb-_-vab+062411">VIEW ALL BEAUTY BRANDS</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
-	document.writeln('<li><a href="/shop/Kiehls-Since-1851/Beauty/_/N-174w8ZlfxgZ1jl/Ntk-all/Ntt-kiehl+powerful+wrinkle/Nty-1/Rpp-1?cm_sp=beauty-_-ddf-_-kiehls+powerful+wrinkle+repair+1+022313">The New Force in Wrinkle Repair from Kiehl\'s</a></li>');
+	document.writeln('<li><a href="/content/beauty-multi-taskers?cm_sp=beauty-_-ddf-_-multi+taskers+1+022613">Our Favorite Beauty Multi-Taskers</a></li>');
 	document.writeln('<li><a href="/content/beauty-garden-party?cm_sp=beauty-_-ddf-_-prom+beauty+2+020513">PROM Beauty: Get the LOOK</a></li>');
 	document.writeln('<li><a href="/product/Lancome-Definicils-High-Definition-Mascara_301_-1_301_9997?cm_sp=beauty-_-ddf-_-lancome+high+definition+mascara++3+022313">Lancome High Definition Mascara</a></li>');
 	document.writeln('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg/Rpp-1?cm_sp=beauty-_-ddf-_-clarisonic+perfect+skin+4+020513">Perfect Skin Begins with CLARISONIC</a></li>');
 	document.writeln('<li><a href="/content/beauty-heart-your-valentine?cm_sp=beauty-_-ddf-_-heart+your+lips+eyes+skin+man+5+020513">Shop Products We LOVE!</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/The-Edge-Shop/_/N-lg88?cm_sp=beauty-_-ddpromo-_-new+in+edge+beauty+021413" >Find What\'s New to Love in EDGE Beauty ></a></div>');
+	document.writeln('<div class="promo"><a href="/product/StriVectin-Advanced-Retinol-Night-Treatment_301_-1_301_503577856?cm_sp=beauty-_-ddpromo-_-new+strivectin+advanced+retinol+night+022613" >NEW! StriVectin Advanced Retinol Night Treatment ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/product/Clinique-Chubby-Stick-Shadow-Tint-for-Eyes_301_-1_301_503738549?cm_sp=beauty-_-ddimage-_-clinique+chubby+eye+021913"><img src="/images/dropDownImages/021913_ddimage_clinique_chubby_eye.jpg"></a>');
+	document.writeln('<a href="/shop/Beauty/_/N-lfxgZ1jl/Ntk-all/Ntt-kiehls+powerful+wrinkle/Nty-1?cm_sp=beauty-_-ddimage-_-kiehls+power+wrinkle+022613"><img src="/images/dropDownImages/022613_ddimage_kiehls_powerful_wrinkle_reducing_cream.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -404,7 +404,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Children-Boys-2-7-Outfits-Sets/_/N-y3fc/Ntk-all/Nty-1/Rpp-1?cm_sp=children-_-ddf-_-little+boys+outfits+sets+4+121512">LITTLE BOYS Outfits & Sets</a></li>');
 	document.writeln('<li><a href="/shop/Children/_/N-lfy0Z1jl/Ntk-p_tag/Ntt-Girls+White+Dresses/Nty-1?cm_sp=children-_-ddf-_-sweet+white+dresses+5+020113">Sweet WHITE Dresses</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Children/_/N-lfy0Z15p/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=children-_-ddpromo-_-shop+new+spring+arrivals+122512" >Shop New Spring Arrivals for boys, girls, and babies ></a></div>');
+	document.writeln('<div class="promo"><a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddpromo-_-shop+girls+spring+dresses+022413" >Shop Spring Dresses for Girls Sizes 2T-6X & 7-16 ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Carters/Children-Layette-Baby-Gifts/_/N-174j5Zy310/Rpp-1?cm_sp=children-_-ddimage-_-carters+little+layette+022313"><img src="/images/dropDownImages/022113_carters_layette_dropdown.jpg"></a>');

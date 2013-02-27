@@ -43,7 +43,9 @@ var sites = [
 "http://search.irs.gov/",
 "http://search.irs.gov.edgesuite-staging.net/",
 "http://server.iad.liveperson.net/",
-"https://state-excise.irs.gov/" ];
+"https://state-excise.irs.gov/",
+"https://forms-uat.irs.gov.edgekey-staging.net/",
+"http://forms-uat.irs.gov.edgekey-staging.net/" ];
 
 var existTestSites = false;
 

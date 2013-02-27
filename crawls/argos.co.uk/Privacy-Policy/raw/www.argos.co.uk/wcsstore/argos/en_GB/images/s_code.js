@@ -30,6 +30,7 @@ More info available at http://www.omniture.com */
 /*               Fixed checkout workaround */
 /* 30/08/2012 GH Survey Module Added */
 /* 08/10/2012 s_account modified (Chris Moores) */
+/* 24/01/2013 PM Temporary fix for missing events in s.events */
 
 /* var s_account="argosprod,argosprodv14" */
 
@@ -354,10 +355,10 @@ function s_doPlugins(s) {
 		s.eVar23='non-browse';
 		s.eVar24='non-browse';
 	}
-	/* Set non-internal campaign variable */
+	/* Set non-internal campaign variable 
 	if(!s.eVar5&&s.eVar2&&s.eVar2!='internal campaign'){
 		s.eVar5='non-internal campaign';
-	}	
+	}*/
 	
 	/* Merchandising Integration */
 	s.integrateSearch(""
@@ -428,6 +429,16 @@ function s_doPlugins(s) {
 	if (s.prop9) {
 		s.transactionID = s.prop9;
 	}
+	
+	/* Temporary fix to add event11 and event12 to s.events if present in s.products */
+	if (s.products) {
+		if (s.products.indexOf('event11') != -1) {
+			s.events = s.apl(s.events,'event11',',',2);
+		}
+		if (s.products.indexOf('event12') != -1) {
+			s.events = s.apl(s.events,'event12',',',2);
+		}
+	}
 }
 
 /* DynamicObjectIDs config */
@@ -469,44 +480,44 @@ s.m_i("Survey");
 /************************** PLUGINS SECTION *************************/
 
 /*
- * Plugin: getLoadTime 2.0
+ * Plugin: getLoadTime 2.1
  */
 s.getLoadTime=new Function("opt","e1","e2",""
-+"var s=this;if(s.alreadySetLoadTime){var remover=s.split(s.events,',"
-+"');var newEvents='';for(i=0;i<remover.length;i++){if(remover[i].ind"
-+"exOf(e1+'=')==-1&&remover[i]!=e2)newEvents=newEvents+remover[i]+','"
-+";}s.events=newEvents.substring(0,newEvents.length-1);return;}if(opt"
-+"=='header'&&!(typeof s_preLoad==='undefined'))var loadTime=((new Da"
-+"te()).getTime()-s_preLoad);else if(opt=='browserapi'&&!(typeof perf"
-+"ormance==='undefined')){try{var loadTime=((new Date()).getTime()-pe"
-+"rformance.timing.requestStart);}catch(err){return;}}else return;if("
-+"Math.round(loadTime/1000)>500)return;s.events=s.apl(s.events,e1+'='"
-+"+Math.round(loadTime/1000)+','+e2,',',2);var nVer=navigator.appVers"
-+"ion;var nAgt=navigator.userAgent;var browserName=navigator.appName;"
-+"var fullVersion=''+parseFloat(navigator.appVersion);var majorVersio"
-+"n=parseInt(navigator.appVersion,10);var nameOffset,verOffset,ix;if("
-+"(verOffset=nAgt.indexOf('Opera'))!=-1){browserName='Opera';fullVers"
-+"ion=nAgt.substring(verOffset+6);if((verOffset=nAgt.indexOf('Version"
-+"'))!=-1)fullVersion=nAgt.substring(verOffset+8);}else if((verOffset"
-+"=nAgt.indexOf('MSIE'))!=-1){browserName='Microsoft Internet Explore"
-+"r';fullVersion=nAgt.substring(verOffset+5);}else if((verOffset=nAgt"
-+".indexOf('Chrome'))!=-1){browserName='Chrome';fullVersion=nAgt.subs"
-+"tring(verOffset+7);}else if((verOffset=nAgt.indexOf('Safari'))!=-1)"
-+"{browserName='Safari';fullVersion=nAgt.substring(verOffset+7);if((v"
-+"erOffset=nAgt.indexOf('Version'))!=-1)fullVersion=nAgt.substring(ve"
-+"rOffset+8);}else if((verOffset=nAgt.indexOf('Firefox'))!=-1){browse"
-+"rName='Firefox';fullVersion=nAgt.substring(verOffset+8);}else if((n"
-+"ameOffset=nAgt.lastIndexOf(' ')+1)<(verOffset=nAgt.lastIndexOf('/')"
-+")){browserName=nAgt.substring(nameOffset,verOffset);fullVersion=nAg"
-+"t.substring(verOffset+1);if(browserName.toLowerCase()==browserName."
-+"toUpperCase())browserName=navigator.appName;}else{browserName='Othe"
-+"r Unknown Browser';fullVersion='';}if((ix=fullVersion.indexOf(';'))"
-+"!=-1)fullVersion=fullVersion.substring(0,ix);if((ix=fullVersion.ind"
-+"exOf(' '))!=-1)fullVersion=fullVersion.substring(0,ix);majorVersion"
-+"=parseInt(''+fullVersion,10);if(isNaN(majorVersion)){fullVersion=''"
-+"+parseFloat(navigator.appVersion);majorVersion=parseInt(navigator.a"
-+"ppVersion,10);}s.alreadySetLoadTime=true;return browserName+' '+maj"
-+"orVersion;");
++"var s=this;try{if(s.alreadySetLoadTime){var remover=s.split(s.event"
++"s,',');var newEvents='';for(i=0;i<remover.length;i++){if(remover[i]"
++".indexOf(e1+'=')==-1&&remover[i]!=e2)newEvents=newEvents+remover[i]"
++"+',';}s.events=newEvents.substring(0,newEvents.length-1);return;}if"
++"(opt=='header'&&!(typeof s_preLoad==='undefined'))var loadTime=((ne"
++"w Date()).getTime()-s_preLoad);else if(opt=='browserapi'&&!(typeof "
++"performance==='undefined')){try{var loadTime=((new Date()).getTime("
++")-performance.timing.requestStart);}catch(err){return;}}else return"
++";if(loadTime/1000>500)return;if(loadTime<0)return;}catch(err){retur"
++"n;}s.events=s.apl(s.events,e1+'='+Math.round(loadTime/1000)+','+e2,"
++"',',2);var nVer=navigator.appVersion;var nAgt=navigator.userAgent;v"
++"ar browserName=navigator.appName;var fullVersion=''+parseFloat(navi"
++"gator.appVersion);var majorVersion=parseInt(navigator.appVersion,10"
++");var nameOffset,verOffset,ix;if((verOffset=nAgt.indexOf('Opera'))!"
++"=-1){browserName='Opera';fullVersion=nAgt.substring(verOffset+6);if"
++"((verOffset=nAgt.indexOf('Version'))!=-1)fullVersion=nAgt.substring"
++"(verOffset+8);}else if((verOffset=nAgt.indexOf('MSIE'))!=-1){browse"
++"rName='Microsoft Internet Explorer';fullVersion=nAgt.substring(verO"
++"ffset+5);}else if((verOffset=nAgt.indexOf('Chrome'))!=-1){browserNa"
++"me='Chrome';fullVersion=nAgt.substring(verOffset+7);}else if((verOf"
++"fset=nAgt.indexOf('Safari'))!=-1){browserName='Safari';fullVersion="
++"nAgt.substring(verOffset+7);if((verOffset=nAgt.indexOf('Version'))!"
++"=-1)fullVersion=nAgt.substring(verOffset+8);}else if((verOffset=nAg"
++"t.indexOf('Firefox'))!=-1){browserName='Firefox';fullVersion=nAgt.s"
++"ubstring(verOffset+8);}else if((nameOffset=nAgt.lastIndexOf(' ')+1)"
++"<(verOffset=nAgt.lastIndexOf('/'))){browserName=nAgt.substring(name"
++"Offset,verOffset);fullVersion=nAgt.substring(verOffset+1);if(browse"
++"rName.toLowerCase()==browserName.toUpperCase())browserName=navigato"
++"r.appName;}else{browserName='Other Unknown Browser';fullVersion='';"
++"}if((ix=fullVersion.indexOf(';'))!=-1)fullVersion=fullVersion.subst"
++"ring(0,ix);if((ix=fullVersion.indexOf(' '))!=-1)fullVersion=fullVer"
++"sion.substring(0,ix);majorVersion=parseInt(''+fullVersion,10);if(is"
++"NaN(majorVersion)){fullVersion=''+parseFloat(navigator.appVersion);"
++"majorVersion=parseInt(navigator.appVersion,10);}s.alreadySetLoadTim"
++"e=true;return browserName+' '+majorVersion;");
 
 
 /*

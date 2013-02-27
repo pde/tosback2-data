@@ -181,6 +181,11 @@ if (document.images)
 	var windowtreatments_on = new Image();
 	windowtreatments_on.src = "/img/lnav3_1windowtreatments_on.gif";
 
+	var coffee_off = new Image();
+	coffee_off.src = "/img/lnav3_1coffee_off.gif";
+	var coffee_on = new Image();
+	coffee_on.src = "/img/lnav3_1coffee_on.gif";
+	
 	var breathe_off = new Image();
 	breathe_off.src = "/img/lnav3_3breathe_off.gif";
 	var breathe_on = new Image();

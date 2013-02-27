@@ -981,7 +981,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "02/23/2013 08:10 AM",
+            DATE_IN_USE: "02/27/2013 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1252,260 +1252,18 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 
 
 
+<!-- WCD Sitewide Head Region -->
 <!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.businessCode.regionTop") -->
 
-<!-- container 1 -->
-<!-- BEGIN Content Item File: /content/0006/192/890/cn6192890.html -->
+<!-- BEGIN - WCD Sitewide Container 1 -->
+<!-- BEGIN Content Item File: /content/0006/122/963/cn6122963.html -->
 
-
-<!-- !!!!!!!!!!!!!!!!!!!!!!!!!  GOL LAYOUT: PERMANENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
-<!-- ++++++++++++++++++++++++++++BRAND BUTTONS OVERRIDE+++++++++++++++++++++++++++++++ -->
-
-
-<!-- begin contentOverride60 -->
-<!-- 03/11/11 Move to IT fix 2569732 60.1 
-<script type="text/javascript">
-	var CheckoutLoggingHelper = Class.create();
-	CheckoutLoggingHelper.prototype = {
-		initialize:function() {
-		
-		},
-		constants:{
-			CHECKOUT_LOGGING_HELPER_COOKIE_NAME:"checkoutLoggingHelper"
-		},
-		model:{
-			previousDwrRequestTime:null,
-			currentDwrRequestTime:null,
-			currentDwrRequestDate:null
-		},
-		controller:{
-			init:{
-				main:function() {
-					var checkoutGetRequestWrapper = checkoutLoggingHelper.controller.checkoutGetRequestWrapper;
-					/* Set previous time at initialization as aop wrap does not wrap the very first request.  Compensate
-					 * by setting the time at object instantiation - which will only be a few ms after the initial request.
-					 */
-					var currentDate = new Date();
-					var currentTime = currentDate.getTime();
-					checkoutLoggingHelper.model.previousDwrRequestTime = currentTime;
-					checkout.controller.dataLoadManager.getRequest = checkout.controller.dataLoadManager.getRequest.wrap(checkoutGetRequestWrapper);
-				}
-			},
-			setPreviousDwrRequestDeltaTime:function() {
-				var CHECKOUT_LOGGING_HELPER_COOKIE_NAME = checkoutLoggingHelper.constants.CHECKOUT_LOGGING_HELPER_COOKIE_NAME;
-				checkoutLoggingHelper.model.currentDwrRequestDate = new Date();
-				var currentDwrRequestDate = checkoutLoggingHelper.model.currentDwrRequestDate;
-				var previousDwrRequestTime = checkoutLoggingHelper.model.previousDwrRequestTime;
-				var currentDwrRequestTime = currentDwrRequestDate.getTime();
-				var previousDwrRequestDeltaTime = null;
-				if (previousDwrRequestTime != null) {
-					previousDwrRequestDeltaTime = currentDwrRequestTime - previousDwrRequestTime;
-				} else {
-					previousDwrRequestDeltaTime = "previous delta time not yet recorded";
-				}
-				
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "previousDwrRequestTime", previousDwrRequestTime);
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "currentDwrRequestTime", currentDwrRequestTime);
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "dwrRequestDeltaTime", previousDwrRequestDeltaTime);
-				/* Update previous time with current time so that the next request is ready to go */
-				checkoutLoggingHelper.model.previousDwrRequestTime = currentDwrRequestTime;
-			},
-			checkoutGetRequestWrapper:function(originalGetRequestMethod, requestVo, dataLoader) {
-				checkoutLoggingHelper.controller.setPreviousDwrRequestDeltaTime();
-				originalGetRequestMethod(requestVo, dataLoader);
-			}
-		}
-	}
-	
-	if (window["checkout"] && window.location.pathname == "/checkout/order.do") {
-		var checkoutLoggingHelper = new CheckoutLoggingHelper();
-		checkoutLoggingHelper.controller.init.main();
-	}
-</script>
--->
-<!-- end contentOverride60 -->
-
-
-<script type="text/javascript">
-  /*Override src of Find and Reset buttons on Category VI pages*/
-  
-  function overrideButton() {
-	if( $('shopBySizeSelections') ) {
-	 
-	 //var controlHolder = $('shopBySizeSelections').select('li.sizeFinderFind');
-	  //controlHolder = controlHolder[0];
-	  var controlHolder = $('shopBySizeSelections');
-	  var controlImage1 = controlHolder.select('img.button_find_sm');
-	  controlImage1 = controlImage1[0];
-	  controlImage1.src = "/assets/common/clear.gif";
-
-	  //var controlHolder2 = $('shopBySizeSelections').select('li.sizeFinderReset');
-	  //controlHolder2 = controlHolder2[0];
-	  var controlHolder2 = $('shopBySizeSelections');
-	  var controlImage2 = controlHolder2.select('img.button_reset_sm');
-	  controlImage2 = controlImage2[0];
-	  controlImage2.src = "/assets/common/clear.gif";
-	}
-  }
-  
-//  Event.observe( window, 'load', overrideButton );
-  
-    /* 05/16/11 updated to be 11.04 compatible. override size chart buttons on category page */
-	
-  		if (window["categoryService"] != undefined) {
-		//Release  11.04 categoryService IS defined
-		
-		//run insertion code
-			Event.observe(document, 'categoryProductGrid:ready', overrideButton );
-			
-		//end Release 11.04
-	
-		} else {
-	
-		//Release 11.03 
-		
-			Event.observe( window, 'load', overrideButton );
-		//end Release 11.03
-		}
-		
-/* 05/16/11 updated to be 11.04 compatible. override size chart buttons on category page */
-  
-  
-  
-
-  //$("button_find_sm").src = "/assets/common/clear.gif";
-</script>
-
-<script type="text/javascript">
-  /*Override src of Close Window button in the View Larger popup*/
-  
-  function overrideCloseWindowButton() {
-	if( $('close_button') ) {
-	 	$('close_button').src = "/Asset_Archive/GPWeb/content/0002/581/055/assets/button_close_window.gif";	  
-	}
-  }
-  
-  Event.observe( window, 'load', overrideCloseWindowButton );
-
-  //$("button_find_sm").src = "/assets/common/clear.gif";
-</script>
-
-<!-- begin contentOverride33 - fix image fix  -->
-<script type="text/javascript">
-/* contentOverride33  */
-if (location.pathname == "/browse/category.do") {
-   document.observe("dom:loaded",function() {
-       if ($('saleImg')) {
-           var saleImg = $('saleImg');
-             saleImg.src = "/Asset_Archive/GPWeb/content/0003/278/071/assets/category_name_sale.gif";
-       }
-   });
-}
-/* contentOverride33 end */
-</script>
-<!-- end contentOverride33 - fix image fix  -->
-
-
-
-<!-- CATEGORY SEARCH BY SIZE TEXT OVERIDE -->
-<script type="text/javascript">
-//CATEGORY VI - change "See our size charts" text
-
-document.observe("dom:loaded",function() {
-    var sizeChartHolder = $('shopBySizeContainer');
-	if( sizeChartHolder ) {
-	  var sizeChartLink = sizeChartHolder.select('a');
-	  sizeChartLink = sizeChartLink[0];
-	  if(sizeChartLink) {
-	    sizeChartLink.update('SIZE CHARTS');
-	  }
-	}
-});
-//CATEGORY VI - change "See our size charts" text
-</script>
-
-
-
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!  WCD_WCD JS & CSS Head Legacy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <style type="text/css">
-/*** BEGIN Checkout Promo Details Legal Pop-up Styling override: add padding GOL request 2/12/13 ***/
-body.popup #bodyContainer .shortDescMsg {padding:5px;line-height: 16px;}
-body.popup #bodyContainer .promoCode {padding-left:5px;}
-body.popup #bodyContainer p{padding:5px;}
-/*** END Checkout Promo Details Legal  Pop-up Styling override: add padding GOL request 2/12/13 ***/
-
-/* **** Baby First Favorites Left Nav Coloration  **** */
-/* 02/21/12 */
-#sideNav #categoryNav77279 a.category, #sideNav #categoryNav77279 a.categorySelected {
-	color: pink;
-}
-#sideNav #categoryNav77286 a.category, #sideNav #categoryNav77286 a.categorySelected {
-	color: blue;
-}
-/* end Baby First Favorites Left Nav Coloration */
-
-/* GOL Seasonal Layout: SPRING 2013 Background  - 12/26/2013 */
-/* WHITE BG */
-body {
-	background: #FFF;
-	background-color:transparent !important;
-	background-image:url("http://www.gap.com/Asset_Archive/GPWeb/content/0005/925/478/assets/fall_2012_US_BeBright.gif") !important;
-	background-repeat:no-repeat;
-	background-position:top center;
-}
-
-/* begin override promo pricing expression coloration */
-.productCatItem span.mupSupMessage { color: #FF3300;font-weight:bold;} /*red and bold message under cat item*/
-/* end override promo pricing expression coloration */
-
-/* BEGIN pop-up containers background #FFF - added 2/12/13 JP  */
-body.popup, body.popup #bodyContainer {
-    background: none repeat scroll 0 0 #FFFFFF !important;
-}
-/* END pop-up containers background #FFF - added 2/12/13 JP  */
+/* GOL LAYOUT US*/
 
 
-/* CHANGE CATEGORY PAGES BACKGROUND TO WHITE */
-.categoryContent {
-	background-color: white;
-}
-
-#footer {color:#666; font-size:9px;}
-
-/*begin - spring 2013: left nav layout*/
-/*keyline to white/reassign keyline */
-#mainContent {border:none;}
-#mainContentContainer {border:none;}
-#mainContentContainer {border-left:none;border-right:none;}
-
-/*remove bottom keyline from main content*/
-#mainContent {border-bottom:none;background-color:#FFF}
-#mainContentContainer {border-bottom:none;background-color:#FFF !important;}
-/* #mainContentContainer {border-bottom:none;background-color:transparent !important;} */
-
-#sideNav  {background-color:#FFF !important;color:#000;}
-/*end reassign keyline */
-
-/*dotted key line removed from maincontent added to sidenav added for 7.12 add contentOvveride*/
-/*#mainContentContainer #mainContent {background-color:transparent !important;border:medium none; background-image:none;}*/
-#mainContentContainer #mainContent {background-color:#FFF;border:medium none; background-image:none;}
-
-#footer a:link, #footer a:visited, #footer a:active{color:#000;}
-
-/*Add white keyline around 988px footer container*/
-/* REMOVED KEYLINE FRO 2012 HOLIDAY ACT 2 - 11/7/2012 */
-/*#brandftr3_10000513 {border-right: 1px solid transparent;border-left: 1px solid transparent;}*/
-
-/* END: GOL Seasonal Layout: Spring 2012*/
-
-
-
-/* GOL Layout: Permanent*/
-
-
-/* VI -- CATEGORY PAGES*/
-
-	
+/*+++++++++++++ VI -- CATEGORY PAGES +++++++++++++++++++*/ 
 	.brand1 .quicklook-sprites, .brand7 .quicklook-sprites, .brand20 .quicklook-sprites {background:transparent url(http://www.gap.com/Asset_Archive/GPWeb/content/0002/444/294/brand_buttons_and_assets_sprite.gif) no-repeat scroll left top;}
 		
 	#shopBySizeContainer{background:#F0F0F0;}
@@ -1520,9 +1278,9 @@ body.popup, body.popup #bodyContainer {
 	/*pagination*/
 	#tabTable, #tabTableOff .categoryPaging a:link, a:visited, a:hover, a:active{color:#000;}
 	
-/* END: VI -- CATEGORY PAGS*/
+/*+++++++++++++ END: VI -- CATEGORY PAGES+++++++++++++++++++*/ 
 
-/*+++++++++++++ LEFT SIDE NAVIGATION OVERRIDE+++++++++++++++++++*/ 
+/*+++++++++++++ BEGIN: LEFT SIDE NAVIGATION OVERRIDE+++++++++++++++++++*/ 
 	
 	#sideNav  {background-color:transparent !important;color:#000000;}
 	#sideNav a:hover {color:#999;}
@@ -1546,9 +1304,7 @@ body.popup, body.popup #bodyContainer {
 	#sideNav li.sale a.subCategory:hover{color: #999;}
 	/*END:Sale Category and subcategory on Left Side Navigation*/
 			
-	/*For 2012 Spring re-design -- reduce top margin for the first header on the left side navigation*/
-	/* 2012 Holiday Act 2 - 11/7/2012 - Changed border-top color from #fff to transparent */
-		#sideNav #categoryNav61861{margin-top:0px}/*reduce top margin for the first header (Features) in 1969 DP*/
+	/*Reduce top margin for the first header on the left side navigation*/
 		#sideNav #categoryNav11674{margin-top:-4px; *margin-top:0px; _margin-top:0px; border-top:1px solid transparent;}/*reduce top margin for the first header (Special Sizes) in Women DP and removes top border*/	
 		#sideNav #categoryNav77397{margin-top:-4px; *margin-top:0px; _margin-top:0px; border-top:1px solid transparent;}/*reduce top margin for the first header (Features) in Body DP and removes top border*/		
 		#sideNav #categoryNav77320{margin-top:0px; _margin-top:0px; *margin-top:0px; border-top:1px solid transparent;}/*reduce top margin for the first header (Features) in Maternity DP*/				
@@ -1565,7 +1321,7 @@ body.popup, body.popup #bodyContainer {
 		#sideNav #categoryNav26637{margin-top:0px; border-top:1px solid transparent;}/*reduce top margin for the first header Sale DP*/
 		
 		
-	/* END: For 2012 Spring re-design -- reduce top margin for the first header on the left side navigation*/
+	/* END: reduce top margin for the first header on the left side navigation*/
 	
 	
 	/*SALE DIVISION LEFT SIDE NAV*/
@@ -1633,14 +1389,26 @@ body.popup, body.popup #bodyContainer {
 		#sideNav #categoryNav26032 a.categorySelected:link, #sideNav #categoryNav26032 a.categorySelected:visited, #sideNav #categoryNav26032 a.categorySelected:active, #sideNav #categoryNav26032 a.categorySelected:hover {color:#999;}
 		#sideNav #categoryNav26032 a.subCategorySelected:link, #sideNav #categoryNav26032 a.subCategorySelected:visited, #sideNav #categoryNav26032 a.subCategorySelected:active, #sideNav #categoryNav26032 a.subCategorySelected:hover {color:#999;}
 
+	/*END: SALE DIVISION LEFT SIDE NAV*/
 
-		
+	/*BEGIN: PIPERLIME SHOE SHOP COLORATION: M,B,G */
+	#sideNav #categoryNav48371 a.category {color:#77BB00;}
 
-		/*END: SALE DIVISION LEFT SIDE NAV*/
+	#sideNav #categoryNav48371 a.categorySelected {color:#77BB00;}
+
+	#sideNav #categoryNav39790 a.category {color:#77BB00;}
+
+	#sideNav #categoryNav39790 a.categorySelected {color:#77BB00;}
+
+	#sideNav #categoryNav39791 a.category {color:#77BB00;}
+
+	#sideNav #categoryNav39791 a.categorySelected {color:#77BB00;}
+	/*END: PIPERLIME SHOE SHOP COLORATION: M,B,G */
+
 	
 /*+++++++++++++ END: LEFT SIDE NAVIGATION OVERRIDE+++++++++++++++++++*/ 
-	
-/*PRODUCT PAGE LAYOUT OVERRIDE*/
+
+/*+++++++++++++ BEGIN: PRODUCT PAGE LAYOUT +++++++++++++++++++*/ 
 	
 	
 	.brand1 .imgDiv {background-color:white; border:1px solid #fff;}/*product images keyline to white */
@@ -1723,10 +1491,9 @@ body.popup, body.popup #bodyContainer {
 	}
 	
 	
-/*PRODUCT PAGE LAYOUT OVERRIDE ENDS*/
+/*+++++++++++++ END: PRODUCT PAGE LAYOUT +++++++++++++++++++*/ 
 
-/*OUTFIT PAGE OVERRIDE*/
-
+/*+++++++++++++ BEGIN: OUTFIT PAGE  LAYOUT +++++++++++++++++++*/ 
 
 #outfitContent #outfitName{color:#000; font-size:13px; font-weight:bold;}
 
@@ -1744,172 +1511,27 @@ body.popup, body.popup #bodyContainer {
     height: 17px;
     width: 72px;
 }
-/*
-.brand1 #addToBagContent input.addToBagBtn, .brand1 #confirmationContentTop input.addToBagBtn, .brand1 #confirmationContentBottom input.addToBagBtn{background:url("/Asset_Archive/GPWeb/content/0002/444/294/brand_buttons_and_assets_sprite.gif") repeat scroll 0 -665px transparent; height:17px; width: 72px;}
-
-.brand1 #addToBagContent input.off, .brand1 #confirmationContentTop input.off, .brand1 #confirmationContentBottom input.off{background-position: 0 -665px;}
 
 
+/*+++++++++++++ END: OUTFIT PAGE  LAYOUT +++++++++++++++++++*/ 
 
-.brand1 #addToBagContent input.on, .brand1 #confirmationContentTop input.on, .brand1 #confirmationContentBottom input.on{background:url("/Asset_Archive/GPWeb/content/0002/444/294/brand_buttons_and_assets_sprite.gif") repeat scroll 0 -732px transparent; height:17px; width: 72px;}
-*/
 
-/* Customer Service page Spring Update */
+/*+++++++++++++ BEGIN: CUSTOMER SERVICE  LAYOUT +++++++++++++++++++*/ 
 	#mainContent .csContentPage {padding:10px 10px 10px 35px;}
 	#mainContent .header1 {margin:10px 0px 10px 0px; color:#000;}
-/* END: Customer Service page Spring Update */
 
-/*Search Results Spring Update*/
-	#noResultsShell {width:828px;}
-/*END: Search Results Spring Update*/
-
-
-
-
-
-
-/*~~~~~~~~~~~~~~~~~~~Piperlime Shoe Shop Coloration: Mens, Boys, Girls~~~~~~~~~~~~~~~~~~~~~~~ */
-#sideNav #categoryNav48371 a.category {
-color:#77BB00;
-}
-
-#sideNav #categoryNav48371 a.categorySelected {
-color:#77BB00;
-}
-
-#sideNav #categoryNav39790 a.category {
-color:#77BB00;
-}
-
-#sideNav #categoryNav39790 a.categorySelected {
-color:#77BB00;
-}
-
-#sideNav #categoryNav39791 a.category {
-color:#77BB00;
-}
-
-#sideNav #categoryNav39791 a.categorySelected {
-color:#77BB00;
-}
-/*~~~~~~~~~~~~~~~~~~~~~~~End: Piperlime Shoe Shop Coloration~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-
-
-/*Fix sale border width - HIDE SALE HEADER 1/14/11 */
-#saleHdr, #clearanceHdr {width:828px;display:none !important;}
-/*End sale border width */
-
-
-/*Fix for QuickLook close button for universal_button_sprites.css */
-.brand1 #quickLookClose, .brand1 #quickLookClose, .brand20 #quickLookClose { width: 19px; margin-top:2px;}
-/*End Fix for QuickLook close button */
-
-/* Hide the default International Shipping Header - Do Not Remove */
-#internationalShippingOptInList div.top {
-	display:none;
-}
-
-
-/* Fix for international shipping selector on CS pages */
-#internationalShippingOptInList p.copyright { margin:0; padding:0 }
-#internationalShippingOptInList .please_select { margin:0 0 10px; padding:0; line-height:10px; font-size:11px }
-#internationalShippingOptInList #explanatoryCopy { margin:12px 0 14px 10px; padding:0 }
+/*+++++++++++++ END: CUSTOMER SERVICE LAYOUT +++++++++++++++++++*/ 
 
 </style>
 
-<!-- Brnd buttons override END -->
+
 
 <script type="text/javascript">
-//Fall 2012 Layout: Product page background remains white
 
-if ( (location.pathname == "/browse/product.do") || (location.pathname == "/browse/outfit.do") ) {
-	document.observe("dom:loaded", function() {
-        var productMainContent = $('mainContent');
-		//productMainContent.setAttribute('style', 'background-color:#ffffff !important');
-		productMainContent.setStyle({ backgroundColor: "#ffffff"});
-		//productMainContent.style.backgroundColor="#ffffff";
-	});
-} else {
+/***BEGIN GOL LEGACY JS OVERRIDES *****/
 
-
-}
-
-</script>
-
-<!-- END Content Item File: /content/0006/192/890/cn6192890.html -->
-
-
-
-<!-- container 2 -->
-
-
-
-<!-- container 3 -->
-<!-- BEGIN Content Item File: /content/0005/828/541/cn5828541.html -->
-
-<script type="text/javascript">
-/* BEGIN - 022112 patch to remove "1969 denim boutique" listing from product pages */
-if (location.pathname == "/browse/product.do") {
-	//objO = {};  // removes sizing links
-	productPage.loadProduct = productPage.loadProduct.wrap(function(originalMethod){
-		originalMethod();
-		var myLI = $("tabWindow").select('li');
-		for (i=0; i<myLI.length; i++) {
-			if (myLI[i].innerHTML.include("1969 denim boutique") ){
-				myLI[i].hide();
-				
-			}
-		}    
-	});
-}
-/* END - 022112 patch to remove "1969 denim boutique" listing from product pages */
-
-/*begin override to update Return Policy link on shopping bag to new CS Returns Page */
-
-if( location.pathname == "/buy/shopping_bag.do" ) {
- document.observe("dom:loaded", function() {
-	var shopBagContainer = $('shoppingBagSummaryContainer');
-
-	if (shopBagContainer){
-	var shoppingBagSummaryContainer = shopBagContainer.select('p');
-
-	shoppingBagSummaryContainer = shoppingBagSummaryContainer[0];
-
-	var shopBagLinks = shoppingBagSummaryContainer.select('a');
-		
-		for (i=0; i<shopBagLinks.length; i++) {
-			if (shopBagLinks[i].innerHTML.include("Return Policy") ){
-				shopBagLinks[i].setAttribute('href','/customerService/info.do?cid=81264');
-				
-			}
-		}
-	}
- })
-}
-/*end override to update Return Policy link on shopping bag to new CS Returns Page */
-
-
-
-
-/* begin override to fix broken Privacy Policy link fix on  Sign In Page  */
-
-if( location.pathname == "/profile/sign_in.do" ) {
- document.observe("dom:loaded", function() {
-   if($('privacyPolicyLink')) {
-    $('privacyPolicyLink').getElementsByTagName("a")[0].setAttribute('href','/customerService/info.do?cid=2331');
-   }
- })
-}
-
-/* end override to fix broken Privacy Policy link fix on  Sign In Page  */
-
-
-
-/* BEGIN Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
-/* Added Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
+/* BEGIN GOL Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
+/* Added GOL Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
 
 document.observe("dom:loaded",function() {
 
@@ -1964,11 +1586,11 @@ document.observe("dom:loaded",function() {
 
 });
 
-/* END Added Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
-/* END Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
+/* END GOL Added Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
+/* END GOL Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
 
-/* BEGIN OVERRIDE to HIGHLIGHT "WOMEN" in Top Navigation for Petite and Tall Divisions - JP 08/22/2012 */
-/* ADDED HIGHLIGHT "MEN" in Top Navigation for Big & Tall Division - JP 11/16/2012 */
+/* BEGIN GOL OVERRIDE to HIGHLIGHT "WOMEN" in Top Navigation for Petite and Tall Divisions - JP 08/22/2012 */
+/* ADDED GOL HIGHLIGHT "MEN" in Top Navigation for Big & Tall Division - JP 11/16/2012 */
 
 document.observe("dom:loaded",function() {
 
@@ -2013,164 +1635,700 @@ var thisDivision = "";
 
 /* END HIGHLIGHT "MEN" in Top Navigation for Big & Tall Division - JP 11/16/2012 */
 /* END OVERRIDE to HIGHLIGHT "WOMEN" in Top Navigation for Petite and Tall Divisions - JP 08/22/2012 */
-</script>
 
-<script type="text/javascript">
-//CUSTOMER SERVICE - change "Gift Card Info" Header
+  /*Override src of Find and Reset buttons on Category VI pages*/
+  
+  function overrideButton() {
+	if( $('shopBySizeSelections') ) {
+	 
+	 //var controlHolder = $('shopBySizeSelections').select('li.sizeFinderFind');
+	  //controlHolder = controlHolder[0];
+	  var controlHolder = $('shopBySizeSelections');
+	  var controlImage1 = controlHolder.select('img.button_find_sm');
+	  controlImage1 = controlImage1[0];
+	  controlImage1.src = "/assets/common/clear.gif";
 
-//copy this function for text with linking
+	  //var controlHolder2 = $('shopBySizeSelections').select('li.sizeFinderReset');
+	  //controlHolder2 = controlHolder2[0];
+	  var controlHolder2 = $('shopBySizeSelections');
+	  var controlImage2 = controlHolder2.select('img.button_reset_sm');
+	  controlImage2 = controlImage2[0];
+	  controlImage2.src = "/assets/common/clear.gif";
+	}
+  }
+  
+//  Event.observe( window, 'load', overrideButton );
+  
+    /* 05/16/11 updated to be 11.04 compatible. override size chart buttons on category page */
+	
+  		if (window["categoryService"] != undefined) {
+		//Release  11.04 categoryService IS defined
+		
+		//run insertion code
+			Event.observe(document, 'categoryProductGrid:ready', overrideButton );
+			
+		//end Release 11.04
+	
+		} else {
+	
+		//Release 11.03 
+		
+			Event.observe( window, 'load', overrideButton );
+		//end Release 11.03
+		}
+		
+/* 05/16/11 updated to be 11.04 compatible. override size chart buttons on category page */
+
+  /*Override src of Close Window button in the View Larger popup*/
+  
+  function overrideCloseWindowButton() {
+	if( $('close_button') ) {
+	 	$('close_button').src = "/Asset_Archive/GPWeb/content/0002/581/055/assets/button_close_window.gif";	  
+	}
+  }
+  
+  Event.observe( window, 'load', overrideCloseWindowButton );
+  
+  //CATEGORY VI - change "See our size charts" text
 
 document.observe("dom:loaded",function() {
-	var giftCardInfoHeader = $('categoryNav2328');
-
-	if (giftCardInfoHeader) {
-					
-			giftCardInfoHeader.firstDescendant().innerHTML = 'Gift Cards & Gift Services';
+    var sizeChartHolder = $('shopBySizeContainer');
+	if( sizeChartHolder ) {
+	  var sizeChartLink = sizeChartHolder.select('a');
+	  sizeChartLink = sizeChartLink[0];
+	  if(sizeChartLink) {
+	    sizeChartLink.update('SIZE CHARTS');
+	  }
 	}
-
-
 });
-//CUSTOMER SERVICE - change "Gift Card Info" Header
-</script>
+//CATEGORY VI - change "See our size charts" text
 
+/*begin override to update Return Policy link on shopping bag to new CS Returns Page */
 
+if( location.pathname == "/buy/shopping_bag.do" ) {
+ document.observe("dom:loaded", function() {
+	var shopBagContainer = $('shoppingBagSummaryContainer');
 
-<!-- begin contentOverride24 removed 6/6/11
-<script type="text/javascript">
-		//DO NOT REMOVE (added 10.27.09 JP)
-		//Removed 06/6/11 confirmed no Stella Products
-		/*
-      if (location.pathname == "/browse/product.do" && productPage.externalOverrides) {
-            productPage.externalOverrides.reviewSuppressionRegExpList.push(new RegExp("Stella McCartney","i"));
-      }
-	  */
-</script>
-  end contentOverride24 -->
- 
- 
- <!-- iframe width/height override -->
-<script type="text/javascript">
-if (location.pathname == "/profile/join_email_list_confirm.do") {
-	var newIFrameSize = function() {
-		var iframeDiv = $('iFrameContent');
-		iframeDiv.setStyle({"width":"950px", "height":"988px"});
-	}
-	document.observe("dom:loaded",newIFrameSize);
-}
+	if (shopBagContainer){
+	var shoppingBagSummaryContainer = shopBagContainer.select('p');
 
-</script>
-<!-- end iframe -->
+	shoppingBagSummaryContainer = shoppingBagSummaryContainer[0];
 
-<!--start product page fix -->
-<script type="text/javascript">
-
- // product page fix 100710
-if (location.pathname != "\/browse\/product\.do") {
-	// remove productPage
-	productPage = null; 
-	//(to disable the reflection logic that is looking for this object at runtime causing the Quicklook failure).
- 
-	// Reset quicklook x and y
-	brandProperties.QUICKLOOKTARGETXPOS = 60 ;
-	brandProperties.QUICKLOOKTARGETYPOS = 204;
-}
-
-
-</script>
-<!-- end product page fix -->
-
-
-
-
-<!-- fix the QL top bar 7.0 -->
-<script type="text/javascript">
-if (window["quickLook"] && quickLook.templates) {
-    quickLook.templates.QUICK_LOOK.template = quickLook.templates.QUICK_LOOK.template.replace(/undefinedbadge/,brandConst["BRAND"+brandConst.BRAND_CODE+"_BADGE_CONTENT_PATH"]+"badge");
-}
-</script>
-<!-- fix the QL top bar 7.0 -->
-
-
-
-<script type="text/javascript">
-// Fixes product page error pushing down the right side
-
-if (location.pathname == "/browse/product.do") {
-
-	document.observe("dom:loaded", function() {
-
-		$('mainContent').setStyle({"width":"828px"});
-
-	});
-
-}
-</script>
-
-
-<script type="text/javascript">
-// SALE BANNER DUPLICATE FIX
-
-if (location.pathname == "/browse/category.do") {
-
-    document.observe("dom:loaded",function() {
-
-		if ($('saleHdr')) {
-
-			var saleImgs = $('saleHdr').select('img');
-
-			if (saleImgs) {
-
-				var saleImgToRemove = saleImgs[1];
-
-				if (saleImgToRemove) {
-
-					saleImgToRemove.remove();
-
-				}
-
+	var shopBagLinks = shoppingBagSummaryContainer.select('a');
+		
+		for (i=0; i<shopBagLinks.length; i++) {
+			if (shopBagLinks[i].innerHTML.include("Return Policy") ){
+				shopBagLinks[i].setAttribute('href','/customerService/info.do?cid=81264');
+				
 			}
+		}
+	}
+ })
+}
+/*end override to update Return Policy link on shopping bag to new CS Returns Page */
 
+
+/* begin override to fix broken Privacy Policy link fix on  Sign In Page  */
+
+if( location.pathname == "/profile/sign_in.do" ) {
+ document.observe("dom:loaded", function() {
+   if($('privacyPolicyLink')) {
+    $('privacyPolicyLink').getElementsByTagName("a")[0].setAttribute('href','/customerService/info.do?cid=2331');
+   }
+ })
+}
+
+/* end override to fix broken Privacy Policy link fix on  Sign In Page  */
+  
+/***END GOL LEGACY JS OVERRIDES *****/
+</script>
+
+
+<!-- begin contentOverride72 - Everyday Free Ship EDFS code - v4 - 2012 holiday adjustments  -->
+<script type="text/javascript">
+
+	// Everyday Free Ship EDFS code - v3 11.04 adjustments
+	// BH 2/3/12 update
+	// Shopping bag code - updates display of ship option text adding the $50 min or FREE with Piperlime text
+	var isPiperlimeInBagForEDFS = false;
+	var shoppingBagSubTotalForEDFS = 0;
+	var productArray = pixelManagementService.model.metricsLibrary.shoppingBag.productList;
+	var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
+	var shipOption1_7To9Day = '';
+	var shipOption1_7To9DayArr = ["2100","2012"];
+	var shipOption2_3To5Day = '';
+	var shipOption2_3To5DayArr = ["2101","2102","2107","2108","2105","2106","2103","2104"];
+	var shipOption3_2Day = '';
+	var shipOption3_2DayArr = ["2109","2110","201","1307","2016","2017"];
+	var shipOption4_1Day = '';
+	var shipOption4_1DayArr = ["2111","2112","1368","1326","2014","2015","2020","2021"];
+	
+	// Update function
+	var ShipWindowShopBagExecuteCheck = function() {
+		// Determine WHICH ship options are active on the site
+		shipOption1_7To9DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption1_7To9Day = opt;
+			}
+		});		
+		shipOption2_3To5DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption2_3To5Day = opt;
+			}
+		});		
+		shipOption3_2DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption3_2Day = opt;
+			}
+		});		
+		shipOption4_1DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption4_1Day = opt;
+			}
+		});
+		
+		// Adjust basic messaging
+		var basicShipMessage = ' Every Day ($50 min)';		
+		var optionToUpdate_7To9 = 'shippingOptionsRadioText' + shipOption1_7To9Day;
+		if( $( optionToUpdate_7To9 ) ) {
+			$( optionToUpdate_7To9 ).insert({bottom: basicShipMessage});
 		}
 
-	});
+		// Adjust standard messaging
+		var standardShipMessage = 'FREE (on orders over $50) or $7 (on orders under $50)';
+		var optionToUdpate_3To5 = 'shippingOptionsRadioText' + shipOption2_3To5Day;
+		if( $("shoppingBagSummaryContainer") ) {
+			var ShipMessageContainer = $("shoppingBagSummaryContainer").select("div.shippingOptionLearnMoreLink");
+			var currentBagMessage = ShipMessageContainer[0].innerHTML;
+			var newBagMessage = currentBagMessage;
+			ShipMessageContainer[0].update(newBagMessage);
+			isPiperlimeInBagForEDFS = checkForPiperlimeInBag();
+			if( $( optionToUdpate_3To5 ) && isPiperlimeInBagForEDFS ) {
+				$( optionToUdpate_3To5 ).insert({bottom: " with Piperlime"});
+			}
+			else {
+				// For options that need the standard text, cut off the price first and adjust layout
+				if( shipOption2_3To5Day != '' && shipOption2_3To5Day != '2101' && shipOption2_3To5Day != '2102' ) {
+					var shipStr = $( optionToUdpate_3To5 ).innerHTML;
+					var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') + 3 );
+					newShipStr = newShipStr + standardShipMessage;
+					$( optionToUdpate_3To5 ).update( newShipStr );
 
+					if( $('selectedShippingMethod' + shipOption2_3To5Day ) ) {
+						$('selectedShippingMethod' + shipOption2_3To5Day ).setStyle({ float:'left' });
+					}
+
+					$( optionToUdpate_3To5 ).setStyle({ width:'227px', float:'right' });
+
+					if( ( navigator.appName == 'Microsoft Internet Explorer' ) && ( navigator.appVersion.indexOf('MSIE 7.0') > -1 || navigator.appVersion.indexOf('MSIE 6.0') > -1 ) ) {
+						$( optionToUdpate_3To5 ).setStyle({ width:'220px' });
+					}
+		
+					var clearDiv = new Element('div', { style:'clear:both' });
+					$( optionToUdpate_3To5 ).insert({ after: clearDiv });
+				}
+			}
+		}
+
+		// Adjust express messaging wheere applicable
+		if( shipOption3_2Day != '' && ( shipOption3_2Day == '201' || shipOption3_2Day == '1307' ) ) {
+			var optionToUdpate_express = 'shippingOptionsRadioText' + shipOption3_2Day;
+			var shipStr = $( optionToUdpate_express ).innerHTML;
+			var messageToInsert = '(2 business days)'
+			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
+			
+			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
+			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
+			$( optionToUdpate_express ).update( newShipStr );
+			$( optionToUdpate_express ).setStyle({ width:'220px' });
+			var clearDiv = new Element('div', { style:'clear:both' });
+			$( optionToUdpate_express ).insert({ after: clearDiv });
+		}
+
+		// Adjust next day messaging wheere applicable
+		if( shipOption4_1Day != '' && ( shipOption4_1Day == '1368' || shipOption4_1Day == '1326' ) ) {
+			var optionToUdpate_nextDay = 'shippingOptionsRadioText' + shipOption4_1Day;
+			var shipStr = $( optionToUdpate_nextDay ).innerHTML;
+			var messageToInsert = '(1 business day)'
+			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
+			
+			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
+			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
+			$( optionToUdpate_nextDay ).update( newShipStr );
+			$( optionToUdpate_nextDay ).setStyle({ width:'220px' });
+			var clearDiv = new Element('div', { style:'clear:both' });
+			$( optionToUdpate_nextDay ).insert({ after: clearDiv });
+		}
+	}
+	// Function to check whether PL items in bag
+	var checkForPiperlimeInBag = function() {
+		var myBooleanValue = false;
+		for (i=0; i<pixelManagementService.model.metricsLibrary.shoppingBag.productList.length; i++){
+			if (pixelManagementService.model.metricsLibrary.shoppingBag.productList[i].productBrandCode == "4"){
+				myBooleanValue = true;
+				break;
+			} else {
+				myBooleanValue = false;
+			}
+		}
+		return myBooleanValue;
+	}
+	if( shoppingBagUrls.include(location.pathname) ){
+		Event.observe(window,"load",ShipWindowShopBagExecuteCheck);
+	}
+	
+	// Checkout code to display promo popup for certain promos
+	var PopWindowMessageDiv;
+	var didEverydayFreeShipSetAlready = false;
+	if( location.pathname == "/checkout/order.do" ){
+		
+		// Create, position and display popup
+		var popWindowWithShipMessage = function() {
+			createPopWindowWithMessage();
+			var offsetLeft = 0;
+			var offSetTop = 0;
+			var popWindowLeft = 0;
+			var popWindowTop = 0;
+			if ($("giftingSummary")){
+				offsetLeft = Element.cumulativeOffset($("giftingSummary")).left;
+				offSetTop = Element.cumulativeOffset($("giftingSummary")).top;
+				popWindowLeft = offsetLeft + 55;
+				popWindowTop = offSetTop + 135;
+			}
+			else {
+				if ($("billingInputPromoRewardCode")) {
+					offsetLeft = Element.cumulativeOffset($("billingInputPromoRewardCode")).left;
+					offSetTop = Element.cumulativeOffset($("billingInputPromoRewardCode")).top;
+					popWindowLeft = offsetLeft + 10;
+					popWindowTop = offSetTop - 410;
+				}
+			}
+			
+			// Position and display
+			PopWindowMessageDiv.style.top = popWindowTop + "px";
+			PopWindowMessageDiv.style.left = popWindowLeft + "px";
+			PopWindowMessageDiv.show();
+		}
+		
+		var messageStringTitle;
+		var messageStringBody;
+		var PopWindowMessageTitleP;
+		var PopWindowMessageBodyP;
+		var CloseMessageWindowP;
+		
+		// Function to create HTML for promo popup
+		var createPopWindowWithMessage = function() {
+			messageStringTitle = "&nbsp;Congratulations!";
+			messageStringBody = "Your order qualifies for <strong>FREE<\/strong> Shipping and will arrive in 7-10 business days (actual delivery time is subject to change; for the most current delivery schedule, check the shipping options listed in the Shopping Bag ). If you need your order to arrive sooner, select a different delivery option in the Shipping section (additional charges will apply).";
+			PopWindowMessageTitleP = new Element('div',{'id':'popWindowContainerTitleP'}).update(messageStringTitle);
+			PopWindowMessageBodyP = new Element('div',{'id':'popWindowContainerBodyP'}).update(messageStringBody);
+			PopWindowMessageDiv = new Element('div',{'id' : 'popWindowContainerDiv'});
+			CloseMessageWindowP = new Element('div',{'id':'popWindowClose',"style":"float:right;","onclick":"PopWindowMessageDiv.style.display = 'none';"}).update('&nbsp;x&nbsp;');
+			CloseMessageWindowP.style.fontSize = "8px";
+			CloseMessageWindowP.style.borderStyle = "solid";
+			CloseMessageWindowP.style.borderColor = "#aaaaaa";
+			CloseMessageWindowP.style.borderWidth = "1px";
+			CloseMessageWindowP.style.margin = "1px";
+			CloseMessageWindowP.style.cursor = "pointer";
+			PopWindowMessageBodyP.style.padding = "4px";
+			PopWindowMessageTitleP.style.fontSize = "14px";
+			PopWindowMessageTitleP.style.margin = "4px";
+			PopWindowMessageTitleP.style.marginBottom = "8px";
+			PopWindowMessageTitleP.style.cssFloat = "left";
+			PopWindowMessageTitleP.style.width = "275px";
+			PopWindowMessageBodyP.style.fontSize = "11px";
+			PopWindowMessageBodyP.style.margin = "4px";
+			PopWindowMessageBodyP.style.height = "130px";
+			PopWindowMessageDiv.style.display = "none";
+			PopWindowMessageDiv.style.width = "300px";
+			PopWindowMessageDiv.style.height = "auto";
+			PopWindowMessageDiv.style.overflow = "hidden";
+			PopWindowMessageDiv.style.backgroundColor = "#ffffff";
+			PopWindowMessageDiv.style.borderStyle = "solid";
+			PopWindowMessageDiv.style.borderColor = "#cccccc";
+			PopWindowMessageDiv.style.borderWidth = "2px";
+			PopWindowMessageDiv.style.position = "absolute";
+			PopWindowMessageDiv.style.top = "400px";
+			PopWindowMessageDiv.style.left = "400px";
+			PopWindowMessageDiv.style.zIndex = "1000";
+			Element.insert(PopWindowMessageDiv,{'top':PopWindowMessageTitleP} );
+			Element.insert(PopWindowMessageDiv,{'top':CloseMessageWindowP} );
+			Element.insert(PopWindowMessageDiv,{'bottom':PopWindowMessageBodyP} );
+			Element.insert($("mainContent"),{'top':PopWindowMessageDiv} );
+			Event.observe(CloseMessageWindowP,"mouseover",function() { CloseMessageWindowP.style.cursor = "hand"; });
+			Event.observe(CloseMessageWindowP,"click",function() { PopWindowMessageDiv.style.display = "none"; });
+		}
+
+		var didEverydayFreeShipSetAlready = false;
+		var isEverydayFreeShipChecked = false;
+		
+		// Check for applied promo and shipping option selected and display popup appropriately
+		var setPromotionAppliedDataToPageWrapper = function( originalMethod ) {
+			
+			// Determine WHICH ship options are active on the site
+			shipOption1_7To9DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption1_7To9Day = opt;
+				}
+			});		
+			shipOption2_3To5DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption2_3To5Day = opt;
+				}
+			});		
+			shipOption3_2DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption3_2Day = opt;
+				}
+			});		
+			shipOption4_1DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption4_1Day = opt;
+				}
+			});		
+			
+			if (checkout.model.data.modules.shipping.selectedShippingOptionDTLId == shipOption1_7To9Day ) {
+				isEverydayFreeShipChecked = true;
+			}
+			originalMethod();
+
+			var codeAttempted = false;
+			var codeEntered = checkout.controller.modules.billing.promotions.lastPromotionInput;
+			var EDFSPromoCodes = ["mycard","silver","luxe","shipbr","just4you","ship2me"];
+			if( codeEntered ) {
+				codeEntered = codeEntered.toLowerCase();
+			}
+			if( EDFSPromoCodes.include( codeEntered ) ) {
+				codeAttempted = true;
+			}
+			/*if (codeEntered == "mycard"){ codeAttempted = true; }
+			if (codeEntered == "silver"){ codeAttempted = true; }
+			if (codeEntered == "luxe"){ codeAttempted = true; }
+			if (codeEntered == "shipbr"){ codeAttempted = true; }
+			if (codeEntered == "just4you"){ codeAttempted = true; }
+			if (codeEntered == "ship2me"){ codeAttempted = true; }*/
+			
+			//checkout.model.data.modules.billing.promotions.promotionUpdateIdRo
+			if( checkout.model.data.modules.shipping.shippingOptionsRo != null && ( codeAttempted ) ){
+				var hasEFSOption = false;
+				//var EDFSPromoCodes = ["mycard","silver","luxe","shipbr","just4you","ship2me"];
+				var testForPromoCodeString = $("billingPromoCodeAppliedList").innerHTML;
+				
+				checkout.model.data.modules.shipping.shippingOptionsRo.each(function(shippingOption){
+					if (shippingOption && shippingOption.shippingType == "7") {
+						var shippingOptionRadio = $( 'shippingOptions' + shipOption1_7To9Day );
+						if(shippingOptionRadio && shippingOptionRadio.checked == true && shippingOptionRadio.disabled == false) {
+							hasEFSOption = true;
+							$break;
+						}
+					}
+				});
+				
+				if ( (hasEFSOption) && (!didEverydayFreeShipSetAlready) ) {
+					popWindowWithShipMessage();
+					didEverydayFreeShipSetAlready = true;
+				}
+				else {
+					if( $( 'shippingOptions' + shipOption3_2Day ) && $( 'shippingOptions' + shipOption4_1Day ) ){
+						if ( $('shippingOptions' + shipOption1_7To9Day ).checked == true || $('shippingOptions' + shipOption3_2Day ).checked == true || $('shippingOptions' + shipOption4_1Day ).checked == true ){
+							didEverydayFreeShipSetAlready = true;
+						} else {
+							didEverydayFreeShipSetAlready = false;
+						}
+					} else {
+						if ( $('shippingOptions' + shipOption1_7To9Day ) ){
+							didEverydayFreeShipSetAlready = true;
+						} else {
+							didEverydayFreeShipSetAlready = false;
+						}
+					}
+				}
+			}
+		}	
+		checkout.controller.modules.billing.promotions.view.setPromotionAppliedDataToPage = checkout.controller.modules.billing.promotions.view.setPromotionAppliedDataToPage.wrap(setPromotionAppliedDataToPageWrapper);	
 }
 
 </script>
-
- 
-
+<!-- end contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
 
 
-<!-- END Content Item File: /content/0005/828/541/cn5828541.html -->
-
-
-
-<!-- container 4 -->
-<!-- BEGIN Content Item File: /content/0005/925/502/cn5925502.html -->
-
-<!--  7/14 product review override sort 'Most Recent' CONTAINER 4-->
+<!-- BEGIN iPad Patches -->
 <script type="text/javascript">
-if( location.pathname == "/browse/product.do" && window["productReviewService"] != undefined ){
-     productReviewService.constants.productReview.MOST_RECENT_SORT_ORDER = true;
+var wcdViewPortNavigator = navigator.userAgent;
+if(wcdViewPortNavigator.indexOf("iPad") != -1) {
+document.write('<meta name = "viewport" content = "width = 1024">');
 }
 </script>
-<!--  end 7/14 product review override -->
+<link rel="apple-touch-icon" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon-retina.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="http://www.gap.com/gid/assets/common/en/apple-touch-icon-retina.png" />
+<!-- END iPad Patches -->
 
-<!-- WCD override to fix pixman data populating on product pages in IE -->
-<script type="text/javascript">
-	pixelManagementService.controller.metricsLibraryManager.setMetricsLibrary = pixelManagementService.controller.metricsLibraryManager.setMetricsLibrary.wrap( function( om ) {
-	  om();
-	  if( location.pathname == "/browse/product.do" ) {
-		document.fire('productPagePixMan:ready');
-	  }
-	});
-</script>
-<!-- END WCD override to fix pixman data populating on product pages in IE -->
-
+<!-- BEGIN ProductPages_EDFS Copy Update -->
 <style type="text/css">
-/* FACETED NAV UPDATE 09/21/2012 */
-/*Begin - FALL 2012: HTML & Marketing Banners layout CONTAINER 4*/
+#newTabWindow { border:1px #c1c1c1 solid; border-top:0; font-size: 11px; margin: 0; padding: 1px 10px 10px; width: 308px; color:#000;}
+#newTabWindow .italCopy {font-size:9px;font-style:italic;}
+#newTabWindow ul { color:#666; font-size:10px; list-style-type:disc; margin-bottom:10px; padding:0; }
+#newTabWindow li { margin-left:20px; }
+</style>
+
+<script type="text/javascript">
+//var prodShipRetInfoCookieCutter = new ProdShipRetInfoCookieCutter("0622PRODSHIPRETINFO","mktUniversalPersist","0622PRODSHIPRETINFO_SEG","prodPageShipRetInfo","25-25-25-25","8","none");
+var plProductSegmentName = "0622PRODSHIPRETINFO_SEGC";
+if( location.pathname == "/browse/product.do" ) {
+
+	if( plProductSegmentName == "0622PRODSHIPRETINFO_SEGC"  ) {
+		var ProductPageShipReturnInserter = Class.create();
+		ProductPageShipReturnInserter.prototype = {
+			initialize: function() { },
+			model: {
+				
+			},
+			controller: {
+				init: function( segment ) { 
+					var newTabWindowDiv = new Element('div',{id:'newTabWindow'});
+					var prodType;
+					var shipReturnContent;
+					// General online exclusives
+					if( $('productMailOnlyReturn') && $('productMailOnlyReturn').style.display != 'none' ) {
+						prodType = "generalExclusive";
+					}
+					// Select online excuses
+					else if( $('productFreeReturn') && $('productFreeReturn').style.display != 'none' ) {
+						prodType = "selectExclusive";
+					}
+					// General
+					else { 
+						prodType = "general";
+					}
+					switch( segment ) {
+						case "0622PRODSHIPRETINFO_SEGB":
+							switch( prodType ) {
+								case "general":
+									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>FREE returns to stores<\/li><li>FREE exchanges<\/li><li>Returns by mail - $6.00<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+									
+								case "generalExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>Returns by mail - $6.00<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+									
+								case "selectExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>FREE returns (by mail only)<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+							}
+							break;
+							
+						case "0622PRODSHIPRETINFO_SEGC":
+							switch( prodType ) {
+								case "general":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail &amp; to stores on all orders</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
+									break;
+									
+								case "generalExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
+									break;
+									
+								case "selectExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
+									break;
+							}
+							break;
+							
+						case "0622PRODSHIPRETINFO_SEGD":
+							switch( prodType ) {
+								case "general":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>FREE exchanges and FREE returns to stores<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+									
+								case "generalExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>Return by mail only<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+									
+								case "selectExclusive":
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>FREE returns (by mail only)<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
+									break;
+							}
+							break;
+							
+					}
+					newTabWindowDiv.update( shipReturnContent );
+					if( $('tabWindow') && ! $('newTabWindow') ) {
+						var tabWindow = $('tabWindow');
+						tabWindow.insert({ after:newTabWindowDiv });
+					}
+				},
+				sendToOmni: function( elt, eventName ) {
+					s.tl( elt , 'o', eventName);
+				},
+				openPopAndSendToOmni: function() {
+					productPageShipReturnInserter.controller.sendToOmni( 'shippingReturn', 'Product Page Shipping & Return' );
+					return gidLib.layeredPopup.openLayeredPopup({str:'/customerService/info.do?cid=2019',id:'shippingOptions',width:398,height:265,style:{name:'universalPopup'}});
+				}
+			},
+			view: {
+				
+			}	
+		};
+	
+		var productPageShipReturnInserter =  new ProductPageShipReturnInserter();
+		
+        productPage.loadProduct = productPage.loadProduct.wrap(
+                        function( originalMethod ) {
+                               originalMethod();
+                               var currentPID = gidLib.getQuerystringParam('pid');
+                               currentPID = currentPID.substr(0,6);
+                               if( currentPID != '000066' && currentPID != '000079' && currentPID != '000138' ) {   // Here's where you check specific product ID, change this to whatever you want to exclude
+                                               productPageShipReturnInserter.controller.init( plProductSegmentName );
+                               }
+                        }
+        );
+		
+	}
+}
+
+</script>
+<!-- END ProductPages_EDFS Copy Update -->
+
+<!-- BEGIN FACEBOOK LIKE  -->
+<script type="text/javascript">
+// Facebook like button
+if( (location.pathname == '/browse/product.do') ) {
+	var fbProductPageLikeButton = {
+		initialize: function() { },
+		model: {
+			searchDexPageStructure: 'http%3A%2F%2Fwww.gap.com%2Fproducts%2F'
+		},
+		controller: {
+			init: function() {
+				if( ! $('fb_like') ) {
+					var model = fbProductPageLikeButton.model;
+					
+					/*var productName = productPage.objP.strVendorName.toLowerCase().replace(/ /g,'-') + '-';
+					productName = productName + productPage.objP.strProductStyleName.toLowerCase().replace(/ /g,'-');
+					productName = productName + '-P' + productPage.productId + '.jsp';*/
+					
+					var productName = escape('P' + productPage.productId + '.jsp?tid=gpsm000009');
+					
+					var fbLikeDiv = new Element('div', {id:'fb_like',style:'margin-top:7px'});
+					//var fbLikeDivStr = '<iframe src="http://www.facebook.com/plugins/like.php?href=' + model.searchDexPageStructure + productName + '&amp;amp;send=false&amp;amp;layout=button_count&amp;amp;width=330&amp;amp;show_faces=false&amp;amp;action=like&amp;amp;colorscheme=default&amp;amp;font=Arial&amp;amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:24px" allowTransparency="true"></iframe>';
+					
+					var fbLikeDivStr = '<iframe src="http://www.facebook.com/plugins/like.php?href=' + model.searchDexPageStructure + productName + '&send=false&layout=button_count&width=330&show_faces=false&action=like&colorscheme=light&font&height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:21px" allowTransparency="true"></iframe>'
+					
+					fbLikeDiv.update( fbLikeDivStr );
+					$('variantButtons').insert({ before:fbLikeDiv });
+				}
+			}
+		}
+	}
+	
+	productPage.initializeVariantButtons = productPage.initializeVariantButtons.wrap( function( originalMethod ) {
+		originalMethod();
+		fbProductPageLikeButton.controller.init();
+	});
+}
+</script>
+<!-- END FACEBOOK LIKE  -->
+
+
+<!-- BEGIN Update to account email preferences link with new hosted page -->
+<script type="text/javascript">
+if (location.href.indexOf('cid=81268') > -1 ) {
+	Event.observe(window, "load", function() {
+		if ( $('tosignupBody') ) {
+			var linksToScan = $('tosignupBody').select('a');
+			var linkToScan;
+			if (linksToScan && linksToScan.length > 0 ) {
+				for ( var i = 0; i < linksToScan.length; i++) {
+					linkToScan = linksToScan[i];
+					if (linkToScan.href.indexOf('join_email_list_confirm.do') > -1 ) {
+						linkToScan.href = '/profile/info.do?cid=48755';
+					}
+				}
+			}
+		}
+	});
+}
+
+</script>
+<!-- END Update to account email preferences link with new hosted page -->
+
+<!-- END Content Item File: /content/0006/122/963/cn6122963.html -->
+
+<!-- END - WCD Sitewide Container 1 -->
+
+<!-- BEGIN - WCD Sitewide Container 2 -->
+<!-- BEGIN Content Item File: /content/0006/122/965/cn6122965.html -->
+
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!  022513_WCD_WCD JS & CSS Head Seasonal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<style type="text/css">
+/**** BEGIN GOL Seasonal Layout: SPRING 2013 ****/
+
+/**** BEGIN BACKGROUND WHITE BG BE BRIGHT LOGO***/
+body {
+	background: #FFF;
+	background-color:transparent !important;
+	background-image:url("http://www.gap.com/Asset_Archive/GPWeb/content/0006/122/965/assets/fall_2012_US_BeBright.gif") !important;
+	background-repeat:no-repeat;
+	background-position:top center;
+}
+
+
+/*** BEGIN Checkout Promo Details Legal Pop-up Styling override: add padding GOL request 2/12/13 ***/
+body.popup #bodyContainer .shortDescMsg {padding:5px;line-height: 16px;}
+body.popup #bodyContainer .promoCode {padding-left:5px;}
+body.popup #bodyContainer p{padding:5px;}
+body.popup, body.popup #bodyContainer {
+    background: none repeat scroll 0 0 #FFFFFF !important;
+}
+/*** END Checkout Promo Details Legal  Pop-up Styling override: add padding GOL request 2/12/13 ***/
+
+/**** END BACKGROUND WHITE BG BE BRIGHT LOGO***/
+
+/*****BEGIN CATEGORY PAGE OVERRIDES *****/
+
+/* begin override promo pricing expression coloration */
+.productCatItem span.mupSupMessage { color: #FF3300;font-weight:bold;} /*red and bold message under cat item*/
+/* end override promo pricing expression coloration */
+
+.categoryContent {
+	background-color: white; /*CHANGE BACKGROUND TO WHITE */
+}
+
+
+/*keyline to white/reassign keyline */
+#mainContent {border:none;}
+#mainContentContainer {border:none;}
+#mainContentContainer {border-left:none;border-right:none;}
+
+/*remove bottom keyline from main content*/
+#mainContent {border-bottom:none;background-color:#FFF}
+#mainContentContainer {border-bottom:none;background-color:#FFF !important;}
+/* #mainContentContainer {border-bottom:none;background-color:transparent !important;} */
+
+#sideNav  {background-color:#FFF !important;color:#000;}
+/*end reassign keyline */
+
+/*dotted key line removed from maincontent added to sidenav added for 7.12 add contentOvveride*/
+/*#mainContentContainer #mainContent {background-color:transparent !important;border:medium none; background-image:none;}*/
+#mainContentContainer #mainContent {background-color:#FFF;border:medium none; background-image:none;}
+
+/*****END CATEGORY PAGE OVERRIDES *****/
+
+/*****BEGIN FOOTER OVERRIDES *****/
+#footer {color:#666; font-size:9px;}
+#footer a:link, #footer a:visited, #footer a:active{color:#000;}
+/*****END FOOTER OVERRIDES *****/
+
+/**** END GOL Seasonal Layout: SPRING 2013 Background  - 12/26/2013 ****/
+
+/**** BEGIN CUSTOM WCD CSS STYLES ****/
+.subMargin15 { margin-bottom: 15px; }
+
+
+/**** END CUSTOM WCD CSS STYLES ****/
+
+/**** BEGIN:  BANNER INSERT CODE CSS****/
 
 * html #categoryProductGrid .brand1 productCatItem { height:357px }
 *:first-child+html #categoryProductGrid .brand1 productCatItem { height:357px }
@@ -2215,51 +2373,6 @@ min-width:187px;
 
 }
 
-
-
-/*CSS for HTML BANNER Layout */
-/*
-#htmlBannerGOL {
-display: block;
-position: relative;
-background-color:#DBD9D5;
-height:269px;
-line-height:20px;
-margin:8px 2px 50px 0px !important;
-*margin-top:1px;
-*margin-bottom:20px;
-*margin-right:2px;
-overflow:hidden;
-padding:0px !important;
-_padding:0px !important;
-float:left;
-width: 202px;
-
-}
-
-
-
-#categoryNameHeader {
-    background-color: #C8F1ED !important;
-    line-height: 20px;
-    margin: 0;
-    padding: 19px 0 21px 21px;
-}
-
-*html #categoryNameHeader { display:inline; }
-
-#catname, #subcatname, #subsubcatname {
-color:#000000;
-font-family:arial;
-font-size:22px;
-font-weight:bold;
-position: absolute !important;
-bottom: 10px !important;
-margin-left:10px !important;
-margin-right:5px !important;
-width: 187px !important;
-}
-*/
 #categoryNameHeader {
     background-color: #000033 !important;
     line-height: 18px;
@@ -2275,9 +2388,9 @@ font-size:18px;
 font-weight:bold;
 }
 
-/*End - FALL 2012: HTML & Marketing Banners layout CONTAINER 4**/
+/**** END:  BANNER INSERT CODE CSS ****/
 
-/** JBOX DEFAULT STYLES **/
+/***** BEGIN JBOX DEFAULT STYLES *****/
 #jbox {
   overflow: auto;
 }
@@ -2365,10 +2478,26 @@ font-weight:bold;
 #jbox #loading img {
   margin-right: 10px;
 }
+/***** BEGIN JBOX DEFAULT STYLES *****/
 </style>
 
+
 <script type="text/javascript">
-/* BEGIN GOL BANNER INSERT CODE ON VI PAGES: WCD CODE 55276 CONTAINER 4 */
+/**********************BEGIN JS SEASONAL OVERRIDES************************/
+
+if ( (location.pathname == "/browse/product.do") || (location.pathname == "/browse/outfit.do") ) {
+	document.observe("dom:loaded", function() {
+        var productMainContent = $('mainContent');
+		//productMainContent.setAttribute('style', 'background-color:#ffffff !important');
+		productMainContent.setStyle({ backgroundColor: "#ffffff"});
+		//productMainContent.style.backgroundColor="#ffffff";
+	});
+} else {
+
+
+}
+
+/***** BEGIN GOL BANNER INSERT CODE ON VI PAGES*******/
 if( location.pathname == "/browse/category.do" ) {
 
 	facetcategoryMarketingRejigger = {
@@ -2517,38 +2646,12 @@ if( location.pathname == "/browse/category.do" ) {
 	}
 	
 	
-	//Event.observe( document, 'categoryProductGrid:ready', categoryMarketingRejigger.init );
+Event.observe( document, 'categoryProductGrid:ready', facetcategoryMarketingRejigger.init );
 	
 
-if( location.pathname == "/browse/category.do") {
-	var hasReadyEventFired = false;
-	if (brandConst.IS_FACET_ENABLED == false) {
-		Event.observe(document, 'categoryProductGrid:ready', function() {
-			//console.log('categoryProductGrid:ready');
-			if(!hasReadyEventFired){
-				hasReadyEventFired = true;
-				facetcategoryMarketingRejigger.init();
-			}
-		});
-	} else {
-		Event.observe(document, 'newCategoryFacetedSearchGrid:ready', function() {
-			//console.log('categoryFacetedSearchGrid:ready');
-			if(!hasReadyEventFired){
-				hasReadyEventFired = true;
-				facetcategoryMarketingRejigger.init();
-			}
-		});
-	}
-}
-
-
-	
-
-	
-	/********* END FACETED NAV UPDATE TO LAUNCH BANNER INSERT CODE ***********/
 	
 }
-/* END GOL BANNER INSERT CODE ON VI PAGES: WCD CODE 55276 CONTAINER 4 */
+/* END GOL BANNER INSERT CODE ON VI PAGES */
 
 /**
 * JBOX:
@@ -2725,7 +2828,7 @@ var jbox = {
   {
     // the iframe#iframeID is still hidden
     // we add some loading text in the div#iframeContainer
-    $(this.iframeContainerID).insert('<div id="loading"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/746/830/assets/loading.gif" alt="loading" align="left" /> loading...</div>');
+    $(this.iframeContainerID).insert('<div id="loading"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/122/965/assets/loading.gif" alt="loading" align="left" /> loading...</div>');
 
     // listen for when the iframe has completed loading its content
     Event.observe(jbox.iframeID, "load", function()
@@ -2761,55 +2864,38 @@ var jbox = {
 
 /* JBOX DATA ATTRIBUTE INIT */
 Event.observe(window,"load",jbox.checkDataAttributes);
+
+/***END JBOX CODE ***/
+
+
+
+/**********************END JS SEASONAL OVERRIDES************************/
 </script>
-
-<script type="text/javascript" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/925/502/assets/wcdLib_110812.js"></script>
-
-
-<!-- END Content Item File: /content/0005/925/502/cn5925502.html -->
+<script type="text/javascript" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/122/965/assets/wcdLib_110812.js"></script>
 
 
+<!-- END Content Item File: /content/0006/122/965/cn6122965.html -->
 
-<!-- container 5 -->
-<!-- BEGIN Content Item File: /content/0006/123/038/cn6123038.html -->
+<!-- END - WCD Sitewide Container 2 -->
+
+<!-- BEGIN - WCD Sitewide Container 3 -->
+<!-- BEGIN Content Item File: /content/0006/129/222/cn6129222.html -->
 
 
 <!-- begin CSS Hot Fix contentOverride  -->
 <style type="text/css">
-/* -- BEGIN content override CNOV-11 CSS  -- */
-#rewards {display: none;}
-/* -- END: content override CNOV-11 CSS  -- */
 
-/* -- BEGIN: override 80 -- */
-.gridProdImg {
-    height: 270px;
-    width: 202px;
-}
-/* -- END: override 80 -- */
-
-/* -- BEGIN: override 95 -- */
-#productSbsFacet .sbsFacetSizeChart img { background-position: 0 -156px; height: 17px; width: 60px; }
-/* -- END: override 95 -- */
-
-/* -- BEGIN: override 107 remove js -- */
-.universalButtonSpriteQuickLookCloseOn { background-position: -777px -716px; height: 19px; width: 19px;} 
-/* -- END: override 107 remove js -- */
-
-/* -- contentOverride123 begin -- */
-#tryFIST { display: none; }
-/* -- contentOverride123 end -- */
-
-/* -- contentOverride130 begin remove js -- */
+/* -- contentOverride130 begin remove associated JS override -- */
 #noCookie {display:none;}
 .siteErrorSpacer {display:none;}
-/* -- contentOverride130 end remove js -- */
+/* -- contentOverride130 end remove associated JS override -- */
 
 /* begin contentOverride150 */
 #productSearchServiceLink {display: none; visibility: hidden;}
 /* end contentOverride150 */
 
 
-/* -- BEGIN content override CNOV-5 -- */
+/* -- BEGIN content override CNOV-5 remove associated JS override-- */
 
 #flyout_size .flyout-footer .clearAllButton {display:none;}
 #flyout_brand .flyout-footer .clearAllButton {display:none;}
@@ -2835,39 +2921,24 @@ img.facet_flyout_close_button {
 }
 
 
-/* -- END content override CNOV-5 -- */
+/* -- END content override CNOV-5 remove associated JS override-- */
 
-/* -- BEGIN content override CNOV-10 CSS -- */
-
-
-body.locale_fr_CA div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-body .size_facet_category .size_option.wide_box {
-	width: 66px;
-}
-
-body.locale_en_GB div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-body .size_facet_category .size_option.wide_box {
-	width: 78px;
-}
-
-div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-footer .clearAllButton {
-	display: none !important;
-	visibility: hidden !important;
-}
-
-/* -- END content override CNOV-10 CSS -- */
-
-/* Begin CNOV-12: Bottom tools line overflowing */
-	#mainContentContainer #mainContentBottom {
-		width: 100%;
+/*-- Begin CNOV-33: Fix for dummy size facet CSS associated with js override --*/
+	div.facet .facetName {
+		padding: 8px 0px 5px 5px;
+		display: inline;
+		width: 50%;
+		line-height: 17px;
 	}
 
-	#mainContentContainer #mainContentBottom .categoryFacetedSearch #productToolsLineBottom.productToolsLine .navSpeedBump .paginatorPreviousArrow {
-		margin-left: 351px;
-	}
 
-	.categoryFacetedSearch .productGridPage, .categoryFacetedSearch .productToolsLine .pagePaginator {
-		width: auto;
+	div.facet_dummySize div#dummySize_text {
+		padding-bottom: 13px;
+		padding-left: 6px;
+		font-style: italic;
 	}
-/* End CNOV-12: Bottom tools line overflowing */
+/*-- END CNOV-33: Fix for dummy size facet CSS associated with js override --*/
+
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -2884,16 +2955,6 @@ if(window['productPage'] || window['quickLook']) {
 </script>
 <!-- end contentOverride 101 -->
 
-<!-- begin contentOverride61 -->
-<script type="text/javascript">
-	if (window["ProductZoom"]) {
-		ProductZoom.init = ProductZoom.init.wrap(function(originalMethod,s) {
-			originalMethod(s);
-			ProductZoom.imgHolder.observe("click", ProductZoom.mouseOverHandler.bind(ProductZoom));
-		});
-	}
-</script>
-<!-- end contentOverride61 -->
 
  
   <!-- begin contentOverride23 -->
@@ -2918,237 +2979,6 @@ if(window['productPage'] || window['quickLook']) {
 </script>
   <!-- end contentOverride23 -->
 
-  <!-- begin contentOverride10 -->
- <script type="text/javascript">
-// CROSSLINK STYLE FIX
-	var fixCrossLinkModuleOpacity = function(){
-		thisBrowser = navigator.userAgent;
-		thisOS = navigator.appVersion;
-		if (thisBrowser.toLowerCase().indexOf("firefox")>0 && thisOS.toLowerCase().indexOf("mac")>0){
-			$('crossLinkStyleFix').innerHTML = "<style type='text/css'>#crossLinkModule{opacity:1.0 !important}<\/style>";
-		}
-	}
-	Event.onDOMReady(fixCrossLinkModuleOpacity);
-<!-- end contentOverride10 -->
-</script>
- 
- <!-- begin contentOverride10 -->
-<!-- CROSSLINK STYLE FIX -->
-<div id="crossLinkStyleFix" style="width:0px;height:0px;visibility:hidden;"></div>
-<!-- end CROSSLINK STYLE FIX -->
- <!-- begin contentOverride10 -->
- 
-
-
-<!-- shopping bag message content override47--> 
-
-<script type="text/javascript">
-
-var contentShoppingMessageOverride = function() {
-
-	if ($("mainContent").select("p.shoppingBagEmptyMessage")[0] != null){
-		var containerMsgArr = $("mainContent").select("p.shoppingBagEmptyMessage");
-		containerMsgArr[0].replace("<p style='font-weight: bold; text-align: center; margin-top: 30px; margin-bottom:30px;'>Your bag is currently empty.<br /><br />If you have an online account with us, please <a href='http://www.gap.com/profile/sign_in.do'>sign in<\/a> to view the products in your bag.<\/p>");
-	}
-
-}
-
-document.observe("dom:loaded",contentShoppingMessageOverride);
-
-</script>
-
-<!-- end shopping bag message content override47 --> 
-
-<!-- begin contentOverride67 - fix for broken globetrotter shipping selector cg not being included within region  -->
-<script type="text/javascript">
-
-siteNavigation.showShippingOptInOverlay = function() {
-	function getLeftMargin() {
-		return ((document.body.clientWidth ? document.body.clientWidth : window.innerWidth) / 2) - (width / 2);
-	}
-
-	var width = 1016;
-	var top = 45;
-	var height = 664;
-
-	new Ajax.Request('/profile/internationalShippingOptInList.do', {
-		onComplete: function(response) {
-			var currentPopUp = $('internationalShippingPopUp');
-			if (currentPopUp) currentPopUp.remove();
-			
-			// we were facing some serious ie 6 css loading issues. this is the only place
-			// to load the css in a way that works every time without adding the css
-			// itself to all pages
-			$$('head')[0].appendChild(new Element('link', { 
-				type : 'text/css',
-				rel  : 'stylesheet',
-				href : '/gid/css/profile/internationalShipping/en/internationalShipping.css',
-				media: 'screen'
-			}));
-			
-			var style = 'top:' + top + 'px;left:' + getLeftMargin() + 'px;width:' + width + 'px;height: ' + height + 'px';
-			var div = new Element('div', {'id': 'internationalShippingPopUp', 'style': style})
-						.update(response.responseText);
-			
-			document.body.appendChild(div);
-			
-			window.onresize = function () {
-				div.style.left = getLeftMargin() + 'px';
-			};
-			
-			$('internationalShippingOptInRegion1').update('<div id="contentForCountrySelectionElement" style="margin:30px 0 10px 10px;"><h1>International Shipping Options</h1><p class="copyright">Global e-commerce provider, FiftyOne, now ships our orders internationally.<br><a href="http://www.gap.com/customerService/info.do?cid=2321" id="customerService" target="_blank">Learn more</a> about international shipping.</p></div>');
-		}
-	});
-	
-	return false;
-};
-
-
-internationalShippingService.controller.setMarketingContentForCountry = function(countryCode, languageCode, currencyCode) {
-    if ($('explanatoryCopy').innerHTML.length > 0) {
-        if (!internationalShippingService.controller.originalMarketingText) 
-           internationalShippingService.controller.originalMarketingText = $('explanatoryCopy').innerHTML;
-    }
-    if ($('explanatoryCopy')) {
-        if (countryCode == "gb") {
-            $('explanatoryCopy').update("We're pleased to announce that you can now shop Gap and Banana Republic online directly in the UK! Shop both sites with one easy checkout, one low flat-rate delivery fee, and free returns online or in stores.");
-        } else {
-           $('explanatoryCopy').update(internationalShippingService.controller.originalMarketingText);
-        }
-    }
-};
-</script>
-<!-- end contentOverride67 - fix for broken globetrotter shipping selector cg not being included within region  -->
-
-<!--start contentOverride75 - Survey popup window fix -->
-<script type="text/javascript">
-
-RockbridgeSurvey.params = "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=330,height=280,top=200,left=200";
-
-RockbridgeSurvey.name = "RockbridgeSurvey";
-
-RockbridgeSurvey.width = 330;
-
-RockbridgeSurvey.height = 280;
-
-RockbridgeSurvey.cookieExpirationTime = new Date((new Date()).getTime() + brandConst.BIZRATE_COOKIE_EXPIRATION_TIME);
-
-</script>
-<!--end contentOverride75 - Survey popup window fix -->
-
-
-<!-- begin contentOverride48 - fix for referral pages  -->
-<script type="text/javascript">
-		/* contentOverride69 (gdocs) begin */
-		performanceMonitor.controller.isReferrerValid = function() {
-			var isReferrerValid = false;
-			var isTestEnvironment = false;
-			var referrer = null;
-			var brandUrl = brandConst.BRAND_URL;
-			var expressionValue = "^https?://.*(" + brandUrl + "|gap.com|gap.eu|gapcanada.ca)";
-			var expressionValueForTestEnvironments = "^https?://.*(" + brandUrl + "|gidgol.com|gidgol.ca|gidgol.co.uk|gidapps.com|gidapps.ca|gidapps.co.uk|gidapps.eu)";
-			var urlExpression = new RegExp(expressionValue, "i");
-			var urlExpressionForTestEnvironments = new RegExp(expressionValueForTestEnvironments, "i");
-			if (document.referrer) {
-				referrer = document.referrer;
-				isReferrerValid = urlExpression.test(referrer);
-				if (isReferrerValid == false) {
-					// Test to see if the environment is a test environment - using test environment expression.
-					isReferrerValid = urlExpressionForTestEnvironments.test(referrer);
-					if (isReferrerValid == true) {
-						isTestEnvironment = true;
-					}
-				}
-			}
-			if (clientBrowser.isIE6up) {
-				if (performanceMonitor.previousPageUnloadDate != null) {
-					isReferrerValid = true;
-				}
-			}
-			performanceMonitor.referrer = referrer;
-			performanceMonitor.expressionValue = expressionValue;
-			performanceMonitor.isReferrerValid = isReferrerValid;
-			performanceMonitor.isReferrerValid = isTestEnvironment;
-			return isReferrerValid;
-		};
-		/* contentOverride69 (gdocs) end */
-</script>
-<!-- end contentOverride48 - fix for referral pages  -->
-
-
-
-
-
-
-<!-- begin contentOverride26 - pixman fix for product pages  -->
-
-<script type="text/javascript">
-
-
-
-/* contentOverride26 begin */
-pixelManagementService.model.isInitializationComplete = false;
-pixelManagementService.controller.metricsLibraryManager.setMetricsLibrary = pixelManagementService.controller.metricsLibraryManager.setMetricsLibrary.wrap(
-	function(originalMethod) {
-		var isInitializationComplete = pixelManagementService.model.isInitializationComplete;
-		if (!isInitializationComplete) {
-			originalMethod();
-		}
-	}
-);
-pixelManagementService.model.pixelPartnerCookieVarPrefixMap = {};
-pixelManagementService.controller.pixelPartnerManager.inspectPixelPartnerPersistedRegistry = function() {
-	var PIXEL_MANAGEMENT_PERSIST_COOKIE_NAME = pixelManagementService.constants.PIXEL_MANAGEMENT_PERSIST_COOKIE_NAME;
-	var PIXEL_MANAGEMENT_PERSIST_PARTNER_LIST = pixelManagementService.constants.PIXEL_MANAGEMENT_PERSIST_PARTNER_LIST;
-	var pixelPartnerPersistedRegistry = pixelManagementService.model.pixelPartnerPersistedRegistry;
-	var pixelPartnerCookieVarPrefixMap = pixelManagementService.model.pixelPartnerCookieVarPrefixMap;
-	
-	//check cookie for persisted pixel partner info
-	pixelManagementService.model.pixelPartnerPersistedRegistryFromCookie = 
-		gidLib.getCookieVar(PIXEL_MANAGEMENT_PERSIST_COOKIE_NAME,PIXEL_MANAGEMENT_PERSIST_PARTNER_LIST);
-	var partnerArray = pixelManagementService.model.pixelPartnerPersistedRegistryFromCookie.split(",");
-	if (partnerArray != null && partnerArray != undefined && partnerArray != "" && partnerArray.length > 0) {
-		//set persistedPartnerRegistry from persistedPartnerCookie
-		var length = partnerArray.length;
-		for (var i = 0; i < length; i++){
-			
-			var indexUnderscore = partnerArray[i].lastIndexOf("_");
-			var indexDash = partnerArray[i].lastIndexOf("-");
-			var cookieVarPrefixMapPixelPartner = null;
-			var pixelPartnerCookieVarPrefix = partnerArray[i].substring(0, indexUnderscore);
-			cookieVarPrefixMapPixelPartner = pixelPartnerCookieVarPrefixMap[pixelPartnerCookieVarPrefix];
-			if (!cookieVarPrefixMapPixelPartner) {
-				var persistedPartner = new pixelManagementService.constructors.AbstractPixelPartner();
-				persistedPartner.pixelPartnerCookieVarPrefix = pixelPartnerCookieVarPrefix;
-				persistedPartner.pixelPartnerStartDate = partnerArray[i].substring(indexUnderscore + 1, indexDash);
-				persistedPartner.pixelPartnerEndDate = partnerArray[i].substring(indexDash + 1);
-				pixelPartnerPersistedRegistry.push(persistedPartner);
-				pixelPartnerCookieVarPrefixMap[pixelPartnerCookieVarPrefix] = persistedPartner;
-			}
-		}
-	}
-}
-pixelManagementService.controller.pixelPartnerManager.inspectPixelPartnerPersistedRegistry = pixelManagementService.controller.pixelPartnerManager.inspectPixelPartnerPersistedRegistry.wrap(
-	function(originalMethod) {
-		var isInitializationComplete = pixelManagementService.model.isInitializationComplete;
-		if (!isInitializationComplete) {
-			originalMethod();
-		}
-	}
-);
-pixelManagementService.controller.pixelPartnerManager.inspectPixelPartnerRegistry = pixelManagementService.controller.pixelPartnerManager.inspectPixelPartnerRegistry.wrap(
-	function(originalMethod) {
-		var isInitializationComplete = pixelManagementService.model.isInitializationComplete;
-		if (!isInitializationComplete) {
-			originalMethod();
-		}
-		isInitializationComplete = true;
-		pixelManagementService.model.isInitializationComplete = isInitializationComplete;
-	}
-);
-/* contentOverride26 end */
-
-</script>
 
 <!-- begin contentOverride Product Review  - pid 719978 talk to Cindy Jermaine or Ollie  -->
 <script type="text/javascript">
@@ -3171,395 +3001,10 @@ if(location.pathname == "/browse/product.do" && gidLib.getQuerystringParam("pid"
 	//});
 
 }
-
-
-
 </script>
-
-
-<script type="text/javascript">
-
-/* contentOverride28 begin */
-
-
-
-if (!window["browserService"]) {
-
-	var BrowserService = Class.create();
-
-	BrowserService.prototype = {
-
-		initialize:function() {
-
-		},
-
-		constants:{
-
-		},
-
-		model:{
-
-			isBrowserServiceActive:true
-
-		},
-
-		controller:{
-
-			init:{
-
-				main:function() {
-
-					var isBrowserServiceActive = browserService.model.isBrowserServiceActive;
-
-					var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-					if (isBrowserServiceActive) {
-
-						mobileBrowserManager.controller.init.main();
-
-					}
-
-				}
-
-			},
-
-			managers:{
-
-				mobileBrowserManager:{
-
-					constants:{
-
-						DESKTOP_SITE_ACTIVE_PARAMETER_NAME:"desktopSiteActive",
-
-						MOBILE_BROWSERS_TO_REDIRECT:[
-
-						"iphone",
-
-						"ipod",
-
-						"android"],
-
-						GID_MOBILE_URL:"gidmobile.com",
-
-						SESSION_COOKIE_NAME:"globalSession",
-
-						MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP:{
-
-							1:"http://m.gap.com",
-
-							2:"http://m.bananarepublic.gap.com",
-
-							3:"http://m.oldnavy.gap.com",
-
-							4:"http://m.piperlime.gap.com",
-
-							10:"http://m.athleta.gap.com"
-
-						}
-
-					},
-
-					model:{
-
-						isMobileBrowserManagerActive:true,
-
-						isMobileBrowserToRedirect:null,
-
-						mobileBrowserToRedirectUserAgent:null,
-
-						isMobileBrowserProcessingActiveOverride:null
-
-					},
-
-					controller:{
-
-						init:{
-
-							main:function() {
-
-								var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-								var constants = mobileBrowserManager.constants;
-
-								mobileBrowserManager.controller.init.setIsMobileBrowserManagerActive();
-
-								var isMobileBrowserManagerActive = mobileBrowserManager.model.isMobileBrowserManagerActive;
-
-								if (isMobileBrowserManagerActive) {
-
-									/* Detect mobile browser to support.  If mobile browser detected detect if 
-
-									 * desktopSiteActive parameter is in the querystring or the cookie.
-
-									 * If desktopSiteActive do not redirect, otherwise redirect the user to the 
-
-									 * mobile site.
-
-									 */
-
-									var isCurrentBusinessUnitMobileSiteEnabled = mobileBrowserManager.controller.isCurrentBusinessUnitMobileSiteEnabled();
-
-									var isMobileBrowserToRedirect = mobileBrowserManager.controller.isMobileBrowserToRedirect();
-
-									if (isCurrentBusinessUnitMobileSiteEnabled && isMobileBrowserToRedirect) {
-
-										var isDesktopSiteActive = mobileBrowserManager.controller.isDesktopSiteActive();
-
-										if (!isDesktopSiteActive) {
-
-											mobileBrowserManager.controller.redirectMobileBrowser();
-
-										}
-
-									}
-
-								}
-
-							},
-
-							setIsMobileBrowserManagerActive:function() {
-
-								var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-								var constants = mobileBrowserManager.constants;
-
-								/* Check for isMobileBrowserProcessingActive override */
-
-								if (window["isMobileBrowserProcessingActive"] != undefined) {
-
-									if (isMobileBrowserProcessingActive != undefined && isMobileBrowserProcessingActive != null) {
-
-										if (isMobileBrowserProcessingActive != true) {
-
-											mobileBrowserManager.model.isMobileBrowserManagerActive = false;
-
-											mobileBrowserManager.model.isMobileBrowserProcessingActiveOverride = isMobileBrowserProcessingActive;
-
-										}
-
-									}
-
-								}
-
-								/* Check for gidmobile.com third party */
-
-								var GID_MOBILE_URL = constants.GID_MOBILE_URL;
-
-								var locationHostname = window.location.hostname;
-
-								locationHostname = locationHostname.toLowerCase();
-
-								if (locationHostname.indexOf(GID_MOBILE_URL) != -1) {
-
-									/* gidmobile.com detected so disable the mobileBrowserManager */
-
-									mobileBrowserManager.model.isMobileBrowserManagerActive = false;
-
-								}
-
-							}
-
-						},
-
-						isCurrentBusinessUnitMobileSiteEnabled:function() {
-
-							var isCurrentBusinessUnitMobileSiteEnabled = false;
-
-							var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-							var MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP = mobileBrowserManager.constants.MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP;
-
-							if (window["gidBrandSiteConstruct"] != undefined && window["gidBrandSiteConstruct"] != null) {
-
-								var businessUnitId = gidBrandSiteConstruct.currentBrandCode;
-
-								var redirectBaseUrl = MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP[businessUnitId];
-
-								if (redirectBaseUrl != undefined && redirectBaseUrl != null && redirectBaseUrl != "") {
-
-									isCurrentBusinessUnitMobileSiteEnabled = true;
-
-								}
-
-							}
-
-							return isCurrentBusinessUnitMobileSiteEnabled;
-
-						},
-
-						isMobileBrowserToRedirect:function() {
-
-							var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-							var model = mobileBrowserManager.model;
-
-							var mobileBrowsersToRedirect = mobileBrowserManager.constants.MOBILE_BROWSERS_TO_REDIRECT;
-
-							var isMobileBrowserToRedirect = false;
-
-							var userAgent = navigator.userAgent;
-
-							var userAgentFormatted = userAgent.toLowerCase();
-
-							for (var a = 0; a < mobileBrowsersToRedirect.length; a++) {
-
-								var mobileBrowserToRedirect = mobileBrowsersToRedirect[a];
-
-								if (userAgentFormatted.search(mobileBrowserToRedirect) != -1) {
-
-									isMobileBrowserToRedirect = true;
-
-									model.isMobileBrowserToRedirect = true;
-
-									model.mobileBrowserToRedirectUserAgent = userAgent;
-
-									break;
-
-								}
-
-							}
-
-							return isMobileBrowserToRedirect;
-
-						},
-
-						isDesktopSiteActive:function() {
-
-							var isDesktopSiteActive = false;
-
-							var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-							var DESKTOP_SITE_ACTIVE_PARAMETER_NAME = mobileBrowserManager.constants.DESKTOP_SITE_ACTIVE_PARAMETER_NAME;
-
-							var SESSION_COOKIE_NAME = mobileBrowserManager.constants.SESSION_COOKIE_NAME;
-
-							var desktopSiteActiveQueryParameterValue = gidLib.getQuerystringParam(DESKTOP_SITE_ACTIVE_PARAMETER_NAME);
-
-							var desktopSiteActiveCookieParameterValue = gidLib.getCookieVar(SESSION_COOKIE_NAME, DESKTOP_SITE_ACTIVE_PARAMETER_NAME)
-
-							/* detect if desktopSiteActive parameter is
-
-							 * in the querystring or the cookie.
-
-							 */
-
-							if (desktopSiteActiveQueryParameterValue == "true") {
-
-								/* query param is true so set the cookie value for subsequent requests */
-
-								isDesktopSiteActive = true;
-
-								gidLib.setCookieVar(SESSION_COOKIE_NAME, DESKTOP_SITE_ACTIVE_PARAMETER_NAME, "true");
-
-							} else if (desktopSiteActiveCookieParameterValue == "true") {
-
-								isDesktopSiteActive = true;
-
-							}
-
-							return isDesktopSiteActive;
-
-						},
-
-						redirectMobileBrowser:function() {
-
-							var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-
-							var MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP = mobileBrowserManager.constants.MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP;
-
-							var businessUnitId = gidBrandSiteConstruct.currentBrandCode;
-
-							var redirectBaseUrl = MOBILE_BROWSER_BUSINESS_UNIT_ID_REDIRECT_URL_MAP[businessUnitId];
-
-							var locationPathname = window.location.pathname;
-
-							var locationSearch = window.location.search;
-
-							var redirectUrl = redirectBaseUrl + locationPathname;
-
-							if (locationSearch != null && locationSearch != undefined && locationSearch.length > 0) {
-
-								redirectUrl = redirectUrl + locationSearch;
-
-							}
-
-							window.location = redirectUrl;
-
-						}
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
-
-	
-
-	var browserService = new BrowserService();
-
-	browserService.controller.init.main();
-
-}
-
-
-
-/* contentOverride28 end */
-
-</script>
-
-<!-- begin contentOverride30 - crosslink  -->
-<script type="text/javascript">
-/* contentOverride30 */
-if (window["crossLink"]) { 
-  crossLink.setPos = function() { 
-    if(!(crossLink.mainContent && crossLink.moduleDim)) return; 
-      
-    crossLink.mainContentPos = Position.cumulativeOffset(crossLink.mainContent); 
-    
-    var setLeftAdjust = (crossLink.quickLinksOpen)?124:28; 
-    var setTopAdjust = (crossLink.quickLinksOpen)?50:-10; 
-    
-    if(crossLink.isHighRes){ 
-      setLeftAdjust = 4; setTopAdjust = 0; 
-    } 
-    
-    var browserOffset = clientBrowser.isIE6 ? window.pageYOffset || document.documentElement.scrollTop: 0; 
-    var crossLinkPos = crossLink.modulePos = crossLink.modulePos = [((crossLink.mainContentDim.width + crossLink.mainContentPos[0])), 
-      (window.innerHeight || document.documentElement.clientHeight) + browserOffset - crossLink.moduleDim.height]; 
-    
-    if(!crossLink.isShown) { 
-      crossLink.module.setStyle({ opacity: '0'}); 
-      crossLink.isShown = new Effect.Appear(crossLink.module.id, {duration: 1.0} ); 
-    }
-    
-    crossLink.module.setStyle({left: crossLinkPos[0]- setLeftAdjust + 'px', top: crossLinkPos[1] + setTopAdjust + 'px'}); 
-    
-    this.crossLinkPosition = {
-      left: crossLinkPos[0]- setLeftAdjust, 
-      top: crossLinkPos[1]+ setTopAdjust
-    }; 
-  }
-}
-/* contentOverride30 end */
-</script>
-<!-- end contentOverride30 -->
-
-<!-- begin contentOverride37 quicklook cleargif fix -->
-<script type="text/javascript">
-	/* contentOverride37 begin */
-	//$("quickLookLauncher").src = "/assets/common/clear.gif";
-	/* contentOverride37 end */
-</script>
-<!-- end contentOverride37 quicklook cleargif fix-->
-
-
 
 <!-- override 36 - account order status help link fix -->
-<!-- addition of returns link to headerLinks -->
+<!-- add returns link to headerLinks -->
 
 <script type="text/javascript">
 
@@ -3721,304 +3166,6 @@ document.observe("dom:loaded", function() {
 </script>
 <!-- End Content Override 107 please remove css-->
 
-<!-- contentOverride108 begin -->
-<script type="text/javascript">
-ContentOverride108 = Class.create();
-
-ContentOverride108.prototype = {
-	initialize:function() {
-	
-	},
-	model:{
-		isOverrideActive:false
-	},
-	controller:{
-		isOverrideActivationValid:function() {
-			var override = contentOverride108;
-			var isOverrideActivationValid = false;
-			var isOverrideActive = override.model.isOverrideActive;
-			if (!isOverrideActive && window["categoryInfo"] && window.location.pathname == "/browse/category.do") {
-				if (categoryInfo.isShopBySize) {
-					var FILTERED_TAB_ACTIVE_PARAMETER = categoryService.constants.requestParameters.FILTERED_TAB_ACTIVE_PARAMETER;
-					/* Check if there is an actual SBS related query parameter in the request and if so, then activate the override */
-					var queryStringFilteredTabActiveParameter = gidLib.getQuerystringParam(FILTERED_TAB_ACTIVE_PARAMETER, true);
-					if (queryStringFilteredTabActiveParameter != null && queryStringFilteredTabActiveParameter != "") {
-						isOverrideActivationValid = true;
-					}
-				}
-			}
-			return isOverrideActivationValid;
-		},
-		init:{
-			main:function() {
-				var override = contentOverride108;
-				var isOverrideActivationValid = override.controller.isOverrideActivationValid();
-				if (isOverrideActivationValid) {
-					override.model.isOverrideActive = true;
-					override.controller.extendCategoryService();
-					categoryService.model.isProductGridRequested = false;
-					categoryService.controller.init.main();
-				}
-			}
-		},
-		extendCategoryService:function() {
-			Object.extend(categoryService.controller, {
-				isParameterWithValue:function(parameter) {
-					var isParameterWithValue = false;
-					if (parameter != null && parameter != "") {
-						isParameterWithValue = true;
-					}
-					return isParameterWithValue;
-				},
-				getQueryParametersUrlFormatted:function() {
-					var constants = categoryService.constants;
-					var controller = categoryService.controller;
-					var requestParameters = constants.requestParameters;
-					var model = categoryService.model;
-					var queryParametersUrlFormatted = null;
-					var queryParameters = [];
-					var clickStream = personalizationService.model.personalizationData.personalizationInfoV1.userContext.clickStream;
-					var userContext = personalizationService.model.personalizationData.personalizationInfoV1.userContext;
-					var isReferrerAThirdPartySite = personalizationService.controller.isReferrerAThirdPartySite();
-					var sbsRequestOverrideParameter = "sbsRequestOverride=true";
-					queryParameters.push(sbsRequestOverrideParameter);
-					/* cid */
-					if (window["categoryInfo"]) {
-						var CID_PARAMETER = requestParameters.CID_PARAMETER;
-						var cidParameter = categoryInfo.businessCatalogItemId;
-						if (cidParameter != undefined && cidParameter != null && cidParameter != "" && cidParameter.length > 0) {
-							var cidParameterEncoded = encodeURIComponent(cidParameter);
-							queryParameters.push(CID_PARAMETER + "=" + cidParameterEncoded);
-						} else {
-							/* Detect if the promoid parameter is present which means this is an mpp.do request. */
-							var PROMO_ID_PARAMETER = requestParameters.PROMO_ID_PARAMETER;
-							var PROMO_REF_ID_PARAMETER = requestParameters.PROMO_REF_ID_PARAMETER;
-							var PROMO_TYPE_PARAMETER = requestParameters.PROMO_TYPE_PARAMETER;
-							
-							var promoIdParameter = gidLib.getQuerystringParam("promoid", true);
-							if (promoIdParameter != "" && promoIdParameter != undefined && promoIdParameter != null) {
-								var promoRefIdParameter = gidLib.getQuerystringParam("promorefid", true);
-								var promoTypeParameter = gidLib.getQuerystringParam("promotype", true);
-								/* promoid */
-								var promoIdParameterEncoded = encodeURIComponent(promoIdParameter);
-								queryParameters.push(PROMO_ID_PARAMETER + "=" + promoIdParameterEncoded);
-								/* promorefid */
-								var promoRefIdParameterEncoded = encodeURIComponent(promoRefIdParameter);
-								queryParameters.push(PROMO_REF_ID_PARAMETER + "=" + promoRefIdParameterEncoded);
-								/* promotype */
-								var promoTypeParameterEncoded = encodeURIComponent(promoTypeParameter);
-								queryParameters.push(PROMO_TYPE_PARAMETER + "=" + promoTypeParameterEncoded);
-							}
-						}
-					}
-					/* sem */
-					var SEM_PARAMETER = requestParameters.SEM_PARAMETER;
-					var semParameter = gidLib.getQuerystringParam(SEM_PARAMETER, true);
-					if (semParameter == "true") {
-						var semParameterEncoded = encodeURIComponent(semParameter);
-						queryParameters.push(SEM_PARAMETER + "=" + semParameterEncoded);
-					} else if (isReferrerAThirdPartySite){
-						queryParameters.push(SEM_PARAMETER + "=" + "true");
-					}
-					/* sortBy */
-					var SORT_BY_PARAMETER = requestParameters.SORT_BY_PARAMETER;
-					var sortByParameter = "0";
-					queryParameters.push(SORT_BY_PARAMETER + "=" + sortByParameter);
-					/* actFltr */
-					var FILTERED_TAB_ACTIVE_PARAMETER = requestParameters.FILTERED_TAB_ACTIVE_PARAMETER;
-					var filteredTabActiveParameter = categoryService.controller.getFilterTabActiveParameter(clickStream);
-					if (filteredTabActiveParameter != null) {
-						var filteredTabActiveParameterEncoded = encodeURIComponent(filteredTabActiveParameter);
-						queryParameters.push(FILTERED_TAB_ACTIVE_PARAMETER + "=" + filteredTabActiveParameterEncoded);
-					}
-					/* sizeCategoryUserSelections */
-					var sizeCategoryUserSelectionsParameters =
-						categoryService.controller.getSizeCategoryUserSelectionsParameters(clickStream);
-					if (sizeCategoryUserSelectionsParameters != null) {
-						queryParameters.push(sizeCategoryUserSelectionsParameters);
-					};
-					/* pageID */
-					var pageIdParameterValue = categoryService.controller.getPageIdParameter(clickStream);
-					var PAGE_ID_PARAMETER = constants.requestParameters.PAGE_ID_PARAMETER;
-					queryParameters.push(PAGE_ID_PARAMETER + "=" + pageIdParameterValue);
-					
-					/* globalShippingCurrencyCode */
-					var globalShippingCurrencyCodeParameterValue = categoryService.controller.getGlobalShippingCurrencyCodeParameter(userContext);
-					if (globalShippingCurrencyCodeParameterValue != null) {
-						var GLOBAL_SHIPPING_CURRENCY_CODE_PARAMETER = constants.requestParameters.GLOBAL_SHIPPING_CURRENCY_CODE_PARAMETER;
-						queryParameters.push(GLOBAL_SHIPPING_CURRENCY_CODE_PARAMETER + "=" + globalShippingCurrencyCodeParameterValue);
-					}
-					/* globalShippingCountryCode */
-					var globalShippingCountryCodeParameterValue = categoryService.controller.getGlobalShippingCountryCodeParameter(userContext);
-					if (globalShippingCountryCodeParameterValue != null) {
-						var GLOBAL_SHIPPING_COUNTRY_CODE_PARAMETER = constants.requestParameters.GLOBAL_SHIPPING_COUNTRY_CODE_PARAMETER;
-						queryParameters.push(GLOBAL_SHIPPING_COUNTRY_CODE_PARAMETER + "=" + globalShippingCountryCodeParameterValue);
-					}
-					
-					if (queryParameters.length > 0) {
-						queryParametersUrlFormatted = queryParameters.join("&");
-					}
-					return queryParametersUrlFormatted;
-				},
-				getFilterTabActiveParameter:function(clickStream) {
-					var filteredTabActiveParameter = null;
-					var constants = categoryService.constants;
-					var controller = categoryService.controller;
-					var requestParameters = constants.requestParameters;
-					var model = categoryService.model;
-					var FILTERED_TAB_ACTIVE_PARAMETER = requestParameters.FILTERED_TAB_ACTIVE_PARAMETER;
-					/* first check the query string parameter, and if it 
-					 * exists then retrieve from query string, otherwise check clickstream. */
-					var queryStringFilteredTabActiveParameter = gidLib.getQuerystringParam(FILTERED_TAB_ACTIVE_PARAMETER, true);
-					var isQueryStringParameterValid = controller.isParameterWithValue(queryStringFilteredTabActiveParameter);
-					var clickStreamFilteredTabActiveParameter = null;
-					var isClickStreamParameterValid = false;
-					if (isQueryStringParameterValid) {
-						filteredTabActiveParameter = queryStringFilteredTabActiveParameter;
-					} else {
-						if (clickStream["isFilteredTabActive"]) {
-							clickStreamFilteredTabActiveParameter = clickStream.isFilteredTabActive;
-							isClickStreamParameterValid = controller.isParameterWithValue(clickStreamFilteredTabActiveParameter);
-							if (isClickStreamParameterValid) {
-								filteredTabActiveParameter = clickStreamFilteredTabActiveParameter;
-							}
-						}
-					}
-					return filteredTabActiveParameter;
-				},												
-				getClickStreamSizeCategorySelectionsMap:function(clickStream) {
-					var clickStreamSizeCategorySelectionsMap = $H();
-					if (clickStream["sizeCategoryUserSelections"]) {
-						var sizeCategoryUserSelections = clickStream.sizeCategoryUserSelections;
-						if (sizeCategoryUserSelections.length > 0) {
-							var sizeCategoryUserSelectionsParametersArray = [];
-							var sizeCategoryUserSelectionsArray = null;
-							/* Create the sizeCategoryUserSelectionsArray */
-							if (sizeCategoryUserSelections.indexOf("||") != -1) {
-								/* Multiple size categories detected */
-								sizeCategoryUserSelectionsArray = sizeCategoryUserSelections.split("||");
-							} else {
-								/* Single size category detected */
-								sizeCategoryUserSelectionsArray = [];
-								sizeCategoryUserSelectionsArray[0] = sizeCategoryUserSelections;
-							}
-							if (sizeCategoryUserSelectionsArray != null && sizeCategoryUserSelectionsArray.length > 0) {
-								var isSizeCategoryWithUserSelections = false;
-								var sizeCategoryParameters = null;
-								var sizeCategoryParametersArray = null;
-								var sizeCategoryId = null;
-								var sizeValuesUserSelection = null;
-								var sizeValuesParameters = null;
-								var sizeValuesParametersArray = null;
-								var sizeCategoryUserSelection = null;
-								for (var i = 0; i < sizeCategoryUserSelectionsArray.length; i++) {
-									isSizeCategoryWithUserSelections = false;
-									sizeCategoryParameters = null;
-									sizeCategoryParametersArray = [];
-									sizeCategoryId = null;
-									sizeValuesUserSelection = null;
-									sizeValuesParametersArray = [];
-									sizeCategoryUserSelection = sizeCategoryUserSelectionsArray[i];
-									if (sizeCategoryUserSelection.indexOf("=")) {
-										sizeCategoryUserSelectionArray = sizeCategoryUserSelection.split("=");
-										sizeCategoryId = sizeCategoryUserSelectionArray[0];
-										sizeValuesUserSelection = sizeCategoryUserSelectionArray[1];
-										if (sizeValuesUserSelection != null && sizeValuesUserSelection.length > 0 && sizeValuesUserSelection != null) {
-											var sizeValuesUserSelectionArray = sizeValuesUserSelection.split(",");
-											for (j = 0; j < sizeValuesUserSelectionArray.length; j++) {
-												var sizeValue = sizeValuesUserSelectionArray[j];
-												if (sizeValue != null && sizeValue.length > 0 && sizeValue != "null") {
-													isSizeCategoryWithUserSelections = true;
-													sizeValuesParametersArray.push(sizeValue);
-												}
-											}
-											if (isSizeCategoryWithUserSelections) {
-												sizeValuesParameters = sizeValuesParametersArray.join(",");
-												clickStreamSizeCategorySelectionsMap.set(sizeCategoryId, sizeValuesParameters);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					return clickStreamSizeCategorySelectionsMap;
-				},
-				/**
-				 * This method iterates through all the sizeCategoryIds and detects if values are in the
-				 * query string and if not, then checks to see if there are values for a given sizeCategoryId
-				 * in clickStream.  The rule is that explicit parameters in the URL always win regardless of the values
-				 * in clickStream.
-				 */
-				getSizeCategoryUserSelectionsParameters:function(clickStream) {
-					var sizeCategoryUserSelectionsParameters = null;
-					var queryStringSizeCategorySelectionsMap = $H();
-					var clickStreamSizeCategorySelectionsMap = categoryService.controller.getClickStreamSizeCategorySelectionsMap(clickStream);
-					if (window["categoryInfo"]) {
-						var sizeCategoryIds = categoryInfo.sizeCategoryIds;
-						var sizeCategoryIdsArray = null;
-						var sizeCategoryId = null;
-						var sizeCategoryIdQueryParameterKey = null;
-						var sizeCategoryIdQueryParameterValue = null;
-						var sizeCategoryIdClickStreamParameterValue = null;
-						var sizeCategoryIdParameterValue = null;
-						var isParameterValueValid = false;
-						var sizeCategoryUserSelectionsParametersArray = null;
-						var sizeCategoryParametersArray = null;
-						var sizeCategoryParameters = null;
-						if (sizeCategoryIds != null && sizeCategoryIds != "") {
-							if (sizeCategoryIds.indexOf(",") != -1) {
-								sizeCategoryIdsArray = sizeCategoryIds.split(",");
-							} else {
-								sizeCategoryIdsArray = new Array(sizeCategoryIds);
-							}
-						}
-						if (sizeCategoryIdsArray != null && sizeCategoryIdsArray.length > 0) {
-							sizeCategoryUserSelectionsParametersArray = [];
-							for (var i = 0; i < sizeCategoryIdsArray.length; i++) {
-								isParameterValueValid = false;
-								sizeCategoryParametersArray = null;
-								sizeCategoryParameters = null;
-								sizeCategoryId = sizeCategoryIdsArray[i];
-								sizeCategoryIdQueryParameterKey = "szCatValue" + sizeCategoryId;
-								sizeCategoryIdQueryParameterValue = gidLib.getQuerystringParam(sizeCategoryIdQueryParameterKey, true);
-								isParameterValueValid = categoryService.controller.isParameterWithValue(sizeCategoryIdQueryParameterValue);
-								if (isParameterValueValid) {
-									sizeCategoryIdParameterValue = sizeCategoryIdQueryParameterValue;
-								} else {
-									sizeCategoryIdClickStreamParameterValue = clickStreamSizeCategorySelectionsMap.get(sizeCategoryId);
-									isParameterValueValid = categoryService.controller.isParameterWithValue(sizeCategoryIdClickStreamParameterValue);
-									if (isParameterValueValid) {
-										sizeCategoryIdParameterValue = sizeCategoryIdClickStreamParameterValue;
-									}
-								}
-								if (isParameterValueValid) {
-									sizeCategoryParametersArray = [];
-									queryStringSizeCategorySelectionsMap.set(sizeCategoryIdQueryParameterKey, sizeCategoryIdParameterValue);
-									sizeCategoryParametersArray.push("szCatId" + "=" + sizeCategoryId);
-									sizeCategoryParametersArray.push(sizeCategoryIdQueryParameterKey + "=" + sizeCategoryIdParameterValue);
-									sizeCategoryParameters = sizeCategoryParametersArray.join("&");
-									sizeCategoryUserSelectionsParametersArray.push(sizeCategoryParameters);
-								}
-							}
-							if (sizeCategoryUserSelectionsParametersArray.length > 0) {
-								sizeCategoryUserSelectionsParameters = sizeCategoryUserSelectionsParametersArray.join("&");
-							}
-						}
-					}
-					return sizeCategoryUserSelectionsParameters;
-				}
-				
-				
-			});
-		}
-	}
-}
-
-var contentOverride108 = new ContentOverride108();
-contentOverride108.controller.init.main();
-</script>
-<!-- contentOverride108 end -->
 
 <!-- contentOverride113 begin -->
 <script type="text/javascript">
@@ -4048,63 +3195,7 @@ if (window['checkout'] && checkout.controller && checkout.controller.modules.sig
 <!-- contentOverride113 end -->
 
 
-<!-- Begin Override 120 -->
-<script type="text/javascript">
-var myWipAppDomain = window.location.hostname;
-if ( (myWipAppDomain.indexOf("wip.gidapps.com") != -1) || (myWipAppDomain.indexOf("app.gidapps.com") != -1) ) {
-	if (window['storeLocatorListService']) {
-		storeLocatorListService.controller.getPostalCodeFromPersonalizationServiceModel = function() {
-			var howToLocate = "10007";
-			
-			var akamaiLocation = personalizationService.model.personalizationData.personalizationInfoV1.marketingMessageInfo.geoLocation;
-			var cookieLocation = gidLib.getCookieVar("globalSession", "pcode");
-	
-			if (storeLocatorListService.model.postalCode) {
-				return storeLocatorListService.model.postalCode;
-			}
-	
-			if (cookieLocation) {
-				howToLocate = cookieLocation;
-			} else if (akamaiLocation) {
-				var zipMatches = akamaiLocation.match(/zip=([\d\w-]+)/);
-				var latitudeMatches = akamaiLocation.match(/lat=([0-9\.-]+)/);
-				var longitudeMatches = akamaiLocation.match(/long=([0-9\.-]+)/);
-				
-				if (zipMatches && latitudeMatches && longitudeMatches) {
-					storeLocatorListService.model.postalCode = zipMatches[1];
-					storeLocatorListService.model.latitude = latitudeMatches[1];
-					storeLocatorListService.model.longitude = longitudeMatches[1];
-					
-					howToLocate = storeLocatorListService.model.postalCode;
-				}
-			}
-			
-			storeLocatorListService.model.postalCode = howToLocate;
-			return howToLocate;
-		};
-	}
-}
-
-</script>
-<!-- End Override 120 -->
-
-<!-- begin contentOverride125_WCD -->
-<script type="text/javascript">
-var leftNavUrlPatch = {
-	init: function() {
-		var sideNavCategories = $('sideNavCategories');
-			if(sideNavCategories){
-				var htmlStr = sideNavCategories.innerHTML;
-				htmlStr = htmlStr.replace(/href=".do/g, 'href="/browse/category.do');
-			$('sideNavCategories').innerHTML = htmlStr;
-		}
-	}
-};
-Event.observe(window, "load", leftNavUrlPatch.init);
-</script>
-<!-- end contentOverride125_WCD -->
-
-<!-- begin contentOverride130 remove css -->
+<!-- begin contentOverride130 with associated CSS override -->
 <script type="text/javascript">
 	if (location.pathname == "/cookieFailure.do") {
 		Event.observe(window,'load',function() {
@@ -4113,25 +3204,8 @@ Event.observe(window, "load", leftNavUrlPatch.init);
 		});
 	}
 </script>
-<!-- end contentOverride130 remove css-->
+<!-- end contentOverride130 with associated CSS override-->
 
-<script type="text/javascript">
-// contentOverride133 begin
-if (window["browserService"]) {
-	browserService.controller.managers.mobileBrowserManager.controller.isMobilePageView = function() {
-		var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
-		var IS_MOBILE_PAGE_VIEW_PARAMETER_NAME = mobileBrowserManager.constants.IS_MOBILE_PAGE_VIEW_PARAMETER_NAME;
-		var isMobilePageView = false;
-		var isMobilePageViewQueryParameterValue = gidLib.getQuerystringParam(IS_MOBILE_PAGE_VIEW_PARAMETER_NAME);
-		if (isMobilePageViewQueryParameterValue == "true") {
-			isMobilePageView = true;
-		}
-		return isMobilePageView;
-	}
-	browserService.controller.init.main();
-}
-// contentOverride133 end
-</script>
 
 <!-- BEGIN IT Override #138 - excessive omniture call mitigation -->
 <script type="text/javascript">
@@ -4143,62 +3217,7 @@ reportingService.controller.viewManagers.rewardBannerViewManager.controller.getR
 
 
 
-<!-- begin contentOverride151.2 -->
-<script type="text/javascript">
-	pixelManagementService.controller.eventHandlers.domLoadedHandler = function () {
-		var isPersonalizationDataReady = personalizationService.model.isPersonalizationDataReady;
-		var pixelManagementServiceReadyHandler = this.controller.eventHandlers.pixelManagementServiceReadyHandler
-				.bind(this);
-		if (isPersonalizationDataReady) {
-			pixelManagementServiceReadyHandler();
-		} else {
-			Event.observe(document, "personalizationData:ready",
-					pixelManagementServiceReadyHandler);
-		}
-	}
-	if (!(/product.do$/.test(document.location.pathname))) {
-		pixelManagementService.override = {};
-		pixelManagementService.override.domLoadedHandlerBound = pixelManagementService.controller.eventHandlers.domLoadedHandler.bind(pixelManagementService);
-		processingService.api.addApplicationMethodToRegistry(pixelManagementService.override.domLoadedHandlerBound, "pixel management service");
-	}
-</script>
-<!-- end contentOverride151.2 -->
-
-
-<!-- begin CNOV-4 --> 
-<script type="text/javascript">
-if (typeof storeLocationsService != 'undefined') {
-	storeLocationsService.view.render = function(skuInfo) {
-		var storeLocations = (storeLocationsService.model.jsonResponse)? storeLocationsService.controller.arrayified(storeLocationsService.model.jsonResponse["storeLocationList"]): null;
-		var storeList = storeLocationsService.controller.sortStores(storeLocationsService.model.selectedSort, storeLocations);
-		var listHtml = storeLocationsService.view.buildStoreList(skuInfo, storeList);
-		
-		if (storeLocationsService.model.jsonResponse) {
-			$('availabilityHeader').update('Availability<br/><div class="updatedAvailability">Updated regularly</div>');
-			var disableSortBy = storeLocationsService.controller.storeListHasOneOrZeroStores(storeList);
-			$('sortBy').disabled = disableSortBy;
-			
-			if (disableSortBy) {
-				$('sortByDiv').addClassName('disabled');
-			} else {
-				$('sortByDiv').removeClassName('disabled');
-			}
-		}
-
-		$("storeLocationsList").update(listHtml);
-		$$('#storeLocationsList > *').invoke('hide');
-		$$('#storeLocationsList > *').invoke('appear', { duration: 0.5 });
-		$$('.limitedBubble').invoke('observe', 'mouseover', storeLocationsService.controller.eventHandlers.mouseOverLimitedBubbleHandler);
-		$$('.limitedBubble').invoke('observe', 'mouseout', function(event) {
-			gidLib.rolloverBubble.closeBubble();
-		});
-	}
-}
-</script>
-<!-- end CNOV-4  -->
-
-
-<!--  BEGIN content override CNOV-5 JS -->
+<!--  BEGIN content override CNOV-5 JS with associated CSS override-->
 <script type="text/javascript">
 if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) && window["navigationService"]) {
 	navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView = navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView.wrap(function(om) {
@@ -4219,13 +3238,8 @@ if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === t
 	});
 }
 </script>
-<!--  END content override CNOV-5 JS -->
+<!--  END content override CNOV-5 JS with associated CSS override-->
 
-<!-- BEGIN content override CNOV-15 post CNOV-13 -->
-<script type="text/javascript">
-if (window["navigationService"]) var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-</script>
-<!-- END content override CNOV-15 post CNOV-13-->
 
 
 <!-- BEGIN content override CNOV-9 JS -->
@@ -4263,67 +3277,7 @@ function swapSignInFormTarget() {
 </script>
 <!-- END content override CNOV-9 JS -->
 
-<!-- BEGIN content override CNOV-16 -->
-<script type="text/javascript">
 
-	if (location.hostname.indexOf(".app.gidapps.") > 0 && 
-		(location.pathname == "/browse/category.do" || 
-		location.pathname == "/browse/search.do" || 
-		location.pathname == "/browse/categorySearch.do" || 
-		location.pathname == "/browse/mpp.do")) {
-		
-		var facetsToggler = {
-			isFacetsOn : null,
-			toggle : function() {
-				var url = "http://" + location.hostname + location.pathname;
-			
-				if (facetsToggler.isFacetsOn) {
-					var params = "&categoryFacetsEnabled=false&isProductCategoryFacetedSearchActive=false&isFacetedCategoryActive=false&isIgnoreCookiesActive=false";
-				} else {
-					var params = "&categoryFacetsEnabled=true&isProductCategoryFacetedSearchActive=true&isFacetedCategoryActive=true&isIgnoreCookiesActive=true";
-				}
-				
-				if (location.search.indexOf("&categoryFacetsEnabled") > 0) {
-					url += location.search.substring(0,location.search.indexOf("&categoryFacetsEnabled")) + params;
-				} else {
-					url += location.search + params;
-				}
-				
-				url += location.hash;
-				
-				location.href = url;
-			
-			},
-			
-			init : function() {
-				if ($('sideNavFacets')) {
-					facetsToggler.isFacetsOn = true;
-				} else {
-					facetsToggler.isFacetsOn = false;
-				}
-
-				
-				if (facetsToggler.isFacetsOn != null) {
-					if (facetsToggler.isFacetsOn) {
-						var buttonText = "enable legacy category";
-					} else {
-						var buttonText = "enable facet category";
-					}
-					try {
-						$('previewContent').select('form')[1].select('ul')[0].insert('<li><input id="facetsToggleButton" type="button" value="' + buttonText + '" onclick="facetsToggler.toggle(); return false;"></input></li>')
-					} catch(e) {
-					}
-				}
-			
-			}
-		}
-		
-		Event.observe(window,"load", facetsToggler.init);
-		
-	}
-
-</script>
-<!-- END content override CNOV-16 -->
 
 <!-- CNOV-17: ProductSearch "}}" workaround -->
 <script type="text/javascript">
@@ -4618,17 +3572,6 @@ if (brandConst.IS_NAV2_ENABLED === 'true' && brandConst.IS_FACET_ENABLED === 'tr
 </script>
 <!-- END content override CNOV-17 JS -->
 
-<!-- begin contentOverride 144 -->
-<script type="text/javascript">
-if (window["navigationService"] && location.pathname == "/browse/category.do") {
-	navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView = navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView.wrap(function(om) {
-		om();
-		document.fire("newCategoryFacetedSearchGrid:ready");
-	});
-}
-</script>
-<!-- end contentOverride 144 -->
-
 <!-- BEGIN: Override CNOV-19 -->
 <script type="text/javascript">
 if (location.hostname.indexOf(".gidapps.") > 0) {
@@ -4638,16 +3581,6 @@ if (location.hostname.indexOf(".gidapps.") > 0) {
 }
 </script>
 <!-- END: Override CNOV-19 -->
-
-<!-- BEGIN content override CNOV-WCD-Quicklinks-Removal-Override -->
-<script type="text/javascript">
-
-if( window["crossLink"] ) {
-  crossLink.wct = '';
-}
-
-</script>
-<!-- END content override CNOV-WCD-Quicklinks-Removal-Override -->
 
 <!-- begin CNOV-31 -->
 <script type="text/javascript">
@@ -4680,8 +3613,6 @@ if( location.pathname == '/profile/account_summary.do' ) {
 }
 </script>
 <!-- end CNOV-31 -->
-
-
 
 <!-- Begin CNOV-32 -->
 <script type="text/javascript" >
@@ -4717,9 +3648,7 @@ if (typeof(checkout) != "undefined" && checkout.controller && checkout.controlle
 </script>
 <!-- End CNOV-32 -->
 
-<!-- Begin CNOV-33: Fix for dummy size facet -->
-
-
+<!-- Begin CNOV-33: Fix for dummy size facet with associated CSS override-->
 <script type="text/javascript">
 
 if (window.navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager &&
@@ -4977,9 +3906,11 @@ navigationService.controller.managers.categoryFacetedSearchManager.view.initiali
 </script>
 
 
-<!-- End CNOV-33: Fix for dummy size facet -->
+<!-- End CNOV-33: Fix for dummy size facet with associated CSS override-->
+
 
 <!-- Begin CNOV-34: productSearchServiceLink XSS fix -->
+
 
 <script type="text/javascript">
 
@@ -5023,8 +3954,7 @@ if (window.navigationService && navigationService.controller && navigationServic
 <!-- End CNOV-34: productSearchServiceLink XSS fix -->
 
 
-
-<!-- VV override - contains content for VV disruptor -->
+<!-- VV override - contains content for VV disruptor additional CSS style also associated-->
 <script type="text/javascript">
 
 var wcd_VV = function() {
@@ -5045,15 +3975,11 @@ var wcd_VV = function() {
 				fireVVDisruptor();
 			} else {
 				Event.fire(document, "personalizationService:renderCustomerAttributes");
-				if($("rewards")){
-					$("rewards").style.display = "block";		
-				}
+				$("rewards").style.display = "block";		
 			}
 		} else {
 			Event.fire(document, "personalizationService:renderCustomerAttributes");
-			if($("rewards")){
-				$("rewards").style.display = "block";
-			}
+			$("rewards").style.display = "block";
 		}
 		// fire virtual value code
 
@@ -5127,15 +4053,31 @@ if (thisBrowser.indexOf("MSIE") != -1){ // if IE
 
 
 </script>
-
 <!-- End VV override -->
 
+<!-- BEGIN content override CNOV-WCD-Quicklinks-Removal-Override -->
+<script type="text/javascript">
+ 
+if( window["crossLink"] ) {
+  crossLink.wct = '';
+}
+ 
+</script>
+<!-- END content override CNOV-WCD-Quicklinks-Removal-Override -->
 
-<!-- END Content Item File: /content/0006/123/038/cn6123038.html -->
+<!-- END Content Item File: /content/0006/129/222/cn6129222.html -->
 
+<!-- END - WCD Sitewide Container 3 -->
 
+<!-- BEGIN - WCD Sitewide Container 4 -->
 
-<!-- container 6 -->
+<!-- END - WCD Sitewide Container 4 -->
+
+<!-- BEGIN - WCD Sitewide Container 5 -->
+
+<!-- END - WCD Sitewide Container 5 -->
+
+<!-- BEGIN - WCD Sitewide Container 6 -->
 <!-- BEGIN Content Item File: /content/0006/211/786/cn6211786.html -->
 
 
@@ -5455,324 +4397,25 @@ if( window["shippingOptionsService"] ) {
 
 <!-- END Content Item File: /content/0006/211/786/cn6211786.html -->
 
+<!-- END - WCD Sitewide Container 6 -->
 
+<!-- BEGIN - WCD Sitewide Container 7 -->
 
-<!-- container 7 -->
-<!-- BEGIN Content Item File: /content/0005/867/076/cn5867076.html -->
+<!-- END - WCD Sitewide Container 7 -->
 
+<!-- BEGIN - WCD Sitewide Container 8 -->
 
-<!-- begin contentOverride72 - Everyday Free Ship EDFS code - v4 - 2012 holiday adjustments  -->
-<script type="text/javascript">
+<!-- END - WCD Sitewide Container 8 -->
 
-	// Everyday Free Ship EDFS code - v3 11.04 adjustments
-	// BH 2/3/12 update
-	// Shopping bag code - updates display of ship option text adding the $50 min or FREE with Piperlime text
-	var isPiperlimeInBagForEDFS = false;
-	var shoppingBagSubTotalForEDFS = 0;
-	var productArray = pixelManagementService.model.metricsLibrary.shoppingBag.productList;
-	var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
-	var shipOption1_7To9Day = '';
-	var shipOption1_7To9DayArr = ["2100","2012"];
-	var shipOption2_3To5Day = '';
-	var shipOption2_3To5DayArr = ["2101","2102","2107","2108","2105","2106","2103","2104"];
-	var shipOption3_2Day = '';
-	var shipOption3_2DayArr = ["2109","2110","201","1307","2016","2017"];
-	var shipOption4_1Day = '';
-	var shipOption4_1DayArr = ["2111","2112","1368","1326","2014","2015","2020","2021"];
-	
-	// Update function
-	var ShipWindowShopBagExecuteCheck = function() {
-		// Determine WHICH ship options are active on the site
-		shipOption1_7To9DayArr.each( function( opt, i ) {
-			if( $('selectedShippingMethod' + opt ) ) {
-				shipOption1_7To9Day = opt;
-			}
-		});		
-		shipOption2_3To5DayArr.each( function( opt, i ) {
-			if( $('selectedShippingMethod' + opt ) ) {
-				shipOption2_3To5Day = opt;
-			}
-		});		
-		shipOption3_2DayArr.each( function( opt, i ) {
-			if( $('selectedShippingMethod' + opt ) ) {
-				shipOption3_2Day = opt;
-			}
-		});		
-		shipOption4_1DayArr.each( function( opt, i ) {
-			if( $('selectedShippingMethod' + opt ) ) {
-				shipOption4_1Day = opt;
-			}
-		});
-		
-		// Adjust basic messaging
-		var basicShipMessage = ' Every Day ($50 min)';		
-		var optionToUpdate_7To9 = 'shippingOptionsRadioText' + shipOption1_7To9Day;
-		if( $( optionToUpdate_7To9 ) ) {
-			$( optionToUpdate_7To9 ).insert({bottom: basicShipMessage});
-		}
+<!-- BEGIN - WCD Sitewide Container 9 -->
 
-		// Adjust standard messaging
-		var standardShipMessage = 'FREE (on orders over $50) or $7 (on orders under $50)';
-		var optionToUdpate_3To5 = 'shippingOptionsRadioText' + shipOption2_3To5Day;
-		if( $("shoppingBagSummaryContainer") ) {
-			var ShipMessageContainer = $("shoppingBagSummaryContainer").select("div.shippingOptionLearnMoreLink");
-			var currentBagMessage = ShipMessageContainer[0].innerHTML;
-			var newBagMessage = currentBagMessage;
-			ShipMessageContainer[0].update(newBagMessage);
-			isPiperlimeInBagForEDFS = checkForPiperlimeInBag();
-			if( $( optionToUdpate_3To5 ) && isPiperlimeInBagForEDFS ) {
-				$( optionToUdpate_3To5 ).insert({bottom: " with Piperlime"});
-			}
-			else {
-				// For options that need the standard text, cut off the price first and adjust layout
-				if( shipOption2_3To5Day != '' && shipOption2_3To5Day != '2101' && shipOption2_3To5Day != '2102' ) {
-					var shipStr = $( optionToUdpate_3To5 ).innerHTML;
-					var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') + 3 );
-					newShipStr = newShipStr + standardShipMessage;
-					$( optionToUdpate_3To5 ).update( newShipStr );
+<!-- END - WCD Sitewide Container 9 -->
 
-					if( $('selectedShippingMethod' + shipOption2_3To5Day ) ) {
-						$('selectedShippingMethod' + shipOption2_3To5Day ).setStyle({ float:'left' });
-					}
+<!-- BEGIN - WCD Sitewide Container 10 -->
 
-					$( optionToUdpate_3To5 ).setStyle({ width:'227px', float:'right' });
+<!-- END - WCD Sitewide Container 10 -->
 
-					if( ( navigator.appName == 'Microsoft Internet Explorer' ) && ( navigator.appVersion.indexOf('MSIE 7.0') > -1 || navigator.appVersion.indexOf('MSIE 6.0') > -1 ) ) {
-						$( optionToUdpate_3To5 ).setStyle({ width:'220px' });
-					}
-		
-					var clearDiv = new Element('div', { style:'clear:both' });
-					$( optionToUdpate_3To5 ).insert({ after: clearDiv });
-				}
-			}
-		}
-
-		// Adjust express messaging wheere applicable
-		if( shipOption3_2Day != '' && ( shipOption3_2Day == '201' || shipOption3_2Day == '1307' ) ) {
-			var optionToUdpate_express = 'shippingOptionsRadioText' + shipOption3_2Day;
-			var shipStr = $( optionToUdpate_express ).innerHTML;
-			var messageToInsert = '(2 business days)'
-			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
-			
-			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
-			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
-			$( optionToUdpate_express ).update( newShipStr );
-			$( optionToUdpate_express ).setStyle({ width:'220px' });
-			var clearDiv = new Element('div', { style:'clear:both' });
-			$( optionToUdpate_express ).insert({ after: clearDiv });
-		}
-
-		// Adjust next day messaging wheere applicable
-		if( shipOption4_1Day != '' && ( shipOption4_1Day == '1368' || shipOption4_1Day == '1326' ) ) {
-			var optionToUdpate_nextDay = 'shippingOptionsRadioText' + shipOption4_1Day;
-			var shipStr = $( optionToUdpate_nextDay ).innerHTML;
-			var messageToInsert = '(1 business day)'
-			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
-			
-			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
-			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
-			$( optionToUdpate_nextDay ).update( newShipStr );
-			$( optionToUdpate_nextDay ).setStyle({ width:'220px' });
-			var clearDiv = new Element('div', { style:'clear:both' });
-			$( optionToUdpate_nextDay ).insert({ after: clearDiv });
-		}
-	}
-	// Function to check whether PL items in bag
-	var checkForPiperlimeInBag = function() {
-		var myBooleanValue = false;
-		for (i=0; i<pixelManagementService.model.metricsLibrary.shoppingBag.productList.length; i++){
-			if (pixelManagementService.model.metricsLibrary.shoppingBag.productList[i].productBrandCode == "4"){
-				myBooleanValue = true;
-				break;
-			} else {
-				myBooleanValue = false;
-			}
-		}
-		return myBooleanValue;
-	}
-	if( shoppingBagUrls.include(location.pathname) ){
-		Event.observe(window,"load",ShipWindowShopBagExecuteCheck);
-	}
-	
-	// Checkout code to display promo popup for certain promos
-	var PopWindowMessageDiv;
-	var didEverydayFreeShipSetAlready = false;
-	if( location.pathname == "/checkout/order.do" ){
-		
-		// Create, position and display popup
-		var popWindowWithShipMessage = function() {
-			createPopWindowWithMessage();
-			var offsetLeft = 0;
-			var offSetTop = 0;
-			var popWindowLeft = 0;
-			var popWindowTop = 0;
-			if ($("giftingSummary")){
-				offsetLeft = Element.cumulativeOffset($("giftingSummary")).left;
-				offSetTop = Element.cumulativeOffset($("giftingSummary")).top;
-				popWindowLeft = offsetLeft + 55;
-				popWindowTop = offSetTop + 135;
-			}
-			else {
-				if ($("billingInputPromoRewardCode")) {
-					offsetLeft = Element.cumulativeOffset($("billingInputPromoRewardCode")).left;
-					offSetTop = Element.cumulativeOffset($("billingInputPromoRewardCode")).top;
-					popWindowLeft = offsetLeft + 10;
-					popWindowTop = offSetTop - 410;
-				}
-			}
-			
-			// Position and display
-			PopWindowMessageDiv.style.top = popWindowTop + "px";
-			PopWindowMessageDiv.style.left = popWindowLeft + "px";
-			PopWindowMessageDiv.show();
-		}
-		
-		var messageStringTitle;
-		var messageStringBody;
-		var PopWindowMessageTitleP;
-		var PopWindowMessageBodyP;
-		var CloseMessageWindowP;
-		
-		// Function to create HTML for promo popup
-		var createPopWindowWithMessage = function() {
-			messageStringTitle = "&nbsp;Congratulations!";
-			messageStringBody = "Your order qualifies for <strong>FREE<\/strong> Shipping and will arrive in 7-10 business days (actual delivery time is subject to change; for the most current delivery schedule, check the shipping options listed in the Shopping Bag ). If you need your order to arrive sooner, select a different delivery option in the Shipping section (additional charges will apply).";
-			PopWindowMessageTitleP = new Element('div',{'id':'popWindowContainerTitleP'}).update(messageStringTitle);
-			PopWindowMessageBodyP = new Element('div',{'id':'popWindowContainerBodyP'}).update(messageStringBody);
-			PopWindowMessageDiv = new Element('div',{'id' : 'popWindowContainerDiv'});
-			CloseMessageWindowP = new Element('div',{'id':'popWindowClose',"style":"float:right;","onclick":"PopWindowMessageDiv.style.display = 'none';"}).update('&nbsp;x&nbsp;');
-			CloseMessageWindowP.style.fontSize = "8px";
-			CloseMessageWindowP.style.borderStyle = "solid";
-			CloseMessageWindowP.style.borderColor = "#aaaaaa";
-			CloseMessageWindowP.style.borderWidth = "1px";
-			CloseMessageWindowP.style.margin = "1px";
-			CloseMessageWindowP.style.cursor = "pointer";
-			PopWindowMessageBodyP.style.padding = "4px";
-			PopWindowMessageTitleP.style.fontSize = "14px";
-			PopWindowMessageTitleP.style.margin = "4px";
-			PopWindowMessageTitleP.style.marginBottom = "8px";
-			PopWindowMessageTitleP.style.cssFloat = "left";
-			PopWindowMessageTitleP.style.width = "275px";
-			PopWindowMessageBodyP.style.fontSize = "11px";
-			PopWindowMessageBodyP.style.margin = "4px";
-			PopWindowMessageBodyP.style.height = "130px";
-			PopWindowMessageDiv.style.display = "none";
-			PopWindowMessageDiv.style.width = "300px";
-			PopWindowMessageDiv.style.height = "auto";
-			PopWindowMessageDiv.style.overflow = "hidden";
-			PopWindowMessageDiv.style.backgroundColor = "#ffffff";
-			PopWindowMessageDiv.style.borderStyle = "solid";
-			PopWindowMessageDiv.style.borderColor = "#cccccc";
-			PopWindowMessageDiv.style.borderWidth = "2px";
-			PopWindowMessageDiv.style.position = "absolute";
-			PopWindowMessageDiv.style.top = "400px";
-			PopWindowMessageDiv.style.left = "400px";
-			PopWindowMessageDiv.style.zIndex = "1000";
-			Element.insert(PopWindowMessageDiv,{'top':PopWindowMessageTitleP} );
-			Element.insert(PopWindowMessageDiv,{'top':CloseMessageWindowP} );
-			Element.insert(PopWindowMessageDiv,{'bottom':PopWindowMessageBodyP} );
-			Element.insert($("mainContent"),{'top':PopWindowMessageDiv} );
-			Event.observe(CloseMessageWindowP,"mouseover",function() { CloseMessageWindowP.style.cursor = "hand"; });
-			Event.observe(CloseMessageWindowP,"click",function() { PopWindowMessageDiv.style.display = "none"; });
-		}
-
-		var didEverydayFreeShipSetAlready = false;
-		var isEverydayFreeShipChecked = false;
-		
-		// Check for applied promo and shipping option selected and display popup appropriately
-		var setPromotionAppliedDataToPageWrapper = function( originalMethod ) {
-			
-			// Determine WHICH ship options are active on the site
-			shipOption1_7To9DayArr.each( function( opt, i ) {
-				if( $('selectedShippingMethod' + opt ) ) {
-					shipOption1_7To9Day = opt;
-				}
-			});		
-			shipOption2_3To5DayArr.each( function( opt, i ) {
-				if( $('selectedShippingMethod' + opt ) ) {
-					shipOption2_3To5Day = opt;
-				}
-			});		
-			shipOption3_2DayArr.each( function( opt, i ) {
-				if( $('selectedShippingMethod' + opt ) ) {
-					shipOption3_2Day = opt;
-				}
-			});		
-			shipOption4_1DayArr.each( function( opt, i ) {
-				if( $('selectedShippingMethod' + opt ) ) {
-					shipOption4_1Day = opt;
-				}
-			});		
-			
-			if (checkout.model.data.modules.shipping.selectedShippingOptionDTLId == shipOption1_7To9Day ) {
-				isEverydayFreeShipChecked = true;
-			}
-			originalMethod();
-
-			var codeAttempted = false;
-			var codeEntered = checkout.controller.modules.billing.promotions.lastPromotionInput;
-			var EDFSPromoCodes = ["mycard","silver","luxe","shipbr","just4you","ship2me"];
-			if( codeEntered ) {
-				codeEntered = codeEntered.toLowerCase();
-			}
-			if( EDFSPromoCodes.include( codeEntered ) ) {
-				codeAttempted = true;
-			}
-			/*if (codeEntered == "mycard"){ codeAttempted = true; }
-			if (codeEntered == "silver"){ codeAttempted = true; }
-			if (codeEntered == "luxe"){ codeAttempted = true; }
-			if (codeEntered == "shipbr"){ codeAttempted = true; }
-			if (codeEntered == "just4you"){ codeAttempted = true; }
-			if (codeEntered == "ship2me"){ codeAttempted = true; }*/
-			
-			//checkout.model.data.modules.billing.promotions.promotionUpdateIdRo
-			if( checkout.model.data.modules.shipping.shippingOptionsRo != null && ( codeAttempted ) ){
-				var hasEFSOption = false;
-				//var EDFSPromoCodes = ["mycard","silver","luxe","shipbr","just4you","ship2me"];
-				var testForPromoCodeString = $("billingPromoCodeAppliedList").innerHTML;
-				
-				checkout.model.data.modules.shipping.shippingOptionsRo.each(function(shippingOption){
-					if (shippingOption && shippingOption.shippingType == "7") {
-						var shippingOptionRadio = $( 'shippingOptions' + shipOption1_7To9Day );
-						if(shippingOptionRadio && shippingOptionRadio.checked == true && shippingOptionRadio.disabled == false) {
-							hasEFSOption = true;
-							$break;
-						}
-					}
-				});
-				
-				if ( (hasEFSOption) && (!didEverydayFreeShipSetAlready) ) {
-					popWindowWithShipMessage();
-					didEverydayFreeShipSetAlready = true;
-				}
-				else {
-					if( $( 'shippingOptions' + shipOption3_2Day ) && $( 'shippingOptions' + shipOption4_1Day ) ){
-						if ( $('shippingOptions' + shipOption1_7To9Day ).checked == true || $('shippingOptions' + shipOption3_2Day ).checked == true || $('shippingOptions' + shipOption4_1Day ).checked == true ){
-							didEverydayFreeShipSetAlready = true;
-						} else {
-							didEverydayFreeShipSetAlready = false;
-						}
-					} else {
-						if ( $('shippingOptions' + shipOption1_7To9Day ) ){
-							didEverydayFreeShipSetAlready = true;
-						} else {
-							didEverydayFreeShipSetAlready = false;
-						}
-					}
-				}
-			}
-		}	
-		checkout.controller.modules.billing.promotions.view.setPromotionAppliedDataToPage = checkout.controller.modules.billing.promotions.view.setPromotionAppliedDataToPage.wrap(setPromotionAppliedDataToPageWrapper);	
-}
-
-</script>
-<!-- end contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
-
-<!-- END Content Item File: /content/0005/867/076/cn5867076.html -->
-
-
-
-<!-- container 8 -->
+<!-- BEGIN - WCD Sitewide Container 11 -->
 <!-- BEGIN Content Item File: /content/0005/780/730/cn5780730.html -->
 
 <!-- BEGIN: contentOverride116 -- GOL Department Facet Suppression-->
@@ -6036,44 +4679,191 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 
 <!-- END Content Item File: /content/0005/780/730/cn5780730.html -->
 
+<!-- END - WCD Sitewide Container 11 -->
 
+<!-- BEGIN - WCD Sitewide Container 12 -->
+<!-- BEGIN Content Item File: /content/0006/024/869/cn6024869.html -->
 
-<!-- container 9 -->
-<!-- BEGIN Content Item File: /content/0005/426/407/cn5426407.html -->
-
-
-<!-- Begin Override 126 -->
+<!-- CNOV-25: A/B test for search engagement-->
 <script type="text/javascript">
-if (location.hostname.indexOf(".app.gidapps.com") != -1) {
-	var forceLightsClose = function() {
-		if (window["objPreview"]) {
-			if ($('previewHighlights')) $('previewHighlights').update().hide();		
-			objPreview.togglePreview = function() {
-				if ($('previewHighlights')) $('previewHighlights').update().hide();
-			};
+// <![CDATA[
+
+var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+
+var NAV2TestCookieCutter = Class.create();
+NAV2TestCookieCutter.prototype = {
+	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+		this.EvarToUse = theEvar != "" ? theEvar : false;
+		this.CookieVariableName = CookieVarName;
+		this.CookieUsed = CookieUsedName;
+		this.CookieValueBase = CookieValueBase;
+		this.SegBreakdown = SegmentBreakdown.split("-");
+		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.QuickSegment = '';
+		this.piperlimeException = plExcept;
+		this.userNeedsSync = false;
+		this.ForcedModeBase = ForcedModeBaseName;
+		this.ModeArrayIndex = this.SegBreakdown.length;
+		this.modeArray = new Array();
+		this.modeArray[0] = "a";
+		this.modeArray[1] = "b";
+		this.modeArray[2] = "c";
+		this.modeArray[3] = "d";
+		this.modeArray[4] = "e";
+		this.modeArray[5] = "f";
+		
+		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+			this.forcedMode();
+		}else{
+			this.cookieScanner();
 		}
-	};
+	},
 
-	Event.observe(window,"load", function() {
-		setTimeout("forceLightsClose()",1000);
-	});
+	forcedMode:function() {
+		var href= location.href;
+		for (i = 0; i < this.ModeArrayIndex; i++) {
+			if (RegExp(this.ForcedModeBase + "=" + this.modeArray[i],'i').test(href)) {
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+
+		userNeedsSync = true;
+	},
+
+	cookieScanner:function() {
+		if (this.DoesTheCookieExist) {
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.RetrievedCookieValue);
+			}
+
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				}
+			}
+		} else {
+			this.tagManager();
+		}
+	},
+
+	tagManager:function() {
+		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+		this.FloorThreshold = 0;
+		this.TopThreshold = 0;
+		
+		for (i = 0; i < this.ModeArrayIndex; i++){
+			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+				break;
+			} else {
+				this.FloorThreshold = this.TopThreshold;
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+	},
 	
-	Event.observe(document,"categoryProductGrid:ready", function() {
-		setTimeout("forceLightsClose()",1000);
-	});
+	setABTestVariable: function(setValue) {
+		thisEvar = 'eVar' + this.EvarToUse;
+		ABTestVariables[thisEvar] = setValue;
+	}
+};
+
+
+var navCookieCutter = new NAV2TestCookieCutter('SNAV_FACETS_13012_v1_SEARCH_TEST', 'mktUniversalPersist', 'searchSEG', 'searchForceMode', '100-0', '8', '');
+
+
+var searchSegment = gidLib.getCookieVar("mktUniversalPersist", "SNAV_FACETS_13012_v1_SEARCH_TEST");
+
+var searchABTest = Class.create();
+searchABTest.prototype = {
+    	emptyString : '',
+	emptyStringFunc : function() { return this.emptyString; },
+
+	initialize : function() {},
+
+
+	segmentASpecificCode : function() {
+		if ($("topSearch_SegA")){
+			$(topSearch_SegA).style.display = "block";
+		}
+	},
+
+	segmentBSpecificCode : function() {
+		if ($("topSearch_SegB")){
+			$(topSearch_SegB).style.display = "block";
+			$(topNavQuickLinkButtonWrapper).style.marginRight = "10px";
+		}
+	},
+
+	// A = baseline no change
+	// B = baseline with only style & size facets
+	executeSegmentSpecificCode : function() {
+		
+		if ( searchSegment == "searchSEGA") {
+			navAB.segmentASpecificCode();
+		} else if ( searchSegment == "searchSEGB") {
+			navAB.segmentBSpecificCode();
+		}
+	}	
+};
+
+var navAB = new searchABTest();
+
+var gidSearchCookieName = 'searchMode';
+
+var domainUrl = '.' + (location.host.split(':')[0]);
+var path = '/';
+
+// Do this on all pages so the search box will be correctly displayed
+Event.observe(document, "dom:loaded", function () {
+	navAB.executeSegmentSpecificCode(); 
+
+	gidLib.setCookie(gidSearchCookieName, escape(searchSegment), null, path, domainUrl, false);
+
+});
+
+// Needed only on the search page
+if (location.pathname == "/browse/search.do") {	
+
+	UrlBuilder.getQueryParametersUrlFormatted = UrlBuilder.getQueryParametersUrlFormatted.wrap(
+		function(originalMethod, pageId) {
+			var queryString = originalMethod(pageId);
+
+			queryString += "&searchMode=" + searchSegment;
+
+			return queryString;
+		}
+	); 
+
 }
+// ]]>
 </script>
-<!-- End Override 126 -->
+<!-- End CNOV-25 -->
 
-<!-- END Content Item File: /content/0005/426/407/cn5426407.html -->
+<!-- END Content Item File: /content/0006/024/869/cn6024869.html -->
 
+<!-- END - WCD Sitewide Container 12 -->
 
+<!-- BEGIN - WCD Sitewide Container 13 -->
 
-<!-- container 10 -->
+<!-- END - WCD Sitewide Container 13 -->
 
-
-
-<!-- container 11 -->
+<!-- BEGIN - WCD Sitewide Container 14 -->
 <!-- BEGIN Content Item File: /content/0005/976/052/cn5976052.html -->
 
 <!-- GOL ENHANCED ZOOM OVERRIDE 3/357/325 -->
@@ -6351,217 +5141,9 @@ Event.observe(document, "dom:loaded", function () {
 
 <!-- END Content Item File: /content/0005/976/052/cn5976052.html -->
 
+<!-- END - WCD Sitewide Container 14 -->
 
-
-<!-- container 12 -->
-<!-- BEGIN Content Item File: /content/0004/918/646/cn4918646.html -->
-
-<!-- iPad Patches -->
-<meta name = "viewport" content = "width = 1024">
-<link rel="apple-touch-icon" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon.png" />
-<link rel="apple-touch-icon" sizes="72x72" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon.png" />
-<link rel="apple-touch-icon" sizes="114x114" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon-retina.png" />
-<link rel="apple-touch-icon" sizes="144x144" href="http://www.gap.com/Asset_Archive/GPWeb/content/0004/918/646/assets/apple-touch-icon-retina.png" />
-
-<!-- begin wcd override -->
-<script type="text/javascript">
- // iOS 4 loader override - take down after facets are live
- var myiOSbrowserAgent = navigator.userAgent;
- if (myiOSbrowserAgent.indexOf("iPad") != -1) {
- 	var iOSVersionSection = myiOSbrowserAgent.split(" OS ")[1];
- 	var iOSVersion = iOSVersionSection.split(" like")[0];
-	if ( (window["imageLoader"]) && (iOSVersion.indexOf("4_") !=-1) ) {
-		imageLoader.fetch = imageLoader.fetch.wrap(function(om) {
-			om();
-			for (var i=0;i<imageLoader.groupCount;i++) {
-				imageLoader.loadImgs(i);
-			}
-		});
-	}
- }
-</script>
-<!-- end wcd override -->
-
-<!-- END Content Item File: /content/0004/918/646/cn4918646.html -->
-
-
-
-<!-- container 13 -->
-<!-- BEGIN Content Item File: /content/0005/667/816/cn5667816.html -->
-
-<style type="text/css">
-#newTabWindow { border:1px #c1c1c1 solid; border-top:0; font-size: 11px; margin: 0; padding: 1px 10px 10px; width: 308px; color:#000;}
-#newTabWindow .italCopy {font-size:9px;font-style:italic;}
-#newTabWindow ul { color:#666; font-size:10px; list-style-type:disc; margin-bottom:10px; padding:0; }
-#newTabWindow li { margin-left:20px; }
-</style>
-
-<script type="text/javascript">
-//var prodShipRetInfoCookieCutter = new ProdShipRetInfoCookieCutter("0622PRODSHIPRETINFO","mktUniversalPersist","0622PRODSHIPRETINFO_SEG","prodPageShipRetInfo","25-25-25-25","8","none");
-var plProductSegmentName = "0622PRODSHIPRETINFO_SEGC";
-if( location.pathname == "/browse/product.do" ) {
-
-	if( plProductSegmentName == "0622PRODSHIPRETINFO_SEGC"  ) {
-		var ProductPageShipReturnInserter = Class.create();
-		ProductPageShipReturnInserter.prototype = {
-			initialize: function() { },
-			model: {
-				
-			},
-			controller: {
-				init: function( segment ) { 
-					var newTabWindowDiv = new Element('div',{id:'newTabWindow'});
-					var prodType;
-					var shipReturnContent;
-					// General online exclusives
-					if( $('productMailOnlyReturn') && $('productMailOnlyReturn').style.display != 'none' ) {
-						prodType = "generalExclusive";
-					}
-					// Select online excuses
-					else if( $('productFreeReturn') && $('productFreeReturn').style.display != 'none' ) {
-						prodType = "selectExclusive";
-					}
-					// General
-					else { 
-						prodType = "general";
-					}
-					switch( segment ) {
-						case "0622PRODSHIPRETINFO_SEGB":
-							switch( prodType ) {
-								case "general":
-									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>FREE returns to stores<\/li><li>FREE exchanges<\/li><li>Returns by mail - $6.00<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-									
-								case "generalExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>Returns by mail - $6.00<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-									
-								case "selectExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping *<\/div><ul><li>7-9 business days - FREE Every Day ($50 min)<\/li><li>3-5 business days - $7.00<\/li><li>2 business days - $17.00<\/li><li>1 business day  - $22.00<\/li><\/ul><div class="copyBlock">returns &amp; exchanges<\/div><ul><li>FREE returns (by mail only)<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-							}
-							break;
-							
-						case "0622PRODSHIPRETINFO_SEGC":
-							switch( prodType ) {
-								case "general":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail &amp; to stores on all orders</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
-									break;
-									
-								case "generalExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
-									break;
-									
-								case "selectExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
-									break;
-							}
-							break;
-							
-						case "0622PRODSHIPRETINFO_SEGD":
-							switch( prodType ) {
-								case "general":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>FREE exchanges and FREE returns to stores<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-									
-								case "generalExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>Return by mail only<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-									
-								case "selectExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns <\/div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag<\/span><\/li><li>Will arrive in 7-9 business days*<\/li><li>Faster shipping available, starting at $7 Flat Rate<\/li><li>FREE returns (by mail only)<\/li><li>FREE exchanges<\/li><\/ul>* <a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More<\/a>';
-									break;
-							}
-							break;
-							
-					}
-					newTabWindowDiv.update( shipReturnContent );
-					if( $('tabWindow') && ! $('newTabWindow') ) {
-						var tabWindow = $('tabWindow');
-						tabWindow.insert({ after:newTabWindowDiv });
-					}
-				},
-				sendToOmni: function( elt, eventName ) {
-					s.tl( elt , 'o', eventName);
-				},
-				openPopAndSendToOmni: function() {
-					productPageShipReturnInserter.controller.sendToOmni( 'shippingReturn', 'Product Page Shipping & Return' );
-					return gidLib.layeredPopup.openLayeredPopup({str:'/customerService/info.do?cid=2019',id:'shippingOptions',width:398,height:265,style:{name:'universalPopup'}});
-				}
-			},
-			view: {
-				
-			}	
-		};
-	
-		var productPageShipReturnInserter =  new ProductPageShipReturnInserter();
-		
-        productPage.loadProduct = productPage.loadProduct.wrap(
-                        function( originalMethod ) {
-                               originalMethod();
-                               var currentPID = gidLib.getQuerystringParam('pid');
-                               currentPID = currentPID.substr(0,6);
-                               if( currentPID != '000066' && currentPID != '000079' && currentPID != '000138' ) {   // Here's where you check specific product ID, change this to whatever you want to exclude
-                                               productPageShipReturnInserter.controller.init( plProductSegmentName );
-                               }
-                        }
-        );
-		
-	}
-}
-
-</script>
-
-<!-- END Content Item File: /content/0005/667/816/cn5667816.html -->
-
-
-
-<!-- container 14 -->
-<!-- BEGIN Content Item File: /content/0005/446/940/cn5446940.html -->
-
-<script type="text/javascript">
-// Facebook like button
-if( (location.pathname == '/browse/product.do') ) {
-	var fbProductPageLikeButton = {
-		initialize: function() { },
-		model: {
-			searchDexPageStructure: 'http%3A%2F%2Fwww.gap.com%2Fproducts%2F'
-		},
-		controller: {
-			init: function() {
-				if( ! $('fb_like') ) {
-					var model = fbProductPageLikeButton.model;
-					
-					/*var productName = productPage.objP.strVendorName.toLowerCase().replace(/ /g,'-') + '-';
-					productName = productName + productPage.objP.strProductStyleName.toLowerCase().replace(/ /g,'-');
-					productName = productName + '-P' + productPage.productId + '.jsp';*/
-					
-					var productName = escape('P' + productPage.productId + '.jsp?tid=gpsm000009');
-					
-					var fbLikeDiv = new Element('div', {id:'fb_like',style:'margin-top:7px'});
-					//var fbLikeDivStr = '<iframe src="http://www.facebook.com/plugins/like.php?href=' + model.searchDexPageStructure + productName + '&amp;amp;send=false&amp;amp;layout=button_count&amp;amp;width=330&amp;amp;show_faces=false&amp;amp;action=like&amp;amp;colorscheme=default&amp;amp;font=Arial&amp;amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:24px" allowTransparency="true"></iframe>';
-					
-					var fbLikeDivStr = '<iframe src="http://www.facebook.com/plugins/like.php?href=' + model.searchDexPageStructure + productName + '&send=false&layout=button_count&width=330&show_faces=false&action=like&colorscheme=light&font&height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:21px" allowTransparency="true"></iframe>'
-					
-					fbLikeDiv.update( fbLikeDivStr );
-					$('variantButtons').insert({ before:fbLikeDiv });
-				}
-			}
-		}
-	}
-	
-	productPage.initializeVariantButtons = productPage.initializeVariantButtons.wrap( function( originalMethod ) {
-		originalMethod();
-		fbProductPageLikeButton.controller.init();
-	});
-}
-</script>
-
-<!-- END Content Item File: /content/0005/446/940/cn5446940.html -->
-
-
-
-<!-- container 15 -->
+<!-- BEGIN - WCD Sitewide Container 15 -->
 <!-- BEGIN Content Item File: /content/0006/176/769/cn6176769.html -->
 
 <script type="text/javascript">
@@ -6747,7 +5329,7 @@ jQuery(document).ready(function() {
 
 <!-- END Content Item File: /content/0006/176/769/cn6176769.html -->
 
-
+<!-- END - WCD Sitewide Container 15 -->
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -7346,7 +5928,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 <style type="text/css">
 #topNav #universalTopNav .division {float:left;}
 
-#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/877/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
+#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
 
 /*Womens*/
 #divisionContainer .division .topnavSprite_division5643_off, #divisionContainer .division .topnavSprite_division5643_notSelected { background-position: -235px -234px; width: 45px; height: 38px; margin: 0 39px 0 8px;} 
@@ -7400,7 +5982,9 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 #topNavLogoBannerWrapper, #topNavLogoContainer {width: 62px; height: 62px; margin-right:30px;}
 #topNavRightSideWrapper {width: 177px; height: 52px; margin-top:10px;}
 #topNavSearchWrapper, #searchInputWrapper {width: 149px; height: 17px;}
-#topNavQuickLinkButtonWrapper {width: 173px; height: 13px;	margin-top: 9px;}
+#topNavQuickLinkButtonWrapper {width: 173px; height: 13px;margin-top: 9px;margin-left: 0px;*margin-left: -29px;}
+
+
 
 /* General Styles */
 .floatLeft { float: left; }
@@ -7456,6 +6040,40 @@ input, select, button {
 }
 #topNavGapMagButton.hoverMag {background-position: 0 -1766px;}
 
+/* Begin Search A/B Test */
+#divwrapper_topSearchText{
+background-color:#ffffff !important;
+border: 1px solid #bbbbbb;
+background: url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_bitmap.png) no-repeat;
+background-repeat:no-repeat;
+background-size: 11px 11px;
+background-position: 7px 5px;
+width:202px;
+height:20px;
+border-radius:30px;
+left: -60px;
+}
+
+#newInputBox_topSearchText{
+width:160px;
+outline: none;
+border: 0px;
+font-family: Arial,Helvetica,Sans-serif;
+font-size: 11px;
+margin-top:3px;
+margin-left:22px;
+margin-right:4px;
+margin-right:1px\8;
+float:left;
+background-color:#ffffff;
+}
+
+#closeButton_topSearchText{
+margin-top:5px;
+margin-top:1px\8;
+display:none;
+}
+/* End Search A/B Test */
 </style> 
 
 
@@ -7572,18 +6190,17 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/226/177/cn6226177.html -->
-<div id="contentItemContainer10000395" class="6226177" >
+    	<!-- BEGIN Content Item File: /content/0006/137/671/cn6137671.html -->
+<div id="contentItemContainer10000395" class="6137671" >
 
 <style type="text/css">
 #globalBanner {
-	width: 581px;
+	width: 472px;
 	height: 62px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
-	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -7591,7 +6208,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000745;
+	color: #000000;
 	text-decoration: none;
 }
 
@@ -7607,14 +6224,22 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: #000745;
+	background-color: black;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerText {
-	padding-top: 6px;
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
 }
 </style>
 
@@ -7622,31 +6247,220 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/226/177/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-			SUPER! <span class="promoPercent">20% OFF</span> WOMEN'S AND MEN'S STYLES!
-			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
-			<br /><span class="detailsLink">DETAILS</span>
-		</a>
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/137/671/assets/022413_ALL_CountdownPromo_20_GB_US.png" alt="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." title="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,472,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/137/671/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+		</map>
 	</div><!-- /Global Banner Text -->
 
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/137/671/assets/022413_ALL_CountdownPromo_20_DISR_US.gif" alt="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." title="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." usemap="#disruptorMap">
+		<map name="disruptorMap">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/137/671/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
 </div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('022713_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0006/226/177/cn6226177.html -->
+<!-- END Content Item File: /content/0006/137/671/cn6137671.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
       <div id="topNavSearchWrapper" class="floatRight">
-        <form id="topSearchForm" name="topSearchForm" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">					
-          <div id="searchInputWrapper" class="posRel">						
-            <input type="text" id="topSearchText" class="searchTextStandard" name="searchText" value="Keyword / Style #" onfocus="objSearchBox.checkSearchText(this);" maxlength="100" />
-            <div id="searchInputButtonDiv" class="posAbs">							
-              <input type="image" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/877/assets/fall_2012_hp_FINAL_US_searcharrow.png" name="submit" id="topSearchGoButton"/>																
-            </div>
-          </div>																														
-        </form>							
-      </div>
+		<!-- begin Search A/B Test -->
+		<script type="text/javascript">
+			function closeButtonShow_topSearchText(){
+				$('closeButton_topSearchText').style.display = "block";
+			}
+			
+			function closeButtonHideReset_topSearchText(){
+				$('topSearchForm_B').reset();
+				$('closeButton_topSearchText').style.display = "none";
+				$('newInputBox_topSearchText').value = 'Search';
+				
+			}
+			
+			function detectNoText(){
+				if( $('newInputBox_topSearchText').value == ''){   		
+						$('newInputBox_topSearchText').value = '';
+						$('closeButton_topSearchText').style.display = "none";
+				}
+			}
+			
+			function detectSearch(){
+				if( $('newInputBox_topSearchText').value == 'Search'){
+			    		$('topSearchForm_B').reset();
+						
+				}
+			}
+			
+			var svgSwitch = function(){
+				if(window.SVGAngle || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")){
+					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_vector.svg) no-repeat";
+					$('divwrapper_topSearchText').style.backgroundSize = "11px 11px";
+					$('divwrapper_topSearchText').style.backgroundPosition = "7px 5px";
+					
+					$('closeButton').src = '/Asset_Archive/GPWeb/content/0005/935/691/assets/close_vector1.svg';
+					
+				}if(clientBrowser.isFirefox3 == true){
+					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_bitmap.png) no-repeat";
+					$('divwrapper_topSearchText').style.backgroundSize = "11px 11px";
+					$('divwrapper_topSearchText').style.backgroundPosition = "7px 5px";
+					$('closeButton').src = '/Asset_Archive/GPWeb/content/0005/935/691/assets/close_bitmap.png';
+				}else{
+				
+				}
+				$('newInputBox_topSearchText').value = 'Search';
+			}
+			
+			document.observe("dom:loaded",svgSwitch);
+
+		</script>	
+		<div id="topSearch_SegA" style="display:none;">
+			 <form id="topSearchForm" name="topSearchForm" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">					
+	          <div id="searchInputWrapper" class="posRel">						
+	            <input type="text" id="topSearchText" class="searchTextStandard" name="searchText" value="Keyword / Style #" onfocus="objSearchBox.checkSearchText(this);" maxlength="100" />
+	            <div id="searchInputButtonDiv" class="posAbs">							
+	              <input type="image" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/fall_2012_hp_FINAL_US_searcharrow.png" name="submit" id="topSearchGoButton"/>																
+	            </div>
+	          </div>																														
+	        </form>		
+		</div>
+		
+		<div id="topSearch_SegB" style="display:none;">
+			<div id="divwrapper_topSearchText" class="posRel">
+				<form id="topSearchForm_B" name="topSearchForm_B" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">	
+				<input id="newInputBox_topSearchText" type="text" maxlength="" onclick="detectSearch();" onkeyup="objSearchBox.checkSearchText(this);closeButtonShow_topSearchText();detectNoText();" value="" name="searchText">
+				</form>
+			<div id="closeButton_topSearchText"><a href="javascript:void(0);" onclick="closeButtonHideReset_topSearchText();"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/close_bitmap.png" id="closeButton"></a></div>
+		</div>
+		<!-- end Search A/B Test -->					
+
+	 </div>
       <!-- Quick Links Container -->
       <div id="topNavQuickLinkButtonWrapper" class="floatRight">
         <img src="http://www.gap.com/assets/common/clear.gif" usemap="#topNavQuickLinkMap" id="topNavQuickLinkButton" />
@@ -8676,7 +7490,7 @@ function validateFormGapFooter()
     <ul class="footer-links find-us">
     	<li class="header">Find Us</li>
         <li>1.800.GAPSTYLE (1.800.427.7895)</li>
-        <li><a href="http://www.gap.com/profile/join_email_list_confirm.do" onclick="return contentItemLink(this,'','CS_Footer_EmailSignUp');">Email sign-up</a></li>
+        <li><a href="http://www.gap.com/profile/info.do?cid=48755" onclick="return contentItemLink(this,'','CS_Footer_EmailSignUp');">Email sign-up</a></li>
         <li><a href="http://www.gap.com/customerService/storeLocator.do" onclick="return contentItemLink(this,'','CS_Footer_StoreLocator');">Store locator</a></li>
         <li><a href="http://www.gap.com/browse/info.do?cid=48620" onclick="return contentItemLink(this,'','CS_Footer_GapOutlet');">Gap Outlet</a></li>
     </ul>
@@ -8834,7 +7648,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6226177,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6137671,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>
@@ -8995,15 +7809,95 @@ function validateFormGapFooter()
 
 
 
-<div id="siteWideBusinessCodeBody"><!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.businessCode.regionBottom") -->
+<div id="siteWideBusinessCodeBody"><!-- WCD Sitewide Body Region -->
+<!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.businessCode.regionBottom") -->
+
+<!-- BEGIN - WCD Sitewide Container 16 -->
+<!-- BEGIN Content Item File: /content/0006/122/931/cn6122931.html -->
+<div id="contentItemContainer212633" class="6122931" >
 
 
-<!-- container 16 -->
+<!-- Begin CNOV-28 Search toggle for preview -->
+<script type="text/javascript">
+// <![CDATA[
+
+if (window.navigationService && navigationService.preview) {
+
+    var previewSearchToggle = {
+	gidSearchCookieName :'searchMode',
+
+	isAMode : function() {
+		var cookieValue = gidLib.getCookie(this.gidSearchCookieName);
+		return !cookieValue || !/searchSEGB/.test(cookieValue);
+	},
+
+	getCurrentButtonText : function() {
+		var label = "Switch to EasyAsk Search";
+		if (this.isAMode()) {
+			label = "Switch to SOLR Search";
+		}
+		return label;
+	},
+
+	toggleSearch : function() {
+		var newMode = "A";
+		if (this.isAMode()) {
+			newMode = "B";
+		}
+		var newLocation = window.location.href;
+		
+		newLocation = newLocation.replace(/\&*searchForceMode=[ab]\&*/i,"");		
+		
+		if (/\?/.test(newLocation)) {
+			newLocation = newLocation.replace(/\?/,"?searchForceMode=" + newMode + "&");
+		} else {
+			newLocation += "?searchForceMode=" + newMode;
+		}
+
+		window.location = newLocation;
+	}
+    }
+
+    Event.onDOMReady(function() {
+	function insertPreviewSearchButton() {
+	    var searchToggleLi = "<li><input type='button' id='searchToggleButton' value='" + previewSearchToggle.getCurrentButtonText() + "' onclick='previewSearchToggle.toggleSearch()'/></li>";
+
+	    $('previewPageInfo').previous().childElements()[0].childElements()[2].insert({after:searchToggleLi});
+		    
+	};
+
+	insertPreviewSearchButton.delay(0.1);
+
+    });
+				
+    
+
+}
+// ]]>
+</script>
+<!-- End CNOV-28 -->
 
 
-<!-- container 17 -->
-<!-- BEGIN Content Item File: /content/0004/781/275/cn4781275.html -->
-<div id="contentItemContainer212632" class="4781275" >
+</div>
+<!-- END Content Item File: /content/0006/122/931/cn6122931.html -->
+
+<!-- END - WCD Sitewide Container 16 -->
+
+<!-- BEGIN - WCD Sitewide Container 17 -->
+
+<!-- END - WCD Sitewide Container 17 -->
+
+<!-- BEGIN - WCD Sitewide Container 18 -->
+
+<!-- END - WCD Sitewide Container 18 -->
+
+<!-- BEGIN - WCD Sitewide Container 19 -->
+
+<!-- END - WCD Sitewide Container 19 -->
+
+<!-- BEGIN - WCD Sitewide Container 20 -->
+<!-- BEGIN Content Item File: /content/0006/129/221/cn6129221.html -->
+<div id="contentItemContainer212629" class="6129221" >
 
 
 <!-- GOL US - pixel container -->
@@ -9693,153 +8587,9 @@ with (brightTagPixelPartner) {
 
 
 </div>
-<!-- END Content Item File: /content/0004/781/275/cn4781275.html -->
+<!-- END Content Item File: /content/0006/129/221/cn6129221.html -->
 
-
-<!-- container 18 -->
-
-
-<!-- container 19 -->
-
-
-<!-- container 20 -->
-<!-- BEGIN Content Item File: /content/0005/568/885/cn5568885.html -->
-<div id="contentItemContainer212629" class="5568885" >
-
-<!-- Update to account email preferences link with new hosted page -->
-<script type="text/javascript">
-if( location.pathname == '/profile/account_summary.do' ) {
-document.observe('dom:loaded', function() {
-if( $('personalInformation') ) {
-var linksToScan = $('personalInformation').select('a');
-var linkToScan;
-if( linksToScan && linksToScan.length > 0 ) {
-for( var i = 0; i < linksToScan.length; i++ ) {
-linkToScan = linksToScan[i];
-if( linkToScan.href.indexOf( 'email_preferences' ) > -1 ) {
-linkToScan.href = '/profile/info.do?cid=82638';
-}
-}
-}
-}
-});
-}
-
-if (location.href.indexOf('cid=2302') > -1 ) {
-	Event.observe(window, "load", function() {
-		if ( $('mainContent') ) {
-			var linksToScan = $('mainContent').select('a');
-			var linkToScan;
-			if (linksToScan && linksToScan.length > 0 ) {
-				for ( var i = 0; i < linksToScan.length; i++) {
-					linkToScan = linksToScan[i];
-					if (linkToScan.href.indexOf('join_email_list_confirm.do') > -1 ) {
-						linkToScan.href = '/profile/info.do?cid=48755';
-					}
-				}
-			}
-		}
-	});
-}
-
-if (location.href.indexOf('cid=81268') > -1 ) {
-	Event.observe(window, "load", function() {
-		if ( $('tosignupBody') ) {
-			var linksToScan = $('tosignupBody').select('a');
-			var linkToScan;
-			if (linksToScan && linksToScan.length > 0 ) {
-				for ( var i = 0; i < linksToScan.length; i++) {
-					linkToScan = linksToScan[i];
-					if (linkToScan.href.indexOf('join_email_list_confirm.do') > -1 ) {
-						linkToScan.href = '/profile/info.do?cid=48755';
-					}
-				}
-			}
-		}
-	});
-}
-
-if ($('footer-links-container')) {
-	var footerLinksToScan = $('footer-links-container').select('a');
-	var footerLinkToScan;
-	if (footerLinksToScan && footerLinksToScan.length > 0) {
-		for ( var i = 0; i < footerLinksToScan.length; i++) {
-			footerLinkToScan = footerLinksToScan[i];
-			// switch join email link
-			if (footerLinkToScan.href.indexOf('/profile/join_email_list_confirm.do') > -1) {
-				footerLinkToScan.href = '/profile/info.do?cid=48755';
-			}
-		}
-	}
-}
-</script>
-
-
-
-<!-- Begin CNOV-28 Search toggle for preview -->
-<script type="text/javascript">
-// <![CDATA[
-
-if (window.navigationService && navigationService.preview) {
-
-    var previewSearchToggle = {
-	gidSearchCookieName :'searchMode',
-
-	isAMode : function() {
-		var cookieValue = gidLib.getCookie(this.gidSearchCookieName);
-		return !cookieValue || !/searchSEGB/.test(cookieValue);
-	},
-
-	getCurrentButtonText : function() {
-		var label = "Switch to EasyAsk Search";
-		if (this.isAMode()) {
-			label = "Switch to SOLR Search";
-		}
-		return label;
-	},
-
-	toggleSearch : function() {
-		var newMode = "A";
-		if (this.isAMode()) {
-			newMode = "B";
-		}
-		var newLocation = window.location.href;
-		
-		newLocation = newLocation.replace(/\&*searchForceMode=[ab]\&*/i,"");		
-		
-		if (/\?/.test(newLocation)) {
-			newLocation = newLocation.replace(/\?/,"?searchForceMode=" + newMode + "&");
-		} else {
-			newLocation += "?searchForceMode=" + newMode;
-		}
-
-		window.location = newLocation;
-	}
-    }
-
-    Event.onDOMReady(function() {
-	function insertPreviewSearchButton() {
-	    var searchToggleLi = "<li><input type='button' id='searchToggleButton' value='" + previewSearchToggle.getCurrentButtonText() + "' onclick='previewSearchToggle.toggleSearch()'/></li>";
-
-	    $('previewPageInfo').previous().childElements()[0].childElements()[2].insert({after:searchToggleLi});
-		    
-	};
-
-	insertPreviewSearchButton.delay(0.1);
-
-    });
-				
-    
-
-}
-// ]]>
-</script>
-<!-- End CNOV-28 -->
-
-
-</div>
-<!-- END Content Item File: /content/0005/568/885/cn5568885.html -->
-
+<!-- END - WCD Sitewide Container 20 -->
 </div>
 
 </body>

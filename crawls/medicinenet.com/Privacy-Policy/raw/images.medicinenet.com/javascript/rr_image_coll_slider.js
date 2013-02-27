@@ -1,7 +1,7 @@
 $(document).ready( function() {
 	
 	/* ----------Config Vars----------- */
-	var slideTimer = 4000;  //time between slides (1 second = 1000), a.k.a. the interval duration
+	var slideTimer = 8000;  //time between slides (1 second = 1000), a.k.a. the interval duration
 	var transitionTime = 800; //transition time (1 second = 1000)
 	var items = $('.slide_item').toArray();  //Get array of elements for sliding
 	var prevBtn = $('#prevbtn');

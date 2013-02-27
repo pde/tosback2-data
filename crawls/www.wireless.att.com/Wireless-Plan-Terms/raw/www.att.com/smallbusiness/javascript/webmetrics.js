@@ -84,7 +84,9 @@ WebMetrics = {
 		//RESET ELIGIBLE VARIABLES FOR NEXT REPORT ON SAME PAGE.
 		WebMetrics.DCSext.LinkLoc = "";
 		WebMetrics.DCSext.LinkName = "";
-		
+		var timeoutInterval = setTimeout(function() { //EVENTS ARE NOT GENERATING FOR CHECKOUT PAGES SO DELAYING CLICK CONTINUE
+
+			},1000);
 	},
 	
 	//REQUEST PROCESSED PAGE NAME

@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 120233 2013-01-31 07:02:49Z pmdl $
+* $Id: trackingTags_v1.1.js 121437 2013-02-22 16:25:29Z richard.pinales $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -510,9 +510,11 @@ NYTD.EventTracker = (function () {
         var trackNow;
         var that = this;
         var datumId = null;
+        var parentDatumId = null;
         var firedFirstEvent = false;
         var scripts = [];
         var queue = [];
+        var newData = [];
 
         if (this instanceof NYTD.EventTracker === false) {
             return new NYTD.EventTracker();
@@ -575,6 +577,25 @@ NYTD.EventTracker = (function () {
             if (!options.background) {
                 lastEventTime = (new Date()).valueOf();
             }
+            
+            if(evt.subject !== 'page' && this.getParentDatumId() !== null) {
+                evt.parentDatumId = this.getParentDatumId();
+            }
+            
+            if(newData.length > 0) {
+                var newDataItem,
+                    key;
+                
+                for (var i = 0; i < newData.length; i++) {
+                    newDataItem = newData[i];
+                    for (key in newDataItem) if (newDataItem.hasOwnProperty(key)) {
+                        evt[key] = newDataItem[key];
+                    }
+                    newData = []; // empty the array out for future usage
+                }
+                
+            }
+            
             if (!options.buffer) {
                 trackNow(evt, options);
             } else if (datumId || !firedFirstEvent) {
@@ -587,6 +608,14 @@ NYTD.EventTracker = (function () {
                 });
             }
         };
+        
+        this.updateData = function (oArg) {
+            if(oArg instanceof Array) {
+                newData = newData.concat(oArg)
+            } else if(typeof oArg === 'object') {
+                newData.push(oArg);   
+            }
+        };
 
         this.hasTrackedEventRecently = function () {
             return ((new Date()).valueOf() - lastEventTime) < 960000;
@@ -595,6 +624,15 @@ NYTD.EventTracker = (function () {
         this.getDatumId = function () {
             return datumId;
         };
+        
+        this.getParentDatumId = function() {
+            if(parentDatumId === null && 
+                NYTD.pageEventTracker && NYTD.pageEventTracker.getDatumId() !== null) {
+                parentDatumId = NYTD.pageEventTracker.getDatumId();
+            }
+            return parentDatumId;
+        };
+        
         this.pixelTrack = function (evt, qs) {
             var imgsrc, validEvt, validQs;
             validEvt = (function (e) {
@@ -659,6 +697,7 @@ NYTD.pageEventTracker = (function (updateFrequency) {
         buffer: true,
         callback: setUpdateTimeout
     });
+    
 
     return tracker;
 })();

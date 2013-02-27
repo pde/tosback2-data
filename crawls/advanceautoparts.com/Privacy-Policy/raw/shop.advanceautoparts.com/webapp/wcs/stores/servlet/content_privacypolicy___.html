@@ -3,6 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head> 
 <!-- Start - JSP File Name: HeaderMetaCheck.jspf -->
+<script>
+var cookieDomain = 'advanceautoparts.com';
+//alert(cookieDomain); 
+</script> 
 <title>Customer Privacy Policy - Advance Auto Parts</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
@@ -106,7 +110,7 @@ text-align: center;
 }
 </style>
 <div id="global_inner_banner">
-<a manual_cm_sp="Promotions-_-SiteWideBanner-_-PromoCode" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_sitewide-15-percent-off-50-130218___" name="15% off nearly everything!* + a $25 coupon|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/a_global_banner_130218.png" border="0" /></a><a manual_cm_sp="Promotions-_-SiteWideBanner-_-FreeShipping" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_freeshipping___" name="Free Shipping|global banner|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/310_globalbanner_right-3.gif" border="0" /></a>
+<a manual_cm_sp="Promotions-_-SiteWideBanner-_-PromoCode" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_sitewide-15-percent-off-50-130225___" name="15% off orders over $50* + a $25 coupon|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/a_global_banner_130225.png" border="0" /></a><a manual_cm_sp="Promotions-_-SiteWideBanner-_-FreeShipping" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_freeshipping___" name="Free Shipping|global banner|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/310_globalbanner_right-3.gif" border="0" /></a>
 </div></div>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
@@ -224,27 +228,28 @@ j("#footer-right-block").append("<div id=\"price_zone_code\">"+priceZoneCode+"</
 };
 j.ajax(ajaxOptions); 
 }
+//alert("preferredstore" + cookieDomain); 
 if(j.cookie('PREFSTORE') == null) {
-j.cookie('PREFSTORE', locationCode, { expires: 365 * 35 });
+j.cookie('PREFSTORE', locationCode, { expires: 365 * 35, path: '/', domain: cookieDomain });
 } else if (j.cookie('PREFSTORE') != null && j.cookie('PREFSTORE') != locationCode) {
-j.cookie('PREFSTORE', locationCode, { expires: 365 * 35 });
+j.cookie('PREFSTORE', locationCode, { expires: 365 * 35 , path: '/', domain: cookieDomain});
 }
 if(j.cookie('PREFSTOREADDRESS') == null) {
-j.cookie('PREFSTOREADDRESS', address, { expires: 365 * 35 });
+j.cookie('PREFSTOREADDRESS', address, { expires: 365 * 35, path: '/', domain: cookieDomain });
 } else if (j.cookie('PREFSTOREADDRESS') != null && j.cookie('PREFSTOREADDRESS') != address) {
-j.cookie('PREFSTOREADDRESS', address, { expires: 365 * 35 });
+j.cookie('PREFSTOREADDRESS', address, { expires: 365 * 35, path: '/', domain: cookieDomain });
 }
 if (j.cookie('ZIPCODE') == null) {
 if (zipcode.length == 5) {
-j.cookie('ZIPCODE', zipcode, { expires: 365 * 35 });
+j.cookie('ZIPCODE', zipcode, { expires: 365 * 35, path: '/', domain: cookieDomain });
 } else {
-j.cookie('ZIPCODE', zipcode.substring(0, 5), { expires: 365 * 35 });
+j.cookie('ZIPCODE', zipcode.substring(0, 5), { expires: 365 * 35, path: '/', domain: cookieDomain });
 }
 } else if (j.cookie('ZIPCODE') != null && j.cookie('ZIPCODE') != zipcode) {
 if (zipcode.length == 5) {
-j.cookie('ZIPCODE', zipcode, { expires: 365 * 35 });
+j.cookie('ZIPCODE', zipcode, { expires: 365 * 35, path: '/', domain: cookieDomain });
 } else {
-j.cookie('ZIPCODE', zipcode.substring(0, 5), { expires: 365 * 35 });
+j.cookie('ZIPCODE', zipcode.substring(0, 5), { expires: 365 * 35, path: '/', domain: cookieDomain });
 }
 }
 j("div#preferredStoreCookieAddress1").html(address);
@@ -1804,11 +1809,11 @@ pageViewAttr[3] = engine;
 }
 }
 var priceZone = "";
-var validZone = validateInput(getAAPPriceZoneCookieRegex(), '1040');
+var validZone = validateInput(getAAPPriceZoneCookieRegex(), '1060');
 if(!validZone){
 priceZone = invalidatePriceZoneCookie();
 }else{
-priceZone = "1040";
+priceZone = "1060";
 }
 pageViewAttr[11] = priceZone;
 productViewAttr[2] = priceZone;
@@ -2070,7 +2075,7 @@ Find stores by State:
 <a href="http://al.stores.advanceautoparts.com">Alabama</a> | 
 <a href="http://ar.stores.advanceautoparts.com">Arkansas</a> | 
 <a href="http://co.stores.advanceautoparts.com">Colorado</a> | 
-<a href="http://ct.stores.advanceautoparts.com">Conneticut</a> | 
+<a href="http://ct.stores.advanceautoparts.com">Connecticut</a> | 
 <a href="http://de.stores.advanceautoparts.com">Delaware</a> | 
 <a href="http://fl.stores.advanceautoparts.com">Florida</a> | 
 <a href="http://ga.stores.advanceautoparts.com">Georgia</a> | 
@@ -2085,7 +2090,7 @@ Find stores by State:
 <a href="http://me.stores.advanceautoparts.com">Maine</a> | 
 <a href="http://mi.stores.advanceautoparts.com">Michigan</a> | 
 <a href="http://mn.stores.advanceautoparts.com">Minnesota</a> | 
-<a href="http://mo.stores.advanceautoparts.com">Mousouri</a> | 
+<a href="http://mo.stores.advanceautoparts.com">Missouri</a> | 
 <a href="http://ms.stores.advanceautoparts.com">Mississippi</a> | 
 <a href="http://ne.stores.advanceautoparts.com">Nebraska</a> | 
 <a href="http://nh.stores.advanceautoparts.com">New Hampshire</a> | 
@@ -2100,7 +2105,7 @@ Find stores by State:
 <a href="http://ri.stores.advanceautoparts.com">Rhode Island</a> | 
 <a href="http://sc.stores.advanceautoparts.com">South Carolina</a> | 
 <a href="http://sd.stores.advanceautoparts.com">South Dakota</a> | 
-<a href="http://tn.stores.advanceautoparts.com">Tennesee</a> | 
+<a href="http://tn.stores.advanceautoparts.com">Tennessee</a> | 
 <a href="http://tx.stores.advanceautoparts.com">Texas</a> | 
 <a href="http://va.stores.advanceautoparts.com">Virginia</a> |
 <a href="http://vi.stores.advanceautoparts.com">Virgin Islands</a> | 
@@ -2155,7 +2160,7 @@ var chooseVehicleViewURL = 'ChooseVehicleView?langId=-1&storeId=10151&catalogId=
 var store_Id = '10151';
 var catalog_Id = '10051';
 var lang_Id = '-1';
-var product_Id = '';
+var product_Id = '374054';
 j(document).ready(function () {
 verifyYMME();
 });

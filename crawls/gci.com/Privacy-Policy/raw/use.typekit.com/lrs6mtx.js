@@ -61,7 +61,7 @@ if(!window.Typekit.load){var Ha=function(a,c){setTimeout(a,c)},Y=new S(new W("//
 $.V=Ia;$.o.push(new P("myriad-pro",["n3","i3","n4","i4","n6"]));$.L.push(new function(){this.Ma=[".tk-myriad-pro"];this.ba=[{value:'"myriad-pro",sans-serif',name:"font-family"}]});$.J=ta;$.M=X;$.R=V;Z&&Z.ea.__webfonttypekitmodule__?(Z.I($),Z.load()):(va($,(new A(navigator.userAgent,document)).parse()),window.Typekit.addKit($));
 })(this,document);
 window.Typekit.config={"p":"//p.typekit.net/p.gif?s=1&k=lrs6mtx&ht=tk&h={host}&f=6848.6851.6849.6850.6852&a=277692&_={_}"};
-/*{"k":"1.3.0","created":"2013-01-30T19:08:16Z"}*/
+/*{"k":"1.3.1","created":"2013-02-26T10:12:41Z"}*/
 ;(function(window,document,undefined){
 function e(b,a){this.b=a||b;this.a=document}e.prototype=function(b,a){this.b=a||b;this.a=this.b.document}.prototype;function f(b){var a=new Image(1,1);a.src=b;a.onload=function(){a.onload=null}}function g(){this.d=window.Typekit.config.p}function h(b,a,c){var d=c||{},b=b.d.replace(/\{\/?([^*}]*)(\*?)\}/g,function(b,a,c){return c&&d[a]?"/"+d[a].join("/"):d[a]||""});b.match(/^\/\//)&&(b=(a?"https:":"http:")+b);return b.replace(/\/*\?*($|\?)/,"$1")}window.Typekit||(window.Typekit={});
 var i=new e(window),j=new function(){this.c=new g},k=!1;function l(){if(!k)for(var b=document.getElementsByTagName("link"),a=0;a<b.length;a++){var c=b[a].getAttribute("href");if(c&&0<=c.indexOf("use.typekit")){b=j;a=i;b.c&&(c=(c=window.__adobewebfontsappname__)?c.toString().substr(0,20):"",f(h(b.c,"https:"==a.a.location.protocol,{host:encodeURIComponent(a.a.location.hostname),app:encodeURIComponent(c),_:(+new Date).toString()})));k=!0;break}}}var m=window.Typekit.load;

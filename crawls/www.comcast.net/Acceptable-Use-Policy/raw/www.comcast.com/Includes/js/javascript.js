@@ -904,3 +904,20 @@ function RegisterScriptTag(scriptUri) {
     script.defer = true;
     document.getElementsByTagName('head').item(0).appendChild(script);
 }
+
+function ResetSegmentation(targetUrl) {
+    if (targetUrl == undefined)
+        targetUrl = "";
+    var action = new RemoteCMSMethod('SegmentationController', 'ResetSegmentation', targetUrl);
+    action.LocalAction = function (args) {
+        if (args != null && (args == "true" || args == true)) {
+            if (targetUrl == "") {
+                window.location.href = window.location.href;
+            }
+            else {
+                window.location.href = targetUrl;
+            }
+        }
+    }
+    action.Invoke();
+}

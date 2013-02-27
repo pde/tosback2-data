@@ -16,7 +16,7 @@
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=192a.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=196.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 <link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=044" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -36,7 +36,8 @@
 <![endif]-->
 
 	<script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=026"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=032"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/ourfriends.js%3Fcache=026"></script>
 <script language="javascript" type="text/javascript">
 	//<![CDATA[
 	var $j = jQuery.noConflict();
@@ -85,6 +86,11 @@
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
+	$(document).ready(function(){
+		if(navigator.userAgent.match(/Xbox/i)){
+			_gaq.push(['_setCustomVar', 1, 'Custom UA', 1]);
+		}
+	});
 
 </script>
 		<link href="../ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -251,7 +257,12 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					url = '/';
 				}
 				url = url == 'javascript:void(0)' ? document.location.href : url;
-				showLogin(false, '', url);
+				if($j(this).data('message')){
+					showLogin(false, $j(this).data('message'), url);
+				}
+				else{
+					showLogin(false, '', url);
+				}
 				if(!loggedin)
 				{
 					return false;
@@ -331,7 +342,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					<div class="message-comment"><strong><span id="loginmsg"></span></strong></div>
 					<div class="sh3">Login to Tube 8</div>
 					<form id="loginform" method="post" action="http://www.tube8.com/signin.html"
-					      onsubmit="tryLogin(ajax_url); return false;">
+						  onsubmit="tryLogin(ajax_url); return false;">
 						<div class="login-inputs">
 							<input name="username" type="text" id="pusrname" defaultVal="Username"/>
 							<input type="hidden" name="loginonly" value="1"/>
@@ -384,7 +395,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 						<a href="http://www.tube8.com/tags.html" onclick="pageTracker._trackEvent('Header', 'Click Tags Tab');" style="padding-right:15px;">Tags</a>
 					</li>
 					<li class="float-left tm-border">
-						<a href='http://enter.t8premium.com/track/MTU5NTQ6MjU6MzQ,587/' target='_blank' rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Premium Tab');">Premium HD</a>
+						<a href='http://enter.t8premium.com/track/MTU5NTU6MjU6MzQ,588/' target='_blank' rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Premium Tab');">Premium HD</a>
 					</li>
 					<li class="float-left tm-border "><a href="http://mbs.tube8live.com/xtarc/595444/435/0/?mta=338099" rel="nofollow" target="_blank" onclick="pageTracker._trackEvent('Header', 'Click Live Girls Tab');">Live Girls</a></li>
 					<li class="float-left tm-border"><a href="http://ads.genericlink.com/ads/site/tube8/dispatcher/t8_na_datingtab.php" rel="nofollow" target="_blank" onClick="pageTracker._trackEvent('Header', 'Click T8 date');">Fuck Date</a></li>
@@ -437,7 +448,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
     <div class="content-wrapper">
 		<div class="form-userinfo-wrapper relative">
 			<div class="section_bar terms-cont display-none">
-				<div class="disclamer-tab absolute">TERMS OF USE</div>
+				<div class="disclamer-tab absolute termsOfUseTitles">TERMS OF USE</div>
 				<div class="disclamer-text">
 						<p class=MsoNormal style='margin-bottom: 12.0pt'><span style='font-size: 8.0pt; line-height: 115%; font-family: "Arial", "sans-serif"'>1.
 						ACCEPTANCE<br>
@@ -972,7 +983,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			</div>
 
 			<div class=" section_bar dmca-cont display-none">
-				<div class="disclamer-tab absolute">DMCA</div>
+				<div class="disclamer-tab absolute termsOfUseTitles">DMCA</div>
 				<div class="disclamer-text">
 					<p class=MsoNormal style='margin-bottom: 12.0pt'><span
 						style='font-size: 8.0pt; line-height: 115%; font-family: "Arial", "sans-serif"'>In
@@ -1089,7 +1100,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			</div>
 
 			<div class="section_bar statement-cont display-none">
-             <div class="disclamer-tab absolute">18 USC 2257 STATEMENT</div>
+             <div class="disclamer-tab absolute termsOfUseTitles">18 USC 2257 STATEMENT</div>
 	            <div class="disclamer-text">
 	                <p>Tube8.com is not a producer (primary or secondary) of any and all of the content found on the website (Tube8.com). With respect to the records as per 18 USC 2257 for any and all content found on this site, please kindly direct your request to the site for which the content was produced.</p>
 	                <p>Tube8.com is a video sharing site in which allows for the uploading, sharing and general viewing of various types of adult content and while Tube8.com does the best it can with verifying compliance, it may not be 100% accurate.</p>
@@ -1106,7 +1117,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			</div>
 
 			<div class="section_bar partner-cont display-none">
-	             <h2 class="disclamer-tab absolute">CONTENT PARTNER PROGRAM</h2>
+	             <h2 class="disclamer-tab absolute termsOfUseTitles">CONTENT PARTNER PROGRAM</h2>
 	            <div class="content-col disclamer-text">
 	                <p class="red-text"><strong>Boost your brand. get Tube8 to send you traffic!</strong> Tube8's Content Partner Program enables content owners to have their videos shown to a huge worldwide audience with a text link above and below each video and the possibility of an underplayer ad below each video, both pointing back to your site.</p>
 	                <p>Tube8 does not charge any upfront fees to join or upload. We receive compensation through your existing PPS or RevShare affiliate program. We only get paid when you get paid.</p>
@@ -1132,14 +1143,14 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			</div>
 
 			<div class="section_bar rta-cont display-none">
-             <div class="disclamer-tab absolute">Parental Control</div>
+             <div class="disclamer-tab absolute termsOfUseTitles">Parental Control</div>
 	            <div class="disclamer-text">
 					Tube 8 is rated with <a href=" http://www.rtalabel.org/index.php?content=parents/" target="_blank">RTA</a>. Parents, you can easily block access to this site. Please read this <a href="http://www.rtalabel.org/index.php?content=parents/" target="_blank">page</a> for more information.
 	            </div>
 			</div>
 
 			<div class="section_bar privacy-cont display-none">
- 				<div class="disclamer-tab absolute">PRIVACY POLICY</div>
+ 				<div class="disclamer-tab absolute termsOfUseTitles">PRIVACY POLICY</div>
  				<div class="disclamer-text">
 
 	            <p>
@@ -1312,9 +1323,11 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					}
 				});
 
-
 				$j('.videoThumbs').live('mouseover', function() {
 					currentThumbnailFlip	=  $j(this);
+					if( currentThumbnailFlip.closest('.friendsAdWrapper').length ) {
+						return false;
+					}
 					var index = currentThumbnailFlip.attr('id');
 
 					first_thumbs[index] = currentThumbnailFlip.attr('src');

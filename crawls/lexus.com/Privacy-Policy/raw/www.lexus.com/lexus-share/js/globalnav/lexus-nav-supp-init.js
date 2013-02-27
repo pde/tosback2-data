@@ -92,14 +92,14 @@ function miniPromo(){
 	]);
 	
 	LXPreload([
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazing.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazingOv.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaits.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaitsOv.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexus.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexusOv.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudio.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudioOv.png'
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazing.gif',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazingOv.gif',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaits.png',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaitsOv.png',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexus.gif',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexusOv.gif',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudio.png',
+		LEXUS_URL+'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudioOv.png'
 	]);
 	
 	LXDoDynamicContent({
@@ -1469,7 +1469,6 @@ LXSettings = {
 	animationsOn: (window.location.href.indexOf("/TheHardWay") == -1)	
 } 
 
-
 LXDoDynamicContent = function(options) {
 	var template = options.template;
 	var html = "";
@@ -2214,19 +2213,19 @@ if (location.protocol == "https:") {
 } else {
 	if (location.href.indexOf('devcpd2')>-1) {
 		LEXUS_URL = "http://devcpd2.lexus.com";
-	}
-	if (location.href.indexOf('staging')>-1) {
+	}else if (location.href.indexOf('staging')>-1) {
 		if (location.href.indexOf('origin')>-1) {
 			LEXUS_URL = "http://origin.staging.lexus.com";
 		} else {
 			LEXUS_URL = "http://staging.lexus.com";
 		} 
-	}
-	if (location.href.indexOf('www') > -1) {
+	}else if (location.href.indexOf('www') > -1) {
 		if (location.href.indexOf('origin')>-1) {
 			LEXUS_URL = "http://origin.www.lexus.com";
 		} else {
 			LEXUS_URL = "http://www.lexus.com";
 		} 
+	}else{
+		LEXUS_URL = "http://www.lexus.com";	
 	}
 }
