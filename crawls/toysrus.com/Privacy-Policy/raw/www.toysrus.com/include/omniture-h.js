@@ -352,6 +352,14 @@ More info available at http://www.omniture.com */
     	  //clean ups
     	  infectedCartSproductJS = null;
       }
+	  var docOmniURL = document.URL;
+	  if(s.products!= null && s.products.length > 0 && (docOmniURL.indexOf('ab=TRU_Header:Utility2:Cart:Mini-Cart') > -1 || docOmniURL.indexOf('ab=TRU_Header:VIEW-CART-n-CHECKOUT:Mini-Cart') > -1))
+	  {
+		var sProductsSplit = s.products;
+		var geteVar5 = sProductsSplit.substring(sProductsSplit.indexOf('eVar5='), sProductsSplit.length);		
+		sProductsSplit = sProductsSplit.replace(geteVar5, 'eVar5=Ship To Store');		
+		s.products = sProductsSplit;		
+	  }
       
       /* PMO 501 - Mini Cart omniture */ 
       if((s.prop1 != null) && (s.prop1 == s.prop9+': Mini Cart') && (s.pageName != s.prop9+': Mini Cart'))
@@ -475,18 +483,40 @@ More info available at http://www.omniture.com */
 				//eVar5
 				if(sprodAdnSrctoken.indexOf('eVar5') > -1) { 
 	    				sprodAdnSrctoken = sprodAdnSrctoken.replace('eVar5=Product Detail Page', 'eVar5=Ship To Store');
+						if(s.events.indexOf('event55') == -1)
+						{
+							s.events = 'event55,' + s.events;							
+						}
 	    			}else if(sprodAdnSrctoken.indexOf('eVar5') == -1){
 	    				sprodAdnSrctoken += ' |eVar5=Ship To Store';
+						if(s.events.indexOf('event55') == -1)
+						{	
+							s.events += ',event55';
+						}
 	    			}
 				omniSTSstorefrontCode = null;
+				s.linkTrackEvents="event55,scAdd,scOpen";
 			}
 			//eVar5 for main product
 			if(i==0 && (sprodAdnSrctoken.indexOf('eVar44') == -1) && (sprodAdnSrctoken.indexOf('eVar5') ==-1))
-		    {sprodAdnSrctoken += ' |eVar5=Product Detail Page';}
+		    {
+				sprodAdnSrctoken += ' |eVar5=Product Detail Page';
+				if(sprodAdnSrctoken.indexOf('eVar38') == -1)
+				{
+					sprodAdnSrctoken += ' |eVar38='+ omniSTSstorefrontCode;					
+				}
+				if(s.events.indexOf('event55') == -1)
+				{						
+					s.events += ',event55';							
+				}
+				s.linkTrackEvents="event55,scAdd,scOpen";				
+			}
 			
 			if(sprodAdnSrctoken != null && sprodAdnSrctoken.length > 0)
-				{sprodAdnSrc += sprodAdnSrctoken + ',';}
-    	  }
+			{
+				sprodAdnSrc += sprodAdnSrctoken + ',';
+			}
+		  }
     	  if(s.products.length > 0 && sprodAdnSrc.length > 0) {s.products = sprodAdnSrc;}
 
     	  //final Clean ups

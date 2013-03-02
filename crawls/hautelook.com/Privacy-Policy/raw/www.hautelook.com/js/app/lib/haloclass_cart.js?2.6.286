@@ -1,0 +1,194 @@
+$Halo.CartItem = $Halo.CartItem || function(argobj){
+	var obj = argobj || false;
+	if(obj instanceof $Halo.CartItem){
+		return obj;
+	}
+	
+	var defaults = {
+		id: -1,
+		cartId: -1,
+		eventTitle: "#EVENTTITLE#",
+		brandName: "#BRANDNAME#",
+		title: "#TITLE#",
+		titleLink: "#TITLELINK#",
+		expireTime: -1,
+		quantity: 0,
+		info: {
+			order: [],
+			values: {}
+		},
+		image: "#IMAGE#",
+		price: -1,
+		returnable: undefined,
+		expired: undefined,
+		viewed: undefined,
+		error: undefined
+	};
+	this.getDefaults = function(){
+		return defaults;
+	};
+	
+	if(!obj){
+		for(var prop in defaults){
+			this[prop] = defaults[prop];
+		}
+		return this;
+	}
+	
+	this.id = +(obj.id || obj.inventory_id || defaults.id);
+	this.cartId = +(obj.cart_id || obj.cartId || defaults.cartId);
+	this.eventTitle = obj.eventTitle || obj.event_title || defaults.eventTitle;
+	this.brandName = obj.brand_name || obj.brandName || defaults.brandName;
+	this.title = obj.title || obj.product_title || defaults.title;
+	this.image = obj.image_url || obj.image || defaults.image;
+	this.error = obj.error || obj.error || defaults.error;
+	
+	this.expireTime = obj.expire_time || obj.expireTime || defaults.expireTime;
+	if(this.expireTime < (new Date()/100)) { this.expireTime *= 1000 }
+	this.quantity = +(obj.amount || obj.quantity || defaults.quantity);
+	this.info = obj.info || defaults.info;
+	
+	this.price = +(obj.price || defaults.price);
+	this.returnable = (typeof obj.returnable !== 'undefined') ? +obj.returnable : defaults.returnable;
+	this.expired = (typeof obj.expired !== 'undefined') ? obj.expired : defaults.expired;
+	this.viewed = +(obj.viewed || obj.viewed_ts || defaults.viewed);
+
+	this.estimated_delivery = obj.estimated_delivery ;
+	
+	try{
+		this.verify(["id"]);
+		this.titleLink = "/product/" + this.id;
+	}
+	catch(e){
+		this.titleLink = defaults.titleLink;
+	}
+
+	return this;
+};
+
+$Halo.CartItem.prototype = new $Halo.Obj();
+$Halo.CartItem.prototype.formatted_delivery_date_range = $Halo.EstimatedDeliveryDateFormatter;
+
+$Halo.Cart = $Halo.Cart || function(obj){
+	if(obj instanceof $Halo.Cart){
+		return obj;
+	}
+	var defaults = {
+		items: [],
+		memberId: -1,
+		hasPaypal: undefined,
+		isGift: undefined,
+		errors: []
+	};
+	
+	this.getDefaults = function(){
+		return defaults;
+	};
+	//console.log(obj);
+	obj = obj || {items:[]};
+	obj.items = obj.items || defaults.items;
+	obj.errors = obj.errors || defaults.errors;
+	this.memberId = obj.member_id || obj.memberId || defaults.memberId;
+	this.hasPaypal = !!(+obj.has_paypal) || !!(+obj.hasPaypal) || defaults.hasPaypal;
+	this.isGift = !!(+obj.gift_checkout) || !!(+obj.isGift) || defaults.isGift;
+	this.cartStamp = obj.cartStamp || false;
+	var i = 0, len = obj.items.length;
+	this.items = [];
+	while(i < len){
+		this.items[i] = new $Halo.CartItem(obj.items[i]);
+		
+		var ei = 0, elen = obj.errors.length;
+		while (ei < elen) {
+            if (typeof obj.errors == 'string') {
+                this.items[i]['error'] = obj.errors;
+            } 
+            else if (obj.errors[ei].error.param && obj.errors[ei].error.param.substring(8) == this.items[i]['cartId']) {
+				this.items[i]['error'] = obj.errors[ei].error.messages[0].message; // only supporting one error message per cart iem at this time.
+			}	
+			else if (!obj.errors[ei].error.param) {
+				this.errors = obj.errors[ei].error.messages[0].message;
+			}
+			ei++;
+		}
+
+		try{
+			this.items[i].verify(["quantity"]);
+		}
+		catch(e){
+			Halo.errors.add(e);
+		}
+		i++;
+	}
+	return this;
+};
+
+$Halo.Cart.prototype = new $Halo.Obj();
+
+$Halo.Cart.prototype.eachItem = function(f, context){
+	var i = 0, len = this.items.length;
+	while(i < len){
+		f.call(context || window, this.items[i]);
+		i++;
+	}
+};
+
+$Halo.Cart.prototype.getCount = function(){
+	var i = 0, len = this.items.length, count = 0;
+	while(i < len){
+		try{
+			this.items[i].verify(["quantity"]);
+			count += this.items[i].quantity;
+		}
+		catch(e){
+			Halo.errors.add(e);
+		}
+		i++;
+	}
+	return count;
+};
+
+$Halo.Cart.prototype.getSubtotal = function(){
+	var i = 0, len = this.items.length, subtotal = 0;
+	while(i < len){
+		try{
+			this.items[i].verify(["quantity","price", "expired"]);
+			if(!this.items[i].expired){
+				subtotal += this.items[i].quantity * this.items[i].price;
+			}
+		}
+		catch(e){
+			Halo.errors.add(e);
+		}
+		i++;
+	}
+	return subtotal;
+};
+
+/*$Halo.CartItem item*/
+$Halo.Cart.prototype.addItem = function(item){
+	if(!(item instanceof $Halo.CartItem)){
+		throw new TypeError("Parameter 'item' must be of type $Halo.CartItem");
+	}
+	
+	var newItems = [];
+	newItems.push(item);
+	this.eachItem(function(oldItem){
+		newItems.push(oldItem);
+	},this);
+	this.items = null;
+	this.items = newItems;
+	return this.items.length;
+};
+
+$Halo.Cart.prototype.remove = function(itemId){
+	var i = 0, len = this.items.length, newItems = [], newCount = 0;
+	while(i < len){
+		if(this.items[i].id !== +itemId){
+			newItems.push(this.items[i]);
+		}
+		i++;
+	}
+	this.items = null;
+	this.items = newItems;
+	return this.items.length;
+};

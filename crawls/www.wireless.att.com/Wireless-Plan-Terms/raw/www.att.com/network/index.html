@@ -1180,24 +1180,47 @@ html body {
             </div>
           </div>
           <div style="float:left; width:335px; height:608px; padding-right:12px;margin-top:-4px;background-image:url('assets/RT-backer.png'); background-repeat: no-repeat;background-position: left top;border-right: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC">
- <div style="margin:50px 0px 9px 21px;" id="animatedTile">
-     <script type="text/javascript">
+<style type="text/css">
+.btnPlay {
+	border:0px;
+	position:absolute;
+    top:98px;
+    left:102px;
+}
+</style>
+<div style="margin:50px 0px 9px 21px;" id="animatedTile">    
+    
+<script type="text/javascript">
 	
-    	var devices = /webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+    	var devices = /webOS|iPad|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 		var isAndroid = /Android/i.test(navigator.userAgent);
+		var iPhone = /iPhone|iPod/i.test(navigator.userAgent);
+		
+		//The iPhone supplies a native play button so the devices needed to be separated out so other devices would have a similar button.
 		if (devices || isAndroid){ 
-			jQuery('#animatedTile').html('<video width="276" height="248" autoplay controls><source src="assets/video/network-tile-bigger-v2.mp4">Your browser does not support the video tag.</video>');
+			jQuery('#animatedTile').html('<div style="position:relative;"><div class="control"><img class="btnPlay" src="assets/iPhonePlayButton.png" alt="Replay" onmouseover="this.src=\'assets/iPhonePlayButton-hover.png\'" onmouseout="this.src=\'assets/iPhonePlayButton.png\'" /></div><video poster="assets/network-tile-bigger.jpg" id="myVideo" autoplay="autoplay" width="276" height="250" preload="auto" tabindex="0" onended="jQuery(\'.btnPlay\').show();" onplay="jQuery(\'.btnPlay\').hide();"><source id="animatedVideo" src="http://wpc.5bd7.att-acdn.net/005BD7/gvpVideos/gvp/mp4/network-tile-bigger-v2.mp4" /><img src="assets/network-tile-bigger.jpg" /></video></div>');
 			if(!isAndroid) {
 				// Android 2.3 does not accept the "type" attribute and fails.
 				jQuery('#animatedVideo').attr('type','video/mp4');				
 			}
 		}
-		else {
-			jQuery('#animatedTile').html('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="276" height="300" id="whatsBetter" align="middle"><param name="movie" value="assets/video/whatsBetter.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#fafafa" /><param name="play" value="true" /><param name="wmode" value="window" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--[if !IE]>--><object type="application/x-shockwave-flash" data="assets/video/whatsBetter.swf" width="276" height="300"><param name="movie" value="assets/video/whatsBetter.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#fafafa" /><param name="play" value="true" /><param name="wmode" value="window" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--<![endif]--><img src="assets/network-tile-bigger.jpg" /></a><!--[if !IE]>--></object><!--<![endif]--></object>');
+		else if (iPhone) {
+		jQuery('#animatedTile').html('<video id="myVideo" autoplay="autoplay" width="276" height="250" preload="auto" tabindex="0" onended="jQuery(\'.btnPlay\').show();"><source src="http://wpc.5bd7.att-acdn.net/005BD7/gvpVideos/gvp/mp4/network-tile-bigger-v2.mp4" type="video/mp4" /><img src="assets/network-tile-bigger.jpg" /></video>');
 		}
+		else {
+			//Used flash for the desktop version.
+			jQuery('#animatedTile').html('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="276" height="250" id="whatsBetter" align="middle"><param name="movie" value="assets/video/whatsBetter.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#fafafa" /><param name="play" value="true" /><param name="wmode" value="window" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--[if !IE]>--><object type="application/x-shockwave-flash" data="assets/video/whatsBetter.swf" width="276" height="250"><param name="movie" value="assets/video/whatsBetter.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#fafafa" /><param name="play" value="true" /><param name="wmode" value="window" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="sameDomain" /><!--<![endif]--><img src="assets/network-tile-bigger.jpg" /></a><!--[if !IE]>--></object><!--<![endif]--></object>');
+		}
+	jQuery(document).ready(function(){
+		var video = jQuery('#myVideo');
+		jQuery('.btnPlay').click(function() {
+			var video = jQuery('#myVideo');
+			video[0].play();
+		});
+	 });
+		
  </script>
-    
-    </div>
+ </div>
             <img src="assets/carousel-divider.jpg" style="display:block;"> <br/>
             <div id="vidPromo" style="padding-left:20px;cursor:pointer;"> <img src="assets/lte101video.jpg" 
 							onmouseover="this.src='assets/lte101video-hover.jpg'" 

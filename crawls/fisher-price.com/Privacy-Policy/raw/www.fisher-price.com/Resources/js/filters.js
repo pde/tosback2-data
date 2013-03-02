@@ -389,18 +389,26 @@ var ageFilter = '',
 	categoryFilter = '',
 	brandsFilter = '',
 	themesFilter = '',
+	ageFilter2 = '',
+	categoryFilter2 = '',
+	brandsFilter2 = '',
+	themesFilter2 = '',
 	finalDataList = '',
 	ageHTML = '',
 	categoryHTML = '',
 	brandsHTML = '',
 	themesHTML = '',
     typeFilter = '',
+    typeFilter2 = '',
     typeHTML = '',
     solutionsFilter = '',
+    solutionsFilter2 = '',
     solutionsHTML = '',
     developmentStageFilter = '',
+    developmentStageFilter2 = '',
     developmentStageHTML = '',
     collectionsFilter = '',
+    collectionsFilter2 = '',
     collectionsHTML = '',
     gaAge = '',
     gaCategory = '',
@@ -411,69 +419,119 @@ var ageFilter = '',
 
 collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
 
-    $('.filter-Age li.click-active').each(function () {
+	ageFilter = '',
+	categoryFilter = '',
+	brandsFilter = '',
+	themesFilter = '',
+	ageFilter2 = '',
+	categoryFilter2 = '',
+	brandsFilter2 = '',
+	themesFilter2 = '',
+	finalDataList = '',
+	ageHTML = '',
+	categoryHTML = '',
+	brandsHTML = '',
+	themesHTML = '',
+    typeFilter = '',
+    typeFilter2 = '',
+    typeHTML = '',
+    solutionsFilter = '',
+    solutionsFilter2 = '',
+    solutionsHTML = '',
+    developmentStageFilter = '',
+    developmentStageFilter2 = '',
+    developmentStageHTML = '',
+    collectionsFilter = '',
+    collectionsFilter2 = '',
+    collectionsHTML = ''
+
+	$('.filter-Age li.click-active').each(function () {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		ageFilter = ageFilter + "|" + getName;
-        ageHTML = ageHTML + "<span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' pName='" + getName + "' href='#'></a>";
+		ageFilter2 = ageFilter2 + "|" + getName + "," + getValue;
+        ageHTML = ageHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	ageFilter = ageFilter.substring(1);
+	ageFilter2 = ageFilter2.substring(1);
 
     $('.filter-category li.click-active').each(function (i) {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		categoryFilter = categoryFilter + "|" + getName;
+		categoryFilter2 = categoryFilter2 + "|" + getName + "," + getValue;
 		categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	categoryFilter = categoryFilter.substring(1);
+	categoryFilter2 = categoryFilter2.substring(1);
 
     $('.filter-type li.click-active').each(function () {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
         typeFilter = typeFilter + "|" + getName;
+        typeFilter2 = typeFilter2 + "|" + getName + "," + getValue;
         // typeHTML = typeHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	typeFilter = typeFilter.substring(1);
+	typeFilter2 = typeFilter2.substring(1);
 
 	$('.filter-solutions li.click-active').each(function () {
 		getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		solutionsFilter = solutionsFilter + "|" + getName;
+		solutionsFilter2 = solutionsFilter + "|" + getName + "," + getValue;
 		// solutionsHTML = solutionsHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>"; 
 		googleAnalyticsData = $(this).attr('trackOnSuccess');
 	});
 	solutionsFilter = solutionsFilter.substring(1);
+	solutionsFilter2 = solutionsFilter2.substring(1);
 
     $('.filter-development-stage li.click-active').each(function () {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
         developmentStageFilter = developmentStageFilter + "|" + getName;
+        developmentStageFilter2 = developmentStageFilter2 + "|" + getName + "," + getValue;
         // developmentStageHTML = developmentStageHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	developmentStageFilter = developmentStageFilter.substring(1);
+	developmentStageFilter2 = developmentStageFilter2.substring(1);
 
 	$('.filter-collections li.click-active').each(function () {
 		getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		collectionsFilter = collectionsFilter + "|" + getName;
+		collectionsFilter2 = collectionsFilter2 + "|" + getName + "," + getValue;
 		//  collectionsHTML = collectionsHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
 		googleAnalyticsData = $(this).attr('trackOnSuccess');
 	});
 	collectionsFilter = collectionsFilter.substring(1);
+	collectionsFilter2 = collectionsFilter2.substring(1);
 
     $('.filter-themes li.click-active').each(function (i) {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		themesFilter = themesFilter + "|" + getName;
+		themesFilter2 = themesFilter2 + "|" + getName + "," + getValue;
 		themesHTML = themesHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='theme updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	themesFilter = themesFilter.substring(1);
+	themesFilter2 = themesFilter2.substring(1);
 
     $('.filter-brands li.click-active').each(function (i) {
         getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
 		brandsFilter = brandsFilter + "|" + getName;
+		brandsFilter2 = brandsFilter2 + "|" + getName + "," + getValue;
 		brandsHTML = brandsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	brandsFilter = brandsFilter.substring(1);
+	brandsFilter2 = brandsFilter2.substring(1);
 
     /* $('.filter-brands li.click-active').each(function () {
     getName = $(this).attr('pName');
@@ -587,16 +645,16 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
 		finalDataList = finalDataList.substring(1);
 	}
 
-/*    var finalDataListObj = new Object();
-    finalDataListObj[0] = ageFilter;
-    finalDataListObj[1] = categoryFilter;
-    finalDataListObj[2] = brandsFilter;
-    finalDataListObj[3] = themesFilter;
-    finalDataListObj[4] = typeFilter;
-    finalDataListObj[5] = solutionsFilter;
-    finalDataListObj[6] = developmentStageFilter;
-    finalDataListObj[7] = collectionsFilter;
-*/
+    var finalDataListObj = new Object();
+    finalDataListObj[0] = ageFilter2;
+    finalDataListObj[1] = categoryFilter2;
+    finalDataListObj[2] = brandsFilter2;
+    finalDataListObj[3] = themesFilter2;
+    finalDataListObj[4] = typeFilter2;
+    finalDataListObj[5] = solutionsFilter2;
+    finalDataListObj[6] = developmentStageFilter2;
+    finalDataListObj[7] = collectionsFilter2;
+
     var finalSelectedCategoriesList = new Object();
     finalSelectedCategoriesList[0] = ageHTML;
     finalSelectedCategoriesList[1] = categoryHTML;
@@ -606,15 +664,18 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
     finalSelectedCategoriesList[5] = solutionsHTML;
     finalSelectedCategoriesList[6] = developmentStageHTML;
     finalSelectedCategoriesList[7] = collectionsHTML;
-/*
+
     // Nr=AND(OR(4294961765,4294961849),OR(4294961862),NOT(4294961819))
 
-    for (i = 0; i <= 7; i++) {
-        if (finalDataListObj[i] !== '') {
-            finalDataList = finalDataList + finalDataListObj[i] + "$";
-        }
-    }
-*/
+    if(isBrandProductPage != true) {
+		finalDataList = "";
+		for (i = 0; i <= 7; i++) {
+			if (finalDataListObj[i] !== '') {
+				finalDataList = finalDataList + finalDataListObj[i] + "$";
+			}
+		}
+	}
+
     var targetId = "#result";
 
 
@@ -1123,7 +1184,6 @@ updateAgeFilterSection = function (objAge) {
 		if(getCode == undefined) {
 			getCode = $(this).attr('categorycode');
 		}
-		getCode = getCode.toLowerCase();
         if ($.inArray(getCode, objAge) !== -1) {
             $(this).css("display", 'block');
         } else {
@@ -1897,6 +1957,9 @@ function buildHash(oe) {
 			if($(this).attr('selector-code')) {
 				hash = hash + "age=" + $(this).attr('selector-code') + "&";
 			}
+			else if($(this).attr('pname')) {
+				hash = hash + "age=" + $(this).attr('pname') + "&";
+			}
 			else {
 				hash = hash + "age=" + $(this).attr('categorycode') + "&";
 			}
@@ -1943,7 +2006,11 @@ function buildHash(oe) {
 		if(!$('#viewAllProducts').hasClass('active') && $('#viewAllProducts').length > 0) {
 			hash = hash + "viewAllProducts=true&";
 		}
-		window.location.hash = hash.substring(0, hash.length-1);
+		hash = hash.substring(0, hash.length-1);
+		if(hash == "") {
+			hash = "#_";
+		}
+		window.location.hash = hash;
 	}
 }
 
@@ -1983,5 +2050,9 @@ function updateHash(obj, oe) {
 	if ($(obj).attr('data-sort') != null) {
 		newHash = newHash + 'dataSort' + "=" + $(obj).attr('data-sort') + "&";
 	}
-	window.location.hash = newHash.substring(0, newHash.length-1);
+	newHash = newHash.substring(0, newHash.length-1);
+	if(newHash == "") {
+		newHash = "#_";
+	}
+	window.location.hash = newHash;
 }

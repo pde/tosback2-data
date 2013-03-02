@@ -19,6 +19,7 @@ dojo.require("bec.util.search");
 dojo.require("bec.analytics.Coremetrics");
 dojo.require("bec.vendors.chat.LivePerson");
 dojo.require("bec.vendors.TagMan");
+dojo.require("bec.vendors.Tealeaf");
 
 dojo.require("bec.widget.Button");
 dojo.require("bec.widget.EasyButton");
@@ -79,6 +80,11 @@ dojo.addOnLoad(function()
     	//TagMan
     	if(typeof tmEnabled !== "undefined" && tmEnabled)
     		new bec.vendors.TagMan();
+    	
+    	//Tealeaf
+    	if(typeof tlEnabled !== "undefined" && tlEnabled) {
+    		new bec.vendors.Tealeaf();
+    	}
     }
     catch(e)
     {

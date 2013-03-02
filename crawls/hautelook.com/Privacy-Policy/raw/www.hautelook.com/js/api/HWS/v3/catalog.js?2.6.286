@@ -1,0 +1,159 @@
+// Namespace check...
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+// Catalog Web Service http://wiki.hautelook.net/wiki/webservice/v3_catalog
+HWS.v3.catalog = {};
+
+/**
+ * Catalog 'assign' method adds properties to model object
+ * @method decorate
+ * @param dataObj {object} response from service
+ * @param dataPropName {object} first property in response object
+ * @param modelObj {object} catalog model object
+ * @param errorStr {string} message when expected property name is not matched from service response object
+ */
+HWS.v3.catalog.assign = function (dataObj, dataPropName, modelObj, errorStr) {
+    var _prop;
+    if (!dataObj.hasOwnProperty(dataPropName)) {
+        throw new Error(errorStr);
+    } else {
+        for (_prop in dataObj[dataPropName]) {
+            modelObj[_prop] = dataObj[dataPropName][_prop];
+        }
+    }
+    return modelObj;
+};
+
+/**
+ * Defines a catalog request object to be used
+ * utilized by the rest of the front-end site.
+ *
+ * @param urlStr {string} url for request
+ * @param params {object} with property 'event_id' and methods for : 'onFailure', 'onSuccess', 'complete'
+ * @param callback {function} that accepts response object if need to parse/revise data, called on success
+ */
+HWS.v3.catalog.Request = function (urlStr, params, callback) {
+    var request = {}, _onSuccess;
+    
+    function isFunction (method) {
+        return (method !== 'undefined' && typeof method === 'function');
+    }
+
+    request.url = urlStr;
+    request.type = 'get';
+    request.dataType = 'json';
+    request.useREST = true;
+    request.haloHandleAjaxResponse = true;
+
+    if (isFunction(params.onFailure)) {
+        request.haloFail = params.onFailure;
+    }
+    if (isFunction(params.complete)) {
+        request.complete = params.complete;
+    }
+    if (isFunction(params.onSuccess)) { 
+        _onSuccess = params.onSuccess; 
+    }
+
+    request.haloSuccess = function(response, status, XHR) {
+        var _response = response;
+        if (isFunction(callback)) {
+            _response = callback(response);
+        }
+        if (_onSuccess) {
+            _onSuccess(_response, status, XHR);
+        }
+    };
+
+    return request;
+};
+
+/**
+ * Web Service request for Catalog Data
+ * @param params {object} with property 'event_id' and methods for : 'onFailure', 'onSuccess', 'complete'
+ */
+HWS.v3.catalog.get = function(params) {
+    var request, urlStr, translate;
+    
+    translate = function (data) {
+        var _catalog = new HWS.models.Catalog(),
+            propName = 'catalog',
+            errorMsg = "HWS.v3.catalog.get - web service should return an object with first property named" + propName;
+
+        _catalog = HWS.v3.catalog.assign(data, propName, _catalog, errorMsg);
+
+        return _catalog;
+    };
+    urlStr = '/v3/catalog/' + params.event_id;
+    if (typeof params.preview !== 'undefined' && params.preview === true) {
+        urlStr = urlStr + '/preview';
+    }
+    request = new HWS.v3.catalog.Request(urlStr, params, translate);
+
+    $.ajax(request);
+};
+
+HWS.v3.catalog.availability = {};
+/**
+ * Web Service request for Catalog Availability Data
+ * @param params {object} with property 'event_id' and methods for : 'onFailure', 'onSuccess', 'complete'
+ */
+HWS.v3.catalog.availability.get = function(params) {
+    var request, urlStr, translate;
+
+    translate = function (data) {
+        var _availabilities = [],
+            propName = 'availability',
+            errorMsg= "HWS.v3.catalog.availability.get - web service should return an " +
+                "array of objects each with the first property named" + propName;
+
+        if (!data.hasOwnProperty('availabilities')) {
+            throw new Error("HWS.v3.catalog.availability.get - web service should return an object with first property named availabilities");
+        } else {
+            $.each(data.availabilities, function (i){
+                var _item, _availability = new HWS.models.CatalogAvailability()
+                _item = HWS.v3.catalog.assign(data.availabilities[i], propName, _availability, errorMsg);
+                _availabilities.push(_item);
+            });
+        }
+
+        return _availabilities;
+    };
+    urlStr = '/v3/catalog/' + params.event_id + '/availability';
+    if (typeof params.preview !== 'undefined' && params.preview === true) {
+        urlStr = urlStr + '/preview';
+    }
+    request = new HWS.v3.catalog.Request(urlStr, params, translate);
+
+    $.ajax(request);
+};
+
+HWS.v3.catalog.event = {};
+/**
+ * Web service request for nested Catalog event data
+ * @param params {object} with property 'event_id' and methods for : 'onFailure', 'onSuccess', 'complete'
+ */
+HWS.v3.catalog.event.get = function(params) {
+    var request, urlStr = '/v3/event/' + params.event_id,confirmData;
+
+    confirmData = function(data) {
+        var nestedEvent;
+        if (!data.hasOwnProperty('event')) {
+            throw new Error(
+                "HWS.v3.catalog.event.get - web service should return an object with first property named event"
+            );
+        } else {
+            if (typeof data.event.meta.status !== 'undefined') {
+                nestedEvent = new HWS.v3.events.object(data.event);
+            }
+        }
+        return nestedEvent;
+    }
+    request = new HWS.v3.catalog.Request(urlStr, params, confirmData);
+    $.ajax(request);
+}

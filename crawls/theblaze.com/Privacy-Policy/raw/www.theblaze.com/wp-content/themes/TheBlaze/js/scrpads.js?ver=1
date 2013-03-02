@@ -14,7 +14,7 @@
 		},
 		init : function() { 
 			this.radiumoneval = "No";
-			this.ord = Math.ceil( Math.random() * 10000000000000000);
+			this.ord = this.util.set_ord_val();
 			if(document.location.pathname !== '/') {
 				path = document.location.pathname.split('/');
 				if(path.length >= 2) this.slug = path[path.length-2];
@@ -22,6 +22,9 @@
 			this.gather_cats();
 		},
 		util : {
+			set_ord_val: function(){ 
+				return Math.ceil( Math.random() * 10000000000000000);
+			},
 			iframe : {
 				create : function(w, h, id) {
 					var ifrm = document.createElement('iframe');
@@ -110,18 +113,23 @@
 		},
 		create_iframe_ad : function(id,url,w,h,params,xparams,refresh){
 			this.gather_cats();
-			var this_ = this,reload = false;
+			var refresh_ = refresh || false;
+			var this_ = this,reload = false, blzads_ord = $.blzads.ord;
 			var ifram = this_.util.iframe.create(w,h,id);
 			var local_params = $.extend({},params,xparams);
+			if(refresh_ && refresh_.ord_reload == true){
+				blzads_ord = this_.util.set_ord_val();
+			}
+
 			function setupIframe (){
 				this.reload = reload;
-				ifram.src  = url+';'+ this_.util.get_doubleclick_params(local_params) +';ord=' + $.blzads.ord +'?';
+				ifram.src  = url+';'+ this_.util.get_doubleclick_params(local_params) +';ord=' + blzads_ord +'?';
 				$('#'+id).append(ifram);
 				if(this.reload){
 					setTimeout(setupIframe,10.*60*1000);
 				}
 			}
-			var refresh_ = refresh || false;
+			
 			if(refresh_ && refresh_.enabled == true){
 				reload = true;
 				setupIframe();

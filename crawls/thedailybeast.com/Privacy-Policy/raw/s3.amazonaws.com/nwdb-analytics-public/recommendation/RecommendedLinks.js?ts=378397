@@ -1,0 +1,1571 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/forrest-fenn-how-to-find-his-hidden-treasure.html",' +
+                '"title": "Forrest Fenn: How to Find His Hidden Treasure",' +
+                '"rubric": "X Marks the Spot",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "74b339d60f3381acc4548e8414300285"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/17/meet-baauer-the-man-behind-the-harlem-shake.html",' +
+                '"title": "Meet Baauer, the Man Behind the Harlem Shake",' +
+                '"rubric": "Viral Sensation",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d47f8b415de7a07d06af70de205dcd25"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/25/the-onion-tweets-that-quvenzhan-wallis-is-a-cunt.html",' +
+                '"title": "The Onion Tweets That Quvenzhan&eacute; Wallis Is the C-Word",' +
+                '"rubric": "No LOLs",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9ee9d0f970e1e9600886057e0b22f7d3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/if-you-re-hunting-for-forrest-fenn-s-buried-treasure-start-here.html",' +
+                '"title": "If You&rsquo;re Hunting for Forrest Fenn&rsquo;s Buried Treasure, Start Here",' +
+                '"rubric": "X Marks the Spot",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a29621d12bd254fd68edd479c4a240fb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesnt Love Chris Christie",' +
+                '"rubric": "null",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/15/conspiracy-theories-why-did-the-pope-really-quit.html",' +
+                '"title": "Conspiracy Theories: Why Did the Pope Really Quit?",' +
+                '"rubric": "GOSSIP",' +
+                '"topic": "World",' +
+                '"urlHashCode": "1f93a6828854ce1236c17d3e12b8369d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/fashion-s-night-out-goes-on-hiatus-in-us-anne-hathaway-apologizes-to-valentino.html",' +
+                '"title": "Anne Hathaway Almost Wore A Dress that Matched Amanda Seyfried\'s; Fashion\'s Night Out Goes on Hiatus in US",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "7fb097ac5110bde6faba072b3838c60d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/white-model-ondria-hardin-poses-as-african-queen-in-num-ro-magazine.html",' +
+                '"title": "White Model Ondria Hardin Poses as &lsquo;African Queen&rsquo; In Num&eacute;ro Magazine",' +
+                '"rubric": "SHOCKING",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "88923fd050f7828d1480550cb17af290"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/25/seth-macfarlane-s-juvenile-oscars-sexism-assassination-nazi-jokes.html",' +
+                '"title": "The Juvenile Oscars",' +
+                '"rubric": "DISASTER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "035607df387a324c7eb05e95c1262f90"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/pope-benedict-s-red-shoes-weren-t-prada.html",' +
+                '"title": "Shocker: Pope Benedict\'s Red Shoes Weren\'t Prada",' +
+                '"rubric": "Say What?!",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "c4c199f4b3b2d9c89e464a4ab904a671"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/david-frum-why-i-signed-the-republican-brief-supporting-gay-marriage.html",' +
+                '"title": "David Frum: Why I Signed the Republican Brief Supporting Gay Marriage",' +
+                '"rubric": "Enough",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa5ca949bd4f25211d1d5ac40c3d6e59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/has-obama-lost-interest-in-the-israel-palestinian-conflict.html",' +
+                '"title": "Has Obama Lost Interest in the Israel-Palestinian Conflict?",' +
+                '"rubric": "Palestine Inaction",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fd494d536c53b5d93f9063460194568"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/domestic-violence-among-the-wealthy-hides-behind-veil-of-silence.html",' +
+                '"title": "Domestic Violence Among the Wealthy Hides Behind &lsquo;Veil of Silence&rsquo;",' +
+                '"rubric": "Unique Stigma",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "00ac1cd67ce4cae7ef392bb6f831861e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-sequester-defies-economic-good-sense-and-should-be-cancelled.html",' +
+                '"title": "The Sequester Defies Economic Good Sense and Should Be Canceled",' +
+                '"rubric": "Just Do It!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "73b6e8dc31f518f55d43484d9524b523"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/the-greatest-sequester-lie-of-all-we-ve-already-saved-84-billion.html",' +
+                '"title": "The Greatest Sequester Lie of All: We&rsquo;ve Already Saved $84 Billion!",' +
+                '"rubric": "The Asylum",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fa77b6103f2ed749e408fb3bb6d01846"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/have-ugg-boots-made-a-tepid-return-to-fashion.html",' +
+                '"title": "Have Ugg Boots Made a Tepid Return to Fashion?",' +
+                '"rubric": "Not Again!",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "5541577bf7644bdd2e92a8223957a912"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/our-unsafe-food-supply-is-killing-us.html",' +
+                '"title": "Our Unsafe Food Supply Is Killing Us",' +
+                '"rubric": "TAKE ACTION, FDA",' +
+                '"topic": "null",' +
+                '"urlHashCode": "9f2adb2ec0d1ab0b05564d01c81170e6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/why-wall-street-is-ignoring-the-arrival-of-the-sequester.html",' +
+                '"title": "Why Wall Street Is Ignoring the Arrival of the Sequester",' +
+                '"rubric": "What Sequester?",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "45cca21bc7d9678bc45899f667d5c3eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/calling-bs-on-the-surge-in-cursing-by-beltway-politicians.html",' +
+                '"title": "Calling BS on the Surge in Cursing by Beltway Politicians",' +
+                '"rubric": "Fightin&rsquo; Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "73587688a2850c19b5e3dbc6479a68b4"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/02/27/david-bowie-george-michael-more-of-the-best-supermodel-music-videos.html",' +
+                '"title": "David Bowie, George Michael &amp; More of the Best Supermodel Music Videos",' +
+                '"rubric": "BOWIE &amp; MORE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b847c0b539f40f72b6bf0dae8d49c44c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/our-unsafe-food-supply-is-killing-us.html",' +
+                '"title": "Our Unsafe Food Supply Is Killing Us",' +
+                '"rubric": "TAKE ACTION, FDA",' +
+                '"topic": "null",' +
+                '"urlHashCode": "9f2adb2ec0d1ab0b05564d01c81170e6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/03/01/our-unsafe-food-supply-is-killing-us.html",' +
+                '"title": "Our Unsafe Food Supply Is Killing Us",' +
+                '"rubric": "TAKE ACTION, FDA",' +
+                '"topic": "null",' +
+                '"urlHashCode": "9f2adb2ec0d1ab0b05564d01c81170e6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/has-obama-lost-interest-in-the-israel-palestinian-conflict.html",' +
+                '"title": "Has Obama Lost Interest in the Israel-Palestinian Conflict?",' +
+                '"rubric": "Palestine Inaction",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fd494d536c53b5d93f9063460194568"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/the-greatest-sequester-lie-of-all-we-ve-already-saved-84-billion.html",' +
+                '"title": "The Greatest Sequester Lie of All: We&rsquo;ve Already Saved $84 Billion!",' +
+                '"rubric": "The Asylum",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fa77b6103f2ed749e408fb3bb6d01846"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/domestic-violence-among-the-wealthy-hides-behind-veil-of-silence.html",' +
+                '"title": "Domestic Violence Among the Wealthy Hides Behind &lsquo;Veil of Silence&rsquo;",' +
+                '"rubric": "Unique Stigma",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "00ac1cd67ce4cae7ef392bb6f831861e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/our-unsafe-food-supply-is-killing-us.html",' +
+                '"title": "Our Unsafe Food Supply Is Killing Us",' +
+                '"rubric": "TAKE ACTION, FDA",' +
+                '"topic": "null",' +
+                '"urlHashCode": "9f2adb2ec0d1ab0b05564d01c81170e6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/forrest-fenn-how-to-find-his-hidden-treasure.html",' +
+                '"title": "Forrest Fenn: How to Find His Hidden Treasure",' +
+                '"rubric": "X Marks the Spot",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "74b339d60f3381acc4548e8414300285"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-sequester-defies-economic-good-sense-and-should-be-cancelled.html",' +
+                '"title": "The Sequester Defies Economic Good Sense and Should Be Canceled",' +
+                '"rubric": "Just Do It!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "73b6e8dc31f518f55d43484d9524b523"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/have-ugg-boots-made-a-tepid-return-to-fashion.html",' +
+                '"title": "Have Ugg Boots Made a Tepid Return to Fashion?",' +
+                '"rubric": "Not Again!",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "5541577bf7644bdd2e92a8223957a912"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/if-you-re-hunting-for-forrest-fenn-s-buried-treasure-start-here.html",' +
+                '"title": "If You&rsquo;re Hunting for Forrest Fenn&rsquo;s Buried Treasure, Start Here",' +
+                '"rubric": "X Marks the Spot",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a29621d12bd254fd68edd479c4a240fb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/cannibal-cop-may-be-saved-by-his-own-words.html",' +
+                '"title": "Cannibal Cop May Be Saved by His Own Words",' +
+                '"rubric": "Saved by His Own Words?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "15d16bc84e5f1758158ef021756ba3af"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2013/02/28/lohan-living-in-a-van-down-by-the-river.html",' +
+                '"title": "Lohan: Living In A Van Down By the River?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "723a70b8aba7a0dc192bc97775d18114"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/28/live-and-let-diocese.html",' +
+                '"title": "Live and Let Diocese",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "13df47f7e5121e132b382e7b25d33b47"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/28/harlem-shake-on-a-plane.html",' +
+                '"title": "\'Harlem Shake\' On A Plane",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7c17d9699ce3fb4d45cec0262f5e46f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/7-best-zero-dark-thirty-parodies-video.html",' +
+                '"title": "&lsquo;Zero Dark Thirty&rsquo; Parodies: Lena Dunham, 50 Cent &amp; More (VIDEO)",' +
+                '"rubric": "Torturously Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3fbbd3ae9551b0bc757612877114c697"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/abc-family-s-switched-at-birth-asl-episode-recalls-gallaudet-protest.html",' +
+                '"title": "ABC Family&rsquo;s &lsquo;Switched at Birth&rsquo; ASL Episode Recalls Gallaudet Protest",' +
+                '"rubric": "Sound of Silence",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b98b48b0682606553b63c4917513a77e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/01/neil-patrick-harris-among-guest-popes.html",' +
+                '"title": "Neil Patrick Harris Among \'Guest Popes\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d5be8a8691ba61ccfe5f0b86efce75ee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/27/chris-christie-vs-the-gop.html",' +
+                '"title": "Chris Christie Vs. The GOP",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae5ba1e7d22805c935b5a83587d57530"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/01/lebron-miami-heat-harlem-shake.html",' +
+                '"title": "LeBron, Miami Heat \'Harlem Shake\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6f47af291491b70b97e951f76dc74870"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/27/lena-dunham-s-zero-dark-thirty-audition.html",' +
+                '"title": "Lena Dunham\'s \'Zero Dark Thirty\' Audition",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c5e4276ca3839307b4b681a84bda1d6b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/26/lil-poopy-the-naughtiest-9-year-old.html",' +
+                '"title": "Lil Poopy: The Naughtiest 9-Year-Old",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5a16e0303bf7c15849a56340a07b87b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/abc-family-s-switched-at-birth-asl-episode-recalls-gallaudet-protest.html",' +
+                '"title": "ABC Family&rsquo;s &lsquo;Switched at Birth&rsquo; ASL Episode Recalls Gallaudet Protest",' +
+                '"rubric": "Sound of Silence",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b98b48b0682606553b63c4917513a77e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/white-model-ondria-hardin-poses-as-african-queen-in-num-ro-magazine.html",' +
+                '"title": "White Model Ondria Hardin Poses as &lsquo;African Queen&rsquo; In Num&eacute;ro Magazine",' +
+                '"rubric": "SHOCKING",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "88923fd050f7828d1480550cb17af290"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/27/keith-ellison-goes-off-on-hannity.html",' +
+                '"title": "Keith Ellison Goes Off On Hannity",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d4623b7772982e456cfbc9c441be4b4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/david-frum-why-i-signed-the-republican-brief-supporting-gay-marriage.html",' +
+                '"title": "David Frum: Why I Signed the Republican Brief Supporting Gay Marriage",' +
+                '"rubric": "Enough",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa5ca949bd4f25211d1d5ac40c3d6e59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/26/lil-poopy-the-naughtiest-9-year-old.html",' +
+                '"title": "Lil Poopy: The Naughtiest 9-Year-Old",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5a16e0303bf7c15849a56340a07b87b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/seven-things-to-do-on-national-day-of-unplugging.html",' +
+                '"title": "Seven Things to Do on National Day of Unplugging",' +
+                '"rubric": "No Gadgets Day",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8bff9dc65cc3d7ba773288e4c37e9939"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/27/chris-christie-vs-the-gop.html",' +
+                '"title": "Chris Christie Vs. The GOP",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae5ba1e7d22805c935b5a83587d57530"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/game-of-thrones-facebook-app-ascent-just-too-popular-in-its-first-week.html",' +
+                '"title": "\'Game of Thrones\' Facebook App Ascent Just Too Popular in Its First Week",' +
+                '"rubric": "Westeros in Your Phone",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "0e76177bd46a9737bc1f724fdb5db57d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/eat-like-a-greek-the-mediterranean-diet-that-could-save-your-life.html",' +
+                '"title": "Eat Like a Greek: The Mediterranean Diet That Could Save Your Life",' +
+                '"rubric": "LIFE-SAVING DIET?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "aebd6935911adfebf13960f4b55212d0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/have-ugg-boots-made-a-tepid-return-to-fashion.html",' +
+                '"title": "Have Ugg Boots Made a Tepid Return to Fashion?",' +
+                '"rubric": "Not Again!",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "5541577bf7644bdd2e92a8223957a912"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/02/28/live-and-let-diocese.html",' +
+                '"title": "Live and Let Diocese",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "13df47f7e5121e132b382e7b25d33b47"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/02/12/whitney-houston-anatomy-of-a-lesbian-rumor.html",' +
+                '"title": "Whitney Houston: Anatomy of a Lesbian Rumor",' +
+                '"rubric": "How Will I Know?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e7600538ca33a0fde84d8d1360d9c6b3"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/02/28/calling-bs-on-the-surge-in-cursing-by-beltway-politicians.html",' +
+                '"title": "Calling BS on the Surge in Cursing by Beltway Politicians",' +
+                '"rubric": "Fightin&rsquo; Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "73587688a2850c19b5e3dbc6479a68b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/the-greatest-sequester-lie-of-all-we-ve-already-saved-84-billion.html",' +
+                '"title": "The Greatest Sequester Lie of All: We&rsquo;ve Already Saved $84 Billion!",' +
+                '"rubric": "The Asylum",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fa77b6103f2ed749e408fb3bb6d01846"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/has-obama-lost-interest-in-the-israel-palestinian-conflict.html",' +
+                '"title": "Has Obama Lost Interest in the Israel-Palestinian Conflict?",' +
+                '"rubric": "Palestine Inaction",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fd494d536c53b5d93f9063460194568"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/david-frum-why-i-signed-the-republican-brief-supporting-gay-marriage.html",' +
+                '"title": "David Frum: Why I Signed the Republican Brief Supporting Gay Marriage",' +
+                '"rubric": "Enough",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa5ca949bd4f25211d1d5ac40c3d6e59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/domestic-violence-among-the-wealthy-hides-behind-veil-of-silence.html",' +
+                '"title": "Domestic Violence Among the Wealthy Hides Behind &lsquo;Veil of Silence&rsquo;",' +
+                '"rubric": "Unique Stigma",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "00ac1cd67ce4cae7ef392bb6f831861e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-sequester-defies-economic-good-sense-and-should-be-cancelled.html",' +
+                '"title": "The Sequester Defies Economic Good Sense and Should Be Canceled",' +
+                '"rubric": "Just Do It!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "73b6e8dc31f518f55d43484d9524b523"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/meet-mariann-from-brooklyn-howard-stern-s-biggest-fan.html",' +
+                '"title": "Meet Mariann From Brooklyn, Howard Stern&rsquo;s Biggest Fan",' +
+                '"rubric": "Wack Pack Queen",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9e9f51b11aba84496d3ac28f211e5188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/how-the-sequester-will-harm-republican-states.html",' +
+                '"title": "How the Sequester Will Harm Republican States",' +
+                '"rubric": "Deadline",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8e3a5c96b57493fbb4e1baa7b16a137c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/why-wall-street-is-ignoring-the-arrival-of-the-sequester.html",' +
+                '"title": "Why Wall Street Is Ignoring the Arrival of the Sequester",' +
+                '"rubric": "What Sequester?",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "45cca21bc7d9678bc45899f667d5c3eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/our-unsafe-food-supply-is-killing-us.html",' +
+                '"title": "Our Unsafe Food Supply Is Killing Us",' +
+                '"rubric": "TAKE ACTION, FDA",' +
+                '"topic": "null",' +
+                '"urlHashCode": "9f2adb2ec0d1ab0b05564d01c81170e6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2011/09/23/nirvana-s-nevermind-20th-anniversary-kurt-cobain-s-feminist-legacy.html",' +
+                '"title": "Nirvana&rsquo;s Secret Feminism",' +
+                '"rubric": "About a Girl",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c672e3c96be0568368aad79bbe2797e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/25/the-onion-tweets-that-quvenzhan-wallis-is-a-cunt.html",' +
+                '"title": "The Onion Tweets That Quvenzhan&eacute; Wallis Is the C-Word",' +
+                '"rubric": "No LOLs",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9ee9d0f970e1e9600886057e0b22f7d3"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/ashton-carter-the-superhero-of-the-sequester.html",' +
+                '"title": "Ashton Carter: Superhero of the Sequester",' +
+                '"rubric": "SELFLESS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "294b051f40c1c4aec64ee9e408093bbc"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-cynical-slog-strategy.html",' +
+                '"title": "The GOP&rsquo;s Cynical Slog Strategy",' +
+                '"rubric": "Obstruction",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "61632018bb887454a398fc13118ebdd4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/has-obama-lost-interest-in-the-israel-palestinian-conflict.html",' +
+                '"title": "Has Obama Lost Interest in the Israel-Palestinian Conflict?",' +
+                '"rubric": "Palestine Inaction",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fd494d536c53b5d93f9063460194568"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/why-the-gop-doesn-t-love-chris-christie.html",' +
+                '"title": "Why the GOP Doesn&rsquo;t Love Chris Christie",' +
+                '"rubric": "CPAC Snub",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52004e942eee06d152a31226b8ff3f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/current-former-yahoo-employees-question-the-ban-on-working-from-home.html",' +
+                '"title": "Current, Former Yahoo Employees Question the Ban on Working From Home",' +
+                '"rubric": "No more work at home!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "8414fb6cfec348696f7f6187eb8a9b2e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/the-greatest-sequester-lie-of-all-we-ve-already-saved-84-billion.html",' +
+                '"title": "The Greatest Sequester Lie of All: We&rsquo;ve Already Saved $84 Billion!",' +
+                '"rubric": "The Asylum",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fa77b6103f2ed749e408fb3bb6d01846"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/our-insincere-pointless-cult-of-apology.html",' +
+                '"title": "Our Insincere, Pointless Cult of Apology",' +
+                '"rubric": "GROVELERS",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a6b1e703d9a2042621f1ec9faf7bf23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-pro-freedom-republicans-are-coming-131-sign-gay-marriage-brief.html",' +
+                '"title": "The Pro-Freedom Republicans Are Coming: 131 Sign Gay-Marriage Brief",' +
+                '"rubric": "Pro-Freedom",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f5c049aa92e83a082cee7a42fc3a58d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/is-egypt-heading-towards-civil-war.html",' +
+                '"title": "Will Violence Erupt in Egypt?",' +
+                '"rubric": "Middle East",' +
+                '"topic": "World",' +
+                '"urlHashCode": "922cbae90ce26f046b46db3134bd44b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-absurd-backlash-against-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "The Absurd Backlash Against Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Feminist Business",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "be8b24ef023accaa7dc8689bc751d120"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/calling-bs-on-the-surge-in-cursing-by-beltway-politicians.html",' +
+                '"title": "Calling BS on the Surge in Cursing by Beltway Politicians",' +
+                '"rubric": "Fightin&rsquo; Words",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "73587688a2850c19b5e3dbc6479a68b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/the-sequester-defies-economic-good-sense-and-should-be-cancelled.html",' +
+                '"title": "The Sequester Defies Economic Good Sense and Should Be Canceled",' +
+                '"rubric": "Just Do It!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "73b6e8dc31f518f55d43484d9524b523"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/david-frum-why-i-signed-the-republican-brief-supporting-gay-marriage.html",' +
+                '"title": "David Frum: Why I Signed the Republican Brief Supporting Gay Marriage",' +
+                '"rubric": "Enough",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "fa5ca949bd4f25211d1d5ac40c3d6e59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-cannibal-cop-and-the-dark-secret-world-of-cannibal-porn.html",' +
+                '"title": "The Cannibal Cop and the Dark, Secret World of Cannibal Porn",' +
+                '"rubric": "Just Fantasy?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2453081b1738d7d8948395a83b592fce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/the-secret-life-of-janet-jackson.html",' +
+                '"title": "The Secret Life of Janet Jackson",' +
+                '"rubric": "Shhh",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6624885380034356b9a04544229fc8f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/there-s-no-problem-with-obama-s-hanging-out-with-jay-z-and-tiger-woods.html",' +
+                '"title": "There&rsquo;s No Problem With Obama&rsquo;s Hanging Out With Jay-Z and Tiger Woods",' +
+                '"rubric": "Under Raps",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "738b13afc2c72eda3f45d3a221bdc5a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/expelled-for-speaking-out-about-rape.html",' +
+                '"title": "Expelled for Speaking Out About Rape?",' +
+                '"rubric": "Outrage",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "b83956f21449a66b629cadac220993af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/mia-wasikowska-psychosexual-turn-in-stoker.html",' +
+                '"title": "Mia Wasikowska&rsquo;s Psychosexual Turn in &lsquo;Stoker&rsquo;",' +
+                '"rubric": "Rising Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4a80c98e864bef63d9186b35da492955"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/why-asian-americans-have-turned-their-backs-on-the-republican-party.html",' +
+                '"title": "Why Asian-Americans Have Turned Their Backs on the Republican Party",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a0c6316c5c7d02fdb05234198853a1a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/ashton-carter-the-superhero-of-the-sequester.html",' +
+                '"title": "Ashton Carter: Superhero of the Sequester",' +
+                '"rubric": "SELFLESS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "294b051f40c1c4aec64ee9e408093bbc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/domestic-violence-among-the-wealthy-hides-behind-veil-of-silence.html",' +
+                '"title": "Domestic Violence Among the Wealthy Hides Behind &lsquo;Veil of Silence&rsquo;",' +
+                '"rubric": "Unique Stigma",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "00ac1cd67ce4cae7ef392bb6f831861e"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/02/28/have-ugg-boots-made-a-tepid-return-to-fashion.html",' +
+                '"title": "Have Ugg Boots Made a Tepid Return to Fashion?",' +
+                '"rubric": "Not Again!",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "5541577bf7644bdd2e92a8223957a912"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/the-gop-s-steep-descent-into-extreme-politics-and-doctrine.html",' +
+                '"title": "The GOP&rsquo;s Steep Descent Into Extreme Politics and Doctrine",' +
+                '"rubric": "Extreme Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "792a3d61de599e7363173da55a2c0629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/28/sheldon-adelson-the-billionaire-who-bankrupted-me.html",' +
+                '"title": "Sheldon Adelson, the Billionaire Who Bankrupted Me",' +
+                '"rubric": "HE&rsquo;S GOT ISSUES",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a33eae5a106131cd0acd325974d9b0f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/25/newsweek-turns-80-read-the-first-issue.html",' +
+                '"title": "Newsweek Turns 80! Read the First Issue",' +
+                '"rubric": "Rewind",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "05df779fa63ed989ce16f2ce3b6929d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/simcity-is-smarter-than-you-even-if-you-re-an-urban-planner.html",' +
+                '"title": "SimCity Is Smarter Than You (Even If You&rsquo;re an Urban Planner)",' +
+                '"rubric": "Game On",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "00ac8c04fceb0234ce62bf1fa9a32908"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/is-egypt-heading-towards-civil-war.html",' +
+                '"title": "Will Violence Erupt in Egypt?",' +
+                '"rubric": "Middle East",' +
+                '"topic": "World",' +
+                '"urlHashCode": "922cbae90ce26f046b46db3134bd44b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/01/publisher-pulls-jonah-lehrer-s-how-we-decide-from-stores.html",' +
+                '"title": "Publisher Pulls Jonah Lehrer&rsquo;s &lsquo;How We Decide&rsquo; From Stores",' +
+                '"rubric": "Disgraced",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6cae3c500d8eea71d3a0b4eee49405c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/inside-the-viral-video-spoof-lena-dunham-s-audition-for-zero-dark-thirty.html",' +
+                '"title": "Inside the Viral Video Spoof Lena Dunham&rsquo;s Audition for &lsquo;Zero Dark Thirty&rsquo;",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4f88bed717dfdfd5fa2277b9dd6de01e"' +
+            '}' +
+        ']' +
+    '}'
+);

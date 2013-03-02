@@ -64,7 +64,7 @@ $.addBrowser(V.getBrowserById("chrome6plus-linux-osx-win2003-win7plus-winvista-w
 $.addBrowser(V.getBrowserById("opera-osx"));$.addBrowser(V.getBrowserById("safari-android-ipad-iphone-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("safari-osx"));$.setFontFilterSet(W);if(Z&&Z.ba.__webfonttypekitmodule__){Z.I($);Z.load()}else window.Typekit.addKit($);
 })(this,document);
 window.Typekit.config={"p":"//p.typekit.net/p.gif?s=1&k=aod3scy&ht=tk&h={host}&f=6770.6769.6771.6768.4876.4490.4875.4517.5173.5036&a=532243&_={_}"};
-/*{"k":"1.3.0","created":"2013-01-30T19:08:16Z"}*/
+/*{"k":"1.4.0","created":"2013-02-28T18:48:23Z"}*/
 ;(function(window,document,undefined){
 function e(b,a){this.b=a||b;this.a=document}e.prototype=function(b,a){this.b=a||b;this.a=this.b.document}.prototype;function f(b){var a=new Image(1,1);a.src=b;a.onload=function(){a.onload=null}}function g(){this.d=window.Typekit.config.p}function h(b,a,c){var d=c||{},b=b.d.replace(/\{\/?([^*}]*)(\*?)\}/g,function(b,a,c){return c&&d[a]?"/"+d[a].join("/"):d[a]||""});b.match(/^\/\//)&&(b=(a?"https:":"http:")+b);return b.replace(/\/*\?*($|\?)/,"$1")}window.Typekit||(window.Typekit={});
 var i=new e(window),j=new function(){this.c=new g},k=!1;function l(){if(!k)for(var b=document.getElementsByTagName("link"),a=0;a<b.length;a++){var c=b[a].getAttribute("href");if(c&&0<=c.indexOf("use.typekit")){b=j;a=i;b.c&&(c=(c=window.__adobewebfontsappname__)?c.toString().substr(0,20):"",f(h(b.c,"https:"==a.a.location.protocol,{host:encodeURIComponent(a.a.location.hostname),app:encodeURIComponent(c),_:(+new Date).toString()})));k=!0;break}}}var m=window.Typekit.load;

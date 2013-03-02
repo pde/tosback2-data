@@ -560,14 +560,44 @@ function toon_lib(){
 	FUNCTIONS
 	*/	
 	
-	/*
-	this.me_and_my_friends_badges = function(params,callback){
-		params.ext = 'client/badges/'+params.msib_id+'/@all?sort[0]=update_date|desc';
-		this.social_api(params,function(data){
-			callback(data);
-		});
+	this.weekly_ranking_community = function(callback){
+		//ajax call url
+		var url = '/leaderboard/ranking/system/community_high_score/communityWeekly';		
+		jQuery.getJSON2(url,
+			function(data){
+				var self = this;
+				this.weeklyData = data;
+				var weeklyMsibs = '';
+				//create msib string for msibid_search method
+				for (var x=0; x<data.plays.length; x++){
+					if (x === data.plays.length-1){
+						weeklyMsibs += data.plays[x].user_id;
+					} else {
+						weeklyMsibs += data.plays[x].user_id + '|';
+					}				
+				}				
+				
+				//avatar, level, points lookup
+				gthat.msibid_search({
+					teg_ids: weeklyMsibs,
+					with_dna:false,
+					exact:true
+				},function(msibdata){
+					//loop data and insert user info
+					for (var i=0; i<msibdata.length; i++){
+						for (var y=0; y<self.weeklyData.plays.length; y++){
+							if (msibdata[i].msibID === self.weeklyData.plays[y].user_id){
+								self.weeklyData.plays[y].user_info = msibdata[i];
+							}
+						}
+					}
+					var weeklyDataComplete = self.weeklyData;
+					callback(weeklyDataComplete);
+				});
+			}
+		);
 	}
-	*/	
+		
 
 	this.me_and_my_friends_badges = function(params,callback){
 		params.ext = 'client/badges/summary/'+params.msib_id+'/@all';
@@ -696,10 +726,10 @@ function toon_lib(){
 					result.message	= status;
 					result.error	= false;					
 					result.levelImage = {};
-					result.levelImage.sml 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_sml.png'
-					result.levelImage.med 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_med.png'
-					result.levelImage.lrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_lrg.png'
-					result.levelImage.xlrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_xlrg.png'						
+					result.levelImage.sml 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_sml.png';
+					result.levelImage.med 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_med.png';
+					result.levelImage.lrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_lrg.png';
+					result.levelImage.xlrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_xlrg.png';						
 					
 					// Ping the level service
 					jQuery.ajax({
@@ -2851,4 +2881,3 @@ function local_storage_class(){
 	}
 
 }
-

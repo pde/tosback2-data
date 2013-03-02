@@ -470,6 +470,14 @@ function onloadBadgevilleInit() {
 			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
 
 		}
+		
+		//2013 stem
+		if (typeof(badgev_isStem) != 'undefined' && badgev_isStem){
+			badgev_params.category = 'stem';
+			// console.log('stem');
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
+
+		}		
 
 		// CES 2012 tagging
 		if (typeof(badgev_isCes2012) != 'undefined' && badgev_isCes2012){
@@ -486,6 +494,8 @@ function onloadBadgevilleInit() {
 		}
 		var urlVal = String(window.location.href);      
 		var urlValSplit = urlVal.split('/');
+
+		if(urlVal.indexOf("hope-for-children") != -1 ){ badgev_params.category = 'stem'; badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000); }
 
 		if (urlValSplit[6] == undefined &&  
 		(urlValSplit[5] == 'cell-phones'|| urlValSplit[5] == 'galaxy-tab' || urlValSplit[5] == 'galaxy-note'

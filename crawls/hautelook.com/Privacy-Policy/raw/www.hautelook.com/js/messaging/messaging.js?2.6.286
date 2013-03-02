@@ -1,0 +1,195 @@
+/*
+ *
+ * Messaging Interface Plugin
+ * Author: Jesse Pate
+ * 10/14/2009
+ *
+ * Modified 11/2011 to use ShadowBox instead of ColorBox for messaging overlays by Bill Heaton
+ *
+ * Usage: var popup = new messaging({base_url: 'test'});
+ *
+ */
+
+var messaging = function(options) {
+    var defaults = {
+            shadowbox: {
+                content: null,
+                height: 110,
+                initialHeight: 110,
+                initialWidth: 310,
+                player: 'html',
+                title: null,
+                width: 310,
+                options: {
+                    animSequence: "sync",
+                    enableKeys: false,
+                    setKeys: {
+                        "27": "Shadowbox.close()"
+                    },
+                    onFinish: function () {
+                    },
+                    onClose: function () {
+                        // need for converstion from colorbox to shadowbox
+                        $(document).trigger('shadowbox_closed');
+                    },
+                    modal: true
+                    // topPosition: false /* an integer would set the top value, default is 45 set in Shadowbox */
+                 }
+            },
+            base_url: false,
+            cache_html: true,
+            additional_params: '',
+            cache_response: false,
+            require_response: true,
+            messaging_id: false
+        };
+
+    var settings = $.extend(true, {}, defaults, options);
+
+    var cached_response = false;
+    var in_process = false;
+    var js_file_count = 0;
+    var css_file_count = 0;
+
+    var methods = {
+        init: function() {
+            if(!document.getElementById('messaging_popups')) createEl({ 'into': 'body', 'type': 'div', 'opts': { 'id':  'messaging_popups', 'style': 'display: none;'}});
+
+            if(settings.messaging_id === false || $('#' + settings.messaging_id).length == 1) {
+                settings.messaging_id = settings.base_url.replace(/-/, '_') + "_" + String((new Date()).getTime()).replace(/\D/gi,'');
+                createEl({ 'into': $('#messaging_popups'), 'type': 'div', 'opts': { 'id':  'messaging_placeholder_' + settings.messaging_id, 'style':'width:' + settings.shadowbox.initialWidth + 'px; height:' + settings.shadowbox.initialHeight + 'px;'}});
+                createEl({ 'into': '#messaging_placeholder_' + settings.messaging_id, 'type': 'div', 'opts': { 'id':  settings.messaging_id, 'class': 'messaging'}});
+                settings.shadowbox.href = '#messaging_placeholder_' + settings.messaging_id;
+                methods.getHtml();
+            }
+        },
+
+        getHtml: function() {
+            $.ajax({
+                url: '/messaging/' + ((settings.cache_html) ? 'cache/' : '') + settings.base_url + '/html' + settings.additional_params,
+                cache: true,
+
+                success: function(result) {
+                    if($('#' + settings.messaging_id).length == 1) {
+                        $('#' + settings.messaging_id).empty();
+                        $('#' + settings.messaging_id).html(result);
+                    }
+                    else {
+                        createEl({ 'into': $('#messaging_popups'), 'type': 'div', 'opts': { 'id':  settings.messaging_id, 'class': 'messaging'}, 'txt': result});
+                    }
+                }
+            });
+        },
+
+        getResponse: function(params, callback, sb_object) {
+            if (typeof params == 'undefined' || (params === null)) {
+                params = {empty: 0};
+            }
+            $.ajax({
+                type: 'post',
+                url: '/messaging/' + ((settings.cache_response) ? 'cache/' : '') + settings.base_url + settings.additional_params,
+                data: params,
+                dataType: 'json',
+
+                success: function(result) {
+                    if(settings.cache_response) cached_response = result;
+                    if(!in_process) methods.processResponseAndDisplayShadowbox($.extend(true, params, result), callback, sb_object);
+                }
+            });
+        },
+
+        processResponseAndDisplayShadowbox: function(response, callback, sb_object) {
+            if(typeof response.success != 'undefined' && response.success === true && in_process === false) {
+                in_process = true;
+                $.each(response.data.messaging_js, function(key, value) {
+                    js_file_count += 1;
+                    $.getScript(value, function() {
+                        js_file_count -= 1;
+                    });
+                });
+
+                $.each(response.data.messaging_css, function(key, value) {
+                    css_file_count += 1;
+                    $.getScript(value, function() {
+                        css_file_count -= 1;
+                    }, 'css');
+                });
+
+                $('#' + settings.messaging_id).ready(function() {
+                    if(typeof response.data == 'undefined') response.data = {};
+
+                    var load_shadowbox = setInterval(function(){
+                        var content, contentMsg;
+                        if(js_file_count === 0 && css_file_count === 0) {
+                            content = $('#messaging_placeholder_' + settings.messaging_id);
+                            clearInterval(load_shadowbox);
+                            settings.shadowbox.content = content.html();
+                            contentMsg = content.find('#'+settings.messaging_id).detach();
+                            settings.shadowbox.options.onFinish = function () {
+                                in_process = false;
+                                if (typeof callback == 'function') {
+                                    callback(response);
+                                } else if (typeof callback == 'string' && typeof sb_object == 'string') {
+                                    window[sb_object][callback](response);
+                                }
+                                contentMsg.appendTo(content);
+                            };
+                            Shadowbox.open(settings.shadowbox);
+                        }
+                    }, 225);
+                });
+            }
+        }
+    };
+
+    this.resize = function() {
+        // no need to change.
+    };
+
+    this.close = function(callback, sb_object) {
+        Shadowbox.close();
+        if(typeof callback == 'function') callback(response);
+        else if(typeof callback == 'string' && typeof sb_object == 'string') {
+            window[sb_object][callback](response);
+        }
+    };
+
+    this.display = function(params, callback, sb_object) {
+        if(typeof Shadowbox.open === 'function' && !in_process) {
+            in_process = true;
+            if(settings.require_response) {
+                if(settings.cache_response && cached_response !== false) {
+                    methods.processResponseAndDisplayShadowbox(cached_response, callback, sb_object);
+                }
+                else {
+                    methods.getResponse(params, callback, sb_object);
+                }
+            }
+            else {
+                methods.processResponseAndDisplayShadowbox({'success': true, 'data': params}, callback, sb_object);
+            }
+            in_process= false;
+        }
+    };
+
+    function createEl(obj) {
+        var object = $(document.createElement(obj.type));
+        if (typeof obj.opts != 'undefined') {
+            $.each(obj.opts, function(key, val) {
+                object.attr(key, val);
+            });
+        }
+
+        if (typeof obj.txt != 'undefined') object.html(obj.txt);
+        if (typeof obj.where == 'undefined') {
+            object.appendTo(obj.into);
+        }
+        else {
+            object.prependTo(obj.into);
+        }
+        return object;
+    }
+
+    methods.init();
+
+};

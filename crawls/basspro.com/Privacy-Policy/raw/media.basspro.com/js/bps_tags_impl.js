@@ -7,10 +7,7 @@
  *  Commission Junction
  *  Disable Gun Categories
  *****************************/
-// ----------
-// BPS Test
-// 02-09-2013
-// ----------
+
 var js_filename = "bps_tags_impl.js";
 
 function debugObjMethods(obj, prefix)
@@ -327,8 +324,8 @@ OmnitureTag.prototype.executeEvent = function()
 
       if(!isEmpty(OmnitureTag.eventValue))
         eval("s." + OmnitureTag.eventName + "='" + OmnitureTag.eventValue +"'");
-	else
-		OmnitureTag.eventValue = OmnitureTag.eventName;
+  else
+    OmnitureTag.eventValue = OmnitureTag.eventName;
 
       if(!isEmpty(OmnitureTag.eventVarName) && !isEmpty(OmnitureTag.eventVarValue))
       {
@@ -364,6 +361,20 @@ OmnitureTag.prototype.setVariables = function()
           this.Tag.subdept = this.Tag.dept;
           this.Tag.dept = this.Tag.types[0];
         }
+      }
+      //
+      if(!isEmpty(getURLParameter("taCategory"))) {
+          s.prop1 = getURLParameter("taSearchTerm");
+          s.prop24 = "Shop by Category";
+          s.prop25 = getURLParameter("taCategory").replace(/[%20]+/g,' ');
+          s.events = "event1";
+      }
+
+      if(!isEmpty(getURLParameter("taBrand"))) {
+          s.prop1 = getURLParameter("taSearchTerm");
+          s.prop24 = "Shop by Brand";
+          s.prop25 = getURLParameter("taBrand").replace(/[%20]+/g,' ');
+          s.events = "event1";
       }
 
       if(s.pageName)
@@ -434,14 +445,14 @@ OmnitureTag.prototype.setVariables = function()
         var searchFirstPage = isSearchFirstPage(tag);
         var productResults = 0;
 
-	if(s.pageName == "No Results Search")
-	{
+  if(s.pageName == "No Results Search")
+  {
             s.pageName = PageTypes.SEARCH;
             s.prop4 = PageTypes.SEARCH;
             s.prop5 = PageTypes.SEARCH;
             s.prop6 = PageTypes.SEARCH;
             s.prop7 = PageTypes.SEARCH;
-	}
+  }
 
         if(searchFirstPage)
         {
@@ -2119,48 +2130,48 @@ var unselectedDropDowns = null;
 
 function copySelector(selector)
 {
-	var copiedSelector = new Array();
+  var copiedSelector = new Array();
 
-	try
-	{
-	for(var i = 0; i < selector.length; i++)
-	{
-		copiedSelector[i] = new Array();
+  try
+  {
+  for(var i = 0; i < selector.length; i++)
+  {
+    copiedSelector[i] = new Array();
 
-		for(var y = 0; y < selector[i].length; y++)
-		{
-			var nextOption = document.createElement('option');
-			nextOption.setAttribute('id', selector[i][y].id);
-			nextOption.setAttribute('value', selector[i][y].value);
-			nextOption.innerHTML = selector[i][y].innerHTML;
+    for(var y = 0; y < selector[i].length; y++)
+    {
+      var nextOption = document.createElement('option');
+      nextOption.setAttribute('id', selector[i][y].id);
+      nextOption.setAttribute('value', selector[i][y].value);
+      nextOption.innerHTML = selector[i][y].innerHTML;
 
-			if(y == 0)
-				nextOption.selected = true;
+      if(y == 0)
+        nextOption.selected = true;
 
-			copiedSelector[i][copiedSelector[i].length] = nextOption;
-		}
-	}
-	}
-	catch(ignore)
-	{}
+      copiedSelector[i][copiedSelector[i].length] = nextOption;
+    }
+  }
+  }
+  catch(ignore)
+  {}
 
-	return copiedSelector;
+  return copiedSelector;
 }
 
 function clearSelector(selector)
 {
-	try
-	{
-	for(var i = 0; i < selector.length; i++)
-	{
-		while(selector[i].length > 0)
-		{
-			selector[i].removeChild(selector[i][0]);
-		}
-	}
-	}
-	catch(ignore)
-	{}
+  try
+  {
+  for(var i = 0; i < selector.length; i++)
+  {
+    while(selector[i].length > 0)
+    {
+      selector[i].removeChild(selector[i][0]);
+    }
+  }
+  }
+  catch(ignore)
+  {}
 }
 
 var previousSelectedAttrNVPairs = null;
@@ -2174,15 +2185,15 @@ function hideSelect()
   chartSelect();
   else if(ppddEnabled && ppdType != "C")
   {
-	if(unselectedDropDowns == null)
-	{
-		try
-		{
-			unselectedDropDowns = copySelector(document.getElementById('OrderItemAddForm').getElementsByTagName('select'));
-		}
-		catch(ignoreErr)
-		{}
-	}
+  if(unselectedDropDowns == null)
+  {
+    try
+    {
+      unselectedDropDowns = copySelector(document.getElementById('OrderItemAddForm').getElementsByTagName('select'));
+    }
+    catch(ignoreErr)
+    {}
+  }
 
     var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
     var selectedAttrNVPairs = new Array();
@@ -2720,9 +2731,9 @@ function hideSelect()
         {
             $("#shippingDisclaimerInner").html(disclaimerText);
             $("#shipL").css('visibility', 'visible');
-	     document.getElementById('shipL').style.visibility = 'visible';
-	     document.getElementById('shipL').style.display = 'block';
-	     document.getElementById('important-notice').style.display = 'block';
+       document.getElementById('shipL').style.visibility = 'visible';
+       document.getElementById('shipL').style.display = 'block';
+       document.getElementById('important-notice').style.display = 'block';
         }
         else
         {
@@ -2875,24 +2886,24 @@ function hideSelect()
 
     try
     {
-	if(previousSelectedAttrNVPairs != null)
-	{
-	for(var i = 0; i < attrDropDowns.length; i++)
-	{
-		for(var y = 0; y < previousSelectedAttrNVPairs.length; y++)
-		{
-			if(attrDropDowns[i].id == previousSelectedAttrNVPairs[y][0] && attrDropDowns[i].value == previousSelectedAttrNVPairs[y][1])
-			{
-				previousSelectedAttrNVPairs[y][1] = null;
-				break;
-			}
-			else if(attrDropDowns[i].id == previousSelectedAttrNVPairs[y][0] && attrDropDowns[i].value != previousSelectedAttrNVPairs[y][1])
-			{
-				previousSelectedAttrNVPairs[y][1] = attrDropDowns[i].value;
-			}
-		}
-	}
-	}
+  if(previousSelectedAttrNVPairs != null)
+  {
+  for(var i = 0; i < attrDropDowns.length; i++)
+  {
+    for(var y = 0; y < previousSelectedAttrNVPairs.length; y++)
+    {
+      if(attrDropDowns[i].id == previousSelectedAttrNVPairs[y][0] && attrDropDowns[i].value == previousSelectedAttrNVPairs[y][1])
+      {
+        previousSelectedAttrNVPairs[y][1] = null;
+        break;
+      }
+      else if(attrDropDowns[i].id == previousSelectedAttrNVPairs[y][0] && attrDropDowns[i].value != previousSelectedAttrNVPairs[y][1])
+      {
+        previousSelectedAttrNVPairs[y][1] = attrDropDowns[i].value;
+      }
+    }
+  }
+  }
     }
     catch(ignoreThis)
     {}
@@ -2902,130 +2913,130 @@ function hideSelect()
 
     try
     {
-	for(var i = 0; i < attrDropDowns.length; i++)
-	{
-		if(!attrDropDowns[i][0].selected)
-		{
-			ddSelectedCount++;
-		}
-		else if(attrDropDowns[i].length < 2)
-		{
-			hasSelectedAllItems = true;
-			break;
-		}
-		else if(attrDropDowns[i].length == 2)
-		{
-			attrDropDowns[i][1].selected = true;
-			ddSelectedCount++;
-		}
-	}
+  for(var i = 0; i < attrDropDowns.length; i++)
+  {
+    if(!attrDropDowns[i][0].selected)
+    {
+      ddSelectedCount++;
+    }
+    else if(attrDropDowns[i].length < 2)
+    {
+      hasSelectedAllItems = true;
+      break;
+    }
+    else if(attrDropDowns[i].length == 2)
+    {
+      attrDropDowns[i][1].selected = true;
+      ddSelectedCount++;
+    }
+  }
     }
     catch(ignoreThis)
     {}
 
     if(ddSelectedCount == attrDropDowns.length)
-	hasSelectedAllItems = true;
+  hasSelectedAllItems = true;
 
-	if(skuResolved)
-	{
-		for(var i = 0; i < skuList.length; i++)
-		{
-			if(skuList[i].pkey == resolvedCatentryId && skuList[i].price == skuList[i].regPrice)
-			{
-				try
-  				{
-				    document.getElementById("your-reg-label").style.display = "none";
-				    document.getElementById("your-clearance-label").style.display = "none";
-				    document.getElementById("your-sale-label").style.display = "none";
-				    document.getElementById("your-clearance-starting-label").style.display = "none";
-				    document.getElementById("your-sale-starting-label").style.display = "none";
-				}
-				catch(ignore)
-				{}
+  if(skuResolved)
+  {
+    for(var i = 0; i < skuList.length; i++)
+    {
+      if(skuList[i].pkey == resolvedCatentryId && skuList[i].price == skuList[i].regPrice)
+      {
+        try
+          {
+            document.getElementById("your-reg-label").style.display = "none";
+            document.getElementById("your-clearance-label").style.display = "none";
+            document.getElementById("your-sale-label").style.display = "none";
+            document.getElementById("your-clearance-starting-label").style.display = "none";
+            document.getElementById("your-sale-starting-label").style.display = "none";
+        }
+        catch(ignore)
+        {}
 
-				break;
-			}
-		}
-	}
-	else
-	{
-		try
-  		{
-			$("#reg-price-value").text("$"+maxPrice);
+        break;
+      }
+    }
+  }
+  else
+  {
+    try
+      {
+      $("#reg-price-value").text("$"+maxPrice);
 
-			if(minPrice < maxPrice)
-				document.getElementById("your-reg-label").style.display = "block";
-			else
-				document.getElementById("your-reg-label").style.display = "none";
+      if(minPrice < maxPrice)
+        document.getElementById("your-reg-label").style.display = "block";
+      else
+        document.getElementById("your-reg-label").style.display = "none";
 
-			document.getElementById("your-clearance-label").style.display = "none";
-			document.getElementById("your-sale-label").style.display = "none";
-		}
-		catch(ignore)
-		{}
-	}
+      document.getElementById("your-clearance-label").style.display = "none";
+      document.getElementById("your-sale-label").style.display = "none";
+    }
+    catch(ignore)
+    {}
+  }
 
-	if(hasSelectedAllItems)
-	{
-		if(document.getElementById("catalog-number").innerHTML.length == 0)
-		{
-			try
-			{
-				var selections = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
-				clearSelector(selections);
+  if(hasSelectedAllItems)
+  {
+    if(document.getElementById("catalog-number").innerHTML.length == 0)
+    {
+      try
+      {
+        var selections = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+        clearSelector(selections);
 
-				for(var i = 0; i < unselectedDropDowns.length && i < selections.length; i++)
-				{
-					var hasSelectedPreviousValue = false;
-					var previousSelectedIndex = -1;
+        for(var i = 0; i < unselectedDropDowns.length && i < selections.length; i++)
+        {
+          var hasSelectedPreviousValue = false;
+          var previousSelectedIndex = -1;
 
-					if(previousSelectedAttrNVPairs != null)
-					{
-						for(var z = 0; z < previousSelectedAttrNVPairs.length; z++)
-						{
-							if(i == z && previousSelectedAttrNVPairs[z][1] != null)
-							{
-								previousSelectedIndex = z;
-								break;
-							}
-						}
-					}
+          if(previousSelectedAttrNVPairs != null)
+          {
+            for(var z = 0; z < previousSelectedAttrNVPairs.length; z++)
+            {
+              if(i == z && previousSelectedAttrNVPairs[z][1] != null)
+              {
+                previousSelectedIndex = z;
+                break;
+              }
+            }
+          }
 
-					for(var y = 0; y < unselectedDropDowns[i].length; y++)
-					{
-						selections[i].appendChild(unselectedDropDowns[i][y]);
-					}
+          for(var y = 0; y < unselectedDropDowns[i].length; y++)
+          {
+            selections[i].appendChild(unselectedDropDowns[i][y]);
+          }
 
-					for(var y = 0; y < selections[i].length; y++)
-					{
-						if(previousSelectedIndex != -1 && previousSelectedAttrNVPairs[previousSelectedIndex][1] == selections[i][y].value)
-						{
-							selections[i][y].selected = true;
-							hasSelectedPreviousValue = true;
-							break;
-						}
-					}
+          for(var y = 0; y < selections[i].length; y++)
+          {
+            if(previousSelectedIndex != -1 && previousSelectedAttrNVPairs[previousSelectedIndex][1] == selections[i][y].value)
+            {
+              selections[i][y].selected = true;
+              hasSelectedPreviousValue = true;
+              break;
+            }
+          }
 
-					if(!hasSelectedPreviousValue)
-						selections[i][0].selected = true;
-				}
-			}
-			catch(ignoreErr)
-			{}
+          if(!hasSelectedPreviousValue)
+            selections[i][0].selected = true;
+        }
+      }
+      catch(ignoreErr)
+      {}
 
-			itemNum = "";
-			multiItemDisplay = true;
+      itemNum = "";
+      multiItemDisplay = true;
 
-			if(callResetSelection)
-			{
-				callResetSelection = false;
-				//hideSelect();
-			}
-		}
-	}
+      if(callResetSelection)
+      {
+        callResetSelection = false;
+        //hideSelect();
+      }
+    }
+  }
 
-	previousSelectedAttrNVPairs = selectedAttrNVPairs;
-	callResetSelection = true;
+  previousSelectedAttrNVPairs = selectedAttrNVPairs;
+  callResetSelection = true;
 
 
    }
@@ -3226,19 +3237,19 @@ function initUpdateSelect(itemNumVal)
       else
       {
 
-	if(ppdType != "C")
-	{
-		var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+  if(ppdType != "C")
+  {
+    var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
 
-        	if(skuList.length == 1 && skuList[0].buyable == 'false')
-        	{
-			hideSelect2();
-        	}
-	 	else if(skuList.length == 1 || attrDropDowns.length == 1)
-	 	{
-			hideSelect();
-	 	}
-	}
+          if(skuList.length == 1 && skuList[0].buyable == 'false')
+          {
+      hideSelect2();
+          }
+     else if(skuList.length == 1 || attrDropDowns.length == 1)
+     {
+      hideSelect();
+     }
+  }
 
         if(skuList.length == 1 && skuList[0].buyable == 'false')
         {

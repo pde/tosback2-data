@@ -887,6 +887,11 @@ $(document).ready(function() {
 						        'backDropId' : 'SeviceEligibiltyBackDrop',
 						        'lightBoxId' : 'SeviceEligibiltyLightBox'
 						    },locationOverlayHandlers);
+        	                 
+        	                 $('a.locationOverlay', "#marqueeSection").myplugin({
+ 						        'backDropId' : 'SeviceEligibiltyBackDrop',
+ 						        'lightBoxId' : 'SeviceEligibiltyLightBox'
+ 						    },locationOverlayHandlers);
         	                
                     	}
                     }

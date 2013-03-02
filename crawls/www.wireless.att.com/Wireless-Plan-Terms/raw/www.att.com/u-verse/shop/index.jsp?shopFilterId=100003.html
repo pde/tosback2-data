@@ -106,7 +106,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 <!--Wireless CTN capture start -->
 <!--Wireless CTN capture end -->
 <meta NAME="DCSext.wtStatusCode" CONTENT="" />
-<meta NAME="DCSext.sessionid" CONTENT="gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249" />
+<meta NAME="DCSext.sessionid" CONTENT="n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761" />
 <meta NAME="DCSext.flowtype" CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" CONTENT="Consumer" />
 <meta NAME="DCSext.wtCustTypeSub" CONTENT="Residential" />
@@ -223,7 +223,16 @@ value: function () {return window.wtAutoPay = '|N'}
 {selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkName', value: function() {
 return reporting.trim(reporting.getDynamicLinkName.apply(this,[]), '_');
 }},
-{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc'},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtStatusCode',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtSuccessFlag',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtEventType',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc,DCSext.wtStatusCode,DCSext.wtSuccessFlag,DCSext.wtEventType'},
 {selector: 'head:page(service-already-exists)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_ServiceAlreadyExists'},
 {selector: 'head:page(check-availability-multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 {selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -454,7 +463,7 @@ Note: This script should be included in a secure (https) page.
 <script type="text/javascript" charset="utf-8">
 function SessionVars() {
 this.getCurrSessId = function() {
-var pSessionId = 'gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249';
+var pSessionId = 'n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761';
 return pSessionId;
 };
 this.getCurrBrowserId = function() {
@@ -488,7 +497,7 @@ sessionVars = new SessionVars();
 var forceFlashDebugMode = false;
 var getTimeOffset = function() {
 var offset = new Number();
-var servertime = 1361971090728;
+var servertime = 1362230095042;
 var clientdateObj = new Date();
 var clienttime = clientdateObj.getTime();
 offset = clienttime - servertime;
@@ -1170,7 +1179,7 @@ ontrigger="wtUverse_ShopPgFilter_Option=$('shopFilter')[$('shopFilter').selected
 </div>
 </div>
 <div class="shop_no_of_months" style="width:90px;">for 6 months</div>
-<a class="shop_build_your_own" href="javascript:void(0);" onclick="callPackageChangeAlert('smartify');
+<a id="build_your_own" class="shop_build_your_own" href="javascript:void(0);" onclick="callPackageChangeAlert('smartify');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_uv80007',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_1_top',
@@ -1182,7 +1191,7 @@ dcsMultiTrack(
 <h2 style="margin-bottom:10px;">
 Please select a Promotion Card or Savings option:
 </h2>
-<div style="float:left; display:inline;">
+<div style="float:left;">
 <div style="width:240px;height:200px;line-height: 15px; padding-top: 15px; background-image: url('../../../2.ecom.attccc.com/media/en_US/images/img/img_div-point_gradient_AA000EPI.gif');background-repeat:repeat-x;background-position:top center;margin:0px 5px;border:1px solid #ccc;border-top:none;">
 <div style="padding:10px 5px 10px 10px;">
 <div style="float:left;">
@@ -1194,11 +1203,11 @@ Please select a Promotion Card or Savings option:
 <span class="orange" id="selText100001">AT&amp;T Promotion Cards</span>
 </div>
 <div style="clear:both;"></div>
-<div style="margin:10px 0px 10px 0px;height:45px;line-height:12px;">
+<div style="margin:10px 0px 10px 0px;height:45px;">
 Get AT&amp;T Rewards on select U-verse services.
 </div>
 <hr style="border:none;border-bottom:1px dotted #ccc;" />
-<div style="padding-top:10px;zoom:1;*padding-top:0px;">
+<div style="padding-top:10px;">
 <strong><b>Minimum Requirements</b></strong><br/>
 Order a Double or Triple Play with any U-verse TV package (excluding U-basic), any Internet speed, and any Home Phone plan and get up to $200 in promotion cards.
 </div>
@@ -1206,7 +1215,7 @@ Order a Double or Triple Play with any U-verse TV package (excluding U-basic), a
 </div>
 </div>
 </div>
-<div style="float:left; display:inline;">
+<div style="float:left;">
 <div style="width:240px;height:200px;line-height: 15px; padding-top: 15px; background-image: url('../../../2.ecom.attccc.com/media/en_US/images/img/img_div-point_gradient_AA000EPI.gif');background-repeat:repeat-x;background-position:top center;margin:0px 5px;border:1px solid #ccc;border-top:none;">
 <div style="padding:10px 5px 10px 10px;">
 <div style="float:left;">
@@ -1218,11 +1227,11 @@ Order a Double or Triple Play with any U-verse TV package (excluding U-basic), a
 <span class="orange" id="selText200001">Existing AT&amp;T Wireless</span>
 </div>
 <div style="clear:both;"></div>
-<div style="margin:10px 0px 10px 0px;height:45px;line-height:12px;">
+<div style="margin:10px 0px 10px 0px;height:45px;">
 Get additional savings on U-verse TV, Internet, and Home Phone when you have an existing AT&amp;T wireless plan. 1 year service agreement required.
 </div>
 <hr style="border:none;border-bottom:1px dotted #ccc;" />
-<div style="padding-top:10px;zoom:1;*padding-top:0px;">
+<div style="padding-top:10px;">
 <strong><b>Minimum Requirements</b></strong><br/>
 Order U300 or higher TV and Max or higher Internet with an existing Nation 450 or higher Wireless plan and get $56 off per month for 12 months.
 </div>
@@ -1230,7 +1239,7 @@ Order U300 or higher TV and Max or higher Internet with an existing Nation 450 o
 </div>
 </div>
 </div>
-<div style="float:left; display:inline;">
+<div style="float:left;">
 <div style="width:240px;height:200px;line-height: 15px; padding-top: 15px; background-image: url('../../../2.ecom.attccc.com/media/en_US/images/img/img_div-point_gradient_AA000EPI.gif');background-repeat:repeat-x;background-position:top center;margin:0px 5px;border:1px solid #ccc;border-top:none;">
 <div style="padding:10px 5px 10px 10px;">
 <div style="float:left;">
@@ -1242,11 +1251,11 @@ Order U300 or higher TV and Max or higher Internet with an existing Nation 450 o
 <span class="orange" id="selText100002">Long-Term Savings</span>
 </div>
 <div style="clear:both;"></div>
-<div style="margin:10px 0px 10px 0px;height:45px;line-height:12px;">
+<div style="margin:10px 0px 10px 0px;height:45px;">
 Lock in a full year of savings on a U-verse Triple Play. 1 year service agreement required.
 </div>
 <hr style="border:none;border-bottom:1px dotted #ccc;" />
-<div style="padding-top:10px;zoom:1;*padding-top:0px;">
+<div style="padding-top:10px;">
 <strong><b>Minimum Requirements</b></strong><br/>
 Order a Triple Play with any U-verse TV package (excluding U-basic), any Internet speed, and any Home Phone plan.
 </div>
@@ -1265,7 +1274,7 @@ Offers will display in your Cart when minimum requirements are met.<br/>
 <div style="float:right;">
 <img alt="Continue Disabled" src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Cont_disabled.gif" title="Please select a savings option to continue" class="clever-button-disabled" >
 <a id="continueLink" class="wtx Uverse_SelectSpecialOffersSubmit" onclick="getDefaultRadio(this, 'uv80007');savingSelectionContinue();" onmousedown="window.wtUserResp=$('selText' + formFunc.getSelectedRadio('savingsSelection').value).innerHTML" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_1&amp;q_usedOffer=uv80007&amp;wtLinkName=Build_Your_Own_uv80007">
-<img class="clever-button" src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Continue_enabled.gif" alt="Continue" />
+<img id="specialOffersModalContinueButton" class="clever-button" src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Continue_enabled.gif" alt="Continue" />
 </a>
 </div>
 <div style="float:left;">
@@ -1366,7 +1375,7 @@ for 12 months
 <a id="uv230007" class="urs-modal-link" style="margin-left:5px;" href="javascript:showPopup('uv230007Pop',true)">Details</a>
 </div>
 </div>
-<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_uv230007');
+<a id="package_U-family" class="shop_get_started" onclick="getHiddenVar(this, 'cpp_uv230007');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_uv230007',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_2_top',
@@ -1402,9 +1411,6 @@ onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').
 <div class="mod_s slots shop_offers">
 <span class="uverse_orange bold">Special Offers</span>
 <div class="unordered-list"><ul>
-<li>
-Order online today and get an extra <b>$200 back</b> via promotion card. Limited time offer!
-</li>
 <div style="float: right; padding-right: 2px;">
 <a class="info_button tooltip shopPageAlert" title="$46 off / 12 MO - 1 yr term required."></a>
 </div>
@@ -1452,7 +1458,7 @@ for 12 months
 <a id="prod4600241" class="urs-modal-link" style="margin-left:5px;" href="javascript:showPopup('prod4600241Pop',true)">Details</a>
 </div>
 </div>
-<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600241');
+<a id="package_U200" class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600241');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_prod4600241',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_3_top',
@@ -1487,9 +1493,6 @@ onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').
 <div class="mod_s slots shop_offers">
 <span class="uverse_orange bold">Special Offers</span>
 <div class="unordered-list"><ul>
-<li>
-Order online today and get an extra <b>$200 back</b> via promotion card. Limited time offer!
-</li>
 <div style="float: right; padding-right: 2px;">
 <a class="info_button tooltip shopPageAlert" title="$46 off / 12 MO - 1 yr term required."></a>
 </div>
@@ -1537,7 +1540,7 @@ for 12 months
 <a id="uv230011" class="urs-modal-link" style="margin-left:5px;" href="javascript:showPopup('uv230011Pop',true)">Details</a>
 </div>
 </div>
-<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_uv230011');
+<a id="package_U300" class="shop_get_started" onclick="getHiddenVar(this, 'cpp_uv230011');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_uv230011',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_4_top',
@@ -1572,9 +1575,6 @@ onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').
 <div class="mod_s slots shop_offers">
 <span class="uverse_orange bold">Special Offers</span>
 <div class="unordered-list"><ul>
-<li>
-Order online today and get an extra <b>$200 back</b> via promotion card. Limited time offer!
-</li>
 <div style="float: right; padding-right: 2px;">
 <a class="info_button tooltip shopPageAlert" title="$51 off / 12 MO - 1 yr term required."></a>
 </div>
@@ -1622,7 +1622,7 @@ for 12 months
 <a id="prod4600243" class="urs-modal-link" style="margin-left:5px;" href="javascript:showPopup('prod4600243Pop',true)">Details</a>
 </div>
 </div>
-<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600243');
+<a id="package_U300" class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600243');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_prod4600243',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_5_top',
@@ -1657,9 +1657,6 @@ onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').
 <div class="mod_s slots shop_offers">
 <span class="uverse_orange bold">Special Offers</span>
 <div class="unordered-list"><ul>
-<li>
-Order online today and get an extra <b>$200 back</b> via promotion card. Limited time offer!
-</li>
 <div style="float: right; padding-right: 2px;">
 <a class="info_button tooltip shopPageAlert" title="$51 off / 12 MO - 1 yr term required."></a>
 </div>
@@ -1707,7 +1704,7 @@ for 12 months
 <a id="prod4600245" class="urs-modal-link" style="margin-left:5px;" href="javascript:showPopup('prod4600245Pop',true)">Details</a>
 </div>
 </div>
-<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600245');
+<a id="package_U450" class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod4600245');
 dcsMultiTrack(
 'DCSext.wtLinkName','Build_And_Price_prod4600245',
 'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_6_top',
@@ -1742,9 +1739,6 @@ onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').
 <div class="mod_s slots shop_offers">
 <span class="uverse_orange bold">Special Offers</span>
 <div class="unordered-list"><ul>
-<li>
-Order online today and get an extra <b>$200 back</b> via promotion card. Limited time offer!
-</li>
 <div style="float: right; padding-right: 2px;">
 <a class="info_button tooltip shopPageAlert" title="$51 off / 12 MO - 1 yr term required."></a>
 </div>
@@ -2293,7 +2287,8 @@ Select Cancel to keep what's already in your Cart.</td>
 <input id="modal-contentindex" type="text" name="modal-readonly" title="Modal opened" onKeyDown="return modalStart(event);" readonly="readonly" class="offscreentext"/>
 <h1 class="fl" id="mainPopUpTitle"></h1>
 <div class="fr" id="popCloseButton">
-<span id="popCloseButtonSpan" onClick="closePopup();"><a class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span>
+<span id="popCloseButtonSpan" onClick="closePopup();">
+<a id="closeLinkCheckCartMsg" class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span>
 </span>
 </div>
 </div>
@@ -2329,7 +2324,7 @@ Select Cancel to keep what's already in your Cart.</td>
 <div id="mainPopupDivIDM" class="mainPopupDivIDM" style="visibility:hidden;">
 <div id="mainPopupHeaderIDM" class="mainPopupContainerIDMHeader">
 <input id="modal-contentidm" type="text" name="modal-readonly" title="Modal opened" onKeyDown="return modalStart(event);" readonly="readonly" class="offscreentext" />
-<div style="height: 37px; padding-left: 10px; padding-right: 10px; overflow: hidden;">
+<div style="height: 37px; padding-right: 10px; overflow: hidden;">
 <div style="float: left; padding-top: 10px; width: 90%;">
 <div class="modal header-iptv" style="padding-left: 0px !important; display: none;">
 <span class="modal-header-title">AT&T U-verse TV</span>
@@ -2345,7 +2340,7 @@ Select Cancel to keep what's already in your Cart.</td>
 </div>
 </div>
 <div style="text-align: right; padding-top: 10px;float:right;">
-<span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
+<span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick(); else if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
 <a name="idmclosekey" href="javascript:void(0);"><img alt="Close" style="cursor: pointer; cursor: hand;" src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></a></span></div>
 <div id="mainPopUpTitleIDM" style="display: none;"></div>
 </div>
@@ -2354,21 +2349,27 @@ Select Cancel to keep what's already in your Cart.</td>
 <div id="mainPopupFooterIDM" class="mainPopupFooterIDM">
 <div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 <div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-<a name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
+<a id="modalCancelButton" name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
 </div>
 <div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 <div title="Add to Cart">
 <div id="addToCartDis" class="hub-save-dis-button"></div>
 </div>
-<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></div>
-<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;"
-src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit">
+<a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+</div>
 <div title="Return to Cart">
-<a id="returnToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="if (!portPhoneLineslist()) cancelModal(null);" >
-</a></div>
-<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;"
-src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
-<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a></div>
+<img id="returnToCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled" />
+</div>
+<div title="Return to Cart">
+<a id="returnToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-return-to-cart-ena" onclick="if (!portPhoneLineslist()) cancelModal(null);" ></a>
+</div>
+<div title="Update Cart">
+<img id="updateCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled" />
+</div>
+<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit">
+<a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+</div>
 </div>
 <div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
 <a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
@@ -2377,7 +2378,9 @@ src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" a
 <a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
 </div>
 </div>
-<div class="offscreentext"><input type="text" id="modal-footer" name="modal-readonly" title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/></div>
+<div class="offscreentext">
+<input type="text" id="modal-footer" name="modal-readonly" title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/>
+</div>
 </div>
 </div>
 <div id="mainPopupDivIDM2" class="mainPopupDivIDM2" style="visibility:hidden;">
@@ -2390,21 +2393,27 @@ src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" a
 <div id="mainPopupFooterIDM2" class="mainPopupFooterIDM">
 <div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 <div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-<a name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
+<a id="modalCancelButton" name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
 </div>
 <div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 <div title="Add to Cart">
 <div id="addToCartDis" class="hub-save-dis-button"></div>
 </div>
-<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></div>
-<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;"
-src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit">
+<a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+</div>
 <div title="Return to Cart">
-<a id="returnToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="if (!portPhoneLineslist()) cancelModal(null);" >
-</a></div>
-<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;"
-src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
-<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a></div>
+<img id="returnToCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled" />
+</div>
+<div title="Return to Cart">
+<a id="returnToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-return-to-cart-ena" onclick="if (!portPhoneLineslist()) cancelModal(null);" ></a>
+</div>
+<div title="Update Cart">
+<img id="updateCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled" />
+</div>
+<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit">
+<a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+</div>
 </div>
 <div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
 <a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
@@ -2413,7 +2422,9 @@ src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" a
 <a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
 </div>
 </div>
-<div class="offscreentext"><input type="text" id="modal-footer" name="modal-readonly" title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/></div>
+<div class="offscreentext">
+<input type="text" id="modal-footer" name="modal-readonly" title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/>
+</div>
 </div>
 </div>
 <div id="abandonmentPopupDiv" class="abandonmentPopupDiv" style="visibility:hidden;">

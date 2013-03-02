@@ -1,0 +1,269 @@
+if (typeof HauteLook === 'undefined') {
+    var HauteLook = {};
+}
+
+(function( HauteLook, $, window ) {
+    'use strict';
+
+    HauteLook.Analytics = {};
+    HauteLook.Analytics.Client = {};
+
+    /**
+     * KISS Metrics client.
+     *
+     * This is a simple wrapper around the KISS Metrics api that provides a
+     * basic interface.
+     *
+     * It is not recommended that application code use this client directly.
+     * See {@link auteLook.Analytics.Controller}.
+     */
+    HauteLook.Analytics.Client.KissMetrics = (function() {
+
+        var
+
+        api = {},
+
+        push = function() {
+            if (typeof window._kmq !== 'undefined') {
+                window._kmq.push.apply( window._kmq, arguments );
+            }
+        };
+
+        api.recordEvent = function(name, properties) {
+            push(['record', name, properties]);
+        };
+
+        api.identifyUser = function(identifier) {
+            push(['identify', identifier]);
+        };
+
+        api.aliasUser = function(identifier, alias) {
+            push(['alias', alias, identifier]);
+        };
+
+        return api;
+
+    })();
+
+
+    /**
+     * Google Analytics Ecommerce Client
+     *
+     * This is a wrapper around the Google Analytics pixels
+     *
+     */
+    HauteLook.Analytics.Client.GoogleAnalytics = (function() {
+
+        var
+
+        api = {};
+
+        api.trackTransactions = function (order, cartItems) {
+
+            addTrans(
+                order.orderId,
+                order.affiliations,
+                order.subtotal,
+                order.tax,
+                order.shippingAmount,
+                order.city,
+                order.state,
+                order.country
+            );
+
+            $.each(cartItems, function(index, item) {
+                addItem(
+                    order.orderId,
+                    item.productId,
+                    item.productName,
+                    item.brandName,
+                    item.price,
+                    item.quantity
+                );
+            });
+            
+            trackTrans();
+        }
+
+        //1. Create a transaction object
+        function addTrans(transactionId, affiliation, total, tax, shipping, city, state, country) {
+            if (typeof _haq !== "undefined") {
+                _haq.push(['_addTrans',
+                            transactionId,
+                            affiliation,
+                            total,
+                            tax,
+                            shipping,
+                            city,
+                            state,
+                            country            
+                ]);
+            }
+        };
+
+        //2. Add items to the transaction
+        function addItem(transactionId, sku, productName, category, unitPrice, quantity) {
+            if (typeof _haq !== "undefined") {                                    
+                _haq.push(['_addItem',
+                            transactionId,
+                            sku,
+                            productName,
+                            category,
+                            unitPrice,
+                            quantity
+                ]);
+            }
+        };
+        
+        //3. Submit the transaction to the Analytics servers.
+        function trackTrans() {
+            if (typeof _haq !== "undefined") {
+                _haq.push(['_trackTrans']);       
+            }     
+        };
+               
+        return api;
+         
+    })();
+
+    /**
+     * Application interface for analytics.
+     *
+     */
+    HauteLook.Analytics.Controller = (function() {
+
+        var
+
+        api = {},
+        squelch = 0;
+
+        api.squelch = function() {
+            squelch = 1;
+        };
+
+        api.identifyAndAlias = function(memberId, sessionId) {
+            HauteLook.Analytics.Client.KissMetrics.identifyUser(memberId);
+            HauteLook.Analytics.Client.KissMetrics.aliasUser(memberId, sessionId);
+        };
+
+        api.loginEvent = function(triggeredBy) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Logged In', {
+            	"Triggered By": triggeredBy
+            });
+        };
+
+        api.catalogView = function(eventId, eventName) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Viewed Catalog', {
+                "EventID": eventId,
+                "Event Name": eventName
+            });
+        };
+
+        api.productView = function(productName, styleNum, quicklook, eventId, parentId) {
+            var properties = {
+                "Product Name": productName,
+                "Style Num": styleNum,
+                "Quicklook": quicklook,
+                "EventID": eventId
+            };
+
+            if (parentId) {
+                properties.parent_id = parentId;
+            }
+
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Viewed Product', properties);
+        };
+
+        api.cartAdd = function(productId, productName, price, quantity, eventName, brandName) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Add to Cart', {
+                "ProductID": productId,
+                "Product Name": productName,
+                "Price": price,
+                "Quantity": quantity,
+                "Event Name": eventName,
+                "Brand Name": brandName
+            });
+        };
+
+        api.purchase = function(order, cartItems) {
+
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Purchase', {
+                "Order ID": order.orderId,
+                "Order Total": order.total,
+                "Order Subtotal": order.subtotal
+            });
+            
+            HauteLook.Analytics.Client.GoogleAnalytics.trackTransactions(order, cartItems);
+        };
+        
+        api.inviteSent = function(emailAddress, source, result) {
+            HauteLook.Analytics.Client.KissMetrics.recordEvent('Referral Recipient', {
+                "E-Mail Address": emailAddress,
+                "Source": source,
+                "Result": result
+            });
+        };
+
+        function squelchProxy(func) {
+            return function() {
+                if (squelch) {
+                    return;
+                }
+
+                func.apply(this, arguments);
+            }
+        };
+
+        /*
+         * wrap all functions with a check to squelch
+         * before calling the actual function
+         */
+        for (var funcName in api) {
+            if (api.hasOwnProperty(funcName) && typeof api[funcName] === 'function') {
+                var func = api[funcName];
+                api[funcName] = squelchProxy(func);
+            }
+        }
+
+        return api;
+
+    })();
+
+    /**
+     * Track all member logged in events.
+     *
+     * This is intentionally coupled to memberLoggedIn event since it happens
+     * all over the code. I did not want to add this directly to the code that
+     * handles login because that would cause a strange dependency. Instead,
+     * this is a nice bridge between the public controller interface and the
+     * login code.
+     */
+    $Halo.bigbro.subscribeOnce("memberLoggedIn", function(loginResponse){
+        var member_id,
+            session_id;
+
+        if (!loginResponse || !loginResponse.member) {
+            return;
+        }
+
+        if (!Halo || !Halo.getCookie) {
+            return;
+        }
+
+        if (loginResponse.member.role > 1) {
+            HauteLook.Analytics.Controller.squelch();
+        }
+
+        member_id = loginResponse.member.member_id;
+        session_id = Halo.getCookie('PHPSESSID');
+        HauteLook.Analytics.Controller.identifyAndAlias(member_id, session_id);
+        HauteLook.Analytics.Controller.loginEvent("Member Data Refresh");
+    });
+
+    Sandbox.getMemberAsync(function(member) {
+        if (member && member.role > 1) {
+            HauteLook.Analytics.Controller.squelch();
+        }
+    });
+
+}( HauteLook, jQuery, window ));

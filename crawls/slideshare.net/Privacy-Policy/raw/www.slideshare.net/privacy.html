@@ -51,7 +51,7 @@
     <script type='text/javascript'>
     //<![CDATA[
       window._auth_token_name = "authenticity_token";
-      window._auth_token = "aJ63Y5YozCHBksIV8PiRMznXH0mxKeRvTgHN7wDFeSs=";
+      window._auth_token = "clxVNeRPjOXBqvsCYA14SBzhpdlm3iFXEnTN2rk9t5I=";
     //]]>
     </script>
     
@@ -216,152 +216,11 @@ document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/"+
 
 
   
-  <script src="../public.slidesharecdn.com/javascripts/ajax_signup.js%3F50c5b0b0d6" type="text/javascript"></script>
+  <script src="../public.slidesharecdn.com/javascripts/ajax_signup.js%3F18b2583220" type="text/javascript"></script>
   
 
 
 
-<script language="javascript">
-  (function($,$$) {
-    function isPaymentPending() {
-      if(window.cookie && window.cookie('proNotice') === null) {
-        $.ajax({
-          url: '/business/premium/is_payment_pending_or_churned_out',
-          type: 'POST',
-          dataType: 'json',
-          success: function(reply){
-            if (reply.status === true) {
-              if(!reply.churn || (reply.churn && window.cookie('churnNotice') === null)) {
-                var element_array = [$('header'), $('div.headerWrapper'), $('.navbar')];
-                $.each(element_array, function() {
-                  if(this.length > 0) {
-                    this.append(reply.msg);
-                  }
-                });
-              }
-              $('#j-close_pro_notice').click(function(e){
-                e.preventDefault();
-                $('#j-pro_notice').slideUp('slow', function(){
-                  if(reply.churn) {
-                    cookie('churnNotice', true, {expires: 365 * 24 * 60 * 60 * 10}); // expires after 10 years
-                    } else {
-                    cookie('proNotice', true, {expires: 0.006944}); // 10 minutes
-                  }
-                  $('#j-pro_notice').remove();
-                });
-              });
-              $('#j-pro_notice').slideDown('slow');
-            }
-          }
-        });
-      }
-    }
-
-    function isCouponRedemptionPending() {
-      if(window.cookie && window.cookie('proNotice') === null) {
-        $.ajax({
-          url: '/business/premium/is_coupon_redemption_pending',
-          type: 'POST',
-          dataType: 'json',
-          success: function(reply){
-            if (reply.status) {
-              var element_array = [$('header'), $('div.headerWrapper'), $('.navbar')];
-              $.each(element_array, function() {
-                if(this.length > 0) {
-                  this.append(reply.msg);
-                }
-              });
-              $('#j-close_pro_notice').click(function(e){
-                e.preventDefault();
-                $('#j-pro_notice').slideUp('slow', function(){
-                  cookie('proNotice', true, {expires: 0.006944}); // 10 minutes
-                  $('#j-pro_notice').remove();
-                });
-              });
-              $('#j-pro_notice').slideDown('slow');
-            }
-          }
-        });
-       }
-     }
-
-    function notification() {
-      $.ajax( {
-        url: "/newsfeed/get_newsfeed_count",
-        type: 'GET',
-        async: true,
-        dataType: 'json',
-        success: function ( data ){
-          if (data.count > 0) {
-            $('.j-intro-newsfeedcount').html('check ' +data.count);
-            $('.j-icon_NoNotification').hide();
-            $('.j-icon_Notification span').html(data.count);
-            $('.j-icon_Notification').show();
-            if (typeof Tinycon !== 'undefined'){
-              Tinycon.setBubble(data.count);
-            }
-          }
-        },
-        error: function (jqXHR){
-        }
-      });
-    }
-
-    $(".j-icon_NoNotification").click(function(e){
-      recordGAMenuEvent('Newsfeed', 'NoNotification_clicked');
-    });
-
-    $(".j-icon_Notification").click(function(e){
-      recordGAMenuEvent('Newsfeed', 'Notification_clicked');
-    });
-
-    $(".j-help").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'help_topnav_clicked');
-    });
-
-    $(".j-newsfeed").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'newsfeed_topnav_clicked');
-    });
-
-    $(".j-public-profile").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'public_profile_topnav_clicked');
-    });
-
-    $(".j-uploads").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'my_uploads_topnav_clicked');
-    });
-
-    $(".j-zipcasts").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'my_zipcasts_topnav_clicked');
-    });
-
-    $(".j-edit-profile").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'edit_profile_topnav_clicked');
-    });
-
-    $(".j-analytics").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'analytics_topnav_clicked');
-    });
-  
-    $(".j-logout").click(function(e){
-      recordGAMenuEvent('Dropdown_Menu_Top_navigation', 'logout_topnav_clicked');
-    });
-
-    // Record GA event for the menu item  
-    function recordGAMenuEvent(menuItem, event) {
-      _gaq.push(['_trackEvent', menuItem, event]);
-    }
-
-    $(function(){
-      if($$.user.loggedin) {
-        notification();
-        isPaymentPending();
-        isCouponRedemptionPending();
-      }
-    });
-  })(jQuery,slideshare_object);
-
-</script>
 
             
             </div>
@@ -381,7 +240,7 @@ document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/"+
           <div class="content">
             <div id='page-notice' class='notice' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div><div id='page-warning' class='warning' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div><div id='page-message' class='message' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div><div id='page-success' class='success' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div><div id='page-error' class='error' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div><div id='page-permanent' class='permanent' style='display:none; '><span></span> </div><div id='page-modal_notice' class='' style='display:none; '><a href='privacy.html#' class='closeThis close' title='Close this notification'>&times;</a><span></span> </div>
             
-            <link href="../public.slidesharecdn.com/stylesheets/static.css%3F1002c69a56.css" media="screen" rel="stylesheet" type="text/css" /><div class='navbar'><ul><li><a href="http://www.slideshare.net/terms"  title='Terms of Service' class='unselected'      >Terms of Service</a></li><li><a href="http://www.slideshare.net/terms#dmca"  title='DMCA' class='unselected'      >DMCA</a></li><li><a href="http://www.slideshare.net/community_guidelines"  title='Guidelines' class='unselected'      >Guidelines</a></li><li><a href="privacy.html"  title='Privacy Policy' class='selected'      >Privacy Policy</a></li></ul></div>
+            <link href="../public.slidesharecdn.com/stylesheets/static.css%3F7e59465f7f.css" media="screen" rel="stylesheet" type="text/css" /><div class='navbar'><ul><li><a href="http://www.slideshare.net/terms"  title='Terms of Service' class='unselected'      >Terms of Service</a></li><li><a href="http://www.slideshare.net/terms#dmca"  title='DMCA' class='unselected'      >DMCA</a></li><li><a href="http://www.slideshare.net/community_guidelines"  title='Guidelines' class='unselected'      >Guidelines</a></li><li><a href="privacy.html"  title='Privacy Policy' class='selected'      >Privacy Policy</a></li></ul></div>
  
                  
                  
@@ -580,7 +439,7 @@ document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/"+
       
       
       <script src="../public.slidesharecdn.com/javascripts/proCtaBox.js%3Fbe3da9a356" type="text/javascript"></script>
-      <script src="../public.slidesharecdn.com/javascripts/fbconnect.js%3F6705a9110a" type="text/javascript"></script>
+      <script src="../public.slidesharecdn.com/javascripts/fbconnect.js%3F2e1a9c1fbc" type="text/javascript"></script>
       
         <!-- start Mixpanel -->
         <script type="text/javascript">

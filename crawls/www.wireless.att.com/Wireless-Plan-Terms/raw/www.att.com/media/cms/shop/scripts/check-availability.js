@@ -90,7 +90,7 @@ var formState = {
        enableForm = true;
        form.find('.required-field').each(
            function(idx, elm) {
-               if(elm.value == '' && enableForm) enableForm = false;
+               if(elm.value.trim() == '' && enableForm) enableForm = false;
            }
        );
        return enableForm;

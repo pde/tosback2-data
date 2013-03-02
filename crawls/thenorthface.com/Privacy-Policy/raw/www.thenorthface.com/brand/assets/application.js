@@ -1240,7 +1240,12 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
       this.updatePageControls();
       this.buildItems();
       this.updatePageRange();
-      $.interface.resetAfterDomWrite();
+
+      // set up any new video lightbox anchors that were written to the page
+      // TODO: Benchmark performance - should improve w/ jQuery's live/on
+      // behavior
+      $.TNF.BRAND.LightboxVideoPlayer.setup();
+
       this.$el.trigger('TNF:paginator:loaded-page', [page])
     },
 
@@ -2582,27 +2587,271 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
 }).call(this);
 (function($) {
 
-  var IframeVideoLoader = Class.create({
-    initialize: function(iframeCont, embedCode) {
-      // for the lightbox...
-      this.videoInterface = $.TNF.BRAND.videoInterface.factory({
-        container:iframeCont,
-        width: 936,
-        height: 518,
-        embedCode: embedCode,
-        onLoad: function() {
-          this.play();
-        }
-      });
+  var VideoInterface = Class.create({
+    API_READY_FAULT_TOLERANCE: 15,
+
+    /* options:
+    *    embedCode: string,
+    *    onLoad: function
+    *    autoplay: (boolean) play when loading is complete (default: false)
+    */
+    initialize: function(options) {
+      this.height           = options.height || 538;
+      this.width            = options.width || 936;
+      this.playerReadyFault = 0;
+      this.apiReadyFault    = 0;
+      this.playerId         = options.playerId;
+      this.embedCode        = options.embedCode;
+      this.onLoad           = options.onLoad;
+      this.autoplay         = options.autoplay;
+      this.loaded           = false;
+      this.Ooyala           = window.tnfOoyala;
+      this.player           = document.getElementById(this.playerId);
+      this.load();
     },
-    pause: function(){
-      this.videoInterface.pause();
+
+
+    load: function(callback) {
+      if (typeof callback === 'function') {
+        this.loaded = false;
+        this.onLoad = callback;
+      }
+      this.commitVideoUpdate() || this.retryVideoUpdate();
+    },
+
+    pause: function() {
+      try {
+        this.player.pauseMovie();
+      } catch (e) {
+        this.player = document.getElementById(this.playerId);
+      }
+    },
+
+    play: function() {
+      if($.TNF.BRAND.Utils.iosDevice() !== true) {
+        this.player.playMovie();
+      }
+    },
+    setPlayheadTime: function(time){
+      this.playerReady(function(){
+        this.player.setPlayheadTime(time);
+      }.bind(this));
+
+    },
+    getPlayheadTime: function(){
+      if(this.player && this.Ooyala.mobile === false){
+        return this.player.getPlayheadTime();
+      } else {
+        return 0;
+      }
+    },
+    retryVideoUpdate: function() {
+      this.updateVideoInterval = setInterval(function() {
+        this.commitVideoUpdate() || this.abandonVideoUpdateTimeout();
+
+        this.apiReadyFault += 0.5;
+      }.bind(this), 500);
+    },
+
+    commitVideoUpdate: function() {
+      this.player = document.getElementById(this.playerId);
+      if (this.player === null || this.Ooyala.apiReady[this.playerId] !== true ) {
+        return false;
+      }
+
+      $(this.player).parent().css({height: this.height, width: this.width});
+
+      this.player.height = this.height;
+      this.player.width  = this.width;
+
+      this.clearVideoRetryInterval();
+
+      if (typeof this.onLoad === 'function' && !this.loaded) {
+        this.onLoad.call(this);
+        this.loaded = true;
+      }
+
+      if (this.autoplay) {
+        this.play();
+      }
+
+      $(document).trigger({type: 'tnf:brand:video_finished_loading', embedCode: this.embedCode});
+    },
+
+    clearVideoRetryInterval: function() {
+      clearInterval(this.updateVideoInterval);
+      this.apiReadyFault = 0;
+    },
+
+    abandonVideoUpdateTimeout: function() {
+      if (this.apiReadyFault >= this.API_READY_FAULT_TOLERANCE) {
+        this.clearVideoRetryInterval();
+        $(document).trigger('tnf:brand:ooyala:apiNeverLoaded');
+      }
+    },
+
+    playerReady: function(callback, retryCount){
+      if (!this.Ooyala.apiReady[this.playerId]){
+        if (!retryCount) retryCount = 0;
+        if (retryCount === this.API_READY_FAULT_TOLERANCE){
+            return false;
+        } else {
+          retryCount += 1;
+          setTimeout(function(){
+            this.playerReady(callback, retryCount);
+          }.bind(this), 500);
+          return false;
+        }
+      }
+      if (typeof callback === 'function'){
+        callback();
+      }
     }
+
   });
 
-  $.TNF.BRAND.IframeVideoLoader = IframeVideoLoader;
+  $.TNF.BRAND.videoInterface = VideoInterface;
+
+  /* options:
+  *    container: $element,
+  *    width: int,
+  *    height: int,
+  *    embedCode: string,
+  *    onLoad: function
+  */
+  VideoInterface.factory = function(options) {
+    // usage: this.videoInterface = $.TNF.BRAND.VideoInterface.factory(options);
+    // iframe building
+    // TODO: Calculate width & height if they are not provided
+
+    options.playerId = 'player'+ new Date().getTime();
+
+    var scriptTag  = document.createElement('script');
+    scriptTag.src  = "http://player.ooyala.com/player.js?hasModuleParams=1&playerBrandingId=db367c03b0de4bcf8bf82a54c001a356&playerContainerId=ooyala-video-"+options.playerId+"&callback=tnfOoyala.handlePlayerReadyStateChange&playerId="+options.playerId+"&wmode=transparent&width=" + options.width + "&height=" + options.height + "&embedCode=" + options.embedCode + "&autoplay="
+
+    options.container.append('<div id="ooyala-video-'+options.playerId+'" class="ooyala-player"></div>');
+    options.container.append(scriptTag);
+
+    return new VideoInterface(options);
+  };
+
+  window.tnfOoyala = (function(window) {
+    return {
+      apiReady: {},
+      mobile: false,
+
+      handlePlayerReadyStateChange: function (playerId, eventName, eventArgs) {
+
+        if(eventName === 'playerEmbedded') {
+          $('#'+playerId)[0].setModuleParams({"vfc-buy-ui":{"region":"US"}});
+
+        } else if(eventName === 'apiReady') {
+
+          tnfOoyala.apiReady[playerId] = true;
+
+          if( $('#'+playerId+'_MobileContainer').length > 0 ){
+            tnfOoyala.mobile = true;
+          } 
+
+          $(document).trigger('tnf:ooyala:event:' + eventName, playerId, eventArgs);
+        }
+      }
+    };
+  })(window);
 
 }(jQuery));
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.LightboxVideoPlayer = (function() {
+    var EMPTY_LIGHTBOX_ID, LIGHTBOX_HEIGHT, LIGHTBOX_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH;
+
+    LIGHTBOX_WIDTH = 956;
+
+    LIGHTBOX_HEIGHT = 538;
+
+    PLAYER_WIDTH = 936;
+
+    PLAYER_HEIGHT = 518;
+
+    EMPTY_LIGHTBOX_ID = 'colorbox-empty-content';
+
+    LightboxVideoPlayer.setup = function() {
+      var videoLightboxNodes,
+        _this = this;
+      videoLightboxNodes = $('[data-embed-code].lightbox');
+      if (!(videoLightboxNodes.length > 0)) {
+        return;
+      }
+      this._ensureEmptyLightboxNodeAvailable();
+      return videoLightboxNodes.each(function(index, element) {
+        return new _this($(element));
+      });
+    };
+
+    LightboxVideoPlayer._ensureEmptyLightboxNodeAvailable = function() {
+      $('body').append("<div id='" + EMPTY_LIGHTBOX_ID + "'></div>");
+      return this.emptyLightboxNode = $("#" + EMPTY_LIGHTBOX_ID);
+    };
+
+    function LightboxVideoPlayer(element) {
+      this.element = element;
+      this._releaseVideoInterface = __bind(this._releaseVideoInterface, this);
+
+      this._buildVideoInterface = __bind(this._buildVideoInterface, this);
+
+      this._applyBrandLightbox = __bind(this._applyBrandLightbox, this);
+
+      this.embedCode = this.element.attr('data-embed-code');
+      this._enableLightbox();
+    }
+
+    LightboxVideoPlayer.prototype._enableLightbox = function() {
+      return this.element.colorbox({
+        href: "#" + EMPTY_LIGHTBOX_ID,
+        innerWidth: "" + LIGHTBOX_WIDTH + "px",
+        innerHeight: "" + LIGHTBOX_HEIGHT + "px",
+        onLoad: this._applyBrandLightbox,
+        onClosed: this._releaseVideoInterface,
+        onComplete: this._buildVideoInterface,
+        inline: true
+      });
+    };
+
+    LightboxVideoPlayer.prototype._applyBrandLightbox = function() {
+      return $('#colorbox').addClass('brand');
+    };
+
+    LightboxVideoPlayer.prototype._buildVideoInterface = function() {
+      return this.videoInterface = $.TNF.BRAND.videoInterface.factory({
+        embedCode: this.embedCode,
+        container: this.constructor.emptyLightboxNode,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
+        autoplay: true
+      });
+    };
+
+    LightboxVideoPlayer.prototype._releaseVideoInterface = function() {
+      var player;
+      player = $('.OoyalaVideoPlayer')[0];
+      if (player && typeof player.pauseMovie === 'function') {
+        player.pauseMovie();
+      }
+      this.videoInterface.pause();
+      $('#colorbox').removeClass('brand');
+      return $('.ooyala-player').css({
+        'height': '1px',
+        'width': '1px',
+        'overflow': 'hidden'
+      });
+    };
+
+    return LightboxVideoPlayer;
+
+  })();
+
+}).call(this);
 (function ($) {
 
   var MediaGalleryBase = Class.create({
@@ -4594,7 +4843,12 @@ $.support.transition = (function(){
       this.buildCallouts();
       this.autoRotate();
       this.bindEvents();
+      this._activateHotRegions();
     }
+
+    TabbedHeroGallery.prototype._activateHotRegions = function() {
+      return this.element.find('.hot-region[data-embed-code]').tnfInlineVideoExpanderer(this.element);
+    };
 
     TabbedHeroGallery.prototype.buildCallouts = function() {
       var callouts;
@@ -4608,7 +4862,7 @@ $.support.transition = (function(){
       if (arguments.length === 1) {
         el = arguments[0];
       }
-      callout = new $.TNF.BRAND.HeroGallery.Standard.Callout($(el));
+      callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
       this.callouts.push(callout);
       return callout;
     };
@@ -5016,6 +5270,7 @@ $.support.transition = (function(){
   $.TNF.BRAND.startupManager.registerController(AutoProductSwapper);
 
 }).call(this);
+
 (function($) {
   $(function() {
     $.interface.initialize();
@@ -5057,7 +5312,7 @@ $.support.transition = (function(){
         $('body').removeClass('editing-via-midas');
       }
 
-      this.resetAfterDomWrite();
+      $.TNF.BRAND.LightboxVideoPlayer.setup();
 
       $('.tertiary table.chart').each(function(){
        $('tr:odd', this).addClass('odd');
@@ -5065,45 +5320,10 @@ $.support.transition = (function(){
 
       $('.hero-box .cta a.video, .hero-cta a.hero-arrow-box').tnfInlineVideoExpanderer($(".hero-box.box"));
 
-      $('#content').append('<div id="colorbox-empty-content"></div>');
       $('a.lightview').colorbox({
         iframe:true,
         innerWidth:'538px',
         innerHeight: '550px'
-      });
-    },
-
-    resetAfterDomWrite: function() {
-      var iframed;
-      $('.lightbox').colorbox({
-        innerWidth:"956px",
-        innerHeight:"538px",
-        inline: true,
-        href: '#colorbox-empty-content',
-        onComplete: function() {
-          var embedCode = $(this).attr('data-embed-code'),
-              iframeCont = $("#colorbox-empty-content");
-         iframed = new $.TNF.BRAND.IframeVideoLoader(iframeCont,embedCode);
-        },
-        onLoad: function(){
-          $('#colorbox').addClass('brand');
-        },
-        onClosed: function() {
-          var player = $('.OoyalaVideoPlayer')[0];
-          if ( player && typeof player.pauseMovie === 'function'){
-            player.pauseMovie();
-          }
-          iframed.pause();
-          $('#colorbox').removeClass('brand');
-        },
-        onCleanup: function() {
-          var player = $('.OoyalaVideoPlayer')[0];
-          if ( player && typeof player.pauseMovie === 'function'){
-            player.pauseMovie();
-          }
-          iframed.pause();
-          $('.ooyala-player').css({'height':'1px', 'width':'1px', 'overflow':'hidden'});
-        }
       });
     },
 

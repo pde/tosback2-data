@@ -16,13 +16,13 @@ function tellafriend(model_nbr, sku) {
 			$("#overlayBG").css({opacity: 0.6, left:0, position: "absolute", "z-index": 998, width: documentWidth, height: documentHeight,"background-color": "black" });
 			var tellafriend_box = '<div id="tellafriend_box"><div id="tellafriend_content"></div><div id="tellafriend_close"><a href="javascript:closeTellafriend()">x close</a></div></div>';
 			$("body").prepend(tellafriend_box);
-			var linkImg = $("#tellafriend_link img");
-			var linkImgOffset = linkImg.offset();
-			var offsetTop = linkImgOffset.top - 160;
+			var link = $("#tellafriend_link");
+			var linkOffset = link.offset();
+			var offsetTop = linkOffset.top - 160;
 			var offsetTop = getViewpointTop() + ((getViewpointHeight() - 495) / 2);	
 			var bodyWidth = $("body").width();
-			var leftOffset = (bodyWidth - 650) / 2;
-			$("#tellafriend_box").css({ width: linkImg.width(), height: linkImg.height(), left: linkImgOffset.left, top: offsetTop});
+			var leftOffset = (bodyWidth - 350) / 2;
+			$("#tellafriend_box").css({ width: link.width(), height: link.height(), left: linkOffset.left, top: offsetTop});
 			$("#tellafriend_content").addClass("loading");
 			var selectedSku = $("#pdp_selectedSKU").val();
 			// alert(postCardURL);
@@ -53,15 +53,15 @@ function tellafriend(model_nbr, sku) {
 	}
 	
 	function closeTellafriend() {
-		var linkImg = $("#tellafriend_link img");
-		var linkImgOffset = linkImg.offset();
+		var link = $("#tellafriend_link");
+		var linkOffset = link.offset();
 		// reset this flag so that the pop-up can be opened again.
 		popUpOpened = 0;
 		
 		$("#postcard").remove();
 		$("#tellafriend_sent").remove();
 		
-		$("#tellafriend_box").animate({height: linkImg.height(), width: linkImg.width(), left: linkImgOffset.left, top: linkImgOffset.top}
+		$("#tellafriend_box").animate({height: link.height(), width: link.width(), left: linkOffset.left, top: linkOffset.top}
 			,	function () {
 				if ($.browser.msie && $.browser.version < 7) $("select").show();
 				$("#overlayBG").remove();

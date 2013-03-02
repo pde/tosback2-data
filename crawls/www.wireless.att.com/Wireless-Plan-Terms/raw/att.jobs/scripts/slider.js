@@ -10,7 +10,7 @@ var slide2 = { width: "100px", height: "65px", top: "15px", left: "55px", zindex
 var slide3 = { width: "80px", height: "50px", top: "20px", left: "118px", zindex: 1, fontsize: "80%" }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     //move he last list item before the first item. The purpose of this is if the user clicks to slide left he will be able to see the last item.
     // $('#carousel_ul li:first').before($('#carousel_ul li:last'));
     if ($("#carousel_ul").length == 0) {
@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 
 
-    $('#p-next').click(function(event) {
+    $('#p-next').click(function (event) {
         //alert("Next");
 
         event.preventDefault();
@@ -36,7 +36,7 @@ $(document).ready(function() {
         t = setInterval("autoSlide()", 3000);
     });
 
-    $('#p-previous').click(function(event) {
+    $('#p-previous').click(function (event) {
         //alert("Next");
 
         event.preventDefault();
@@ -47,11 +47,13 @@ $(document).ready(function() {
         t = setInterval("autoSlide()", 3000);
     });
 
-    $('.carousel li a').click(function(e) {
+    $('.carousel li a').click(function (e) {
         e.preventDefault();
     });
 
-    $('.carousel li').click(function() {
+    $('.carousel li').click(function () {
+
+      
         var SelectePanel = $('.carousel li').index(this) + 1;
         vCurrentDsiplaySlide = SelectePanel;
         setContinuesNumber(vTotalSlides, VPadding);
@@ -60,7 +62,9 @@ $(document).ready(function() {
         t = setInterval("autoSlide()", 3000);
     });
 
-
+    $('.carousel li').mouseenter(function () {
+        clearInterval(t);
+    });
 
     $("#carousel_inner").before('<a id="left_scroll">Move Left</a>');
     $("#carousel_inner").after('<a id="right_scroll">Move Right</a>');
@@ -69,7 +73,7 @@ $(document).ready(function() {
     setAwardModuleTitle(1);
 
     //when user clicks the image for sliding right        
-    $('#right_scroll').click(function() {
+    $('#right_scroll').click(function () {
 
 
         if ($("#right_scroll").hasClass('right_scroll_off')) {
@@ -101,7 +105,7 @@ $(document).ready(function() {
         }
 
         //make the sliding effect using jquery's anumate function '
-        $('#carousel_ul:not(:animated)').animate({ 'left': left_indent }, 300, function() {
+        $('#carousel_ul:not(:animated)').animate({ 'left': left_indent }, 300, function () {
 
             //get the first list item and put it after the last list item (that's how the infinite effects is made) '
             //$('#carousel_ul li:last').after($('#carousel_ul li:first')); 
@@ -112,7 +116,7 @@ $(document).ready(function() {
     });
 
     //when user clicks the image for sliding left
-    $('#left_scroll').click(function() {
+    $('#left_scroll').click(function () {
 
         if ($("#left_scroll").hasClass('left_scroll_off')) {
             return;
@@ -133,7 +137,7 @@ $(document).ready(function() {
             $("#left_scroll").addClass("left_scroll_off");
         }
 
-        $('#carousel_ul:not(:animated)').animate({ 'left': left_indent }, 500, function() {
+        $('#carousel_ul:not(:animated)').animate({ 'left': left_indent }, 500, function () {
 
             /* when sliding to left we are moving the last item before the first list item */
             // $('#carousel_ul li:first').before($('#carousel_ul li:last')); 
@@ -152,7 +156,7 @@ $(document).ready(function() {
 
 
     //when user clicks the image for sliding left
-    $('#carousel_ul li li').mouseenter(function() {
+    $('#carousel_ul li li').mouseenter(function () {
 
         var CrrentTitle = $(this).children("div").html();
         var pLeft = $(this).position().left;
@@ -198,14 +202,14 @@ $(document).ready(function() {
 
     });
 
-    $('#carousel_ul li li').mouseout(function() {
+    $('#carousel_ul li li').mouseout(function () {
 
         $(".award-content-left").hide();
         $(".award-content-right").hide();
     });
 
     //when user clicks the image for sliding left
-    $('#carousel_ul .thump').mouseenter(function() {
+    $('#carousel_ul .thump').mouseenter(function () {
 
         var CrrentTitle = $(this).children("h3").html();
         var pLeft = $(this).position().left;
@@ -220,17 +224,17 @@ $(document).ready(function() {
 
     });
 
-    $('#carousel_ul .thump').mouseout(function() {
+    $('#carousel_ul .thump').mouseout(function () {
         $(".video-tooltip").hide();
     });
 
     //when user clicks the image for sliding left
-    $('#carousel_ul a').click(function() {
+    $('#carousel_ul a').click(function () {
         $(".video-tooltip").hide();
     });
 
     //For opening URL in New Window with provide size in URL
-    $('.newpage-wh').click(function(e) {
+    $('.newpage-wh').click(function (e) {
 
         e.preventDefault();
         // Getting URL var by its nam

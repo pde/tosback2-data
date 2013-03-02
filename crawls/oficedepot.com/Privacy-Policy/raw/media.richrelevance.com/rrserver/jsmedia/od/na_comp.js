@@ -80,7 +80,7 @@ function populatePrices(a) {
                         rrPriceBlock.push('<span class="main_price">' + a.prices[b].price + ' <br/> ' + rrUOM + '</span></span>');
                     }
                     document.getElementById("rrPriceElement" + item_suffix).innerHTML = rrPriceBlock.join('');
-                    document.getElementById("item_atc_rrSKU" + item_suffix).innerHTML = a.prices[b].pidForDisplay;
+                    document.getElementById("item_atc_rrSKU" + item_suffix).value = a.prices[b].pidForDisplay;
                     $("ul.rrAddCartBtn" + a.prices[b].pid).show(); // show the add to cart button
                 }
             }

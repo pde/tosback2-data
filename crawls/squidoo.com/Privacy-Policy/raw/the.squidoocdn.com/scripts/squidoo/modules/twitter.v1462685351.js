@@ -1,0 +1,1 @@
+!function(a,b){$Sq.views.bless("twitter",{view:{initialize:function(){}},editor:{initialize:function(){}}})}(jQuery,Backbone);

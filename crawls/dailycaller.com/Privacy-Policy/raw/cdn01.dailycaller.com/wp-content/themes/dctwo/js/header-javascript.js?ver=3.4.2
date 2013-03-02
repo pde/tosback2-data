@@ -1,0 +1,257 @@
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function eraseCookie(name) {
+	createCookie(name,"",-1);
+}
+
+//<!--Visual Revenue Reader Response Tracking Script (v152) -->
+	var _vrq = _vrq || [];
+	_vrq.push(['id', 152]);
+	_vrq.push(['automate', true]);
+	_vrq.push(['track', function(){}]);
+	(function(d, a){
+		var s = d.createElement(a),
+		x = d.getElementsByTagName(a)[0];
+		s.async = true;
+		s.src = 'http://a.visualrevenue.com/vrs.js';
+		x.parentNode.insertBefore(s, x);
+	})(document, 'script');
+
+//<!-- End of VR RR Tracking Script - All rights reserved -->
+
+jQuery(function ($) {
+	$('#author-bio-link').bt({
+		showTip: function(box) {
+	        $('.bt-content').prepend("<div class='close-button'><img alt='' src='http://cdn01.dailycaller.com/wp-content/themes/dctwo/images/close-window.png'/></div>");
+	        $('.close-button').attr('title', 'click here to close this dialog').click(function() {
+	            $(document).click();
+	        });
+	        $(box).fadeIn(200);
+	    },
+
+	 trigger: 'click',
+	  ajaxPath: ["$(this).attr('href')"],
+	  centerPointY: .1,
+	  positions: ['right', 'left'], 
+	  clickAnywhereToClose: 'true',
+	  width: 350, 
+	  padding:0,
+	  spikeGirth: 10, 
+	  spikeLength: 10, 
+	  cornerRadius: 5, 
+	  fill: '#edefe6', 
+	  strokeStyle: '#832921',
+	  strokeWidth: '2', 
+	  shadow: true, 
+	  shadowBlur: 12,
+	  shadowOffsetX: -20,
+	  shadowOffsetY: 20, 
+	  shadowColor: '#5c5c5c',
+	  hoverIntentOpts: {interval: 800, timeout: 500}, 
+	  cssStyles: {
+	    fontSize: '12px',
+	    fontFamily: 'Open Sans'
+	  }
+	});
+});
+
+
+jQuery(function ($) {
+	$('#email-this-tool').bt({
+		showTip: function(box) {
+	        $(box).fadeIn(200);
+	        $('.bt-content').prepend("<div class='close-button-email'><button>Cancel</button></div>");
+	        $('.close-button-email button').attr('title', 'click here to close this dialog').click(function() {
+	            $(document).click();
+	        });
+	        
+	    },
+
+	 trigger: 'click',
+	  ajaxPath: ["$(this).attr('href')"],
+	  centerPointY: .1,
+	  positions: ['bottom'], 
+	  clickAnywhereToClose: 'true',
+	  width: 440, 
+	  padding:0,
+	  spikeGirth: 10, 
+	  spikeLength: 10, 
+	  cornerRadius: 5, 
+	  fill: '#edefe6', 
+	  strokeStyle: '#832921',
+	  strokeWidth: '2', 
+	  shadow: true, 
+	  shadowBlur: 12,
+	  shadowOffsetX: -20,
+	  shadowOffsetY: 20, 
+	  shadowColor: '#5c5c5c',
+	  hoverIntentOpts: {interval: 800, timeout: 500}, 
+	  cssStyles: {
+	    fontSize: '12px',
+	    fontFamily: 'Open Sans'
+	  }
+	});
+});
+
+//Browser Support Code
+function emailAjaxSubscriptionSubmitFunction(isWidget){
+	var ajaxRequest;  // The variable that makes Ajax possible!
+
+	try{
+		// Opera 8.0+, Firefox, Safari
+		ajaxRequest = new XMLHttpRequest();
+	} catch (e){
+		// Internet Explorer Browsers
+		try{
+			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e){
+				// Something went wrong
+				alert("Your browser is not compatible with AJAX.");
+				return false;
+			}
+		}
+	}
+	
+	var prevSubmitHTML = document.getElementById('EmailSubmitButton').innerHTML;
+	document.getElementById('EmailSubmitButton').innerHTML = '<img src="/wp-content/themes/dctwo/images/ajax-loader.gif">';
+
+	// Create a function that will receive data sent from the server
+	ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState == 4){
+			if(isWidget){
+				document.getElementById('widgetEmailResults').innerHTML = ajaxRequest.responseText;				
+			}
+			else{
+			document.getElementById('results').innerHTML = ajaxRequest.responseText;				
+			}
+
+			document.getElementById('EmailSubmitButton').innerHTML = prevSubmitHTML;
+		}
+	}
+	
+	
+	var email = document.getElementById('email').value;
+	if(is_null(email) || email=="Email Address"){
+		alert("Invalid Email Address. Please input an email address");
+		document.getElementById('EmailSubmitButton').innerHTML = prevSubmitHTML;			
+		return false;
+	}
+	else{
+		if(document.getElementById('TheDCLinks')){
+			var TheDCLinks = document.getElementById('TheDCLinks').checked;
+		}
+		else{
+			var TheDCLinks = false;
+		}
+		if(document.getElementById('CampusCaller')){
+			var CampusCaller = document.getElementById('CampusCaller').checked;
+		}
+		else{
+			var CampusCaller = false;
+		}		
+		if(document.getElementById('GinnisList')){		
+			var GinnisList = document.getElementById('GinnisList').checked;
+		}
+		else{
+			var GinnisList = false;
+		}		
+		if(document.getElementById('TheDCMorning')){
+			var TheDCMorning = document.getElementById('TheDCMorning').checked;			
+		}
+		else{
+			var TheDCMorning = false;
+		}		
+
+		var queryString = "?email=" + email;
+
+		if(TheDCLinks==true){	queryString = queryString + "&TheDCLinks=" + TheDCLinks;	}
+		if(CampusCaller==true){	queryString = queryString + "&CampusCaller=" + CampusCaller;	}
+		if(GinnisList==true){	queryString = queryString + "&GinnisList=" + GinnisList;	}
+		if(TheDCMorning==true){	queryString = queryString + "&TheDCMorning=" + TheDCMorning;	}
+
+			ajaxRequest.open("GET", "/wp-content/themes/dctwo/goldlasso/mainsubscribe.php" + queryString, true);
+			ajaxRequest.send(null); 
+		
+	}
+}
+
+  function is_null(input){
+    return input==null;
+  }
+
+jQuery(function ($){
+	$(document).ready(function() {
+	    function isScrolledIntoView(elem,scrollelem) {
+	        var docViewTop = $(window).scrollTop();
+	        var docViewBottom = docViewTop + $(window).height();
+	        var rtn = false;
+	        var elemTop = $(scrollelem).offset().top;
+
+	        var elemBottom = elemTop + $(scrollelem).height();
+	        
+	        if(docViewTop <= elemTop-1){
+		        rtn = false;
+	        }
+	        else if(docViewTop >= elemTop){
+		        rtn = true;
+	        }
+	        
+	        return rtn;
+	    }
+	
+	    var myelement = $('#access-float'); // the element to act on if viewable
+	    var scrolltoelement = $('#access');
+	    $(window).scroll(function() {
+	        if(isScrolledIntoView(myelement,scrolltoelement)) {
+	            // do something when element is scrolled to and viewable
+	            myelement.show();
+	        } else {
+	            // do something when element is not viewable
+	            myelement.hide();
+	        }
+	    });
+	   
+	});
+});	
+
+	jQuery(document).ready(function($){
+		$('.image_caption_toggle_off').click(function(){	
+			$('.image_caption_toggle_off').hide();
+			$('.image_caption_toggle').show();			
+			$('.image_caption').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });
+			$('.image_caption').css("display", "block");
+		});
+			
+		
+
+		$('.image_caption_toggle').click(function(){	
+			$('.image_caption_toggle').hide();				
+			$('.image_caption').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });
+			$('.image_caption_toggle_off').animate({height: "toggle", opacity: "toggle"}, { duration: "slow" });			
+			$('.image_caption_toggle_off').css("display", "block");
+		});
+
+	});
+

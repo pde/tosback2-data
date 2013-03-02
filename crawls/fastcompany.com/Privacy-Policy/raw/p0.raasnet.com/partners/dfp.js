@@ -12,12 +12,12 @@ function getNdlNdrParams() {
         if (typeof(_ca_ndl) != 'undefined' && _ca_ndl) {
             ndl = _ca_ndl;
         } else {
-            ndl = encodeURIComponent(document.location.toString().substr(0, 500));
+            ndl = encodeURIComponent(document.location.toString().substr(0, 1000));
         }
         if (typeof(_ca_ndr) != 'undefined' && _ca_ndr) {
             ndr = _ca_ndr;
         } else {
-            ndr = encodeURIComponent(document.referrer.toString().substr(0, 500));
+            ndr = encodeURIComponent(document.referrer.toString().substr(0, 1000));
         }
     } catch (e) {
         error("URL set error", e);

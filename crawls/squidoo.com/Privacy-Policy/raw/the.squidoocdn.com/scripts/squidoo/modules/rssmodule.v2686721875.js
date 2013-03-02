@@ -1,0 +1,1 @@
+!function(a,b){$Sq.bless("rssmodule",{})}(jQuery,Backbone);

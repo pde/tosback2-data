@@ -55,7 +55,7 @@
         <link rel="stylesheet" type="text/css" href="../static2.fitbit.com/combined.s-css-css.h484a693fa40d4dba2a2d26b5ae15630d.pack%3Fitems=%252Fjs%252Flib%252Fjqueryui%252F1.8.1%252Fthemes%252Fbase%252Fjquery.ui.core.css" charset="utf-8"/>
 
         
-        <link rel="stylesheet" type="text/css" href="../static3.fitbit.com/combined.s-css-css.hbca27dfe000c6e809f1281fdb4670f41.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="../static3.fitbit.com/combined.s-css-css.h4195d7607dc26d72d36c68543f185374.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
         
 
         <!--[if IE]>
@@ -1309,7 +1309,24 @@ http://help.fitbit.com/#product_aria">Aria Scale Help</a>
    
 
 
-            <script type="text/json" id="aria101_labels">
+            
+   		
+
+
+	
+		   
+			         				         		
+
+
+
+
+
+
+   		       
+	
+
+
+<script type="text/json" id="aria101_labels">
 {
 "using_scale": "Using Your Scale",
 "adding_people": "Adding People",
@@ -1447,6 +1464,11 @@ http://help.fitbit.com/#product_aria">Aria Scale Help</a>
     <button>Set a weight goal now</button>
 </script>
 
+
+
+   
+
+
             
                 <script type="text/javascript">
 fitbit.i18n.setResource('com.fitbit.app.label.set', 'Set');
@@ -1511,7 +1533,7 @@ fitbit.i18n.setResource('com.fitbit.app.user.friends.label.empty_state_notificat
 
 
     
-	<script type="text/javascript"  src="../static1.fitbit.com/combined.s-jsyui-js.hf0c91229c8b0930bc6881a019ac502a3.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fmodules%252Fdropdown.js%252C%252Fjs%252Ffitbit%25"  charset="utf-8" ></script>
+	<script type="text/javascript"  src="../static3.fitbit.com/combined.s-jsyui-js.h29a8d9042e158b402534ce2c5b0f747a.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fmodules%252Fdropdown.js%252C%252Fjs%252Ffitbit%25"  charset="utf-8" ></script>
 	
 
     
@@ -2030,7 +2052,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 })();
 </script>
 
-<script type="text/javascript">
+<script type="text/javascript"  src="../static2.fitbit.com/simple.s-jsyui-js.h893c75bed28a85e280365453885f2664.pack%3Fitems=%252Fscripts%252Flibs%252Fua-parser%252Fua-parser.js"  charset="utf-8" ></script><script type="text/javascript">
     
     (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
     b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
@@ -2056,34 +2078,52 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 
     var mpqQAPrj = "45b3cbfc56ddb35a099bc7f38fc74f4c"; // QA Project
 
-    var mixpanelConfig = {
-        cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500, upgrade: true,
-        loaded: function(){
-            // Upgrade to new mixpanel, which does not use mpq variable
-            // If they don't equal each other
-            if (mpq != mixpanel) {
-                // Then we'll set the mpq items
-                var len = mpq.length, i = 0;
-                while(len--){
-                    mixpanel.push(mpq[i++]);
+    var getMixpanelConfig = function(namespace){
+        return {
+            cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500, upgrade: true,
+            loaded: function(){
+                // Upgrade to new mixpanel, which does not use mpq variable
+                // If they don't equal each other
+                if (mpq != mixpanel) {
+                    // Then we'll set the mpq items
+                    var len = mpq.length, i = 0;
+                    while(len--){
+                        mixpanel.push(mpq[i++]);
+                    }
+
+                    // And make mpq variable equal mixpanel, so future calls to mpq will just call mixpanel
+                    mpq = mixpanel;
                 }
 
-                // And make mpq variable equal mixpanel, so future calls to mpq will just call mixpanel
-                mpq = mixpanel;
+                
             }
-        }
+        };
     };
 
     
-    if (document.location.host === "www.fitbit.com" || document.location.host === "api.fitbit.com") {
-        mixpanel.init(mpqWebsitePrj, mixpanelConfig);
-    } else {
-        mixpanel.init(mpqQAPrj, mixpanelConfig);
-
+    if ( !(document.location.host === "www.fitbit.com" || document.location.host === "api.fitbit.com") ) {
         mpqMasterPrj = mpqSignupPrj = mpqDashboardPrj = mpqOrderPrj = mpqBadgesPrj = mpqDevicesPrj = mpqWebsitePrj = mpqSocialFeaturesPrj = mpqCWPrj = mpqQAPrj;
     }
 
-	
+    mixpanel.init(mpqWebsitePrj, getMixpanelConfig());
+
+    
+    (function(){
+        var masterConfig = getMixpanelConfig('master');
+        mixpanel.init(mpqMasterPrj, masterConfig, 'master');
+        mixpanel.master.register({"Environment":"prod","Logged In":false});
+
+        var userAgent = new UAParser(),
+            os = userAgent.getOS(),
+            osVersion = [os.name, os.version].join(' ');
+
+        mixpanel.master.register({
+            '!PAGEGROUP': 'Web',
+            'Locale': 'en_US',
+            'Operating System Version': osVersion
+        });
+    })()
+    
     mpq.push(["register", {"age":"","city":"","country":"","gender":"","interface":"","member":"","state":"","timezone":"","Api Usage":"","City":"","State":"","Food Goal":"","Goal Primary":"","GoalFoodBudget":"","GoalFoodCalories":"","GoalPrimary":"","GoalWeight":"","Member":"","Tracker":""}, "all"]);
     mpq.push(["register", {"Locale": "US"}, "all", 90]);
     mpq.push(["register", {"LocaleLang": "en_US"}, "all", 90]);
@@ -2172,7 +2212,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
     
     
     
-    	BOOMR.addVar("requestId", "web03.fitbit.com_1361970396736_27761");
+    	BOOMR.addVar("requestId", "web01.fitbit.com_1362229470997_26159");
     
     </script>
 

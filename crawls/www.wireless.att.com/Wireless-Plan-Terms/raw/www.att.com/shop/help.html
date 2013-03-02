@@ -178,6 +178,7 @@ CQURLInfo = {
 <script type="text/javascript" src="../shopcms/libs/cq/personalization/clientlib.js"></script> 
 <div class="analytics"> 
 </div> 
+<script src="../media/cms/homepage/scripts/BrowserDetect.js" type="text/javascript"></script> 
 <script type="text/javascript">       
 	atgProfileDataReady = jQuery.Deferred(); 
 	var atgProfileDataTimer = setTimeout(function() { 
@@ -220,6 +221,9 @@ CQURLInfo = {
                 } 
               CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
 		}); 
+	// setting browser and operating system after reading from the client side 
+	CQ_Analytics.ProfileDataMgr.setProperty("browser", BrowserDetect.browser);  
+	CQ_Analytics.ProfileDataMgr.setProperty("os", BrowserDetect.OS); 
         clearTimeout(atgProfileDataTimer); 
         atgProfileDataReady.resolve(data); 
 	}});                               
@@ -682,7 +686,7 @@ U-verse service today.</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 335223233955903617878710816997425182570 --> 
+		 <!--X-Renderer: 339821384303313149530060625914001684604 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -707,9 +711,9 @@ jQuery(window).load(function(){
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
 ATT.globalVars.ban = ""; 
-ATT.globalVars.flowIndicator = "UP"; 
+ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "48045"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -720,15 +724,15 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="48045"; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "UP"){ 
-		flowType ="UP"; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
@@ -802,7 +806,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "HARRISON TOWNSHIP"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -811,7 +815,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "MI"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -889,7 +893,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","Wy7DRt6XV87pxpxKJncQgfww!1801690698!1361918679611"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","pkXLRxmJSSD7zNvvy63B5djc!-1792814421!1362192116493"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

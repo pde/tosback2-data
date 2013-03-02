@@ -62,7 +62,7 @@ if(typeof Linicom === 'undefined') {
 		}
 		Linicom._wasShown = false;
 	},
-	"_setLink" : function(a,newlink)
+	"_trueSetLink" : function(a,newlink)
 	{
 		if(navigator.appName == 'Microsoft Internet Explorer') {
 			var old = a.innerHTML ;
@@ -73,6 +73,16 @@ if(typeof Linicom === 'undefined') {
 			}
 		}
 		a.href=newlink;
+	},
+	"_setLink" : function(a,newlink)
+	{
+		Linicom._trueSetLink(a,newlink);
+		if(Linicom.ynethack) {
+			a.onclick=function() {
+				Linicom._trueSetLink(a,newlink);
+				return true;
+			};
+		}
 	},
 	"_onLoad" : function() {
 		if(Linicom._ready)
@@ -99,6 +109,13 @@ if(typeof Linicom === 'undefined') {
 			blacklist = blacklist.concat(options.blacklist);
 		if('skip' in options)
 			skip = options.skip;
+		Linicom.ynethack=false;
+		for(var i=0;i<blacklist.length;i++) {
+			if(blacklist[i]==='ynethack') {
+				Linicom.ynethack = true;
+				break;
+			}
+		}
 
 		if(convert!='none') { // rewrite URLs
 			var links = document.getElementsByTagName('a');

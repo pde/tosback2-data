@@ -107,7 +107,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 <!--Wireless CTN capture end -->
 <meta NAME="DCSext.wtStatusCode" CONTENT="" />
 <meta NAME="DCSext.wtPN" CONTENT="Uverse Check Availability Address Pg" />
-<meta NAME="DCSext.sessionid" CONTENT="gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249" />
+<meta NAME="DCSext.sessionid" CONTENT="n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761" />
 <meta NAME="DCSext.flowtype" CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" CONTENT="Consumer" />
 <meta NAME="DCSext.wtCustTypeSub" CONTENT="Residential" />
@@ -223,7 +223,16 @@ value: function () {return window.wtAutoPay = '|N'}
 {selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkName', value: function() {
 return reporting.trim(reporting.getDynamicLinkName.apply(this,[]), '_');
 }},
-{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc'},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtStatusCode',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtSuccessFlag',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtEventType',
+value: ''
+},
+{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc,DCSext.wtStatusCode,DCSext.wtSuccessFlag,DCSext.wtEventType'},
 {selector: 'head:page(service-already-exists)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_ServiceAlreadyExists'},
 {selector: 'head:page(check-availability-multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 {selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -409,7 +418,7 @@ meteor.tracking.track('49ff2bfd-1827-4488-8f34-2a8b9ffd5fd3', {'url_storage_sour
 <script type="text/javascript" charset="utf-8">
 function SessionVars() {
 this.getCurrSessId = function() {
-var pSessionId = 'gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249';
+var pSessionId = 'n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761';
 return pSessionId;
 };
 this.getCurrBrowserId = function() {
@@ -443,7 +452,7 @@ sessionVars = new SessionVars();
 var forceFlashDebugMode = false;
 var getTimeOffset = function() {
 var offset = new Number();
-var servertime = 1361971093998;
+var servertime = 1362230097832;
 var clientdateObj = new Date();
 var clienttime = clientdateObj.getTime();
 offset = clienttime - servertime;
@@ -1621,7 +1630,8 @@ commonFunc.addOnload("document.getElementById('serviceAddress1').focus();");
 <input id="modal-contentindex" type="text" name="modal-readonly" title="Modal opened" onKeyDown="return modalStart(event);" readonly="readonly" class="offscreentext"/>
 <h1 class="fl" id="mainPopUpTitle"></h1>
 <div class="fr" id="popCloseButton">
-<span id="popCloseButtonSpan" onClick="closePopup();"><a class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span>
+<span id="popCloseButtonSpan" onClick="closePopup();">
+<a id="closeLinkCheckCartMsg" class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span>
 </span>
 </div>
 </div>

@@ -29,9 +29,20 @@ function s_doPlugins(s) {
 if (!s.pageName) s.pageName=document.title 
 
 /* External Campaign Tracking */
-if(!s.campaign)
-	s.campaign=s.getQueryParam('cmp')
-	s.campaign=s.getValOnce(s.campaign,'s_campaign',0)
+var pid = s.getQueryParam('pid');
+var cmp =s.getQueryParam('cmp');	
+if(!s.campaign){
+	if(cmp != ""){
+		if(pid != "")
+			s.campaign = cmp + "-" + pid;
+		else
+			s.campaign = cmp;
+	}	
+}
+if(cmp.indexOf('af-')>-1 && cmp.indexOf('cj_')>-1)
+	s.campaign=s.eVar68=s.getValOnce(s.campaign,'s_campaign',0);
+else
+	s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
 
 /* Internal Campaign Tracking */
 if(s.getQueryParam('intcmp') != ""){

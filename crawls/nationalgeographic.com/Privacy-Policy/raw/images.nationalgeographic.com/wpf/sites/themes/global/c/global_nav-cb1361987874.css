@@ -1,0 +1,870 @@
+/* ------------------------------------------------------------
++Reset
+------------------------------------------------------------ */
+body,
+#navigation_tophat_container li,
+#navigation_tophat_container h1,
+#navigation_tophat_container h2,
+#navigation_tophat_container h3 { 
+    margin:0;
+    padding:0;
+}
+
+#navigation_tophat_container ol,
+#navigation_tophat_container ul {
+    list-style:none;
+}
+
+/* ------------------------------------------------------------
++General Styles and Positioning
+------------------------------------------------------------ */
+#navigation_tophat_container * { 
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    -webkit-transition: all 0.3s ease 0s;
+       -moz-transition: all 0.3s ease 0s;
+        -ms-transition: all 0.3s ease 0s;
+         -o-transition: all 0.3s ease 0s;
+            transition: all 0.3s ease 0s;
+}
+
+#navigation_tophat_container {
+    background: #111;
+    box-shadow: 0 2px 10px #333;
+    height: auto;
+    min-width: 1030px;
+    z-index: 10000;
+}
+
+#navigation_tophat_container figure { 
+    margin: 0; 
+}
+
+#navigation_tophat_container .hidden {
+    font-size: 0; 
+    left: -9999px; 
+    line-height: 0; 
+    margin: 0; 
+    padding: 0; 
+    position: absolute; 
+    width: 0;
+}
+
+#navigation_tophat_container .hiddenText {
+    direction: ltr;
+    text-indent: -9999px;
+}
+
+#navigation_tophat_container .inline_list li { display: inline-block; }
+
+#navigation_tophat_container .inline-list > li {
+    float: left;
+}
+
+#navigation_mainA, #navigation_mainB {
+    border-top: 1px solid #222;
+    clear: both;
+    font-family: arial,sans-serif;
+    font-size: 16px;
+    height: auto; 
+    margin: 0 auto; 
+    position: relative;
+    width: 990px;
+}
+
+#navigation_mainA { 
+    font-size: 13px; 
+}
+
+#navigation_mainB {
+    width: inherit;
+}
+
+#navigation_mainB:before {
+    border-top: 1px solid #222;
+    bottom: 0;
+    content: "";
+    display: block;
+    font-size: inherit;
+    height: 2.2em;
+    position: absolute;
+    width: 100%;
+}
+
+#navigation_mainB .navigation_mainB_container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 990px;
+}
+
+/*#navigation_mainB .cf:before,
+#navigation_mainB .cf:after { 
+    content: ""; 
+    display: table; 
+}
+
+#navigation_mainB .cf:after { 
+    clear: both; 
+}*/
+
+#navigation_mainB a { 
+    display: block;
+    text-decoration: none;
+}
+#navigation_mainB a:hover { 
+    text-decoration: none; 
+}
+
+/* ------------------------------------------------------------
++NG Logo
+------------------------------------------------------------ */
+#navigation_mainA #header_logo { 
+    clear: left;
+    float:left; 
+    margin: 13px 20px 9px 0; 
+}
+
+#navigation_mainA #header_logo a.fn {
+    background: url(../i/presentation/ng_logo_hp_125.png) no-repeat scroll;
+    display: block;
+    float: left;
+    height: 53px;
+    width: 262px;
+}
+
+#navigation_mainA .vcard div {
+	/* overrides screen.css */
+    position: absolute;
+}
+
+#navigation_mainA abbr {
+	/* overrides utility.css */
+	cursor: pointer;
+}
+
+/* ------------------------------------------------------------
++Shared Header (Sign In/Join buttons and Avatar)
+------------------------------------------------------------ */
+#navigation_mainA #shared-header {
+    float: right;
+    font-size: 16px;
+    padding: 0.6em 0 0 0;
+}
+
+/* ------------------------------------------------------------
++Search Bar
+------------------------------------------------------------ */
+#navigation_mainA #global_search { 
+    float: right; 
+    padding: 1.7em 2.3em 0 2em; 
+}
+
+#navigation_mainA #global_search .field {
+	float: left;
+}
+
+#navigation_mainA #header_search_input {
+    background: url(../i/presentation/search-white.png) no-repeat 8px 6px #444;
+    border: 0 none;
+    border-radius: .3em;
+    color: #999;
+    font-family: arial,sans-serif;
+    font-size: inherit;
+    height: 2.2em;
+    max-width: 10em;
+    padding: 7px 15px 7px 30px;  /* Using px as FF doesn't like em in this instance */
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    width: 20em;
+
+    -webkit-appearance: none;
+       -moz-appearance: none;
+
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+       -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+        -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+         -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+
+    -webkit-transition: all 0.7s ease 0s;
+       -moz-transition: all 0.7s ease 0s;
+        -ms-transition: all 0.7s ease 0s;
+         -o-transition: all 0.7s ease 0s;
+            transition: all 0.7s ease 0s;
+}
+
+#navigation_mainA #header_search_input .placeholder {
+    /* Used for browsers who don't support HTML5 Placeholder tag */
+    color: #999;
+}
+
+#navigation_mainA #header_search_input:focus {
+    background: url(../i/presentation/search-dark.png) no-repeat 8px 6px #fcfcfc;
+    color: #333;
+    max-width: 30em;
+    outline: none;
+    padding: 7px 15px 7px 30px;  /* Using px as FF doesn't like em in this instance */
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { /* Chrome and Safari Search Overrides*/
+    #navigation_mainA #header_search_input, 
+    #navigation_mainA #header_search_input:focus {
+        /*padding: 0.375em 0.938em 0.375em 1.6em;*/
+        padding: 0 0 0 15px;
+    }
+}
+
+#navigation_mainA #header_search_input .field input {
+	border: 1px solid #ccc; padding: 3px;
+}
+
+#navigation_mainA #header_search_input .field input:hover {
+	border: 1px solid #ddd;
+}
+
+#navigation_mainA #header_search_input .field input:focus {
+	border: 1px solid #aaa;
+}
+
+#navigation_mainA #header_search_input button {position: relative; border: 0; padding: 0; cursor: pointer; overflow: visible; /* removes extra side padding in IE */}
+#navigation_mainA #header_search_input button::-moz-focus-inner {border: none; /* overrides extra padding in Firefox */}
+#navigation_mainA #header_search_input button span {position: relative; display: block; white-space: nowrap;}
+ @media screen and (-webkit-min-device-pixel-ratio: 0) {/* Safari and Google Chrome only - fix margins */
+ #navigation_mainA #header_search_input button span {margin-top: -1px;}
+}
+
+#navigation_mainB_wrap > span, 
+#navigation_mainA #header_search > span {
+    position: absolute;
+}
+
+/* ------------------------------------------------------------
++Social Links (Twitter/Facebook buttons)
+------------------------------------------------------------ */
+#navigation_mainA #social {
+	color: #999;
+    float: right; 
+    margin: 0;
+    padding: 1.7em 0 0 0;
+}
+
+#navigation_mainA #social > li > a {
+    background: url(../i/presentation/social-sprite.png) no-repeat;
+    display: block;
+    height: 1.9em;
+    line-height: 2em;
+    margin-top: 0.18em;
+    width: 1.83em;
+} 
+#navigation_mainA #social > li > a.facebook {
+    background-position: -87px -24px;
+    margin-right: 5px;
+}
+#navigation_mainA #social > li > a.facebook:hover {
+    background-position: -87px 0px;
+}
+#navigation_mainA #social > li > a.twitter {
+    background-position: -58px -24px;
+}
+#navigation_mainA #social > li > a.twitter:hover {
+    background-position: -58px 0px;
+}
+#navigation_mainA #social > li:first-child {
+    margin-top: 6px; 
+    margin-right: 3px; 
+    vertical-align: top;
+}
+#navigation_mainA #social .inline_list li { display: inline-block; }
+#navigation_mainA #social .inline-list > li {
+    float: left;
+}
+#navigation_mainA #social .inline_list li:first-child {
+    margin-top: 2px; 
+    margin-right: 3px;
+}
+
+/* ------------------------------------------------------------
++Primary Navigation
+------------------------------------------------------------ */
+
+nav#navigation_mainB .primary_nav {
+    margin-top: 0; 
+    padding: 0 0 4.59em 0; 
+    position: relative;
+}
+
+nav#navigation_mainB .primary_nav > li {
+    position: relative; 
+    z-index: 60;
+}
+nav#navigation_mainB .primary_nav > li.active { 
+    position: static; 
+    z-index: 55;
+}
+
+nav#navigation_mainB .primary_nav > li > a {
+    color: #ddd;
+    line-height: 2.4;
+    padding: 0 .85em;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+
+nav#navigation_mainB .active .secondary_nav li > a.active
+ {
+    color: #fc0;
+}
+
+/* ------------------------------------------------------------
++Secondary and Sub Navs
+------------------------------------------------------------ */
+nav#navigation_mainB .secondary_nav,
+nav#navigation_mainB .spotlight { 
+    float: left;
+    text-align: left;
+}
+nav#navigation_mainB .secondary_nav { 
+    border: 0 solid #eee; /* makes managing border switching below eaiser. */
+    border-right-width: 1px;
+    line-height: 1.2em;
+    padding-left: 0;
+}
+
+nav#navigation_mainB .secondary_nav > li { 
+    border-bottom: 1px solid #eee; 
+}
+
+nav#navigation_mainB .secondary_nav > li > a {
+    color: #333;
+    font-size: .85em;
+    padding: .6em 1em;
+    white-space: normal;
+}
+nav#navigation_mainB .secondary_nav li > a:hover,
+nav#navigation_mainB .secondary_nav li:hover > a,
+nav#navigation_mainB .spotlight_left_menu li > a:hover { 
+    background-color: #eee; 
+}
+
+nav#navigation_mainB .left .secondary_nav { 
+    border-right-width: 0;
+    border-left-width: 1px;
+    float: right;
+    margin-right: 1px; 
+}
+nav#navigation_mainB .sub_nav {
+    background-color: #fff;
+    box-shadow: 0 2px 10px #666;
+    display: none;
+    float: right;
+    position: absolute;
+    z-index: 50;
+}
+
+/* Triangle decoration */
+nav#navigation_mainB .sub_nav:before {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    content: '';
+    position: absolute;
+    top: -14px;
+}
+
+nav#navigation_mainB li:hover .sub_nav {
+    display: block;
+}
+
+nav#navigation_mainB .active .sub_nav { 
+    box-shadow: none; 
+}
+
+nav#navigation_mainB .left.sub_nav { /* Switiches the direction in which the dropdown extends from the parent nav */
+    right: 0; 
+}
+
+/* -------  Sub nav for active nav item */
+nav#navigation_mainB .active .secondary_nav {
+    border: none;
+    height: 35px;
+    width: 100%;
+}
+nav#navigation_mainB .active .secondary_nav > li {
+    border: none;
+    float: left;
+}
+
+nav#navigation_mainB .active .secondary_nav li > a {
+    border-right: 1px solid #333;
+    color:  #ddd;
+    font-size: 0.813em;
+    margin: 9px 0;
+    padding: 0 13px;
+    white-space: nowrap;
+}
+nav#navigation_mainB .active .secondary_nav li > a:hover,
+nav#navigation_mainB .active .secondary_nav li:hover > a { 
+    background-color: transparent;
+    color: #fc0; 
+}
+
+nav#navigation_mainB .primary_nav > li.active .sub_nav,
+nav#navigation_mainB .primary_nav > li.active:hover .sub_nav {
+    background-color: transparent;
+/*    border-top: 1px solid #222;*/
+    display: block;
+    left: 0;
+    margin-bottom: 5px;
+    position: absolute;
+    width: 990px;
+}
+nav#navigation_mainB .primary_nav > li.active .sub_nav:before { 
+    border-width: 0; 
+}
+nav#navigation_mainB .primary_nav > li.active .spotlight { 
+    display: none; 
+}
+/* ------- End Sub nav for active nav item */
+
+/* Section widths for existing subnav menus -- make more dynamic in future updates */
+nav#navigation_mainB .video .sub_nav { width: 22em; }
+nav#navigation_mainB .photography .sub_nav { width: 24.3em; }
+nav#navigation_mainB .animals .sub_nav { width: 24.7em; }
+nav#navigation_mainB .environment .sub_nav { width: 24.2em; }
+nav#navigation_mainB .travel .sub_nav { width: 24em; }
+nav#navigation_mainB .adventure .sub_nav { width: 25em; }
+nav#navigation_mainB .television .left.sub_nav { width: 46em; }
+nav#navigation_mainB .kids .left.sub_nav { width: 22.5em; }
+nav#navigation_mainB .subscriptions .left.sub_nav { width: 29.4em; }
+nav#navigation_mainB .shop .left.sub_nav { width: 54.5em; }
+
+/* Center triangles within the different sections */
+nav#navigation_mainB .video .sub_nav:before { left: 1.7em; }
+nav#navigation_mainB .photography .sub_nav:before { left: 3.1em; }
+nav#navigation_mainB .animals .sub_nav:before { left: 2.2em; }
+nav#navigation_mainB .environment .sub_nav:before { left: 3.1em; }
+nav#navigation_mainB .travel .sub_nav:before { left: 1.9em; }
+nav#navigation_mainB .adventure .sub_nav:before { left: 2.7em; }
+nav#navigation_mainB .television .left.sub_nav:before { left: auto; right: 3em; }
+nav#navigation_mainB .kids .left.sub_nav:before { left: auto; right: 1.5em; }
+nav#navigation_mainB .subscriptions .left.sub_nav:before { left: auto; right: 3.7em; }
+nav#navigation_mainB .shop .left.sub_nav:before { left: auto; right: 1.7em; }
+
+/* ------------------------------------------------------------
++Spotlights
+------------------------------------------------------------ */
+nav#navigation_mainB .spotlight {
+    border-left: 1px solid #EEE;
+    border-right: 0 solid #EEE;
+    color: #000;
+    display: inline-block;
+    margin: 1px 0 0 -1px;
+    max-width: 15.4em;
+    padding: .7em 1.13em 1em 1.1em;
+    width: auto;
+}
+
+nav#navigation_mainB .left > .spotlight {
+    border-left: 0 solid #EEE;
+    border-right: 1px solid #EEE;
+    float: right;
+    margin: 1px -1px 0 0;
+}
+
+nav#navigation_mainB .spotlight a,
+nav#navigation_mainB .spotlight_left_menu a {
+    color: #000;
+}
+
+nav#navigation_mainB .spotlight h2 {
+    font-size: 17px;
+    font-weight: 400;
+    margin-top: .2em;
+    max-width: 200px;
+    padding-bottom: .7em;
+}
+
+nav#navigation_mainB .spotlight h2,
+nav#navigation_mainB .spotlight_left_menu h2,
+nav#navigation_mainB .spotlight_left_menu li {
+    text-align: left;
+}
+
+nav#navigation_mainB .spotlight h3 { 
+    font-size: 1em; 
+}
+
+nav#navigation_mainB .spotlight img { 
+    border: 1px solid #ccc;
+    display: block;
+    max-width: 200px;
+}
+
+nav#navigation_mainB .spotlight figcaption {
+    font-size: .9em;
+    line-height: 1.4em;
+    margin-top: .6em;
+    max-width: 200px;
+}
+
+nav#navigation_mainB .spotlight_left_menu {
+    border-right: 1px solid #EEE;
+    display: inline-block;
+    float: left;
+    max-width: 385px;
+    padding: 1em 1em .5em;
+}
+
+nav#navigation_mainB  .spotlight_left_menu a {
+    display: inline-block;
+}
+
+nav#navigation_mainB .spotlight_left_menu figure {
+    display: inline-block;
+    float: left;
+    padding-right: 1.2em;
+}
+
+nav#navigation_mainB .spotlight_left_menu li ul {
+    float: right;
+    max-width: 15em;
+    width: 17em;
+}
+
+nav#navigation_mainB .spotlight_left_menu li ul li {
+    font-size: 0.8em;
+    line-height: 1.45em;
+    padding-top: 0.2em;
+}
+
+nav#navigation_mainB .spotlight_left_menu li ul li:first-child {
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1.2em;
+}
+
+
+nav#navigation_mainB .spotlight_left_menu li a {
+    border-bottom: 1px solid #EEE;
+    padding: 0.5em 0;
+}
+
+nav#navigation_mainB .spotlight_left_menu li:last-child a {
+    border-bottom: 0 solid #EEE;
+}
+
+/* ------------------------------------------------------------
++Navigation Elements
+------------------------------------------------------------ */
+/*------ Home ------*/
+nav#navigation_mainB .home > a:hover { /* Home does not get .secondary-nav background-color */
+    background-color: #fc0;
+    color: #333;
+}
+nav#navigation_mainB .home > a:hover > .sub_nav, 
+nav#navigation_mainB .home:hover > .sub_nav { /* Home does not display a spotlight */
+    background-color: #fff;
+    display: none;
+}
+nav#navigation_mainB .home .secondary_nav li > a { /* Home has darker color than other sub nav links */
+    color: #aaa;
+}
+
+/*------ Video ------*/
+#navigation_tophat_primary + li.nav9:hover,
+#navigation_tophat_primary li.nav9:hover h3 a {background-color: #82B4D2; color: #fff;}
+
+nav#navigation_mainB .video.active > a,
+nav#navigation_mainB .video > a:hover,
+nav#navigation_mainB .video:hover > a,
+nav#navigation_mainB .video.active .sub_nav, 
+nav#navigation_mainB .video.active .secondary_nav { 
+    background-color: #3C5D89;
+    color :#fff; 
+}
+
+/*------ Photography ------*/
+#navigation_tophat_primary + li.nav2:hover,
+#navigation_tophat_primary li.nav2:hover h3 a {background-color: #313B47; color: #98CCFE;}
+
+nav#navigation_mainB .photography.active > a,
+nav#navigation_mainB .photography > a:hover,
+nav#navigation_mainB .photography:hover > a,
+nav#navigation_mainB .photography.active .sub_nav, 
+nav#navigation_mainB .photography.active .secondary_nav { 
+    background-color: #313B47; 
+    color :#fff;
+}
+
+/*------ Animals ------*/
+#navigation_tophat_primary + li.nav3:hover,
+#navigation_tophat_primary li.nav3:hover h3 a {background-color: #FF9414; color: #000 !important;}
+
+nav#navigation_mainB .animals.active > a,
+nav#navigation_mainB .animals > a:hover,
+nav#navigation_mainB .animals:hover > a,
+nav#navigation_mainB .animals.active .sub_nav, 
+nav#navigation_mainB .animals.active .secondary_nav {
+    background-color: #FF9414;
+    color: #000;
+}
+nav#navigation_mainB .animals.active .secondary_nav > li > a:hover,
+nav#navigation_mainB .animals.active .secondary_nav > li > a.active {
+    color: #fff;
+}
+nav#navigation_mainB .animals.active .primary_nav li > a, 
+nav#navigation_mainB .animals.active .secondary_nav li > a {
+    color: #000;
+}
+
+/*------ Environment ------*/
+#navigation_tophat_primary + li.nav4:hover,
+#navigation_tophat_primary li.nav4:hover h3 a {background-color: #39433A; color: #C6DE6E;}
+
+nav#navigation_mainB .environment.active > a,
+nav#navigation_mainB .environment > a:hover,
+nav#navigation_mainB .environment:hover > a,
+nav#navigation_mainB .environment.active .sub_nav, 
+nav#navigation_mainB .environment.active .secondary_nav {
+    background-color: #39433A;
+    color :#fff;
+}
+
+/*------ Travel ------*/
+#navigation_tophat_primary + li.nav5:hover,
+#navigation_tophat_primary li.nav5:hover h3 a {background-color: #82B4D2; color: #000;}
+
+nav#navigation_mainB .travel.active > a,
+nav#navigation_mainB .travel > a:hover,
+nav#navigation_mainB .travel:hover > a,
+nav#navigation_mainB .travel.active .sub_nav, 
+nav#navigation_mainB .travel.active .secondary_nav,
+nav#navigation_mainB .travel.active .secondary_nav li > a { 
+    background-color: #82B4D2; 
+    color: #000;
+}
+nav#navigation_mainB .travel.active .secondary_nav li > a {
+    border-right: 1px solid #000;
+}
+nav#navigation_mainB .travel.active .secondary_nav li > a:hover,
+nav#navigation_mainB .travel.active .secondary_nav > li > a.active {
+    color: #fff;
+}
+
+/*------ Adventure ------*/
+#navigation_tophat_primary + li.nav6:hover,
+#navigation_tophat_primary li.nav6:hover h3 a {background-color: #881F00; color: #FC0;}
+
+nav#navigation_mainB .adventure.active > a,
+nav#navigation_mainB .adventure > a:hover,
+nav#navigation_mainB .adventure.active .sub_nav, 
+nav#navigation_mainB .adventure.active .secondary_nav,
+nav#navigation_mainB .adventure:hover > a,
+nav#navigation_mainB .adventure.active .secondary_nav > li > a {
+    background-color: #881F00;
+    color: #fff;
+}
+nav#navigation_mainB .adventure.active .secondary_nav > li > a:hover,
+nav#navigation_mainB .adventure.active .secondary_nav > li > a.active {
+    color: #fc0;
+}
+
+nav#navigation_mainB .adventure.active .secondary_nav li > a {
+    border-right: 1px solid #fff;
+}
+
+/*------ Television ------*/
+#navigation_tophat_primary + li.nav7:hover,
+#navigation_tophat_primary li.nav7:hover h3 a {background-color: #393939; color: #fff;}
+
+nav#navigation_mainB .television.active > a,
+nav#navigation_mainB .television > a:hover,
+nav#navigation_mainB .television:hover > a,
+nav#navigation_mainB .television.active .sub_nav, 
+nav#navigation_mainB .television.active .secondary_nav { 
+    background-color: #053960; 
+    color :#fff;
+}
+
+/* Spotlights for Television */
+nav#navigation_mainB .television .secondary_nav {
+    bottom: 0;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    margin-right: 0;
+    position: absolute;
+    right: 0;
+    width: 55%;
+}
+nav#navigation_mainB .television .secondary_nav li { 
+    float: left; 
+}
+nav#navigation_mainB .television .secondary_nav li:hover {
+    background-color: #eee;
+}
+nav#navigation_mainB .television .secondary_nav > li > a {
+    border-right: 1px solid #CCC;
+    line-height: 1.3em;
+    margin: 9px 0;
+    padding: 0 13px;
+}
+nav#navigation_mainB .television .spotlight {
+    border-left: 0;
+    border-right: 0; 
+    float: left; 
+    max-width: 20.2em;
+    width: 45%; 
+}
+
+nav#navigation_mainB .television .spotlight img {
+    max-width: 100%;
+}
+
+nav#navigation_mainB .television .spotlight h1 { 
+    margin: 1em 0 .5em 0; 
+}
+nav#navigation_mainB .television .spotlight figcaption { 
+    margin-top: .7em;
+}
+
+nav#navigation_mainB .television .featured_shows {
+    border-left: 1px solid #ccc;
+    clear:  none;
+    float:  right;
+    width:  55%;
+}
+
+nav#navigation_mainB .television .featured_shows a {
+	color: #044E8E;
+}
+
+nav#navigation_mainB .television .featured_shows_channel {
+    max-width: 49%;
+    padding: .5em 0 3em 1.5em;
+}
+
+nav#navigation_mainB .television .featured_shows_wild {
+    float: right;
+    max-width: 49%;
+    padding: .5em 1.5em 3em 0;
+}
+
+nav#navigation_mainB .television .featured_shows h1 {
+    margin: 0 0 15px 0;
+}
+
+nav#navigation_mainB .television .featured_shows > h2 {
+    float: right;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin-right: 14em;
+    padding: .9em 0 .3em 0;
+}
+
+nav#navigation_mainB .television .featured_shows li {
+    font-size: .9em;
+    padding: .2em;
+}
+nav#navigation_mainB .television .featured_shows li > a:hover {
+    color: #fc0;
+}
+nav#navigation_mainB .television .featured_shows_channel img,
+nav#navigation_mainB .television .featured_shows_wild img {
+    height: auto;
+    max-width: 125px;
+    width: auto;
+}
+
+nav#navigation_mainB .television .featured_shows_channel,
+nav#navigation_mainB .television .featured_shows_wild { 
+    display: inline-block; 
+}
+
+#navigation_mainB .television .secondary_nav li:first-child a,
+#navigation_mainB .television .secondary_nav li:first-child + li a {
+    display: none;
+}
+
+/*------ Kids ------*/
+#navigation_tophat_primary + li.nav8:hover,
+#navigation_tophat_primary li.nav8:hover h3 a {background-color: #FFD25B; color: #000;}
+
+nav#navigation_mainB .kids.active > a,
+nav#navigation_mainB .kids > a:hover,
+nav#navigation_mainB .kids:hover > a,
+nav#navigation_mainB .kids.active .secondary_nav {
+    background-color: #FFD25D;
+    color: #333;
+}
+nav#navigation_mainB .kids .left > .spotlight {
+    border-right: 0 solid #EEE;
+}
+/*------ Subscriptions ------*/
+nav#navigation_mainB .subscriptions.active > a,
+nav#navigation_mainB .subscriptions > a:hover,
+nav#navigation_mainB .subscriptions:hover > a { 
+    background-color: #3A3A3A; 
+}
+
+nav#navigation_mainB .primary_nav > li.subscriptions > a:hover {
+    color: #DDD;
+}
+nav#navigation_mainB .subscriptions .sub_nav {
+    min-height: 11em;
+}
+nav#navigation_mainB .subscriptions .secondary_nav {
+    list-style: none;
+    margin: 0;
+    width: 14.6em;
+}
+nav#navigation_mainB .subscriptions .spotlight img {
+    border: 0 solid #CCC;
+}
+
+/*------ Shop ------*/
+#navigation_tophat_primary + li.nav10:hover,
+#navigation_tophat_primary li.nav10:hover h3 a {background-color: #393939; color: #fff;}
+
+nav#navigation_mainB .shop.active > a,
+nav#navigation_mainB .shop > a:hover,
+nav#navigation_mainB .shop:hover > a { 
+    background-color: #FC0;
+    color: #000; 
+}
+
+nav#navigation_mainB .primary_nav > li.shop:hover a {
+    color: #000;
+}
+
+nav#navigation_mainB .primary_nav > li.subscriptions > a, 
+nav#navigation_mainB .primary_nav > li.shop > a { 
+    color: #FC0; 
+}
+
+nav#navigation_mainB .shop .spotlight {
+    max-width: 20.55em;
+    padding-bottom: 0;
+}
+
+nav#navigation_mainB .shop .spotlight img {
+    border: 0 solid #CCC;
+    max-width: 290px;
+}
+
+nav#navigation_mainB .shop .spotlight figcaption {
+    line-height: 1.6em;
+    max-width: 290px;
+}
+
+nav#navigation_mainB .shop .secondary_nav {
+    width: 10em;
+}
+
+nav#navigation_mainB .shop .spotlight_left_menu > h2 {
+    float: right;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin-right: 14.5em;
+}

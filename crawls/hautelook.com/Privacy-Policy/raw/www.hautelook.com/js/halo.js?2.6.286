@@ -1,0 +1,1036 @@
+// HAUTELOOK HALO CLASS
+// PUBLIC METHODS:
+//      - Halo.getAjaxStatus();
+//      - Halo.setAjaxStatus(bool);
+
+var Halo = new function _halo() {
+    var waiting = [];
+
+    var init = function() { 
+        $.extend({
+            getScript: function(pUrl, callback, attributes, type) {
+                var url = pUrl + "?" + buildVersion;
+                if(typeof attributes != 'undefined' && typeof type == 'undefined') {
+                    if(typeof attributes != 'object') {
+                        type = attributes;
+                        delete attributes;
+                    }
+                }
+                if(typeof type == 'undefined' || type != 'css') type = 'js';
+                var head = document.getElementsByTagName("head")[0];
+
+                if(type == 'js') {
+                    var count = $('head script').filter(function() {
+                        return ($(this).attr('src') == url) ? true : false;
+                    }).size();
+
+                    if(count) {
+                        if (callback && typeof callback == 'function') callback();
+                        return;
+                    }
+
+                    var script = document.createElement("script");
+                    script.src = url;
+                    if(typeof attributes != 'undefined') {
+                        for(var x in attributes) {
+                            script.setAttribute(x, attributes[x]);
+                        }
+                    }
+                } else if(type == 'css') {
+                    var count = $('head link').filter(function() {
+                        if($(this).hasClass('localstorage')) return false;
+                        return ($(this).attr('href') == url) ? true : false;
+                    }).size();
+
+                    if(count) {
+                        if (callback && typeof callback == 'function') callback();
+                        return;
+                    }
+
+                    var script = document.createElement("link");
+                    script.href = url;
+                    script.rel = 'stylesheet';
+                    script.media = 'all';
+                    script.type = 'text/css';
+                }
+
+                if(arrayIndexOf.call(waiting, url) != -1) {
+                    return;
+                } else {
+                    waiting.push(url);
+                }
+
+                var done = false;
+                if(type == 'js') {
+                    // Attach handlers for all browsers
+                    script.onload = script.onreadystatechange = function() {
+                        if ( !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete") ) {
+                            done = true;
+                            if (callback && typeof callback == 'function') setTimeout(callback, 0);
+                            // Handle memory leak in IE
+                            script.onload = script.onreadystatechange = null;
+                        }
+                    };
+                } else {
+                    if (callback && typeof callback == 'function') {
+                        setTimeout(function() {
+                            callback();
+                        }, 50);
+                    }
+                }
+
+                // If IE has it cached, then it will begin parsing it instantly instead of letting the code finish its current thread
+                setTimeout(function() {
+                    var index = arrayIndexOf.call(waiting, url);
+                    if(index != -1) {
+                        waiting.splice(index, 1);
+                    }
+
+                    head.appendChild(script);
+                }, 0);
+            }
+        });
+		
+        $.ajaxSetup({
+            errFunc: false,
+            successFunc: false,
+            useREST: false,
+            haloHandleAjaxResponse: false,
+            haloSuccess: function() {},
+            haloFail: function(response) {
+                var values = [];
+                if ("string" == typeof response) {
+                    values = response;
+                } else {
+                    for(var key in response) {
+                        values.push(response[key]);
+                    }
+                }
+                $Halo.bigbro.notify("ShowMiscErrors", values);
+                Halo.setAjaxStatus(false);
+            },
+
+            beforeSend: function(xhr) {
+                if (this.useREST) {
+                    xhr.setRequestHeader("Auth", "HWS a5a4d56c84b8d8cd0e0a0920edb8994c");
+                    xhr.setRequestHeader("Content-encoding", "gzip,deflate");
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                }
+
+                // DO NOT REMOVE THIS LINE EVER, FIXES ISSUE WITH FIREFOX AND NGINX WEB SERVER
+                if  ($.browser == 'mozilla' && (typeof this.data == 'undefined' || this.data == null)) {
+                    this.data = {blank: 0};
+                }
+
+                this.errFunc = this.error;
+                this.successFunc = this.success;
+                this.overloadedFuncCallsSuccess = false;
+                this.success = function(result, status, XHR) {
+                    if(this.haloHandleAjaxResponse === true) {
+                        this.successFunc = function(result, status, XHR) {
+                            this.handleAjaxResponse(result, this.haloSuccess, this.haloFail, status, XHR);
+                        }
+                    }
+
+
+                    if(typeof(Sandbox) != 'undefined' && !Sandbox.serverTime.isSet()){
+                        Sandbox.serverTime.update(XHR);
+                    }
+
+                    // Numbers get removed
+                    // Slashes become _
+                    // Remove trailing _
+                    var overloaded_name = this.url.replace(/[0-9\-]/g, '').replace(/[\/]{1,}/g, '_').replace(/_$/, '');
+                    if (typeof window[overloaded_name] == 'function') {
+                        this.overloadedFuncCallsSuccess = (window[overloaded_name](result) === true) ? true : false;
+                        if (this.overloadedFuncCallsSuccess && typeof this.successFunc == 'function') {
+                            this.successFunc(result, status, XHR);
+                        }
+                    } else if (typeof this.successFunc == 'function') {
+                        this.successFunc(result, status, XHR);
+                    }
+                };
+
+                this.error = function(xhr, desc, exceptionObj) {
+                    if (this.url != '/ajaxerror') {
+                        if(this.useREST) {
+                            // get server error code
+                            var statusCode = xhr.status.toString();
+
+                            // 4xx server code (data submission error)
+                            if (statusCode.match(/4\d\d/)) {
+                                // 401 Unauthorized - call soft login overlay
+                                if (statusCode.match(/401/) && "/v2/member/summary" != this.url) {
+                                    // soft login overlay code here
+                                    var loaderName = 'login/softLogin';
+                                    $.getScript("/js/app/modules/loaders/overlays/soft-login.js", function() {
+                                        if (Sandbox.moduleStatus('overlays/login/soft-login') === 'active') {
+                                            $Halo.bigbro.notify('softLoginOverlayDisplay');
+                                        } else {
+                                            setTimeout(arguments.callee, 25);
+                                        }
+                                    });
+                                } else { // other 4xx codes
+                                    var response;
+
+                                    try {
+                                        response = JSON.parse(xhr.responseText);
+                                        response.errors = response.errors || {};
+                                    } catch(e) {
+                                        response = {errors: {} };
+                                    }
+
+                                    if ("function" == typeof this.errFunc) {
+                                        this.errFunc(response.errors);
+                                    } else {
+                                        this.haloFail(response.errors);
+                                    }
+                                }
+                            }
+
+                            // 5xx server code (server side error)
+                            if (statusCode.match(/5\d\d/)) {
+                                var response;
+
+                                try {
+                                    response = JSON.parse(xhr.responseText);
+                                    response.errors = response.errors || {};
+                                } catch (e) {
+                                    response = { errors: {} };
+                                }
+
+                                if ("function" == typeof this.errFunc) {
+                                    this.errFunc(response.errors);
+                                } else if ("function" == typeof this.haloFail) {
+                                    this.haloFail(response.errors);
+                                } else {
+                                    // call the default haloFail error function in $.ajaxSetup (above) by accessing it directly from the jQuery object
+                                    $.ajaxSettings.haloFail("There was an error processing your submission. It's our fault and we're sorry for any inconvenience.<br /><br />Please call customer service if this problem continues.");
+                                }
+
+                                // call the error email notification
+                                this.err_info = { xhr_obj: Halo.dump(xhr), err_desc: desc, except_obj: exceptionObj };
+                                $.ajax({
+                                    url: '/ajaxerror',
+                                    type: 'post',
+                                    data: { ajaxObj: Halo.dump(this) },
+                                    dataType: 'text'
+                                });
+                            }
+                        }
+                    }
+
+                    if (typeof this.errFunc == 'function') {
+                        this.errFunc(xhr, desc, exceptionObj);
+                    }
+                };
+
+                this.handleAjaxResponse = function(response, success_func, fail_func, status, XHR) {
+                    if(typeof success_func != 'function') throw('Halo.handleAjaxResponse: Non function passed to success_func');
+                    if(typeof fail_func != 'function') throw('Halo.handleAjaxResponse: Non function passed to fail_func');
+
+                    if(this.useREST) {
+                        var statusCode = XHR.status.toString();
+
+                        // 2xx server code
+                        if (statusCode.match(/2\d\d/)) {
+                            if ((response != null) && (response.success === true)) {
+                                success_func(response.data, status, XHR);
+                            } else if((response != null) && (response.success === false)){
+                                fail_func(response.errors);
+                            } else {
+                                success_func(response, status, XHR);
+                            }
+
+                            return;
+                        }
+                    }
+
+                    // Look at this for bug avoidance
+                    if(typeof response != 'object') response = JSON.parse(response);
+
+                    // if NOT 304 "Not Modified" server code (if 304, don't do anything)
+                    if(typeof response != 'undefined' || (statusCode && !statusCode.match(/304/))) {
+                        if(typeof response.success != 'undefined') {
+                            if (response.success === true) {
+                                success_func(response.data, status, XHR);
+                            } else {
+                                fail_func(response.errors);
+                            }
+                        } else {
+                            throw('Halo.handleAjaxResponse is only designed to work with the Halo Response Helper');
+                        }
+                    }
+                };
+            }
+        });
+    }
+	
+	this.REST = function(requestObj){
+		var ajaxObj = {
+			type: 'get',
+			dataType: 'json'
+		}
+		ajaxObj = $.extend(true, ajaxObj, requestObj);
+		var userBeforeSend = ajaxObj.beforeSend;
+		var userError = ajaxObj.error;
+		var userSuccess = ajaxObj.success;
+		
+		ajaxObj.beforeSend = function(xhr){
+            //If the request if going to /v3/, add auth header, otherwise, don't.
+            if(requestObj.url && requestObj.url.indexOf('/v3/') === 0){
+                xhr.setRequestHeader("Auth", "HWS a5a4d56c84b8d8cd0e0a0920edb8994c");
+            }
+            xhr.setRequestHeader("Content-encoding", "gzip,deflate");
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.setRequestHeader("Accept", "application/json");
+			if(typeof userBeforeSend == 'function') {
+				userBeforeSend(xhr);
+			}
+		};
+		ajaxObj.success = function(result, status, XHR){
+			if(typeof(Sandbox) != 'undefined' && !Sandbox.serverTime.isSet()){
+				Sandbox.serverTime.update(XHR);
+			}
+			
+			var overloaded_name = this.url.replace(/[0-9\-]/g, '').replace(/[\/]{1,}/g, '_').replace(/_$/, '');
+			if (typeof window[overloaded_name] == 'function') {
+				this.overloadedFuncCallsSuccess = (window[overloaded_name](result) === true) ? true : false;
+				if (this.overloadedFuncCallsSuccess && typeof userSuccess == 'function') {
+					userSuccess(result, status, XHR);
+				}
+			}
+			else if (typeof userSuccess == 'function') {
+				userSuccess(result, status, XHR);
+			}
+
+		};
+		ajaxObj.error = function(xhr, desc, exceptionObj){
+			 var statusCode = xhr.status.toString();
+
+			// 4xx server code (data submission error)
+			if (statusCode.match(/4\d\d/)) {
+
+			  // 401 Unauthorized - call soft login overlay
+			  if (statusCode.match(/401/) && "/v2/member/summary" != this.url) {
+				// soft login overlay code here
+				$.getScript("/js/app/modules/loaders/overlays/soft-login.js", function() {
+					if (Sandbox.moduleStatus('overlays/login/soft-login') === 'active') {
+						$Halo.bigbro.notify('softLoginOverlayDisplay');
+					}
+					else {
+						setTimeout(arguments.callee, 25);
+					}
+				});
+			  }
+			  // other 4xx codes
+			  else {
+				var response;
+
+				try {
+					response = JSON.parse(xhr.responseText);
+				}
+				catch(e) {
+					response = {};
+				}
+
+				if('function' == typeof userError){
+					userError(response);
+				}
+			  }
+			}
+
+			// 5xx server code (server side error)
+			if (statusCode.match(/5\d\d/)) {
+
+			  // call the default haloFail error function in $.ajaxSetup (above) by accessing it directly from the jQuery object
+			  $.ajaxSettings.haloFail("There was an error processing your submission. It's our fault and we're sorry for any inconvenience.<br /><br />Please call customer service if this problem continues.");
+
+			  // call the error email notification
+			  this.err_info = { xhr_obj: Halo.dump(xhr), err_desc: desc, except_obj: exceptionObj };
+			  $.ajax({
+				url: '/ajaxerror',
+				type: 'post',
+				data: { ajaxObj: Halo.dump(this) },
+				dataType: 'text'
+			  });
+			}
+		};
+		
+		$.ajax(ajaxObj);
+	};
+	
+	this.setTrackingCookiesFromUrl = function() {
+	    var queryString = location.search.substring(1);
+	    var queryStringParts = queryString.split('&');
+	    var map = getTrackingCookieMap();
+	    for (var i = 0; i < queryStringParts.length; ++i)
+	    {
+	        var internalParts = queryStringParts[i].split('=');
+	        if (internalParts.length == 2)
+	        {
+	            var key = internalParts[0];
+	            $.each(map, function(index, mapRow) {
+                    if (key == index && typeof map[key] !== 'undefined')
+                    {
+                        var value = $.trim(internalParts[1]);
+                        value = decodeURIComponent(value);
+                        if (typeof mapRow.filter !== 'undefined')
+                        {
+                            value = value.replace(mapRow.filter, '');
+                        }
+                        if (typeof mapRow.max_length !== 'undefined')
+                        {
+                            value = value.substring(0, mapRow.max_length);
+                        }
+                        if (typeof mapRow.expire_days !== 'undefined')
+                        {
+                            Halo.setCookie(mapRow.cookie_name, value, mapRow.expire_days);
+                        }
+                        else
+                        {
+                            Halo.setCookie(mapRow.cookie_name, value);
+                        }
+                    }
+                });
+	        }
+	    }
+	    
+        function getTrackingCookieMap() {
+            return {
+                sid : {'cookie_name' : 'gaCamp[sid]', 'expire_days' : 365 * 2, 'filter' : /[^0-9]+/gi, 'max_length' : 5},
+                mid : {'cookie_name' : 'gaCamp[mid]', 'expire_days' : 365 * 2, 'filter' : /[^a-zA-Z0-9]+/gi, 'max_length' : 255},
+                aid : {'cookie_name' : 'gaCamp[aid]', 'expire_days' : 365 * 2, 'filter' : /[^ a-zA-Z0-9-_+\'",&]+/gi, 'max_length' : 200},
+                cid : {'cookie_name' : 'gaCamp[cid]', 'expire_days' : 365 * 2, 'filter' : /[^ a-zA-Z0-9-_+\'",&]+/gi, 'max_length' : 200},
+                tid : {'cookie_name' : 'gaCamp[tid]', 'expire_days' : 365 * 2, 'filter' : /[^a-zA-Z0-9-_+\'",=+&%@!#$^*:]+/gi, 'max_length' : 255}
+            };
+        };
+	};
+
+    // VARIOUS AJAX RELATED FUNCTIONS
+
+    var waiting_on_ajax_status = false;
+
+    this.getAjaxStatus = function() {
+        return waiting_on_ajax_status;
+    };
+
+    this.setAjaxStatus = function(status) {
+        if(typeof status != 'boolean') {
+            throw('Halo.setAjaxStatus: Attempt to set Ajax Status to Non Boolean');
+        }
+        else {
+            waiting_on_ajax_status = status;
+            return true;
+        }
+    };
+
+    // MISC INTERFACE FUNCTIONS
+
+    this.verifyObjectStructure = function(structure, data) {
+    data = data || {};
+    data.getSize = function(obj) {
+            var size = 0, key;
+            obj = this[obj];
+
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+
+            return size;
+        };
+
+        if(typeof structure.x == 'undefined') {
+            for(var x in structure) {
+
+                var count = (typeof data[x] == 'object') ? data.getSize(x) : 1;
+
+                if(structure[x].required === true || typeof data[x] != 'undefined') {
+          if(typeof data[x] != structure[x].type) return false;
+
+                    if(typeof structure[x].required == 'number') {
+                        if(count != structure[x].required) return false;
+                    }
+                    else {
+                        if(count == 0) return false;
+                    }
+
+        }
+
+                if(structure[x].type == 'object' && count != 0) {
+                    var deep_check = this.verifyObjectStructure(structure[x].structure, data[x]);
+                    if(deep_check === false) return false;
+                }
+            }
+            delete data.getSize;
+            return true;
+        }
+        else {
+            for(var x in data) {
+                // getSize is our own function and we don't need to check it against anything
+                if(x == 'getSize') {
+                    continue;
+                }
+
+                var count = (typeof data[x] == 'object') ? data.getSize(x) : 1;      ;
+        if(structure.x.required === true || typeof data[x] != 'undefined') {
+                  if(typeof data[x] != structure.x.type) return false;
+
+                    if(typeof structure.x.required == 'number') {
+                        if(count != structure.x.required) return false;
+                    }
+                    else {
+                        if(count == 0) return false;
+                    }
+
+        }
+
+                if(structure.x.type == 'object' && count != 0) {
+                    var deep_check = this.verifyObjectStructure(structure.x.structure, data[x]);
+                    if(deep_check === false) return false;
+                }
+            }
+            delete data.getSize;
+            return true;
+        }
+    };
+
+    this.clone = function(obj) {
+        return Halo.extend(true, (obj instanceof Array) ? [] : {}, obj);
+    };
+
+    //Copyright 2009 Nicholas C. Zakas. All rights reserved.
+    //MIT Licensed
+    this.timedChunk = function(items, process, context, callback){
+        //create a clone of the original data because we're gonna be deleting chunks of it.
+        var todo = items.concat();
+
+        setTimeout(function(){
+            //get current time in microseconds
+            var start = +new Date();
+
+            //this function should only take up 50 ms of runtime before ending the thread,
+            //or until there's no more array to loop through, whichever is first.
+            do {
+                //call some function within the context specified, using the first element of
+                //the cloned array.  its removal from the array will be explained later.
+                 process.call(context, todo.shift());
+            } while (todo.length > 0 && (+new Date() - start < 50));
+
+            //if there's more left of the array after 50 milliseconds worth of deletes,
+            //the function is to be called again in 25 milliseconds, returning control of the browser
+            //until then.
+            if (todo.length > 0){
+                setTimeout(arguments.callee, 25);
+            } 
+            //if there's nothing left of the array, call whatever callback meant to run when
+            //the array looping functionality is done.
+            else {
+                callback(items);
+            }
+        }, 25);
+    };
+
+    //object related version of Halo.TimedChunk.  Functionality is identical.
+    this.timedChunkJson = function(obj, process, context, callback){
+        var todo = Halo.clone(obj);   //create a clone of the original
+
+        var size = 0, key;
+
+        for (key in todo) {
+            if (todo.hasOwnProperty(key)) size++;
+        }
+
+        setTimeout(function(){
+            var start = +new Date();
+
+            for(var i in todo){
+                process.call(context, todo[i]);
+                delete(todo[i]);
+                size--;
+
+                if(!(size > 0 && (+new Date() - start < 50))){
+                    break;
+                }
+            }
+
+            if (size > 0){
+                setTimeout(arguments.callee, 25);
+            } else {
+                callback(obj);
+            }
+        }, 25);
+    };
+
+    /*
+      Halo.beget implements Douglas Crockford's prototypal inheritance model.
+      Note that the default use of this causes all variables and methods to be public
+      Base = {
+          stuff: function() {}
+      }
+      myThing = Halo.beget(Base);
+      myThing.stuff();
+    */
+    this.beget = function(obj) {
+        function F() {}
+        F.prototype = obj;
+        return new F();
+    };
+
+    /*
+      Halo.obj creates an object with public, private, and protected data. Allows for inheritance via the parent argument.
+      Methods added to this object  after the fact will not be able to access private data at all.
+    */
+    this.obj = function(parameters) {
+        var that = parameters.parent || {};
+        var pub = parameters.pub;
+        var priv = parameters.priv;
+        var params = Halo.beget(pub);
+
+        if(typeof parameters.parent != 'undefined') {
+            Halo.extend(true, params, parameters.parent);
+        }
+
+        for (var x in priv) {
+            params[x] = priv[x];
+        }
+
+        for (var x in pub) {
+            (function() {
+                var which = x;
+                if(typeof pub[which] == 'function') {
+                    that[which] = function() {
+                        return pub[which].apply(params, arguments);
+                    }
+                }
+                else {
+                    that[which] = pub[which];
+                }
+            })();
+        }
+        return that;
+    };
+
+    /*
+        Halo.extend is a modified version of the jQuery extend function. The difference is that this has no code built in to automatically
+        extend jQuery.
+     */
+
+    this.extend = function() {
+        // copy reference to target object
+            var target = arguments[0] || {}, i = 1, length = arguments.length, deep = false, options, name, src, copy;
+
+            // Handle a deep copy situation
+            if ( typeof target === "boolean" ) {
+                deep = target;
+                target = arguments[1] || {};
+                // skip the boolean and the target
+                i = 2;
+            }
+
+            // Handle case when target is a string or something (possible in deep copy)
+            if ( typeof target !== "object" && !$.isFunction(target) ) {
+                target = {};
+            }
+
+            for ( ; i < length; i++ ) {
+                // Only deal with non-null/undefined values
+                if ( (options = arguments[ i ]) != null ) {
+                    // Extend the base object
+                    for ( name in options ) {
+                        src = target[ name ];
+                        copy = options[ name ];
+
+                        // Prevent never-ending loop
+                        if ( target === copy ) {
+                            continue;
+                        }
+
+                        // Recurse if we're merging object literal values or arrays
+                        if ( deep && copy && ( $.isPlainObject(copy) || copy instanceof Array ) ) {
+                            var clone = src && ( $.isPlainObject(src) || src instanceof Array ) ? src
+                                : copy instanceof Array ? [] : {};
+
+                            // Never move original objects, clone them
+                            target[ name ] = Halo.extend( deep, clone, copy );
+
+                        // Don't bring in undefined values
+                        } else if ( copy !== undefined ) {
+                            target[ name ] = copy;
+                        }
+                    }
+                }
+            }
+
+            // Return the modified object
+            return target;
+    };
+
+    /*
+        Halo.addMethod - By John Resig (MIT Licensed)
+        Map a single function call to multiple functions based on the # of arguments it accepts
+
+        USAGE:
+            function Users(){
+              Halo.addMethod(this, "find", function(){
+                // Find all users...
+              });
+              Halo.addMethod(this, "find", function(name){
+                // Find a user by name
+              });
+              Halo.addMethod(this, "find", function(first, last){
+                // Find a user by first and last name
+              });
+            }
+    */
+    this.addMethod = function(object, name, fn){
+        var old = object[ name ];
+        object[ name ] = function(){
+            if (fn.length == arguments.length) {
+                return fn.apply( this, arguments );
+            }
+            else if (typeof old == 'function') {
+                return old.apply( this, arguments );
+            }
+            return fn.apply(this, arguments);
+        };
+    };
+
+    // Halo.createEl({into: jQuery, type: 'div', opts: {'class': 'blah', 'id': 'some_id'}, [txt: 'this is some text'], [prepend: true]});
+    this.createEl = function createEl(obj) {
+        var object = $(document.createElement(obj.type));
+        if (typeof obj.opts != 'undefined') {
+            $.each(obj.opts, function(key, val) {
+                object.attr(key, val);
+            });
+        }
+
+        if (typeof obj.txt != 'undefined') object.html(obj.txt);
+        if (typeof obj.prepend == 'undefined' || obj.prepend == false) {
+        	if (typeof obj.replace == 'undefined' || obj.replace == false) {
+        		object.appendTo(obj.into);
+        	} else {
+        		$(obj.into).replaceWith(object);
+        	}	
+        }
+        else {
+            object.prependTo(obj.into);
+        }
+        return object;
+    };
+
+
+    //MISC COOKIE RELATED FUNCTIONS
+
+    this.setCookie = function (cookie_name,value,expiredays) {
+        var storage = BrowserStorage.setStorageEngines('cookie');
+        if (expiredays < 0){
+            storage.remove(cookie_name);
+            return;
+        }
+        storage.set(cookie_name, value, expiredays * 24 * 60 * 60 * 1000, 5, '/', '.hautelook.com');
+    };
+
+    this.getCookie = function (cookie_name) {
+        var storage = BrowserStorage.setStorageEngines('cookie');
+        var val = storage.get(cookie_name);
+
+        return (val === null) ? "" : val;
+    };
+
+    this.truncate = function(len, text) {
+        //if text is null for some reason, browsers crap all over themselves.  
+        //This should allow you to call truncate on a possibly empty form-field or null value instead of hoping for an empty string. -DM
+        if(text == null){text = '';}
+        else {text = text.toString()}
+        
+        if (text.length > len) {
+            text = text.substring(0, len);
+            text = text.replace(/\w+$/, '');
+            text += "...";
+        }
+        return text;
+    };
+
+    //MISC NUMBER RELATED FUNCTIONS
+
+    this.formatMoney = function(nStr) {
+        nStr += '';
+        nStr = nStr.replace(/[\$,]{1,}/g, '');
+        var x = ((+nStr).toFixed(2)).split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+
+        x2 = Number(x2).toFixed(2);
+        var total = x1 + '.' + x2.replace(/^0./g, '');
+        if(total == '-0.00') total = '0.00';
+        return "$" + total;
+    };
+
+    this.formatNumber = function(nStr, options) {
+        if(typeof(options) == 'undefined')options={};
+
+        var defaultOptions = {
+            prefix: (typeof(options) == "undefined" || typeof(options.prefix) == "undefined") ? "" : options.prefix,
+            suffix: (typeof(options) == "undefined" || typeof(options.suffix) == "undefined") ? "" : options.suffix,
+            precision: (typeof(options) == "undefined" || typeof(options.precision) == "undefined") ? 0 : options.precision
+        }; 
+        
+        if(defaultOptions.precision == 0){
+            nStr = (+nStr).toFixed(0);
+        }
+        nStr += '';
+        nStr = nStr.replace(/[\$,]{1,}/g, '');
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : 0;
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        x2 = (x2 != '' ? "." + Number(x2).toFixed(defaultOptions.precision).substring(2) : "." +(0).toFixed(defaultOptions.precision).substring(2));
+        if(x2 == '.')x2='';
+        var total = x1 + x2.replace(/^0./g, '');
+
+        if(total == '-0.00') total = '0.00';
+
+        if(total.indexOf("-") == 0){
+            total = "-" + defaultOptions.prefix + total.substr(1);
+        }else{
+            total = defaultOptions.prefix + total;
+        }
+
+        total += defaultOptions.suffix;
+
+        return total;
+    };
+
+    this.removeMoney = function(money) {
+        return money.replace(/[\$,]{1,}/g, '');
+    };
+
+  // local time in microseconds
+  this.toUTC = function(time) {
+    var localDate = new Date();
+    var localDiff = (-localDate.getTimezoneOffset()) * 60 * 1000;
+
+    return time - localDiff;
+  };
+  
+    //MISC ARRAY FUNCTIONS
+
+    this.inArray = function(search, elt /*, from*/) {
+        var len = search.length >>> 0;
+        var from = Number(arguments[2]) || 0;
+        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+
+        if (from < 0) {
+            from += len;  
+        }
+        for (; from < len; from++) {  
+            if (from in search && search[from] === elt) {
+                return !!(from+1);  
+            }
+        }
+        return false;  
+    };
+   
+    //PRINTING FINCTIONS
+    this.printEl = function (selector){
+        
+        $(".printHidden").removeClass('printHidden');
+        
+        $(selector).siblings().not(selector).addClass('printHidden');
+        $(selector).parents().siblings().not(selector).addClass('printHidden');
+        
+        //$("body").children().not(selector).addClass('printHidden');
+        $("<style media='print'> .printHidden{ display:none; } </style>").appendTo('head');
+        window.print();
+        
+        
+        return;
+    }
+    
+  this.dateTool = {
+    shortDays: ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'],
+    shortMonths: ['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sep','Oct','Nov','Dec'],
+    days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    months: ['January','February','March','April','May','June','July','August','September','October','November','December']
+  };
+  
+  this.blaze = function(depth, trail, tree){
+    if(trail.length === depth){
+      return tree;
+    }
+    if(typeof tree[trail[depth]] !== 'undefined' && tree[trail[depth]] !== null){
+      return arguments.callee(depth + 1, trail, tree[trail[depth]]);
+    }
+    return undefined;
+  };
+  
+  var toBaseArray = function(num, newBase){
+    var number = num || 0, dig = 0, base = newBase || 10, nums = [];
+    while(number > 0){
+      nums[dig] = number % (base);
+      number -= nums[dig];
+      number /= base;
+      dig++;
+    }
+    return nums;
+  };
+  
+  this.toBase62 = function(num){
+    var base62 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+          "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+          "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+          "u", "v", "w", "x", "y", "z", "A", "B", "C", "D",
+          "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+          "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var nums = toBaseArray(num, 62),
+      newStr = "", i = nums.length - 1;
+    while(i > -1){
+      newStr += base62[nums[i]];
+      i--;
+    };
+    return newStr;
+  }
+  
+  this.toHex = function(num){
+    var hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+          "A", "B", "C", "D", "E", "F"];
+    
+    var nums = toBaseArray(num, 16);
+    var newStr = "";
+    var i = nums.length - 1;
+    while(i > -1){
+      newStr += hex[nums[i]];
+      i--;
+    }
+    return newStr;
+  };
+  
+  this.fromBase62 = function(str){
+    var base62vals = {
+      "0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8,
+      "9": 9, "a": 10, "b": 11, "c": 12, "d": 13, "e": 14, "f": 15, "g": 16,
+      "h": 17, "i": 18, "j": 19, "k": 20, "l": 21, "m": 22, "n": 23, "o": 24,
+      "p": 25, "q": 26, "r": 27, "s": 28, "t": 29, "u": 30, "v": 31, "w": 32,
+      "x": 33, "y": 34, "z": 35, "A": 36, "B": 37, "C": 38, "D": 39, "E": 40,
+      "F": 41, "G": 42, "H": 43, "I": 44, "J": 45, "K": 46, "L": 47, "M": 48,
+      "N": 49, "O": 50, "P": 51, "Q": 52, "R": 53, "S": 54, "T": 55, "U": 56,
+      "V": 57, "W": 58, "X": 59, "Y": 60, "Z": 61
+    }
+    var nums = str.split("");
+    var i = 0, len = nums.length;
+    var total = 0;
+    while(i < len){
+      total += base62vals[nums[len - 1 - i]] * (Math.pow(62, i));
+      i++;
+    }
+    return total;
+  }
+  
+  this.fromHex=  function(str){
+    var hexVals = {"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15};
+    var nums = str.split("");
+    var i = 0, len = nums.length;
+    var total = 0;
+    while(i < len){
+      total += hexVals[nums[len - 1 - i]] * (Math.pow(16, i));
+      i++;
+    }
+    return total;
+  }
+  
+  this.errors = (function(){
+    var errs = [];
+    this.add = function(err){
+      if(errs.length > 50){
+        errs = errs.slice(0,40);
+      }
+      if(siteDebug && console){
+        console.error(err);
+      }
+      return errs.unshift(err);
+    };
+    this.getAll = function(){
+      return errs.slice(0, errs.length);
+    };
+    this.get = function(index){
+      if(errs[index]){
+        return errs[index];  
+      }
+      else{
+        return "No error found at index " + index;
+      }
+    };
+    this.len = function(){
+      return errs.length;
+    };
+    this.dumpToEmail = function(){
+      $.ajax({
+        url: '/ajaxerror',
+        type: 'post',
+        data: { ajaxObj: Halo.dump(errs, 0) },
+        dataType: 'text'
+      });
+    };
+    this.flush = function(){
+      errs = null;
+      errs = [];
+      return 0;
+    };
+    this.dumpToConsole = function(){
+      if(console && console.error){
+        var i = 0, len = errs.length;
+        console.group("Dumping Halo.errors");
+        while( i < len){
+          console.error(errs[i]);
+          i++;
+        }
+        console.groupEnd();
+      }
+      else{
+        var fakeConsole = $("<div id='HaloErrorFakeConsole'></div>");
+        fakeConsole.attr("style",
+          "position:absolute;top:0px;left:0px;" + 
+          "background-color:#FFFFFF;color:#000000;"
+        );
+        $("body").children().addClass("HaloErrorHidden");
+        var closebutton = $("<input type='button' value='Close'></input>");
+        closebutton.bind("click", function(){
+          $('#HaloErrorFakeConsole').remove();
+          $("body").children().removeClass("HaloErrorHidden");
+        });
+        fakeConsole.prepend(closebutton);
+        fakeConsole.append(Halo.dump(errs,0));
+        fakeConsole.prependTo($("body"));
+      }
+    };
+    return this;
+  })();
+  
+  // SETUP
+    init();
+};
+
+$.fn.bindOnce = function(){
+  var ev = arguments[0], f = arguments[2] || arguments[1], evdata = (arguments[2]) ? arguments[1] : false;
+  return this.each(function(){
+    if(!evdata){
+      $(this).unbind(ev).bind(ev, f);
+    }
+    else{
+      $(this).unbind(ev).bind(ev, evdata, f);
+    }
+  });
+};
+
+$(document).ready(function() {
+    Halo.setTrackingCookiesFromUrl();
+});

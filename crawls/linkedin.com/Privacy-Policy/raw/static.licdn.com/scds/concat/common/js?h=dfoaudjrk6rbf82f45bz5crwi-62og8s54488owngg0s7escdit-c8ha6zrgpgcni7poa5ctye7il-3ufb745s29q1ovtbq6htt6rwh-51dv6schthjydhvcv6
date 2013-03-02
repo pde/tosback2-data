@@ -237,7 +237,7 @@ e=[]
 })();
 LI.log=window.LI.log;
 
-/* adfwnms4e2747dfg6kfa179we */
+/* 3ao8n8s88e5pg2rx8f375mzq9 */
 
 LI.show=function(a,b){var b=(b)?b:"block";
 YDom.setStyle(a,"display",b)
@@ -257,7 +257,7 @@ b(c,a)
 };
 LI.injectAlert=function(c,h,b,a,i,j){var k=(!b)?YDom.get("global-error"):YDom.get(b);
 k.innerHTML="";
-var e='<div class="alert {type}" role="alert"><i class="icon"></i><p><strong>{msg}</strong></p>',f={msg:c,type:h},g=(typeof(i)==="undefined")?false:(!!i);
+var e='<div class="alert {type}" role="alert"><p><strong>{msg}</strong></p>',f={msg:c,type:h},g=(typeof(i)==="undefined")?false:(!!i);
 if(g){e+='<a href="#" class="dismiss" id="dismiss-alert" role="button">';
 if(j){e+="{closeMsg}";
 f.closeMsg=j
@@ -742,6 +742,15 @@ if(e++>=b){return false
 }else{return a(h.parentNode)
 }}return a(f)
 };
+LI.getScript=LI.getScript||function(c,a,b,d){YAHOO.util.Get.script(c,{onSuccess:a,onFailure:b,timeout:d})
+};
+LI.getCSS=LI.getCSS||function(c,a,b,d){YAHOO.util.Get.css(c,{onSuccess:a,onFailure:b,timeout:d})
+};
+LI.hasAttribute=function(b,a){if(b.hasAttribute){LI.hasAttribute=function(d,c){return d.hasAttribute(c)
+}
+}else{LI.hasAttribute=function(d,c){return d.getAttribute(c)!==null
+}
+}};
 if(!Array.prototype.indexOf){Array.prototype.indexOf=function(c){if(this===void 0||this===null){throw new TypeError()
 }var d=Object(this);
 var a=d.length>>>0;
@@ -1689,35 +1698,3 @@ if(!b){b=Y$("input[type=text], input[type=password], textarea, select","main",tr
 }if(b&&!b.disabled&&b.style.display!="none"&&b.focus){b.focus()
 }return b
 };
-
-/* 314g33k1ajv1j88qpwaprriea */
-
-LI.define("WebTrack2.Modules.PagePerformance");
-LI.WebTrack2.Modules.PagePerformance=function(){var e=this,c=0,a=0,f,b=LI.WebTrack2.Core.getInstance().register(this,"aleepageperf-timings",{1:{name:"serverStartTime",type:"int"},2:{name:"serverEndTime",type:"int"},3:{name:"clientStartTime",type:"int"},4:{name:"clientTimeToFirstPixel",type:"int"},5:{name:"clientEndTime",type:"int"},6:{name:"clientDomReady",type:"int"},7:{name:"eventSentTime",type:"int"},9:{name:"postHeaderParseControl",type:"int"},11:{name:"postBodyParseControl",type:"int"},13:{name:"postFooterParseControl",type:"int"},15:{name:"postFooterGlobalJS",type:"int"},17:{name:"postGlobalHeadCSS",type:"int"},19:{name:"postGlobalHeadJS",type:"int"},21:{name:"postPageHeadJS",type:"int"},22:{name:"postFooterPageJS",type:"int"},26:{name:"navigationTimingApi",type:"boolean"},27:{name:"hasFizzyEmbed",type:"boolean"},28:{name:"totalEmbedRenderTimeMs",type:"int"},29:{name:"serverFirstFlushTime",type:"int"}});
-YEvent.onDOMReady(function(){if(typeof(WEBTRACK_GLOBAL)!=="undefined"){WEBTRACK_GLOBAL.record("clientDomReady")
-}});
-function d(){var h,g;
-if(typeof(WEBTRACK_GLOBAL)==="undefined"||(!YDom.get("ubpTracker"))){return
-}if(WEBTRACK_GLOBAL.relayUBPWindowLoadHandler&&!f){f=true;
-return WEBTRACK_GLOBAL.relayUBPWindowLoadHandler(d)
-}WEBTRACK_GLOBAL.set("navigationTimingApi",typeof(window.performance)!=="undefined");
-WEBTRACK_GLOBAL.record("clientEndTime");
-c=1*WEBTRACK_GLOBAL.seedTime;
-a=1*WEBTRACK_GLOBAL.get("serverFirstFlushTime");
-h=WEBTRACK_GLOBAL.getSoftTimings();
-for(g in h){if(YAHOO.lang.hasOwnProperty(h,g)){h[g]=a+(h[g]-c)
-}}function i(){var j=WEBTRACK_GLOBAL.get("serverFirstFlushTime")+WEBTRACK_GLOBAL.lapse();
-WEBTRACK_GLOBAL.set("eventSentTime",j);
-return j
-}WEBTRACK_GLOBAL.set("clientStartTime",WEBTRACK_GLOBAL.get("serverFirstFlushTime"));
-b({serverStartTime:""+WEBTRACK_GLOBAL.get("serverStartTime"),serverFirstFlushTime:""+WEBTRACK_GLOBAL.get("serverFirstFlushTime"),serverEndTime:""+WEBTRACK_GLOBAL.get("serverEndTime"),clientStartTime:""+WEBTRACK_GLOBAL.get("clientStartTime"),postGlobalHeadCSS:""+WEBTRACK_GLOBAL.get("postGlobalHeadCSS"),postGlobalHeadJS:""+WEBTRACK_GLOBAL.get("postGlobalHeadJS"),postPageHeadJS:""+WEBTRACK_GLOBAL.get("postPageHeadJS"),clientTimeToFirstPixel:""+WEBTRACK_GLOBAL.get("clientTimeToFirstPixel"),postHeaderParseControl:""+WEBTRACK_GLOBAL.get("postHeaderParseControl"),postBodyParseControl:""+WEBTRACK_GLOBAL.get("postBodyParseControl"),postFooterParseControl:""+WEBTRACK_GLOBAL.get("postFooterParseControl"),postFooterGlobalJS:""+WEBTRACK_GLOBAL.get("postFooterGlobalJS"),postFooterPageJS:""+WEBTRACK_GLOBAL.get("postFooterPageJS"),clientDomReady:""+WEBTRACK_GLOBAL.get("clientDomReady"),clientEndTime:""+WEBTRACK_GLOBAL.get("clientEndTime"),eventSentTime:i,hasFizzyEmbed:""+WEBTRACK_GLOBAL.get("hasFizzyEmbed"),totalEmbedRenderTimeMs:""+WEBTRACK_GLOBAL.get("totalEmbedRenderTimeMs"),navigationTimingApi:""+WEBTRACK_GLOBAL.get("navigationTimingApi")});
-if(typeof(InSlow)!=="undefined"){InSlow.inSlowTimer=setTimeout(function(){var j=(document.getElementById("inSlowConfig")?document.getElementById("inSlowConfig").value:"false");
-var k=LI.getQueryStringParam("perf");
-if(j&&typeof(j)==="string"&&j=="true"&&k){var l=document.createElement("SCRIPT");
-l.type="text/javascript";
-l.src=InSlow.scriptUrl;
-document.getElementsByTagName("body")[0].appendChild(l)
-}},3000)
-}}YEvent.on(window,"load",d)
-};
-new LI.WebTrack2.Modules.PagePerformance();

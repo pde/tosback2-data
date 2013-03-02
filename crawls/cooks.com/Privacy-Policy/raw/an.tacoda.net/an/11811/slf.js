@@ -1,7 +1,7 @@
-// 2012/11/05 16:49:29
+// 2013/03/01 16:14:09
 var ANV='6.4.6';
 var ANAXCD=24;
-var ANDCC='acx';
+var ANDCC='zzz';
 var ANDPEFA;
 var ANDPEFAI=' ANDEPC11811';
 var ANEU='http://tacoda.at.atwola.com/e/e.js?';
@@ -9,12 +9,12 @@ var ANME=0;
 var ANMU='http://tacoda.at.atwola.com/dastat/ping.js?';
 var ANP=2;
 var ANPIC;
-var ANPIR='AH/search|HHgoogle.com|LHyahoo|LHbing';
+var ANPIR='';
 var ANPIDC="L";
 var ANPIRF=1;
-var ANPIRPSL=0;
-var ANPIRSSL=1;
-var ANPIS="unescape(document.location.href+document.referrer+tacLogRef5()).toLowerCase()";
+var ANPIRPSL=1;
+var ANPIRSSL=0;
+var ANPIS="unescape(document.location.href).toLowerCase()";
 var ANPUF=1;
 var ANSID=11811;
 var ANTCC;
@@ -32,16 +32,16 @@ var ANID='TID';
 var ANCC=0;
 var ANDPU='http://tacoda.at.atwola.com/rtx/r.js?';
 var ANRDF=1;
-var ANSCC="unescape(isSocialNetworkShared()+document.location.href+'title:'+getTitle()+tacLogRef()).toLowerCase()";
+var ANSCC="unescape(document.location.href).toLowerCase()";
 var ANTPUD;
 var ANVDT=0;
-var CCLOOKUP22='AEBQq=grilled|CEBPbaked|DEBQbq|A#EBQtitle.*recipe.*grilled|U#EBQing|P#EBPbaked|Q#EBQbq|P#EBRpan.*fried|P#EBOitalian|AEBO/italian|AFIXsocialnetwork:share:facebook:read|TECM|TECI:facebook|UFILgoogleplus|UECKlifestream|UEUMtwitter|UEWTfacebook:like|[FIQok:recommend|UFIWstumbleupon|AACXcooks.com';
+var CCLOOKUP22='ZZZdummy';
 var ANAXLSL='';
 var ANCB1=0;
 var ANCB3=0;
 var ANRD='';
 var ANOO=0;
-var ANCCPD=1;
+var ANCCPD=0;
 var ANCCSD=0;
 var ANTPPF=1;
 var ANXCC='ZZZ';
@@ -83,70 +83,6 @@ var ANBYODE='bk';
 var ANBYODS='bk,^100[0-9]{3}$';
 var ANBYODO='bk';
 var ANTPX='[24]';
-function getTitle(){
-var title=document.getElementsByTagName('title');
-if(title.length>0){
-cleanTitle=unescape(title[0].text).replace(/(<([^>]+)>)/ig,"").replace(/[_\s+-\/:]/g,"");
-return cleanTitle;
-}else{
-return"";
-}
-}
-function tacLogRef(){
-window.ANGRD=function(){
-var ustr='';
-if(top!=self){
-ustr+=escape(document.location.href+'&ifu='+escape(document.referrer));
-}else{
-ustr+=escape(document.location.href);
-}
-return'&pu='+escape(ustr);
-}
-}
-function isSocialNetworkShared(){
-var smPrefix="socialnetwork:share";
-var smSites=[{"key":"twitter","regex":/twitter.com/i},
-{"key":"googleplus","regex":/plus.google.com/i},
-{"key":"lifestream","regex":/lifestream.aol.com/i},
-{"key":"stumbleupon","regex":/stumbleupon.com/i},
-{"key":"facebook:like","regex":/facebook.com.plugins.like.php.*action.like/i},
-{"key":"facebook:like","regex":/facebook.com.plugins.likebox.php/i},
-{"key":"facebook:like","regex":/&fb_action_types=[^.]+.likes/i},
-{"key":"facebook:recommend","regex":/facebook.com.plugins.like.php.*action.recommend/i},
-{"key":"facebook:recommend","regex":/&fb_action_types=[^.]+.recommends/i},
-{"key":"facebook:read","regex":/facebook.com.l.php/i},
-{"key":"facebook:read","regex":/&fb_action_types=[^.]+.reads/i},
-{"key":"facebook","regex":/facebook.com/i}];
-var url=document.referrer;
-if(window!=window.top){
-url=document.referrer+document.location.href;
-var r=document.location.href.match(/tacref=(.*)/i);
-if(r){
-if(r.length>1){
-url=r[1];
-}
-}
-}
-for(var i=0;i<smSites.length;i++){
-if(url.search(smSites[i]["regex"])!=-1){
-return smPrefix+":"+smSites[i]["key"];
-}
-}
-return"";
-}
-function tacLogRef5(){
-window.ANGPU=function(){
-var ustr=document.location.href;
-if(ustr.indexOf("?")==-1){
-ustr+="?";
-}else{
-ustr+="&";
-}
-ustr+="ifu="+escape(document.referrer);
-return escape(ustr);
-}
-return"";
-}
 function FTPP()
 {
 var v=ANTID;

@@ -87,13 +87,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 		<title>Move Your AT&T U-verse Service - It's Easier Than Ever!</title>        
 		<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
-		<meta name="Description" content="Moving? It's easy to move your AT&T U-verse service, free installation is included, you can keep your DVR recordings, and ask about getting a reward card when you move! "/>
+		<meta name="Description" content="Moving? It's easy to move your AT&T U-verse service, free installation is included, you can keep your DVR recordings, and ask about getting a reward card when you move!    "/>
 		<meta name="Keywords" content="move, moving, mover, move service, move U-verse, moving U-verse"/>
 		<meta name="DCSext.wtPN" content=""/>
 		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
 		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 		<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
-		<script src="../../scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>	
+		<script src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>	
 		<script type="text/javascript" src="../scripts/commonFunc.js"></script>
 		<script type="text/javascript" src="../scripts/formFunc.js"></script>
 		<script type="text/javascript">
@@ -349,7 +349,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249" />
+<meta NAME="DCSext.sessionid" 				CONTENT="n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer" />
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
@@ -611,7 +611,16 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		{selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkName', value: function() {
 			return reporting.trim(reporting.getDynamicLinkName.apply(this,[]), '_');
 		}},
-		{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc'},
+		{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtStatusCode', 
+			value: ''
+		},
+		{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtSuccessFlag', 
+			value: ''
+		},
+		{selector: '#wrapper a:local', type: 'wtparam', name: 'DCSext.wtEventType', 
+			value: ''
+		},
+		{selector: '#wrapper a:local', type: 'wtevent', name: '', params: 'wtLinkName,wtLinkLoc,DCSext.wtStatusCode,DCSext.wtSuccessFlag,DCSext.wtEventType'},
 		{selector: 'head:page(service-already-exists)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_ServiceAlreadyExists'},
 		{selector: 'head:page(check-availability-multiple-address)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_MultipleAddress'},
 		{selector: 'head:page(address-changed)', type: 'wtmeta', name: 'wtStatusMsg', value: 'UV_AddressChanged'},
@@ -785,7 +794,7 @@ function handleLastFieldInteracted(e) {
 
 
 
-		
+			
 			<link rel="stylesheet" type="text/css" href="../styles/checkout.css" />
 			<link rel="stylesheet" type="text/css" href="../styles/availability.css" />
 			<link rel="stylesheet" type="text/css" href="../styles/uverse.css" />
@@ -829,7 +838,7 @@ function handleLastFieldInteracted(e) {
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = 'gSywRnHR6VY2YdGnQHMdjp3L!-881324213!1361971089249';
+			var pSessionId = 'n2jxRx7NS7dylJyzFF2vRlsf!1710085515!1362230093761';
 			return pSessionId;
 		};
 
@@ -869,7 +878,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1361971117617;
+		var servertime = 1362230115027;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -2889,7 +2898,7 @@ meteor.sharing.configure('d6ca2d4c-b527-4866-a122-1958487d7814');
 
 
  <input id="modal-contentidm" type="text" name="modal-readonly"  title="Modal opened" onKeyDown="return modalStart(event);" readonly="readonly" class="offscreentext" />
-    <div style="height: 37px; padding-left: 10px; padding-right: 10px; overflow: hidden;">
+    <div style="height: 37px; padding-right: 10px; overflow: hidden;">
     	<div style="float: left; padding-top: 10px; width: 90%;">
 			<div class="modal header-iptv" style="padding-left: 0px !important; display: none;">
 				<span class="modal-header-title">AT&T U-verse TV</span>
@@ -2905,7 +2914,7 @@ meteor.sharing.configure('d6ca2d4c-b527-4866-a122-1958487d7814');
 			</div>	
     	</div>
         <div style="text-align: right; padding-top: 10px;float:right;">
-	        <span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
+	        <span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick(); else if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
 	        <a name="idmclosekey" href="javascript:void(0);"><img alt="Close" style="cursor: pointer; cursor: hand;" src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></a></span></div>
     	<div id="mainPopUpTitleIDM" style="display: none;"></div>
     </div>
@@ -2933,52 +2942,55 @@ meteor.sharing.configure('d6ca2d4c-b527-4866-a122-1958487d7814');
 		
 		
 			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
-						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-						<a name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
-						</div>
+				<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
+					<a id="modalCancelButton" name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
+				</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart">
-							<div id="addToCartDis" class="hub-save-dis-button"></div>
-						</div>
-					
-					
-					
-					
-					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></div>
-					
-					
-					
-					
-						
-					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
-					<div title="Return to Cart">
-					<a id="returnToCartEna" href="javascript:void(0);"  style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="if (!portPhoneLineslist()) cancelModal(null);" >
-					</a></div>
-					
-					
-					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
-				
-					
-					
-					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a></div>
-						</div>
-						
-					
-					
-					
-						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
-						</div>
-						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
-						</div>
+						<div id="addToCartDis" class="hub-save-dis-button"></div>
 					</div>
-				
+						
 					
-<div class="offscreentext"><input type="text" id="modal-footer" name="modal-readonly"  title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/></div>
-        
+						
+							<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit">
+								<a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+							</div>
+						
+						
+					
+						
+					<div title="Return to Cart">
+						<img id="returnToCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled" />
+					</div>
+					<div title="Return to Cart">
+						<a id="returnToCartEna" href="javascript:void(0);"  style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-return-to-cart-ena" onclick="if (!portPhoneLineslist()) cancelModal(null);" ></a>
+					</div>
+								
+					<div title="Update Cart">
+						<img id="updateCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled" />
+					</div>
+						
+					
+						
+							<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit">
+								<a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+							</div>
+							
+						
+					
+				</div>
+				<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
+					<a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
+				</div>
+				<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
+					<a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
+				</div>
+			</div>
+		
+			
+	<div class="offscreentext">
+		<input type="text" id="modal-footer" name="modal-readonly"  title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/>
+	</div>
 
 
 		</div>
@@ -3010,52 +3022,55 @@ meteor.sharing.configure('d6ca2d4c-b527-4866-a122-1958487d7814');
 		
 		
 			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
-						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-						<a name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
-						</div>
+				<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
+					<a id="modalCancelButton" name="cancelbuttonkey" class="hub-cancel-button" href="javascript:void(0);"></a>
+				</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart">
-							<div id="addToCartDis" class="hub-save-dis-button"></div>
-						</div>
-					
-					
-					
-					
-					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></div>
-					
-					
-					
-					
-						
-					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
-					<div title="Return to Cart">
-					<a id="returnToCartEna" href="javascript:void(0);"  style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="if (!portPhoneLineslist()) cancelModal(null);" >
-					</a></div>
-					
-					
-					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
-				
-					
-					
-					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a></div>
-						</div>
-						
-					
-					
-					
-						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
-						</div>
-						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
-						</div>
+						<div id="addToCartDis" class="hub-save-dis-button"></div>
 					</div>
-				
+						
 					
-<div class="offscreentext"><input type="text" id="modal-footer" name="modal-readonly"  title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/></div>
-        
+						
+							<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit">
+								<a class="hub-save-ena-button" id="addToCartEna" href="javascript:void(0);" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+							</div>
+						
+						
+					
+						
+					<div title="Return to Cart">
+						<img id="returnToCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled" />
+					</div>
+					<div title="Return to Cart">
+						<a id="returnToCartEna" href="javascript:void(0);"  style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-return-to-cart-ena" onclick="if (!portPhoneLineslist()) cancelModal(null);" ></a>
+					</div>
+								
+					<div title="Update Cart">
+						<img id="updateCartDis" style="display:none; margin-bottom: 20px;" src="../../../2.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled" />
+					</div>
+						
+					
+						
+							<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit">
+								<a href="javascript:void(0);" id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit hub-cart-update-dis" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" ></a>
+							</div>
+							
+						
+					
+				</div>
+				<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
+					<a name="nextbuttonkey" class="hub-next-button" href="javascript:void(0);"></a>
+				</div>
+				<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
+					<a class="hub-previous-button" name="footerback" href="javascript:void(0);"></a>
+				</div>
+			</div>
+		
+			
+	<div class="offscreentext">
+		<input type="text" id="modal-footer" name="modal-readonly"  title="Modal opened" onKeyDown="setModalFocus();" readonly="readonly" class="offscreentext"/>
+	</div>
 
 
 		</div>

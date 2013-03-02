@@ -186,6 +186,15 @@
 					return [-16,'aborting for an iframe','unrecognized preferred breaker'];
 			}
 		}
+		if(Math.random() < 0.05){
+			write_script(
+				(introspection.is_secure ? 'https://' : 'http://')
+				+"ads.skinected.com"				+'/supplysideinfo.php?track_type=sniffer_middle'
+				+'&placement_id='+"64"				+"&domain="+htmlescape(whence_i_came)
+				+"&sampling_rate=0.05"
+				+"&cb="+Math.floor(Math.random()*2147483647)
+			);
+		}
 
 		if(top.document.body.offsetWidth < 1000){return [-7,'page width','body']}
 

@@ -1,4 +1,3 @@
-
 if(typeof dj=="undefined"){dj={};}
 if(typeof dj.context=="undefined"){dj.context={};}
 if(typeof djConfig=="undefined"){this.djConfig={};}
@@ -979,6 +978,7 @@ dj.module.header2012.lifp = {
 	            "asia,india" : "50f57264bd7fb2d2f6629af6",
 	            "asia,jp"    : "505a8796ff85b0b47f000001",
 	            "europe"     : "50f5723cbd7fb2d2f6629af4",
+                    "europe,uk"  : "50f5723cbd7fb2d2f6629af4",
 	          //"europe,tr"  : "", pending impl
 	          //"germany"    : "", seperate impl
 	            "na,lat"     : "50f57272bd7fb2d2f6629af7",

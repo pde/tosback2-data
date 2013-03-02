@@ -1,0 +1,142 @@
+/* Note:
+ * Would prefer to subscribe to "overlays/deprecatedBrowser/deprecatedBrowserInitialized"
+ * but there's a race condition
+ */
+
+$Halo.bigbro.subscribe("windowLoaded", function(){
+	$Halo.bigbro.unsubscribe("windowLoaded", arguments.callee);
+	Core.start("overlays/deprecatedBrowser/deprecatedBrowser");
+});
+
+Core.register({
+    name: "overlays/deprecatedBrowser/deprecatedBrowser",
+    group: false,
+    css: ['/css/app/modules/default/overlays/deprecatedbrowser/deprecatedBrowser.css'],
+    settings: {
+        domSelector: "#deprecated_browser",
+        domLocation: "#deprecated_browser_container",
+        insertionMethod: $.fn.prependTo,
+        isOverlay: true
+    },
+    obj: {
+    	priv: {
+    		modalType: "remind",
+    		browserType: null,
+    		closeOverlay: function() {
+    			$Halo.bigbro.unsubscribe("overlays/deprecatedBrowser/deprecatedBrowserClose", this.closeOverlay);
+    			
+				$("#sb-title-inner").removeClass("deprecatedBrowserTitle");
+				$("#sb-nav").removeClass("deprecatedBrowserCloseButton");
+				$("#sb-nav span").remove();
+				
+				Halo.setCookie("HauteLookBrowserRetirement", this.modalType, 0);
+    		},
+    		populateOverlay: function() {
+    			$Halo.bigbro.unsubscribe("overlays/deprecatedBrowser/deprecatedBrowserPopulate", this.populateOverlay);
+    			
+				$("#sb-title-inner").addClass("deprecatedBrowserTitle");
+				$("#sb-nav").addClass("deprecatedBrowserCloseButton");
+				$("#sb-nav").prepend("<span>Close</span>");
+				
+				var browserType = this.browserType;
+				
+				$("#deprecated_browser_container span.useragent").each(function(){
+					$(this).html(browserType);
+				});
+				
+				var upgradeSectionIcon = $("<img>");
+				var upgradeSectionLink = $("<a class='upgradeNowButton' target='_blank'><div class='btn xlarge_green'><div><p>Upgrade Now</p></div></div></a>");
+				var altSectionIcon = $("<img>");
+				var altSectionLink = $(document.createElement("a"));
+				
+				altSectionLink.attr("target", "_blank");
+				upgradeSectionIcon.attr("alt", browserType);
+				
+				if(/Internet Explorer/i.test(browserType)) {
+					upgradeSectionIcon.attr("src", "/images/deprecated_browser/ie.png");
+					upgradeSectionLink.attr("href", "http://windows.microsoft.com/en-US/internet-explorer/download-ie");
+					
+					altSectionIcon.attr("alt", "Mozilla Firefox");
+					altSectionIcon.attr("src", "/images/deprecated_browser/firefox_small.png");
+					altSectionLink.append("<span>Mozilla Firefox</span>");
+					altSectionLink.attr("href", "http://www.mozilla.org/en-US/firefox/update");
+				} else {
+					upgradeSectionIcon.attr("src", "/images/deprecated_browser/firefox.png");
+					upgradeSectionLink.attr("href", "http://www.mozilla.org/en-US/firefox/update");
+					
+					altSectionIcon.attr("alt", "Internet Explorer");
+					altSectionIcon.attr("src", "/images/deprecated_browser/ie_small.png");
+					altSectionLink.append("<span>Internet Explorer</span>");
+					altSectionLink.attr("href", "http://windows.microsoft.com/en-US/internet-explorer/download-ie");
+				}
+				
+				var upgradeListItem = $("<li>");
+				upgradeSectionLink.prepend(upgradeSectionIcon);
+				upgradeListItem.append(upgradeSectionLink);
+				
+				var upgradeSection = $("#deprecated_browser_container div.upgrade-section");
+				upgradeSection.prepend("<h2>" + browserType + "</h2>");
+				upgradeSection.find("ul").append(upgradeListItem);
+				
+				var altListItem = $("<li>");
+				altSectionLink.prepend(altSectionIcon);
+				altListItem.append(altSectionLink);
+				$("#deprecated_browser_container div.alternative-section ul").prepend(altListItem);
+				
+				$("#deprecated_browser_container div.dismiss-section a:first")[0].onclick = function(e){
+					Shadowbox.close();
+				};
+				
+				if(/Win/i.test(navigator.platform)) {
+					$("#deprecated_browser_container div.alternative-section ul a.safari-link").attr("href", "http://support.apple.com/kb/DL1531");
+				}
+    		},
+    	    openOverlay: function() {
+    	    	var that = this;
+    	    	
+    	    	$Halo.bigbro.unsubscribe("overlays/deprecatedBrowser/deprecatedBrowserStarted", arguments.callee);
+    	    	
+    	    	$Halo.bigbro.subscribe("overlays/deprecatedBrowser/deprecatedBrowserStarted", function(html) {
+    	    		var that = this;
+    	    		$Halo.bigbro.subscribe("overlays/deprecatedBrowser/deprecatedBrowserPopulate", this.populateOverlay, that);
+    	    		$Halo.bigbro.subscribe("overlays/deprecatedBrowser/deprecatedBrowserClose", this.closeOverlay, that);
+    	    		
+    				Shadowbox.open({
+    					content: html.html(),
+    					player: 'html',
+    					width: 990,
+    					title: 'New Year, New Browser',
+    					options: {
+    						modalName: 'deprecatedBrowser',
+    						onFinish: function() {
+    							$Halo.bigbro.notify("overlays/deprecatedBrowser/deprecatedBrowserPopulate");
+    						},
+    						onClose: function() {
+    							$Halo.bigbro.notify("overlays/deprecatedBrowser/deprecatedBrowserClose");
+    						}
+    					}
+    				});
+    	    	}, that);
+    	    }
+    	},
+    	pub: {
+    		init: function() {
+    			var that = this;
+    			
+    			if(Halo.getCookie("HauteLookBrowserRetirement") == "remind") {
+    				return;
+    			}
+    			
+    			if($.browser.msie && parseInt($.browser.version, 10) === 7) {
+    				// Internet Explorer 7.0
+    				this.browserType = "Internet Explorer";
+        			$Halo.bigbro.subscribe("overlays/deprecatedBrowser/deprecatedBrowserStarted", this.openOverlay, that);
+    			} else if (jQuery.browser.mozilla && jQuery.browser.version.substr(0, 5) == '1.9.2') {
+    				// Firefox 3.6.x
+    				this.browserType = "Mozilla Firefox";
+        			$Halo.bigbro.subscribe("overlays/deprecatedBrowser/deprecatedBrowserStarted", this.openOverlay, that);
+    			}
+    		}
+    	}
+    }
+}, false);

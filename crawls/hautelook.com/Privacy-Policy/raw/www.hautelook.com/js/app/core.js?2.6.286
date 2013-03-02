@@ -1,0 +1,369 @@
+var Core = (function() {
+    var modules = (function() {
+        var data = {};
+        var browserStorage = BrowserStorage.setStorageEngines('local', 'session', 'userData');
+        
+        var ModuleInterface = function() {};
+            ModuleInterface.prototype.name = false;
+            ModuleInterface.prototype.group = null;
+            ModuleInterface.prototype.active = false;
+            ModuleInterface.prototype.ready = false;
+            ModuleInterface.prototype.initialized = false;
+            ModuleInterface.prototype.dom = false; // jQuery reference to the Module's HTML
+            ModuleInterface.prototype.domSelector = false;
+            ModuleInterface.prototype.domLocation = 'body #container'; // jQuery selector 
+            ModuleInterface.prototype.insertionMethod = $.fn.appendTo; // jQuery method reference 
+            ModuleInterface.prototype.isOverlay = false; // Is intended to be used in an overlay
+
+            ModuleInterface.prototype.init = function() {
+                return true;
+            };
+            
+            ModuleInterface.prototype.destroy = function() {
+                this.hide();
+
+                if(this.active) {
+                    this.stop();
+                }
+
+                for(var x in this) {
+                    if(this.hasOwnProperty(x)) {
+                        delete this[x];
+                    }
+                }
+
+                return true;
+            };
+
+            ModuleInterface.prototype.getOwnProperty = function(key) {
+                return Core.getData()[this.name][key];
+            }
+
+            ModuleInterface.prototype.setOwnProperty = function(key, value) {
+                Core.getData()[this.name][key] = value;
+            };
+            
+            // Show and hide do not need to be implemented by modules
+            ModuleInterface.prototype.show = function() {
+                if(typeof this.domLocation == 'string' && typeof this.dom == 'object' && 'jquery' in this.dom) {
+                    var that = this;
+                    if($(this.domSelector).size() == 0) {
+                        $(document).ready(function() {
+                            that.insertionMethod.call(that.dom, $(that.domLocation));
+                            $Halo.bigbro.notify(that.name + "Show");
+                            $Halo.bigbro.notify(that.name + "Show_BB");
+                        });
+                    }
+                }
+            };
+            
+            ModuleInterface.prototype.hide = function() {
+                var that = this;
+                $(document).ready(function() {
+                    if($(that.domSelector).size() != 0) {
+                        if(typeof that.dom == 'object' && 'jquery' in that.dom) {
+                            that.dom.detach();
+                        }
+                    }
+                });
+            };
+            
+            ModuleInterface.prototype.start = function() {
+                if(this.getOwnProperty('ready')) {
+                    if(!this.getOwnProperty('isOverlay')) {
+                        this.show();
+                    }
+
+                    this.setOwnProperty('active', true);
+                    $Halo.bigbro.notify(this.name + 'Started', this.dom);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            
+            ModuleInterface.prototype.stop = function() {
+                if(this.getOwnProperty('ready')) {
+                    this.hide();
+                    this.setOwnProperty('active', false);
+                    $Halo.bigbro.notify(this.name + 'Stopped');
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+        
+        var Module = function(name, reference, group, settings, callback, isGetaways) {
+                var cache;
+
+                settings = settings || {};
+                reference.parent = new ModuleInterface();
+                reference.parent.group = group || null;
+                reference.parent.name = name;
+                reference.parent.isOverlay = !!settings.isOverlay;
+                
+                if(settings.domLocation && typeof settings.domLocation == 'string') {
+                    reference.parent.domLocation = settings.domLocation;
+                }
+                
+                if(settings.insertionMethod) {
+                    if(typeof settings.insertionMethod == 'string' && jQuery.fn[settings.insertionMethod]) {
+                        reference.parent.insertionMethod = jQuery.fn[settings.insertionMethod];
+                    }
+                    else if(settings.insertionMethod instanceof Function) {
+                        // Have to trust the coder that the passed in function is in fact a jQuery method or is 100% compatible
+                        reference.parent.insertionMethod = settings.insertionMethod;
+                    }
+                }
+
+                if(settings.noHTML === true) {
+                    reference.parent.ready = true;
+                       callback(Halo.obj(reference));
+                }
+                else {
+                    if(settings.groupHTML &&  typeof settings.groupHTML == 'object' && 'jquery' in settings.groupHTML) {
+                        reference.parent.dom = settings.groupHTML.filter(function() {
+                            return $(this).is(settings.domSelector);
+                        });
+                        reference.parent.domSelector = settings.domSelector;
+                        reference.parent.ready = true;
+                           callback(Halo.obj(reference));
+                    }
+                    else {
+                        // The single equals is intentional. This does not make me a bad person.
+                        if(settings.cache && (cache = browserStorage.get('module' + name + 'htmlCache'))) {
+                            reference.parent.dom = $(cache).filter(function() {
+                                return $(this).is(settings.domSelector);
+                            });
+                            
+                            reference.parent.domSelector = settings.domSelector;
+                            reference.parent.ready = true;
+                               callback(Halo.obj(reference));
+                        }
+                        else {
+
+                            var urlT;
+                            
+                            if( typeof(isGetaways)!= "undefined" && isGetaways){
+                                urlT='/getaways/modules/moduleGroup/' + group + "?" + buildVersion;
+                            }else{
+                                urlT= '/modules/html/module/' + name.replace(/\//g, "%2F") + "?" + buildVersion;
+                            }
+                            
+                            $.ajax({
+                                url: urlT, /*encode forward slashes*/ 
+                                type: 'GET',
+                                dataType: 'html',
+                               
+                                error: function(response) {
+                                    // I need something besides an alert here.
+                                    if(siteDebug) debug.log('Request to ' + this.url + ' failed');
+                                },
+                                success: function(response) {
+                                    if(settings.cache) {
+                                        browserStorage.set('module' + name + 'htmlCache', response, +settings.cache);
+                                    }
+
+                                    reference.parent.dom = $(response).filter(function() {
+                                        return $(this).is(settings.domSelector);
+                                    });
+
+                                    reference.parent.domSelector = settings.domSelector;
+                                    reference.parent.ready = true;
+                                       callback(Halo.obj(reference));
+                                }
+                            });
+                        }
+                    }
+                }
+            };
+
+        var moduleAPI = function() {};
+            moduleAPI.clearCache = function(module) {
+                return (typeof module != 'string') ? false : browserStorage.remove('module' + name + 'htmlCache');
+            }
+        
+            moduleAPI.getData = function() {
+                return data;
+            }
+        
+            moduleAPI.exists = function(module) {
+                return data.hasOwnProperty(module);
+            };
+            
+            moduleAPI.start = function(module) {
+                if(data[module] && !data[module].getOwnProperty('active')) {
+                    data[module].start(module);
+                }
+            }
+            
+            moduleAPI.stop = function(module) {
+                if(data[module] && data[module].getOwnProperty('active')) {
+                    data[module].stop();
+                }
+            }
+            
+            moduleAPI.startAll = function(/* group */) {
+                var group = arguments[0] || false;
+                
+                for (var module in data) {
+                    if(data.hasOwnProperty(module) && data[module] instanceof Module) {
+                        if(group === false || data[module].group === group) {
+                            data[module].start();
+                        }
+                    }
+                }
+            };
+            
+            moduleAPI.stopAll = function(/* group */) {
+                var group = arguments[0] || false;                
+                for (var module in data) {
+                    if(data.hasOwnProperty(module)) {
+                        if(group === false || data[module].group == group) {
+                            data[module].stop();
+                        }
+                    }
+                }
+            }
+
+            moduleAPI.add = function(module, HaloObj, group, settings) {
+                if(!moduleAPI.exists(module)) {
+                    var self = arguments.callee;
+                    var callback = function(obj) {
+                        if(typeof obj == 'object') {
+                            self(module, obj, group, settings);
+                        }
+                    }
+                    
+                    if(HaloObj == null) {
+                        $Halo.bigbro.subscribe(module + 'Loaded', callback, this);
+                    }
+                    else {
+                        $Halo.bigbro.unsubscribe(module + 'Loaded', callback);
+                        if(typeof HaloObj == 'object') {
+                            try {
+                                new Module(module, HaloObj, group, settings, function(moduleInstance) {
+                                    data[module] = moduleInstance;
+                                    data[module].init();
+                                    data[module].setOwnProperty('initialized', true);
+                                    $Halo.bigbro.notify(module + 'Initialized');
+                                }, settings.isGetaways);
+                            }
+                            catch(e) {
+                                if(siteDebug) {
+                                    debug.log(e);
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            moduleAPI.remove = function(module) {
+                if(moduleAPI.exists(module)) {
+                    data[module].destroy();
+                    delete data[module];
+                }
+            }
+        
+        return moduleAPI;
+    }());
+
+    var coreAPI = function() {}
+        coreAPI.clearCache = modules.clearCache;
+        coreAPI.getData = modules.getData;
+        coreAPI.stop = modules.stop;
+        coreAPI.start = modules.start;
+        coreAPI.startAll = modules.startAll;
+        coreAPI.stopAll = modules.stopAll;
+        coreAPI.register = function(moduleInfo) {
+            if(typeof moduleInfo.name == 'undefined') return false;
+            if(typeof moduleInfo.group == 'undefined') return false;
+            if(typeof moduleInfo.settings == 'undefined') return false;
+
+            if(typeof moduleInfo.css != 'undefined' && moduleInfo.css instanceof Array) {
+                for(var x = 0; x < moduleInfo.css.length; x++) {
+                    $.getScript(moduleInfo.css[x], undefined, undefined, 'css');
+                }
+            }
+
+            if(typeof moduleInfo.js != 'undefined' && moduleInfo.js instanceof Array) {
+                for(var i = 0; i < moduleInfo.js.length; i++) {
+                    $.getScript(moduleInfo.js[i]);
+                }
+            }
+            
+            moduleInfo.obj = moduleInfo.obj || null;
+            modules.add(moduleInfo.name, moduleInfo.obj, moduleInfo.group, moduleInfo.settings);
+
+            return true;
+        }
+        coreAPI.unregister = modules.remove;
+        coreAPI.registerGroup = function(group, moduleInfo, cache, isGetaways ) {
+            var browserStorage = BrowserStorage.setStorageEngines('local', 'session', 'userData');
+            var that = this;
+            var cacheHtml;
+            
+            moduleInfo = moduleInfo || {};
+            
+            if(cache && (cacheHtml = browserStorage.get('group' + group + 'htmlCache'))) {
+                for(var x in moduleInfo) {
+                    moduleInfo[x].settings.groupHTML = $(cacheHtml);
+                    this.register(moduleInfo[x]);
+                }
+            }
+            else {
+                var urlT;
+                if( typeof(isGetaways)!= "undefined" && isGetaways){
+                    urlT='/getaways/modules/moduleGroup/' + group + "?" + buildVersion;
+                }else{
+                    urlT= '/modules/group/module-group/' + group + "?" + buildVersion;
+                }
+                
+                $.ajax({
+                    url: urlT,
+                    type: 'GET',
+                    dataType: 'html',
+                    
+                    success: function(response) {
+                        if(cache) {
+                            browserStorage.set('group' + group + 'htmlCache', response, cache);
+                        }
+
+                        for(var x in moduleInfo) {
+                            moduleInfo[x].settings.groupHTML = $(response);
+                            that.register(moduleInfo[x]);
+                        }
+                    }
+                });
+            }
+        },
+        coreAPI.registerPluginGroup = function(group, moduleInfo, cache) {
+            var browserStorage = BrowserStorage.setStorageEngines('local', 'session', 'userData');
+            var that = this;
+            moduleInfo = moduleInfo || {};
+            
+            if(cache && (cacheHtml = browserStorage.get('group' + group + 'htmlCache'))) {
+                for(var x in moduleInfo) {
+                    moduleInfo[x].settings.groupHTML = $(cacheHtml);
+
+                    this.register(moduleInfo[x]);
+                }
+            }
+            else {
+                var cacheHtml = "";
+                for (var x in moduleInfo){
+                    that.register(moduleInfo[x]);
+                    //need a better way to to this. - DM
+                    cacheHtml += '<div id="' +moduleInfo[x].name + '">' + moduleInfo[x].settings.groupHTML.html() + '</div>';
+                }
+                if(cache){
+                    browserStorage.set('group' + group + 'htmlCache', cacheHtml, cache);
+                }
+            }
+        }
+    return coreAPI;
+}());

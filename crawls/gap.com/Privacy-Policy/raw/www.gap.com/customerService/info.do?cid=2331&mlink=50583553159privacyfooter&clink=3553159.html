@@ -981,7 +981,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "02/27/2013 08:09 AM",
+            DATE_IN_USE: "03/02/2013 08:07 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -3953,6 +3953,47 @@ if (window.navigationService && navigationService.controller && navigationServic
 
 <!-- End CNOV-34: productSearchServiceLink XSS fix -->
 
+<!-- Begin CNOV-38 Search autocorrect omniture -->
+<script type="text/javascript">
+// <![CDATA[
+
+if (window.reportingService && reportingService.controller && reportingService.controller.viewManagers && reportingService.controller.viewManagers.categoryFacetedSearchViewManager && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
+
+
+	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars.wrap(function (originalMethod) {
+	    	originalMethod();
+
+		var facetSearchManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.facetSearchManager;
+		var model = facetSearchManager.model;
+		var isSearchModel = facetSearchManager.model.isSearch;
+                var isSearch = isSearchModel === true || isSearchModel === 'true';
+                    
+
+
+                if (isSearch) {
+                    	var searchAppManager = reportingService.controller.appManagers.searchAppManager;
+
+                	var data = facetSearchManager.model.data;
+    				
+    			model.searchKeyword = searchAppManager.getSiteSearchActiveKeyword();
+    				
+    			var searchVariableValue = model.searchKeyword;
+    			if (data != undefined && model.searchKeyword != data.productCategoryFacetedSearch.searchText) {
+    				searchVariableValue = model.searchKeyword + " -> " + data.productCategoryFacetedSearch.searchText;
+
+    				var brandPrefix = reportingService.controller.viewManagers.commonViewManager.model.commonBrandPrefix;
+    				
+    				s.prop17 = brandPrefix + ":" + searchVariableValue;
+    				s.eVar20 = brandPrefix + ":" + searchVariableValue;
+			}
+		}
+	});
+}
+
+
+// ]]>
+</script>
+<!-- End CNOV-38 Search autocorrect omniture -->
 
 <!-- VV override - contains content for VV disruptor additional CSS style also associated-->
 <script type="text/javascript">
@@ -4687,8 +4728,6 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- CNOV-25: A/B test for search engagement-->
 <script type="text/javascript">
 // <![CDATA[
-
-var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
 
 var NAV2TestCookieCutter = Class.create();
 NAV2TestCookieCutter.prototype = {
@@ -6190,12 +6229,12 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/137/671/cn6137671.html -->
-<div id="contentItemContainer10000395" class="6137671" >
+    	<!-- BEGIN Content Item File: /content/0006/176/694/cn6176694.html -->
+<div id="contentItemContainer10000395" class="6176694" >
 
 <style type="text/css">
 #globalBanner {
-	width: 472px;
+	width: 505px;
 	height: 62px;
 	position: relative;
 	display: block;
@@ -6247,17 +6286,17 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/137/671/assets/022413_ALL_CountdownPromo_20_GB_US.png" alt="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." title="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/176/694/assets/022813_ALL_MENWOMStyle_GB_US.png" alt="25% off ALL WOMEN'S &amp; MEN'S STYLES. ONLINE ONLY. ENDS SATURDAY, 3/2. ENTER GAP25." title="25% off ALL WOMEN'S &amp; MEN'S STYLES. ONLINE ONLY. ENDS SATURDAY, 3/2. ENTER GAP25." usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,472,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/137/671/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,472,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/176/694/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/137/671/assets/022413_ALL_CountdownPromo_20_DISR_US.gif" alt="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." title="Today 20% off Womens &amp; Mens Styles. Online Only. Enter GAPDRESS." usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/176/694/assets/022813_ALL_MENWOMStyle_DISR_US.gif" alt="25% off ALL WOMEN'S &amp; MEN'S STYLES. ONLINE ONLY. ENDS SATURDAY, 3/2. ENTER GAP25." title="25% off ALL WOMEN'S &amp; MEN'S STYLES. ONLINE ONLY. ENDS SATURDAY, 3/2. ENTER GAP25." usemap="#disruptorMap">
 		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/137/671/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/176/694/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
         </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -6265,7 +6304,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('022713_GB');
+	globalBannerDisruptor.init('022813_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -6386,7 +6425,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/137/671/cn6137671.html -->
+<!-- END Content Item File: /content/0006/176/694/cn6176694.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7648,7 +7687,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6137671,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6176694,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>

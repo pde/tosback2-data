@@ -133,7 +133,28 @@ window.webtrendsAsyncInit=function(){
         plugins:{
             hm:{src:"/template/ver1-0/js/asyncwebtrends/webtrends.hm.js",hmurlparams:"frame,image"}
         }
-        }).track();
+        });
+    if ($.cookie("tmg_subs") != null){
+    	var ts = $.parseJSON($.cookie("tmg_subs"));
+        dcs.DCSext.location = ts.location;
+    	dcs.DCSext.trialDescription =ts.trialDescription;
+	    dcs.DCSext.subscriptionType = ts.subscriptionType;
+	    dcs.DCSext.flowType = ts.flowType;
+	    dcs.DCSext.productType = ts.productType;
+	    dcs.DCSext.serviceId = ts.serviceId;
+	    dcs.DCSext.servicePriceId = ts.servicePriceId;
+	
+	    dcs.DCSext.discountVoucher = ts.discountVoucher;
+	    dcs.DCSext.partnerName = ts.partnerName;
+	    dcs.DCSext.currentPromoName = ts.currentPromoName;
+	    dcs.DCSext.sourcePromoName = ts.sourcePromoName;
+	    dcs.DCSext.promoType = ts.promoType;
+	    dcs.DCSext.tCode = ts.tCode;
+	    dcs.DCSext.status = ts.status == true  && ts.acquisitionCompleted == true ? 'Active':'Inactive';
+
+   }
+   dcs.track();
+
 };
 (function(){
     var s=document.createElement("script"); s.async=true; s.src="/template/ver1-0/js/asyncwebtrends/webtrends.js";
@@ -253,7 +274,7 @@ $(document).ready(function() {
 </script>		
 <script type="text/javascript">
   var gs_channels="default";
-  // Last-updated: 2013-02-27 12:53:39.73
+  // Last-updated: 2013-03-02 13:07:19.795
 gs_channels="tch_technology";
 
 </script>
@@ -273,7 +294,7 @@ gs_channels="tch_technology";
 		
 	
 
-<link rel="stylesheet" type="text/css" href="../../../template/ver1-0/css/subscriber.css%3Fv=1361969619073.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../../../template/ver1-0/css/subscriber.css%3Fv=1362229639795.css" media="screen" />
 <script language="Javascript" type="text/javascript" src="../../../template/ver1-0/js/ajax.js"></script>
 
 <script language="Javascript" type="text/javascript" src="../../../template/ver1-0/js/commWidget.js"></script>
@@ -309,10 +330,29 @@ gs_channels="tch_technology";
 
 <body>
 	<script type="text/javascript">
+		var subsInfo = new Object();
+		subsInfo.channel =  $('meta[name="DCSext.Channel"]').attr("content");
+		if(subsInfo.channel==undefined){subsInfo.channel='';}
+		subsInfo.mlc = $('meta[name="DCSext.MLC"]').attr("content");
+		if(subsInfo.mlc==undefined){subsInfo.mlc='';}
+		subsInfo.category = $('meta[name="DCSext.Category"]').attr("content");
+		if(subsInfo.category==undefined){subsInfo.category='';}
+		subsInfo.level = $('meta[name="DCSext.Level"]').attr("content");
+		if(subsInfo.level==undefined){subsInfo.level='';}
+		subsInfo.author = $('meta[name="DCSext.author"]').attr("content");
+		if(subsInfo.author==undefined){subsInfo.author='';}
+		subsInfo.content_type = $('meta[name="DCSext.Content_Type"]').attr("content");
+		if(subsInfo.content_type==undefined){subsInfo.content_type='';}
+		subsInfo.articleId = $('meta[name="DCSext.articleId"]').attr("content");
+		if(subsInfo.articleId==undefined){subsInfo.articleId='';}
+		var subsJson = JSON.stringify(subsInfo);
+		$.cookie("tmg_subs_referer",subsJson, { path: '/', domain: 'telegraph.co.uk'});
+		var inviteWTUrlSuffix='?channel='+ subsInfo.channel+'&mlc='+subsInfo.mlc+'&category='+ subsInfo.category+'&level='+subsInfo.level+'&author='+subsInfo.author+'&content_type='+subsInfo.content_type+'&articleId='+subsInfo.articleId;
+		
 		
 			
 				
-					var inviteUrl = "/subscriptions/invitation-intl/";
+					var inviteUrl = "/subscriptions/invitation-intl/"+inviteWTUrlSuffix;
 				
 			
 	
@@ -323,6 +363,7 @@ gs_channels="tch_technology";
 			
 		var plink = "http://www.telegraph.co.uk/template/ver1-0/templates/fragments/common/toolBar-js.jsp";
 	</script>
+	<script src="Privacy-and-Cookie-Policy.html" type="text/javascript" ></script>
 	<script src="../../../../s.telegraph.co.uk/toolbar/js/tmgMenu.js" type="text/javascript" ></script>
 <!--[if lte IE 6]>
 <div id="ieLteSix">
@@ -392,7 +433,7 @@ gs_channels="tch_technology";
 				<div id="tmglTopRight" class="tmgTopBarDate">
 					<div id="tmglLasUpdatedDateFeed">
 	<p>
-		Wednesday 27 February 2013</p>
+		Saturday 02 March 2013</p>
 </div>
 
 </div>
@@ -1150,37 +1191,8 @@ article.articleTypeName=tmglstory<br>-->
 
 			
 						
-							<!-- 9850730 -->
-<div class="oneQuarter servicesSmall ">
-	<div class="summarySmall">
-		<div class="headerFive">		
-			<a href="Privacy-and-Cookie-Policy.html"> 
-				The World's Finest Homes</a>
-		</div>
-		<div class="piccentre containerdiv ">
-		<a  href="http://www.telegraph.co.uk/sponsored/property/finest-homes/?WT.mc_id=605541&source=USTrafficDriver">
-						<img src="../../../../i.telegraph.co.uk/multimedia/archive/02460/whydah-st-thomas_2460001f.jpg" alt="Villa Whydah St Thomas" border="0" width="220" height="137" /><span class="imgSlantOverlay">&nbsp;</span>
-						</a>
-				</div>
-	
-<h3>
-			<a  href="http://www.telegraph.co.uk/sponsored/property/finest-homes/?WT.mc_id=605541&source=USTrafficDriver">
-						Exclusive rooms with the very best views</a>
-				</h3>
-		<div class="traffdrivViewLink">
-			<a  href="http://www.telegraph.co.uk/sponsored/property/finest-homes/?WT.mc_id=605541&source=USTrafficDriver">
-						View</a>
-				</div>
-
-	</div>
-</div>
-					
-				
-
-			
-						
 							<!-- 9516888 -->
-<div class="oneQuarter servicesSmall last">
+<div class="oneQuarter servicesSmall ">
 	<div class="summarySmall">
 		<div class="headerFive">		
 			<a href="http://www.telegraph.co.uk/sponsored/travel/9213796/Dunhill-Travel-Deals-offers.html?utm_source=tmg&utm_medium=td_moreoffers&utm_campaign=dunhill0309"> 
@@ -1203,6 +1215,12 @@ article.articleTypeName=tmglstory<br>-->
 
 	</div>
 </div>
+					
+				
+
+			
+						
+							
 					
 				
 
@@ -1376,7 +1394,7 @@ article.articleTypeName=tmglstory<br>-->
 <div id="footerinfo">
 			<p>&copy; Copyright of Telegraph Media Group Limited 2013</p>
 			<p><a href="http://www.telegraph.co.uk/termsandconditions">Terms and Conditions</a> </p>
-			<p><a href="http://www.telegraph.co.uk/archive/2013-2-27.html">Today's News</a></p>
+			<p><a href="http://www.telegraph.co.uk/archive/2013-3-2.html">Today's News</a></p>
 			<p ><a href="http://www.telegraph.co.uk/archive/">Archive</a></p>
 					<p ><a href="http://www.telegraph.co.uk/topics/about-us/style-book/">Style Book</a></p>
 					<p class="last"><a href="http://www.telegraph.co.uk/topics/weather/4142730/Weather-forecast.html">Weather Forecast</a></p>

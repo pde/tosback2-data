@@ -3451,14 +3451,7 @@ var a=axel*10000000000000;
 function GetActionTag(b){if(b){var d=document.getElementById(b);
 var c="http://view.atdmt.com/jaction/";
 if(d){document.body.removeChild(d)
-}d=document.createElement("script");
-d.setAttribute("id",b);
-d.setAttribute("type","text/javascript");
-d.setAttribute("async","async");
-d.setAttribute("defer","defer");
-document.body.appendChild(d);
-d.src=c+b+"/?"+Math.random()
-}}function GetFloodlightTag(c){if(c){var e=document.getElementById(c);
+}}}function GetFloodlightTag(c){if(c){var e=document.getElementById(c);
 var d="http://3990485.fls.doubleclick.net/activityi;";
 var b=c.split(";");
 for(s in b){if(b[s].indexOf("src")==0){d="http://"+b[s].split("=")[1]+".fls.doubleclick.net/activityi;";
@@ -4683,15 +4676,7 @@ for(var h in f){if(g==0){e+=h+"."+f[h]+"/"
 }}g++
 }}}mb.atlas.setAtlasTag(e)
 }};
-c.setAtlasTag=function(d){if(d){var e=document.getElementById(d);
-if(e){document.body.removeChild(e)
-}e=document.createElement("script");
-e.setAttribute("id",d);
-e.setAttribute("type","text/javascript");
-document.body.appendChild(e);
-e.src=a+d+"/?"+Math.random()
-}};
-mb.metrics.registerEngine("atlas",c)
+c.setAtlasTag=function(d){}
 })();if(typeof(window.mb)=="undefined"){mb={}
 }mb.ga=new (function(){var a=this;
 a.init=function(){mb.logger.info("mb.ga.track.init")

@@ -3,19 +3,33 @@
 var typeAheadEnabled = true;
 
 var lastSearch = "";
-//This method creates the typeahead popup
-function typeAheadResults(textValue,event, storeId, langId, catalogId)
-{
+
+if(typeAheadEnabled) {
+  setInterval(function(){typeAheadResults("10151", "-1", "10051")},150);
+}
+
+function handleKeyEvents(txtValue, event) {
   if(event.keyCode == 27) {
+    txtValue.value = "";
     $('#type-ahead-container').css("display", "none");
+   }
+  return true;
+}
+
+//This method creates the typeahead popup
+function typeAheadResults(storeId, langId, catalogId)
+{
+  var searchText = $('#type-ahead-search').val();
+  if(isEmpty(searchText) || (searchText == 'Enter Keyword or Item #')) {
+    $('#type-ahead-container').css("display", "none");
+    return true;
   }
-  var searchText = textValue.value;
   searchText = searchText.toLowerCase();
   // Remove special characters from search text and make sure its length is between 3 to 20 characters
   searchText = searchText.replace(/[^a-zA-Z0-9\s]+/g,'');
   searchText = searchText.replace(/^\s*/, '').replace(/\s*$/, '');
-  if(!(searchText == lastSearch)) {
-    if(searchText.length >= 3 && searchText.length <= 20) {
+  if(searchText.length >= 3 && searchText.length <= 20) {
+    if(!(searchText == lastSearch)) {
       var ajaxOptions = {
         type: "POST",
         url: "/webapp/wcs/stores/servlet/AjaxBPSTypeAheadSearchCmd",
@@ -42,13 +56,16 @@ function typeAheadResults(textValue,event, storeId, langId, catalogId)
                     var cat = a.replace(/[{}"]+/g,'');
                       var category = cat.split(':');
                       if(b == null || b == ''){
-                        catHtml = catHtml + "<li><a href='/"+category[0].replace(/[']+/g,'')+"/_/"+category[1]+"' title='"+category[0]+"'>"+category[0]+"</a></li>";
+                        var cNameClean = category[0].replace(/[']+/g,'');
+                        catHtml = catHtml + "<li><a href='/"+cNameClean+"/_/"+category[1]+"?taCategory="+cNameClean+"&taSearchTerm="+searchText+"' title='"+category[0]+"'>"+category[0]+"</a></li>";
                       } else {
                         var subCatHtml = "";
-                        catHtml = catHtml + "<li><a href='/"+category[0].replace(/[']+/g,'')+"/_/"+category[1]+"' title='"+category[0]+"'>"+category[0]+"</a><ul>";
+                        var cNameClean1 = category[0].replace(/[']+/g,'');
+                        catHtml = catHtml + "<li><a href='/"+cNameClean1+"/_/"+category[1]+"?taCategory="+cNameClean1+"&taSearchTerm="+searchText+"' title='"+category[0]+"'>"+category[0]+"</a><ul>";
                         $.each(this, function(x, y) {
                           $.each(this, function(c, d) {
-                            subCatHtml = subCatHtml + "<li><a href='/"+category[0].replace(/[']+/g,'')+"/_/"+category[1]+"' title='"+c+"'>in "+c+"</a></li>";
+                            var sNameClean = category[0].replace(/[']+/g,'');
+                            subCatHtml = subCatHtml + "<li><a href='/"+sNameClean+"/_/"+category[1]+"?taCategory="+sNameClean+"&taSearchTerm="+searchText+"' title='"+c+"'>in "+c+"</a></li>";
                           });
                         });
                         catHtml = catHtml + subCatHtml + "</ul></li>";
@@ -62,7 +79,8 @@ function typeAheadResults(textValue,event, storeId, langId, catalogId)
               if(i == 'Brand') {
                 $.each(this, function(k, v) {
                   $.each(this, function(x, y) {
-                    brandHtml = brandHtml + "<li><a href='/"+x.replace(/[']+/g,'')+"/_/"+y+"' title='"+x+"'>"+x+"</a></li>";
+                    bNameClean = x.replace(/[']+/g,'');
+                    brandHtml = brandHtml + "<li><a href='/"+bNameClean+"/_/"+y+"?taBrand="+bNameClean+"&taSearchTerm="+searchText+"' title='"+x+"'>"+x+"</a></li>";
                   });
                 });
                 if(brandHtml != "") {
@@ -82,8 +100,10 @@ function typeAheadResults(textValue,event, storeId, langId, catalogId)
       };
     $.ajax(ajaxOptions);
     } else {
-      $('#type-ahead-container').css("display", "none");
+        return true;
     }
+  } else {
+      $('#type-ahead-container').css("display", "none");
   }
   lastSearch = searchText;
 }

@@ -307,3 +307,12 @@ function TrackLocalClick(s,h){
 function TrackArchiveClick(c,t){        
         _gaq.push(['_trackEvent','Karoo Archive '+c,'Clicked',t]);
 }
+
+
+
+// Focus on Google Search on load
+( function($) {
+	$(document).ready(function () { 
+		$("#ctl00_Search_googlesearchbox").focus();
+	});
+} ) ( jQuery );

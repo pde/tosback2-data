@@ -1,4 +1,4 @@
-//$Revision: 503286 $, $Date: 2013-01-07 16:32:30 -0800 (Mon, 07 Jan 2013) $ and $Author: ak8407 $
+//$Revision: 510832 $, $Date: 2013-02-15 14:25:21 -0800 (Fri, 15 Feb 2013) $ and $Author: grunning $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -49,7 +49,7 @@ ATT.c2c = function () {
 	    	return sum;
     	};
 
-    if(ATT.globalVars && ATT.globalVars.cartContents && ATT.globalVars.cartContents.orderType){
+    if(ATT.globalVars && ATT.globalVars.cartContents && ATT.globalVars.cartContents.orderType && location.href.indexOf('/ordersummary') == -1){
     	results.orderType = ATT.globalVars.cartContents.orderType ? ATT.globalVars.cartContents.orderType :'';
     	window.lpMTagConfig.vars.push(["page","orderType",results.orderType]);
     }
@@ -284,7 +284,7 @@ ATT.c2c = function () {
 		    window.lpMTagConfig.vars.push(["page","OrderTotal",results.orderTotal || ""]);
 		    window.lpMTagConfig.vars.push(["page","OrderNumber",ATT.globalVars.orderNumber || ""]);		   
 		    //thank you /confirmation
-		    window.lpMTagConfig.vars.push(["page","orderTotalOrderType",results.orderType]);
+		   // window.lpMTagConfig.vars.push(["page","orderTotalOrderType",results.orderType]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalOTR",results.orderTotal || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalRMR",results.mrcTotal || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalDeviceValue",results.orderTotalDeviceValue || ""]);
@@ -298,7 +298,8 @@ ATT.c2c = function () {
 		    window.lpMTagConfig.vars.push(["page","orderTotalFeatureType",results.orderTotalFeatureType || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesValue",results.orderTotalAccessoriesValue || ""]);
 		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesQuantity",results.orderTotalAccessoriesQuantity || ""]);
-		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesType",results.orderTotalAccessoriesType || ""]);		
+		    window.lpMTagConfig.vars.push(["page","orderTotalAccessoriesType",results.orderTotalAccessoriesType || ""]);
+		    window.lpMTagConfig.vars.push(["page","orderAccessoriesSku",results.orderAccessoriesSku || ""]);
 	}   
 
 };

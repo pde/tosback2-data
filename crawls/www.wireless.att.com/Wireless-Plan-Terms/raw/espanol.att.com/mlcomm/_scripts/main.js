@@ -205,8 +205,10 @@ function renderGlobalNav() {
 	document.write('<li><a href="https://www.att.com/olam/dashboardAction.olamexecute" title="Mi Cuenta (en ingl&eacute;s)" target="_blank">Mi Cuenta (en ingl&eacute;s)</a></li>');
 	document.write('<li><a href="/residential_customers/att_uverse/uverse_voice/index.html?id=' + state + '" title="Servicio de tel&eacute;fono digital de AT&amp;T U-verse">Servicio de tel&eacute;fono digital de AT&amp;T U-verse</a></li>'); 
 	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_services/index.html?id=' + state + '" title="Servicios &uacute;nicos de AT&amp;T U-verse">Servicios &uacute;nicos de AT&amp;T U-verse</a></li>');   
+	
 	document.write('<li><a href="http://www.att.com/u-verse/availability/index.jsp?source=IC00ya000000001U" target="_blank" title="Disponibilidad en mi &aacute;rea">Disponibilidad en mi &aacute;rea</a></li>');   
 	document.write('<li><a href="/residential_customers/att_uverse/uverse_wireless/index.html?id=' + state + '" title="Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse<sup>&reg;</sup>">Receptor inal&aacute;mbrico de TV de AT&amp;T U-verse </a></li>');
+	document.write('<li class="short"><a href="/residential_customers/att_uverse/uverse_help/uverse_guides.html?id=' + state + '" title="Gu&#237;a del usuario">Gu&#237;a del usuario</a></li>');
 	document.write('</ul>');
 	document.write('</div>');
 	
@@ -564,6 +566,11 @@ document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
 document.write('<div class="rc-release-box">'); 
+document.write('<p>26 de febrero de 2013<br />');
+document.write('<a href="/newsroom/news_releases/hacemos_2-28-13.html?id=' + state + '" title="Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a">Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>31 de enero de 2013<br />');
 document.write('<a href="/newsroom/news_releases/seguridad_en_linea_1-31-13.html?id=' + state + '" title="Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet">Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet</a></p>');
 document.write('</div>');
@@ -598,10 +605,7 @@ document.write('<p>19 de septiembre de 2012<br />');
 document.write('<a href="/newsroom/news_releases/it_can_wait_9-19-12.html?id=' + state + '" title="El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir">El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir</a></p>');
 document.write('</div>');
 
-document.write('<div class="rc-release-box">'); 
-document.write('<p>17 de septiembre de 2012<br />');
-document.write('<a href="/newsroom/news_releases/iphone5_preorder_release_9-17-12.html?id=' + state + '" title="AT&amp;T bate record de ventas con el iPhone 5">AT&amp;T bate record de ventas con el iPhone 5</a></p>');
-document.write('</div>');
+
 
 
 

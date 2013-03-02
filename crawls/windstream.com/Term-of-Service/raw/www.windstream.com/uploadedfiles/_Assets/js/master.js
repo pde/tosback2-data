@@ -165,6 +165,7 @@ $(document).ready(function () {
 
     normalizePlanHeight();
     supportMapImage();
+    mobileSupportHeaderHeight();
 
     //Characters Remaining
     var characters = 100;
@@ -479,6 +480,27 @@ $(document).ready(function () {
     } ());
 
 });
+
+var mobileSupportHeaderHeight = function() {
+
+    if (layoutWidth < 480) {
+
+        var $supportBanner = $('.support-banner'),
+            $bannerBox = $supportBanner.find('.banner-box'),
+            $lead = $bannerBox.find('.lead');
+
+        heights = $lead.map(function() {
+            return $(this).height();
+        }).get(),
+
+        maxHeight = Math.max.apply(null, heights);
+
+        $bannerBox.height(maxHeight);
+    } else {
+        return;
+    }
+
+};
 
 var supportMapImage = function () {
     var $supportMapImg = $('.support-stores .col-left').find('img'),
@@ -1355,15 +1377,71 @@ $(function () {
 
 /* Support Header Switcher */
 $(function () {
+
+    function setSupportHeaderCookie(val) {
+        var oldVal = $.cookie('support-selected-tab');
+        $.removeCookie('support-selected-tab', { path: '/' });
+        return $.cookie('support-selected-tab', val, { path: '/' });
+    }
+
+    function setInitialSupportHeader() {
+        if ( !$.cookie('support-selected-tab') ) {
+            return $.cookie('support-selected-tab', 1, { path: '/' });
+        }
+    }
+
+    setInitialSupportHeader();
+
     $('.support-nav li').live('click', function () {
         var goTo = $(this).find('a').attr('data');
         var slideString = goTo.split('-');
+
         $('.support-nav li a.current').removeClass('current');
         $(this).find('a').addClass('current');
         $('.lead.on').removeClass('on');
         $('.support-slide-' + slideString[2] + '').addClass('on');
+
+        setSupportHeaderCookie( $(this).index() + 1 );
+
         return false;
     });
+
+
+    // Check cookie for saved header state
+    if ( $.cookie('support-selected-tab') ) {
+
+        var $supportNavLI = $('.support-nav li');
+
+        switch ( $.cookie('support-selected-tab') ) {
+            case '1':
+                $supportNavLI.eq(0).click();
+                setSupportHeaderCookie(1);
+                break;
+
+            case '2':
+                $supportNavLI.eq(1).click();
+                setSupportHeaderCookie(2);
+                break;
+
+            case '3':
+                $supportNavLI.eq(2).click();
+                setSupportHeaderCookie(3);
+                break;
+
+            case '4':
+                $supportNavLI.eq(3).click();
+                setSupportHeaderCookie(4);
+                break;
+
+            case '5':
+                $supportNavLI.eq(4).click();
+                setSupportHeaderCookie(5);
+                break;
+
+            default:
+                break;
+        }
+    }
 });
 
 

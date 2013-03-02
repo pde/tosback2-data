@@ -6,7 +6,7 @@
     this.timezone = 0;
     this.fpcdom = "";
     this.onsitedoms = "";
-    this.downloadtypes = "xls,doc,pdf,txt,csv,zip";
+    this.downloadtypes = "xls,doc,pdf,txt,csv,zip,ashx";
     this.navigationtag = "div,table";
     this.adclickparam = "WT.ac";
     this.trackevents = true;

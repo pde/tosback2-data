@@ -14,18 +14,18 @@
 		<link rel="canonical" href="info.html" />		<title>Funny Videos,Viral Clips,Free Games,Funny Pictures -VIDEOBASH.COM</title>
 		<link rel="shortcut icon" href="../cdn1.static.videobash.com/images/favicon2.ico" />
 		<!--[if IE 6]>
-			<link href="http://cdn1.static.videobash.com/css/ie6-style-new.css?vbc=045" rel="stylesheet" type="text/css" />
+			<link href="http://cdn1.static.videobash.com/css/ie6-style-new.css?vbc=047" rel="stylesheet" type="text/css" />
 		<![endif]-->
 		<!--[if lte IE 7]>
-			<link href="http://cdn1.static.videobash.com/css/ie-style-new.css?vbc=045" rel="stylesheet" type="text/css" />
+			<link href="http://cdn1.static.videobash.com/css/ie-style-new.css?vbc=047" rel="stylesheet" type="text/css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="http://cdn1.static.videobash.com/css/ie8-style-new.css?vbc=045" rel="stylesheet" type="text/css" />
+			<link href="http://cdn1.static.videobash.com/css/ie8-style-new.css?vbc=047" rel="stylesheet" type="text/css" />
 		<![endif]-->
 		<!--[if IE 9]>
-			<link href="http://cdn1.static.videobash.com/css/ie9-style-new.css?vbc=045" rel="stylesheet" type="text/css" />
+			<link href="http://cdn1.static.videobash.com/css/ie9-style-new.css?vbc=047" rel="stylesheet" type="text/css" />
 		<![endif]-->
-		<link href="../cdn1.static.videobash.com/css/style_new.css%3Fvbc=045.css" rel="stylesheet" type="text/css" />
+		<link href="../cdn1.static.videobash.com/css/style_new.css%3Fvbc=047.css" rel="stylesheet" type="text/css" />
 				<link rel="alternate" type="application/rss+xml" title="VideoBash - RSS Video Feed" href="http://www.videobash.com/rss/video" />
 		<link rel="alternate" type="application/rss+xml" title="VideoBash - RSS Photo Feed" href="http://www.videobash.com/rss/photo" />
 		<link rel="alternate" type="application/rss+xml" title="VideoBash - RSS Games Feed" href="http://www.videobash.com/rss/game" />
@@ -34,8 +34,8 @@
 			
 		<!-- END POPBLOCK -->
         
-		<script src="../cdn1.static.videobash.com/js/jquery.min.js%3Fvbc=045"></script>
-		<script src="../cdn1.static.videobash.com/js/global_new.js%3Fvbc=045"></script>
+		<script src="../cdn1.static.videobash.com/js/jquery.min.js%3Fvbc=047"></script>
+		<script src="../cdn1.static.videobash.com/js/global_new.js%3Fvbc=047"></script>
 				<script>
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-15098260-1']);
@@ -47,10 +47,9 @@
 		  })();
 		</script>
 		
-		</head>
+				</head>
 
-<body itemscope itemtype="http://schema.org/WebPage">				
-		<div class="image-overlay absolute display-none" id="image-overlay"></div>
+<body itemscope itemtype="http://schema.org/WebPage">				<div class="image-overlay absolute display-none" id="image-overlay"></div>
 		<div class="image-overlay-container absolute display-none" id="image-overlay-container"></div>	
 		<div class="header-container relative">
 		<div class="header width-layout relative">
@@ -83,7 +82,7 @@
 				    </form>
 				</li>
 				<li id="loginli">
-							   				<a href="info.html" onclick="window.open('http://www.videobash.com/user/fbSignin', 'fbSigninWindow','width=700, height=350, scrollbars=0');return false;" class="sprite-menu header-facebook-login display-block" title="Facebook Login"></a>
+											<a href="info.html" onclick="fbLogin();return false;" class="sprite-menu header-facebook-login display-block" title="Facebook Login"></a>
 				                            
 				    						<div class="login sprite-menu">
 							<a href="info.html#" onclick="openLogin();_gaq.push(['_trackEvent', 'Login', 'Login Header']);return false;" id="login" class="">Login </a> <span style="margin:0 8px;">|</span> <a href="http://www.videobash.com/signup" onclick="_gaq.push(['_trackEvent', 'Login', 'Login Header']);">Sign Up</a>
@@ -640,5 +639,71 @@
 			s.parentNode.insertBefore(po, s);
 			})();
 		</script>		
+		<div id="fb-root"></div>
+		<script>
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId 	 : 154739397877434, // App ID
+					status     : true, // check login status
+					cookie     : true, // enable cookies to allow the server to access the session
+					xfbml      : true  // parse XFBML
+				});
+				FB.Event.subscribe('comment.create',
+				function(response) {
+					var commentQuery = FB.Data.query("SELECT text, fromid FROM comment WHERE post_fbid='"+response.commentID+"' AND object_id IN (SELECT comments_fbid FROM link_stat WHERE url='"+response.href+"')");
+					var userQuery = FB.Data.query("SELECT name, pic_square FROM user WHERE uid in (select fromid from {0})", commentQuery);
+
+					FB.Data.waitOn([commentQuery, userQuery], function() {
+						var commentRow = commentQuery.value[0];
+						var userRow = userQuery.value[0];
+						saveSocialComment(commentRow.text, userRow.name, userRow.pic_square);
+						//console.log(userRow.name+" (id: "+commentRow.fromid+") posted the comment: "+commentRow.text+" User Thumbnail URL is:"+userRow.pic_square);
+					});
+				}
+			);
+			};
+
+			function fbLogin() {
+				FB.getLoginStatus(function(response) {
+					if (response.status === 'connected') {
+						callLogin(response.authResponse.accessToken);
+					} else if (response.status === 'not_authorized') {
+						login();
+					} else {
+						login();
+					}
+				});
+			}
+
+			function login() {
+				FB.login(function(response) {
+					if (response.authResponse) {
+						callLogin(response.authResponse.accessToken);
+					} else {
+						// no action
+					}
+				});
+			}
+
+			function callLogin(access_token) {
+				$.post('/user/fbLogin',{'access_token':access_token}, 
+				function(response) {
+					json = $.parseJSON(response);
+					if(json.type == 'SUCCESS') {
+						window.location = json.homepage;
+					} else if (json.type == 'ERROR') {
+						// There was an error, no action
+					}
+				});
+			}
+
+			// Load the SDK Asynchronously
+			(function(d){
+				var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+				js = d.createElement('script'); js.id = id; js.async = true;
+				js.src = "//connect.facebook.net/en_US/all.js";
+				d.getElementsByTagName('head')[0].appendChild(js);
+			}(document));
+		</script>
     </body>
 </html>

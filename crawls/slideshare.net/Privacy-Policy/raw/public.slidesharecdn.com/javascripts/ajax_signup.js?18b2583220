@@ -1,0 +1,220 @@
+(function($){
+  window.ga_track = function (tag, type, optional_label, optional_value){
+    window._gaq = _gaq || [];
+    _gaq.push(["_trackEvent", tag, type, optional_label, optional_value]);
+  };
+
+  can_post_message = function(){
+    if(!($.browser.msie && parseFloat($.browser.version) < 8.0 )){
+      if(window.postMessage && !$.browser.opera){
+        return true;
+      }
+    }
+    return false;
+  };
+
+  getUrlVars = function(url){
+    url = url ? url : window.location.href;
+    var vars = [], hash;
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  };
+  getUrlVar = function(name,url){
+    return this.getUrlVars(url)[name];
+  };
+
+  isInternalRedirect = function(url) {
+    url = decodeURIComponent(url);
+    var dummy_anchor = document.createElement('a');
+    dummy_anchor.href = url;
+    var is_valid_protocol = /http(s)?:$/.test(dummy_anchor.protocol);
+    var is_valid_hostname = (new RegExp('^' + location.hostname + '$')).test(dummy_anchor.hostname);
+    return (is_valid_protocol && is_valid_hostname);
+  };
+
+  is_abbr = function (e){
+    return ((getUrlVar('download_id', e) && getUrlVar('download_id', e).length > 0) ||
+            getUrlVar('abbr', e) == 'true' || getUrlVar('from',e) == 'download');
+  };
+  var atStep = 1;
+  
+  slideshare_object.setup_signup_modal_box = function(){
+    var loginSignupLinks;
+    if(window.location.href.match("/upload") !== null) {
+      loginSignupLinks = $('a[href*="/login"], a[href*="/signup"], a[href*="/upload"]').filter(':not(.void_fancybox)');
+    } else {
+      loginSignupLinks = $('a[href*="/login"], a[href*="/signup"]').filter(':not(.void_fancybox)');
+    }
+    loginSignupLinks.attr("data-toggle","modal");
+    loginSignupLinks.attr("data-target","#login_modal");
+    //Content of this div will be dynamically populated by ajax and shown in bootstrap modal box
+    $('body').append('<div class="modal fade FBlogin login-wrapper hide" id="login_modal"></div>');
+  };
+
+  window.modal_login = {};
+  modal_login.cache_validations = {
+    username  : false,
+    password  : false,
+    email     :false,
+    section_one : false
+  };
+  
+  window.modalSignupCallBack = function(){
+    window.ga_track( "Signup", "thickbox_signup_success" );
+    if(window.location.pathname.startsWith("/upload") === true){
+      _gaq.push(['_trackEvent', 'Upload', 'ss_signup_successful']);
+      window.location.replace(window.location.href.replace("loggedout_","loggedin_loggedout_"));
+      return false;
+    }
+    if ( fromType !== 'business' || !fromSource || fromSource.length < 1 || !isInternalRedirect(fromSource) ) {
+      if (fromType == 'favorite'){
+        window.cookie('loggedout_favorite', true, {expires : 1});
+      }
+      window.location.reload();
+    } else {
+      window.location.href = decodeURIComponent(fromSource);
+      $(window).trigger('submitPaymentForm');
+    }
+  };
+  
+   window.modalLoginCallBack = function(){
+    if( is_abbr(window.thisLink) ) {
+      _gaq.push(['_trackEvent', 'Login', 'ss_login', 'ss_login_from_fancybox(download)']);
+    } else {
+      _gaq.push(['_trackEvent', 'Login', 'ss_login', 'ss_login_from_fancybox']);
+    }
+    if(window.location.pathname.startsWith("/upload") === true){
+      _gaq.push(['_trackEvent', 'Upload', 'ss_login_successful']);
+      window.location.replace(window.location.href.replace("loggedout_","loggedin_loggedout_"));
+      return false;
+    }
+
+    var escapeUrl = jQuery.inArray(window.fromType, ["business", "upload", "download"])  !== -1;
+    if(window.fromType == 'unsubscribe') {
+      $.post('/comment/unsubscribe' , {'id' : slideshare_object.slideshow.id}, 
+      function(response_data) {
+        $('#fancy_close').click();
+        $('.comments-unsubscribe').hide();
+        $('.comments-subscribe').show().highlightOut();
+        $('.comments-subscribe input')[0].checked = false;
+        window.location.href= window.location.origin + window.location.pathname;
+      });
+    } else if(escapeUrl && window.fromSource && window.fromSource.length > 1 && isInternalRedirect(window.fromSource)) {
+      window.location.href = decodeURIComponent(window.fromSource);
+      $(window).trigger('submitPaymentForm');
+    } else {
+      if (fromType == 'favorite'){
+        window.cookie('loggedout_favorite', true, {expires : 1});
+      }
+      window.location.reload() ;
+    }
+   };
+  //jQuery.receiveMessage( callback [, source_origin ] [, delay ] );
+  // callback (Function) executes whenever a jQuery.postMessage message is received, 
+  // source_origin (String) If window.postMessage is available and this value 
+  //is not equal to the event.origin property, the callback will not be called.
+  // delay  (Number) An optional zero-or-greater delay in milliseconds .
+    if ($.isFunction($.receiveMessage)) {
+      $.receiveMessage(
+        function(event){
+          if(event.data === 'Signup_show_from_iframe'){
+            $("#j-facebook-text").html("Connect with Facebook");
+            $("#modal-login-heading").html("Sign up for SlideShare ");
+            append_modal_header();
+            window.ga_track( "Signup", "Signup_loaded");
+          } else if(event.data === 'login_show_from_iframe'){
+            $("#j-facebook-text").html("Log in with Facebook");
+            $("#modal-login-heading").html("Log in to SlideShare ");
+            append_modal_header();
+            window.ga_track( "Signup", "Login_clicked");
+          }else if(event.data === 'modalSignupSubmit' ){
+            modalSignupCallBack();
+          }else if(event.data === 'modalLoginSubmit'){
+            modalLoginCallBack();
+          }else if(event.data === 'hideSpinner'){
+            $('.spinnerForIframe').hide();
+            $('#j-fb-modal-btn').show();
+            $('#modal_login_iframe').show();
+          }
+        },(function(){
+              return 'https://'+$(location).attr('host');
+            }()
+          )
+      );
+    }
+
+  $("a[data-toggle=modal]").live('click',function (e) {
+    $("#login_modal").show();
+    e.preventDefault();
+    if( typeof e.target !== 'undefined'){
+      thisLink = e.target.href;
+    }
+    modalMessages = {
+     'download'  : "to download...",
+     'addcontact': "to follow...",
+     'favorite'  : "to favorite...",
+     'comments'  : "to post a comment...",
+     'AddToCommunity': "to add this document to a group/event...",
+     'follow'    : "to follow this user...",
+     'business'  : "to continue...",
+     'upload'    : "to start uploading...",
+     'contest'   : "to vote...",
+     'rsvp'      : "to join this meeting...",
+     'user'      : "to register the username...",
+     'zipcast'   : "to schedule a meeting...",
+     'googledocs': "to import from google docs...",
+     '_end'      : ""
+    };
+
+    //Keeping this global
+    fromType = ""; fromSource = "";
+
+    if ( e.target && e.target.href && e.target.href.length > 1) {
+      window.fromType   = getUrlVar('from', e.target.href);
+      window.fromSource = getUrlVar('from_source', e.target.href);
+    }
+   
+    var target = $(this).attr('data-target');
+    var url = $(this).attr('href');
+    $(target).load(url);
+  });
+    
+  $('#fb-login-modalbox').live('click',function() {
+    window.ga_track("Signup", "fancybox_fblogin_clicked");
+  });
+  
+  //Function is called when modal login box is loaded
+  window.callbackOnShow = function(){
+    append_modal_header();
+    window.ga_track( "Signup", "thickbox_loaded" );
+  };
+
+  //appends text like "to download", "to upload" to the modal header 
+  window.append_modal_header = function(e) {
+    if (typeof(modalMessages[fromType]) !== 'undefined' && modalMessages[fromType].length > 1 ){
+      $('#modal-login-heading').append(modalMessages[fromType]+modalMessages._end);
+    }
+  };
+  
+  //Function is called when modal login box is closed
+  window.callbackOnClose = function (e){
+    if( is_abbr(thisLink) ) {
+      window.ga_track( "Signup", "thickbox_closed", "download" );
+    }else {
+      window.ga_track( "Signup", "thickbox_closed" );
+    }
+    return true;
+  };
+  
+  $(document).ready(function(){
+    _gaq.push(['_setAccount', 'UA-2330466-1']);
+    _gaq.push(['_setDomainName', '.slideshare.net']);
+    _gaq.push(['_addIgnoredRef', 'slideshare.net']);
+    slideshare_object.setup_signup_modal_box();
+  });
+})(jQuery);

@@ -6,7 +6,8 @@
 		_meta: {},
 		_data: {},
 		dc: {
-	        _svr: "http://ad.doubleclick.net",
+	        //_svr: "http://ad.doubleclick.net",
+			_svr: "http://ad.doubleclick.net/N4145", 
 			_collSvr:"http://a.collective-media.net",
 			_method: "adj",
 			_url: "",
@@ -17,7 +18,6 @@
 			_ref: "",
 			_sid: "",
 			_fmt: "",
-			_u: [],
 			_pageAdsObj: {},
 			tile: function() {
 				return ++$.ad._tile;
@@ -79,8 +79,7 @@
 							"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid,
 							"url=" + url,
 							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,",").replace("300x100","300x251,300x100"), "tile=" + tile ,
-							"dc_ref="+ encodeURIComponent("http://www.foxnews.com"),	
-							this.u(data, id) + "|",													
+							"dc_ref="+ encodeURIComponent("http://www.foxnews.com"),													
 							"ord=" + $.ad.ord + "?"
 						]);
 						
@@ -97,7 +96,6 @@
 						"url=" + url,
 						this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,","), "tile=" + tile,
 						"dc_ref="+ encodeURIComponent("http://www.foxnews.com"),
-						this.u(data, id) + "|",	
 						"ord=" + $.ad.ord + "?"
 					]);
 					
@@ -260,58 +258,6 @@
 				}
 				return c;
 			},				
-		    u: function(data, id) {
-				var thisObj = this;
-				//u=segs|sid|adv|topic/hub|col|ptype|pos|meta|cat|chan|pers|show|end|format|sec|test|stream|playlist|pname|r1|r2|r3|r4|r5|r6|r7|r8|bk|kw
-				var s = ',';
-				var idd = id.split('-')[0];
-				var metainfo = thisObj.meta(5,'tags').replace(/;m[0-9]=/g,'|').substr(1).split('|');
-				var i = 5;
-				var meta = [];
-				while (i--) {
-					meta.push(metainfo[i]||"");
-				}
-				meta = meta.reverse().join('|');
-
-				var reginfo = thisObj.reginfo(false);
-				var reg = '';
-				if (reginfo=='') {
-					reg = "|||||||";
-				} else {
-					reg = "united_states"+reginfo.substring(0,reginfo.length-1).replace(/r[0-9]=/g,'').split("&").reverse().join("|");//+"||";
-				}
-				//undefined
-				var cat  = "";
-				var chan = "";
-				var pers = "";
-				var show = "";
-				var end  = "";
-				var fmat = "";
-				var sec  = "";
-				var test = "";
-				var strm = "";
-				var play = "";
-				var pnam = "";
-				
-				
-				if(typeof $.ad._meta["classificationISA"] == "string"){
-					var c = $.ad._meta["classificationISA"];
-					c = c.replace(/[ ]/g,"");
-					//u=ptype|adv|ctype|pos|url|classification 
-					var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url,escape(c)];
-				}else{
-					//u=ptype|adv|ctype|pos|url 
-					var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url];
-				}	   
-			   
-			    var p = "u=";
-				
-				thisObj._u[idd] = a.join('|');
-		
-				if(a.length == 5){thisObj._u[idd] += "|";}
-						
-				return p + this._u[idd];
-			},
 			quant: {
 				get: function() {
 					//FOX-10744
@@ -1096,7 +1042,8 @@
 				"fb-share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.tl();},
 				"twttr-follow": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";window.omtr.tl('','o','follow');},
 				"email-sign-up-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event52";window.omtr.events="event52";window.omtr.tl('','o','email-sign-up-success');},	
-								
+				"show-more": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event53";window.omtr.events="event53";window.omtr.tl('','o','show-more');},					
+				
 				
 				"slide": function(obj){
 					window.omtr.events="event26";
@@ -1272,6 +1219,7 @@
 				"fb-share": function(obj){$.ad.omni.load({"fb-share": obj});},
 				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},		
 				"email-sign-up-success": function(obj){$.ad.omni.load({"email-sign-up-success": obj});},	
+				"show-more": function(obj){$.ad.omni.load({"show-more": obj});},
 				
 				"view": function(d){$.ad.omni.init(d);$.ad.niel.pre(d);$.ad.coms.load(d);$.ad.chart.load();},
 				//"slide": function(x){$.ad.omni.load({"slide": x});$.ad.niel.pre($.ad.meta());$.ad.coms.load($.ad.meta());/*$.ad.chart.load('/'+x);*/},

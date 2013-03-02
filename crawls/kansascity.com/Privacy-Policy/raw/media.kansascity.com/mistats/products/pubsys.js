@@ -770,7 +770,7 @@ mistats.InteractionTracker = function ()
       setPending();
 
       if (this.callout)
-         this.callout();
+         this.callout(pType);
 
       return counts[pType];
    };
@@ -791,7 +791,7 @@ mistats.InteractionTracker = function ()
       setPending();
 
       if (this.callout)
-         this.callout();
+         this.callout(pType);
 
       return counts[pType];
    };

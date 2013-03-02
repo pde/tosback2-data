@@ -187,18 +187,6 @@ $(document).ready(function(){
 	}
 		
 	
-	function loadSocialMediaButtons()	{
-	
-		if($('.social').length==0)	{return false;}
-		else {$('.social').html('<ul class="actions inline"><li><a href="http://www.facebook.com/tealium" target="_blank"><img src="/assets/img/facebook.png" height="24" width="24"></li><li><a href="http://www.linkedin.com/company/tealium" target="_blank"><img src="/assets/img/linkedin.png" height="24" width="24"></a></li><li><a href="http://twitter.com/tealium/" target="_blank"><img src="/assets/img/twitter.png" height="24" width="24"></a></li><li><a href="http://feeds2.feedburner.com/VisitorInsights" target="_blank"><img src="/assets/img/rss.png" height="24" width="24"></a></li></ul>');}
-
-		setTimeout (
-			function() {
-				$('.social').fadeIn();
- 		 	}, 1500
- 		 );
-	}
-
 	function showMenu()	{
 		if($(this).hasClass('last'))	{return;}
 		$(this).addClass("highlight");
@@ -223,7 +211,6 @@ $(document).ready(function(){
 	
 	highlightNav();
 	highlightSubNav();
-	loadSocialMediaButtons();
 
 
 });

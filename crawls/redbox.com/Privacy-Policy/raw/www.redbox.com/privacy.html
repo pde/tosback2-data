@@ -2,11 +2,25 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:pas="http://pluck.redbox.com/2009/pluckApplicationServer" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
-    <head id="ctl00_ctl00_Head1"><meta content="text/html; charset=utf-8" http-equiv="content-type" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1" />
+    <head id="ctl00_ctl00_Head1"><meta content="text/html; charset=utf-8" http-equiv="content-type" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+
         <link rel="search" type="application/opensearchdescription+xml" href="http://www.redbox.com/content/opensearch.xml" title="redbox.com" />
         <link rel="apple-touch-icon" href="http://www.redbox.com/content/images/ico_redbox72.png" />
         <link rel="shortcut icon" href="content/images/favicon.ico" />
         
+        <script type="text/javascript">
+            // Defect #1057 - Only load <meta /> for viewport for non-iPad browser.
+            // This has to be loaded immediately but at this point we don't have jQuery loaded.
+            // Hence the old-school DOM manipulation.
+            if (navigator.userAgent && navigator.userAgent.match(/iPad/i) == null)
+            {
+                var node = document.createElement("meta");
+                node.setAttribute('name', 'viewport');
+                node.setAttribute('content', 'initial-scale=1, width=device-width, maximum-scale=1');
+                document.getElementsByTagName('head')[0].appendChild(node);
+            }
+        </script>
+
         <meta property="og:site_name" content="redbox.com" /><meta property="og:title" content="Redbox Privacy Policy | Redbox customer Privcay Policy" /><meta property="og:type" content="website" /><meta property="og:image" content="http://www.redbox.com/content/images/redbox_kiosk_90x90.png" /><meta property="og:url" content="http://www.redbox.com/privacy" /><meta property="fb:app_id" content="139138829484516" /><meta property="fb:admins" content="597809314" /><title>
 	Redbox Privacy Policy | Redbox customer Privcay Policy
 </title>
@@ -14,7 +28,7 @@
 
     <meta name="description" content="Redbox pledges to be responsible when gathering your personal information and to protect your privacy. This Privacy Notice should answer your questions about the sources and kinds of information we collect, how we use it, when it may be shared with others, and how we safeguard its confidentiality and security. Visit Redbox.com to learn more." />
     <meta name="keywords" content="Redbox privacy policy, Redbox privacy, privacy policy, new movie release policies, Redbox secure payment, Redbox customer privacy policy, personal information, selling information, privacy notification" />
-    <link href="Content/1_global.css" rel="stylesheet" type="text/css" /><link href="Content/2_core.css" rel="stylesheet" type="text/css" /><script src="gen2.27/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.27/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.27/scripts/mbox.js" type="text/javascript"></script>
+    <link href="Content/1_global.css" rel="stylesheet" type="text/css" /><link href="Content/2_core.css" rel="stylesheet" type="text/css" /><script src="gen2.28/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.28/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.28/scripts/mbox.js" type="text/javascript"></script>
 
         <script type="text/javascript">            // script for google analytics
             var _gaq = _gaq || [];
@@ -121,6 +135,7 @@
         </div>
     </div>
 </div>
+
             </div>
         </div>
 
@@ -705,7 +720,7 @@ Redbox Automated Retail LLC | 1 Tower Lane, Suite 900 | Oakbrook Terrace, IL 601
                     rb.util.HasPCN = false;
                     rb.util.HasDSA = false;
                 </script>
-        <script src="gen2.27/scripts/s_code.js" type="text/javascript"></script><script src="gen2.27/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
+        <script src="gen2.28/scripts/s_code.js" type="text/javascript"></script><script src="gen2.28/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
 rb.app.store.init({ selectedStore: null });
 rb.app.cart.init({ session: {"storeRef":null,"items":[]}, maxItems: 5, cartUrl: "https://www.redbox.com/cart" });
 rb.app.user.init({ loggedIn: false, loginUrl: "https://www.redbox.com/register?ReturnUrl=http%3a%2f%2fwww.redbox.com%2fprivacy" });
@@ -717,12 +732,12 @@ rb.component.register('storepickermenu0_storepicker', rb.widget.storepicker, {"g
 $('.jqbutton').button();
 rb.component.register('search0', rb.widget.search, {"searchAcct":"sp1004a1b7","searchApi":"http://search.redbox.com","searchUrl":"http://www.redbox.com/search","urlPath":"/","type":"search","id":"search0","clientText":{"SearchMoviesAndGames":"Search for Movies & Games"}});
 rb.component.register('shoppingsession0', rb.widget.shoppingsession, {"showBlurayWarning":true,"data":{"session":{"storeRef":null,"items":[]}},"urlPath":"/","type":"shoppingsession","id":"shoppingsession0","clientText":{}});
-rb.component.register('buttonset0', rb.widget.buttonset, {"dvdText":"DVD","blurayText":"Blu-ray<sup>TM</sup>","rent":"RESERVE NOW","inCart":"IN YOUR CART","find":"FIND","findNearby":"FIND NEARBY","remindMe":"REMIND ME","processing":"LOADING","findProductFormat":"FIND {0}","findNearbyProductFormat":"FIND {0} NEARBY","rentProductFormat":"RESERVE {0}","inventory":[],"reminders":[],"runView":false,"enableSuggestedStores":true,"locationsUrl":"http://www.redbox.com/locations","urlPath":"/","type":"buttonset","id":"buttonset0","clientText":{}});
+rb.component.register('buttonset0', rb.widget.buttonset, {"dvdText":"DVD","blurayText":"Blu-ray<sup>TM</sup>","rent":"RESERVE NOW","inCart":"IN YOUR CART","find":"FIND","findNearby":"FIND NEARBY","remindMe":"REMIND ME","processing":"LOADING","findProductFormat":"FIND {0}","findNearbyProductFormat":"FIND {0} NEARBY","rentProductFormat":"RESERVE {0}","remindMeProductFormat":"REMIND ME {0}","inventory":[],"reminders":[],"runView":false,"enableSuggestedStores":true,"locationsUrl":"http://www.redbox.com/locations","urlPath":"/","type":"buttonset","id":"buttonset0","clientText":{}});
 rb.component.register('buttonset0_StorePicker', rb.widget.storepicker, {"getSuggestions":true,"moviesUrl":"http://www.redbox.com/movies","searchUrl":"http://www.redbox.com/locations","inTitlesContext":false,"inLocationContext":false,"parentType":"ButtonSet","urlPath":"/","type":"storepicker","id":"buttonset0_StorePicker","clientText":{"EnterAddressOrZip":"Enter your address or ZIP code","Browse":"BROWSE","Rent":"RENT","Select":"SELECT","SelectedForYou":"Suggested for You:"}});
 rb.rec.Omn.RecordPage('Help', 'Privacy Policy');
 rb.component.register('footer0', rb.widget.footer, {"urlPath":"/","type":"footer","id":"footer0","clientText":{}});});</script>
 
-        <!-- 10 -->
+        <!-- 07 -->
 
         <script type="text/javascript">            // script for google analiytics
             (function ()

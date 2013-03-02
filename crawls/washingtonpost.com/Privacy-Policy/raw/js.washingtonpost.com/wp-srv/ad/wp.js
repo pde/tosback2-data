@@ -105,6 +105,14 @@
       wpAd.tools.add_criteo();
     }
 
+    //20951 - CW - WP+ pixel for wp sitewide
+    var wp_plus_pix = [
+          'http://pixel.mathtag.com/event/js?mt_id=193782&mt_adid=109699&v1=&v2=&v3=&s1=&s2=&s3='
+        ], wp_plus_pix_l = wp_plus_pix.length;
+    while(wp_plus_pix_l--){
+      wpAd.tools.loadScript(wp_plus_pix[wp_plus_pix_l]);
+    }
+
   }
 
   //called on first placeAd2 call

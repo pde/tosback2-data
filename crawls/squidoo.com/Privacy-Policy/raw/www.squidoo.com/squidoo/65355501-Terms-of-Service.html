@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="en" lang="en"  itemscope="itemscope" itemtype="http://schema.org/Article">
   <head>
   <title>Getting Started With Squidoo (The official overview, FAQ and TOS): Terms of Service</title>
-  <link rel="stylesheet" href="../../the.squidoocdn.com/styles/min/bootstrap.v1183506466.css" />
+  <link rel="stylesheet" href="../../the.squidoocdn.com/styles/min/bootstrap.v2308547389.css" />
 <link rel="stylesheet" href="../../the.squidoocdn.com/styles/themes/theme_squidgrid.css" />
       <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.squidoo.com/xml/syndicate_lens/squidoo" />
       <link rel="canonical" href="65355501-Terms-of-Service.html" />
@@ -52,7 +52,7 @@
   Squidoo = { 
     statichost: 'http://the.squidoocdn.com',
 
-    __generated__: '2013-02-27T05:35:32-05:00', 
+    __generated__: '2013-03-02T07:13:05-05:00', 
 
     host: document.location.protocol + '//' + document.location.hostname,
 
@@ -101,7 +101,7 @@
         }
           };
       Squidoo.DEPS.TRACKER = {
-            src: '/scripts/squidoo/lib/tracker.v2350915646.js',
+            src: '/scripts/squidoo/lib/tracker.v2637894967.js',
             isLoaded: function(callback) {
         
     callback(Squidoo.Tracker && Squidoo.Tracker.lib);
@@ -275,12 +275,17 @@ if (!window.Squidoo) {
   };
 }
 
-/*
 var flagged = false;
+// our new amazon test sample = !WIP
 var inAmazonTestSample = false;
+// test group is a label corresponding to the planned test schedule
+var amazonTestGroup = 'Price/No Price';
+// simple 50/50 test grup assignment
+var amazonVariant = Math.round(Math.random()) === 1 ? 'A' : 'B';
+// our mixpanel token group
 var amazonClickoutsMixPanelToken = 'e9164a80f6828a0301dc19d518314516';
 var lensrankTier = function() {
-  var lensrank = parseInt('1');
+  var lensrank = parseInt('1806572');
   if (lensrank > 1 && lensrank <= 10000) {
     return '1-10k';
   } else if (lensrank > 10000 && lensrank <= 20000) {
@@ -292,7 +297,7 @@ var lensrankTier = function() {
   }
 }();
 var lensrankTestTier = function() {
-  var lensrank = parseInt('1');
+  var lensrank = parseInt('1806572');
   if (lensrank > 1 && lensrank <= 100000) {
     return '1-100k';
   } else if (lensrank > 100000 && lensrank <= 200000) {
@@ -306,6 +311,7 @@ var lensrankTestTier = function() {
   }
 }();
 
+/*
 $J(window).on('squidoo.lazyload.finished', function() {
   // figure out what kinds of links are available on this page
   if (!window.__amazonLinks) {
@@ -324,8 +330,11 @@ $J(window).on('squidoo.lazyload.finished', function() {
       'lensrank-tier': lensrankTier,
       'test-lensrank-tier': lensrankTestTier,
       'official-count': window.__amazonLinks.officialCount,
-      'unofficial-count': window.__amazonLinks.unofficialCount
-    }
+      'unofficial-count': window.__amazonLinks.unofficialCount,
+      'variant': amazonVariant,
+      'test-group': amazonTestGroup,
+      'logged-in': window.theMember && window.theMember.id ? 'yes' : 'no'
+    };
 
     $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
       tracker.push(['track', 'Lens Visit', sample]);
@@ -339,39 +348,56 @@ $J(window).on('squidoo.lazyload.finished', function() {
       var $ = jQuery, $W = $(window), t = null; 
       var events = { at5th: false, at10th: false, at15th: false, at20th: false };
       var modules = { 
-        at5th: $('section.module:eq(3)').offset(), 
-        at10th: $('section.module:eq(8)').offset(), 
-        at15th: $('section.module:eq(13)').offset(), 
-        at20th: $('section.module:eq(18)').offset() 
+        at5th: $('section.module:eq(3)'),
+        at10th: $('section.module:eq(8)'),
+        at15th: $('section.module:eq(13)'),
+        at20th: $('section.module:eq(18)')
       };
+      var allModules = $('section.module').add('.module.widget');
       $W.on('scroll', function() {
         clearTimeout(t);
         t = setTimeout(function() {
           var top = $W.scrollTop() + $W.height();
-          if (modules.at5th && !events.at5th && top >= modules.at5th.top + 200) {
+          if (modules.at5th.length && !events.at5th && top >= modules.at5th.offset().top + 200) {
             events.at5th = true;
             $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
               tracker.push(['track', '5th Module', sample]);
             });
           }
-          if (modules.at10th && !events.at10th && top >= modules.at10th.top + 200) {
+          if (modules.at10th.length && !events.at10th && top >= modules.at10th.offset().top + 200) {
             events.at10th = true;
             $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
               tracker.push(['track', '10th Module', sample]);
             });
           } 
-          if (modules.at15th && !events.at15th && top >= modules.at15th.top + 200) {
+          if (modules.at15th.length && !events.at15th && top >= modules.at15th.offset().top + 200) {
             events.at15th = true;
             $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
               tracker.push(['track', '15th Module', sample]);
             });
           }
-          if (modules.at20th && !events.at20th && top >= modules.at20th.top + 200) {
+          if (modules.at20th.length && !events.at20th && top >= modules.at20th.offset().top + 200) {
             events.at20th = true;
             $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
               tracker.push(['track', '20th Module', sample]);
             });
           }
+          allModules.each(function(i, module) {
+            var $module = $(module), type = $module.data('module-type');
+            if (type !== 'amazon' && type !== 'amazon_spotlight') {
+              return;
+            }
+            if (!module.viewed && top >= $module.offset().top) {
+              module.viewed = true;
+              $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+                tracker.push(['track', 'Amazon Module View', $.extend({}, sample, {
+                  'module-type': type,
+                  'display-mode': type === 'amazon' ? ( $module.find('.commerce_media').length ? 'commerce-media' : 'commerce-thumb' ) : 'n/a',
+                  'item-density': type === 'amazon' ? $module.find('.commerce_media').add('.commerce_thumb').length : 'n/a'
+                })]);
+              });
+            }
+          });
         }, 100);
       });
     }();
@@ -408,6 +434,17 @@ function hasPageLoaded() {
   if (typeof(pageBottomLoaded) != 'undefined') {
     onPageLoadHandler();
   }
+}
+
+// amazon test
+if (inAmazonTestSample) {
+  pageLoadActions.push(function() {
+    // A === price
+    // B === no price
+    if (amazonVariant === 'B') {
+      $J('[data-module-type="amazon"]').add('[data-module-type="amazon_spotlight"]').find('.commerce_price .the-price').hide();
+    }
+  });
 }
 
 // Either when the page loads, or after 12 seconds...whatever comes first
@@ -512,7 +549,14 @@ function registerPostsTestTier( test ) {
 registerPostsTestTier();
 
 </script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/lib/backbone.v3555428447.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/lib/modernizr-custom.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/lib/rivets.v3018671450.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/core/models.v1035427601.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/core/views.v3682948576.js"></script>
 <script src="../../the.squidoocdn.com/scripts/jquery/mpl_nav.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/modules/rssmodule.v2686721875.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/modules/twitter.v1462685351.js"></script>
     <!-- adsense setup -->
   <script type="text/javascript" src="../../partner.googleadservices.com/gampad/google_service.js">
   </script>
@@ -619,20 +663,19 @@ registerPostsTestTier();
       xhr.send(null);
     }
 
-    /*
     if (inAmazonTestSample && !isWorkshop && link.hostname.match(/amazon/)) {
       trackAmazonClick(link);
     }
-    */
     
           evTrack('clickout', link.hostname, link.href);
       }
 
-  /*
   function trackAmazonClick(link) {
+    return; 
+    
     var $ = jQuery, sH = $(window).height(), $link = $(link), at = $link.position().top;
 
-    var $module = $link.closest('[data-module-type]'), type = $module.data('mod-type');
+    var $module = $link.closest('[data-module-type]'), type = $module.data('module-type');
     var hasItemDes = 'n/a', displayMode = 'n/a', itemDensity = 'n/a', inBody = $module.closest('#left_col_wrap').length;
     if (type === 'amazon') {
       var $item = $link.closest('.commerce_media');
@@ -661,12 +704,13 @@ registerPostsTestTier();
         'lensrank-tier': lensrankTier, // established in lens.php,
         'test-lensrank-tier': lensrankTestTier,
         'official-count': window.__amazonLinks ? window.__amazonLinks.officialCount : 'n/a',
-        'unofficial-count': window.__amazonLinks ? window.__amazonLinks.unofficialCount : 'n/a'
+        'unofficial-count': window.__amazonLinks ? window.__amazonLinks.unofficialCount : 'n/a',
+        'variant': amazonVariant,
+        'test-group': amazonTestGroup
       }]);
     });
   }
-  */
-
+  
   var evSocial = function(network, socialAction, opt_target, opt_pagePath) {
     try {
               _gaq.push(['_trackSocial', network, socialAction, opt_target, opt_pagePath]);
@@ -860,7 +904,7 @@ registerPostsTestTier();
                                   <a href="65355501-Terms-of-Service.html#module65355741" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">2. The big picture: Description of Service</a>
                                 </li> 
                                                               <li>
-                                  <a href="65355501-Terms-of-Service.html#module65355751" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. The rules</a>
+                                  <a href="65355501-Terms-of-Service.html#module166476468" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. The Rules</a>
                                 </li> 
                                                               <li>
                                   <a href="65355501-Terms-of-Service.html#module65355761" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">4. The content: who owns it?</a>
@@ -1097,8 +1141,8 @@ registerPostsTestTier();
   <!-- ratings -->
 
   <p class="clear lt_gray font12 lens_ratings"> 
-          Ranked #18,551      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
-      #1,804,606 overall
+          Ranked #18,637      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
+      #1,806,572 overall
     
      | Donates to Rhodesian Ridgeback Rescue of NorCal  </p>
 
@@ -1169,7 +1213,7 @@ registerPostsTestTier();
 
 
 <a name="module65355501"></a>
-<section data-lmi="65355501" data-mod-pos="2" data-module-type="pagebreak" class="novib module  pagebreak " id="module65355501">
+<section data-lazyload="no" data-lmi="65355501" data-mod-pos="2" data-module-type="pagebreak" class="novib module  pagebreak " id="module65355501">
   
     
             <hgroup class="module_header">
@@ -1189,7 +1233,7 @@ The principals in these Terms do not change, though the specific enforcement of 
 
 
 <a name="module166107775"></a>
-<section data-lmi="166107775" data-mod-pos="3" data-module-type="toc" class="novib module  toc " id="module166107775">
+<section data-lazyload="no" data-lmi="166107775" data-mod-pos="3" data-module-type="toc" class="novib module  toc " id="module166107775">
   
     
             <hgroup class="module_header">
@@ -1200,13 +1244,13 @@ The principals in these Terms do not change, though the specific enforcement of 
   
     <div class="toc_wrap" id="toc_wrap_less166107775">
     <ol class="toc_plain">
-    <li><a href="65355501-Terms-of-Service.html#module65355501">Terms of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355511">1. YES, I AGREE!</a></li><li><a href="65355501-Terms-of-Service.html#module65355741">2. The big picture: Description of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355751">3. The rules</a></li><li><a href="65355501-Terms-of-Service.html#module65355761">4. The content: who owns it?</a></li><li><a href="65355501-Terms-of-Service.html#module65355771">5. About royalties</a></li>    </ol>
+    <li><a href="65355501-Terms-of-Service.html#module65355501">Terms of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355511">1. YES, I AGREE!</a></li><li><a href="65355501-Terms-of-Service.html#module65355741">2. The big picture: Description of Service</a></li><li><a href="65355501-Terms-of-Service.html#module166476468">3. The Rules</a></li><li><a href="65355501-Terms-of-Service.html#module65355751"></a></li><li><a href="65355501-Terms-of-Service.html#module65355761">4. The content: who owns it?</a></li>    </ol>
         <div class="pull-right clear"><a class="btn btn-mini" href="65355501-Terms-of-Service.html#" onclick="$J('#toc_wrap_less166107775').hide(); $J('#toc_wrap_more166107775').show(); return false;">More</a></div>
       </div>
 
   <div class="toc_wrap" id="toc_wrap_more166107775" style="display:none;">
     <ol class="toc_plain">
-    <li><a href="65355501-Terms-of-Service.html#module65355501">Terms of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355511">1. YES, I AGREE!</a></li><li><a href="65355501-Terms-of-Service.html#module65355741">2. The big picture: Description of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355751">3. The rules</a></li><li><a href="65355501-Terms-of-Service.html#module65355761">4. The content: who owns it?</a></li><li><a href="65355501-Terms-of-Service.html#module65355771">5. About royalties</a></li><li><a href="65355501-Terms-of-Service.html#module65355791">6. Resale of service</a></li><li><a href="65355501-Terms-of-Service.html#module65355801">7. Squidoo can modify or discontinue the service</a></li><li><a href="65355501-Terms-of-Service.html#module65355811">8. External software</a></li><li><a href="65355501-Terms-of-Service.html#module65355821">9. Squidoo can terminate your use of the service</a></li><li><a href="65355501-Terms-of-Service.html#module65355831">10. Squidoo proprietary rights</a></li><li><a href="65355501-Terms-of-Service.html#module65355841">11. Disclaimer of waranties</a></li><li><a href="65355501-Terms-of-Service.html#module65355851">12. Limitation of liability</a></li><li><a href="65355501-Terms-of-Service.html#module65355861">13. Miscellaneous, but important, terms</a></li><li><a href="65355501-Terms-of-Service.html#module65355871">14. Dispute resolution</a></li><li><a href="65355501-Terms-of-Service.html#module65358141">15. Trademarks</a></li><li><a href="65355501-Terms-of-Service.html#module166107615">16. Good Practice</a></li><li><a href="65355501-Terms-of-Service.html#module65358251"></a></li>    </ol>
+    <li><a href="65355501-Terms-of-Service.html#module65355501">Terms of Service</a></li><li><a href="65355501-Terms-of-Service.html#module65355511">1. YES, I AGREE!</a></li><li><a href="65355501-Terms-of-Service.html#module65355741">2. The big picture: Description of Service</a></li><li><a href="65355501-Terms-of-Service.html#module166476468">3. The Rules</a></li><li><a href="65355501-Terms-of-Service.html#module65355751"></a></li><li><a href="65355501-Terms-of-Service.html#module65355761">4. The content: who owns it?</a></li><li><a href="65355501-Terms-of-Service.html#module65355771">5. About royalties</a></li><li><a href="65355501-Terms-of-Service.html#module65355791">6. Resale of service</a></li><li><a href="65355501-Terms-of-Service.html#module65355801">7. Squidoo can modify or discontinue the service</a></li><li><a href="65355501-Terms-of-Service.html#module65355811">8. External software</a></li><li><a href="65355501-Terms-of-Service.html#module65355821">9. Squidoo can terminate your use of the service</a></li><li><a href="65355501-Terms-of-Service.html#module65355831">10. Squidoo proprietary rights</a></li><li><a href="65355501-Terms-of-Service.html#module65355841">11. Disclaimer of waranties</a></li><li><a href="65355501-Terms-of-Service.html#module65355851">12. Limitation of liability</a></li><li><a href="65355501-Terms-of-Service.html#module65355861">13. Miscellaneous, but important, terms</a></li><li><a href="65355501-Terms-of-Service.html#module65355871">14. Dispute resolution</a></li><li><a href="65355501-Terms-of-Service.html#module65358141">15. Trademarks</a></li><li><a href="65355501-Terms-of-Service.html#module166107615">16. Good Practice</a></li><li><a href="65355501-Terms-of-Service.html#module65358251"></a></li>    </ol>
     <div class="pull-right clear"><a class="btn btn-mini" href="65355501-Terms-of-Service.html#" onclick="$J('#toc_wrap_more166107775').hide(); $J('#toc_wrap_less166107775').show(); return false;">Less</a></div>
   </div>
 
@@ -1221,7 +1265,7 @@ The principals in these Terms do not change, though the specific enforcement of 
 
 
 <a name="module65355511"></a>
-<section data-lmi="65355511" data-mod-pos="4" data-module-type="textmodule" class="novib module  textmodule " id="module65355511">
+<section data-lazyload="no" data-lmi="65355511" data-mod-pos="4" data-module-type="textmodule" class="novib module  textmodule " id="module65355511">
   
     
             <hgroup class="module_header">
@@ -1245,7 +1289,7 @@ We aim to support high-quality, original and useful lifestyle content that real 
 
 
 <a name="module65355741"></a>
-<section data-lmi="65355741" data-mod-pos="5" data-module-type="textmodule" class="novib module  textmodule " id="module65355741">
+<section data-lazyload="no" data-lmi="65355741" data-mod-pos="5" data-module-type="textmodule" class="novib module  textmodule " id="module65355741">
   
     
             <hgroup class="module_header">
@@ -1279,51 +1323,90 @@ When becoming a Lensmaster, you have the ability to turn ON a feature called &qu
           
 
 
-<a name="module65355751"></a>
-<section data-lmi="65355751" data-mod-pos="6" data-module-type="textmodule" class="novib module  textmodule " id="module65355751">
+<a name="module166476468"></a>
+<section data-lazyload="no" data-lmi="166476468" data-mod-pos="6" data-module-type="textmodule" class="novib module  textmodule " id="module166476468">
   
     
             <hgroup class="module_header">
                   <h2 class="module_title">
-            3. The rules          </h2>
+            3. The Rules          </h2>
                       </hgroup>
         
   
   
 <div class="write_module">
-<div id="imageDiv65355751"></div>Here are the big picture rules. Please remember that Squidoo reserves the right to cancel your account if we suspect that you're spamming, sharing illegal content, abusing or maligning another community member or individual, or any other activities that don't fit the spirit of the site. We promise not to do this without fair cause. By following the below rules, we're betting you'll be just fine.<br />
-<br />
-<ul><br />
+<div id="imageDiv166476468"></div>Here are the big picture rules. Please remember that Squidoo reserves the right to cancel your account if we suspect that you're spamming, sharing illegal content, abusing or maligning another community member or individual, or any other activities that don't fit the spirit of the site. We promise not to do this without fair cause. By following the below rules, we're betting you'll be just fine.<div class="break"></div>  <div style="clear:both;"></div></div>
+    </section><!-- /.module 166476468 -->
+
+
+
+
+<a name="module65355751"></a>
+<section data-lazyload="no" data-lmi="65355751" data-mod-pos="7" data-module-type="textmodule" class="novib module  textmodule " id="module65355751">
+  
+    
+          
+  
+  
+<div class="write_module">
+<div id="imageDiv65355751"></div><ul><br />
 <li> You are solely responsible for your conduct and any data, text, information, screen names, links, graphics, photos, profiles, audio and video clips, and links (&quot;Content&quot;) that you submit, post and display on your Lens or via the Service.<br />
+<br /><br />
 </li><li> You cannot Spam. We hate Spam. Everyone hates Spam. Meet our Zero Tolerance Policy: You cannot modify, adapt or hack the Squidoo website, your own lenses, or anyone else's lenses. You also cannot use your Squidoo lenses or our platform to spam or attack others online, on the site or off. This includes such behaviour as automatically redirecting traffic from your lenses to other pages, introducing viruses to the site, spamming bloggers, email spam to lensmasters or others, and more. If our community reports you for this activity--even if your lenses and actions just SMELL spammy, you'll likely have your account deleted.<br />
+<br /><br />
 </li><li> You also cannot create spam lenses (multiple lenses that carry the same content, lenses that are irrelevant to the topic, lenses that are uncurated and lifted from other sites, Squidoo accounts with several lenses devoid of multiple modules of handpicked content, accounts trying to promote the same service on hundreds of matching lenses, or anything the Squidoo officials deem to be Spam). Period.<br />
-</li><li>We run regular and periodic reviews of lenses to enforce our policies, including (but not limited to): acting against known spam content,<br />
-locking lenses on topics we can't support, 'doorway' lenses that exist solely to promote an affiliate program, and most recently we have also<br />
-increased our systematic intolerance of aggressively duplicated (unoriginal) content, article spinning (yikes), and plagiarism. We aim to support high-quality, original and useful lifestyle content that real readers will be glad to land on. So, in addition to enforcing our TOS, we reserve the right to unpublish lenses that have shallow or lower-quality writing, as well as lenses that point to other sites that have been flagged as low quality or spam.<br />
+<br /><br />
+</li><li>We run regular and periodic reviews of lenses to enforce our policies, including (but not limited to): acting against known spam content, locking lenses on topics we can't support, 'doorway' lenses that exist solely to promote an affiliate program, and most recently we have also increased our systematic intolerance of aggressively duplicated (unoriginal) content, article spinning (yikes), and plagiarism. We aim to support high-quality, original and useful lifestyle content that real readers will be glad to land on. So, in addition to enforcing our TOS, we reserve the right to unpublish lenses that have shallow or lower-quality writing, as well as lenses that point to other sites that have been flagged as low quality or spam.<br />
+<br /><br />
 </li><li> You must not abuse, harass, threaten, malign, flame or intimidate other Lensmasters, staff, others who use the Service, bloggers or others online. Nor may you upload, post or otherwise include any Content that is defamatory, libelous, tortuous, vulgar, obscene, invasive of privacy, racially or ethnically objectionable, hateful, promotes or provides instructional information about illegal activities, or promotes any act of cruelty to animals or certain vegetables.<br />
+<br /><br />
 </li><li> You must not impersonate another Lensmaster or any official of Squidoo. This also extends to falsely claiming to be a &quot;Giant Squid&quot; (one of our VIP members) or volunteer Citizen Squid or Angel or any of our other community awards and positions. If you trick someone into thinking you're something you're not, we'll lock your account.<br />
+<br /><br />
 </li><li> Thou shalt not create X-rated lenses. Creating X-rated lenses may result in having your lens or entire account locked and/or deleted.<br />
+<br /><br />
 </li><li> Your lensmaster bio pics MUST be G-rated. Using R or X-rated avatars may result in having your entire account deleted.<br />
+<br /><br />
 </li><li> If SquidStaff believes your lens to be grossly miscategorized, they reserve the right to re-categorize your lens right away or lock it.<br />
+<br /><br />
 </li><li> You cannot create Lenses or use the Service for any illegal or unauthorized purpose, or to promote or make solicitations for any illegal or unauthorized activity.<br />
+<br /><br />
 </li><li> You cannot use the Service to distribute, share or solicit Content belonging to third parties without proper authorization from the owner(s) of that Content. You must respect the proprietary and intellectual property rights of others (including trademark, copyright and trade secrecy) in creating your Lens. Squidoo is a fair harbor platform and can't endorse the content on our pages; if you have an issue with another user's content, please contact that individual directly first. Failing that, please send us a note, and we may be able to review or lock the lens in question.<br />
-</li><li> You must not, in the use of Squidoo, violate any Federal, state or local laws. If you are creating a Lens outside of the United States, you must comply with all local laws regarding online conduct and acceptable content<br />
-</li><li> <b>The Squidoo Respect Everyone Policy:</b> You cannot abuse other lensmasters, bloggers, organizations and individuals online and off. Wait, did we mention this one yet? Probably because we're serious. Abuse = flaming people in the SquidU forum, harming their lenses for your own gain, publicly maligning other members of the community, emailing threatening notes to lensmasters, and more. If our forum moderators or community report you for these activities, your lenses could get locked or deleted.<br />
+<br /><br />
+</li><li> You must not, in the use of Squidoo, violate any Federal, state or local laws. If you are creating a Lens outside of the United States, you must comply with all local laws regarding online conduct and acceptable content.<br />
+<br /><br />
+</li><li> <b>The Squidoo Respect Everyone Policy:</b> You cannot abuse other lensmasters, bloggers, organizations and individuals online and off. Wait, did we mention this one yet? Probably because we're serious. Abuse = flaming people in the SquidooHQ forum, harming their lenses for your own gain, publicly maligning other members of the community, emailing threatening notes to lensmasters, and more. If our forum moderators or community report you for these activities, your lenses could get locked or deleted.<br />
+<br /><br />
 </li><li> You cannot transmit content in breach of a confidentiality or fiduciary obligation you may have.<br />
+<br /><br />
 </li><li> We've said this already but it's worth saying again: You cannot attempt to automatically redirect surfers to other domains, mislead surfers of the origins of the Content contained in your Lens, or use your Lens as storage for remote loading or to a website outside of the Squidoo website.<br />
+<br /><br />
 </li><li>You cannot manipulate our affiliate partners (like ebay and <a href="https://affiliate-program.amazon.com/gp/associates/help/t15/a6?ie=UTF8&amp;pf_rd_t=501&amp;ref_=amb_link_180161_5&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=&pf_rd_s=assoc-right-1&pf_rd_r=&pf_rd_i=assoc_help_main">Amazon</a>, but not limited to those) by purchasing items from your own lenses in order to snag an extra commission. This will result in defaulting your royalties to charity.<br />
+<br /><br />
 </li><li> You may not develop restricted or password-only Lenses, or hidden pages or images (those not linked to from another accessible page).<br />
+<br /><br />
 </li><li> You cannot interfere with or disrupt the Service, or any servers or networks connected to the Service, or disobey any requirements, procedures, policies or regulations of networks connected to the Service.<br />
+<br /><br />
 </li><li> You cannot collect or store personal data about other users, except that you may encourage surfers to contact you and you may, in return, contact them back.<br />
+<br /><br />
 </li><li> <b>Note: Squidoo does not endorse or recommend <a href="http://www.squidoo.com/pages/faq#foolsgold">ratings swaps</a>.</b> And, in fact, if you spam people asking for them, you'll assuredly lose. Building a so-called business on ratings swaps or traffic exchanges could mean you did a whole lot of work for a whole lot of nothing.<br />
+<br /><br />
 </li><li> Squidoo reserves the right to change our LensRank algorithm at any time.<br />
+<br /><br />
 </li><li> <b>The end of spambait:</b> Some topics are just irresistible to spammers. These are topics that don't generally exist in the real world, that aren't particularly useful, and that are very profitable to people who spam. So, here's where we draw the line between junk and spam. There are topics we're just not going to let people write about. We wish we didn't have to do that, but it's the best plan available to remove the bad actors that want to take advantage, while keeping the site open for passionate people of all stripes. So the deal is: you can't build any content in these areas on Squidoo. If you are interested in these areas, it's entirely possible you will bump into our filter (we call it the <a href="http://www.squidoo.com/squiddont">SquidDon't filter</a>), and if you do, we hope you'll just walk away, not try to be clever and get around it. Hey, there must be other things you're passionate about in this world. Why not make a lens on that, and leave the online texasholdem4u pages out. Even better, we hope that 99% of you won't even know it's there.<br />
+<br /><br />
 </li><li> If your lens exists to send people to a site that offers illegal downloads of movies, games, or music, we will suspend it, and will probably suspend ALL your lenses. It's a violation of the DMCA and our policies. We understand that more options are becoming available to watch TV shows and movies online, some paid and some free. However, writing lenses about this topic can be tricky. These lenses are almost always flagged and locked by our community for appearing to be a violation of our TOS and DMCA laws. If you choose to create lenses about free online media sources, please keep in mind:<br />
+<br /><br />
 <ol><li>If we doubt your resource, or if your lens is reported as spam, we may end up locking your lens, possibly for good.<br />
+<br /><br />
 </li><li> If you actively spam, regardless of your topic, your lens will probably be locked for good.<br />
-</li><li> The most successful lenses revolve around not-found-anywhere-else content. There are plenty of great ways to uses links as resources, and if your lens has no original content, it could get flagged or locked.</li></ol></li><li> Even further clarification of our Terms of Service for those that need it to be clarified:<br />
+<br /><br />
+</li><li> The most successful lenses revolve around not-found-anywhere-else content. There are plenty of great ways to uses links as resources, and if your lens has no original content, it could get flagged or locked.</li></ol><br />
+<br /><strong>Even further clarification of our Terms of Service for those that need it to be clarified:</strong><br />
+<br /><br />
 <ol><li> If you make a lens filled with repetitive language designed to bait the search engines, we'll probably delete it. We are looking for useful, updated material that is written by a person, for a person.<br />
+<br /><br />
 </li><li> If you make lots and lots of cookie cutter lenses, each one mirroring the next, we will probably delete them. See #1.<br />
+<br /><br />
 </li><li> Hosting content used without permission, copied and pasted articles, and/or uncredited images and language is against our TOS. For best results, just be you. Yup, we're more strict than the law states, and we also don't allow <a href="http://blogs.squidoo.com/squidblog/2010/06/08/looks-like-its-time-for-a-reminder/">PLRs, purchased articles, etc</a>. If you didn't write it, it isn't yours to use.</li></ol></li></ul><div class="break"></div>  <div style="clear:both;"></div></div>
     </section><!-- /.module 65355751 -->
 
@@ -1331,7 +1414,7 @@ increased our systematic intolerance of aggressively duplicated (unoriginal) con
 
 
 <a name="module65355761"></a>
-<section data-lmi="65355761" data-mod-pos="7" data-module-type="textmodule" class="novib module  textmodule " id="module65355761">
+<section data-lazyload="no" data-lmi="65355761" data-mod-pos="8" data-module-type="textmodule" class="novib module  textmodule " id="module65355761">
   
     
             <hgroup class="module_header">
@@ -1353,7 +1436,7 @@ Squidoo provides pre-built modules that make it easy for you to find and add lin
 
 
 <a name="module65355771"></a>
-<section data-lmi="65355771" data-mod-pos="8" data-module-type="textmodule" class="novib module  textmodule " id="module65355771">
+<section data-lazyload="no" data-lmi="65355771" data-mod-pos="9" data-module-type="textmodule" class="novib module  textmodule " id="module65355771">
   
     
             <hgroup class="module_header">
@@ -1402,7 +1485,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355791"></a>
-<section data-lmi="65355791" data-mod-pos="9" data-module-type="textmodule" class="novib module  textmodule " id="module65355791">
+<section data-lazyload="no" data-lmi="65355791" data-mod-pos="10" data-module-type="textmodule" class="novib module  textmodule " id="module65355791">
   
     
             <hgroup class="module_header">
@@ -1422,7 +1505,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355801"></a>
-<section data-lmi="65355801" data-mod-pos="10" data-module-type="textmodule" class="novib module  textmodule " id="module65355801">
+<section data-lazyload="no" data-lmi="65355801" data-mod-pos="11" data-module-type="textmodule" class="novib module  textmodule " id="module65355801">
   
     
             <hgroup class="module_header">
@@ -1440,7 +1523,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355811"></a>
-<section data-lmi="65355811" data-mod-pos="11" data-module-type="textmodule" class="novib module  textmodule " id="module65355811">
+<section data-lazyload="no" data-lmi="65355811" data-mod-pos="12" data-module-type="textmodule" class="novib module  textmodule " id="module65355811">
   
     
             <hgroup class="module_header">
@@ -1458,7 +1541,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355821"></a>
-<section data-lmi="65355821" data-mod-pos="12" data-module-type="textmodule" class="novib module  textmodule " id="module65355821">
+<section data-lazyload="no" data-lmi="65355821" data-mod-pos="13" data-module-type="textmodule" class="novib module  textmodule " id="module65355821">
   
     
             <hgroup class="module_header">
@@ -1476,7 +1559,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355831"></a>
-<section data-lmi="65355831" data-mod-pos="13" data-module-type="textmodule" class="novib module  textmodule " id="module65355831">
+<section data-lazyload="no" data-lmi="65355831" data-mod-pos="14" data-module-type="textmodule" class="novib module  textmodule " id="module65355831">
   
     
             <hgroup class="module_header">
@@ -1494,7 +1577,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355841"></a>
-<section data-lmi="65355841" data-mod-pos="14" data-module-type="textmodule" class="novib module  textmodule " id="module65355841">
+<section data-lazyload="no" data-lmi="65355841" data-mod-pos="15" data-module-type="textmodule" class="novib module  textmodule " id="module65355841">
   
     
             <hgroup class="module_header">
@@ -1512,7 +1595,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355851"></a>
-<section data-lmi="65355851" data-mod-pos="15" data-module-type="textmodule" class="novib module  textmodule " id="module65355851">
+<section data-lazyload="no" data-lmi="65355851" data-mod-pos="16" data-module-type="textmodule" class="novib module  textmodule " id="module65355851">
   
     
             <hgroup class="module_header">
@@ -1530,7 +1613,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355861"></a>
-<section data-lmi="65355861" data-mod-pos="16" data-module-type="textmodule" class="novib module  textmodule " id="module65355861">
+<section data-lazyload="no" data-lmi="65355861" data-mod-pos="17" data-module-type="textmodule" class="novib module  textmodule " id="module65355861">
   
     
             <hgroup class="module_header">
@@ -1548,7 +1631,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 
 <a name="module65355871"></a>
-<section data-lmi="65355871" data-mod-pos="17" data-module-type="textmodule" class="novib module  textmodule " id="module65355871">
+<section data-lazyload="no" data-lmi="65355871" data-mod-pos="18" data-module-type="textmodule" class="novib module  textmodule " id="module65355871">
   
     
             <hgroup class="module_header">
@@ -1574,7 +1657,7 @@ Squidoo is one of many ways you can post information online, and if you find any
 
 
 <a name="module65358141"></a>
-<section data-lmi="65358141" data-mod-pos="18" data-module-type="textmodule" class="novib module  textmodule " id="module65358141">
+<section data-lazyload="no" data-lmi="65358141" data-mod-pos="19" data-module-type="textmodule" class="novib module  textmodule " id="module65358141">
   
     
             <hgroup class="module_header">
@@ -1603,7 +1686,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
 
 
 <a name="module166107615"></a>
-<section data-lmi="166107615" data-mod-pos="19" data-module-type="textmodule" class="novib module  textmodule " id="module166107615">
+<section data-lazyload="no" data-lmi="166107615" data-mod-pos="20" data-module-type="textmodule" class="novib module  textmodule " id="module166107615">
   
     
             <hgroup class="module_header">
@@ -1625,7 +1708,7 @@ On the other hand, YES, please use Squidoo when you have something personal and 
 
 
 <a name="module65358251"></a>
-<section data-lmi="65358251" data-mod-pos="20" data-module-type="blackbox" class="novib module  blackbox " id="module65358251">
+<section data-lazyload="no" data-lmi="65358251" data-mod-pos="21" data-module-type="blackbox" class="novib module  blackbox " id="module65358251">
   
     
           
@@ -1702,7 +1785,7 @@ On the other hand, YES, please use Squidoo when you have something personal and 
               </p>
             
       <ul class="font12">
-                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">37 featured lenses</a></li>
+                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">38 featured lenses</a></li>
                   <li>Winner of <a href="http://www.squidoo.com/member/awards/SquidTeam">15 trophies</a>!</li>
                 <li>Top lens &raquo; <a href="http://www.squidoo.com/Squidoo-revenue-tips-feb-2010">The 9 Best Ways To Monetize Your Lenses (An official guide by SquidooHQ)</a></li>
               
@@ -1735,7 +1818,63 @@ On the other hand, YES, please use Squidoo when you have something personal and 
   </script>
 </div><!-- /sb_ad -->
 
+  <style>
+.linkUnitDiv {
+  width: 175px;
+}
+.linkUnitDiv h4 {
+  padding-bottom: 0 !important;
+}
+.linkAdUnit {
+  padding: 5px 0px 10px 0px;
+}
+.linkUnitTitle {
+  color: #454545 !important;
+  text-decoration: none;
+}
+.linkUnitText {
+  text-decoration: none;
+  font-size: 13px;
+  color: #0F73AB;
+}
+.linkUnitText:hover {
+  text-decoration: underline;
+}
+</style>
+<div class="sb_item" id="google_adsense_test">
+  <script type="text/javascript">
+    function google_ad_request_done(ads) {}
 
+    function google_radlink_request_done(radlinks) {
+      if (radlinks.length < 1)
+        return;
+
+      document.write("<div class='linkUnitDiv'><div class='linkUnitTitleDiv'><h3 class='nomargin'><a class='linkUnitTitle' href='http://www.squidoo.com/squidoo/&quot;&#32;+&#32;google_info.feedback_url&#32;+&#32;&quot;'>Related Ads</a></h3></div>\n");
+      document.write("<div class='linkAdUnit'>")
+      for ( i = 0; i < radlinks.length; ++i) {
+        document.write("<a class='linkUnitText' target=\"_top\" href="http://www.squidoo.com/squidoo/\&quot;http://www.squidoo.com/squidoo/links?google_kw=&quot;" + 
+          radlinks[i].url_escaped_term + "&google_rt=" + 
+          radlinks[i].radlink_token + "&google_page_url=" + 
+          encodeURIComponent(window.location) + "\">" + 
+          radlinks[i].term + "</a><br> \n");
+      }
+
+      document.write("</div></div>");
+    }
+
+    // Required parameters
+    google_ad_client = 'ca-pub-9879162776784828';
+    google_ad_output = 'js';
+    google_num_radlinks = '4';
+
+    // Optional Parameters
+    google_max_radlink_len = '25';
+    google_num_radlinks_per_unit = '2,2';
+    google_ad_channel = '3578317423';
+    google_rl_filtering = 'high';
+  </script>
+  <script src='../../pagead2.googlesyndication.com/pagead/show_ads.js'></script>
+</div>
 
 
 <a name="module90503951"></a>
@@ -1888,9 +2027,9 @@ On the other hand, YES, please use Squidoo when you have something personal and 
             </form>
           </div>
                     <!-- remove "#footer_copy" from stylesheet -->
-      <div class="font12 footer_copy clear">Copyright &copy; 2013,
+      <div class="font12 footer_copy clear" style="margin-bottom: 3px;">Copyright &copy; 2013,
         Squidoo, LLC and respective copyright owners</div>
-      <div class="font11 footer_copy">This page and all the pages on Squidoo generate income for lensmasters and charities based on affiliate relationships with our partners, including Amazon, Google, eBay and others. Have fun.</div>
+      <div class="font11 footer_copy margin_bot_15">This page and all the pages on Squidoo generate income for lensmasters and charities based on affiliate relationships with our partners, including Amazon, Google, eBay and others. Have fun.</div>
     </div>
   
     <div class="footer_right span4">
@@ -1978,7 +2117,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
   </div>
 </noscript>
 
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,387,new Date().getTime(),"","","","",""]);</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,376,new Date().getTime(),"","","","",""]);</script>
 
 
 <div id="default_onion" class="default_onion" style="display: none;"></div>
@@ -2051,7 +2190,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
             <button class="btn btn-primary" type="submit">Post Comment</button>
             <button class="btn" type="button" onclick="SquidooComments.cancel();">Cancel</button>
           </div><!-- .btn-group -->
-          <input type="hidden" name="comment_nonce" value="db380c1b57c0cd6ebda41583410ee210">
+          <input type="hidden" name="comment_nonce" value="5b60a50822163f65a024c5e93d26b4d9">
 
 
         </div>

@@ -201,8 +201,7 @@ var Class = (function() {
     /* options:
     *    embedCode: string,
     *    onLoad: function
-    *
-    *    TODO: add autoplay option
+    *    autoplay: (boolean) play when loading is complete (default: false)
     */
     initialize: function(options) {
       this.height           = options.height || 538;
@@ -212,6 +211,7 @@ var Class = (function() {
       this.playerId         = options.playerId;
       this.embedCode        = options.embedCode;
       this.onLoad           = options.onLoad;
+      this.autoplay         = options.autoplay;
       this.loaded           = false;
       this.Ooyala           = window.tnfOoyala;
       this.player           = document.getElementById(this.playerId);
@@ -277,6 +277,10 @@ var Class = (function() {
       if (typeof this.onLoad === 'function' && !this.loaded) {
         this.onLoad.call(this);
         this.loaded = true;
+      }
+
+      if (this.autoplay) {
+        this.play();
       }
 
       $(document).trigger({type: 'tnf:brand:video_finished_loading', embedCode: this.embedCode});
@@ -364,6 +368,98 @@ var Class = (function() {
   })(window);
 
 }(jQuery));
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.LightboxVideoPlayer = (function() {
+    var EMPTY_LIGHTBOX_ID, LIGHTBOX_HEIGHT, LIGHTBOX_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH;
+
+    LIGHTBOX_WIDTH = 956;
+
+    LIGHTBOX_HEIGHT = 538;
+
+    PLAYER_WIDTH = 936;
+
+    PLAYER_HEIGHT = 518;
+
+    EMPTY_LIGHTBOX_ID = 'colorbox-empty-content';
+
+    LightboxVideoPlayer.setup = function() {
+      var videoLightboxNodes,
+        _this = this;
+      videoLightboxNodes = $('[data-embed-code].lightbox');
+      if (!(videoLightboxNodes.length > 0)) {
+        return;
+      }
+      this._ensureEmptyLightboxNodeAvailable();
+      return videoLightboxNodes.each(function(index, element) {
+        return new _this($(element));
+      });
+    };
+
+    LightboxVideoPlayer._ensureEmptyLightboxNodeAvailable = function() {
+      $('body').append("<div id='" + EMPTY_LIGHTBOX_ID + "'></div>");
+      return this.emptyLightboxNode = $("#" + EMPTY_LIGHTBOX_ID);
+    };
+
+    function LightboxVideoPlayer(element) {
+      this.element = element;
+      this._releaseVideoInterface = __bind(this._releaseVideoInterface, this);
+
+      this._buildVideoInterface = __bind(this._buildVideoInterface, this);
+
+      this._applyBrandLightbox = __bind(this._applyBrandLightbox, this);
+
+      this.embedCode = this.element.attr('data-embed-code');
+      this._enableLightbox();
+    }
+
+    LightboxVideoPlayer.prototype._enableLightbox = function() {
+      return this.element.colorbox({
+        href: "#" + EMPTY_LIGHTBOX_ID,
+        innerWidth: "" + LIGHTBOX_WIDTH + "px",
+        innerHeight: "" + LIGHTBOX_HEIGHT + "px",
+        onLoad: this._applyBrandLightbox,
+        onClosed: this._releaseVideoInterface,
+        onComplete: this._buildVideoInterface,
+        inline: true
+      });
+    };
+
+    LightboxVideoPlayer.prototype._applyBrandLightbox = function() {
+      return $('#colorbox').addClass('brand');
+    };
+
+    LightboxVideoPlayer.prototype._buildVideoInterface = function() {
+      return this.videoInterface = $.TNF.BRAND.videoInterface.factory({
+        embedCode: this.embedCode,
+        container: this.constructor.emptyLightboxNode,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
+        autoplay: true
+      });
+    };
+
+    LightboxVideoPlayer.prototype._releaseVideoInterface = function() {
+      var player;
+      player = $('.OoyalaVideoPlayer')[0];
+      if (player && typeof player.pauseMovie === 'function') {
+        player.pauseMovie();
+      }
+      this.videoInterface.pause();
+      $('#colorbox').removeClass('brand');
+      return $('.ooyala-player').css({
+        'height': '1px',
+        'width': '1px',
+        'overflow': 'hidden'
+      });
+    };
+
+    return LightboxVideoPlayer;
+
+  })();
+
+}).call(this);
 (function($){
   var VideoGallery = Class.create({
 
@@ -731,18 +827,22 @@ var Class = (function() {
   var InlineVideoExpander = Class.create({
     videoInterface: null,
     initialize: function($actionElm, $targetCont, ratio) {
+      var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
     /*
       $actionElm: the link or element that click event is attached to
       $targetCont: the element the video is getting injected into.
       ratio: what the video ratio should be. for 16:9 this should be 0.5625
     */
 
-      var that = this;
       // if not set, default to 16:9
       ratio                 = ratio || 0.5625;
       this.embedCode        = $actionElm.attr("data-embed-code");
 
       if (typeof this.embedCode === 'undefined' || this.embedCode === '') return;
+
+      // Bind callback functions
+      this._play  = __bind(this._play, this);
+      this._close = __bind(this._close, this);
 
       this.$targetCont      = $targetCont;
       this.heroCont         = $(".hero", this.$targetCont);
@@ -753,33 +853,27 @@ var Class = (function() {
       this.playerContainer  = $('.player-container', this.$targetCont);
       this.playHeadTime     = 0;
 
-      $actionElm.bind('click', function(e) {
-        e.preventDefault();
-        // requery when the user has clicked
-        that.targetContHeight = that.heroCont.outerHeight();
-        that.$targetCont.height(that.targetContHeight);
-        that.adjustVideoSpace(true);
-      });
-
-      $(this.$targetCont).bind("close-event", function(){
-        if (that.videoInterface){
-          that.videoInterface.pause();
-          window.tnfOoyala.apiReady[that.videoInterface.playerId] = false;
-          that.playheadTime = that.videoInterface.getPlayheadTime();
-        }
-        that.adjustVideoSpace();
-      });
+      $actionElm.bind('click', this._play);
+      $(this.$targetCont).bind("close-event", this._close);
     },
 
-    adjustVideoSpace:function(insert) {
-      var that = this;
-
-      if(insert) {
-        that.insertVideo();
-      } else {
-        that.removeVideo();
+    _play: function(event) {
+      this.playerContainer.empty();
+      this.playerContainer.show();
+      event.preventDefault();
+      // requery when the user has clicked
+      this.targetContHeight = this.heroCont.outerHeight();
+      this.$targetCont.height(this.targetContHeight);
+      this.insertVideo();
+    },
+     
+    _close: function() {
+      if (this.videoInterface){
+        this.videoInterface.pause();
+        window.tnfOoyala.apiReady[this.videoInterface.playerId] = false;
+        this.playheadTime = this.videoInterface.getPlayheadTime();
       }
-
+      this.removeVideo();
     },
 
     insertVideo: function() {
@@ -789,15 +883,15 @@ var Class = (function() {
       that.heroCont.fadeOut('slow');
 
       that.$targetCont.animate({ height: height}, 1000, function() {
-        that.handleVideo(true);
-        that.adjustForIpadInsert(that);
+        that.handleVideo();
+        that.adjustForIpadInsert();
       });
     },
 
-    adjustForIpadInsert: function(that) {
+    adjustForIpadInsert: function() {
       if (TNF.ipad){
-        that.playerContainer.animate({'padding-top': '35px' });
-        $('a.video-interface-close', that.playerContainer).css({"border-radius": '10px 10px 0 0'});
+        this.playerContainer.animate({'padding-top': '35px' });
+        $('a.video-interface-close', this.playerContainer).css({"border-radius": '10px 10px 0 0'});
       }
     },
 
@@ -807,7 +901,7 @@ var Class = (function() {
       that.playerContainer.fadeOut('slow');
 
       $(that.$targetCont).animate({ height: that.targetContHeight }, 1000, function() {
-        that.handleVideo();
+	that._fadeOutPlayerContainer();
         that.heroCont.fadeIn('slow');
         that.adjustForIpadRemove(that);
       });
@@ -820,7 +914,7 @@ var Class = (function() {
       }
     },
 
-    handleVideo: function (insert) {
+    handleVideo: function () {
       var player = null,
           that   = this;
 
@@ -828,41 +922,39 @@ var Class = (function() {
         player = $("#"+this.videoInterface.playerId);
       }
 
-      if (insert) {
+      if ($(player).length === 0){
 
-        if ($(player).length === 0){
+        this.videoInterface = $.TNF.BRAND.videoInterface.factory({
+          container: this.playerContainer,
+          width: that.targetContWidth,
+          height: that.ratioHeight,
+          embedCode: that.embedCode,
+          onLoad: function() {
+            that.videoInterface.play();
+          }
 
-          this.videoInterface = $.TNF.BRAND.videoInterface.factory({
-            container: this.playerContainer,
-            width: that.targetContWidth,
-            height: that.ratioHeight,
-            embedCode: that.embedCode,
-            onLoad: function() {
-              that.videoInterface.play();
-            }
+        });
 
-          });
+        that.playerContainer.append('<a class="video-interface-close"></a>');
 
-          that.playerContainer.append('<a class="video-interface-close"></a>');
-
-          $('a.video-interface-close', that.playerContainer).click(function(e) {
-            e.preventDefault();
-            that.$targetCont.trigger("close-event");
-          }).bind(this);
-
-        } else {
-
-          that.playerContainer.fadeIn("fast", function(){
-            that.videoInterface.setPlayheadTime(that.playheadTime);
-          }); 
-
-        }
+        $('a.video-interface-close', that.playerContainer).click(function(e) {
+          e.preventDefault();
+          that.$targetCont.trigger("close-event");
+        }).bind(this);
 
       } else {
 
-        that.playerContainer.fadeOut("fast");
+        that.playerContainer.fadeIn("fast", function(){
+          that.videoInterface.setPlayheadTime(that.playheadTime);
+        }); 
+
       }
+    },
+
+    _fadeOutPlayerContainer: function() {
+      this.playerContainer.fadeOut("fast");
     }
+
   });
 
   $.TNF.BRAND.InlineVideoExpander = InlineVideoExpander;
@@ -940,10 +1032,12 @@ var Class = (function() {
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $.TNF.BRAND.HeroGallery = (function() {
-    var DATA_ATTR, FLYOUT_CLOSED_EVENT, FLYOUT_OPENED_EVENT, ITEM_LOADED_EVENT, POPUP_CLOSED_EVENT, POPUP_OPENED_EVENT;
+  $.TNF.BRAND.Gallery = (function() {
+    var DATA_ATTR, FLYOUT_CLOSED_EVENT, FLYOUT_OPENED_EVENT, ITEM_LOADED_EVENT, ITEM_SELECTOR, POPUP_CLOSED_EVENT, POPUP_OPENED_EVENT;
 
     DATA_ATTR = 'hero_gallery';
+
+    ITEM_SELECTOR = 'div.hero-gallery-item, .gallery-item';
 
     ITEM_LOADED_EVENT = 'loaded_TNF_heroSpot';
 
@@ -955,59 +1049,36 @@ var Class = (function() {
 
     FLYOUT_CLOSED_EVENT = 'hero_gallery_flyout_closed';
 
-    function HeroGallery(element) {
+    function Gallery(element) {
       this.element = element;
       this._countDownHeroSpotLoaders = __bind(this._countDownHeroSpotLoaders, this);
 
       this._buildItem = __bind(this._buildItem, this);
 
-      this.focus = __bind(this.focus, this);
-
-      if (this.element.hasClass('tabbed-hero-gallery')) {
-        return;
-      }
       this._setup();
     }
 
-    HeroGallery.prototype.rotate = function() {
+    Gallery.prototype.rotate = function() {
       return this.paginator.next();
     };
 
-    HeroGallery.prototype.append = function(content) {
+    Gallery.prototype.append = function(content) {
       return this.element.append(content);
     };
 
-    HeroGallery.prototype.width = function() {
+    Gallery.prototype.width = function() {
       return this.element.width();
     };
 
-    HeroGallery.prototype.stopAutoRotation = function() {
-      return this.autoRotator.stop();
-    };
-
-    HeroGallery.prototype.focus = function(e) {
-      var element;
-      try {
-        element = $(e.target);
-        if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
-          return this.body.trigger('hero_gallery_paged', {
-            page: this.paginator.currentPage
-          });
-        }
-      } catch (e) {
-
-      }
-    };
-
-    HeroGallery.prototype.jumpToPage = function(page) {
+    Gallery.prototype.jumpToPage = function(page) {
       return this.paginator.jumpToPage(page);
     };
 
-    HeroGallery.prototype.currentItem = function() {
+    Gallery.prototype.currentItem = function() {
       return this.items[this.paginator.currentPage];
     };
 
-    HeroGallery.prototype.dispose = function() {
+    Gallery.prototype.release = function() {
       var item, _i, _len, _ref, _results;
       this.autoRotator.stop();
       this.element.data(DATA_ATTR, null);
@@ -1022,83 +1093,75 @@ var Class = (function() {
       return _results;
     };
 
-    HeroGallery.prototype._setup = function() {
+    Gallery.prototype.dispose = function() {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn('Gallery#dispose is deprecated. Use #release instead');
+      }
+      return this.release();
+    };
+
+    Gallery.prototype._setup = function() {
       this.body = $('body');
       this._setDataAttribute();
       this._buildItems();
       this._buildPaginator();
       this._buildViewPort();
       this._buildUI();
-      this._setupObservers();
-      return this._setupAutoRotator();
+      return this._setupObservers();
     };
 
-    HeroGallery.prototype._setupAutoRotator = function() {
-      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
-        rotatable: this,
-        controlElement: this.element
-      });
-    };
-
-    HeroGallery.prototype._setDataAttribute = function() {
+    Gallery.prototype._setDataAttribute = function() {
       if (this.element.data(DATA_ATTR)) {
         this.element.data(DATA_ATTR).dispose();
       }
       return this.element.data(DATA_ATTR, this);
     };
 
-    HeroGallery.prototype._buildItem = function(index, element) {
-      var object, type;
+    Gallery.prototype._buildItem = function(index, element) {
       if (arguments.length === 1) {
         element = index;
       }
-      type = $(element).data('type');
-      if (type === 'standard' || type === 'linked-carousel' || type === void 0) {
-        object = $.TNF.BRAND.HeroGallery.Standard;
-      } else {
-        object = $.TNF.BRAND.HeroGallery.Rotator;
-      }
-      return this.items.push(new object.Item($(element)));
+      return this.items.push($.TNF.BRAND.Gallery.ItemFactory(element));
     };
 
-    HeroGallery.prototype._buildUI = function() {
+    Gallery.prototype._buildUI = function() {
       var itemWidth, secondaryViewport, viewportElement;
       if (this.element.hasClass('linked-carousel')) {
         viewportElement = $('.hero-gallery-mini-scroller');
         itemWidth = viewportElement.find('.linked-carousel-mini-item').width();
-        secondaryViewport = new $.TNF.BRAND.HeroGallery.Viewport(viewportElement, itemWidth);
+        secondaryViewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
         return new $.TNF.BRAND.LinkedCarousel(this.viewport, secondaryViewport);
       } else {
-        this.ui = new $.TNF.BRAND.HeroGallery.UI(this.paginator);
+        this.ui = new $.TNF.BRAND.Gallery.UI(this.paginator);
         this.append(this.ui.elements());
         return this.ui.centerPageIndicator();
       }
     };
 
-    HeroGallery.prototype._buildViewPort = function() {
+    Gallery.prototype._buildViewPort = function() {
       var itemWidth, viewportElement;
-      itemWidth = this.element.find('div.hero-gallery-item').width();
+      itemWidth = this.element.find(ITEM_SELECTOR).width();
       viewportElement = this.element.find('div.hero-gallery-scroller');
-      this.viewport = new $.TNF.BRAND.HeroGallery.Viewport(viewportElement, itemWidth);
+      this.viewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
       return this.viewport.setWidth(itemWidth * this.items.length);
     };
 
-    HeroGallery.prototype._buildPaginator = function() {
+    Gallery.prototype._buildPaginator = function() {
       if (this.items.length > 1) {
         return this.paginator = new $.TNF.BRAND.Paginator(this);
       }
     };
 
-    HeroGallery.prototype._buildItems = function() {
+    Gallery.prototype._buildItems = function() {
       var items;
-      items = this.element.find('div.hero-gallery-item');
+      items = this.element.find(ITEM_SELECTOR);
       this.heroSpotLoadCountdown = items.length;
       this.element.bind('loaded_TNF_heroSpot', this._countDownHeroSpotLoaders);
       this.items = [];
       return items.each(this._buildItem);
     };
 
-    HeroGallery.prototype._countDownHeroSpotLoaders = function() {
+    Gallery.prototype._countDownHeroSpotLoaders = function() {
       this.heroSpotLoadCountdown -= 1;
       if (this.heroSpotLoadCountdown < 1) {
         this.element.trigger('loaded_TNF_heroGallery');
@@ -1106,24 +1169,38 @@ var Class = (function() {
       }
     };
 
-    HeroGallery.prototype._setupObservers = function() {
+    Gallery.prototype._setupObservers = function() {
       this.element.bind('click', this.focus);
       if (this.ui) {
-        this.body.bind('hero_gallery_popup_opened', this.ui.hide);
-        this.body.bind('hero_gallery_flyout_opened', this.ui.hide);
-        this.body.bind('hero_gallery_popup_closed', this.ui.show);
-        return this.body.bind('hero_gallery_flyout_closed', this.ui.show);
+        this.body.bind(POPUP_OPENED_EVENT, this.ui.hide);
+        this.body.bind(FLYOUT_OPENED_EVENT, this.ui.hide);
+        this.body.bind(POPUP_CLOSED_EVENT, this.ui.show);
+        return this.body.bind(FLYOUT_CLOSED_EVENT, this.ui.show);
       }
     };
 
-    return HeroGallery;
+    return Gallery;
 
   })();
 
 }).call(this);
 (function() {
 
-  $.TNF.BRAND.HeroGallery.Button = (function() {
+  $.TNF.BRAND.Gallery.ItemFactory = function(element) {
+    var object, type;
+    type = $(element).data('type');
+    if (type === 'standard' || type === void 0) {
+      object = $.TNF.BRAND.Gallery.Standard;
+    } else {
+      object = $.TNF.BRAND.Gallery.Rotator;
+    }
+    return new object.Item($(element));
+  };
+
+}).call(this);
+(function() {
+
+  $.TNF.BRAND.Gallery.Button = (function() {
     var SHORT, TALL;
 
     SHORT = 'short';
@@ -1168,7 +1245,7 @@ var Class = (function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.NextButton = (function(_super) {
+  $.TNF.BRAND.Gallery.NextButton = (function(_super) {
 
     __extends(NextButton, _super);
 
@@ -1184,14 +1261,14 @@ var Class = (function() {
 
     return NextButton;
 
-  })($.TNF.BRAND.HeroGallery.Button);
+  })($.TNF.BRAND.Gallery.Button);
 
 }).call(this);
 (function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.PrevButton = (function(_super) {
+  $.TNF.BRAND.Gallery.PrevButton = (function(_super) {
 
     __extends(PrevButton, _super);
 
@@ -1207,13 +1284,13 @@ var Class = (function() {
 
     return PrevButton;
 
-  })($.TNF.BRAND.HeroGallery.Button);
+  })($.TNF.BRAND.Gallery.Button);
 
 }).call(this);
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $.TNF.BRAND.HeroGallery.PageIndicator = (function() {
+  $.TNF.BRAND.Gallery.PageIndicator = (function() {
 
     function PageIndicator(responder) {
       var item, _i, _ref;
@@ -1290,15 +1367,15 @@ var Class = (function() {
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $.TNF.BRAND.HeroGallery.UI = (function() {
+  $.TNF.BRAND.Gallery.UI = (function() {
 
     function UI(paginator) {
       this.hide = __bind(this.hide, this);
 
       this.show = __bind(this.show, this);
-      this.nextButton = new $.TNF.BRAND.HeroGallery.NextButton(paginator);
-      this.prevButton = new $.TNF.BRAND.HeroGallery.PrevButton(paginator);
-      this.pageIndicator = new $.TNF.BRAND.HeroGallery.PageIndicator(paginator);
+      this.nextButton = new $.TNF.BRAND.Gallery.NextButton(paginator);
+      this.prevButton = new $.TNF.BRAND.Gallery.PrevButton(paginator);
+      this.pageIndicator = new $.TNF.BRAND.Gallery.PageIndicator(paginator);
     }
 
     UI.prototype.show = function() {
@@ -1335,7 +1412,7 @@ var Class = (function() {
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $.TNF.BRAND.HeroGallery.Viewport = (function() {
+  $.TNF.BRAND.Gallery.Viewport = (function() {
 
     Viewport.prototype.itemMargin = 4;
 
@@ -1384,85 +1461,119 @@ var Class = (function() {
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.LinkedCarousel = (function() {
+  $.TNF.BRAND.HeroGallery = (function(_super) {
 
-    function LinkedCarousel(primaryViewport, secondaryViewport) {
-      this.primaryViewport = primaryViewport;
-      this.secondaryViewport = secondaryViewport;
-      this.activateItem = __bind(this.activateItem, this);
+    __extends(HeroGallery, _super);
 
-      this._prepareSecondaryViewport();
+    function HeroGallery() {
+      this.focus = __bind(this.focus, this);
+      return HeroGallery.__super__.constructor.apply(this, arguments);
     }
 
-    LinkedCarousel.prototype._prepareSecondaryViewport = function() {
-      var clone, items, total;
-      this.itemWidth = this.secondaryViewport.itemWidth;
-      this.itemMargin = this.secondaryViewport.itemMargin;
-      items = this.secondaryViewport.el.find('.linked-carousel-mini-item');
-      clone = items.first().clone();
-      this.secondaryViewport.append(clone);
-      this.items = items.add(clone);
-      total = this.items.length;
-      this.secondaryViewport.setWidth((this.itemWidth * total) + (this.itemMargin * total));
-      this.secondaryViewport.el.css('left', "-" + this.itemWidth + "px");
-      return this.items.bind('click', this.activateItem);
+    HeroGallery.prototype.stopAutoRotation = function() {
+      return this.autoRotator.stop();
     };
 
-    LinkedCarousel.prototype.activateItem = function(event) {
-      var selectedItem, targetElement, targetIndex;
-      if (typeof event.preventDefault === 'function') {
-        event.preventDefault();
+    HeroGallery.prototype.focus = function(e) {
+      var element;
+      try {
+        element = $(e.target);
+        if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
+          return this.body.trigger('hero_gallery_paged', {
+            page: this.paginator.currentPage
+          });
+        }
+      } catch (e) {
+
       }
-      selectedItem = $(event.target);
-      targetElement = selectedItem.attr('href');
-      targetIndex = $(targetElement).index();
-      this.primaryViewport.jumpToPage(targetIndex);
-      return this.selectMiniCarouselIndex(selectedItem);
     };
 
-    LinkedCarousel.prototype.selectMiniCarouselIndex = function(selectedElement) {
-      var cloneMethod, deletedItemFilter, firstItem, index, lastItem, pixelsToLeft,
-        _this = this;
-      firstItem = this.items.eq(0);
-      lastItem = this.items.eq(this.items.length - 1);
-      index = selectedElement.index();
-      if (index === 1) {
-        pixelsToLeft = "-=" + this.itemWidth + "px";
-        deletedItemFilter = ':eq(0)';
-        cloneMethod = 'append';
-      } else if (index === 2) {
-        pixelsToLeft = "+=" + this.itemWidth + "px";
-        deletedItemFilter = ":eq(" + (this.items.length - 1) + ")";
-        cloneMethod = 'prepend';
-      }
-      return this.secondaryViewport.el.animate({
-        left: pixelsToLeft
-      }, 500, 'easeInOutSine', function() {
-        var clone, deletedItem;
-        deletedItem = _this.items.filter(deletedItemFilter);
-        deletedItem.remove();
-        _this.items = _this.items.not(deletedItemFilter);
-        clone = selectedElement.clone();
-        clone.bind('click', _this.activateItem);
-        _this.secondaryViewport[cloneMethod](clone);
-        _this.items = _this.items.add(clone);
-        return _this.secondaryViewport.el.css('left', "-" + _this.itemWidth + "px");
+    HeroGallery.prototype._setupAutoRotator = function() {
+      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
+        rotatable: this,
+        controlElement: this.element
       });
     };
 
-    return LinkedCarousel;
+    HeroGallery.prototype._setup = function() {
+      HeroGallery.__super__._setup.apply(this, arguments);
+      return this._setupAutoRotator();
+    };
+
+    return HeroGallery;
+
+  })($.TNF.BRAND.Gallery);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.LinkedGallery = (function(_super) {
+
+    __extends(LinkedGallery, _super);
+
+    function LinkedGallery() {
+      this._buildItem = __bind(this._buildItem, this);
+      return LinkedGallery.__super__.constructor.apply(this, arguments);
+    }
+
+    LinkedGallery.prototype._buildUI = function() {
+      var itemWidth, secondaryViewport, viewportElement;
+      viewportElement = $('.hero-gallery-mini-scroller');
+      itemWidth = viewportElement.find('.linked-carousel-mini-item').width();
+      secondaryViewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
+      return new $.TNF.BRAND.LinkedCarousel(this.viewport, secondaryViewport);
+    };
+
+    LinkedGallery.prototype._buildItem = function(index, element) {
+      if (arguments.length === 1) {
+        element = index;
+      }
+      return this.items.push(new $.TNF.BRAND.Gallery.Standard.Item($(element)));
+    };
+
+    return LinkedGallery;
+
+  })($.TNF.BRAND.Gallery);
+
+}).call(this);
+(function() {
+
+  $.TNF.BRAND.GalleryFactory = (function() {
+
+    function GalleryFactory(element) {
+      if (!(element.length > 0)) {
+        return;
+      }
+      if (element.hasClass('tabbed-hero-gallery')) {
+        return;
+      }
+      if (element.hasClass('gallery')) {
+        new $.TNF.BRAND.Gallery(element);
+      } else if (element.hasClass('linked-carousel')) {
+        new $.TNF.BRAND.LinkedGallery(element);
+      } else {
+        new $.TNF.BRAND.HeroGallery(element);
+      }
+    }
+
+    return GalleryFactory;
 
   })();
 
 }).call(this);
 
-$.TNF.BRAND.HeroGallery.Standard = {};
+$.TNF.BRAND.Gallery.Standard = {};
 
 (function() {
 
-  $.TNF.BRAND.HeroGallery.Callout = (function() {
+  $.TNF.BRAND.Gallery.Callout = (function() {
 
     function Callout() {}
 
@@ -1500,7 +1611,7 @@ $.TNF.BRAND.HeroGallery.Standard = {};
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.Standard.Callout = (function(_super) {
+  $.TNF.BRAND.Gallery.Standard.Callout = (function(_super) {
 
     __extends(Callout, _super);
 
@@ -1689,13 +1800,13 @@ $.TNF.BRAND.HeroGallery.Standard = {};
 
     return Callout;
 
-  })($.TNF.BRAND.HeroGallery.Callout);
+  })($.TNF.BRAND.Gallery.Callout);
 
 }).call(this);
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $.TNF.BRAND.HeroGallery.Item = (function() {
+  $.TNF.BRAND.Gallery.Item = (function() {
 
     Item.prototype.videoInterfaceContainer = null;
 
@@ -1966,7 +2077,7 @@ $.TNF.BRAND.HeroGallery.Standard = {};
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.Standard.Item = (function(_super) {
+  $.TNF.BRAND.Gallery.Standard.Item = (function(_super) {
 
     __extends(Item, _super);
 
@@ -1979,7 +2090,7 @@ $.TNF.BRAND.HeroGallery.Standard = {};
 
     Item.prototype.build = function() {
       this.content = this.element.find('div.hero-gallery-item-content');
-      this.flyout = new $.TNF.BRAND.HeroGallery.Flyout(this, this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right').first());
+      this.flyout = new $.TNF.BRAND.Gallery.Flyout(this, this.element.find('div.hero-gallery-flyout-left, div.hero-gallery-flyout-right').first());
       this.buildCallouts();
       return this.element.trigger('loaded_TNF_heroSpot', this);
     };
@@ -1989,7 +2100,7 @@ $.TNF.BRAND.HeroGallery.Standard = {};
       if (arguments.length === 1) {
         el = arguments[0];
       }
-      callout = new $.TNF.BRAND.HeroGallery.Standard.Callout($(el));
+      callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
       this.callouts.push(callout);
       return callout;
     };
@@ -2015,17 +2126,17 @@ $.TNF.BRAND.HeroGallery.Standard = {};
 
     return Item;
 
-  })($.TNF.BRAND.HeroGallery.Item);
+  })($.TNF.BRAND.Gallery.Item);
 
 }).call(this);
 
-$.TNF.BRAND.HeroGallery.Rotator = {};
+$.TNF.BRAND.Gallery.Rotator = {};
 
 (function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.Rotator.Callout = (function(_super) {
+  $.TNF.BRAND.Gallery.Rotator.Callout = (function(_super) {
 
     __extends(Callout, _super);
 
@@ -2128,7 +2239,7 @@ $.TNF.BRAND.HeroGallery.Rotator = {};
 
     return Callout;
 
-  })($.TNF.BRAND.HeroGallery.Callout);
+  })($.TNF.BRAND.Gallery.Callout);
 
 }).call(this);
 (function() {
@@ -2136,7 +2247,7 @@ $.TNF.BRAND.HeroGallery.Rotator = {};
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery.Rotator.Item = (function(_super) {
+  $.TNF.BRAND.Gallery.Rotator.Item = (function(_super) {
 
     __extends(Item, _super);
 
@@ -2374,7 +2485,7 @@ $.TNF.BRAND.HeroGallery.Rotator = {};
 
     return Item;
 
-  })($.TNF.BRAND.HeroGallery.Item);
+  })($.TNF.BRAND.Gallery.Item);
 
 }).call(this);
 (function() {
@@ -2459,7 +2570,7 @@ $.TNF.BRAND.HeroGallery.Rotator = {};
 
   })();
 
-  $.TNF.BRAND.HeroGallery.Flyout = Flyout;
+  $.TNF.BRAND.Gallery.Flyout = Flyout;
 
 }).call(this);
 (function() {
@@ -2514,13 +2625,8 @@ $.TNF.BRAND.HeroGallery.Rotator = {};
 }).call(this);
 
 (function($) {
-
-  var heroGallery = $('.hero-gallery').first();
-
-  if (heroGallery.length > 0) {
-    new $.TNF.BRAND.HeroGallery(heroGallery);
-  }
-
+  var gallery = $('.hero-gallery, .gallery').first();
+  new $.TNF.BRAND.GalleryFactory($(gallery));
 }(jQuery));
 
 

@@ -2,7 +2,7 @@
 
 
 
-
+		
 	/**
 * SWFObject v1.5: Flash Player detection and embed - http://blog.deconcept.com/swfobject/
 *
@@ -1151,6 +1151,7 @@ eol.create("template", (function($) {
     @name page    
     @description Common features/behaviors to assist in page building.
 */
+
 if (typeof(eol) === 'undefined') { var eol = {}; }
 eol.create("page", function($) {
     
@@ -1472,7 +1473,7 @@ eol.create("page", function($) {
         $(document).ready(function() {
             $("div.eol-modalwrap, div.eol-modaldropshadow").remove();
             if ( defaults.show ) {
-                $("body").append("<div class='eol-modaldropshadow'> </div><div class='eol-modalwrap' >" + defaults.html + "</div>");
+                $("body").append("<div class='eol-modaldropshadow'>&nbsp;</div><div class='eol-modalwrap' >" + defaults.html + "</div>");
                         
                 $("div.eol-modaldropshadow").css({
                     height: $(document).height() + "px"
@@ -1553,8 +1554,8 @@ eol.create("page", function($) {
         	$('#HHeader').append('<div id="Skin_Left" class="split_skin ' + args.config.skinScroll + '"></div><div id="Skin_Right" class="split_skin ' + args.config.skinScroll + '"></div>');
         	if(args.config.skinScroll === "fixed"){
         		$('body').css('overflow-x','hidden');
-        		$('#Skin_Left').css({'position':'fixed','margin-top':'-95px','margin-left':'-260px'})	
-        		$('#Skin_Right').css({'position':'fixed','margin-top':'-95px'});
+        		$('#Skin_Left').css({'position':'fixed','margin-left':'-260px','top':'0'})	
+        		$('#Skin_Right').css({'position':'fixed','top':'0'});
         	}else{
         		$('body').css('overflow-x','hidden');
         		$('#Skin_Left').css({'position':'absolute','top':'0','left':'-260px'});
@@ -1771,5 +1772,4 @@ eol.create("control", function($, context) {
             "update" : update
         };
     });
-
 

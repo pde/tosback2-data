@@ -1,0 +1,363 @@
+(function($$, $) {
+  $$.facebook_activity_queue = [];
+
+  $$.setup_fbconnect_interaction = function() {
+    //if not logged in
+    if (!slideshare_object.user.loggedin) {
+      $('body').on('click', '#fb-login-modalbox', function() {
+        window.fromSource = window.fromSource || getUrlVar('from_source'); 
+        var itemLocation = 'fancybox';
+        $('#j-fb-modalbox-indicator').show();
+        var perms = slideshare_object.fbconnect.basic_perms;
+        if (typeof(thisLink) !== "undefined" && is_abbr(thisLink)) {
+          perms = slideshare_object.fbconnect.download_perms;
+        }
+        slideshare_object.unsubscribeFBStatusChange();
+        //Facebook SDK should be ready before this block executes
+        window.FB && FB.login(function(response) {
+          if (response) {
+            if (response.authResponse) {
+              if (typeof(thisLink) != "undefined" && is_abbr(thisLink)) {
+                slideshare_object.fbConnect('/fbconnect/create_account_or_login?from_page=download',
+                  { access_token : response.authResponse.accessToken,
+                    fb_user_id : response.authResponse.userID
+                  }, function(data) {
+                    fbconnect_login_redirect(data, itemLocation);
+                  });
+              } else {
+                slideshare_object.fbConnect('/fbconnect/create_account_or_login',
+                  { access_token : response.authResponse.accessToken,
+                    fb_user_id : response.authResponse.userID
+                  }, function(data) {
+                    fbconnect_login_redirect(data, itemLocation);
+                  });
+              }
+            } else {
+              $('#j-fb-modalbox-indicator').hide();
+            }
+          } else {
+            $('#j-fb-modalbox-indicator').hide();
+          }
+        },
+        perms);
+      });
+    }
+
+    function allow_publish_for(action_name) {
+        return ($$.user.is_opengraph_user && $$.user.opengraph_permissions[action_name]);
+    }
+
+    function og_params_for(action) {
+      var current_location = action.ppt_url || location_without_params();
+      var params = {};
+      switch(action.name) {
+        case 'view':
+        case 'favorite':
+          params.presentation = current_location;
+          break;
+        case 'download':
+          // URL is of the form :
+          //http://slideshare.net/abhinavdhasmana/savedfiles
+          //?s_title=hadoop-and-hbase-on-amazon-web-services&user_id=115622&login=AmazonWebServices
+          var title = getUrlVar('s_title');
+          var login = getUrlVar('user_login');
+          params.presentation = "http://www.slideshare.net/"+login+"/"+title;
+          break;
+        case 'comment':
+          params.presentation = current_location;
+          params.message = action.message;
+          break;
+        case 'follow':
+          params.profile = action.facebook_user_id;
+          break;
+        default:
+          error("Unknown action: " + action.name);
+      }
+      params.access_token = $$.user.fb_access_token;
+      return params;
+    }
+
+    function og_url_for(action_name) {
+      if(action_name === 'follow') {
+        return '/me/og.follows';
+      } else {
+        return '/me/' + $$.fb_app_name + ':' + action_name;
+      }
+    }
+
+    function og_notify_ga(action) {
+      var fb_source = getUrlVar('fb_source');
+      //Trigger a different GA if user came from facebook
+      if(getUrlVar('code') || fb_source) {
+        if(fb_source) {
+          slideshare_object.ga('fb_opengraph', 'publish_action', 'from_facebook_' + action + '_' + fb_source);
+        } else {
+          slideshare_object.ga('fb_opengraph', 'publish_action', 'from_facebook_' + action);
+        }
+      } else {
+        slideshare_object.ga('fb_opengraph', 'publish_action', action);
+      }
+    }
+
+    $$.pushPendingFBactivities = function(){
+      var FBqueue = slideshare_object.facebook_activity_queue;
+
+      while (FBqueue.length){
+        var fb_activity = FBqueue.pop();
+        slideshare_object.push_activity_to_facebook(fb_activity.action, fb_activity.callback);
+      }
+    };
+
+    $$.post_activity_to_facebook = function(action, callback) {
+      if(!allow_publish_for(action.name)) {
+        callback();
+        return;
+      }
+      if(!window.FB) {
+        $$.facebook_activity_queue.push({'action': action, 'callback': callback});
+        return;
+      }
+
+      $$.push_activity_to_facebook(action, callback);
+    };
+
+    $$.push_activity_to_facebook = function(action, callback){
+
+      var url = og_url_for(action.name);
+      //TODO: This is ugly, refactor
+      if(action.name === 'view') {
+        $('.fb-msg').addClass('hide');
+        $('.fb-activity-ss, .fb-activity-ss .progress').removeClass('hide');
+      }
+      FB.api(url, 'post', og_params_for(action), callback);
+      og_notify_ga(action.name);
+    };
+
+    $$.remove_activity_from_facebook = function(actionId, callback){
+      $('.fb-msg').addClass('hide');
+      $('.fb-activity-ss .progress').removeClass('hide');
+      FB.api(
+        '/' + actionId,
+        'delete',
+        {
+          access_token: slideshare_object.user.fb_access_token
+        },
+        callback);
+    };
+
+    function fbconnect_login_redirect(data, itemLocation) {
+      // Modal login window in upload page raises a ga call when fb login/signup is successful
+      var escaped_window_location = escape(window.location.href);
+      var fromSource = window.fromSource,
+        fromType = window.fromType || getUrlVar('from');
+      if((window.location.pathname.startsWith("/upload")) &&
+        (data.status === 1 || data.status === 2 || data.status === 3)) {
+        _gaq.push(['_trackEvent', 'Upload', 'fb_login_successful']);
+        escaped_window_location = escaped_window_location.replace("loggedout_","loggedin_loggedout_");
+      }
+
+
+
+
+      switch (data.status) {
+      case 1:
+        /*A new user has been created*/
+        _gaq.push(['_trackEvent', 'Signup', 'fb_login', 'fb_signup_from_'+itemLocation]);
+        if (typeof(fromSource) != "undefined") {
+          window.location.replace("/fbconnect/landingpage?from=" + fromSource);
+        } else {
+          window.location.replace("/fbconnect/landingpage?from=" + escaped_window_location);
+        }
+        break;
+      case 2:
+        /* User is existing ss user */
+        if (typeof(fromSource) != "undefined") {
+          window.location.replace("/fbconnect/landingpage?from=" + fromSource);
+        } else {
+          window.location.replace("/fbconnect/landingpage?from=" + escaped_window_location);
+        }
+        break;
+      case 3:
+        /*The user already had a facebook linked account*/
+        /*Handle the logout page*/
+        _gaq.push(['_trackEvent', 'Login', 'fb_login', 'fb_login_from_'+itemLocation]);
+        if (getUrlVars().from_logout !== undefined &&
+            typeof(fromType) == "undefined") { window.location.replace('/newsfeed'); }
+        else {
+          if (typeof(fromType) !== "undefined" &&
+             (fromType == 'zipcast' || fromType == 'business' ||
+              fromType == 'upload' || fromType == 'download') && fromSource &&
+              fromSource.length > 1 && isInternalRedirect(fromSource) ) {
+            window.location.href = decodeURIComponent(fromSource);
+            $(window).trigger('submitPaymentForm');
+          } else {
+            if(window.location.pathname.startsWith("/upload")){
+              window.location.replace(window.location.href.replace("loggedout_","loggedin_loggedout_"));
+              return false;
+            } else {
+              window.location.reload();
+            }
+          }
+        }
+        break;
+      case 4:
+        /*Failed*/
+        window.location.reload();
+        break;
+      default:
+        window.location.reload();
+      }
+    }
+
+    /* Handles redirect logic when a logged in slideshare 
+    user links his account to facebook */
+    function fbconnect_login_redirect_link(data) {
+      $('#j-fb-topnav-indicator').hide();
+      $('#j-fb-login-indicator').hide();
+      switch (data.status) {
+      case 1:
+        /* Success */
+        window.location.reload();
+        break;
+      case 3:
+        /*User already exists this facebook login*/
+        $('#page-error').append('We could not connect your SlideShare account ' +
+                                'to Facebook. This Facebook login is already ' +
+                                'being used with another SlideShare account.').show();
+        break;
+      default:
+        $('#page-error').append('There was an error.').show();
+      }
+    }
+
+    function fbconnect_delink_callback(data) {
+      window.location.reload();
+    }
+
+    $(document).ready(function() {
+      _gaq.push(['_setAccount', 'UA-2330466-1']);
+      _gaq.push(['_setDomainName', '.slideshare.net']);
+      _gaq.push(['_addIgnoredRef', 'slideshare.net']);
+
+      // When facebook sdk is initialized, activate fblogin button
+      $(document).bind('fbinitialized', function(){
+        $('#fb-login').removeClass('disabled');
+      });
+
+      $('#j-delink-fb').on('click', function(e) {
+        e.preventDefault();
+        $.post('/fbconnect/delink_facebook_profile', {}, fbconnect_delink_callback, 'json');
+      });
+
+      $('#fb-login').click(function(e) {
+        if ($(this).hasClass('disabled')){
+          return;
+        }
+        var itemLocation = 'login';
+        e.preventDefault();
+        window.fromSource = getUrlVar('from_source');
+        $('#j-fb-login-indicator').show();
+        if (!$(this).hasClass("fb-login-new")) {
+          $(this).html("Connecting...").addClass("disabled");
+        }
+        var perms = slideshare_object.fbconnect.basic_perms;
+        if (slideshare_object.user.loggedin) {
+          perms = slideshare_object.fbconnect.download_perms;
+        }
+
+        slideshare_object.unsubscribeFBStatusChange();
+        window.FB && FB.login(function(response) {
+          if (response) {
+            if (response.authResponse) {
+              if (slideshare_object.user.loggedin) {
+                if (!slideshare_object.user.is_fbuser) {
+                  $.post('/fbconnect/link_facebook_profile',
+                    {access_token : response.authResponse.accessToken,
+                     fb_user_id : response.authResponse.userID},
+                    function(data) {
+                      fbconnect_login_redirect_link(data);
+                    },
+                    'json');
+                }
+              } else {
+                $.post('/fbconnect/fb_login',
+                {},
+                function(data) {
+                  slideshare_object.fbConnect('/fbconnect/create_account_or_login',
+                    { access_token : response.authResponse.accessToken,
+                      fb_user_id : response.authResponse.userID
+                    }, function(data) {
+                      fbconnect_login_redirect(data, itemLocation);
+                    });
+                },
+                'json');
+              }
+            } else {
+              $('#j-fb-login-indicator').hide();
+            }
+          } else {
+            $('#j-fb-login-indicator').hide();
+          }
+        },
+        perms);
+      });
+    });
+  };
+  $$.setup_opengraph_interaction = function() {
+    $('.player').bind('fb-view-published', function(e, actionId){
+      $('.fb-activity-ss .progress').addClass('hide');
+      $$.slideshow.view_action_state = 'published';
+      $('.fb-removed').addClass('hide');
+      $('.fb-viewed').removeClass('hide');
+      // set an action id to refer to it later
+      $$.slideshow.view_action_id = actionId;
+      if (cookie("og_notified") !== "true"){
+        $('.fb-viewed').popover({ placement : 'top', html : true, trigger : 'manual' }).popover('show');
+      }
+    });
+    $('.player').bind('fb-view-failed', function(e, error){
+      slideshare_object.ga('fb_opengraph','view-publish-failed', error.id, error.message);
+      slideshare_object.slideshow.view_action_state = 'failed';
+      $('.fb-activity-ss .progress').addClass('hide');
+    });
+
+    $('.player').bind('fb-favorite-failed', function(e, error){
+      slideshare_object.ga('fb_opengraph','favorite-publish-failed', error.id || error.type, error.message);
+    });
+
+    $('#j-popover-okay').on('click', function(e){
+      e.preventDefault();
+      cookie("og_notified", true, { path: '/', expires: 365 });
+      $('.fb-viewed').popover('hide');
+    });
+    $('.fb-viewed').on('click',function(e){
+      e.preventDefault();
+      if ($$.slideshow.view_action_state == 'published' &&
+          ($$.slideshow.view_action_id !== null || $$.slideshow.view_action_id !== undefined)) {
+        $$.remove_activity_from_facebook($$.slideshow.view_action_id, function(response){
+          if(response && !response.error) {
+            $('.fb-activity-ss .progress').addClass('hide');
+            $('.player').trigger('fb-view-removed');
+          }
+        });
+
+      }
+    });
+    $('.player').bind('fb-view-removed', function(){
+      $('.fb-activity-ss .progress').addClass('hide');
+      $$.slideshow.view_action_state = 'removed';
+      $$.slideshow.view_action_id = null;
+      $('.fb-viewed').addClass('hide');
+      $('.fb-removed').removeClass('hide');
+      slideshare_object.ga('fb_opengraph', 'fb-view-removed');
+    });
+    $('.fb-removed').on('click',function(e){
+      e.preventDefault();
+      $$.post_activity_to_facebook({ name: 'view' }, function(response){
+        if ((response !== undefined) && (response.id)) {
+          $('.player').trigger('fb-view-published', response.id);
+        }
+      });
+    });
+  };
+})(slideshare_object, jQuery);

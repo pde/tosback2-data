@@ -478,7 +478,18 @@ AccountFacade.alert = function (params, closeCallback) {
   content.find('.jsConfirmOk').text(params.okButtonVal)
   content.find('.jsClose').hide()
   content.find('.jsConfirmMsg').html(params.content)
+
+  closeCallback = function() {
+    $('body').unbind('keydown', keyDownEvent)
+  }
   var alertPopup = AccountFacade.popup({title:params.title, content:content.html(), afterClose:closeCallback, closeOnClickOnOutsideArea:true, notCloseOthers:params.notCloseOthers})
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 13) {
+      if (closeCallback) closeCallback()
+      alertPopup.closePopup()
+    }
+  }
   alertPopup.find('.jsConfirmOk').click(function () {
     if (closeCallback) closeCallback()
     alertPopup.closePopup()
@@ -491,7 +502,17 @@ AccountFacade.confirm = function (params, okCallback, cancelCallback) {
   content.find('.jsConfirmOk').text(params.okButtonVal)
   content.find('.jsClose').text(params.cancelButtonVal)
   content.find('.jsConfirmMsg').html(params.confirmMsg)
-  var confPopup = AccountFacade.popup({title:params.title, content:content.html(), onClose:cancelCallback, closeOnClickOnOutsideArea:true, notCloseOthers:params.notCloseOthers})
+  var closeCallback = function() {
+    $('body').unbind('keydown', keyDownEvent)
+  }
+  var confPopup = AccountFacade.popup({title:params.title, content:content.html(), afterClose:closeCallback, onClose:cancelCallback, closeOnClickOnOutsideArea:true, notCloseOthers:params.notCloseOthers})
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 13) {
+      if (okCallback) okCallback()
+      confPopup.closePopup()
+    }
+  }
   confPopup.find('.jsConfirmOk').click(function () {
     if (okCallback) okCallback()
     confPopup.closePopup()
@@ -530,7 +551,14 @@ AccountFacade.popup = function(params) {
 
   popup.calculatePosition()
 
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 27) popup.closePopup()
+  }
+
   popup.closePopup = function() {
+    $('body').unbind('keydown', keyDownEvent)
+
     if (params.onClose && !params.onClose()) return
 
     popup.fadeOut('fast', function() {
