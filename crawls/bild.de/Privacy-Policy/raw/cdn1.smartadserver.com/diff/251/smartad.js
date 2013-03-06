@@ -94,6 +94,6 @@ function SmartAdServer_iframe(sas_pageid,sas_formatid,sas_target,sas_w,sas_h) {
 }
 
 /* burt script in Absprache mit CoBi */
-if (window.location.toString().toLowerCase().indexOf("computerbild.de") != -1){  
-   document.write('<scr'+'ipt src="http://measure.richmetrics.com/rfm/computerbild-nl/rich-computerbild-nl.js"></scr'+'ipt>');
-}
+//if (window.location.toString().toLowerCase().indexOf("computerbild.de") != -1){
+//   document.write('<scr'+'ipt src="http://measure.richmetrics.com/rfm/computerbild-nl/rich-computerbild-nl.js"></scr'+'ipt>');
+//}

@@ -1,0 +1,196 @@
+function setAnalyticsPassThroughCookie(componentName,productSlot){var cookieVal='';var elem=0;var vals=new Array();if(componentName.length>0){vals[elem]="ComponentName="+componentName;elem++;}
+if(productSlot.length>0){vals[elem]="ProductSlot="+productSlot;elem++;}
+cookieVal=vals.join("&");if(cookieVal.length>0){document.cookie='anlytxpt='+escape(cookieVal)+";path=/";}}
+function setAnalyticsPassThroughCookieEvent(eventValue){var cookieVal='';if(eventValue.length>0){cookieVal+='events='+eventValue;}
+if(cookieVal.length>0){document.cookie='anlytxpt='+escape(cookieVal)+";path=/";}}
+function setAnalyticsTabsCookie(componentName){var cookieVal='';var today=new Date();today.setTime(today.getTime());var expire=new Date();expire.setTime(today.getTime()+(60000));if(componentName.length>0){document.cookie='anlytxtab='+escape(componentName)+"; expires="+expire.toGMTString()+";path=/ ";}}
+function setAnalyticsMoreTopBrandsCookie(componentName){var cookieVal='';var today=new Date();today.setTime(today.getTime());var expire=new Date();expire.setTime(today.getTime()+(60000));if(componentName.length>0){document.cookie='anlytxmtb='+escape(componentName)+"; expires="+expire.toGMTString()+";path=/ ";}}
+function setTemporaryCookieHolder(componentName){var cookieVal='';var today=new Date();today.setTime(today.getTime());var expire=new Date();expire.setTime(today.getTime()+(60000));if(componentName.length>0){document.cookie='tch='+escape(componentName)+"; expires="+expire.toGMTString()+";path=/ ";}}
+function bvOnclickHandler(event,link){try{var elem=(event&&(event.target||event.srcElement))||window;var eventVal="event26";var eVarNum=56;var data="Bazaarvoice";var oldLinkTrackVars=s.linkTrackVars;var oldLinkTrackEvents=s.linkTrackEvents;var oldEvents=s.events;var oldProducts=s.products;s.linkTrackVars="events";s.linkTrackEvents=eventVal;s.events=eventVal;if(s.products){s.linkTrackVars+=",products";s.products=s.products.replace(/([^,;]*;[^,;]*);[^,]*/g,"$1");}
+s.linkTrackVars+=",eVar"+eVarNum;s["eVar"+eVarNum]=event;s_linkTrackEvents=s.linkTrackEvents;s_linkTrackVars=s.linkTrackVars;s_events=s.linkTrackEvents;s.tl(link,"o",data);s_linkTrackVars=s.linkTrackVars=oldLinkTrackVars;s_linkTrackEvents=s.linkTrackEvents=oldLinkTrackEvents;s_events=s.events=oldEvents;}
+catch(error){}}
+function urlencode(str){var ret=str;ret=ret.toString();ret=encodeURIComponent(ret);ret=ret.replace(/%20/g,'+');return ret;}
+function urldecode(str){var ret=str;ret=ret.toString();ret=decodeURIComponent(ret);return ret;}
+function getCompare(f){var R='';var cnt=0;for(var n=0;n<50;n++){var e=document.getElementById("comp"+n);if(e!=null){if(e.checked){R+=e.value+' ';cnt++;}}}
+if(cnt<2){alert("Please Select at least (2) two products for comparison");return false;}
+if(R.length>0){f.R.value=R;return true;}else{return false;}}
+function validateChecks(f){var R='';var chkCnt=0;for(var n=0;n<50;n++){var e=document.getElementById("comp"+n);if(e!=null){if(e.checked){chkCnt++;}}
+if(chkCnt>4){alert("You may select up to (4) four products to compare");f.checked=false;break;}}}
+function validateSearch(form_name,search_name,search_type){var Search=document.getElementById(form_name);var Ntt=document.getElementById(search_name);if(Ntt.value==""||Ntt.value=="Keyword, category or part number"||Ntt.value=="Enter product name"){alert("You must enter a search term");return false;}}
+function show_ref(type){var Div=document.getElementById(type+"div");var Lnk=document.getElementById(type+"lnk");var Hide=document.getElementById(type+"hide");Div.style.display='';Lnk.style.display='none';Hide.style.display='';}
+function hide_ref(type){var Div=document.getElementById(type+"div");var Lnk=document.getElementById(type+"lnk");var Hide=document.getElementById(type+"hide");Div.style.display='none';Lnk.style.display='';Hide.style.display='none';}
+if(typeof($)!="undefined"){$(function(){var cat_id=0;$("div.cat_li_toggle").each(function(){cat_id++;var cat_id_id=cat_id;$(this).click(function(){var el_li=document.getElementById("cat_li_id_"+cat_id_id);var el_img_li=document.getElementById("img_li_id_"+cat_id_id);if(el_li.style.display=='none'){$(el_li).show();el_img_li.src=el_img_li.src.replace(/plus2/,"minus");}else{$(el_li).hide();el_img_li.src=el_img_li.src.replace(/minus/,"plus2");}});});});}
+function recalculate(objFormBasket,qty_id){if(eval('objFormBasket.'+qty_id+'.value')==0){var order_item_id=qty_id.substr(3);remove(objFormBasket,order_item_id);}else{objFormBasket.Submit.value='Recalculate';objFormBasket.submit();}}
+function savequote(objFormBasket){objFormBasket.Submit.value='Save Quote';objFormBasket.submit();}
+function remove(objFormBasket,val){objFormBasket.elements['remove[]'].value=val;objFormBasket.submit();}
+function remove_canada_items(objFormBasket,val,redirect_location){var items=[];var generateFormobj='';var items_init=0;items=val.split('|');if($('form[name='+objFormBasket+']').length>0){if($('form[name='+objFormBasket+']').find("input[name='remove[]']").length>0){$('form[name='+objFormBasket+']').find("input[name='remove[]']").remove();}
+for(items_init=0;items_init<items.length;items_init++){$('<input type="hidden" name="remove[]" value="'+items[items_init]+'" />').appendTo($('form[name='+objFormBasket+']'));}
+if(redirect_location!=''){$('<input type="hidden" name="hidLastSearch" value="'+redirect_location+'" />').appendTo($('form[name='+objFormBasket+']'));}
+$('form[name='+objFormBasket+']').submit();}else{if($('#MsgAlert-ubox').length>0){generateFormobj='<form style="display: inline;" method="post" name="formbasket">'+'<input type="hidden" value="" name="Submit">';for(items_init=0;items_init<items.length;items_init++){generateFormobj=generateFormobj+'<input type="hidden" name="remove[]" value="'+items[items_init]+'" />';}
+generateFormobj=generateFormobj+'<input type="hidden" name="hidLastSearch" value="'+redirect_location+'" />';generateFormobj=generateFormobj+'</form>';$(generateFormobj).appendTo($('#MsgAlert-ubox'));}
+$('form[name='+objFormBasket+']').submit();}}
+function pop_more(image,title,text,sku){PositionX=100;PositionY=100;defaultWidth=660;defaultHeight=560;var opt='resizable=yes,scrollbars=yes,width='+defaultWidth+',height='+defaultHeight+',left='+PositionX+',top='+PositionY;if((typeof sku=="undefined")||(sku=="")){paramSKU="";}else{paramSKU="&sku="+sku;}
+window.open('/popup/?type=more&image='+image+'&title='+title+'&text='+text+paramSKU,'',opt);}
+function pop_shipping(){PositionX=100;PositionY=100;defaultWidth=400;defaultHeight=400;var opt='resizable=yes,scrollbars=yes,width='+defaultWidth+',height='+defaultHeight+',left='+PositionX+',top='+PositionY;window.open('/popup/?type=shipping','',opt);}
+function popup_genwin(u,n,w,h)
+{gwin=window.open(u,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,copyhistory=yes,width='+w+',height='+h);gwin.focus();}
+function pop_core(){PositionX=100;PositionY=100;defaultWidth=400;defaultHeight=400;var opt='resizable=yes,scrollbars=yes,width='+defaultWidth+',height='+defaultHeight+',left='+PositionX+',top='+PositionY;window.open('/popupBasket.php?type=core','',opt);}
+function core_popup(domain,w){website_window=window.open(domain,'website_window','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,copyhistory=yes,width='+w+', height=600');website_window.focus();}
+function pop_quote(){PositionX=100;PositionY=100;defaultWidth=300;defaultHeight=300;var opt='resizable=yes,scrollbars=yes,width='+defaultWidth+',height='+defaultHeight+',left='+PositionX+',top='+PositionY;window.open('/popupBasket.php?type=quote','',opt);}
+function pop_fax(){PositionX=100;PositionY=100;defaultWidth=500;defaultHeight=700;var opt='resizable=yes,scrollbars=yes';window.open('/popupBasket.php?type=fax','',opt);}
+function popitup(url){PositionX=100;PositionY=100;defaultWidth=660;defaultHeight=560;var urlName=url.split(".");var opt='resizable=yes,scrollbars=yes,width='+defaultWidth+',height='+defaultHeight+',left='+PositionX+',top='+PositionY;newwindow=window.open('/popup.php/?type='+urlName[0],'',opt);if(window.focus){newwindow.focus()}}
+function check_saved_vehicle(){if(document.forms.savedv.ymm.value==''){alert('Please select a Saved Vehicle');return false;}}
+function applyClickFocus(el)
+{if(typeof(el)=='string'){el=document.getElementById(el);}
+if((!el)||(el.nodeType!=1)){return;}
+el.defaultText=(el.attributes.value)?el.attributes.value.nodeValue:(el.value)?el.value:'';el.onfocus=function()
+{if(this.value==this.defaultText){this.value='';}
+this.select();};el.onblur=function()
+{if(this.value==''){this.value=this.defaultText;}};}
+function applyClickFocusToAll()
+{var els=document.getElementsByTagName('input');for(var i=0;i<els.length;++i)
+{el=els[i];if((el.type=="text")&&(el.className.match(/\bclickfocus\b/)!=null))
+{applyClickFocus(el);}}}
+var swidth=screen.width;var sheight=screen.height;function feedbackpop(cur_url){var feedback_url='/feedback/';if((typeof cur_url=="undefined")||(cur_url==""))
+{cur_url=window.location;}
+window.open(feedback_url+'?w='+swidth+'&h='+sheight+'&u='+cur_url,'feedbk','width=535, height=510, screenX='+((swidth-535)/2)+',screenY='+((sheight-488)/2)+',top='+((sheight-488)/2)+',left='+((swidth-535)/2)+',resizable=yes,copyhistory=yes,scrollbars=no');}
+function fcheck_required_overall(){var OverallValue="";if(typeof document.feedback.overall!='undefined'){if(typeof document.feedback.overall.value!='undefined'){OverallValue=document.feedback.overall.value;}else{for(i=0;i<5;i++){if(typeof document.feedback.overall[i]!='undefined'){if(document.feedback.overall[i].checked=="1"){OverallValue=document.feedback.overall[i].value;}}else{OverallValue="0";}}}}else{OverallValue="0";}
+if(OverallValue==""){alert("Please choose an overall rating before submitting.");return false;}}
+function fcheck_required_comments(){var CommentsValue="";if(typeof document.feedback.comments!='undefined'){if(typeof document.feedback.comments.value!='undefined'){if(document.feedback.comments.value!='Please enter your comments about this webpage here.'){CommentsValue=document.feedback.comments.value;}}}else{CommentsValue="0";}
+if(CommentsValue==""){alert("Please enter your comments before submitting.");return false;}}
+function fcheck_required(){var requiredData="";var requiredDataCtr=1;if(IsEmpty($("select[name*='comment_topic']").val())){requiredData=(requiredDataCtr++)+".) Category that describes your comment\n";}
+if(IsEmpty($("textarea[id='comments']").val())||"Please enter your comments about this webpage here."==$("textarea[id='comments']").val()){requiredData+=(requiredDataCtr++)+".) Comments\n";}
+if(IsEmpty($("input[name='answer_6']").val())){requiredData+=(requiredDataCtr++)+".) Email Address\n";}else if(!IsEmail($("input[name='answer_6']").val())){requiredData+=(requiredDataCtr++)+".) Must supply a valid Email Address\n";}
+if(!IsEmpty($("input[name='answer_7']").val())){if(!IsPhone($("input[name='answer_7']").val())){requiredData+=(requiredDataCtr++)+".) Please supply a valid phone number";}}
+if(!IsEmpty(requiredData)){alert('Please complete the following field/s:\n'+requiredData);return false;}
+return true;}
+function textCounter(field,cntfield,maxlimit){if(field.value.length>maxlimit){field.value=field.value.substring(0,maxlimit);}else{cntfield.value=maxlimit-field.value.length;}}
+function clearTextArea(){if(document.feedback.cleared.value==''){document.feedback.cleared.value=1;document.feedback.comments.value='';}}
+function showAllSavedVehicles(){$("#sv_sa").hide();$("#sv_sl").show();$(".sv:hidden").show();}
+function showLessSavedVehicles(){$("#sv_sl").hide();$("#sv_sa").show();$(".sv:gt(2)").hide();}
+function getCookie(cookie_name){var results=document.cookie.match(cookie_name+'=(.*?)(;|$)');if(results){return(unescape(results[1]));}else{return null;}}
+function setCookie(name,value,seconds){if(typeof seconds=="undefined"){document.cookie=name+"="+value+"; path=/";}else{var date=new Date();date.setTime(date.getTime()+(seconds*1000));var expires="; expires="+date.toGMTString();document.cookie=name+"="+value+expires+"; path=/";}}
+function removeSavedVehicle(vehicle,vehicle_id){var savedVehicles=getCookie("savedVehicles");var arr=savedVehicles.split("|");for(var i in arr){if(vehicle==arr[i].replace(/\+/g," ")){arr.splice(i,1);}}
+var newSavedVehicles="";var seconds='-1';if(arr.length>0){newSavedVehicles=arr.join('|');seconds=31*60*60*24;}
+setCookie('savedVehicles',newSavedVehicles,seconds);$("#sv_id_"+vehicle_id).remove();$(".sv:nth-child(3):hidden").show();if($(".sv").size()<4){$("#sv_sl:visible").hide();$("#sv_sa:visible").hide();}
+if($(".sv").size()==0){$("#myGarage").hide();}}
+if(typeof($)!="undefined"){$(function(){if(typeof(document.searchkeyword)!="undefined"){document.searchkeyword.Ntt.focus();}});}
+function ManageTabPanelDisplay(){var idlist=new Array('tab1focus','tab2focus','tab3focus','tab4focus','tab5focus','tab1ready','tab2ready','tab3ready','tab4ready','tab5ready','content1','content2','content3','content4','content5');if(arguments.length<1){return;}
+for(var i=0;i<idlist.length;i++){var block=false;for(var ii=0;ii<arguments.length;ii++){if(idlist[i]==arguments[ii]){block=true;break;}}
+if(document.getElementById(idlist[i])!=null){if(block){document.getElementById(idlist[i]).style.display="inline";var re=new RegExp("focus","g");if(idlist[i].match(re)){document.getElementById(idlist[i]).className="active";}}
+else{document.getElementById(idlist[i]).style.display="none";}}}}
+function showHoverBox(active){var idlist=new Array('category-hover-box1','category-hover-box2','category-hover-box3','category-hover-box4','category-hover-box5','category-hover-box6','category-hover-box7','category-hover-box8');if(arguments.length<1){return;}
+for(var i=0;i<idlist.length;i++){var block=false;if(document.getElementById(idlist[i])!=null){if(active==idlist[i]){document.getElementById(idlist[i]).style.display="inline";}
+else{document.getElementById(idlist[i]).style.display="none";}}}}
+function SelectSavedVehicle(){var editsavedvehicles=document.editsavedvehicles;var index=0;var ymm="";for(var i=0;i<editsavedvehicles.savedvehicle.length;i++){if(editsavedvehicles.savedvehicle[i].checked){ymm=editsavedvehicles.savedvehicle[i].value;index=i;}}
+if(index==0){return false;}
+else{for(var i=0;i<JSON_obj.savedvehicles.length;i++){if(JSON_obj.savedvehicles[i].id==ymm){editsavedvehicles.year.value=JSON_obj.savedvehicles[i].year;editsavedvehicles.make.value=JSON_obj.savedvehicles[i].make_text;editsavedvehicles.model.value=JSON_obj.savedvehicles[i].model_text;break;}}
+return true;}}
+function SelectSavedVehicles(){var savedvehicles=document.savedvehicles;for(var i=0;i<JSON_obj.savedvehicles.length;i++){if(JSON_obj.savedvehicles[i].id==savedvehicles.sv_ymm.value){savedvehicles.year.value=JSON_obj.savedvehicles[i].year;savedvehicles.make.value=JSON_obj.savedvehicles[i].make_text;savedvehicles.model.value=JSON_obj.savedvehicles[i].model_text;break;}}
+savedvehicles.submit();}
+function tryAnotherVehicle()
+{document.getElementById("vehicle_fits").style.display='block';document.getElementById("part_fits").style.display='none';document.getElementById("part_not_fits").style.display='none';}
+function navHover()
+{if(document.getElementById("nav"))
+{var obj=document.getElementById("nav");var ArrayLi=obj.getElementsByTagName('li');var nav_id;for(var i=0;i<ArrayLi.length;i++)
+{if(ArrayLi[i].id!="")
+{nav_id=ArrayLi[i].id;if(nav_id.length>0)
+{document.getElementById(nav_id).onmouseover=function()
+{toggleDropDowns("off");this.className+=' hoverIn';};document.getElementById(nav_id).onmouseout=function()
+{toggleDropDowns("on");this.className=this.className.replace(' hoverIn',"");};}}}}}
+function toggleDropDowns(toggle){var selNodes=document.getElementsByTagName('select');var max=selNodes.length;for(var i=0;i<max;i++){var nodeObj=selNodes[i];if(nodeObj.id!='search-dd'){if(toggle=="off"){nodeObj.style.visibility='hidden';}else{nodeObj.style.visibility='visible';}}}}
+function Is_Numeric(id){var id_name='#'+id;$(id_name).keyup(function(){var qty=document.getElementById(id).value;var ValidChars="0123456789.";var IsNumber=true;var Char;for(i=0;i<qty.length&&IsNumber==true;i++)
+{Char=qty.charAt(i);if(ValidChars.indexOf(Char)==-1)
+{IsNumber=false;break;}}
+if(IsNumber==false){document.getElementById(id).value=1;}});}
+function menuTabCheck(){var ua=window.navigator.userAgent;var msie=ua.indexOf("MSIE ");if(msie>0){vernum=parseInt(ua.substring(msie+5,ua.indexOf(".",msie)));if(vernum<7){navHover();}}}
+if(typeof($)!="undefined"){$(document).ready(function(){$('#toggle-cat_more').click(function(){$('#category-more').toggle();$('#toggle-cat_more').hide();$('#toggle-cat_less').show();});$('#toggle-cat_less').click(function(){$('#category-more').toggle();$('#toggle-cat_more').show();$('#toggle-cat_less').hide();});});}
+$(document).ready(function()
+{$(".collapsed .collapsed-content").hide();$(".link-group h3").click(function()
+{$(this).next(".collapsed-content").slideToggle();$(this).parent("div").toggleClass("collapsed");});});function anchorPosition(aPos,aSpeed){$("html:not(:animated),body:not(:animated)").animate({scrollTop:$('top').offset().top+aPos},aSpeed);}
+function viewContainerContents(viewContents,hideContents){$('#'+viewContents).show();$('#'+hideContents).hide();}
+function in_array(needle,haystack,strict){var found=false,key,strict=!!strict;for(key in haystack){if((strict&&haystack[key]===needle)||(!strict&&haystack[key]===needle)){found=true;break;}}
+return found;}
+function array_search(needle,haystack,strict){var found=-1,key,strict=!!strict;for(key in haystack){if((strict&&haystack[key]===needle)||(!strict&&haystack[key]===needle)){found=key;break;}}
+return found;}
+function validate(){var username=$("#customer_username").val();if(IsEmpty(username)){alert("Please enter all fields to continue");return false;}
+if(!IsEmail(username)){alert("Must supply a valid Email Address");return false;}
+return true;}
+function emailValidate(){var email=$("#email").val();if((IsEmpty(email))||(email.toLowerCase()=='enter email address')){alert("Please enter your email address to continue.");return false;}else{if(!IsEmail(email)){alert("Please supply a valid email address");return false;}}
+return true;}
+function subscribeValidate(){var semail=$("#semail").val();if((IsEmpty(semail))||(semail.toLowerCase()=='enter your email address')){alert("Please enter your email address to continue.");return false;}else{if(!IsEmail(semail)){alert("Please supply a valid email address");return false;}}
+return true;}
+function IsEmpty(value){value=jQuery.trim(value);if(value=="")return true;else return false;}
+function IsFloat(a){a=jQuery.trim(a);if(parseFloat(a))return true;else return false}
+function IsPhone(a){var b=/^\d+([\d-])*$/;if(b.test(a))return true;else return false}
+function IsEmail(email){var regex=/^\w+([\!\#$\%\&\'\*\+\.\-\/\=\?\^\`{\|\}\~]?\w+)*@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;if(regex.test(email))return true;else return false;}
+function validateLogin(){var email=$("#email").val();var password=$("#password").val();if((IsEmpty(email))&&(IsEmpty(password))){alert("Required fields are empty");return false;}else{if((!IsEmpty(email))){if(!IsEmail(email)){alert("Please supply a valid email address");return false;}}else{alert("Email Address field is empty.");return false;}
+if((IsEmpty(password))){alert("Password field is empty.");return false;}}
+return true;}
+function validateRMA()
+{var please_complete="";var requiredRMACtr=1;if(IsEmpty($("input[name='name']").val())){please_complete+=(requiredRMACtr++)+".) Name\n";}
+if(IsEmpty($("input[name='address']").val())){please_complete+=(requiredRMACtr++)+".) Address\n";}
+if(IsEmpty($("input[name='day_phone']").val())){please_complete+=(requiredRMACtr++)+".) Day Phone\n";}
+if(IsEmpty($("input[name='email_address1']").val())){please_complete+=(requiredRMACtr++)+".) Email Address\n";}else if(IsEmpty($("input[name='email_address2']").val())){please_complete+=(requiredRMACtr++)+".) Retype Email Address\n";}else if(!IsEmail($("input[name='email_address1']").val())){please_complete+=(requiredRMACtr++)+".) Invalid Email Address\n";}else if(!IsEmail($("input[name='email_address2']").val())){please_complete+=(requiredRMACtr++)+".) Email address's Do not match\n";}else if($("input[name='email_address1']").val()!=$("input[name*='email_address2']").val()){please_complete+=(requiredRMACtr++)+".) Email address's Do not match\n";}
+if(IsEmpty($("input[name='order_number']").val())){please_complete+=(requiredRMACtr++)+".) Order Number\n";}
+if(IsEmpty($("textarea[name='parts']").val())){please_complete+=(requiredRMACtr++)+".) Part Numbers & Description\n";}
+if(IsEmpty($("textarea[name='reason']").val())){please_complete+=(requiredRMACtr++)+".) Reason for Return\n";}
+if(please_complete){alert('Please complete the following fields:\n'+please_complete);return false;}
+return true;}
+function validateFormValues(){var name=$("#name").val();var email=$("#email").val();var dept=$("#department").val();var rma=$("#rma").val();var msg=$("#message").val();if((IsEmpty(name))&&(IsEmpty(email))&&(IsEmpty(dept))&&(IsEmpty(msg))){alert("Required fields are empty");return false;}else{if(IsEmpty(name)){alert("Name field is empty.");return false;}
+if(!IsEmpty(email)){if(!IsEmail(email)){alert("Please supply a valid email address");return false;}}else{alert("Email Address field is empty.");return false;}
+if(IsEmpty(dept)){alert("Please select a department.");return false;}else if(dept=='shipping'){if(IsEmpty(rma)){alert("Order and Part # field is empty.");return false;}}
+if(IsEmpty(msg)){alert("Message field is empty.");return false;}}
+return true;}
+function validateTrackOrder(){var orderID=$("#order_id").val();var emailAddress=$("#email_address").val();if((IsEmpty(orderID))&&(IsEmpty(emailAddress))){alert("Required fields are empty.");return false;}else{if(IsEmpty(orderID)){alert("Order ID field is empty.");return false;}
+if(!IsEmpty(emailAddress)){if(!IsEmail(emailAddress)){alert("Please supply a valid email address");return false;}}else{alert("Email Address field is empty.");return false;}}
+return true;}
+function validatePriceMatchForm(){if(IsEmpty($("#userName").val())){alert("Missing Name!");return false;}
+if(IsEmpty($("#userEmail").val())){alert("Missing E-Mail!");return false;}else{if(!IsEmail($("#userEmail").val())){alert("Not a valid E-Mail Address!");return false;}}
+if(!IsPhone($("#userPhoneNumber").val())&&!IsEmpty($("#userPhoneNumber").val())){alert("Invalid Phone Number!");return false}
+if(IsEmpty($("#partBrand").val())){alert("Missing Brand Name!");return false;}
+if(IsEmpty($("#partNumber").val())){alert("Missing Part Number!");return false;}
+if(IsEmpty($("#partDesc").val())){alert("Missing Part Description!");return false;}
+if(IsEmpty($("#compPrice").val())){alert("Missing Their Price!");return false;}
+if(!IsFloat($("#compPrice").val())){alert("Invalid Their Price!");return false}
+if(IsEmpty($("#ourPrice").val())){alert("Missing Our Price!");return false;}
+if(!IsFloat($("#ourPrice").val())){alert("Invalid Our Price!");return false}
+if(IsEmpty($("#compShipping").val())){alert("Missing Their Shipping Price!");return false;}
+if(!IsFloat($("#compShipping").val())&&$("#compShipping").val()!=0){alert("Invalid Their Shipping Charge!");return false}
+if(parseFloat($("#compPrice").val())==parseFloat($("#ourPrice").val())){alert("Their Price and Our Price are the same");return false;}
+if(parseFloat($("#compPrice").val())>parseFloat($("#ourPrice").val())){alert("Our Price is lower than Their Price");return false;}
+if(IsEmpty($("#compURL").val())){alert("Missing Url!");return false;}}
+function encodeWithCase(str){str=str.replace(/\ /g,"_");str=str.replace(/\//g,"-fs-");str=str.replace(/\&/g,"-and-");str=str.replace(/\./g,"-dot-");str=str.replace(/\"/g,"-qt-");str=str.replace(/\,/g,"-comma-");str=str.replace(/\(/g,"-openp-");str=str.replace(/\)/g,"-closep-");str=str.replace(/\+/g,"-plus-");str=str.replace(/^\s+|\s+$/g,"");return str;}
+function encode(str){str=str.replace(/\ /g,"_");str=str.replace(/\//g,"-fs-");str=str.replace(/\&/g,"-and-");str=str.replace(/\./g,"-dot-");str=str.replace(/\"/g,"-qt-");str=str.replace(/\,/g,"-comma-");str=str.replace(/\(/g,"-openp-");str=str.replace(/\)/g,"-closep-");str=str.replace(/\+/g,"-plus-");str=str.toLowerCase();str=str.replace(/^\s+|\s+$/g,"");return str;}
+function encodeNrValue(str){str=str.replace(/\&/g,"%26");str=str.replace(/\+/g,"%252B");return str;}
+function escapeQueryValue(str){str=str.replace(/\,/g,"\,");str=str.replace(/\(/g,"\(");str=str.replace(/\)/g,"\)");str=str.replace(/\:/g,"\:");str=str.replace(/\ /g,"\+");return str;}
+function decode(str){str=str.replace(/\_/g," ");str=str.replace(/\-fs\-/g,"/");str=str.replace(/\-and\-/g,"&");str=str.replace(/\-dot\-/g,".");str=str.replace(/\-qt\-/g,"\"");str=str.replace(/\-comma\-/g,",");str=str.replace(/\-openp\-/g,"(");str=str.replace(/\-closep\-/g,")");str=str.replace(/\-plus\-/g,"+");return str;}
+function getQueryString(name){name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(window.location.href);if(null==results){return null;}
+else{return results[1];}}
+function collapse_items(obj){if(typeof'undefined'!=obj){for(var i in obj){document.getElementById(obj[i].id).style.display=obj[i].display;}}}
+function getQueryVariable(variable){var query=window.location.search.substring(1);var vars=query.split("&");for(var i=0;i<vars.length;i++){var pair=vars[i].split("=");if(pair[0]==variable){return pair[1];}}
+return'';}
+function dart_formatValue(str){str=str.toLowerCase();str=str.replace(/\-/g,' ');str=str.replace(/\&/g,'-and-');str=str.replace(/\//g,' ');str=str.replace(/\./g,' ');str=str.replace(/^\s+|\s+$/g,'');str=str.replace(/\ /g,'_');str=str.replace(/\,/g,'');str=str.replace(/\_+/g,'_');return str;}
+function remove_URISpaces(str){str=str.toLowerCase();str=str.replace(/\ /g,'_');str=encodeURIComponent(str);return str;}
+function array_unique(a){function contains(a,e){for(j=0;j<a.length;j++){if(a[j]==e){return true;}}
+return false;}
+temp=new Array();for(i=0;i<a.length;i++){if(!contains(temp,a[i])){temp.length+=1;temp[temp.length-1]=a[i];}}
+return temp;}
+function getKeywords(){var http_referer=document.referrer;if(''!=http_referer){refer=jQuery.url.setUrl(http_referer);host=refer.attr('host');query=refer.attr('query');if(null==query){query=refer.attr('anchor');}
+if(null==query){return false;}
+query='&'+query.toString();if(host.indexOf('google')!=-1||host.indexOf('msn')!=-1||host.indexOf('bing')!=-1){querystring=query.match(/\&q=[^&#]+/);if(querystring!=null){querystring=querystring.toString();return urldecode(querystring.replace(/\+/g,' ').replace(/&+q=/,''));}}else if(host.indexOf('yahoo')!=-1){querystring=query.match(/\&p=[^&#]+/);if(querystring!=null){querystring=querystring.toString();return urldecode(querystring.replace(/\+/g,' ').replace(/&+p=/,''));}}}
+return false;}
+var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(input){var output="";var chr1,chr2,chr3,enc1,enc2,enc3,enc4;var i=0;input=Base64._utf8_encode(input);while(i<input.length){chr1=input.charCodeAt(i++);chr2=input.charCodeAt(i++);chr3=input.charCodeAt(i++);enc1=chr1>>2;enc2=((chr1&3)<<4)|(chr2>>4);enc3=((chr2&15)<<2)|(chr3>>6);enc4=chr3&63;if(isNaN(chr2)){enc3=enc4=64;}else if(isNaN(chr3)){enc4=64;}
+output=output+
+this._keyStr.charAt(enc1)+this._keyStr.charAt(enc2)+
+this._keyStr.charAt(enc3)+this._keyStr.charAt(enc4);}
+return output;},decode:function(input){var output="";var chr1,chr2,chr3;var enc1,enc2,enc3,enc4;var i=0;input=input.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(i<input.length){enc1=this._keyStr.indexOf(input.charAt(i++));enc2=this._keyStr.indexOf(input.charAt(i++));enc3=this._keyStr.indexOf(input.charAt(i++));enc4=this._keyStr.indexOf(input.charAt(i++));chr1=(enc1<<2)|(enc2>>4);chr2=((enc2&15)<<4)|(enc3>>2);chr3=((enc3&3)<<6)|enc4;output=output+String.fromCharCode(chr1);if(enc3!=64){output=output+String.fromCharCode(chr2);}
+if(enc4!=64){output=output+String.fromCharCode(chr3);}}
+output=Base64._utf8_decode(output);return output;},_utf8_encode:function(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
+else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
+else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
+return utftext;},_utf8_decode:function(utftext){var string="";var i=0;var c=c1=c2=0;while(i<utftext.length){c=utftext.charCodeAt(i);if(c<128){string+=String.fromCharCode(c);i++;}
+else if((c>191)&&(c<224)){c2=utftext.charCodeAt(i+1);string+=String.fromCharCode(((c&31)<<6)|(c2&63));i+=2;}
+else{c2=utftext.charCodeAt(i+1);c3=utftext.charCodeAt(i+2);string+=String.fromCharCode(((c&15)<<12)|((c2&63)<<6)|(c3&63));i+=3;}}
+return string;}};function htmlEntities(str)
+{return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

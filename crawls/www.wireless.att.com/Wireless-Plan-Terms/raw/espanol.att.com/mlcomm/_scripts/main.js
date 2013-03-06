@@ -571,6 +571,11 @@ document.write('<a href="/newsroom/news_releases/hacemos_2-28-13.html?id=' + sta
 document.write('</div>');
 
 document.write('<div class="rc-release-box">'); 
+document.write('<p>21 de febrero de 2013<br />');
+document.write('<a href="/newsroom/news_releases/florida_2-21-13.html?id=' + state + '" title="AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes">AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>31 de enero de 2013<br />');
 document.write('<a href="/newsroom/news_releases/seguridad_en_linea_1-31-13.html?id=' + state + '" title="Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet">Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet</a></p>');
 document.write('</div>');
@@ -600,18 +605,8 @@ document.write('<p>20 de septiembre de 2012<br />');
 document.write('<a href="/newsroom/news_releases/att_company_of_year_9-20-12.html?id=' + state + '" title="AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.">AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.</a></p>');
 document.write('</div>');
 
-document.write('<div class="rc-release-box">'); 
-document.write('<p>19 de septiembre de 2012<br />');
-document.write('<a href="/newsroom/news_releases/it_can_wait_9-19-12.html?id=' + state + '" title="El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir">El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir</a></p>');
-document.write('</div>');
 
 
-
-
-
-
-
- 
 document.write('<div class="rc-release-box">');
 document.write('<p class="arrow"> <a href="/newsroom/news_archive.html?id=' + state + '" title="Ver archivos">Ver archivos</a></p>');
 document.write('</div>');

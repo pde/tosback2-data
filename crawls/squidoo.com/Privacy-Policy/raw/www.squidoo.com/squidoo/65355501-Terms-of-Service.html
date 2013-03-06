@@ -52,7 +52,7 @@
   Squidoo = { 
     statichost: 'http://the.squidoocdn.com',
 
-    __generated__: '2013-03-02T07:13:05-05:00', 
+    __generated__: '2013-03-06T06:58:54-05:00', 
 
     host: document.location.protocol + '//' + document.location.hostname,
 
@@ -202,7 +202,7 @@
     
     sdkLoaded: false,
     
-    defaultPicture: 'http://i2.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
+    defaultPicture: 'http://i3.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
     
     // 
     // allows client to reload Facebook SDK on demand
@@ -276,16 +276,22 @@ if (!window.Squidoo) {
 }
 
 var flagged = false;
+// test activated
+var isAmazonTestActive = Math.round(Math.random() * 19) === 1;
 // our new amazon test sample = !WIP
-var inAmazonTestSample = false;
+var inAmazonTestSample = isAmazonTestActive && false;
 // test group is a label corresponding to the planned test schedule
-var amazonTestGroup = 'Price/No Price';
+var amazonTestGroup = 'Spotlight Product Recommendations';
 // simple 50/50 test grup assignment
 var amazonVariant = Math.round(Math.random()) === 1 ? 'A' : 'B';
 // our mixpanel token group
 var amazonClickoutsMixPanelToken = 'e9164a80f6828a0301dc19d518314516';
+// the name for the click event
+var amazonClickoutEvent = 'Amazon Clickout #2';
+var amazonModuleViewEvent = 'Amazon Module View #2';
+
 var lensrankTier = function() {
-  var lensrank = parseInt('1806572');
+  var lensrank = parseInt('1807341');
   if (lensrank > 1 && lensrank <= 10000) {
     return '1-10k';
   } else if (lensrank > 10000 && lensrank <= 20000) {
@@ -297,7 +303,7 @@ var lensrankTier = function() {
   }
 }();
 var lensrankTestTier = function() {
-  var lensrank = parseInt('1806572');
+  var lensrank = parseInt('1807341');
   if (lensrank > 1 && lensrank <= 100000) {
     return '1-100k';
   } else if (lensrank > 100000 && lensrank <= 200000) {
@@ -311,7 +317,6 @@ var lensrankTestTier = function() {
   }
 }();
 
-/*
 $J(window).on('squidoo.lazyload.finished', function() {
   // figure out what kinds of links are available on this page
   if (!window.__amazonLinks) {
@@ -320,7 +325,7 @@ $J(window).on('squidoo.lazyload.finished', function() {
       'unofficialCount': 0
     };
     $a = $J('[href*="amazon."]');
-    window.__amazonLinks.officialCount = $a.filter('[data-official="yes"]').length;
+    window.__amazonLinks.officialCount = $a.filter('[data-official="yes"]').length + $a.filter('[data-official="recommendation"]').length;
     window.__amazonLinks.unofficialCount = $a.length - window.__amazonLinks.officialCount;
   }
 
@@ -336,9 +341,11 @@ $J(window).on('squidoo.lazyload.finished', function() {
       'logged-in': window.theMember && window.theMember.id ? 'yes' : 'no'
     };
 
+    /* No need to capture this
     $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
       tracker.push(['track', 'Lens Visit', sample]);
     });
+    */
 
     // stash the counts
     $Sq.api('sample/set_amazon_link_counts', 'POST', $J.extend({}, window.__amazonLinks, { 'lens': theLensName }));
@@ -346,6 +353,8 @@ $J(window).on('squidoo.lazyload.finished', function() {
     // also in the Amazon test sample, track scroll past 5th, 10th, 15th, and 20th modules
     !function() {
       var $ = jQuery, $W = $(window), t = null; 
+
+      /*
       var events = { at5th: false, at10th: false, at15th: false, at20th: false };
       var modules = { 
         at5th: $('section.module:eq(3)'),
@@ -353,11 +362,15 @@ $J(window).on('squidoo.lazyload.finished', function() {
         at15th: $('section.module:eq(13)'),
         at20th: $('section.module:eq(18)')
       };
+      */
+
       var allModules = $('section.module').add('.module.widget');
       $W.on('scroll', function() {
         clearTimeout(t);
         t = setTimeout(function() {
           var top = $W.scrollTop() + $W.height();
+
+          /*
           if (modules.at5th.length && !events.at5th && top >= modules.at5th.offset().top + 200) {
             events.at5th = true;
             $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
@@ -382,6 +395,8 @@ $J(window).on('squidoo.lazyload.finished', function() {
               tracker.push(['track', '20th Module', sample]);
             });
           }
+          */
+
           allModules.each(function(i, module) {
             var $module = $(module), type = $module.data('module-type');
             if (type !== 'amazon' && type !== 'amazon_spotlight') {
@@ -390,7 +405,7 @@ $J(window).on('squidoo.lazyload.finished', function() {
             if (!module.viewed && top >= $module.offset().top) {
               module.viewed = true;
               $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
-                tracker.push(['track', 'Amazon Module View', $.extend({}, sample, {
+                tracker.push(['track', amazonModuleViewEvent, $.extend({}, sample, {
                   'module-type': type,
                   'display-mode': type === 'amazon' ? ( $module.find('.commerce_media').length ? 'commerce-media' : 'commerce-thumb' ) : 'n/a',
                   'item-density': type === 'amazon' ? $module.find('.commerce_media').add('.commerce_thumb').length : 'n/a'
@@ -403,7 +418,6 @@ $J(window).on('squidoo.lazyload.finished', function() {
     }();
   }
 });
-*/
 
   var url = '/track/ajax_beacon?';
   url += "lens_id=" + theLensId;
@@ -434,17 +448,6 @@ function hasPageLoaded() {
   if (typeof(pageBottomLoaded) != 'undefined') {
     onPageLoadHandler();
   }
-}
-
-// amazon test
-if (inAmazonTestSample) {
-  pageLoadActions.push(function() {
-    // A === price
-    // B === no price
-    if (amazonVariant === 'B') {
-      $J('[data-module-type="amazon"]').add('[data-module-type="amazon_spotlight"]').find('.commerce_price .the-price').hide();
-    }
-  });
 }
 
 // Either when the page loads, or after 12 seconds...whatever comes first
@@ -506,13 +509,19 @@ function doSquidLike(button) {
           // this logic is opposite because the state class is applied above 
           { 'action': $J('li.social_like').hasClass('social_liked') ? 'like' : 'unlike' },
           function (result) { // success
+            var res = $J.parseJSON(result);
+            if (res.status == 'like_limit') {
+              $Sq.notify.error("Hey there! You've reached the maximum number of SquidLikes for today. Come back again tomorrow to SquidLike this lens.", { hideAfter: 5000 });
+              previousState ? inc() : dec();
+              _gaq.push(['_trackEvent', 'Errors', 'LikeLimit', theMember.username]);
+            }
             allButtons.removeClass('disabled');
           },
           'text', 
           function() { // error
             previousState ? inc() : dec();
             allButtons.removeClass('disabled');
-          } 
+          }
         );
       }
     } else {
@@ -671,8 +680,6 @@ registerPostsTestTier();
       }
 
   function trackAmazonClick(link) {
-    return; 
-    
     var $ = jQuery, sH = $(window).height(), $link = $(link), at = $link.position().top;
 
     var $module = $link.closest('[data-module-type]'), type = $module.data('module-type');
@@ -689,10 +696,10 @@ registerPostsTestTier();
       }
     }
     $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
-      tracker.push(['track', 'Amazon Clickout', {
+      tracker.push(['track', amazonClickoutEvent, {
         'logged-in': window.theMember && window.theMember.id ? 'yes' : 'no',
         'lmi': type === 'intro' ? 'n/a' : $module.data('lmi'),
-        'official': $link.data('official') == 'yes',
+        'official': $link.data('official'),
         'scrolls': Math.ceil(at/sH),
         'module-position': inBody ? $module.data('mod-pos') : 'n/a',
         'module-type': type,
@@ -809,7 +816,7 @@ registerPostsTestTier();
     <div id="squidnav_left" class="float_left six columns">
       <ul>
                   
-                      <li><a id="toolbar_login" href="https://www.squidoo.com/member/login/squidoo">Log In</a></li>
+                      <li><a id="toolbar_login" href="http://www.squidoo.com/member/login/squidoo">Log In</a></li>
                     
           <li><a href="http://www.squidoo.com/topics">Explore Topics</a></li>
                     
@@ -831,7 +838,7 @@ registerPostsTestTier();
 
   <div class="squidnav_mobile clearfix" style="display: none;">
     <ul class="unstyled margin_bot_10" style="border-top: 1px solid #333; padding-top: 4px;">
-                        <li><a id="toolbar_login" href="https://www.squidoo.com/member/login/squidoo">Log In</a></li>
+                        <li><a id="toolbar_login" href="http://www.squidoo.com/member/login/squidoo">Log In</a></li>
                 <li><a href="http://www.squidoo.com/topics">Explore Topics</a></li>
         <li><a onclick="_gaq.push(['_trackEvent', 'Sign Up', 'Join Us']);" href="http://www.squidoo.com/member/registration">Join Us</a></li>
           </ul>
@@ -1141,8 +1148,8 @@ registerPostsTestTier();
   <!-- ratings -->
 
   <p class="clear lt_gray font12 lens_ratings"> 
-          Ranked #18,637      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
-      #1,806,572 overall
+          Ranked #18,518      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
+      #1,807,341 overall
     
      | Donates to Rhodesian Ridgeback Rescue of NorCal  </p>
 
@@ -1785,7 +1792,7 @@ On the other hand, YES, please use Squidoo when you have something personal and 
               </p>
             
       <ul class="font12">
-                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">38 featured lenses</a></li>
+                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">37 featured lenses</a></li>
                   <li>Winner of <a href="http://www.squidoo.com/member/awards/SquidTeam">15 trophies</a>!</li>
                 <li>Top lens &raquo; <a href="http://www.squidoo.com/Squidoo-revenue-tips-feb-2010">The 9 Best Ways To Monetize Your Lenses (An official guide by SquidooHQ)</a></li>
               
@@ -2093,7 +2100,7 @@ On the other hand, YES, please use Squidoo when you have something personal and 
           });
         }
       </script>
-    <script src="../../the.squidoocdn.com/scripts/custom/minifiedlens.v182667004.js"></script>
+    <script src="../../the.squidoocdn.com/scripts/custom/minifiedlens.v3566530108.js"></script>
 <script src="../../assets.pinterest.com/js/pinit.js"></script>
 <script src="../../apis.google.com/js/plusone.js"></script>
 
@@ -2117,7 +2124,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
   </div>
 </noscript>
 
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,376,new Date().getTime(),"","","","",""]);</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,223,new Date().getTime(),"","","","",""]);</script>
 
 
 <div id="default_onion" class="default_onion" style="display: none;"></div>
@@ -2190,7 +2197,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
             <button class="btn btn-primary" type="submit">Post Comment</button>
             <button class="btn" type="button" onclick="SquidooComments.cancel();">Cancel</button>
           </div><!-- .btn-group -->
-          <input type="hidden" name="comment_nonce" value="5b60a50822163f65a024c5e93d26b4d9">
+          <input type="hidden" name="comment_nonce" value="3a510fd1f318a2c5a5f3a6c3bbbcda3a">
 
 
         </div>

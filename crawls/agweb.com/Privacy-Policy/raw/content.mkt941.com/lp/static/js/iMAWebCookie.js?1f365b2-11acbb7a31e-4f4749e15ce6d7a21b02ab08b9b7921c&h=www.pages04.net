@@ -8,7 +8,7 @@
  */
 
 (function() {
-    var version = 1.17,
+    var version = 1.18,
             page = {},
             cookiespace = 'com.silverpop.iMA',
             vtrendzCookieSpace = 'com.vtrenz.iMA',
@@ -87,19 +87,12 @@
         },
 
         cot : function() {
-            if (!page.args) {
-                page.args = pageargs();
-                setClickStreamParamsCookies();
-            }
-
+            initialize();
+            setClickStreamParamsCookies();
             var mailingId = getClickStreamValue(0);
             var userId = getClickStreamValue(1);
             var jobId = getClickStreamValue(2);
             if (mailingId != '' && userId != '' && jobId != '') {
-                if (!page.metas) {
-                    page.metas = metatags();
-                }
-
                 var cothost = null;
                 if ((cothost = page.metas['com.silverpop.cothost'])) {
                     var args = '';
@@ -115,19 +108,12 @@
         },
 
         cotLink : function() {
-            if (!page.args) {
-                page.args = pageargs();
-                setClickStreamParamsCookies();
-            }
-
+            initialize();
+            setClickStreamParamsCookies();
             var mailingId = getClickStreamValue(0);
             var userId = getClickStreamValue(1);
             var jobId = getClickStreamValue(2);
             if (mailingId != '' && userId != '' && jobId != '') {
-                if (!page.metas) {
-                    page.metas = metatags();
-                }
-
                 var cothost = null;
                 if ((cothost = page.metas['com.silverpop.cothost'])) {
                     var args = '';
@@ -162,33 +148,22 @@
         },
 
         setIFrameSrc: function(control, url) {
-            var metas = null;
-            if (!page || !page.metas) {
-                metas = metatags();
-            }
-
-            if (!trackingEnabled() && control.src.indexOf(url) == -1) {
-                var params = checkForAcceptsCookieCookie ? "spWebTrackingOptIn=0" : "";
-                control.src =  getUrlWithParams(url, params);
-            } else if (control.src.indexOf(url) == -1) {
-                if (!page.args) {
-                    page.args = pageargs();
+            initialize();
+            if (control.src.indexOf(url) == -1) {
+                var params = "";
+                if (!trackingEnabled()) {
+                    params = checkForAcceptsCookieCookie ? "spWebTrackingOptIn=0" : "";
+                } else {
                     setClickStreamParamsCookies();
-                }
+                    if (!page.websync) {
+                        page.websync = websync();
+                        cachedSession = session(true);
+                    }
 
-                if (!page.metas) {
-                    page.metas = metas;
-                }
-
-                if (!page.websync) {
-                    websyncBridge();
-                    page.websync = websync();
-                    cachedSession = session(true);
-                }
-
-                var params = getCookieParams(page);
-                if (checkForAcceptsCookieCookie) {
-                    params += "&spWebTrackingOptIn=1";
+                    params = getCookieParams(page);
+                    if (checkForAcceptsCookieCookie) {
+                        params += "&spWebTrackingOptIn=1";
+                    }
                 }
                 control.src = getUrlWithParams(url, params);
             }
@@ -212,22 +187,88 @@
             functions.containsPage = containsPage;
             functions.addPage = addPage;
             functions.hashString = hashString;
+            functions.getRootDomain = getRootDomain;
+            functions.getPage = getPage;
             return functions;
         }
     };
 
+    function getPage() {
+        return page;
+    }
+
+    function initialize() {
+        if (!(page.isInitialized === true)) {
+            page.metas = parseMetaTags();
+            page.args = parsePageArgs();
+            page.pageName = page.args['vpagename'] || w.ewt_pagename || page.metas[metaspace + 'pagename'] || "";
+            page.primaryDomain = parsePrimaryDomain();
+            page.brandedDomains = parseBrandedDomains();
+
+            if (page.metas[metaspace + webTrackingOptInPrefix]) {
+                checkForAcceptsCookieCookie = true;
+            }
+            page.isInitialized = true;
+        }
+    }
+    
+    function parseMetaTags() {
+        var tags = {};
+        var metas = d.getElementsByTagName('meta');
+        for (var i = 0; i < metas.length; i++) {
+            tags[metas[i].name.toLowerCase()] = metas[i].content;
+        }
+        return tags;
+    }
+
+    function parsePageArgs() {
+        var h, args = {}, q = location.search.substring(1).split('&');
+        for (var i = 0; i < q.length; i++) {
+            h = q[i].split("=");
+            args[h[0].toLowerCase()] = unescape(h[1]);
+        }
+        return args;
+    }
+
+    function parsePrimaryDomain() {
+        var primaryDomainOverride = page.metas['com.silverpop.primary_domain'];
+        if (primaryDomainOverride && primaryDomainOverride.length > 0) {
+            var dotPrefix = (primaryDomainOverride[0] == '.') ? '' : '.';
+            return dotPrefix + primaryDomainOverride;
+        } else {
+            return  getRootDomain(l.hostname);
+        }
+    }
+
+    function getRootDomain(url) {
+        var hostname = url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+        var parts = hostname.split('.');
+        if (parts.length == 1)
+            return "";
+
+        if (hostname.toLowerCase().indexOf(".co.uk") != -1 && parts.length >= 3) {
+            return "." + parts[parts.length - 3] + "." + parts[parts.length - 2] + "." + parts[parts.length - 1];
+        } else {
+            return "." + parts[parts.length - 2] + "." + parts[parts.length - 1];
+        }
+    }
+
+    function parseBrandedDomains() {
+        var domainarray = [];
+        var brandeddomains = null;
+        if ((brandeddomains = page.metas['com.silverpop.brandeddomains'])) {
+            domainarray = brandeddomains.split(',')
+        }
+
+        return domainarray;
+    }
+
     function pageview(existingSession) {
-        var metas = metatags();
         if (!trackingEnabled()) {
             createReferrerCookieIfDoesNotExist();
             return false;
         }
-
-        websyncBridge();
-        page.args = pageargs();
-        page.metas = metas;
         page.websync = websync();
-        page.pageName = pagename();
         var trackedSession = (existingSession) ? existingSession : ((cachedSession) ? cachedSession : session(true));
         var newPageVisit = isFirstPageVisit();
         recordPageVisit();
@@ -239,14 +280,14 @@
         },'pageview'));
 
         //make sure that the action tag uses a domain that is part of the branded domains listed in the meta tag
-        var tags = document.getElementsByTagName("FORM");
-        for (var i = 0; i < tags.length; i++) {
-            var url = tags[i].action;
-            var pageId = tags[i].getAttribute('pageId');
-            var siteId = tags[i].getAttribute('siteId');
-            var parentPageId = tags[i].getAttribute('parentPageId');
+        var forms = document.getElementsByTagName("FORM");
+        for (var i = 0; i < forms.length; i++) {
+            var url = getFormActionUrl(forms[i]);
+            var pageId = forms[i].getAttribute('pageId');
+            var siteId = forms[i].getAttribute('siteId');
+            var parentPageId = forms[i].getAttribute('parentPageId');
 
-            if (isBrandedDomain(url, getBrandedDomains()) && pageId && siteId) {
+            if (isBrandedDomain(url) && pageId && siteId) {
                 var hostName = getFormActionHostName(url);
                 var resourceUri = getFormActionResourceUri(url);
                 var resourceName = getFormActionResourceName(url);
@@ -278,10 +319,7 @@
             return true;
 
         var cookie = readCookie(".accept_cookies");
-        if (cookie == "true")
-            return true;
-
-        return false;
+        return cookie == "true";
     }
 
     function createReferrerCookieIfDoesNotExist() {
@@ -416,14 +454,14 @@
 
     function createCookie(c) {
         if (cookiesEnabled()) {
-            var batter = c.name + "=" + c.uid + _ttl(c.ttl) +"; path=/";
+            var batter = c.name + "=" + c.uid + _ttl(c.ttl) + "; path=/;" + "domain=" + page.primaryDomain + ";";
             d.cookie = batter;
         }
     }
 
     function updateCookie(_name, _value, _expiry) {
         if (cookiesEnabled()) {
-            var batter = cookiespace + _name + '=' + _value + _ttl(_expiry) +'; path=/';
+            var batter = cookiespace + _name + '=' + _value + _ttl(_expiry) +'; path=/;' + 'domain=' + page.primaryDomain + ';';
             d.cookie = batter;
         }
     }
@@ -483,64 +521,43 @@
         return (w.ewt_page_key) ? w.ewt_page_key : 'no-key';
     }
 
-    function pageargs() {
-        var h, args = {}, q = location.search.substring(1).split('&');
-        for (var i = 0; i < q.length; i++) {
-            h = q[i].split("=");
-            args[h[0].toLowerCase()] = unescape(h[1]);
-        }
-
-        return args;
-    }
-
-    function pagename() {
-        return page.args['vpagename'] || w.ewt_pagename || page.metas[metaspace + 'pagename'] || l.pathname;
-    }
-
-    function metatags() {
-        var tags = {}, m = d.getElementsByTagName('meta');
-        for (var i = 0; i < m.length; i++) {
-            tags[m[i].name.toLowerCase()] = m[i].content;
-            if (m[i].name.toLowerCase() == (metaspace + webTrackingOptInPrefix)) {
-                checkForAcceptsCookieCookie = true;
-            }
-        }
-        return tags;
-    }
-
-
     function websync() {
-        var w = {
-            uid:readCookie('WebCookie'),
-            ttl:websyncTTL,
-            name:cookiespace + 'WebCookie',
-            isNew:false,
-            associatedUID:''
-        };
+        if (!page.websync) {
+            websyncBridge();
 
-        // no engage visitor cookie so see if B2B has one
-        if (w.uid == '') {
-            w.uid = readCookie('WebCookie', vtrendzCookieSpace);
+            var w = {
+                uid:readCookie('WebCookie'),
+                ttl:websyncTTL,
+                name:cookiespace + 'WebCookie',
+                isNew:false,
+                associatedUID:''
+            };
+
+            // no engage visitor cookie so see if B2B has one
+            if (w.uid == '') {
+                w.uid = readCookie('WebCookie', vtrendzCookieSpace);
+            }
+
+            var webSyncId = page.args['websyncid'];
+            if (webSyncId != null) {
+                if (w.uid != '')
+                    w.associatedUID = w.uid;
+                w.uid = webSyncId;
+            }
+
+            if (w.uid == '') {
+                //create websync guid & cookie:
+                w.uid = _guid();
+                createCookie(w);
+                w.isNew = true;
+            } else {
+                //[just] extend cookie expiry:
+                updateCookie('WebCookie', w.uid, w.ttl);
+            }
+            page.websync = w;
         }
 
-        var webSyncId = page.args['websyncid'];
-        if (webSyncId != null) {
-            if (w.uid != '')
-                w.associatedUID = w.uid;
-            w.uid = webSyncId;
-        }
-
-        if (w.uid == '') {
-            //create websync guid & cookie:
-            w.uid = _guid();
-            createCookie(w);
-            w.isNew = true;
-        }
-        else {
-            //[just] extend cookie expiry:
-            updateCookie('WebCookie', w.uid, w.ttl);
-        }
-        return w;
+        return page.websync;
     }
 
     function websyncBridge() {
@@ -579,7 +596,7 @@
 
         if (checkReferrer && s.uid != '' && d.referrer && d.referrer.length > 0) {
             // This is where we need to check flag
-            var domains = getBrandedDomains();
+            var domains = page.brandedDomains;
 
             var startIndex = -1;
             var keepExistingSession = false;
@@ -700,40 +717,24 @@
         }
     }
 
-    function getBrandedDomains() {
-        var domainarray = [];
-        var brandeddomains = null;
-        if ((brandeddomains = page.metas['com.silverpop.brandeddomains'])) {
-            domainarray = brandeddomains.split(',')
-        }
-
-        return domainarray;
-    }
-
     function appendCookieToLinks() {
         if (!trackingEnabled()) {
             if (checkForAcceptsCookieCookie) {
-                if (!page || !page.metas) {
-                    page.metas = metatags();
-                }
-                var brandedDomains = getBrandedDomains();
-                appendParamsToFormTags(brandedDomains, "spWebTrackingOptIn=0");
+                appendParamsToFormTags("spWebTrackingOptIn=0");
             }
             return false;
         }
 
-        var brandedDomains = getBrandedDomains();
         var params = getCookieParams(page);
-
-        appendParamsToAnchorTags(brandedDomains, params);
+        appendParamsToAnchorTags(params);
 
         if (checkForAcceptsCookieCookie) {
             params += "&spWebTrackingOptIn=1";
         }
-        appendParamsToFormTags(brandedDomains, params);
+        appendParamsToFormTags(params);
     }
 
-    function appendParamsToAnchorTags(brandedDomains, params) {
+    function appendParamsToAnchorTags(params) {
         var tags = document.getElementsByTagName("A");
         for (var i = 0; i < tags.length; i++) {
             var url = tags[i].href;
@@ -742,7 +743,7 @@
                 continue;
             }
 
-            if (isBrandedDomain(url, brandedDomains)) {
+            if (isBrandedDomain(url)) {
                 var innerHTML= tags[i].innerHTML;
                 tags[i].href = getUrlWithParams(url, params);
                 tags[i].innerHTML=innerHTML;
@@ -750,13 +751,18 @@
         }
     }
 
-    function appendParamsToFormTags(brandedDomains, params) {
-        var tags = document.getElementsByTagName("FORM");
-        for (var i = 0; i < tags.length; i++) {
-            var url = tags[i].action;
+    function getFormActionUrl(formElement) {
+        var formActionUrl = formElement.getAttribute('action');
+        if (typeof(formActionUrl)!='string') formActionUrl = formElement.attributes.action.value; //ie
+        return formActionUrl;
+    }
 
-            if (isBrandedDomain(url, brandedDomains)) {
-                tags[i].action = getUrlWithParams(url, params + "&trackedExternalFormPost=1");
+    function appendParamsToFormTags(params) {
+        var forms = document.getElementsByTagName("FORM");
+        for (var i = 0; i < forms.length; i++) {
+            var url = getFormActionUrl(forms[i]);
+            if (isBrandedDomain(url)) {
+                forms[i].attributes.action.value = getUrlWithParams(url, params + "&trackedExternalFormPost=1");
             }
         }
     }
@@ -790,33 +796,33 @@
         return url;
     }
 
-    function isUrlStartsWith(url, prefix) {
-        return url.indexOf(prefix) === 0;
-    }
-
-    function getCurrentHost(protocol) {
-        return protocol + l.hostname;
-    }
-
-    function getEwtHostFor(protocol) {
-        return  protocol + w.ewt_host;
-    }
-
-    function isBrandedDomain(url, domainArray) {
+    function isBrandedDomain(url) {
         if (!isUrlStartsWith(url, "http://") && !isUrlStartsWith(url, "https://"))
             return false;
-        if (isUrlStartsWith(url, getCurrentHost('http://')) || isUrlStartsWith(url, getCurrentHost('https://')))
+        if (isSamePrimaryDomain(url))
             return false;
         else if (isUrlStartsWith(url, getEwtHostFor('http://')) || isUrlStartsWith(url, getEwtHostFor('https://')))
             return true;
         else {
-            for (var x = 0; x < domainArray.length; x++) {
-                if (isUrlStartsWithBrandDomainScheme(url, domainArray[x])) {
+            for (var x = 0; x < page.brandedDomains.length; x++) {
+                if (isUrlStartsWithBrandDomainScheme(url, page.brandedDomains[x])) {
                     return true;
                 }
             }
             return false;
         }
+    }
+
+    function isUrlStartsWith(url, prefix) {
+        return url.indexOf(prefix) === 0;
+    }
+
+    function isSamePrimaryDomain(url) {
+        return getRootDomain(url) === page.primaryDomain;
+    }
+
+    function getEwtHostFor(protocol) {
+        return  protocol + w.ewt_host;
     }
 
     function getFormActionHostName(url) {
@@ -916,7 +922,7 @@
             return value;
         }
 
-        value = page.args[clickStreamKeys[index].toLowerCase()]
+        value = page.args[clickStreamKeys[index].toLowerCase()];
         if (typeof value  == 'undefined')
             value = '';
         return value;
@@ -941,6 +947,7 @@
         }
     }
 
+    onloadcallstack.push(initialize);
     onloadcallstack.push(pageview);
     onloadcallstack.push(appendCookieToLinks);
     var initWebTracking = function() {

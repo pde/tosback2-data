@@ -260,9 +260,10 @@ function assignCampaign() {
            scode=ckQS();
         }  else  if (ll_o.ref.length > 1 && (ll_o.ref.indexOf("https://w"+"ww.llbean.com") < 0 && ll_o.ref.indexOf("http://w"+"ww.llbean.com")<0 )) {
 
+        
            if (location.host=='ww'+'w.llbean.com') {
                 var enginesUS= [
-                  {i:"google",patt:/http:\/\/.*google.com/,sc:"3010809",parm:"q"}
+                  {i:"google",patt:/(http|https):\/\/.*google.com/,sc:"3010809",parm:"q"}
                  ,{i:"yahoo",patt:/http:\/\/.*search.yahoo/,sc:"3010810",parm:"p"}
                  ,{i:"msn-live",patt:/http:\/\/.*(search|msntv|www).(msn|live|bing)/,sc:"3010811",parm:"q"}
                  ,{i:"aol",patt:/http:\/\/.*search.aol/,sc:"3010812",parm:"query"}

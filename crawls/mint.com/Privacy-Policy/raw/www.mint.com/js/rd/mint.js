@@ -336,7 +336,7 @@ $(document).ready(function(){
 	//Grab twitter json feed for news updates
 	
 	if($('.news_updates').length){
-		$.getJSON('https://twitter.com/status/user_timeline/mint.json?count=15&callback=?', function(data){	
+		$.getJSON('https://api.twitter.com/1/statuses/user_timeline/mint.json?count=15&callback=?', function(data){
 			$.each(data, function(i,post){
 				
 				// convert to local string and remove seconds and year //		

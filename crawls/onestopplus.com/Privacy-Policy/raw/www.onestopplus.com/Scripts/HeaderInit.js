@@ -33,7 +33,7 @@ function InitHeader() {
 
      /* search suggestions and history */
     var searchInput = $('#search-terms'); // header search box; nothing else to config
-    if (!location.href.match(/AffiliateBrowsing|bags.onestopplus|art.onestopplus|pbj.onestopplus|stg.bags/)) { SearchDeluxe.Init($('div.search-suggestions'), searchInput); }
+    if (!searchInput.hasClass('affiliate')) { SearchDeluxe.Init($('div.search-suggestions'), searchInput); }
 }
 
 var SearchDeluxe = { // InteractiveSearch? SearchWithSuggestionsAndHistory?
@@ -185,16 +185,15 @@ function ShowShoppersClubLogo(ClubLogo, LogoLink, vendorName) {
              NotEligible: 4,
              MemberJoined: 5,
              ExpiredJoined: 6,
-             Guestmember: 7,
-             NewMemberJoined: 11,
+             Guestmember: 7
          };
         var cookieValue;
         var cookieName = GetUserCookieName(vendorName);
         var subCookiePrefix = GetSubCookiePrefix(vendorName);
 
         cookieValue = GetDecodedSubCookieValue(cookieName, subCookiePrefix + '.ShoppersClubMember');
-
-        if ((cookieValue != null) && (cookieValue == MembershipStatus.Member.toString() || cookieValue == MembershipStatus.NewMemberJoined.toString()))
+        
+        if((cookieValue != null) && cookieValue == MembershipStatus.Member.toString())
         {
            {
               

@@ -24,7 +24,7 @@
 
 
 
-<link rel="stylesheet" href="../../../../css/shopping-nextag.jsp%3F1446521765.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="../../../../css/shopping-nextag.jsp%3F547596032.css" type="text/css" media="all"/>
 
 
 
@@ -41,7 +41,7 @@ text-decoration:underline;}.ad-url{color:#4D8703;}
 body.rb-bkg {background:#FFFFFF !important;}.rb div.bodyMargin{background:#FFFFFF !important}
 -->
 </style>
-<script type="text/javascript" src="../../../../../img04.static-nextag.com/www/js/core.jsp%3F1446521765.js"></script>
+<script type="text/javascript" src="../../../../../img04.static-nextag.com/www/js/core.jsp%3F547596032.js"></script>
 
 
 
@@ -68,7 +68,7 @@ body.rb-bkg {background:#FFFFFF !important;}.rb div.bodyMargin{background:#FFFFF
 
 
 
-<link rel="stylesheet" href="../../../../css/shopping-nextag.jsp%3F1446521765.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="../../../../css/shopping-nextag.jsp%3F547596032.css" type="text/css" media="all"/>
 
 
 
@@ -85,7 +85,7 @@ text-decoration:underline;}.ad-url{color:#4D8703;}
 body.rb-bkg {background:#FFFFFF !important;}.rb div.bodyMargin{background:#FFFFFF !important}
 -->
 </style>
-<script type="text/javascript" src="../../../../../img04.static-nextag.com/www/js/core.jsp%3F1446521765.js"></script>
+<script type="text/javascript" src="../../../../../img04.static-nextag.com/www/js/core.jsp%3F547596032.js"></script>
 
 
 
@@ -174,8 +174,13 @@ div#header-tabs ul li {  background-image: url(../../../../../img01.static-nexta
 				
 									
 				
-					<li ><a rel="nofollow" href="https://www.nextag.com/accounts/login" onclick="googleAnalyticsSiteTracking ('/accounts/login', 'Home Page', 'User Account Sign-up'); popup=false">Log In</a></li>
-					<li><a rel="nofollow" href="https://www.nextag.com/accounts/login" onclick="googleAnalyticsSiteTracking ('/accounts/login', 'Home Page', 'User Account Sign-up'); popup=false">Sign Up</a></li>
+			 		<li class="bl" id="hv3_id4" style="display:none;" ><a rel="nofollow" href="https://www.nextag.com/accounts/login" onclick="popup=false">null</a></li>
+					<li id="hv3_id5"  ><a rel="nofollow" href="https://www.nextag.com/accounts/login" onclick="googleAnalyticsSiteTracking ('/accounts/login', 'Home Page', 'User Account Sign-up'); popup=false">Log In</a></li>
+					<li id="hv3_id6"><a rel="nofollow" href="https://www.nextag.com/accounts/login" onclick="googleAnalyticsSiteTracking ('/accounts/login', 'Home Page', 'User Account Sign-up'); popup=false">Sign Up</a></li>
+				
+				
+				<li id="hv3_id8" style="display:none;"><a href="http://www.nextag.com/accounts/logout">Sign out</a></li>
+				 
 				
 				
 			     
@@ -336,6 +341,19 @@ window.addEvent('domready', function() {
 
 
 
+	<script type="text/javascript"  defer="defer">
+	  gaEnabled = function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = 'http://www.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  };
+	  
+	  window.addEvent('load', gaEnabled );
+	
+  	var googleAnalyticsAccount = 'UA-31913284-1';
+	var _gaq = _gaq || [];
+	_gaq.push([ '_setAccount', googleAnalyticsAccount ]);
+	</script>	
 
 
 	
@@ -787,7 +805,7 @@ loadBBBJS = function() {
 			if (typeof displaySocialWidget === "function") {
 				displaySocialWidget();
 			}
-			FB.Event.subscribe('auth.authResponseChange', function(response) {
+			window.authRespChange = function(response) {
 				if (response.authResponse && ajaxRegister == false) {
 					if (typeof registerFB === "function") {
 						registerFB();
@@ -798,7 +816,8 @@ loadBBBJS = function() {
 						login.autoFBLogin();
 					}
 				}
-			});
+			};
+			FB.Event.subscribe('auth.authResponseChange', authRespChange);
 			FB.Event.subscribe('edge.create', function(href) {
 				http = new NxtgHttpReq("/tools/cube.jsp");
 				http.setPost();
@@ -846,28 +865,12 @@ loadBBBJS = function() {
 <div class="fv2-clear"></div>
 
 
-	<script type="text/javascript"  defer="defer">
-	  gaEnabled = function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = 'http://www.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  };
-	  
-	  window.addEvent('load', gaEnabled );
-	
-  	var googleAnalyticsAccount = 'UA-31913284-1';
-	var _gaq = _gaq || [];
-	_gaq.push([ '_setAccount', googleAnalyticsAccount ]);
-	</script>	
-
-
-
 
 
 <script type="text/javascript">
 <!--
 
-var nsinfo={chnl:'main',nxtg:'-',usr:'-',as:'8888888,3843,8073,18271,21819,10676,18796,21556,11465,546,16863,16849,3122,16521,12065,13923,545,11694,328,14550,3356,793,21351,11089',ssb:'XVtfXllbXFpEORwLBQAaAQwbIA1UWllPNgANVBoaC0QFC1hQRFhaX1tYXVxbWVFfW1tEWF9ZUFpa',bld:'1446521765',ipp:{ver: '14', brLeg: false, bind: 'none',ri: false,la: '', oltxsc:'black', rivh:'3'}};
+var nsinfo={chnl:'main',nxtg:'-',usr:'-',as:'8888888,3843,8073,18271,21819,10676,18796,21556,11465,546,16863,16849,3122,16521,12065,13923,545,11694,328,14550,3356,793,21351,11089',ssb:'W1BQXF1cXFtZXEQ5HAsFABoBDBsgDVRaWU82AA1UGhoLRAULW1lEWFpfW1xZWFxeUVhcX0RYXV9RX14%3D',bld:'547596032',ipp:{ver: '14', brLeg: false, bind: 'none',ri: false,la: '', oltxsc:'black', rivh:'3'}};
 // -->
 </script><!-- endnxtginc -->
 

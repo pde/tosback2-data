@@ -1,0 +1,65 @@
+if (window.location.href.indexOf('thenextweb.com') == -1) {
+    (function() {
+        // Get the params from the script
+        // TODO: Search for livefyre_backcompat.js
+        var lf_backcompat_config = {},
+            scripts = document.getElementsByTagName('script');
+        window.lf_window_ready = false;
+
+        for (var i=0, len=scripts.length; i<len; i++) {
+            if (/javascripts\/livefyre_embed|livefyreembed|livefyre_backcompat\.js/.exec(scripts[i].src) != null) {
+                var params = scripts[i].src.split('#')[1].split('&');
+                for (var j=0, jlen=params.length; j<jlen; j++) {
+                    var attr = params[j].split('=');
+                    lf_backcompat_config[attr[0]] = attr[1];
+                }
+                break;
+            }
+        }
+
+        // Clean up the config object
+        if (typeof(lf_backcompat_config.bn) !== 'undefined') {
+            lf_backcompat_config.site_id = lf_backcompat_config.bn;
+            delete lf_backcompat_config.bn;
+        }
+
+        // TESTING: Need to find the lfhost meta value if it's on the page
+        var meta = document.getElementsByTagName('meta');
+        for (var i=0, len=meta.length; i<len; i++) {
+            if (meta[i].name == 'lfhost') {
+                lf_backcompat_config.lfhost = meta[i].content;
+                break;
+            }
+        }
+
+        // Check window ready
+        if (window.addEventListener) { // W3C standard
+            window.addEventListener('load', function() {
+                window.lf_window_ready = true;
+            }, false); // NB **not** 'onload'
+        } else if (window.attachEvent) { // Microsoft
+            window.attachEvent('onload', function() {
+                window.lf_window_ready = true;
+            });
+        }
+
+        // Write init script into the page
+        var oScript = document.createElement('script');
+        oScript.type = 'text/javascript';
+        if (typeof(lf_backcompat_config.lfhost) !== 'undefined') {
+            oScript.src = 'http://zor.'+ lf_backcompat_config.lfhost +'/wjs/v1.0.1469841/javascripts/livefyre_init.js';
+        } else {
+            oScript.src = 'http://zor.livefyre.com/wjs/v1.0.1469841/javascripts/livefyre_init.js';
+        }
+        document.getElementsByTagName("head")[0].appendChild(oScript);
+
+        // Create the LF object
+        setTimeout(function() {
+            if (typeof(LF) === 'function') {
+                fyre = LF(lf_backcompat_config);
+            } else {
+                setTimeout(arguments.callee, 50);
+            }
+        }, 50);
+    })();
+}

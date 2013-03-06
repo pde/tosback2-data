@@ -16,7 +16,7 @@
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=196.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=200.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 <link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=044" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -36,7 +36,7 @@
 <![endif]-->
 
 	<script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=032"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=033"></script>
 <script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/ourfriends.js%3Fcache=026"></script>
 <script language="javascript" type="text/javascript">
 	//<![CDATA[
@@ -88,7 +88,7 @@
 	})();
 	$(document).ready(function(){
 		if(navigator.userAgent.match(/Xbox/i)){
-			_gaq.push(['_setCustomVar', 1, 'Custom UA', 1]);
+			_gaq.push(['_setCustomVar', 1, 'Custom UA', 'Xbox']);
 		}
 	});
 
@@ -362,19 +362,31 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			</div>
 		</div>
 	</div>
-	<div id="promo" class="relative" style="display:none;">
-		<div class="promo-back"></div>
-		<div class="absolute img-program-container">
-			<div class="relative">
-				<div class="buttons-img absolute sponsor-close-button"><a href="javascript:toggleDisplay('promo');"><span>X</span></a></div>
-				<div class="main-sprite-img absolute sponsor-text-01"><span class="display-none">Sponsored text link</span></div>
-				<div class="main-sprite-img absolute sponsor-text-02"><span class="display-none">Under player banner</span></div>
-			</div>
-			<div id="sponsorImg"></div>
+	<!-- bubble for follow user button -->
+	<div id="infoFollowWrapper">
+	<div class="borderForIE"></div>
+	<div class="roundCorner">
+		<img src="../cdn1.static.tube8.phncdn.com/images/greenRoundHook.png" alt="Green Hook" width="46" height="46">
+		<div class="newFollowMessage">
+			<h2>Nice work!</h2>
+			<p>You are now following videos from <a class="userToFollowLink" href="info.html" onclick="pageTracker._trackEvent(\'Video Page\',\'Click Username\');"></a>.</p>
+			<p>Control who you follow on the <a class="myFollowingPageLink" href="info.html">Following</a> page.</p>
 		</div>
+		<div class="closeInfoFollow">X</div>
 	</div>
-
-
+	<div class="spike"></div>
+</div>
+<div id="promo" class="relative" style="display:none;">
+	<div class="promo-back"></div>
+	<div class="absolute img-program-container">
+		<div class="relative">
+			<div class="buttons-img absolute sponsor-close-button"><a href="javascript:toggleDisplay('promo');"><span>X</span></a></div>
+			<div class="main-sprite-img absolute sponsor-text-01"><span class="display-none">Sponsored text link</span></div>
+			<div class="main-sprite-img absolute sponsor-text-02"><span class="display-none">Under player banner</span></div>
+		</div>
+		<div id="sponsorImg"></div>
+	</div>
+</div>
 	<div id="mydiv" style="position: absolute; z-index: 1;"></div>
 	<a name="allin" id="allin" style="margin-left: 0;"></a>
 		<div class="main-wrapper">
@@ -1324,14 +1336,16 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				});
 
 				$j('.videoThumbs').live('mouseover', function() {
-					currentThumbnailFlip	=  $j(this);
+					currentThumbnailFlip = $j(this);
 					if( currentThumbnailFlip.closest('.friendsAdWrapper').length ) {
 						return false;
 					}
 					var index = currentThumbnailFlip.attr('id');
 
-					first_thumbs[index] = currentThumbnailFlip.attr('src');
-					startThumbChange(index, currentThumbnailFlip.attr('thumb_src'));
+					currentThumbSrc = currentThumbnailFlip.attr('src');
+					first_thumbs[index] = currentThumbSrc;
+					thumbDirURL = currentThumbSrc.substring(0, currentThumbSrc.lastIndexOf('/')+1);
+					startThumbChange(index, thumbDirURL);
 				});
 				$j('.videoThumbs').live('mouseout', function(){
 					endThumbChange(currentThumbnailFlip.attr('id'));
@@ -1411,6 +1425,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				<ul class="footer">
 					<li><a href="http://feedback.tube8.com" target='_blank'>FEEDBACK FORUM</a></li>
 					<li><a href="info.html#partner">CONTENT PARTNER PROGRAM</a></li>
+					<li><a href="http://www.tube8.com/webmasters">WEBMASTERS</a></li>
 					<li><a href="info.html#privacy">PRIVACY POLICY</a></li>
 				</ul>
 			</div>

@@ -36,10 +36,10 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/NYDJ/Women-Denim-Jeans-Capri/_/N-174wlZz2qs/Rpp-1?cm_sp=womens-_-ddf-_-nydj+capris+4+020813">New Arrivals:NYDJ Capris</a></li>');
 	document.writeln('<li><a href="/content/women-spring-essentials?cm_sp=womens-_-ddf-_-spring+essentials+5+013013">Spring Essentials Trend Guide</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/MICHAEL-Michael-Kors/Women/_/N-1738nZlfx6/Rpp-1?cm_sp=womens-_-ddpromo-_-kors+022113" >MICHAEL KORS: SHOP NEW ARRIVALS FROM ONE OF OUR HOTTEST DESIGNERS></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Vince-Camuto/Women/_/N-173cuZlfx6/Rpp-1?cm_sp=womens-_-ddpromo-_-vince+camuto+030413" >VINCE CAMUTO: SHOP NEW ARRIVALS></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/MICHAEL-Michael-Kors/Women/_/N-1738nZlfx6/Rpp-1?cm_sp=womens-_-ddimage-_-kors+022113"><img src="/images/dropDownImages/022013dropdown_womens_michael_kors.jpg"></a>');
+	document.writeln('<a href="/shop/Vince-Camuto/Women/_/N-173cuZlfx6/Rpp-1?cm_sp=womens-_-ddimage-_-vince+camuto+030413"><img src="/images/dropDownImages/030213dropdown_womens_vince_camuto.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -123,7 +123,7 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Shoes/_/N-lfxlZ15p/Rpp-1?cm_sp=shoes-_-ddf-_-1+new+arrivals+020113">New Arrivals</a></li>');
-	document.writeln('<li><a href="/shop/Shoes-Women-Boots/_/N-y2z3/Rpp-1?cm_sp=shoes-_-ddf-_-2+boots+020713">Boots</a></li>');
+	document.writeln('<li><a href="/shop/Shoes-Women-Sandals/_/N-v7oh/Rpp-1?cm_sp=shoes-_-ddf-_-2+sandals+030613">Sandals</a></li>');
 	document.writeln('<li><a href="/content/shoes-comfort-shop?cm_sp=shoes-_-ddf-_-3+comfort+shop+011813">Comfort Shop</a></li>');
 	document.writeln('<li><a href="/shop/Shoes-Women/_/N-lgakZ1jl/Ntk-all/Ntt-special+occasion/Nty-1/Rpp-1?cm_sp=shoes-_-ddf-_-4+special+occasion+122512">Special Occasion</a></li>');
 	document.writeln('<li><a href="/shop/Shoes-Women-Pumps/_/N-ygfd/Rpp-1?cm_sp=shoes-_-ddf-_-5+pumps+010513">Pumps</a></li>');
@@ -177,7 +177,7 @@ function buildDropdown() {
 	document.writeln('<div class="promo"><a href="/shop/Vera-Bradley/Handbags/_/N-173quZlfyu?cm_sp=handbags-_-ddpromo-_-vera+bradley+bright+spring+030213" >SHOP BRIGHT SPRING PRINTS FROM VERA BRADLEY ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/MICHAEL-Michael-Kors/Handbags/_/N-1738nZlfyu/Ns-p_coach_active_date%7C1?cm_sp=handbags-_-ddimage-_-mkors+new+arrivals+04012428+030213"><img src="/images/dropDownImages/030213dd_hb_mkors.jpg"></a>');
+	document.writeln('<a href="/shop/MICHAEL-Michael-Kors/Handbags/_/N-1738nZlfyu/Ns-p_coach_active_date%7C1?cm_sp=handbags-_-ddimage-_-mkors+new+arrivals+04012428+030213"><img src="/images/dropDownImages/030513dd_hb_mkors_zinnia.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -290,7 +290,7 @@ function buildDropdown() {
 	document.writeln('</div>');
 	document.writeln('<div class="bottom">');
 	document.writeln('<ul>');
-	document.writeln('<li><a href="http://www.dillards.com/shop/Beauty/_/N-lfxgZ15p/Rpp-1?catalogId=301&langId=-1&storeId=301?cm_sp=beauty-_-ddtc-_-new+arrivals+1+021913">New Arrivals</a></li>');
+	document.writeln('<li><a href="/shop/The-Edge-Shop/_/N-lg88?cm_sp=beauty-_-ddtc-_-edge+beauty+1+030613">EDGE Beauty</a></li>');
 	document.writeln('<li><a href="/shop/Beauty-Gifts-Sets/_/N-zpsd?cm_sp=beauty-_-ddtc-_-gifts+and+sets+2+102012">Gifts & Sets</a></li>');
 	document.writeln('<li><a href="/shop/Beauty-Fragrance/_/N-yi4i?cm_sp=beauty-_-ddtc-_-fragrance+3+062411">Fragrance</a></li>');
 	document.writeln('<li><a href="/shop/Beauty-Skincare/_/N-y36e?cm_sp=beauty-_-ddtc-_-skincare+4+062411">Skincare</a></li>');
@@ -309,13 +309,13 @@ function buildDropdown() {
 	document.writeln('<li><a href="/content/beauty-multi-taskers?cm_sp=beauty-_-ddf-_-multi+taskers+1+022613">Our Favorite Beauty Multi-Taskers</a></li>');
 	document.writeln('<li><a href="/content/beauty-garden-party?cm_sp=beauty-_-ddf-_-prom+beauty+2+020513">PROM Beauty: Get the LOOK</a></li>');
 	document.writeln('<li><a href="/product/Lancome-Definicils-High-Definition-Mascara_301_-1_301_9997?cm_sp=beauty-_-ddf-_-lancome+high+definition+mascara++3+022313">Lancome High Definition Mascara</a></li>');
-	document.writeln('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg/Rpp-1?cm_sp=beauty-_-ddf-_-clarisonic+perfect+skin+4+020513">Perfect Skin Begins with CLARISONIC</a></li>');
+	document.writeln('<li><a href="/product/Clinique-Even-Better-Eyes-Dark-Circle-Corrector_301_-1_301_503297072?cm_sp=beauty-_-ddf-_-clinique+even+better+eye+dark+circle+corrector+4+030513">Even Better Eyes Dark Circle Corrector from Clinique</a></li>');
 	document.writeln('<li><a href="/content/beauty-heart-your-valentine?cm_sp=beauty-_-ddf-_-heart+your+lips+eyes+skin+man+5+020513">Shop Products We LOVE!</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/product/StriVectin-Advanced-Retinol-Night-Treatment_301_-1_301_503577856?cm_sp=beauty-_-ddpromo-_-new+strivectin+advanced+retinol+night+022613" >NEW! StriVectin Advanced Retinol Night Treatment ></a></div>');
+	document.writeln('<div class="promo"><a href="/product/Giorgio-Armani-Acqua-di-Gio-Essenza-Eau-de-Toilette_301_-1_301_503809844?cm_sp=beauty-_-ddpromo-_-new+acqua+di+gio+essenza+030513" >NEW INTENSE FRAGRANCE FOR MEN: ACQUA DI GIO ESSENZA  ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Estee-Lauder/_/N-lg40?cm_sp=beauty-_-ddimage-_-estee+lauder_gift+with+purchase+030113"><img src="/images/dropDownImages/022813_ddimage_estee_lauder_gift_with_purchase_final_days.jpg"></a>');
+	document.writeln('<a href="/product/philosophy-hope-in-a-jar-night-intensive-retexturizing-moisturizer_301_-1_301_503743590?cm_sp=beauty-_-ddimage-_-philosophy+hope+in+a+jar+night+030613"><img src="/images/dropDownImages/030513dd_b_philosophy_hope_in_a_jar.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -353,7 +353,7 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z15p/Rpp-1?cm_sp=mens-_-ddf-_-mens+new+arrivals+012313">NEW ARRIVALS in Men\'s</a></li>');
-	document.writeln('<li><a href="/shop/Men-Big-Tall/_/N-ls51/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=mens-_-ddf-_-best+selling+active+wear+2+012613">NEW ARRIVALS Big & Tall</a></li>');
+	document.writeln('<li><a href="/shop/Men-Big-Tall/_/N-ls51/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=mens-_-ddf-_-new+arrivals+big+tall+2+012613">NEW ARRIVALS Big & Tall</a></li>');
 	document.writeln('<li><a href="/content/mensaccessories?cm_sp=mens-_-ddf-_-watches+bags+accessories+3+111712">Watches, Sunglasses, Bags & Accessories</a></li>');
 	document.writeln('<li><a href="/shop/Men-Underwear-Socks-Sleepwear-Underwear-Underwear-Socks-Sleepwear/_/N-yyme/Rpp-1?cm_sp=mens-_-ddf-_-underwear+socks+sleepwear+t+in+shorts+4+022313">Underwear, Socks, and Sleepwear</a></li>');
 	document.writeln('<li><a href="/shop/Men-Shorts/_/N-mz7z/Rpp-1?cm_sp=mens-_-ddf-_-just+in+shorts+5+022313">JUST IN: SHORTS</a></li>');
@@ -407,7 +407,7 @@ function buildDropdown() {
 	document.writeln('<div class="promo"><a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddpromo-_-shop+girls+spring+dresses+022413" >Shop Spring Dresses for Girls Sizes 2T-6X & 7-16 ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Children/_/N-lfy0Z1jl/Ns-p_best_sellers_rank%7C1/Ntk-all/Ntt-seersucker/Nty-1/Rpp-1?cm_sp=children-_-ddimage-_-kids+seersucker+030113"><img src="/images/dropDownImages/030113dropdown_kids_seersucker_styles.jpg"></a>');
+	document.writeln('<a href="/content/infant-dresswear?cm_sp=children-_-ddimage-_-infant+dresswear+030513"><img src="/images/dropDownImages/030413dropdown_c_infant_dresswear.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');

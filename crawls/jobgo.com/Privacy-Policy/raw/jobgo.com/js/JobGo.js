@@ -1193,6 +1193,8 @@ JobGo.Form = {
                                 .not('.COMPANY_ID')
                                 .not("[name*='I_CURRENTLY_WORK_HERE']")
                                 .not('.ICurrentlyWorkHere')
+                                .not("[name*='I_CURRENTLY_STUDY_HERE']")
+                                .not('.ICurrentlyStudyHere')
                                 .not('.MultiplierItemIsDeleted')
                                 .not('.StartDate')
                                 .not('.EndDate')

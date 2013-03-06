@@ -405,11 +405,8 @@ var Class = (function() {
     function LightboxVideoPlayer(element) {
       this.element = element;
       this._releaseVideoInterface = __bind(this._releaseVideoInterface, this);
-
       this._buildVideoInterface = __bind(this._buildVideoInterface, this);
-
       this._applyBrandLightbox = __bind(this._applyBrandLightbox, this);
-
       this.embedCode = this.element.attr('data-embed-code');
       this._enableLightbox();
     }
@@ -823,11 +820,11 @@ var Class = (function() {
   };
 })(jQuery);
 (function($) {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   var InlineVideoExpander = Class.create({
     videoInterface: null,
     initialize: function($actionElm, $targetCont, ratio) {
-      var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
     /*
       $actionElm: the link or element that click event is attached to
       $targetCont: the element the video is getting injected into.
@@ -860,13 +857,14 @@ var Class = (function() {
     _play: function(event) {
       this.playerContainer.empty();
       this.playerContainer.show();
+
       event.preventDefault();
       // requery when the user has clicked
       this.targetContHeight = this.heroCont.outerHeight();
       this.$targetCont.height(this.targetContHeight);
       this.insertVideo();
     },
-     
+
     _close: function() {
       if (this.videoInterface){
         this.videoInterface.pause();
@@ -901,7 +899,7 @@ var Class = (function() {
       that.playerContainer.fadeOut('slow');
 
       $(that.$targetCont).animate({ height: that.targetContHeight }, 1000, function() {
-	that._fadeOutPlayerContainer();
+        that._fadeOutPlayerContainer();
         that.heroCont.fadeIn('slow');
         that.adjustForIpadRemove(that);
       });
@@ -977,13 +975,9 @@ var Class = (function() {
 
     function AutoRotator(options) {
       this.stop = __bind(this.stop, this);
-
       this.resume = __bind(this.resume, this);
-
       this.pause = __bind(this.pause, this);
-
-      this.rotate = __bind(this.rotate, this);
-      this.rotatable = options.rotatable;
+      this.rotate = __bind(this.rotate, this);      this.rotatable = options.rotatable;
       this.controlElement = options.controlElement;
       if (typeof this.rotatable.rotate !== 'function') {
         throw 'AutoRotator expects an object that responds to #rotate';
@@ -1052,9 +1046,8 @@ var Class = (function() {
     function Gallery(element) {
       this.element = element;
       this._countDownHeroSpotLoaders = __bind(this._countDownHeroSpotLoaders, this);
-
       this._buildItem = __bind(this._buildItem, this);
-
+      this.width = __bind(this.width, this);
       this._setup();
     }
 
@@ -1107,7 +1100,8 @@ var Class = (function() {
       this._buildPaginator();
       this._buildViewPort();
       this._buildUI();
-      return this._setupObservers();
+      this._setupObservers();
+      return this._setDimensions();
     };
 
     Gallery.prototype._setDataAttribute = function() {
@@ -1131,17 +1125,22 @@ var Class = (function() {
         itemWidth = viewportElement.find('.linked-carousel-mini-item').width();
         secondaryViewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
         return new $.TNF.BRAND.LinkedCarousel(this.viewport, secondaryViewport);
-      } else {
-        this.ui = new $.TNF.BRAND.Gallery.UI(this.paginator);
-        this.append(this.ui.elements());
-        return this.ui.centerPageIndicator();
+      } else if (this.paginator != null) {
+        if (this.element.hasClass('gallery')) {
+          this.ui = new $.TNF.BRAND.Gallery.UI(this.paginator);
+          return this.append(this.ui.elements());
+        } else {
+          this.ui = new $.TNF.BRAND.HeroGallery.UI(this.paginator);
+          this.append(this.ui.elements());
+          return this.ui.centerPageIndicator();
+        }
       }
     };
 
     Gallery.prototype._buildViewPort = function() {
       var itemWidth, viewportElement;
       itemWidth = this.element.find(ITEM_SELECTOR).width();
-      viewportElement = this.element.find('div.hero-gallery-scroller');
+      viewportElement = this.element.find('div.hero-gallery-scroller, .gallery-viewport');
       this.viewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
       return this.viewport.setWidth(itemWidth * this.items.length);
     };
@@ -1179,6 +1178,20 @@ var Class = (function() {
       }
     };
 
+    Gallery.prototype._setDimensions = function() {
+      var itemWidth, items, uiElement;
+      if (!this.element.hasClass('gallery')) {
+        return;
+      }
+      items = this.element.find(ITEM_SELECTOR);
+      itemWidth = items.width();
+      this.viewport.setWidth(this.items.length * itemWidth);
+      uiElement = this.element.find('.gallery-ui');
+      return uiElement.css({
+        left: (this.width() / 2) - (uiElement.width() / 2)
+      });
+    };
+
     return Gallery;
 
   })();
@@ -1189,13 +1202,112 @@ var Class = (function() {
   $.TNF.BRAND.Gallery.ItemFactory = function(element) {
     var object, type;
     type = $(element).data('type');
-    if (type === 'standard' || type === void 0) {
+    if (type === 'standard' || type === 'carousel' || type === void 0) {
       object = $.TNF.BRAND.Gallery.Standard;
     } else {
       object = $.TNF.BRAND.Gallery.Rotator;
     }
     return new object.Item($(element));
   };
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  $.TNF.BRAND.Gallery.Viewport = (function() {
+
+    Viewport.prototype.itemMargin = 4;
+
+    function Viewport(el, itemWidth) {
+      this.el = el;
+      this.itemWidth = itemWidth;
+      this.jumpToPage = __bind(this.jumpToPage, this);
+      this._bindEvents();
+    }
+
+    Viewport.prototype.setWidth = function(width) {
+      return this.el.width(width);
+    };
+
+    Viewport.prototype.prepend = function(elements) {
+      return this.el.prepend(elements);
+    };
+
+    Viewport.prototype.append = function(elements) {
+      return this.el.append(elements);
+    };
+
+    Viewport.prototype.jumpToPage = function(event, data) {
+      var page;
+      if (this.el.is(':animated')) {
+        return false;
+      }
+      if (arguments.length === 1) {
+        page = event.page;
+      } else {
+        page = data.page;
+      }
+      return this.el.animate({
+        left: -(page * this.itemWidth)
+      }, 500, 'easeInOutSine');
+    };
+
+    Viewport.prototype._bindEvents = function() {
+      return $('body').bind('hero_gallery_paged', this.jumpToPage);
+    };
+
+    return Viewport;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery = (function(_super) {
+
+    __extends(HeroGallery, _super);
+
+    function HeroGallery() {
+      this.focus = __bind(this.focus, this);
+      HeroGallery.__super__.constructor.apply(this, arguments);
+    }
+
+    HeroGallery.prototype.stopAutoRotation = function() {
+      return this.autoRotator.stop();
+    };
+
+    HeroGallery.prototype.focus = function(e) {
+      var element;
+      try {
+        element = $(e.target);
+        if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
+          return this.body.trigger('hero_gallery_paged', {
+            page: this.paginator.currentPage
+          });
+        }
+      } catch (e) {
+
+      }
+    };
+
+    HeroGallery.prototype._setupAutoRotator = function() {
+      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
+        rotatable: this,
+        controlElement: this.element
+      });
+    };
+
+    HeroGallery.prototype._setup = function() {
+      HeroGallery.__super__._setup.apply(this, arguments);
+      return this._setupAutoRotator();
+    };
+
+    return HeroGallery;
+
+  })($.TNF.BRAND.Gallery);
 
 }).call(this);
 (function() {
@@ -1251,7 +1363,7 @@ var Class = (function() {
 
     function NextButton() {
       NextButton.__super__.constructor.apply(this, arguments);
-      this.element = $("<a class='hero-gallery-arrow-right arrow-box " + this.className + "'><div class='arrow'></div></a>");
+      this.element = $("<a class='next'></a>");
     }
 
     NextButton.prototype.render = function() {
@@ -1274,7 +1386,7 @@ var Class = (function() {
 
     function PrevButton() {
       PrevButton.__super__.constructor.apply(this, arguments);
-      this.element = $("<a class='hero-gallery-arrow-left arrow-box-left " + this.className + "'><div class='arrow'></div></a>");
+      this.element = $("<a class='prev'></a>");
     }
 
     PrevButton.prototype.render = function() {
@@ -1296,9 +1408,7 @@ var Class = (function() {
       var item, _i, _ref;
       this.responder = responder;
       this.showPageAtIndex = __bind(this.showPageAtIndex, this);
-
       this.jumpToPage = __bind(this.jumpToPage, this);
-
       this.pageCount = this.responder.itemCount();
       $('body').bind('hero_gallery_paged', this.showPageAtIndex);
       this.currentPageElement = $('<em></em>');
@@ -1371,9 +1481,7 @@ var Class = (function() {
 
     function UI(paginator) {
       this.hide = __bind(this.hide, this);
-
-      this.show = __bind(this.show, this);
-      this.nextButton = new $.TNF.BRAND.Gallery.NextButton(paginator);
+      this.show = __bind(this.show, this);      this.nextButton = new $.TNF.BRAND.Gallery.NextButton(paginator);
       this.prevButton = new $.TNF.BRAND.Gallery.PrevButton(paginator);
       this.pageIndicator = new $.TNF.BRAND.Gallery.PageIndicator(paginator);
     }
@@ -1391,7 +1499,9 @@ var Class = (function() {
     };
 
     UI.prototype.elements = function() {
-      return this.nextButton.render().add(this.prevButton.render().add(this.pageIndicator.render()));
+      var uiElements;
+      uiElements = this.prevButton.render().add(this.pageIndicator.render().add(this.nextButton.render()));
+      return $('<div class="gallery-ui"></div>').append(uiElements);
     };
 
     UI.prototype.release = function() {
@@ -1410,103 +1520,72 @@ var Class = (function() {
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.Gallery.Viewport = (function() {
+  $.TNF.BRAND.HeroGallery.NextButton = (function(_super) {
 
-    Viewport.prototype.itemMargin = 4;
+    __extends(NextButton, _super);
 
-    function Viewport(el, itemWidth) {
-      this.el = el;
-      this.itemWidth = itemWidth;
-      this.jumpToPage = __bind(this.jumpToPage, this);
-
-      this._bindEvents();
+    function NextButton() {
+      NextButton.__super__.constructor.apply(this, arguments);
+      this.element = $("<a class='hero-gallery-arrow-right arrow-box " + this.className + "'><div class='arrow'></div></a>");
     }
 
-    Viewport.prototype.setWidth = function(width) {
-      return this.el.width(width);
+    NextButton.prototype.render = function() {
+      this.element.bind('click', this.responder.next);
+      return NextButton.__super__.render.apply(this, arguments);
     };
 
-    Viewport.prototype.prepend = function(elements) {
-      return this.el.prepend(elements);
-    };
+    return NextButton;
 
-    Viewport.prototype.append = function(elements) {
-      return this.el.append(elements);
-    };
-
-    Viewport.prototype.jumpToPage = function(event, data) {
-      var page;
-      if (this.el.is(':animated')) {
-        return false;
-      }
-      if (arguments.length === 1) {
-        page = event.page;
-      } else {
-        page = data.page;
-      }
-      return this.el.animate({
-        left: -(page * this.itemWidth)
-      }, 500, 'easeInOutSine');
-    };
-
-    Viewport.prototype._bindEvents = function() {
-      return $('body').bind('hero_gallery_paged', this.jumpToPage);
-    };
-
-    return Viewport;
-
-  })();
+  })($.TNF.BRAND.Gallery.Button);
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
+  var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $.TNF.BRAND.HeroGallery = (function(_super) {
+  $.TNF.BRAND.HeroGallery.PrevButton = (function(_super) {
 
-    __extends(HeroGallery, _super);
+    __extends(PrevButton, _super);
 
-    function HeroGallery() {
-      this.focus = __bind(this.focus, this);
-      return HeroGallery.__super__.constructor.apply(this, arguments);
+    function PrevButton() {
+      PrevButton.__super__.constructor.apply(this, arguments);
+      this.element = $("<a class='hero-gallery-arrow-left arrow-box-left " + this.className + "'><div class='arrow'></div></a>");
     }
 
-    HeroGallery.prototype.stopAutoRotation = function() {
-      return this.autoRotator.stop();
+    PrevButton.prototype.render = function() {
+      this.element.bind('click', this.responder.previous);
+      return PrevButton.__super__.render.apply(this, arguments);
     };
 
-    HeroGallery.prototype.focus = function(e) {
-      var element;
-      try {
-        element = $(e.target);
-        if (element.hasClass('hero-gallery-item') || element.hasClass('hero-gallery-content')) {
-          return this.body.trigger('hero_gallery_paged', {
-            page: this.paginator.currentPage
-          });
-        }
-      } catch (e) {
+    return PrevButton;
 
-      }
+  })($.TNF.BRAND.Gallery.Button);
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.HeroGallery.UI = (function(_super) {
+
+    __extends(UI, _super);
+
+    function UI(paginator) {
+      this.nextButton = new $.TNF.BRAND.HeroGallery.NextButton(paginator);
+      this.prevButton = new $.TNF.BRAND.HeroGallery.PrevButton(paginator);
+      this.pageIndicator = new $.TNF.BRAND.Gallery.PageIndicator(paginator);
+    }
+
+    UI.prototype.elements = function() {
+      return this.nextButton.render().add(this.prevButton.render().add(this.pageIndicator.render()));
     };
 
-    HeroGallery.prototype._setupAutoRotator = function() {
-      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
-        rotatable: this,
-        controlElement: this.element
-      });
-    };
+    return UI;
 
-    HeroGallery.prototype._setup = function() {
-      HeroGallery.__super__._setup.apply(this, arguments);
-      return this._setupAutoRotator();
-    };
-
-    return HeroGallery;
-
-  })($.TNF.BRAND.Gallery);
+  })($.TNF.BRAND.Gallery.UI);
 
 }).call(this);
 (function() {
@@ -1520,7 +1599,7 @@ var Class = (function() {
 
     function LinkedGallery() {
       this._buildItem = __bind(this._buildItem, this);
-      return LinkedGallery.__super__.constructor.apply(this, arguments);
+      LinkedGallery.__super__.constructor.apply(this, arguments);
     }
 
     LinkedGallery.prototype._buildUI = function() {
@@ -1618,9 +1697,7 @@ $.TNF.BRAND.Gallery.Standard = {};
     function Callout(element) {
       this.element = element;
       this.fadePopup = __bind(this.fadePopup, this);
-
       this.showPopup = __bind(this.showPopup, this);
-
       this.body = $('body');
       this.parentElement = this.element.parent();
       this.containerWidth = this.parentElement.width();
@@ -1804,6 +1881,148 @@ $.TNF.BRAND.Gallery.Standard = {};
 
 }).call(this);
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  $.TNF.BRAND.Gallery.Standard.CalloutWhite = (function(_super) {
+
+    __extends(CalloutWhite, _super);
+
+    function CalloutWhite(element) {
+      this.element = element;
+      this.fadePopup = __bind(this.fadePopup, this);
+      this.showPopup = __bind(this.showPopup, this);
+      this.body = $('body');
+      this.closestContainerWithHeight = this.element.closest('.hero');
+      this.parentElement = this.element.parent();
+      this.containerWidth = this.closestContainerWithHeight.width();
+      this.containerHeight = this.closestContainerWithHeight.height();
+      this.build();
+      this.setupObservers();
+    }
+
+    CalloutWhite.prototype.build = function() {
+      this.position = this.element.position();
+      this.parentElement.append('<div class="hero-gallery-callout-marker callout-white"><em></em><a></a></div>');
+      this.parentElement.append("<div class=\"hero-gallery-callout-popup callout-white\">\n  <div class=\"hero-gallery-callout-popup-content callout-white\"></div>\n</div>");
+      this.marker = this.parentElement.find('div.hero-gallery-callout-marker:last');
+      this.markerCircle = this.marker.find('em');
+      this.markerIndicator = this.marker.find('a');
+      this.popup = this.parentElement.find('div.hero-gallery-callout-popup:last');
+      this.markerSize = this.marker.width();
+      this.marker.css('top', this.position['top'] - (this.markerSize / 2)).css('left', this.position['left'] - (this.markerSize / 2));
+      this.markerCircle.css('top', this.markerSize / 2).css('left', this.markerSize / 2);
+      this.contentElement = this.element.clone().css('top', 0).css('left', 0).css('visibility', 'visible').css('position', 'static');
+      this.popup.find('div.hero-gallery-callout-popup-content').append(this.contentElement);
+      return this.positionPopup();
+    };
+
+    CalloutWhite.prototype.setupObservers = function() {
+      var _this = this;
+      this.body.bind('hero_gallery_popup_opened', this.fadePopup);
+      this.body.bind('hero_gallery_flyout_opened', this.fadePopup);
+      this.body.bind('hero_gallery_paged', this.fadePopup);
+      this.markerIndicator.bind('mouseover', function() {
+        return _this.markerCircle.animate({
+          top: 0,
+          left: 0,
+          width: _this.markerSize,
+          height: _this.markerSize
+        }, 100, 'easeInOutSine');
+      });
+      this.markerIndicator.bind('mouseout', function() {
+        if (_this.showing) {
+          return;
+        }
+        return _this.deactivateMarker();
+      });
+      return this.markerIndicator.bind('click', this.showPopup);
+    };
+
+    CalloutWhite.prototype.positionPopup = function() {
+      var left, markerSpacing, popupHeight, popupWidth, threshold, top;
+      popupWidth = this.popup.outerWidth();
+      popupHeight = this.popup.outerHeight();
+      markerSpacing = this.markerSize / 2;
+      threshold = 10;
+      left = 0;
+      top = 0;
+      if (this.position['top'] < (popupHeight + threshold)) {
+        top = this.position['top'];
+      } else {
+        top = this.position['top'] - popupHeight;
+      }
+      if (this.position['left'] < (popupWidth + threshold)) {
+        left = this.position['left'];
+      } else {
+        left = this.position['left'] - popupWidth;
+      }
+      return this.popup.css('top', top).css('left', left).css('display', 'none');
+    };
+
+    CalloutWhite.prototype.showPopup = function() {
+      if (this.showing) {
+        this.hidePopup();
+        return;
+      }
+      this.body.trigger({
+        type: 'hero_gallery_popup_opened',
+        callout: this
+      });
+      this.activateMarker();
+      this.popup.css('opacity', 0).css('display', 'block');
+      this.popup.animate({
+        opacity: 1
+      }, 200, 'easeInOutSine');
+      return this.showing = true;
+    };
+
+    CalloutWhite.prototype.hidePopup = function() {
+      var _this = this;
+      this.body.trigger({
+        type: 'hero_gallery_popup_closed',
+        callout: this
+      });
+      this.deactivateMarker();
+      this.popup.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.popup.css('display', 'none');
+      });
+      return this.showing = false;
+    };
+
+    CalloutWhite.prototype.fadePopup = function() {
+      var _this = this;
+      if (!this.showing) {
+        return;
+      }
+      this.body.trigger({
+        type: 'hero_gallery_popup_closed',
+        callout: this
+      });
+      this.deactivateMarker();
+      this.popup.animate({
+        opacity: 0
+      }, 200, 'easeInOutSine', function() {
+        return _this.popup.css('display', 'none');
+      });
+      return this.showing = false;
+    };
+
+    CalloutWhite.prototype.dispose = function() {
+      this.marker.remove();
+      this.popup.remove();
+      return this.element = null;
+    };
+
+    return CalloutWhite;
+
+  })($.TNF.BRAND.Gallery.Callout);
+
+}).call(this);
+(function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $.TNF.BRAND.Gallery.Item = (function() {
@@ -1817,24 +2036,17 @@ $.TNF.BRAND.Gallery.Standard = {};
     function Item(element) {
       this.element = element;
       this.adjustVideoSpace = __bind(this.adjustVideoSpace, this);
-
       this.showVideo = __bind(this.showVideo, this);
-
       this.restoreDefaultImage = __bind(this.restoreDefaultImage, this);
-
       this.revealRolloverImage = __bind(this.revealRolloverImage, this);
-
       this.setupRolloverObservers = __bind(this.setupRolloverObservers, this);
-
       this.handleCtaRollout = __bind(this.handleCtaRollout, this);
-
       this.handleCtaRollover = __bind(this.handleCtaRollover, this);
-
       this.addHotRegion = __bind(this.addHotRegion, this);
-
       this.addCta = __bind(this.addCta, this);
-
-      this.id = this.element.attr('id').split('herospot-')[1];
+      if (!this.element.hasClass('gallery-item')) {
+        this.id = this.element.attr('id').split('herospot-')[1];
+      }
       this.build();
       this.buildCtas();
       this.buildHotRegions();
@@ -2083,9 +2295,8 @@ $.TNF.BRAND.Gallery.Standard = {};
 
     function Item() {
       this.handleCtaClick = __bind(this.handleCtaClick, this);
-
       this.addCallout = __bind(this.addCallout, this);
-      return Item.__super__.constructor.apply(this, arguments);
+      Item.__super__.constructor.apply(this, arguments);
     }
 
     Item.prototype.build = function() {
@@ -2100,7 +2311,11 @@ $.TNF.BRAND.Gallery.Standard = {};
       if (arguments.length === 1) {
         el = arguments[0];
       }
-      callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
+      if ($(el).hasClass('callout-white')) {
+        callout = new $.TNF.BRAND.Gallery.Standard.CalloutWhite($(el));
+      } else {
+        callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
+      }
       this.callouts.push(callout);
       return callout;
     };
@@ -2253,19 +2468,13 @@ $.TNF.BRAND.Gallery.Rotator = {};
 
     function Item() {
       this.hideFlyout = __bind(this.hideFlyout, this);
-
       this.handleImageLoadError = __bind(this.handleImageLoadError, this);
-
       this.loadImage = __bind(this.loadImage, this);
-
       this.tracking = __bind(this.tracking, this);
-
       this.isTracking = __bind(this.isTracking, this);
-
       this.addCallout = __bind(this.addCallout, this);
-
       this.handleArrowBoxClick = __bind(this.handleArrowBoxClick, this);
-      return Item.__super__.constructor.apply(this, arguments);
+      Item.__super__.constructor.apply(this, arguments);
     }
 
     Item.prototype.build = function() {
@@ -2498,9 +2707,7 @@ $.TNF.BRAND.Gallery.Rotator = {};
       this.element = element;
       this.item = item;
       this.hide = __bind(this.hide, this);
-
       this.setBackgroundImage = __bind(this.setBackgroundImage, this);
-
       if (this.element.length > 0) {
         this.setup();
       }
@@ -2581,9 +2788,7 @@ $.TNF.BRAND.Gallery.Rotator = {};
     function Paginator(responder) {
       this.responder = responder;
       this.next = __bind(this.next, this);
-
       this.previous = __bind(this.previous, this);
-
       this.items = this.responder.items;
       this.element = this.responder.element;
       this.width = this.responder.width;

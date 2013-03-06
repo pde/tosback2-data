@@ -68,6 +68,7 @@
       dataType: 'script',
       url: script_base,
       timeout: 2000,
+      crossDomain: true,
       data: {
         netId: '1180',
         cookieName: cookieName,
@@ -633,6 +634,33 @@
         type: 'text/javascript',
         src: 'http://ad.doubleclick.net/pfadx/wpni.'+ commercialNode +';sz=184x90,200x60;pos=promo;kw=test_promotile;dcmt=text/javascript;ord=' + Math.floor(Math.random()*1E9) + '?'
       }).appendTo('head');
+    });
+  }
+
+  //20999 - JH - brand connect tracking:
+  if(win.jQuery){
+    $(function(){
+      var bcdiv = $('div.brand-connect-module');
+      if(bcdiv.length){
+        $.ajax({
+          cache: true,
+          dataType: 'script',
+          crossDomain: true,
+          url: 'http://js.washingtonpost.com/wp-srv/ad/brandConnectTracking.js',
+          timeout: 2000,
+          error: function(err){
+            if(wpAd.flags.debug){
+              try{win.console.log('brandConnectTracking.js timeout error:', err);}catch(e){}
+            }
+          },
+          success: function(data){
+            wpAd.brandConnect.init();
+            if(wpAd.flags.debug){
+              try{win.console.log('brandConnectTracking.js', 'loaded:');}catch(e){}
+            }
+          }
+        });
+      }
     });
   }
 

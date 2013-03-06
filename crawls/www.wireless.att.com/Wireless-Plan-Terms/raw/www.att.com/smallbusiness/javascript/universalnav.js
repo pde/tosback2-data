@@ -25,14 +25,12 @@ $("#uniNav").hover(
 	},
 	function (){
 		$("div#uniNav").css('background-position', '4px -11px');
-		$("div#navBusiness a").css('color','white');
 		$("div#navBusinessTray").hide();
 	}
 );
 $("#navPersonal,#navAtt").hover(
 	function () {
 		$("div#uniNav").css('background-position', '4px -11px');
-		$("div#navBusiness a").css('color','white');
 		$("div#navBusinessTray").hide();	
 	},
 	function (){

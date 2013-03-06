@@ -12,6 +12,53 @@
   var TBRUM=TBRUM||{};TBRUM.q=TBRUM.q||[]; TBRUM.q.push(['mark','firstbyte',(new Date).getTime()]);
 </script>
 
+<!-- artframe test -->
+<script type="text/javascript">
+function artFrameTab(){
+	if(window.searchData){
+		if(searchData.action.indexOf('wallart/search') !== -1){
+			// gbc serp frame test
+			var addTabs = function(){
+				$('#ContentContainerRight').prepend('<div id="gbcsearchtabs" style="width:770px;border-bottom:2px solid #79a618;margin:0 0 20px -10px;overflow:auto;"><a class="active" href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="gbcsearch_cp" title="Cafepress Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-cafepress.jpg) no-repeat;width:199px;height:35px;float:left;">&nbsp;</a><a href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="gbcsearch_gbc" title="Great Big Canvas Premium Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-gbc.jpg) no-repeat;width:199px;height:35px;float:left;margin-left:2px;">&nbsp;</a></div>');
+				$('#gbcsearch_gbc').on('click', function(e){
+					e.preventDefault();
+					var gbcterms = $('#q').val();
+					window.location.href = 'http://supercart.cafepress.com/gbc?q=' + gbcterms;
+				});
+			};
+			window.doWallartSerpCallback = function(){
+				if($('#gbcsearchtabs').length === 0){
+					addTabs();
+				}
+			};
+			// just in case it hasn't been triggered:
+			doWallartSerpCallback();
+		}
+	} else if(window.cpsearch && window.cpsearch.searchCategoryName){
+		// ibox serp frame test
+		if(cpsearch.searchCategoryName.toLowerCase().indexOf('invitation') !== -1){
+			$('.layout-content').prepend('<div id="iboxsearchtabs" style="width:770px;border-bottom:2px solid #79a618;margin:0 0 20px -10px;overflow:auto;"><a class="active" href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="iboxsearch_cp" title="Cafepress Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-cafepress.jpg) no-repeat;width:199px;height:35px;float:left;">&nbsp;</a><a href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="iboxsearch_ibox" title="InvitationBox Premium Collection" style="background:url(../../../../content.cpcache.com/cplabs/iboxsearchtab-ibox.jpg) no-repeat;width:199px;height:35px;float:left;margin-left:2px;">&nbsp;</a></div>');
+			$('#iboxsearch_ibox').on('click', function(e){
+				e.preventDefault();
+				var iboxterms = $('#q').val();
+				window.location.href = 'http://supercart.cafepress.com/ibox?q=' + iboxterms;
+			});
+		}
+	}
+}
+	
+function AFcheckForjQuery(){
+	if (window.$){
+		artFrameTab();
+	} else {
+		setTimeout(AFcheckForjQuery, 200);
+	}
+}
+
+AFcheckForjQuery();
+</script>
+<!-- end artframe tab -->
+
 
 
 <title>CafePress.com : Customer Service : Privacy Policy</title>
@@ -84,11 +131,14 @@ window.cafepress.domain_uk = 'cafepress.co.uk';
 
 window.cafepress.originCountryCode = 'US'
 
+
+window.cafepress.useAutoCompleteService = false;
+
 window.cafepress.tracking = window.cafepress.tracking || {};
 window.cafepress.tracking.pageLandingType = 'HelpPage';
 window.cafepress.tracking.productFamily = '';
 window.cafepress.tracking.salesChannel = 'Other';
-window.cafepress.tracking.abTestString = 'AB_CAF-374:T:F,AB_CAF-64:T:F,AB_CAF-704:T:F,AB_CPLABS_ARTFRAME:C:F,AB_RETL_BS:C:F,AB_RETL-248:T:F,AB_RMVC-218:T:F,AB_SOCIAL_LOGIN:T:F,EXP_08_00:T:F,EXP_08_07:T:F,EXP_11_03:C:F,EXP_11_17:T:F';
+window.cafepress.tracking.abTestString = 'AB_CAF-64:T:F,AB_CAF-704:T:F,AB_CPLABS_ARTFRAME:T:F,AB_CPLABS_SUBTLE:C:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,AB_RMVC-217:T:F,AB_RMVC-218:T:F,AB_RMVC-38:C:F,AB_SOCIAL_LOGIN:T:F,AB_SRP_XSL_ALT:C:F,EXP_08_00:C:F,EXP_08_07:T:F,EXP_11_03:C:F,EXP_11_17:T:F';
 window.cafepress.tracking.businessUnit = 'Retail';
 window.cafepress.tracking.searchTerm = '';
 window.cafepress.tracking.trafficMedium = 'Direct';
@@ -115,8 +165,8 @@ Copyright 1997-2005 Omniture, Inc. -->
 	var AFFILIATE_CJ_MASTER_PID="7532081";
 	var AFFILIATE_CJ_PID="0";
 	var LANDING_PAGE_MEMBER_NO="0";
-	var AnalyzableVisitorExperimentAssignment="AB_CAF-374:T:F,AB_CAF-64:T:F,AB_CAF-704:T:F,AB_CPLABS_ARTFRAME:C:F,AB_RETL_BS:C:F,AB_RETL-248:T:F,AB_RMVC-218:T:F,AB_SOCIAL_LOGIN:T:F,EXP_08_00:T:F,EXP_08_07:T:F,EXP_11_03:C:F,EXP_11_17:T:F";
-	var VisitorId="FD7705263793B0E3E97C00888E068E1D:54759E5C532C5FA776F5A8A966E935FC";
+	var AnalyzableVisitorExperimentAssignment="AB_CAF-64:T:F,AB_CAF-704:T:F,AB_CPLABS_ARTFRAME:T:F,AB_CPLABS_SUBTLE:C:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,AB_RMVC-217:T:F,AB_RMVC-218:T:F,AB_RMVC-38:C:F,AB_SOCIAL_LOGIN:T:F,AB_SRP_XSL_ALT:C:F,EXP_08_00:C:F,EXP_08_07:T:F,EXP_11_03:C:F,EXP_11_17:T:F";
+	var VisitorId="AE28E9681ACCC3F4931E28D6B7481E58:D209D81BFEEC1360B79A8B9572266907";
 	var notpurchase_channel_CSR="False";
 	var AFFILIATE_TYPE="direct";
 	var AFFILIATE_MEMBER_NO="8130179";
@@ -130,7 +180,8 @@ Copyright 1997-2005 Omniture, Inc. -->
 <!-- End SiteCatalyst code variables version: H.2. -->
 
 	<!-- Omniture Code Ends -->
-<script src="../../../../content.cpcache.com/js/allglobal.manualv2.min.js%3F12262012" type="text/javascript"></script>
+<script src="../../../../content.cpcache.com/js/allglobal.manualv2.min.js%3Fv=1" type="text/javascript"></script>
+<!--test-->
 <script type="text/javascript">
 $(document).ready(function (){
 $("#cartItemCount").html("<u>"+window.cafepress.cartItemCount+"</u>");
@@ -142,6 +193,53 @@ $("#cartItemCount").html("<u>"+window.cafepress.cartItemCount+"</u>");
 <script type='text/javascript'>
   var TBRUM=TBRUM||{};TBRUM.q=TBRUM.q||[]; TBRUM.q.push(['mark','firstbyte',(new Date).getTime()]);
 </script>
+
+<!-- artframe test -->
+<script type="text/javascript">
+function artFrameTab(){
+	if(window.searchData){
+		if(searchData.action.indexOf('wallart/search') !== -1){
+			// gbc serp frame test
+			var addTabs = function(){
+				$('#ContentContainerRight').prepend('<div id="gbcsearchtabs" style="width:770px;border-bottom:2px solid #79a618;margin:0 0 20px -10px;overflow:auto;"><a class="active" href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="gbcsearch_cp" title="Cafepress Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-cafepress.jpg) no-repeat;width:199px;height:35px;float:left;">&nbsp;</a><a href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="gbcsearch_gbc" title="Great Big Canvas Premium Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-gbc.jpg) no-repeat;width:199px;height:35px;float:left;margin-left:2px;">&nbsp;</a></div>');
+				$('#gbcsearch_gbc').on('click', function(e){
+					e.preventDefault();
+					var gbcterms = $('#q').val();
+					window.location.href = 'http://supercart.cafepress.com/gbc?q=' + gbcterms;
+				});
+			};
+			window.doWallartSerpCallback = function(){
+				if($('#gbcsearchtabs').length === 0){
+					addTabs();
+				}
+			};
+			// just in case it hasn't been triggered:
+			doWallartSerpCallback();
+		}
+	} else if(window.cpsearch && window.cpsearch.searchCategoryName){
+		// ibox serp frame test
+		if(cpsearch.searchCategoryName.toLowerCase().indexOf('invitation') !== -1){
+			$('.layout-content').prepend('<div id="iboxsearchtabs" style="width:770px;border-bottom:2px solid #79a618;margin:0 0 20px -10px;overflow:auto;"><a class="active" href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="iboxsearch_cp" title="Cafepress Collection" style="background:url(../../../../content.cpcache.com/cplabs/gbcsearchtab-cafepress.jpg) no-repeat;width:199px;height:35px;float:left;">&nbsp;</a><a href="index.aspx%3Fpage=privacy_policy.aspx.html#" id="iboxsearch_ibox" title="InvitationBox Premium Collection" style="background:url(../../../../content.cpcache.com/cplabs/iboxsearchtab-ibox.jpg) no-repeat;width:199px;height:35px;float:left;margin-left:2px;">&nbsp;</a></div>');
+			$('#iboxsearch_ibox').on('click', function(e){
+				e.preventDefault();
+				var iboxterms = $('#q').val();
+				window.location.href = 'http://supercart.cafepress.com/ibox?q=' + iboxterms;
+			});
+		}
+	}
+}
+	
+function AFcheckForjQuery(){
+	if (window.$){
+		artFrameTab();
+	} else {
+		setTimeout(AFcheckForjQuery, 200);
+	}
+}
+
+AFcheckForjQuery();
+</script>
+<!-- end artframe tab -->
 
 </head>
 <body>
@@ -335,7 +433,7 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 					<ul class="nav-menu">
 					<li class="nav-2 active"><a href="http://www.cafepress.com/+t-shirts" alt="T-shirts">T-shirts</a>
 						<div class="sub-menu first-menu">
-						<span></span>
+                        	<div class="nav-col1">
 							<a href="http://www.cafepress.com/+t-shirts">T-shirts</a>
 							<a href="http://www.cafepress.com/+kids-clothing">Kids T-shirts</a>
 							<a href="http://www.cafepress.com/+baby-clothing">Baby T-shirts</a>
@@ -345,7 +443,18 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 							<a href="http://www.cafepress.com/+womens-maternity">Maternity</a>
 							<a href="http://www.cafepress.com/+womens-plus-sizes">Plus Size</a>
 							<a href="http://www.cafepress.com/+polos">Polos</a>
+							
+                            </div>
+                            <div class="nav-col2">
+                            <a href="http://www.cafepress.com/+st-patricks-day+t-shirts">St. Patrick’s Day T-Shirts</a>
+							<a href="http://www.cafepress.com/+irish+t-shirts">Irish T-Shirts</a>
+							<a href="http://www.cafepress.com/+shamrock+t-shirts">Shamrock T-Shirts</a>
+							<a href="http://www.cafepress.com/+pi-day+t-shirts">Pi Day T-Shirts</a>
+							<a href="http://www.cafepress.com/+pi+t-shirts">Pi T-Shirts</a>
+							<a href="http://www.cafepress.com/+3.14+t-shirts">3.14 T-Shirts</a>
+							<a href="http://www.cafepress.com/+math+t-shirts">Math T-Shirts</a>
 							<a href="http://www.cafepress.com/+t-shirts">All T-shirts &raquo;</a>
+                            </div>
 						</div>
 					</li>
 				
@@ -370,8 +479,8 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 						
 							<div class="nav-col1">
 							
-                            				<a href="http://www.cafepress.com/+baby-clothing">Baby Clothing</a>
-                            				<a href="http://www.cafepress.com/+baby-bodysuits">Baby Bodysuits</a> 
+                            <a href="http://www.cafepress.com/+baby-clothing">Baby Clothing</a>
+                            <a href="http://www.cafepress.com/+baby-bodysuits">Baby Bodysuits</a> 
 							<a href="http://www.cafepress.com/+baby-bibs">Baby Bibs</a>
 							<a href="http://www.cafepress.com/+baby-hat">Baby Hats</a>
 							<a href="http://www.cafepress.com/+baby-blanket">Baby Blankets</a>
@@ -380,12 +489,12 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 							
 							</div>
 							<div class="nav-col2">
-                            				<a href="http://www.cafepress.com/+kids-clothing">Kids Clothing</a>
-                            				<a href="http://www.cafepress.com/+kids-baseball-jerseys">Kids Baseball Jerseys</a>
+                            <a href="http://www.cafepress.com/+kids-clothing">Kids Clothing</a>
+                            <a href="http://www.cafepress.com/+kids-baseball-jerseys">Kids Baseball Jerseys</a>
 							<a href="http://www.cafepress.com/+kids-water-bottles">Kids Water Bottles</a>
 							<!-- <a href="http://www.cafepress.com/+flip-flops">Kids Flip Flops</a> -->
-                            				<a href="http://www.cafepress.com/+toys">Kids Toys</a>
-                            				<a href="http://www.cafepress.com/+lunch-bag">Kids Lunch Bags</a>
+                            <a href="http://www.cafepress.com/+toys">Kids Toys</a>
+                            <a href="http://www.cafepress.com/+lunch-bag">Kids Lunch Bags</a>
 							<!-- <a href="http://www.cafepress.com/make/3d-photo-gifts/catalog/8x10_3d_frames">Photo Frames</a>
 							<a href="http://www.cafepress.com/make/3d-photo-gifts/catalog/bookmarks">Bookmarks</a>
                             				<a href="http://www.cafepress.com/make/3d-photo-gifts/catalog/rulers_6_inch">Rulers</a> -->
@@ -433,6 +542,8 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 							<a href="http://www.cafepress.com/+shot-glasses">Shot Glasses</a>
 							<a href="http://www.cafepress.com/+coasters">Drink Coasters</a>
 							<a href="http://www.cafepress.com/+flasks">Flasks</a>
+                            <a href="http://www.cafepress.com/+st.-patricks-day+drinking-glasses">St. Patrick’s Day Steins</a>
+                            <a href="http://www.cafepress.com/+st.-patricks-day+drinking-glasses">St. Patrick’s Day Drinking Glasses</a>
 							<br/>
 							<a href="http://www.cafepress.com/+drinkware">All Drinkware &raquo;</a>
 						</div>
@@ -1031,8 +1142,9 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 					<li class="nav-2"><a href="http://www.cafepress.com/+holidaygiftsunder50+gifts" alt="Gifts under $50">Gifts under $50</a></li>
 					<li class="nav-2"><a href="http://www.cafepress.com/+holidaygiftsunder35+gifts" alt="Gifts under $35">Gifts under $35</a></li>
 					<li class="nav-2"><a href="http://www.cafepress.com/+holidaygiftsunder25+gifts" alt="Gifts under $25">Gifts under $25</a></li>
+                    <li class="nav-2"><a href="http://www.cafepress.com/+inexpensive+gifts" alt="Affordable Gifts">Affordable Gifts</a></li>
 					<li class="nav-2"><a href="http://www.cafepress.com/+likeable+gifts" alt="Likeable Gifts">Likeable Gifts</a> <span style="color:#cc0000; display:inline; font-size:11px">new!</span></li>
-					<!-- <li class="nav-2"><a href="http://www.cafepress.com/+stocking-stuffer+gifts " alt="Stocking Stuffer Gifts">Stocking Stuffer Gifts</a></li> -->
+					
 					<li class="nav-2"><a href="http://www.cafepress.com/make/personalized-gifts" alt="Personalized Gifts">Personalized Gifts</a></li>
 					<li class="nav-2"><a href="http://www.cafepress.com/+gifts" alt="See All Gifts">See All Gifts &raquo;</a></li>
 				</ul>

@@ -1,0 +1,459 @@
+var m_mhTheme=null;var m_pageTheme=null;var m_pbarCart=null;var m_pbarMA=null;var m_ensightenLink=null;var m_pnlinks;var m_crumbs;var m_mhFixed=false;var m_isHome=false;var m_isSegHome=false;var m_skipMenuDef=false;var m_mda=null;var m_printLink=null;var m_emailLink=false;var m_helpLink=null;var m_production=true;var m_menudef="/content/public/menu.aspx";var m_avgChW=6;var m_crumbRegEx1=/<.*>/g;var m_crumbRegEx2=/&nbsp;/g;var m_crumbRegEx3=/&~ck=bt/g;var m_subNavLinksDisplay=false;var m_subNavIconsDisplay=false;var m_largeFont=false;var m_supressSubNav=false;var m_stdEmpty="";var m_stdOffImg;var m_activeTab=null;var m_pbarStripAjax=null;var m_pbarNavAjax=null;var m_pbarContentAjax=null;var m_defaultTabs=false;var m_pbarPfx="";var m_phoneTitle=null;var m_phoneMsg=null;var m_phoneTariff=null;var m_pbarContentDiv=null;var m_pageTab=null;var m_mastheadWidth=928;var m_mastheadWidthNextGen=965;var m_pbarTabEnabled=false;var m_tabNav=false;var m_pbarCartEnabled=false;var m_pbarMAEnabled=false;var m_toolBoxLinks=null;var m_toolBoxRender=null;var m_pbarLinks=null;var m_pbarStripContent=null;var m_buyonlineMessage=null;var m_subNavLinkWidth=null;var m_searchTypes=null;var m_searchTemp=null;var m_myAccountLink=null;var m_timeoutOpenDelay=null;var m_timeoutCloseDelay=null;var m_timeoutTerOpenDelay=null;var m_timeoutTerCloseDelay=null;var m_tabContentDiv=null;var m_tabTerContentDiv=null;var m_maIframe=false;var Screen=new GetScreen();var m_cartPages=new Array();var loaded=new Array();var onloadFired=false;var m_isRtl=false;var m_clientVars=null;var m_isCenter=true;var m_isPopupIntention=false;var m_runSafeLoad=false;var segmentTitle=null;var m_premierModal=null;var shrink=0
+var isbloated=false;var isbloating=false;var m_fromAddToCart=false
+var ContainerHeight=0
+var increment=0
+var intShow
+var m_id
+var blockcollapse=false
+var m_menuload=new Array();var m_menuloaded=false;var m_popClose="Close";var m_isAlienwareLayout=false;var m_isAlienwareTheme=false;var m_stormCookie=null;var m_navPage=null;var m_isRcomm=false;var m_curUrl="";var _subMenuMarkup=[];var m_searchText="Search";try{if(document.domain.indexOf("dell.com.")==-1&&document.domain.indexOf("dell.com")!=-1){document.domain="dell.com";}else{try{window.location.href;}catch(e){document.domain=document.domain;}}}catch(e){}
+function writeMH(phoneTitle,phoneMsg,phoneTariff,segmentTitle,hasLocale,logoLink,pnmsg){document.write("<div id=\"trailimageid\"><span id=\"processingCaptionID\">Processing....</span><img src=\""+m_imgPfx+"/images/global/brand/icons/ajax-loader[1].gif\" border=\"0\"></div>");document.write("<div id=\"iframeContainer\" style=\"position:absolute;\"></div>");m_phoneTitle=phoneTitle;m_phoneMsg=phoneMsg;m_phoneTariff=phoneTariff;m_curUrl=(m_curUrl!=null&&m_curUrl.length>0)?m_curUrl:window.location.href;document.writeln("<!-- begin masthead -->");m_stdOffImg="<img src=\""+m_imgPfx+"/images/global/brand/icons/smextlink.gif\", width=\"16\" height=\"9\" border=\"0\"/>";autoconfig();if(typeof(m_suppressPrintLink)!="undefined"){m_printLink=null;}
+if(typeof(m_menuBar)=="undefined"){if(!m_production){document.write("<div class=\"para\" style=\"color:red; font-weight:bold\">There is a problem with the menu definition. ");document.write("<a href=\""+m_menudef+"\">Click here to view</a></div>");return;}
+return;}
+if(m_largeFont){m_avgChW=m_avgChW+2;}
+m_mhFixed=true;if(typeof(m_printableText)=="undefined"){m_printableText=m_printText;}
+if(typeof(m_helptext)=="undefined"){m_helptext="help";}
+document.writeln("<a name=\"mastheadtop\"></a>");document.write("<div class=\"mastheadcontainer\"><table id=\"nextgen\" class=\"centertable\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\""+m_mastheadWidthNextGen+"\"><tr>");if(m_IsAuthPremier){document.write("<td class=\"mhpersonalizationcell\" valign=\"middle\" "+((typeof(m_menuBar)!="undefined"&&m_menuBar&&m_menuBar.length>0&&!m_skipMenuDef)?"colspan=\"3\"":"colspan=\"2\"")+"><table id=\"pbarstriptable\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><img class=\"flag\" height=\"11\" width=\"16\" src=\"http://www1-cdn.dell.com/css/images/flags/"+m_ctry+".gif\" alt=\""+m_ctryName+"\"/></td><td nowrap=\"nowrap\"><div id=\"localeselectorlinkdiv_premier\" class=\"localeselectorlinkdiv\"><div id=\"localeselectorlink\" class=\"localeselectorlink_premier\">"+m_ctryName+"</div></div>");}
+else{document.write("<td class=\"mhpersonalizationcell\" valign=\"middle\" "+((typeof(m_menuBar)!="undefined"&&m_menuBar&&m_menuBar.length>0&&!m_skipMenuDef)?"colspan=\"3\"":"colspan=\"2\"")+"><table id=\"pbarstriptable\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><img class=\"flag\" height=\"11\" width=\"16\" src=\"http://www1-cdn.dell.com/css/images/flags/"+m_ctry+".gif\" alt=\""+m_ctryName+"\"/></td><td nowrap=\"nowrap\"><div id=\"localeselectorlinkdiv\" class=\"localeselectorlinkdiv\"><div id=\"localeselectorlink\" class=\"localeselectorlink\">"+m_ctryName+"</div></div><div id=\"localeselectordiv\" class=\"localeselectorhidden\"></div>");}
+if($("#nextgen").length>0)
+renderCountrySelector();document.write("</td>");var ticks=new Date();document.write("<td><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" alt=\"\" border=\"0\" width=\"15\" height=\"1\" /></td><td width=\"100%\">");renderBuyOnline();document.write("</td>");document.write("<td valign=\"middle\" nowrap=\"nowrap\">");if(segmentTitle){document.write("<div class=\"segmenttitle\">");document.write(segmentTitle);document.write("</div>");}
+document.write("</td><td valign=\"middle\" nowrap=\"nowrap\">");if(m_pbarLinks!=null&&m_pbarLinks.length>0){renderPbarLinks();}
+document.write("</td><td valign=\"top\">");document.write("<div class=\"pbarcontainer\" id=\"pbarcontainer\"><div id=\"pbarcontent\" name=\"pbar\" class=\"pbarcontent\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>");document.write("<td><div id=\"pbarstripcontainer\"></div></td>");renderPbarStrip();if(m_toolBoxRender!=null)
+document.write(m_toolBoxRender);document.write("</tr></table></div></div></td></tr></table></td></tr><tr>")
+document.write("<td class=\"mhlogocell\" valign=\"middle\" rowspan=\"2\">");document.write("<div id=\"logocontainer\">");document.write("<a href=\"#skipMH\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" alt=\"Skip to main content\" border=\"0\" width=\"1\" height=\"1\" /></a>");if(typeof(m_nothomelogo)!="undefined"){if(m_homelink!=null&&m_homelink.length>0){var pcol=(window.location.protocol=='https:')?"https:":"http:";if(m_homelink.toLowerCase().indexOf(pcol)==-1){if(m_homelink.indexOf("/")!=0){m_homelink="/"+m_homelink;}}
+if(logoUrlOverride!=null&&logoUrlOverride.length>0){m_homelink=logoUrlOverride;}}
+var IEver=readIEVer();var isIE6orless=(IEver>=1.0)&&(IEver<7.0);m_nothomelogo=m_nothomelogo.replace("/images/global/brand/ui/logo.gif",(m_isAlienwareTheme?"/images/global/brand/ui/nxgen/logo73.png":"/images/global/brand/ui/storm80/logo80."+(isIE6orless?"gif":"png")));if(logoLink){document.write("<a class=\"logolink\" href=\""+m_homelink+"\">");}
+document.write("<img class=\"logo\" src=\""+m_nothomelogo+"\" border=\"0\" width=\"61\" height=\"61\" alt=\"Dell\" />");if(logoLink){document.write("</a>");}}
+document.write("</div></td>");if(typeof(m_menuBar)!="undefined"&&m_menuBar&&m_menuBar.length>0&&!m_skipMenuDef){document.write("<td class=\"mhprimarynavcell\" valign=\"middle\">");var pageTab=null;var maxTab=(m_pbarTabEnabled&&!m_tabNav)?m_menuBar.length:(m_menuBar.length-1);var curUrl=m_curUrl;var urlOverRide=false;var cookieTab=m_stormCookie.session.getCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS);if(cookieTab=="myaccountMenu"){pageTab=m_menuBar.length;}
+if(pageTab==null){if(cookieTab!=null&&cookieTab.length>0){for(n=0;n<m_menuBar.length;n++){if((cookieTab==m_menuBar[n].Id)||(cookieTab==n))
+{pageTab=n;break;}}}
+else{for(n=0;n<m_menuBar.length;n++){if(m_menuBar[n].IsSelectedTab){m_pageTab=n;m_stormCookie.session.setCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS,m_menuBar[n].Id);break;}}}}
+var qTab=getQueryVariable("~tid");if(qTab){if(typeof(qTab)!="undefined"&&!isNaN(parseInt(qTab))&&qTab<=maxTab){pageTab=qTab;m_stormCookie.session.setCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS,qTab);}
+for(n=0;n<m_menuBar.length;n++){if(m_menuBar[n].Id.indexOf(qTab)!=-1){pageTab=n;m_stormCookie.session.setCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS,m_menuBar[n].Id);}}}
+else{if(!isNaN(parseInt(m_pageTab))){if(m_pageTab<=maxTab){pageTab=parseInt(m_pageTab);}}
+for(n=0;n<m_menuBar.length;n++){if(m_pageTab==m_menuBar[n].Text||((m_pageTab+"Menu")==m_menuBar[n].Id)){pageTab=n;}}}
+if(pageTab==null){m_pageTab=0;}
+else{m_pageTab=pageTab;}
+document.write("<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tr>");renderPrimaryTabStrip();document.write("<td width=\"100%\" valign=\"bottom\"><div class=\"tabspacer\" /></td>");document.write("</tr></table></td>");}
+document.write("<td class=\"mhsearchcell\" valign=\"middle\">");if(typeof(m_supressSearch)=="undefined"||m_supressSearch==false){document.write("<div class=\"searchcontainer\" id=\"searchcontainer\">");if(m_search){if(window.location.protocol=="https:"){m_search=m_search.replace(/http:\/\/i.dell.com/g,m_imgPfx);}
+document.write("<div class=\"searchbox_topright\"><div class=\"searchbox_topleft\"><div class=\"searchbox_bottomright\"><div class=\"searchbox_bottomleft\">");m_search=m_search.replace("http://i.dell.com/images/global/brand/ui/primary.gif",(m_imgPfx+"/images/global/brand/ui/nxgen/search_field_button.gif"));$(function(){var SearchText=m_searchText;$(".mastheadcontainer .searchcontainer .searchbox_bottomleft").css("display","none").append(m_search);$(".mastheadcontainer .searchcontainer form td:first").addClass("searchinputcol");$(".mastheadcontainer .searchcontainer .searchinputcol input").attr("value","");$(".mastheadcontainer .searchcontainer form td:last input").remove();$(".mastheadcontainer .searchcontainer form td:last").append("<div class=\"l\"><\/div><div class=\"r\"><\/div><div class=\"c\"\/>");$(".mastheadcontainer .searchcontainer form td:last a").append("<nobr>"+SearchText+"</nobr>").appendTo(".mastheadcontainer .searchcontainer form td:last .c").hover(function(){$(".mastheadcontainer .searchcontainer form td:last .l, .mastheadcontainer .searchcontainer form td:last .r").addClass("selected");},function(){$(".mastheadcontainer .searchcontainer form td:last .l, .mastheadcontainer .searchcontainer form td:last .r").removeClass("selected");});$(".mastheadcontainer .searchcontainer .searchbox_bottomleft").css("display","block");});document.write("</div></div></div></div>");var btn=null;if(btn){btn.attr("hspace","0");btn.attr("src",m_imgPfx+"/images/global/brand/ui/nxgen/search_field_button.gif");}
+var cat=getQueryVariable("cat");var kword=getQueryVariable("k");if(cat!=null){var input=getRawObject("cat");if(input){input.value=cat;}}
+if(kword!=null){var kinput=getRawObject("searchinput");if(kinput){var kw=DecodeSearch(kword);if(kw!=undefined&&kw.length>0){kinput.value=kw;}}}}
+else{}
+var searchCombo=document.getElementById("cat");SetSeachComboTitle(searchCombo);document.write("</div>");}
+document.write("</td></tr>");if(typeof(m_menuBar)!="undefined"&&m_menuBar&&m_menuBar.length>0&&!m_skipMenuDef&&typeof(m_menuBar[m_pageTab])!="undefined"&&m_menuBar[m_pageTab].MenuItems.length>0){document.write("<tr><td class=\"mhsecondarynavcell\" align=\"left\" valign=\"middle\" colspan=\"2\">");document.write("<div class=\"subnavcontainer\" id=\"subnav\">");index=m_pageTab;document.write(renderSecondaryTabStrip(m_menuBar[index]));document.write("</div></td></tr>");}
+else{document.write("<tr><td colspan=\"3\"></td></tr>");}
+if(m_crumbs!=null||m_mda!=null||m_menuBar!=null){document.write("<tr><td class=\"mhcrumbcell\" valign=\"middle\" ");if(typeof(m_menuBar)!="undefined"&&m_menuBar&&m_menuBar.length>0&&!m_skipMenuDef){document.write(" colspan=\"3\"");}
+else{document.write(" colspan=\"2\"");}
+document.write("><table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>");if(m_crumbs){if(m_isRtl){renderMastheadCrumbsRtl();}
+else{renderMastheadCrumbs();}}
+if(m_mda&&!(m_isRtl)){document.write("<div class=\"mdabarcontainer\" id=\"mdabar\">");document.write(m_mda);document.write("</div>");}
+if(m_mda&&m_isRtl){document.write("<div class=\"mdabarcontainer\" id=\"mdabar\">");document.write(m_mda);document.write("</div>");}
+document.write("</td></tr>");}
+else{document.write("<tr><td><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" alt=\"\" border=\"0\" width=\"1\" height=\"10\" /></td></tr>");}
+document.write("</table></td></tr></table></div>");if(m_pnlinks&&m_subNavLinksDisplay&&(!m_supressSubNav)){document.write("<div class=\"tertiarynavcontainer\"><table class=\"centertable\" cellpadding=\"0\" cellspacing=\"0\" width=\""+m_mastheadWidthNextGen+"\"><tr><td valign=\"middle\">");document.write("<span id=\"psinfo\" class=\"psinfo\"></span>");document.write("</td><td valign=\"bottom\">");renderSubNavLinks();document.write("</td></tr></table></div>");}
+document.write("<a name=\"skipMH\"></a>");document.writeln("<!-- end masthead -->");bindMastHeadFlyouts();}
+function SetSeachComboTitle(SelectObj){if(SelectObj){if(SelectObj.selectedIndex>-1){if(SelectObj.options[SelectObj.selectedIndex].value!=""){var searchCombo=document.getElementById("cat");if(searchCombo){searchCombo.title=SelectObj.options[SelectObj.selectedIndex].text;}}}}}
+function renderBuyOnline(){if(m_phoneTitle||m_phoneMsg){if(m_isRtl){buyOnlineAlign="left";}
+else{buyOnlineAlign="right";}
+document.write("<span class=\"message_buyonline\">");if(m_phoneTitle){document.write("<span style=\"padding-"+buyOnlineAlign+":3px\">")
+document.write(m_phoneTitle);document.write("</span>")}
+if(m_phoneMsg){document.write("<span style=\"padding-"+buyOnlineAlign+":3px\">")
+document.write(m_phoneMsg);document.write("</span>")}
+if(m_phoneTariff){document.write("<span>")
+document.write("<span class=\"mhTextNewTrf\">"+m_phoneTariff+"</span>");document.write("</span>")}
+document.write("</span>");}}
+var isCSS=false;var isW3C=false;var isIE4=false;var isNN4=false;var isIE6=false;var isGecko=false;var isOpera=false;var isDHTML=false;var isSafari=false;var suppressMenus=false;var m_anchorClicked=false;var pageSeg=getCookieKeyValue("lwp","s");var pageLang=getCookieKeyValue("lwp","l");var pageCnty=getCookieKeyValue("lwp","c");var pageCS=getCookieKeyValue("lwp","cs");function autoconfig(){if(document&&document.images){isCSS=(document.body&&document.body.style)?true:false;isW3C=(isCSS&&document.getElementById)?true:false;isIE4=(isCSS&&document.all&&readIEVer()>=4.0)?true:false;isNN4=(document.layers)?true:false;isGecko=(isCSS&&navigator&&navigator.product&&navigator.product=="Gecko");isOpera=(isCSS&&navigator.userAgent.indexOf("Opera")!=-1);isSafari=(isCSS&&navigator.userAgent.indexOf("Safari")!=-1);isIE6CSS=(document.compatMode&&document.compatMode.indexOf("CSS1")>=0)?true:false;isIE6=(isIE6CSS&&readIEVer()>=6.0);isDHTML=isCSS&&(isIE4||isGecko||isOpera);if(suppressMenus){isDHTML=false;}
+else if(isOpera&&readOperaVer()<7){isDHTML=false;}
+else if(isGecko&&navigator.productSub<=20011022){isDHTML=false;}
+else if(isGecko&&navigator.productSub==20030107){var x=navigator.userAgent.indexOf("AppleWebKit");if(x>-1){isDHTML=(navigator.userAgent.substring(x+12,x+15))>300;}
+else{isDHTML=false;}}
+m_stormCookie=new StormCookie();}}
+function readIEVer(){var agent=navigator.userAgent;var offset=agent.indexOf("MSIE");if(offset<0){return 0;}
+return parseFloat(agent.substring(offset+5,agent.indexOf(";",offset)));}
+function readOperaVer(){var agent=navigator.userAgent;var offset=agent.indexOf("Opera");if(offset<0){return 0;}
+return parseFloat(agent.substring(offset+6));}
+function renderPbarLinks(){if(m_pbarLinks){document.write("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>");for(var n=0;n<m_pbarLinks.length;n++){var href=m_pbarLinks[n].Href;var text=m_pbarLinks[n].Text;var icon=m_pbarLinks[n].IconUrl;if(icon!=undefined&&icon!=null&&icon.length>0&&icon.indexOf(".com/")!=-1){icon=m_imgPfx+icon.substring(icon.indexOf(".com/")+4);document.write("<td valign=\"middle\"><img src=\""+icon+"\" height=\"17px\" border=\"0\" alt=\""+text+"\" /></td>");}
+document.write("<td valign=\"middle\" nowrap=\"true\"><span class=\"pbarlink\" nowrap=\"1\"><a href=\""+href+"\">"+text+"</a></span></td>");document.write("<td valign=\"middle\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" border=\"0\" height=\"1\" width=\"10\" alt=\"\" /></td>");}
+document.write("</tr></table>");}}
+function renderPrimaryTabStrip(){var menuHeaderID;if(isIE6){}
+var cssPrefix="inactivetab";for(n=0;n<m_menuBar.length;n++){if(n==m_pageTab){cssPrefix="activetab";}
+var index=n;if((m_menuBar[n].Href!=null&&m_menuBar[n].Href.length>0)){var item=m_menuBar[n];document.write("<td><div id=\""+m_menuBar[n].Id+"\" class=\""+cssPrefix+"\" id=\""+m_menuBar[n].Id+"\" name=\"mh_tabselector\">");document.write("<div onclick=\"SwapTab( '"+m_menuBar[index].Id+"', '"+createNavLink(m_menuBar[index].Href,n)+"', "+index+" )\" class=\""+cssPrefix+"content\" id=\""+m_menuBar[n].Id+"content\" align=\"center\" nowrap=\"1\">");document.write(m_menuBar[n].Text);document.write("</div></div></td>");}
+else{document.write("<td><div onclick=\"swapSecondaryTabStrip('"+m_menuBar[n].Id+"','"+index+"')\" class=\""+cssPrefix+"\" id=\""+m_menuBar[n].Id+"\" name=\"mh_tabselector2\">");document.write("<div class=\""+cssPrefix+"content\" id=\""+m_menuBar[n].Id+"content\" align=\"center\" style=\"cursor:pointer\" nowrap=\"1\">");document.write(m_menuBar[n].Text);document.write("</div></div></td>");}
+if(n==m_pageTab){m_activeTab=getRawObject(m_menuBar[m_pageTab].Id);}
+cssPrefix="inactivetab";}
+if(m_pbarTabEnabled&&!m_tabNav){if(isSafari&&m_myAccountLink){document.write("<td width=\"4px\" vAlign=\"top\" >");document.write("<div id=\"pbarTableft\" class=\""+cssPrefix+"left\"></div>");document.write("</td>");document.write("<td><div onclick=\"window.location='"+m_myAccountLink+"';\" class=\""+cssPrefix+"\" id=\"pbarTab\" name=\"mh_tabselector2\">");document.write("<div class=\""+cssPrefix+"content\" id=\"pbarTabcontent\" align=\"center\" style=\"cursor:pointer\" nowrap=\"1\">");document.write(m_pbarTabTitle);document.write("</div></div></td>");}
+if(!isSafari){var link=(window.location.href.indexOf("~tid")==-1)?(window.location.href+"&~tid="+m_menuBar.length):window.location.href.replace("~tid="+getQueryVariable("~tid"),"~tid="+(m_menuBar.length));document.write("<td width=\"4px\" vAlign=\"top\" >");document.write("<div id=\"pbarTableft\" class=\""+cssPrefix+"left\"></div>");document.write("</td>");document.write("<td><div onclick=\"renderPbarTabNav('pbarTab')\" class=\""+cssPrefix+"\" id=\"pbarTab\" name=\"mh_tabselector2\">");document.write("<div class=\""+cssPrefix+"content\" id=\"pbarTabcontent\" align=\"center\" style=\"cursor:pointer\" nowrap=\"1\">");document.write(m_pbarTabTitle);document.write("</div></div></td>");}}}
+function createNavLink(url,tab){var link=null;var patt=/^htt(p|ps):\/\//gi;var patt2=/^javascript/i;if(url!=null){if(url.match(patt)||url.match(patt2)){link=url;}
+else{link=m_regionDomain+url;}}
+return link;}
+function swapSecondaryTabStrip(src,id){subNavContent=getRawObject("subnav");menu=m_menuBar[id];SwapTab(getRawObject(src),null,id);subNavContent.innerHTML=renderSecondaryTabStrip(menu);bindMastHeadFlyouts();}
+function renderSecondaryTabStrip(menu){var sep="sub";var isTitle=false;var subNavHTML=new StringBuffer();subNavHTML.append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\"><tr><td width=\"10\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" border=\"0\" height=\"1\" width=\"10\" alt=\"\" /></td>");var columnClass="";var columnView=false;for(var n=0;n<menu.MenuItems.length;n++){var item=menu.MenuItems[n];var subMenu="";if(item.Text!=null){if(n==0){if(m_isRtl){containerClass="subnavlinkcontainerlast";}
+else{containerClass="subnavlinkcontainerfirst";}}
+else if((n+1)==menu.MenuItems.length){if(m_isRtl){containerClass="subnavlinkcontainerfirst";}
+else{containerClass="subnavlinkcontainerlast";}}
+else{containerClass="subnavlinkcontainer";}
+if(item.MenuItems==null){containerClass+="nomenu";}
+if(isDHTML){if(n>0){subNavHTML.append("<td width=\"2\"><div class=\"subnavlinkdivide\"></div></td>");}
+if(item.MenuItems){if((n+1)==menu.MenuItems.length){columnClass="columnlist";columnView=true;}
+else{columnClass="linklist";columnView=false;}
+subNavHTML.append("<td class=\"subnavlinkcell\" id=\"mh_"+n+"cell\" valign=\"middle\" align=\"center\"><div id=\"mh_"+n+"\" name=\"mh_subnavlink\" class=\""+containerClass+"\">");subNavHTML.append("<table cellpadding=\"0\" cellspacing=\"0\" height=\"30\"><tr><td>");if(item.Href!=null&&item.Href.length>0){subNavHTML.append("<a href=\""+createNavLink(item.Href,n)+"\" "+item.TargetHTML+" id=\"mh_"+n+"link\" class=\"subnavlink\">"+item.Text.replace("\n","<br/>")+"</a>");}
+else{subNavHTML.append("<a href=\"#\" "+item.TargetHTML+" id=\"mh_"+n+"link\" onclick=\"return false\" class=\"subnavlink\">"+item.Text.replace("\n","<br/>")+"</a>");}
+subNavHTML.append("</td><td><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" border=\"0\" height=\"1\" width=\"4\" alt=\"\" /></td><td valign=\"middle\"><img id=\"mh_"+n+"carrot\" src=\""+m_imgPfx+(m_isAlienwareTheme?"/images/global/brand/ui/nxgen/nav_down.gif\"":"/images/global/brand/ui/storm80/nav_down.gif\"")+" border=\"0\" height=\"4\" width=\"7\" alt=\"\" /></td></tr></table></div>");subMenu+="<div id=\"mh_"+n+"content\" class=\"floatingmenu\" onmouseout=\"SubNavEventInActive()\" onmouseover=\"ClearSubNavTimeOut(false);\">";subMenu+="<table id=\"uniqueplaceholderIDsec\" class=\"mh_"+(columnView?"columnlist":"linklist")+"\" cellspacing=\""+(isIE6?"0":"1")+"\" cellpadding=\"0\" border=\"0\"><tr><td width=\"1\" class=\"subnavmenuborder\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"1\" height=\"1\" alt=\"\"></td><td valign=\"top\" class=\"subnavcolumn\">";var column=1;var columns=new Array();for(var nn=0;nn<item.MenuItems.length;nn++){var drop=item.MenuItems[nn];if(columnView){column=drop.Column?drop.Column:1;}
+if(columns[column]==undefined){columns[column]="";}
+if(drop.Text!=null){if(drop.Href!=null&&drop.Href.length==0){columns[column]+="<tr><td class=\"menutitle\">"+drop.Text+"</td></tr>";}
+else{columns[column]+="<tr><td class=\""+sep+"\" onMouseOver=\"this.className='"+sep+"hover';\" onMouseOut=\"this.className='"+sep+"';\"><div class=\""+sep+"\">";if(!columnView){columns[column]+="<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\" style=\"padding-top:3px;\"><img src=\""+m_imgPfx+(m_isAlienwareTheme?"/images/global/brand/ui/nxgen/":"/images/global/brand/ui/storm80/")+(m_isRtl?"nav_left_blue":"nav_right_blue")+".gif\" alt=\"\" /></td><td><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"4\" height=\"1\" alt=\"\"></td><td><a class=\"menulink\" href=\""+createNavLink(drop.Href,n)+"\" "+drop.TargetHtml+"> "+drop.Text+(drop.OffDell?m_stdOffImg:"")+"</a></td></tr></table>";}
+else{columns[column]+="<table cellpadding=\"0\" cellspacing=\"0\"><tr><td><a class=\"menulink\" href=\""+createNavLink(drop.Href,n)+"\" "+drop.TargetHtml+">"+drop.Text+(drop.OffDell?m_stdOffImg:"")+"</a></td></tr></table>";}
+columns[column]+="</div>";if(drop.MenuItems!=null){columns[column]+="<div class=\"mhproductlinks\">";for(var nnn=0;nnn<drop.MenuItems.length;nnn++){var prod=drop.MenuItems[nnn];if(prod.Text!=null&&prod.Text.length>0){if(nnn!=0&&!columnView){columns[column]+=",&nbsp; ";}
+if(columnView){columns[column]+="<div class=\"mhproductdiv\"><table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\" style=\"padding-top:3px;width:7px;\"><img src=\""+m_imgPfx+"/images/global/brand/ui/nxgen/"+(m_isRtl?"nav_left_grey":"nav_right_grey")+".gif\" alt=\"\" /></td><td><a class=\"mhproductlink\" href=\""+createNavLink(prod.Href,n)+"\" "+prod.TargetHtml+"> "+prod.Text+"</a></td></tr></table></div>";}
+else{columns[column]+="<a class=\"mhproductlink\" href=\""+createNavLink(prod.Href,n)+"\" "+prod.TargetHtml+">"+prod.Text+"</a>";}}}
+columns[column]+="</div>";}
+columns[column]+="</td></tr>";}}
+sep=drop.IsSeparator?"sep":"sub";}
+var columnClass="mh_linkcolumn";if(columns.length>2){columnClass="mh_viewallcolumn";}
+subMenu+="<table class=\""+columnClass+"\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";var col=0;for(var cc=1;cc<6;cc++){if(columns[cc]!=null){if(col>0){subMenu+="</table></td><td valign=\"top\" class=\"subnavcolumn\"><table class=\""+columnClass+"\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";}
+subMenu+=columns[cc];col++;}}
+subMenu+="</table></td><td width=\"1\" class=\"subnavmenuborder\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"1\" height=\"1\" alt=\"\"></td></tr><tr><td colspan=\""+(col+2)+"\"><table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td width=\"2\"><img src=\""+m_imgPfx+"/images/global/brand/ui/nxgen/menucornerbl_2x2.gif\" alt=\"\" /></td><td class=\"subnavmenuborderbottom\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"1\" height=\"1\" alt=\"\"></td><td width=\"2\"><img src=\""+m_imgPfx+"/images/global/brand/ui/nxgen/menucornerbr_2x2.gif\" alt=\"\" /></td></tr></table></div></td></tr></table></td>";}
+else{subNavHTML.append("<td class=\"subnavlinkcell\" id=\"mh_"+n+"cell\" valign=\"middle\" align=\"center\"><div id=\"mh_"+n+"\" name=\"mh_subnavlink\" class=\""+containerClass+"\">");subNavHTML.append("<table cellpadding=\"0\" cellspacing=\"0\" height=\"30\"><tr><td><a href=\""+createNavLink(item.Href,n)+"\" "+item.TargetHTML+" id=\"mh_"+n+"link\" class=\"subnavlinknomenu\">"+item.Text.replace("\n","<br/>")+"</a></td></tr></table></div>");subNavHTML.append("</td>");}}
+else{subMenu+="<td class=\"subnavlinkcell\" id=\"mh_"+n+"cell\" valign=\"middle\" align=\"center\"><div class=\""+containerClass+"\">";subMenu+="<table cellpadding=\"0\" cellspacing=\"0\" height=\"30\"><tr><td><a href=\""+createNavLink(item.Href,n)+"\" "+item.TargetHTML+" class=\"subnavlinknomenu\">"+item.Text.replace("\n","<br/>")+"</a></td></tr></table></div>";subNavHTML.append("</td>");}}
+_subMenuMarkup["mh_"+n]=subMenu;}
+subNavHTML.append("</tr></table>");return subNavHTML.toString();}
+function SwapTab(src,url,tab){var tablink=getRawObject(src);if(m_activeTab!=null){m_activeTab.className="inactivetab";getRawObject(m_activeTab.id+"content").className="inactivetabcontent";}
+tablink.className="activetab";getRawObject(tablink.id+"content").className="activetabcontent";if(m_menuBar.length==tab){m_stormCookie.session.setCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS,"myaccountMenu");}
+else{m_stormCookie.session.setCookie("~tid"+pageCnty+pageLang+pageSeg+pageCS,m_menuBar[tab].Id);}
+m_activeTab=tablink;if(url!=null){document.location=url;}}
+function bindMastHeadFlyouts(){if(!m_tabNav&&$("#nextgen").length>0){$("div[name='mh_subnavlink']").hover(function(){SubNavEventActive($(this));},function(){SubNavEventInActive($(this));});$("td[name='mh_subnavlink']").hover(function(){TerNavEventActive($(this));},function(){TerNavEventInActive($(this));});}}
+function SubNavEventActiveString(str){SubNavEventActiveOpen(getRawObject(str));}
+function SubNavEventActive(src){var id=src.attr("id");m_timeoutOpenDelay=setTimeout("SubNavEventActiveOpen('"+id+"')",10);}
+function SubNavEventActiveOpen(src){var obj=getRawObject(src);src=$('#'+src);if(src==undefined){return;}
+var id=src.attr("id");var link=$('#'+id+'link');var content=$('#'+id+'content');var carrot=$('#'+id+'carrot');var cell=$('#'+id+'cell');var isFirst=false;var isLast=false;var noMenu=false;if(content.size()<=0){content=$(_subMenuMarkup[id]);cell.append(content);}
+if(m_timeoutCloseDelay){ClearSubNavTimeOut(false);}
+if(m_tabContentDiv!=id){if(m_tabContentDiv!=null){SubNavEventInActiveClose();}
+m_tabContentDiv=id;if(src!=null){if(src.attr("class")=="subnavlinkcontainerfirst"){isFirst=true;src.attr("class","subnavlinkcontainerfirstselected");}
+if(src.attr("class")=="subnavlinkcontainerlast"){isLast=true;src.attr("class","subnavlinkcontainerlastselected");}
+if(src.attr("class")=="subnavlinkcontainerfirstnomenu"){isFirst=true;noMenu=true;src.attr("class","subnavlinkcontainerfirstnomenuselected");}
+if(src.attr("class")=="subnavlinkcontainerlastnomenu"){isLast=true;noMenu=true;src.attr("class","subnavlinkcontainerlastnomenuselected");}
+if(src.attr("class")=="subnavlinkcontainer"){src.attr("class","subnavlinkcontainerselected");}
+if(src.attr("class")=="subnavlinkcontainernomenu"){noMenu=true;src.attr("class","subnavlinkcontainernomenuselected");}}
+if(cell!=null){if(cell.attr("class")=="subnavlinkcell"){if(noMenu){cell.attr("class","subnavlinkcellnomenuselected");}
+else{cell.attr("class","subnavlinkcellselected");}}}
+if(link!=null){if(id.indexOf("undefined")>-1){link.attr("class","subnavlinknomenuselected");}
+else{link.attr("class","subnavlinkselected");}
+if(carrot!=null){carrot.attr("src",m_imgPfx+(m_isAlienwareTheme?"/images/global/brand/ui/nxgen/nav_up.gif":"/images/global/brand/ui/storm80/nav_up.gif"));}}
+if(content!=null){try{if(Screen.AvailableWidth<(obj.offsetLeft+$("#logocontainer").width()+(content.width()-1)+1)||m_mastheadWidthNextGen<(obj.offsetLeft+$("#logocontainer").width()+(content.width()-1)+1)||isLast){content.css('left',obj.offsetLeft-content.width()+obj.offsetWidth+(isLast?0:1));}
+else{if(m_isRtl&&!isFirst){content.css('left',obj.offsetLeft-content.width()+obj.offsetWidth+(isLast?0:2));}
+else{content.css('left',(obj.offsetLeft-(isFirst?0:1))+"px");}}
+if(cell!=null&&cell.height()!=null){content.css("top",cell.height()-3+"px");}
+else{content.css("top",obj.offsetTop+obj.offsetHeight-3+"px");}
+content.css("display","block");content.bgiframe();var flyoutdata=content.html();if(flyoutdata!=null||flyoutdata!=undefined){if(flyoutdata.indexOf("uniqueplaceholderID")==-1){try{var contentid=content.attr("id");var contentDiv=$('#'+contentid);if(contentDiv.html().indexOf("name=\""+id.substring(3,id.length)+"\"")==-1){if(contentid=="mh_myaccountcontent"){contentDiv.html("<div id=\"pbarcontent\" name=\""+id.substring(3,id.length)+"\" class=\"pbarcontent\"><iframe onmouseover=\"ClearSubNavTimeOut(true);\" onmouseout=\"ClearIsIframe()\" width=\"228\" id=\"myframe\" scrolling=\"auto\" frameborder=\"0\" name=\"myframe\" src=\""+m_pbarPfx+"/pbar/ajax.aspx?~psc=myaccount\"></iframe></div>");}
+else{AsyncXDomainIframeCall(m_pbarPfx+"/pbar/ajax.aspx?~psc="+id.substring(3,id.length),tabcontentajax);}}}
+catch(e)
+{}}}}
+catch(e)
+{}}}}
+function TerNavEventActive(src){var id=src.attr("id");m_timeoutTerOpenDelay=setTimeout("TerNavEventActiveOpen('"+id+"')",10);}
+function TerNavEventActiveOpen(src){var obj=getRawObject(src);src=$('#'+src);if(src==undefined){return;}
+var id=src.attr("id");var content=$('#'+id+'subcontent');if(m_timeoutTerCloseDelay){ClearTerNavTimeOut(false);}
+if(m_tabTerContentDiv!=id){if(m_tabTerContentDiv!=null){TerNavEventInActiveClose();}
+m_tabTerContentDiv=id;if(content!=null){try{content.css('left',obj.offsetWidth+"px");content.css("top",obj.offsetTop-3+"px");content.css("display","block");}
+catch(e)
+{}}}}
+function ClearIsIframe(){m_maIframe=false;}
+function ClearSubNavTimeOut(isIframe){clearTimeout(m_timeoutCloseDelay);m_timeoutCloseDelay=null;m_maIframe=isIframe;}
+function ClearSubNavOpenTimeOut(){clearTimeout(m_timeoutOpenDelay);m_timeoutOpenDelay=null;}
+function ClearTerNavTimeOut(isIframe){clearTimeout(m_timeoutTerCloseDelay);m_timeoutTerCloseDelay=null;}
+function ClearTerNavOpenTimeOut(){clearTimeout(m_timeoutTerOpenDelay);m_timeoutTerOpenDelay=null;}
+function SubNavEventInActive(src){ClearSubNavOpenTimeOut();if(!m_timeoutCloseDelay){m_timeoutCloseDelay=setTimeout("SubNavEventInActiveClose()",500);}}
+function SubNavEventInActiveClose(){if(m_tabContentDiv&&!m_maIframe){var src=getRawObject(m_tabContentDiv);if(src){var link=getRawObject(m_tabContentDiv+"link");var content=getRawObject(m_tabContentDiv+"content");var carrot=getRawObject(m_tabContentDiv+"carrot");var cell=getRawObject(m_tabContentDiv+"cell");if(src!=null){if(src.className=="subnavlinkcontainerfirstselected"){src.className="subnavlinkcontainerfirst";}
+if(src.className=="subnavlinkcontainerlastselected"){src.className="subnavlinkcontainerlast";}
+if(src.className=="subnavlinkcontainerfirstnomenuselected"){src.className="subnavlinkcontainerfirstnomenu";}
+if(src.className=="subnavlinkcontainerlastnomenuselected"){src.className="subnavlinkcontainerlastnomenu";}
+if(src.className=="subnavlinkcontainerselected"){src.className="subnavlinkcontainer";}
+if(src.className=="subnavlinkcontainernomenuselected"){src.className="subnavlinkcontainernomenu";}}
+if(cell!=null){if((cell.className=="subnavlinkcellselected")||(cell.className=="subnavlinkcellnomenuselected")){cell.className="subnavlinkcell";}}
+if(link!=null){if(link.className=="subnavlinkselected"){link.className="subnavlink";}
+else{link.className="subnavlinknomenu";}
+if(carrot!=null){carrot.src=m_imgPfx+(m_isAlienwareTheme?"/images/global/brand/ui/nxgen/nav_down.gif":"/images/global/brand/ui/storm80/nav_down.gif");}}
+if(content!=null){content.style.display="none";}
+m_tabContentDiv=null;}}}
+function TerNavEventInActive(src){ClearTerNavOpenTimeOut();if(!m_timeoutTerCloseDelay){m_timeoutTerCloseDelay=setTimeout("TerNavEventInActiveClose()",500);}}
+function TerNavEventInActiveClose(){if(m_tabTerContentDiv&&!m_maIframe){var src=getRawObject(m_tabTerContentDiv);if(src){var content=getRawObject(m_tabTerContentDiv+"subcontent");if(content!=null){content.style.display="none";}
+m_tabTerContentDiv=null;}}}
+function renderLanguageToggle(){document.write("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" height=\"10\" align=\"right\"><tr>");document.write("<td align=\"left\" valign=\"middle\"><a href=\""+m_langSelectorUrl+"\"><img src=\""+m_imgPfx+"/images/global/brand/icons/"+m_langSelectorIcon+".gif\" border=\"0\" alt=\"\"></a></td>");document.write("<td align=\"left\" valign=\"middle\" nowrap=\"true\"><a class=\"lnk_crumb\" href=\""+m_langSelectorUrl+"\">"+m_langSelectorCaption+"</a></td>");document.write("</tr></table>");}
+function renderCountrySelector(){var localOpts=m_localeSelector.substring(m_localeSelector.indexOf('<option'));localOpts=localOpts.substring(0,localOpts.indexOf('</select>'));var findStr=new RegExp('<option value="','g');localOpts=localOpts.replace(findStr,'<option value="http://www.dell.com')
+$("#localeselectordiv").append($("<select size=\"5\" onkeypress=\"if(event && event.which == 13 || event.keyCode == 13){document.location = this.options[this.selectedIndex].value; $(this).toggle( true );}\" onClick=\"if( this.options[this.selectedIndex].value != '' ) document.location = this.options[this.selectedIndex].value;$(this).toggle( true )\"></select>").append(localOpts));var countrylnk=$("#localeselectorlinkdiv #localeselectorlink").live("click",function(){localeMenuToggle();});var localSel=$("#localeselectordiv");localSel.bind("mouseover",function(){localeMenuToggleDelayClear();});localSel.bind("mouseleave",function(){delayLocaleMenuToggle();});}
+var _localeMenuToggleDelay=null;function delayLocaleMenuToggle(){localeMenuToggleDelayClear();_localeMenuToggleDelay=setTimeout("localeMenuToggle(true)",500);}
+function localeMenuToggleDelayClear(){if(_localeMenuToggleDelay){clearTimeout(_localeMenuToggleDelay);_localeMenuToggleDelay=null;}}
+function localeMenuToggle(forceClose){var locsel=$("#localeselectordiv");var loclink=$("#localeselectorlink");var locdiv=$("#localeselectorlinkdiv");if(locsel.attr("class")=="localeselector"||forceClose){locsel.attr("class","localeselectorhidden");locsel.css("display","none");locdiv.attr("class","localeselectorlinkdiv");loclink.attr("class","localeselectorlink");}
+else{locsel.attr("class","localeselector");locsel.css("display","block");locdiv.attr("class","localeselectorlinkdivselected");loclink.attr("class","localeselectorlinkselected");var obj=getRawObject("localeselectorlinkdiv");locsel.css("top",obj.offsetTop+obj.offsetHeight+"px");$("#localeselectordiv select").focus();}}
+function menuRef(id,text,href,items,target){menuRef(id,text,href,items,target,false)}
+function menuRef(id,text,href,items,target,selected,column){this.Id=id;this.Text=text;this.Href=mhFixupLink(href,"&~ck=mn");this.IsSeparator=false;this.IsCaption=false;this.MenuItems=items;this.IsSelectedTab=false;this.Column=column;if(selected==true){this.IsSelectedTab=true;}
+this.OffDell=false;this.TargetHtml=m_stdEmpty;if((typeof(target)!="undefined")&&target){this.OffDell=(target=="offdell");this.TargetHtml=" target=\""+target+"\"";}}
+function menuItem(text,href,target,icon,column){this.Text=text;this.Href=mhFixupLink(href,"&~ck=mn");this.IsSeparator=false;this.IsCaption=false;this.IconUrl=icon;this.MenuItems=null;this.Column=column;this.OffDell=false;this.TargetHtml=m_stdEmpty;if((typeof(target)!="undefined")&&target){this.OffDell=(target=="offdell");this.TargetHtml=" target=\""+target+"\"";}}
+function menuCaption(text){this.Text=text;this.Href=null;this.IsSeparator=false;this.IsCaption=true;this.MenuItems=null;}
+function menuSep(){this.IsSeparator=true;this.IsCaption=false;}
+function mhLink(text,href,icon,extra,isFilter){href=mhFixupLink(href,extra);this.Text=text;this.Href=href;this.Icon=icon;this.IsFilter=isFilter;}
+function updateTotalCartItemsAjax(){AsyncXDomainIframeCall(m_pbarPfx+"/pbar/ajax.aspx?~psc=cart",updateTotalCartItemsAjaxCallback);}
+function updateTotalCartItemsAjaxCallback(event){if(event.Status="OK"&&event.Response!="false"&&event.Response.length>0){var link=document.createElement("div");link.innerHTML=event.Response;try{cartItems=false;var divs=link.getElementsByTagName("div");for(var i=0;i<divs.length;i++){if(divs[i].className=="cartItems"){var totalSpan=divs[1].getElementsByTagName("span")[1];if(totalSpan){var totalValue=totalSpan.innerHTML.toString();totalValue=totalValue.substr(0,totalValue.length-1);updateTotalCartItems(totalValue);}
+var cartItems=true;}}
+if(!cartItems){updateTotalCartItems(0);}}
+catch(ex)
+{}}}
+function updateTotalCartItems(value){if(value!=null&&value!=undefined){var link=document.getElementById("totalcartitems");if(link!=null&&value==0){link.className="";link.innerHTML="";link.parentNode.style.paddingRight="0";}
+else if(link!=null&&value<10){link.className="cartCount";link.innerHTML=value;link.parentNode.style.paddingRight="22px";}
+else if(link!=null&&value>=10){link.className="cartCountLarger";link.innerHTML=value;link.parentNode.style.paddingRight="25px";}}}
+var delayMin=null;var delayMax=null;var currentID=null;function flyoutopen(id,width){try{if(currentID!=id){isbloating=true;var isfromaddtocart=false;m_id=id;if(id=="carttemp"){isfromaddtocart=true;id="cart";if(totalcartquantity>=0){updateTotalCartItems(totalcartquantity);}}
+var link=document.getElementById("flyout"+id+"link");var body=document.getElementById("flyout"+id+"body");var offset=document.getElementById("flyout"+id+"offset");width=offset.offsetWidth>width?offset.offsetWidth:width;body.style.top=(offset.offsetTop+offset.offsetHeight-1)+"px";linky=getRawObject("pbarcontainer");var flyoutwidth;if(id=="cart"){flyoutwidth=linky.offsetLeft+width+21;}
+else{flyoutwidth=linky.offsetLeft+linky.offsetWidth-offset.offsetWidth+width+21;}
+if(Screen.AvailableWidth<flyoutwidth){body.style.width=width-2;if($.browser.msie){var vdiff=1;if(offset.offsetLeft<=1073){var vdiff=0}}else{var vdiff=2}
+body.style.left=(offset.offsetLeft-width+offset.offsetWidth-vdiff)+"px";}
+else{body.style.width=width-2;body.style.left=(offset.offsetLeft)+"px";}
+link.className="fo"+id+"linkmax";body.className="fo"+id+"bodymax";body.style.overflow="visible";offset.className="fo"+id+"offsetmax";currentID=id;var ticks=new Date();if(m_pbarContentDiv!=("flyout"+id+"body")){try{m_pbarContentDiv="flyout"+id+"body";var flyoutDiv=getRawObject(m_pbarContentDiv);if(isfromaddtocart){flyoutDiv.innerHTML=cartcontent;m_fromAddToCart=true;}
+else{if(flyoutDiv.innerHTML.indexOf("name=\""+id+"\"")==-1){if(m_pbarContentDiv=="flyoutmyaccountbody"){flyoutDiv.innerHTML="<div id=\"pbarcontent\" name=\""+id+"\" class=\"pbarcontent\"><iframe onmouseout=\"javascript:flyoutmin('myaccount')\" onmouseover=\"javascript:flyoutminclear()\" width=\"228\" id=\"myframe\" scrolling=\"auto\" frameborder=\"0\" name=\"myframe\" src=\""+m_pbarPfx+"/pbar/ajax.aspx?~psc=myaccount\"></iframe></div>";}
+else if(m_pbarContentDiv=="flyouttoolboxbody"){}
+else{ispaging=false;AsyncXDomainIframeCall(m_pbarPfx+"/pbar/ajax.aspx?~psc="+id,pbarcontentajax);}}
+m_fromAddToCart=false;}}
+catch(e){}}
+growIt(id);}}
+catch(e)
+{}}
+var doneGrowing=false;var toolboxHeight=0;function growIt(id){var offset=document.getElementById("flyout"+id+"offset");offset.className="fo"+id+"offsetmax";isbloating=true;m_id=id;var body=getRawObject("flyout"+id+"body");if(body==null){isbloated=false;isbloating=false;return;}
+body.style.height="1px";body.style.overflow="hidden";increment=0;ContainerHeight=body.scrollHeight;toolboxHeight=body.scrollHeight;doneGrowing=false;doGrow(body);$("#flyout"+id+"body").bgiframe();}
+function doGrow(body){if(body.id=="flyouttoolboxbody"&&$.browser.msie&&parseInt($.browser.version)==7){ContainerHeight=toolboxHeight;}
+try{if(ContainerHeight-increment>=15){if(increment<ContainerHeight){increment=increment+15;body.style.height=increment+"px";intShow=setTimeout(function(){doGrow(body)},0);}
+else{doneGrowing=true;}}
+else if(ContainerHeight-increment>0){var diff=ContainerHeight-increment;increment=increment+diff;body.style.height=increment+"px";intShow=setTimeout(function(){doGrow(body)},0);}
+else{doneGrowing=true;}
+if(doneGrowing==true){if(m_fromAddToCart!=true){body.style.overflow="visible";}
+isbloated=true;isbloating=false;window.clearTimeout(intShow);doneGrowing==false;}}
+catch(e){}}
+var doneShrinking=false;function shrinkIt(id,clear){if(isbloated){if(!isclosing){ContainerHeight=increment;if(ispaging==true){var body=getRawObject("flyout"+m_id+"body");ContainerHeight=body.scrollHeight;}
+if(ContainerHeight>1){isclosing=true;currentID=null;shrink=ContainerHeight;window.clearTimeout(intShow);doneShrinking=false;intHide=setTimeout(function(){doShrink(id,clear)},0);}
+else{isbloated=false;isbloating=false;isclosing=false;window.clearTimeout(intHide);flyoutclose(id,true);if(clear){body.innerHTML="<div id=\"loading\" style=\"font-family:arial;font-size:9pt;padding:10px;\">"+m_LoadingCaption+"</div>";}}}}
+else{isbloated=false;isbloating=false;}}
+var isclosing=false;function doShrink(id,clear){var body=getRawObject("flyout"+m_id+"body");body.style.overflow="hidden";if(shrink>10){shrink=shrink-15;if(shrink>0){body.style.height=shrink+"px";intHide=setTimeout(function(){doShrink(id,clear)},0);}
+else{doneShrinking=true;}}
+else{doneShrinking=true;}
+if(doneShrinking==true){isbloated=false;isbloating=false;isclosing=false;window.clearTimeout(intHide);flyoutclose(m_id,true);if(clear){body.innerHTML="<div id=\"loading\" style=\"font-family:arial;font-size:9pt;padding:10px;\">"+m_LoadingCaption+"</div>";}}}
+function flyoutclear(){flyoutminclear();}
+function flyoutminclear(){if(delayMin){clearTimeout(delayMin);delayMin=null;}}
+function flyoutmaxclear(){if(delayMax){clearTimeout(delayMax);delayMax=null;}}
+var focusFound=false;function FireOnFocus(e){focusFound=true;}
+function FireOnBlur(e){focusFound=false;}
+function flyoutmin(id){if(blockcollapse==true){return;}
+if(m_fromAddToCart==false){flyoutmaxclear();if(isbloated==true){if(id=="myaccount"){try{var myFrame=window.frames["myframe"];if(myFrame!=null){var frameDoc=myFrame.document;if(frameDoc!=null){var emailControl=frameDoc.forms[0].email;if(emailControl!=null){if(window.addEventListener){emailControl.addEventListener("focus",FireOnFocus,false);emailControl.addEventListener("blur",FireOnBlur,false);}
+else{emailControl.attachEvent("onfocus",FireOnFocus);emailControl.attachEvent("onblur",FireOnBlur);}}
+var passwordControl=frameDoc.forms[0].password;if(passwordControl!=null){if(window.addEventListener){passwordControl.addEventListener("focus",FireOnFocus,false);passwordControl.addEventListener("blur",FireOnBlur,false);}
+else{passwordControl.attachEvent("onfocus",FireOnFocus,false);passwordControl.attachEvent("onblur",FireOnBlur,false);}}}}}
+catch(e)
+{}
+if(focusFound){return;}}
+delayMin=setTimeout("shrinkIt('"+id+"',false)",500);}}}
+var inflyoutmax=false;function flyoutmax(id,width){inflyoutmax=true;isaddingtocart=false;flyoutminclear();if((isbloated==false)&&(isbloating==false)){if(currentID!=id&&currentID!=null){flyoutclose(currentID,false);}
+currentID=null;delayMax=setTimeout("flyoutopen('"+id+"','"+width+"')",0);}
+else{if(m_fromAddToCart){return;}
+if(id!=m_id){shrinkIt(id,false);setTimeout("flyoutmax('"+id+"','"+width+"')",250);}}}
+function flyoutclose(id,clear){try{var link=document.getElementById("flyout"+id+"link");var body=document.getElementById("flyout"+id+"body");var offset=document.getElementById("flyout"+id+"offset");link.className="fo"+id+"linkmin";body.className="fo"+id+"bodymin";offset.className="fo"+id+"offsetmin";m_pbarContentDiv=null;if(clear){currentID=null;}}
+catch(e)
+{}}
+function pbarstripajax(event){if(event.Status=="OK"&&event.Response!="false"&&event.Response.length>0){m_pbarMA.IsAuthenticated=getCookie("GAAuth")?true:false;m_pbarMA.IsCookied=getCookie("chm:TP")?true:false;m_pbarMA.FirstName=m_pbarMA.IsCookied?getCookieKeyValue("chm:TP","fn",true):m_pbarMA.FirstName;renderPbarStrip();}}
+function pbarnavajax(event){if(event.Status="OK"&&event.Response!="false"&&event.Response.length>0){link=getRawObject("subnav");link.innerHTML=event.Response;bindMastHeadFlyouts();}}
+function pbarcontentajax(event){if(event.Status="OK"&&m_pbarContentDiv&&event.Response!="false"&&event.Response.length>0){if(m_id=="cart"){link=getRawObject(m_pbarContentDiv);link.innerHTML=event.Response;try{var divs=link.getElementsByTagName("div");for(var i=0;i<divs.length;i++){if(divs[i].className=="productImage"){var imgUrl=divs[i].getElementsByTagName("img")[0].src;var pos=imgUrl.indexOf("op=");if(pos>-1){var imageID=imgUrl.substring(pos+3,imgUrl.length);divs[i].getElementsByTagName("img")[0].src="http://accessories.us.dell.com/sna/images/products/thumbnail/"+imageID+".jpg";"http://accessories.us.dell.com/sna/images2/resize.aspx/"+imageID;}}
+if(divs[i].className=="productDesc"){var proddiv=divs[i];var dspan=proddiv.getElementsByTagName("span")[1];if(dspan.innerHTML=="0.00"){dspan.style.display="none";var zeroDisc=new String(proddiv.innerHTML.replace(/<BR>/i,""));proddiv.innerHTML=zeroDisc;}}}}
+catch(ex)
+{}
+m_cartPages[m_cartPages.length]=link.innerHTML;var cartBody=getRawObject(m_pbarContentDiv);cartBody.style.height="1px";cartBody.style.overflow="hidden";cartBody.style.height=cartBody.scrollHeight;ContainerHeight=cartBody.scrollHeight;if(ispaging==false){growIt("cart");}}}}
+function tabcontentajax(event){if(event.Status="OK"&&m_tabContentDiv&&event.Response!="false"&&event.Response.length>0){link=getRawObject(m_tabContentDiv+"content");link.innerHTML=event.Response;}}
+var ispaging=false;function cartPaging(idx){try{ispaging=true;if(typeof(m_cartPages[idx])!="undefined"){link=getRawObject(m_pbarContentDiv);link.innerHTML=m_cartPages[idx];var cartBody=getRawObject(m_pbarContentDiv);cartBody.style.height="1px";cartBody.style.overflow="hidden";cartBody.style.height=cartBody.scrollHeight;ContainerHeight=cartBody.scrollHeight;}
+else{var content="cart";if(m_pbarContentDiv.indexOf("flyout")>=0){content=m_pbarContentDiv.substring(6,m_pbarContentDiv.indexOf("body"));}
+if(m_pbarContentDiv.indexOf("mh_")>=0){content=m_pbarContentDiv.substring(3,m_pbarContentDiv.indexOf("content"));}
+AsyncXDomainIframeCall(m_pbarPfx+"/pbar/ajax.aspx?~psc="+content+"&~cix="+idx,pbarcontentajax);}}
+catch(e)
+{}}
+function maLogout(){for(formIdx=0;formIdx<document.forms.length;formIdx++){if("myaccountlogout"==document.forms[formIdx].name){var curUrl=document.location.href;var logOutIdx=curUrl.indexOf("&~myaccountlogin=true");if(logOutIdx>-1){document.forms[formIdx].action=curUrl.substring(0,logOutIdx);}
+document.forms[formIdx].submit();}}}
+function maLinkLogout(){try{document.cookie="chm:TP="+escape("null")+";path=/;expires=Thu, 01-Jan-1970 00:00:01 GMT;domain=.dell.com";document.cookie="Profile="+escape("null")+";path=/;expires=Thu, 01-Jan-1970 00:00:01 GMT;domain=.dell.com";document.cookie="GAHot="+escape("null")+";path=/;expires=Thu, 01-Jan-1970 00:00:01 GMT;domain=.dell.com";var url=m_pbarPfx+"/pbar/login.aspx?~logout=true";$j.getScript(url,logoutajax);}
+catch(e)
+{}}
+function logoutajax(event){window.location.reload();}
+function maLink(href){window.parent.location=href;}
+function maEnterSubmit(event){if(event&&event.which==13||event.keyCode==13)
+maLoginValidation();else
+return true;}
+function maLoginValidation(){var myAccntLogin="myaccountlogin";for(formIdx=0;formIdx<document.forms.length;formIdx++){if(myAccntLogin==document.forms[formIdx].name){myAccntLogin=document.forms[formIdx];break;}}
+var email=myAccntLogin.email;var emailDiv=document.getElementById("emailDiv");var password=myAccntLogin.password;var passwordDiv=document.getElementById("passwordDiv");if(email.value.length!=0&&password.value.length!=0){var actionUrl=document.location.href;try{myAccntLogin.submit();}
+catch(e){}}
+else{emailDiv.style.display="none";passwordDiv.style.display="none";}
+if(email.value.length==0){emailDiv.style.display="block";}
+if(password.value.length==0){passwordDiv.style.display="block";}
+if(email.value.length==0||password.value.length==0){try{window.parent.setMAIframeHeight(document.getElementById("myaccountpage").offsetHeight);}
+catch(e)
+{}}}
+function ToolBox(caption,menuItems,width,iconUrl){this.Caption=caption;this.MenuItems=menuItems;this.IconUrl=iconUrl;this.Width=width;this.Render=ToolBoxRender;}
+function renderToolBox(){if(m_toolBoxLinks!=undefined){try{document.write(m_toolBoxLinks.Render());}
+catch(ex){}}}
+function retRenderToolBox(){if(m_toolBoxLinks!=undefined){try{m_toolBoxRender=m_toolBoxLinks.Render();}
+catch(ex){}}}
+function renderPbarStrip(){var strip=getRawObject("pbarstripcontainer");var content;if(m_pbarStripContent){strip.innerHTML=m_pbarStripContent;}
+else{if(m_pbarCart!=undefined||m_pbarMA!=undefined||m_toolBoxLinks!=undefined){content="<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>";if(m_pbarMA!=undefined){try{content+=m_pbarMA.Render();}
+catch(ex){}}
+if(m_ensightenLink!=undefined){try{content+=m_ensightenLink.Render();}
+catch(ex){}}
+if(m_pbarCart!=undefined){try{content+=m_pbarCart.Render();}
+catch(ex){}}
+content+="</tr></table>";strip.innerHTML=content;}}
+updateTotalCartItemsAjax();}
+function ToolBoxRender(){var nav;m_LoadingCaption=this.LoadingCaption;nav="<td valign=\"top\"><div id=\"flyouttoolboxlink\" class=\"fotoolboxlinkmin\" onmouseout=\"javascript:flyoutmin('toolbox')\" onmouseover=\"javascript:flyoutmax('toolbox', "+this.Width+")\" >"
++"<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>"
++"<td nowrap=\"true\"><span class=\"toolboxcaption\">"+this.Caption+"</span></td>"
++"</tr></table></div><div id=\"flyouttoolboxoffset\" class=\"fotoolboxoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>"
++"<div style=\"width:"+this.Width+"px;\" id=\"flyouttoolboxbody\" name=\"flyouttoolboxbody\" class=\"fotoolboxbodymin\" onmouseout=\"javascript:flyoutmin('toolbox')\" onmouseover=\"javascript:flyoutclear()\"><div style=\"padding:10px;\">";if(this.MenuItems!=null&&this.MenuItems.length>0){for(var i=0;i<this.MenuItems.length;i++){if(this.MenuItems[i].IsSeparator){nav+="<div class=\"toolbox_divide\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"5\" /></div>";}
+else if(this.MenuItems[i].IsCaption){nav+="<div class=\"toolbox_caption\">"+this.MenuItems[i].Text+"</div>";}
+else{if(this.MenuItems[i].MenuItems!=null&&this.MenuItems[i].MenuItems.length>0){nav+="<a href=\"#\" onclick=\"toolBoxToggle('"+i+"', event||window.event);\"><div id=\"tnav_"+i+"\" class=\"toolbox_link_expand\">"+this.MenuItems[i].Text+"</div></a><div id=\"tnav_"+i+"_sub\" style=\"display:none;\">";for(var s=0;s<this.MenuItems[i].MenuItems.length;s++){nav+="<a  href=\""+this.MenuItems[i].MenuItems[s].Href+"\""+this.MenuItems[i].MenuItems[s].TargetHtml+"\"><div class=\"toolbox_link_sub\">"+this.MenuItems[i].MenuItems[s].Text;if(this.MenuItems[i].MenuItems[s].OffDell){nav+=m_stdOffImg;}
+nav+="</div></a>";}
+nav+="</div>";}
+else{var anchorTitle="";var anchorName="";if((this.MenuItems[i].Href.indexOf("stormModal.show"))>=0){var stormModalCallStr=this.MenuItems[i].Href.substring((this.MenuItems[i].Href.indexOf("{")+1),(this.MenuItems[i].Href.indexOf("}")));var stormModalCall=stormModalCallStr.split(",");var i2=0;for(i2=0;i2<stormModalCall.length;i2++){stormModalCall[i2]=stormModalCall[i2].substring((stormModalCall[i2].indexOf("'")+1),(stormModalCall[i2].lastIndexOf("'")));}
+var stormModalTitle=(stormModalCall[0])?stormModalCall[0]:"";var stormModalHref=(stormModalCall[1])?stormModalCall[1]:"";var stormModalAuth=(stormModalCall[2])?stormModalCall[2]:"";var stormModalTop=(stormModalCall[3])?stormModalCall[3]:"";var stormModalHeight=(stormModalCall[4])?stormModalCall[4]:"";var stormModalWidth=(stormModalCall[5])?stormModalCall[5]:"";var stormModalSwap=(stormModalCall[6])?stormModalCall[6]:"";anchorTitle=" title=\""+stormModalTitle+"\"";this.MenuItems[i].Href=stormModalHref+"?xform=fragment_content&modaltype=box&position=center&height="+stormModalHeight+"&width="+stormModalWidth+"&ovropac=50&ovrcolor=#000000&level="+stormModalAuth+"&swapLogin="+stormModalSwap;}
+nav+="<a  href=\""+this.MenuItems[i].Href+"\""+this.MenuItems[i].TargetHtml+"\""+anchorTitle+anchorName+"><div class=\"toolbox_link\">"+this.MenuItems[i].Text;if((this.MenuItems[i].Href.indexOf("basket.aspx"))>=0){m_premierCartLink=this.MenuItems[i].Href;}
+if((this.MenuItems[i].Href.indexOf("logout.aspx"))>=0){m_premierLogoutLink=this.MenuItems[i].Href;}
+if(this.MenuItems[i].OffDell){nav+=m_stdOffImg;}
+nav+="</div></a>";}}}}
+nav+="</div></div></td>";return nav;}
+function toolBoxToggle(id,e){if(e.preventDefault)
+e.preventDefault();else
+e.returnValue=false;var nav=document.getElementById("tnav_"+id);var subnav=document.getElementById("tnav_"+id+"_sub");if(subnav.style.display=="none"){nav.className="toolbox_link_collapse";subnav.style.display="inline";}
+else{nav.className="toolbox_link_expand";subnav.style.display="none";}
+var body=getRawObject("flyouttoolboxbody");body.style.height="1px";if(!$.browser.msie){body.style.overflow="hidden"};body.style.height=body.scrollHeight+subnav.scrollHeight;ContainerHeight=body.scrollHeight+subnav.scrollHeight;}
+var ispaging=false;function EnsightenLink(){this.Render=EnsightenLinkRender;}
+function EnsightenLinkRender(){var content;content="<td id=\"stormPbar\"><span class=\"privacysettingslinkcontainer\"><a class=\"privacysettingslink\" href=\"#\"></a></span></td>";return content;}
+function PbarCartStrip(caption,link,items,load,count,flyout){this.Caption=caption;this.Link=link;this.ItemsCaption=items;this.LoadingCaption=load;this.Count=count;this.IsFlyout=flyout;this.Render=PbarCartStripRender;}
+function PbarCartStripRender(){var content;m_LoadingCaption=this.LoadingCaption;content="<td id=\"stormPbar\"><div id=\"flyoutcartlink\" class=\"focartlinkmin\">"
++"<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>"
++"<td nowrap=\"true\"><div class=\"cartContainer\"><a href=\""+this.Link+"\" class=\"cartCaption cartIcon\">"+this.Caption+"<span id=\"totalcartitems\"></span></a></div></td>"
++"</tr></table>"
++"</div>"
++"</td>";return content;}
+function PbarMAStrip(captionCookied,captionAuth,captionUnauth,clearUser,auth,cookied,fname,lname,load,flyout,modaltitle){this.IsAuthenticated=auth;this.IsCookied=cookied;this.FirstName=fname;this.LastName=lname;this.CaptionClearUser="<a href=\"javascript:maLinkLogout();\" class=\"para_small\" style=\"font-weight:normal;\" target=\"_self\">"+clearUser+"</a>";this.CaptionCookied=captionCookied;this.CaptionAuth=captionAuth;this.CaptionUnauth=captionUnauth;this.LoadingCaption=load;this.IsFlyout=flyout;this.ModalTitle=modaltitle;this.Render=PbarMAStripRender;}
+function PbarMAStripPremier(captionCookied,captionAuth,captionUnauth,clearUser,clearUserLink,auth,cookied,fname,lname,load,flyout,modaltitle){this.IsAuthenticated=auth;this.IsCookied=cookied;this.FirstName=fname;this.LastName=lname;this.clearUserText=clearUser;this.CaptionClearUser="<a href=\""+clearUserLink+"\" class=\"para_small\" style=\"font-weight:normal;\" target=\"_self\">"+clearUser+"</a>";this.CaptionCookied=captionCookied;this.CaptionAuth=captionAuth;this.CaptionUnauth=captionUnauth;this.LoadingCaption=load;this.IsFlyout=flyout;this.ModalTitle=modaltitle;this.Render=PbarMAStripRenderPremier;}
+function PbarMAStripRender(){var content;content="<td id=\"stormPbar\">";if(this.IsAuthenticated&&this.FirstName!=null&&this.FirstName.length>0){this.CaptionAuth="<span class=\"hellouser\">"+this.CaptionAuth.replace(/{clearuser}/g,("<span class=\"clearuser\">"+this.CaptionClearUser+"</span>")).replace(/{fname}/g,this.FirstName).replace(/{lname}/g,this.LastName)+"</span>";var myacctcaption=(!this.IsFlyout&&m_myAccountLink!=null)?("<a href=\""+m_myAccountLink+"\">"+this.CaptionAuth+"</a>"):this.CaptionAuth;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\">"+myacctcaption+"</td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+else if(this.IsCookied&&this.FirstName!=null&&this.FirstName.length>0){this.CaptionCookied="<span class=\"hellouser\">"+this.CaptionCookied.replace(/{clearuser}/g,("<span class=\"clearuser\">"+this.CaptionClearUser+"</span>")).replace(/{fname}/g,this.FirstName).replace(/{lname}/g,this.LastName)+"</span>";var myacctcaption=(!this.IsFlyout&&m_myAccountLink!=null)?("<a href=\""+m_myAccountLink+"\">"+this.CaptionCookied+"</a>"):this.CaptionCookied;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\">"+myacctcaption+"</td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+else{var pbarurl=m_pbarPfx;if(pbarurl==undefined||pbarurl.length==0){pbarurl="http://pbar.us.dell.com";}
+var modal_parameters="&modaltype=box&position=center&modalwidth=290&modalheight=245&ovrcolor=gray&title="+this.ModalTitle+"&showtitle=true";var url_login=pbarurl+m_login_url+"?level=3"+getLwp()+modal_parameters;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\"><span class=\"pbarlink\">";content+="<a href=\""+url_login+"\" title=\""+this.ModalTitle+"\" name=\"modalPopup\">";content+=this.CaptionUnauth+"</a></span></td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+content+="<div style=\"width:250px;\" id=\"flyoutmyaccountbody\" class=\"fomyaccountbodymin\"><div id=\"loading\" style=\"font-family:arial;font-size:9pt;padding:10px;\">"+this.LoadingCaption+"</div></div></td>";return content;}
+function PbarMAStripRenderPremier(){var content;content="<td id=\"stormPbar\">";if(this.IsAuthenticated&&this.FirstName!=null&&this.FirstName.length>0){this.CaptionAuth=(this.clearUserText=="")?this.CaptionAuth.replace(/\({clearuser}\)/g,("{clearuser}")):"<span class=\"premierStoreTitle\">"+this.CaptionAuth.replace(/\({clearuser}\)/g,("</span>({clearuser})"));this.CaptionAuth="<span class=\"hellouser\">"+(this.clearUserText!="")?this.CaptionAuth.replace(/{clearuser}/g,("<span class=\"clearuser\">"+this.CaptionClearUser+"</span>")).replace(/{fname}/g,this.FirstName).replace(/{lname}/g,this.LastName)+"</span>":"</span>";var myacctcaption=this.CaptionAuth;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\">"+myacctcaption+"</td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+else if(this.IsCookied&&this.FirstName!=null&&this.FirstName.length>0){this.CaptionCookied=(this.clearUserText=="")?this.CaptionCookied.replace(/\({clearuser}\)/g,("{clearuser}")):"<span class=\"premierStoreTitle\">"+this.CaptionCookied.replace(/\({clearuser}\)/g,("</span>({clearuser})"));this.CaptionCookied="<span class=\"hellouser\">"+(this.clearUserText!="")?this.CaptionCookied.replace(/{clearuser}/g,("<span class=\"clearuser\">"+this.CaptionClearUser+"</span>")).replace(/{fname}/g,this.FirstName).replace(/{lname}/g,this.LastName)+"</span>":"</span>";var myacctcaption=this.CaptionCookied;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\" style=\"cursor:auto;\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\">"+myacctcaption+"</td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+else{var pbarurl=m_pbarPfx;if(pbarurl==undefined||pbarurl.length==0){pbarurl="http://pbar.us.dell.com";}
+var modal_parameters="&modaltype=box&position=center&modalwidth=290&modalheight=220&ovrcolor=gray&title="+this.ModalTitle+"&showtitle=true";var url_login=pbarurl+m_login_url+"?level=3"+getLwp()+modal_parameters;content+="<div id=\"flyoutmyaccountlink\" class=\"fomyaccountlinkmin\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td nowrap=\"true\" class=\"para_small\"><span class=\"pbarlink\">";content+="<a href=\""+url_login+"\" title=\""+this.ModalTitle+"\" name=\"modalPopup\">";content+=this.CaptionUnauth+"</a></span></td></tr></table></div><div id=\"flyoutmyaccountoffset\" class=\"fomyaccountoffsetmin\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" height=\"1\" /></div>";}
+content+="<div style=\"width:250px;\" id=\"flyoutmyaccountbody\" class=\"fomyaccountbodymin\"><div id=\"loading\" style=\"font-family:arial;font-size:9pt;padding:10px;\">"+this.LoadingCaption+"</div></div></td>";return content;}
+var isReady=false;function getObjectHeight(obj){return $(obj).height();}
+function getObjectsByTag(tag){if(document.getElementsByTagName){return document.getElementsByTagName(tag);}
+else if(document.all){return document.all.tags(tag);}
+return null;}
+function mhFixupLink(href,extra){if(typeof(extra)=="undefined"){extra="&~ck=mn";}
+if(href){var anchor=null;var anchorix=href.indexOf("#");if(anchorix!=-1){anchor=href.substr(anchorix);href=href.substr(0,anchorix);}
+if(href.indexOf("?")==-1){extra="?"+extra.substr(1);}
+if(href.toLowerCase().indexOf("javascript:")==-1){href+=extra;}
+else{start=href.indexOf("?");if(start!=-1){ix=href.indexOf("\'",start);if(ix==-1){ix=href.indexOf("\\",start);if(ix==-1){ix=href.indexOf("\"",start);}}
+if(ix!=-1){href=href.substr(0,ix)+extra+href.substr(ix);}}}
+if(anchor){href+=anchor;}}
+return href;}
+function getRawObject(obj){var theObj;if(typeof obj=="string"){if(isW3C){theObj=document.getElementById(obj);}
+else if(isIE4){theObj=document.all(obj);}
+else if(isNN4){theObj=seekLayer(document,obj);}
+else{theObj=document.getElementById(obj);}}
+else{theObj=obj;}
+return theObj;}
+function menuGoto(url){if(m_anchorClicked){return;}
+m_anchorClicked=true;if(url!=null&&url.indexOf("javascript")>-1){eval(url);}
+else{document.location=url;}
+if(document.event!=null){document.event.cancelBubble=true;}
+return false;}
+function menuWinOpen(url){window.open(url);return false;}
+function winopen(url,stuff,morestuff){var popwin=window.open(url,stuff,morestuff);if(typeof(popwin)!="undefined"&&popwin){popwin.focus();}
+lastPopup=popwin;}
+var _curAuthLevel=0;var m_login_url="/pbar/login.aspx";var _mwidth=200;var _mheight=200;function proccessAuthChange(level){_curAuthLevel=level;$(".modalLoad").remove();$(".modalArrow").remove();$(".modalCeil").parent().remove();$(".modalOverlay").remove();window.location.reload();}
+function getQueryVariable(variable,url){var query=m_curUrl.substring(m_curUrl.indexOf("?")+1,m_curUrl.length);if(url!=null){query=url.substring(url.indexOf("?")+1,url.length);}
+var vars=query.split("&");for(var i=0;i<vars.length;i++){var pair=vars[i].split("=");if(pair[0]==variable){return pair[1];}}}
+function GetScreen(){try{this.Width=screen.width;this.Height=screen.height;this.AvailableWidth=screen.availWidth;this.AvailableHeight=screen.availHeight;this.ColorDepth=screen.colorDepth;}catch(err){this.Width=1024;this.Height=768;this.AvailableWidth=1024;this.AvailableHeight=768;this.ColorDepth=0;}}
+var m_framesAdded=false;function AddHiddenFrames(){if(m_framesAdded){return;}
+var df1=document.getElementById("dataiframe_0");if(df1!=null){m_framesAdded=true;}
+m_framesAdded=true;for(var i=0;i<10;i++){var iframeObj=document.createElement("iframe");iframeObj.id="dataiframe_"+i;iframeObj.style.border='0px';iframeObj.style.width='0px';iframeObj.style.height='0px';iframeObj.src="javascript:false;";var container=getRawObject("iframeContainer");if(container==null){var container=document.createElement("div");container.id="iframeContainer";container.style.position="absolute";document.body.appendChild(container);}
+container.appendChild(iframeObj);}}
+var m_dataIframes=new Array();var m_frameIdxs=new Array();var m_frameIdx=0;function AsyncXDomainIframeCall(url,callback){AddHiddenFrames();var iframeObj;for(n=0;n<m_frameIdxs.length;n++){if(m_frameIdxs[n]==url){iframeObj=m_dataIframes[n];}}
+if(iframeObj==null){if(m_frameIdx>=10){m_frameIdx=0;}
+iframeObj=document.getElementById("dataiframe_"+m_frameIdx);m_dataIframes[m_frameIdx]=iframeObj;m_frameIdxs[m_frameIdx]=url;m_frameIdx++;}
+iframeObj.onload=function(){jasonCallback(iframeObj.id,callback);};iframeObj.onreadystatechange=function(){jasonCallback(iframeObj.id,callback);};var ticks=new Date();var urlTime="ts="+ticks.getSeconds()+ticks.getMilliseconds();if(url.indexOf("?")==-1){url+="?";}
+else{url+="&";}
+setTimeout("NavigateFrame( '"+iframeObj.id+"','"+(url+urlTime)+"' )",10);}
+function NavigateFrame(IFrameObj,URL){IFrameObj=document.getElementById(IFrameObj);try{if(IFrameObj.contentDocument){IFrameDoc=IFrameObj.contentDocument;}else if(IFrameObj.contentWindow){IFrameDoc=IFrameObj.contentWindow.document;}else if(IFrameObj.document){IFrameDoc=IFrameObj.document;}else{return true;}
+IFrameDoc.location.replace(URL);}
+catch(e){IFrameObj.src=URL;}
+return false;}
+function jasonCallback(id,callback){var iframeObj=document.getElementById(id);if(iframeObj.readyState=="complete"||typeof(iframeObj.readyState)=="undefined"){try{var thingie=new Object();var retval=null;var txt=null;try{if(iframeObj.contentDocument){thingie.Node=iframeObj.contentDocument.body;txt=iframeObj.contentDocument.body.innerHTML;if(txt=="false"){return;}}
+else if(iframeObj.contentWindow){var frmDoc=null;try{frmDoc=iframeObj.contentWindow.document;}
+catch(e){return;}
+thingie.Node=frmDoc.body;txt=thingie.Node.innerHTML;}
+else if(iframeObj.document){thingie.Node=iframeObj.document.body;txt=iframeObj.document.body.innerHTML;}}
+catch(e){callback(thingie);}
+if(thingie.Node!=null&&thingie.Node.getElementsByTagName("pre").length>0){var jasonElm=thingie.Node.getElementsByTagName("pre")[0];eval(jasonElm.innerHTML);thingie.Status="OK";thingie.Response=txt;thingie.JasonObj=retval;callback(thingie);}
+else if(txt.indexOf("var")==0){eval(txt);thingie.Status="OK";thingie.Response=txt;thingie.JasonObj=retval;callback(thingie);}
+else{thingie.Status="OK";thingie.Response=txt;callback(thingie);}}
+catch(e){thingie.Status="NOTOK";thingie.Response="";thingie.Error=e;callback(thingie);}}}
+function StringBuffer(){this.buffer=[];}
+StringBuffer.prototype.append=function append(string){this.buffer.push(string);return this;};StringBuffer.prototype.toString=function toString(){return this.buffer.join("");};function getLwp(){var cntr="";var segm="";var lang="";var cs="";var gotq=m_curUrl.split('?').length>1;var lwp=new StringBuffer();if(cntr==null||cntr.length==0){cntr=getCookieKeyValue("lwp","c");}
+if(segm==null||segm.length==0){segm=getCookieKeyValue("lwp","s");}
+if(lang==null||lang.length==0){lang=getCookieKeyValue("lwp","l");}
+if(cs==null||cs.length==0){cs=getCookieKeyValue("lwp","cs");}
+if(cntr!=null&&cntr.length!=0){lwp.append("&c=");lwp.append(cntr);}
+if(segm!=null&&segm.length!=0){lwp.append("&s=");lwp.append(segm);}
+if(lang!=null&&lang.length!=0){lwp.append("&l=");lwp.append(lang);}
+if(cs!=null&&cs.length!=0){lwp.append("&cs=");lwp.append(cs);}
+return lwp.toString().split('#')[0];}
+function StripCookieValue(inVal,removeVal){if(!inVal||inVal.length==0||!removeVal||removeVal.length==0){return inVal;}
+var idx=0;var ampIdx=0;var semiIdx=0;var len=0;var repString="";idx=inVal.indexOf(removeVal);if(idx>-1){ampIdx=inVal.indexOf("&",idx);semiIdx=inVal.indexOf(";",idx);len=ampIdx;if(len==-1){len=semiIdx;}
+else if(semiIdx!=-1&&semiIdx<len){len=semiIdx;}
+if(len>-1){repString=inVal.substring(idx,len);}
+else{repString=inVal.substr(idx);}
+return inVal.replace(repString,"").replace("&&","&");}
+return inVal;}
+function getCookieKeyValue(cname,id,caseSensitive){try{var offset=1;var sid=id+"=";var sid1="?"+id+"=";var sid2="&"+id+"=";var lwp=getCookie(cname);var startIdx=0;var endIdx=0;var kvalue=null;if(lwp.indexOf(sid1)!=-1){sid=sid1;offset=2;}
+if(lwp.indexOf(sid2)!=-1){sid=sid2;offset=2;}
+if(lwp.indexOf(sid)==-1){return null;}
+else{startIdx=lwp.indexOf(sid)+id.length+offset;if(lwp.substring(startIdx).indexOf("&")==-1){return lwp.substring(startIdx);}
+else{endIdx=lwp.substring(startIdx).indexOf("&")+startIdx;}}
+kvalue=lwp.substring(startIdx,endIdx);}
+catch(e)
+{}
+if(caseSensitive==true){return kvalue;}
+else{if(kvalue===null)return null;return kvalue.toLowerCase();}}
+function getCookie(NameOfCookie){if(document.cookie.length>0){begin=document.cookie.indexOf(NameOfCookie+"=");if(begin!=-1){begin+=NameOfCookie.length+1;end=document.cookie.indexOf(";",begin);if(end==-1){end=document.cookie.length;}
+return unescape(document.cookie.substring(begin,end));}}
+return"";}
+function SetCookie(NameOfCookie,value){SetCookieValue(NameOfCookie,value,false,true);}
+function SetCookieValue(NameOfCookie,value,persist,escaped){var expires="";if(persist==true){expires=new Date();expires.setYear(expires.getYear()+2);expires=expires.toGMTString();}
+document.cookie=NameOfCookie+"="+(escaped==false?value:escape(value))+";path=/;domain=dell.com;"+(persist==true?("expires="+expires+";"):"");}
+function StormCookie(){var STORMSCOOKIE="StormSCookie";this.session={cookieName:STORMSCOOKIE,cookieValue:getCookie(STORMSCOOKIE),setCookie:function(key,value){var vals=getCookie(STORMSCOOKIE);var val=getCookieKeyValue(STORMSCOOKIE,key,true);if(val!=value){var idx=this.cookieValue.indexOf(key+"="+val,0);var amp=(idx==0||this.cookieValue.length==0)?"":"&";if(idx==-1){SetCookieValue(STORMSCOOKIE,this.cookieValue+amp+key+"="+value,false,false);}
+else{SetCookieValue(STORMSCOOKIE,this.cookieValue.replace(amp+key+"="+val,amp+key+"="+value),false,false);}
+this.cookieValue=getCookie(STORMSCOOKIE);}},getCookie:function(key){return getCookieKeyValue(STORMSCOOKIE,key,true);}}
+var STORMPCOOKIE="StormPCookie";this.persistant={cookieName:STORMPCOOKIE,cookieValue:getCookie(STORMPCOOKIE),setCookie:function(key,value){var val=getCookieKeyValue(STORMPCOOKIE,key,true);if(val!=value){var idx=this.cookieValue.indexOf(key+"="+val,0);var amp=(idx==0||this.cookieValue.length==0)?"":"&";if(idx==-1){SetCookieValue(STORMPCOOKIE,this.cookieValue+amp+key+"="+value,true,false);}
+else{SetCookieValue(STORMPCOOKIE,this.cookieValue.replace(amp+key+"="+val,amp+key+"="+value),true,false);}
+this.cookieValue=getCookie(STORMPCOOKIE);}},getCookie:function(key){return getCookieKeyValue(STORMPCOOKIE,key,true);}}}
+function AsyncAddToCart(url,processingCaption){var otrail=document.getElementById('processingCaptionID');otrail.innerHTML=processingCaption;$j(document).bind('mousemove',followmouse);AsyncXDomainIframeCall(url,AsyncAddToCartCallback);}
+var cartcontent=null;var totalcartquantity=0;var asyncCartObj=null;var isaddingtocart=false;function AsyncAddToCartCallback(rsp){inflyoutmax=false;isaddingtocart=true;if(rsp.Status!="OK"){hidetrail();return;}
+else{hidetrail();var jasonCart=rsp.JasonObj;var relatedproductscontent="";cartcontent="<div id=\"pbarcontent\" name=\"carttemp\" class=\"pbarcontentcart\" style=\"width:350px;float:left;\">";if(jasonCart.Error){cartcontent=cartcontent+" <div class=\"cartItems_error\">"+jasonCart.Error+"</div>";}
+else{var showRelatedProd=true;var caption=jasonCart.RelatedProductsCaption;if((caption==null)||(jasonCart.RelatedProductsUrl==null)){showRelatedProd=false;}
+else if(caption!=null&&(caption.length>0)){if(caption.substring(caption.length-1)==" "){showRelatedProd=false;}}
+else{showRelatedProd=false;}
+if(showRelatedProd==true){relatedproductscontent="<div class=\"simpleButtonMODIFIED\" style=\"float:left;\"><a href=\""+jasonCart.RelatedProductsUrl+"\" style=\"text-decoration:none\"><span name=\"silver_Btn\" class=\"silverBtn\"><div class=\"silverBtnLeft\">"+"</div><div class=\"silverBtnMid\">"+jasonCart.RelatedProductsCaption+"</div><div class=\"silverBtnRight\"></div></span></a></div><div class=\"cartspacer\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"248\" height=\"5\" border=\"0\" alt=\"\" /></div>";}
+cartcontent=cartcontent+" <div class=\"cartTopInfo\"><div class=\"cartItems_bold\">"+jasonCart.CartTopInfo+"</div></div>"+"<div class=\"cartItem\">"+"<div class=\"pbarspacer\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" /></div>"+"<div class=\"productImage\"><img src=\""+jasonCart.Image+"\" width=\"40\" border=\"0\" alt=\"\" /></div>"+"<div class=\"productDesc\"><span class=\"productTitle\" title=\""+jasonCart.ShortDescription+"\">"+jasonCart.ShortDescription+"</span><br />"+"</div>"+"<div class=\"productPrice\" style=\"width:150px;\">"+jasonCart.Price+"</div>";}
+cartcontent=cartcontent+"<div style=\"clear:both;\"></div>"+"<div class=\"productDivide\"></div>"+"<div class=\"cartspacer\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"320\" height=\"10\" border=\"0\" alt=\"\" /></div>"+relatedproductscontent+"<div class=\"simpleButtonMODIFIED\" style=\"float:right;\"><a href=\""+jasonCart.CartLinkUrl+"\"><span name=\"green_Btn\" class=\"greenBtn\"><div class=\"greenBtnLeft\">"+"</div><div class=\"greenBtnMid\">"+jasonCart.CartLinkCaption+"</div><div class=\"greenBtnRight\"></div></span></a></div>"+"<div class=\"simpleButtonMODIFIED\" style=\"float:left;\"><a href=\"javascript:CollapseOnContinueShopping('cart')\" style=\"text-decoration:none\"><span name=\"silver_Btn\" class=\"silverBtn\" style=\"\"><div class=\"silverBtnLeft\">"+"</div><div class=\"silverBtnMid\" style=\"\">"+jasonCart.ContinueShoppingCaptoin+"</div><div class=\"silverBtnRight\"></div></span></a></div><div class=\"pbarspacer\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" /></div>"+"<div class=\"cartspacer\"><img src=\""+m_imgPfx+"/images/global/general/spacer.gif\" width=\"300\" height=\"5\" border=\"0\" alt=\"\" /></div>"+"</div>"+"</div>";totalcartquantity=jasonCart.CartQuantity;InitOpenCartItem();}}
+function gettrailobj(){return $j('#trailimageid');}
+function followmouse(e){var xcoord=offsetfrommouse[0];var ycoord=offsetfrommouse[1];if(typeof e!="undefined"){xcoord+=e.pageX;ycoord+=e.pageY;}
+else if(typeof window.event!="undefined"){xcoord+=truebody().scrollLeft+event.clientX;ycoord+=truebody().scrollTop+event.clientY;}
+var docwidth=document.all?truebody().scrollLeft+truebody().clientWidth:pageXOffset+window.innerWidth-15;var docheight=document.all?Math.max(truebody().scrollHeight,truebody().clientHeight):Math.max(document.body.offsetHeight,window.innerHeight);if(xcoord+trailimage[1]+3>docwidth||ycoord+trailimage[2]>docheight)
+gettrailobj().css({display:"none"});else
+gettrailobj().css({display:""});var cssObj={left:xcoord+"px",top:ycoord+"px",visibility:"visible"};gettrailobj().css(cssObj);}
+var trailimage=["",100,99];var offsetfrommouse=[10,-20];var displayduration=1;function hidetrail(){gettrailobj().css({visibility:"hidden"});$j(document).unbind('mousemove',followmouse);}
+function InitOpenCartItem(){m_cartPages=new Array();if(inflyoutmax){return;}
+if(isbloated==false){if(isaddingtocart){var cartDiv=getRawObject("flyoutcartbody");cartDiv.innerHTML="";m_pbarContentDiv=null;currentID=null;m_cartPages=new Array();scroll(0,0);flyoutmax('carttemp','350');isaddingtocart=false;}}
+else{if(isaddingtocart){CollapseOnContinueShopping("cart");isbloated=true;setTimeout("InitOpenCartItem()",250);}}}
+function CollapseOnContinueShopping(id){flyoutmaxclear();delayMin=setTimeout("shrinkIt('"+id+"',true)",0);}

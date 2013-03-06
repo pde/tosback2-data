@@ -2,12 +2,7 @@
 function runSearch() {
 	var searchTerm = document.searchform.q.value;
 	
-	if (isNumeric(searchTerm) == true && searchTerm.length > 4) { 
-		document.searchform.method='post';
-		document.searchform.action='http://map.ais.ucla.edu/go/'+searchTerm+'';
-	} else {
-		document.searchform.action='http://gsa.search.ucla.edu/search'; //run search
-	}
+	document.searchform.action='http://search.ucla.edu/search';
 	document.searchform.submit();
 }
 

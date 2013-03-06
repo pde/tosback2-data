@@ -966,7 +966,7 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
             alias : '',
             msg : '',
             img : '',
-            ref : document.location.href
+            ref : encodeURI(document.location.href)
         },
 
         /* add method

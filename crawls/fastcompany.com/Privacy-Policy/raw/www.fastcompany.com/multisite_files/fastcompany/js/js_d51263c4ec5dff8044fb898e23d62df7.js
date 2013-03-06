@@ -1894,39 +1894,9 @@ fastCo.redirect = (function() {
         var mobiles = [];
         mobiles[0] = "iphone";
         mobiles[1] = "ipod";
-        mobiles[2] = "smartphone";
-        mobiles[3] = "playstation";
-        mobiles[4] = "wap";
-        mobiles[5] = "windows ce";
-        mobiles[6] = "wm5 pie";
-        mobiles[7] = "iemobile";
-        mobiles[8] = "series60";
-        mobiles[9] = "symbian";
-        mobiles[10] = "series60";
-        mobiles[11] = "series70";
-        mobiles[12] = "hiptop";
-        mobiles[13] = "series80";
-        mobiles[14] = "series90";
-        mobiles[15] = "blackberry";
-        mobiles[16] = "android";
-        mobiles[17] = "midp";
-        mobiles[18] = "wml";
-        mobiles[19] = "brew";
-        mobiles[20] = "palm";
-        mobiles[21] = "xiino";
-        mobiles[22] = "blazer";
-        mobiles[23] = "pda";
-        mobiles[24] = "nitro";
-        mobiles[25] = "netfront";
-        mobiles[26] = "sonyericsson";
-        mobiles[27] = "ericsson";
-        mobiles[28] = "sec-sgh";
-        mobiles[29] = "docomo";
-        mobiles[30] = "kddi";
-        mobiles[31] = "vodafone";
-        mobiles[32] = "opera mini";
-        mobiles[33] = "motorola";
-        mobiles[34] = "nokia";
+        mobiles[2] = "blackberry";
+        mobiles[3] = "android";
+        mobiles[4] = "motorola";
       
         var uagent = navigator.userAgent.toLowerCase();
         for(i=0; i<mobiles.length; i++) {
@@ -1999,7 +1969,7 @@ if ( fastCo.redirect.isMobile() ) {
             for(var i=0; i<patterns.length; i++){
                 var node = uri.match( patterns[i] );
                 if( node && node.length === 1 ){
-                    var url = moburl + '?m=' + domain + '/node/' + node[0].match(/\d+/)[0] + '&url=' + window.location.href;
+                    var url = moburl + '?m=' + domain + '/node/' + node[0].match(/\d+/)[0] + '&url=' + window.location.href + '&' + window.location.search.substring(1);
                     window.location = url;
                 }
             }
@@ -2084,14 +2054,15 @@ Drupal.behaviors.DART = function() {
         var result = regex.exec($(this).attr('class'));
         var scriptTag = Drupal.DART.tag(Drupal.DART.settings.loadLastTags[result[1]]);
 
+        //This fix was specific for a dyson ad, but they're not running now, putting this back fixes dell ad
         //If user is IE
         //If the script doesn't contain the word imu_ then do standard writecapture, else use ProxyGetElementByID option hack. This was put in place for certain ads that refuse to show up in IE, and to limit applying this hack on IMU only so other units wouldn't be affected.
-        if ((navigator.userAgent.toLowerCase().indexOf("msie") != -1 ) && (result[1].indexOf("imu_") != -1)){
-          $(this).writeCapture().append(scriptTag,{proxyGetElementById:true}).addClass('dart-processed');
-        }
-        else {
+       // if ((navigator.userAgent.toLowerCase().indexOf("msie") != -1 ) && (result[1].indexOf("imu_") != -1)){
+       //   $(this).writeCapture().append(scriptTag,{proxyGetElementById:true}).addClass('dart-processed');
+       // }
+       // else {
           $(this).writeCapture().append(scriptTag).addClass('dart-processed');
-        }
+       // }
       }
     });
   }

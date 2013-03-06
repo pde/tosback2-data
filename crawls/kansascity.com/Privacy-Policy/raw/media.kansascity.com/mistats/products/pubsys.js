@@ -286,6 +286,7 @@ mistats.AdTracker = function ()
       for (i = 0; i < scripts.length; i++)
       {
          ad = null;
+         def = null;
 
          src = (scripts[i].src || '').toLowerCase();
          if (!src.match(/^https*:\/{2}ad\.doubleclick\.net\/adj\/mi\.\w{3}/) || scripts[i].tracked)

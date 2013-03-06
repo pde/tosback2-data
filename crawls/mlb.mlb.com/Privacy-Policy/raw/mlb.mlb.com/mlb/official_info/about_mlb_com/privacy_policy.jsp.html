@@ -231,7 +231,7 @@ var club      = "mlb",
     pageid    = "privacy_policy",
     dc_keyVal = "",
     dc_lang   = "en",
-    sysdate	  = "201303020739";
+    sysdate	  = "201303060655";
 </script>
 
 <!--[if lte IE 7 ]>
@@ -308,7 +308,7 @@ var club      = "mlb",
   };
   bam.EASTERN_TIME = bam.getEasternDate();
   var flips = {
-    global: '03/02/2013 11:00 AM GMT-500'
+    global: '03/06/2013 11:00 AM GMT-500'
   };
 
   bam.getFlipDate = function (club) {
@@ -1391,12 +1391,25 @@ $(document).ready(function(){
 if (section=="gameday" || section=="homepage" || section=="multimedia" || section=="news") {
 	var _sf_mlb_sec = (section=="gameday")?"gd":(section=="homepage")?"hp":(section=="multimedia")?"mm":(section=="news")?"news":"";
 	var _sf_async_config={};
+	// curfour article only
+	var isCutFourArticle = (window.location.pathname === '/cutfour/index.jsp' && window.location.hash !== "") ? true : false;
+	
 	/** CONFIGURATION START **/
 	_sf_async_config.uid = 43794;
-	_sf_async_config.domain = "mlb.com";
-	_sf_async_config.useCanonical = true;
+	_sf_async_config.domain = "mlb.com";	
 	_sf_async_config.sections = _sf_mlb_sec+","+page_id;//CHANGE THIS
 	_sf_async_config.authors = club;					//CHANGE THIS
+	
+	
+       
+    
+       _sf_async_config.useCanonical =  true;
+    
+    
+   
+	
+	
+	
 	/** CONFIGURATION END **/
 	(function(){
 		function loadChartbeat() {

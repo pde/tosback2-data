@@ -2797,11 +2797,8 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
     function LightboxVideoPlayer(element) {
       this.element = element;
       this._releaseVideoInterface = __bind(this._releaseVideoInterface, this);
-
       this._buildVideoInterface = __bind(this._buildVideoInterface, this);
-
       this._applyBrandLightbox = __bind(this._applyBrandLightbox, this);
-
       this.embedCode = this.element.attr('data-embed-code');
       this._enableLightbox();
     }
@@ -3955,7 +3952,7 @@ $.fn.tnfBrandItemBuilder = function () {
     instance = null;
 
     Locale.singleton = function() {
-      if (!(instance != null)) {
+      if (instance == null) {
         instance = new this;
       }
       return instance;
@@ -3964,34 +3961,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T20:24:13Z"
+        "updated_at": "2011-09-21T14:24:13-06:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T21:31:30Z",
+        "created_at": "2011-03-04T14:31:30-07:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T18:12:06Z"
+        "updated_at": "2011-08-19T12:12:06-06:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T22:11:13Z"
+        "updated_at": "2011-09-23T16:11:13-06:00"
       }
     ];
 
@@ -4409,9 +4406,7 @@ $.fn.tnfBrandItemBuilder = function () {
 
     function RaceNav() {
       this.redirect = __bind(this.redirect, this);
-
-      this.redirectToVal = __bind(this.redirectToVal, this);
-      this.element = $('#race_event');
+      this.redirectToVal = __bind(this.redirectToVal, this);      this.element = $('#race_event');
       this.setupObservers();
     }
 
@@ -4511,8 +4506,7 @@ $.fn.tnfBrandItemBuilder = function () {
   RaceEventShuffler = (function() {
 
     function RaceEventShuffler(element) {
-      this.oldEventBouncer = __bind(this.oldEventBouncer, this);
-      this.element = element;
+      this.oldEventBouncer = __bind(this.oldEventBouncer, this);      this.element = element;
       this.old_race_events = [];
       this.bounceOldEvents();
       this.appendOldEvents();
@@ -4629,9 +4623,7 @@ $.fn.tnfBrandItemBuilder = function () {
 
     function ProductGridTabController() {
       this.activateAnchor = __bind(this.activateAnchor, this);
-
-      this.activateGrid = __bind(this.activateGrid, this);
-      this.elements = [];
+      this.activateGrid = __bind(this.activateGrid, this);      this.elements = [];
       this.build();
       this.bindEvents();
     }
@@ -4734,8 +4726,7 @@ $.fn.tnfBrandItemBuilder = function () {
     };
 
     function ProductGridTabbed(element) {
-      this.handleProductGridSelection = __bind(this.handleProductGridSelection, this);
-      this.element = $(element);
+      this.handleProductGridSelection = __bind(this.handleProductGridSelection, this);      this.element = $(element);
       this.tabController = $.TNF.BRAND.ProductGridTabController.singleton();
       this.build();
       this.bindEvents();
@@ -4820,15 +4811,10 @@ $.support.transition = (function(){
       var el, tabElements;
       this.element = element;
       this.resumeAutoRotation = __bind(this.resumeAutoRotation, this);
-
       this.pauseAutoRotation = __bind(this.pauseAutoRotation, this);
-
       this.stopAutoRotation = __bind(this.stopAutoRotation, this);
-
       this.rotate = __bind(this.rotate, this);
-
       this.addCallout = __bind(this.addCallout, this);
-
       tabElements = $('.side-tabs a', this.element);
       this.tabs = (function() {
         var _i, _len, _results;
@@ -4862,7 +4848,11 @@ $.support.transition = (function(){
       if (arguments.length === 1) {
         el = arguments[0];
       }
-      callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
+      if ($(el).hasClass('callout-white')) {
+        callout = new $.TNF.BRAND.Gallery.Standard.CalloutWhite($(el));
+      } else {
+        callout = new $.TNF.BRAND.Gallery.Standard.Callout($(el));
+      }
       this.callouts.push(callout);
       return callout;
     };
@@ -4929,13 +4919,9 @@ $.support.transition = (function(){
     function HeroGalleryTab(element) {
       this.element = element;
       this._enableIfOpen = __bind(this._enableIfOpen, this);
-
       this.enable = __bind(this.enable, this);
-
       this.disable = __bind(this.disable, this);
-
       this.select = __bind(this.select, this);
-
       this.renderStrategy = HeroGalleryTabRenderStrategy.factory(this.element);
       this.element.bind('click', this.select);
       this.element.bind('mouseenter', this._enableIfOpen);
@@ -4999,9 +4985,7 @@ $.support.transition = (function(){
     function HeroGalleryTabRenderStrategy(element) {
       this.element = element;
       this.deselect = __bind(this.deselect, this);
-
       this.select = __bind(this.select, this);
-
       this.panel = $(this.element.attr('href'));
       this.element.closest('.side-tabs').bind(SELECTION_EVENT, this.deselect);
     }
@@ -5034,9 +5018,8 @@ $.support.transition = (function(){
 
     function HeroGalleryTabJSRenderStrategy() {
       this.deselect = __bind(this.deselect, this);
-
       this.select = __bind(this.select, this);
-      return HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
+      HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
     }
 
     HeroGalleryTabJSRenderStrategy.prototype.select = function(event) {
@@ -5120,9 +5103,7 @@ $.support.transition = (function(){
     function Ustream(el) {
       this.el = el;
       this.close = __bind(this.close, this);
-
       this.embed = __bind(this.embed, this);
-
       this.panel = this.el.closest('.panel');
       this.tabs = $('.side-tabs');
       this.bindEvents();
@@ -5171,9 +5152,7 @@ $.support.transition = (function(){
     function WhistlerVideo(el) {
       this.el = el;
       this.hideVideo = __bind(this.hideVideo, this);
-
       this.showVideo = __bind(this.showVideo, this);
-
       $('#whistler-video-open').bind('click', this.showVideo);
       $('#whistler-video-close').bind('click', this.hideVideo);
       this.galleryItems = $(".hero-gallery-item");
@@ -5222,7 +5201,6 @@ $.support.transition = (function(){
     function AutoProductSwapper(element) {
       this.element = element;
       this.rotate = __bind(this.rotate, this);
-
       this.index = 0;
       this.setupElements();
       this.bindEvents();

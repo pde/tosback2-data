@@ -694,28 +694,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "SAT MARCH 2 8:30/7:30C",
+							"title" : "THE 40 YEAR OLD VIRGIN",
+							"subtitle" : "SATURDAY MARCH 16 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_40yearoldvirgin.png"
 						},
 						{
-							"title" : "FAST & FURIOUS",
-							"subtitle" : "SAT MARCH 2 6:30/5:30C",
+							"title" : "THE UGLY TRUTH",
+							"subtitle" : "SATURDAY MARCH 9 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
 						},
 						{
-							"title" : "BOOT CAMP",
-							"subtitle" : "SAT MARCH 2 11/10C",
+							"title" : "KNOCKED UP",
+							"subtitle" : "SUNDAY MARCH 10 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_bootcamp.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_knockedup.png"
 						},
 						{
-							"title" : "RESIDENT EVIL: AFTERLIFE",
-							"subtitle" : "SUN MARCH 3 11/10C",
+							"title" : "CASINO ROYALE",
+							"subtitle" : "FRIDAY MARCH 22 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_casinoroyale.png"
 						}
 					]
 				}

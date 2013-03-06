@@ -242,6 +242,12 @@ $(document).ready(function() {
         100);
         
     }
+	
+	if ($("#ProductDetails .primaryInfo #eyebrow").length > 0){
+		$(".breadcrumbsArea #breadcrumbs span").length == 0 ? $(".primaryInfo").removeClass("primaryInfoTopMargin").addClass("breadcumNotAvailable") : $(".primaryInfo").addClass("primaryInfoTopMargin").removeClass("breadcumNotAvailable");
+	}else{
+		$(".primaryInfo").removeClass("primaryInfoTopMargin breadcumNotAvailable");
+	}
     
 });
 

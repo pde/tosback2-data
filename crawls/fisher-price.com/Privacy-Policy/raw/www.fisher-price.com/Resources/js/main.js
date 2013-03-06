@@ -2575,6 +2575,77 @@ com.mattel.main = function () {
 			});
 		});
 
+		$("#FavouritesVid").live('click', function (event) {
+            event.preventDefault();
+            var popupurl = $(this).attr("rel");
+
+            //Make the AJAX call to fetch the data & then call overlay to display popup
+            $.ajax({
+                url: popupurl,
+                success: function (data) {
+                    $('.displayComponentOverlay').html(data);
+                    $('.displayComponentOverlay').show();
+
+                    var flashHeight = $('.displayComponentOverlay object').height();
+                    var flashWidth = $('.displayComponentOverlay object').width();
+
+                    if ($('.displayComponentOverlay object object')) {
+                        if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {
+                            flashHeight = $('.displayComponentOverlay object object').height();
+                        }
+                        if ($('.displayComponentOverlay object object').width() > $('.displayComponentOverlay object').width()) {
+                            flashWidth = $('.displayComponentOverlay object object').width();
+                        }
+                    }
+
+                   var windowWidth = $(window).width();
+                    var windowHeight = $(window).height();
+                    var flashRatio = flashWidth / flashHeight;
+                    var windowRatio = windowWidth / windowHeight;
+
+                    if (windowRatio > flashRatio) {
+                        if (windowHeight > flashHeight) {
+                            newFlashHeight = windowHeight * 0.88;
+                            newFlashWidth = newFlashHeight * flashRatio;
+                        }
+                        else {
+                            newFlashWidth = flashWidth;
+                            newFlashHeight = flashHeight;
+                        }
+                    }
+                    else {
+                        if (windowWidth > flashWidth) {
+                            newFlashWidth = windowWidth * 0.88;
+                            newFlashHeight = newFlashWidth / flashRatio;
+                        }
+                        else {
+                            newFlashWidth = flashWidth;
+                            newFlashHeight = flashHeight;
+                        }
+                    }
+                    if (newFlashWidth > 1132) {
+                        newFlashHeight = newFlashHeight * 1132 / newFlashWidth
+                        newFlashWidth = 1132;
+                    }
+
+                    $('.displayComponentOverlay object').width(newFlashWidth + 'px');
+                    $('.displayComponentOverlay object').height(newFlashHeight + 'px');
+                    if ($('.displayComponentOverlay object object')) {
+                        $('.displayComponentOverlay object object').width(newFlashWidth + 'px');
+                        $('.displayComponentOverlay object object').height(newFlashHeight + 'px');
+                    }
+                    $('.lightbox-top>div').width((newFlashWidth + 25) + 'px')
+                    $('.lightbox-content').width(newFlashWidth + 'px')
+                    $('.lightbox-content .modal-area .modal-area-content').height(newFlashHeight + 'px')
+                    $('.lightbox-bottom>div').width((newFlashWidth + 25) + 'px')
+                    /* Changed the value as the PopUp is going up the screen, there by cutting a part of it in IE & Chrome - Pulak */
+                    $('.displayComponentOverlay').jOverlay();
+                    $(document).scrollTop(0);
+                    //                    onlineGamesSetupGames();
+                }
+            });
+        });
+		
 
 		$("#LaunchWhatsNew").live('click', function (event) {
 			event.preventDefault();

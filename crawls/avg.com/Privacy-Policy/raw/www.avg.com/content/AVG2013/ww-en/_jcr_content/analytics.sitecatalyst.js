@@ -313,12 +313,409 @@
         
         
         
-        /***** HELPER FUNCTIONS3 ****/
+        
+
+s.getQueryParam = new Function("p", "d", "u", ""
++ "var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
++ "on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
++ ".length:i;t=s.p_gpv(p.substring(0,i),u+'');if(t){t=t.indexOf('#')>-"
++ "1?t.substring(0,t.indexOf('#')):t;}if(t)v+=v?d+t:t;p=p.substring(i="
++ "=p.length?i:i+1)}return v");
+s.p_gpv = new Function("k", "u", ""
++ "var s=this,v='',i=u.indexOf('?'),q;if(k&&i>-1){q=u.substring(i+1);v"
++ "=s.pt(q,'&','p_gvf',k)}return v");
+s.p_gvf = new Function("t", "k", ""
++ "if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
++ "rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase()){v=s.rep(v,'+',' '); return v;}"
++ "}return ''");
+
+
+s.deB64 = function(s) {
+  var e={},i,k,v=[],r='',w=String.fromCharCode;
+  var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
+  for(z in n){for(i=n[z][0];i<n[z][1];i++){v.push(w(i));}}
+  for(i=0;i<64;i++){e[v[i]]=i;}
+  for(i=0;i<s.length;i+=72){var b=0,c,x,l=0,o=s.substring(i,i+72);
+  for(x=0;x<o.length;x++){c=e[o.charAt(x)];b=(b<<6)+c;l+=6;while(l>=8){r+=w((b>>>(l-=8))%256);}}}return r;}
+  
+
+if(!s.eVar62){
+	s.eVar62=(s.deB64(s.getQueryParam('tu_exp')))
+  }
+  
+  
+  
+  
+
+
+/***** HELPER FUNCTIONS3 ****/
 url = document.location.href;
 url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
 url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
 alias = url.substring(url.lastIndexOf("/") + 1, url.length);
 domain = url.split(/\/+/g)[1]; 
+
+
+	/* Automated download tracking */
+	var url=s.linkHandler("download-file-");
+  var metadownload = GetHttpEquiv();
+  if(metadownload === undefined) {
+ var metadownload = "0";
+}
+//  var s_vi_value = s.c_r("s_vi");
+  var s_vi_value = "abcd";  
+  var s_vi_value_short = s_vi_value.substring(7, 20);
+  if((url) || (metadownload.indexOf('download-file-')>-1) ) {    
+        	if((url.indexOf('tri')>-1)  || (metadownload.indexOf('tri')>-1)) {
+			if((url.indexOf('avd')>-1) || (metadownload.indexOf('avd')>-1)){ 
+				s.prop9="down_trial_avd_avg_"+alias;
+				s.eVar9="down_trial_avd_avg_"+alias;
+        s.products =';avd_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */               
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('triisi')>-1) || (metadownload.indexOf('triisi')>-1)){ 
+				s.prop9="down_trial_isi_avg_"+alias;
+				s.eVar9="down_trial_isi_avg_"+alias;
+        s.products =';isi_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */    
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('trituh')>-1) || (metadownload.indexOf('trituh')>-1)){ 
+				s.prop9="down_trial_tuh_avg_"+alias;
+				s.eVar9="down_trial_tuh_avg_"+alias;
+        s.products =';tuh_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */    
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('fww')>-1) || (metadownload.indexOf('fww')>-1)){ 
+				s.prop9="down_trial_fww_avg_"+alias;
+				s.eVar9="down_trial_fww_avg_"+alias;
+        s.products =';fww_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */    
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('isp')>-1) || (metadownload.indexOf('isp')>-1)){ 
+				s.prop9="down_trial_isp_avg_"+alias;
+				s.eVar9="down_trial_isp_avg_"+alias;
+        s.products =';isp_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";     
+			}else if((url.indexOf('idt')>-1) || (metadownload.indexOf('idt')>-1)){ 
+				s.prop9="down_trial_idt_avg_"+alias;
+				s.eVar9="down_trial_idt_avg_"+alias;
+        s.products =';idt_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}                 
+       else if((url.indexOf('triavc')>-1) || (metadownload.indexOf('triavc')>-1)){ 
+				s.prop9="down_trial_avc_avg_"+alias;
+				s.eVar9="down_trial_avc_avg_"+alias;
+        s.products =';avc_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}   
+       else if((url.indexOf('triisc')>-1) || (metadownload.indexOf('triisc')>-1)){
+				s.prop9="down_trial_isc_avg_"+alias;
+				s.eVar9="down_trial_isc_avg_"+alias;
+        s.products =';isc_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"+s_vi_value_short;
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}
+       else if((url.indexOf('triavb')>-1) || (metadownload.indexOf('triavb')>-1)){  
+				s.prop9="down_trial_avb_avg_"+alias;
+				s.eVar9="down_trial_avb_avg_"+alias;
+        s.products =';avb_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"+s_vi_value_short;
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}      
+       else if((url.indexOf('triise')>-1)  || (metadownload.indexOf('triise')>-1)){   
+				s.prop9="down_trial_ise_avg_"+alias;
+				s.eVar9="down_trial_ise_avg_"+alias;
+        s.products =';ise_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}                  
+       else if((url.indexOf('trifsc')>-1)  || (metadownload.indexOf('trifsc')>-1)){    
+				s.prop9="down_trial_fsc_avg_"+alias;
+				s.eVar9="down_trial_fsc_avg_"+alias;
+        s.products =';fsc_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}                 
+       else if((url.indexOf('trimsb')>-1)  || (metadownload.indexOf('trimsb')>-1)){  
+				s.prop9="down_trial_msb_avg_"+alias;
+				s.eVar9="down_trial_msb_avg_"+alias;
+        s.products =';msb_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}                                                
+       else if((url.indexOf('trialb')>-1)  || (metadownload.indexOf('trialb')>-1)){     
+				s.prop9="down_trial_alb_avg_"+alias;
+				s.eVar9="down_trial_alb_avg_"+alias;
+        s.products =';alb_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			} 
+		} else             
+        		if((url.indexOf('afg')>-1)  || (metadownload.indexOf('afg')>-1)){
+				s.prop9="down_paid_afg_avg_"+alias;
+				s.eVar9="down_paid_afg_avg_"+alias;
+        s.products =';afg_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('avd')>-1)  || (metadownload.indexOf('avd')>-1)){
+				s.prop9="down_paid_avd_avg_"+alias;
+				s.eVar9="down_paid_avd_avg_"+alias;
+        s.products =';avd_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('fww')>-1)  || (metadownload.indexOf('fww')>-1)){
+				s.prop9="down_paid_fww_avg_"+alias;
+				s.eVar9="down_paid_fww_avg_"+alias;
+        s.products =';fww_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('isp')>-1)  || (metadownload.indexOf('isp')>-1)){
+				s.prop9="down_paid_isp_avg_"+alias;
+				s.eVar9="down_paid_isp_avg_"+alias;
+        s.products =';isp_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}else if((url.indexOf('lsf')>-1)  || (metadownload.indexOf('lsf')>-1)){
+				s.prop9="down_paid_lsf_avg_"+alias;
+				s.eVar9="down_paid_lsf_avg_"+alias;
+        s.products =';lsf_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";    
+			}else if((url.indexOf('afh')>-1)  || (metadownload.indexOf('afh')>-1)){     
+				s.prop9="down_paid_afh_avg_"+alias;
+				s.eVar9="down_paid_afh_avg_"+alias;
+        s.products =';afh_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";     
+			}else if((url.indexOf('abf')>-1)  || (metadownload.indexOf('abf')>-1)){    
+				s.prop9="down_paid_abf_avg_"+alias;
+				s.eVar9="down_paid_abf_avg_"+alias;
+        s.products =';abf_trial;1;0';
+				s.events=s.events?s.events+",event33":"event13,event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";    
+			}else if((url.indexOf('smf')>-1)  || (metadownload.indexOf('smf')>-1)){       
+				s.prop9="down_paid_smf_avg_"+alias;
+				s.eVar9="down_paid_smf_avg_"+alias;
+        s.products =';smf_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";     
+			}else if((url.indexOf('alf')>-1)  || (metadownload.indexOf('alf')>-1)){       
+				s.prop9="down_paid_alf_avg_"+alias;
+				s.eVar9="down_paid_alf_avg_"+alias;
+        s.products =';alf_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";     
+			}else if((url.indexOf('avc')>-1)  || (metadownload.indexOf('avc')>-1)){     
+				s.prop9="down_paid_avc_avg_"+alias;
+				s.eVar9="down_paid_avc_avg_"+alias;
+        s.products =';avc_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";    
+			}else if((url.indexOf('pct')>-1)  || (metadownload.indexOf('pct')>-1)){     
+				s.prop9="down_paid_pct_avg_"+alias;
+				s.eVar9="down_paid_pct_avg_"+alias;
+        s.products =';pct_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";    
+			}else if((url.indexOf('avb')>-1)  || (metadownload.indexOf('avb')>-1)){      
+				s.prop9="down_paid_avb_avg_"+alias;
+				s.eVar9="down_paid_avb_avg_"+alias;
+        s.products =';avb_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";   
+			}else if((url.indexOf('ise')>-1)  || (metadownload.indexOf('ise')>-1)){    
+				s.prop9="down_paid_ise_avg_"+alias;
+				s.eVar9="down_paid_ise_avg_"+alias;
+        s.products =';ise_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33"; 
+			}else if((url.indexOf('fsc')>-1)  || (metadownload.indexOf('fsc')>-1)){  
+				s.prop9="down_paid_fsc_avg_"+alias;
+				s.eVar9="down_paid_fsc_avg_"+alias;
+        s.products =';fsc_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";  
+			}else if((url.indexOf('msb')>-1)  || (metadownload.indexOf('msb')>-1)){      
+				s.prop9="down_paid_msb_avg_"+alias;
+				s.eVar9="down_paid_msb_avg_"+alias;
+        s.products =';msb_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";      
+			}else if((url.indexOf('alb')>-1)  || (metadownload.indexOf('alb')>-1)){      
+				s.prop9="down_paid_alb_avg_"+alias;
+				s.eVar9="down_paid_alb_avg_"+alias;
+        s.products =';alf_paid;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}
+      else if((url.indexOf('tuh')>-1)  || (metadownload.indexOf('tuh')>-1)){      
+				s.prop9="down_trial_tuh_avg_"+alias;
+				s.eVar9="down_trial_tuh_avg_"+alias;
+        s.products =';tuh_trial;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+			}          
+     /* else {
+				s.prop9=url;
+				s.eVar9=url;
+				s.events=s.events?s.events+",event9,event10,event13":"event9,event10,event13";
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event9,event10,event13";
+			}        */
+		}
+    
+    
+
+ 
+ var url2=s.linkHandler("download");    
+ if(url2) {
+    if(url.indexOf('download.cnet.com/AVG-AntiVirus-FREE')>-1)   {
+				s.prop9="down_free_avc_cnet.com_"+alias;
+				s.eVar9="down_free_avc_cnet.com_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ }
+ 
+ 
+ var url3=s.linkHandler("stahuj");    
+ if(url3) {
+    if(url.indexOf('stahuj.centrum.cz/avg-antivirus')>-1)   {
+				s.prop9="down_free_avc_stahuj.cz_"+alias;
+				s.eVar9="down_free_avc_stahuj.cz_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ } 
+ 
+ var url4=s.linkHandler("chip.de");    
+ if(url4) {
+    if(url.indexOf('chip.de/downloads/AVG-Free-Antivirus')>-1)   {
+				s.prop9="down_free_avc_chip.de_"+alias;
+				s.eVar9="down_free_avc_chip.de_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ }  
+ 
+  var url5=s.linkHandler("01net.com");    
+ if(url5) {
+    if(url.indexOf('01net.com/telecharger/windows/Securite/antivirus-antitrojan')>-1)   {
+				s.prop9="down_free_avc_01net.com_"+alias;
+				s.eVar9="down_free_avc_01net.com_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ }  
+ 
+ 
+  var url6=s.linkHandler("html.it");    
+ if(url6) {
+    if(url.indexOf('download.html.it/software/vedi/9792/avg-anti-virus')>-1)   {
+				s.prop9="down_free_avc_html.it_"+alias;
+				s.eVar9="down_free_avc_html.it_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ }  
+ 
+ 
+  var url7=s.linkHandler("dobreprogramy.pl");    
+ if(url7) {
+    if(url.indexOf('dobreprogramy.pl/AVG-AntiVirus-Free-Edition')>-1)   {
+				s.prop9="down_free_avc_dobreprogramy.pl_"+alias;
+				s.eVar9="down_free_avc_dobreprogramy.pl_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ } 
+ 
+ 
+   var url8=s.linkHandler("baixaki.com");    
+ if(url8) {
+    if(url.indexOf('baixaki.com.br/download/avg-anti-virus')>-1)   {
+				s.prop9="down_free_avc_baixaki.com.br_"+alias;
+				s.eVar9="down_free_avc_baixaki.com.br_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ } 
+ 
+   var url9=s.linkHandler("softportal.com");    
+ if(url9) {
+    if(url.indexOf('softportal.com/getsoft-607-avg-antivirus-free')>-1)   {
+				s.prop9="down_free_avc_softportal.com_"+alias;
+				s.eVar9="down_free_avc_softportal.com_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ } 
+ 
+    var url10=s.linkHandler("tamindir.com");    
+ if(url10) {
+    if(url.indexOf('tamindir.com/avg-anti-virus-free-edition')>-1)   {
+				s.prop9="down_free_avc_tamindir.com_"+alias;
+				s.eVar9="down_free_avc_tamindir.com_"+alias;
+        s.products =';avc_free;1;0';
+				s.events=s.events?s.events+",event33":"event33"; /*+s_vi_value_short; */
+				s.linkTrackVars="prop9,eVar9,events";
+				s.linkTrackEvents="event33";
+    }
+ } 
+
+
+
+ alert("I am an alert box!");
+
 
 /***** CUSTOM TRACKING ***/
 if(domain=="free.avg.com"){
@@ -394,13 +791,8 @@ s.endof=new Function("x",""
 +"t;");
 
 
-s.deB64 = function(s) {
-  var e={},i,k,v=[],r='',w=String.fromCharCode;
-  var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
-  for(z in n){for(i=n[z][0];i<n[z][1];i++){v.push(w(i));}}
-  for(i=0;i<64;i++){e[v[i]]=i;}
-  for(i=0;i<s.length;i+=72){var b=0,c,x,l=0,o=s.substring(i,i+72);
-  for(x=0;x<o.length;x++){c=e[o.charAt(x)];b=(b<<6)+c;l+=6;while(l>=8){r+=w((b>>>(l-=8))%256);}}}return r;}
+
+  
 
 /*
 * Plugin Utility: apl v1.1
@@ -456,23 +848,6 @@ s.repl=new Function("x","o","n",""
 +"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
 
 
-/*
-* Plugin: getQueryParam 2.3 - return query string parameter(s)
-* Omniture Consulting 18/06/2009: Amended to avoid using s.epa method
-*/
-s.getQueryParam = new Function("p", "d", "u", ""
-+ "var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
-+ "on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
-+ ".length:i;t=s.p_gpv(p.substring(0,i),u+'');if(t){t=t.indexOf('#')>-"
-+ "1?t.substring(0,t.indexOf('#')):t;}if(t)v+=v?d+t:t;p=p.substring(i="
-+ "=p.length?i:i+1)}return v");
-s.p_gpv = new Function("k", "u", ""
-+ "var s=this,v='',i=u.indexOf('?'),q;if(k&&i>-1){q=u.substring(i+1);v"
-+ "=s.pt(q,'&','p_gvf',k)}return v");
-s.p_gvf = new Function("t", "k", ""
-+ "if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
-+ "rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase()){v=s.rep(v,'+',' '); return v;}"
-+ "}return ''");
 
 /*                                                                  
 * Plugin: clickPast - version 1.0

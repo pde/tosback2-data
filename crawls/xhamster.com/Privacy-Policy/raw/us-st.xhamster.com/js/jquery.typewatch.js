@@ -61,7 +61,7 @@
 
 					if (evt.keyCode == 13 && (this.type.toUpperCase() == "TEXT" || this.type.toUpperCase() == "PASSWORD")) {
 						timerWait = 1;
-						overrideBool = true;
+						//overrideBool = true;
 					}
 
 					var timerCallbackFx = function() {

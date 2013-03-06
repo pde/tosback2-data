@@ -990,7 +990,7 @@ $(document).ready(function() {
 
 	// handle phone number image to display between call-centre working times
 	handleCallCenterStrapline();
-	
+    PhoneNumberDisplayRuleOffers();	
 	// only display phone number logo image on homepage
 	//displayCallCentreStraplineOnHomepage();
 	
@@ -1216,6 +1216,25 @@ function isTouringWebsite() {
 	// currently, only 1 unique thing determines whether it's Touring - URL!
 	if(pageUrl.indexOf("/touring%2Dcamping/") != -1 || pageUrl.indexOf("/touring-camping/") != -1) return true;
 	else return false;
+}
+
+
+function PhoneNumberDisplayRuleOffers()
+{
+    var now = new Date();
+    var hours = now.getHours();
+	
+    //alert(hours);
+    if ((hours < 9 || hours > 21))
+    {
+        $("#hdrHelpImg").addClass("noVisible");
+    }
+    var displayHdrImageFlag = $("#displayHeaderImageWithLink").val();
+    if (displayHdrImageFlag == "yes")
+    {
+        $("#hdrHelpImgWithLink").show();
+        //$("#hdrHelpImg").remove();
+    }
 }
 
 

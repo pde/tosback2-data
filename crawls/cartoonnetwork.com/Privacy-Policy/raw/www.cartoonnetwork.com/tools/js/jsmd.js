@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "cartoon.190.2661.20121009",
+	version: "cartoon.213.2661.20130225",
 	release: "0",
 	dictionary: {
 		init: {
@@ -339,7 +339,7 @@ var _jsmd_default={
 						this.v.eVar15 = this.v.prop15; this.v.prop15 = "";
 						this.v.linkTrackVars = "events,products,eVar3,eVar15,prop35,prop46,eVar46,prop47,eVar47";
 						}
-						else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1)
+						else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1 || _w.location.href.indexOf("splashback") != -1)
 						{
 				   		 var igt = (this.get("business.cnt.game.title") != "" ? this.get("business.cnt.game.title") : "");
 				    		 var gts = (this.get("business.cnt.epic.game.time_spent") != "" ? this.get("business.cnt.epic.game.time_spent") : "");
@@ -415,6 +415,8 @@ var _jsmd_default={
 							this.v.eVar27 = this.v.channel; this.v.channel = "";
 							this.v.eVar28 = this.v.prop28; this.v.prop28 = "";
 							this.v.hier1 = "";
+							this.v.eVar19 = ""; this.v.prop19 = "";
+							this.v.eVar20 = ""; this.v.prop20 = "";
 							if (d.indexOf("complete") != -1 || d.indexOf("mixit-video-complete") != -1) {
 								this.v.eVar11 = this.v.prop11; this.v.prop11 = "";
 								this.v.eVar12 = this.v.prop12; this.v.prop12 = "";
@@ -668,7 +670,7 @@ var _jsmd_default={
 			},
 			"adbp-video": {
 				filters: {
-					"video-preroll":					{ include: ["page.domain","video.title","video.id","business.friendly_name","page.franchise","video.preroll","code.version"] }
+					"video-preroll":					{ include: ["page.domain","video.title","video.id","business.friendly_name","page.transaction_id","page.franchise","video.preroll","code.version"] }
 				},
 				variablemap: {
 					"page.domain":						["eVar29"],
@@ -682,6 +684,7 @@ var _jsmd_default={
 					"promo.internal.id":				["eVar43"],
 					"promo.internal.implied":			["eVar48"],				//Campaign Stacking (SEO Driven)
 					"promo.external.id":				["campaign"],			//Marketing/External Campaigns
+					"page.transaction_id":				["eVar46"],
 					"delimiter":						"|"
 				},
 				eventmap: {
@@ -1816,9 +1819,10 @@ var _jsmd_default={
 				this.set("link",{name: "game time spent: "+gd.ingame_title, type: "o"});
 				this.set("business.cnt.game.time_spent",timeSpent+"");
 				}
-				else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1)
+				else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1 || _w.location.href.indexOf("splashback") != -1)
 
 				{
+				this.set("business.cnt.game.title",gd);
 				this.set("link",{name: "game time spent: "+gd, type: "o"});
 				this.set("business.cnt.epic.game.time_spent",timeSpent+"");
 				}
@@ -2088,8 +2092,12 @@ var _jsmd_default={
 				this.set("action","link");
 				this.set("link",{name: "video-preroll: " + videoTitle, type: "o"});
 				this.push("page.events","video.preroll");
+				this.send();
+				sendComscoreVideoMetrixBeacon(v.id,2);	//ad-related comscore call
 			},
 			"video-start": function(data, map) {
+				_w.jsmdPreviousPaused =false;
+				_w.jsmdPreviousBuffering =false;
 				var v = data.video||{};
 				var videoTitle = "";
 				if(typeof(v.title) == "undefined"){
@@ -2114,6 +2122,8 @@ var _jsmd_default={
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,videoTitle);
 			},
 			"video-autostart": function(data, map) {
+				_w.jsmdPreviousPaused =false;
+				_w.jsmdPreviousBuffering =false;
 				var v = data.video||{};
 				var videoTitle = "";
 				if(typeof(v.title) == "undefined"){
@@ -2134,12 +2144,30 @@ var _jsmd_default={
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,videoTitle);
 			},
 			"video-pause": function(data, map) {
+				var paused;
+				if(typeof(data.video.paused) == "undefined"){
+					paused =false;
+				}else{
+					paused = data.video.paused;
+				}
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
+				var previousPaused = vc.get(data.video.id,"isPaused");
+				if(paused != previousPaused){
 				vc.pause(data.video.id);
+				}
 			},
 			"video-buffer": function(data, map) {
+				var buffering;
+				if(typeof(data.video.buffering) == "undefined"){
+					buffering =false;
+				}else{
+					buffering = data.video.buffering;
+				}
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
+				var previousBuffering = vc.get(data.video.id,"isBuffering");
+				if(buffering != previousBuffering){
 				vc.buffer(data.video.id);
+				}
 			},
 			"video-complete": function(data, map) {
 				var v = data.video||{};
@@ -2174,8 +2202,6 @@ var _jsmd_default={
 				jsmd.TVE.totalAdDurations += Math.round(data.duration*1);
 
 				var MSO = jsmd.tveMSO;
-				this.set("tve.page.name", data.franchise+":"+data.title);
-				jsmd.TVE.pageName = this.get("tve.page.name");
 				this.set("tve.video_title", data.title);//prop12
 				jsmd.TVE.videoTitle = this.get("tve.video_title");
 				jsmd.TVE.brand = this.get("tve.brand");
@@ -2240,8 +2266,6 @@ var _jsmd_default={
 
 
 				var MSO = jsmd.tveMSO;
-				this.set("tve.page.name", data.franchise+":"+data.title);
-				jsmd.TVE.pageName = this.get("tve.page.name");
 				this.set("tve.video_title", data.title);//prop12
 				jsmd.TVE.videoTitle = this.get("tve.video_title");
 				jsmd.TVE.brand = this.get("tve.brand");
@@ -2319,7 +2343,7 @@ var _jsmd_default={
 							eVar19:jsmd.TVE.userID,
 							prop20:"0:content",
 							eVar20:"0:content",
-							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event13,event15,event23,event21";
@@ -2376,7 +2400,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar20:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					this.set("business.vendor.sitecatalyst", s_data);
 
@@ -2435,7 +2459,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar20:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
 	            		jsmd.TVE.isAdPlayTimeSet = true;
@@ -2495,7 +2519,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar20:grossProgressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
@@ -2588,7 +2612,7 @@ var _jsmd_default={
 							eVar19:jsmd.TVE.userID,
 							prop13:"0:content",
 							eVar13:"0:content",
-							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(adTotal){
 	            		s_data["linkTrackEvents"] = "event9,event13,event15,event21";
@@ -2654,7 +2678,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar13:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 
 					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
@@ -2713,7 +2737,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar13:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
 	            		jsmd.TVE.isAdPlayTimeSet = true;
@@ -2818,7 +2842,7 @@ var _jsmd_default={
 							eVar19:jsmd.TVE.userID,
 							prop13:"0:content",
 							eVar13:"0:content",
-							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(adTotal){
 	            		s_data["linkTrackEvents"] = "event8,event13,event15,event21";
@@ -2884,7 +2908,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar13:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 
 					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
@@ -2950,7 +2974,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar13:progressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
 	            		jsmd.TVE.isAdPlayTimeSet = true;
@@ -3018,7 +3042,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
 							eVar13:grossProgressMarker,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					if(adPlayTime != "" && adPlayTime > 0){
 	            		s_data["linkTrackEvents"] = "event6,event20,event22";
@@ -3058,8 +3082,8 @@ var _jsmd_default={
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
 				jsmd.TVE.videoFranchise = this.get("tve.franchise");
 				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
-				this.set("tve.video.live.stream", data.omnitureVideoName);//prop14,eVar14
-				jsmd.TVE.liveStreamName = jsmd.get("tve.video.live.stream");
+				this.set("tve.video.live.stream", data.id);//prop14,eVar14
+				jsmd.TVE.liveStreamName = data.id;//tve.video.live.stream refuses to set. have to explicitly set data.id
 				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
 				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
 				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
@@ -3096,7 +3120,7 @@ var _jsmd_default={
 							eVar16:jsmd.TVE.authState,
 							prop19:jsmd.TVE.userID,
 							eVar19:jsmd.TVE.userID,
-							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
@@ -3130,7 +3154,7 @@ var _jsmd_default={
 							eVar14:jsmd.TVE.liveStreamName,
 							eVar16:jsmd.TVE.authState,
 							eVar19:jsmd.TVE.userID,
-							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+							linkTrackVars:"events,products,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
 					};
 					this.set("business.vendor.sitecatalyst", s_data);
 
@@ -3796,20 +3820,22 @@ var _jsmd = function() {
 			}
 			else if((navigator.appVersion.indexOf("MSIE 8.")!=-1))
 			{
-				var compatMode = jsmd.plugin.gIreportgetMetaCompatible("IE=EmulateIE7");
-				if((compatMode && compatMode.indexOf("EmulateIE7")!=-1)){
-					if(l == 0){
-						try{
-							l = 0;
-							for(var p in this){
-								var pName = p+"";
-								if(!isNaN(parseInt(pName))){
-									l+=1;
+				try {
+					var compatMode = _jsmd.plugin.gIreportgetMetaCompatible("IE=EmulateIE7");
+					if((compatMode && compatMode.indexOf("EmulateIE7")!=-1)){
+						if(l == 0){
+							try{
+								l = 0;
+								for(var p in this){
+									var pName = p+"";
+									if(!isNaN(parseInt(pName))){
+										l+=1;
+									}
 								}
-							}
-						}catch(e){}
+							}catch(e){}
+						}
 					}
-				}
+				} catch(e) {}
 			}
 
 			if(typeof f=="function"){
@@ -4005,7 +4031,6 @@ _jsmd.addOnLoad(function(){
 	_jsmd.init().send();
 });
 */
-
 function sendInteractionEvent(data,event){
     try {
 		trackMetrics({
@@ -4032,6 +4057,15 @@ else if(event === "REPLAY"){
 
 else if(event === "TIME SPENT"){
  action = "ingame-progress";}
+
+else if(event === "unity_installed"){
+ action = "cnt-game-unity-installed";}
+
+ else if(event === "unity_not_installed"){
+ action = "cnt-game-unity-not-installed";}
+
+ else if(event === "unity_download"){
+ action = "cnt-game-unity-download";}
 
     try {
 		trackMetrics({

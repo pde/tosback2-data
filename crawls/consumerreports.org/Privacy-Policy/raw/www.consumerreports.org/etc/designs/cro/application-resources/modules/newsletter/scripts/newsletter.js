@@ -47,7 +47,7 @@ CUNewsletter.signup = function()
         var theParamString = '?' + 'email=' + escape(theEmail) +
                                   '&firstname=' +
                                   '&lastName=&source=' + theSource +                
-                                  '&redirect=' + encodeURIComponent('http://' + 'www.consumerreports.org' + '/cro/customer-service/email-service/e-mail-newsletters/newslettermgt.htm');
+                                  '&redirect=' + encodeURIComponent('http://web.consumerreports.org/newsletter/email-newsletters-step1.html');
         document.location.href = 'http://consumerreports.p.delivery.net/m/p/csu/sub/process.asp'+theParamString;
     }
 };

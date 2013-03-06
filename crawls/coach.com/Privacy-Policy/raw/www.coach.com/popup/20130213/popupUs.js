@@ -139,6 +139,29 @@ function goLink(linkwwcm){
 		
 }
 
+// Mother's Bag Module
+function popMomBag(){
+$('#DivContainer').prepend('<div id="MomBagDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeMomBag()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="MomBagFrame" id="MomBagFrame" src="/us/modules/mombag/27/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'MomBagDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Mother's Bag";
+	s.eVar16 = "Mother's Bag";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeMomBag() {
+	$('#MomBagFrame').remove();
+	$('#MomBagDiv').remove();
+	window.onresize = null; 
+}
+
 // American Redcross Sandy
 function popSandy(){
 $('#DivContainer').prepend('<div id="SandyDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSandy()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="SandyFrame" id="SandyFrame" src="/us/redcross_sandy/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
@@ -1858,7 +1881,7 @@ function closeLook() {
 
 function popupWallets() {
 
-	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/modules/women_wallet_guide/201301/11/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:557px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:557px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px;" src="/us/modules/women_wallet_guide/201302/27/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
 	document.getElementById('DivWallet').style.visibility='visible';
 	document.getElementById('DivWallet').style.zIndex='9000';
@@ -1872,7 +1895,7 @@ function popupWallets() {
 	
    	// REPOSITION DIV
 	divname = 'DivWallet';
-	divwidth = 842;
+	divwidth = 844;
 	divheight = 557;
 	window.onresize =  divPos;
 	divPos();
@@ -2331,6 +2354,9 @@ window.onload = function () {
 		//fire the function, else log the error
 		var popdiv = result.toLowerCase();
 		switch(popdiv){
+			case "mothers_bag":
+				popMomBag();
+				break;
 			case "redcross_sandy":
 				popSandy();
 				break;
