@@ -4,11 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
     <meta name="google-site-verification" content="haEGRQ8p0gAH1TK-OubvZSbz7Qj_gu3u1jp0G2JhJZk" />    
-    <script src="../../cdn3.ebags.com/eBagsBundles/20.3.16.2/requirejs"></script>
+    <script src="../../cdn3.ebags.com/eBagsBundles/20.7.6.1/requirejs"></script>
 
 <script type="text/javascript">
     require.config({
-        baseUrl: '//cdn3.ebags.com/eBagsBundles/20.3.16.2',
+        baseUrl: '//cdn3.ebags.com/eBagsBundles/20.7.6.1',
         waitSeconds: 10
     });
     require.onError = function (err) {
@@ -64,9 +64,9 @@
     <link href="../../cdn2.ebags.com/img/Content/ebags/images/siteImages/icons/favicon.png" rel="icon" type="image/x-icon" />
     <link href="http://cdn2.ebags.com/img/Content/ebags/images/siteImages/icons/eBagsIcon.png" rel="apple-touch-icon" />
 
-    <link href="../../cdn3.ebags.com/eBagsBundles/20.3.16.2/main.css" rel="stylesheet"/>
+    <link href="../../cdn3.ebags.com/eBagsBundles/20.7.6.1/main.css" rel="stylesheet"/>
 
-    <link href="../../cdn3.ebags.com/eBagsBundles/20.3.16.2/eb_superstyle.css" rel="stylesheet"/>
+    <link href="../../cdn3.ebags.com/eBagsBundles/20.7.6.1/eb_superstyle.css" rel="stylesheet"/>
 
            
     
@@ -77,13 +77,8 @@
 		    #wrap {display:table;height:100%}
 	    </style>
     <![endif]-->
-   
 </head>
 <body>
-
-
-<div class="mboxDefault" id="dynamicContentBoxGlobal"></div>
-
 
 <div id="wrap"> <!-- wrap -->
     <div id="main"> <!-- main -->
@@ -857,26 +852,44 @@
                         }
 
                         lnkHeaderCartItems.html(strCartItemCountText);
-
-                        // Track Action
-                        var trackingData = {
-                            events: [eBags.events.cart.add],
-                            pageName: 'QuickView : Add to Cart',
-                            channel: 'Shopping Cart',
-                            prop5: 'Shopping Cart',
-                            eVar8: 'Shopping Cart'
-                        };
-
-                        if (iCurrentCount === 1) {
-                            trackingData.events.push(eBags.events.cart.open);
-                        }
-
-                        eBags.trackPage(trackingData);
                     });
                 });
             </script>
             
             
+    <div id="headerDealOfTheDay">
+        <a title="eBags Steal of the Day - one incredible deal, every day" id="lnkDealOfDay" href="index.cfm%3Ffuseaction=privacy.html#"><img  alt="Steal of the Day" src='../../cdn2.ebags.com/img/header/btn_dealoftheday.gif'></a>
+    </div>
+
+	    <script type="text/javascript">
+	        require(['get!core/eBags', 'get!dropbox/dropbox'], function (eBags, dropbox) {
+	            eBags.dropbox('#lnkDealOfDay', {
+	                cookie: { name: 'dotdId', value: '4823', domain: 'www.ebags.com', days: 1 },
+                    //This determines if the deal of the day will auto show on the users first visit
+                    autoShowConfig: false,
+                    autoCloseSeconds: 8,
+                    relativeToElem: '#headerDealOfTheDay',
+                    container: '.topSection',
+                    url: '/Catalog/DealOfTheDayPopup',
+                    docWidth: 700,
+                    subscribe: {
+                        linkId: '#lnkSubscribe',
+                        serviceUrl: '/WebService/EmailSubscription.asmx',
+                        serviceEmailMethod: 'ModifyEmailSubscriptionByEmail',
+                        serviceCustIdMethod: 'ModifyEmailSubscriptionByCustomerId',
+                        emailTextbox: '#txtEmail',
+                        submitButton: '#btnDotdSubmit',
+                        subscribeDivId: '#divEmailSubscription',
+                        completeDivId: '#divEmailSubscribeComplete',
+                        customerId: '',
+                        subscribeType: 7,
+                        subscribeStatus: 3,
+                        websiteId: 1
+                        }
+                }, 'dotdDefaults');
+	        });
+	    </script>
+
 
             <div class="headerRewards">
                 <a title="eBags Blog - Get the scoop on eBags &amp; the bags we sell" class="headerLinkStyle" id="headerRewards_Blog" href="http://blog.eBags.com">Blog</a>
@@ -1139,20 +1152,64 @@
         <div id="footer-col1">
             <img src="../../cdn2.ebags.com/img/Content/ebags/images/siteImages/footer/eBagsInsider.png" alt="eBags Insider" border="0" style="float:left; padding-right:5px;" /><h3>Emails</h3>
             <p></p>
-            <div id="email-signup">
+            <div id="email-signup">     
                 
-                    <form name="quicksignup" action="http://www.ebags.com/members/index.cfm">
-                    <input type="Hidden" name="fuseaction" value="generic_customer_insert">
-                    <input type="Hidden" name="cust_origin_cd" value="PAGEEND">
-                    <input type="Hidden" name="destination" value="emailsignup">
-                    <input id="efield" type="text" name="email" value="Enter email address..." onfocus="this.value=''"
-                        size="30">
-                    <div id="btn-email-signup">
-                        <input type="image" src="../../cdn2.ebags.com/img/btn-emailSubmit.png" id="submit"
-                            alt="Join Now" /></div>
-                    <input type="Hidden" name="em" value="signupnew">
-                </form>
-                
+
+<form id="quicksignup">
+    
+    <div class="submitControls">
+        <input id="AnchorTag" name="AnchorTag" type="hidden" value="FT" />
+        <input class="efield" data-val="true" data-val-regex="Please enter a valid email address (e.g. name@domain.com)." data-val-regex-pattern="^\s{0,3}[a-zA-Z0-9_\+-]+(\.[a-zA-Z0-9\+-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.([a-zA-Z]{2,4})\s{0,3}$" data-val-required="Please enter your email address (example: name@domain.com)." id="EmailAddress" name="SubscribeEmailServiceModel.EmailAddress" type="text" value="" />
+        <div class="btn-email-signup">
+            <input id="submitEmailSubscription" type="image" src="../../cdn2.ebags.com/img/btn-emailSubmit.png" alt="Join Now" />
+        </div>
+    </div>
+    <span class="field-validation-valid" data-valmsg-for="SubscribeEmailServiceModel.EmailAddress" data-valmsg-replace="true"></span>
+    <div class="successDisplay" style="display:none" ><span style="font-family:'MuseoSlab-500', sans-serif; font-weight:bold; color:#063b69; font-size:14px;">Thanks for becoming an<br />eBags Insider!</span>
+        <span style="font-family:'MuseoSlab-500Italic', sans-serif;">Look for your exclusive<br />email savings.</span></div>
+</form>
+
+<script type="text/javascript">
+
+    require(["get!core/eBags"], function (eBags) {
+        eBags.watermark('#EmailAddress', 'Your email address...', '');
+    });
+
+    require(['jquery'], function ($) {
+        $(document).off("submit", "#quicksignup"); //remove any duplicate submit event wireups
+        $(document).on("submit", "#quicksignup", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/Site/SubscribeEmailAjax',
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.SuccessfullySubscribed)
+                    {
+                        $(".submitControls").hide();
+                        $(".successDisplay").show();
+                    }
+                    else
+                    {
+                        $(".submitControls").show();
+                        $(".successDisplay").hide();
+                    }
+                }
+            });
+        });
+
+    });
+
+</script>
+
+
+
+
+
+
+
             </div>
             <div id="socialnet">
                 <ul>
@@ -1240,7 +1297,7 @@
                 site are the property of their respective owners.
                 <br />
                 eBags USA &copy; 1999 - 2013 eBags, Inc. All rights reserved.<br />
-                W-2013-03-06<br />
+                W-2013-03-09<br />
             </div>
         </div>
         <!-- / footernav -->
@@ -1346,7 +1403,7 @@ s.parentNode.insertBefore(gts, s);
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-<link href="../Bundles/20.3.16.2/Content/css/a.css%3FDateTime=2013-03-06T06:13:05.9971775&amp;VisitorId=9091ED4B24D85E46BE929B4A1AF7658E.css" rel="stylesheet" type="text/css" />
+<link href="../Bundles/20.7.6.1/Content/css/a.css%3FDateTime=2013-03-09T06:09:45.1266238&amp;VisitorId=D123D82276FC3F41BED82D7D41ED9B8D.css" rel="stylesheet" type="text/css" />
     
 
 

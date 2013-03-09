@@ -7,10 +7,10 @@ var mY = 4;
 
 // IE Stupidity Check. 
 if (ie4) {
-    if ((navigator.userAgent.indexOf('MSIE 5') > 0) || (navigator.userAgent.indexOf('MSIE 6') > 0) || (navigator.userAgent.indexOf('MSIE 7') > 0) || (navigator.userAgent.indexOf('MSIE 8') > 0 || (navigator.userAgent.indexOf('MSIE 9') > 0))) {
+    if ((navigator.userAgent.indexOf('MSIE 5') > 0) || (navigator.userAgent.indexOf('MSIE 6') > 0) || (navigator.userAgent.indexOf('MSIE 7') > 0) || (navigator.userAgent.indexOf('MSIE 8') > 0 || (navigator.userAgent.indexOf('MSIE 9') > 0) || (navigator.userAgent.indexOf('MSIE 10') > 0))) {
         ie5 = true;
     }
-    if (ns6) {
+    if (ns6) { 
         ns6 = false;
     }
 }

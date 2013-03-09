@@ -4144,7 +4144,7 @@ define('de.bild.newstickerOverview', ['/code/de-bild-newstickeroverview,29329616
 
 });
 
-define('de.bild.videoTeaser', ['/code/de-bild-videoteaser,29329610.1.bild.js'], function(){
+define('de.bild.videoTeaser', ['/code/de-bild-videoteaser,29329610.2.bild.js'], function(){
 
 });
 
@@ -4553,14 +4553,12 @@ google.load('ads.search', '2');
 /*adcode.core:26045252.1*/
 
 
-/*de.bild.video:25425042.6*/
+/*de.bild.video:25425042.8*/
 
 var de = de || {};
 de.bild = de.bild || {};
-
 de.bild.video = (function($){
-
-
+    var initTriggered = false;
     
     /**
      * init: inits video center load funcs
@@ -4583,14 +4581,11 @@ de.bild.video = (function($){
      * @private
      */
     function getVideoStateManager() {
-    	if ((window.project_objects !== null && window.project_objects !== undefined) && (window.project_objects.StateManger != null)) {
+     if ((window.project_objects !== null && window.project_objects !== undefined) && (window.project_objects.StateManger != null)) {
           return window.project_objects.StateManger;
         }
         return false;
     }
-
-
-
     /**
      * initVideoIn: inits (registers) all videos which are childnodes of $context
      * @name initVideoIn
@@ -4600,13 +4595,17 @@ de.bild.video = (function($){
      * param $context - jQuery Object
      */
     function initVideoIn( $context ) {
-        registerAllVideoObjectsForContext( $context )
+        
+        if(!initTriggered) {
+            initTriggered = true;
+            registerAllVideoObjects( de.bild.settings.videoSettings.widgetCssFile, null, de.bild.settings.videoSettings.swfFile);
+        } else {
+            registerAllVideoObjectsForContext( $context )
+        }
+                
         return true;
     };
-
-
     return {
-
         'registerAll' : function(){
             registerAllVideoObjects( de.bild.settings.videoSettings.widgetCssFile, null, de.bild.settings.videoSettings.swfFile);
         },
@@ -4617,14 +4616,11 @@ de.bild.video = (function($){
             return getVideoStateManager();
         },
         'initVideoIn' : function($context) {
-        	initVideoIn( $context );
+         return initVideoIn( $context );
         }
     }
-
 }(jQuery));
-
-
-/*de.bild.init:27524116.6*/
+/*de.bild.init:27524116.9*/
 
 /**
  * de.bild.init
@@ -4648,10 +4644,16 @@ de.bild.init = ( function($) {
                     de.bild.common.autoLoadModule( $context );
                 }
             },
-            videoTeaser: {
+            vp: {
                 identifier: 'videoTeaser',
                 init: function($context){
                     de.bild.videoTeaser.init( $context );
+                }
+            },
+            mediacenter: {
+                identifier: 'galleryCenter',
+                init: function($context){
+                    de.bild.galleryCenter.init( $context );
                 }
             },
             gallery: {
@@ -4685,7 +4687,11 @@ de.bild.init = ( function($) {
         load: function(moduleName, $context){
             var self = this;
             var module = this.modules[moduleName];
-            if(module && this.isLoaded(module)) {
+            if(!module) {
+                console.warn('INIT: Unknown module - ' + moduleName);
+                return false;
+            }
+            if(this.isLoaded(module)) {
                 module.init($context);
             } else {
                 var filename = this.moduleNamespace + module.identifier;
@@ -4803,7 +4809,7 @@ de.bild.init = ( function($) {
         }
         // Videos
         if(de.bild.video) {
-            de.bild.video.init();
+            de.bild.video.initVideoIn($context);
         }
         // Jalousie
         if(de.bild.jalousie) {
@@ -4891,7 +4897,6 @@ de.bild.init = ( function($) {
         if(de.bild.user && de.bild.user.isLoggedIn()) {
             $context.find('.btnLogin').hide();
         }
-
         if(de.bild.social) {
             var $socialMediaButtons = $context.find('.social-button');
             if($socialMediaButtons.length) {
@@ -5237,7 +5242,7 @@ de.bild.globalSandBox = (function($) {
  
  
 })(jQuery);
-/*de.bild.community:27210474.9*/
+/*de.bild.community:27210474.10*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -5291,7 +5296,14 @@ de.bild.community = (function($, SandBox) {
                 'ajaxType':$.ajax,
                 'callback' : function(response, $target) {                   
                     //global init since p2r4 BILD-Markuped elements are rendered by KIT
-                    de.bild.init($target);
+                    //de.bild.init($target);
+
+if(de.bild.jalousie) {
+            var $jalousieCollection = $target.find('.jalousie');
+            if($jalousieCollection.length) {
+                de.bild.jalousie.init($jalousieCollection);
+            }
+        }
                     
                     //normal Comunity Init
                     init();
@@ -8108,7 +8120,7 @@ de.bild.community.likeBtn = (function($,Community) {
  } 
  
 })(jQuery,de.bild.community)
-/*de.bild.community.notification:29369464.2*/
+/*de.bild.community.notification:29369464.5*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8167,7 +8179,7 @@ de.bild.community.notification = (function($, Community) {
             $.ajax({
                 url: de.bild.settings.community.urls.getNotificationCounter,
                 dataType:"json",
-                cache : "false",
+                cache : "false"
             }).done(function(data){
                 if(data && data.status==="success"){
                     
@@ -8295,7 +8307,7 @@ de.bild.community.notification = (function($, Community) {
             dataType : "html",
             cache : "false",
             dataType : "html",
-            timeout: 10000,
+            timeout: 10000
         }).done(function(data) {
             if(data) {
                 

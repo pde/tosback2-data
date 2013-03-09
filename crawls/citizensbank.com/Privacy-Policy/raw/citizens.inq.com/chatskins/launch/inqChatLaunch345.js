@@ -1,7 +1,7 @@
-/* Timestamp: Fri Feb 22 15:22:18 PST 2013*/if (window["v3Lander"]==null){
+/* Timestamp: Fri Mar 08 23:27:26 PST 2013*/if (window["v3Lander"]==null){
 v3Lander={
 
-    codeVersion:'1361575338403',
+    codeVersion:'1362814046786',
 	v3Frame:false,
 	domState: "defer-failed",
 	domReady: false,
@@ -396,8 +396,8 @@ v3Lander={
 	},
 
 	onDomReady:function(){
-		if (v3Lander.domReady)return;
-		v3Lander.domReady=true;
+        if (v3Lander.domReady)return;
+        v3Lander.domReady=true;
 		if (window.location.href.indexOf("?C2C")!=-1){
 		    try{
 				v3Lander.renderC2CDiv();
@@ -422,7 +422,9 @@ v3Lander={
 	},
 
 	testReady:function(){
-        if (typeof $ != "undefined" && $.isReady) {
+        var WAIT_PERIOD = 100;
+
+        if (typeof jQuery != "undefined" && jQuery.isReady) {
 			setTimeout("v3Lander.onDomReady()", 1);
 		} else if (typeof document.readyState == "undefined") {
 			if (document.addEventListener){
@@ -433,16 +435,13 @@ v3Lander={
 					false
 				);
 			}
-			setTimeout("v3Lander.onDomReady()", 100);
+			setTimeout("v3Lander.onDomReady()", WAIT_PERIOD);
 		} else {
 			if (document.readyState=="complete")
 				setTimeout("v3Lander.onDomReady();", 0);
-			else if (document.all && !window.opera){
+			else if (document.all && !window.opera){       
 				try {
-					
-					document.write('<sc'+'ript type="text/javascript" id="v3ContentLoadTag" defer="defer" '+'></sc'+'ript>');
-
-					
+                
 					var isExitChat = false;
 					if (isExitChat) {
 					    
@@ -452,13 +451,20 @@ v3Lander={
 					            'onload="window.v3Lander._tcBBFrameOnload()"></iframe>');
 					    }
 					}
+                
+                    var ieVer = navigator.userAgent.match(/MSIE\s(\d+)/);
+                    if ( ieVer.length == 2 && parseInt(ieVer[1]) >= 10 ) {
+                        document.write('<sc'+'ript type="text/javascript" id="v3ContentLoadTag" defer="defer" src="' + v3Lander.normalizeProtocol('https://citizens.inq.com')+'/tagserver/v3/blank.js" '+'></sc'+'ript>');
+                    } else {
+                        document.write('<sc'+'ript type="text/javascript" id="v3ContentLoadTag" defer="defer" '+'></sc'+'ript>');
+                    }
 				} catch (e) {this.log(e);}
 				var v3ContentLoadTag=document.getElementById("v3ContentLoadTag");
 				if (v3ContentLoadTag){
 					v3ContentLoadTag.onreadystatechange=function(){
 						v3Lander.domState=this.readyState;
 						if (this.readyState=="complete"){
-							setTimeout("v3Lander.onDomReady()", 100);
+							setTimeout("v3Lander.onDomReady()", WAIT_PERIOD);
 						}
 					};
 				}
@@ -491,51 +497,42 @@ v3Lander={
 		}
 	},
     
-	prepBBDetect: function(){
-		var blankURL = v3Lander.normalizeProtocol("https://citizens.inq.com")+"/tagserver/v3/blank.html";
-
-		function _tcBBLoader() {
-			setTimeout('document.getElementById("tcBBFrame").src = "'+blankURL+'?tc=1";', 100);
-		}
-
-		function _tcBBFrameOnload() {
-			var tcBBFrame = window.document.getElementById("tcBBFrame");
-			if(!tc_iframe_loaded_flag && tcBBFrame.src.indexOf("?tc=1") == -1) {
-				if(isIE) {
-					window.attachEvent("onload", _tcBBLoader);
-				} else {
-					window.addEventListener("load", _tcBBLoader, true);
-				}
-			} else if(!tc_iframe_loaded_flag && tcBBFrame.src.indexOf("?tc=1") != -1) {
-				tc_iframe_loaded_flag = true;
-			} else if(tc_iframe_loaded_flag) {
-				window.inqFrame.Inq.EC.setEnabled(false);
-				history.back();
-			}
-		}
-		v3Lander._tcBBFrameOnload = _tcBBFrameOnload;
-
-		var tc_iframe_loaded_flag = false;
-		var isIE = navigator.userAgent.toLowerCase().indexOf("msie")>-1;
-
-		if(!isIE){
-			var iframe=window.document.createElement('iframe');
-			iframe.style.position = "absolute";
-			iframe.style.width = "10px";
-			iframe.style.height = "10px";
-			iframe.style.left = 0;
-			iframe.style.top = 0;
-			iframe.style.zIndex = 0;
-			iframe.style.display = "none";
-			iframe.style.padding = 0;
-			iframe.style.margin = 0;
-			iframe.id = "tcBBFrame";
-			iframe.name = "tcBBFrame";
-			iframe.src = blankURL;
-			iframe.onload = v3Lander._tcBBFrameOnload;
-			window.document.body.appendChild(iframe);
-		}
-	},
+    prepBBDetect: function(){
+        var blankURL = v3Lander.normalizeProtocol("https://citizens.inq.com")+"/tagserver/v3/blank.html";
+        var tc_iframe_loaded_flag = false;
+        function _tcBBFrameOnload() {
+            if(!tc_iframe_loaded_flag && document.getElementById("tcBBFrame").src.indexOf("?tc=1") == -1) {
+                setTimeout('document.getElementById("tcBBFrame").src ="'+blankURL+'?tc=1";', 100);
+            } else if(!tc_iframe_loaded_flag && document.getElementById("tcBBFrame").src.indexOf("?tc=1") != -1) {
+                tc_iframe_loaded_flag = true;
+            } else if(tc_iframe_loaded_flag) {
+                window.inqFrame.Inq.EC.setEnabled(false);
+                history.back();
+            }
+        }
+        v3Lander._tcBBFrameOnload = _tcBBFrameOnload;
+        var placedIframe = 0;
+        var isIE = navigator.userAgent.toLowerCase().indexOf("msie")>-1;
+        function _placeTcBBFrame() {
+            if (placedIframe == 0 && !isIE){
+                placedIframe = 1;
+                var dynamicIframe = document.createElement('div');
+                dynamicIframe.innerHTML = '<iframe id="tcBBFrame" src="'+ blankURL +'" frameborder="0" style="height:0px;width:0px;visibility:hidden" onload="v3Lander._tcBBFrameOnload()"></iframe>';
+                document.getElementsByTagName('body')[0].appendChild(dynamicIframe);
+            }
+        }
+        v3Lander._placeTcBBFrame = _placeTcBBFrame;
+        function placeTcBBFrame_pre() {
+            setTimeout('v3Lander._placeTcBBFrame()', 100);
+        }
+        if (window.addEventListener){
+            window.addEventListener('load', placeTcBBFrame_pre, true);
+        } else if (window.attachEvent){
+            window.attachEvent('onload', placeTcBBFrame_pre);
+        } else {
+            placeTcBBFrame_pre();
+        }
+    },
 
 	
     removeNode:function(id){
@@ -693,4 +690,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Fri Feb 22 15:22:18 PST 2013*/
+/* Timestamp: Fri Mar 08 23:27:26 PST 2013*/

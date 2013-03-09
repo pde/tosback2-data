@@ -1,0 +1,1555 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/meet-ania-kate-upton-s-russian-buxom-blonde-doppelg-nger.html",' +
+                '"title": "Meet Ania, Kate Upton&rsquo;s Russian, Buxom Blonde Doppelg&auml;nger",' +
+                '"rubric": "Double-Take",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bb352ebbb09f0db8df489bf048ec8645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/rihanna-celebrates-her-river-island-line-with-a-fashion-exhibit-dedicated-to-herself.html",' +
+                '"title": "Rihanna Celebrates her River Island Line with a Fashion Exhibit Dedicated to Herself",' +
+                '"rubric": "Glory Call",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "7851b47340079449cf001e0c71d39363"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/liza-morales-on-losing-lamar-odom-to-khloe-kardashian.html",' +
+                '"title": "Liza Morales on Losing Lamar Odom to Khloe Kardashian",' +
+                '"rubric": "Ex-Friends",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "221bc03c286e7ec722635261213d0779"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/jenni-konner-talks-girls-lena-dunham-and-the-facts-of-life-author-kevin-fallon.html",' +
+                '"title": "Jenni Konner Talks &lsquo;Girls,&rsquo; Lena Dunham, and &lsquo;The Facts of Life&rsquo;",' +
+                '"rubric": "Secret Weapon",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "997f25c46f1982b98b288e5e3be807b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/hit-and-run-driver-julio-acevedo-talks-suggests-50-cent-connection.html",' +
+                '"title": "Hit-and-Run Driver Julio Acevedo Talks, Suggests 50 Cent Connection",' +
+                '"rubric": "Brooklyn Twist",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "14b579e81eb5a97d7db387f3aa8c2435"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/inside-the-vatican-diaries-by-john-thavis.html",' +
+                '"title": "Inside John Thavis&rsquo;s &lsquo;Vatican Diaries&rsquo;",' +
+                '"rubric": "When In Rome",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d39888a89c9b16ead1e77493a58f88cf"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-catholic-church-is-insular-and-intolerant.html",' +
+                '"title": "The Catholic Church Is Insular and Intolerant",' +
+                '"rubric": "Religious Reform",' +
+                '"topic": "World",' +
+                '"urlHashCode": "7c7e2d3c9f1c66bcd9dbe3bbbbe75540"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/in-defense-of-ann-romney.html",' +
+                '"title": "Give Ann Romney a Break",' +
+                '"rubric": "Sympathy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "dd2077b56592cc7b20ff145b8468b6d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/inside-the-vatican-diaries-by-john-thavis.html",' +
+                '"title": "Inside John Thavis&rsquo;s &lsquo;Vatican Diaries&rsquo;",' +
+                '"rubric": "When In Rome",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d39888a89c9b16ead1e77493a58f88cf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/yahtzee-jobless-rate-dips-to-7-7-percent-unemployment-at-4-year-low.html",' +
+                '"title": "Yahtzee! Jobless Rate Dips to 7.7 Percent; Unemployment at 4-Year Low",' +
+                '"rubric": "Nice Numbers",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "efe427820015938a02376c10253d3966"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/does-arkansas-hate-women-doctors-decry-new-radical-abortion-ban.html",' +
+                '"title": "Does Arkansas Hate Women? Doctors Decry New Radical Abortion Ban",' +
+                '"rubric": "Abortion Ban",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d03566ceef405c5b49e4a03ce038421e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/why-time-warner-felt-it-had-to-spin-off-magazine-unit-time-inc.html",' +
+                '"title": "Why Time Warner Felt It Had to Spin Off Magazine Unit Time Inc.",' +
+                '"rubric": "Spun Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d4eac3b48e4dfa099fcdf59587138595"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/hugo-chavez-s-house-of-cards.html",' +
+                '"title": "Hugo Ch&aacute;vez&rsquo;s House of Cards",' +
+                '"rubric": "Sinking",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8480761d7fd084023081075cf853334"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/jenni-konner-talks-girls-lena-dunham-and-the-facts-of-life-author-kevin-fallon.html",' +
+                '"title": "Jenni Konner Talks &lsquo;Girls,&rsquo; Lena Dunham, and &lsquo;The Facts of Life&rsquo;",' +
+                '"rubric": "Secret Weapon",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "997f25c46f1982b98b288e5e3be807b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/don-t-just-blame-the-queen-bee.html",' +
+                '"title": "Don&rsquo;t Just Blame the Queen Bee",' +
+                '"rubric": "Two-Way Street",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d058366316ca3c0123b56adbbd532f83"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/hit-and-run-driver-julio-acevedo-talks-suggests-50-cent-connection.html",' +
+                '"title": "Hit-and-Run Driver Julio Acevedo Talks, Suggests 50 Cent Connection",' +
+                '"rubric": "Brooklyn Twist",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "14b579e81eb5a97d7db387f3aa8c2435"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/the-stupidest-hugo-chavez-hagiographies-from-the-yanquis-who-loved-him.html",' +
+                '"title": "The Stupidest Hugo Ch&aacute;vez Hagiographies From the Yanquis Who Loved Him",' +
+                '"rubric": "Absurd Elegies",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad2f061088b51b2a3c4fab8c1ae7b7e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/inside-the-vatican-diaries-by-john-thavis.html",' +
+                '"title": "Inside John Thavis&rsquo;s &lsquo;Vatican Diaries&rsquo;",' +
+                '"rubric": "When In Rome",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d39888a89c9b16ead1e77493a58f88cf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/in-defense-of-ann-romney.html",' +
+                '"title": "Give Ann Romney a Break",' +
+                '"rubric": "Sympathy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "dd2077b56592cc7b20ff145b8468b6d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-catholic-church-is-insular-and-intolerant.html",' +
+                '"title": "The Catholic Church Is Insular and Intolerant",' +
+                '"rubric": "Religious Reform",' +
+                '"topic": "World",' +
+                '"urlHashCode": "7c7e2d3c9f1c66bcd9dbe3bbbbe75540"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/hugo-chavez-s-house-of-cards.html",' +
+                '"title": "Hugo Ch&aacute;vez&rsquo;s House of Cards",' +
+                '"rubric": "Sinking",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8480761d7fd084023081075cf853334"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/why-time-warner-felt-it-had-to-spin-off-magazine-unit-time-inc.html",' +
+                '"title": "Why Time Warner Felt It Had to Spin Off Magazine Unit Time Inc.",' +
+                '"rubric": "Spun Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d4eac3b48e4dfa099fcdf59587138595"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/new-report-points-to-risk-with-boeing-787-battery.html",' +
+                '"title": "New Report Points to Risk With Boeing 787 Battery",' +
+                '"rubric": "Smoking Gun",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b1cf1e3985cccc82fb8953ce0eab83aa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/hugo-chavez-dead-at-58-good-riddance.html",' +
+                '"title": "Hugo Ch&aacute;vez Dead at 58: Good Riddance!",' +
+                '"rubric": "el Comandante",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8ec357b0884a8df081504a04fb93313"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/the-daily-show-s-new-open.html",' +
+                '"title": "A New Beginning At The Daily Show",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1c704836be91f11f5d3a39a43ffcde6e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/sears-targets-snl-over-jesus-sketch-justin-timberlake-to-host.html",' +
+                '"title": "Sears Targets \'SNL\' Over Jesus Sketch, Justin Timberlake To Host",' +
+                '"rubric": "Too Soon?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "05f732c5ab49c25830ae448836259cdd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/06/mila-isn-t-alone-awkward-celeb-interviews.html",' +
+                '"title": "Mila Isn\'t Alone: Awkward Celeb Interviews",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "12e9560d6e7d1d9725ebe52825e0490e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/jenni-konner-talks-girls-lena-dunham-and-the-facts-of-life-author-kevin-fallon.html",' +
+                '"title": "Jenni Konner Talks &lsquo;Girls,&rsquo; Lena Dunham, and &lsquo;The Facts of Life&rsquo;",' +
+                '"rubric": "Secret Weapon",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "997f25c46f1982b98b288e5e3be807b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/4-year-old-sings-best-bruno-mars-cover-ever.html",' +
+                '"title": "Best Bruno Mars Cover Ever?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a624d3eaeb2f3f46e05dc7b16a9d2cce"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/the-weather-channel-s-crazy-storm-names.html",' +
+                '"title": "The Weather Channel\'s Crazy Storm Names",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1e5e6878fb6a70c62d6cf6360181863e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/doctor-who-five-facts-about-new-companion-jenna-louise-coleman.html",' +
+                '"title": "\'Doctor Who\': Five Facts About New Companion Jenna-Louise Coleman",' +
+                '"rubric": "Who Is...",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e4ee85e8beb0a8cdb9a57017ff2922c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/much-ado-about-joss-whedon.html",' +
+                '"title": "Much Ado About Joss Whedon",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a46f14d9b5d3ff4922f17262fc980093"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/shaq-s-revenge-on-aaron-carter.html",' +
+                '"title": "Shaq\'s Revenge On Aaron Carter",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "420ba6d74a9e381275ac9d1624a8addb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/catholics-pissed-over-busty-model-lucy-pinder-s-topless-pics-mocking-pope.html",' +
+                '"title": "Catholics Pissed Over Busty Model\'s Topless Pics Mocking Pope",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c13c7d332434f00b1f60137b9a499221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/06/wwe-s-paul-bearer-dies-at-58.html",' +
+                '"title": "WWE&rsquo;s Spooky Mortician Dies",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c0a60e7a15685dc3c7f6ebe30b00456c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/what-critics-are-saying-about-oz-the-great-and-powerful.html",' +
+                '"title": "What Critics Are Saying About &lsquo;Oz: The Great and Powerful&rsquo;",' +
+                '"rubric": "At the Movies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "86a9bf95510585f58a5f454ef467ab41"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/did-the-view-just-lose-joy-behar-and-elisabeth-hasselbeck.html",' +
+                '"title": "Did &lsquo;The View&rsquo; Just Lose Joy Behar and Elisabeth Hasselbeck?",' +
+                '"rubric": "Hot Topics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8c30e5982475a4e288c2bc6f382edc98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/u-s-drone-program-cheat-sheet.html",' +
+                '"title": "U.S. Drone Program Cheat Sheet",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "70d134c9df3ba1e65ab33287ef90d6af"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/07/rand-paul-s-epic-filibuster.html",' +
+                '"title": "Rand Paul\'s Epic Filibuster",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9e1d8d64e4a744208ada43d992e52046"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/sears-targets-snl-over-jesus-sketch-justin-timberlake-to-host.html",' +
+                '"title": "Sears Targets \'SNL\' Over Jesus Sketch, Justin Timberlake To Host",' +
+                '"rubric": "Too Soon?",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "05f732c5ab49c25830ae448836259cdd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/08/ode-to-a-facebook-news-feed.html",' +
+                '"title": "Ode to a Facebook News Feed",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9401bf2d2dc7e17ce54203cdd4dd74d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/jenni-konner-talks-girls-lena-dunham-and-the-facts-of-life-author-kevin-fallon.html",' +
+                '"title": "Jenni Konner Talks &lsquo;Girls,&rsquo; Lena Dunham, and &lsquo;The Facts of Life&rsquo;",' +
+                '"rubric": "Secret Weapon",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "997f25c46f1982b98b288e5e3be807b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/06/colbert-vs-franco-nerd-off.html",' +
+                '"title": "Colbert vs. Franco: Nerd-Off",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f70c755bda6c432f05ba35b3491f67d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/hugo-chavez-dead-at-58-good-riddance.html",' +
+                '"title": "Hugo Ch&aacute;vez Dead at 58: Good Riddance!",' +
+                '"rubric": "el Comandante",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8ec357b0884a8df081504a04fb93313"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/08/sexy-celebrity-selfies.html",' +
+                '"title": "Sexy Celebrity Selfies",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4b12fa0d541e591eb001491f38955bbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/the-stupidest-hugo-chavez-hagiographies-from-the-yanquis-who-loved-him.html",' +
+                '"title": "The Stupidest Hugo Ch&aacute;vez Hagiographies From the Yanquis Who Loved Him",' +
+                '"rubric": "Absurd Elegies",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad2f061088b51b2a3c4fab8c1ae7b7e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/banished-lauren-drain-on-growing-up-in-the-westboro-baptist-church.html",' +
+                '"title": "&lsquo;Banished&rsquo; Lauren Drain on Growing Up in the Westboro Baptist Church",' +
+                '"rubric": "\'Banished\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "897b669a89e57694865e80dfd9b7b72d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/03/06/hit-and-run-driver-julio-acevedo-talks-suggests-50-cent-connection.html",' +
+                '"title": "Hit-and-Run Driver Julio Acevedo Talks, Suggests 50 Cent Connection",' +
+                '"rubric": "Brooklyn Twist",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "14b579e81eb5a97d7db387f3aa8c2435"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/in-defense-of-ann-romney.html",' +
+                '"title": "Give Ann Romney a Break",' +
+                '"rubric": "Sympathy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "dd2077b56592cc7b20ff145b8468b6d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-catholic-church-is-insular-and-intolerant.html",' +
+                '"title": "The Catholic Church Is Insular and Intolerant",' +
+                '"rubric": "Religious Reform",' +
+                '"topic": "World",' +
+                '"urlHashCode": "7c7e2d3c9f1c66bcd9dbe3bbbbe75540"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/inside-the-vatican-diaries-by-john-thavis.html",' +
+                '"title": "Inside John Thavis&rsquo;s &lsquo;Vatican Diaries&rsquo;",' +
+                '"rubric": "When In Rome",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d39888a89c9b16ead1e77493a58f88cf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/does-arkansas-hate-women-doctors-decry-new-radical-abortion-ban.html",' +
+                '"title": "Does Arkansas Hate Women? Doctors Decry New Radical Abortion Ban",' +
+                '"rubric": "Abortion Ban",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d03566ceef405c5b49e4a03ce038421e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/meet-ruth-duccini-a-munchkin-from-the-wizard-of-oz.html",' +
+                '"title": "Meet Ruth Duccini, a Munchkin From &lsquo;The Wizard of Oz&rsquo;",' +
+                '"rubric": "Yellow Brick Road",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a0d17812ddb570d6611907b823ea0d94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/7-best-valerie-harper-moments-video.html",' +
+                '"title": "7 Best Valerie Harper Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "04ca2d7793a64d9ed1bf6e7ab09a5112"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/hugo-chavez-s-house-of-cards.html",' +
+                '"title": "Hugo Ch&aacute;vez&rsquo;s House of Cards",' +
+                '"rubric": "Sinking",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8480761d7fd084023081075cf853334"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/why-time-warner-felt-it-had-to-spin-off-magazine-unit-time-inc.html",' +
+                '"title": "Why Time Warner Felt It Had to Spin Off Magazine Unit Time Inc.",' +
+                '"rubric": "Spun Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d4eac3b48e4dfa099fcdf59587138595"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/yahtzee-jobless-rate-dips-to-7-7-percent-unemployment-at-4-year-low.html",' +
+                '"title": "Yahtzee! Jobless Rate Dips to 7.7 Percent; Unemployment at 4-Year Low",' +
+                '"rubric": "Nice Numbers",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "efe427820015938a02376c10253d3966"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/jenni-konner-talks-girls-lena-dunham-and-the-facts-of-life-author-kevin-fallon.html",' +
+                '"title": "Jenni Konner Talks &lsquo;Girls,&rsquo; Lena Dunham, and &lsquo;The Facts of Life&rsquo;",' +
+                '"rubric": "Secret Weapon",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "997f25c46f1982b98b288e5e3be807b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/yahtzee-jobless-rate-dips-to-7-7-percent-unemployment-at-4-year-low.html",' +
+                '"title": "Yahtzee! Jobless Rate Dips to 7.7 Percent; Unemployment at 4-Year Low",' +
+                '"rubric": "Nice Numbers",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "efe427820015938a02376c10253d3966"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/03/08/it-s-not-just-dinner-why-obama-s-meetups-really-matter-in-washington.html",' +
+                '"title": "It&rsquo;s Not Just Dinner: Why Obama&rsquo;s Meet-Ups Really Matter in Washington",' +
+                '"rubric": "The Sequester",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d410d76fb7a00400b7caa2023cd7a3b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-is-giving-us-a-filibuster-tutorial-so-let-s-pay-attention.html",' +
+                '"title": "Rand Paul Is Giving Us a Filibuster Tutorial, So Let&rsquo;s Pay Attention",' +
+                '"rubric": "HAIL RAND PAUL!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a18b165d43190981a07b36b1b3282de3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/hugo-chavez-dead-at-58-good-riddance.html",' +
+                '"title": "Hugo Ch&aacute;vez Dead at 58: Good Riddance!",' +
+                '"rubric": "el Comandante",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8ec357b0884a8df081504a04fb93313"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/tragedy-in-a-lion-s-lair-sanctuary-intern-died-following-her-passion.html",' +
+                '"title": "Tragedy in a Lion&rsquo;s Lair: Sanctuary Intern Died Following Her Passion",' +
+                '"rubric": "Animal Attack",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6daa94e3a14cc3ce6e10ff947c68a9d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/the-stupidest-hugo-chavez-hagiographies-from-the-yanquis-who-loved-him.html",' +
+                '"title": "The Stupidest Hugo Ch&aacute;vez Hagiographies From the Yanquis Who Loved Him",' +
+                '"rubric": "Absurd Elegies",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad2f061088b51b2a3c4fab8c1ae7b7e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/mika-brzezinski-cheers-sheryl-sandberg-s-lean-in.html",' +
+                '"title": "Mika Brzezinski Cheers Sheryl Sandberg&rsquo;s &lsquo;Lean In&rsquo;",' +
+                '"rubric": "Lean &amp; Mean",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7d63140563ee65cb11fcc65d79b0081e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/in-defense-of-ann-romney.html",' +
+                '"title": "Give Ann Romney a Break",' +
+                '"rubric": "Sympathy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "dd2077b56592cc7b20ff145b8468b6d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/can-the-cardinals-find-a-clean-pope.html",' +
+                '"title": "Can the Cardinals Find a Clean Pope?",' +
+                '"rubric": "Dirty Dozen",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e3ca3525a64899bc7f3483062f00f03c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/yahtzee-jobless-rate-dips-to-7-7-percent-unemployment-at-4-year-low.html",' +
+                '"title": "Yahtzee! Jobless Rate Dips to 7.7 Percent; Unemployment at 4-Year Low",' +
+                '"rubric": "Nice Numbers",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "efe427820015938a02376c10253d3966"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/good-news-they-hate-me-in-russia.html",' +
+                '"title": "Good News! They Hate Me in Russia",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f1d25019677e79b6e7902e82ec1dcf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-catholic-church-is-insular-and-intolerant.html",' +
+                '"title": "The Catholic Church Is Insular and Intolerant",' +
+                '"rubric": "Religious Reform",' +
+                '"topic": "World",' +
+                '"urlHashCode": "7c7e2d3c9f1c66bcd9dbe3bbbbe75540"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/inside-the-vatican-diaries-by-john-thavis.html",' +
+                '"title": "Inside John Thavis&rsquo;s &lsquo;Vatican Diaries&rsquo;",' +
+                '"rubric": "When In Rome",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d39888a89c9b16ead1e77493a58f88cf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/why-time-warner-felt-it-had-to-spin-off-magazine-unit-time-inc.html",' +
+                '"title": "Why Time Warner Felt It Had to Spin Off Magazine Unit Time Inc.",' +
+                '"rubric": "Spun Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d4eac3b48e4dfa099fcdf59587138595"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/hugo-chavez-s-house-of-cards.html",' +
+                '"title": "Hugo Ch&aacute;vez&rsquo;s House of Cards",' +
+                '"rubric": "Sinking",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f8480761d7fd084023081075cf853334"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/rand-paul-kicks-it-old-school-in-filibuster-marathon-over-drones.html",' +
+                '"title": "Rand Paul Kicks It Old School in Filibuster Marathon Over Drones",' +
+                '"rubric": "Filibuster King",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb878b05655ee0ca3dd78d18ef7752b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/revenge-what-went-wrong-with-abc-s-once-daring-thriller.html",' +
+                '"title": "&lsquo;Revenge&rsquo;: What Went Wrong with ABC&rsquo;s Once-Daring Thriller?",' +
+                '"rubric": "Sophomore Slump",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f6cf1de795132892ed5aac5223872a0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/are-republicans-the-new-democrats.html",' +
+                '"title": "Are Republicans the New Democrats?",' +
+                '"rubric": "TRANSFORMATION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eecfffc4ef05aa94c028974ba8c19a4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/it-s-not-a-storm-until-the-weather-channel-names-it.html",' +
+                '"title": "It&rsquo;s Not a Storm Until the Weather Channel Names It",' +
+                '"rubric": "GLOBAL DOMINATION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "b7f8ccd6dee5c2d4f8ce0703ad3b5c00"' +
+            '}' +
+        ']' +
+        ',' +
+        '"stl": [' +
+            '{' +
+                '"url": "/articles/2012/04/09/ashley-judd-slaps-media-in-the-face-for-speculation-over-her-puffy-appearance.html",' +
+                '"title": "Ashley Judd Slaps Media in the Face for Speculation Over Her &lsquo;Puffy&rsquo; Appearance",' +
+                '"rubric": "Smack-down",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e51378d5916efcd6f3afa75143b3417b"' +
+            '}' +
+        ']' +
+    '}'
+);

@@ -2,36 +2,50 @@
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
-/* GameStop Implementation Version 6.7 (2013-01-30A) */
+/* GameStop Implementation Version 6.8 (2013-03-01A) */
 
 /* Specify the Report Suite ID(s) to track here */
-var s_account = 'gamestopdev'
+var s_account = 'gamestopsafety'
 if (document.URL.indexOf('qa.ebgames.ca') > -1)
     s_account = 'gamestopcadev';
 else if (document.URL.indexOf('qa.gamestop.ca') > -1)
     s_account = 'gamestopcadev';
-else if (document.URL.indexOf('qa.ebgames.com') > -1)
-    s_account = 'gamestopebgdev';
+else if (document.URL.indexOf('dev.gamestop.com') > -1 || document.URL.indexOf('local.gamestop.com') > -1 || document.URL.indexOf('me.gamestop.com') > -1)
+    s_account = 'gamestopdev';
+else if (document.URL.indexOf('qa.gamestop.com') > -1)
+    s_account = 'gamestopqa1';
+else if (document.URL.indexOf('qa2.gamestop.com') > -1)
+    s_account = 'gamestopqa2';
+else if (document.URL.indexOf('qa3.gamestop.com') > -1)
+    s_account = 'gamestopqa3';
 else if (document.URL.indexOf('www.gamestop.com') > -1)
     s_account = 'gamestopprod';
 else if (document.URL.indexOf('www.ebgames.ca') > -1)
     s_account = 'gamestopcaprod';
 else if (document.URL.indexOf('www.gamestop.ca') > -1)
     s_account = 'gamestopcaprod';
+else if (document.URL.indexOf('dev.ebgames.com') > -1)
+    s_account = 'gamestopebgdev';
+else if (document.URL.indexOf('qa.ebgames.com') > -1)
+    s_account = 'gamestopebgqa1';
+else if (document.URL.indexOf('qa2.ebgames.com') > -1)
+    s_account = 'gamestopebgqa2';
+else if (document.URL.indexOf('qa3.ebgames.com') > -1)
+    s_account = 'gamestopebgqa3';
 else if (document.URL.indexOf('www.ebgames.com') > -1)
     s_account = 'gamestopebgprod';
-else if (document.URL.indexOf('m.ebgames.ca') > -1)
-    s_account = 'gamestopcamobileprod';
-else if (document.URL.indexOf('m.gamestop.ca') > -1)
-    s_account = 'gamestopcamobileprod';
 else if (document.URL.indexOf('m.qa.ebgames.ca') > -1)
     s_account = 'gamestopcamobiledev';
+else if (document.URL.indexOf('m.ebgames.ca') > -1)
+    s_account = 'gamestopcamobileprod';
 else if (document.URL.indexOf('m.qa.gamestop.ca') > -1)
     s_account = 'gamestopcamobiledev';
-else if (document.URL.indexOf('m.gamestop.com') > -1)
-    s_account = 'gamestopmobileprod';
+else if (document.URL.indexOf('m.gamestop.ca') > -1)
+    s_account = 'gamestopcamobileprod';
 else if (document.URL.indexOf('m.qa.gamestop.com') > -1)
     s_account = 'gamestopmobiledev';
+else if (document.URL.indexOf('m.gamestop.com') > -1)
+    s_account = 'gamestopmobileprod';
 else if (document.URL.indexOf('impulsedriven.com') > -1 || document.URL.indexOf('impulsedriven.net') > -1 || document.URL.indexOf('impulsestore.gamestop.com') > -1)
     s_account = 'gamestoppcdownloadprod';
 else if (document.URL.indexOf('www.gameinformer.com') > -1)
@@ -65,9 +79,11 @@ gs.varUsed='prop26';
 */
 
 //Channels to be determined
-gs._channelDomain = 'Social Media Organic|facebook.com,flickr.com,twitter.com,youtube.com,myspace.com>Gamestop Network|kongregate.com,gameinformer.com,testecom.pvt,poweruprewards.com,joltonline.com,ebgames.com.au,gamestop.at,ebgames.ca,ebgames.sk,gamestop.fi,micromania.fr,gamestop.de,gamestop.ie,gamestop.it,ebgames.co.nz,ebgames.no,gamestop.pt,gamestop.es,ebgames.se,trymedia.com';
+gs._channelDomain = 'Social Media Organic|facebook.com,flickr.com,twitter.com,youtube.com,myspace.com>Email|gamestop-email.com,brierleycrm.com>Gamestop Network|kongregate.com,gameinformer.com,testecom.pvt,poweruprewards.com,joltonline.com,ebgames.com.au,gamestop.at,ebgames.ca,ebgames.sk,gamestop.fi,micromania.fr,gamestop.de,gamestop.ie,gamestop.it,ebgames.co.nz,ebgames.no,gamestop.pt,gamestop.es,ebgames.se,trymedia.com';
 gs._channelParameter = 'Paid Search|gclid,utm_medium,utm_source'
-gs._channelPattern = 'Paid Search|ppc>Email|eml>Affiliate|afl>Banner|bnr,banner>Rich Media|rch>Social Media|soc>Re-targeting|rtg>Partner|pnr>GameStop Network|gsn';
+gs._channelPattern = 'Paid Search|ppc>Email|eml>Affiliate|afl>Feeds|fds>Banner|bnr,banner>Rich Media|rch>Social Media|soc>Re-targeting|rtg>Partner|pnr>GameStop Network|gsn';
+
+
 
 /* Uncomment the following if 1st Party SSL Certificate has been installed */
 gs.trackingServer = 'metrics.gamestop.com';
@@ -235,9 +251,12 @@ function s_doPlugins(s) {
         gs.eVar63 = gs.eVar43 = gs._keywords;
         if (gs.eVar41 == 'Paid Search' && gs.eVar43 == 'n/a') gs.eVar63 = gs.eVar43 = 'Unknown Keyword';
         gs.eVar64 = gs.eVar44 = gs._referringDomain;
+	//Google Non-Affiliated Referrer Override - EC2013-03-01
+	if (gs._channel == 'non-affiliated referrers' && _referringDomain.indexOf('www.google.com'))  gs.eVar61 = gs.eVar48 = gs.eVar41 = 'Organic Search';
         //Change the Default Channel Names
         if (gs.eVar41 == 'Natural Search') gs.eVar61 = gs.eVar48 = gs.eVar41 = 'Organic Search';
         gs.eVar45 = gs.crossVisitParticipation(gs.eVar41, 's_cvp2', '30', '5', '>');
+
     }
     gs.linkInternalFilters = gs.tempFilters;
 

@@ -12,6 +12,9 @@ $(document).ready(function(){
     if(!avast.disableSlideTop) $('#content-holder').slideTop();
     if(!avast.disableToggleSlide) $('#content-holder').toggleSlide();
 	if(!avast.disableTestimonials) $('#testimonial').testimonials();
+    // Init hadd
+    var avastHadd = avast.hadd;
+    if(!avast.disableHadd && typeof avastHadd.init != 'undefined') avastHadd.init();
 
 	/*
 	 * Bind sharebox events

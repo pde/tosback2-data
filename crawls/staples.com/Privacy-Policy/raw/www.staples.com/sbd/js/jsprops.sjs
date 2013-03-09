@@ -32,7 +32,12 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1362560406880,
+	timeStamp: 1362819602994,
+
+	scodeSwitch: 'ON',
+	mBoxSwitch: 'ON',
+	
+	
 	
 	
 	DEF_LANG_ID: '-1',
@@ -71,7 +76,7 @@ function chatActive(dateStamp) {
 	redirectpage: '/sbd/sbd/cre/resources/browserupgrade/index.html',
 	
 	
-	samuserInfo: 'Account Manager',
+	samuserInfo: 'Contact',
 	
         loading: 'Loading...',
 
@@ -118,7 +123,7 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Mar 06, 2013 08:23:23'),
+	isChatOpen: chatActive('Mar 09, 2013 08:17:40'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
@@ -194,7 +199,7 @@ function chatActive(dateStamp) {
 
  	
     HomePage:{
-	MakeHomePage: 'Make this my Staples start page',
+	MakeHomePage: 'Make Home Page',
 	Rewards: 'Rewards#'
 	},
 	

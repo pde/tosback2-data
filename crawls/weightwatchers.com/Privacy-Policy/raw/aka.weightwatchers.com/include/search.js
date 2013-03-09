@@ -78,19 +78,22 @@ function Redirect(category, keyword, pDomain)
 		parent.location.href = domain + "/search/category.aspx?cat=" + category + "&search=" + encodeURIComponent(keyword);	
 }
 
-function ErrCheck(obj){ 
-    if(!obj.value || obj.value == message  || obj.value == obj.getAttribute('PlaceHolder')){ 
-        obj.value = message; 
-        obj.blur(); 
+function ErrCheck(obj){
+    if (!obj.value || obj.value == message || obj.value == obj.getAttribute('PlaceHolder')) {
+        obj.value = message;
+        obj.blur();
+        if ($('#inputerror') != null)
+            $('#inputerror').text(message);
+
         return true; 
     } 
     return false; 
 } 
 
 //This method was created for 9.4 search for WildCard 
-function WarringCheck(obj){     
-        
-        alert(msgError);
+function WarringCheck(obj){
+
+    alert(msgError);    
         obj.blur(); 
         return true;    
 } 

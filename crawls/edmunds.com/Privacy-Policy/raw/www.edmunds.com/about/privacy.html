@@ -1268,6 +1268,11 @@ PAGESETUP.addControl(function() {
                 EDM.Propensity.Ads.Visitor.updatePageView();
             });
         }
+        
+        if(EDM.Core.PackageUtils.exists('EDM.Propensity.UPS.Primer')){
+            EDM.Propensity.UPS.Primer.execute();
+        }
+
     }, 'high');
 </script>
 <script type="text/javascript">
@@ -1279,13 +1284,19 @@ PAGESETUP.addControl(function() {
 EDM.Core.ABJS.COHORTS = {
     'email_marketing':{
         'traffic_allocation':0,
-        'campaigns':[],
+        'campaigns':['email_signup_slideout'],
         'business_owner':'email-marketing-team'
     }
 };
 EDM.Core.ABJS.CAMPAIGNS = {
+    'email_signup_slideout':{
+        'traffic_allocation':'always_run',
+        'recipes':['email_signup_con','email_signup_v1']
+    }
 };
 EDM.Core.ABJS.RECIPES = {
+    'email_signup_con':{'traffic_allocation': 50, 'handler':'EDM.Core.ABJS.PropensityTestModelHandler', 'ptm_primer':'EDM.Widget.ArrowSlider.EmailMarketingAPrimer'},
+    'email_signup_v1':{'traffic_allocation': 50, 'handler':'EDM.Core.ABJS.PropensityTestModelHandler', 'ptm_primer':'EDM.Widget.ArrowSlider.EmailMarketingBPrimer'}
 };            EDM.Core.ABJS.Primer.execute();
         }
 	},'high');

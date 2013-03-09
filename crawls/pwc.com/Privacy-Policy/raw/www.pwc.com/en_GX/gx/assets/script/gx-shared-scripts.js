@@ -102,7 +102,7 @@ $(function(){
 	});
 });
 
-// Google Analytics tracking. D.Montana 05-MAR-2013
+// Google Analytics event tracking (downloads, mailto and offsite links). D.Montana 05-MAR-2013
 $(function(){
         var filetypes = /\.(zip|epub|txt|csv|wmv|ibooks|pdf|doc*|xls*|ppt*|mp3|mp4|f4v|flv|mov)$/i;
         var baseHref = '';
@@ -139,3 +139,43 @@ $(function(){
             }
         });
 });
+
+// Google Analytics event tracking (modals and share icons). D.Montana 05-MAR-2013
+$(function () {
+		$("a.shareitem img").click(function () {
+			var alttext = $(this).attr("alt");
+			_gaq.push(['_trackEvent', 'Share', 'Click-' + alttext, location.pathname]);
+		});
+		$(".media-overlay").click(function () {
+			var src = "";
+			if ($(this).attr("media-src")) {
+				src = $(this).attr("media-src");
+				var fileExtension = "";
+				fileExtension = src.substring(src.lastIndexOf(".") + 1, src.length).toLowerCase();
+				if (src.search('youtube') >= 0) {
+					mediaType = "youtube";
+					src = $(src).attr("src");
+				} else if ((src.charAt(0) == "#") || (fileExtension == "jhtml") || (fileExtension == "html") || (fileExtension == "htm")) {
+					mediaType = "html";
+				} else if ((fileExtension == "jpeg") || (fileExtension == "jpg") || (fileExtension == "gif") || (fileExtension == "png")) {
+					mediaType = "image";
+				} else if (fileExtension == "mp3") {
+					mediaType = "audio";
+				} else if (fileExtension == "swf") {
+					mediaType = "flash";
+				} else {
+					mediaType = "akamaivideo";
+				}
+				_gaq.push(['_trackEvent', 'Modal', 'Click-' + mediaType, src]);
+			}
+		});
+});	
+
+// Google Analytics video tracking for the Akamai-based media player. D.Montana 05-MAR-2013
+function sendToHtml(val4, val2, val1){ 
+	var ga4 = val4; 
+	var ga2 = val2;
+	var ga1 = val1; 
+	_gaq.push(['_trackEvent', 'Media', ga4, ga2]); 
+}
+

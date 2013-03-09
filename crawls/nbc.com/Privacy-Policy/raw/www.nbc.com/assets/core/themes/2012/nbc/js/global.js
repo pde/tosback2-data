@@ -35,9 +35,8 @@ if (domain.substring(0, 6) == "stage.") {
     nbcu.config.addParam("nbcuEnvironment", "dev");
 }
 
-if (getQuery("_mode") == "app" || NBC.cookie("_mode") == "app") {
+if (getQuery("_mode") == "app") {
     NBC("header.global, footer.global, header.site, footer.site").hide();
-    NBC.cookie("_mode", "app");
 }
 
 function getQuery(name) {

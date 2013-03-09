@@ -5296,7 +5296,10 @@ $.support.transition = (function(){
        $('tr:odd', this).addClass('odd');
       });
 
-      $('.hero-box .cta a.video, .hero-cta a.hero-arrow-box').tnfInlineVideoExpanderer($(".hero-box.box"));
+      videoTriggers = $('.hero-box .cta a.video, .hero-cta a.hero-arrow-box')
+      if (videoTriggers.length > 0 && typeof(videoTriggers.tnfInlineVideoExpanderer) === 'function') {
+        videoTriggers.tnfInlineVideoExpanderer($(".hero-box.box"));
+      }
 
       $('a.lightview').colorbox({
         iframe:true,

@@ -47,149 +47,143 @@
 		countryCodeArray[20]="Colombia|CO|COP|1.1800000000|13357";
 		countryCodeArray[21]="Costa Rica|CR|CRC|1.1800000000|13357";
 		countryCodeArray[22]="Cyprus|CY|EUR|1.1800000000|13357";
-		countryCodeArray[23]="Czech Republic|CZ|CZK|1.1800000000|13357";
-		countryCodeArray[24]="Denmark|DK|DKK|1.1800000000|13357";
-		countryCodeArray[25]="Dominica|DM|USD|1.1800000000|13357";
-		countryCodeArray[26]="Dominican Republic|DO|DOP|1.1800000000|13357";
-		countryCodeArray[27]="Ecuador|EC|USD|1.1800000000|13357";
-		countryCodeArray[28]="Egypt|EG|EGP|1.1800000000|13357";
-		countryCodeArray[29]="El Salvador|SV|USD|1.1800000000|13357";
-		countryCodeArray[30]="Estonia|EE|EUR|1.1800000000|13357";
-		countryCodeArray[31]="Finland|FI|EUR|1.1800000000|13357";
-		countryCodeArray[32]="France|FR|EUR|1.1800000000|13357";
-		countryCodeArray[33]="French Guiana|GF|EUR|1.1800000000|13357";
-		countryCodeArray[34]="Germany|DE|EUR|1.1800000000|13357";
-		countryCodeArray[35]="Gibraltar|GI|GBP|1.1800000000|13357";
-		countryCodeArray[36]="Greece|GR|EUR|1.1800000000|13357";
-		countryCodeArray[37]="Grenada|GD|USD|1.1800000000|13357";
-		countryCodeArray[38]="Guadeloupe|GP|EUR|1.1800000000|13357";
-		countryCodeArray[39]="Guatemala|GT|GTQ|1.1800000000|13357";
-		countryCodeArray[40]="Guernsey|GG|GBP|1.1800000000|13357";
-		countryCodeArray[41]="Honduras|HN|HNL|1.1800000000|13357";
-		countryCodeArray[42]="Hong Kong|HK|HKD|1.1800000000|13357";
-		countryCodeArray[43]="Hungary|HU|HUF|1.1800000000|13357";
-		countryCodeArray[44]="Iceland|IS|EUR|1.1800000000|13357";
-		countryCodeArray[45]="India|IN|INR|1.1800000000|13357";
-		countryCodeArray[46]="Indonesia|ID|IDR|1.1800000000|13357";
-		countryCodeArray[47]="Ireland|IE|EUR|1.1800000000|13357";
-		countryCodeArray[48]="Israel|IL|ILS|1.1800000000|13357";
-		countryCodeArray[49]="Italy|IT|EUR|1.1800000000|13357";
-		countryCodeArray[50]="Jamaica|JM|JMD|1.1800000000|13357";
-		countryCodeArray[51]="Japan|JP|JPY|1.1800000000|13357";
-		countryCodeArray[52]="Jersey|JE|GBP|1.1800000000|13357";
-		countryCodeArray[53]="Jordan|JO|JOD|1.1800000000|13357";
-		countryCodeArray[54]="Korea, Republic of|KR|KRW|1.1800000000|13357";
-		countryCodeArray[55]="Kuwait|KW|KWD|1.1800000000|13357";
-		countryCodeArray[56]="Latvia|LV|LVL|1.1800000000|13357";
-		countryCodeArray[57]="Liechtenstein|LI|EUR|1.1800000000|13357";
-		countryCodeArray[58]="Lithuania|LT|LTL|1.1800000000|13357";
-		countryCodeArray[59]="Luxembourg|LU|EUR|1.1800000000|13357";
-		countryCodeArray[60]="Macao|MO|HKD|1.1800000000|13357";
-		countryCodeArray[61]="Maldives|MV|MVR|1.1800000000|13357";
-		countryCodeArray[62]="Malta|MT|EUR|1.1800000000|13357";
-		countryCodeArray[63]="Martinique|MQ|EUR|1.1800000000|13357";
-		countryCodeArray[64]="Mexico|MX|MXN|1.1800000000|13357";
-		countryCodeArray[65]="Monaco|MC|EUR|1.1800000000|13357";
-		countryCodeArray[66]="Montserrat|MS|USD|1.1800000000|13357";
-		countryCodeArray[67]="Netherlands|NL|EUR|1.1800000000|13357";
-		countryCodeArray[68]="New Zealand|NZ|NZD|1.1800000000|13357";
-		countryCodeArray[69]="Nicaragua|NI|NIO|1.1800000000|13357";
-		countryCodeArray[70]="Norway|NO|NOK|1.1800000000|13357";
-		countryCodeArray[71]="Oman|OM|OMR|1.1800000000|13357";
-		countryCodeArray[72]="Pakistan|PK|PKR|1.1800000000|13357";
-		countryCodeArray[73]="Panama|PA|PAB|1.1800000000|13357";
-		countryCodeArray[74]="Paraguay|PY|PYG|1.1800000000|13357";
-		countryCodeArray[75]="Peru|PE|PEN|1.1800000000|13357";
-		countryCodeArray[76]="Philippines|PH|PHP|1.1800000000|13357";
-		countryCodeArray[77]="Poland|PL|PLN|1.1800000000|13357";
-		countryCodeArray[78]="Portugal|PT|EUR|1.1800000000|13357";
-		countryCodeArray[79]="Qatar|QA|QAR|1.1800000000|13357";
-		countryCodeArray[80]="Romania|RO|RON|1.1800000000|13357";
-		countryCodeArray[81]="Russian Federation|RU|RUB|1.1800000000|13357";
-		countryCodeArray[82]="Réunion|RE|EUR|1.1800000000|13357";
-		countryCodeArray[83]="Saint Kitts and Nevis|KN|USD|1.1800000000|13357";
-		countryCodeArray[84]="Saint Lucia|LC|USD|1.1800000000|13357";
-		countryCodeArray[85]="Saudi Arabia|SA|SAR|1.1800000000|13357";
-		countryCodeArray[86]="Singapore|SG|SGD|1.1800000000|13357";
-		countryCodeArray[87]="Slovakia|SK|EUR|1.1800000000|13357";
-		countryCodeArray[88]="Slovenia|SI|EUR|1.1800000000|13357";
-		countryCodeArray[89]="South Africa|ZA|ZAR|1.1800000000|13357";
-		countryCodeArray[90]="Spain|ES|EUR|1.1800000000|13357";
-		countryCodeArray[91]="Sri Lanka|LK|LKR|1.1800000000|13357";
-		countryCodeArray[92]="Sweden|SE|SEK|1.1800000000|13357";
-		countryCodeArray[93]="Switzerland|CH|CHF|1.1800000000|13357";
-		countryCodeArray[94]="Taiwan|TW|TWD|1.1800000000|13357";
-		countryCodeArray[95]="Thailand|TH|THB|1.1800000000|13357";
-		countryCodeArray[96]="Trinidad and Tobago|TT|USD|1.1800000000|13357";
-		countryCodeArray[97]="Turkey|TR|TRY|1.1800000000|13357";
-		countryCodeArray[98]="Turks and Caicos Islands|TC|USD|1.1800000000|13357";
-		countryCodeArray[99]="United Arab Emirates|AE|AED|1.1800000000|13357";
-		countryCodeArray[100]="United Kingdom|GB|GBP|1.1800000000|13357";
-		countryCodeArray[101]="UNITED STATES|US|USD|1|0";
+		countryCodeArray[23]="Denmark|DK|DKK|1.1800000000|13357";
+		countryCodeArray[24]="Dominica|DM|USD|1.1800000000|13357";
+		countryCodeArray[25]="Dominican Republic|DO|DOP|1.1800000000|13357";
+		countryCodeArray[26]="Ecuador|EC|USD|1.1800000000|13357";
+		countryCodeArray[27]="Egypt|EG|EGP|1.1800000000|13357";
+		countryCodeArray[28]="El Salvador|SV|USD|1.1800000000|13357";
+		countryCodeArray[29]="Estonia|EE|EUR|1.1800000000|13357";
+		countryCodeArray[30]="Finland|FI|EUR|1.1800000000|13357";
+		countryCodeArray[31]="France|FR|EUR|1.1800000000|13357";
+		countryCodeArray[32]="French Guiana|GF|EUR|1.1800000000|13357";
+		countryCodeArray[33]="Germany|DE|EUR|1.1800000000|13357";
+		countryCodeArray[34]="Gibraltar|GI|GBP|1.1800000000|13357";
+		countryCodeArray[35]="Greece|GR|EUR|1.1800000000|13357";
+		countryCodeArray[36]="Grenada|GD|USD|1.1800000000|13357";
+		countryCodeArray[37]="Guadeloupe|GP|EUR|1.1800000000|13357";
+		countryCodeArray[38]="Guatemala|GT|GTQ|1.1800000000|13357";
+		countryCodeArray[39]="Guernsey|GG|GBP|1.1800000000|13357";
+		countryCodeArray[40]="Honduras|HN|HNL|1.1800000000|13357";
+		countryCodeArray[41]="Hong Kong|HK|HKD|1.1800000000|13357";
+		countryCodeArray[42]="Iceland|IS|EUR|1.1800000000|13357";
+		countryCodeArray[43]="India|IN|INR|1.1800000000|13357";
+		countryCodeArray[44]="Indonesia|ID|IDR|1.1800000000|13357";
+		countryCodeArray[45]="Ireland|IE|EUR|1.1800000000|13357";
+		countryCodeArray[46]="Israel|IL|ILS|1.1800000000|13357";
+		countryCodeArray[47]="Italy|IT|EUR|1.1800000000|13357";
+		countryCodeArray[48]="Jamaica|JM|JMD|1.1800000000|13357";
+		countryCodeArray[49]="Japan|JP|JPY|1.1800000000|13357";
+		countryCodeArray[50]="Jersey|JE|GBP|1.1800000000|13357";
+		countryCodeArray[51]="Jordan|JO|JOD|1.1800000000|13357";
+		countryCodeArray[52]="Korea, Republic of|KR|KRW|1.1800000000|13357";
+		countryCodeArray[53]="Kuwait|KW|KWD|1.1800000000|13357";
+		countryCodeArray[54]="Latvia|LV|LVL|1.1800000000|13357";
+		countryCodeArray[55]="Liechtenstein|LI|EUR|1.1800000000|13357";
+		countryCodeArray[56]="Lithuania|LT|LTL|1.1800000000|13357";
+		countryCodeArray[57]="Luxembourg|LU|EUR|1.1800000000|13357";
+		countryCodeArray[58]="Macao|MO|HKD|1.1800000000|13357";
+		countryCodeArray[59]="Maldives|MV|MVR|1.1800000000|13357";
+		countryCodeArray[60]="Malta|MT|EUR|1.1800000000|13357";
+		countryCodeArray[61]="Martinique|MQ|EUR|1.1800000000|13357";
+		countryCodeArray[62]="Mexico|MX|MXN|1.1800000000|13357";
+		countryCodeArray[63]="Monaco|MC|EUR|1.1800000000|13357";
+		countryCodeArray[64]="Montserrat|MS|USD|1.1800000000|13357";
+		countryCodeArray[65]="Netherlands|NL|EUR|1.1800000000|13357";
+		countryCodeArray[66]="New Zealand|NZ|NZD|1.1800000000|13357";
+		countryCodeArray[67]="Nicaragua|NI|NIO|1.1800000000|13357";
+		countryCodeArray[68]="Norway|NO|NOK|1.1800000000|13357";
+		countryCodeArray[69]="Oman|OM|OMR|1.1800000000|13357";
+		countryCodeArray[70]="Pakistan|PK|PKR|1.1800000000|13357";
+		countryCodeArray[71]="Panama|PA|PAB|1.1800000000|13357";
+		countryCodeArray[72]="Paraguay|PY|PYG|1.1800000000|13357";
+		countryCodeArray[73]="Peru|PE|PEN|1.1800000000|13357";
+		countryCodeArray[74]="Philippines|PH|PHP|1.1800000000|13357";
+		countryCodeArray[75]="Portugal|PT|EUR|1.1800000000|13357";
+		countryCodeArray[76]="Qatar|QA|QAR|1.1800000000|13357";
+		countryCodeArray[77]="Romania|RO|RON|1.1800000000|13357";
+		countryCodeArray[78]="Russian Federation|RU|RUB|1.1800000000|13357";
+		countryCodeArray[79]="Réunion|RE|EUR|1.1800000000|13357";
+		countryCodeArray[80]="Saint Kitts and Nevis|KN|USD|1.1800000000|13357";
+		countryCodeArray[81]="Saint Lucia|LC|USD|1.1800000000|13357";
+		countryCodeArray[82]="Saudi Arabia|SA|SAR|1.1800000000|13357";
+		countryCodeArray[83]="Singapore|SG|SGD|1.1800000000|13357";
+		countryCodeArray[84]="Slovakia|SK|EUR|1.1800000000|13357";
+		countryCodeArray[85]="Slovenia|SI|EUR|1.1800000000|13357";
+		countryCodeArray[86]="South Africa|ZA|ZAR|1.1800000000|13357";
+		countryCodeArray[87]="Spain|ES|EUR|1.1800000000|13357";
+		countryCodeArray[88]="Sri Lanka|LK|LKR|1.1800000000|13357";
+		countryCodeArray[89]="Sweden|SE|SEK|1.1800000000|13357";
+		countryCodeArray[90]="Switzerland|CH|CHF|1.1800000000|13357";
+		countryCodeArray[91]="Taiwan|TW|TWD|1.1800000000|13357";
+		countryCodeArray[92]="Thailand|TH|THB|1.1800000000|13357";
+		countryCodeArray[93]="Trinidad and Tobago|TT|USD|1.1800000000|13357";
+		countryCodeArray[94]="Turkey|TR|TRY|1.1800000000|13357";
+		countryCodeArray[95]="Turks and Caicos Islands|TC|USD|1.1800000000|13357";
+		countryCodeArray[96]="United Arab Emirates|AE|AED|1.1800000000|13357";
+		countryCodeArray[97]="United Kingdom|GB|GBP|1.1800000000|13357";
+		countryCodeArray[98]="UNITED STATES|US|USD|1|0";
 
 	var currencyCodeArray = new Array();
-		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504200000|2|29627095";
-		currencyCodeArray[1]="Argentine Peso|ARS|5.3737400000|2|29627096";
-		currencyCodeArray[2]="Australian Dollar|AUD|1.0266200000|1|29627097";
-		currencyCodeArray[3]="Barbados Dollar|BBD|2.1402500000|2|29627098";
-		currencyCodeArray[4]="Taka|BDT|84.9860000000|2|29627099";
-		currencyCodeArray[5]="Bulgarian Lev|BGN|1.5594800000|2|29627100";
-		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4054960000|2|29627101";
-		currencyCodeArray[7]="Boliviano|BOB|7.5930300000|2|29627102";
-		currencyCodeArray[8]="Brazilian Real|BRL|2.1187400000|1|29627103";
-		currencyCodeArray[9]="Belize Dollar|BZD|2.1940200000|2|29627104";
-		currencyCodeArray[10]="Canadian Dollar|CAD|1.0513600000|2|29627105";
-		currencyCodeArray[11]="Swiss Franc|CHF|0.9867710000|1|29627106";
-		currencyCodeArray[12]="Chilean Peso|CLP|507.5280000000|-1|29627107";
-		currencyCodeArray[13]="Yuan Renminbi|CNY|6.7032700000|2|29627108";
-		currencyCodeArray[14]="Colombian Peso|COP|1914.9300000000|-2|29627109";
-		currencyCodeArray[15]="Costa Rican Colon|CRC|538.1800000000|2|29627110";
-		currencyCodeArray[16]="Czech Koruna|CZK|20.2506000000|0|29627111";
-		currencyCodeArray[17]="Danish Krone|DKK|5.9507400000|0|29627112";
-		currencyCodeArray[18]="Dominican Peso|DOP|43.8912000000|2|29627113";
-		currencyCodeArray[19]="Egyptian Pound|EGP|7.2368200000|1|29627114";
-		currencyCodeArray[20]="Euro|EUR|0.7861810000|2|29627115";
-		currencyCodeArray[21]="British Pound|GBP|0.6814470000|2|29627116";
-		currencyCodeArray[22]="Quetzal|GTQ|8.4383700000|2|29627117";
-		currencyCodeArray[23]="Hong Kong Dollar|HKD|8.3424400000|2|29627118";
-		currencyCodeArray[24]="Lempira|HNL|21.4240000000|2|29627119";
-		currencyCodeArray[25]="Hungarian Forint|HUF|230.6520000000|0|29627120";
-		currencyCodeArray[26]="Indonesian Rupiah|IDR|10377.5000000000|-2|29627121";
-		currencyCodeArray[27]="Israeli Shekel|ILS|3.9651500000|1|29627122";
-		currencyCodeArray[28]="Indian Rupee|INR|57.8942000000|0|29627123";
-		currencyCodeArray[29]="Jamaican Dollar|JMD|101.8280000000|2|29627124";
-		currencyCodeArray[30]="Jordanian Dinar|JOD|0.7625300000|2|29627125";
-		currencyCodeArray[31]="Japanese Yen|JPY|99.2322000000|0|29627126";
-		currencyCodeArray[32]="Riel|KHR|4286.9400000000|2|29627127";
-		currencyCodeArray[33]="Korean Won|KRW|1169.1800000000|0|29627128";
-		currencyCodeArray[34]="Kuwaiti Dinar|KWD|0.3032910000|2|29627129";
-		currencyCodeArray[35]="Cayman Islands Dollar|KYD|0.8926650000|2|29627130";
-		currencyCodeArray[36]="Sri Lanka Rupee|LKR|136.1580000000|2|29627131";
-		currencyCodeArray[37]="Lithuanian Litas|LTL|2.7525300000|2|29627132";
-		currencyCodeArray[38]="Latvian Lats|LVL|0.5585070000|2|29627133";
-		currencyCodeArray[39]="Rufiyaa|MVR|16.7240000000|2|29627135";
-		currencyCodeArray[40]="Mexican Peso|MXN|13.6188000000|0|29627136";
-		currencyCodeArray[41]="Cordoba Oro|NIO|26.0966000000|2|29627137";
-		currencyCodeArray[42]="Norwegian Krone|NOK|5.8847100000|0|29627138";
-		currencyCodeArray[43]="New Zealand Dollar|NZD|1.2788300000|1|29627140";
-		currencyCodeArray[44]="Omani Rial|OMR|0.4140780000|2|29627141";
-		currencyCodeArray[45]="Balboa|PAB|1.0755000000|2|29627142";
-		currencyCodeArray[46]="Peruvian Nuevo Sol|PEN|2.7769400000|1|29627143";
-		currencyCodeArray[47]="Philippine Peso|PHP|43.7675000000|0|29627144";
-		currencyCodeArray[48]="Pakistan Rupee|PKR|105.5070000000|2|29627145";
-		currencyCodeArray[49]="Polish Zloty|PLN|3.3274900000|2|29627146";
-		currencyCodeArray[50]="Guarani|PYG|4479.4600000000|0|29627147";
-		currencyCodeArray[51]="Qatari Riyal|QAR|3.9159000000|2|29627148";
-		currencyCodeArray[52]="New Romanian Leu|RON|3.4962400000|2|29627149";
-		currencyCodeArray[53]="Russian Ruble|RUB|32.3107000000|2|29627150";
-		currencyCodeArray[54]="Saudi Riyal|SAR|4.0334500000|1|29627151";
-		currencyCodeArray[55]="Swedish Krona|SEK|6.7673700000|0|29627152";
-		currencyCodeArray[56]="Singapore Dollar|SGD|1.3325400000|1|29627153";
-		currencyCodeArray[57]="Thai Baht|THB|32.0822000000|0|29627155";
-		currencyCodeArray[58]="Turkish Lira|TRY|1.9014800000|1|29627156";
-		currencyCodeArray[59]="Taiwan Dollar|TWD|31.9585000000|0|29627157";
-		currencyCodeArray[60]="US Dollar|USD|1.0000000000|2|29627159";
-		currencyCodeArray[61]="South African Rand|ZAR|9.5450600000|1|29627160";
+		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504200000|2|29964482";
+		currencyCodeArray[1]="Argentine Peso|ARS|5.4450400000|2|29964483";
+		currencyCodeArray[2]="Australian Dollar|AUD|1.0323200000|1|29964484";
+		currencyCodeArray[3]="Barbados Dollar|BBD|2.1402500000|2|29964485";
+		currencyCodeArray[4]="Taka|BDT|85.6098000000|2|29964486";
+		currencyCodeArray[5]="Bulgarian Lev|BGN|1.6040000000|2|29964487";
+		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4054740000|2|29964488";
+		currencyCodeArray[7]="Boliviano|BOB|7.5930300000|2|29964489";
+		currencyCodeArray[8]="Brazilian Real|BRL|2.1102400000|1|29964490";
+		currencyCodeArray[9]="Belize Dollar|BZD|2.1940200000|2|29964491";
+		currencyCodeArray[10]="Canadian Dollar|CAD|1.0797600000|2|29964492";
+		currencyCodeArray[11]="Swiss Franc|CHF|1.0142000000|1|29964493";
+		currencyCodeArray[12]="Chilean Peso|CLP|507.6360000000|-1|29964494";
+		currencyCodeArray[13]="Yuan Renminbi|CNY|6.6841200000|2|29964495";
+		currencyCodeArray[14]="Colombian Peso|COP|1938.7000000000|-2|29964496";
+		currencyCodeArray[15]="Costa Rican Colon|CRC|538.0730000000|2|29964497";
+		currencyCodeArray[16]="Danish Krone|DKK|6.1157200000|0|29964499";
+		currencyCodeArray[17]="Dominican Peso|DOP|44.0740000000|2|29964500";
+		currencyCodeArray[18]="Egyptian Pound|EGP|7.2658600000|1|29964501";
+		currencyCodeArray[19]="Euro|EUR|0.8085400000|2|29964502";
+		currencyCodeArray[20]="British Pound|GBP|0.7049130000|2|29964503";
+		currencyCodeArray[21]="Quetzal|GTQ|8.3910500000|2|29964504";
+		currencyCodeArray[22]="Hong Kong Dollar|HKD|8.3423300000|2|29964505";
+		currencyCodeArray[23]="Lempira|HNL|21.3487000000|2|29964506";
+		currencyCodeArray[24]="Indonesian Rupiah|IDR|10418.4000000000|-2|29964508";
+		currencyCodeArray[25]="Israeli Shekel|ILS|3.9560100000|1|29964509";
+		currencyCodeArray[26]="Indian Rupee|INR|58.4642000000|0|29964510";
+		currencyCodeArray[27]="Jamaican Dollar|JMD|104.1940000000|2|29964511";
+		currencyCodeArray[28]="Jordanian Dinar|JOD|0.7630670000|2|29964512";
+		currencyCodeArray[29]="Japanese Yen|JPY|101.4590000000|0|29964513";
+		currencyCodeArray[30]="Riel|KHR|4284.7900000000|2|29964514";
+		currencyCodeArray[31]="Korean Won|KRW|1171.4300000000|0|29964515";
+		currencyCodeArray[32]="Kuwaiti Dinar|KWD|0.3055390000|2|29964516";
+		currencyCodeArray[33]="Cayman Islands Dollar|KYD|0.8926650000|2|29964517";
+		currencyCodeArray[34]="Sri Lanka Rupee|LKR|136.2660000000|2|29964518";
+		currencyCodeArray[35]="Lithuanian Litas|LTL|2.8314700000|2|29964519";
+		currencyCodeArray[36]="Latvian Lats|LVL|0.5753930000|2|29964520";
+		currencyCodeArray[37]="Rufiyaa|MVR|16.9606000000|2|29964522";
+		currencyCodeArray[38]="Mexican Peso|MXN|13.6911000000|0|29964523";
+		currencyCodeArray[39]="Cordoba Oro|NIO|26.1769000000|2|29964524";
+		currencyCodeArray[40]="Norwegian Krone|NOK|6.1024900000|0|29964525";
+		currencyCodeArray[41]="New Zealand Dollar|NZD|1.2984400000|1|29964527";
+		currencyCodeArray[42]="Omani Rial|OMR|0.4140890000|2|29964528";
+		currencyCodeArray[43]="Balboa|PAB|1.0755000000|2|29964529";
+		currencyCodeArray[44]="Peruvian Nuevo Sol|PEN|2.8092100000|1|29964530";
+		currencyCodeArray[45]="Philippine Peso|PHP|43.8105000000|0|29964531";
+		currencyCodeArray[46]="Pakistan Rupee|PKR|105.1190000000|2|29964532";
+		currencyCodeArray[47]="Guarani|PYG|4366.5300000000|0|29964534";
+		currencyCodeArray[48]="Qatari Riyal|QAR|3.9157900000|2|29964535";
+		currencyCodeArray[49]="New Romanian Leu|RON|3.5733500000|2|29964536";
+		currencyCodeArray[50]="Russian Ruble|RUB|32.9748000000|2|29964537";
+		currencyCodeArray[51]="Saudi Riyal|SAR|4.0335600000|1|29964538";
+		currencyCodeArray[52]="Swedish Krona|SEK|6.8187800000|0|29964539";
+		currencyCodeArray[53]="Singapore Dollar|SGD|1.3398600000|1|29964540";
+		currencyCodeArray[54]="Thai Baht|THB|31.9800000000|0|29964542";
+		currencyCodeArray[55]="Turkish Lira|TRY|1.9337500000|1|29964543";
+		currencyCodeArray[56]="Taiwan Dollar|TWD|31.9047000000|0|29964544";
+		currencyCodeArray[57]="US Dollar|USD|1.0000000000|2|29964546";
+		currencyCodeArray[58]="South African Rand|ZAR|9.7815600000|1|29964547";
 
 	function setCookies(cookieName,codeValue){
 		$.cookie(cookieName, codeValue,{ path: '/', domain: '.dillards.com' });
@@ -417,6 +411,12 @@
 
 		}
 		else{
+			$('title').each(function () {
+				if($(this).text().indexOf("$") != -1){
+					$(this).empty();
+					$(this).append("Dillard's International - Official Site of Dillard's Department Stores - Dillards.com | The Style of Your Life");
+				}
+			})
 			//fix to hide links (remove once display:none's on bundleDisplay)
 			$('a').each(function () {
 				if ($(this).is("#add-wishlist")) {
@@ -435,6 +435,22 @@
 			$('#search-filter').unbind();
 			$('#error-search-filter').unbind();
 			$('div').each(function (index) {
+				//Start:Stores in search result list
+				if ($(this).is(".cat-search-wrap-fixed")) {
+					$(this).children('div').children('div').children('div').each(function () {
+						if ($(this).is(".banner.stores")) {
+							$(this).css("display","none");
+						}
+					});
+				}
+				if ($(this).is(".cat-search-wrap")) {
+					$(this).children('div').children('div').children('div').children('div').children('ul').children('li').children('div').each(function () {
+						if ($(this).is(".storeDetails")) {
+							$(this).css("display","none");
+						}
+					});
+				}
+				//End:Stores in search result list
 				//Start:MyDillards
 				if ($(this).is("#myDillardsBar")) {
 					$(this).children('div').children('span').children('span').each(function () {
@@ -453,12 +469,6 @@
 				if ($(this).is("#fiftyOne-poplinks")) {
 					$(this).css("display","");
 				}
-				$(this).children('title').each(function () {
-					if($(this).text().indexOf("$") != -1){
-						$(this).empty();
-						$(this).append("Dillard's International - Official Site of Dillard's Department Stores - Dillards.com | The Style of Your Life");
-					}
-				});
 /*
 				if ($(this).is("#cart-area")) {
 					$("form").each(function (index) {

@@ -94,12 +94,6 @@
 
     //add the tiffany tiles
     wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
-    
-    //sponsored advertiser (quigo) links:
-    //moved into this file in wpAd.textlinks
-    /*if(typeof wpAds === 'undefined' || !win.wpAds.textlinks) {
-      wpAd.tools.addScript("http://js.washingtonpost.com/wp-srv/ad/textlink_driver.js");
-    }*/
 
     //19882 - Criteo Implementation
     if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
@@ -118,13 +112,6 @@
 
   //called on first placeAd2 call
   wpAd.config.init = function () {
-    //20246-CD-TEST
-    if(/ad_test\=topratedlawyers/i.test(location.search)){
-      wpAd.config.templates.toprated_lawyers_test = {
-        what: ['marketing'],
-        hardcode: '<div style="height:30;background-color:rgb(243,243,243);text-align:center;"><a href="http://topratedlawyers.washingtonpost.com" target="_blank" style="font-size:1.2em;line-height:30px;">Click Here to view the Area\'s Top-Rated Lawyers</a></div>'
-      };
-    }
 
     //sponsorship for surface 2/14/13-2/28/13 - JH
     if(((!wpAd.flags.is_homepage && win.estNowWithYear >= 201302140000 && /^201302/.test(win.estNowWithYear)) || /testads\=surface_sponsor/.test(location.search)) && win.jQuery){

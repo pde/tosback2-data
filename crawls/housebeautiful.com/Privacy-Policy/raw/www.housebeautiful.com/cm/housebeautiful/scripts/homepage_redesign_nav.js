@@ -2,44 +2,87 @@
 $(function() {
     $("#decoratingdd, #decorating_btn")
         .mouseover(function() { 
-            var src = $("#decorating_btn").attr("src").match(/[^\.]+/) + "-over.gif";
-            $("#decorating_btn").attr("src", src);
+            var src = $("#decorating_btn").attr("src").match(/[^\.]+/);
+            if (src[0].indexOf('over') < 0) {
+                src += "-over.gif";
+                $("#decorating_btn").attr("src", src);
+            }else{
+                $("#decorating_btn").addClass("selected");
+            };
         })
         .mouseout(function() {
-            var src = $("#decorating_btn").attr("src").replace("-over", "");
-            $("#decorating_btn").attr("src", src);
+            if(!$("#decorating_btn").hasClass("selected")){
+                var src = $("#decorating_btn").attr("src").replace("-over", "");
+                $("#decorating_btn").attr("src", src);
+            }else{
+                $("#kitchens_btn").removeClass("selected");
+                $("#pictures_btn").removeClass("selected");
+                $("#shopping_btn").removeClass("selected");
+            }
         });	
 		
 	$("#kitchensdd, #kitchens_btn")
         .mouseover(function() { 
-            var src = $("#kitchens_btn").attr("src").match(/[^\.]+/) + "-over.gif";
-            $("#kitchens_btn").attr("src", src);
+            var src = $("#kitchens_btn").attr("src").match(/[^\.]+/);
+            if (src[0].indexOf('over') < 0){
+                src += "-over.gif";
+                $("#kitchens_btn").attr("src", src);    
+            }else{
+                $("#kitchens_btn").addClass("selected");
+            }
         })
         .mouseout(function() {
-            var src = $("#kitchens_btn").attr("src").replace("-over", "");
-            $("#kitchens_btn").attr("src", src);
+            if(!$("#kitchens_btn").hasClass("selected")){
+                var src = $("#kitchens_btn").attr("src").replace("-over", "");
+                $("#kitchens_btn").attr("src", src);    
+            }else{
+                $("#decorating_btn").removeClass("selected");
+                $("#pictures_btn").removeClass("selected");
+                $("#shopping_btn").removeClass("selected");
+            }
         });	
 		
 	$("#picturesdd, #pictures_btn")
         .mouseover(function() { 
-            var src = $("#pictures_btn").attr("src").match(/[^\.]+/) + "-over.gif";
-            $("#pictures_btn").attr("src", src);
+            var src = $("#pictures_btn").attr("src").match(/[^\.]+/);
+            if(src[0].indexOf('over') < 0){
+                src += "-over.gif";
+                $("#pictures_btn").attr("src", src);
+            }else{
+                $("#pictures_btn").addClass("selected");
+            }
         })
         .mouseout(function() {
-            var src = $("#pictures_btn").attr("src").replace("-over", "");
-            $("#pictures_btn").attr("src", src);
+            if(!$("#pictures_btn").hasClass("selected")){
+                var src = $("#pictures_btn").attr("src").replace("-over", "");
+                $("#pictures_btn").attr("src", src);
+            }else{
+                $("#decorating_btn").removeClass("selected");
+                $("#kitchens_btn").removeClass("selected");
+                $("#shopping_btn").removeClass("selected");
+            }
         });
 		
 	$("#shoppingdd, #shopping_btn")
         .mouseover(function() { 
-            var src = $("#shopping_btn").attr("src").match(/[^\.]+/) + "-over.gif";
-            $("#shopping_btn").attr("src", src);
+            var src = $("#shopping_btn").attr("src").match(/[^\.]+/);
+            if(src[0].indexOf('over') < 0){
+                src += "-over.gif";
+                $("#shopping_btn").attr("src", src);
+            }else{
+                $("#shopping_btn").addClass("selected");
+            }
         })
         .mouseout(function() {
-            var src = $("#shopping_btn").attr("src").replace("-over", "");
-            $("#shopping_btn").attr("src", src);
+            if(!$("#shopping_btn").hasClass("selected")){
+                var src = $("#shopping_btn").attr("src").replace("-over", "");
+                $("#shopping_btn").attr("src", src);
+            }else{
+                $("#decorating_btn").removeClass("selected");
+                $("#kitchens_btn").removeClass("selected");
+                $("#pictures_btn").removeClass("selected");
+            }
         });
-		
 });
 
 //Removes Bottom Border on 2nd to last element in dropdown

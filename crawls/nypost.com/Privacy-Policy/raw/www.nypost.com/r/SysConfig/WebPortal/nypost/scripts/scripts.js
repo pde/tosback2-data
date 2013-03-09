@@ -32,12 +32,14 @@ $(document).ready(function(){
 						d.addClass('active');	
 					}, 100);
 					//get ad
+/**					
 					if(d.ad === undefined){
 						$.get('/Fragment/SysConfig/WebPortal/nypost/blocks/fat_header/fat_header_ad.jpt', { section : s, anchor : a }, function(r){
 				       		d.find('.ad-wrap').html(r);
 				    		d.ad = r;
 				    	});
 				    }
+**/				    
 				});
 				$(this).parent().parent().on('mouseleave', function(){
 					o.parent().removeClass('on');

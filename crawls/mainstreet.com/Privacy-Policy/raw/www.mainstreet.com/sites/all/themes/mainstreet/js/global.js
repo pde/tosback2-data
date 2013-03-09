@@ -580,7 +580,6 @@ var MS_PollCallback = {
  * Print the page
  */
 function ms_printPage() {
-    TSC.reporting.sendLinkEvent("Mainstreet Print Page");
     this.print();
 }
 

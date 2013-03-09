@@ -594,3 +594,62 @@ this.setUrl = function (url) { this.url = url; };
 this.toString = function () { return "[AD|ID=" + this.id + "|WIDTH=" + this.width + "|HEIGHT=" + this.height + "]"; };
 }
 // ------ /CNN ADS OBJECT ----- //
+var ads_register = [];
+function cnnad_createAd(adId,cnnad_url,cnnad_height,cnnad_width,target)
+{
+if (typeof SKIP_AD_CREATION !== 'undefined' && SKIP_AD_CREATION) { return; }
+cnnad_url = cnnad_preview(cnnad_url);
+cnnad_url = cnnad_statusCodeQA(cnnad_url);
+cnnad_url += "&transactionID=" + cnnad_getTransactionID();
+cnnad_url += '&tile=' + cnnad_getDynamicTileID(cnnad_url) + '&domId=' + adId;
+cnnad_createAdHelper(adId,cnnad_url,cnnad_height,cnnad_width,target,false);
+// ADM functionality
+var adSize = new String();
+if(cnnad_url.match("_position=") ){
+adSize = cnnad_getParamValue(cnnad_url, "_position=", "_");
+}
+else if(cnnad_url.match("_pos=")){
+adSize = cnnad_getParamValue(cnnad_url, "_pos=", "_");
+}
+else {
+adSize = "";
+}
+if(typeof cnnad_calledURLs != 'undefined')
+{
+cnnad_calledURLs[adSize] = cnnad_url;
+}
+// END ADM functionality
+var the_whole_id = "ad-" + adId;
+ads_register.push(the_whole_id)
+}
+function repaint_ads()
+{
+setTimeout(repaint_em,3000);
+function repaint_em()
+{
+var bMatch = navigator.userAgent.match(/Firefox\/(.*)$/);
+if (bMatch && bMatch.length > 1) {
+var browser_version = bMatch[1]*1;	
+if(browser_version >= 17)
+{
+console.log("repainting...");
+var adsLength = ads_register.length;
+for(var idx = 0; idx < adsLength; idx++)
+{
+el = document.getElementById(ads_register[idx]);
+if(el)
+{
+console.log(ads_register[idx])
+el.style.display = 'none';
+el.offsetHeight;
+el.style.display = 'block';
+}
+} 
+}
+}
+}
+}
+if(window.addEventListener)
+{
+window.addEventListener("load", repaint_ads, false);
+}

@@ -773,12 +773,12 @@ var J=$(".view-more-products").data("viewMoreProductText");
 var L=$(".view-more-products").data("viewLessProductText");
 $(this).parent().append('<a href="#" class="show-more-a">'+J+'</a><a href="#" class="show-less-a hidden">'+L+"</a>")
 }});
-$(".cust-table .show-more-a").live("click",function(J){J.preventDefault();
+$(document).delegate(".cust-table .show-more-a","click",function(J){J.preventDefault();
 $(this).siblings().find("tr").removeClass("hidden");
 $(this).siblings(".show-less-a").removeClass("hidden");
 $(this).addClass("hidden")
 });
-$(".cust-table .show-less-a").live("click",function(J){J.preventDefault();
+$(document).delegate(".cust-table .show-less-a","click",function(J){J.preventDefault();
 $(this).siblings().each(function(K){$(".cust-table").find("table:eq(0)").each(function(L){if($(this).find("tr").length>6){$(this).find("tr").each(function(M){if(M>=6){$(this).addClass("hidden")
 }})
 }$(this).siblings().find("tr").addClass("hidden")

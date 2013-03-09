@@ -30,6 +30,7 @@
 <!-- START IMPORT: tagman.jsp -->
 	<script language="JavaScript" type="text/javascript">
 		var tmEnabled = true;
+		dojo.require("bec.vendors.TagMan");
 	</script>
 	
 
@@ -120,7 +121,8 @@ tmParams = {
 <!-- BEGIN CoremetricsBase.jspf -->
 
 <script language="javascript1.1" src="../../../libs.coremetrics.com/eluminate.js" type="text/javascript"></script>
-
+<script language="javascript1.1" src="../../wcsstore/CommonAssets/javascript/cmcustom.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/bec/analytics/Coremetrics/Common.js"></script>
 <script language="javascript1.5" type="text/javascript"><!-- 
 	var cmCommon = new bec.analytics.Coremetrics.Common();
 	var becCoremetrics = null;
@@ -141,8 +143,10 @@ tmParams = {
 	var cmAttributes = "";
 	var rememberMeShopper = false;
 	
-	//Suppress DDX head file request
-	CM_DDX.headScripts = false;
+	// Initialize Coremetrics
+	dojo.addOnLoad(function() {
+		becCoremetrics = new bec.analytics.Coremetrics();		
+	});
 	
 	cmSetClientID("90047110",false,"1.harryanddavid.com","harryanddavid.com");
 //--></script>	
@@ -150,12 +154,21 @@ tmParams = {
 <script type="text/javascript" src="../../content/common/scripts/csd.js"></script>
 <script type="text/javascript" src="../../content/Hand/include/js/csd.js"></script>
 
+    <script type="text/javascript">
+        if(window.location.protocol == 'http:')
+        {
+            console.debug('Including the SLI css file');
+            document.write("<link rel='stylesheet' href='http://www.harryanddavid.com/h/view/&quot;&#32;+&#32;window.location.protocol&#32;+&#32;&quot;//assets.resultspage.com/autosuggest/autosuggest.css' media='screen' type='text/css' />");
+        }
+    </script>
+
 <link href="../../content/Hand/images/favicon.ico" rel="shortcut icon">
 <!-- START IMPORT: liveperson.jspf -->
 <script language="JavaScript" type="text/javascript">
 	var lpEnabled = false;  //Default
 </script>
 	<script language="JavaScript" src="../../wcsstore/CommonAssets/javascript/liveperson/mtagconfig.js" type="text/javascript"></script><script language="JavaScript" type="text/javascript">
+		dojo.require("bec.chat.LivePerson");		
 		lpEnabled = true;
 		
 		/* The following information should be set on all pages for chat/monitoring - i.e. tagged page */
@@ -179,15 +192,6 @@ tmParams = {
 <!-- END: janrainconfig -->
 	<script language="JavaScript" type="text/javascript">
 		var tlEnabled = true;
-	</script>
-
-	<link href="../../../assets.resultspage.com/js/rac/sli-rac.0.4.css" rel="stylesheet" media="screen" type="text/css" />
-	<link href="../../../harryanddavid.resultspage.com/rac/sli-rac.css" rel="stylesheet" media="screen" type="text/css" />	
-	
-	<script language="javascript" type="text/javascript">
-		dojo.addOnLoad(function(){
-			dojo.io.script.get({url: "//harryanddavid.resultspage.com/rac/sli-rac.config.js"});
-		});
 	</script>
 <!--  BEGIN Content Spot espotHTMLHead --><meta http-equiv="content-language" content="en-us"><!--  END Content Spot espotHTMLHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHead -->
 <script type="text/javascript">
@@ -368,7 +372,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 </script>
 <!-- End TopUtilityRight.jsp -->
 	</div>	
-	<div id="menu" class="clearfix"><div class="separator first"></div><div id="menu-gift-baskets-tower-boxes" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="gift-baskets-tower-boxes" menuName="Gift Baskets &<br/>Towers" altMenuName="Gift Baskets & Towers" menuURL="http://www.harryanddavid.com/h/gift-baskets-tower-boxes" class="menu"><a href="http://www.harryanddavid.com/h/gift-baskets-tower-boxes" class="base">Gift Baskets &<br/>Towers</a></div><div class="separator"></div><div id="menu-fruit-gift" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="fruit-gift" menuName="Pears &<br/>Fresh Fruit" altMenuName="Pears & Fresh Fruit" menuURL="http://www.harryanddavid.com/h/fruit-gift" class="menu"><a href="http://www.harryanddavid.com/h/fruit-gift" class="base">Pears &<br/>Fresh Fruit</a></div><div class="separator"></div><div id="menu-monthly-fruit-clubs" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="monthly-fruit-clubs" menuName="Fruit<br/>Clubs" altMenuName="Fruit Clubs" menuURL="http://www.harryanddavid.com/h/monthly-fruit-clubs" class="menu"><a href="http://www.harryanddavid.com/h/monthly-fruit-clubs" class="base">Fruit<br/>Clubs</a></div><div class="separator"></div><div id="menu-chocolates-sweets-candy" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="chocolates-sweets-candy" menuName="Chocolates &<br/>Sweets" altMenuName="Chocolates & Sweets" menuURL="http://www.harryanddavid.com/h/chocolates-sweets-candy" class="menu"><a href="http://www.harryanddavid.com/h/chocolates-sweets-candy" class="base">Chocolates &<br/>Sweets</a></div><div class="separator"></div><div id="menu-gourmet-foods" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="gourmet-foods" menuName="Gourmet<br/>Foods" altMenuName="Gourmet Foods" menuURL="http://www.harryanddavid.com/h/gourmet-foods" class="menu"><a href="http://www.harryanddavid.com/h/gourmet-foods" class="base">Gourmet<br/>Foods</a></div><div class="separator"></div><div id="menu-flowers-plants" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="flowers-plants" menuName="Flowers &<br/>Plants" altMenuName="Flowers & Plants" menuURL="http://www.harryanddavid.com/h/flowers-plants" class="menu"><a href="http://www.harryanddavid.com/h/flowers-plants" class="base">Flowers &<br/>Plants</a></div><div class="separator"></div><div id="menu-holiday-gifts-occasions" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="holiday-gifts-occasions" menuName="Holidays &<br/>Special Occasions" altMenuName="Holidays & Special Occasions" menuURL="http://www.harryanddavid.com/h/holiday-gifts-occasions" class="menu"><a href="http://www.harryanddavid.com/h/holiday-gifts-occasions" class="base">Holidays &<br/>Special Occasions</a></div><div class="separator"></div><div id="menu-gift-on-sale" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="gift-on-sale" menuName="Sales &<br/>Specials" altMenuName="Sales & Specials" menuURL="http://www.harryanddavid.com/h/gift-on-sale" class="menu"><a href="http://www.harryanddavid.com/h/gift-on-sale" class="base">Sales &<br/>Specials</a></div><div class="separator last"></div></div>
+	<div id="menu" class="clearfix"><div class="separator first"></div><div id="menu-gift-baskets-tower-boxes" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="gift-baskets-tower-boxes" menuName="Gift Baskets &<br/>Towers" altMenuName="Gift Baskets & Towers" menuURL="http://www.harryanddavid.com/h/gift-baskets-tower-boxes?cm_sp=fonav-_-giftbasketstowerboxes-_-giftbasketstowerboxes" class="menu"><a href="http://www.harryanddavid.com/h/gift-baskets-tower-boxes" class="base">Gift Baskets &<br/>Towers</a></div><div class="separator"></div><div id="menu-fruit-gift" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="fruit-gift" menuName="Pears &<br/>Fresh Fruit" altMenuName="Pears & Fresh Fruit" menuURL="http://www.harryanddavid.com/h/fruit-gift?cm_sp=fonav-_-fruitgift-_-fruitgift" class="menu"><a href="http://www.harryanddavid.com/h/fruit-gift" class="base">Pears &<br/>Fresh Fruit</a></div><div class="separator"></div><div id="menu-monthly-fruit-clubs" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="monthly-fruit-clubs" menuName="Fruit<br/>Clubs" altMenuName="Fruit Clubs" menuURL="http://www.harryanddavid.com/h/monthly-fruit-clubs?cm_sp=fonav-_-monthlyfruitclubs-_-monthlyfruitclubs" class="menu"><a href="http://www.harryanddavid.com/h/monthly-fruit-clubs" class="base">Fruit<br/>Clubs</a></div><div class="separator"></div><div id="menu-chocolates-sweets-candy" preload="false" dojoType="bec.menu.MenuContentPane" position="left" topCatIdentifier="chocolates-sweets-candy" menuName="Chocolates &<br/>Sweets" altMenuName="Chocolates & Sweets" menuURL="http://www.harryanddavid.com/h/chocolates-sweets-candy?cm_sp=fonav-_-chocolatessweetscandy-_-chocolatessweetscandy" class="menu"><a href="http://www.harryanddavid.com/h/chocolates-sweets-candy" class="base">Chocolates &<br/>Sweets</a></div><div class="separator"></div><div id="menu-gourmet-foods" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="gourmet-foods" menuName="Gourmet<br/>Foods" altMenuName="Gourmet Foods" menuURL="http://www.harryanddavid.com/h/gourmet-foods?cm_sp=fonav-_-gourmetfoods-_-gourmetfoods" class="menu"><a href="http://www.harryanddavid.com/h/gourmet-foods" class="base">Gourmet<br/>Foods</a></div><div class="separator"></div><div id="menu-flowers-plants" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="flowers-plants" menuName="Flowers &<br/>Plants" altMenuName="Flowers & Plants" menuURL="http://www.harryanddavid.com/h/flowers-plants?cm_sp=fonav-_-flowersplants-_-flowersplants" class="menu"><a href="http://www.harryanddavid.com/h/flowers-plants" class="base">Flowers &<br/>Plants</a></div><div class="separator"></div><div id="menu-holiday-gifts-occasions" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="holiday-gifts-occasions" menuName="Holidays &<br/>Special Occasions" altMenuName="Holidays & Special Occasions" menuURL="http://www.harryanddavid.com/h/holiday-gifts-occasions?cm_sp=fonav-_-holidaygiftsoccasions-_-holidaygiftsoccasions" class="menu"><a href="http://www.harryanddavid.com/h/holiday-gifts-occasions" class="base">Holidays &<br/>Special Occasions</a></div><div class="separator"></div><div id="menu-gift-on-sale" preload="false" dojoType="bec.menu.MenuContentPane" position="right" topCatIdentifier="gift-on-sale" menuName="Sales &<br/>Specials" altMenuName="Sales & Specials" menuURL="http://www.harryanddavid.com/h/gift-on-sale?cm_sp=fonav-_-giftonsale-_-giftonsale" class="menu"><a href="http://www.harryanddavid.com/h/gift-on-sale" class="base">Sales &<br/>Specials</a></div><div class="separator last"></div></div>
 <script type="text/javascript">
 	dojoParseNode("menu");
 	// resize menus removed
@@ -379,8 +383,8 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 			<div id="espotHeaderBanner" class="genericESpot">
 				<div class="caption" style="display:none">[espotHeaderBanner]</div>
 		
-    <span id="espotHeaderBanner_150336_contSWbb2013.03.05">
-<a id="banner" href="http://www.harryanddavid.com/h/gift-on-sale/gifts-with-free-shipping?cm_sp=sitewide-_-bb-_-fsdselect"><img src="../../images/espots/belt/130305-easter-free-ship-nodetails.jpg"/></a>
+    <span id="espotHeaderBanner_151335_contHDSWbbeaster13.03.07">
+<a id="banner" href="http://www.harryanddavid.com/h/holiday-gifts-occasions/easter-basket-gifts?cm_sp=sitewide-_-bb-_-easter"><img src="../../images/espots/belt/130305-Easter.jpg"/></a>
 
     </span>
 
@@ -662,7 +666,16 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		if(cmPassCoremetrics != 'OFF'){cmCreateManualLinkClickTag(cmHref, cmLinkName, cmPageName);	}
 	}
 </script>
-<!-- END: cmInitiateTags.jsp --><!--  BEGIN Content Spot espotFooterSiteWide --><!--  END Content Spot espotFooterSiteWide --><!--  BEGIN Partner Feed PartnerFeedSiteWideFooter -->
+<!-- END: cmInitiateTags.jsp -->
+	<script language="javascript" type="text/javascript">
+		var sliJsProtocol = (("https:" == document.location.protocol) ? "https:" : "http:");
+		var sliURL = sliJsProtocol + '//harryanddavid.resultspage.com/search?ts=rac&w=';
+		console.debug("sliJsProtocol: " + sliJsProtocol);
+		document.write(unescape('%3Clink rel="stylesheet" type="text/css" href="' + sliJsProtocol + '//assets.resultspage.com/js/rac/sli-rac.0.4.css" /%3E'));
+		document.write(unescape('%3Clink rel="stylesheet" type="text/css" href="' + sliJsProtocol + '//harryanddavid.resultspage.com/rac/sli-rac.css" /%3E'));	
+		document.write(unescape('%3Cscript src="' + sliJsProtocol + '//harryanddavid.resultspage.com/rac/sli-rac.config.js" type="text/javascript"%3E%3C/script%3E'));
+	</script>
+<!--  BEGIN Content Spot espotFooterSiteWide --><!--  END Content Spot espotFooterSiteWide --><!--  BEGIN Partner Feed PartnerFeedSiteWideFooter -->
 	<script>
 		var footLinks = dojo.query("#footer .links li a");
 		

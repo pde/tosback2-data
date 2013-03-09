@@ -14,41 +14,61 @@ document.cookie='ZEDOIDX=1000;expires='+t1.toGMTString()+';domain=.zedo.com;path
 </head>
 <body marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 style="background-color:transparent">
 <script language="javascript">
-var v9="1302,1133,1875,1303,802,1976,1988,779,1241,480";
-v9=v9.split(",");
-var n13=false;var v5=''+window.location.search;
-v5=v5.substring(1,v5.length);
-v5=v5.split(';');
-for(var i=0;i<v5.length;i++){
-var v14=v5[i].split('=');
-if(v14[0]=='n'){
-v5=v14[1];
-break;
-}}
-for(var i=0;i<v9.length;i++){
-if(v5==v9[i]){
-n13=true;
-break;
-}}
-if(n13){
-var n9=location.href;var c12=n9.replace(n9.substring(0,n9.indexOf('?')),'http://axp.zedo.com/client/axp/ff2.html');
-document.write('<iframe src="http://d3.zedo.com/jsc/d3/'+c12+'" frameborder=0 marginheight=0 marginwidth=0 scrolling="no" allowTransparency="true" width="100%" height="100%" />');
+var w9="791,1302,1133,1875,1303,802,1976,1988,779,1241,480";
+w9=w9.split(",");
+var i11=false;var z7=''+window.location.search;
+z7=z7.substring(1,z7.length);
+z7=z7.split(';');
+var n10;var a6;var n16="";var n14=n16.split(",");var e14=false;
+for(var i=0;i<z7.length;i++){
+var p10=z7[i].split('=');
+if(p10[0]=='n'){
+n10=p10[1];
+}
+if(p10[0]=='c'){
+a6=p10[1];
+var i13=a6.toString().indexOf('/');
+if(i13!=-1){
+a6=parseInt(a6.substr(0,i13));
 }else{
-var zzl='';var zzGeo=254;var zzCountry=255;var zzState=0;var zzMetro=0;var zzuid="unknown";var z10='';
+a6=parseInt(a6);
+}}}
+for(var i=0;i<w9.length;i++){
+if((typeof n10!='undefined')&&(n10==w9[i])){
+if(typeof a6!='undefined'){
+for(var k=0;k<n14.length;k++){
+var v13=n14[k].split("-");
+if(n10==v13[0]){
+e14=true;
+var a13=v13[1].split(':');
+for(var j=0;j<a13.length;j++){
+if(a6==a13[j]){
+i11=true;
+break;
+}}}}}
+if(!e14){
+i11=true;
+break;
+}}}
+if(i11){
+var a9=location.href;var e12=a9.replace(a9.substring(0,a9.indexOf('?')),'http://axp.zedo.com/client/axp/ff2.html');
+document.write('<iframe src="http://d3.zedo.com/jsc/d3/'+e12+'" frameborder=0 marginheight=0 marginwidth=0 scrolling="no" allowTransparency="true" width="100%" height="100%" />');
+}else{
+var zzl='';var zzGeo=254;var zzCountry=255;var zzState=0;var zzMetro=0;var zzuid="unknown";var v9='';
 if(document.cookie.match(/ZEDOIDA=([^;]*)/)){
 zzuid=RegExp.$1;
-z10='?'+zzuid;
+v9='?'+zzuid;
 }
 if(document.cookie.indexOf('ZEDOIDX')==-1){
-z10='?unknown';
+v9='?unknown';
 }
 if((document.cookie.indexOf('ZEDOIDX')!=-1)&&(document.cookie.indexOf('ZEDOIDA')==-1)){
-z10='?'+Math.floor(Math.random()* 10001);
+v9='?'+Math.floor(Math.random()* 10001);
 }
-document.write('<script language="JavaScript" src="http://d7.zedo.com/bar/v17-005/d3/jsc/gl.js'+z10+'"><\/script>');
+document.write('<script language="JavaScript" src="http://d7.zedo.com/bar/v17-006/d3/jsc/gl.js'+v9+'"><\/script>');
 if(document.cookie.indexOf('ZEDOIDX')==-1)
 zzuid='blocked';
-document.write('<scr'+'ipt language="JavaScript" src="http://d3.zedo.com/bar/v17-005/d3/jsc/iframe2.js"></scr'+'ipt>');
+document.write('<scr'+'ipt language="JavaScript" src="http://d3.zedo.com/bar/v17-006/d3/jsc/iframe2.js"></scr'+'ipt>');
 }
 </script>
 <noscript>

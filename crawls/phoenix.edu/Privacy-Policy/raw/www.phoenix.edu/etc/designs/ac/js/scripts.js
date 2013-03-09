@@ -1042,7 +1042,8 @@ if(typeof az!=="undefined"&&H.call(az,aC)){aw[aC]=az[aC]
 }}}else{if(typeof az!=="undefined"){aw=az[aA]
 }if((typeof aw==="undefined"||typeof aw==="null")&&(av.defaults===true||typeof ay==="undefined")){aw=W.essentials[aA]
 }}return(H.call(av,"callback")&&typeof av.callback==="function"&&!au)?av.callback.call(this,"success",aw,av.data):aw
-}catch(aB){if(console){console.log(aB);
+}catch(aB){if(H.call(av,"callback")&&typeof av.callback==="function"){av.callback("error")
+}if(console){console.log(aB);
 console.log(aB.stack)
 }}}function ar(at,aE,au,aA){var aM,aw,aN="",aF,ay=false,az,aK="application/json",aP={},aB=false,aO,av,aG=0,ax,aC,aD,aJ,aI={},aH=[b,j,d,m,g,i,p,k,"id","smUserId","financialCalcTempData","homePhoneAreaCode","homePhonePhoneNumber","homePhoneExtension","mobilePhoneAreaCode","mobilePhonePhoneNumber","mobilePhoneExtentsion"];
 try{if(!H.call(W,"essentials")){W.essentials={}
@@ -1110,7 +1111,8 @@ aJ=JSON.stringify(aI);
 J(S,aJ,365,K,"/");
 if(typeof aA==="function"){aA.call(this,"success","200")
 }}}return true
-}catch(aL){if(console){console.log(aL);
+}catch(aL){if(aA){aA("error")
+}if(console){console.log(aL);
 console.log(aL.stack)
 }}}function ak(aw,av){var au={},at,ax;
 for(at in aw){if(H.call(aw,at)){ax=av[at];

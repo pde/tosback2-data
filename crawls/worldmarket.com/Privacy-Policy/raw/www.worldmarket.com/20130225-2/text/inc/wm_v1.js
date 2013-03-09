@@ -1,8 +1,7 @@
 // auto-select first color tile if present on PDP
 
-
+// product page tweaks
 jQuery(function () {
-
 	if (location.pathname.indexOf("/product/")==0 && jQuery('div#detailSwatchContainer').size()>0 ) {
 		try {
 		jQuery('div#detailSwatchContainer a:first img')[0].onclick();
@@ -12,7 +11,7 @@ jQuery(function () {
 /// ** add messaging when on eGift Cert page and coming back from personalization ** ////
 
 jQuery(function() {
-	if (location.pathname=="/product/gift-certificate.do" && location.search.indexOf('fromPage=personalization')>0) {
+	if (location.hostname.indexOf("worldmarket.com")>-1 && location.pathname=="/product/gift-certificate.do" && location.search.indexOf('fromPage=personalization')>0) {
 		setTimeout(function () {showGlobalBasket();}, 1000);
 	}
 });

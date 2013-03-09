@@ -1,0 +1,30 @@
+(function($) {
+  $(function(){
+    // detect browser
+    var browser = 'other';
+    if(navigator && navigator.userAgent) {
+      if(navigator.userAgent.match(/firefox/i))
+        browser = 'firefox';
+      else if(navigator.userAgent.match(/chrome/i))
+        browser = 'chrome';
+    }
+
+    // detect https everywhere (currenly only works in firefox)
+    var httpse_installed = ($('#httpse-detect').attr('src') == 'https://www.eff.org/sites/all/themes/frontier/images/got-https-e.png') ? true : false;
+
+    // promote this just for firefox users until this bug is fixed: https://trac.torproject.org/projects/tor/ticket/8124
+    if(browser == 'firefox') {
+      if(httpse_installed) {
+        // hide sidebar block
+        $('.pane-install-httpse').hide();
+      } else {
+        // hide chrome download link
+        $('#httpse-sidebar-chrome').hide();
+      }
+    }
+    // hide the whole sidebar block from everyone else
+    else {
+      $('.pane-install-httpse').hide();
+    }
+  });
+})(jQuery);

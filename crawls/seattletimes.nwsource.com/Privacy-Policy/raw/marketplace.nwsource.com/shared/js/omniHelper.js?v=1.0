@@ -3,18 +3,37 @@
 // version 2.0 MJB 09/19/2012
 
 //  Change Log   
-//  10/18/2012  MJB Added content consumption and event                                                
-//                  Remove obsolete call to web service                               
+//  10/18/2012  MJB Added content consumption and event
+//                  Remove obsolete call to web service
+//  12/20/2012  MJB Removed prop19 and Evar24 from updates
+//                  Those will be reused with Pay Meter.
+//  12/21/2012  MJB Adding Meter Logic
+//  12/27/2012  MJB Added JanRain event logic and JanRain login
+//  01/07/2013  MJB Added logic to look for a Modal
+//  02/04/2013  MJB Added Modal, and DiscusID logic
+//  02/08/2013  MJB Added modal check
+//  02/14/2013  MJB Added more Discus variables
+//  02/21/2013  MJB Removed MG2 vars not being used
+//  02/26/2013  MJB Don't do content consumed if a wall is popped up
+//  03/01/2013  MJB MG2 pages should write to prop5 and eVar5
+
+                
 
 
-var omniHelper_version = '2.0 - Sep 19 2012';
+var omniHelper_version = '2.1 - Feb 08 2013';
 
 var t_omni_matchtype;
 var regX = new RegExp("[\/]", "g");
 var t_omni_finished = false;
+var meterTries = 0;
+var meterLoaded = false;
+
+var modalTries = 0;
 
 var vBounceOff
 var vLoad
+var OfferTrackVars =      "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop17,prop18,prop21,prop22,prop23,prop24,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop44,prop38,prop50,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
+var ContentConsumedVars = "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop14,prop17,prop18,prop21,prop22,prop23,prop24,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop38,prop50,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
 
 runPrimary();
 
@@ -23,7 +42,10 @@ function runPrimary() {
     if (checkRequired()) {
         t_omni_matchtype = "metadata";
         runSecondary();
-    } 
+    }
+    getMeter();
+    getJanRain();
+    getMG2();
 }
 
 function runSecondary() {
@@ -166,8 +188,8 @@ function assignSvars() {
     if (s.hier4) { s.hier4 = formatVariable(s.hier4) };
     
     if (window.t_omni_pagename) {
-        s.pageName = t_omni_pagename.toLowerCase().replace(/[^a-zA-Z 0-9 \- \|]+/g, '');
-        t_omni_pagenameArr = t_omni_pagename.toLowerCase().split("|");
+        s.pageName = window.t_omni_pagename.toLowerCase().replace(/[^a-zA-Z 0-9 \- \|_]+/g, '');
+        t_omni_pagenameArr = window.t_omni_pagename.toLowerCase().split("|");
     } else {
         s.pageName = t_omni_temppath;
     }
@@ -181,7 +203,7 @@ function assignSvars() {
     if (s.channel) { s.channel = formatVariable(s.channel) };
     
     if (window.t_omni_server) {
-        s.server = t_omni_server.toLowerCase();
+        s.server = window.t_omni_server.toLowerCase();
     } else {
         s.server = window.location.hostname.toLowerCase();
     }
@@ -259,17 +281,17 @@ function assignSvars() {
     if (s.prop3) { s.prop3 = formatVariable(s.prop3) };
         
     if (window.t_omni_articleid) {
-        s.prop4 = t_omni_articleid.toLowerCase();
+        s.prop4 = window.t_omni_articleid.toLowerCase();
     }
     if (s.prop4) { s.prop4 = formatVariable(s.prop4) };
     
     if (window.t_omni_pagetype) {
-        s.prop5 = t_omni_pagetype.toLowerCase();
+        s.prop5 = window.t_omni_pagetype.toLowerCase();
     }
     if (s.prop5) { s.prop5 = formatVariable(s.prop5) };
     
     if (window.t_omni_site) {
-        s.prop6 = t_omni_site.toLowerCase();
+        s.prop6 = window.t_omni_site.toLowerCase();
     }
     if (s.prop6) { s.prop6 = formatVariable(s.prop6) };
     
@@ -283,63 +305,50 @@ function assignSvars() {
     if (s.prop8) { s.prop8 = formatVariable(s.prop8) };
     if (s.prop9) { s.prop9 = formatVariable(s.prop9) };
     if (s.prop10) { s.prop10 = formatVariable(s.prop10) };
-    
-    
+
     if (window.OAS_sitepage) {
-        s.prop14 = OAS_sitepage.toLowerCase();
+        s.prop14 = window.OAS_sitepage.toLowerCase();
     }
-    if (s.prop14) { s.prop14 = formatVariable(s.prop14) };    
-    
     if (window.OAS_listpos) {
-        s.prop15 = smartTrim(OAS_listpos.toLowerCase(), 96);
+        s.prop15 = smartTrim(window.OAS_listpos.toLowerCase(), 96);
     }
-    if (s.prop15) { s.prop15 = formatVariable(s.prop15) };
-    
     if (window.OAS_query) {
-        s.prop16 = smartTrim(OAS_query.toLowerCase(), 96);
+        s.prop16 = smartTrim(window.OAS_query.toLowerCase(), 96);
         s.prop16 = s.prop16.replace(/^\?/, "");
         s.prop16 = s.prop16.replace(/\&/g, "|");
     }
-    if (s.prop16) { s.prop16 = formatVariable(s.prop16) };
     
+       
     if (window.t_omni_author) {
-        s.prop17 = t_omni_author.toLowerCase();
+        s.prop17 = window.t_omni_author.toLowerCase();
     }
     if (s.prop17) { s.prop17 = formatVariable(s.prop17) };
     
     if (window.t_omni_pubdate) {
-        s.prop18 = t_omni_pubdate.toLowerCase();
+        s.prop18 = window.t_omni_pubdate.toLowerCase();
     }
     if (s.prop18) { s.prop18 = formatVariable(s.prop18) };
     
-    if (window.t_omni_neighborhood) {
-        s.prop19 = t_omni_neighborhood.toLowerCase();
-    }
-    if (s.prop19) { s.prop19 = formatVariable(s.prop19) };
     
-    if (window.t_omni_version) {
-        s.eVar24 = t_omni_version.toLowerCase();
-    }
-    if (s.eVar24) { s.eVar24 = formatVariable(s.eVar24) };
-    
+   
     if (window.t_omni_path) {
-        s.hier1 = t_omni_path.toLowerCase();
+        s.hier1 = window.t_omni_path.toLowerCase();
     } else {
         s.hier1 = t_omni_temppath;
     }
     if (s.hier1) { s.hier1 = formatVariable(s.hier1) };
     
     if (window.t_omni_sagepath) {
-        s.hier2 = t_omni_sagepath.toLowerCase();
+        s.hier2 = window.t_omni_sagepath.toLowerCase();
     } else {
         s.hier2 = "";
     }
     if (s.hier2) { s.hier2 = formatVariable(s.hier2) };
     
-    if (window.t_omni_matchtype) {
-        s.prop43 = t_omni_matchtype.toLowerCase();
-    }
-    if (s.prop43) { s.prop43 = formatVariable(s.prop43) };
+//    if (window.t_omni_matchtype) {
+//        s.prop43 = t_omni_matchtype.toLowerCase();
+//    }
+//    if (s.prop43) { s.prop43 = formatVariable(s.prop43) };
     
     if (window.t_omni_contest) {
         s.prop5 = "contests";
@@ -361,12 +370,371 @@ function assignSvars() {
     s.prop42 = String(window.location).replace(/^.*:\/\//, "").substring(0, 100).toLowerCase();
     if (s.prop42) { s.prop42 = formatVariable(s.prop42) };
 
-    s.prop75 = "v01.280912";
+    s.prop74 = "v01.281212";
+    s.prop75 = "v01.181212";
+
+    if (typeof st_login != 'undefined') {
+        if (typeof st_login.subscriberData != 'undefined') {
+            if (typeof st_login.subscriberData.accountId != 'undefined') {
+                s.eVar75 = st_login.subscriberData.accountId;
+                if (typeof st_login.subscriberData.subscriptionLevelHousehold != 'undefined') {
+                    s.eVar47 = st_login.subscriberData.subscriptionLevelHousehold;
+                }
+                if (typeof st_login.subscriberData.validSubscription != 'undefined') {
+                    s.eVar46 = st_login.subscriberData.validSubscription;
+                }     
+            }
+        }
+    }
 
     t_omni_hier3 = window.location.hostname + window.location.pathname;
     t_omni_hier3 = t_omni_hier3.replace(regX, "|");
     s.hier3 = t_omni_hier3.toLowerCase();
     if (s.hier3) { s.hier3 = formatVariable(s.hier3) };
+}
+
+function getMeter() {
+    if (typeof MeterTrace != 'undefined') {
+        if ((typeof MeterTrace.page.timestamp == 'undefined') && (meterTries < 1)) {
+            meterTries++;
+            setTimeout(getMeter, 100);
+        } else {
+            loadMeterValues();
+        }
+    }
+    else {
+        if ((meterTries < 1)) {
+            meterTries++;
+            setTimeout(getMeter, 100);
+        } 
+    }    
+}        
+
+function loadMeterValues() {
+      
+    if ((typeof MeterTrace.conf == 'undefined')) {
+       s.prop21 = "No Meter";
+    } else {
+       loadMeterConf();
+       loadMeterPage();
+       loadMeterErrors();
+     }
+
+    meterLoaded = true;
+
+}
+
+function loadMeterConf() {
+    var m = MeterTrace.conf;
+    if (typeof m.meterAppVersion != 'undefined') { s.prop21 = m.meterAppVersion; }
+    if (typeof m.meterBuildInfo != 'undefined') { s.prop22 = m.meterBuildInfo; }
+    if (typeof m.meterConfVersion != 'undefined') { s.prop23 = m.meterConfVersion; }
+    if (typeof m.meterConfReason != 'undefined') { s.prop24 = m.meterConfReason; }
+    if (typeof m.getConfiguredLimitCount != 'undefined') { s.prop26 = m.getConfiguredLimitCount; }
+    if (typeof m.getRotationPeriod != 'undefined') { s.prop27 = m.getRotationPeriod; }
+    if (typeof m.hasActiveLimitCount != 'undefined') { s.prop28 = m.hasActiveLimitCount.toString(); }
+    if (typeof m.hasActiveOfferTrigger != 'undefined') { s.prop29 = m.hasActiveOfferTrigger.toString(); }
+    if (typeof m.isActive != 'undefined') { s.prop30 = m.isActive.toString(); }
+    if (typeof m.isRotationMode != 'undefined') { s.prop31 = m.isRotationMode.toString(); }
+}
+
+function loadMeterPage() {
+
+    if (typeof MeterTrace.page == 'undefined') {
+    } else {
+        var m = MeterTrace.page;
+        if (typeof m.offerCode != 'undefined') {
+           if ((m.offerCode != null) && (MeterTrace.conf.hasActiveOfferTrigger = true)) {
+                if (s.eVar46) {
+                    if (s.eVar46 != '1') {
+                        s.events = s.apl(s.events, 'event16', ',', 1);
+                    }
+                } else {
+                    s.events = s.apl(s.events, 'event16', ',', 1);
+                }
+            }
+        }
+
+
+        if (typeof m.contentId != 'undefined') {s.prop39 = m.contentId; }
+        if (typeof m.excluded != 'undefined') { s.prop40 = m.excluded.toString(); }
+        if (typeof m.type != 'undefined') { s.prop43 = m.type; }
+        if (typeof m.source  != 'undefined') { s.prop38 = m.source; }
+        if (typeof m.countBeforeDiscards != 'undefined') { s.prop46 = m.countBeforeDiscards; }
+        if (typeof m.countAfterDiscardsAndUpdates != 'undefined') {s.prop47 = m.countAfterDiscardsAndUpdates; }
+        if (typeof m.offerCode != 'undefined') { s.prop48 = m.offerCode; }
+        
+        // if beyond the limit, change the offer code to "wall"
+        if (typeof m.isBeyondLimit != 'undefined') {
+            if (m.isBeyondLimit == true) {
+                s.prop48 = "wall";
+            }
+        }
+
+        // if eVar46 is set (user has logged in and has access to this page, the offer/wall won't display.  So, unset prop48
+        if (s.eVar46) {
+            if (s.eVar46 = '1') {
+                s.prop48 = "";
+            }
+        }
+    }
+}
+
+function loadMeterErrors() {
+
+    var str = "";
+
+    if (typeof MeterTrace.errors != 'undefined') {
+        for (idx in MeterTrace.errors) {
+            var err = MeterTrace.errors[idx];
+            str += 'errorCaught_' + idx + '=' + err.message;
+
+            if (typeof err.hasNestedError != 'undefined') {
+                var ne = err.getNestedError();
+
+                if (typeof ne != 'undefined' && ne != null) {
+                    str += ' w/nested error; \'' + ne.message + '\'';
+                    str += '., line nr.; ' + ne.lineNumber;
+                }
+            }
+
+            str += '\n';
+        }
+
+        if (str.length > 0) {
+            s.events = s.apl(s.events, 'event44', ',', 1);
+            s.eVar44 = str;
+        }
+    }
+}
+
+//function Stringify (pVar) {
+//   var retVar
+//   if ((typeof JSON == 'undefined')) {
+//       retVar = pVar;
+//   } else {
+//       retVar = JSON.stringify(pVar);
+//   }
+//   return retVar;        
+//}
+
+// JanRain events and login
+
+function getJanRain() {
+    if (window.localStorage.janrainCaptureProfileData) { s.eVar74 = window.localStorage.janrainCaptureProfileData.match(/"uuid":"([^"]*)"/)[1]; }
+}
+
+function janrainWidgetOnload() {
+    var submitOmnitureEvent = function(event, provider, linktitle) {
+        s.linkTrackVars = 'event,eVar14';
+        s.linkTrackEvents = event;
+        s.eVar14 = linktitle;
+        CallOmniTL(linktitle);
+    };
+
+    janrain.events.onCaptureSessionCreated.addHandler(function(response) {
+        submitOmnitureEvent('event21', response.provider, 'onCaptureSessionCreated');
+    });
+
+    janrain.events.onCaptureSessionEnded.addHandler(function(response) {
+        submitOmnitureEvent('event22', response.provider, 'onCaptureSessionEnded');
+    });
+
+    janrain.events.onCaptureSessionFound.addHandler(function(response) {
+        submitOmnitureEvent('event23', response.provider, 'onCaptureSessionFound');
+    });
+
+    janrain.events.onCaptureTransactionTimeout.addHandler(function(response) {
+        submitOmnitureEvent('event24', response.provider, 'onCaptureTransactionTimeout');
+    });    
+    
+    janrain.events.onCaptureExpiredToken.addHandler(function(response) {
+       submitOmnitureEvent('event25', response.provider, 'onCaptureExpiredToken');
+    });
+
+    janrain.events.onCaptureLoginStart.addHandler(function(response) {
+       submitOmnitureEvent('event26', response.provider, 'onCaptureLoginStart');
+    });
+
+    janrain.events.onCaptureLoginSuccess.addHandler(function(response) {
+        submitOmnitureEvent('event27', response.provider, 'onCaptureLoginSuccess');
+    });
+
+    janrain.events.onCaptureLoginFailed.addHandler(function(response) {
+        submitOmnitureEvent('event28', response.provider, 'onCaptureLoginFailed');
+    });
+
+    janrain.events.onCaptureRegistrationStart.addHandler(function(response) {
+        submitOmnitureEvent('event29', response.provider, 'onCaptureRegistrationStart');
+    });
+
+    janrain.events.onCaptureRegistrationSuccess.addHandler(function(response) {
+        submitOmnitureEvent('event30', response.provider, 'onCaptureRegistrationSuccess');
+    });
+
+    janrain.events.onCaptureRegistrationFailed.addHandler(function(response) {
+        submitOmnitureEvent('event31', response.provider, 'onCaptureRegistrationFailed');
+    });
+
+    janrain.events.onCaptureValidationSuccess.addHandler(function(response) {
+        submitOmnitureEvent('event32', response.provider, 'onCaptureValidationSuccess');
+    });
+
+    janrain.events.onCaptureValidationFailed.addHandler(function(response) {
+        submitOmnitureEvent('event33', response.provider, 'onCaptureValidationFailed');
+    });
+
+    janrain.events.onCaptureServerValidationComplete.addHandler(function(response) {
+        submitOmnitureEvent('event34', response.provider, 'onCaptureExpiredToken');
+    });
+
+    janrain.events.onCaptureValidationComplete.addHandler(function(response) {
+        submitOmnitureEvent('event35', response.provider, 'onCaptureServerValidationComplete');
+    });
+
+    janrain.events.onCaptureEmailVerificationSuccess.addHandler(function(response) {
+        submitOmnitureEvent('event36', response.provider, 'onCaptureEmailVerificationSuccess');
+    });
+
+    janrain.events.onCaptureEmailVerificationFailed.addHandler(function(response) {
+        submitOmnitureEvent('event37', response.provider, 'onCaptureEmailVerificationFailed');
+    });
+
+    janrain.events.onCaptureFormError.addHandler(function(response) {
+        submitOmnitureEvent('event38', response.provider, 'onCaptureFormError');
+    });
+
+    janrain.events.onCaptureError.addHandler(function(response) {
+        submitOmnitureEvent('event39', response.provider, 'onCaptureError');
+    });
+
+    janrain.events.onCaptureLinkAccountError.addHandler(function(response) {
+        submitOmnitureEvent('event40', response.provider, 'onCaptureLinkAccountError');
+    });
+
+}
+
+// MG2 Events  (MG2 pages will either be tagged with mg2|offer|generic or
+//   st|account_services|MG2
+
+function getMG2() {
+    if (window.t_omni_pagename) {
+        t_omni_pagenameArrM = t_omni_pagename.toLowerCase().split("|");
+    }
+    if (t_omni_pagenameArrM) {
+        if ((t_omni_pagenameArrM[0] == 'st') && (t_omni_pagenameArrM[1] == 'account_services')) {
+            if (typeof (t_omni_pagenameArrM[2]) != 'undefined') {
+                if (t_omni_pagenameArrM[2] == 'mg2') {
+                    loadMG2_Events(t_omni_pagenameArrM[2]);
+                }
+            }
+        }
+    }
+}
+
+function loadMG2_Events(pPage) {
+
+    s.events = s.apl(s.events, 'event41', ',', 1);
+
+    lPage = pPage;
+    if ((lPage.toString().toLowerCase() == 'generic') | (lPage.toString().toLowerCase() == 'mg2')) {
+        if (document.URL.toLowerCase()) {
+            lURL = document.URL.toLowerCase() + "?";
+            lURLArray = lURL.split('?');
+            lPArray = lURLArray[0].split('/');
+            lPage = lPArray[lPArray.length - 1];
+        }
+    }
+
+
+    if (lPage == 'subscribe1.aspx') {
+        s.pagename = "st|content_access|subscribe|info_collection";
+        s.prop5 = "info_collection";
+        s.prop7 = "content_access";
+        s.prop8 = "subscribe";
+        s.prop9 = "info_collection";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+        
+    }
+         
+    if (lPage == 'subscribe.aspx')       {
+        s.pagename = "st|content_access|subscribe|info_collection";
+        s.prop5 = "info_collection";
+        s.prop7 = "content_access";
+        s.prop8 = "subscribe";
+        s.prop9 = "info_collection";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+     
+    if (lPage == 'subscribemain.aspx')   {
+        s.pagename = "st|content_access|subscribe|order";
+        s.prop5 = "order";
+        s.prop7 = "content_access";
+        s.prop8 = "subscribe";
+        s.prop9 = "order";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+     
+    if (lPage == 'register.aspx')        { 
+        s.pagename = "st|account_services|create_account|registration";
+        s.prop5 = "registration";
+        s.prop7 = "account_services";
+        s.prop8 = "create_account";
+        s.prop9 = "registration";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+     
+    if (lPage == 'createaccount.aspx')   {
+        s.pagename = "st|account_services|create_account|info_collection";
+        s.prop5 = "info_collection";
+        s.prop7 = "account_services";
+        s.prop8 = "create_account";
+        s.prop9 = "info_collection";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+     
+    if (lPage == 'subscribe_confirm.aspx')  {
+        s.pagename = "st|content_access|subscribe|confirmation";
+        s.prop5 = "confirmation";
+        s.prop7 = "content_access";
+        s.prop8 = "subscribe";
+        s.prop9 = "confirmation";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+
+    if (lPage == 'register_confirm.aspx') {
+        s.pagename = "st|account_services|create_account|confirmation";
+        s.prop5 = "confirmation";
+        s.prop7 = "account_services";
+        s.prop8 = "create_account";
+        s.prop9 = "confirmation";
+        s.eVar5 = s.prop5;
+        s.eVar7 = s.prop7;
+        s.eVar8 = s.prop8;
+        s.eVar9 = s.prop9;
+    }
+
+    s.eVar45 = s.getQueryParam('pid');
+    s.prop54 = s.getQueryParam('pid');
+
 }
 
 function PageQuery(q) {
@@ -446,16 +814,25 @@ function sendGenericEvent(etype) {
 
         return outVar;
     }
-    function PostIt() {
+    function Omnihelper_PostIt() {
+
+        // we have to wait for the meter to load before processing.  The meter loaded flag is set when the
+        // meter is loaded.  If it's not set, wait another half a second and then just send what we have.
+        
+        // then, reset event2 (page load).
 
         if (!vLoad) {
+            if (!meterLoaded) {
+                meterLoaded = true;
+                setTimeout(Omnihelper_PostIt, 500);
+            } else {
+                vLoad = "Y"
+                var s_code = s.t();
+                if (s_code)
+                    document.write(s_code);
 
-            vLoad = "Y"
-            var s_code = s.t();
-            if (s_code)
-                document.write(s_code);
-
-            s.events = s.apl(s.events, 'event2', ',', 1)
+                s.events = s.apl(s.events, 'event2', ',', 1)
+            }
         }
     }
 
@@ -504,21 +881,25 @@ function sendGenericEvent(etype) {
     }
 
     function ContentConsumed(intType) {
+    
+        //bypass this if prop48 = wall (they can't see the article)
 
-        s.linkTrackVars = 'events,eVar35';
-        s.linkTrackEvents = 'event15';
+        if (s.prop48 != 'wall') {
+            s.linkTrackVars = ContentConsumedVars;
+            s.linkTrackEvents = 'event15';
 
-        // Only record the Content Consumed event
-        
-        s.events = "";
+            // Only record the Content Consumed event
 
-        s.events = s.apl(s.events, 'event15', ',', 1);
-        s.eVar35 = intType;
-        if (s.eVar35) { s.eVar35 = formatVariable(s.eVar35) };
+            s.events = "";
+
+            s.events = s.apl(s.events, 'event15', ',', 1);
+            s.eVar35 = intType;
+            if (s.eVar35) { s.eVar35 = formatVariable(s.eVar35) };
 
 
-        CallOmniTL("ContentConsumed");
-
+            CallOmniTL("ContentConsumed");
+        }
+ 
     }
 
     function BounceOff() {
@@ -550,6 +931,24 @@ function sendGenericEvent(etype) {
         //    }
 
     }
+    
+    function OfferPresented (offerType) {
+
+        s.linkTrackVars = OfferTrackVars;
+        s.linkTrackEvents = 'event43';
+
+        // Only record the Content Consumed event
+        
+        s.events = "";
+
+        s.events = s.apl(s.events, 'event43', ',', 1);
+//        s.eVar35 = intType;
+//        if (s.eVar35) { s.eVar35 = formatVariable(s.eVar35) };
+
+
+        CallOmniTL("OfferPresented");
+
+    }
 
     //window.onload = PostIt();
     //window.onbeforeunload = BounceOff;
@@ -569,9 +968,21 @@ function sendGenericEvent(etype) {
 
     if (s.prop5) {
         if (s.prop5 == "article" || s.prop5 == "newsapp" || s.prop5.indexOf("blog") > -1) {
-            var Timeout = setTimeout(ArticleTimer, 30000);
             function ArticleTimer() {
                 ContentConsumed(s.prop5)
             }
+            var Timeout = setTimeout(ArticleTimer, 30000);
         }
     }
+
+        // wait one second then look to see if an offer popped up
+        
+        function PopUpMsg() {
+            if (typeof _offerPopUp != 'undefined') {
+                if ((_offerPopUp == "modal") || (_offerPopUp == "wall")) {
+                    OfferPresented(_offerPopUp);
+                }
+            }
+        }
+
+        var TimeoutP = setTimeout(PopUpMsg, 1000);

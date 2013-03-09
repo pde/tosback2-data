@@ -88,16 +88,14 @@ var werehere = new Array(
 					 	"Read All FAQs",
 					 	"Correct Your Order",
 					 	"Closing Your Account",
-					 	"Contact Us",
-					 	"Live Chat"
+					 	"Contact Us"
 					);
 
 var werehereLink = new Array (
 						  thisServer + "help.html?tm_link=help_nav_4_top10",
 						  thisServer + "correcting.html?tm_link=help_nav_4_correcting",
 						  thisServer + "closeaccount.html?tm_link=help_nav_4_close",
-						  thisServer + "customer_serve.html?tm_link=help_nav_4_contact",
-						  "javascript:liveChatWindow('http://ticketmasterus.custhelp.com/app/utils/chat');"
+						  thisServer + "customer_serve.html?tm_link=help_nav_4_contact"
 					);
 
 var policies = new Array(

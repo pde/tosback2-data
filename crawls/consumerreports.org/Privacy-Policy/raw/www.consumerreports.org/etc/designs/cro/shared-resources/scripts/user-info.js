@@ -255,13 +255,13 @@ CRUserInfo.hideAndShowClasses = function(inName, inFunction)
 {
     if (inFunction())
     {
-        $(".no" + inName).hide();
-        $(".if" + inName).show();
+        jQuery(".no" + inName).hide();
+        jQuery(".if" + inName).show();
     }
     else
     {
-        $(".if" + inName).hide();
-        $(".no" + inName).show();
+        jQuery(".if" + inName).hide();
+        jQuery(".no" + inName).show();
     }
 };
 
@@ -307,54 +307,54 @@ jQuery(document).ready(function() {
                 {
                     theTruncatedDisplayName = theDisplayName.substring(0, 14);
                 }
-                $(".truncDisplayName").empty();
-                $(".truncDisplayName").append(theTruncatedDisplayName);
-                $(".truncDisplayName").show();
-                $(".displayName").empty();
-                $(".displayName").append(theDisplayName);
-                $(".displayName").show();
+                jQuery(".truncDisplayName").empty();
+                jQuery(".truncDisplayName").append(theTruncatedDisplayName);
+                jQuery(".truncDisplayName").show();
+                jQuery(".displayName").empty();
+                jQuery(".displayName").append(theDisplayName);
+                jQuery(".displayName").show();
                 if (CRUserInfo.isEBSCO())
                 {
-                    $(".noEBSCO").hide();
-                    $(".ifEBSCO").show();
+                    jQuery(".noEBSCO").hide();
+                    jQuery(".ifEBSCO").show();
                 }
                 else
                 {
-                    $(".ifEBSCO").hide();
-                    $(".noEBSCO").show();
+                    jQuery(".ifEBSCO").hide();
+                    jQuery(".noEBSCO").show();
                 }
             }
             if (CRUserInfo.isAutoLogin())
             {
-                $(".ifAutoLogin").attr("checked","checked");
+                jQuery(".ifAutoLogin").attr("checked","checked");
             }
             else
             {
-                $(".ifAutoLogin").removeAttr("checked");
+                jQuery(".ifAutoLogin").removeAttr("checked");
             }
             var theAlertsArray = CRUserInfo.getAlerts();
             if (theAlertsArray != null)
             {
                 if (theAlertsArray.length > 0)
                 {
-                    $("ol.alert").empty();
+                    jQuery("ol.alert").empty();
                     for (var i = 0; (i < theAlertsArray.length); i++)
                     {
-                        $("ol.alert").append("<li>" + theAlertsArray[i] + "</li>");
+                        jQuery("ol.alert").append("<li>" + theAlertsArray[i] + "</li>");
                     }
-                    $(".noAlert").hide();
-                    $(".ifAlert").show();
+                    jQuery(".noAlert").hide();
+                    jQuery(".ifAlert").show();
                 }
                 else
                 {
-                    $(".ifAlert").hide();
-                    $(".noAlert").show();
+                    jQuery(".ifAlert").hide();
+                    jQuery(".noAlert").show();
                 }
             }
             else
             {
-                $(".ifAlert").hide();
-                $(".noAlert").show();
+                jQuery(".ifAlert").hide();
+                jQuery(".noAlert").show();
             }
             CRUserInfo.hideAndShowClasses("Subscriptions", CRUserInfo.hasSubscriptions);
             CRUserInfo.hideAndShowClasses("APS", CRUserInfo.hasAPS);
@@ -372,7 +372,7 @@ jQuery(document).ready(function() {
 
             validateSubscriptions(CRUserInfo);
 
-            if ($("#billshrinkAnchor").length) {
+            if (jQuery("#billshrinkAnchor").length) {
                 var theSubscriberType = "03";
                 if (CRUserInfo.hasCROAnnual() || CRUserInfo.hasCBDP()) {
                     theSubscriberType = "02";
@@ -380,8 +380,8 @@ jQuery(document).ready(function() {
                 else if (CRUserInfo.hasCROMonthly()) {
                     theSubscriberType = "01";
                 }
-                var theOriginalHref = $("#billshrinkAnchor").attr("href");
-                $("#billshrinkAnchor").attr("href", theOriginalHref + "&utm_source=" + theSubscriberType);
+                var theOriginalHref = jQuery("#billshrinkAnchor").attr("href");
+                jQuery("#billshrinkAnchor").attr("href", theOriginalHref + "&utm_source=" + theSubscriberType);
             }
     }});
     }

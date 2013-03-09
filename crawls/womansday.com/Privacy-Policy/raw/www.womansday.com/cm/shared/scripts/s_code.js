@@ -2,7 +2,7 @@ function createCookie(d,c,a){if("undefined"!==typeof c){"number"==typeof a&&(a={
 function readCookie(name) {var nameEQ = name + "=";var ca = document.cookie.split(';');for(var i=0;i < ca.length;i++) {var c = ca[i];while (c.charAt(0)==' ') c = c.substring(1,c.length);if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);}return null;}
 function eraseCookie(name,options){ createCookie(name,null,options)}
 
-/* SiteCatalyst code version: H.25.3 Last Update 1/22/13 */
+/* SiteCatalyst code version: H.25.3 Last Update 2/8/13 */
 /* s_account set on page */
 var s=s_gi(s_account)
 
@@ -163,11 +163,13 @@ s.prop56=location.hostname+location.pathname;
 if (location.href != s.referrer)
 {
 s.eVar10=s.getQueryParam('src');
+if (!s.eVar10) {s.eVar10=s.getQueryParam('fb_ref');}
 s.eVar11=s.getQueryParam('mag');
 s.eVar12=s.getQueryParam('dom');
 s.eVar13=s.getQueryParam('con');
 s.eVar14=s.getQueryParam('list');
 s.eVar15=s.getQueryParam('link');
+if (!s.eVar15) {s.eVar15=s.getQueryParam('fb_source');}
 s.eVar16=s.getQueryParam('chan');
 s.eVar17=s.getQueryParam('ad_grp');
 s.eVar18=s.getQueryParam('ad');
@@ -276,7 +278,7 @@ s.events = s.events.replace(/,event54/, "")
 s.events = s.events.replace(/,event55/, "")
 s.events = s.events.replace(/,event56/, "")
 s.events = s.events.replace(/,event57/, "")
-if ((document.referrer.indexOf('search') > -1) && (location.href != document.referrer))
+if ((s.referrer.indexOf('search') > -1) && (location.href != s.referrer))
 	{
 	if (s.prop18.indexOf("main_sr") > -1) {s.events=s.apl(s.events,'event32',',',1)}
 	if (s.prop18.indexOf("img_sr") > -1) {s.events=s.apl(s.events,'event54',',',1)}
@@ -292,13 +294,13 @@ s.prop57="validateFrm";
 
 /* RWD */
 // Rendered Experience
-if (location.host.indexOf("roadandtrack.com") > -1) {
+if (location.href.indexOf("roadandtrack.com") > -1) {
 		if (document.documentElement.clientWidth <= 479) {s.eVar65="Phone";}
 		if (document.documentElement.clientWidth >= 480 && document.documentElement.clientWidth <= 959) {s.eVar65="Tablet";}
 		if (document.documentElement.clientWidth >= 960) {s.eVar65="Desktop";}
 	}
 
-if (location.host.indexOf("townandcountrymag.com") > -1) {
+if (location.href.indexOf("townandcountrymag.com") > -1) {
 		if (document.documentElement.clientWidth <= 599) {s.eVar65="Phone";}
 		if (document.documentElement.clientWidth >= 600 && document.documentElement.clientWidth <= 991) {s.eVar65="Tablet";}
 		if (document.documentElement.clientWidth >= 992) {s.eVar65="Desktop";}

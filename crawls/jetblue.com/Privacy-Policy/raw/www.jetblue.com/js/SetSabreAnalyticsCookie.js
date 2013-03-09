@@ -10,7 +10,7 @@ var saSCParam = 'sc';
 var saCJPrefix = 'cj';
 var saCookieName = 'JetblueCJCookie';
 var saPath = '/';
-var saDomain = 'sabresonicweb.com';
+var saDomain = '.jetblue.com';
 var saExpirationDate = new Date();
 saExpirationDate.setDate(saExpirationDate.getDate() + 7);  // Expiration date will be 7 days after
 

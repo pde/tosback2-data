@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.33.9";
+        var acVersion = "4.34.18";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -95,7 +95,10 @@ UPX.editmode = false;
 </head>
 
 <body id="contentpage" class="contentpage privacy_policy alternate 
-beta"><div class="clickstreamcloud"><script type="text/javascript">
+beta"><div class="mboxDefault"></div>
+<script type="text/javascript">mboxCreate("phoenix_global")</script>
+
+<div class="clickstreamcloud"><script type="text/javascript">
     
 
 
@@ -2309,52 +2312,75 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
   
 
 
-    
-    
-          
-    
-
 
 
 
   <script type="text/javascript" src="../etc/designs/common/js/s_code.js"></script>
   <script type="text/javascript">
+
+
     if(typeof(sc) !== 'object') var sc = {};
+    sc.hostName = 'cq02.dc3.aptimus.net';
+    sc.pageName = 'privacy_policy';
+    sc.pageTitle = 'privacy policy'
+    sc.pagePath = '/copyright-legal/privacy_policy';
+    sc.courseTitle = '';
+    sc.courseName = '';
+    sc.courseId= '';
+    sc.coursePrefix = '';
+    sc.templateName = 'contentpage' != false ? 'contentpage' : '';
+    sc.contentVersion = '1.12';
+
     sc.init = function(){
       s.channel = 'mktg';
-      s.server='cq03.dc1.aptimus.net';
+      s.server= sc.hostName;
+      sc.path = sc.pagePath.length > 0 ?  sc.pagePath : window.location.pathname;
+      sc.pathArray = [];
+      if(sc.path.charAt(0) != '/') sc.path = '/'+sc.path;
+      //if(sc.path.indexOf('') != -1) sc.path = sc.path.slice(20, sc.path.length);
+      if(sc.templateName == "coursespage" && sc.coursePrefix != "" && sc.courseName != "" && sc.path.indexOf('coursespagetemplate') != -1){
+        sc.path = sc.path.slice(0,sc.path.indexOf('coursespagetemplate'))+sc.coursePrefix+"/"+sc.courseName;
+      }
+      sc.path = 'mktg'+sc.path;
+      sc.pathArray = sc.path.split('/');
+      //pathArr.splice(0,0,"mktg");
+      //set content paths for homepage)
+      if(sc.pageName == "en" && sc.pathArray.length == 2){
+          sc.pathArray[1] = "home-page";
+          sc.pathArray[2] = "home-page";
+      }
+      //Set Content Path 1
+      if(typeof(sc.pathArray[1]) !== 'undefined') s.prop1 = sc.pathArray.slice(0,2).join(':');
+      //Set Content Path 2
+      if(typeof(sc.pathArray[2]) !== 'undefined') s.prop2 = sc.pathArray.slice(0,3).join(':');
+      else if(typeof(sc.pathArray[1]) !== 'undefined')s.prop2 = sc.pathArray.slice(0,2).join(':');
+      //set page name
+      s.pageName = sc.pathArray.slice(0,sc.pathArray.length).join(':');
 
-      s.pageName = 'privacy policy' === '' ? 'mktg:' + (document.title.indexOf(" - University") > -1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase()) : 'mktg:privacy policy'
-      s.pageName='mktg:privacy policy';
-      if(document.location.pathname === "/") s.pageName = "mktg:home page";
-      if(s.pageName.indexOf('page not found') !== -1){ //error page
+      if(sc.pageTitle.indexOf('page not found') !== -1){ //error page
         s.pageType = "errorPage";
-        s.pageName = document.location.href;
+        s.pageName = document.location.href.toLowerCase();
       } 
-
+     
       //sProps
-      var path = (window.location.pathname.charAt(0) === "/" ) ? 'mktg'+window.location.pathname : 'mktg/'+window.location.pathname;
-      path =  path.indexOf('.') !== -1 ? path.substring(0,path.indexOf('.')).split('/') : path.split('/');
-      if(path[1] === '') path[1] = 'home-page';
-      if(typeof(path[1]) !== 'undefined') s.prop1 = path.slice(0,2).join(':');
-      if(typeof(path[2]) !== 'undefined') s.prop2 = path.slice(0,3).join(':');
       s.prop3 = sc.timeZoneOffset();
-      s.prop6 = 'contentpage';
-      s.prop7 = '1.12';
+      s.prop6 = sc.templateName;
+      s.prop7 =  sc.contentVersion;
       s.prop8 = 'phoenix.edu';
       s.prop9 = unescape(window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.hash);
       s.prop10 = 'uop';
       s.prop11 = s_account.indexOf(',') !== -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
-      s.prop12 = path[path.length-1];
+      s.prop12 = sc.pageName == "en" ? 'home-page' : sc.pageName;
       s.prop13 = typeof(name) === "string" ? name : '';//cms identifier
       s.prop14 =  unescape(document.location.pathname + window.location.hash);
-      s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( path[path.length-1] ), document.location.pathname.length) + window.location.hash;
+      s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( sc.pathArray[sc.pathArray.length-1] ), document.location.pathname.length) + window.location.hash;
       s.prop16 = (typeof(sc.prop16) === 'string') ? sc.prop16 : '';
       s.prop17 = (typeof(sc.prop17) === 'string') ? sc.prop17 : '';
       s.prop18 = (typeof(sc.prop18) === 'string') ? sc.prop18 : '';
       s.prop19 = (typeof(sc.prop19) === 'string') ? unescape(sc.prop19) : '';
       s.prop20 = (typeof(sc.prop20) === 'string') ? sc.prop20 : '';
       s.prop35 = (document.documentElement.clientWidth === document.body.clientWidth) ? 'standard' : 'responsive';
+      
       //eVars
       s.eVar1 = "D=c1";
       s.eVar2 = "D=c2";
@@ -2365,7 +2391,10 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
       s.eVar9 = "D=c9";
       s.eVar12 = s.pageName.toLowerCase();
       try{ s.eVar13 = ProfileService.profile.analyticsId; } catch(e){}
-      try{ if( isNaN(parseInt(s.getQueryParam('orderID'),10)) === false ) s.eVar14 = s.getQueryParam('orderID'); }catch(e){}
+      try{ if( isNaN(parseInt(s.getQueryParam('orderID'),10)) === false ){
+        s.eVar5= "+1";
+        s.eVar14 = s.getQueryParam('orderID');   
+      }}catch(e){} 
       s.eVar15 = "D=c13";
       s.eVar16 = "D=c19";
       s.eVar18 = "D=c14";
@@ -2416,9 +2445,8 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
         if(typeof(COMMON_flowPlayer) != 'undefined' && typeof(COMMON_flowPlayer.getFLVName) === 'function') flvName = COMMON_flowPlayer.getFLVName(url); 
         if(typeof(settings) != 'undefined' && typeof(settings.videoTitle) != 'undefined') title = settings.videoTitle != '' ? settings.videoTitle : '';
         if(typeof(settings) != 'undefined' && typeof(settings.videoCategory) != 'undefined') category = settings.videoCategory != '' ? settings.videoCategory : '';
-        if(title == '' && flvName != 'undefined') title = flvName;
+        if(!title && flvName != 'undefined') title = flvName;
         if(typeof(flvId) === 'string') title += ' | ' + flvId;
-        //if(settings)console.info(settings);
         if (mode == 'open'){//s.Media.open & s.Media.play
           s.Media.open(title,duration,url);
           s.Media.play(title,0);
@@ -2446,9 +2474,6 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
 <script language="JavaScript" type="text/javascript"><!--
 if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
 //--></script><noscript><img src="../../metrics.phoenix.edu/b/ss/apollouopmktgprod,apollouopglobal/1/H.25--NS/0%3F[AQB]&amp;cdp=2&amp;ns=metrics&amp;[AQE]" height="1" width="1" border="0" alt=""/></noscript>
-
-
-
 
 <script type="text/javascript">
   /*Live Chat Tracking*/
@@ -2484,6 +2509,9 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
   }catch(e){}
 
 </script>
+
+
+
   
 
   
@@ -2549,9 +2577,8 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
   
   </body>
 <!--
-[Instance=cq03.dc1.aptimus.net; Elapsed=1 ms; Last Generated=Wed Mar 06 00:05:56 GMT 2013; ]
+[Instance=cq02.dc3.aptimus.net; Elapsed=1 ms; Last Generated=Fri Mar 08 23:25:26 GMT 2013; ]
 -->
-
 
 
 

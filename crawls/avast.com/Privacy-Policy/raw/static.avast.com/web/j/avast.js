@@ -680,6 +680,9 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
                 fix = 0;
             }
 
+            //actual jquery plugin - to fix problems of takeing proper css value from hidden element
+            (function(e){e.fn.extend({actual:function(t,n){if(!this[t]){throw'$.actual => The jQuery method "'+t+'" you called does not exist'}var r={absolute:false,clone:false,includeMargin:false};var i=e.extend(r,n);var s=this.eq(0);var o,u;if(i.clone===true){o=function(){var e="position: absolute !important; top: -1000 !important; ";s=s.clone().attr("style",e).appendTo("body")};u=function(){s.remove()}}else{var a=[];var f="";var l;o=function(){if(e.fn.jquery>="1.8.0")l=s.parents().addBack().filter(":hidden");else l=s.parents().andSelf().filter(":hidden");f+="visibility: hidden !important; display: block !important; ";if(i.absolute===true)f+="position: absolute !important; ";l.each(function(){var t=e(this);a.push(t.attr("style"));t.attr("style",f)})};u=function(){l.each(function(t){var n=e(this);var r=a[t];if(r===undefined){n.removeAttr("style")}else{n.attr("style",r)}})}}o();var c=/(outer)/g.test(t)?s[t](i.includeMargin):s[t]();u();return c}})})(jQuery)
+
             // Define local function
             /* 
              * function will find and get tallest tag height
@@ -693,7 +696,7 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
                     avast.core.imagesLoaded( list, function(){
                         var paramsList = $(list)
                                             .map( function(){
-                                                return parseInt( $(this).css( style ) , 10);
+                                                return parseInt( $(this).actual( style ) , 10);
                                             })
                                             .get();
                         callback( Math.max.apply(null, paramsList) );
@@ -702,7 +705,7 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
                 else{
                     var paramsList = $(list)
                                         .map( function(){
-                                            return parseInt( $(this).css( style ) , 10);
+                                            return parseInt( $(this).actual( style ) , 10);
                                         })
                                         .get();
                     callback( Math.max.apply(null, paramsList) );
@@ -735,6 +738,17 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
          */
         isInt : function(n) {
             return typeof n === 'number' && parseFloat(n) == parseInt(n, 10) && !isNaN(n);
+        },
+
+
+        /* 
+         * method will check if given value is an array
+         * @method isArray
+         * @param object $n - value to check
+         * @return boolean
+         */
+        isArray : function(n) {
+            return Object.prototype.toString.call( n ) === '[object Array]' ? true : false;
         },
 
 

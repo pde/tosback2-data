@@ -493,42 +493,42 @@
 	var jQuery = $.noConflict(true);
     var $ = jQuery;
     
-fp_b3db7a2aa6ee4a3a8e2fed414c5a381a = 2
+fp_43d6fb9a992c41c0b44df717b4516eb5 = 2
 
-already_Initialized_b3db7a2aa6ee4a3a8e2fed414c5a381a = false;
-ndn_load_player_b3db7a2aa6ee4a3a8e2fed414c5a381a = function(init) {
- if ((!already_Initialized_b3db7a2aa6ee4a3a8e2fed414c5a381a && init) || !init) {
- 	var iframe = document.getElementById('ndn_frame_b3db7a2aa6ee4a3a8e2fed414c5a381a');
+already_Initialized_43d6fb9a992c41c0b44df717b4516eb5 = false;
+ndn_load_player_43d6fb9a992c41c0b44df717b4516eb5 = function(init) {
+ if ((!already_Initialized_43d6fb9a992c41c0b44df717b4516eb5 && init) || !init) {
+ 	var iframe = document.getElementById('ndn_frame_43d6fb9a992c41c0b44df717b4516eb5');
 		var htmlAssetURL = '';
 		if (!init) {
-	        htmlAssetURL = 'http://assets.newsinc.com/launchers/20130214/thumbnailLauncher5.html?wid=18864&embed=js&freewheel=90541&sitesection=vcstar_nws_non_sec&width=300&height=250&thumbid=slider&zoneid=51039&ga=false&fp='+fp_b3db7a2aa6ee4a3a8e2fed414c5a381a+'&reload=true'
+	        /*htmlAssetURL = 'http://assets.newsinc.com/launchers/20130214/thumbnailLauncher5.html?wid=18864&embed=js&freewheel=90541&sitesection=vcstar_nws_non_sec&width=300&height=250&thumbid=slider&zoneid=51039&ga=false&fp='+fp_43d6fb9a992c41c0b44df717b4516eb5+'&reload=true'*/
 	    }
 	    else {
-	        htmlAssetURL = 'http://assets.newsinc.com/launchers/20130214/thumbnailLauncher5.html?wid=18864&embed=js&freewheel=90541&sitesection=vcstar_nws_non_sec&width=300&height=250&thumbid=slider&zoneid=51039&ga=false&fp='+fp_b3db7a2aa6ee4a3a8e2fed414c5a381a+'&reload=false'
+	        htmlAssetURL = 'http://assets.newsinc.com/launchers/20130214/thumbnailLauncher5.html?wid=18864&embed=js&freewheel=90541&sitesection=vcstar_nws_non_sec&width=300&height=250&thumbid=slider&zoneid=51039&ga=false&fp='+fp_43d6fb9a992c41c0b44df717b4516eb5+'&reload=false'
+ 		iframe.contentWindow.location.replace(htmlAssetURL);
 	    }
-     iframe.contentWindow.location.replace(htmlAssetURL);
- 	if (init) already_Initialized_b3db7a2aa6ee4a3a8e2fed414c5a381a = true;
+ 	if (init) already_Initialized_43d6fb9a992c41c0b44df717b4516eb5 = true;
  }
 }
 
-ndn_add_waypoints_b3db7a2aa6ee4a3a8e2fed414c5a381a = function () {
+ndn_add_waypoints_43d6fb9a992c41c0b44df717b4516eb5 = function () {
      $.fn.waypoint.defaults = {
          context: window,
          continuous: true,
          enabled: true,
          horizontal: false,
-         offset: '50%',
+         offset: '40%',
          triggerOnce: true
      }
-     $('#ndn_frame_b3db7a2aa6ee4a3a8e2fed414c5a381a').waypoint(function(direction) {
+     $('#ndn_frame_43d6fb9a992c41c0b44df717b4516eb5').waypoint(function(direction) {
          if ((parseInt($(this).position().top) + ($(this).height() / 2 )) < $.waypoints('viewportHeight')) {
-             fp_b3db7a2aa6ee4a3a8e2fed414c5a381a = 1;
-				ndn_load_player_b3db7a2aa6ee4a3a8e2fed414c5a381a(true);
+             fp_43d6fb9a992c41c0b44df717b4516eb5 = 1;
+				ndn_load_player_43d6fb9a992c41c0b44df717b4516eb5(true);
          } else {
-             fp_b3db7a2aa6ee4a3a8e2fed414c5a381a = 3;
-				ndn_load_player_b3db7a2aa6ee4a3a8e2fed414c5a381a();
+             fp_43d6fb9a992c41c0b44df717b4516eb5 = 3;
+				ndn_load_player_43d6fb9a992c41c0b44df717b4516eb5();
          }
-         //alert(fp_b3db7a2aa6ee4a3a8e2fed414c5a381a);
+         //alert(fp_43d6fb9a992c41c0b44df717b4516eb5);
      }, {
 	        offset: function() {
 		        return $.waypoints('viewportHeight') - ($(this).height() / 2);
@@ -536,9 +536,9 @@ ndn_add_waypoints_b3db7a2aa6ee4a3a8e2fed414c5a381a = function () {
      });
 };
 
-ndn_main_b3db7a2aa6ee4a3a8e2fed414c5a381a = function() {
+ndn_main_43d6fb9a992c41c0b44df717b4516eb5 = function() {
     var frame = document.createElement("iframe");
-    frame.id = "ndn_frame_b3db7a2aa6ee4a3a8e2fed414c5a381a";
+    frame.id = "ndn_frame_43d6fb9a992c41c0b44df717b4516eb5";
     frame.scrolling = 'no';
     frame.frameBorder = 0;
     frame.setAttribute('marginwidth','0px');
@@ -555,10 +555,10 @@ ndn_main_b3db7a2aa6ee4a3a8e2fed414c5a381a = function() {
         parent = document.getElementsByTagName('body')[0];
     };
     parent.appendChild(frame);
-    ndn_add_waypoints_b3db7a2aa6ee4a3a8e2fed414c5a381a()
-    setTimeout('ndn_load_player_b3db7a2aa6ee4a3a8e2fed414c5a381a(true);',3000);
+    ndn_add_waypoints_43d6fb9a992c41c0b44df717b4516eb5()
+    setTimeout('ndn_load_player_43d6fb9a992c41c0b44df717b4516eb5(true);',3000);
     return false;
 };
-ndn_main_b3db7a2aa6ee4a3a8e2fed414c5a381a();
+ndn_main_43d6fb9a992c41c0b44df717b4516eb5();
 
 })(jQuery);

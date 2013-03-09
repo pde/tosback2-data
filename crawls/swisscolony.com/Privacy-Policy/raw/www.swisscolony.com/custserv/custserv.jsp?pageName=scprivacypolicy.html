@@ -327,7 +327,7 @@ iframe {
 		order_link:				"",													//Link
 		order_code:				"",													//Code
 		web_language:			"EN", // Web Language
-		pipeline_session_id:	'3fd7bc4cc0a8786732fd4662c62edd5b', // PipelineSessionId
+		pipeline_session_id:	'4f47ee24c0a878672354c054504cd922', // PipelineSessionId
 		is_internal_ip:			"No", // isInternal
 		referring_url:			'' // referer	
 	};
@@ -430,12 +430,35 @@ iframe {
 <!-- Tealium script for tagging -->
 <script type="text/javascript">
 var path = window.location.pathname;
-if (path != "/" && !path.contains("home.jsp") && !path.contains(".cat")) {
+if (pathContains(path)) {
     (function(a,b,c,d){
     a='//tags.tiqcdn.com/utag/imsinc/main/prod/utag.js';
     b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
     a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
     })();
+}
+
+function pathContains(path) {
+	var nonAjaxPages = Array();
+	nonAjaxPages.push('.pro');
+	nonAjaxPages.push('.ens');
+	nonAjaxPages.push('basket.jsp');
+	nonAjaxPages.push('billing.jsp');
+	nonAjaxPages.push('review.jsp');
+	nonAjaxPages.push('receipt.jsp');
+	nonAjaxPages.push('down_payment_default.jsp');
+	nonAjaxPages.push('payment_method_default.jsp');
+	nonAjaxPages.push('personal_profile.jsp');
+	nonAjaxPages.push('register.jsp');
+	nonAjaxPages.push('register.cmd');
+	nonAjaxPages.push('product.jsp');
+	nonAjaxPages.push('ensemble.jsp');
+	nonAjaxPages.push('custserv.jsp');
+	nonAjaxPages.push('process_item.cmd');
+   for (i in nonAjaxPages) {
+       if (path.contains(nonAjaxPages[i])) return true;
+   }
+   return false;
 }
 </script>
 

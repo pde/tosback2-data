@@ -1294,10 +1294,12 @@ var Class = (function() {
     };
 
     HeroGallery.prototype._setupAutoRotator = function() {
-      return this.autoRotator = new $.TNF.BRAND.AutoRotator({
-        rotatable: this,
-        controlElement: this.element
-      });
+      if (this.items.length > 1) {
+        return this.autoRotator = new $.TNF.BRAND.AutoRotator({
+          rotatable: this,
+          controlElement: this.element
+        });
+      }
     };
 
     HeroGallery.prototype._setup = function() {
@@ -1574,6 +1576,8 @@ var Class = (function() {
     __extends(UI, _super);
 
     function UI(paginator) {
+      this.show = this.show.bind(this);
+      this.hide = this.hide.bind(this);
       this.nextButton = new $.TNF.BRAND.HeroGallery.NextButton(paginator);
       this.prevButton = new $.TNF.BRAND.HeroGallery.PrevButton(paginator);
       this.pageIndicator = new $.TNF.BRAND.Gallery.PageIndicator(paginator);
@@ -1948,15 +1952,23 @@ $.TNF.BRAND.Gallery.Standard = {};
       threshold = 10;
       left = 0;
       top = 0;
-      if (this.position['top'] < (popupHeight + threshold)) {
+      if (this.position['top'] < (this.containerHeight / 2)) {
         top = this.position['top'];
       } else {
         top = this.position['top'] - popupHeight;
       }
-      if (this.position['left'] < (popupWidth + threshold)) {
-        left = this.position['left'];
+      if (this.position['left'] < (this.containerWidth / 2)) {
+        if (this.position['left'] < (popupWidth + threshold)) {
+          left = this.position['left'];
+        } else {
+          left = this.position['left'] - popupWidth;
+        }
       } else {
-        left = this.position['left'] - popupWidth;
+        if (this.position['left'] > (this.containerWidth - popupWidth - threshold)) {
+          left = this.position['left'] - popupWidth;
+        } else {
+          left = this.position['left'];
+        }
       }
       return this.popup.css('top', top).css('left', left).css('display', 'none');
     };

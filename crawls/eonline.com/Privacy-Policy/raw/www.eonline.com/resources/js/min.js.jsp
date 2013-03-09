@@ -1173,7 +1173,8 @@ eol.create("page", function($) {
             "server" : {
                 "dateTime" : 0
             },
-            "legacy" : true
+            "legacy" : true, //deprecated
+            "fixedLayout" : true //page is fixed to 3 columns
         },
         "dart" :  { 
             "site" : "home",
@@ -1216,12 +1217,22 @@ eol.create("page", function($) {
         return gmt(_s.context.server.dateTime);
     }
     
+    //deprecated
     function legacyContext( isLegacy ) {
     	_s.context.legacy = isLegacy;
     }
     
+    //deprecated
     function getLegacy() {
     	return _s.context.legacy;
+    }
+    
+    function fixedLayoutContext( isFixed ) {
+    	_s.context.fixedLayout = isFixed;
+    }
+    
+    function getFixedLayout() {
+    	return _s.context.fixedLayout;
     }
 
     /***********************************************
@@ -1366,9 +1377,11 @@ eol.create("page", function($) {
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "za") {
         	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0.1");
-        	
         	retVal = advertisement.join(";").replace(/\;\;/,";");
-        } 
+        } else if (adEdition === "it") {
+        	advertisement.push("http://video.bal.ad.dotandad.com/mediamond.jsp?mpo=vast_eonline&mpt=nbc_eo_vid_art&rnd=%n");
+        	retVal = advertisement.join(";").replace(/\;\;/,";");
+        }
         else {
         	advertisement.push("http://a.collective-media.net/pfadx/wtv.eent/video");
         	advertisement.push("sz=1x1");
@@ -1499,6 +1512,8 @@ eol.create("page", function($) {
         "dartUrl" : dartUrl,
         "legacyContext" : legacyContext,
         "getLegacy" : getLegacy,
+        "fixedLayoutContext" : fixedLayoutContext,
+        "getFixedLayout" : getFixedLayout,
         "modal" : modal,
         "dartRender" : dartRender,
         "dartRefresh" : dartRefresh,
@@ -1535,7 +1550,7 @@ eol.create("page", function($) {
         if ( args.config.headerSpot.toLowerCase() === "no" ) {
             $("div#headerSpot,div#header_promo").remove();
         }
-        if(eol.page.getLegacy()) {
+        if(eol.page.getFixedLayout()) {
 	        $("html,body").css($.extend({},(args.css || args ),{
 	            "background-repeat":"no-repeat",
 	            "background-attachment" : ( args.config.skinScroll === "scroll" ? "scroll" : "fixed" ), 

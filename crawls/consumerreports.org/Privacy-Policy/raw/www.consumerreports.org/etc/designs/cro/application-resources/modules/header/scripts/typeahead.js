@@ -140,7 +140,10 @@ CUTypeAhead.mouseTrigger = function(e) {
 					var theKeyword = CUTypeAhead.data[i].keyword.toLowerCase();
 					var theImage = CUTypeAhead.data[i].image;
 					var theTarget = CUTypeAhead.data[i].target;
-					var theAlwaysDisplay = CUTypeAhead.data[i].always;
+					var theDomain =  document.domain;
+                    if(theDomain!= null && (theDomain.indexOf(".consumer.org")== -1))
+                        theTarget = "http://consumerreports.org" + theTarget;
+                    var theAlwaysDisplay = CUTypeAhead.data[i].always;
 					var theTargetIsDisplayedAlready = false;
 					for (var j = 0; (j < theTargets.length); j++) {
 						if (theTargets[j] == theTarget) {
@@ -210,6 +213,9 @@ CUTypeAhead.keyTrigger = function(e) {
 						var theKeyword = CUTypeAhead.data[i].keyword.toLowerCase();
 						var theImage = CUTypeAhead.data[i].image;
 						var theTarget = CUTypeAhead.data[i].target;
+						var theDomain =  document.domain;
+						if(theDomain!= null && (theDomain.indexOf(".consumer.org")== -1))
+						    theTarget = "http://consumerreports.org" + theTarget;
 						var theAlwaysDisplay = CUTypeAhead.data[i].always;
 						var theTargetIsDisplayedAlready = false;
 						for (var j = 0; (j < theTargets.length); j++) {

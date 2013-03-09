@@ -1,5 +1,5 @@
 (function() {
-    var version = "20130202A";
+    var version = "20130219B";
     /* bk-injector.js - modified */
     try {
         (function (name, definition) {
@@ -748,11 +748,13 @@
         
         function doBlueKaiSnapfishLogic(url, events) {
             if(events.indexOf("purchase")!==-1) {
-                snapfishMap.snapfishConversion(w);
+                snapfishMap.snapfishConversion(window);
             } else {
-                snapfishMap.snapfishDefault(w);
+                snapfishMap.snapfishDefault(window);
             }
         }
+        var doBlueKaiUSLogic=doBlueKaiSnapfishLogic,
+            doBlueKaiInternationalLogic=doBlueKaiSnapfishLogic;
         
         // Metadata detection routine - building metaDictionary for use by Bluekai from primative data sets
         var s=window.s||{},
@@ -976,6 +978,8 @@
                 (/indigo\-ext\-pro\.houston\.hp\.com\/cgi\-bin\/na_prd\/cust\/ccresponse\.html\?comment/),
                 (/itrc\.hp\.com\/service\/mcmBsc\/createHWCallReq\.do\?/),
                 (/austin\.hp\.com/),
+                /* (/h20139.www2.hp.com\/SmbStore\/FreeFreightOptions.asp/), */
+                (/h20139\.www2\.hp\.com/),
                 (/shopping\d?\.hp\.com.+newsletter\.do/),
                 (/h17007\.www1\.hp\.com\/us\/en/),
                 (/passport\d?\.hp\.com\/hppcf\/login\.do/),
@@ -992,12 +996,12 @@
         /* for(var i= 0,last=urlKeywordRegexp.length;i<last;i++) {
             if(urlKeywordRegexp[i].match(queryString) || urlKeywordRegexp[i].match(referrer)) { omitBluekaiBeacon=true; i=last;}
         } */
-        // if(!omitBluekaiBeacon) {
+        if(!omitBluekaiBeacon) {
             _domReadyBK(function() {
                 doBKOnReady();
                 executeSendData();
             });
-        // }
+        }
         
         /* if ( typeof (_domReady) != "undefined") {
             _domReady.ready( 

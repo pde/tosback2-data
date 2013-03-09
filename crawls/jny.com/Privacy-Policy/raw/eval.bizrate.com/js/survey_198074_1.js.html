@@ -1,5 +1,7 @@
 <!-- //
 
+var BIZRATE = {};
+
 /******** BEGIN JQUERY ********/
 //Fix any jquery namespace problems
 //if (window.jQuery !== undefined) {
@@ -213,7 +215,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
 
 (function ($) {
     var bizrate, Base64;
-    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/e3f52d6d' : 'http://images.bizrate.com/s2static/us/eval/e3f52d6d');
+    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/1acc3b9f' : 'http://images.bizrate.com/s2static/us/eval/1acc3b9f');
 	var logoPath= (("https:" == document.location.protocol) ? '' : '');
 
     bizrate = {
@@ -243,8 +245,8 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             popupTitle:'Tell Us What You Think!',
         	pitchType: 3,
             altImageText: 'Tell Us What You Think!',
-            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13625759531140874773302010301003810&rid=1362575953010101221&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1362575953010101221',
+            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13628349755978226507102020301000802&rid=1362834975010206317&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
+            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1362834975010206317',
             inviteImageUrl: 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif',
             merchantLogoUrl: ((logoPath === '') ? '' : (logoPath + 198074 +'.gif')),
             buttonImageUrl:'',
@@ -253,7 +255,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             inviteHeight: '150',
             inviteUrl: 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
             popupUrl: 'https://eval.bizrate.com/popupinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1362575953010101221',
+            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1362834975010206317',
             closeWindowText: '[Close]'
 
             // moving css and jquery inline for performance
@@ -512,25 +514,27 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
 
             //this.inviteImageURL = 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif';
             //this.inviteURL = 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP&imageSize=' + this.size;
-            //this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13625759531140874773302010301003810&rid=1362575953010101221&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP';
+            //this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13628349755978226507102020301000802&rid=1362834975010206317&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP';
 
             this.inviteImageURL = bizrate.tplVars.inviteImageUrl;
             this.surveyURL = bizrate.tplVars.surveyUrl;
             this.inviteURL = bizrate.tplVars.inviteUrl;
 
-            if (typeof(bizrate.params.br_pos_x) != 'undefined' && !isNaN(bizrate.params.br_pos_x)) {
+            if (typeof(bizrate.params.br_pos_x) != 'undefined' && bizrate.params.br_pos_x != null && !isNaN(bizrate.params.br_pos_x)) {
                 this.posX = bizrate.params.br_pos_x;
                 this.winX = bizrate.params.br_pos_x;
             } else {
-                this.posX = (bizrate.getWidth()-this.width)/2;
-                this.winX = this.posX+bizrate.getLeft();
+                // default to 50, 50
+                this.posX = 50;
+                this.winX = 50;
             }
-            if (typeof(bizrate.params.br_pos_y) != 'undefined' && !isNaN(bizrate.params.br_pos_y)) {
+            if (typeof(bizrate.params.br_pos_y) != 'undefined' && bizrate.params.br_pos_y != null && !isNaN(bizrate.params.br_pos_y)) {
                 this.posY = bizrate.params.br_pos_y;
                 this.winY = bizrate.params.br_pos_y;
             } else {
-                this.posY = 75;    // 1.5 inches from top of browser window
-                this.winY = this.posY+bizrate.getTop()+80;
+                // default to 50, 50
+                this.posY = 50;
+                this.winY = 50;
             }
             if (bizrate.tplVars.type == 2) { this.URLParameters += '&sc=1'; }
             //if (typeof(br_zip) != 'undefined') { this.URLParameters += '&cartzip=' + br_zip; };

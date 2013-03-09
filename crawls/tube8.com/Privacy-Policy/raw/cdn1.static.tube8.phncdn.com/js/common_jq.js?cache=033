@@ -150,12 +150,10 @@ function manageDefinitions(){
 function validateEmail(){
 	var emailReg = /^([+.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,6})$/i;
 	if(emailReg.test($("#email").val())){
-		fieldGood('email');
 		aFieldStatus["email"]= 0;
 		return true;
 	}
 	else{
-		fieldBad('email');
 		aFieldStatus["email"]= 1;
 		return false;
 	}
@@ -192,12 +190,10 @@ function validateBirth(){
 function validateUsername(){
 	var userReg = /^[.0-9a-z_]{4,16}$/i;
 	if(userReg.test($("#username").val())){
-		fieldGood('username');
 		aFieldStatus["username"]= 0;
 		return true;
 	}
 	else{
-		fieldBad('username');
 		aFieldStatus["username"]= 5;
 		return false;
 	}
@@ -337,6 +333,7 @@ function ajaxVerify(field){
 		}, "json");
 	}
 	else{
+		fieldBad(field);
 		manageDefinitions();
 	}
 }
@@ -1092,9 +1089,9 @@ function userSubscriptionsFollow(url, theButton, follower, follow, action, hash,
 		data: { follower: follower[0], follow: follow[0], action: action, hash: hash},
 		url: url,
 		success: function(resp){
-			//if (isMyPage) {
-				//window.location.replace(location);
-			//} else {
+			if (isMyPage) {
+				window.location.replace(location);
+			} else {
 				if(action){
 						theButton.removeClass("follow-user");
 						theButton.addClass("following-user");
@@ -1106,7 +1103,7 @@ function userSubscriptionsFollow(url, theButton, follower, follow, action, hash,
 						theButton.addClass("follow-user");
 						action = 1;
 				}
-			//}
+			}
 		}
 	});
 }

@@ -677,6 +677,11 @@ if (!mistats.tagSentV15 && mistats.bizunit && mistats.bizunit === 'MER')
    s.sa(mistats.account);
 }
 
+
+if ((location.hash || '').match(/wgt=|navlinks*=|storylink=/) && !(mistats.bizunit || '').match(/SAC/))
+   location.hash = '';
+
+
 /*
 // Temporary "survey" for No Referrer traffic
 if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things/i)
@@ -714,64 +719,51 @@ d.src = ["//secure-us.imrworldwide.com/cgi-bin/m?ci=us-203838h&cg=0&cc=1&si=", e
 escape(document.referrer), "&ts=compact&rnd=", (new Date()).getTime()].join('');
 })();
 
-mistats.initAnalyzer = function ()
+mistats.initAnalyzer = function (pSwitch)
 {
    var t;
-   var lsObjs;
-   var domObjs;
    var tmpObj;
    var analyzerMode;
 
-   // Exit if the localStorage or scriptLoader objects are not present
    if (typeof localStorage === 'undefined' || typeof scriptLoader === 'undefined')
       return;
 
-   analyzerMode = '';
-   lsObjs = [];
+   analyzerMode = location.search.toLowerCase().match(/mi_analyzer=\w+/);
+   analyzerMode = pSwitch || (analyzerMode ? analyzerMode[0].substr(12) : '');
 
-   // Look for the mi_analyzer key/value pair in the URL
-   if (location.search.match(/mi_analyzer=/i))
-      analyzerMode = (location.search.toLowerCase().split('mi_analyzer='))[1];
-
-   // Get all MI Analyzer keys and store them in the lsObjs array
-   for (t = 0; t < localStorage.length; t++)
+   if (analyzerMode === 'off')
    {
-      tmpObj = localStorage.key(t);
-      if (tmpObj.indexOf('mianalyzer_') === 0)
-         lsObjs[lsObjs.length] = tmpObj;
-   }
+      for (t in localStorage)
+         if (t.indexOf('mianalyzer_') === 0)
+            localStorage.removeItem(t);
 
-   // If mi_analyzer=off then remove the localStorage keys and the MI Analyzer objects from the DOM
-   if (analyzerMode.indexOf('off') === 0)
-   {
-      for (t = 0; t < lsObjs.length; t++)
-         localStorage.removeItem(lsObjs[t]);
-
-      domObjs = [document.getElementById('mistats_cp'), document.getElementById('mistats_panel')];
-
-      for (t = 0; t < domObjs.length; t++)
-         if (domObjs[t])
-            document.body.removeChild(domObjs[t]);
+      tmpObj = document.getElementById('mistats_cp');
+      if (tmpObj)
+         document.body.removeChild(tmpObj);
+      tmpObj = document.getElementById('mistats_panel');
+      if (tmpObj)
+         document.body.removeChild(tmpObj);
 
       return;
    }
 
-   // If mi_analyzer=on or if any of the localStorage keys exist, load the MI Analyzer
-   if (analyzerMode.indexOf('on') === 0 || lsObjs.length)
+   for (t in localStorage)
+      if (t.indexOf('mianalyzer_') === 0)
+      {
+         analyzerMode = 'on';
+         break;
+      }
+
+   if (analyzerMode === 'on')
    {
-      // Grab the host name of the site file.
-      mistats.mediadomain = (mistats.sitefile && mistats.sitefile.match(/^https*\W+\w+/i)) ?
-         mistats.sitefile.replace(/https*\W+/i, '').split('/')[0] : 'www.mcclatchyinteractive.com';
+      mistats.mediadomain = (mistats.sitefile || '').match(/^https*:\/{2}[^\/]+/i);
+      mistats.mediadomain = mistats.mediadomain ? mistats.mediadomain[0].replace(/https*:\/{2}/i, '') : 'media.mcclatchyinteractive.com';
 
       mistats.loadCP = new scriptLoader();
       mistats.loadCP.injectScript('http://' + mistats.mediadomain + '/mistats/analyzer/js/analyticsCP.js', function () {});
       mistats.loadCP.injectStyle('http://' + mistats.mediadomain + '/mistats/analyzer/css/analyticsCP.css', function () {});
    }
-
-   return true;
 };
 
-// Enable or disable the MI Analyzer panel
-// Comment out the following line to disable Analyzer
 mistats.initAnalyzer();
 

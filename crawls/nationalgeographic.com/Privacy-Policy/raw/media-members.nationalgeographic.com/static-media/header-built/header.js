@@ -2195,7 +2195,8 @@ _mmdbHeaderRequire.define("header/init", function(){});
             json2: 'header/lib/json2',
             livefyreManager: 'header/livefyre/livefyre_manager',
             'quick-cookies': 'header/lib/quick_cookies',
-            'page-scroller': 'header/page_scroller'
+            'page-scroller': 'header/page_scroller',
+            facebookLoader: 'header/lib/facebook-loader',
         },
         map: {
             '*': {
@@ -2263,7 +2264,12 @@ _mmdbHeaderRequire.define("header/init", function(){});
                     window.Recaptcha = Recaptcha;
                     return Recaptcha;
                 }
-            }
+            },
+            //facebookSDK: {
+                //exports: function() {
+                    //return window.FB;
+                //},
+            //},
         },
 
         deps: ['header/lib/console']
@@ -2286,15 +2292,6 @@ _mmdbHeaderRequire.define("header/init", function(){});
     _mmdbHeaderRequire.require.config({
         context: 'header',
         config: {
-            'header/routers/header': {
-                'controlsOnly': getConfig('controlsOnly', false),
-                'headerDivId': getConfig('headerDivId', 'shared-header'),
-            },
-            'header/context': {
-                'staticUrl': getConfig('staticUrl'),
-                'serverSideLogin': getConfig('serverSideLogin', false),
-                'refreshOnLogin': getConfig('refreshOnLogin', true),
-            },
             'header/urls': {
                 'mmdbHost': getConfig('mmdbHost'),
                 'memcenHost': getConfig('memcenHost'),
@@ -2306,6 +2303,7 @@ _mmdbHeaderRequire.define("header/init", function(){});
     });
 
     global._headerRequire = headerRequire;
+    global._headerGetConfig = getConfig;
     //_mmdbHeaderRequire.define([], function() {
         //return headerRequire; 
     //});
@@ -14958,6 +14956,7 @@ function($,
     // meaning and avoids a lot of code duplication.
     function applyErrorProcessing(jqXHR) {
         var dfd = new $.Deferred();
+
         $.when(jqXHR)
          .done(function(data, jqXHR) {
              // Allow the possibility of receiving an ok http response code with
@@ -15177,13 +15176,16 @@ return {
 'verify': path_func(mmdbHost + '/user/%(id)s/verify/?key=%(key)s'),
 
 
+'check-profanity': path_func(mmdbHost + '/check_profanity/'),
+
+
 'user-interests': path_func(mmdbHost + '/user/%(id)s/interests/'),
 
 
 'places-suggest': path_func(mmdbHost + '/places/geodatasuggest/?query=%(query)s'),
 
 
-'user-preferences': path_func(mmdbHost + '/user/%(id)s/preferences/'),
+'user-notifications': path_func(mmdbHost + '/user/%(user_id)s/notifications/'),
 
 
 'user-detail': path_func(mmdbHost + '/user/%(id)s/'),
@@ -15192,7 +15194,7 @@ return {
 'mmdb-logout': path_func(mmdbHost + '/user/%(id)s/logout/'),
 
 
-'user-notifications': path_func(mmdbHost + '/user/%(user_id)s/notifications/'),
+'user-preferences': path_func(mmdbHost + '/user/%(id)s/preferences/'),
 
 
 'all-interests': path_func(mmdbHost + '/interests/'),
@@ -15213,7 +15215,7 @@ return {
 'gigya-login': path_func(commonsSecureHost + '/header/social_login/'),
 
 
-'logout': path_func(commonsSecureHost + '/header/logout/'),
+'notifications-proxy': path_func(commonsSecureHost + '/header/notifications/'),
 
 
 'create-activity': path_func(commonsSecureHost + '/header/create_activity/'),
@@ -15231,6 +15233,9 @@ return {
 'save-avatar': path_func(commonsSecureHost + '/header/save_avatar/'),
 
 
+'user-update-notification': path_func(commonsSecureHost + '/header/user_update_notification/'),
+
+
 'resend-activation-link': path_func(commonsSecureHost + '/header/resend_activation_link/'),
 
 
@@ -15244,6 +15249,9 @@ return {
 
 
 'reset-password': path_func(commonsSecureHost + '/header/reset_password/'),
+
+
+'logout': path_func(commonsSecureHost + '/header/logout/'),
 
 
 'close-alert': path_func(commonsSecureHost + '/header/close_alert/'),
@@ -15431,25 +15439,27 @@ return {
     },
 
     codes: { SERVER_ERROR: "SERVER_ERROR",
-NO_GIGYA_DATA_IN_SESSION: "NO_GIGYA_DATA_IN_SESSION",
-NO_AVATAR_IN_SESSION: "NO_AVATAR_IN_SESSION",
-CAPTCHA_INVALID: "CAPTCHA_INVALID",
 CLIENT_GIGYA_LOGIN_FAILED: "CLIENT_GIGYA_LOGIN_FAILED",
-FORBIDDEN: "FORBIDDEN",
 LOGIN_REQUIRED: "LOGIN_REQUIRED",
-BAD_PASSWORD_RESET_CONFIRMATION_CODE: "BAD_PASSWORD_RESET_CONFIRMATION_CODE",
 USER_EMAIL_NOT_VERIFIED: "USER_EMAIL_NOT_VERIFIED",
-TOO_YOUNG: "TOO_YOUNG",
+INVALID_USER_AUTH: "INVALID_USER_AUTH",
+BAD_PASSWORD_RESET_CONFIRMATION_CODE: "BAD_PASSWORD_RESET_CONFIRMATION_CODE",
 FILE_TOO_BIG: "FILE_TOO_BIG",
+NOT_FOUND: "NOT_FOUND",
+FORBIDDEN: "FORBIDDEN",
+NO_GIGYA_DATA_IN_SESSION: "NO_GIGYA_DATA_IN_SESSION",
+TOO_YOUNG: "TOO_YOUNG",
 GIGYA_SIGNATURE_INVALID: "GIGYA_SIGNATURE_INVALID",
-INVALID_IMAGE_SIZE: "INVALID_IMAGE_SIZE",
+INVALID_PASSWORD_MATCH: "INVALID_PASSWORD_MATCH",
+UNKNOWN_USER: "UNKNOWN_USER",
 USER_BANNED: "USER_BANNED",
 INVALID_DATE: "INVALID_DATE",
-INVALID_PASSWORD_MATCH: "INVALID_PASSWORD_MATCH",
 USER_EXISTS: "USER_EXISTS",
-UNKNOWN_USER: "UNKNOWN_USER",
-INVALID_USER_AUTH: "INVALID_USER_AUTH",
+INVALID_IMAGE_SIZE: "INVALID_IMAGE_SIZE",
 INVALID_INPUT: "INVALID_INPUT",
+CAPTCHA_INVALID: "CAPTCHA_INVALID",
+INVALID_SERVER_CREDENTIALS: "INVALID_SERVER_CREDENTIALS",
+NO_AVATAR_IN_SESSION: "NO_AVATAR_IN_SESSION",
 INVALID_PASSWORD: "INVALID_PASSWORD",
 PROFANITY: "PROFANITY",
 REQUIRED: "REQUIRED",
@@ -15677,55 +15687,31 @@ function(
 _mmdbHeaderRequire.define('header/collections/notifications',['backbone',
         'jquery',
         'underscore',
-        'urls',
         '../models/notification'
        ],
 function(Backbone,
          $,
          _,
-         Urls,
          Notification
         ) {
     return Backbone.Collection.extend({
         model: Notification,
 
-        url: function() {
-            return Urls['user-notifications']({user_id: this.user.id})
-        },
-
-        sync: function(method, model, options) {
-            options = options || {};
-            $.extend(true, options, {
-                dataType: 'jsonp',
-                data: {
-                    format: 'json-p'
-                }
-            });
-            return Backbone.sync(method, model, options);
-        },
+        url: '/header/notifications/inbox/',
 
         initialize: function(models, options) {
-            options = options || {};
-            if (!options.user) {
-                throw new Error("Each notification collection must have a user associated with it!");
-            }
-            this.user = options.user;
         },
 
         fetch: function(options) {
             options = options || {};
-            options.dataType = 'jsonp';
             options.context = this.context;
             return Backbone.Collection.prototype.fetch.call(this, options);
         },
 
         parse: function(resp) {
-            this.totalPages = resp.pages;
-            return resp['results'];
-        },
-
-        fetchPage: function(page) {
-            return this.fetch({add: true, data: {page: page}});
+            this.hasNextPage = resp['has-next'];
+            this.hasPreviousPage = resp['has-previous'];
+            return resp['objects'];
         }
 
     });
@@ -15754,6 +15740,8 @@ function($,
          GigyaHelper,
          NotificationCollection
         ) {
+    var NOTIFICATION_COUNT_UPDATED_EVENT = 'notification-count-updated';
+
     return BaseModel.extend({
         initialize: function(data, options) {
             var self = this;
@@ -15829,6 +15817,8 @@ function($,
                         //$.cookie('mmdbsessionid', null);
                     }).fail(function(jqXHR) {
                         //debugger;
+                    }).always(function() {
+                        self.off();
                     });
 
 
@@ -15897,11 +15887,36 @@ function($,
         },
 
         getUnreadNotificationsCount: function() {
-            return $.when(Request.jsonp(
-                Urls['user-notifications-unread-count']({user_id: this.id})
-            )).pipe(function(data) {
-                return data.count;
-            });
+            return 0
+            /*
+            return $.when(Request.get('/header/notifications/inbox/unread/'))
+                .pipe(function(data) {
+                    return data.count;
+                });
+            */
+        },
+
+        notificationCheckFreq: 5000,
+
+        onNotificationCountUpdate: function(callback) {
+            var self = this;
+            this.on('notification-count-updated', callback);
+
+            if (!this._notificationCountInterval) {
+                this._notificationCountInterval = setInterval(function() {
+                    $.when(self.getUnreadNotificationsCount())
+                        .done(function(count) {
+                            self.trigger(NOTIFICATION_COUNT_UPDATED_EVENT, count);
+                        });
+                }, this.notificationCheckFreq);
+            }
+        },
+
+        deinit: function() {
+            this.off(NOTIFICATION_COUNT_UPDATED_EVENT);
+            if (this._notificationsCountInverval) {
+                clearInterval(this._notificationsCountInterval);
+            }
         },
 
         validate: function( data ) {
@@ -16073,11 +16088,11 @@ function($) {
             return $.cookie(name);
         },
 
-        set: function(name, value, path) {
+        set: function(name, value, opts) {
             var options = {};
 
-            if (path) {
-                options.path = path;
+            if (opts) {
+                options.path = opts.path;
             }
 
             return $.cookie(name, value, options);
@@ -16131,17 +16146,75 @@ var pageScroller = (function () {
     var cookieName = "scrolltop";
 
     setScrollTo = function(position) {
+        // set quick cookie containing the position to scroll to 
         return QuickCookies.set(cookieName, position);
     },
 
     unsetScrollTo = function() {
+        // unset the cookie
         return QuickCookies.remove(cookieName);
     },
 
     checkScrollTo = function() {
-        position = QuickCookies.getThenRemove(cookieName);
-        if(position) {
+
+        /*
+         * Checks for the existence of a quick cookie containing the
+         * position to scroll to.
+         *
+         * If it exists, check to make sure the page has loaded enough
+         * for the scroll to be possible.  If not, keep checking in 
+         * intervals until the scroll is possible.
+         */
+
+        var intervalId=null;
+        var position=null;
+        var intervals = 2000;    // check every two seconds
+        var timeout = 1000 * 60; // check for a minute
+        var intervalCount = 0;
+
+        function scrollNow(position) {
             $(window).scrollTop(position);
+        }
+
+        function checkCanScroll(position) {
+            return ($(document).height() >= ( $(window).height() + position)) ? true : false;
+        }
+
+        function attemptScroll() {
+
+            if(!position) return false;
+
+            intervalCount++;
+
+            if(checkCanScroll(position)) {
+                scrollNow(position);
+                if(intervalId) { clearInterval(intervalId); }
+                return true;
+
+            } else {
+
+                // If we're doing intervals and have reached our
+                // timeout, stop repeating
+                if(intervalId) {
+                    if(intervalCount * intervals >= timeout) {
+                        clearInterval(intervalId);
+                    }
+                }
+                return false;
+            }
+        }
+
+        position = QuickCookies.getThenRemove(cookieName);
+
+        if(position) {
+
+            position = parseInt(position);
+
+            // If the first attempt fails, the page isn't done loading yet,
+            // so let's try again in intervals:
+            if(!attemptScroll()) {
+                intervalId = setInterval(attemptScroll, intervals);
+            }
             return true;
         } else {
             return false;
@@ -16158,6 +16231,223 @@ var pageScroller = (function () {
 return pageScroller;
 });
 
+_mmdbHeaderRequire.define('header/models/activity',[
+        'models/base-model', 
+        '../urls',
+        '../errors',
+        'request'
+       ],
+function(
+         BaseModel,
+         Urls,
+         Errors,
+         Request
+        ) {
+
+    return BaseModel.extend({
+
+        initialize: function(data, options) {  }
+
+    }, {
+
+        create: function(activityData, options) {
+
+            return Request.post(Urls['create-activity'](), {
+
+                activityData: activityData
+
+            }).pipe(function(data) {
+
+            });
+
+        }
+    });
+});
+
+/*
+ *
+ * livefyreHelper
+ * Checks for livefyre configurations in the currently rendered page
+ * If present, setups up livefyre authentication delegates and loads the stream
+ */
+_mmdbHeaderRequire.define('livefyreManager',[
+        'jquery',
+        'backbone',
+        'header/models/activity'
+       ], 
+function( 
+         $,
+         Backbone,
+         ActivityModel
+        ) {
+
+
+	function LivefyreManager( context ) {
+
+        this._livefyreLoaded = new $.Deferred();
+
+        var self = this;
+
+        $.when(this.livefyreReady())
+            .done(function() {
+
+                self.config = window.livefyreConfig;
+                self.context = context;
+                self.user = null;
+
+                self.config.global.authDelegate = self.extendAuthDelegate();
+                self.loadStreams();
+
+                // Capture the log in event for future logins
+                self.context.on('user-logged-in', function() {
+                    self.finishLogin();
+                });
+
+            })
+            .fail(function() {
+
+            })
+        
+	}
+
+    LivefyreManager.prototype = {
+
+        livefyreLoaded: function() {
+            return this._livefyreLoaded.promise();
+        },
+
+        livefyreReady: function() {
+
+            var dfd = new $.Deferred();
+
+            var intervals = 5000; // every five seconds
+            var timeout = 1000 * 60; // a minute
+            var cnt = 0;
+            var intervalId = null;
+
+            function doChecks() {
+
+                cnt++;
+
+                // if livefyre variables NOT set on page
+                if ( ('undefined' == typeof fyre) ||
+                     ('undefined' == typeof window.livefyreConfig) ||
+                     ('undefined' == typeof window.livefyreConfig.streams) ||
+                     (!window.livefyreConfig.streams.length) ){
+
+                    // if we're doing intervals and  reached our timeout:
+                    if(intervalId) {
+                        if(cnt * intervals >= timeout) {
+                            dfd.reject();
+                            clearInterval(intervalId);
+                        }
+                    }
+                    return false;
+
+                } else {
+
+                    // found livefyre variables set on page.
+                    dfd.resolve();
+                    if(intervalId) {
+                        clearInterval(intervalId); 
+                    }
+                    return true;
+                }
+
+            }
+
+            if(!doChecks()) {
+                intervalId = setInterval(doChecks, intervals);
+            }
+
+            return dfd.promise();
+        },
+
+        extendAuthDelegate: function() {
+
+            // Overriding Livefyre's default authentication system
+            var self = this;
+
+            this.authDelegate = new fyre.conv.RemoteAuthDelegate();
+            $.extend(this.authDelegate, {
+                login: function (handlers){
+                    self.context.requestLogin(function() {
+                            self.finishLogin();
+                            handlers.success();
+                            return true;
+                        },
+                        function() {
+                            handlers.failure();
+                            return false;
+                        });
+                },
+                logout: function (handlers) {
+                    self.context.logoutUser();
+                    handlers.success();
+                    return false;
+                },
+
+                viewProfile: function(handlers, author) {
+                    if (author && author.profileUrl) {
+                        document.location = author.profileUrl;
+                    }
+                    handlers.success();
+                    return true;
+                },
+
+                editProfile: function(handlers,author) {
+                    if(self.user) {
+                        document.location = '/members/settings/public-profile/';
+                    }
+                    handlers.success();
+                    return true;
+                },
+            });
+            return this.authDelegate;
+        },
+
+        loadStreams: function() {
+            // Calls fyre.conv.load to load any streams configured on the page.
+            var self = this;
+            fyre.conv.load(
+                this.config.global,
+                this.config.streams,
+                function (widget) { 
+
+                    self._livefyreLoaded.resolve(widget);
+
+                    $.when(self.context.isLoggedIn())
+                     .done(function(loggedIn) {
+                         if (loggedIn) {
+                             self.finishLogin();
+                         }
+                    });
+                });
+        },
+
+        finishLogin: function() {
+            // Logs a user in to livefyre when they log in to the header
+            $.when(this.context.getUser()).done(function(user) {
+                if (!user) {
+                    console.error("User is not logged in!");
+                    return;
+                }
+                self.user = user;
+
+                try {
+                    fyre.conv.login(self.user.get('livefyreToken'));
+                } catch (e) {
+                    console.log("Error attempting to login with ", lfCookieName, " cookie value: ", cval, " ", e);
+                }
+            });
+        }
+
+
+    };
+
+	return LivefyreManager;
+});
+
 _mmdbHeaderRequire.define('header/context',[
         'module',
         'sprintf',
@@ -16168,8 +16458,10 @@ _mmdbHeaderRequire.define('header/context',[
         './models/user',
         'backbone',
         'underscore',
+        'errors',
         'header/gigya-helper',
-        'page-scroller'
+        'page-scroller',
+        'livefyreManager'
        ],
 function(module,
          sprintf,
@@ -16180,8 +16472,10 @@ function(module,
          User,
          Backbone,
          _,
+         Errors,
          GigyaHelper,
-         pageScroller
+         pageScroller,
+         LivefyreManager
         ) {
 
     var USER_LOGIN_EVENT = 'user-logged-in',
@@ -16198,9 +16492,31 @@ function(module,
         if ('alerts' in this.sc) {
             this._alerts = this.sc.alerts;
         }
+
+        this.initializeLivefyre();
     }
 
     _.extend(Context.prototype, Backbone.Events, {
+
+        initializeLivefyre: function() {
+            this._livefyreManager = new LivefyreManager(this);
+        },
+
+        /**
+         * This provides an asynchronous way for javascript code to access the
+         * "widget" that is returned from fyre.conv.load once the streams are
+         * done loading.  Currently YourShot uses this so they can know when
+         * comments are posted on their pages...widget.on('commentPosted', func)
+         */
+        getLivefyreWidget: function() {
+            return $.when(this._livefyreManager.livefyreLoaded())
+                .pipe(function(widget) {
+                    return widget;
+                }, function() { 
+                    return null; 
+                });
+        },
+
         _getServerContext: function() {
             return this.sc;
         },
@@ -16209,8 +16525,10 @@ function(module,
             return this.sc[key];
         },
 
+        getConfig: _headerGetConfig,
+
         getStaticUrl: function() {
-            var staticUrl = module.config().staticUrl;
+            var staticUrl = this.getConfig('staticUrl');
             if (staticUrl) {
                 return staticUrl;
             }
@@ -16234,7 +16552,10 @@ function(module,
             else {
                 return this._user.fetch().pipe(function() {
                     return self._user;
-                }, function() {
+                }, function(error, jqXHR) {
+                    if (error && Errors.isCodeEqual(error.code, 'INVALID_SERVER_CREDENTIALS')) {
+                        self.logoutUser();
+                    }
                     return null;
                 });
             }
@@ -16255,7 +16576,7 @@ function(module,
                          //self.triggerLogin();
                      }
                      else {// if (config.serverSideLogin) {
-                         return self.doServerSideLogin(userInfo.UIDSignature, userInfo.signatureTimestamp)
+                         return self._doServerSideLogin(userInfo.UIDSignature, userInfo.signatureTimestamp)
                              .pipe(function() {
                                  return self._getFetchedUser();
                              }, function() {
@@ -16313,15 +16634,17 @@ function(module,
         },
 
         onUserLoggedOut: function(callback) {
-            this.bind(USER_LOGOUT_EVENT, callback);
+            this.bind(USER_LOGOUT_EVENT, function(user) {
+                callback(user);
+            });
         },
 
         onUserRegistered: function(callback) {
             this.bind(USER_REGISTERED_EVENT, callback);
         },
 
-        triggerLogout: function() {
-            this.trigger(USER_LOGOUT_EVENT);
+        triggerLogout: function(user) {
+            this.trigger(USER_LOGOUT_EVENT, user);
         },
 
         triggerUserRegistered: function() {
@@ -16355,7 +16678,7 @@ function(module,
             
             self.checkRedirect();
 
-            if (module.config().refreshOnLogin) {
+            if (this.getConfig('refreshOnLogin', false)) {
                 Util.reloadLocation();
             } else {
                 // If we're here, the user logged in and the page
@@ -16378,9 +16701,12 @@ function(module,
         },
 
         logoutUser: function() {
-            var self = this;
+            var self = this,
+                promise = null;
+
             if (this._user) {
-                $.when(this._user.logout()).always(function() {
+                var old_user = this._user;
+                promise = $.when(this._user.logout()).always(function() {
                     // If the currently viewed page required a 
                     // login and they just logged out, redirect
                     // to the main page of the site without showing
@@ -16388,7 +16714,6 @@ function(module,
                     // on the page they're at.
 
                     uri = new Uri(Util.getLocation().toString());
-                    //uri = new Uri(sharedHeaderConfig['memcenHost']);
                     uri.setAnchor(''); // remove #logout
                     
                     if (self.sc.login_required) {
@@ -16396,10 +16721,14 @@ function(module,
                     }
 
                     Util.setLocation(uri.toString());
-                    self.triggerLogout();
+
+                    self.triggerLogout(old_user);
+                    old_user.deinit();
                 })
             }
             this._user = null;
+
+            return promise;
         },
 
         // This will bring up the login modal to prompt the user to log in.
@@ -16434,6 +16763,14 @@ function(module,
         getCalledFromAction: function() {
             return this._loginRegCalledFromAction;
         },
+        
+        setEmailVerifiedFromAction: function(isEmailVerifiedFromAction) {
+            this._emailVerifiedFromAction = isEmailVerifiedFromAction;
+        },
+
+        getEmailVerifiedFromAction: function() {
+            return this._emailVerifiedFromAction;
+        },
 
         requestLoginClosed: function() {
             this.setCalledFromAction(false);
@@ -16462,7 +16799,7 @@ function(module,
             }
         },
 
-        doServerSideLogin: function(signature, timestamp) {
+        _doServerSideLogin: function(signature, timestamp) {
             if (!this._user) {
                 throw new Error("user must be initialized by this point!");
             }
@@ -16474,7 +16811,7 @@ function(module,
              .done(function() {
                  self.checkRedirect();
 
-                 if (module.config().refreshOnLogin) {
+                 if (self.getConfig('refreshOnLogin')) {
                      Util.reloadLocation();
                  }
                  else {
@@ -16483,7 +16820,7 @@ function(module,
              }).fail(function() {
                  console.error("Could not log in to site, now in an undefined state...");
              });
-        },
+        }        
     });
 
     return Context;
@@ -17415,12 +17752,20 @@ function program21(depth0,data) {
   return buffer;}
 
 ),
+"verification-failed-alert": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<span>\nThe verification link has expired. To activate your account, please click the most recent email activation link we sent you. \n</span>\n";}
+
+),
 "alert-base": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
 
 
-  return "<div class=\"alert banner\">\n    <div class=\"banner-wrap\">\n        <div class=\"alert-child\">\n\n        </div>\n        <a id=\"close-banner\" href=\"#close-banner\">&times;</a>\n    </div>\n</div>\n";}
+  return "<div class=\"alert banner\">\n    <div class=\"banner-wrap\">\n        <div class=\"alert-child\"></div>\n        <a id=\"close-banner\" href=\"#\">&times;</a>\n    </div>\n</div>\n";}
 
 ),
 "alert-activation-reminder": template(function (Handlebars,depth0,helpers,partials,data) {
@@ -17540,6 +17885,26 @@ function program3(depth0,data) {
   buffer += escapeExpression(stack1) + "images/nationalGeographic_default_avatar.jpg\n                ";
   return buffer;}
 
+function program5(depth0,data) {
+  
+  
+  return "1";}
+
+function program7(depth0,data) {
+  
+  
+  return "0";}
+
+function program9(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += " (";
+  foundHelper = helpers.notificationsTotal;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.notificationsTotal; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + ")";
+  return buffer;}
+
   buffer += "<div class=\"mem_menu logged_in\">\n    <a href=\"";
   foundHelper = helpers.memcenHost;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
@@ -17568,11 +17933,15 @@ function program3(depth0,data) {
   foundHelper = helpers.displayName;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.displayName; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</a>\n    <!-- <a class=\"badge\" href=\"/inbox/\">\n        ";
+  buffer += escapeExpression(stack1) + "</a>\n    <a class=\"badge\" href=\"/inbox/\" style=\"opacity: ";
+  stack1 = depth0.notificationsTotal;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(7, program7, data),fn:self.program(5, program5, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ";\">\n        <div class=\"count\">";
   foundHelper = helpers.notificationsTotal;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.notificationsTotal; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\n        <div class=\"badge_arrow\"></div>\n    </a> -->\n    <ul>\n        <li><a href=\"";
+  buffer += escapeExpression(stack1) + "</div>\n    </a>\n    <div class=\"menu_arrow\"></div>\n    <ul>\n        <li><a href=\"";
   foundHelper = helpers.memcenHost;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -17584,15 +17953,15 @@ function program3(depth0,data) {
   foundHelper = helpers.uid;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.uid; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/\">Public Profile</a></li>\n        <!-- <li><a href=\"";
+  buffer += escapeExpression(stack1) + "/\">Public Profile</a></li>\n        <!--<li><a class=\"inbox_menu_item\" href=\"";
   foundHelper = helpers.memcenHost;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/inbox/\">Inbox (";
-  foundHelper = helpers.notificationsTotal;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.notificationsTotal; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + ")</a></li> -->\n        <li><a href=\"";
+  buffer += escapeExpression(stack1) + "/inbox/\">Inbox";
+  stack1 = depth0.notificationsTotal;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</a></li>-->\n        <li><a href=\"";
   foundHelper = helpers.memcenHost;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -18032,6 +18401,19 @@ function program8(depth0,data) {
   return buffer;}
 
 ),
+"alert-registration-complete-from-action": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div>\n  <div>\n    <span class=\"text_555\">\n\n        Welcome, ";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + ", to the National Geographic Society.<br>\n\n        Click on the Member Center in the menu <b><i>below your name</i></b> to learn more about membership and access your profile and account settings.\n \n    </span>\n  </div>\n</div>\n\n\n";
+  return buffer;}
+
+),
 "partials-recaptcha": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
@@ -18042,7 +18424,7 @@ function program8(depth0,data) {
 ),
 "resend-activation-link": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, self=this;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -18051,12 +18433,31 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n    You can also provide a new email address or request the link again. <input type=\"email\" maxlength=\"62\" id=\"resend-activation-email\" value=\"";
+  foundHelper = helpers.email;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" placeholder=\"Email Address\" name=\"email\"> <a id=\"resend-activation-link-button\">Resend</a>\n  ";
+  return buffer;}
+
+function program5(depth0,data) {
   
-  return "\n    If you need the email resent, click \"Resend.\" <a id=\"resend-activation-link-button\">Resend</a>\n  ";}
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n  <span class=\"error\">";
+  foundHelper = helpers.error;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.error; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "</span>\n  ";
+  return buffer;}
 
   buffer += "<span class=\"text_555\">\n  ";
   stack1 = depth0.sent;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n  ";
+  stack1 = depth0.error;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</span>\n";
   return buffer;}
@@ -18096,7 +18497,7 @@ function program1(depth0,data) {
   stack1 = depth0.error;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    <h1 class=\"title_333\">Create An Account</h1>\n    <hr class=\"dotted\"/>\n    <div id=\"gigya_login\"></div>\n    <a id=\"social-reg-button\" class=\"fb\" href=\"#\">Join now with Facebook</a>\n    <span class=\"text_555\">or</span>\n    <a id=\"native-reg-button\" class=\"big_blue_button\" href=\"#native-reg\">Create a new account</a>\n    <div id=\"fb-root\"></div>\n    <script>(function(d, s, id) {\n      var js, fjs = d.getElementsByTagName(s)[0];\n      if (d.getElementById(id)) return;\n      js = d.createElement(s); js.id = id;\n      js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\";\n      fjs.parentNode.insertBefore(js, fjs);\n    }(document, 'script', 'facebook-jssdk'));</script>\n    <div class=\"fb-facepile\" data-href=\"https://www.facebook.com/natgeo/\" data-max-rows=\"1\" data-width=\"300\" data-show-faces=\"true\" data-stream=\"false\" data-header=\"false\"></div>\n    <div class=\"bottom\">\n        <span class=\"text_555_small already\">Already a member?&nbsp;</span><a id=\"signlink\" class=\"text_blue_small\" href=\"#login\">Sign in.</a>\n        <span class=\"text_blue_small why\"><a href=\"http://help.nationalgeographic.com/customer/portal/articles/757556\" target=\"_blank\">Why am I joining?</a> | <a href=\"http://help.nationalgeographic.com/customer/portal/articles/884025\" target=\"_blank\">Previous site user?</a>\n        </span>\n        <hr class=\"dotted\"/>\n        <span class=\"text_999_small tos\">By joining, you agree to our <a href=\"http://www.nationalgeographic.com/community/terms/\" target=\"_blank\">Terms of Service</a>, <a href=\"http://www.nationalgeographic.com/community/privacy/\" target=\"_blank\">Privacy Policy</a>, and <a href=\"http://www.nationalgeographic.com/community/community-rules/\" target=\"_blank\">Community Rules</a></span>\n    </div>\n</div>\n";
+  buffer += "\n    <h1 class=\"title_333\">Create An Account</h1>\n    <hr class=\"dotted\"/>\n    <div id=\"gigya_login\"></div>\n    <a id=\"social-reg-button\" class=\"fb\" href=\"#\">Join now with Facebook</a>\n    <span class=\"text_555\">or</span>\n    <a id=\"native-reg-button\" class=\"big_blue_button\" href=\"#native-reg\">Create a new account</a>\n    <div class=\"fb-facepile\" data-href=\"https://www.facebook.com/natgeo/\" data-max-rows=\"1\" data-width=\"300\" data-show-faces=\"true\" data-stream=\"false\" data-header=\"false\"></div>\n    <div class=\"bottom\">\n        <span class=\"text_555_small already\">Already a member?&nbsp;</span><a id=\"signlink\" class=\"text_blue_small\" href=\"#login\">Sign in.</a>\n        <span class=\"text_blue_small why\"><a href=\"http://help.nationalgeographic.com/customer/portal/articles/757556\" target=\"_blank\">Why am I joining?</a> | <a href=\"http://help.nationalgeographic.com/customer/portal/articles/884025\" target=\"_blank\">Previous site user?</a>\n        </span>\n        <hr class=\"dotted\"/>\n        <span class=\"text_999_small tos\">By joining, you agree to our <a href=\"http://www.nationalgeographic.com/community/terms/\" target=\"_blank\">Terms of Service</a>, <a href=\"http://www.nationalgeographic.com/community/privacy/\" target=\"_blank\">Privacy Policy</a>, and <a href=\"http://www.nationalgeographic.com/community/community-rules/\" target=\"_blank\">Community Rules</a></span>\n    </div>\n</div>\n";
   return buffer;}
 
 ),
@@ -18982,13 +19383,11 @@ _mmdbHeaderRequire.define('header/views/alerts-view',[
         'jquery',
         './base-view',
         '../urls',
-        '../models/user',
         '../models/alert'
         ],
         function($,
             BaseView,
             Urls,
-            UserModel,
             AlertModel
             ){
     return BaseView.extend({
@@ -19046,26 +19445,76 @@ function($,
 			var self = this;
             
             this.context.on('user-logged-in user-logged-out', function() {
+                self.bindEvents();
                 self.render();
             });
 
-            //$('.back_to_top').click(function(){
-                //$("html,body").animate({ scrollTop: 0 }, "slow");
-                //return false;
-            //});
+            this._notificationCount = null;
+            this._renderPromise = new $.Deferred();
 
+            this.bindEvents();
         },
 
-		//showLoggedOut: function(){
-            //this.template = 'controls-logged-out';
-			//this.render();
-		//},
-		
-		//showLoggedIn: function(){
-			//var self = this;
-            ////var alerts = new AlertsView({context:self.context});
-            //self.render();
-		//},
+        bindEvents: function() {
+            var self = this;
+            /*
+            $.when(this.context.getUser()).done(function(user) {
+                    if (user) {
+                        user.onNotificationCountUpdate(function(count) {
+                            self.notificationCountUpdated(count);
+                        });
+                    }
+                });
+            */
+        },
+
+        //This method will only work after the view has been rendered.
+        notificationCountUpdated: function(count) {
+            var self = this;
+            //if (count !== this._notificationCount) {
+                //this._notificationCount = count;
+                //this.render();
+            //}
+            this._renderPromise.done(function() {
+                if (count) {
+                    self.$('.badge')
+                        .css('opacity', 1)
+                        .find('.count')
+                        .text(count);
+                    self.$('.mem_menu .inbox_menu_item')
+                        .text('Inbox (' + count + ')');
+                } else {
+                    self.$('.badge').css('opacity', 0);
+                    self.$('.mem_menu .inbox_menu_item')
+                        .text('Inbox');
+                }
+            });
+        },
+
+        getNotificationCount: function() {
+            if (typeof this._notificationCount === "number") {
+                return this._notificationCount;
+            }
+            else {
+                return $.when(this.context.getUser())
+                    .then(function(user) {
+                        var noteCountDfd = new $.Deferred();
+                        
+                        $.when(user.getUnreadNotificationsCount())
+                            .then(function(count) {
+                                noteCountDfd.resolve(count);
+                            }, function(error) {
+                                noteCountDfd.resolve(0);
+                            });
+
+                        noteCountDfd.done(function(count) {
+                            self._notificationCount = count;
+                        });
+
+                        return noteCountDfd.promise();
+                    });
+            }
+        },
 
         render: function() {
             var self = this;
@@ -19088,25 +19537,26 @@ function($,
                         self.render();
                     });
 
-                    //return $.when(user.getUnreadNotificationsCount())
-                    //.pipe(function(notificationsTotal) {
-                    var avatar = user.getActiveAvatar();
-                    return self.renderTemplate({
-                        uid: user.id,
-                        displayName: user.get('displayName'),
-                        avatarUrl: avatar ? avatar.get('url') : null,
-                        //notificationsTotal: notificationsTotal,
-                        memcenHost: Urls['memcen-host'],
-                        staticUrl: self.context.getStaticUrl()
+                    return $.when(self.getNotificationCount()).pipe(function(notificationsTotal) {
+                        var avatar = user.getActiveAvatar();
+                        return $.when(self.renderTemplate({
+                            uid: user.id,
+                            displayName: user.get('displayName'),
+                            avatarUrl: avatar ? avatar.get('url') : null,
+                            notificationsTotal: notificationsTotal,
+                            memcenHost: Urls['memcen-host'],
+                            staticUrl: self.context.getStaticUrl()
+                        })).done(function() {
+                            self._renderPromise.resolve();
+                        });
                     });
-                    //});
                 }
                 else {
                     self.template = 'controls-logged-out';
                     return self.renderTemplate({});
                 }
-            }, function() {
-                console.error("Cannot get logged in user data from mmdb!");
+            }, function(error, jqXHR) {
+                console.error("Cannot get logged in user data from mmdb: " + error);
                 self.template = 'controls-server-error';
                 return self.renderTemplate();
             });
@@ -19122,12 +19572,18 @@ _mmdbHeaderRequire.define('session-augment',['jquery', 'jQuery-cookie'], functio
         cookieName = 'memSess';
         sess = $.cookie(cookieName);
         createCookie = function (data) {
-           $.cookie(cookieName, '' + data.memberHash + '|' + data.memberLevel, { expires: (365*20), path:'/' });
+           $.cookie(cookieName, '' + data.memberHash + '|' + data.memberLevel,
+                {
+                    expires: (365*20),
+                    path:'/',
+                    domain: 'nationalgeographic.com'
+                });
         };
         removeCookie = function () { sess = $.removeCookie(cookieName); };
 
         //Keeping it all in sync
         window.onMMDBHeaderLoaded(function(context) {
+            var jq = window.jQuery || $;
             $.when(context.isLoggedIn())
             .done( function (isLoggedIn) {
                 if (isLoggedIn) {
@@ -19142,7 +19598,7 @@ _mmdbHeaderRequire.define('session-augment',['jquery', 'jQuery-cookie'], functio
                 } else { removeCookie(); }
             });
             context.onUserLoggedIn(function(user) {
-                $(window).trigger({
+                jq(window).trigger({
                     type: 'login'
                 });
                 $.when(context.getUser())
@@ -19151,7 +19607,7 @@ _mmdbHeaderRequire.define('session-augment',['jquery', 'jQuery-cookie'], functio
                 });
             });
             context.onUserLoggedOut(function(user) {
-                $(window).trigger({
+                jq(window).trigger({
                     type: 'logout'
                 });
                 removeCookie();
@@ -19363,8 +19819,8 @@ function(
  *
  */
 
-_mmdbHeaderRequire.define('header/views/alert-header-base',['jquery',
-        './base-view'
+_mmdbHeaderRequire.define('header/views/alerts/alert',['jquery',
+        '../base-view'
        ],
 function($,
          MCView
@@ -19374,31 +19830,64 @@ function($,
         template: 'alert-base',
 
         events: {
-            "click #close-banner" : "closeBanner"
+            "click #close-banner" : "closeBanner",
         },
 
+        // This is the class of the div element set up in the
+        // alert-base template, to which alert-header-child view
+        // classes will attach.
+        childDivClass: 'alert-child',
+
         initialize: function(options) {
-
-            if($('#navigation_tophat_container').length) {
-                $('#navigation_tophat_container').after(this.$el)
-            } else {
-                $('header:first').after(this.$el);
-            }
-
-            // This is the class of the div element set up in the
-            // alert-base template, to which alert-header-child view
-            // classes will attach.
-            this.childDivClass = 'alert-child';
-
+            this.constructor.attachToPage(this);
         },
 
         closeBanner: function() {
-            this.$el.remove();
+            this.constructor.removeFromPage(this);
         },
 
         render: function(alertmessage) {
             return this.renderTemplate();
-        }
+        },
+    }, {
+        managedViews: [],
+
+        isAlreadyOnPage: function(alertView) {
+            for( var i=0; i < this.managedViews.length; i++) {
+                if (this.managedViews[i] === alertView) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        removeFromPage: function(alertView) {
+            var i = this.managedViews.indexOf(alertView);
+            if (i < 0) {
+                throw new Error("Alert is not on the page, cannot remove!");
+            }
+
+            alertView.remove();
+            this.managedViews.splice(i, 1);
+        },
+
+        attachToPage: function(alertView) {
+            if (this.isAlreadyOnPage(alertView)) {
+                return false;
+            }
+
+            var selector = alertView.context.getConfig('alertContainerSelector'),
+                $container = $(selector);
+            
+            if (!$container.length) {
+                throw new Error("alertContainerSelector config does not result in a valid element!");
+            }
+
+            this.managedViews.push(alertView);
+            $container.append(alertView.$el);
+
+            return true;
+        },
     });
 });
 
@@ -19415,77 +19904,62 @@ function($,
  *
  */
 
-_mmdbHeaderRequire.define('header/views/alert-header-child',['jquery',
+_mmdbHeaderRequire.define('header/views/alerts/template-alert',['jquery',
         'templates',
-        './alert-header-base'
+        './alert'
        ],
 function($,
          Templates,
-         AlertBaseView
+         AlertView
         ) {
-    return AlertBaseView.extend({
-
-        
+    return AlertView.extend({
         initialize: function(options) {
+            options = options || {};
 
-            // apply inialization from AlertBaseView first.
-            AlertBaseView.prototype.initialize.apply(this, arguments);
+            // apply inialization from AlertView first.
+            AlertView.prototype.initialize.apply(this, arguments);
 
-            this.childData = {}; // see applyData function below
-            this.childTemplate = null;  // defined by extending view
-
-            if(options) {
-                if(options.model) {
-                    this.model = options.model;
-                }
+            if (options.templateData) {
+                this.templateData = options.templateData; // see applyData function below
             }
-
+            if (options.template) {
+                this.subTemplate = options.template;
+            }
         },
 
         applyData: function(data) {
-
             // Each alert view has its own template, and many of these templates
             // require data passed to them, such as a username or email or something.
             // The function provides a standard way to pass data into any
             // alert view.  The data is then passed to the template.
             //
             // "data" is expected to be a JSON object of key-value pairs.
-            this.childData = data;
+            this.templateData = data;
         },
 
-        getTemplateRenderedHtml: function(templateName, data) {
-
-            // This returns the alert view's template-rendered HTML
-
-            if (!this.childTemplate) {
-                throw new Error("You must either pass a template to 'renderTemplate'"+
-                            "or set the 'template' attribute on the instantiated"+
-                            "child view");
+        // This returns the alert view's template-rendered HTML
+        renderSubtemplate: function(templateName, data) {
+            if (!(this.subTemplate in Templates)) {
+                throw new Error("The specified template does not exist: " + this.subTemplate);
             }
 
-            if (!(this.childTemplate in Templates)) {
-                throw new Error("The specified template does not exist: " + this.childTemplate);
-            }
-
-            return Templates[this.childTemplate](this.childData);
+            return Templates[this.subTemplate](this.templateData);
 
         },
 
         render: function() {
-
             var self = this;
 
-            // extending AlertBaseView's render method to append the child view's rendered HTML:
-            return $.when(AlertBaseView.prototype.render.apply(this, arguments)).done(function() {
-
+            // extending AlertView's render method to append the child view's rendered HTML:
+            return $.when(AlertView.prototype.render.apply(this, arguments)).done(function() {
                 // attach to the specified div tag
                 // childDivClass is defined in the alert-header-base view.
-                self.$('.' + self.childDivClass).html(self.getTemplateRenderedHtml(
-                    self.childTemplate,
-                    self.childData
+                self.$('.' + self.childDivClass).html(self.renderSubtemplate(
+                    self.subTemplate,
+                    self.templateData
                 ));
             });
-        }
+        },
     })
 })
 ;
@@ -19493,13 +19967,15 @@ _mmdbHeaderRequire.define('header/views/resend-activation-link',['jquery',
         './base-view',
         'errors',
         'urls',
-        'request'
+        'request',
+        'util'
 ],
 function($,
          BaseView,
          Errors,
          Urls,
-         Request
+         Request,
+         Util
         ) {
     return BaseView.extend({
 
@@ -19512,12 +19988,17 @@ function($,
         initialize: function(options) {
             this.sent = false;
             this.email = options.email || null;
+            this.changeEmailNonce = options.changeEmailNonce || null;
+            this.error = null;
         },
 
         toggleState: function() {
             if(!this.sent)
             {
+                this.error=false;
                 this.sent=true;
+            } else {
+                this.sent=false;
             }
             this.render();
         },
@@ -19537,17 +20018,32 @@ function($,
             }
             nextPage = uri.toString();
 
+            frmObj = Util.formToObject(this.$('#resend-activation-email'));
+            this.email = frmObj['email'];
+
             var self = this;
             $.when(Request.post(Urls['resend-activation-link']({}), {
                     email: this.email,
-                    nextpage: nextPage
+                    changeEmailNonce: this.changeEmailNonce,
+                    nextpage: nextPage,
                 }))
                 .done(function(data) {
                     self.trigger('activation-link-resent');
                     self.toggleState();
                 })
                 .fail(function(error) {
-                    error = error;
+
+                    if (!error) {
+                        self.error = 'Unknown Server Error';
+                    }
+                    else if (Errors.isCodeEqual(error.code, 'USER_EXISTS')) {
+                        self.error = "Error: This email is already in use by another user.";
+                    }
+                    else if (Errors.isCodeEqual(error.code, 'UNKNOWN_USER')) {
+                        // When nonce doesn't match a user, don't give any specifics.
+                        self.error = "Unknown Server Error";
+                    }
+                    self.render();
                 });
 
             return false;
@@ -19556,38 +20052,37 @@ function($,
         render: function() {
             return this.renderTemplate({
                 sent: this.sent,
-                email: this.email
+                email: this.email,
+                changeEmailNonce: this.changeEmailNonce,
+                error: this.error
             });
         }
     })
 });
 
-_mmdbHeaderRequire.define('header/views/alert-activation-reminder',['jquery',
+_mmdbHeaderRequire.define('header/views/alerts/activation-reminder',['jquery',
         'templates',
-        './alert-header-child',
-        './resend-activation-link'
+        './template-alert',
+        '../resend-activation-link'
        ],
 function($,
          Templates,
-         AlertChildView,
+         TemplateAlert,
          ResendActivationLinkView
         ) {
-    return AlertChildView.extend({
+    return TemplateAlert.extend({
+        subTemplate: 'alert-activation-reminder',
 
         initialize: function(options) {
+            TemplateAlert.prototype.initialize.apply(this, arguments);
 
-            AlertChildView.prototype.initialize.apply(this, arguments);
-
-            this.childTemplate = 'alert-activation-reminder';
-
-            this.childData = {
+            this.templateData = {
                 "emailResent": false,
-                "showResendLink": options.showResendLink || false
-            }; 
+                "showResendLink": options.showResendLink || false,
+                "changeEmailNonce": options.changeEmailNonce || null
+            };
 
-
-
-            if(this.childData.showResendLink) {
+            if(this.templateData.showResendLink) {
 
                 // This sub-view only presend after registration.  During login,
                 // if the user hasn't verified their email, this reminder doesn't 
@@ -19597,11 +20092,12 @@ function($,
 
                 this.resendView = new ResendActivationLinkView({
                     context: this.context,
-                    email: this.model.attributes.email
+                    email: this.model.attributes.email,
+                    changeEmailNonce: this.templateData.changeEmailNonce
                 });
 
                 this.resendView.on('activation-link-resent', function() {
-                    self.childData.emailResent=true;
+                    self.templateData.emailResent = true;
                     self.render();
                 });
                 this.resendView.render();
@@ -19611,17 +20107,17 @@ function($,
 
         render: function() {
 
-            // overriding AlertChildView's render method.  Unnecessary unless you need to 
+            // overriding TemplateAlert's render method.  Unnecessary unless you need to 
             // have custom functionality in the render method, it will usually suffice to
             // specify the template name in initialize and then pass in data the template
             // needs in applyData().  Overridden here to attach the resend email sub view.
 
             var self = this;
 
-            return $.when(AlertChildView.prototype.render.apply(this, arguments))
+            return $.when(TemplateAlert.prototype.render.apply(this, arguments))
             .done(function() {
                 
-                if(self.childData.showResendLink) {
+                if(self.templateData.showResendLink) {
                     $('#resend-activation-link').append(self.resendView.el);
                 }
             });
@@ -19630,21 +20126,16 @@ function($,
     })
 })
 ;
-_mmdbHeaderRequire.define('header/views/alert-disabled-account',['jquery',
+_mmdbHeaderRequire.define('header/views/alerts/disabled-account',['jquery',
         'templates',
-        './alert-header-child',
+        './template-alert',
        ],
 function($,
          Templates,
-         AlertChildView
+         TemplateAlert
         ) {
-    return AlertChildView.extend({
-
-        initialize: function(options) {
-            AlertChildView.prototype.initialize.apply(this, arguments);
-            this.childTemplate = 'alert-disabled-account';
-        }
-
+    return TemplateAlert.extend({
+        subTemplate: 'alert-disabled-account',
     })
 })
 ;
@@ -19674,10 +20165,11 @@ _mmdbHeaderRequire.define('header/views/login-start',['jquery',
         '../models/user',
         'recaptcha',
         '../models/social-reg-manager',
-        './alert-activation-reminder',
-        './alert-disabled-account',
+        './alerts/activation-reminder',
+        './alerts/disabled-account',
         './resend-activation-link',
-        './disabled-account'
+        './disabled-account',
+        'quick-cookies'
        ],
 function($,
          BaseView,
@@ -19689,7 +20181,8 @@ function($,
          ActivationReminderAlert,
          DisabledAccountAlert,
          ResendActivationLinkView,
-         DisabledAccountView
+         DisabledAccountView,
+         QuickCookies
         ) {
     return BaseView.extend({
         template: 'login-start',
@@ -19774,6 +20267,11 @@ function($,
                             this.redirectToLandingPage
                 ))
                 .done(function(user) {
+                    
+                    if(self.context.getEmailVerifiedFromAction()) {
+                        QuickCookies.set('registered-from-action-success',"1");
+                    }
+
                     self.trigger('login-complete', user);
                 })
                 .fail(function(error) {
@@ -19795,7 +20293,6 @@ function($,
                         formError['formErrors'] = 'Please verify your email';
 
                         // Show reminder alert to activate, don't include a link to resend verification email
-                        // Why isn't this view showing up?
                         var view = new ActivationReminderAlert({ 
                             context: self.context, 
                             showResendLink: false});
@@ -19806,7 +20303,8 @@ function($,
                         self.showResendActivationLink = true;
                         self.resendActivationLinkView = new ResendActivationLinkView({
                             context: self.context,
-                            email: formObj.username
+                            email: formObj.username,
+                            changeEmailNonce: error.changeEmailNonce
                         });
 
                     }
@@ -19981,19 +20479,60 @@ _mmdbHeaderRequire.define('header/messages',[], function() {
 });
 
 
+_mmdbHeaderRequire.define('facebookLoader',[], function() {
+    var _facebook;
+    var _oldFB;
+    return {
+        load: function(cb) {
+          _facebook = window.FB;
+          
+            if (_facebook) {
+                cb(_facebook);
+            }
+            else {
+                _oldFB = window.FB;
+                window.fbAsyncInit = function() {
+                    // init the FB JS SDK
+                    //FB.init({
+                      ////appId: 504231839597367,
+                      //status: true, // check the login status upon init?
+                      //cookie: true, // set sessions cookies to allow your server to access the session?
+                      //xfbml: true  // parse XFBML tags on this page?
+                    //});
+
+                    _facebook = FB;
+
+                    cb(_facebook);
+                };
+
+                (function(d, debug){
+                   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+                   if (d.getElementById(id)) {return;}
+                   js = d.createElement('script'); js.id = id; js.async = true;
+                   js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+                   ref.parentNode.insertBefore(js, ref);
+                 }(document, /*debug*/ true));
+            }
+        },
+    };
+});
+
+
 _mmdbHeaderRequire.define('header/views/register-start',['jquery',
         './base-view',
         'errors',
         '../messages',
         '../models/user',
-        '../models/social-reg-manager'
+        '../models/social-reg-manager',
+        'facebookLoader'
        ],
 function($,
          BaseView,
          Errors,
          Messages,
          User,
-         SocialRegManager
+         SocialRegManager,
+         facebookLoader
         ) {
     return BaseView.extend({
         template: 'register-start',
@@ -20006,6 +20545,7 @@ function($,
         },
 
         initialize: function(options) {
+            var self = this;
         },
 
         startSocialReg: function(e) {
@@ -20054,9 +20594,19 @@ function($,
 
         render: function() {
             var self = this;
-            return self.renderTemplate({
+            return $.when(self.renderTemplate({
                 error: this.error,
                 staticUrl: this.context.getStaticUrl()
+            })).done(function() {
+                facebookLoader.load(function() {
+                    // Refresh the FB XML tags so the facepile loads when the modal opens
+                    setTimeout(function() {
+                        FB.XFBML.parse();
+                    }, 100);
+                });
+                // Ensure the first FB span always has the correct dimensions, otherwise
+                // the facepile will shift down and overlap the next section.  
+                $('.fb-facepile > span').css({'width':'300px','height':'70px'});
             });
         }
     })
@@ -20495,6 +21045,30 @@ window.zxcvbn=function(b,a){var d,c,e;c=I();if(null!=a){d=0;for(e=a.length;0<=e?
 
 _mmdbHeaderRequire.define("zxcvbn", function(){});
 
+_mmdbHeaderRequire.define('header/models/profanity',['jquery',
+        'models/base-model',
+        'urls',
+        'errors',
+        'request'],
+function(
+        $,
+        BaseModel,
+        Urls,
+        Errors,
+        Request
+        ) { 
+
+    return BaseModel.extend({}, {
+        checkText: function(text) {
+            if (!text) return null;
+
+            return Request.get(Urls['check-profanity'](), {
+                    text: text
+                });
+         }
+    });
+});
+
 _mmdbHeaderRequire.define('header/views/native-reg-p1',[
         'jquery',
         './base-view',
@@ -20502,7 +21076,8 @@ _mmdbHeaderRequire.define('header/views/native-reg-p1',[
         'util',
         'errors',
         'jstz',
-        'zxcvbn'
+        'zxcvbn',
+        '../models/profanity'
        ],
 function($,
          BaseView,
@@ -20510,7 +21085,8 @@ function($,
          Util,
          Errors,
          jstz,
-         zxcvbn
+         zxcvbn,
+         Profanity
         ) {
 
     return BaseView.extend({
@@ -20596,7 +21172,7 @@ function($,
         },
 
         _processErrors: function(error) {
-            this.formErrors.reset();
+//             this.formErrors.reset();
             if (Errors.isCodeEqual(error.code, 'USER_EXISTS')) {
                 this.formErrors.setFieldError('email', 'This email address is already registered.');
             }
@@ -20605,12 +21181,15 @@ function($,
                 this.model.blockFutureRegistration();
             }
             else if (Errors.isCodeEqual(error.code, 'INVALID_INPUT')) {
-                this.formErrors.setTopError('Please fix the fields in red');
+                if (!this.formErrors.getTopError()) {
+                    this.formErrors.setTopError('Please fix the fields in red');
+                }
 
                 for (var field in error.fieldErrors) {
                     var field_name_to_text = {
                         firstName: 'first name',
                         lastName: 'last name',
+                        middleName: 'middle name'
                     };
 
                     if (Errors.isCodeEqual(error.fieldErrors[field], 'PROFANITY')) {
@@ -20643,22 +21222,32 @@ function($,
         forward: function(e) {
             var self = this;
 
+            this.formErrors.reset();
+
             $( '.reg_loading' ).css( 'display', 'block' );
 
             this.fixBlur();
 
             var formData = Util.formToObject(this.$('#native-reg-start-form'));
 
-            $.when(this.model.canRegister(formData))
-                .done(function() {
-                    self.trigger("complete");
-                })
-                .fail(function(error) {
+            var handleFail = function(error) {
                     self._processErrors(error);
                     self.formData = formData;
                     self.render();
-                });
+                }
+            var canRegisterPromise = $.when(this.model.canRegister(formData))
+                    .fail(handleFail),
+                profanityPromise = $.when(Profanity.checkText(formData.middleName))
+                    .fail(function(error) {
+                        var new_error = Errors.createValidationError({
+                            middleName: error.code,
+                        });
+                        handleFail(new_error);
+                    });
 
+            $.when(canRegisterPromise, profanityPromise).done(function(){
+                    self.trigger("complete");
+                });
             //return false;
         },
 
@@ -20799,41 +21388,43 @@ function($,
                 this.providedName = options.providedName;
 
                 var query = encodeURIComponent(this.providedName);
-                $.when(self.doSuggest(query))
-                    .done(function(data) {
+                if (query) {
+                    $.when(self.doSuggest(query))
+                        .done(function(data) {
 
-                        // If any predictions come back, just grab the
-                        // first (i.e. strongest match)
-                        if(data.predictions.length > 0 &&
-                           data.predictions[0].matched_substrings.length > 0)
-                        {
-                            prediction = data.predictions[0];
+                            // If any predictions come back, just grab the
+                            // first (i.e. strongest match)
+                            if(data.predictions.length > 0 &&
+                               data.predictions[0].matched_substrings.length > 0)
+                            {
+                                prediction = data.predictions[0];
 
-                            // If any substrings from FB matched for this
-                            // prediction (logically, this will always be the
-                            // case; we will probably need to expand upon this)
-                            self.usePrediction(prediction, true);
-                            self.$el.attr('value', prediction.description);
+                                // If any substrings from FB matched for this
+                                // prediction (logically, this will always be the
+                                // case; we will probably need to expand upon this)
+                                self.usePrediction(prediction, true);
+                                self.$el.attr('value', prediction.description);
 
-                        } else {
-                            // This will probably never happen.  Anything coming back
-                            // from facebook will have some kind of match, but just
-                            // in case, if there's really no match, put the providedName
-                            // in the input field and make the selection box show.
-                            self.$el.attr('value', self.providedName);
-                            self.$el.autocomplete( "search");
-                        }
+                            } else {
+                                // This will probably never happen.  Anything coming back
+                                // from facebook will have some kind of match, but just
+                                // in case, if there's really no match, put the providedName
+                                // in the input field and make the selection box show.
+                                self.$el.attr('value', self.providedName);
+                                self.$el.autocomplete( "search");
+                            }
+                        })
+                    .fail(function(data) {
+                        //self.$el.attr('value', this.providedName);
                     })
-                .fail(function(data) {
-                    //self.$el.attr('value', this.providedName);
-                })
+                }
             }
             else if (options.location) {
                 this._locationId = options.location.id;
                 this._locationReference = options.location.reference;
                 this._locationName = options.location.name;
                 this.$el.attr('value', this._locationName);
-            } else if (options.initialValue) {
+            } else if (options.initialValue && options.initialValue.trim()) {
                 this.initialValue = options.initialValue.trim();
                 var query = encodeURIComponent(this.initialValue);
                 $.when(self.doSuggest(this.initialValue))
@@ -23203,7 +23794,7 @@ _mmdbHeaderRequire.define('header/views/native-reg-p2',['jquery',
         'errors',
         './location-input',
         './edit-custom-avatar',
-        './alert-activation-reminder'
+        './alerts/activation-reminder'
        ],
 function($,
          BaseView,
@@ -23269,6 +23860,7 @@ function($,
                     var view = new ActivationReminderAlert({ 
                         context: self.context, 
                         model: self.model,
+                        changeEmailNonce: data.changeEmailNonce,
                         showResendLink: true});
                     view.render();
 
@@ -23978,26 +24570,29 @@ function(Request,
             // cookie again.
 
             pageScroller.setScrollTo($(window).scrollTop());
+            this.context.setEmailVerifiedFromAction(true);
         },
     });
 });
 
-_mmdbHeaderRequire.define('header/views/alert-registration-complete',['jquery',
+_mmdbHeaderRequire.define('header/views/alerts/registration-complete',['jquery',
         'templates',
-        './alert-header-child',
+        './template-alert',
        ],
 function($,
          Templates,
-         AlertChildView
+         TemplateAlert
         ) {
-    return AlertChildView.extend({
+    return TemplateAlert.extend({
+        subTemplate: 'alert-registration-complete',
 
         initialize: function(options) {
-            AlertChildView.prototype.initialize.apply(this, arguments);
-            this.childTemplate = 'alert-registration-complete';
+            TemplateAlert.prototype.initialize.apply(this, arguments);
 
             email = options.email || null;
-            this.applyData({"email":email});
+            this.applyData({
+                email:email
+            });
         }
     })
 })
@@ -24019,7 +24614,8 @@ _mmdbHeaderRequire.define('header/views/login-reg-modal',[
         '../gigya-helper',
         './verification',
         './verification-from-action',
-        './alert-registration-complete',
+        './alerts/registration-complete',
+        'quick-cookies',
         'uriLib'
     ],
 function($,
@@ -24039,6 +24635,7 @@ function($,
          VerificationView,
          VerificationFromActionView,
          RegistrationCompleteAlert,
+         QuickCookies,
          Uri
         ) {
     var childContainerId = 'container-block';
@@ -24125,6 +24722,7 @@ function($,
 
                             if(self.context.getCalledFromAction()) {
                                 redirectToLandingPage = false;
+                                QuickCookies.set('registered-from-action-success',"1");
                             } else {
                                 redirectToLandingPage = true;
                             }
@@ -24210,32 +24808,17 @@ function($,
             this.render();
         },
 
-        showVerification: function(retry) {
-            var self = this;
+        showVerification: function() {
             var view = new VerificationView({context: this.context});
-            if(retry){
-                view.message = "Retry message";
-            }
-            else{
-                view.message = "Welcome message";
-            }
-            self.showView(view);
+            this.showView(view);
         },
 
-        showVerificationFromAction: function(retry) {
-            var self = this;
+        showVerificationFromAction: function() {
             var view = new VerificationFromActionView({context: this.context});
-            if(retry){
-                view.message = "Retry message";
-            }
-            else{
-                view.message = "Welcome message";
-            }
-            self.showView(view);
+            this.showView(view);
         },
 
         showEmailVerifiedAlert: function() {
-
             $.when(this.context.getUser())
                 .done(function(user) {
                     if(user!== null && user.attributes.isEmailVerified) {
@@ -24271,6 +24854,28 @@ function($,
     })
 });
 
+_mmdbHeaderRequire.define('header/views/alerts/registration-complete-from-action',['jquery',
+        'templates',
+        './template-alert',
+       ],
+function($,
+         Templates,
+         TemplateAlert
+        ) {
+    return TemplateAlert.extend({
+        subTemplate: 'alert-registration-complete-from-action',
+
+        initialize: function(options) {
+            TemplateAlert.prototype.initialize.apply(this, arguments);
+
+            options = options || {};
+
+            name = options.name || null;
+            this.applyData({"name":name});
+        }
+    })
+})
+;
 _mmdbHeaderRequire.define('header/routers/header',[
         'module', // Special Dep for config
         'jquery',
@@ -24279,7 +24884,10 @@ _mmdbHeaderRequire.define('header/routers/header',[
         '../models/user',
         '../views/header',
         '../views/header-controls',
-        '../views/login-reg-modal'
+        '../views/login-reg-modal',
+        'quick-cookies',
+        '../views/alerts/registration-complete-from-action',
+        '../views/alerts/template-alert'
        ],
 function(module,
          $,
@@ -24288,10 +24896,13 @@ function(module,
          UserModel,
          HeaderView,
          HeaderControlsView,
-         LoginRegModalView
+         LoginRegModalView,
+         QuickCookies,
+         RegistrationCompleteFromActionAlert,
+         TemplateAlert
         ) {
 
-    var config = module.config();
+    //var config = module.config();
     return Backbone.Router.extend({
         routes: {
             "login": "login",
@@ -24305,7 +24916,8 @@ function(module,
             "verify": "verify",
             "login/:verify": "verify",
             "login/:verify/:from-action": "verifyFromAction",
-            "login/:verify/:retry": "verify",
+            //"login/:verify/:retry": "verify",
+            "verification-failed": "verificationFailed",
             "email-verified-alert": "emailVerifiedAlert"
         },
 
@@ -24317,7 +24929,7 @@ function(module,
             }
 
             var headerCls;
-            if (config.controlsOnly) {
+            if (this.context.getConfig('controlsOnly')) {
                 headerCls = HeaderControlsView;
             }
             else {
@@ -24327,7 +24939,7 @@ function(module,
             this.header = new headerCls({context:this.context});
             this.header.render();
 
-            $('#'+config.headerDivId).append(this.header.el);
+            $('#'+this.context.getConfig('headerDivId')).append(this.header.el);
 
             this.loginRegModal = new LoginRegModalView({context:this.context});
             $('body').append(this.loginRegModal.el);
@@ -24335,6 +24947,8 @@ function(module,
             this.loginRegModal.on('user-registered', function() {
                 Util.setHash("");
             });
+            
+            this.checkLoginFromActionSuccess();
         },
 
         login: function() {
@@ -24363,13 +24977,19 @@ function(module,
         },
 
         verify: function(verify, retry){
-            var attempt = (typeof retry === 'undefined') ? false : true;
-            this.loginRegModal.showVerification(attempt);
+            this.loginRegModal.showVerification();
         },
 
-        verifyFromAction: function(verify, retry){
-            var attempt = (typeof retry === 'undefined') ? false : true;
-            this.loginRegModal.showVerificationFromAction(attempt);
+        verifyFromAction: function(){
+            this.loginRegModal.showVerificationFromAction();
+        },
+
+        verificationFailed: function() {
+            var alert = new TemplateAlert({
+                template:'verification-failed-alert',
+                context: this.context
+            });
+            alert.render();
         },
 
         forgotPassword: function() {
@@ -24378,7 +24998,29 @@ function(module,
 
         resetPassword: function() {
             this.loginRegModal.showResetPassword();
-        }
+        },
+
+        checkLoginFromActionSuccess: function() {
+            // If a user attempts an action, like commenting, and
+            // isn't logged in, then registers, after they log
+            // in for the first time, show this welcome view.
+            var cookieExists = QuickCookies.getThenRemove('registered-from-action-success');
+            if(cookieExists) {
+
+                var self = this;
+                $.when(this.context.getUser())
+                    .done(function(user) {
+                        var view = new RegistrationCompleteFromActionAlert({ 
+                                context: self.context,
+                                name: user.attributes.displayName
+                            });
+                        view.render();
+                    });
+            }
+
+        },
+
+
     });
 });
 
@@ -24537,180 +25179,6 @@ function(
     return Analytics;
 });
 
-_mmdbHeaderRequire.define('header/models/activity',[
-        'models/base-model', 
-        '../urls',
-        '../errors',
-        'request'
-       ],
-function(
-         BaseModel,
-         Urls,
-         Errors,
-         Request
-        ) {
-
-    return BaseModel.extend({
-
-        initialize: function(data, options) {  }
-
-    }, {
-
-        create: function(activityData, options) {
-
-            return Request.post(Urls['create-activity'](), {
-
-                activityData: activityData
-
-            }).pipe(function(data) {
-
-            });
-
-        }
-    });
-});
-
-/*
- *
- * livefyreHelper
- * Checks for livefyre configurations in the currently rendered page
- * If present, setups up livefyre authentication delegates and loads the stream
- */
-_mmdbHeaderRequire.define('livefyreManager',[
-        'jquery',
-        'backbone',
-        'header/models/activity'
-       ], 
-function( 
-         $,
-         Backbone,
-         ActivityModel
-        ) {
-
-    function livefyreReady() {
-
-        if ('undefined' == typeof fyre) {
-            return false;
-        }
-
-        if ('undefined' == typeof window.livefyreConfig) {
-            console.log("The livefyre source file was loaded but not configurations were found");
-            return false;
-        }
-
-        if ('undefined' == typeof window.livefyreConfig.streams  || !window.livefyreConfig.streams.length) {
-            console.log("The livefyre source file was loaded, but no streams were configured.");
-            return false;
-        }
-
-        return true;
-    }
-
-
-	function LivefyreManager( context ) {
-        if(!livefyreReady()) return;
-
-        var self = this;
-
-        this.config = window.livefyreConfig;
-        this.context = context;
-        this.user = null;
-
-        var authDelegate = new fyre.conv.RemoteAuthDelegate();
-
-        $.extend(authDelegate, {
-            login: function (handlers){
-                self.context.requestLogin(function() {
-                        // callback upon successful login
-                        self.finishLogin();
-                        handlers.success();
-                        return true;
-                    },
-                    function() {
-                        // callback upon cancel
-                        handlers.failure();
-                        return false;
-                    });
-            },
-            logout: function (handlers) {
-                self.context.logoutUser();
-                handlers.success();
-                return false;
-            },
-
-            viewProfile: function(handlers, author) {
-                //document.location = author
-                if (author && author.profileUrl) {
-                    document.location = author.profileUrl;
-                }
-
-                handlers.success();
-                return true;
-            },
-
-            editProfile: function(handlers,author) {
-                if(self.user) {
-                    document.location = '/members/settings/public-profile/';
-                }
-                handlers.success();
-                return true;
-            },
-        });
-        this.config.global.authDelegate = authDelegate;
-
-        fyre.conv.load(
-            this.config.global,
-            this.config.streams,
-            function (widget) { 
-                //widget.on('commentPosted', function(data) {
-                //    self.onComment(data);
-                //});
-
-                $.when(self.context.isLoggedIn())
-                 .done(function(loggedIn) {
-                     if (loggedIn) {
-                         self.finishLogin();
-                     }
-                });
-            });
-
-        // Capture the log in event for future logins
-        this.context.on('user-logged-in', function() {
-            self.finishLogin();
-        });
-
-        
-	}
-
-    LivefyreManager.prototype = {
-        /*
-        onComment: function(commentData) {
-            return true;
-        },
-        */
-
-        // Called when the user has been logged in via the shared header.
-        finishLogin: function() {
-            $.when(this.context.getUser()).done(function(user) {
-                if (!user) {
-                    console.error("User is not logged in!");
-                    return;
-                }
-                self.user = user;
-
-                try {
-                    fyre.conv.login(self.user.get('livefyreToken'));
-                } catch (e) {
-                    console.log("Error attempting to login with ", lfCookieName, " cookie value: ", cval, " ", e);
-                }
-            });
-        },
-
-    };
-
-	return LivefyreManager;
-});
-
 _mmdbHeaderRequire.define('header/main',[
         'jquery',
         'util',
@@ -24720,7 +25188,6 @@ _mmdbHeaderRequire.define('header/main',[
         './routers/header',
         'server-context-data',
         'analytics',
-        'livefyreManager',
         'page-scroller'
        ],
 function($,
@@ -24731,7 +25198,6 @@ function($,
          HeaderRouter,
          serverContextData,
          Analytics,
-         LivefyreManager,
          pageScroller
         ) {
     var context = new HeaderContext(serverContextData);
@@ -24742,7 +25208,6 @@ function($,
         });
 
         var analytics = new Analytics(context)
-        var livefyreManager = new LivefyreManager(context);
 
         pageScroller.checkScrollTo();
 

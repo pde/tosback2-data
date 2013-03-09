@@ -2252,6 +2252,7 @@ JobGo.Search = {
             var jobId = CandidateSearchJobId();
             var participants = ParticipantSearch();
             var rxMessageSend = /\/message\/(sendmessage|invitetorecruitment)\//i;
+            var rxMessageSendAdditional = /\/message\/(sendmessagecandidate)\//i;
             var rxTypeOffer = /\/type\/offer\//i;
             var sendMessage =  /sendmessage/i;
             $('#chk-all').click(function() {
@@ -2272,32 +2273,27 @@ JobGo.Search = {
                 c = c.replace(/,$/, '');
                 jc = jc.replace(/,$/, '');
                 $('#gActions')
-                        .attr('disabled', c.length == 0)
-                        .unbind()
-                        .bind('change', function() {
-                            var target = $("#gActions option:selected").val();
-                            var newUrl = '';
+                    .attr('disabled', c.length == 0)
+                    .unbind()
+                    .bind('change', function () {
+                        var target = $("#gActions option:selected").val();
+                        var newUrl = '';
 
-                            //if(jobId && !rxMessageSend.test(target))
-                            if(jobId)
-                            {
-                                newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
-                            } else if (participants && sendMessage.test(target)) {
-                                newUrl = target + jc;
+                        if (jobId && !rxMessageSendAdditional.test(target)) {
+                            newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
+                        } else if (participants && sendMessage.test(target)) {
+                            newUrl = target + jc;
+                        }
+                        else {
+                            if (rxTypeOffer.test(target)) {
+                                newUrl = target + c + '/jobId/' + jobId;
                             }
-                            else
-                            {
-                                if(rxTypeOffer.test(target))
-                                {
-                                    newUrl = target + c + '/jobId/' + jobId;
-                                }
-                                else
-                                {
-                                    newUrl = target + c;
-                                }
+                            else {
+                                newUrl = target + c;
                             }
-                            window.location = newUrl;
-                        });
+                        }
+                        window.location = newUrl;
+                    });
             });
             $("input[name='itemCheckbox[]']").click(function() {
                 var all = true;

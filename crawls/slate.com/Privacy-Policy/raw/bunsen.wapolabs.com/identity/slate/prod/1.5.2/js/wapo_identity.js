@@ -66,6 +66,24 @@ var wapoEnv = new WapoEnv();
 
 window.$wpjQ = typeof window.$wpjQ !== 'undefined' && window.$wpjQ || jQuery;
 
+
+function isBanned()
+{
+  $wpjQ.ajax({
+      url: "http:"+wapoEnv.wapo_site_url+"slateLogin/isBannedLogin.json",
+      dataType: 'jsonp',
+      cache: false,
+      jsonp: wapoEnv.param_name_jsonp_callback,
+      success: function(data){
+	  if(data.isBanned == true){
+	      wapoVisitor.wapoLogout();
+          }
+      }
+  });
+}
+
+
+
 $wpjQ(document).ready(function($){
     $wpjQ.ajax({
 	url: wapoEnv.waposites_js,
@@ -90,6 +108,7 @@ $wpjQ(document).ready(function($){
                             	    if(typeof Echo !== 'undefined'){
                                 	wapoIdentityInit();
                             	    }
+                            	    isBanned();
 				}
 			    })
 		        }

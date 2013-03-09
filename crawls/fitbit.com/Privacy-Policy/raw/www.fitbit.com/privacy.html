@@ -52,10 +52,10 @@
         
 
         
-        <link rel="stylesheet" type="text/css" href="../static2.fitbit.com/combined.s-css-css.h484a693fa40d4dba2a2d26b5ae15630d.pack%3Fitems=%252Fjs%252Flib%252Fjqueryui%252F1.8.1%252Fthemes%252Fbase%252Fjquery.ui.core.css" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="../static0.fitbit.com/combined.s-css-css.hfb9dcf1ced74214aaa9d419aeeff602d.pack%3Fitems=%252Fjs%252Flib%252Fjqueryui%252F1.8.1%252Fthemes%252Fbase%252Fjquery.ui.core.css" charset="utf-8"/>
 
         
-        <link rel="stylesheet" type="text/css" href="../static3.fitbit.com/combined.s-css-css.h4195d7607dc26d72d36c68543f185374.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="../static6.fitbit.com/combined.s-css-css.h641e3f4bfe8c508cebac4a060a7ad7ad.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
         
 
         <!--[if IE]>
@@ -945,13 +945,11 @@ http://help.fitbit.com
                             </a>
                         </li>
                         
-                        
-                        <li class="footer-link-item">&nbsp;</li>
                     </ul>
                 </section>
                 
                 
-                    <section class="footer-section">
+                    <section class="footer-section deviceHelp">
                         <h4 class="headline">
                             Device Help
                         </h4>
@@ -981,7 +979,7 @@ http://help.fitbit.com/#product_ultra">Ultra Tracker Help</a>
 
 http://help.fitbit.com/#product_aria">Aria Scale Help</a>
                             </li>
-                                
+                            
                         </ul>
                     </section>
                 
@@ -1009,7 +1007,7 @@ http://help.fitbit.com/#product_aria">Aria Scale Help</a>
     
         
         
-            <script type="text/javascript"  src="../static7.fitbit.com/combined.s-jsyui-js.h6c697069e934fdd678e6453bc6e7a91b.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fjquery.fitbitCommon.js%252C%252Fjs%252Fswfobj"  charset="utf-8" ></script>
+            <script type="text/javascript"  src="../static2.fitbit.com/combined.s-jsyui-js.h676e4acf7eda6262866b28fbaebf25d8.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fjquery.fitbitCommon.js%252C%252Fjs%252Fswfobj"  charset="utf-8" ></script>
             
    		
 
@@ -1548,7 +1546,7 @@ fitbit.i18n.setResource('com.fitbit.app.user.friends.label.empty_state_notificat
 
 
     
-	<script type="text/javascript"  src="../static1.fitbit.com/combined.s-jsyui-js.h09eed72d33f6c619f019ad4e91229d7d.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fmodules%252Fdropdown.js%252C%252Fjs%252Ffitbit%25"  charset="utf-8" ></script>
+	<script type="text/javascript"  src="../static0.fitbit.com/combined.s-jsyui-js.ha46764f01064955fb49ae54340d16c61.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fmodules%252Fdropdown.js%252C%252Fjs%252Ffitbit%25"  charset="utf-8" ></script>
 	
 
     
@@ -2080,7 +2078,6 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
     'set_config','people.set','people.increment','people.track_charge','people.append'];
     for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.2;})(document,window.mixpanel||[]);
 
-	var mpq = [];
 	var mpqMasterPrj = "82d19845b298fcc8b8713861c9cf67c0";
     var mpqSignupPrj = "6d8c58bf820d35c347bf4c80b85dfa87";
     var mpqDashboardPrj = "f1d7f147cdb73c164d5e1e29f7cda229";
@@ -2093,64 +2090,348 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 
     var mpqQAPrj = "45b3cbfc56ddb35a099bc7f38fc74f4c"; // QA Project
 
-    var getMixpanelConfig = function(namespace){
-        return {
-            cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500, upgrade: true,
-            loaded: function(){
-                // Upgrade to new mixpanel, which does not use mpq variable
-                // If they don't equal each other
-                if (mpq != mixpanel) {
-                    // Then we'll set the mpq items
-                    var len = mpq.length, i = 0;
-                    while(len--){
-                        mixpanel.push(mpq[i++]);
-                    }
-
-                    // And make mpq variable equal mixpanel, so future calls to mpq will just call mixpanel
-                    mpq = mixpanel;
-                }
-
-                
-            }
-        };
-    };
-
     
     if ( !(document.location.host === "www.fitbit.com" || document.location.host === "api.fitbit.com") ) {
         mpqMasterPrj = mpqSignupPrj = mpqDashboardPrj = mpqOrderPrj = mpqBadgesPrj = mpqDevicesPrj = mpqWebsitePrj = mpqSocialFeaturesPrj = mpqCWPrj = mpqQAPrj;
     }
 
-    mixpanel.init(mpqWebsitePrj, getMixpanelConfig());
+    /**
+     * Mixpanel wrapper
+     * @param {String} token Your Mixpanel project token. This can be found on the Settings page of your Mixpanel report.
+     * @param @optional {Object} config   A dictionary of configuration options to set. These are the same options available in mixpanel.set_config
+     * @param @optional {String} namespace The name for the new Mixpanel tracking instance to create. This will be an attribute of the global Mixpanel object - if you pass in "twitter", for example, you will then make calls like mixpanel.twitter.track("tweet").
+     */
+    var Mixpanel = function(token, config, namespace) {
+        if ( !(this instanceof Mixpanel) ) {
+            return new Mixpanel(token, config, namespace);
+        }
+
+        this.initialize(token, config, namespace);
+
+        return this;
+    };
+
+    Mixpanel.prototype = {
+        /**
+         * Initialize mixpanel object
+         * @param {String} token Your Mixpanel project token. This can be found on the Settings page of your Mixpanel report.
+         * @param @optional {Object} config   A dictionary of configuration options to set. These are the same options available in mixpanel.set_config
+         * @param @optional {String} namespace The name for the new Mixpanel tracking instance to create. This will be an attribute of the global Mixpanel object - if you pass in "twitter", for example, you will then make calls like mixpanel.twitter.track("tweet").
+         * @return {Object} This instance.
+         */
+        initialize: function(token, config, namespace) {
+            // Retrieve the mixpanel object and intialize
+            this.getMixpanelObj().init(token, config, namespace);
+
+            // Store the token, config, and namespace
+            this.token = token;
+            this.config = config;
+            this.namespace = namespace;
+
+            return this;
+        },
+
+        /**
+         * Retrieve the mixpanel object, referencing the namespace if it exists
+         * @return {Object} The mixpanel object.
+         */
+        getMixpanelObj: function() {
+            var mixpanel = window.mixpanel;
+            var namespace = this.namespace;
+
+            // Retrieve the mixpanel instance based on the namespace if the instance exists
+            if(namespace && mixpanel[namespace]) {
+                mixpanel = mixpanel[namespace];
+            }
+
+            return mixpanel;
+        },
+
+        /**
+         * Trigger a method with a set of arguments
+         * @param  {Array} args A set of arguments to trigger. Like ['register', {}], which would trigger mixpanel.register({});
+         * @return {Object} This instance.
+         */
+        push: function(args) {
+            var mixpanel = this.getMixpanelObj();
+            mixpanel.push(args);
+
+            return this;
+        }
+    };
+
+    /**
+     * Initialize and store mixpanel projects
+     * @param {Object} options Optional values containing the array of projects to initialize, super properties to set for all initialized projects, and the default project token
+     * @return {Object} This instance.
+     */
+    Mixpanel.Manager = function(options) {
+        if ( !(this instanceof Mixpanel.Manager) ) {
+            return new Mixpanel.Manager(options);
+        }
+
+        this.initialize(options);
+
+        return this;
+    };
+
+    Mixpanel.Manager.prototype = {
+        /**
+         * Setup projects and store the default project token
+         * @param {Object} options Optional values containing the projects to initialize, super properties to set for all initialized projects, and the default project
+         * @return {Object} This instance.
+         */
+        initialize: function(options) {
+            // Default project token. Will be used as a key to retrieve the default project
+            this.default = options.default;
+
+            this.setupProjects(options.projects || [], options.properties);
+
+            return this;
+        },
+
+        /**
+         * [setupProjects description]
+         * @param {Array} projects A collection of mixpanel projects to initialize. Each item in the could be: {token: '', config: {}, namespace: ''}. config and namespace are optional
+         * @param @optional {Object} properties Super properties that will be registered on every project in the projects array
+         * @return {Object} This instance.
+         */
+        setupProjects: function(projects, properties) {
+            // Create an object to store projects
+            this.projects = {};
+
+            var length = projects.length;
+            var i = 0;
+
+            // Loop through the array of projects and register them
+            while(length--) {
+                var project = projects[i++];
+                this.registerProject(project, properties);
+            }
+
+            return this;
+        },
+
+        /**
+         * Trigger a method with a set of arguments.
+         *
+         * Prior to Mixpanel's JS API v2.2, events could include a set of propeties. These properties could include a token so that
+         * events could be tracked on the tokens corresponding project. v2.2 ignores this token now, so instead, private tracking
+         * methods triggered by this push method will use the properties.token to track the event on the appropriate project.
+         *
+         * @param  {Array} args A set of arguments to trigger. Like ['register', {}], which would trigger mixpanel.register({});
+         * @return {Object} This instance.
+         */
+        push: function(args) {
+            var methodName = args.shift();
+            var mixpanel;
+
+            // Check if a private method exists on the instance to handle the method args
+
+            var method = this['_' + methodName];
+            if(method) {
+                method.apply(this, args);
+            } else {
+                // Otherwise, trigger push method on the default mixpanel project
+                mixpanel = this.getProject();
+                mixpanel.push(args);
+            }
+
+            return this;
+        },
+
+        /**
+         * Track event on the appropriate project.
+         *
+         * The project will be retrieved based on properties.token. If none is passed, the event will be tracked on the default mixpanel project.
+         *
+         * @private
+         * @param  {String} event The name of the event to track. This can be anything a user does - "button click", "user signup", "item purchased", etc. You can name your events anything you like.
+         * @param  @optional {Object} properties A set of properties to include with the event you're sending. These can describe the user who did the event or the event itself.
+         * @param  @optional {Function} callback A callback function to fire after the event is successfully tracked.
+         * @return {Object} This instance.
+         */
+        _track: function(event, properties, callback) {
+            properties = properties || {};
+
+            var project = this.getProject(properties.token);
+            project && project.getMixpanelObj().track(event, properties, callback);
+
+            return this;
+        },
+
+        /**
+         * Track clicks on a set of links defined by a selector (a normal CSS selector, not jQuery style class or logical selectors) on the appropriate project.
+         *
+         * The project will be retrieved based on properties.token. If none is passed, the event will be tracked on the default mixpanel project.
+         *
+         * @private
+         * @param  {String} selector A valid CSS selector that matches the link(s) you want to track
+         * @param  {Stirng} event The name of the event to send when a link is clicked. This can be anything you want, like "clicked header link" or "footer link click".
+         * @param  @optional {Object|Function} properties This can be a set of properties, or a function that returns a set of properties after being passed a DOMElement. Example values: { user_type: "paid", button_id: 45 } or function(link) { return { link_type: $(link).attr('type') }; }
+         * @return {Object} This instance.
+         */
+        _track_links: function(selector, event, properties) {
+            properties = properties || {};
+
+            var project = this.getProject(properties.token);
+            project && project.getMixpanelObj().track_links(selector, event, properties);
+
+            return this;
+        },
+
+        /**
+         * Track the submission of a form. The form is identified by a valid CSS selector targeting the form element.
+         *
+         * The project will be retrieved based on properties.token. If none is passed, the event will be tracked on the default mixpanel project.
+         *
+         * @private
+         * @param {String} selector A valid CSS selector that matches the link(s) you want to track.
+         * @param {String} event The name of the event to send when the form is submitted. This can be anything you want, like "submitted contact form" or "user signup".
+         * @param {Object|Function} properties This can be a set of properties, or a function that returns a set of properties after being passed a DOMElement. Example values: { user_type: "paid", button_id: 45 } or function(form) { return { form_type: $(form).attr('type') }; }
+         * @return {Object} This instance.
+         */
+        _track_forms: function(selector, event, properties) {
+            properties = properties || {};
+
+            var project = this.getProject(properties.token);
+            project && project.getMixpanelObj().track_forms(selector, event, properties);
+
+            return this;
+        },
+
+        /**
+         * Retrieve a mixpanel project
+         * @param  @optional {String} token Used as a key to retrieve the mixpanel project. Defaults to using the default property stored on the instance
+         * @return {Object|Undefined} The project corresponding to the token/default or undefined if it is not found.
+         */
+        getProject: function(token) {
+            return this.projects[token || this.default];
+        },
+
+        /**
+         * Store a Mixpanel project. A Mixpanel project is instantiated from the data. If the data is the Mixpanel instance itself, it will just be stored.
+         * @param {Object} data An object containing a token, config and namespace. Can also be a Mixpanel instance.
+         * @param @optional {Object} properties Super properties to be registered on the project
+         * @return {Object} Mixpanel instnace.
+         */
+        registerProject: function(data, properties) {
+            var project;
+
+            if (data) {
+                if (data.token) {
+                    project = this.projects[data.token];
+
+                    if (!project) {
+                        project = data instanceof Mixpanel ? data : new Mixpanel(data.token, data.config, data.namespace);
+                        this.projects[data.token] = project;
+                    }
+
+                    if (properties) project.getMixpanelObj().register(properties);
+                }
+            }
+
+            return project;
+        }
+    };
+
+    Mixpanel.getMixpanelConfig = function(namespace, trackPageView){
+        return {
+            cookie_name: "mp_cookie", cross_subdomain_cookie: false, track_links_timeout: 500, upgrade: true, track_pageview: trackPageView,
+            loaded: function(){
+                
+            }
+        };
+    };
+
+    var mpq = new Mixpanel.Manager({
+        'default': mpqWebsitePrj,
+        projects: [
+            {
+                token: mpqWebsitePrj,
+                config: Mixpanel.getMixpanelConfig()
+            },
+            {
+                token: mpqSignupPrj,
+                config: Mixpanel.getMixpanelConfig('signup', false),
+                namespace: 'signup'
+            },
+            {
+                token: mpqDashboardPrj,
+                config: Mixpanel.getMixpanelConfig('dashboard', false),
+                namespace: 'dashboard'
+            },
+            {
+                token: mpqOrderPrj,
+                config: Mixpanel.getMixpanelConfig('order', false),
+                namespace: 'order'
+            },
+            {
+                token: mpqBadgesPrj,
+                config: Mixpanel.getMixpanelConfig('badges', false),
+                namespace: 'badges'
+            },
+            {
+                token: mpqDevicesPrj,
+                config: Mixpanel.getMixpanelConfig('devices', false),
+                namespace: 'devices'
+            },
+            {
+                token: mpqSocialFeaturesPrj,
+                config: Mixpanel.getMixpanelConfig('social', false),
+                namespace: 'social'
+            },
+            {
+                token: mpqCWPrj,
+                config: Mixpanel.getMixpanelConfig('corporatewellness', false),
+                namespace: 'corporatewellness'
+            },
+            {
+                token: mpqQAPrj,
+                config: Mixpanel.getMixpanelConfig('qa', false),
+                namespace: 'qa'
+            }
+        ]
+    });
+
+    
+    for(var p in mpq.projects){
+        if (mpq.projects.hasOwnProperty(p)) {
+            mpq.projects[p].push(["register", {"age":"","city":"","country":"","gender":"","interface":"","member":"","state":"","timezone":"","Api Usage":"","City":"","State":"","Food Goal":"","Goal Primary":"","GoalFoodBudget":"","GoalFoodCalories":"","GoalPrimary":"","GoalWeight":"","Member":"","Tracker":""}, "all"]);
+            mpq.projects[p].push(["register", {"Locale": "US"}, "all", 90]);
+            mpq.projects[p].push(["register", {"LocaleLang": "en_US"}, "all", 90]);
+            mpq.projects[p].push(["register", {"CW": "no"}, "all", 90]);
+            mpq.projects[p].push(["register", {"LocaleReal": "US"}, "all", 90]);
+
+        
+            mpq.projects[p].push(["register", {"Loggedin": "False"}, "all", 90]);
+        
+        }
+    }
 
     
     (function(){
-        var masterConfig = getMixpanelConfig('master');
-        mixpanel.init(mpqMasterPrj, masterConfig, 'master');
-        mixpanel.master.register({"Environment":"prod","Logged In":false});
+        mpq.registerProject({
+            token: mpqMasterPrj,
+            config: Mixpanel.getMixpanelConfig('master', false),
+            namespace: 'master'
+        });
 
+        var props = {"Environment":"prod","Logged In":false};
         var userAgent = new UAParser(),
             os = userAgent.getOS(),
             osVersion = [os.name, os.version].join(' ');
 
-        mixpanel.master.register({
-            '!PAGEGROUP': 'Web',
-            'Locale': 'en_US',
-            'Operating System Version': osVersion
-        });
-    })()
-    
-    mpq.push(["register", {"age":"","city":"","country":"","gender":"","interface":"","member":"","state":"","timezone":"","Api Usage":"","City":"","State":"","Food Goal":"","Goal Primary":"","GoalFoodBudget":"","GoalFoodCalories":"","GoalPrimary":"","GoalWeight":"","Member":"","Tracker":""}, "all"]);
-    mpq.push(["register", {"Locale": "US"}, "all", 90]);
-    mpq.push(["register", {"LocaleLang": "en_US"}, "all", 90]);
-    mpq.push(["register", {"CW": "no"}, "all", 90]);
-    mpq.push(["register", {"LocaleReal": "US"}, "all", 90]);
+        props['!PAGEGROUP'] = 'Web';
+        props['Locale']= 'en_US';
+        props['Operating System Version'] = osVersion;
 
+        mpq.getProject(mpqMasterPrj).push(['register', props]);
+    })()
     
     fitbit.loadInlineScript(function () {
 
 	    
-	            mpq.push(["register", {"Loggedin": "False"}, "all", 90]);
-	        
 	    $(function () {
             
 	        mpq.push(["track_links",
@@ -2204,7 +2485,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
 
 
 
-<script type="text/javascript"  src="../static6.fitbit.com/combined.s-jsyui-js.h29868ac39aedb2d77da06891d65cb479.pack%3Fitems=%252Fjs%252Ftracking%252FCTCommon.js%252C%252Fjs%252Flib%252Fboomerang%252Fboo"  charset="utf-8" ></script>
+<script type="text/javascript"  src="../static6.fitbit.com/combined.s-jsyui-js.h2db73a0223767272a59d610e271fc924.pack%3Fitems=%252Fjs%252Ftracking%252FCTCommon.js%252C%252Fjs%252Flib%252Fboomerang%252Fboo"  charset="utf-8" ></script>
 
 
 
@@ -2227,7 +2508,7 @@ fitbit.i18n.setResource('com.fitbit.app.includes.label.germany', 'Deutschland');
     
     
     
-    	BOOMR.addVar("requestId", "web03.fitbit.com_1362575345941_48273");
+    	BOOMR.addVar("requestId", "web06.fitbit.com_1362834337369_27137");
     
     </script>
 

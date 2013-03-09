@@ -106,4 +106,11 @@ jQuery(document).ready(function()
 	};
 
 	omnitureTrackingQueryParam.run();
+
+	jQuery("a[href^='http://link.csmonitor.com/join']").click(function(){
+		var s = s_gi(s_account);
+		s.linkTrackVars='prop4';
+		s.linkTrackEvents='';
+		s.tl(this, 'o', 'Newsletter Signup');
+	});
 });

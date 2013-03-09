@@ -3448,10 +3448,7 @@ break
 }}}return d
 }};var axel=Math.random()+"";
 var a=axel*10000000000000;
-function GetActionTag(b){if(b){var d=document.getElementById(b);
-var c="http://view.atdmt.com/jaction/";
-if(d){document.body.removeChild(d)
-}}}function GetFloodlightTag(c){if(c){var e=document.getElementById(c);
+function GetFloodlightTag(c){if(c){var e=document.getElementById(c);
 var d="http://3990485.fls.doubleclick.net/activityi;";
 var b=c.split(";");
 for(s in b){if(b[s].indexOf("src")==0){d="http://"+b[s].split("=")[1]+".fls.doubleclick.net/activityi;";
@@ -4382,7 +4379,6 @@ c("#zipInput").val(m)
 }c("#locDealerForm input[name=zip]").bind("keydown",e.numbersOnly);
 c("#locDealerForm").bind("submit",function(C){e.metrics.trackInteraction({linkName:"DealerLocator",linkSource:"Header"});
 e.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"ZipCode-Header-Click",label:c("#zipInput").val()+"-Search"});
-e.metrics.trackAtlasInteraction({action:"MBU_LCP_Find_a_dealer_page",atc4:c("#zipInput").val()});
 if(c(this).find("input[name=zip]").val().length<5||c(this).find("input[name=zip]").val().length>5){c(this).find(".errorTxt").show();
 return false
 }c.cookie("MBUSA_PREFERRED_ZIP",c(this).find("input[name=zip]").val(),{path:"/",expires:new Date(2042,1,1)})
@@ -4578,9 +4574,6 @@ if(typeof i.trackType=="undefined"){i.trackType="_trackEvent"
 f.trackGAInteraction=function(i){i.trackType="_trackEvent";
 a(i)
 };
-f.trackAtlasInteraction=function(i){i.type="Atlas";
-a(i)
-};
 f.trackPage=function(i){if(typeof(i)=="string"){i=g(i)
 }a(i)
 };
@@ -4656,28 +4649,6 @@ if(l){mb.metrics.trackInteraction(l)
 }catch(k){if(mb.logger.level<=ERROR){mb.logger.error(k)
 }}}
 })(jQuery);if(typeof(window.mb)=="undefined"){mb={}
-}mb.atlas=new (function(){var c=this;
-var b=["action","type","model","class","year","bodyStyle"];
-var a=document.location.protocol+"//view.atdmt.com/jaction/";
-c.init=function(){};
-c.track=function(j){if(new Date().getTime()>new Date(2013,2,1,0,0,0,0)){return
-}mb.logger.info("mb.atlas.track");
-var e=j.action;
-var d=0;
-var f={};
-if(j.type=="Atlas"){for(var h in j){if($.inArray(h,b)==-1){f[h]=j[h];
-d++
-}}if(d==1){for(var h in f){e=j.action+"/v3/"+h+"."+f[h]
-}}else{if(d>1){var g=0;
-e=j.action+"/v3/";
-for(var h in f){if(g==0){e+=h+"."+f[h]+"/"
-}else{if(g==d-1){e+=h+"."+f[h]+""
-}else{e+=h+"."+f[h]+"/"
-}}g++
-}}}mb.atlas.setAtlasTag(e)
-}};
-c.setAtlasTag=function(d){}
-})();if(typeof(window.mb)=="undefined"){mb={}
 }mb.ga=new (function(){var a=this;
 a.init=function(){mb.logger.info("mb.ga.track.init")
 };
@@ -5058,8 +5029,7 @@ return false
 e("#errorMsg").addClass("error");
 e(".error").text("Please enter valid zip code.");
 return false
-}}mb.metrics.trackInteraction({type:"Atlas",action:"NYC_MBUSAPayment_Calculator"});
-e("#payment-estimator-form input[name=payment1]").bind("keydown",mb.numbersOnly);
+}}e("#payment-estimator-form input[name=payment1]").bind("keydown",mb.numbersOnly);
 e("#payment-estimator-form input[name=payment2]").bind("keydown",mb.numbersOnly);
 e("#payment-estimator-form input[name=payment3]").bind("keydown",mb.numbersOnly);
 var w=e(".down-payment");
@@ -5175,7 +5145,7 @@ e("#errorMsg2").addClass("error");
 e("#errorMsg2").html("Option "+G+" : The down payment plus the trade-in amount exceeds the allowed amount.<br>Please enter an amount not greater than 25% of MSRP.")
 }if(g.find("#monthly"+(C+1)).text()=="$0"){g.find("#monthly"+(C+1)).text("No Data Available")
 }else{g.find("#monthly"+(C+1)).text(c.formatCurrency(A[C][x+"monthlyPayment"]))
-}}}}e("#payment-estimator .apply-credit-track-link").attr("href","https://www.mbfs.com/mbfsr/en/apply/applyHome.do?RequestFrom=MBUSA&Veh_ModelCode="+q.model+"&Veh_ModelYear="+q.year);
+}}}}e("#payment-estimator .apply-credit-track-link").attr("href","https://www.mbfs.com/mbfsr/en/apply/applyHome.do?RequestFrom=MBUSA&Veh_ModelCode="+q.model+"&Veh_ModelYear="+q.year+"&utm_campaign=mbusa_sites&utm_source=mbusa.com&utm_medium=referral&utm_content=payment_estimator_page_"+q.year+"_"+q.model);
 e(".apply-credit-track-link").click(function(){if(q.model=="C250W"){q.model="C250WZ"
 }else{if(q.model=="C300W4"){q.model="C300WZ4"
 }else{if(q.model=="SL550"){q.model="SL550R"
@@ -5195,8 +5165,7 @@ return false
 var a=function(y){mb.logger.log("mb.forms.initPageStyles");
 var j=y.getProperty("section"),q=y.getProperty("subsection");
 e(".apply-credit-footer").click(function(){var i={type:"GA",trackType:"_trackEvent",category:"outbound-apply-for-credit",action:"Apply for Credit",label:"Apply for Credit(Financing)"};
-mb.metrics.trackInteraction(i);
-mb.metrics.trackInteraction({type:"Atlas",action:"MBU_ApplyForCredit_Start"})
+mb.metrics.trackInteraction(i)
 });
 if(y.getProperty("subsection")=="owners_support"){e.cookie("C_VID_CLASS_PATH","",{path:"/mercedes/owners/videos/"});
 e.cookie("C_VID_CLASS_PATH",null,{path:"/mercedes/owners/videos/"})
@@ -5562,7 +5531,7 @@ c("#esm-form").attr("action",h+"/"+g+"/mercedes_email_subscription/subscribe/cha
 c(".esm-email").click(function(l){if(c(this).val()=="Enter your email address"){c(this).val("")
 }});
 c("#esm-form").validate({onfocusout:false,onkeyup:false,rules:{email:{required:true,email:true}},messages:{email:{required:"Please enter your email address.",email:"Please enter a valid email address"}},errorPlacement:function(l,m){c("#esm-form .esm-form-controls .esm-errors").html(l)
-},submitHandler:function(n){if(c("#esm-form .esm-category input:checked").size()==0||c("#global-optin").val()=="O"){if(d=="esm"){c(".esm-form-controls #email").addClass("error");
+},submitHandler:function(l){if(c("#esm-form .esm-category input:checked").size()==0||c("#global-optin").val()=="O"){if(d=="esm"){c(".esm-form-controls #email").addClass("error");
 c("#esm-form .esm-form-controls .esm-errors").html("<label class='error'>Please select at least one email category</label>");
 return false
 }else{if(c(".esm-change-email input[name='oldEmail']").val()==c("#esm-form .esm-email").val()){c("#global-optin").val("O");
@@ -5571,16 +5540,13 @@ c("#esm-form").attr("action",c("#unsubscribe-all a").attr("href"))
 c("#esm-form .esm-form-controls .esm-errors").html("<label class='error'>Please select at least one email category</label>");
 return false
 }c.cookie("MBUSA_ESM_STATUS",null,{path:"/"})
-}}else{if(d=="manage_optin_status"){if(c(".esm-change-email input[name='oldEmail']").val()!=c("#esm-form .esm-email").val()){c(n).attr("action",h+"/"+g+"/mercedes_email_subscription/subscribe/change")
+}}else{if(d=="manage_optin_status"){if(c(".esm-change-email input[name='oldEmail']").val()!=c("#esm-form .esm-email").val()){c(l).attr("action",h+"/"+g+"/mercedes_email_subscription/subscribe/change")
 }else{c("#global-optin").val("I");
-c(n).attr("action",h+"/"+g+"/mercedes_email_subscription/update/success");
-var m=c("#esm-form .esm-category input:checked[name='newsletterCategories[1].optIn']").length;
-if(m==1){var l={type:"Atlas",trackType:"_trackEvent",action:"MBU_EmailSubscribe"};
-mb.metrics.trackInteraction(l)
-}}}c.cookie("MBUSA_ESM_STATUS","1",{path:"/",expires:new Date(2042,1,1)})
-}mb.contactus.setOptinGaTag(n,"ESM-ContactUs",d);
-if(d=="manage_optin_status"){mb.contactus.setOptoutGaTag(n,"ESM-ContactUs")
-}n.submit();
+c(l).attr("action",h+"/"+g+"/mercedes_email_subscription/update/success")
+}}c.cookie("MBUSA_ESM_STATUS","1",{path:"/",expires:new Date(2042,1,1)})
+}mb.contactus.setOptinGaTag(l,"ESM-ContactUs",d);
+if(d=="manage_optin_status"){mb.contactus.setOptoutGaTag(l,"ESM-ContactUs")
+}l.submit();
 return false
 }});
 c("#manage-interests-form").validate({onfocusout:false,onkeyup:false,rules:{email:{required:true,email:true}},messages:{email:{required:"Please enter your email address.",email:"Please enter a valid email address"}},errorPlacement:function(l,m){c(".esm-active-state .esm-form-controls .esm-errors").html(l);
@@ -5610,21 +5576,19 @@ c("#image-overlay").parent().prev("a.close-modal").addClass("image-overlay-close
 c(".image-overlay-close").html("<span/>");
 c(".image-overlay-close").parent().parent(".modal-container").addClass("esm-overlay")
 };
-a.setOptinGaTag=function(j,i,k){var f="";
+a.setOptinGaTag=function(i,h,j){var f="";
 var g=false;
-var l=false;
-c(j).find(".esm-category input:checked").next("div.esm-cat-details").each(function(o,m){var n=c.trim(c(this).find("label").text());
-if(k=="manage_optin_status"){if(b[n]=="false"&&c(this).prev("input").is(":checked")==true){f+=n+"|"
-}}else{f+=n+"|"
-}if(!g&&b[n]=="false"&&c(this).prev("input").is(":checked")==true){g=true;
-l=true
+var k=false;
+c(i).find(".esm-category input:checked").next("div.esm-cat-details").each(function(n,l){var m=c.trim(c(this).find("label").text());
+if(j=="manage_optin_status"){if(b[m]=="false"&&c(this).prev("input").is(":checked")==true){f+=m+"|"
+}}else{f+=m+"|"
+}if(!g&&b[m]=="false"&&c(this).prev("input").is(":checked")==true){g=true;
+k=true
 }});
 f=f.substr(0,f.length-1);
-if(f!=""){if(g){mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:i,action:"ESM-Winback",label:""})
-}if(k=="manage_optin_status"){if(l){mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:i,action:"ESM-Optin",label:f})
-}}else{if(c(".contactus").length){var h=c("#esm-form .esm-category input:checked[name='newsletterCategories[1].optIn']").length;
-if(h==1){mb.metrics.trackInteraction({type:"Atlas",action:"MBU_EmailSubscribe"})
-}}mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:i,action:"ESM-Optin",label:f})
+if(f!=""){if(g){mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:h,action:"ESM-Winback",label:""})
+}if(j=="manage_optin_status"){if(k){mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:h,action:"ESM-Optin",label:f})
+}}else{mb.metrics.trackInteraction({type:"GA",trackType:"_trackEvent",category:h,action:"ESM-Optin",label:f})
 }}};
 a.setOptoutGaTag=function(h,g){var f="";
 c(h).find(".esm-category input").each(function(){var i=c.trim(c(this).next(".esm-cat-details").find("label").text());
@@ -6124,16 +6088,14 @@ c(k).parents(".esm-widget-wrapper.on").parent(".esm-signup").siblings(".esm-form
 c(k).parents(".esm-widget-wrapper.on").prev(".esm-widget-background").addClass("esm-bg-error-state")
 },submitHandler:function(l){var k=c(l).serialize();
 var j=c(l).attr("action");
-c.ajax({type:"POST",url:j,data:k,success:function(p,r,o){c(".esm-widget-wrapper").removeClass("on");
+c.ajax({type:"POST",url:j,data:k,success:function(o,q,n){c(".esm-widget-wrapper").removeClass("on");
 c(".esm-widget-background").hide();
-var n=c(".esm-category input:checked[name='newsletterCategories[1].optIn']").length;
-var q=c(".classic-center #signup-container .esm-category input:checked[name='newsletterCategories[2].optIn']").length;
-if(q>0){n=1
-}c(l).parents(".esm-signup").html(p);
+var m=c(".esm-category input:checked[name='newsletterCategories[1].optIn']").length;
+var p=c(".classic-center #signup-container .esm-category input:checked[name='newsletterCategories[2].optIn']").length;
+if(p>0){m=1
+}c(l).parents(".esm-signup").html(o);
 mb.contactus.setOptinGaTag(l,"ESM-InPage");
-if(n==1){var m={type:"Atlas",trackType:"_trackEvent",action:"MBU_EmailSubscribe"};
-mb.metrics.trackInteraction(m)
-}c.cookie("MBUSA_ESM_STATUS","1",{path:"/",expires:new Date(2042,1,1)})
+c.cookie("MBUSA_ESM_STATUS","1",{path:"/",expires:new Date(2042,1,1)})
 },error:function(m,o,n){mb.logger.log("ESM subscribe error:"+n)
 }});
 return false
@@ -6585,15 +6547,7 @@ var formCommentsVal=$("#command #comments").val();
 if(formCommentsVal!==null){formCommentsVal=formCommentsVal.replace(mbraceCustomComment,"");
 formComments.val(formCommentsVal)
 }}if(currModalSubsection.indexOf("thankyou")>=0){var testDrive=$("#preferredTestDrive:checked",$currForm);
-if(testDrive.length>0){var actionString="Contact_Form:Request_Quote_Testdrive:Thankyou",labelString="Contact_Form:Request_Quote_Testdrive";
-if(typeof mb.leadAtlasParams!="undefined"){mb.metrics.trackInteraction(mb.leadAtlasParams);
-mb.leadAtlasParams=undefined
-}if(typeof mb.testDriveLeadAtlasParams!="undefined"){mb.metrics.trackInteraction(mb.testDriveLeadAtlasParams);
-mb.testDriveLeadAtlasParams=undefined
-}}else{var actionString="Contact_Form:"+labelFormType[subsection]+":Thankyou",labelString="Contact_Form:"+labelFormType[subsection];
-if(typeof mb.leadAtlasParams!="undefined"){mb.metrics.trackInteraction(mb.leadAtlasParams);
-mb.leadAtlasParams=undefined
-}}if($('[name="vehicleModel"]',$currForm).length){var modelString=$('[name="vehicleModel"]',$currForm).val();
+if($('[name="vehicleModel"]',$currForm).length){var modelString=$('[name="vehicleModel"]',$currForm).val();
 if(modelString!=""){labelString+=":"+modelString
 }}}else{var actionString="Contact_Form:Start",labelString="Contact_Form:"+labelFormType[subsection];
 var metricsParamFrom={type:"GA",trackType:"_trackEvent",category:"Contact_Form",action:"Contact_Form:From:"+window.location.pathname,label:"Contact_Form:"+labelFormType[subsection]};
@@ -6603,8 +6557,7 @@ if(currModalSubsection.indexOf("classic-center")>=0||currModalSubsection.indexOf
 tdtimeOpts=$("#testDriveTime option")
 }var metricsParam={type:"GA",trackType:"_trackEvent",category:"Contact_Form",action:actionString,label:labelString};
 mb.metrics.trackInteraction(metricsParam);
-if(subsection=="test_drive"){mb.metrics.trackAtlasInteraction({action:"MBU_CORP_RequestTestDrive"});
-mb.metrics.trackInteraction({type:"Floodlight",fl_type:"sched418",src:"3990485",cat:"mbu_c261"})
+if(subsection=="test_drive"){mb.metrics.trackInteraction({type:"Floodlight",fl_type:"sched418",src:"3990485",cat:"mbu_c261"})
 }if(subsection=="request_a_quote"){mb.metrics.trackInteraction({type:"Floodlight",fl_type:"reque871",src:"3990485",cat:"nyc_m475"})
 }}if(section==="contactus"&&$('select[name="vehicleClass"]').length){me.initVehicleSelector(node);
 $('[name="vehicleModel"]').bind("change",function(){if($('[name="vehicleModel"]').val().length>0){var data="class="+$('[name="vehicleClass"]').val()+"&model="+$('[name="vehicleModel"]').val();
@@ -7180,77 +7133,75 @@ d++){var g=f[d].split(e);
 if(g.length==2){return g[1]
 }}return null
 }
-})(jQuery);mb.dealerWidget=(function(a){return function(r,n){var v=this,i=mb.logger,c,e,k,d,t,f,q,o,m,g,s,b={type:"GA",trackType:"_trackEvent",category:"find_local_dealer",action:"find_local_dealer:find_dealer",label:"find_local_dealer:find_by_zip"},l={type:"Atlas",action:"MBU_BYO_FindDealer"},j='input[name="zipMin"]',h,u,p;
-v.getElement=function(){return c
+})(jQuery);mb.dealerWidget=(function(a){return function(q,m){var u=this,i=mb.logger,c,e,k,d,s,f,p,n,l,g,r,b={type:"GA",trackType:"_trackEvent",category:"find_local_dealer",action:"find_local_dealer:find_dealer",label:"find_local_dealer:find_by_zip"},j='input[name="zipMin"]',h,t,o;
+u.getElement=function(){return c
 };
-v.setOptions=function(w){e=w||{}
+u.setOptions=function(v){e=v||{}
 };
-v.getOptions=function(){return e
+u.getOptions=function(){return e
 };
-v.setResult=function(w){k=w
+u.setResult=function(v){k=v
 };
-v.getResult=function(){return k
+u.getResult=function(){return k
 };
-v.setFullTakeOver=function(w){if(typeof w==="boolean"){d=w
-}else{d=a(w).find("input[name=fullTakeOver]").val().toLowerCase()==="true"?true:false
+u.setFullTakeOver=function(v){if(typeof v==="boolean"){d=v
+}else{d=a(v).find("input[name=fullTakeOver]").val().toLowerCase()==="true"?true:false
 }};
-v.getFullTakeOver=function(){return d
+u.getFullTakeOver=function(){return d
 };
-v.setMapHeight=function(w){if(typeof w==="number"){o=w
-}else{o=parseInt(a(w).find("input[name=mapHeight]").val(),10)
+u.setMapHeight=function(v){if(typeof v==="number"){n=v
+}else{n=parseInt(a(v).find("input[name=mapHeight]").val(),10)
 }};
-v.getMapHeight=function(){return o
+u.getMapHeight=function(){return n
 };
-v.setMapWidth=function(w){if(typeof w==="number"){q=w
-}else{q=parseInt(a(w).find("input[name=mapWidth]").val(),10)
+u.setMapWidth=function(v){if(typeof v==="number"){p=v
+}else{p=parseInt(a(v).find("input[name=mapWidth]").val(),10)
 }};
-v.getMapWidth=function(){return q
+u.getMapWidth=function(){return p
 };
-v.setShowMap=function(w){if(typeof w==="boolean"){f=w
-}else{f=a(w).find("input[name=showMap]").val().toLowerCase()==="true"?true:false
+u.setShowMap=function(v){if(typeof v==="boolean"){f=v
+}else{f=a(v).find("input[name=showMap]").val().toLowerCase()==="true"?true:false
 }};
-v.getShowMap=function(){return f
+u.getShowMap=function(){return f
 };
-v.setMap=function(w){t=w
+u.setMap=function(v){s=v
 };
-v.getMap=function(){return t
+u.getMap=function(){return s
 };
-v.getContextPath=function(){return m
+u.getContextPath=function(){return l
 };
-v.setAltMapView=function(w){if(typeof w==="string"){g=w
-}else{g=a(w).find("input[name=altMapView]").val().toLowerCase()==="true"?true:false
+u.setAltMapView=function(v){if(typeof v==="string"){g=v
+}else{g=a(v).find("input[name=altMapView]").val().toLowerCase()==="true"?true:false
 }};
-v.getAltMapView=function(){return g
+u.getAltMapView=function(){return g
 };
-v.getNestedForm=function(){return s
+u.getNestedForm=function(){return r
 };
-v.getAtlasParams=function(){return l
+u.getGaParams=function(){return b
 };
-v.getGaParams=function(){return b
+u.getZipInputSelector=function(){return j
 };
-v.getZipInputSelector=function(){return j
+u.getVehicleClass=function(){return h
 };
-v.getVehicleClass=function(){return h
+u.getVehicleModel=function(){return t
 };
-v.getVehicleModel=function(){return u
+u.setReturnHash=function(v){o=v
 };
-v.setReturnHash=function(w){p=w
+u.getReturnHash=function(){return o
 };
-v.getReturnHash=function(){return p
-};
-c=r;
-m=a(r).find("input[name=contextPath]").val();
-s=a(r).find("input[name=nestedForm]").val().toLowerCase()==="true"?true:false;
-h=a(r).find("input[name=widgetVehicleClass]").val();
-u=a(r).find("input[name=widgetVehicleModel]").val();
-v.setOptions(n);
-v.setFullTakeOver(c);
-v.setShowMap(c);
-v.setMapWidth(c);
-v.setMapHeight(c);
-v.setAltMapView(c);
-if(!s){v.wireForm(c)
-}else{v.wireNestedForm(c)
+c=q;
+l=a(q).find("input[name=contextPath]").val();
+r=a(q).find("input[name=nestedForm]").val().toLowerCase()==="true"?true:false;
+h=a(q).find("input[name=widgetVehicleClass]").val();
+t=a(q).find("input[name=widgetVehicleModel]").val();
+u.setOptions(m);
+u.setFullTakeOver(c);
+u.setShowMap(c);
+u.setMapWidth(c);
+u.setMapHeight(c);
+u.setAltMapView(c);
+if(!r){u.wireForm(c)
+}else{u.wireNestedForm(c)
 }}
 })(jQuery);
 mb.dealerWidget.prototype.wireForm=function(e){var d=this,b=$("form",e),a=$.cookie("MBUSA_PREFERRED_ZIP"),c=$(d.getZipInputSelector(),e);
@@ -7266,9 +7217,7 @@ h<f;
 h++){mb.global.enterLoadingMode(g[h].getElement())
 }}mb.preferredDealer.getDealerDetails({form:j,opts:d.getOptions()});
 mb.metrics.trackInteraction(d.getGaParams());
-if($(".page-properties .pp-section").text()=="accessories"){mb.metrics.trackInteraction({type:"Atlas",action:"nycmas_NYCMBUSAAfterSalesAccessoriesFindaDeale_6"})
-}else{mb.metrics.trackInteraction(d.getAtlasParams())
-}return false
+return false
 }})
 };
 mb.dealerWidget.prototype.wireNestedForm=function(e){var d=this,b=$(".form",e),a=$.cookie("MBUSA_PREFERRED_ZIP"),c=$(d.getZipInputSelector(),e);
@@ -7279,8 +7228,7 @@ g=g.replace("zipMin","zip");
 $.cookie("MBUSA_PREFERRED_ZIP",c.val(),{path:"/",expires:new Date(2042,1,1)});
 mb.global.enterLoadingMode(e);
 mb.preferredDealer.getDealerDetails({nestedForm:g,opts:d.getOptions()});
-mb.metrics.trackInteraction(d.getGaParams());
-mb.metrics.trackInteraction(d.getAtlasParams())
+mb.metrics.trackInteraction(d.getGaParams())
 }$(d.getZipInputSelector(),b).bind("keypress",function(j){var g=(j.which===13),i=$(this),h=j.keyCode||j.which;
 if(h===13&&d.isValidZip(i)){f();
 return !g
@@ -7294,62 +7242,59 @@ if(!g){if($(".error-container-dealer-zip",b).length){$(".error-container-dealer-
 return false
 })
 };
-mb.dealerWidget.prototype.showResult=function(x){if(mb.logger.level<=DEBUG){mb.logger.debug("mb.dealerWidget.showResult()")
-}if(x){this.setResult(x)
-}var w=this,u=this.getElement(),l=$(".btn-change-dealer",u),q=$(".dealer-result",u),j=$(".dealer-results",u),g=$(".dealer-result-wrapper",u),p=$(".btn-change-zip",u),b=$(".near",u),m={type:"Atlas",action:"MBU_BYO_ChangeDealer"},a={type:"GA",trackType:"_trackEvent",category:"find_local_dealer",action:"find_local_dealer:change_dealer",label:"find_local_dealer:change_dealer"};
+mb.dealerWidget.prototype.showResult=function(w){if(mb.logger.level<=DEBUG){mb.logger.debug("mb.dealerWidget.showResult()")
+}if(w){this.setResult(w)
+}var v=this,t=this.getElement(),l=$(".btn-change-dealer",t),p=$(".dealer-result",t),j=$(".dealer-results",t),g=$(".dealer-result-wrapper",t),o=$(".btn-change-zip",t),b=$(".near",t),a={type:"GA",trackType:"_trackEvent",category:"find_local_dealer",action:"find_local_dealer:change_dealer",label:"find_local_dealer:change_dealer"};
 j.hide();
-p.hide();
+o.hide();
 b.hide();
-if(!this.getFullTakeOver()){$(".dealer-result-wrapper",u).hide();
-$(".dealer-widget",u).show()
-}else{$(".dealer-widget",u).hide()
-}q.html(this.getResult()).show();
-if(this.getVehicleClass()&&this.getVehicleModel()){var o=$(".modal-form",u);
-o.each(function(A,z){var y=$(this).attr("href")+"/class-"+w.getVehicleClass()+"/model-"+w.getVehicleModel();
-$(this).attr("href",y)
+if(!this.getFullTakeOver()){$(".dealer-result-wrapper",t).hide();
+$(".dealer-widget",t).show()
+}else{$(".dealer-widget",t).hide()
+}p.html(this.getResult()).show();
+if(this.getVehicleClass()&&this.getVehicleModel()){var n=$(".modal-form",t);
+n.each(function(z,y){var x=$(this).attr("href")+"/class-"+v.getVehicleClass()+"/model-"+v.getVehicleModel();
+$(this).attr("href",x)
 })
-}mb.contactforms.modalFormHijack(q);
-if(this.getReturnHash()){w.updateChangeDealerLink()
-}if(this.getNestedForm()){q.addClass("nested-form");
-l.show().unbind().click(function(B){B.preventDefault();
+}mb.contactforms.modalFormHijack(p);
+if(this.getReturnHash()){v.updateChangeDealerLink()
+}if(this.getNestedForm()){p.addClass("nested-form");
+l.show().unbind().click(function(A){A.preventDefault();
 g.hide();
 $(this).hide();
-q.hide();
-var z=$(".dealer-results .dealer-details",u).length;
-if(z<=0){var y=$.cookie("MBUSA_PREFERRED_ZIP");
-if(!y){y=$(".dealer-zip",q).text();
-$.cookie("MBUSA_PREFERRED_ZIP",y,{path:"/",expires:new Date(2042,1,1)})
-}$(w.getZipInputSelector(),g).val(y);
-var A=$("input",g).serialize();
-A=A.replace("zipMin","zip");
-mb.global.enterLoadingMode(u);
-mb.preferredDealer.getDealerDetails({nestedForm:A,opts:w.getOptions()});
-mb.metrics.trackInteraction(m);
+p.hide();
+var y=$(".dealer-results .dealer-details",t).length;
+if(y<=0){var x=$.cookie("MBUSA_PREFERRED_ZIP");
+if(!x){x=$(".dealer-zip",p).text();
+$.cookie("MBUSA_PREFERRED_ZIP",x,{path:"/",expires:new Date(2042,1,1)})
+}$(v.getZipInputSelector(),g).val(x);
+var z=$("input",g).serialize();
+z=z.replace("zipMin","zip");
+mb.global.enterLoadingMode(t);
+mb.preferredDealer.getDealerDetails({nestedForm:z,opts:v.getOptions()});
 mb.metrics.trackInteraction(a)
 }j.show();
-p.show();
+o.show();
 b.show();
 return false
 })
-}else{mb.metrics.wireNode(q);
-$(".change-dealer a",u).click(function(y){mb.metrics.trackInteraction(m)
-})
-}if(this.getShowMap()){if(this.getAltMapView()){q.addClass("alt-map-view")
-}else{q.addClass("main-map-view")
-}var s=".alt-view .dealer-map",h=q.find(".dealer-lat").text(),e=q.find(".dealer-lon").text(),k=q.find(".dealer-name-single").text(),t=q.find(s).get(0),i=11;
-if(!this.getMap()&&MQA){var r=new MQA.LatLng(h,e),v=new MQA.TileMap(t,i,r),f=new MQA.Size(this.getMapWidth(),this.getMapHeight());
-v.setSize(f);
-var d=this.getContextPath()+"/images/icons/mbpushpin.png",c=new MQA.Icon(d,43,35),n=new MQA.Poi(r,c);
-v.addShape(n);
-$(t).click(function(){var y="http://mapquest.com/?q="+h+","+e+"("+k+")";
-window.open(y)
+}else{mb.metrics.wireNode(p)
+}if(this.getShowMap()){if(this.getAltMapView()){p.addClass("alt-map-view")
+}else{p.addClass("main-map-view")
+}var r=".alt-view .dealer-map",h=p.find(".dealer-lat").text(),e=p.find(".dealer-lon").text(),k=p.find(".dealer-name-single").text(),s=p.find(r).get(0),i=11;
+if(!this.getMap()&&MQA){var q=new MQA.LatLng(h,e),u=new MQA.TileMap(s,i,q),f=new MQA.Size(this.getMapWidth(),this.getMapHeight());
+u.setSize(f);
+var d=this.getContextPath()+"/images/icons/mbpushpin.png",c=new MQA.Icon(d,43,35),m=new MQA.Poi(q,c);
+u.addShape(m);
+$(s).click(function(){var x="http://mapquest.com/?q="+h+","+e+"("+k+")";
+window.open(x)
 });
-MQA.EventManager.addListener(n,"click",function(){var y="http://mapquest.com/?q="+h+","+e+"("+k+")";
-window.open(y)
+MQA.EventManager.addListener(m,"click",function(){var x="http://mapquest.com/?q="+h+","+e+"("+k+")";
+window.open(x)
 });
-this.setMap(v)
-}}else{q.removeClass("alt-map-view");
-q.removeClass("main-map-view")
+this.setMap(u)
+}}else{p.removeClass("alt-map-view");
+p.removeClass("main-map-view")
 }if($(".modal-container .dealer-widget-container .dealer-result .dealer-details .dealer-name").length>0){mb.metrics.wireNode($(".modal-container .dealer-widget-container .dealer-result .dealer-details .dealer-name"))
 }if($(".modal-container .dealer-widget-container .dealer-result .dealer-details .visit-dealer-inventory").length>0){mb.metrics.wireNode($(".modal-container .dealer-widget-container .dealer-result .dealer-details .visit-dealer-inventory"))
 }};

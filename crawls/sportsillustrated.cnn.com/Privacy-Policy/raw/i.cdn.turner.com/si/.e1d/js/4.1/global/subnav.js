@@ -12,9 +12,9 @@ var siNav = {
 		var out = "<ul>\n";
 		for (var i=0; i<nav.length; i++) {
 			var item = nav[i];
-			if (item.cl) { /* class, if needed, should only be set at the beginning of a subnav */
-				out = "<ul class="+ item.cl +">\n";
-			}
+			//if (item.cl) { /* class, if needed, should only be set at the beginning of a subnav */
+			//	out = "<ul class="+ item.cl +">\n";
+			//}
 			if (item.u && item.l) {
 				if(item.u == "#") {
 					if (item.c) {out += '<li class="' + item.c + '">' + item.l;}
@@ -193,7 +193,7 @@ siNav.load({
 				{ "u":"/baseball/mlb/teams/seattle-mariners/?eref=sinav",		"l":"Mariners" },
 				{ "u":"/baseball/mlb/teams/new-york-yankees/?eref=sinav",		"l":"Yankees" },
 				{ "u":"/baseball/mlb/teams/chicago-white-sox/?eref=sinav",		"l":"White Sox" },
-				{ "u":"/baseball/mlb/teams/texas-rangers/?eref=sinav",			"l":"Rangers" },
+				{ "u":"/baseball/mlb/teams/texas-rangers/?eref=sinav",			"l":"Rangers" }
 			]
 		},
 		{ "u":"/baseball/mlb/players/?eref=sinav",			"l":"Players" },
@@ -520,7 +520,6 @@ siNav.load({
 	],
 	"video" : [
 		{ "u": "/basketball/ncaa/seth-davis/fresh-takes/?eref=sinav",			"l":"Fresh Takes" },
-		{ "u": "/2013_swimsuit/video/?eref=sinav",			"l":"Swimsuit" },
-		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }
+		{ "u": "/2013_swimsuit/video/?eref=sinav",			"l":"Swimsuit" }
 	]
 });

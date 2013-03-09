@@ -249,6 +249,7 @@ function au_corporate_profile_nav() {
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=7811" title="AT&amp;T Senior Executives">AT&amp;T Senior Executives</a></li>'
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=5629" title="AT&amp;T Directors">AT&amp;T Directors</a></li>'
 				 + '<li><a href="' + site + '/gen/general?pid=18600" title="Meet the Senior Leaders">Meet the Senior Leaders</a></li>'
+				 + '<li><a href="' + site + '/gen/general?pid=23873" title="AT&amp;T Women Leaders">AT&amp;T Women Leaders</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '<li class="col3"><strong>In the Community</strong>'
