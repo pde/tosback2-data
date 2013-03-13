@@ -69,6 +69,7 @@ $(document).ready(function(){
             controls: true,
             nextSelector: ".ra",
             prevSelector: ".la",
+            useCSS: false,
             onSliderLoad: function(){
                 // IE Fix :  Set clones hidden in css and show them when all bxslider is ready to show
                 $('.bx-clone').css('visibility', 'visible');
@@ -92,6 +93,7 @@ $(document).ready(function(){
             controls: true,
             nextSelector: ".ra",
             prevSelector: ".la",
+            useCSS: false,
             onSliderLoad: function(){
                 // IE Fix :  Set clones hidden in css and show them when all bxslider is ready to show
                 $('.bx-clone').css('visibility', 'visible');

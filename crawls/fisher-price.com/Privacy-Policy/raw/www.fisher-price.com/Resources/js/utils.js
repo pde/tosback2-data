@@ -296,7 +296,7 @@ $(function () {
             '<param value="showall" name="scale">' +
             '<param value="true" name="menu">' +
             '<param value="false" name="devicefont">' +
-            '<param value="sameDomain" name="allowScriptAccess">' +
+            '<param value="always" name="allowScriptAccess">' +
 		'</object>';
 
     $('#tvVideo').append(embedObj);
@@ -631,13 +631,11 @@ function displayVideos(video_id, _path, _flashVarValue, _width, _height, _vw, _v
 
     //Call the function to check flash is enabled/disabled
    var isFlashPresent = isFlashEnabled();
-//("in display");
+  
     if (isFlashPresent) {
         output_value = objectString(_width, _height, _path, _flashVarValue);
-       // alert(output_value);
-       // alert(document.getElementById("video-player"));
+
         $('#video-player').html(output_value);
-        
     }
     else {
 
@@ -684,7 +682,7 @@ function objectString(_width, _height, _path, _flashVarValue) {
                     '<param name="menu" value="false" />' +
                     '<param name="devicefont" value="false" />' +
                     '<param name="salign" value="" />' +
-                    '<param name="allowScriptAccess" value="sameDomain" />' +
+                    '<param name="allowScriptAccess" value="always" />' +
                     '<param name="allowfullscreen" value="true"/>' +
                     '<param name="FlashVars" value="' + _flashVarValue + '" />' +
                         '<!--[if !IE]>-->' +
@@ -699,7 +697,7 @@ function objectString(_width, _height, _path, _flashVarValue) {
                         '<param name="menu" value="false" />' +
                         '<param name="devicefont" value="false" />' +
                         '<param name="salign" value="" />' +
-                        '<param name="allowScriptAccess" value="sameDomain" />' +
+                        '<param name="allowScriptAccess" value="always" />' +
                         '<param name="allowfullscreen" value="true"/>' +
                         '<param name="FlashVars" value="' + _flashVarValue + '" />' +
                         '<!--<![endif]-->' +

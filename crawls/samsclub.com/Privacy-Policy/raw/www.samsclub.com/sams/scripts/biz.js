@@ -1,3 +1,36 @@
+/* Global Slideshow */
+var slideInterval;
+
+function initSlides(){
+  var a = '<div id="slideshow_control_0" class="on"></div>';
+  var b = $('#slide_holder').children('div').length;
+  
+  $('#slide_holder').removeClass('nojs').children('div:first').css('display','block');
+
+  for(var i=1;i<b;i++){
+    a += '<div id="slideshow_control_'+String(i)+'"></div>'; 
+  }
+  
+  $('#slide_0').addClass('on');
+
+  $('#slideshow_controls').prepend(a+'<span class="clear"></span>').css('width',String((b*20)-5)).delegate('div','click',function(){
+    upSlides($(this),$('#slide_holder > div.on'));
+  });
+
+  $('#slideshow').one('mouseover',function(){
+    clearInterval(slideInterval);
+  });
+}
+function upSlides(a){
+  if(a != undefined && a.hasClass('on')) return;
+  if(a == undefined) a = ($('#slideshow_controls').children('div:last').hasClass('on'))? $('#slideshow_controls').children('div:first') : $('#slideshow_controls').children('div.on').next();
+  $('#slideshow_controls').children('div.on').removeClass('on');
+  $('#slide_holder').children('div.on').removeClass('on').fadeOut('fast');
+  a.addClass('on');
+  $('#slide_'+String(a.attr('id').slice(-1))).addClass('on').fadeIn('fast');
+}
+/* End Global Slideshow */
+
 (function($){
 /* Global Nav Holiday Text */
 $('#sub-nav > .holder > .nav > li').last().prev().children('a').css('color','#c9000d');
@@ -129,49 +162,22 @@ $('.estarlogo').bind('click', function() {
   window.location = 'http://www.samsclub.com/sams/pagedetails/content.jsp?pageName=energyStar';
 });
 
-})(jQuery);
+/* Datalogix Tracking Pixels */
+var rand = Math.random()*10000000000000000000;
+var loc = (location.pathname.indexOf('.cp')>-1 && $('#breadcrumb').length)? $.trim($('#breadcrumb').text().replace(/\*[^\*]+\*/g,'').replace(/[^0-9a-zA-Z:]/g,'')).split('::')[1].toLowerCase() : location.pathname;
+if(loc.indexOf('order_receipt.jsp')>1) loc = 'g-660';
+else if(loc == 'baby') loc = 'g-661';
+else if(loc == 'electronics') loc = 'g-662';
+else if(loc == 'outdoor') loc = 'g-663';
+else loc = 'g-659';
+document.write("<img src='"+location.protocol+"//h.nexac.com/e/a-975/s-1743/c-183/"+loc+".xgi?pkey=eqbw69pemzv15&chpcm=&chpsg=&chpcr=&chpck=&rand="+rand+"&chpth=' width='1' height='1' />");
 
 /* Homepage Slideshow */
-var curSlide;
-var nexSlide;
-var maxSlide;
-var play;
-
-function adSlides() {
-  var slides = '<div id="slideshow_control_0" style="margin-left: 0 !important; background-position: -15px 0;"></div>';
-  var slideControls = $('#slideshow_controls');
-  for (var i = 1; i < maxSlide; i++) {
-    slides += '<div id="slideshow_control_' + String(i) + '"></div>';
-  }
-
-  slideControls.prepend(slides + '<span style="display: block; clear:both;"></span>');
-  slideControls.css('width',String((maxSlide*20)+(maxSlide-1)*5));
-  
-  slideControls.delegate('div', 'click', function () {
-    var a = $(this).attr('id');
-    upSlides(Number(a.charAt(a.length - 1)));
-  });
-
-  $('#slideshow').one('mouseover', function () {
-    clearInterval(play);
-  });
+if(location.pathname.indexOf('homepage.jsp')>-1){
+  initSlides();
+  slideInterval = setInterval(function(){
+    upSlides();
+  }, 4500);
 }
-function upSlides(i) {
-  if(curSlide == i) return;
-  $('#slideshow_control_' + String(curSlide)).css('background-position', '0px 0px');
-  $('#slideshow_control_' + String(i)).css('background-position', '-15px 0px');
-  $('#slide_' + String(curSlide)).fadeOut('fast');
-  curSlide = i;
-  $('#slide_' + String(curSlide)).fadeIn('fast');
-}
-function playSlideshow() {
-  if (++nexSlide >= maxSlide) nexSlide = 0;
-  upSlides(nexSlide);
-}
-if(location.href.indexOf('homepage.jsp') != -1){
-  maxSlide = $('#slide_holder').children('div').length;
 
-  adSlides();
-  curSlide = nexSlide = 0;
-  play = setInterval("playSlideshow()", 5500);
-}
+})(jQuery);

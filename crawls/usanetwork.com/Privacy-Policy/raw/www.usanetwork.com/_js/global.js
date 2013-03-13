@@ -1029,7 +1029,7 @@ function usa_setupMeebo()
         label: "",
         onClick: function(){ parent.location.href = '/videos/Suits/Full Episodes'; }
 	});
-	
+
 	usa_meeboButtons.buttons.push({
 		id: "usa-featured_1-button",
         type: "widget",
@@ -1040,18 +1040,18 @@ function usa_setupMeebo()
         height: 400,
         iframe: "/meebo/rp-summer-extras.html",
         onHide: function(widget, element) {
-            //console.log (widget);
-            console.log (element);
-            console.log (element.contentWindow);
+            //usa_debugOut (widget);
+            usa_debugOut (element);
+            usa_debugOut (element.contentWindow);
             if (typeof element.contentWindow.hideVideo != 'undefined')
             {
             	element.contentWindow.hideVideo();
             }
         },
         onShow: function(widget, element) {
-            //console.log (widget);
-            console.log (element);
-            console.log (element.contentWindow);
+            //usa_debugOut (widget);
+            usa_debugOut (element);
+            usa_debugOut (element.contentWindow);
             if (typeof element.contentWindow.showVideo != 'undefined')
             {
             	element.contentWindow.showVideo();

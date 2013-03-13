@@ -1912,10 +1912,22 @@ if(urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('SGH-I717R
 		});
 	}
 
+	//tagging for Samsung ATIV Smart PC 500T: Consideration
+	if(urlValueSplit[6].match('tablet-pcs') || urlValueSplit[6].match('XE500T1C-HA2US') || urlValueSplit[6].match('XE500T1C-HA1US') || urlValueSplit[6].match('XE500T1C-A04US') || urlValueSplit[6].match('XE500T1C-A03US') || urlValueSplit[6].match('XE500T1C-A02US') || urlValueSplit[6].match('XE500T1C-A01US')){
+		$('.recommend-herosection a').click(function(e){
+			var axel = Math.random() + "";
+			var a = axel * 10000000000000;
+			$('body').append('<iframe src="http://1782317.fls.doubleclick.net/activityi;src=1782317;type=2013s977;cat=samsu003;ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+		});
+	}
 
-	
-
-
+	if(urlValueSplit[6].match('XE500T1C-A04US') || urlValueSplit[6].match('XE500T1C-A03US') || urlValueSplit[6].match('XE500T1C-A02US') || urlValueSplit[6].match('XE500T1C-A01US')){
+		$('.flagship-cta').click(function(e){
+			var axel = Math.random() + "";
+			var a = axel * 10000000000000;
+			$('body').append('<iframe src="http://1782317.fls.doubleclick.net/activityi;src=1782317;type=2013s977;cat=samsu870;ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+		});
+	}
 
 //pixel tracking click events for home-theater/HT-E6730W/ZA
 	if(urlValueSplit[6].match('HT-E6730W')){

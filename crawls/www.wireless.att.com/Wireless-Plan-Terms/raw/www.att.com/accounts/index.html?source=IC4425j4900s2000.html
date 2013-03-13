@@ -33,20 +33,21 @@
 
 
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	 <title>AT&T Account Management - View & Pay Your Bill, Upgrade Features & Services</title>
+	 <title>myAT&T Login - Pay Bills Online & Manage Your AT&T Account</title>
 		
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Cache-Control" content="no-cache='set-cookie', no-store" />
 	<meta http-equiv="Expires" content="-1" />
 	<meta name="robots" content="NOODP,NOYDIR" />
-	<meta name="description" content="Access Your AT&T Wireless, U-verse, Internet or Home Phone Accounts to View and Pay Your Bill, Check Your Rate Plan and Usage, and Upgrade Features and Services." />
-	<meta name="keywords" content="att, at&t, pay, view, bill, billing, account, access, management, wireless, u-verse, internet, home, phone, check, rate, plan, usage, upgrade, features, services, login, log, into " />
+	<meta name="description" content="Log into myAT&T to view and pay your AT&T bills online, manage your account, or upgrade your AT&T Wireless, U-verse, Internet, and Home Phone services." />
+	<meta name="keywords" content="myAT&T Login, Pay Bills, View Bills, AT&T Pay Bill, AT&T Payment, AT&T Wireless Pay Bill, AT&T Account Management, AT&T Phone Bill, AT&T U-verse Payment, AT&T Wireless Payment, AT&T Phone Payment" />
 	<meta http-equiv="imagetoolbar" content="" />
 
 	
@@ -163,7 +164,9 @@
 			
 				
 
-	
+	<!-- BEGIN: MyATT RD 2113 -->
+
+<!-- END: MyATT RD 2113 -->
 	
 	
   <!-- Main page layout -->
@@ -476,7 +479,7 @@ return true;
 		
 		
 		
-			<script type="text/javascript" src="../scripts/foresee_global/foresee-trigger-global.js"></script>
+			<script type="text/javascript" src="https://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script>
 			
 			<script type="text/javascript">ForeSee.CPPS.fsr$set('customer_type','current')</script>
 			
@@ -572,7 +575,7 @@ return true;
 <script type="text/javascript">
 var customGlobalNavResources = {
         userInfo: "/olam/jsp/tiles/common_includes/globalNav/user_info.jsp?hideLoginButton=true",
-        segmentationMenu: "/olam/jsp/tiles/common_includes/globalNav/segmentation_menu.jsp?isGNDisabled=false",
+        segmentationMenu: "/olam/jsp/tiles/common_includes/globalNav/segmentation_menu.jsp?isGNDisabled=false&isblankGlobalNAV=false",
         menuJSON: "/olam/jsp/tiles/common_includes/globalNav/menu_json.jsp"
 };
 
@@ -736,6 +739,7 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 
 
+
    
 <!--ERRORS DISPLAY-->
 <!--<br></br>-->
@@ -820,6 +824,7 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 
 
+
  
 
 
@@ -842,7 +847,7 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 
 <input type="hidden" id="isCgateProtected" name ="isCgateProtected" value="true"/>
-<input type="hidden" id="cGateLoginUrl" name ="cGateLoginUrl" value="https://myattwx18.att.com/commonLogin/igate_wam/multiLogin.do"/>
+<input type="hidden" id="cGateLoginUrl" name ="cGateLoginUrl" value="https://myattwx22.att.com/commonLogin/igate_wam/multiLogin.do"/>
 
 <input type="hidden" id="stopSessionTimer" value="Y" />
 <input type="hidden" id="isMyATTLoginPage" value="Y"/>
@@ -975,7 +980,7 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 				<span>
 					
 					    
-					        <input type="text" name="userid" autocomplete=off size="30" class="inputClass"  
+					        <input type="text" name="userid" size="30" class="inputClass"  
 								value='' maxlength="50" title="User ID" id="userID" tabindex="1"  onkeyup="autotab('loginForm',this,50); formatCTN(this,event);"
 								onfocus="UserBoxFocusImgChange()" onblur="UserBoxFocusOutImgChange();"/>	
 					    
@@ -1085,6 +1090,7 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 			<input type = "hidden" id="remember_me" name="remember_me" value="N"/>
 			<input type= "hidden" id="cancelURL" name="cancelURL" value=""/>
 		 	<input type = "hidden" name="rootPath" value="/olam/English"/>
+		 	
 		</form>
 		</div>
 		<div class="clear"></div>
@@ -1123,6 +1129,24 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 	
 	
 	
+	<script> 
+		jQuery(document).ready(function()
+		{
+			if ( jQuery.browser.msie ) 
+			{
+				var count = jQuery(".carouselVideo").length;
+				var i=0;
+				var loop = 5-count;
+				if (count < 5)
+				{
+        			for (i=0;i<=loop;i++)
+            		{
+                		jQuery("ul#mycarousel").append("<li  style=\"border:none!important\">&nbsp;</li>")
+            		}
+				}
+			}
+		});
+	</script>
 	<script type="text/javascript" src="../olam/js/myatt-gvp.js.html"></script>
 	<script type="text/javascript" src="../scripts/jquery.jcarousel.min.js"></script>
 	<script type="text/javascript">
@@ -1141,7 +1165,19 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 		});
 	</script>
-	
+	<script>
+		jQuery(document).ready(function()
+		{
+			var count = jQuery(".carouselVideo").length;
+			if (count <= 4)
+			{
+			    jQuery(".jcarousel-prev").css("display","none");
+                jQuery(".jcarousel-next").css("display","none");  
+                jQuery(".carouselBgNew .jcarousel-container-horizontal").css("padding-left","0px");
+                jQuery(".carouselBgNew .jcarousel-container-horizontal").css("margin-left","0px");
+			}
+		});
+    </script>
 	<a  style="display:none;" class="tooltips" href="index.html%3Fsource=IC4425j4900s2000.html#tip101"></a>	
 	<span style="display:none;" class="tips" id="tip101"></span>
 	
@@ -1187,6 +1223,9 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 							
 								<div id='secondary-content'  class=''>
 									
+
+
+
 
 
 
@@ -1480,9 +1519,11 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 	    
 		
-	  		
-	  		
-	  	
+		
+		  	
+		  			  	
+			
+		
 	  	
 
 <div style="clear:both"></div>
@@ -1612,8 +1653,8 @@ Enter the new ID and password you received in your recent order confirmation.
 		
 		<script type="Text/javascript">
 		
-			lpMTagConfig.vars.push(['session','sessionId','35T5R72XLyhbnQDxNGtY5PG0zF6KQd2xTLThJfyQq11RGrL24JY4']);
-			lpMTagConfig.vars.push(['session','stack','woammw20']);
+			lpMTagConfig.vars.push(['session','sessionId','2nC2RQvDwKtV5mv2hnQyL6zyvJ3JMvxjpsS0CkZ3JYPp8yLdHftT']);
+			lpMTagConfig.vars.push(['session','stack','woammw23']);
 			
 			
 			
@@ -1805,7 +1846,6 @@ Enter the new ID and password you received in your recent order confirmation.
 		
 		
 			<!--CE FOOTER -->
-				
 				<div class="group">
 					<div class="w346 left dotSites padBot30"> 
 						<span class="dotCom">
@@ -1876,6 +1916,11 @@ Enter the new ID and password you received in your recent order confirmation.
 				
 				 	
 				 </div>
+								 
+
+
+
+
 			<!-- WebTrends Base Tag : include only at end of page -->
 			
 			
@@ -1913,7 +1958,7 @@ Enter the new ID and password you received in your recent order confirmation.
 
 
 <script language="JavaScript" type="text/javascript">
-	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"Login","ap":"woammw20","sc":"OLAM","pn":"Login","se":"AccountLogin","si":"35T5R72XLyhbnQDxNGtY5PG0zF6KQd2xTLThJfyQq11RGrL24JY4!1936340304!1362835031129"}};
+	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"Login","ap":"woammw23","sc":"OLAM","pn":"Login","se":"AccountLogin","si":"2nC2RQvDwKtV5mv2hnQyL6zyvJ3JMvxjpsS0CkZ3JYPp8yLdHftT!-2005416187!1363177219730"}};
 </script>
 <!--  VirtuOzLoader.js file included for RD2113 - Virtual Expert - 1104-->
 <script type="text/javascript" src="../olam/virtuOz/scripts/VirtuOzLoader.js.html"></script>
@@ -2104,8 +2149,8 @@ Enter the new ID and password you received in your recent order confirmation.
 	{
 		try{
 			if(linkName !=null){
-				linkName = linkName.split('-').join('');
-				if(!isNaN(linkName) && linkName.length >= 10){
+				var linkNameTemp = linkName.split('-').join('');
+				if(!isNaN(linkNameTemp) && linkNameTemp.length >= 10){
 					return null;
 				}
 			}
@@ -2263,6 +2308,9 @@ Enter the new ID and password you received in your recent order confirmation.
 		jQuery('#secondary-content div:first-child').css('margin-top','0px');
 		});
 		</script>
+		<!-- BEGIN: MyATT RD 2113 -->
+		
+		<!-- END: MyATT RD 2113 -->
 	
 	
 	

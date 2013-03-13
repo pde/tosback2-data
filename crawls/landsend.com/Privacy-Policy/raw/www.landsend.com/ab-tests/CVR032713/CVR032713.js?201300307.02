@@ -1,0 +1,92 @@
+(function(){
+	var IS_STARTED = false,					// Global toggle for error checking prior to the test command execution
+	IS_ACTIVE = true,						// Global toggle to quickly turn off test
+	TEST_NAME = 'CVR032713';		// Pull from the test plan document or Contact Stewart Schilling
+	
+	// Internal test logic variables
+	var is_email = $.query ? $.query.get('emid') || $.query.get('EMID') : '';
+	is_email = false;
+	var getAllocation = function getAllocation(){
+		// stubbing out the email EID read for now
+		//return is_email ? [0,34,33,33] : [0,50,50];
+		return [0,40,40,20];
+	};
+	
+	le.uxd.ui.abtest.manager.execute(TEST_NAME, {
+		allocation: getAllocation(),				// Pull from the test plan document
+		groupFormat: function(testName, group){
+			if (!is_email){
+				if (group == 'B'){
+					//Send to seperate group based on email segmentation
+					//group = 'D';
+				}
+				if (group == 'C'){
+					//Send to seperate group based on email segmentation
+					//group = 'E';					
+				}
+			}
+			return group;
+		},
+		eVar: 'eVar20',								// Pull from the test plan document
+		eVarFormat: function(testName, group){		
+			return testName + "-_-" + group;		// Formatting function in case the value needs to be manipulated before being sent to omniture
+		},
+		kioskGroup: 'A',							// Pull from the test plan document.  The ordinal positions of the allocation correspond to the groups allocation[0] = group a
+		duration: 45,								// length of cookie lifespan
+		command: function(group){
+			
+			// No errors in the site prior to the ab-test loading
+			// If we made it here, the ab-test error handling should take over
+			IS_STARTED = true;
+			
+			$(document).ready(function(){
+				
+				// If the test is not active, execute the default condition
+				if(!IS_ACTIVE){
+					return;
+				}
+				
+				// Execute the B group, first check if the test is active
+				if (group == 'B' && IS_ACTIVE){
+
+					return;
+				}
+								
+				// Execute the C group, first check if the test is active
+				if (group == 'C' && IS_ACTIVE){
+
+					return;
+				}
+				
+				// Execute the D group, first check if the test is active
+				if (group == 'D' && IS_ACTIVE){
+
+					return;
+				}
+				
+				// Execute the E group, first check if the test is active
+				if (group == 'E' && IS_ACTIVE){
+
+					return;
+				}
+				
+				// If the group is not defined for some reason, execute the default condition
+				
+			});
+			
+		},
+		error: function(){
+			// add error functionality here
+		}
+	});
+
+	// if error anywhere on the page show dropdowns
+	$(window).error(function(){
+		setTimeout(function(){
+			if (!IS_STARTED) {
+				// If there is a global error not affiliated with the AB test, execute the default condition
+			}
+		},5000);
+	});
+
+})();

@@ -55,7 +55,7 @@
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = '';
+OAS_listpos = ',x32';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -150,7 +150,7 @@ function OAS_AD(pos) {
 	<ul class="sf-menu">
 		<li><a href="http://adage.com/index.php">Home</a></li><li><a href="http://adage.com/current-issue">This Week's Issue</a><ul>
 	<li class="home_menu">
-		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1362355357" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
+		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1362950178" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
 	</li>
 </ul>
 </li><li><a href="http://adage.com/article/news/ad-age-s-mobile-app-iphone-android-blackberry-wp7/228530/">Mobile App</a></li><li><a href="http://www.adage.com/ipad">iPad App</a></li>
@@ -283,8 +283,11 @@ menu item
 <!--
 menu item
 --><li>
-	<a href="http://adage.com/special-reports/superbowl/148" class="bottom_menu">Super Bowl</a>
-	
+	<a href="http://adage.com/special-reports/4asconference/152" class="bottom_menu">4A's</a>
+	<ul>
+	<li><a href="http://adage.com/article/special-report-4as-conference/p-g-s-marc-pritchard-forget-tech-embrace-idea/240261/">P&G's Marc Pritchard</a></li>						
+</ul>
+
 </li>
 
 	</ul>
@@ -294,6 +297,84 @@ menu item
 
 
 		
+<script type="text/javascript">
+Interstitial = {
+	parentId:'home',
+	id:'interstitial',
+	ad_id:'interstitial-ad',
+	timer:null,
+
+	setOpacity:function(id, opacity) {
+    	el=document.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+
+				if(end == i) {
+					setTimeout("Interstitial.destroy()", time);
+				}
+			}
+			clearTimeout(this.timer);
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+			clearTimeout(this.timer);
+		}
+	},
+
+	hide:function() {
+		if(document.getElementById(this.id)) {
+			// this.fade(this.id, 100, 0, 300);
+			this.destroy();
+		}
+	},
+
+	destroy:function() {
+		var hpto = document.getElementById(this.id);
+		hpto.removeChild(document.getElementById(this.ad_id));
+		hpto.style.visibility='hidden';
+		hpto.style.display='none';
+	}
+}
+
+Interstitial.timer = setTimeout('Interstitial.hide()', 12*1000);
+
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
+
+<div id="interstitial">
+	<div id="interstitial-head">
+		<div id="interstitial-logo">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
+		</div>
+		<div id="interstitial-skip">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
+		</div>
+	</div>
+
+	<div id="interstitial-ad">
+		<!-- OAS Interstitial AD POSITION -->
+		<script language="JavaScript">
+			OAS_AD('x32');
+		</script>
+	</div>
+</div>
+
 	</div>
 </div>
 
@@ -440,23 +521,23 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
     <div class="rss_col">
 	<div class="logo_auto"></div>
     <ul><li>
-<a href="http://www.autonews.com/article/20130308/OEM01/130309855/toyota-defends-title-as-worlds-most-valuable-car-brand-report-says" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Toyota defends title as world\&#039;s most valuable car brand, report says', 'http://www.autonews.com/article/20130308/OEM01/130309855/toyota-defends-title-as-worlds-most-valuable-car-brand-report-says']);" target="_new">
-Toyota defends title as world's most valuable car brand, report says
+<a href="http://www.autonews.com/article/20130312/OEM04/130319967/outgoing-chevy-impala-lives-another-year-as-fleet-only-model" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Outgoing Chevy Impala lives another year, as fleet-only model', 'http://www.autonews.com/article/20130312/OEM04/130319967/outgoing-chevy-impala-lives-another-year-as-fleet-only-model']);" target="_new">
+Outgoing Chevy Impala lives another year, as fleet-only model
 </a>
 </li>
 <li>
-<a href="http://www.autonews.comhttp://europe.autonews.com/article/20130307/ANE/130309882/hyundai-europe-doubles-ad-budget-to-fight-image-problem" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Hyundai Europe doubles ad budget to fight image problem', 'http://www.autonews.comhttp://europe.autonews.com/article/20130307/ANE/130309882/hyundai-europe-doubles-ad-budget-to-fight-image-problem']);" target="_new">
-Hyundai Europe doubles ad budget to fight image problem
+<a href="http://www.autonews.com/article/20130312/RETAIL03/130319968/gm-marketing-shakeup-may-end-joint-venture-that-handles-chevy" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'GM marketing shakeup may end joint venture that handles Chevy advertising', 'http://www.autonews.com/article/20130312/RETAIL03/130319968/gm-marketing-shakeup-may-end-joint-venture-that-handles-chevy']);" target="_new">
+GM marketing shakeup may end joint venture that handles Chevy advertising
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20130304/BLOG06/130309940/heres-the-deal-behind-shaqs-buick-commercials" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Here\&#039;s the deal behind Shaq\&#039;s Buick commercials', 'http://www.autonews.com/article/20130304/BLOG06/130309940/heres-the-deal-behind-shaqs-buick-commercials']);" target="_new">
-Here's the deal behind Shaq's Buick commercials
+<a href="http://www.autonews.com/article/20130312/RETAIL03/130319975/lexus-to-launch-global-brand-campaign-in-may" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Lexus to launch global brand campaign in May', 'http://www.autonews.com/article/20130312/RETAIL03/130319975/lexus-to-launch-global-brand-campaign-in-may']);" target="_new">
+Lexus to launch global brand campaign in May
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20130304/OEM02/303049987/ace-marketer-finds-a-new-road" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ace marketer finds a new road', 'http://www.autonews.com/article/20130304/OEM02/303049987/ace-marketer-finds-a-new-road']);" target="_new">
-Ace marketer finds a new road
+<a href="http://www.autonews.comhttp://europe.autonews.com/article/20130312/ANE/130309964/psa-launches-new-brand-strategy-for-peugeot-and-citroen" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'PSA launches new brand strategy for Peugeot and Citroen', 'http://www.autonews.comhttp://europe.autonews.com/article/20130312/ANE/130309964/psa-launches-new-brand-strategy-for-peugeot-and-citroen']);" target="_new">
+PSA launches new brand strategy for Peugeot and Citroen
 </a>
 </li>
   <ul>
@@ -465,23 +546,13 @@ Ace marketer finds a new road
     <div class="rss_col">
 	<div class="logo_b2b"></div>
     <ul><li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130306/SOCIAL/303069997/1500/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Digital Face-off: Social platforms vie for a company\&#039;s business', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130306/SOCIAL/303069997/1500/rss998&rssfeed=rss998']);" target="_new">
-Digital Face-off: Social platforms vie for a company's business
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130312/MEDIABUSINESS1203/303119992/1484/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Mobile-optimized site makeover delivers new ad units', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130312/MEDIABUSINESS1203/303119992/1484/rss998&rssfeed=rss998']);" target="_new">
+Mobile-optimized site makeover delivers new ad units
 </a>
 </li>
 <li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130306/SOCIAL/303069998/1501/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Report sees lack of social media-business alignment', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130306/SOCIAL/303069998/1501/rss998&rssfeed=rss998']);" target="_new">
-Report sees lack of social media-business alignment
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130305/STRATEGY06/303049942/1169/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Marketing-IT alignment drives revenue growth, ROI', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130305/STRATEGY06/303049942/1169/rss998&rssfeed=rss998']);" target="_new">
-Marketing-IT alignment drives revenue growth, ROI
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130304/STRATEGY/303049973/1150/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Juniper Networks\&#039; CMO talks about taking on Cisco', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130304/STRATEGY/303049973/1150/rss998&rssfeed=rss998']);" target="_new">
-Juniper Networks' CMO talks about taking on Cisco
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130312/WEB06/303079991/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'How vCom Solutions built its sales pipeline', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130312/WEB06/303079991/1429/rss998&rssfeed=rss998']);" target="_new">
+How vCom Solutions built its sales pipeline
 </a>
 </li>
   <ul>
@@ -490,23 +561,23 @@ Juniper Networks' CMO talks about taking on Cisco
     <div class="rss_col">
 	<div class="logo_cnn"></div>
     <ul><li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/hz_odbty21s/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Royal Caribbean shares sink 3% after 105 passengers fall ill', 'http://rss.cnn.com/~r/rss/money_latest/~3/hz_odbty21s/index.html']);" target="_new">
-Royal Caribbean shares sink 3% after 105 passengers fall ill
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/XB-cceQtSjU/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'The wealth effect might be shrinking', 'http://rss.cnn.com/~r/rss/money_latest/~3/XB-cceQtSjU/index.html']);" target="_new">
+The wealth effect might be shrinking
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/k0mjXyrMISY/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Martha Stewart, J.C. Penney and Macy\&#039;s ordered to mediation', 'http://rss.cnn.com/~r/rss/money_latest/~3/k0mjXyrMISY/index.html']);" target="_new">
-Martha Stewart, J.C. Penney and Macy's ordered to mediation
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/1tMC7WVlEIk/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Paul Ryan wants to cut more federal workers', 'http://rss.cnn.com/~r/rss/money_latest/~3/1tMC7WVlEIk/index.html']);" target="_new">
+Paul Ryan wants to cut more federal workers
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/yYn1u80yEDc/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Wrigley to sell caffeinated chewing gum', 'http://rss.cnn.com/~r/rss/money_latest/~3/yYn1u80yEDc/index.html']);" target="_new">
-Wrigley to sell caffeinated chewing gum
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/CaFkmy6NMlo/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Citi\&#039;s stock surges 30% under Corbat', 'http://rss.cnn.com/~r/rss/money_latest/~3/CaFkmy6NMlo/index.html']);" target="_new">
+Citi's stock surges 30% under Corbat
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/M0R__pvDl7o/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Italy\&#039;s credit rating downgraded', 'http://rss.cnn.com/~r/rss/money_latest/~3/M0R__pvDl7o/index.html']);" target="_new">
-Italy's credit rating downgraded
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/ta4irIorlAg/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks: Retail sales in focus', 'http://rss.cnn.com/~r/rss/money_latest/~3/ta4irIorlAg/index.html']);" target="_new">
+Stocks: Retail sales in focus
 </a>
 </li>
   <ul>
@@ -540,23 +611,23 @@ Marketing executive Jane Reiss finds a Grey area
     <div class="rss_col">
 	<div class="logo_msn"></div>
     <ul><li>
-<a href="http://www.nbcnews.com/business/need-job-granny-nannies-rise-1C8757731" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Need a job? \&#039;Granny nannies\&#039; on the rise', 'http://www.nbcnews.com/business/need-job-granny-nannies-rise-1C8757731']);" target="_new">
-Need a job? 'Granny nannies' on the rise
+<a href="http://www.nbcnews.com/business/how-congress-members-retirement-package-compares-yours-1C8823621" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'How Congress\&#039; retirement package compares to yours', 'http://www.nbcnews.com/business/how-congress-members-retirement-package-compares-yours-1C8823621']);" target="_new">
+How Congress' retirement package compares to yours
 </a>
 </li>
 <li>
-<a href="http://www.nbcnews.com/business/hot-chicks-60-peeps-more-popular-ever-1C8769122" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Hot chicks: At 60, Peeps more popular than ever', 'http://www.nbcnews.com/business/hot-chicks-60-peeps-more-popular-ever-1C8769122']);" target="_new">
-Hot chicks: At 60, Peeps more popular than ever
+<a href="http://redtape.nbcnews.com/_news/2013/03/12/17286101-celebrity-hackers-stole-data-from-annualcreditreportcom-equifax-says?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Equifax: Data stolen from AnnualCreditReport.com', 'http://redtape.nbcnews.com/_news/2013/03/12/17286101-celebrity-hackers-stole-data-from-annualcreditreportcom-equifax-says?lite']);" target="_new">
+Equifax: Data stolen from AnnualCreditReport.com
 </a>
 </li>
 <li>
-<a href="http://www.nbcnews.com/business/luxury-cars-going-green-geneva-motor-show-1C8752834" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Luxury cars going green at Geneva Motor Show', 'http://www.nbcnews.com/business/luxury-cars-going-green-geneva-motor-show-1C8752834']);" target="_new">
-Luxury cars going green at Geneva Motor Show
+<a href="http://lifeinc.today.com/_news/2013/03/12/17287234-hr-block-filing-mistake-delays-600000-tax-returns?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'H&amp;R Block filing error delays 600,000 tax returns', 'http://lifeinc.today.com/_news/2013/03/12/17287234-hr-block-filing-mistake-delays-600000-tax-returns?lite']);" target="_new">
+H&R Block filing error delays 600,000 tax returns
 </a>
 </li>
 <li>
-<a href="http://lifeinc.today.com/_news/2013/03/08/17226299-hooters-is-chasing-women-as-customers?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Hooters is chasing women&mdash; as customers', 'http://lifeinc.today.com/_news/2013/03/08/17226299-hooters-is-chasing-women-as-customers?lite']);" target="_new">
-Hooters is chasing women— as customers
+<a href="http://www.nbcnews.com/business/faa-approves-boeing-plan-fix-787s-batteries-1C8832802" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'FAA approves Boeing plan to fix 787\&#039;s batteries', 'http://www.nbcnews.com/business/faa-approves-boeing-plan-fix-787s-batteries-1C8832802']);" target="_new">
+FAA approves Boeing plan to fix 787's batteries
 </a>
 </li>
   <ul>
@@ -626,7 +697,7 @@ Hooters is chasing women— as customers
 		<a href="http://www.crain.com/">Crain Communications</a> | <a href="privacy.html">Privacy Statement</a> | <a href="http://adage.com/terms/">Terms of Use</a> | <a href="http://adage.com/help/faq#contactus">Contact Us</a>
 	</div>
 </div>
-<!-- Total time: 8.21978998184 -->
+<!-- Total time: 4.58364295959 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->

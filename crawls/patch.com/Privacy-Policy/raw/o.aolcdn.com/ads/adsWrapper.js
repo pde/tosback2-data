@@ -8,7 +8,7 @@ catch (e){}
 adsLo=adsLo||""
 var adsUAC=adsLo.indexOf('atwUAC='),adsUACH
 function adSetMOAT(v){
-if (v){
+if (v&&v!='0'){
 var d=document,s=d.createElement("script"),h=d.getElementsByTagName("head")[0]; 
 s.src='http://s.moatads.com/aolalways5fd2/moatuac.js'; 
 h.appendChild(s); 
@@ -30,8 +30,9 @@ adsATOth='',adsATMob='',adsSrAT='',adsTacOK=1,adsD=new Date(),aolAdFdBkStr='',ad
 adsScr=adsD.getTime()%0x3b9aca00,adsVal='',adsCp=0,adsMNS,adsExcV='',adsLNm=0,
 adsUA=navigator.userAgent.toLowerCase(),adsIE,adsAJAX=0,adsTzAT="aduho="+(-1*adsD.getTimezoneOffset())+";",
 adsNMSG='',adsTile=1,adsPage='',adsDivs=[],adsQuigo=0,adsCA,adsCF=[],adsCW=[],adsCH=[],adsCAd=[],adsChn='',
-adsDev=(typeof window.onorientationchange!='undefined')?1:0;
-if (!adsDev&&adsUA.indexOf('mobile')>-1)adsDev=1;
+adsDev=(typeof window.onorientationchange!='undefined')?'1':'0';
+if (adsUA.indexOf('mobile')>-1)adsDev='1';
+if (!adsDev)adsDev='0';
 if (!window.ATW3_AdObj){
 try {
 if (parent.window.ATW3_AdObj){
@@ -155,7 +156,16 @@ adsRMIFOnL(f,d)
 }else{
 if (n>0){
 var x=s.substr(n,s.length),p=document.getElementById(f.divName);
-p.innerHTML=x}}}}}
+var x1=s.indexOf('adComRedirect');
+if (x1>-1){
+ var x2=s.indexOf("';",x1),u=s.substring(x1+15,x2);
+ adSetupDiv(f.w,f.h,u,f.divName,f.src,'text',f.mn);
+ adsDivs[adsDivs.length-1].LoadAd()
+}
+else { 
+ p.innerHTML=x
+}
+}}}}}
 function adSetNetId(v){adsNt=v}
 function adSetPlId(v){adsPl=v}
 function adSetHtNm(){}
@@ -254,6 +264,7 @@ if (m)s=s.replace(/alias=[0-9]*;/,"alias="+m+";").replace(/kvmn=[0-9]*;/,"kvmn="
 var i=s.indexOf(';grp='),u=''
 if (i==-1)u=s.replace(/ /, "")+" "
 else u=s.substring(0,i+5)+dt
+u=u.replace(/kvgrp=[0-9]*;/,"kvgrp="+dt+";")
 v.adURL=u
 v.LoadAd()
 }}
@@ -268,6 +279,7 @@ catch (e){}
 if (s){
 if (m)s=s.replace(/alias=[0-9]*;/,"alias="+m+";").replace(/kvmn=[0-9]*;/,"kvmn="+m+";")
 var dt=adsD.getTime()%0x3b9aca00,i=s.indexOf(';grp=');
+s=s.replace(/kvgrp=[0-9]*;/,"kvgrp="+dt+";")
 try {f.src=s.substring(0,i+5)+dt}
 catch(e){}}}
 }
@@ -311,38 +323,43 @@ if (adsQuigo==0&&(/aolSize=["']([\d]*?)\|([\d]*)["']/i.test(aD1))&&(unescape(Reg
  h=unescape(RegExp.$2);
 }
 else{
- if (!adsMob){
-  if (/img (.*?)width=["']?(.*?)(\"|\'| )/i.test(aD1))wi=unescape(RegExp.$2);
-  if (/img (.*?)height=["']?(.*?)[\"|\'| ]/i.test(aD1))h=unescape(RegExp.$2);
-  if (!(/^[0-9]+$/.test(unescape(wi))))wi='';
-  if (!(/^[0-9]+$/.test(unescape(h))))h='';
+ if (/ACE_AR(.*?)Size(.*?)[,}]/i.test(aD1)){
+  var as=unescape(RegExp.$2).replace(/[^\d\+]/g,"");
+  wi=parseInt(as.substring(0,3),10);
+  h=parseInt(as.substring(3,s.length),10);
  }
- if (!(wi&&h)&&wi!=1&&h!=1){
-  if ((v.childNodes.length==1)||(d.adsWidth&&d.adsHeight)){
-   if (d.adsWidth&&d.adsHeight){wi=d.adsWidth;h=d.adsHeight}
-   else{
-    if (s){
-     wi=s.offsetWidth
-     if (adsIE&&adsUA.indexOf('trident/5')<0)h=s.offsetHeight
-     else h=aD.offsetHeight
+ else {
+  if (!adsMob){
+   if (/img (.*?)width=["']?(.*?)(\"|\'| )/i.test(aD1))wi=unescape(RegExp.$2);
+   if (/img (.*?)height=["']?(.*?)[\"|\'| ]/i.test(aD1))h=unescape(RegExp.$2);
+   if (!(/^[0-9]+$/.test(unescape(wi))))wi='';
+   if (!(/^[0-9]+$/.test(unescape(h))))h='';
+  }
+  if (!wi||!h||wi<2||h<2){
+   if ((v.childNodes.length==1)||(d.adsWidth&&d.adsHeight)){
+    if (d.adsWidth&&d.adsHeight){wi=d.adsWidth;h=d.adsHeight;}
+    else{
+     if (s){
+      wi=s.offsetWidth
+      if (adsIE&&adsUA.indexOf('trident/5')<0)h=s.offsetHeight
+      else h=aD.offsetHeight
+     }
     }
    }
+   else if (adsMob){
+    try{
+     wi=f.contentWindow.document.body.scrollWidth;
+     h=f.contentWindow.document.body.scrollHeight;
+    }
+    catch(e){}
+   } 
   }
-  else if (adsMob){
-   try{
-    wi=f.contentWindow.document.body.scrollWidth;
-    h=f.contentWindow.document.body.scrollHeight;
-   }
-   catch(e){}
-  } 
  }
 }
 adsDevilObj(v.divName,wi,h)
-if (((wi&&h)&&!(v.w==wi&&v.h==h)&&(aD1.indexOf('AOLDevilNoExpand')==-1))||(aD1.indexOf('AOLDevilExpand')!=-1)){
-if (h!=1){
+if ((wi&&h&&wi>1&&h>1&&!(v.w==wi&&v.h==h)&&(aD1.indexOf('AOLDevilNoExpand')==-1))||(aD1.indexOf('AOLDevilExpand')!=-1)){
  f.width=wi
  f.height=h
-}
 }
 if (wi&&h&&f&&adsQuigo==0)f.className="uac_"+wi+"x"+h;
 adsQuigo=0

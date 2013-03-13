@@ -168,11 +168,8 @@ function s_doPlugins(s) {
 	else if(s.events&&s.events.indexOf('purchase')>-1) //if events is presents, and the purchase events is included
 	{	
 		s.eVar37='unknown at time of purchase';
-		if (clubCode == 'dbc' || clubCode == 'DBC'){
-		 s.eVar28=s.eVar4=s.eVar5='D=v37';
-		}else{
-		s.eVar28=s.eVar30=s.eVar4=s.eVar5='D=v37';
-		}
+		s.eVar28=s.eVar4=s.eVar5='D=v37';
+		
 	}
 	else if(s.eVar37)
 	{

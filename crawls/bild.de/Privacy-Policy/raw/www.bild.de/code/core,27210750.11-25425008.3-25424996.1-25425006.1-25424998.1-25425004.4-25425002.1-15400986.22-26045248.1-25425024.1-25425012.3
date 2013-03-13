@@ -1997,7 +1997,7 @@ de.bild.httpFist = (function($){
     };
    
 }(jQuery));
-/*de.bild.sso:27401092.4*/
+/*de.bild.sso:27401092.5*/
 
 /**
 * de.bild.sso - main SSO functionality
@@ -2366,25 +2366,7 @@ de.bild.sso = (function($){
        
         isUserBarOn = true;
     };
-     function checkQOD(){
-         var info = getUserInfo();
-         var url = de.bild.settings.community.urls.getQODcomment;
-        
-         if(info && info.firstLogin){
-            
-             $.ajax({
-                 url: url,
-                 dataType:'html'
-             }).done(function(response){                
-                     //reset first Login Cookie
-                     info.firstLogin=false;
-                     setUserInfo(JSON.stringify(info));                
-                     //set lightbox that doesn't queue
-                     lightBox(response,null,true);
-                 }
-             )
-         }
-     }
+     
     /**
      * modfies nav when logged out
      * @function
@@ -2536,10 +2518,7 @@ de.bild.sso = (function($){
         renderUserBar();
         getStatus();
         setupEvents();
-       
-        //Question of the day trigger
-        if(isLoggedIn())
-        checkQOD();
+
         return true;
     };
     //public methods
@@ -4620,7 +4599,7 @@ de.bild.video = (function($){
         }
     }
 }(jQuery));
-/*de.bild.init:27524116.9*/
+/*de.bild.init:27524116.15*/
 
 /**
  * de.bild.init
@@ -4629,118 +4608,26 @@ de.bild.video = (function($){
  * CSS Klassen:
  * keine
  */
-jQuery.noConflict();
+jQuery.noConflict()
 var de = de || {};
 de.bild = de.bild || {};
 de.bild.init = ( function($) {
-    var siteInitalised = false;
-    var mandatoryModulesInitalised = false;
-    var moduleController = {
-        moduleNamespace : 'de.bild.',
-        modules: {
-            autoLoad: {
-                identifier: 'common',
-                init: function($context){
-                    de.bild.common.autoLoadModule( $context );
-                }
-            },
-            vp: {
-                identifier: 'videoTeaser',
-                init: function($context){
-                    de.bild.videoTeaser.init( $context );
-                }
-            },
-            mediacenter: {
-                identifier: 'galleryCenter',
-                init: function($context){
-                    de.bild.galleryCenter.init( $context );
-                }
-            },
-            gallery: {
-                identifier: 'mediaGallery',
-                init: function($context){
-                    de.bild.mediaGallery.init( $context );
-                }
-            },
-            bildLive: {
-                identifier: 'bildLive',
-                init: function($context){
-                    de.bild.bildLive.init( $context );
-                }
-            },
-            ntoverview: {
-                identifier: 'newstickerOverview',
-                init: function($context){
-                    de.bild.newstickerOverview.init( $context );
-                }
-            },
-            maps: {
-                identifier: 'maps',
-                init: function($context){
-                    de.bild.maps.init( $context );
-                }
-            }
-        },
-        isLoaded: function(module){
-            return de.bild[ module.identifier ];
-        },
-        load: function(moduleName, $context){
-            var self = this;
-            var module = this.modules[moduleName];
-            if(!module) {
-                console.warn('INIT: Unknown module - ' + moduleName);
-                return false;
-            }
-            if(this.isLoaded(module)) {
-                module.init($context);
-            } else {
-                var filename = this.moduleNamespace + module.identifier;
-                de.bild.moduleLoader.load(filename, function(){
-                    module.init($context);
-                });
-            }
-        }
-    };
-    de.bild.events.subscribe('initModule', function(e, moduleName, selector){
-        if(!mandatoryModulesInitalised) {
-            mandatoryModulesInitalisation();
-        }
-        if(moduleName === 'maps') {
-            if(de.bild.maps) {
-                de.bild.maps.init( $(selector) );
-            } else if(de.bild.moduleLoader) {
-                de.bild.moduleLoader.load('maps', function(){
-                    de.bild.maps.init( $(selector) );
-                });
-            }
-        } else {
-            moduleController.load(moduleName, $(selector).last());
-        }
-    });
-    function mandatoryModulesInitalisation($context) {
-        mandatoryModulesInitalised = true;
-        if(de.bild.globalSandBox) {
-            de.bild.globalSandBox.init();
+ var siteInitalised = false;
+ 
+ 
+ 
+ function initializeOnce($context) {
+  
+  
+  //init SandBox  
+  if(de.bild.globalSandBox) {   
+   de.bild.globalSandBox.init();   
+  }
+  
+  if(de.bild.user) {           
+            de.bild.user.init();          
         }
         
-        if(de.bild.user) {
-            de.bild.user.init();
-        }
-        
-    }
-    function initializeOnce($context) {
-        if(!mandatoryModulesInitalised) {
-            mandatoryModulesInitalisation($context);
-        }
-        // Live event binding for simple functions
-        if(de.bild.common) {
-    
-            de.bild.common.initLightboxes($context);
-            de.bild.common.initTabModules($context);
-            de.bild.common.initPagination($context);
-            de.bild.common.initCommentsAndColumns($context);
-            
-        }
         /* social */
         if(de.bild.social) {
             de.bild.social.init();
@@ -4750,138 +4637,161 @@ de.bild.init = ( function($) {
         if(de.bild.community) {
             de.bild.community.init();
         }
-                
-        
+  
+  
+  
+  // Live event binding for simple functions
+  if(de.bild.common) {
+ 
+   de.bild.common.initLightboxes($context);
+   de.bild.common.initTabModules($context);
+   de.bild.common.initPagination($context);
+   de.bild.common.initCommentsAndColumns($context);
+   
+  }
+  
+  
         if(de.bild.onDemand) {
-            de.bild.onDemand.init($context);
+            de.bild.onDemand.init($context); 
         }
         
         /* Sliding Social Bar */
         if(de.bild.socialBar) {
             var $socialBarLeftAndMiddle = $context.find('.social-sharing');
-            if($socialBarLeftAndMiddle.length && $socialBarLeftAndMiddle.length > 1) {
+            if($socialBarLeftAndMiddle.length && $socialBarLeftAndMiddle.length > 1) {        
                 de.bild.socialBar.init( $socialBarLeftAndMiddle );
-            }
+            }         
         }
         
         /* Live Article */
         if(de.bild.liveArticle) {
             var $liveArticle = $context.find('.liveticker');
-            if($liveArticle.length) {
+            if($liveArticle.length) {        
                 de.bild.liveArticle.init( $liveArticle );
-            }
+            }         
         }
-        
-    }
-    // run once
-    function init($context) {
-        if( typeof $context === 'undefined' || $context.length === 0) {
-            return false;
-        }
-        // sso.init : see navi.js
-        // run once
-        if(siteInitalised === false) {
-            initializeOnce($context);
-            siteInitalised = true;
-        }
-        
-        // A-Teasers
-        if(de.bild.rotationTeaser) {
-            var $rotationTeaser = $context.find('div.rotate');
-            if($rotationTeaser.length) {
-                de.bild.rotationTeaser.init($rotationTeaser);
-            }
-        }
-        //Breaking news
-        if(de.bild.breakingNews) {
-            var $breaking = $context.find('#breaking');
-            if($breaking.length) {
-                de.bild.breakingNews.init();
-            }
-        }
-        
-        // Bildlaufleiste
-        if(de.bild.slider) {
-            var $collection = $context.find('.slideshow');
-            if($collection.length) {
-                de.bild.slider.init($collection);
-            }
-        }
-        // Videos
-        if(de.bild.video) {
-            de.bild.video.initVideoIn($context);
-        }
-        // Jalousie
-        if(de.bild.jalousie) {
-            var $jalousieCollection = $context.find('.jalousie');
-            if($jalousieCollection.length) {
-                de.bild.jalousie.init($jalousieCollection);
-            }
-        }
-        
-        
-        // Newsticker
-        if(de.bild.newsTicker) {
-            var $ntCollection = $context.find('.nticker');
-            if($ntCollection.length) {
-                de.bild.newsTicker.init($ntCollection);
-            }
-        }
-        
-        
-        // MediaCenter
-        if(de.bild.galleryCenter) {
-            var $gcCollection = $context.find('.mediacenter');
-            if($gcCollection.length) {
-                de.bild.galleryCenter.init($gcCollection);
-            }
-        }
-        
-        
-        // VideoTeaser
-        if(de.bild.videoTeaser) {
-            var $vtCollection = $context.find('.vp');
-            if($vtCollection.length) {
-                de.bild.videoTeaser.init($vtCollection);
-            }
-        }
-        
-        
-        // FG & Galeriemodule
-        if(de.bild.mediaGallery) {
-            var $mgGollection = $context.find('figure.gallery');
-            if($mgGollection.length) {
-                de.bild.mediaGallery.init($mgGollection);
-            }
-        }
-        // Top Nachrichten, Bilder, Videos des Tages
-        if(de.bild.topNews) {
-            var $tnCollection = $context.find('section.ateaser');
-            if($tnCollection.length) {
-                de.bild.topNews.init($tnCollection);
-            }
-        }
-        // Accordion module
-        if(de.bild.accordion) {
-            var $accCollection = $context.find('.accordion, .ktgacc');
-            if($accCollection.length) {
-                de.bild.accordion.init($accCollection);
-            }
-        }
-        
-        /* personalised Teaser */
-        if(de.bild.personalisedTeaser) {
-            var $pTeasers = $context.find('.personalised-teaser');
-            if($pTeasers.length) {
-                    de.bild.personalisedTeaser.init($pTeasers);
-            }
-        }
-        
-        
-        if(de.bild.rssRotationTeaser){
-            var $rssRotationTeaser = $context.find('#rssBRotate');
-            if($rssRotationTeaser.length) {
-                    de.bild.rssRotationTeaser.init();
+  
+ }
+ 
+ 
+ 
+ // run once
+ function init($context) {
+  if( typeof $context === 'undefined' || $context.length === 0) {
+   return false;
+  }
+  // sso.init : see navi.js
+  // run once
+  if(siteInitalised === false) {   
+   initializeOnce($context);   
+   siteInitalised = true;
+  }
+  
+  // A-Teasers
+  if(de.bild.rotationTeaser) {
+   var $rotationTeaser = $context.find('div.rotate');
+   if($rotationTeaser.length) {
+    de.bild.rotationTeaser.init($rotationTeaser);
+   }
+  }
+  //Breaking news
+  if(de.bild.breakingNews) {
+   var $breaking = $context.find('#breaking');
+   if($breaking.length) {
+    de.bild.breakingNews.init();
+   }
+  }
+  
+  // Bildlaufleiste
+  if(de.bild.slider) {
+   var $collection = $context.find('.slideshow');
+   if($collection.length) {
+    de.bild.slider.init($collection);
+   }
+  }
+  // Videos
+  if(de.bild.video) {
+   de.bild.video.init();
+  }
+  // Jalousie
+  if(de.bild.jalousie) {
+   var $collection = $context.find('.jalousie');
+   if($collection.length) {
+    de.bild.jalousie.init($collection);
+   }
+  }
+  
+  
+  // Newsticker
+  if(de.bild.newsTicker) {
+   var $collection = $context.find('.nticker');
+   if($collection.length) {
+    de.bild.newsTicker.init($collection);
+   }
+  }
+  
+  
+  // MediaCenter
+  if(de.bild.galleryCenter) {
+   var $collection = $context.find('.mediacenter');
+   if($collection.length) {
+    de.bild.galleryCenter.init($collection);
+   }
+  }
+  
+  
+  // VideoTeaser
+  if(de.bild.videoTeaser) {
+   var $collection = $context.find('.vp');
+   if($collection.length) {
+    de.bild.videoTeaser.init($collection);
+   }
+  }
+  
+  
+  // FG & Galeriemodule
+  if(de.bild.mediaGallery) {
+   var $collection = $context.find('figure.gallery');
+   if($collection.length) {
+    de.bild.mediaGallery.init($collection);
+   }
+  } 
+  // Top Nachrichten, Bilder, Videos des Tages
+  if(de.bild.topNews) {
+   var $collection = $context.find('.ateaser');
+   if($collection.length) {
+    de.bild.topNews.init($collection);
+   }
+  }
+  // Accordion module
+  if(de.bild.accordion) {
+   var $collection = $context.find('.accordion, .ktgacc');
+   if($collection.length) {
+    de.bild.accordion.init($collection);
+   }
+  }
+  
+  /* personalised Teaser */
+  if(de.bild.personalisedTeaser) {
+   var $pTeasers = $context.find('.personalised-teaser');
+   if($pTeasers.length) {
+     de.bild.personalisedTeaser.init($pTeasers);
+   }
+  }
+  
+  
+  if(de.bild.rssRotationTeaser){
+   var $rssRotationTeaser = $context.find('#rssBRotate');
+   if($rssRotationTeaser.length) {
+     de.bild.rssRotationTeaser.init();
+   }
+  }
+  
+  /* Artikelgalerie */
+  if(de.bild.articleGallery) {
+            var $articleGalleries = $context.find('.articleSlide');
+            if($articleGalleries.length) {
+                de.bild.articleGallery.init( $articleGalleries );
             }
         }
         
@@ -4893,23 +4803,20 @@ de.bild.init = ( function($) {
             }
         }
         
+        if(de.bild.community.teaserComments){            
+            if($context.prop('nodeName').toLowerCase()!="body"){
+                de.bild.community.teaserComments.checkForTeaserComments($context);
+            }
+            
+        }       
         
-        if(de.bild.user && de.bild.user.isLoggedIn()) {
-            $context.find('.btnLogin').hide();
-        }
-        if(de.bild.social) {
-            var $socialMediaButtons = $context.find('.social-button');
-            if($socialMediaButtons.length) {
-                de.bild.social.initSocialButtons($context);
-            }            
-        }
         
         
         /** OLD Modules! */
        
         /* accordeon */
         if(de.bild.accordeon) {
-            var $acs = $context.find('div.ranking, div.simVids, div.topVids, div.simPhotos, div.discussed, div.regComments, h5.acctoggle');
+            var $acs = $context.find('div.ranking, div.simVids, div.topVids, div.simPhotos, div.discussed, div.regComments');
             if($acs.length) {
                 de.bild.accordeon.init($acs);
             }
@@ -4923,14 +4830,16 @@ de.bild.init = ( function($) {
             }
         }
         
-        return siteInitalised;
-    }
-    //document.ready
-    $(function() {
-        init($('body'));
-    });
-    
-    return init;
+        
+  
+  return siteInitalised;
+ };
+ //document.ready
+ $(function() {
+  init($('body'));
+ });
+ 
+ return init;
 }(jQuery));
 /*de.bild.globalSandBox:29369344.2*/
 
@@ -8840,7 +8749,7 @@ de.bild.community.profile = (function($, Community) {
  } 
  
 })(jQuery, de.bild.community) 
-/*de.bild.community.qotd:29369472.2*/
+/*de.bild.community.qotd:29369472.6*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8848,7 +8757,7 @@ de.bild.community = de.bild.community||{};
 de.bild.community.qotd = (function($, Community) {
     
     var initialised = false;
-        function setupQuestionOfTheDay() {
+    function setupQuestionOfTheDay() {
         if(de.bild.sso && de.bild.sso.isLoggedIn() && $.cookie(Community.settings().QODcookie) != null) {
             Community.load({
                 'url' : urls.QODlightbox,
@@ -8901,7 +8810,12 @@ de.bild.community.qotd = (function($, Community) {
             $('#sn-fb').parents('.socials').remove();
         //check ob user hat gerade ein Kommentar gesendet
         if(de.bild.sso.isLoggedIn() && $.cookie('qotdLogin') != null) {
-            $.cookie('qotdLogin', null);
+            //remove Cookie
+            $.cookie('qotdLogin', null, {
+                    path : '/',
+                    expires : -1,
+                    domain : de.bild.env.domain
+                });
             var form = $('.com-question').last();
             var $fieldset = form.find('.com-buttons, fieldset');
             
@@ -8910,7 +8824,8 @@ de.bild.community.qotd = (function($, Community) {
             var successMSG = $(de.bild.settings.community.templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', 'Vielen Dank für Ihren Beitrag.'));
             $fieldset.hide();
             $fieldset.first().after(successMSG);
-            successMSG.animate({"opacity":0}, de.bild.settings.community.options.fadeDelay, function(){
+           de.bild.community.comments.delayToFade(successMSG, de.bild.settings.community.options.fadeDelay, function() {
+                successMSG.remove();
                 $fieldset.find('textarea').val(''); 
                 $fieldset.show();
             });
@@ -8928,7 +8843,8 @@ de.bild.community.qotd = (function($, Community) {
                 expires.setMinutes(expires.getMinutes() + 5);
                 $.cookie('qotdLogin', 1, {
                     path : '/',
-                    expires : expires
+                    expires : expires,
+                    domain : de.bild.env.domain
                 });
                 Community.showLightBox({
                     'wrapperId' : 'sso-lightbox',
@@ -8983,7 +8899,7 @@ de.bild.community.qotd = (function($, Community) {
     }   
     
 })(jQuery, de.bild.community) 
-/*de.bild.community.teaserComments:27210486.3*/
+/*de.bild.community.teaserComments:27210486.4*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -9018,62 +8934,62 @@ de.bild.community.teaserComments = (function($, Community) {
         {'19565604': ['rating_19471642_59119364','rating_19471644_59119364'], '19572902': ['rating_19572902_12132434','rating_19572902_799672245'], '19584838': ['rating_19584838_45356346']}
          Object expected from KA: {"payload_type":"json","status":"1","error":"","numComments":[{"10000584":3577,"8819148":3406,"10414364":2746}]}
      */
-    function loadTeaserComments(idMap,url){
+    function loadTeaserComments(idMap, url) {
         /* idMap has to be present */
-       $body =  $('body');
-        if (typeof idMap === 'object') {
-            articleCommentsMap = idMap;            
+        $body = $('body');
+        if( typeof idMap === 'object') {
+            articleCommentsMap = idMap;
             /*load css */
             //de.bild.utils.addStyleSheet(de.bild.settings.community.urls.commentsCSS, 'comTeaserComments');
             /* option url */
             url = url || de.bild.settings.community.urls.articleComments;
             /* build parameter string to add to the URL */
+            
             articleCommentsIds = [];
-            for (var k in articleCommentsMap) {
-               articleCommentsIds.push(k);  
+            
+            var lengthBefore = articleCommentsIds.length;
+            
+            for(var k in articleCommentsMap) {                
+                    articleCommentsIds.push(k);                
             }
-            url = url + articleCommentsIds.join(':');
-            /* get JSON */
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'json',
-                'cache' : true
-            })
-            .done(function(data){
-                 articleCommentsJSON = data.numComments || {};
-            })
-            .always(function(){
-                showTeaserComments();
-            });
-           
-            /* ie is crippled */            
-            if (!$body.hasClass('modern')){
-                $contentWrapper.find('div.hentry, .mtA, div.ateaser-content, div.slide-item')
-                .mouseenter(function() {
-                    var $this = $(this),
-                    $ugc;
-                    if ($this.hasClass('mtA')) {
-                        $ugc = $this.closest('div.ugcGroup');
-                    } else {
-                        $ugc = $this.find('div.ugcGroup');
-                    }
-                    if ($ugc.length) {
-                       $ugc.show();
-                    }
-                })
-                .mouseleave(function () {
-                    var $this = $(this),
-                    $ugc;
-                    if ($this.hasClass('mtA')) {
-                        $ugc = $this.closest('div.ugcGroup');
-                    } else {
-                        $ugc = $this.find('div.ugcGroup');
-                    }
-                    if ($ugc.length) {
-                       $ugc.hide();
-                    }
+            //only do the comment call when there are
+            if(articleCommentsIds.length > 0) {
+                url = url + articleCommentsIds.join(':');
+                /* get JSON */
+                $.ajax({
+                    url : url,
+                    type : 'GET',
+                    dataType : 'json',
+                    'cache' : true
+                }).done(function(data) {
+                    articleCommentsJSON = data.numComments;
+                }).always(function() {
+                    showTeaserComments();
                 });
+                /* ie is crippled */
+                if(!$body.hasClass('modern')) {
+                    $contentWrapper.find('div.hentry, .mtA, div.ateaser-content, div.slide-item').mouseenter(function() {
+                        var $this = $(this), $ugc;
+                        if($this.hasClass('mtA')) {
+                            $ugc = $this.closest('div.ugcGroup');
+                        } else {
+                            $ugc = $this.find('div.ugcGroup');
+                        }
+                        if($ugc.length) {
+                            $ugc.show();
+                        }
+                    }).mouseleave(function() {
+                        var $this = $(this), $ugc;
+                        if($this.hasClass('mtA')) {
+                            $ugc = $this.closest('div.ugcGroup');
+                        } else {
+                            $ugc = $this.find('div.ugcGroup');
+                        }
+                        if($ugc.length) {
+                            $ugc.hide();
+                        }
+                    });
+                }
             }
         }
     };
@@ -9098,7 +9014,10 @@ de.bild.community.teaserComments = (function($, Community) {
                     var $elem = $('#' + collection[n]);
                     /* only if the element has more than 2 comments, otherwise delete it */
                     if ($elem.length && value > 0) {
-                         $elem.text(value).parents('div.ugcGroup, li.comment-count').addClass('active'); 
+                         //in some cases there is a <i>-Tag containing "kommentare" this shouldn't be replaced
+                         $elem = $elem.find('i').length>0?$elem.find('em'):$elem;
+                         $elem.text(value);
+                         $elem.parents('div.ugcGroup, li.comment-count').addClass('active'); 
                     }
                     else{
                         $elem.parents('.ugcGroup').hide();
@@ -9108,6 +9027,37 @@ de.bild.community.teaserComments = (function($, Community) {
         }
     };  
     
+    /**
+     * Function that searches in a given context for ugcGroups and retrieves the comment count.
+     */
+    function checkForTeaserComments($content) {
+        $content = $content ? $content : $('body');
+        var ugcs = jQuery('.ugcGroup a', $content)
+        var json = {};
+        ugcs.each(function() {
+            var $this = jQuery(this);
+            var linkID = $this.attr('id');
+            if(linkID) {
+                var tarr = linkID.split('_');
+                //id = comments_2101921804_0_1059189009
+                if(tarr.length == 4) {
+                    var ugcID = tarr[1];
+                    //wenn schon ein Element vorhanden ist, nur die ID an das Array hängen
+                    if(json[ugcID]) {
+                        //nur wenn nicht schon vorhanden, sollte immer der Fall sein
+                        if(jQuery.inArray(linkID, tarr) == -1) {
+                            json[ugcID].push(linkID);
+                        }
+                    }
+                    //Array an dieser Stelle erstellen
+                    else {
+                        json[ugcID] = [linkID];
+                    }
+                }
+            }
+        })
+        de.bild.community.loadTeaserComments(json);
+    }
     
     
     
@@ -9131,7 +9081,8 @@ de.bild.community.teaserComments = (function($, Community) {
         },
         'loadTopicData':function(data){
             de.bild.community.follow.loadTopicData(data);
-        }       
+        },
+        'checkForTeaserComments':checkForTeaserComments       
   
     }   
     
@@ -9265,7 +9216,7 @@ de.bild.user = (function($, SandBox){
 
 
 
-/*de.bild.common:27524118.5*/
+/*de.bild.common:27524118.7*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -9361,7 +9312,8 @@ de.bild.common = (function($, SandBox) {
         /** Radio buttons included in common tabs */
         $context.on(SandBox.getActionEvents('tabs').click, '.sortOption input', function(e) {
             var $radioButton = $(this);
-            var $targetContainer = $radioButton.closest('.sortOption').siblings('ol.items,p.hint');
+            var $targetContainer = $radioButton.closest('.sortOption').siblings('ol.items,p.hint,h2').first();
+            var $targetParent = $targetContainer.parent();
             var $top5Element = $radioButton.closest('.top5');
             var url = $radioButton.attr('data-ajax-href');
             $.ajax({
@@ -9377,7 +9329,7 @@ de.bild.common = (function($, SandBox) {
                 $top5Element.removeClass('loading');
             }).done(function(response) {
                 $targetContainer.replaceWith(response);
-                SandBox.initModules($targetContainer);
+                SandBox.initModules($targetParent);
             }).fail(function() {
                 console.error('Tabs AJAX Request failed.');
             });

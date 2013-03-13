@@ -4,7 +4,7 @@
   'use strict';
 
   wpAd.config = wpAd.config || {};
-  
+
   //20127-CD
   if(commercialNode.match("lifestyle/kidspost")){
     commercialNode = commercialNode.replace(/^lifestyle\/kidspost/i,"kidspost");
@@ -23,14 +23,14 @@
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
   wpAd.flags.vi_test = /vi_test/.test(location.search) && win.wp_meta_data && win.wp_meta_data.contentType && /CompoundStory/i.test(win.wp_meta_data.contentType.toString());
-  
+
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
     'www.washingtonpost.com': 'http://www.washingtonpost.com/wp-srv/ad/fif.html',
     'qaprev.digitalink.com': 'http://qaprev.digitalink.com/wp-srv/ad/fif.html',
     'prodprev.digitalink.com': 'http://prodprev.digitalink.com/wp-srv/ad/fif.html'
   };
-  
+
   wpAd.constants = {
     'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/wp_config.js',
     'site': 'wpni',
@@ -157,6 +157,17 @@
         }
         return wpAd.cache.articleId;
       })();
+    },
+    author: function () {
+        return wpAd.cache.hasOwnProperty('author') ? wpAd.cache.author : (function() {
+            wpAd.cache.author = [];
+            if (typeof wp_meta_data !== 'undefined' && wp_meta_data.author) {
+                for (var i=0; i < wp_meta_data.author.length; i++) {
+                    wpAd.cache.author[i]=wp_meta_data.author[i].replace(" ","_").toLowerCase();
+                }
+            }
+            return wpAd.cache.author;
+        })();
     },
     page: function () {
       return wpAd.cache.hasOwnProperty('page') ? wpAd.cache.page : (function () {
@@ -318,7 +329,7 @@
 
       contentType = wpAd.textlinks.templates[contentType] ? contentType : 'CompoundStory';
       cnode = wpAd.textlinks.cat_check(cnode);
-      
+
       var cmpid = win.cmpid && win.cmpid.toLowerCase() || false,
           template = cmpid && wpAd.textlinks.templates[contentType][position][cmpid] || wpAd.textlinks.templates[contentType][position].standard;
       cnode = template[cnode] ? cnode : 'ros';
@@ -434,21 +445,21 @@
       setTimeout(function(){ wpAd.tools.initVITest(elements); }, 100);
     }
   };
-  
+
   wpAd.tools.vi_pixels = {
     'extra_bb': [
       'http://ad.doubleclick.net/ad/wpni.test/view1;sz=1x1;ord=[timestamp]',
       'http://ad.doubleclick.net/ad/wpni.test/view2;sz=1x1;ord=[timestamp]'
     ]
   };
-  
+
   //homepage refresh modification:
   win.TWP = win.TWP || {};
   win.TWP.hpRefreshTests = win.TWP.hpRefreshTests || {};
   win.TWP.hpRefreshTests.adRefreshFunction = function() {
     return wpAd.flags.test_ads ? false : true;
   };
-  
+
   //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {
 
@@ -497,18 +508,18 @@
         if(adi_push){
           adi_push.style.backgroundImage = 'url(http://img.wpdigital.net/wp-adv/test/mstest/pushdown-ad-small.png)';
           adi_push.style.backgroundPosition = '-7px -100px';
-        }              
+        }
       }
     }
 
-    
+
     if(tempcase.what === 'featrent' && window.jQuery){
       $('#wpni_adi_featrent').css({
         background: 'none',
         padding: '0'
       });
     }
-    
+
     //
     if(/^tiffany_tile/i.test(tempcase.what)){
       if(wpAd.flags.is_homepage){
@@ -522,13 +533,13 @@
     if(tempcase.what === 'flex_ss_bb_hp' && (tempcase.where === 'lifestyle/home' || tempcase.where === 'lifestyle/home/front' || tempcase.where === 'lifestyle/home-garden')){
       tempcase.where += '/flex';
     }
-    
+
     //Viewable Impression unique zone + exclusions:
     if(tempcase.delivery === 'vi'){
       tempcase.where += '/viewable';
       tempcase.keyvalues['!c'].push('media', 'intrusive');
     }
-    
+
     //persistant_bb render when viewable
     if(tempcase.defaults.what === 'persistent_bb' && /viewable_test/.test(location.search)){
       tempcase.delivery = 'vi';
@@ -580,11 +591,11 @@
     if(wpAd.tools.mediaPage()) {
       tempcase.keyvalues['!c'].push('media');
     }
-    
+
     //viewable impression pixel test:
     if(wpAd.tools.vi_pixels[tempcase.what] && wpAd.flags.vi_test){
       wpAd.tools.addPixel(wpAd.tools.vi_pixels[tempcase.what][0], tempcase.what + ' impression');
-      
+
       if(!wpAd.flags.vi_script_loaded && !$.fn.viewable){
         wpAd.flags.vi_script_loaded = true;
         wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js');
@@ -613,7 +624,7 @@
   wpTiles.init = function (a) {
     placeAd2(commercialNode, a, false, '');
   };
-  
+
   //MS - promo tile test
   if(/test_ads\=promotile/.test(location.search) && win.jQuery){
     $(function(){

@@ -587,10 +587,15 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var isModelThree = false;
 				var storeId = 10101;
 				var startingAt = "";
+				var alt_product_name = "";
 				
 				if (style && style != rec_prod_id) {
 					isModelThree = true;
 				}
+				
+				alt_product_name = productName.replace(/\|/g, ' ');
+				alt_product_name = alt_product_name.replace(/\'/g, '&apos;');
+				alt_product_name = alt_product_name.replace(/$/, ', ');
 				
 				productName = productName.replace(/\|/g, "<br/>");
 				
@@ -662,8 +667,9 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				
 				lines.push("<p class='price'>" + startingAt + " $" + parseFloat(price).toFixed(2) + "</p>");
 				
+				//alert("productName = " + productName);
 				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews'>" + 
-						"<img src='" + ratingImg + "' alt='" + alt_text_rating + " out of 5 stars'>"+ "</a></span></div>");
+						"<img src='" + ratingImg + "' alt='" + alt_product_name + alt_text_rating + " out of 5 stars'>"+ "</a></span></div>");
 				
 				if (!isModelThree) {
 					lines.push("<p><label class='ada-hide' for='check_" + compareCatentryId + "'>Compare</label>" +
@@ -754,8 +760,8 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 					thumbnailImg = image_prefix + image.substring(0, image.indexOf("_")) + "_MV_TB" + image.substring(image.length-4, image.length);
 				}
 				
-				lines.push('<a href=' + selected_href + ' aria-hidden="true" role="presentation" tabindex="-1"><img style="border:1px solid #999; height:140px;width:170px;" alt="' + 
-						imageAlt + '" role="presentation" src="' + image + '"></img></a>');
+				lines.push('<a href=' + selected_href + ' aria-hidden="true" role="presentation" tabindex="-1"><img style="border:1px solid #999;" alt="' + 
+						imageAlt + '" role="presentation" src="' + image + '" /></a>');
 				lines.push('<p class="featuredprod"><a href=' + selected_href + '>' + productName + '</a></p>');
 				lines.push("</div>");
 			}			

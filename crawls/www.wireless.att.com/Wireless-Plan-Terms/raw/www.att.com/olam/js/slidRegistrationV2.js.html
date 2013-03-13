@@ -4,6 +4,10 @@
 
 var isAlreadySubmitted = false;
 var hasBeenSubmitted = false;
+
+//Don't start showign inline errors until they have entered the initial value
+var orcInitialValueSubmitted = false;
+
 function enableNextButton(){
 	document.getElementById('enbNextBtn').style.display='block';
 	document.getElementById('dsbNextBtn').style.display='none';
@@ -398,7 +402,6 @@ function selectOptionCheckValues() {
         return false;
 	}
 	
-
 	sendORCMethod1 = document.getElementById("sendORCMethod1").value;
 	sendORCMethod1 = replaceAll(sendORCMethod1, "\\'", "&#39;");
 	sendORCMethod2 = document.getElementById("sendORCMethod2").value;
@@ -411,7 +414,6 @@ function selectOptionCheckValues() {
 	var f = document.getElementById("frmSelectOption");
 
 	var f_unavailableorc = document.getElementById("unavailableorc");
-	var f_availableorc = document.getElementById("availableorc");
 	
 	if ( f_unavailableorc.checked ) {
 		
@@ -423,20 +425,59 @@ function selectOptionCheckValues() {
 		}
 	}
 	
-	if ( f_availableorc.checked ) {
-		
-		var f_orc = document.getElementById("orc");
-		var orc = slidreg2trim( f_orc.value );
-		if ( orc == "" ) {
-			displayErrorMessage("Please enter your Online Registration Code(needs cms)", f_orc);
-			return false;
-		}
+	orcInitialValueSubmitted = true;
+	
+	var res = validateSelectOptionValues();
+	if(res == 0){
+		return false;
 	}
 	
 	disableNextButton();
 	hasBeenSubmitted=true;
 	return true;
+}
+
+function validateSelectOptionValues(){
 	
+	if ( !orcInitialValueSubmitted ) return 1;
+	
+	document.getElementById("missingInputAlertsDiv").style.display="none";
+	var InvalidORCAlert = document.getElementById("InvalidORCAlert").value;
+	
+	var f_availableorc = document.getElementById("availableorc");
+	if ( f_availableorc.checked ) {
+		
+		var f_orc = document.getElementById("orc");
+		var orc = slidreg2trim( f_orc.value );
+		
+		// Trim trailing . from cut and paste
+		orc = orc.replace( /\.+$/, "" );
+		f_orc.value = orc;
+		
+		if ( orc == "" || orc == null) {
+			displayInlineErrorMsg(InvalidORCAlert, f_orc);
+//			document.getElementById("ORCcheck1").className = "radioGroup1 error ORCBooleanRadio ";
+			jQuery( "#ORCcheck1" ).addClass("error");
+			document.getElementById("ORCcheck2").className = "regCode MarTop5 MarLeft20 MarBot15 checkORC";
+			document.getElementById("availableorc_section").className = "tipPad safariComp botMar15 ORCBooleanContent";
+			disableNextButton();
+			return 0;
+		}
+		if ( !orc.match( /^\d{8}$/ ) ) {
+			displayInlineErrorMsg(InvalidORCAlert, f_orc);
+			jQuery( "#ORCcheck1" ).addClass("error");
+//			document.getElementById("ORCcheck1").className = "radioGroup1 error ORCBooleanRadio ";
+			document.getElementById("ORCcheck2").className = "regCode MarTop5 MarLeft20 MarBot15 checkORC";
+			document.getElementById("availableorc_section").className = "tipPad safariComp botMar15 ORCBooleanContent";
+			disableNextButton();
+	        return 0;
+		}
+	}
+	document.getElementById("ORCcheck1").className = "radioGroup1 ORCBooleanRadio ";
+	jQuery( "#ORCcheck1" ).removeClass("error");
+	document.getElementById("showNext").style.display="block";
+	document.getElementById("blockNext").style.display="none";
+	return 1;
 }
 
 // Helper to check the orcMethod radio button element to see if any are selected
@@ -466,7 +507,9 @@ function haveNeedOrcChanged() {
 
 	var f_unavailableorc = document.getElementById("unavailableorc");
 	var f_availableorc = document.getElementById("availableorc");
+	jQuery("#ORCcheck1").removeClass("error");
 	
+	document.getElementById("missingInputAlertsDiv").style.display="none";
 	var sec_unavailableorc = document.getElementById("unavailableorc_section");
 	var sec_availableorc = document.getElementById("availableorc_section");
 
@@ -598,22 +641,58 @@ function enterOrcCheckValues() {
 	if ( hasBeenSubmitted ) {
         return false;
 	}
-        
-	var invalidEnterORCWireless =document.getElementById("errormsg1").innerHTML;
 	
-	var orcField = document.getElementById("f_orc");
-	var orc = slidreg2trim(orcField.value);
-	if ( orc == null || orc.length == 0) {
-		displayErrorMessage(invalidEnterORCWireless, orcField);
+	orcInitialValueSubmitted = true;
+	var res = validateEnterOrcValues();
+	if(res == 0){
 		return false;
 	}
-
+	
 	document.getElementById("showNext").style.display="none";
 	document.getElementById("blockNext").style.display="block";
 	hasBeenSubmitted=true;
 	return true;
 }
 
+function validateEnterOrcValues(){
+	
+	// If they havn't entered the initial value we don't have to do this check
+	if ( !orcInitialValueSubmitted ) return 1;
+	
+	document.getElementById("missingInputAlertsDiv").style.display="none";
+	var invalidEnterORCWireless =document.getElementById("errormsg1").innerHTML;
+	var invalidORCLengthAlert =document.getElementById("errormsg2").innerHTML;
+	
+	var orcField = document.getElementById("f_orc");
+	var orc = slidreg2trim(orcField.value);
+	
+	// Trim trailing . from cut and paste
+	orc = orc.replace( /\.+$/, "" );
+	orcField.value = orc;
+	
+	if ( orc == null || orc.length == 0) {
+		displayInlineErrorMsg(invalidEnterORCWireless, orcField);
+		jQuery("#EnterORCText").addClass("error");
+//		document.getElementById("EnterORCText").className = "tipPad MarTop5 MarLeftRight25 padRight1px error botMar0";
+		document.getElementById("showNext").style.display="none";
+		document.getElementById("blockNext").style.display="block";
+		return 0;
+	}
+	if ( !orc.match( /^\d{8}$/ ) ) {
+		displayInlineErrorMsg(invalidORCLengthAlert, orcField);
+		jQuery("#EnterORCText").addClass("error");
+//		document.getElementById("EnterORCText").className = "tipPad MarTop5 MarLeftRight25 padRight1px error botMar0";
+		document.getElementById("showNext").style.display="none";
+		document.getElementById("blockNext").style.display="block";
+        return 0;
+	}
+	
+	jQuery("#EnterORCText").removeClass("error");
+//	document.getElementById("EnterORCText").className = "tipPad MarTop5 MarLeftRight25 padRight1px botMar0";
+	document.getElementById("showNext").style.display="block";
+	document.getElementById("blockNext").style.display="none";
+	return 1;
+}
 //Start for CR-1203-0834. Added new funtion filterForTN( string )
 function filterForTN( str ) {
 	str = str.split(' ').join('');
@@ -647,6 +726,21 @@ function displayErrorMessage(message, field) {
 	
 }
 
+function displayInlineErrorMsg(message, field){
+	
+	var sse = document.getElementById("serverSideErrors");
+	if ( sse ) {
+		sse.style.display="none";
+	}
+	
+	var jsErrMsg = document.getElementById("EmailAlert1");
+	jsErrMsg.innerHTML= "<p class='rederr-Msg'>"+ message+"</p>";
+	
+	
+	document.getElementById("missingInputAlertsDiv").style.display = "block";
+
+	if ( field ) field.focus();
+}
 
 function enableDisableIfPresent( id, enabled ) {
 	var field = document.getElementById(id);
@@ -703,4 +797,49 @@ function confirmationPageCheckValues(){
 
 function replaceAll(txt, replace, with_this) {
 	return txt.replace(new RegExp(replace, 'g'),with_this);
+}
+
+function alreadyHaveAccessIdClicked(){
+	var modalURL="/olam/unauth/displayValidateAccessIdRegistration.myworld";
+	if(jQuery.browser.msie){
+		jQuery.colorbox({iframe:true, height:555, width:800, scrolling:false, overlayClose:false, href: modalURL,close:""});
+		return false;
+	}
+	else
+	{
+		jQuery.colorbox({iframe:true, height:550, width:800, scrolling:false, overlayClose:false, href: modalURL,close:""});
+		return false;
+	}
+}
+
+function isEmpty(myString) {
+
+	if (myString == 'null') {
+		return true;
+	}
+	if (myString == null) {
+		return true;
+	}
+	if (myString == '') {
+		return true;
+	}
+	if (myString.length == 0) {
+		return true;
+	}
+	return false;
+}
+
+// to remove leading & trailing spaces from do.obj values 
+function stripCharacters( obj ){
+	var str= obj.value;
+	var str = str.split(' ').join('');
+	str = str.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+	var tempstr = str.split('-').join('');
+	tempstr = tempstr.split('.').join('');
+	tempstr = tempstr.split('_').join('');
+	if(!isNaN(tempstr))
+	{
+		str = tempstr;
+	}
+	obj.value=str;
 }

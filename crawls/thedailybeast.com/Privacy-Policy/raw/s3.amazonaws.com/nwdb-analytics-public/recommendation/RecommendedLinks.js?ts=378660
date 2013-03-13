@@ -1,0 +1,1507 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/a-love-letter-to-american-idol-judge-nicki-minaj.html",' +
+                '"title": "A Love Letter to &lsquo;American Idol&rsquo; Judge Nicki Minaj",' +
+                '"rubric": "Best Judge Ever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b7742f8193add9d072577cf2c968a6c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/the-bachelor-finale-sean-lowe-answers-our-questions.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo; Finale: Sean Lowe Answers Our Questions",' +
+                '"rubric": "Rose Ceremony",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "294a5088a0858dff8139440bb243c0fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/habemus-who-a-daunting-task-at-the-papal-conclave.html",' +
+                '"title": "&lsquo;Habemus Who?&rsquo; A Daunting Task at the Papal Conclave",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "171189a7972dda8ee326c2a6a3a55f33"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/donald-wuerl-america-s-candidate-for-pope0.html",' +
+                '"title": "Donald Wuerl: America&rsquo;s Candidate for Pope?",' +
+                '"rubric": "AMEN",' +
+                '"topic": "World",' +
+                '"urlHashCode": "37469c09acc048338e7bf6f85f968723"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/harry-styles-gets-a-huge-butterfly-tattoo-inked-on-his-chest.html",' +
+                '"title": "Harry Styles Gets Huge Butterfly Tattoo Inked On Chest, Fans React",' +
+                '"rubric": "Inked",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f4f9759cbef9b1b58928acbd9dc66d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/20/chuck-hagel-friend-of-hamas-how-the-right-wing-press-got-it-way-wrong.html",' +
+                '"title": "Chuck Hagel, Friend of Hamas? How the Right-Wing Press Got It Way Wrong",' +
+                '"rubric": "Oops!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "10e04632efbf09239323c95024639ba2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/the-week-s-best-longreads-for-march-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for March 9, 2013",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "eb2ff37aad170187b7c1d02daa188b9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/donald-wuerl-america-s-candidate-for-pope0.html",' +
+                '"title": "Donald Wuerl: America&rsquo;s Candidate for Pope?",' +
+                '"rubric": "AMEN",' +
+                '"topic": "World",' +
+                '"urlHashCode": "37469c09acc048338e7bf6f85f968723"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/habemus-who-a-daunting-task-at-the-papal-conclave.html",' +
+                '"title": "&lsquo;Habemus Who?&rsquo; A Daunting Task at the Papal Conclave",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "171189a7972dda8ee326c2a6a3a55f33"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/in-andaman-islands-indian-court-allows-return-of-a-human-safari.html",' +
+                '"title": "In Andaman Islands, Indian Court Allows Return of a &lsquo;Human Safari&rsquo;",' +
+                '"rubric": "Boundaries",' +
+                '"topic": "Travel",' +
+                '"urlHashCode": "f386967f8aa93b56f555999a18892547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/nine-things-you-should-know-about-genetically-modified-organisms.html",' +
+                '"title": "Nine Things You Should Know About Genetically Modified Organisms",' +
+                '"rubric": "Whole Food Facts",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6b972a419d9b21ee4db302579010b3c0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/the-bachelor-finale-sean-lowe-answers-our-questions.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo; Finale: Sean Lowe Answers Our Questions",' +
+                '"rubric": "Rose Ceremony",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "294a5088a0858dff8139440bb243c0fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/did-the-view-just-lose-joy-behar-and-elisabeth-hasselbeck.html",' +
+                '"title": "Did &lsquo;The View&rsquo; Just Lose Joy Behar and Elisabeth Hasselbeck?",' +
+                '"rubric": "Hot Topics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8c30e5982475a4e288c2bc6f382edc98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/03/bob-woodward-and-the-rules-of-washington-morality.html",' +
+                '"title": "Bob Woodward and the Rules of Washington Morality",' +
+                '"rubric": "Collective Madness",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2976dfc3f35654f1b6cc6da952198730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/washington-post-s-katharine-weymouth-offers-story-behind-the-story.html",' +
+                '"title": "Washington Post&rsquo;s Katharine Weymouth Offers the &lsquo;Story Behind the Story&rsquo;",' +
+                '"rubric": "&lsquo;Tough Calls&rsquo;",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "58c517f7c9e0074a0a8d416850daf69a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/the-vatican-s-big-fashion-probelm-how-fat-is-the-new-pope.html",' +
+                '"title": "The Vatican\'s Big Fashion Problem: How Fat Is the New Pope?",' +
+                '"rubric": "Size Matters",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0683df84e0ce41f2e5f74ede98baa8e4"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/06/28/humiliating-day-for-tv-news-from-ann-curry-s-exit-to-cnn-fox-debacles.html",' +
+                '"title": "Humiliating Day for TV News, From Ann Curry&rsquo;s Exit to CNN, Fox Debacles",' +
+                '"rubric": "Turn It Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "90a273dc6ffe08b35340175b40ee01c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/06/28/7-fascinating-facts-about-savannah-guthrie-today-s-probable-new-anchor.html",' +
+                '"title": "7 Fascinating Facts About Savannah Guthrie, &lsquo;Today&rsquo;s&rsquo; Probable New Anchor",' +
+                '"rubric": "Anchor Update",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f46c6cefc5abaa8dae4e407ba08a424"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/23/ann-curry-s-twitter-rehab.html",' +
+                '"title": "Ann Curry&rsquo;s Twitter Rehab",' +
+                '"rubric": "Lookin&rsquo; Good",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "b63c3aac87bcb39b21a7e51f0f8dbcdb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/03/quiz-who-said-it-gma-host-katie-couric-or-today-host-sarah-palin.html",' +
+                '"title": "Quiz: Who Said It, &lsquo;GMA&rsquo; Host Katie Couric or &lsquo;Today&rsquo; Host Sarah Palin?",' +
+                '"rubric": "Quote Quiz",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "96b94561aab8b69a58d9637bd899dacc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/did-the-view-just-lose-joy-behar-and-elisabeth-hasselbeck.html",' +
+                '"title": "Did &lsquo;The View&rsquo; Just Lose Joy Behar and Elisabeth Hasselbeck?",' +
+                '"rubric": "Hot Topics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8c30e5982475a4e288c2bc6f382edc98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/donald-wuerl-america-s-candidate-for-pope0.html",' +
+                '"title": "Donald Wuerl: America&rsquo;s Candidate for Pope?",' +
+                '"rubric": "AMEN",' +
+                '"topic": "World",' +
+                '"urlHashCode": "37469c09acc048338e7bf6f85f968723"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/06/28/ann-curry-leaving-today-show.html",' +
+                '"title": "Tearful Ann Curry Announces &lsquo;Today&rsquo; Departure",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c2301525ddd1fc84a2842f3f6d559d79"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/11/matt-lauer-loves-ann-curry.html",' +
+                '"title": "Matt Lauer Loves Ann Curry",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d61c70ce460aaa573a16892773f734cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/the-bachelor-finale-sean-lowe-answers-our-questions.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo; Finale: Sean Lowe Answers Our Questions",' +
+                '"rubric": "Rose Ceremony",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "294a5088a0858dff8139440bb243c0fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/10/snl-s-five-time-superstars.html",' +
+                '"title": "SNL\'s Five-Time Superstars",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "89e89a63f738adb241d417c4e4457e74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/introducing-school-of-thrones-game-of-thrones-parody-web-series.html",' +
+                '"title": "Introducing &lsquo;School of Thrones&rsquo;: &lsquo;Game of Thrones&rsquo; Parody Web Series",' +
+                '"rubric": "Prom Night is Coming",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b65c2bfecd579ef40c9c51750c865a44"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/11/the-bachelor-shuts-down-lindsay.html",' +
+                '"title": "\'The Bachelor\' Shuts Down Lindsay",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bf9d3ace4fa7da703af7aaac576dc8c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/11/the-bachelor-proposes.html",' +
+                '"title": "\'The Bachelor\' Proposes",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d77862f8285e9366a908d2d3c37bd7f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/10/jeb-bush-s-coming-out-party.html",' +
+                '"title": "Jeb Bush\'s Coming-Out Party",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5d52a7cadcddf729c791ffb3856e1137"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/harry-styles-gets-a-huge-butterfly-tattoo-inked-on-his-chest.html",' +
+                '"title": "Harry Styles Gets Huge Butterfly Tattoo Inked On Chest, Fans React",' +
+                '"rubric": "Inked",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8f4f9759cbef9b1b58928acbd9dc66d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/11/valerie-harper-i-m-ready-for-it.html",' +
+                '"title": "Valerie Harper: \'I\'m Ready for It\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "97f99344b6ebb677c88af9e54a998f9e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/did-the-view-just-lose-joy-behar-and-elisabeth-hasselbeck.html",' +
+                '"title": "Did &lsquo;The View&rsquo; Just Lose Joy Behar and Elisabeth Hasselbeck?",' +
+                '"rubric": "Hot Topics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8c30e5982475a4e288c2bc6f382edc98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/dancing-nana-88-year-old-grandmother-gets-down-to-retro-tunes.html",' +
+                '"title": "Dancing Nana: 88-Year-Old Grandmother Gets Down to Retro Tunes",' +
+                '"rubric": "Don\'t Break a Hip",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7b07f47507289b6f2990657313cd8584"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/egyptians-to-john-kerry-stop-backing-dictators.html",' +
+                '"title": "Egyptians to John Kerry: Stop Backing Dictators",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4a592c92c012ed82e8816acdba041fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/dancing-nana-88-year-old-grandmother-gets-down-to-retro-tunes.html",' +
+                '"title": "Dancing Nana: 88-Year-Old Grandmother Gets Down to Retro Tunes",' +
+                '"rubric": "Don\'t Break a Hip",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7b07f47507289b6f2990657313cd8584"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/dianne-feinstein-ignites-debate-about-veterans-with-ptsd-and-guns.html",' +
+                '"title": "Dianne Feinstein Ignites Debate About Veterans With PTSD and Guns",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fd697217d56a843fc14b54da14b4c266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/on-the-home-front-drones-are-quickly-shot-down-by-states.html",' +
+                '"title": "On the Home Front, Drones Are Quickly Shot Down by States",' +
+                '"rubric": "Tug of War",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e87680ddc3db66d3297453fcd7c0fd45"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/24/how-the-english-bulldog-lost-westminster-but-conquered-america.html",' +
+                '"title": "How the English Bulldog Lost Westminster But Conquered America",' +
+                '"rubric": "It-Breed",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "740d9ce4b99993b654ea5834d11aa6b8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/nine-things-you-should-know-about-genetically-modified-organisms.html",' +
+                '"title": "Nine Things You Should Know About Genetically Modified Organisms",' +
+                '"rubric": "Whole Food Facts",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6b972a419d9b21ee4db302579010b3c0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/whatever-happened-to-prison-break-hunk-wentworth-miller.html",' +
+                '"title": "Whatever Happened to &lsquo;Prison Break&rsquo; Hunk Wentworth Miller?",' +
+                '"rubric": "Career Switch",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "66222130b2423650e7fef5982324c7c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/chris-stark-the-man-behind-bbc-s-hilarious-mila-kunis-interview-speaks.html",' +
+                '"title": "Chris Stark, Man Behind BBC&rsquo;s Hilarious Mila Kunis Interview, Speaks",' +
+                '"rubric": "BBC\'s Viral Bloke",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "575cd3c6beef3c146136422484048c21"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/02/28/community-alison-brie-yvette-nicole-brown-gillian-jacobs-megan-ganz-roundtable.html",' +
+                '"title": "&lsquo;Community&rsquo;: Alison Brie, Yvette Nicole Brown, Gillian Jacobs &amp; Megan Ganz Roundtable",' +
+                '"rubric": "And I Am Telling You &hellip;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "01b693f87c73672916077bd1a6257fdb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/06/28/humiliating-day-for-tv-news-from-ann-curry-s-exit-to-cnn-fox-debacles.html",' +
+                '"title": "Humiliating Day for TV News, From Ann Curry&rsquo;s Exit to CNN, Fox Debacles",' +
+                '"rubric": "Turn It Off",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "90a273dc6ffe08b35340175b40ee01c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/06/28/7-fascinating-facts-about-savannah-guthrie-today-s-probable-new-anchor.html",' +
+                '"title": "7 Fascinating Facts About Savannah Guthrie, &lsquo;Today&rsquo;s&rsquo; Probable New Anchor",' +
+                '"rubric": "Anchor Update",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0f46c6cefc5abaa8dae4e407ba08a424"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/26/matt-lauer-gets-sliced-up-as-today-show-s-ratings-fall.html",' +
+                '"title": "Matt Lauer Gets Sliced Up as &lsquo;Today&rsquo; Show&rsquo;s Ratings Fall",' +
+                '"rubric": "&lsquo;Today&rsquo; Scapegoat",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "951f8f0f63b188a2156a3ebd036434a3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/the-anne-hathaway-hatred-is-out-of-control.html",' +
+                '"title": "The Anne Hathaway Hatred Is Out of Control",' +
+                '"rubric": "Enough, Already!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d3e5c89391bd9f8d1cdf2f30cc3416c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/donald-wuerl-america-s-candidate-for-pope0.html",' +
+                '"title": "Donald Wuerl: America&rsquo;s Candidate for Pope?",' +
+                '"rubric": "AMEN",' +
+                '"topic": "World",' +
+                '"urlHashCode": "37469c09acc048338e7bf6f85f968723"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/the-week-s-best-longreads-for-march-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for March 9, 2013",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "eb2ff37aad170187b7c1d02daa188b9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/did-the-view-just-lose-joy-behar-and-elisabeth-hasselbeck.html",' +
+                '"title": "Did &lsquo;The View&rsquo; Just Lose Joy Behar and Elisabeth Hasselbeck?",' +
+                '"rubric": "Hot Topics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8c30e5982475a4e288c2bc6f382edc98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/habemus-who-a-daunting-task-at-the-papal-conclave.html",' +
+                '"title": "&lsquo;Habemus Who?&rsquo; A Daunting Task at the Papal Conclave",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "171189a7972dda8ee326c2a6a3a55f33"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/06/in-defense-of-ann-romney.html",' +
+                '"title": "Give Ann Romney a Break",' +
+                '"rubric": "Sympathy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "dd2077b56592cc7b20ff145b8468b6d5"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-mayor-of-monrovia-s-fall-from-grace.html",' +
+                '"title": "The Mayor of Monrovia&rsquo;s Fall From Grace",' +
+                '"rubric": "Africa",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ae89a30a2b6d1a6dd805dde5344149af"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/why-hugo-chavez-was-bad-for-venezuela.html",' +
+                '"title": "Why Hugo Chavez Was Bad for Venezuela",' +
+                '"rubric": "Venezuela after Chavez",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6a4b3418224baf9a55bfd3db8351bee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-odd-story-of-c-s-lewis-an-extremely-odd-man.html",' +
+                '"title": "The Odd Story of C.S. Lewis, an Extremely Odd Man",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "659cdb204c7a10c8fa2bf3bdd56e1d2f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/obama-s-drone-debacle.html",' +
+                '"title": "Obama&rsquo;s Drone Debacle",' +
+                '"rubric": "Fiasco",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e8f644f4952d9c7322d5d6ca5fb01730"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/mothers-who-drag-their-daughters-down.html",' +
+                '"title": "Mothers Who Drag Their Daughters Down",' +
+                '"rubric": "Role Reversal",' +
+                '"topic": "Women in the World",' +
+                '"urlHashCode": "d826ff28e7b10cd83c7276812d4918ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/04/get-a-f-ing-life-last-words-daniel-day-lewis-spoke-to-half-brother.html",' +
+                '"title": "&quot;Get a F***ing Life&quot;: Last Words Daniel Day-Lewis Spoke To Half-Brother",' +
+                '"rubric": "Day By Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8882e89ff7a253abb06ae256736683e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/why-don-t-the-french-speak-english.html",' +
+                '"title": "Why Don&rsquo;t the French Speak English?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "28dd6ed0c273907cd2a69614468b0645"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/34-years-later-gun-shots-still-echo-from-a-senseless-killing.html",' +
+                '"title": "34 Years Later, Gunshots Still Echo From a Senseless Killing",' +
+                '"rubric": "A Perfect Moment",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "28ec4b8c63fa9fb16d5520aed933f044"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/donald-wuerl-america-s-candidate-for-pope0.html",' +
+                '"title": "Donald Wuerl: America&rsquo;s Candidate for Pope?",' +
+                '"rubric": "AMEN",' +
+                '"topic": "World",' +
+                '"urlHashCode": "37469c09acc048338e7bf6f85f968723"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/09/the-week-s-best-longreads-for-march-9-2013.html",' +
+                '"title": "The Week&rsquo;s Best Longreads for March 9, 2013",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "eb2ff37aad170187b7c1d02daa188b9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/07/bridgewater-may-be-the-hottest-hedge-fund-for-harvard-grads-but-it-s-also-the-weirdest.html",' +
+                '"title": "Bridgewater May Be the Hottest Hedge Fund for Harvard Grads, but It&rsquo;s Also the Weirdest",' +
+                '"rubric": "MONEY",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "37dd7e53c38fd5b7852d0ce77ec0c119"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/meet-alec-baldwin-and-kim-basinger-s-model-daughter-ireland-baldwin.html",' +
+                '"title": "Meet Alec Baldwin and Kim Basinger&rsquo;s Model Daughter, Ireland Baldwin",' +
+                '"rubric": "MODEL ALERT",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9ab188b21c02851aa5c3cdfad23fc18c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/habemus-who-a-daunting-task-at-the-papal-conclave.html",' +
+                '"title": "&lsquo;Habemus Who?&rsquo; A Daunting Task at the Papal Conclave",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "171189a7972dda8ee326c2a6a3a55f33"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/many-models-get-paid-in-clothes-not-cash-but-that-might-be-changing.html",' +
+                '"title": "Many Models Get Paid in Clothes, Not Cash, but That Might Be Changing",' +
+                '"rubric": "Hint: Not Cash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "9befee69cd962fe1fa7b262f651afc5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/11/porn-isn-t-just-for-men-why-women-love-watching.html",' +
+                '"title": "Porn Isn&rsquo;t Just for Men! Why Women Love Watching",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2e3a3d6c4be1392fe9b5e37175134900"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/the-bachelor-ex-contestant-leslie-hughes-spills-nine-secrets-about-the-show.html",' +
+                '"title": "&lsquo;The Bachelor&rsquo;: Ex-Contestant Leslie Hughes Spills Nine Secrets About the Show",' +
+                '"rubric": "THE FINAL ROSE",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4adace10256b5adff8fcce4f5cd3c23b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/08/the-westboro-defectors-speak-phelps-granddaughters-embrace-tolerance.html",' +
+                '"title": "The Westboro Defectors Speak: Phelps Granddaughters Embrace Tolerance",' +
+                '"rubric": "Listening Tour",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86d7ab0a228632bdac63f7fbd05e5a04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/03/bob-woodward-and-the-rules-of-washington-morality.html",' +
+                '"title": "Bob Woodward and the Rules of Washington Morality",' +
+                '"rubric": "Collective Madness",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2976dfc3f35654f1b6cc6da952198730"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/02/25/oops-dkny-admits-using-blogger-s-photos-without-permission.html",' +
+                '"title": "Oops: DKNY Admits Using Blogger&rsquo;s Photos Without Permission",' +
+                '"rubric": "Seeing Double",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "e2e27bd5e60575b2e7ddadfc4025d557"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/gop-meltdown-paul-ryan-doubles-down-on-his-losing-southern-strategy.html",' +
+                '"title": "GOP Meltdown: Paul Ryan Doubles Down On His Losing Southern Strategy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a4c9f48fc3ab86ec2a63364d5155168f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/sunday-talk-interviews-show-why-jeb-bush-will-never-be-president.html",' +
+                '"title": "Sunday Talk Interviews Show Why Jeb Bush Will Never Be President",' +
+                '"rubric": "Bush Baggage",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7de619ed5c94f0c45a43c0d49820aa95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/matt-lauer-s-bruising-year-after-ann-curry-s-ouster-devastated-thetoday-show.html",' +
+                '"title": "Matt Lauer&rsquo;s Bruising Year After Ann Curry&rsquo;s Ouster Devastated the &lsquo;Today&rsquo; Show",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "de1d6e9b3f6d3a319477551034ac815f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2013/02/08/1978-now-that-was-a-blizzard-photos.html",' +
+                '"title": "1978: Now That Was a Blizzard! (PHOTOS)",' +
+                '"rubric": "CHILLING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b89b298adde3105f163e8fb4d7e314cf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+        ']' +
+    '}'
+);

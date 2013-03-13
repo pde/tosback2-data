@@ -408,7 +408,7 @@ if( typeof jQuery != 'undefined' ){
             var providers = this.options.providers;
             var param;
             $("a").each(function(){
-                href = $(this).attr('href');
+                href = $(this).attr('href') ? $(this).attr('href') : "";
                 for(var i=0;i<providers.length;i++){
                 if(href.indexOf(providers[i]) != -1){
                     if(i == 0){

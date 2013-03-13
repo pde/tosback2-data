@@ -10,7 +10,6 @@ var E4x = {
 
     initialize: function () {
         E4x.container = $('div.E4x')[0];
-
         var loc = window.location + '';
         if (loc.indexOf('secure') < 0) {
             if (true) {
@@ -46,10 +45,24 @@ var E4x = {
     popupDiv: function () {
         var cookies = new CookieManager();
         var ipCountry = cookies.getValueIgnoreCase('IPCountry');
+        var retVal = false;
+        var smartDeviceList = /iphone|ipod|series60|symbian|android|windows ce|blackberry|palm/;
+        var uagent = navigator.userAgent.toLowerCase();
+
+        if (uagent.search(smartDeviceList) > -1) {
+            retVal = true;
+        }
         if (E4x.showPopupOnClick || (typeof (ipCountry) != 'undefined' && ipCountry != 'US')) {
-            var myAnnouncement = Dialog.Box;
-            myAnnouncement.initialize($('#E4x'));
-            myAnnouncement.show();
+
+            if (retVal) {               
+                $('#E4x').hide();
+                window.location.href = '/Mobile/InternationalShipping.aspx';
+            }
+            else {
+                var myAnnouncement = Dialog.Box;
+                myAnnouncement.initialize($('#E4x'));
+                myAnnouncement.show();
+            }
         }
         else {
             $('#E4x').hide();

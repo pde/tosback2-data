@@ -24,9 +24,9 @@ $(document).ready(function(){
 	if(typeof BrowserDetect != 'undefined') isMobileDevice =(BrowserDetect.OS=="iPad" || BrowserDetect.OS=="iPhone" || BrowserDetect.OS=="Android")
 	var menuIsFixed = false;
 	var breakPoint = 95;
-	var $hugeTabSelector = $(".Women #main-nav .women-top-dd, .Juniors #main-nav .juniors-top-dd, .Shoes #main-nav .shoes-top-dd, .Handbags #main-nav .handbags-top-dd, .Accessories #main-nav .accessories-top-dd, .Lingerie #main-nav .lingerie-top-dd, .Beauty #main-nav .beauty-top-dd, .Men #main-nav .men-top-dd, .Children #main-nav .children-top-dd, .Home #main-nav .home-top-dd");
-
+	
 	if(! isMobileDevice){
+		
 		$(window).scroll(function(){
 	
 			var isInternational = ($("#myDillardsContainer").css("display")!="block");
@@ -38,7 +38,6 @@ $(document).ready(function(){
 				$("#wrapper").css("padding-top","41px");
 				$("#myDillardsSmallLogo").stop().fadeIn(250);
 				$("#myDillardsBar").addClass("menuSticky");
-				$hugeTabSelector.css("margin-bottom","0");
 				if(isInternational){
 					$(".fiftyOne-nav").addClass("sticky");
 					$("#main-nav-wrapper, .fiftyOne-nav").addClass("stickyInt");
@@ -52,7 +51,6 @@ $(document).ready(function(){
 				$("#wrapper").css("padding-top","0");
 				$("#myDillardsSmallLogo").stop().fadeOut(250);
 				$("#myDillardsBar").removeClass("menuSticky");
-				$hugeTabSelector.css("margin-bottom","-1px");
 			}
 		});
 	}

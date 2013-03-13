@@ -1,0 +1,689 @@
+// IE already has this method natively, so we're adding it for everything else.
+if (window.HTMLElement && !HTMLElement.prototype.contains) {
+    HTMLElement.prototype.contains = function(el) {
+        while (el && el !== this) { el = el.parentNode; }
+        return el !== null;    // If el is null, we've hit document root without finding "this"
+    };
+};
+
+// netflix.utils.Map:
+//      makeEnum(arg1...argN) => {arg1: "arg1", argN: "argN"}
+//      getValues(mapObj{a: 1, b: 2, c: 3} => [1, 2, 3]
+//      make(key1, value1...keyOdd, valueEven) => {key1: value1, keyOdd: valueEven}
+//      keyMap(args1...argsN) => {args1: 1, argsN: 1}
+//      preserve(Object target, Object source)
+//      copy(Object source, Object restrictTo)
+//      map(Array/Object keys, Function callback)
+//      makeFromArrays(Array keys, Array values)
+//      fill(Array/Object keys, Aray/Function/other populate)
+//      invert(Object origMap)
+if (!netflix.utils) netflix.utils = {};
+(function($){
+    // Private
+        // functions
+    var _makeEnum = function(enumObj, keys) {
+            if (keys && keys instanceof Array) {
+                $.each(keys, function(i, key) { _makeEnum(enumObj, key); });
+            } else {
+            	enumObj[keys] = keys;
+            }
+            return enumObj;
+        }
+    ;
+
+    // PUBLIC API
+    netflix.utils.Map = {
+        // Make an enum from the arguments; ensures all keys and values are strings
+        //
+        // makeEnum(arg1...argN)
+        // @param arg1...argN {Object} or {Array} or other
+        //          if Object, adds all object keys to the enum
+        //          if Array, adds all values to the enum
+        //
+        // Examples:
+        //      netflix.utils.Map.makeEnum("a", "b", "c") => {a: "a", b: "b", c: "c"}
+        //      netflix.utils.Map.makeEnum("a", ["b", "c"], "d") => {a: "a", b: "b", c: "c", d: "d"}
+        //      netflix.utils.Map.makeEnum(enumObj1{toString: "a"}, enumObj2{toString: "b"}) => {a: enumObj1, b: enumObj2}
+        makeEnum: function() {
+            return _makeEnum({}, $.makeArray(arguments));
+        },
+        
+        //
+        // @param mapObj {Object} Object to retrieve values from
+        // Examples:
+        //      netflix.utils.Map.getValues({a: 1, b: 2, c: 3}) => [1, 2, 3]
+        getValues: function(mapObj) {
+            var values = [];
+            for (var key in mapObj) {
+                values.push(mapObj[key]);
+            }
+            return values;
+        },
+        
+        // Make a map from arguments
+        //
+        // make(key1, value1...keyOdd, valueEven)
+        // @param arg1...argOdd Map key
+        // @param arg2...argEven Map value
+        //
+        // Example:
+        //      netflix.utils.Map.make("a", 1, "c", 2, "c", 3) => {a: 1, b: 2, c: 3}
+        make: function() {
+            var newMap = {};
+            for (var i=0, len=arguments.length; i<len; i+=2) {
+                newMap[arguments[i]] = (i+1 < len) ? arguments[i+1] : null;
+            }
+            return newMap;
+        },
+        
+        // Make a key map where all values are set to 1
+        //
+        // keyMap(args1...argsN)
+        // @param args1...argsN Map keys
+        //
+        // Examples:
+        //      netflix.utils.Map.keyMap("a", "b", "c") => { a: 1, b: 1, c: 1 }
+        keyMap: function() {
+            return this.fill($.makeArray(arguments), 1);
+        },
+        
+        // @deprecated
+        // Use jQuery.extend instead
+        extend: function(target) {
+            return $.extend.apply(this, (arguments.length === 1) ?
+                                    [{}].push(Array.prototype.slice.call(arguments, 0))
+                                :   arguments);
+        },
+
+        // An extend that will preserve existing properties on the target,
+        // preventing them from being overridden during the extend
+        //
+        // preserve(Object target, Object source)
+        // @param target {Object}
+        // @param source {Object}
+        preserve: function(target, source) {
+            return $.extend({}, source, target);
+        },
+        
+        // Make a copy of the map
+        //
+        // copy(Object source, Object restrictTo)
+        // @param source {Object} Map to copy
+        // @param restrictTo Object Optional; restrict the copy to only those properties on source that are also defined on the restrictTo object
+        copy: function(source, restrictTo) {
+            var copyOf = {};
+            $.each(restrictTo || source, function(key) {
+                copyOf[key] = source[key];
+            });
+            return copyOf;
+        },
+        
+        // Map keys to callback return value for that key
+        //
+        // map(keys, Function callback)
+        // @param arg1 {Array} or {Object} Array or object of map keys
+        // @param arg2 {Function} callback(index, value) Callback that should return value for the map
+        // Examples:
+        //      netflix.utils.Map.map(["a", "b", "c"], function(index, key) { return index; }) => {a: 1, b: 2, c: 3}
+        //      netflix.utils.Map.map({a: 1, b: 2, c: 3}, function(key, value) { return key + value; }) => {a: "a1", b: "b2", c: "c3"}
+        map: function(keys, callback) {
+            return this.fill(keys, callback);
+        },
+        
+        // Merge two arrays into a map
+        //
+        // makeFromArrays(Array keys, Array values)
+        // @param arg1 {Array} Array of map keys
+        // @param arg2 {Array} Array of map values
+        // 
+        // Examples:
+        //      netflix.utils.Map.makeFromArrays(["a", "b", "c", "d"], [1, 2, 3]) => {a:1, b:2, c:3, d:null}
+        makeFromArrays: function(keys, values) {
+            var newMap = {},
+                valuesLen = (values) ? values.length : 0;
+            $.each(keys, function(i, key) {
+                newMap[String(key)] = (i < valuesLen) ? values[i] : null;
+            });
+            return newMap;
+        },
+        
+        // Make a map where all keys are filled with the value
+        //
+        // fill(Array/Object keys, Aray/Function/other populate)
+        // @param keys {Array} or {Object} Map keys
+        // @param populate {Array} or {Function} or {Other (treated as single value)} Value to fill keys with
+        //
+        // Examples:
+        //      netflix.utils.Map.fill(["a", "b", "c"], 0) => {a: 0, b: 0, c: 0}
+        //      netflix.utils.Map.fill({a:1, b:2, c:3}, 0) => {a: 0, b: 0, c: 0}
+        //      netflix.utils.Map.fill(["a", "b", "c"], [3, 2, 1] => {a:3, b:2, c:1}
+        //      netflix.utils.Map.fill(["a", "b", "c"], function(key, index) { return index--; } => {a: 0, b: 1, c: 2}
+        //      netflix.utils.Map.fill({a:1, b:2, c:3}, function(key, value) { return value++; } => {a: 2, b: 3, c: 4}
+        fill: function(keys, populate) {
+            var fillFunc,
+                newMap = {};
+            if (populate instanceof Function) {
+                fillFunc = function(key, value) {
+                    newMap[key] = populate(key, value);
+                };
+            } else if (populate instanceof Array
+                        && keys instanceof Array) {
+                var populateLen = populate.length;
+                fillFunc = function(key, index) {
+                    newMap[key] = (index < populateLen) ? populate[index] : null;
+                };
+            } else {
+                fillFunc = function(key, value) {
+                    newMap[key] = populate;
+                }
+            }
+            if (keys instanceof Array) {
+                var origFillFunc = fillFunc;
+                fillFunc = function(index, key) {
+                    origFillFunc(key, index);
+                }
+            }
+            $.each(keys, fillFunc);
+            return newMap;
+        },
+        
+        // Invert a map, keys become values and values become keys; ensures all keys are strings
+        //
+        // invert(Object origMap)
+        // @param origMap {Object} Map to reverse
+        invert: function(origMap) {
+            var newMap = {};
+            for (var key in origMap) {
+                newMap[origMap[key]] = key;
+            }
+            return newMap;
+        }        
+   };
+    
+})(jQuery);
+// Unlike the old DebugConsole, netflix.DebugConsole requires only jQuery.
+//
+// netflix.DebugConsole.open() - Opens the debug console for viewing as soon as the DOM is ready.
+// netflix.DebugConsole.write(str, styleObj) - Write to the debug console
+
+netflix.DebugConsole = (function($) {
+    var _MAX_SIZE_DEFAULT = 300,
+        _PRUNE_TO_SIZE = 200,
+    
+        _msgQueue = [],
+	    _isOpen = false,
+	    _debugJq = null,
+	    
+	    _prune = function(count) {
+			if (count <= _MAX_SIZE_DEFAULT) {
+                // short-circuit: no need to prune
+                return;
+            } else if (_isOpen) {
+				// Bypass jQuery for performance
+				var debugEl = _debugJq[0],
+                    diff = debugEl.childNodes.length - _PRUNE_TO_SIZE;
+				while ((diff--) > 0) {
+					debugEl.removeChild(debugEl.firstChild);
+				}
+			} else {
+				_msgQueue = _msgQueue.slice(0, _PRUNE_TO_SIZE);
+			}
+	    },
+	    
+	    _write = function(str, styleObj) {
+	    	var strJq = $("<div class=\"dmsg\">" + str + "</div>");
+    		if (styleObj) {
+    			strJq.css(styleObj);
+    		}
+    		_debugJq.append(strJq);
+			_prune(_debugJq.children().length);
+	    },
+	    
+	    _log = function(str, styleObj) {
+	    	if (_isOpen) {
+				_write(str, styleObj);
+	    	} else {
+				_msgQueue.push({ str: str, style: styleObj });
+				_prune(_msgQueue.length);
+	    	}
+	    },
+	    
+	    _open = function() {
+	    	if (!_isOpen) {
+                _isOpen = true;
+                if (!(_debugJq && _debugJq.length > 0)) {
+                    _debugJq = $('<div id="debug"></div>');
+                    $(document.body).append(_debugJq);
+                }
+				while (_msgQueue.length > 0) {
+					var msg = _msgQueue.shift();
+					_write(msg.str, msg.style);
+				}
+			}
+	    },
+
+        DebugConsole = {
+            // Opens the debug console as soon as the DOM is ready.
+		    open: function() {
+                if (!_isOpen) {
+                    $(document).ready(function() {
+                        _open();
+                    });
+                }
+            },
+
+    		// Write to the debug console. If it's open, these messages will go
+	       	// straight to the DOM; otherwise, they'll get queued up for when the
+		    // debug console opens.
+		    // @param msg The message to log to the console
+		    // @param styleObj A hash map of style name-value pairs (where the name is the Javascript name)
+		    log: function(msg, styleObj) {
+                _log(msg, styleObj);
+		    },
+            
+            clear: function() {
+                if (_isOpen) {
+                    _debugJq.empty();
+                } else {
+                    _msgQueue = [];
+                }
+            }
+        };
+
+    // backwards compatability for those used to write
+    DebugConsole.write = DebugConsole.log;
+    
+    return DebugConsole;
+})(jQuery);
+
+// backwards compatability
+var DebugConsole = netflix.DebugConsole,
+    dbg = netflix.DebugConsole.log;
+if (null == netflix.logging){ netflix.logging = {}; }
+netflix.logging.Beacon = (function($, PageConstants, Map, dbg){
+    var _beaconUrl, _externalBindableEvents = [],
+    _addEvent = function(){
+        var _argument;
+        if (arguments && 1 == arguments.length){
+            _argument = arguments[0];
+            if (typeof _argument == "string"){
+                _argument = [_argument];
+            } else if (typeof _argument == "object"){ // Normally a map literal
+                _argument = Map.getValues(_argument);
+            }
+            _externalBindableEvents = _externalBindableEvents.concat(_argument);
+        } else {
+            //dbg("Exception. More than a single argument was sent to the beacon");
+        }
+    };
+    /* Bind function to window load to allow subscribers to publish events to the Beacon.
+    * The other alternative to a Beacon singleton is to allow multiple beacon classes to exist,
+    * each with its own set of events to listen to. */
+    $(window).load(function(){
+        $(document).bind(_externalBindableEvents.join(" "), function(){
+            if (!_beaconUrl){ // Create the beacon url if it is not currently cached
+                var _autoCompleteConstants = PageConstants && PageConstants["AUTOCOMPLETE"] || null,
+                        _beaconUrl = _autoCompleteConstants && _autoCompleteConstants["beaconUrl"] || null;
+            }
+            if (_beaconUrl){
+                if(arguments[1]){
+                    new Image().src = _beaconUrl + "?" + $.param(arguments[1]);
+                }
+            }
+        });
+    });
+    return { addEvent : _addEvent};
+})(jQuery, netflix.constants.page, netflix.utils.Map, netflix.DebugConsole.log);/*jslint nomen:true, browser:true, white:true*/
+/*global netflix:true, FB:true, jQuery:true*/
+netflix.facebook = (function($) {
+
+    /** jQueried window object */
+    var $win = $(window),
+
+    /**
+     * Makes a call to Facebook's getLoginStatus. Multiple events may fire but this is necessary since
+     * many browsers aren't firing as they should.
+     *
+     * @param fn an optional callback to execute after the login status has completed.
+     */
+    _verifyLoginStatus = function(fn, reload) {
+        var FB_STATUS_TIMEOUT = 7000;
+        var timedOut = false;
+
+
+        var timeOut = setTimeout(function(){
+            timedOut = true;
+            fn( {error: 'timeout'});
+        },FB_STATUS_TIMEOUT);
+
+        FB.getLoginStatus(function(response) {
+            if (!timedOut) {
+                clearTimeout(timeOut);
+                fn(response)
+            }
+        }, reload);
+    },
+
+    _eventListener = function(event_name, fn) {
+				FB.Event.subscribe(event_name, function(response){
+					fn(response);
+				});
+    },
+
+    /**
+     * Applies listeners to all of Facebook's subscribe-able events. They become a fb<eventName>
+     * style event that is triggered on the browser's window object whenever they fire. These
+     * are viewable anywhere the window object is accessible.
+     */
+    _monitorFacebook = function() {
+        if (!_monitorFacebook.applied) {
+            FB.Event.subscribe('auth.statusChange', function(response) {
+                $win.trigger('fbAuthStatusChange', [response]);
+            });
+            _monitorFacebook.applied = true;
+        }
+    },
+
+    /**
+     * The Facebook API calls for a div with an id of "fb-root" to exist on the page, this
+     * method checks for said existence and creates the node if it is not present.
+     */
+    _writeFacebookRootNode = function() {
+        // Check for existence of fb-root node
+        var $root = $('#fb-root');
+        if (!$root.length) {
+            // Create the node
+            $root = $('<div id="fb-root">').appendTo(document.body);
+        }
+        return $root;
+    },
+
+    /**
+     * This method creates the script tag that invokes and brings the Facebook api into
+     * the page. The resulting FB object should be in the window scope upon successful
+     * completion of the script load. An applied flag is set to true on this function
+     * after it has executed once.
+     */
+    _writeFacebookScriptNode = function(locale) {
+        if (!_writeFacebookScriptNode.applied) {
+            // Create the script that will initialize facebook
+            var $root = _writeFacebookRootNode();
+            var $script = $('#fb-jsapi');
+            if (!$script.length) {
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://connect.facebook.net/' + locale + '/all.js';
+                script.id = "fb-jsapi";
+                $root.append(script);
+                $script = $(script);
+            }
+            _writeFacebookScriptNode.applied = true;
+        }
+    },
+
+    /**
+     * Applies the Netflix<->Facebook initialization. The Facebook root node and
+     * script are injected into the page if they don't already exist and FB.init()
+     * is called on the resulting object.  Finally, the global fbAsyncInitDone
+     * event is triggered on the global window object.
+     */
+    _initializeFacebook = function(locale) {
+        // Add or append to the fbAsycInit method
+
+        if (!_initializeFacebook.applied) {
+            var oldInit = window.fbAsyncInit;
+
+            window.fbAsyncInit = function() {
+                // Attach and subscribe our events to Facebook's events
+                _monitorFacebook();
+
+                FB.init({
+                    appId: 163114453728333,
+                    status: true,
+                    cookie: true,
+                    xfbml: true,
+                    channelUrl: "https://signup.netflix.com/facebookchannel" + "?locale=" + locale,
+                    oauth: true
+                });
+
+                if (oldInit) {
+                    try {
+                        oldInit.apply(null, arguments);
+                    } catch(err) {
+                    }
+                }
+                //alert("before trigger");
+                $win.trigger('fbAsyncInitDone');
+            };
+
+            _initializeFacebook.applied = true;
+        }
+
+        _writeFacebookScriptNode(locale);
+    },
+
+    /**
+     * Start failure countdown timer that will send a 'fb_down' message to listeners of window if FB JS isn't found
+     * in the DOM. From experience, 10 seconds has proven to be the right duration to wait before canceling further FB
+     * interaction.
+     */
+    _initializeFailureTimer = function (duration) {
+        if (typeof FB == 'object' && typeof netflix.facebook.isup == 'undefined') {
+            netflix.facebook.isup = true;
+            $win.trigger('fb_up');
+        } else if (typeof netflix.facebook.isup == 'undefined') {
+            if (typeof netflix.facebook._listenerDoneInit == 'undefined') {
+                netflix.facebook._listenerDoneInit = function () {
+                    if (typeof netflix.facebook.isup == 'undefined') {
+                        netflix.facebook.isup = true;
+                        if (typeof netflix.facebook._failureTimer != 'undefined') {
+                            clearTimeout(netflix.facebook._failureTimer);
+                        }
+                        $win.trigger('fb_up');
+                    }
+                };
+                $win.bind('fbAsyncInitDone', netflix.facebook._listenerDoneInit);
+            }
+            if (typeof netflix.facebook._failureTimer == 'undefined') {
+                netflix.facebook._failureTimer = setTimeout(function () {
+                        if (typeof FB == 'undefined' || FB == null || typeof FB != 'object') {
+                            netflix.facebook.isup = false;
+                            $win.trigger('fb_down', ['fbJs=missing']);
+                        } else {
+                            netflix.facebook.isup = true;
+                            clearTimeout(netflix.facebook._failureTimer);
+                            $win.trigger('fb_up');
+                        }
+                    },
+                    duration
+                );
+            }
+        }
+    },
+
+    _initializeLoginStatus = function () {
+        var listener = function () {
+            _verifyLoginStatus(function (response) {
+
+                if (response.error === "timeout") {
+                    jQuery(window).trigger("fb_timed_out");
+                    jQuery(window).trigger("fb_down", ["loginStatus=timed_out"]);
+
+                } else {
+                    if (response.status === "connected") {
+                        netflix.facebook.accessToken = response.authResponse.accessToken;
+                        jQuery(window).trigger("fb_connected");
+
+                    } else if (response.status === "not_authorized" || response.status === "notConnected") {
+                        jQuery(window).trigger("fb_not_authorized");
+
+                    } else {
+                        jQuery(window).trigger("fb_logged_out");
+                    }
+
+                    netflix.utils.beacon('fbstat=' + response.status);
+                }
+
+            }, false);
+        };
+
+        if (typeof netflix.facebook.isup == 'undefined') {
+            $win.bind('fb_up', listener);
+        } else if (netflix.facebook.isup) {
+            listener();
+        }
+    },
+
+    _initAcctConnectedCheck = function (id) {
+        if (typeof id != 'undefined') {
+            jQuery.get('/nfapi?endpoint=desktop/signup/fbconnection/' + id).success(function () {
+                netflix.facebook.connectionStatus = "fb_connected_to_nflx";
+                jQuery(window).trigger('fb_connected_to_nflx');
+                netflix.utils.beacon('fbToNflxStatus=connected');
+            }).error(function () {
+                netflix.facebook.connectionStatus = "fb_not_connected_to_nflx";
+                jQuery(window).trigger('fb_not_connected_to_nflx');
+                netflix.utils.beacon('fbToNflxStatus=not_connected');
+            });
+        }
+    },
+
+    _handleConnectionAction = function (fn) {
+        _eventListener("auth.authResponseChange", function(response){
+            var status = false;
+
+            if (response.status === "connected") {
+                netflix.facebook.accessToken = response.authResponse.accessToken;
+                status = true;
+            }
+
+            fn(status);
+        });
+    },
+
+    _logHandler = function (type, detail) {
+        var url = type;
+        if (typeof detail != 'undefined' && detail != null) {
+            url += '&' + detail;
+        }
+        netflix.utils.beacon(url);
+    },
+
+    _initLogging = function () {
+        $win.bind({
+            'fb_up':function (event, detail) {
+                _logHandler('fb=up', detail);
+            },
+            'fb_down':function (event, detail) {
+                _logHandler('fb=down', detail);
+            }
+        });
+    },
+
+    _parseXfbml = function(elem, fn) {
+        if (typeof fn == 'function') {
+            var FB_PARSE_TIMEOUT = 3000;
+            var timedOut = false;
+
+            var timeOut = setTimeout(function(){
+                timedOut = true;
+
+                $win.trigger('fb_down', ['btnParse=timed_out']);
+
+                fn(false);
+            },FB_PARSE_TIMEOUT);
+
+            FB.XFBML.parse(elem, function(response) {
+                if (!timedOut) {
+                    clearTimeout(timeOut);
+                    fn(true);
+                }
+            });
+        } else {
+            FB.XFBML.parse(elem);
+        }
+    },
+
+    _init = function(locale, initStatus) {
+        netflix.utils.beacon('gstat=true');
+        // Ask Facebook about our login status
+        _initializeFacebook(locale);
+        jQuery(window).bind("fb_connected", function () {
+            netflix.facebook.initAcctConnectedCheck(FB.getUserID());
+        });
+        if (initStatus) {
+            _initializeLoginStatus();
+        }
+        _initializeFailureTimer(10000);
+        _initLogging();
+    };
+
+    // Install selected code into the page
+    return {
+		init: _init,
+        initAcctConnectedCheck: _initAcctConnectedCheck,
+        verifyLoginStatus: _verifyLoginStatus,
+        handleConnectionAction: _handleConnectionAction,
+        parseXfbml: _parseXfbml,
+		eventListener: _eventListener
+    };
+
+}(jQuery));
+/*jslint nomen:true, browser:true, white:true*/
+/*global netflix:true, FB:true, jQuery:true*/
+netflix.facebook.loginRegister = (function(Beacon) {
+    var _$win = $(window), _$fbForm,
+    _login = function() {
+        // https://developers.facebook.com/docs/reference/javascript/FB.login/
+        FB.login(function(response) {
+            if (response.authResponse) {
+                // https://developers.facebook.com/docs/reference/javascript/FB.api/
+                //alert('user authed: ' + response.authResponse.accessToken);
+				_logAuth();
+                $('#user_token').val(response.authResponse.accessToken);
+                _$fbForm.submit();
+            } else {
+                // User cancelled
+                //alert('user cancelled connect');
+				_logCancel();
+            }
+        }, { scope: 'publish_actions,email' });
+    },
+
+	_init = function($fbLoginBtn, $fbForm, locale) {
+		_$fbForm = $fbForm;
+
+		// Set up login/register ecweb form
+	    _$win.bind('fbAsyncInitDone', function() {
+	        $fbLoginBtn.click(function() {
+	            if (($("#terms_agree").length>0) && (!$('#terms_agree').attr('checked'))) {
+                    return false;
+                } else {
+                    _logClick();
+                    _login();
+                }
+	            return false;
+	        });
+	    });
+
+		// Initialize the facebook_api.js wrapper around the Facebook JS SDK
+		netflix.facebook.init(locale);
+	},
+	
+	_logAuth = function() {
+		
+	},
+	
+	_logCancel = function() {
+		
+	},
+	
+	_logClick = function() {
+		
+	};
+
+	return {
+		init: _init,
+		login: _login
+	};
+}(netflix.logging.Beacon));

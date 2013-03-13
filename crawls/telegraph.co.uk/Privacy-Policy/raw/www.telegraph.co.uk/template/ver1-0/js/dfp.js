@@ -1,15 +1,15 @@
 // 5.30 - changed dfpjsver to version
-//        removed ptorocol on calls, all calls start //
-//        removed the sl (string length) whikch indicated the l;ength of the adtag url, now on DFP Premium not really needed.
+//        removed protocol on calls, all calls start //
+//        removed the sl (string length) which indicated length of the adtag url, now on DFP Premium not really needed.
 // 5.31 - Added support for Do Not Track if set in the DOM - http://ie.microsoft.com/testdrive/browser/donottrack/default.html
-//        Cleaned uop some code, Removed pg-=null when articleid not set
+//        Cleaned uop some code, Removed pg=null when articleid not set
 // 5.32 - Cleaning up code, reducing lines numbers, reducing logic
 //        Now only adds the geo KVP if available in page
 // 5.33 - removed device orientation as not being set until after the page is loaded
 // 5.34 - created new tmgads.about[] object
 // 5.40 - restructured the tmgAds object, 
-//        cleaned up code, standardised array/obj creation to {} & [], 
-//        made all previous arrays into objects, still got to work on the renderTime and cleanup some rrant vars as well.s
+//        cleaned up code, standardised array/obj creation 
+//        made all previous arrays into objects
 // 5.41 - cleaned up performance data
 // 5.42 - cleaning up
 // 5.43 - fixed undefined DNT on Safari iDevice
@@ -25,7 +25,8 @@
 // 5.55 - fixed old video ad calls using adx to force pfadx method
 // 5.56 - added quantcast support, changed Wunderloop segmentIds
 // 5.57 - fixed for...in loop issue re: Jobs - (http://stackoverflow.com/questions/1529593/javascript-custom-array-prototype-interfering-with-for-in-loops), removed old Wunderloop segment values, refined code for perfomance/render timingso, Added taxonomy fix for Food/Drink
-// 5.58 - Fixed bug which was mixing up the video adcalls & adding sz values after the ord=nnn? fixed bug introduced in 5.55 which means no protocol being passded to video ads. this broke Ooyala
+// 5.58 - Fixed bug which was mixing up the video adcalls & adding sz values after the ord=nnn? fixed bug introduced in 5.55 which means no protocol being passed to video ads. this broke Ooyala
+// 5.59 - Added support for videosrc metatag
 // INITIALISE tmgAds object
 var tmgAds = new tmgAdsInitAdsData();
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -33,8 +34,8 @@ var tmgAds = new tmgAdsInitAdsData();
 
 function tmgAdsInitAdsData(){
   this.adops            = {};
-  this.adops.version    = 5.58;
-  this.adops.date       = "2013-01-23";
+  this.adops.version    = 5.59;
+  this.adops.date       = "2013-01-30";
   this.adops.company    = "Telegraph Media Group";
   this.adops.doNotTrack = tmgAdsGetDoNotTrack();
   this.performance      = {adTotal:0,adAvg:0,adCount:0};
@@ -99,6 +100,7 @@ function tmgAdsGetPageData(){
     tmp.level     = tmgAdsGetMetaTag("DCSext.Level");
     tmp.articleid = tmgAdsGetMetaTag("DCSext.articleId");
     tmp.otherdata = "";
+    tmp.videosrc  = tmgAdsGetMetaTag("tmgads.videosrc");
     tmp.geo       = "";
     tmp.platform  = tmgAdsGetMetaTag("DCSext.Platform");
   } else {
@@ -110,6 +112,7 @@ function tmgAdsGetPageData(){
     tmp.articleid = tmgAdsGetMetaTag("tmgads.articleid");
     tmp.otherdata = tmgAdsGetMetaTag("tmgads.otherdata");
     tmp.geo       = tmgAdsGetMetaTag("tmgads.geo");
+    tmp.videosrc  = tmgAdsGetMetaTag("tmgads.videosrc");
     tmp.platform  = "desktop";
   }
   return tmp;
@@ -428,15 +431,15 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[n]['kvps'] += ";fv="  + tmgAds.flash.versionMaj;
   tmgAds.ads[n]['kvps'] += ";dnt=" + tmgAds.adops.doNotTrack;
   tmgAds.ads[n]['kvps'] += ";pos=" + tmgAds.dfp.tile;  
-  if(tmgAds.page.articleid != "null") tmgAds.ads[n]['kvps'] += ";pg="  + tmgAds.page.articleid;
-  if(tmgAds.page.geo != "null")       tmgAds.ads[n]['kvps'] += ";geo=" + tmgAds.page.geo;
   tmgAds.ads[n]['kvps'] += tmgAds.page.grapeshot;
   tmgAds.ads[n]['kvps'] += tmgAds.page.keywords;
   tmgAds.ads[n]['kvps'] += tmgAds.page.quantcast;
   tmgAds.ads[n]['kvps'] += tmgAds.page.audienceScienceConnect;
+  if(tmgAds.page.videosrc != "null")  tmgAds.ads[n]['kvps'] += ";vidsrc=" + tmgAds.page.videosrc;
+  if(tmgAds.page.articleid != "null") tmgAds.ads[n]['kvps'] += ";pg="  + tmgAds.page.articleid;
+  if(tmgAds.page.geo != "null")       tmgAds.ads[n]['kvps'] += ";geo=" + tmgAds.page.geo;
   if(tmgAds.page.urlParams['adtest']) tmgAds.ads[n]['kvps'] += ";test="+ tmgAds.page.urlParams['adtest'];
-  //if(adExtraTags.length>0) tmgAds.ads[n]['kvps'] += adExtraTags;  // Add any extra data passed infrom the ad invocation call
-  if(adExtraTags) tmgAds.ads[n]['kvps'] += adExtraTags;  // Add any extra data passed infrom the ad invocation call
+  if(adExtraTags)                     tmgAds.ads[n]['kvps'] += adExtraTags; // add tags opassed to this function call.
   tmgAds.ads[n]['kvps'] += tmgAds.cookies.audienceScience;
   tmgAds.ads[n]['kvps'] += tmgAds.cookies.audienceScienceOther;
   tmgAds.ads[n]['kvps'] += tmgAds.cookies.adops;

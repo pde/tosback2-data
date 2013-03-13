@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,2,9,13,14,57,0);
+var tvgServerTimeUTC = new Date(2013,2,13,12,18,8,0);
 
-var dServerET = new Date(2013,2,9,8,14,57,0);
+var dServerET = new Date(2013,2,13,8,18,8,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,2,9);
-dSrvrTime.setUTCHours(13,14,57,0);
+dSrvrTime.setUTCFullYear(2013,2,13);
+dSrvrTime.setUTCHours(12,18,8,0);
 
-var dLocalTime = new Date(2013,2,9,8,14,57,0);
-var dGridStart = new Date(2013,2,9,8,0,0,0);
+var dLocalTime = new Date(2013,2,13,8,18,8,0);
+var dGridStart = new Date(2013,2,13,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= d3705178314ab60af39d2b373e5a237dec5e18ea 1362834897';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 728edffdb353b3058bf26dfa3c17cb90e96914af 1363177088';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,9 +50,9 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 3/9/2013 1:00:00 PM GMT */
+/* TVGSVC02 3/13/2013 12:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-03-09)*/
+/* Listings: In-Grid and Close-Up Ads (2013-03-13)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
@@ -109,7 +109,7 @@ var slot_banner_top_HP = 0;
 var slot_box_300x250_HP = 0;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
-var slot_banner_top_LST = 0;
+var slot_banner_top_LST = 1;
 var slot_banner_top_NT = 0;
 var slot_box_300x250_NT = 0;
 

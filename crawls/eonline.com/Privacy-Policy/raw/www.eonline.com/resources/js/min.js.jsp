@@ -1376,7 +1376,7 @@ eol.create("page", function($) {
         	advertisement.push("http://cdn-static.liverail.com/swf/v4/plugins/pdk/LiveRailPlugin446.swf|LR_PUBLISHER_ID=" + publisherId + "|LR_SCHEMA=vast2|LR_VERTICALS="+dart.domain);
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "za") {
-        	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4080005/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0.1");
+        	advertisement.push("http://adserver.adtech.de/?advideo/3.0/567.1/4334495/0//cc=2;vidAS=pre_roll;vidRT=VAST;vidRTV=2.0");
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "it") {
         	advertisement.push("http://video.bal.ad.dotandad.com/mediamond.jsp?mpo=vast_eonline&mpt=nbc_eo_vid_art&rnd=%n");
@@ -1486,7 +1486,7 @@ eol.create("page", function($) {
         $(document).ready(function() {
             $("div.eol-modalwrap, div.eol-modaldropshadow").remove();
             if ( defaults.show ) {
-                $("body").append("<div class='eol-modaldropshadow'>&nbsp;</div><div class='eol-modalwrap' >" + defaults.html + "</div>");
+                $("body").append("<div class='eol-modaldropshadow'> </div><div class='eol-modalwrap' >" + defaults.html + "</div>");
                         
                 $("div.eol-modaldropshadow").css({
                     height: $(document).height() + "px"

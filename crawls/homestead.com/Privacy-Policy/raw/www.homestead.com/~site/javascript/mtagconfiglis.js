@@ -25,6 +25,8 @@ var btConfig = {
 'btVisitorEmail': '',
 'btVisitorPhone': ''
 };
+// by default make bt_chatAvailable to false
+var bt_chatAvailable = false;
 // method to load boldchat js on to page and after loading running our logic
 btConfig.btLoadScripts = function () {
 if (!btConfig.btTagLoaded) { 
@@ -36,13 +38,30 @@ var btJSElement = document.createElement('script');
 btJSElement.setAttribute('type', 'text/javascript');
 btJSElement.setAttribute('charset', 'iso-8859-1');
 btJSElement.setAttribute('src', btUrl);
-btJSElement.onload = btJSElement.onreadystatechange = function(){
-// bt_chatAvailable is in scope from boldchat js is loaded.
-btConfig.setupChat(bt_chatAvailable);
+// this is for IE
+btJSElement.onreadystatechange = function () {
+if (this.readyState == 'complete' || this.readyState == 'loaded') {
+btConfig.setupChat();
 }
+};
+btJSElement.onload = function() {
+btConfig.setupChat();
+};
 document.getElementsByTagName('head').item(0).appendChild(btJSElement);
 }
 };
+// setup proactive chat.
+var _bcvma = _bcvma || [];
+_bcvma.push(["setAccountID",btConfig.btAccountId]);
+_bcvma.push(["setParameter","WebsiteDefID",btConfig.btWebsiteId]);
+_bcvma.push(["setParameter","InvitationDefID",btConfig.btInviteId]);
+_bcvma.push(["pageViewed"]);
+var vms = document.createElement("script");
+vms.type = "text/javascript";
+vms.async = true;
+vms.src = ('https:'==document.location.protocol?'https://':'http://') + "vmss.boldchat.com/aid/" + btConfig.btAccountId + "/bc.vms4/vms.js";
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(vms, s);
 btConfig.onLoadAll = function() {
 //The folowing functions will be load after the page will finish loading
 btConfig.btLoadScripts();
@@ -116,7 +135,8 @@ break;
 function lpAddVars(scope,name,value) {
 return;
 }
-btConfig.setupChat = function(chatAvailable){
+btConfig.setupChat = function(){
+chatAvailable = bt_chatAvailable;
 try {
 // set the dynamic button object
 var chat = "Unavailable";

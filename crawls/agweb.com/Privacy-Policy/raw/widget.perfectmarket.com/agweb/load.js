@@ -1,4 +1,4 @@
-var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'agweb/pmk-1.7.js';var _pmsb = false;var bbVer = getBBVersion();
+var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'agweb/pmk-1.8.js';var _pmsb = false;var bbVer = getBBVersion();
 if (bbVer == null || parseInt(bbVer) > 5) {
 var pm_ppy="agweb";
 var pmk,pmglb,pmfa,pmad,pmdebug_c;pmglb=pmglb||null;pmfa=pmfa||null;pmad=pmad||null;pmdebug_c=pmdebug_c||null;pmk=pmk||null;

@@ -149,6 +149,7 @@ writeMegaMenu('<ul class="submenu-list">');
 writeMegaMenu('<li class="megamenu-submenu-header">Shop by Category</li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/mens-watches/1000920000/100090/1/0/0/0/100090.100091.100092">Men\'s Watches</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/womens-watches/1000930000/100090/1/0/0/0/100090.100091.100093">Women\'s Watches</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/team-watches-100380--1/1003800000/100090/1/0/0/0/100090.100091.100380">Team Watches</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100091|1000910000|1|0|||100090|100090.100091">View All</a></li>');
 writeMegaMenu('</ul>');
 writeMegaMenu('<ul class="submenu-list">');

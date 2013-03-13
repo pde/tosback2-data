@@ -32,6 +32,13 @@ if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('
 	document.cookie = c;	
 }
 
+function _set_SessionCookie(_name, _val){
+  var c = _name+'=' + _val                                
+  + '; path=/'
+  + '; domain=.microsoft.com';
+                document.cookie = c;    
+}
+
 if (typeof(COMSCORE) == "undefined") {
 	var COMSCORE = {};
 }
@@ -975,6 +982,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 			start: function() {
 				//If Mobile browser NOT detected then run init() function
+				
 				if(/iphone|ipad|ipod|android|opera (mini|mobi)|blackberry|windows (phone|ce)|iemobile|htc|nokia|mobile/i.test(navigator.userAgent)){
 				 //Disable recruitment for mobile
 				}else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
@@ -1151,7 +1159,9 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 		// public methods and properties
 		return {
 			onload : function() {
+				
 				if (_sr.OnReady.done) { return; }
+				
 				_sr.OnReady.done = true;
 				_sr.Broker.start(); //initialize the broker once the DOM is ready
 				//clean up
@@ -1178,44 +1188,53 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				}
 			},
 			listen : function() {
+ 				//Chrome
+ 				if (/Chrome/i.test(navigator.userAgent)) {
+ 					if(/loading|uninitialized/i.test(document.readyState))
+ 					{ 
+ 						document.addEventListener('DOMContentLoaded', _sr.OnReady.onload, false); }else{ _sr.OnReady.onload(); 
+ 					}
+ 				} 
 				//safari
-				if (/WebKit|khtml/i.test(navigator.userAgent)) {
-					_sr.OnReady.timer = setInterval(function() {
-						if (/loaded|complete/.test(document.readyState)) {
-							clearInterval(_sr.OnReady.timer);
-							delete _sr.OnReady.timer;
-							_sr.OnReady.onload();
-						}}, 10);
-				}
-				//mozilla opera 
+ 				else if (/WebKit|khtml/i.test(navigator.userAgent)) {
+ 					_sr.OnReady.timer = setInterval(function() {
+ 					if (/loaded|complete/.test(document.readyState)) {
+ 						clearInterval(_sr.OnReady.timer);
+ 						delete _sr.OnReady.timer;
+ 						_sr.OnReady.onload();
+ 					}}, 10);
+ 				}
+ 				//ie
+ 				else if (window.ActiveXObject) {
+ 					//_sr.OnReady.iew32 = true;
+ 					//document.write('<script id="sr__ie_onload" defer src="' + ((location.protocol == 'https:') ? '//0' : 'javascript:void(0)') + '"><\/script>');
+ 					//document.getElementById('sr__ie_onload').onreadystatechange = function(){if (this.readyState == 'complete') { _sr.OnReady.onload(); }};
+ 					COMSCORE.SiteRecruit.OnReady.waitForLoad = setInterval(function() {
+ 						try { // throws errors until after ondocummentready 
+ 							document.documentElement.doScroll('left'); 
+ 						}catch (ex) { return; }
+ 							COMSCORE.SiteRecruit.OnReady.waitForLoad = clearInterval(COMSCORE.SiteRecruit.OnReady.waitForLoad);
+ 							COMSCORE.SiteRecruit.OnReady.onload();
+ 						}, 1000);
+ 				}
+ 				//mozilla opera 
 				else if (document.addEventListener) {
-					document.addEventListener('DOMContentLoaded', _sr.OnReady.onload, false);
-				}
-				//ie
-				else if (window.ActiveXObject) {
-					//_sr.OnReady.iew32 = true;
-					//document.write('<script id="sr__ie_onload" defer src="' + ((location.protocol == 'https:') ? '//0' : 'javascript:void(0)') + '"><\/script>');
-					//document.getElementById('sr__ie_onload').onreadystatechange = function(){if (this.readyState == 'complete') { _sr.OnReady.onload(); }};
-					COMSCORE.SiteRecruit.OnReady.waitForLoad = setInterval(function() {
-				                try {
-				                    // throws errors until after ondocummentready
-				                    document.documentElement.doScroll('left');
-								} catch (ex) {
-									return;
-				                }
-				                COMSCORE.SiteRecruit.OnReady.waitForLoad = clearInterval(COMSCORE.SiteRecruit.OnReady.waitForLoad);
-								COMSCORE.SiteRecruit.OnReady.onload();
-				            }, 1000);
-				}
+ 						if(/loading|uninitialized/i.test(document.readyState)){
+ 							document.addEventListener('DOMContentLoaded', _sr.OnReady.onload, false); 
+ 						}
+ 						else{ 
+ 							_sr.OnReady.onload(); 
+ 						} 
+				} 
 				//default ??
-				else  {
-					if(window.addEventListener) {
-						window.addEventListener('load', _sr.OnReady.onload, false);
-					} else if (window.attachEvent) {
-						return window.attachEvent('onload', _sr.OnReady.onload);
-					}
+ 				else {
+ 					if(window.addEventListener){ 
+ 						window.addEventListener('load', _sr.OnReady.onload, false); 
+ 					}else if (window.attachEvent)	{ 
+ 						return window.attachEvent('onload', _sr.OnReady.onload); 
+ 					} 
 				}
-			},
+ 			},
 			f:[],done:false,timer:null
 		};
 	})();

@@ -25,6 +25,7 @@
 	<link rel="stylesheet" href="../../../../css/compressed/cv-ptp-styles.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="../../../../css/compressed/category-search.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="../../../../css/gallery-styles.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../../../css/compressed/sec-styles.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="../../../../css/compressed/print.css" type="text/css" media="print" />
 	<link media="only screen and (max-device-width:480px)" href="../../../../css/compressed/mobile.css" type="text/css" rel="stylesheet" />
 
@@ -383,55 +384,6 @@ function getCookie(c_name)
 			
 
 </div>
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
-
-
-<div class="genericESpot"><!--<div class="caption" style="display:none">[ES_EXPERIMENT_5]</div>--> 
-<!--
-	<table>
-	<tr><td>MarketingSpotIdentifier UniqueID:</td> <td> 63807 </td></tr>
-	<tr><td>MarketingSpotIdentifier Name:</td> <td> ES_EXPERIMENT_5 </td></tr>
-	</table>			
--->
-
-<!-- <h4>Categories</h4> -->
-
-	<!-- <h4>Catalog Entries</h4> -->
-
-	<!-- <h4>Content</h4> -->
-  
- 
-	
-				     	<script type="text/javascript">
-					   		var exp5 = 'Place Holder for blank content';
-					   	</script>
-					 <!--
-        1: 67333ES_EXPERIMENT_5_CNT
-			<table>
-				<tr><td>Name:</td> <td> ES_EXPERIMENT_5_CNT </td></tr>
-			  	<tr><td>DataType:</td> <td> MarketingContent </td></tr>
-			  	<tr><td>ActivityIdentifier UniqueID:</td> <td> 0 </td></tr>
-			  	<tr><td>ActivityIdentifier Name:</td> <td>  </td></tr>
-			  	<tr><td>CampaignName:</td> <td>  </td></tr>
-			  	<tr><td>ActivityFormat:</td> <td>  </td></tr>
-			  	<tr><td>ActivityPriority:</td> <td> 1 </td></tr>
-		        <tr><td>Url Link:</td> <td>  </td></tr>	
-		        			
-	        		<tr><td>Marketing Text:</td> <td> var exp5 = &#039;Place Holder for blank content&#039;; </td></tr>
-	        		<tr><td>Location:</td> <td>  </td></tr>
-		         
-		        <tr><td>Format UniqueID:</td> <td> 2 </td></tr>
-		        <tr><td>Format Name:</td> <td> Text </td></tr>      	
-		        <tr><td>Content Mime Type:</td> <td>  </td></tr>    
-		        <tr><td>Name:</td> <td>  </td></tr>      	      	      	
-		        <tr><td>Short Description:</td> <td>  </td></tr>      	      	      	      	
-		        <tr><td>Image:</td> <td>  </td></tr>           
-		            
-	      	</table>       	      	 	      	      	      	
-        --> 
-			
-
-</div>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 <script type="text/javascript">
 	var pageNameForOnClick = "Default Page Name";
@@ -602,13 +554,14 @@ function getCookie(c_name)
 	var config = {over: shows,timeout: 300,out: hides};
 	var b,left;
 	function shows() {$(this).addClass('on');$(this).find('.sub').fadeIn();}
-	function hides() {$(this).find('.sub').fadeOut(); b=$(this); setTimeout("$(b).removeClass('on');", 165 );}
+	function hides() { $(this).removeClass("on").find('.sub').fadeOut(165); }
 	
 	$(document).ready(function() {
 		left=0;
-		$("#main-nav li").hoverIntent(config);
+		$("#main-nav").children('li').hoverIntent(config);
+		/*
 		$("#main-nav > li").each(function(i) {
-			if (i < 4) {
+ 			if (i < 4) {
 				$(this).children(".sub").css("left",left +"px");
 				left+=38;
 			}else if (i > 3 && i < 9) {
@@ -618,6 +571,7 @@ function getCookie(c_name)
 				$(this).children(".sub").css("left","266px");
 			}
 		});
+		*/
 	});
 	
 	$(document).ready(function() {
@@ -1052,7 +1006,7 @@ checkCookie();
 			
 			<div id="search">
  				<input class="text" type="text" id="search-input" maxlength="52" name="Ntt" value="" AUTOCOMPLETE=OFF />
-				<div id="search-filter">
+				<!-- <div id="search-filter">
 					<div id="filter-value">All Categories</div>
 					<ul class="dd">
  						<li name="N" id="all"><a href="javascript:setCategoryDropdownValue(document.CatalogSearchForm, '1000301');">All Categories</a></li>
@@ -1068,7 +1022,7 @@ checkCookie();
 				        <li name="N" id="home"><a href="javascript:setCategoryDropdownValue(document.CatalogSearchForm, '1000450');">Home</a></li>
 				        <li name="N" id="sale"><a href="javascript:setCategoryDropdownValue(document.CatalogSearchForm, '1000301 31');">Sale</a></li> 
 					</ul>
-				</div>	
+				</div>	 -->
 				<div id="SuggestionListDiv"></div>
 				<button type="submit" id="search-btn" class="primary">Search</button>
 					
@@ -1137,6 +1091,19 @@ checkCookie();
 						}
 
 					}
+
+					// handle wrapping on typeahead results
+					$(".typeAheadGray").each(function () {
+
+						var lineHeight = $(this).height(),
+						    liOffset = $(this).parents("li").eq(0).offset().top,
+						    grayOffset = $(this).offset().top;
+
+						if (grayOffset >= liOffset + lineHeight) {
+
+							$(this).addClass("wrapped");
+						}
+					});
 				}
 			});
 			
@@ -1358,9 +1325,37 @@ checkCookie();
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 			</div>
 		</noscript>
-		<script type="text/javascript">
-			buildDropdown();
-		</script>
+		
+		     
+	 	 
+			 	   	<script>		
+						var eSpotArray = new Array();
+						eSpotArray[0] = "ES_EXPERIMENT_5";
+							
+						$.ajaxQueue({
+						    cache: false,
+						    type: "POST",
+						    dataType: "json",
+						    url: "/webapp/wcs/stores/servlet/HeaderDisplayTestESpot5",
+						    data: "emsName="+eSpotArray+"&maxNumDisp="+1+"&storeId="+301+"&catalogId=301",
+							success: function(json)
+							{
+				 				var successResp = json.JSON;
+				 				var errorResp = json.JSONError;
+				 				if(successResp != null){	 
+				 					var scriptContent = (successResp.eSpotContent0==null?"":successResp.eSpotContent0);
+				 					if(scriptContent != null)
+				 					{
+									   	eval(scriptContent);
+								   	}
+				   				}
+					   		}
+						});
+				    </script>
+				 
+	 	
+ 
+	
 		</ul>
 	</div>
 </div>
@@ -1754,24 +1749,8 @@ var fC,fID;
     
         	
         
-<style type="text/css">
-	#stuff { position: fixed; bottom: 15px; right: 20px; height: 70px; margin: 0 0 10px; display: none; border: none; }
-	.FaqLegal h2 {margin-top: 20px; padding: 20px 0;}
-	.FaqLegal h3 { font-size: 14px; padding: 12px 0; }
-	.FaqLegal h4 { padding: 12px 0; }
-	.FaqLegal {clear:both;}
-	.Faqs, .PoliNoti, .ProdRec { margin: 0 0 20px 0; }
-	#answers form select { width: 600px; }
-	#answers form select option { margin: 5px 0; }
-	#answers address { font-style: normal; line-height: 1.2em; }
-	#answers p, #answers a { font-family: "Century Gothic",Helvetica,Arial,sans-serif; font-size: 12px; line-height: 20px; vertical-align: top; }
-	#answers ul, #answers address { margin: 0 0 0.83em; }
-	#answers ul li, #answers ul li a { line-height: 25px; }
-	#answers ul li { padding:0 0 0 20px; }
-	#answers span.directions { font-weight: bold; }
-</style>
 
-<div id="stuff">
+<div id="backToTop">
 	<a onclick="scrollToTop()">
 		<img src="../../../../images/buttons/back-to-top-image.png" width="80" height="80" />
 	</a>
@@ -1779,614 +1758,512 @@ var fC,fID;
 
 <script type="text/javascript">
 	$(document).ready(function() 
-	{
-		$(window).scroll(function() 
 		{
-			if ($(this).scrollTop() > 500) 
+			$(window).scroll(function() 
 			{
-				$('#stuff').fadeIn('slow');
-			} 
-			else 
-			{
-				$('#stuff').fadeOut('slow');
+				if ($(this).scrollTop() > 500) 
+				{
+					$('#backToTop').fadeIn('slow');
+				} 
+				else 
+				{
+					$('#backToTop').fadeOut('slow');
+				}
+			});
+			
+			if (window.location.hash) {
+				scrollToLink(window.location.hash);
 			}
 		});
 		
-		if (window.location.hash) {
-			scrollToLink(window.location.hash);
-		}
+	$(function () {
+	
+		$(".parseHTML").each(function () {
+		
+			$(this).html($(this).text());
+		});
 	});
 	function trackLink(PageId)
 	{
 		cmCreateElementTag(PageId, 'FAQ');
-	}
+	};
 	function scrollToLink(number){
 		var theNumber = number.substring(1),
 		    topClearance = 80,
 		    scrollTime = 1000;
 		$("html, body").animate({scrollTop: $("a[name='" + theNumber + "']").position().top + topClearance}, scrollTime);
 		window.location.hash = number;
-	}
+	};
 	function scrollToTop(){
 		$('html, body').animate({scrollTop:0},1000);
 		window.location.hash="";
-	}
+	};
 </script>
 
-<div id="answers">
 
-	<div class="Faqs">
+
+<div class="faqContainer">
+
+	<!-- <h1>FAQ's, Notices & Policies</h1> -->
+
+	<div class="selectionArea">
+	
+		<h2>Frequently Asked Questions</h2>
+		<p>Below is a list of the questions most frequently asked by our customers. Select for details.</p>
+		<p>If you don't find the answer below, please <a href="http://www.dillards.com/kana/KanaStartServlet">contact us</a>.</p>
+		<form name="ListBoxForm" class="form">
+			<tr>
+				<td colspan="4" align="center">
+					
+					<select NAME="ListBoxURL" id="" Size="1" onchange="scrollToLink(this[this.selectedIndex].value)" >
+						<OPTION value="">Click to select</OPTION>
+						
+							<option value="#20" onClick="javascript:trackLink('How-can-I-find-out-about-Career-Opportunities-with-Dillards');">How can I find out about Career Opportunities with Dillard&#039;s?</option>
+						
+							<option value="#21" onClick="javascript:trackLink('What-categories-are-featured-in-your-catalogs');">What categories are featured in your catalogs?</option>
+						
+							<option value="#22" onClick="javascript:trackLink('What-if-I-am-allergic-to-fragrance-strips-in-catalogs-and-statement-enclosures');">What if I am allergic to fragrance strips in catalogs and statement enclosures?</option>
+						
+							<option value="#23" onClick="javascript:trackLink('Can-I-make-my-Dillards-Credit-Card-payment-online');">Can I make my Dillard&#039;s Credit Card payment online?</option>
+						
+							<option value="#24" onClick="javascript:trackLink('What-types-of-Dillards-account-information-can-I-access-online');">What types of Dillard&#039;s account information can I access online?</option>
+						
+							<option value="#25" onClick="javascript:trackLink('Where-do-I-mail-my-Dillards-Credit-Card-payment');">Where do I mail my Dillard&#039;s Credit Card payment?</option>
+						
+							<option value="#26" onClick="javascript:trackLink('What-is-the-Dillards-Rewards-program');">What is the Dillard&#039;s Rewards program?</option>
+						
+							<option value="#27" onClick="javascript:trackLink('How-do-I-receive-and-redeem-Dillards-Shopping-Passes');">How do I receive and redeem Dillard&#039;s Shopping Passes?</option>
+						
+							<option value="#28" onClick="javascript:trackLink('How-do-I-reach-Elite-Member-status-What-are-the-benefits-of-being-an-Elite-Cardmember');">How do I reach Elite Member status? What are the benefits of being an Elite Cardmember?</option>
+						
+							<option value="#29" onClick="javascript:trackLink('Do-you-have-Dillards-Gift-Cards');">Do you have Dillard&#039;s Gift Cards?</option>
+						
+							<option value="#30" onClick="javascript:trackLink('Where-can-I-use-my-Dillards-Gift-Card');">Where can I use my Dillard&#039;s Gift Card?</option>
+						
+							<option value="#31" onClick="javascript:trackLink('How-can-I-find-out-the-balance-on-my-Dillards-Gift-Card-');">How can I find out the balance on my Dillard&#039;s Gift Card? </option>
+						
+							<option value="#32" onClick="javascript:trackLink('How-can-I-report-a-Dillards-Gift-Card-lost-or-stolen');">How can I report a Dillard&#039;s Gift Card lost or stolen?</option>
+						
+							<option value="#40" onClick="javascript:trackLink('How-can-I-check-on-my-order');">How can I check on my order?</option>
+						
+							<option value="#41" onClick="javascript:trackLink('What-if-I-need-to-cancel-my-order');">What if I need to cancel my order?</option>
+						
+							<option value="#42" onClick="javascript:trackLink('Do-you-offer-Gift-Wrap');">Do you offer Gift Wrap?</option>
+						
+							<option value="#43" onClick="javascript:trackLink('What-types-of-payment-do-you-accept-for-online-purchases');">What types of payment do you accept for online purchases?</option>
+						
+							<option value="#44" onClick="javascript:trackLink('How-do-I-contact-the-Dillards-Call-Center-and-what-are-their-hours');">How do I contact the Dillard&#039;s Call Center and what are their hours?</option>
+						
+							<option value="#45" onClick="javascript:trackLink('Do-I-have-to-pay-tax-on-my-order');">Do I have to pay tax on my order?</option>
+						
+							<option value="#46" onClick="javascript:trackLink('Is-Dillards-affiliated-with-any-other-retail-companies');">Is Dillard&#039;s affiliated with any other retail companies?</option>
+						
+							<option value="#47" onClick="javascript:trackLink('What-is-the-Dillards-Stock-symbol');">What is the Dillard&#039;s Stock symbol?</option>
+						
+							<option value="#48" onClick="javascript:trackLink('What-is-the-address-and-phone-number-of-your-corporate-office');">What is the address and phone number of your corporate office?</option>
+						
+							<option value="#49" onClick="javascript:trackLink('What-if-I-have-a-question-or-need-information');">What if I have a question or need information?</option>
+						
+							<option value="#50" onClick="javascript:trackLink('What-if-I-need-to-return-an-item');">What if I need to return an item?</option>
+						
+							<option value="#51" onClick="javascript:trackLink('What-if-I-need-to-return-a-gift-purchased-in-a-Dillards-store');">What if I need to return a gift purchased in a Dillard&#039;s store?</option>
+						
+							<option value="#52" onClick="javascript:trackLink('How-secure-is-shopping-online-with-you');">How secure is shopping online with you?</option>
+						
+							<option value="#53" onClick="javascript:trackLink('Do-I-have-to-pay-shipping');">Do I have to pay shipping?</option>
+						
+							<option value="#54" onClick="javascript:trackLink('Do-you-ship-to-APOFPO-addresses');">Do you ship to APO/FPO addresses?</option>
+						
+							<option value="#55" onClick="javascript:trackLink('How-soon-will-I-receive-my-order');">How soon will I receive my order?</option>
+						
+							<option value="#56" onClick="javascript:trackLink('How-will-my-order-ship');">How will my order ship?</option>
+						
+							<option value="#57" onClick="javascript:trackLink('How-do-I-place-an-order-online');">How do I place an order online?</option>
+						
+							<option value="#58" onClick="javascript:trackLink('How-do-I-create-a-Dillardscom-Account');">How do I create a Dillards.com Account?</option>
+						
+							<option value="#59" onClick="javascript:trackLink('Do-I-have-to-have-a-Dillardscom-account-to-purchase-on-your-site');">Do I have to have a Dillards.com account to purchase on your site?</option>
+						
+							<option value="#60" onClick="javascript:trackLink('What-if-I-forget-my-Password');">What if I forget my Password?</option>
+						
+							<option value="#61" onClick="javascript:trackLink('What-if-I-need-to-change-my-Dillardscom-account-profile');">What if I need to change my Dillards.com account profile?</option>
+						
+							<option value="#62" onClick="javascript:trackLink('How-do-I-find-the-Dillards-store-closest-to-me');">How do I find the Dillard&#039;s store closest to me?</option>
+						
+							<option value="#33" onClick="javascript:trackLink('Do-you-sell-Electronic-Gift-Cards');">Do you sell Electronic Gift Cards?</option>
+						
+							<option value="#34" onClick="javascript:trackLink('Where-can-eGift-Cards-be-used');">Where can eGift Cards be used?</option>
+						
+							<option value="#35" onClick="javascript:trackLink('How-do-I-activate-an-eGift-Card-I-receive');">How do I activate an eGift Card I receive?</option>
+						
+							<option value="#36" onClick="javascript:trackLink('When-I-use-an-eGift-Card-to-make-a-purchase-then-return-that-purchase-why-is-my-balance-put-on-a-traditional-gift-card-rather-than-my-eGift-Card');">When I use an eGift Card to make a purchase, then return that purchase, why is my balance put on a traditional gift card rather than my eGift Card?</option>
+						
+							<option value="#37" onClick="javascript:trackLink('What-is-the-PIN-used-for-that-is-located-on-the-printed-version-of-my-eGift-Card');">What is the PIN used for that is located on the printed version of my eGift Card?</option>
+						
+							<option value="#38" onClick="javascript:trackLink('How-can-I-find-out-the-balance-of-my-eGift-Card');">How can I find out the balance of my eGift Card?</option>
+						
+							<option value="#39" onClick="javascript:trackLink('Can-I-see-my-receipts-electronically-without-getting-them-sent-by-email');">Can I see my receipts electronically without getting them sent by email?</option>
+						
+					</select>
+				</td>
+			</tr>
+		</form>
+		
+		<h2>Policies & Notices</h2>
+		<p>Below is a list of our policies and notices. Select for details.</p>
+		<form name="ListBoxForm" class="form">
+			<tr>
+				<td colspan="4" align="center">
+					
+					<select NAME="ListBoxURL" id="" Size="1" onchange="scrollToLink(this[this.selectedIndex].value)" >
+						<OPTION value="">Click to select</OPTION>
+						
+								<option value="#84" onClick="javascript:trackLink('California-Transparency-in-Supply-Chains-Act');">California Transparency in Supply Chains Act</option>
+							
+								<option value="#80" onClick="javascript:trackLink('Copyright-Notice');">Copyright Notice</option>
+							
+								<option value="#68" onClick="javascript:trackLink('Dillardscom-Privacy-Policy');">Dillards.com Privacy Policy</option>
+							
+								<option value="#67" onClick="javascript:trackLink('InStore-Return-Policy');">In-Store Return Policy</option>
+							
+								<option value="#64" onClick="javascript:trackLink('Info-about-Dillards-Credit');">Info about Dillard&#039;s Credit</option>
+							
+								<option value="#63" onClick="javascript:trackLink('Legal-Notices--Terms-of-Use');">Legal Notices - Terms of Use</option>
+							
+								<option value="#82" onClick="javascript:trackLink('Limitation-of-Liability');">Limitation of Liability</option>
+							
+								<option value="#66" onClick="javascript:trackLink('Online-Return-Policy');">Online Return Policy</option>
+							
+								<option value="#78" onClick="javascript:trackLink('Pricing-Policy');">Pricing Policy</option>
+							
+								<option value="#83" onClick="javascript:trackLink('Security');">Security</option>
+							
+								<option value="#65" onClick="javascript:trackLink('Shipping-Policy');">Shipping Policy</option>
+							
+								<option value="#81" onClick="javascript:trackLink('Submission-of-Information-to-Dillards');">Submission of Information to Dillard&#039;s</option>
+							
+								<option value="#79" onClick="javascript:trackLink('Tax-Information');">Tax Information</option>
+							
+								<option value="#77" onClick="javascript:trackLink('The-Childrens-Online-Privacy-Protection-Act');">The Children&#039;s Online Privacy Protection Act</option>
+							
+					</select>
+				</td>
+			</tr>
+		</form>	
+
+		<h2>Product Recalls</h2> 
+		<p>You can visit the Consumer Product Safety Commission (CPSC) at <a target="_blank" href="http://www.cpsc.gov">www.cpsc.gov</a> for more information on recalls.</p>
+		<ul>
+			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+
+
+<div class="genericESpot"><!--<div class="caption" style="display:none">[ES_Product_Recalls]</div>--> 
+<!--
+	<table>
+	<tr><td>MarketingSpotIdentifier UniqueID:</td> <td> 120311 </td></tr>
+	<tr><td>MarketingSpotIdentifier Name:</td> <td> ES_Product_Recalls </td></tr>
+	</table>			
+-->
+
+<!-- <h4>Categories</h4> -->
+
+	<!-- <h4>Catalog Entries</h4> -->
+
+	<!-- <h4>Content</h4> -->
+  
+ 
+	<li><a target="_blank" href="http://www.dillards.com/images/PDF/WestBendRecall.pdf">West Bend and Back to Basics Cocoa Latte Hot Drink Makers</a></li><!--
+        1: 122343ES_Product_Recalls_Cnt
+			<table>
+				<tr><td>Name:</td> <td> ES_Product_Recalls_Cnt </td></tr>
+			  	<tr><td>DataType:</td> <td> MarketingContent </td></tr>
+			  	<tr><td>ActivityIdentifier UniqueID:</td> <td> 0 </td></tr>
+			  	<tr><td>ActivityIdentifier Name:</td> <td>  </td></tr>
+			  	<tr><td>CampaignName:</td> <td>  </td></tr>
+			  	<tr><td>ActivityFormat:</td> <td>  </td></tr>
+			  	<tr><td>ActivityPriority:</td> <td> 1 </td></tr>
+		        <tr><td>Url Link:</td> <td>  </td></tr>	
+		        			
+	        		<tr><td>Marketing Text:</td> <td> &lt;li&gt;&lt;a target=&#034;_blank&#034; href=&#034;/images/PDF/WestBendRecall.pdf&#034;&gt;West Bend and Back to Basics Cocoa Latte Hot Drink Makers&lt;/a&gt;&lt;/li&gt; </td></tr>
+	        		<tr><td>Location:</td> <td>  </td></tr>
+		         
+		        <tr><td>Format UniqueID:</td> <td> 2 </td></tr>
+		        <tr><td>Format Name:</td> <td> Text </td></tr>      	
+		        <tr><td>Content Mime Type:</td> <td>  </td></tr>    
+		        <tr><td>Name:</td> <td>  </td></tr>      	      	      	
+		        <tr><td>Short Description:</td> <td>  </td></tr>      	      	      	      	
+		        <tr><td>Image:</td> <td>  </td></tr>           
+		            
+	      	</table>       	      	 	      	      	      	
+        --> 
+			
+
+</div>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+		</ul>
+
+	</div>
+
+	<div class="answerArea">
 	
 		<h1>Frequently Asked Questions</h1>
 		
-		<p>Below is a list of the questions most frequently asked by our customers. Select for details.</p>
-		<p>If you don't find the answer below, please <a href="http://www.dillards.com/kana/KanaStartServlet">contact us</a>.</p>
+			
+					<h2>Career Opportunities</h2>
+				
+					<h3><a name="20"/></a>Q. How can I find out about Career Opportunities with Dillard&#039;s?</h3>
+					<p>A. <span class="parseHTML">Stores and some of our other locations such as Distribution Centers, Buying Offices, and the Corporate Headquarters post their job openings on Monster.com. Click on &lt;b&gt;Dillard&#039;s Careers&lt;/b&gt; at the bottom of the Home Page to view our openings. You must be at least 18 years of age to apply. We are an EEOC employer. Or visit any store and complete an application. </span></p>	
+			
+					<h2>Catalogs</h2>
+				
+					<h3><a name="21"/></a>Q. What categories are featured in your catalogs?</h3>
+					<p>A. <span class="parseHTML">Catalog categories are Women, Juniors, Shoes, Handbags, Accessories, Lingerie, Beauty, Men, Children, and Home. We do not publish Furniture catalogs. Our furniture is featured in newspaper inserts. Catalogs are published seasonally.</span></p>	
+			
+					<h3><a name="22"/></a>Q. What if I am allergic to fragrance strips in catalogs and statement enclosures?</h3>
+					<p>A. <span class="parseHTML">Send an e-mail to &lt;a href=&#034;mailto:questions@dillards.com&#034;&gt;questions@dillards.com&lt;/a&gt; letting us know that you do not wish to receive these. Our Marketing Department can have them removed.</span></p>	
+			
+					<h2>Dillard&#039;s Credit Card</h2>
+				
+					<h3><a name="23"/></a>Q. Can I make my Dillard&#039;s Credit Card payment online?</h3>
+					<p>A. <span class="parseHTML">Yes. You can make payments to your Dillard&#039;s account safely and securely through our Online Credit Services. Click on My Account at the top of the Home Page to enter your log-in information, then click on the &lt;span class=&#034;faqForLinks&#034;&gt;Dillard&#039;s Card Services&lt;/span&gt; link and complete the payment profile.</span></p>	
+			
+					<h3><a name="24"/></a>Q. What types of Dillard&#039;s account information can I access online?</h3>
+					<p>A. <span class="parseHTML">You have the ability to view your current and/or past (up to 6 months) statements, access sales receipts or view your payment(s) pending and payment history online, and you can even pay your bill online! Simply visit &lt;a href=&#034;http://www.dillards.com/payonline&#034;&gt;www.dillards.com/payonline&lt;/a&gt; to either enroll for this FREE service, or login to access your information.</span></p>	
+			
+					<h3><a name="25"/></a>Q. Where do I mail my Dillard&#039;s Credit Card payment?</h3>
+					<p>A. <span class="parseHTML">ALL Dillard&#039;s Credit Card and Dillard&#039;s American Express Card Payments should be mailed to:&lt;address&gt;GE Capital Retail Bank&lt;br&gt;P.O. Box 965022&lt;br&gt;Orlando, FL 32896&lt;/address&gt;</span></p>	
+			
+					<h2>Dillard&#039;s Reward Program</h2>
+				
+					<h3><a name="26"/></a>Q. What is the Dillard&#039;s Rewards program?</h3>
+					<p>A. <span class="parseHTML">The Dillard&#039;s Rewards program is a points-based program that allows you to enjoy the Reward of your choice - 10% Off Shopping Pass or $10 Reward Certificate - each time you earn 1,500 Reward Points. With a 10% Off Shopping Pass, you can save 10% on all Dillard&#039;s merchandise with your Dillard&#039;s Card ? every item and every brand ? on the day of your choice. With a $10 Reward Certificate, you can save $10, with no merchandise exclusions, on your next Dillard&#039;s Card purchase. Dillard&#039;s Credit Cardholders and Dillard&#039;s American Express Cardmembers earn 2 points every dollar spent (net purchases) at Dillard&#039;s. Dillard&#039;s American Express Cardmembers also earn 2 points for every dollar spent (net purchases) at grocery stores and gas stations, as well as 1 point for every dollar spent (net purchases) everywhere else American Express is accepted.</span></p>	
+			
+					<h3><a name="27"/></a>Q. How do I receive and redeem Dillard&#039;s Shopping Passes?</h3>
+					<p>A. <span class="parseHTML">Dillard&#039;s Rewards are issued within one to two billing cycles after earned and will be sent to you with your monthly billing statement. Dillard&#039;s Cardholders will receive a 10% off Shopping Pass or a $10 Reward Certificate for every 1,500 points earned (Maximum of 12 shopping per account per year; maximum of $40 issued per billing statement). Dillard&#039;s Shopping Passes are valid for 10% off a total day&#039;s purchases at any Dillard&#039;s location or at dillards.com. You choose the day to redeem. The value of the 10% off discount will be taken at the time of purchase. The barcode on the Pass must be scanned for each transaction in order to qualify for the discount. With a $10 Reward Certificate, you can save $10, with no merchandise exclusions, on your next Dillard&#039;s Card purchase at any Dillard&#039;s location or at Dillards.com. Dillard&#039;s Shopping Pass and Reward Certificate must be used by the expiration date with your Dillard&#039;s Credit Card or your Dillard&#039;s American Express Card. The Pass/Reward Certificate cannot be used to purchase gift cards and cannot be redeemed for cash or combined with any non-sale promotional offer.</span></p>	
+			
+					<h3><a name="28"/></a>Q. How do I reach Elite Member status? What are the benefits of being an Elite Cardmember?</h3>
+					<p>A. <span class="parseHTML">Shop your way to Elite status by spending $2,000 (net purchases) in a calendar year on your Dillard&#039;s Credit Card or Dillard&#039;s American Express Card. To maintain Elite status, you must spend $2,000 in net purchases each calendar year.&lt;br&gt;&lt;br&gt;Dillard&#039;s Elite Cardmembers are entitled to a number of benefits*:&lt;ul&gt;&lt;li&gt;Free standard shipping at Dillards.com**&lt;/li&gt;&lt;li&gt;Free gift wrapping at Dillard&#039;s or Dillards.com**&lt;/li&gt;&lt;li&gt;Monthly Elite-only Bonus Point Offers&lt;/li&gt;&lt;li&gt;Invitations to Private Shopping Event&lt;/li&gt;&lt;li&gt;Priority Elite Customer Service Line&lt;/li&gt;&lt;li&gt;Access to special amenities and savings when you book your travel through Dillard&#039;s Travel Privileges (for Dillard&#039;s Elite American Express Cardmembers only)***&lt;/li&gt;&lt;li&gt;Plus, Elite Cardmembers who spend $5,000 or more annually will receive an Elite escape! Choose from three amazing travel, golf or spa packages****&lt;/li&gt;&lt;/ul&gt;* Elite benefits listed are for current year and are subject to change in subsequent years.&lt;br&gt;** The gift wrapping and shipping discount for qualifying Elite Card purchases will be applied as a statement credit, up to $16.95, within 2 billing cycles of your purchase date.&lt;br&gt;*** Dillard&#039;s Travel Privileges brought to you by American Express with offers from participating American Express merchants. Travel Privileges program may be terminated at any time. Individual offers are subject to change and offer expiration dates vary. Complete terms and conditions are available at DillardsEliteTravel.com.&lt;br&gt;**** Cardmembers who spend $5,000 on their Dillard&#039;s Card in a calendar year will be eligible to select one of three rewards (Travel, Golf and Spa). Once eligibility is verified, you will be sent a unique PIN that you will have to mail in or redeem via web. Full details of the rewards will be sent upon eligibility.</span></p>	
+			
+					<h2>Gift Cards</h2>
+				
+					<h3><a name="29"/></a>Q. Do you have Dillard&#039;s Gift Cards?</h3>
+					<p>A. <span class="parseHTML">Yes, we do, and they are for sale on our site as well as in all of our store locations. Click &lt;span class=&#034;faqForLinks&#034;&gt;Store Locator &amp; Events&lt;/span&gt; at the bottom of the Home Page to find the store nearest you. Our online Gift Card selection can be accessed by clicking &lt;span class=&#034;faqForLinks&#034;&gt;Gift Cards for Everyone&lt;/span&gt; at the bottom of the Home Page. Gift Cards are available online in amounts from $10 to $1000.</span></p>	
+			
+					<h3><a name="30"/></a>Q. Where can I use my Dillard&#039;s Gift Card?</h3>
+					<p>A. <span class="parseHTML">You can use your Gift Card for purchases in any of our stores or when shopping on Dillards.com. You cannot use a Dillard&#039;s Gift Card to purchase a Dillard&#039;s Gift Card or a Dillard&#039;s eGift Card.</span></p>	
+			
+					<h3><a name="31"/></a>Q. How can I find out the balance on my Dillard&#039;s Gift Card? </h3>
+					<p>A. <span class="parseHTML">You can call toll-free 1-800-345-5273 or an associate at any store can give you that information.</span></p>	
+			
+					<h3><a name="32"/></a>Q. How can I report a Dillard&#039;s Gift Card lost or stolen?</h3>
+					<p>A. <span class="parseHTML">You can call toll-free number 1-800-345-5273 or you can contact any Dillard&#039;s store to report a gift card lost or stolen. In either case you must have the gift card number.</span></p>	
+			
+					<h2>Orders</h2>
+				
+					<h3><a name="40"/></a>Q. How can I check on my order?</h3>
+					<p>A. <span class="parseHTML">If you provide your email address when you place an order, we will automatically notify you when we receive your order, send updates as to the status of each item on your order, and notify you when your order ships. You can also check on the status of your order online. You can click &lt;span class=&#034;faqForLinks&#034;&gt;Check your order status&lt;/span&gt; at the bottom of the screen then key your order number and billing phone number to view details of a specific order. To see a list of all orders placed click &lt;span class=&#034;faqForLinks&#034;&gt;Check your order status&lt;/span&gt; and log in with your Email Address and Password. You can click on a specific order to view details. You can e-mail &lt;a href=&#034;mailto:customer_service@dillards.com&#034;&gt;Customer Service&lt;/a&gt; or call 1-800-345-5273 if you have questions about your order. We provide a reference number on our status emails and in Order Status online that can be used to track your order once it has shipped.</span></p>	
+			
+					<h3><a name="41"/></a>Q. What if I need to cancel my order?</h3>
+					<p>A. <span class="parseHTML">We can cancel your order if we receive your request prior to shipping it. Once your order has shipped, it cannot be canceled but it can be returned to us or to any Dillard&#039;s store location. To cancel an order, please call 1-800-345-5273 and speak to a Customer Service Representative.</span></p>	
+			
+					<h3><a name="42"/></a>Q. Do you offer Gift Wrap?</h3>
+					<p>A. <span class="parseHTML">Yes, we do. Wedding Registry purchases are packaged in a complimentary gift box. For all other, we will place each item you specify in a gift box for only $5 per item.</span></p>	
+			
+					<h3><a name="43"/></a>Q. What types of payment do you accept for online purchases?</h3>
+					<p>A. <span class="parseHTML">We accept the following payment types: Dillard&#039;s Credit Card, Dillard&#039;s American Express Card, Dillard&#039;s Gift Card, Visa, Mastercard, American Express, and Discover. We can only accept one credit card type and number per order and only cards issued in the U.S.A. However, we do accept Dillard&#039;s Gift Card(s) in combination with a Dillard&#039;s credit card.</span></p>	
+			
+					<h3><a name="44"/></a>Q. How do I contact the Dillard&#039;s Call Center and what are their hours?</h3>
+					<p>A. <span class="parseHTML">Dillard&#039;s Call Center Hours are: Monday through Saturday 7:00 am to 10:00 pm (CST) Sunday 12:00 (Noon) to 6:00 pm (CST) 1-800-345-5273</span></p>	
+			
+					<h3><a name="45"/></a>Q. Do I have to pay tax on my order?</h3>
+					<p>A. <span class="parseHTML">We are required by law to charge sales tax if the state to which the order is being shipped has a state tax and if we have a store location in that state. The charge to you is based on the sales tax for the state to which the order is being shipped.</span></p>	
+			
+					<h2>Our Company</h2>
+				
+					<h3><a name="46"/></a>Q. Is Dillard&#039;s affiliated with any other retail companies?</h3>
+					<p>A. <span class="parseHTML">We are frequently asked this question. We are not affiliated with any other retailers and all of our 300 plus store locations do business as Dillard&#039;s. We have acquired several other retail chains over the past few years, but all of them are now Dillard&#039;s stores.</span></p>	
+			
+					<h3><a name="47"/></a>Q. What is the Dillard&#039;s Stock symbol?</h3>
+					<p>A. <span class="parseHTML">Dillard&#039;s stock is traded over the New York Stock Exchange. The ticker symbol is DDS.</span></p>	
+			
+					<h3><a name="48"/></a>Q. What is the address and phone number of your corporate office?</h3>
+					<p>A. <span class="parseHTML">Our corporate offices are located in Little Rock, Arkansas.&lt;br&gt;&lt;br&gt;Corporate Headquarters Address:&lt;address&gt;1600 Cantrell Road&lt;br&gt;Little Rock, AR 72201&lt;/address&gt;Mailing Address:&lt;address&gt;Post Office Box 486&lt;br&gt;Little Rock, AR 72203&lt;/address&gt;</span></p>	
+			
+					<h3><a name="49"/></a>Q. What if I have a question or need information?</h3>
+					<p>A. <span class="parseHTML">If you have a question or need information not included in our Frequently Asked Questions section, you can e-mail us at &lt;a href=&#034;mailto:questions@dillards.com&#034;&gt;Questions&lt;/a&gt;. We try to answer all inquiries within 24 hours.</span></p>	
+			
+					<h2>Returns</h2>
+				
+					<h3><a name="50"/></a>Q. What if I need to return an item?</h3>
+					<p>A. <span class="parseHTML">Items purchased on our site can be returned to the Internet Store location or to any Dillard&#039;s store (excluding Clearance Centers). Electronics items must be returned in the original packing material from the manufacturer. The return shipping address is: &lt;address&gt;Dillard&#039;s Direct&lt;br&gt;600 Carnahan Drive&lt;br&gt;Maumelle, AR 72113&lt;/address&gt; Please be aware that you will be responsible for return shipping charges. If you wish to print a Return Label, click &lt;span class=&#034;faqForLinks&#034;&gt;Check your order status&lt;/span&gt; at the bottom of the Home Page. For additional information, please refer to our &lt;a href=&#034;http://www.dillards.com/information/faq#55&#034;&gt;Online Return Policy&lt;/a&gt;.</span></p>	
+			
+					<h3><a name="51"/></a>Q. What if I need to return a gift purchased in a Dillard&#039;s store?</h3>
+					<p>A. <span class="parseHTML">If you are not near one of our stores, send an e-mail to &lt;a href=&#034;mailto:questions@dillards.com&#034;&gt;Questions&lt;/a&gt;. Please include the location of the store where your gift was purchased if you have this information. Also, include a phone number where you can be reached. We will forward this information to the store where your gift was purchased, so that they can contact you and assist with the exchange or return.</span></p>	
+			
+					<h2>Security</h2>
+				
+					<h3><a name="52"/></a>Q. How secure is shopping online with you?</h3>
+					<p>A. <span class="parseHTML">Our site processes all sensitive data keyed into a browser via a &#034;secure socket layer&#034; or SSL, which is the industry standard for encrypting transmitted data. Your information is stored behind a second firewall on a separate server dedicated to that purpose. Once through the firewall, the data is further protected by security protocols requiring a Login ID and Password to access. Security is a top priority with us and we will do our utmost to insure the security and privacy of your data. You may notice that when you are looking at product information, it is not secured. This is typical of most sites. However, once you begin the checkout process which includes providing your personal information, that is secure.</span></p>	
+			
+					<h2>Shipping</h2>
+				
+					<h3><a name="53"/></a>Q. Do I have to pay shipping?</h3>
+					<p>A. <span class="parseHTML">Orders requesting expedited service and ordered prior to 3:00 pm central time are shipped the same day (Monday through Friday). Expedited orders placed on Saturday, Sunday or a Holiday will be shipped the following business day. You can expect delivery in 2 business days after shipping. Additional charges will be applied to merchandise shipped to Alaska, Hawaii, Puerto Rico, and Virgin Islands. Expedited shipping is not available for P.O. Box and APO/FPO addresses. Shipping charges are calculated for each address and are based on the order amount being shipped to that address. The following charges will apply to your order:&lt;br&gt;&lt;br&gt;&lt;table width=&#034;300&#034; border=&#034;0&#034; cellspacing=&#034;0&#034; cellpadding=&#034;0&#034;&gt;&lt;colgroup&gt;&lt;col align=&#034;left&#034;&gt;&lt;col align=&#034;center&#034;&gt;&lt;col align=&#034;center&#034;&gt;&lt;/colgroup&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&#034;left&#034;&gt;&lt;b&gt;ORDER AMOUNT&lt;/b&gt;&lt;/td&gt;&lt;td align=&#034;center&#034;&gt;&lt;b&gt;STANDARD&lt;/b&gt;&lt;/td&gt;&lt;td align=&#034;center&#034;&gt;&lt;b&gt;EXPEDITED&lt;br&gt;&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&#034;left&#034; height=&#034;15&#034;&gt;Up to $149.99&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt; $8.50 &lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$18.50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&#034;left&#034; height=&#034;15&#034;&gt;$150.00 and Up&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$11.95&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$21.95&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;Items, including certain electronics, that are very large or fragile may include an additional shipping charge. Items in a multi-item order may be shipped separately and from different locations. Gift Cards are shipped U.S. Mail at no charge for standard delivery. There is a $8.50 charge for expedited delivery. Dillard&#039;s does not ship fragrances, aerosols, and alcohol based products via expedited delivery or to P.O. boxes, military facilities or outside the continental United States. Please select standard delivery for the shipment of these items.</span></p>	
+			
+					<h3><a name="54"/></a>Q. Do you ship to APO/FPO addresses?</h3>
+					<p>A. <span class="parseHTML">Yes, we do ship to APO/FPO addresses. However, due to restrictions at those postal facilities, we are unable to ship oversized or heavy items. We also can not offer Expedited shipping to these locations. Please allow 2-8 weeks for delivery.</span></p>	
+			
+					<h3><a name="55"/></a>Q. How soon will I receive my order?</h3>
+					<p>A. <span class="parseHTML">Processing time for in stock items is approximately 2 business days. Standard delivery is 2-5 business days; expedited delivery is 2 business days. Delivery times do not include processing time. If the item is not in stock, you will receive an email to inform you.</span></p>	
+			
+					<h3><a name="56"/></a>Q. How will my order ship?</h3>
+					<p>A. <span class="parseHTML">Service providers are Fed Ex and USPS. The carrier will be determined by the service available for your &#034;ship to&#034; location and the method of delivery (Standard or Expedited) you select. When your order ships, you will receive an email that includes the name of the carrier and a tracking number. For more information about shipping, please refer to our Shipping Policy.</span></p>	
+			
+					<h2>Shopping</h2>
+				
+					<h3><a name="57"/></a>Q. How do I place an order online?</h3>
+					<p>A. <span class="parseHTML">First, you will need to locate the item you wish to purchase. If it is an item from our catalog, begin by clicking on the merchandise category and appropriate subcategory under Shop By. If you wish to purchase a registry gift, click &lt;span class=&#034;faqForLinks&#034;&gt;Wedding &amp; Baby Registry&lt;/span&gt; at the bottom of the pages.</span></p>	
+			
+					<h3><a name="58"/></a>Q. How do I create a Dillards.com Account?</h3>
+					<p>A. <span class="parseHTML">You can create a Dillards.com account by clicking My Account at the top of our Home Page. Click Create An Account under &#034;New Customers&#034;. You can also create a Dillards.com account during the checkout process by clicking the I would like to setup a Dillards.com account box at the bottom of the &#034;Billing Information&#034; page. Completing the account setup includes providing an Email Address and creating a Password. You will use this Email Address and Password when you place an order.</span></p>	
+			
+					<h3><a name="59"/></a>Q. Do I have to have a Dillards.com account to purchase on your site?</h3>
+					<p>A. <span class="parseHTML">No, you do not. You can shop as frequently as you like as a &#034;new customer&#034;, but we hope that you will choose to create a Dillards.com account. The benefits include access to Order Status to review the details of each of your orders and check on the status, use of an address book to keep your frequently used mailing addresses, and a streamlined checkout since you do not have to key your billing and shipping address information each time.</span></p>	
+			
+					<h3><a name="60"/></a>Q. What if I forget my Password?</h3>
+					<p>A. <span class="parseHTML">Just click where indicated below the Email Address and Password boxes on the Login screen. Once on the Forgot Password Page, key in your email address click Send Password. You will receive an email. Within the email click on the Bold words Dillard&#039;s Password Reset. We&#039;ll guide you through resetting your password. If you still need help with your Password, click Contact us via email at the bottom of the page.</span></p>	
+			
+					<h3><a name="61"/></a>Q. What if I need to change my Dillards.com account profile?</h3>
+					<p>A. <span class="parseHTML">You can do this any time by clicking &lt;span class=&#034;faqForLinks&#034;&gt;My Account&lt;/span&gt; on the Home Page then clicking &#034;My Personal Information&#034; and/or &#034;Quick Checkout Profile&#034; on the My Account page.</span></p>	
+			
+					<h2>Store Location</h2>
+				
+					<h3><a name="62"/></a>Q. How do I find the Dillard&#039;s store closest to me?</h3>
+					<p>A. <span class="parseHTML">Click &lt;span class=&#034;faqForLinks&#034;&gt;Store Locator &amp; Events&lt;/span&gt; at the bottom of our Home Page. Here you click a state, enter a city and state, or enter a zip code in the search box to find stores closest to you.</span></p>	
+			
+					<h2>eGift Cards</h2>
+				
+					<h3><a name="33"/></a>Q. Do you sell Electronic Gift Cards?</h3>
+					<p>A. <span class="parseHTML">Yes, we do, and they are available for sale on Dillards.com. Our eGift Card selection can be accessed by clicking Dillard&#039;s Gift Cards at the bottom of the Home Page. eGift cards are available in amounts from $10 to $250.</span></p>	
+			
+					<h3><a name="34"/></a>Q. Where can eGift Cards be used?</h3>
+					<p>A. <span class="parseHTML">You can use your eGift Card on Dillards.com at checkout or print it (after activating it) and use it for purchases in any of our stores. You cannot use a Dillard&#039;s eGift Card to purchase a Dillard&#039;s eGift Card or a Dillard&#039;s Gift Card.</span></p>	
+			
+					<h3><a name="35"/></a>Q. How do I activate an eGift Card I receive?</h3>
+					<p>A. <span class="parseHTML">After receiving the email announcing your eGift Card:&lt;ul&gt;&lt;li&gt;Click the &lt;span class=&#034;faqForButtons&#034;&gt;Activate&lt;/span&gt; button in the email you receive.&lt;/li&gt;&lt;li&gt;If you have an account, enter your personal information and click &lt;span class=&#034;faqForButtons&#034;&gt;Login&lt;/span&gt;.&lt;/li&gt;&lt;li&gt;If you do not have an account, click &lt;span class=&#034;faqForButtons&#034;&gt;Create an Account&lt;/span&gt; and enter your personal information.&lt;/li&gt;&lt;/ul&gt;You must have an account to redeem an eGift Card. EGift Card funds will automatically apply to your account once you log into your Dillards.com account. You can see your eGift Cards under &lt;span class=&#034;faqForLinks&#034;&gt;Manage eGift Cards&lt;/span&gt; under &lt;span class=&#034;faqForLinks&#034;&gt;My Account&lt;/span&gt;.</span></p>	
+			
+					<h3><a name="36"/></a>Q. When I use an eGift Card to make a purchase, then return that purchase, why is my balance put on a traditional gift card rather than my eGift Card?</h3>
+					<p>A. <span class="parseHTML">Company policy is that the value of the returning eGift Card purchases must always be placed on traditional gift cards.</span></p>	
+			
+					<h3><a name="37"/></a>Q. What is the PIN used for that is located on the printed version of my eGift Card?</h3>
+					<p>A. <span class="parseHTML">The PIN on your printed eGift Card will only be necessary if someone other than yourself used the gift card to make a purchase online.</span></p>	
+			
+					<h3><a name="38"/></a>Q. How can I find out the balance of my eGift Card?</h3>
+					<p>A. <span class="parseHTML">You can call toll-free 1-800-345-5273.</span></p>	
+			
+					<h2>eReceipts</h2>
+				
+					<h3><a name="39"/></a>Q. Can I see my receipts electronically without getting them sent by email?</h3>
+					<p>A. <span class="parseHTML">If you are a registered shopper on Dillards.com, you can click the &lt;span class=&#034;faqForLinks&#034;&gt;MY DILLARD&#039;S&lt;/span&gt; link in the upper left, then click &lt;span class=&#034;faqForLinks&#034;&gt;My Purchase History&lt;/span&gt;. Recent Purchases displays Web Orders (pending and completed) and Store Orders (made at a Dillard&#039;s store). Click a purchase to see a copy of the receipt.</span></p>	
+			
+			
+		<h1>Company Notices & Terms of Use</h1>
 		
-		<form name="ListBoxForm" class="form">
-			<select SIZE="1" NAME="ListBoxURL" onchange="scrollToLink(this[this.selectedIndex].value)">
-				<option selected="selected" value="">Click to select</option>
-				<option VALUE="#1" onClick="javascript:trackLink('Career_Opportunities');">How can I find out about career opportunities with Dillard's?</option>
-				<option VALUE="#2" onClick="javascript:trackLink('Catalog_Categories');">What categories are featured in your catalogs?</option>
-				<option VALUE="#3" onClick="javascript:trackLink('Fragrance_Strips');">What if I am allergic to fragrance strips in catalogs and statement enclosures?</option>
-				<option VALUE="#4" onClick="javascript:trackLink('Credit_Card_Payment');">Can I make my Dillard's Credit Card payment online?</option>
-				<option VALUE="#5" onClick="javascript:trackLink('Online_Account_Information');">What types of Dillard's account information can I access online?</option>
-				<option VALUE="#6" onClick="javascript:trackLink('Credit_Card_Payment');">Where do I mail my Dillard's Credit Card payment?</option>
-				<option VALUE="#7" onClick="javascript:trackLink('Rewards_Program');">What is the Dillard's Rewards program?</option>
-				<option VALUE="#8" onClick="javascript:trackLink('Dillards_Shopping_Pass');">How do I receive and redeem Dillard's Shopping Passes?</option>
-				<option VALUE="#9" onClick="javascript:trackLink('Elite_Member_Status');">How do I reach Elite Member status? What are the benefits of being an Elite Cardmember?</option>
-				<option VALUE="#10" onClick="javascript:trackLink('Have_Gift_Cards');">Do you have Dillard's Gift Cards?</option>
-				<option VALUE="#11" onClick="javascript:trackLink('Use_Gift_Card');">Where can I use my Dillard's Gift Card?</option>
-				<option VALUE="#12" onClick="javascript:trackLink('Gift_Card_Balance');">How can I find out the balance on my Dillard's Gift Card?</option>
-				<option VALUE="#13" onClick="javascript:trackLink('Gift_Card_LostStolen');">How can I report a Dillard's Gift Card lost or stolen?</option>
-				<option VALUE="#65" onClick="javascript:trackLink('Gift_Card_Sell_Egift');">Do you sell Electronic Gift Cards?</option>
-				<option VALUE="#66" onClick="javascript:trackLink('Gift_Card_Use_Egift');">Where can eGift Cards be used?</option>
-				<option VALUE="#67" onClick="javascript:trackLink('Gift_Card_Activate_Egift');">How do I activate an eGift Card I receive?</option>
-				<option VALUE="#68" onClick="javascript:trackLink('Gift_Card_Balance_Egift');">How can I find out the balance of my eGift Card?</option>
-				<option VALUE="#69" onClick="javascript:trackLink('Gift_Card_Return_Egift');">When I use an eGift Card to make a purchase, then return that purchase, why is my balance put on a traditional gift card rather than my eGift Card?</option>
-				<option VALUE="#70" onClick="javascript:trackLink('Gift_Card_Egift_Pin');">What is the PIN used for that is located on the printed version of my eGift Card?</option>
-				<option VALUE="#72" onClick="javascript:trackLink('View_Ereceipt_Online');">Can I see my receipts electronically without getting them sent by email?</option>
-				<option VALUE="#14" onClick="javascript:trackLink('HowTo_Check_On_Order');">How can I check on my order?</option>
-				<option VALUE="#15" onClick="javascript:trackLink('Cancel_Order');">What if I need to cancel my order?</option>
-				<option VALUE="#16" onClick="javascript:trackLink('Offer_GiftWrap');">Do you offer Gift Wrap?</option>
-				<option VALUE="#17" onClick="javascript:trackLink('Tax_On_Order');">Do I have to pay tax on my order?</option>
-				<option VALUE="#18" onClick="javascript:trackLink('Payment_Types');">What types of payment do you accept for online purchases?</option>
-				<option VALUE="#19" onClick="javascript:trackLink('Contact_CallCenter');">How do I contact the Dillard's Call Center and what are their hours?</option>
-				<option VALUE="#20" onClick="javascript:trackLink('Other_Retail_Companies');">Is Dillard's affiliated with any other retail companies?</option>
-				<option VALUE="#21" onClick="javascript:trackLink('StockSymbol');">What is the Dillard's Stock symbol?</option>
-				<option VALUE="#22" onClick="javascript:trackLink('Contact_CorporateOffice');">What is the address and phone number of your corporate office?</option>
-				<option VALUE="#23" onClick="javascript:trackLink('Information_Needed');">What if I have a question or need information?</option>
-				<option VALUE="#36" onClick="javascript:trackLink('Return_Item');">What if I need to return an item?</option>
-				<option VALUE="#37" onClick="javascript:trackLink('Return_Gift');">What if I need to return a gift purchased in a Dillard's store?</option>
-				<option VALUE="#38" onClick="javascript:trackLink('Secure_Shopping');">How secure is shopping online with you?</option>
-				<option VALUE="#39" onClick="javascript:trackLink('Pay_Shipping');">Do I have to pay shipping?</option>
-				<!-- <option VALUE="#40" onClick="javascript:trackLink('Ship_OverSeas');">Do you ship overseas?</option> -->
-				<option VALUE="#41" onClick="javascript:trackLink('ShippingTo_APO_FPO');">Do you ship to APO/FPO addresses?</option>
-				<option VALUE="#42" onClick="javascript:trackLink('Days_For_OrderArrival');">How soon will I receive my order?</option>
-				<option VALUE="#43" onClick="javascript:trackLink('Shipping_Company_Used');">How will my order ship?</option>
-				<option VALUE="#44" onClick="javascript:trackLink('HowTo_Place_Orders');">How do I place an order online?</option>
-				<option VALUE="#45" onClick="javascript:trackLink('Create_Dillards_Account');">How do I create a Dillards.com Account?</option>
-				<option VALUE="#46" onClick="javascript:trackLink('Account_Needed_For_Purchase');">Do I have to have a Dillards.com account to purchase on your site?</option>
-				<option VALUE="#47" onClick="javascript:trackLink('Forget_Password');">What if I forget my Password?</option>
-				<option VALUE="#49" onClick="javascript:trackLink('Change_Account_Profile');">What if I need to change my Dillards.com account profile?</option>
-				<option VALUE="#50" onClick="javascript:trackLink('Store_Locator');">How do I find the Dillard's store closest to me?</option>
-			</select>
-		</form>
-	
+			
+					<h2><a name="84"/></a>California Transparency in Supply Chains Act</h2>
+				
+					<h3>California Transparency in Supply Chain Act Statement 2010</h3>
+					
+					<p><span class="parseHTML">The following describes Dillard&#039;s efforts to eradicate slavery and human trafficking from its direct supply chains. Among other measures, Dillard&#039;s:&lt;ol&gt;&lt;li&gt;Engages in verification of product supply chains for products imported by Dillard&#039;s to evaluate and address risks of human trafficking and slavery. See Dillard&#039;s &lt;a target=&#034;_blank&#034; href=&#034;http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150&#034;&gt;Social Accountability Policy&lt;/a&gt; and Dillard&#039;s &lt;a target=&#034;_blank&#034; href=&#034;http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=6458&#034;&gt;Social Accountability Report&lt;/a&gt; for details. Dillard&#039;s utilizes third party inspectors to ensure compliance with Dillard&#039;s Social Accountability Policy;&lt;/li&gt;&lt;li&gt;Conducts audits of suppliers of products imported by Dillard&#039;s to evaluate supplier compliance with company standards for trafficking and slavery in supply chains. See Dillard&#039;s Social Accountability Policy and Dillard&#039;s Social Accountability Report for details;&lt;/li&gt;&lt;li&gt;Requires direct suppliers to certify that materials incorporated into the product comply with the laws regarding slavery and human trafficking of the country or countries in which they are doing business. See Dillard&#039;s Social Accountability Policy which is applicable to import vendors. Dillard&#039;s requires all vendors, pursuant to its purchase order terms, to warrant, represent and agree that all merchandise shipped to Dillard&#039;s was manufactured and produced in full compliance with any applicable current, or later adopted, laws of the country of manufacturer governing the use of child labor, illegal forced labor, illegal prison labor or similar illegal working conditions, as well as any other applicable human rights statutes, regulations and laws;&lt;/li&gt;&lt;li&gt;Maintains internal accountability standards and procedures for employees or contractors failing to meet company standards regarding slavery and human trafficking for imported products. See Dillard&#039;s Social Accountability Policy and Dillard&#039;s Social Accountability Report for details; and&lt;/li&gt;&lt;li&gt;Provides company employees and management, who have direct responsibility for import supply chain management, training on human trafficking and slavery, risks within the supply chains of products. See Dillard&#039;s Social Accountability Policy and Dillard&#039;s Social Accountability Report for details.&lt;/li&gt;&lt;/ol&gt;</span></p>	
+			
+					<h2><a name="80"/></a>Copyright Notice</h2>
+				
+					<p><span class="parseHTML">The entire contents of this site are the sole and exclusive property of Dillard&#039;s, Inc. and are subject to United States and worldwide laws and treaties restricting the copy, distribution, publishing and transmission of same. No portion of this site may be copied, distributed, published or transmitted without the express written consent of Dillard&#039;s, Inc. Users of this site may download and print materials from this site for personal, non-commercial use related to placement of an order or shopping with Dillard&#039;s, provided that any such copy must contain this notice.&lt;br&gt;&lt;br&gt;All of this web site&#039;s content and supporting code are copyrighted by or licensed to Dillard&#039;s, Inc. and all rights are reserved. All content copies, either electronic or printed, are for personal use only. The content and supporting code contained herein may not be used in any other manner unless express written permission is obtained in advance.</span></p>	
+			
+					<h2><a name="68"/></a>Dillards.com Privacy Policy</h2>
+				
+					<p><span class="parseHTML">Thank you for visiting Dillards.com. Dillard&#039;s understands that on-line privacy is very important to you. We have adopted this Internet Privacy Policy as part of our commitment to your privacy. The terms &#034;we&#034;, &#034;us&#034;, and &#034;our&#034; refer to the Dillard&#039;s Inc. family of companies, operators of Dillard&#039;s retail stores and Dillards.com.&lt;br&gt;&lt;br&gt;This Internet Privacy Policy applies to personal information we obtain from you via Dillards.com (the Web Site). The Internet Privacy Policy describes what personally identifiable information we may collect or obtain about you (Personal Information), provides examples of how we use Personal Information, and explains your options regarding our use and disclosure of Personal Information. Please note that the Internet Privacy Policy applies only to your interactions with us through this Web Site. It does not apply to interactions through our retail stores, or to your use of a Dillard&#039;s credit card (even if you use a Dillard&#039;s credit card on this Web Site). A separate Privacy Policy, administered by GE Capital Retail Bank, pertains to your use of the Dillard&#039;s Credit Card and Dillard&#039;s American Express&amp;reg; Card. For that Privacy Policy, &lt;a target=&#034;_blank&#034; href=&#034;https://www.onlinecreditcenter6.com/contactus/dillards/layout/ESecPrivacy.jsp?clientId=dillards&#034;&gt;click here&lt;/a&gt;.&lt;ol&gt;&lt;li&gt;What Personal Information We Obtain&lt;/li&gt;&lt;li&gt;How We Use Personal Information&lt;/li&gt;&lt;li&gt;How We Share Personal Information&lt;/li&gt;&lt;li&gt;How We Use Cookies&lt;/li&gt;&lt;li&gt;How You Can Opt Out of Promotional Emails&lt;/li&gt;&lt;li&gt;Use of Non-Personally Identifiable Information&lt;/li&gt;&lt;li&gt;Miscellaneous Information (such as changes to this policy, data security, children&#039;s privacy)&lt;/li&gt;&lt;/ol&gt;</span></p>	
+			
+					<h3>1. What Personal Information We Obtain</h3>
+					
+					<p><span class="parseHTML">We obtain Personal Information from you -- such as your name, address, account number, shopping history, e-mail address and telephone number -- when you give us that information when shopping or using our services. For example, we may obtain Personal Information about you when you (i) register to use our website; (ii) place an order with us; (iii) participate in our gift registry programs; (iv) participate in advertising promotions or sweepstakes; or (v) subscribe to Dillards.com E-mail Updates (our e-mail newsletter). We also may collect Personal Information when you correspond or speak with us. We may also collect Personal Information about you from third parties, such as demographic or marketing firms, to improve our marketing efforts.</span></p>	
+			
+					<h3>2. How We Use Personal Information</h3>
+					
+					<p><span class="parseHTML">We use Personal Information to conduct our business and to provide you with high quality products and services. For example, if you order from the Web Site, we may send you emails and notices about your order and about other merchandise and services that we think may be of interest to you. We may also share Personal Information with other members of the Dillard&#039;s corporate family. We do not sell or rent the Personal Information we obtain through the Web Site. If you want to opt out of getting promotional emails from Dillard&#039;s, see Section 5 below.</span></p>	
+			
+					<h3>3. How We Share Personal Information</h3>
+					
+					<p><span class="parseHTML">To provide you with quality service, we may disclose the Personal Information we collect with service providers that perform marketing, promotional and other services for us. Service providers who perform services on our behalf are contractually bound to use your Personal Information only to help us to provide you with products and services from Dillard&#039;s. We may also provide information to carefully selected outside companies for the purpose of jointly marketing a product or service to you. We may share information about aggregate shopping histories and demographics with consultants and others for purposes such as analyzing retail trends and marketing, but such information does not identify you or any other individual.&lt;br&gt;&lt;br&gt;We may also disclose your Personal Information when we believe that it is required by law or necessary to operate our business (e.g., to our attorneys, auditors, or accountants), to protect your rights, to protect our rights, or to protect the rights of others. We may also disclose your Personal Information as part of our customer or contacts list if another company acquires Dillard&#039;s or a portion of our business.&lt;br&gt;&lt;br&gt;Except as described, we do not share or knowingly make any Personal Information available to any third parties.</span></p>	
+			
+					<h3>4. How We Use Cookies</h3>
+					
+					<p><span class="parseHTML">A &#034;cookie&#034; is a small data file stored by your Web browser on your computer&#039;s hard drive. It allows Dillards.com to recognize your computer (but not specifically who is using it) upon entering the site. A cookie cannot retrieve any other data from your hard drive, pass on a computer virus, or capture your email address.&lt;br&gt;&lt;br&gt;We use cookies to keep track of when you return to the Web Site as well as to identify the pages you click on during your visit to our site and the name of the Web site you visited immediately before clicking to Dillards.com. We may use this information to improve our site design, product assortments, customer service, and special promotions. You can, of course, disable cookies on your computer by indicating this in the settings, preferences or options menus in your browser. &lt;strong&gt;&lt;em&gt;However you will not be able to make purchases on our site if you disable cookies.&lt;/em&gt;&lt;/strong&gt;&lt;br&gt;&lt;br&gt;If you are shopping Dillards.com and are having difficulty adding items to your shopping bag or completing your order, please check your privacy settings in your browser. We find that &#034;Medium&#034; Privacy Settings will optimize your online shopping experience at Dillards.com. If you are currently using the &#034;Medium High&#034; or &#034;High&#034; privacy settings, you can improve your online ordering experience if you override your current cookie handling practices for specific websites, including Dillards.com. Please click here for instructions on how to override your normal privacy/cookie handling practices. If you prefer not to change your privacy settings or override your cookie handling practices, you can, as always, place your Dillard&#039;s order by phone at 1-800-345-5273.</span></p>	
+			
+					<h3>5. How You Can Opt Out of Promotional Emails</h3>
+					
+					<p><span class="parseHTML">You may access and update your Personal Information and your preferences about receiving promotional emails from Dillard&#039;s at any time. To do that:&lt;ol&gt;&lt;li&gt;Click &lt;span class=&#034;faqForLinks&#034;&gt;MY DILLARD&#039;S&lt;/span&gt; at the top of the web page&lt;/li&gt;&lt;li&gt;Enter Email Address, Password, and click &lt;span class=&#034;faqForButtons&#034;&gt;Login&lt;/span&gt;&lt;/li&gt;&lt;li&gt;Click &lt;span class=&#034;faqForLinks&#034;&gt;My Personal Information&#034;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;Un-check the box for &#034;Send me e-mails about store specials.&#034; Please allow up to ten days for us to process your request.&lt;/li&gt;&lt;/ol&gt;If you &#034;opt out&#034; of receiving promotional emails from us, the only e-mails you will receive will be (I) about transactions that you initiate (such as to confirm orders you submit on our Web Site, inform you about your order status, respond to your customer service inquiries and answer any other questions you send us); (II) about matters affecting your Personal Information; and (III) in connection with certain services or promotions for which you have registered, such as our gift registry program.</span></p>	
+			
+					<h3>6. Use of Non-Personally Identifiable Information</h3>
+					
+					<p><span class="parseHTML">When you visit our site, we collect, via cookies as described above, information about your visit to our site, including what pages you may have visited. This information contains none of your Personal Information. We currently use Google Analytics to compile this information in a manner which is helpful to us in analyzing visitors&#039; use of our site. Google Analytics also uses this information, via a cookie placed on or recognized by your browser, to place advertisements for our products on other websites that you visit after your visit to Dillards.com. These advertisements may be based upon the pages you visited during your visit to Dillards.com. You may opt out of our use of your browsing history information in this manner at any time by visiting Google&#039;s &lt;a target=&#034;_blank&#034; href=&#034;https://www.google.com/settings/ads/onweb/&#034;&gt;Ad Preferences Manager&lt;/a&gt;. You may also choose to install the &lt;a target=&#034;_blank&#034; href=&#034;https://tools.google.com/dlpage/gaoptout/&#034;&gt;Google Analytics Opt-Out Browser Add-on&lt;/a&gt;, which if installed will prevent Google Analytics from using information obtained from your visit to Dillards.com.</span></p>	
+			
+					<h3>7. Miscellaneous Information</h3>
+					
+					<p><span class="parseHTML">Changes to this Internet Privacy Policy: We reserve the right to change this Internet Privacy Policy, and to apply any changes to previously collected personal information. We urge you to periodically check this Privacy Policy for any changes. The ?last revised? date will change when we make revisions to the policy. All changes will be effective upon posting or as otherwise stated in the revision. If you cannot accept the terms of the Internet Privacy Policy, as posted, please do not use this Web Site.&lt;br&gt;&lt;br&gt;Data Security: We protect the security of your personal information through use of technical, administrative, and physical information safeguards.&lt;br&gt;&lt;br&gt;Governing Law, Dispute Jurisdiction: The laws of the State of Arkansas, excluding its choice of law principles, govern all matters arising from or related to the Web Site, including your access and use, and any Internet transaction between you and us.&lt;br&gt;&lt;br&gt;Links: Our Web Site may have links to third party websites. This Internet Privacy Policy does not apply to any other web sites. You should review their privacy policies.&lt;br&gt;&lt;br&gt;Children&#039;s Privacy: We do not knowingly request or collect personal information from any person under 13 years of age through this Web Site without prior verifiable parental consent. If we become aware that an individual is under the age of 13 and has submitted any information to us through this Web Site for any purpose without prior verifiable parental consent, we will delete his or her information from our files.</span></p>	
+			
+					<h3>Questions?</h3>
+					
+					<p><span class="parseHTML">If you have questions regarding our Internet Privacy Policy please contact us at:&lt;address&gt;Dillard&#039;s, Inc.&lt;br&gt;Attn: Legal Dept.&lt;br&gt;1600 Cantrell Road&lt;br&gt;Little Rock, AR 72201&lt;br&gt;1-800-643-8274&lt;/address&gt;Or email us at &lt;a href=&#034;mailto:questions@dillards.com&#034;&gt;questions@dillards.com&lt;/a&gt;&lt;br&gt;&lt;br&gt;Last Revised: November 14, 2012.</span></p>	
+			
+					<h2><a name="67"/></a>In-Store Return Policy</h2>
+				
+					<p><span class="parseHTML">We trust you will be satisfied with your Dillard&#039;s purchase. However, should you decide the merchandise is not satisfactory, Dillard&#039;s return policy is set forth below.&lt;br&gt;&lt;br&gt;Dillard&#039;s will issue a refund in the form and amount of the original tender paid (including sales tax) or Dillard&#039;s will issue a Merchandise Credit at the customer&#039;s choice, when each of the following conditions has been met: 1. Merchandise will be accepted for return for thirty (30) calendar days from the date of purchase, except as otherwise stated on the face of the receipt or at point of sale; and 2. The merchandise must be in its original, unused condition unless there is a manufacturer&#039;s defect; and 3. The merchandise must be accompanied by either the original Dillard&#039;s Receipt or the original Dillard&#039;s Proof of Purchase Label. Dillard&#039;s does not give Price Adjustments. Refunds for check purchases will have a ten (10) day waiting period before a cash or check refund is issued.</span></p>	
+			
+					<h2><a name="64"/></a>Info about Dillard&#039;s Credit</h2>
+				
+					<p><span class="parseHTML">&lt;address&gt;GE Capital Retail Bank&lt;br&gt;P.O. Box 965022&lt;br&gt;Orlando, FL 32896&lt;/address&gt;If you wish, you may complete a credit card application on-line, or visit any of our stores to pick up an application in person. A request for credit authorizes GE Capital Retail Bank to investigate your credit record. For information on GE Capital Retail Bank&#039;s sharing practices with regard to your personal information click here. You also agree that if you use or allow others to use your Dillard&#039;s credit card, you will be bound by the terms of the credit card agreement mailed with the card.&lt;br&gt;&lt;br&gt;For information on GE Capital Retail Bank&#039;s key credit terms of the Dillard&#039;s Personal Credit Card agreement, &lt;a target=&#034;_blank&#034; href=&#034;https://www.onlinecreditcenter2.com/consumereApply/Internet/dillards/en/pdf/TermsConditions.pdf&#034;&gt;click here&lt;/a&gt;.</span></p>	
+			
+					<h2><a name="63"/></a>Legal Notices - Terms of Use</h2>
+				
+					<p><span class="parseHTML">This web site is owned and operated by Dillard&#039;s, Inc at http://www.dillards.com.&lt;br&gt;&lt;br&gt;The material contained within this web site is periodically checked for accuracy and is presented without any warranties, either expressed or implied. Dillard&#039;s Inc. and its subsidiaries will assume no, and hereby disclaims any, responsibility for any errors or omissions of this web site&#039;s content. Dillard&#039;s shall not be responsible for any damages incurred as a result of the content or use of this web site.&lt;br&gt;&lt;br&gt;By using the material at this web site, all users agree to all terms and conditions contained in this web site, which are subject to change without notice, as well as all applicable laws, and do so at their own risk. All changes to this legal notice will be posted to this web site in a timely manner.&lt;br&gt;&lt;br&gt;Occasionally, orders for an item exceeding our supply are received. If we are unable to fulfill your order, you will be notified and your credit card will not be charged.&lt;br&gt;&lt;br&gt;Materials contained within this web site are intended for U.S. residents. Any deliveries requested for addresses outside the U.S. are subject to refusal by Dillard&#039;s, Inc.&lt;br&gt;&lt;br&gt;Any link between dillards.com and any other web site does not constitute an endorsement of the linked site. Dillard&#039;s, Inc. does not make and hereby disclaims any warranty as to the content of any other web site linked to dillards.com. Exercise caution when communicating or interacting with any web site.&lt;br&gt;&lt;br&gt;Any questions regarding these legal notices may be directed to:&lt;address&gt;Dillard&#039;s Inc.&lt;br&gt;Legal Dept.&lt;br&gt;1600 Cantrell Road&lt;br&gt;Little Rock, AR 72201&lt;/address&gt;</span></p>	
+			
+					<h2><a name="82"/></a>Limitation of Liability</h2>
+				
+					<p><span class="parseHTML">This website and all information contained herein are provided &#034;as is&#034; and without warranties of any kind, express or implied. Dillard&#039;s shall not be liable for any damages whatsoever arising out of or relating to the use by any person of this site, including but not limited to direct, indirect, consequential or punitive damages, including damages to hardware or software resulting from use of this site.</span></p>	
+			
+					<h2><a name="66"/></a>Online Return Policy</h2>
+				
+					<p><span class="parseHTML">We trust you will be satisfied with your Dillard&#039;s purchase. However, should you decide the merchandise is not satisfactory, Dillard&#039;s online return policy is stated below.&lt;br&gt;&lt;br&gt;The merchandise may be mailed back to us, or returned to any Dillard&#039;s location. Please leave all merchandise tags attached. Also, please note that if you choose to mail the merchandise back, you will be responsible for the shipping fees. We recommend that you insure the package and ship via a traceable method. Dillard&#039;s offers a Fed Ex return label you can print from your computer and attach to the return package. No refunds are given on shipping and handling charges. Personalized items and clearance items marked down 65% or more cannot be returned.&lt;br&gt;&lt;br&gt;Address package to:&lt;address&gt;Dillard&#039;s&lt;br&gt;600 Carnahan Drive&lt;br&gt;Maumelle, AR 72113&lt;/address&gt;Dillard&#039;s will issue a refund in the form and amount of the original tender paid (including sales tax) or Dillard&#039;s will issue a Dillard&#039;s Gift Card, at the customer&#039;s choice, when each of the following conditions has been met: 1. The merchandise must be returned within thirty (30) calendar days from the date of purchase, except as otherwise stated on the face of the packing slip or on the item&#039;s product page; and 2. The merchandise must be in its original, unused condition unless there is a manufacturer&#039;s defect; and 3. The merchandise must be accompanied by either the original Dillard&#039;s Receipt or the original Dillard&#039;s Proof of Purchase Label. (Proof of Purchase information is included on the packing slip for all Dillard&#039;s Direct orders.)&lt;br&gt;&lt;br&gt;If the merchandise being returned was purchased using a credit card and we credit your account, the credit will show on the statement you receive after the issuing bank applies the credit.&lt;br&gt;&lt;br&gt;If you exchange merchandise, your account will be credited for the return and a sale rung for the new merchandise.&lt;br&gt;&lt;br&gt;If the merchandise being returned was purchased using a Dillard&#039;s Gift Card, that card will be credited if there is a balance on it. If the balance on the card is $0.00 a new Gift Card will be issued for the return amount and mailed to you.</span></p>	
+			
+					<h2><a name="78"/></a>Pricing Policy</h2>
+				
+					<p><span class="parseHTML">Dillard&#039;s is committed to offering quality merchandise at fair, competitive prices. In most cases, the internet prices will reflect store prices. However, there may be some exceptions. Internet sale prices expire at midnight Central time on the date displayed for the item. Prices and sales are subject to change without notice.&lt;br&gt;&lt;br&gt;Dillard&#039;s does not make price adjustments.&lt;br&gt;&lt;br&gt;Merchandise available through Dillards.com may not be available in all our stores.</span></p>	
+			
+					<h2><a name="83"/></a>Security</h2>
+				
+					<p><span class="parseHTML">We are committed to maintaining the security of the information we receive from you. To prevent unauthorized access, we have implemented appropriate software and management procedures which we monitor continuously. Encryption is a process which scrambles your personal information while it is in transit to us. We encrypt sensitive information as you key it in your browser via a &#034;secure socket layer&#034;, or SSL, which is the industry standard for encrypting transmitted data. Upon receipt, your information is stored on a secured server behind a firewall. This secured server is not directly connected to the Internet, and the firewall which protects it meets all industry standards. In addition, the facility that houses the server is physically secured to further protect your information against loss, alteration or misuse. We are and will continue to be diligent in our efforts to ensure that your personal information is secure with us.</span></p>	
+			
+					<h2><a name="65"/></a>Shipping Policy</h2>
+				
+					<p><span class="parseHTML">Orders requesting regular shipping are shipped within 2 business days. Our transit map gives the average number of business days required for delivery after shipment.&lt;br&gt;&lt;br&gt;&lt;img class=&#034;transitMap&#034; src=&#034;https://www.dillards.com/images/common/shipping-policy-map.png&#034; /&gt;&lt;br&gt;&lt;br&gt;Orders requesting expedited service and ordered prior to 3:00 pm central time are shipped the same day (Monday through Friday). Expedited orders placed on Saturday, Sunday or a Holiday will be shipped the following business day. You can expect delivery in 2 business days after shipping.&lt;br&gt;&lt;br&gt;Additional charges will be applied to merchandise shipped to Alaska, Hawaii, Puerto Rico, and the Virgin Islands.&lt;br&gt;&lt;br&gt;Expedited shipping is not available for P.O. Box and APO/FPO addresses.&lt;br&gt;&lt;br&gt;Shipping charges are calculated for each address and are based on the order amount being shipped to that address.&lt;br&gt;&lt;br&gt;The following charges will apply to your order:&lt;br&gt;&lt;br&gt;&lt;table width=&#034;300&#034; border=&#034;0&#034; cellspacing=&#034;0&#034; cellpadding=&#034;0&#034;&gt;&lt;colgroup&gt;&lt;col align=&#034;left&#034;&gt;&lt;col align=&#034;center&#034;&gt;&lt;col align=&#034;center&#034;&gt;&lt;/colgroup&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&#034;left&#034;&gt;&lt;b&gt;ORDER AMOUNT&lt;/b&gt;&lt;/td&gt;&lt;td align=&#034;center&#034;&gt;&lt;b&gt;STANDARD&lt;/b&gt;&lt;/td&gt;&lt;td align=&#034;center&#034;&gt;&lt;b&gt;EXPEDITED&lt;br&gt;&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&#034;left&#034; height=&#034;15&#034;&gt;Up to $149.99&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt; $8.50 &lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$18.50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&#034;left&#034; height=&#034;15&#034;&gt;$150.00 and Up&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$11.95&lt;/td&gt;&lt;td height=&#034;15&#034; align=&#034;center&#034;&gt;$21.95&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;Items, including certain electronics, that are very large or fragile may include an additional shipping charge. Items in a multi-item order may be shipped separately and from different locations.&lt;br&gt;&lt;br&gt;Gift Cards are shipped U.S. Mail at no charge for standard delivery. There is a $8.50 charge for expedited delivery.&lt;br&gt;&lt;br&gt;Dillard&#039;s does not ship fragrances, aerosols, and alcohol based products via expedited delivery or to P.O. boxes, military facilities or outside the continental United States. Please select standard delivery for the shipment of these items.</span></p>	
+			
+					<h2><a name="81"/></a>Submission of Information to Dillard&#039;s</h2>
+				
+					<p><span class="parseHTML">Dillard&#039;s shall have a permanent, irrevocable license to modify, retransmit, license, distribute, sell or otherwise use in any manner any and all information, including suggestions and ideas, submitted to Dillard&#039;s through use of this site, without any obligation to compensate or further notify the person submitting the information of such use.&lt;br&gt;&lt;br&gt;Any person submitting, posting or displaying any data, text, music, sound, photographs, graphics, video, messages, tags and/or other materials (&#034;Content&#034;), in any media, to Dillard&#039;s, whether publically or privately transmitted, represents, warrants and agree that she is the sole owner of such Content and has the lawful right to submit same for use by Dillard&#039;s. Further, any person submitting Content grants to Dillard&#039;s a permanent, irrevocable license to modify, retransmit, license, distribute, sell or otherwise use in any manner any and all Content submitted without any obligation to compensate or further notify the person submitting the Content of such use.</span></p>	
+			
+					<h2><a name="79"/></a>Tax Information</h2>
+				
+					<p><span class="parseHTML">Dillard&#039;s Inc. operates in 29 states throughout the U.S. Current law requires us to collect all state taxes that are applicable, based on the order&#039;s &#034;ship to&#034; address. Be advised that some states require a tax on the delivery and/or gift wrap charges, as well. All applicable taxes will be clearly displayed on your order at order completion time.&lt;br&gt;&lt;br&gt;NOTE: Tax rates are subject to change at any time.</span></p>	
+			
+					<h2><a name="77"/></a>The Children&#039;s Online Privacy Protection Act</h2>
+				
+					<p><span class="parseHTML">The Children&#039;s Online Privacy Protection Act (COPPA) protects the online privacy and personal information of children under 13 years of age. In compliance with this act, Dillard&#039;s does not promote online to children, and does not intentionally collect any personally identifiable information from children under 13. Children under the age of 13 must be signed up by their parents and use their parents email address in order to receive e-mail updates.</span></p>	
+				
+
 	</div>
-
-	<div class="PoliNoti">
 	
-		<h1>Policies & Notices</h1>
-		
-		<p>Below is a list of our Policies & Notices. Select for details.</p>
-		
-		<form name="ListBoxForm" class="form">
-			<select SIZE="1" NAME="ListBoxURL" onchange="scrollToLink(this[this.selectedIndex].value)">
-				<option selected="selected" value="">Click to select</option>
-				<option VALUE="#51">Company Notices and Terms of Use</option>
-				<option VALUE="#52">Legal Notices - Terms of Use</option>
-				<option VALUE="#53">Information about Dillard's Credit</option>
-				<option VALUE="#54">Shipping Policy</option>
-				<option VALUE="#55">Online Return Policy</option>
-				<option VALUE="#71">In-Store Return Policy</option>
-				<option VALUE="#56">Dillards.com Privacy Policy</option>
-				<option VALUE="#57">The Children's Online Privacy Protection Act (COPPA)</option>
-				<option VALUE="#58">Pricing Policy</option>
-				<option VALUE="#59">Tax Information</option>
-				<option VALUE="#60">Copyright Notice</option>
-				<option VALUE="#61">Submission of Information to Dillard's</option>
-				<option VALUE="#62">Limitation of Liability</option>
-				<option VALUE="#63">Security</option>
-				<option VALUE="#64">California Transparency in Supply Chain Act Statement 2010</option>
-			</select>
-		</form>
-	
-	</div>
-
-	<div class="ProdRec">
-	
-		<h1>Product Recalls</h1> 
-		
-		<p>You can visit the Consumer Product Safety Commission (CPSC) at <a href="http://www.cpsc.gov">www.cpsc.gov</a> for more information on recalls.</p>
-		<p><a target="_blank" href="http://www.dillards.com/images/PDF/WestBendRecall.pdf">West Bend and Back to Basics Cocoa Latte Hot Drink Makers</a></p>
-		
-	</div>
-	
-	<img src="../../../../images/common/prod-dividers.png">
-	
-	<div class="FaqLegal">
-		
-		<h2>Career Opportunities</h2> 
-		
-			<h3><a name="1"></a>Q. How can I find out about Career Opportunities with Dillard's?</h3>
-			<p>A. Stores and some of our other locations such as Distribution Centers, Buying Offices, and the Corporate Headquarters post their job openings on Monster.com. Click on <span class="directions">Dillard's Careers</span> at the bottom of the Home Page to view our openings. You must be at least 18 years of age to apply. We are an EEOC employer.</p>
-		
-		<h2>Catalogs</h2>
-		
-			<h3><a name="2"></a>Q. What categories are featured in your catalogs?</h3>
-			<p>A. Catalog categories are Women, Juniors, Shoes, Handbags, Accessories, Lingerie, Beauty, Men, Children, and Home. We do not publish Furniture catalogs. Our furniture is featured in newspaper inserts. Catalogs are published seasonally.</p>
-			
-			<h3><a name="3"></a>Q. What if I am allergic to fragrance strips in catalogs and statement enclosures?</h3>
-			<p>A. Send an e-mail to <a href="mailto:questions@dillards.com">Questions</a> letting us know that you do not wish to receive these. Our Marketing Department can have them removed.</p>
-		
-		<h2>Dillard's Credit Card</h2> 
-		
-			<h3><a name="4"></a>Q. Can I make my Dillard's Credit Card payment online?</h3>
-			<p>A. Yes. You can make payments to your Dillard's account safely and securely through our Online Credit Services. Click on <span class="directions">My Account</span> at the top of the Home Page to enter your log-in information, then click on the "Dillard's Card Services" link and complete the payment profile.</p>
-			
-			<h3><a name="5"></a>Q. What types of Dillard's account information can I access online?</h3>
-			<p>A. You have the ability to view your current and/or past (up to 6 months) statements, access sales receipts or view your payment(s) pending and payment history online, and you can even pay your bill online! Simply visit <a href="http://www.dillards.com/payonline">www.dillards.com/payonline</a> to either enroll for this FREE service, or log-in to access your information.</p>
-			
-			<h3><a name="6"></a>Q. Where do I mail my Dillard's Credit Card payment?</h3>
-			<p>A. ALL Dillard's Credit Card and Dillard's American Express Card Payments should be mailed to:</p>
-			<address>GE Capital Retail Bank<br />
-			P.O. Box 965022<br />
-			Orlando, FL 32896</address>
-
-		<h2>Dillard's Rewards Program</h2>
-		
-			<h3><a name="7"></a>Q. What is the Dillard's Rewards program?</h3>
-			<p>A. The Dillard's Rewards program is a points-based program that allows you to enjoy the Reward of your choice — 10% Off Shopping Pass or $10 Reward Certificate — each time you earn 1,500 Reward Points. With a 10% Off Shopping Pass, you can save 10% on all Dillard's merchandise with your Dillard's Card – every item and every brand – on the day of your choice. With a $10 Reward Certificate, you can save $10, with no merchandise exclusions, on your next Dillard's Card purchase. Dillard's Credit Cardholders and Dillard's American Express Cardmembers earn 2 points every dollar spent (net purchases) at Dillard's. Dillard's American Express Cardmembers also earn 2 points for every dollar spent (net purchases) at grocery stores and gas stations, as well as 1 point for every dollar spent (net purchases) everywhere else American Express is accepted.</p>
-			
-			<h3><a name="8"></a>Q. How do I receive and redeem Dillard's Shopping Passes?</h3>
-			<p>A. Dillard's Rewards are issued within one to two billing cycles after earned and will be sent to you with your monthly billing statement. Dillard's Cardholders will receive a 10% off Shopping Pass or a $10 Reward Certificate for every 1,500 points earned (Maximum of 12 shopping per account per year; maximum of $40 issued per billing statement). Dillard's Shopping Passes are valid for 10% off a total day's purchases at any Dillard's location or at dillards.com. You choose the day to redeem. The value of the 10% off discount will be taken at the time of purchase. The barcode on the Pass must be scanned for each transaction in order to qualify for the discount. With a $10 Reward Certificate, you can save $10, with no merchandise exclusions, on your next Dillard's Card purchase at any Dillard's location or at dillards.com. Dillard's Shopping Pass and Reward Certificate must be used by the expiration date with your Dillard's Credit Card or your Dillard's American Express Card. The Pass/Reward Certificate cannot be used to purchase gift cards and cannot be redeemed for cash or combined with any non-sale promotional offer.</p>
-			
-			<h3><a name="9"></a>Q. How do I reach Elite Member status? What are the benefits of being an Elite Cardmember?</h3>
-			<p>A. Shop your way to Elite status by spending $2,000 (net purchases) in a calendar year on your Dillard's Credit Card or Dillard's American Express Card. To maintain Elite status, you must spend $2,000 in net purchases each calendar year.
-			
-				<h4>Dillard's Elite Cardmembers are entitled to a number of benefits*:</h4>
-					<ul>
-						<li>Free standard shipping at Dillards.com**</li>
-						<li>Free gift wrapping at Dillard's or Dillards.com**</li> 
-						<li>Monthly Elite-only Bonus Point Offers</li>
-						<li>Invitations to Private Shopping Event</li>
-						<li>Priority Elite Customer Service Line</li>
-						<li>Access to special amenities and savings when you book your travel through Dillard's Travel Privileges (for Dillard's Elite American Express Cardmembers only)***</li>
-						<li>Plus, Elite Cardmembers who spend $5,000 or more annually will receive an Elite escape! Choose from three amazing travel, golf or spa packages****</li> 
-						<li>
-							<ul>
-								<li>* Elite benefits listed are for current year and are subject to change in subsequent years.</li> 
-								<li>** The gift wrapping and shipping discount for qualifying Elite Card purchases will be applied as a statement credit, up to $16.95, within 2 billing cycles of your purchase date.</li>
-								<li>*** Dillard's Travel Privileges brought to you by American Express with offers from participating American Express merchants. Travel Privileges program may be terminated at any time. Individual offers are subject to change and offer expiration dates vary. Complete terms and conditions are available at DillardsEliteTravel.com.</li>
-								<li>**** Cardmembers who spend $5,000 on their Dillard's Card in a calendar year will be eligible to select one of three rewards (Travel, Golf and Spa). Once eligibility is verified, you will be sent a unique PIN that you will have to mail in or redeem via web. Full details of the rewards will be sent upon eligibility.</li>
-							</ul>
-						</li>
-					</ul>     
-		
-		<h2>Gift Cards</h2>
-		
-			<h3><a name="10"></a>Q. Do you have Dillard's Gift Cards?</h3>
-			<p>A. Yes, we do, and they are for sale on our site as well as in all of our store locations. Click <b>Store Locator &amp; Events</b> at the bottom of the Home Page to find the store nearest you. Our online Gift Card selection can be accessed by clicking <b>Gift Cards for Everyone</b> at the bottom of the Home Page. Gift Cards are available online in amounts from $10 to $1000.</p>
-			
-			<h3><a name="11"></a>Q. Where can I use my Dillard's Gift Card?</h3>
-			<p>A. You can use your Gift Card for purchases in any of our stores or when shopping on Dillards.com. You cannot use a Dillard's Gift Card to purchase a Dillard's Gift Card or a Dillard's eGift Card. </p>
-			
-			<h3><a name="12"></a>Q. How can I find out the balance on my Dillard's Gift Card? </h3>
-			<p>A. You can call toll-free 1-800-345-5273 or an associate at any store can give you that information. </p>
-			
-			<h3><a name="13"></a>Q. How can I report a Dillard's Gift Card lost or stolen?</h3>
-			<p>A. You can call toll-free number 1-800-345-5273 or you can contact any Dillard's store to report a gift card lost or stolen. In either case you must have the gift card number.</p>
-
-		<h2>eGift Cards</h2>
-		
-			<h3><a name="65"></a>Q. Do you sell Electronic Gift Cards?</h3>
-			<p>A. Yes, we do, and they are available for sale on Dillards.com.  Our eGift Card selection can be accessed by clicking Dillard's Gift Cards at the bottom of the Home Page.  eGift cards are available in amounts from $10 to $250.</p>  
-
-			<h3><a name="66"></a>Q. Where can eGift Cards be used?</h3>
-			<p>A. You can use your eGift Card on Dillards.com at checkout or print it (after activating it) and use it for purchases in any of our stores. You cannot use a Dillard's eGift Card to purchase a Dillard's eGift Card or a Dillard's Gift Card. </p>
-
-			<h3><a name="67"></a>Q. How do I activate an eGift Card I receive?</h3>
-			<p>A. After receiving the email announcing your eGift Card:</p>
-				<ul>
-					<li>Click the Activate button in the email you receive.</li>
-					<li>If you have an account, enter your personal information and click Login.</li>
-					<li>If you do not have an account, click Create an Account and enter your personal information.</li>
-					<li>You must have an account to redeem an eGift Card.</li>
-					<li>eGift Card funds will automatically apply to your account once you log into your Dillards.com account.</li>
-					<li>You can see your eGift Cards under Manage eGift Cards under My Account.</li>
-				</ul>
-
-			<h3><a name="68"></a>Q. How can I find out the balance of my eGift Card?</h3>
-			<p>A. You can call toll-free 1-800-345-5273.</p>
-			
-			<h3><a name="69"></a>Q. When I use an eGift Card to make a purchase, then return that purchase, why is my balance put on a traditional gift card rather than my eGift Card?</h3>
-			<p>A. Company policy is that the value of the returning eGift Card purchases must always be placed on traditional gift cards.</p>
-			
-			<h3><a name="70"></a>Q. What is the PIN used for that is located on the printed version of my eGift Card?</h3>
-			<p>A. The PIN on your printed eGift Card will only be necessary if someone other than yourself used the gift card to make a purchase online.</p>
-
-		<h2>eReceipts</h2>
-		
-			<h3><a name="72"></a>Q. Can I see my receipts electronically without getting them sent by email?</h3>
-			<p>If you are a registered shopper on Dillards.com, you can click the MY DILLARDS link in the upper left, then click My Purchase History. Recent Purchases displays Web Orders (pending and completed) and Store Orders (made at a Dillard’s store). Click a purchase to see a copy of the receipt.
-
-		<h2>Orders</h2>
-		
-			<h3><a name="14"></a>Q. How can I check on my order?</h3>
-			<p>A. If you provide your email address when you place an order, we will automatically notify you when we receive your order, send updates as to the status of each item on your order, and notify you when your order ships. You can also check on the status of your order online. You can click <span class="directions">Check your order status</span> at the bottom of the screen then key your order number and billing phone number to view details of a specific order. To see a list of all orders placed click <span class="directions">Check your order status</span> and log in with your Email Address and Password. You can click on a specific order to view details. You can e-mail <a href="mailto:customer_service@dillards.com">Customer Service</a> or call 1-800-345-5273 if you have questions about your order. We provide a reference number on our status emails and in Order Status online that can be used to track your order once it has shipped.</p>
-			
-			<h3><a name="15"></a>Q. What if I need to cancel my order?</h3>
-			<p>A. We can cancel your order if we receive your request prior to shipping it. Once your order has shipped, it cannot be canceled but it can be returned to us or to any Dillard's store location. To cancel an order, please call 1-800-345-5273 and speak to a Customer Service Representative.</p>
-			
-			<h3><a name="16"></a>Q. Do you offer Gift Wrap?</h3>
-			<p>A. Yes, we do. Wedding Registry purchases are packaged in a complimentary gift box. For all other, we will place each item you specify in a gift box for only $5 per item. </p>
-			
-			<h3><a name="17"></a>Q. Do I have to pay tax on my order?</h3>
-			<p>A. We are required by law to charge sales tax if the state to which the order is being shipped has a state tax and if we have a store location in that state. The charge to you is based on the sales tax for the state to which the order is being shipped.</p>
-			
-			<h3><a name="18"></a>Q. What types of payment do you accept for online purchases?</h3>
-			<p>A. We accept the following payment types: Dillard's Credit Card, Dillard's American Express Card, Dillard's Gift Card, Visa, Mastercard, American Express, and Discover. We can only accept one credit card type and number per order and only cards issued in the U.S.A. However, we do accept Dillard's Gift Card(s) in combination with a Dillard's credit card.</p>
-			
-			<h3><a name="19"></a>Q. How do I contact the Dillard's Call Center and what are their hours?</h3>
-			<p>A. Dillard's Call Center Hours are: Monday through Saturday 7:00 am to 10:00 pm (CST) Sunday 12:00 (Noon) to 6:00 pm (CST) 1-800-345-5273</p>
-		
-		<h2>Our Company</h2>
-		
-			<h3><a name="20"></a>Q. Is Dillard's affiliated with any other retail companies?</h3>
-			<p>A. We are frequently asked this question. We are not affiliated with any other retailers and all of our 300 plus store locations do business as Dillard's. We have acquired several other retail chains over the past few years, but all of them are now Dillard's stores.</p>
-			
-			<h3><a name="21"></a>Q. What is the Dillard's Stock symbol?</h3>
-			<p>A. Dillard's stock is traded over the New York Stock Exchange. The ticker symbol is DDS.</p>
-			
-			<h3><a name="22"></a>Q. What is the address and phone number of your corporate office?</h3>
-			<p>A. Our corporate offices are located in Little Rock, Arkansas.</p>
-			<p>Corporate Headquarters Address: 1600 Cantrell Road, Little Rock, AR 72201</p> 
-			<p>Mailing Address: Post Office Box 486, Little Rock, AR 72203</p>
-			<p>Telephone: 501-376-5200</p>     
-			
-			<h3><a name="23"></a>Q. What if I have a question or need information?</h3>
-			<p>A. If you have a question or need information not included in our Frequently Asked Questions section, you can e-mail us at <a href="mailto:questions@dillards.com">Questions</a>. We try to answer all inquiries within 24 hours.</p>
-		
-		<h2>Returns</h2> 
-		
-			<h3><a name="36"></a>Q. What if I need to return an item?</h3>
-			<p>A. Items purchased on our site can be returned to the Internet Store location or to any Dillard's store (excluding Clearance Centers).</p> 
-			Electronics items must be returned in the original packing material from the manufacturer. The return shipping address is:</p>
-			<address>Dillard's Direct<br />
-			600 Carnahan Drive<br />
-			Maumelle, AR  72113</address>
-			<p>Please be aware that you will be responsible for return shipping charges. If you wish to print a Return Label, click <span class="directions">Check your order status</span> at the bottom of the Home Page. For additional information, please refer to our <a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#55">Online Return Policy</a>.</p>
-			
-			<h3><a name="37"></a>Q. What if I need to return a gift purchased in a Dillard's store?</h3>
-			<p>A. If you are not near one of our stores, send an e-mail to <a href="mailto:questions@dillards.com">Questions</a>. Please include the location of the store where your gift was purchased if you have this information. Also, include a phone number where you can be reached. We will forward this information to the store where your gift was purchased, so that they can contact you and assist with the exchange or return.</p>
-			
-			<h2>Security</h2> 
-			<h3><a name="38"></a>Q. How secure is shopping online with you?</h3>
-			<p>A. Our site processes all sensitive data keyed into a browser via a "secure socket layer" or SSL, which is the industry standard for encrypting transmitted data. Your information is stored behind a second firewall on a separate server dedicated to that purpose. Once through the firewall, the data is further protected by security protocols requiring a Login ID and Password to access. Security is a top priority with us and we will do our utmost to insure the security and privacy of your data. You may notice that when you are looking at product information, it is not secured. This is typical of most sites. However, once you begin the checkout process which includes providing your personal information, that is secure.</p>
-		
-		<h2>Shipping</h2>
-		
-			<h3><a name="39"></a>Q. Do I have to pay shipping?</h3>
-			<p>A. Orders requesting expedited service and ordered prior to 3:00 pm central time are shipped the
-			same day (Monday through Friday). Expedited orders placed on Saturday, Sunday or a Holiday
-			will be shipped the following business day. You can expect delivery in 2 business days after
-			shipping. Additional charges will be
-			applied to merchandise shipped to Alaska, Hawaii, Puerto Rico, and Virgin Islands. Expedited
-			shipping is not available for P.O. Box and APO/FPO addresses. Shipping charges are calculated
-			for each address and are based on the order amount being shipped to that address. The following
-			charges will apply to your order:</p> 
-			<p>      
-				<table width="500" border="0" cellspacing="0" cellpadding="0">
-				<colgroup>
-					<col align="left">
-					<col align="center">
-					<col align="center">
-				</colgroup>
-				<tbody>
-					<tr> 
-						<td align="left"><b>ORDER AMOUNT</b></td>
-						<td align="center"><b>STANDARD</b></td>
-						<td align="center"><b>EXPEDITED<br></b></td>
-					</tr>
-					<tr> 
-						<td align="left" height="15">Up to $149.99</td>
-						<td height="15" align="center"> $8.50 </td>
-						<td height="15" align="center">$18.50</td>
-					</tr>
-					<tr> 
-						<td align="left" height="15">$150.00 and Up</td>
-						<td height="15" align="center">$11.95</td>
-						<td height="15" align="center">$21.95</td>
-					</tr>
-				</tbody>
-				</table>
-			</p>
-			
-			<p>Items, including certain electronics, that are very large or fragile may include an additional
-			shipping charge. Items in a multi-item order may be shipped separately and from different
-			locations. Gift Cards are shipped U.S. Mail at no charge for standard delivery. There is a $8.50
-			charge for expedited delivery. Dillard's does not ship fragrances, aerosols, and alcohol based
-			products via expedited delivery or to P.O. boxes, military facilities or outside the continental
-			United States. Please select standard delivery for the shipment of these items.</p>
-	
-			<!-- <h3><a name="40"></a>Q. Do you ship overseas?</h3>
-			<p>A. At this time we only ship within the United States. We do not ship overseas, to Canada, or to Mexico.</p> -->
-	
-			<h3><a name="41"></a>Q. Do you ship to APO/FPO addresses?</h3>
-			<p>A. Yes, we do ship to APO/FPO addresses. However, due to restrictions at those postal facilities, we are unable to ship oversized or heavy items. We also can not offer Express shipping to these locations. Please allow 2-8 weeks for delivery. </p>
-			
-			<h3><a name="42"></a>Q. How soon will I receive my order?</h3>
-			<p>A. Processing time for in stock items is approximately 2 business days. Standard delivery is 2-5
-			business days; expedited delivery is 2 business days. Delivery times do not include processing
-			time. If the item is not in stock, you will receive an email to inform you.</p>
-			
-			<h3><a name="43"></a>Q. How will my order ship?</h3>
-			<p>A. Service providers are Fed Ex and USPS. The carrier will be determined by the service
-			available for your "ship to" location and the method of delivery (standard or expedited ) you
-			select. When your order ships, you will receive an email that includes the name of the carrier and
-			a tracking number. For more information about shipping, please refer to our Shipping Policy.</p>
-			
-		<h2>Shopping</h2>
-		
-			<h3><a name="44"></a>Q. How do I place an order online?</h3>
-			<p>A. First, you will need to locate the item you wish to purchase. If it is an item from our catalog, begin by clicking on the merchandise category and appropriate subcategory under Shop By. If you wish to purchase a registry gift, click <span class="directions">Wedding & Gift Registries</span> at the bottom of the pages. </p>
-			
-			<h3><a name="45"></a>Q. How do I create a Dillards.com Account?</h3>
-			<p>A. You can create a Dillards.com account by clicking <span class="directions">My Account</span> at the top of our Home Page. Click <span class="directions">Create An Account</span> under "New Customers". You can also create a Dillards.com account during the checkout process by clicking the <b>I would like to setup a Dillards.com account</b> box at the bottom of the "Billing Information" page. Completing the account setup includes providing an Email Address and creating a Password. You will use this Email Address and Password when you place an order.</p>
-			
-			<h3><a name="46"></a>Q. Do I have to have a Dillards.com account to purchase on your site?</h3>
-			<p>A. No, you do not. You can shop as frequently as you like as a "new customer", but we hope that you will choose to create a Dillards.com account. The benefits include access to Order Status to review the details of each of your orders and check on the status, use of an address book to keep your frequently used mailing addresses, and a streamlined checkout since you do not have to key your billing and shipping address information each time.</p>
-			
-			<h3><a name="47"></a>Q. What if I forget my Password?</h3>
-			<p>A. Just click where indicated below the Email Address and Password boxes on the Login screen. Once on the Forgot Password Page, key in your email address click Send Password. You will receive an email. Within the email click on the Bold words <span class="instructions">Dillard's Password Reset</span>. We'll guide you through resetting your password. If you still need help with your Password, click <span class="directions">Contact us via email</span> at the bottom of the page.</p>
-			
-			<h3><a name="49"></a>Q. What if I need to change my Dillards.com account profile?</h3>
-			<p>A. You can do this any time by clicking <span class="directions">My Account</span> on the Home Page then clicking "My Personal Information" and/or "Quick Checkout Profile" on the My Account page.</p>
-		
-		<h2>Store Location</h2>
-		
-		<h3><a name="50"></a>Q. How do I find the Dillard's store closest to me?</h3>
-		<p>A. Click <span class="directions">Store Locator & Events</span> at the bottom of our Home Page. Here you click a state, enter a city and state, or enter a zip code in the search box to find stores closest to you.</p>
-				
-		
-		<h2><a name="51"></a>Company Notices and Terms of Use</h2>
-		
-			<h3><a name="52"></a> Legal Notices - Terms of Use </h3>
-			<p>This web site is owned and operated by Dillard's, Inc at http://www.dillards.com.
-			<p>The material contained within this web site is periodically checked for accuracy and is presented without any warranties, either expressed or implied. Dillard's Inc. and its subsidiaries will assume no, and hereby disclaims any, responsibility for any errors or omissions of this web site's content. Dillard's shall not be responsible for any damages incurred as a result of the content or use of this web site.</p>
-			<p>By using the material at this web site, all users agree to all terms and conditions contained in this web site, which are subject to change without notice, as well as all applicable laws, and do so at their own risk. All changes to this legal notice will be posted to this web site in a timely manner.</p>
-			<p>Occasionally, orders for an item exceeding our supply are received. If we are unable to fulfill your order, you will be notified and your credit card will not be charged.</p>
-			<p>Materials contained within this web site are intended for U.S. residents. Any deliveries requested for addresses outside the U.S. are subject to refusal by Dillard's, Inc.</p>
-			<p>Any link between dillards.com and any other web site does not constitute an endorsement of the linked site. Dillard's, Inc. does not make and hereby disclaims any warranty as to the content of any other web site linked to dillards.com. Exercise caution when communicating or interacting with any web site.</p>
-			<p>Any questions regarding these legal notices may be directed to:</p>
-			<address>Dillard's Inc.<br/>
-			Legal Dept.<br/>
-			1600 Cantrell Road<br/>
-			Little Rock, AR 72201</address>    
-			
-			<h3><a name="53"></a>Information about Dillard's Credit </h3>
-			<address>GE Capital Retail Bank<br/>
-			P.O. Box 965022<br/>
-			Orlando, FL 32896</address>
-			<p>If you wish, you may complete a credit card application on-line, or visit any of our stores to pick up an application in person. A request for credit authorizes GE Capital Retail Bank to investigate your credit record. For information on GE Capital Retail Bank's sharing practices with regard to your personal information click here. You also agree that if you use or allow others to use your Dillard's credit card, you will be bound by the terms of the credit card agreement mailed with the card.</p>
-			<p> For information on GE Capital Retail Bank's 
-			key credit terms of the Dillard's Personal Credit
-			Card agreement, <a href="https://www.onlinecreditcenter2.com/consumereApply/Internet/dillards/en/pdf/TermsConditions.pdf" target="blank">click here</a>.</p>
-			
-			<h3><a name="54"></a>Shipping Policy</h3>
-			<p>Orders requesting regular shipping are shipped within 2 business days. Our transit map gives the average number of business days required for delivery after shipment.</p>
-			<img src="../../../../images/fedex_ground_service_map.png">
-			<p>Orders requesting expedited service and ordered prior to 3:00 pm central time are shipped the same day (Monday through Friday). Expedited orders placed on Saturday, Sunday or a Holiday will be shipped the following business day. You can expect delivery in 2 business days after shipping.</p>
-			<p>Additional charges will be applied to merchandise shipped to Alaska, Hawaii, Puerto Rico, and the Virgin Islands.</p>
-			<p>Expedited shipping is not available for P.O. Box and APO/FPO addresses.</p>
-			<p>Shipping charges are calculated for each address and are based on the order amount being shipped to that address.</p>
-			<p>The following charges will apply to your order:</p>
-			<p>      
-				<table width="500" border="0" cellspacing="0" cellpadding="0">
-				<colgroup>
-					<col align="left">
-					<col align="center">
-					<col align="center">
-				</colgroup>
-				<tbody>
-					<tr> 
-						<td align="left"><b>ORDER AMOUNT</b></td>
-						<td align="center"><b>STANDARD</b></td>
-						<td align="center"><b>EXPEDITED<br></b></td>
-					</tr>
-					<tr> 
-						<td align="left" height="15">Up to $149.99</td>
-						<td height="15" align="center"> $8.50 </td>
-						<td height="15" align="center">$18.50</td>
-					</tr>
-					<tr> 
-						<td align="left" height="15">$150.00 and Up</td>
-						<td height="15" align="center">$11.95</td>
-						<td height="15" align="center">$21.95</td>
-					</tr>
-				</tbody>
-				</table>
-			</p>
-			<p>Items, including certain electronics, that are very large or fragile may include an additional shipping charge. Items in a multi-item order may be shipped separately and from different locations.</p>
-			<p>Gift Cards are shipped U.S. Mail at no charge for standard delivery. There is a $8.50 charge for expedited delivery.</p>
-			<p>Dillard's does not ship fragrances, aerosols, and alcohol based products via expedited delivery or to P.O. boxes, military facilities or outside the continental United States. Please select standard delivery for the shipment of these items.</p>
-			
-			<h3><a name="55"></a>Online Return Policy</h3>
-			<p>We trust you will be satisfied with your Dillard's purchase. However, should you decide the merchandise is not satisfactory, Dillard's online return policy is stated below.</p>
-			<p>The merchandise may be mailed back to us, or returned to any Dillard's location. Please leave all merchandise tags attached. Also, please note that if you choose to mail the merchandise back, you will be responsible for the shipping fees. We recommend that you insure the package and ship via a traceable method. Dillard's offers a Fed Ex return label you can print from your computer and attach to the return package. No refunds are given on shipping and handling charges. Personalized items and clearance items marked down 65% or more cannot be returned.</p>
-			<p>Address package to:</p>
-			<address>Dillard's<br/>
-			600 Carnahan Drive<br />
-			Maumelle, AR  72113</address>
-			<p>Dillard's will issue a refund in the form and amount of the original tender paid (including sales tax) or Dillard's will issue a Dillard's Gift Card, at the customer's choice, when each of the following conditions has been met: 1. The merchandise must be returned within thirty (30) calendar days from the date of purchase, except as otherwise stated on the face of the packing slip or on the item's product page; and 2. The merchandise must be in its original, unused condition unless there is a manufacturer's defect; and 3. The merchandise must be accompanied by either the original Dillard's Receipt or the original Dillard's Proof of Purchase Label. (Proof of Purchase information is included on the packing slip for all Dillard's Direct orders.)</p>
-			<p>If the merchandise being returned was purchased using a credit card and we credit your account, the credit will show on the statement you receive after the issuing bank applies the credit.</p>
-			<p>If you exchange merchandise, your account will be credited for the return and a sale rung for the new merchandise.</p>
-			<p>If the merchandise being returned was purchased using a Dillard's Gift Card, that card will be credited if there is a balance on it. If the balance on the card is $0.00 a new Gift Card will be issued for the return amount and mailed to you.</p>
-			
-			<h3><a name="71"></a>In-Store Return Policy</h3>
-			<p>We trust you will be satisfied with your Dillard's purchase. However, should you decide the merchandise is not satisfactory, Dillard's return policy is set forth below.</p>
-			<p>Dillard's will issue a refund in the form and amount of the original tender paid (including sales tax) or Dillard's will issue a Merchandise Credit at the customer's choice, when each of the following conditions has been met: 1. Merchandise will be accepted for return for thirty (30) calendar days from the date of purchase, except as otherwise stated on the face of the receipt or at point of sale; and 2. The merchandise must be in its original, unused condition unless there is a manufacturer's defect; and 3. The merchandise must be accompanied by either the original Dillard's Receipt or the original Dillard's Proof of Purchase Label. Dillard's does not give Price Adjustments. Refunds for check purchases will have a ten (10) day waiting period before a cash or check refund is issued.</p>
-			
-			<!-- P R I V A C Y  P O L I C Y -->
-			<h3><a name="56"></a>Dillards.com Privacy Policy</h3>
-			<p>Thank you for visiting Dillards.com. Dillard's understands that on-line privacy is very important to you. We have adopted this Internet Privacy Policy as part of our commitment to your privacy. The terms "we", "us", and "our" refer to the Dillard's Inc. family of companies, operators of Dillard's retail stores and Dillards.com.</p>
-			<p>This Internet Privacy Policy applies to personal information we obtain from you via Dillards.com (the Web Site). The Internet Privacy Policy describes what personally identifiable information we may collect or obtain about you (Personal Information), provides examples of how we use Personal Information, and explains your options regarding our use and disclosure of Personal Information. Please note that the Internet Privacy Policy applies only to your interactions with us through this Web Site. It does not apply to interactions through our retail stores, or to your use of a Dillard's credit card (even if you use a Dillard's credit card on this Web Site). A separate Privacy Policy, administered by GE Capital Retail Bank, pertains to your use of the Dillard's Credit Card and Dillard's American Express&reg; Card. For that Privacy Policy, <a href="https://www.onlinecreditcenter6.com/contactus/dillards/layout/ESecPrivacy.jsp?clientId=dillards" target="_blank">click here</a>.</p>
-			<ul>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#WhatPersonal">1. What Personal Information We Obtain</a></li>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#HowPersonal">2. How We Use Personal Information</a></li>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#SharePersonal">3. How We Share Personal Information</a></li>       
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#UseCookies">4. How We Use Cookies</a></li>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#ChangePreferences">5. How You Can Opt Out of Promotional Emails</a></li>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#IdentifiableInfo">6. Use of Non-Personally Identifiable Information</a></li>
-				<li><a href="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html#MiscInfo">7. Miscellaneous Information</a> (such as changes to this policy, data security, children's privacy)</li>
-			</ul>
-			
-				<h4><a name="WhatPersonal"></a>1. What Personal Information We Obtain.</h4>
-				<p>We obtain Personal Information from you -- such as your name, address, account number, shopping history, e-mail address and telephone number -- when you give us that information when shopping or using our services. For example, we may obtain Personal Information about you when you (i) register to use our website; (ii) place an order with us; (iii) participate in our gift registry programs; (iv) participate in advertising promotions or sweepstakes; or (v) subscribe to Dillards.com E-mail Updates (our e-mail newsletter). We also may collect Personal Information when you correspond or speak with us. We may also collect Personal Information about you from third parties, such as demographic or marketing firms, to improve our marketing efforts.</p>
-				
-				<h4><a name="HowPersonal"></a>2. How We Use Personal Information</h4>		
-				<p>We use Personal Information to conduct our business and to provide you with high quality products and services. For example, if you order from the Web Site, we may send you emails and notices about your order and about other merchandise and services that we think may be of interest to you. We may also share Personal Information with other members of the Dillard's corporate family. We do not sell or rent the Personal Information we obtain through the Web Site. If you want to opt out of getting promotional emails from Dillard's, see Section 5 below.</p>
-				
-				<h4><a name="SharePersonal"></a>3. How We Share Personal Information</h4>
-				<p>To provide you with quality service, we may disclose the Personal Information we collect with service providers that perform marketing, promotional and other services for us. Service providers who perform services on our behalf are contractually bound to use your Personal Information only to help us to provide you with products and services from Dillard's. We may also provide information to carefully selected outside companies for the purpose of jointly marketing a product or service to you. We may share information about aggregate shopping histories and demographics with consultants and others for purposes such as analyzing retail trends and marketing, but such information does not identify you or any other individual.</p>
-				<p>We may also disclose your Personal Information when we believe that it is required by law or necessary to operate our business (e.g., to our attorneys, auditors, or accountants), to protect your rights, to protect our rights, or to protect the rights of others. We may also disclose your Personal Information as part of our customer or contacts list if another company acquires Dillard's or a portion of our business.</p>
-				<p>Except as described, we do not share or knowingly make any Personal Information available to any third parties.</p>
-				
-				<h4><a name="UseCookies"></a>4. How We Use Cookies</h4>
-				<p>A "cookie" is a small data file stored by your Web browser on your computer's hard drive. It allows Dillards.com to recognize your computer (but not specifically who is using it) upon entering the site. A cookie cannot retrieve any other data from your hard drive, pass on a computer virus, or capture your email address.</p>
-				<p>We use cookies to keep track of when you return to the Web Site as well as to identify the pages you click on during your visit to our site and the name of the Web site you visited immediately before clicking to Dillards.com. We may use this information to improve our site design, product assortments, customer service, and special promotions. You can, of course, disable cookies on your computer by indicating this in the settings, preferences or options menus in your browser. <strong><em>However you will not be able to make purchases on our site if you disable cookies.</em></strong></p>
-				<p>If you are shopping Dillards.com and are having difficulty adding items to your shopping bag or completing your order, please check your privacy settings in your browser. We find that "Medium" Privacy Settings will optimize your online shopping experience at Dillards.com. If you are currently using the "Medium High" or "High" privacy settings, you can improve your online ordering experience if you override your current cookie handling practices for specific websites, including Dillards.com. Please <a href="http://www.dillards.com/info/cookies.jsp">click here</a> for instructions on how to override your normal privacy/cookie handling practices. If you prefer not to change your privacy settings or override your cookie handling practices, you can, as always, place your Dillard's order by phone at 1-800-345-5273.</p>
-				
-				<h4><a name="ChangePreferences"></a>5. How You Can Opt Out of Promotional Emails</h4>
-				<p>You may access and update your Personal Information and your preferences about receiving promotional emails from Dillard's at any time. To do that:</p>
-				<ul>
-					<li>
-						1. Click "My Dillard's" at the top of the web page
-					</li>
-					<li>
-						2. Enter Email Address, Password, and click "Login"
-					</li>
-					<li>
-						3. Click "My Personal Information"
-					</li>            
-					<li>
-						4. Un-check the box for "Send me e-mails about store specials." Please allow up to ten days for us to process your request.
-					</li>
-				</ul>
-				<p>If you "opt out" of receiving promotional emails from us, the only e-mails you will receive will be (I) about transactions that you initiate (such as to confirm orders you submit on our Web Site, inform you about your order status, respond to your customer service inquiries and answer any other questions you send us); (II) about matters affecting your Personal Information; and (III) in connection with certain services or promotions for which you have registered, such as our gift registry program.</p>
-				
-				
-				<h4><a name="IdentifiableInfo"></a>6. Use of Non-Personally Identifiable Information</h4>
-				<p>When you visit our site, we collect, via cookies as described above, information about your visit to our site, including what pages you may have visited. This information contains none of your Personal Information. We currently use Google Analytics to compile this information in a manner which is helpful to us in analyzing visitors' use of our site. Google Analytics also uses this information, via a cookie placed on or recognized by your browser, to place advertisements for our products on other websites that you visit after your visit to Dillards.com. These advertisements may be based upon the pages you visited during your visit to Dillards.com. You may opt out of our use of your browsing history information in this manner at any time by visiting Google's <a target="_blank" href="https://www.google.com/settings/ads/onweb/">Ad Preferences Manager</a>. You may also choose to install the <a target="_blank" href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-Out Browser Add-on</a>, which if installed will prevent Google Analytics from using information obtained from your visit to Dillards.com.</p>
-				
-				<h4><a name="MiscInfo"></a>7. Miscellaneous Information</h4>
-				<p>Changes to this Internet Privacy Policy: We reserve the right to change this Internet Privacy Policy, and to apply any changes to previously collected personal information. We urge you to periodically check this Privacy Policy for any changes.  The “last revised” date will change when we make revisions to the policy.  All changes will be effective upon posting or as otherwise stated in the revision. If you cannot accept the terms of the Internet Privacy Policy, as posted, please do not use this Web Site.</p>
-				<p>Data Security: We protect the security of your personal information through use of technical, administrative, and physical information safeguards.</p>
-				<p>Governing Law, Dispute Jurisdiction: The laws of the State of Arkansas, excluding its choice of law principles, govern all matters arising from or related to the Web Site, including your access and use, and any Internet transaction between you and us.</p>
-				<p>Links: Our Web Site may have links to third party websites. This Internet Privacy Policy does not apply to any other web sites. You should review their privacy policies.</p>
-				<p>Children's Privacy: We do not knowingly request or collect personal information from any person under 13 years of age through this Web Site without prior verifiable parental consent. If we become aware that an individual is under the age of 13 and has submitted any information to us through this Web Site for any purpose without prior verifiable parental consent, we will delete his or her information from our files.</p>
-				<p><strong>Questions?</strong></p>
-				<p>If you have questions regarding our Internet Privacy Policy please contact us at:</p>
-				<address>Dillard's, Inc.<br />
-				Attn: Legal Dept.<br />
-				1600 Cantrell Road<br />
-				Little Rock, AR 72201<br />
-				1-800-643-8274</address>
-				<p>Or email us at <a href="mailto:questions@dillards.com">questions@dillards.com</a></p>
-				<p>Last Revised:  November 14, 2012.</p>
-			
-			<h3><a name="57"></a>The Children's Online Privacy Protection Act (COPPA)</h3>
-			<p>The Children's Online Privacy Protection Act (COPPA) protects the online privacy and personal information of children under
-			13 years of age. In compliance with this act, Dillard's does not promote online to children, and does not intentionally collect
-			any personally identifiable information from children under 13. Children under the age of 13 must be signed up by their parents
-			and use their parents email address in order to receive e-mail updates.</p>
-			
-			<h3><a name="58"></a>Pricing Policy</h3>
-			<p>Dillard's is committed to offering quality merchandise at fair, competitive prices. In most cases, the internet prices will reflect 
-			store prices. However, there may be some exceptions. Internet sale prices expire at midnight Central time on the date displayed for the item. 
-			Prices and sales are subject to change without notice.</p>
-			<p>Dillard's does not make price adjustments.</p>
-			<p>Merchandise available through Dillards.com may not be available in all our stores.</p>
-			
-			<h3><a name="59"></a>Tax Information</h3>
-			<p>Dillard's Inc. operates in 29 states throughout the U.S. Current law requires us to collect all state taxes that are applicable, based on 
-			the order's "ship to" address. Be advised that some states require a tax on the delivery and/or gift wrap charges, as well. All applicable
-			taxes will be clearly displayed on your order at order completion time.</p>
-			<p>NOTE: Tax rates are subject to change at any time.</p>
-			
-			<h3><a name="60"></a>Copyright Notice</h3>
-			<p>The entire contents of this site are the sole and exclusive property of Dillard's, Inc. and are subject to United States and worldwide
-			laws and treaties restricting the copy, distribution, publishing and transmission of same. No portion of this site may be copied, distributed,
-			published or transmitted without the express written consent of Dillard's, Inc. Users of this site may download and print materials from this
-			site for personal, non-commercial use related to placement of an order or shopping with Dillard's, provided that any such copy must contain this notice.</p>
-			<p>All of this web site's content and supporting code are copyrighted by or licensed to Dillard's, Inc. and all rights are reserved.
-			All content copies, either electronic or printed, are for personal use only. The content and supporting code contained herein may
-			not be used in any other manner unless express written permission is obtained in advance.</p> 
-			
-			<h3><a name="61"></a>Submission of Information to Dillard's</h3>
-			<p>Dillard's shall have a permanent, irrevocable license to modify, retransmit, license, distribute, sell or otherwise use in any
-			manner any and all information, including suggestions and ideas, submitted to Dillard's through use of this site, without any obligation
-			to compensate or further notify the person submitting the information of such use.</p>
-			<p>Any person submitting, posting or displaying any data, text, music, sound, photographs, graphics, video, messages, tags and/or other
-			materials ("Content"), in any media, to Dillard's, whether publically or privately transmitted, represents, warrants and agree that she 
-			is the sole owner of such Content and has the lawful right to submit same for use by Dillard's. Further, any person submitting Content 
-			grants to Dillard's a permanent, irrevocable license to modify, retransmit, license, distribute, sell or otherwise use in any manner any
-			and all Content submitted without any obligation to compensate or further notify the person submitting the Content of such use.</p>
-			
-			<h3><a name="62"></a>Limitation of Liability</h3>
-			<p>This website and all information contained herein are provided "as is" and without warranties of any kind, express or implied. Dillard's shall
-			not be liable for any damages whatsoever arising out of or relating to the use by any person of this site, including but not limited to direct,
-			indirect, consequential or punitive damages, including damages to hardware or software resulting from use of this site.</p>
-			
-			<h3><a name="63"></a>Security</h3>
-			<p>We are committed to maintaining the security of the information we receive from you. To prevent unauthorized access, we have 
-			implemented appropriate software and management procedures which we monitor continuously. Encryption is a process which scrambles 
-			your personal information while it is in transit to us. We encrypt sensitive information as you key it in your browser via a
-			"secure socket layer", or SSL, which is the industry standard for encrypting transmitted data. Upon receipt, your information 
-			is stored on a secured server behind a firewall. This secured server is not directly connected to the Internet, and the firewall 
-			which protects it meets all industry standards. In addition, the facility that houses the server is physically secured to further
-			protect your information against loss, alteration or misuse. We are and will continue to be diligent in our efforts to ensure that 
-			your personal information is secure with us.</p>
-			
-			<h3><a name="64"></a>California Transparency in Supply Chain Act Statement 2010</h3>
-			<p>California Transparency in Supply Chains Act Statement</p>
-			<p>The following describes Dillard's efforts to eradicate slavery and human trafficking from its direct supply chains. Among other measures, Dillard's:</p>
-			<ul>
-				<li>
-					(1) Engages in verification of product supply chains for products imported by Dillard's to evaluate and address risks of human trafficking and slavery. See <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard's Social Accountability Policy</a> and <a href="http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=6458" target="blank">Dillard's Social Accountability Report</a> for details. Dillard's utilizes third party inspectors to ensure compliance with <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard's Social Accountability Policy</a>;
-				</li>
-				<li>
-					(2) Conducts audits of suppliers of products imported by Dillard?s to evaluate supplier compliance with company standards for trafficking and slavery in supply chains. See <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard?s Social Accountability Policy</a> and <a href="http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=6458" target="blank">Dillard's Social Accountability Report</a> for details; 
-				</li>
-				<li>
-					(3) Requires direct suppliers to certify that materials incorporated into the product comply with the laws regarding slavery and human trafficking of the country or countries in which they are doing business. See <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard's Social Accountability Policy</a> which is applicable to import vendors. Dillard's requires all vendors, pursuant to its purchase order terms, to warrant, represent and agree that all merchandise shipped to Dillard's was manufactured and produced in full compliance with any applicable current, or later adopted, laws of the country of manufacturer governing the use of child labor, illegal forced labor, illegal prison labor or similar illegal working conditions, as well as any other applicable human rights statutes, regulations and laws;</li>
-				<li>
-					(4) Maintains internal accountability standards and procedures for employees or contractors failing to meet company standards regarding slavery and human trafficking for imported products. See <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard's Social Accountability Policy</a> and <a href="http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=6458" target="blank">Dillard's Social Accountability Report</a> for details; and
-				</li>
-				<li>
-					(5) Provides company employees and management, who have direct responsibility for import supply chain management, training on human trafficking and slavery, risks within the supply chains of products. See <a href=" http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=3150" target="blank"> Dillard's Social Accountability Policy</a> and <a href="http://investor.shareholder.com/dillards/documentdisplay.cfm?DocumentID=6458" target="blank">Dillard's Social Accountability Report</a> for details. 
-				</li>
-			</ul>
-		
-		<p><span class="copyright">This page last updated on September 13, 2012.</span></p>
-
-	</div> <!--FAQLEGAL-->
-	
-</div><!--ANSWERS-->
-<br/>
-		
-		
-
+</div>
 
 
     	</div>
@@ -2951,7 +2828,7 @@ $(document).ready(function() {
 <li><a href="http://www.dillards.com/shop/COACH/_/N-1738wZlfu5?cm_sp=EspotFooterBrands-_-COACH-_-TextLink0112">COACH</a></li>
 <li><a href="http://www.dillards.com/content/cremieuxlandingpage?cm_sp=EspotFooterBrands-_-DanielCremieux-_-TextLink0312">Daniel Cremieux</a></li>
 <li><a href="http://www.dillards.com/shop/Dooney-Bourke/Handbags/_/N-1730nZlfyu?cm_sp=EspotFooterBrands-_-DooneyAndBourke-_-TextLink0112">Dooney & Bourke</a></li>
-<li><a href="http://www.dillards.com/content/eileen-fisher-landing-boutique?cm_sp=EspotFooterBrands-_-EileenFisher-_-TextLink0112">Eileen Fisher</a></li>
+<li><a href="http://www.dillards.com/shop/Eileen-Fisher/Women/_/N-1738eZlfx6/Rpp-1?cm_sp=EspotFooterBrands-_-EileenFisher-_-TextLink0112">Eileen Fisher</a></li>
 <li><a href="http://www.dillards.com/shop/Estee-Lauder/_/N-lg40?cm_sp=EspotFooterBrands-_-EsteeLauder-_-TextLink0312">Estee Lauder</a></li>
 <li><a href="http://www.dillards.com/content/fossil-vintage-bags-shoes-accessories?cm_sp=EspotFooterBrands-_-Fossil-_-TextLink0512">Fossil</a></li>
 <li><a href="http://www.dillards.com/content/Fryelanding?cm_sp=EspotFooterBrands-_-Frye-_-TextLink0312">Frye</a></li>
@@ -2997,7 +2874,7 @@ $(document).ready(function() {
 &lt;li&gt;&lt;a href=&#034;/shop/COACH/_/N-1738wZlfu5?cm_sp=EspotFooterBrands-_-COACH-_-TextLink0112&#034;&gt;COACH&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/content/cremieuxlandingpage?cm_sp=EspotFooterBrands-_-DanielCremieux-_-TextLink0312&#034;&gt;Daniel Cremieux&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/shop/Dooney-Bourke/Handbags/_/N-1730nZlfyu?cm_sp=EspotFooterBrands-_-DooneyAndBourke-_-TextLink0112&#034;&gt;Dooney &amp; Bourke&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#034;/content/eileen-fisher-landing-boutique?cm_sp=EspotFooterBrands-_-EileenFisher-_-TextLink0112&#034;&gt;Eileen Fisher&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#034;/shop/Eileen-Fisher/Women/_/N-1738eZlfx6/Rpp-1?cm_sp=EspotFooterBrands-_-EileenFisher-_-TextLink0112&#034;&gt;Eileen Fisher&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/shop/Estee-Lauder/_/N-lg40?cm_sp=EspotFooterBrands-_-EsteeLauder-_-TextLink0312&#034;&gt;Estee Lauder&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/content/fossil-vintage-bags-shoes-accessories?cm_sp=EspotFooterBrands-_-Fossil-_-TextLink0512&#034;&gt;Fossil&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#034;/content/Fryelanding?cm_sp=EspotFooterBrands-_-Frye-_-TextLink0312&#034;&gt;Frye&lt;/a&gt;&lt;/li&gt;

@@ -700,10 +700,10 @@ function search(){
 				}
 			}				
 		}else{ // guest user
-			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001" tabindex="2">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
+			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="2">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
 			var apply="Apply for Kay Credit";
 			//document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+  apply + '</a>');
-			document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+  apply + '</a>'); 
+			document.write('<div class="accent credit_guest"><a class="link" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+  apply + '</a></div>'); 
 		}
 
 
@@ -717,7 +717,7 @@ function search(){
 		<script language="javascript">
 			var storenumber = getStoreNumber();
 			if (storenumber == null ){
-				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001" tabindex="6">My Account</a></h4><span class="spacer">&nbsp;</span>');
+				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="6">My Account</a></h4><span class="spacer">&nbsp;</span>');
 			}
 		</script>
 		
@@ -794,7 +794,7 @@ function search(){
 		<!-- Wish List start-->
 			<div class="modal modal-ie" id="wishlist-modal">
 				
-						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay" class="link" id="wishListBar" tabindex="9">
+						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay&amp;errorViewName=LogonForm" class="link" id="wishListBar" tabindex="9">
 							<span id="miniWishListBody" class="body">
 								<span class="text strong">
 									Wish List 
@@ -812,7 +812,7 @@ function search(){
 			<div dojoType="wc.widget.RefreshArea" id="MiniShoppingCart" widgetId="MiniShoppingCart" controllerId="MiniShoppingCartController" onmouseover="showMiniShopCartDropDown('shoppingCartBar','quick_cart_container','orderItemsList');" role="wairole:region" waistate:live="polite" waistate:atomic="true" waistate:relevant="all">
 				<!-- BEGIN MiniShopCartDisplay.jsp --><!-- If we get here from a generic error this service will fail so we need to catch the exception -->
 
-<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=OrderItemDisplayView&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="10" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
+<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=LogonForm&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="10" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
 		<h4 id="miniShopCartBody" class="wa_normal">
 			Shopping Bag(0)
 		</h4>
@@ -867,6 +867,36 @@ function search(){
 
 <div class="header-container">		
   		
+	<div id="storeContainer">
+		<div id='findAStore'>
+			<div id='findAStore2'>
+				<table id="findAStore3" border="0" cellpadding="0" cellspacing="0" summary="Find A Store text">
+					<tbody>
+						<tr>
+							<td>
+								<label for="input_location"><span id="find">FIND A STORE</span></label>
+							</td>
+							<td><span id="findAStoreErrMsg" class="hidden">There are no store locations at the selected location.</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<form id="find_stores" action="index.html#" onsubmit="return false;">
+					<label for="input_location">
+					<input id="input_location" type="text" size="45" maxlength="50" title="location"/>
+					
+							<a href="index.html#" id="findStoresBtn" onclick="javascript:findStores(-1, 25); return false;">
+								<img width="82" height="23" src="../../../../../../../img/store_locator/btn_findstores.jpg" alt="find a store" />
+							</a>
+						
+					</label>
+				</form>
+				<ul class="horizontalList">
+					<li>Enter Street Address, City, State or Zip Code</li>
+					<li><a href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?catalogId=10001&landing=1&langId=-1&storeId=10101">View All Stores</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
 <link rel="stylesheet"  type="text/css" href="../../../../../../../css/AutoSuggestSearch.css" />
 
@@ -877,8 +907,8 @@ function search(){
 <div class="logo">
 	  	<a href="index.html"/>
 		
-				<img src="../../../../../../../img/shared/header/logo_kay.jpg" width="158" height="95" border="0" alt="Kay Jewelers, the Jewelry Store for Rings, Diamonds, Gemstones, Watches and More" />
-	 		
+	 			<h1><img src="../../../../../../../img/shared/header/logo_kay.jpg" width="158" height="95" border="0" alt="Kay Jewelers, the Jewelry Store for Rings, Diamonds, Gemstones, Watches and More" /></h1>
+			
    	</a>
 </div>
 
@@ -905,6 +935,36 @@ function search(){
 			</div>
 			
 			
+	<div id="storeContainer">
+		<div id='findAStore'>
+			<div id='findAStore2'>
+				<table id="findAStore3" border="0" cellpadding="0" cellspacing="0" summary="Find A Store text">
+					<tbody>
+						<tr>
+							<td>
+								<label for="input_location"><span id="find">FIND A STORE</span></label>
+							</td>
+							<td><span id="findAStoreErrMsg" class="hidden">There are no store locations at the selected location.</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<form id="find_stores" action="index.html#" onsubmit="return false;">
+					<label for="input_location">
+					<input id="input_location" type="text" size="45" maxlength="50" title="location"/>
+					
+							<a href="index.html#" id="findStoresBtn" onclick="javascript:findStores(-1, 25); return false;">
+								<img width="82" height="23" src="../../../../../../../img/store_locator/btn_findstores.jpg" alt="find a store" />
+							</a>
+						
+					</label>
+				</form>
+				<ul class="horizontalList">
+					<li>Enter Street Address, City, State or Zip Code</li>
+					<li><a href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?catalogId=10001&landing=1&langId=-1&storeId=10101">View All Stores</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 			
 	
 		</div>
@@ -1008,7 +1068,7 @@ function search(){
 					<span id="searchTextHolder" class="nodisplay"></span>
 					<span class="spanacce"></span>
 					
-					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="SEARCH" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="search" tabindex="21"/>
+					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="Search by Stock # or Keyword" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="search" tabindex="21"/>
 					<input type="submit" onclick="return validateSearchSubmit();" aria-label="search" value=" " tabindex="22">
 					<div id="autoSuggest_Container">
 						<div id="autoSuggest_Result_div" class="autoSuggestBox1" onmouseover="autoSuggestHover = true;" onmouseout="autoSuggestHover = false; document.getElementById('SimpleSearchForm_SearchTerm').focus();" style="display:none;">
@@ -1128,7 +1188,7 @@ function search(){
 
 <div class="espot-header">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<p style="font-family: Myriad Pro,VegurMedium,Arial,sans-serif;"><strong>Save up to $1,200 on Select Diamond Bridal Rings</strong> (<a href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=bridal&#32;Banner&amp;searchText=bridal&#32;Banner" style="display:inline;text-decoration: underline;font-size: 75%;">shop now</a>)</p><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<p style="font-family: Myriad Pro,VegurMedium,Arial,sans-serif;"><strong>Dream it! Own it! Instant Credit. Special Financing Available. No Annual Fee.</strong> (<a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=kay_credit" style="display:inline;text-decoration: underline;font-size: 75%;">see details</a>)</p><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
 
 <div class="homecontent clearfix "> 
@@ -1227,7 +1287,7 @@ function search(){
 		</script>
 		<!--END COREMETRICS IO-->
         <h3 class="title-bold wa_center">Browse Our Designers and Collections</h3>
-        <hr>
+        <hr class="dottedline">
         <div class="grid_39 bottom_space_3">
 	        <div class="grid_7 alpha">
 	            <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
@@ -1313,7 +1373,9 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 				//transition effect
 				$('#popup').fadeIn(2000); 
 				//$('#popup').css('display', 'block');		
-				
+
+				//Set focus to the email address input
+				$('#email2').focus();
 			}							
 									
 			$('input#email').click(function(){
@@ -1353,7 +1415,10 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 					$("input#email2").focus(); 				
 					error('Please enter a valid email address.');
 				}
-			});				
+			});
+
+			// handles keyboard, keeping focus within the dialog
+			$("#popup").on ("keydown", modalKeyboardHandler);
 		});
 	}
 		
@@ -1386,6 +1451,60 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	{				
 		$('div#info').html('');
 	}
+	
+	//ADA
+	// This function keeps keyboard focus within the dialog; escape to cancel...
+	function modalKeyboardHandler (e) {
+		var $dialog = $(this);
+		if ($dialog.is(":visible")) {
+			//debug ("keypress in " + $dialog[0].id + " keyCode=" + e.keyCode);
+			// find first and last focusable items in the dialog
+			var first = $('#popup .close');
+			var firstId = "closeBtn";
+			var last = $('#popup .modalInput:last');
+			var lastId = "privacyPolicy";
+			//debug ("first=" + first.id + " last=" + last.className );
+			
+			// keep tabs and escapes from propagating outside this dialog
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+			//debug ("keyCode=" + e.keyCode + " " + " which=" + e.which);
+			switch (e.keyCode || e.which) {
+				case 27: // escape
+					closeReminder();
+					return false;
+					break;
+				
+				case 9:  // shift+tab
+					if (e.shiftKey) {
+						//debug ("- shift+tab");
+						if (e.target.id == firstId) {
+							// if we fall off the beginning, wrap to end
+							//debug ("- fell off beginning");
+							e.preventDefault();
+							last.focus();
+							return false;
+						} // if
+						break;
+					} // if
+				
+				case 9: // tab key without shift
+					//debug ("tab key...");
+					if (e.target.id == lastId) {
+						//debug ("fell off the end...");
+						// if we fall off the end, wrap to beginning
+						e.preventDefault();
+						first.focus();
+						return false;
+					} // if
+			} // switch
+		
+		} // if
+		
+		// if we made it down here, perform default action
+		//debug ("-- default action --");
+		return true;
+	} // modalKeyboardHandler
 </script>
 <style type="text/css">
 	.email-promo-pop-up-box-container{		
@@ -1406,7 +1525,7 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 <img alt="promo email text" class="email-promo-pop-up-img" src="../../../../../../../static_assets/media/kay/kay_popup_images/kay_popup_emailSignUp.jpg">
 <div class="pop-up-box">
 <div class="">
-<a class="close" href="javascript:closeReminder();">&nbsp;</a>
+<a class="close" href="javascript:closeReminder();" id="closeBtn">&nbsp;</a>
 </div>
 <div>
 <p class="pre-banner-title" id="pre_banner_title">Sign Up Now For</p>
@@ -1417,7 +1536,7 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
 <div id="content">
 <div>
-<p class="text" id="message">Receive $25 off any jewelry purchase of $99 or more just for signing up NOW!*<br><br> *Your welcome email will be sent to you in the next few days with the $25 off code and details.</p>
+<p class="text" id="message">and find out about new merchandise and special promotions from <br><span class="bold">Kay Jewelers</span></p>
 </div>
 <div class="top_space_4 email-box">
 <div id="info"></div>
@@ -1427,7 +1546,7 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 <div class="top_space_3 terms-conditions">
 </div>
 <div class="top_space_3 email-box-links">
-<a href="javascript:closeReminder();" class="modalInput">No Thank You</a> &nbsp; | &nbsp; <a href="index.html#" onclick="openPrivacyPolicyWindow('ContentView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;cmsId=privacy-policy')" class="modalInput">Privacy Policy</a>
+<a href="javascript:closeReminder();" class="modalInput">No Thank You</a> &nbsp; | &nbsp; <a href="index.html#" onclick="openPrivacyPolicyWindow('ContentView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;cmsId=privacy-policy')" class="modalInput" id="privacyPolicy">Privacy Policy</a>
 </div>
 </div>
 </div>
@@ -1551,7 +1670,9 @@ border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </script>
 <!-- CMS-START : Footer --><!-- Start- JSP File Name: CMSContentSpotDisplay.jsp --><div class="footer-tools">
 <a href="http://www.kay.com/CatalogRequest?langId=-1&amp;storeId=10101&amp;catalogId=10001" class="shop-our-catalog" target="_top"> <span>Shop Our Catalog</span> </a>
-<div class="errordiv" style="color:red;" id="errorMessagesJavaScript"></div>
+<h3 id="formErrors-label" style="font-weight: normal;">
+<div role="complementary" aria-labelledby="formErrors-label" class="errordiv" style="color:red;" id="errorMessagesJavaScript"></div>
+</h3>
 <div class="signup-offers">
 <div class="signup-wrap">
 <form method="POST" name="EmailSignup" id="EmailSignup">

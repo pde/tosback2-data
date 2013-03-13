@@ -1,0 +1,1 @@
+$(document).ready(function(){$.ajax({url:"/ajax/jsdetect"})});

@@ -121,7 +121,11 @@ GeoLoc = {
 		this.dtabCookie = this.getCookie("DTAB");
 		this.subDtabCookie = this.getCookie("subDTAB");
 		this.userZip = this.getZip(this.locCookie);
-
+		
+		//ADDING DEFAULT COOKIEE FOR SMALLBUSINESS
+		this.modifyCookie("DTAB","Tab=Bus",365);
+		this.modifyCookie("subDTAB","",-1);
+		
 		jQuery("#navPersonal a").click(function(e) { GeoLoc.localize(1,GeoLoc.userZip,"res",this.href); e.preventDefault();e.stopPropagation(); });
 		jQuery("#navBusiness a").click(function(e) { GeoLoc.localize(2,GeoLoc.userZip,"bus",this.href); e.preventDefault();e.stopPropagation(); });
 		jQuery('#uniNavsmallBusiness').click(function(e) { GeoLoc.localize(2,GeoLoc.userZip,"bus",this.href); e.preventDefault();e.stopPropagation(); });

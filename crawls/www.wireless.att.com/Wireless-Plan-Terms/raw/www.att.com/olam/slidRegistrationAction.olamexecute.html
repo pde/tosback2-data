@@ -31,6 +31,7 @@
 
 
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
@@ -163,7 +164,9 @@
 			
 				
 
-	
+	<!-- BEGIN: MyATT RD 2113 -->
+
+<!-- END: MyATT RD 2113 -->
 	
 	
 
@@ -912,7 +915,7 @@ return true;
 		
 		
 		
-			<script type="text/javascript" src="../scripts/foresee_global/foresee-trigger-global.js"></script>
+			<script type="text/javascript" src="https://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script>
 			
 			<script type="text/javascript">ForeSee.CPPS.fsr$set('customer_type','current')</script>
 			
@@ -960,8 +963,8 @@ return true;
 			
 			<!-- Added check to send a parameter to decide the hiding of the login-logout button if user is coming through WG env -->
 				
-				<div id="orangeNav"></div>
-			
+				<div id="orangeNav"></div> 
+		
 		
 	</div>
 	<div id="globalNavShadows"></div>
@@ -974,7 +977,7 @@ return true;
 <script type="text/javascript">
 var customGlobalNavResources = {
         userInfo: "/olam/jsp/tiles/common_includes/globalNav/blank.jsp",
-        segmentationMenu: "/olam/jsp/tiles/common_includes/globalNav/segmentation_menu.jsp?isGNDisabled=true",
+        segmentationMenu: "/olam/jsp/tiles/common_includes/globalNav/segmentation_menu.jsp?isGNDisabled=true&isblankGlobalNAV=true",
         menuJSON: "/olam/jsp/tiles/common_includes/globalNav/blank.jsp"
 };
 
@@ -1179,6 +1182,7 @@ jQuery(document).ready(function() {
 
 
 
+
    
 <!--ERRORS DISPLAY-->
 <!--<br></br>-->
@@ -1255,9 +1259,15 @@ jQuery(document).ready(function() {
 
 
 
+
+
+
+<script type="text/javascript" src="js/jquery.colorbox.js.html"></script>
+<script type="text/javascript" src="js/prototype.js.html"></script>
 <script type="text/javascript" src="js/slidRegistrationV2.js.html"></script>
 <script type="text/javascript" src="js/myatt-gvp.js.html"></script>
 <script src="https://www.att.com/media/gvp/gvpUtils.js" type="text/javascript" ></script>
+
 <script type="text/javascript" charset="utf-8">
 	jQuery(document).ready(function() {
 				var gvpLanguage = 'en_US'; 
@@ -1287,8 +1297,9 @@ jQuery(document).ready(function() {
 
 
 window.onload = function(){
+	triggerSessionTimoutTimer();
 	var selectedAccountType = document.getElementById("selectedAccountType");
-	accountTypeSelectionChange (selectedAccountType,"onPageLoad") ;
+	accountTypeSelectionChange (selectedAccountType,"onPageLoad");
 }
 
 function clickedCancel(){
@@ -1313,6 +1324,7 @@ function stripCharacters( obj ){
 
 
 
+
  	<div class="primary-row-seamless">
 
 		<div style="display: none;" id="clientSideErrors">
@@ -1324,8 +1336,6 @@ function stripCharacters( obj ){
 		</div>	
 	</div>
 
-
- 
  	
  	
  	
@@ -1355,6 +1365,29 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 					
 					
 
+
+					
+						<p class="MarTop20 MarLeft25"><b>Already have an AT&T Access ID?</b> 
+						&#160;			
+						<a name="help" class="lnk-help tooltips"	href="slidRegistrationAction.olamexecute.html#tip61"><img title="" alt="help"
+								src="../images/global/icn-help.png" class=""></a> 
+								<span id="tip61" class="tips">
+								Select the link and then enter your AT&T Access ID.
+								</span>
+						&#160;						
+						<a href="slidRegistrationAction.olamexecute.html#" onclick="alreadyHaveAccessIdClicked();return false;">Start here</a> </p>
+				
+
+<form id="slidValidateModal" name="slidValidateModal" action="https://www.att.com/olam/unauth/submitValidateAccessIdRegistration.myworld" method="POST">
+	
+	<input type="hidden" name="slid" value=""/>
+	<input type="hidden" name="password" value=""/>
+</form>
+
+
+
+
+
         
 <form id="frmSelectAccount" name="frmSelectAccount" onsubmit="return verifySelectAccount();" action="https://www.att.com/olam/unauth/submitAccountRegistration.myworld" method="post">
 	<div class="styled_forms modalForms">
@@ -1362,14 +1395,17 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 
 			<div class="tipPad safariComp botMar15">
 				<div class=" right MarRight5 float-left w260">
-
 					<label title="acctype" class="top0" for="selectedAccountType">Account Type</label>
 				</div>
 				<div class=" MarTop3 ie7MarTop0 helpDiv ">
-				&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce" href="slidRegistrationAction.olamexecute.html#tip53"><img title="" alt="help"
-						src="../images/global/icn-help.png" class=""></a><span
-						id="tip53" class="tips">	Please select the type of personal account you want to link to your AT&T Access ID.  Each personal account will be linked individually.  After linking, you can access all of your linked accounts by logging in with your AT&T Access ID.</span>
-						
+				&#160;
+				
+				<a name="help" class="lnk-help tooltips ie7Top4pxForce" href="slidRegistrationAction.olamexecute.html#tip53">
+				<img title="" alt="help"
+						src="../images/global/icn-help.png" class="">
+				</a>
+				<span id="tip53" class="tips">	Please select the type of personal account you want to link to your AT&T Access ID.  Each personal account will be linked individually.  After linking, you can access all of your linked accounts by logging in with your AT&T Access ID.</span>
+				
 				</div>
 				<div class="">
 
@@ -1474,7 +1510,7 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 
 		<div class="btn MarTop15 botMar0">
 			<div class="btnLt">
-				<a href="slidRegistrationAction.olamexecute.html#" class="textLink" title="" onclick="clickedCancel()">Cancel</a></span>
+				<a href="slidRegistrationAction.olamexecute.html#" class="textLink" title="" onclick="clickedCancel();return false;">Cancel</a></span>
 			</div>
 			<div class="btnRt" id="mynext">
 
@@ -1527,6 +1563,8 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 				
 					<div id='secondary-content'  class=''>
 						
+
+
 
 
 
@@ -1841,9 +1879,11 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 
 	    
 		
-	  		
-	  		
-	  	
+		
+	  			
+			
+			
+		
 	  	
 
 <div class="clear"></div>
@@ -1893,8 +1933,8 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 		
 		<script type="Text/javascript">
 		
-			lpMTagConfig.vars.push(['session','sessionId','35T5R72XLyhbnQDxNGtY5PG0zF6KQd2xTLThJfyQq11RGrL24JY4']);
-			lpMTagConfig.vars.push(['session','stack','woammw20']);
+			lpMTagConfig.vars.push(['session','sessionId','2nC2RQvDwKtV5mv2hnQyL6zyvJ3JMvxjpsS0CkZ3JYPp8yLdHftT']);
+			lpMTagConfig.vars.push(['session','stack','woammw23']);
 			
 			
 			
@@ -2030,7 +2070,6 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 		
 		
 			<!--CE FOOTER -->
-				
 				<div class="group">
 					<div class="w346 left dotSites padBot30"> 
 						<span class="dotCom">
@@ -2101,6 +2140,11 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 				
 				 	
 				 </div>
+								 
+
+
+
+
 			<!-- WebTrends Base Tag : include only at end of page -->
 			
 			
@@ -2138,7 +2182,7 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 
 
 <script language="JavaScript" type="text/javascript">
-	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"slidReg2SelectAccount","ap":"woammw20","sc":"OLAM","pn":"slidReg2SelectAccount","se":"AccountLogin","si":"35T5R72XLyhbnQDxNGtY5PG0zF6KQd2xTLThJfyQq11RGrL24JY4!1936340304!1362835031129"}};
+	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"slidReg2SelectAccount","ap":"woammw23","sc":"OLAM","pn":"slidReg2SelectAccount","se":"AccountLogin","si":"2nC2RQvDwKtV5mv2hnQyL6zyvJ3JMvxjpsS0CkZ3JYPp8yLdHftT!-2005416187!1363177219730"}};
 </script>
 <!--  VirtuOzLoader.js file included for RD2113 - Virtual Expert - 1104-->
 <script type="text/javascript" src="virtuOz/scripts/VirtuOzLoader.js.html"></script>
@@ -2329,8 +2373,8 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 	{
 		try{
 			if(linkName !=null){
-				linkName = linkName.split('-').join('');
-				if(!isNaN(linkName) && linkName.length >= 10){
+				var linkNameTemp = linkName.split('-').join('');
+				if(!isNaN(linkNameTemp) && linkNameTemp.length >= 10){
 					return null;
 				}
 			}
@@ -2488,6 +2532,9 @@ Later in this process you'll create an AT&T Access ID-- a single User ID and pas
 		jQuery('#secondary-content div:first-child').css('margin-top','0px');
 		});
 		</script>
+		<!-- BEGIN: MyATT RD 2113 -->
+		
+		<!-- END: MyATT RD 2113 -->
 	
 	
 	

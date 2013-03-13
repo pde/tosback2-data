@@ -721,7 +721,23 @@ MATTEL.tracker.Tracker = {
 		    if( isDoubleTrackingEnabled == true)
 		    {
 		    	pageTracker._trackPageview(url);
-		    	pageTracker._trackEvent(Tracker.contenttype, Tracker.action, trackname.replace("&", "and"));
+				if(Tracker.action.toLowerCase() != 'view' && Tracker.currentTrackedSite.substring(0,11)=='fisherprice' && Tracker.contenttype.toLowerCase()=='game')
+			    {					
+					 utag.view({ 
+					  event_id:'',    
+					  event_category_id:Tracker.contenttype, 
+					  event_action_type:Tracker.action, 
+					  event_action_attr46:Tracker.action,
+					  event_detail_attr47:Tracker.name,
+					  event_detail_sub_attr48:'',
+					  event_length_attr49:'', 
+					  event_length_full_attr50:''
+					  });
+				}
+                else
+                {
+                    pageTracker._trackEvent(Tracker.contenttype, Tracker.action, trackname.replace("&", "and"));
+                }
 		    	
 		    }
 		    //Do either page view tracking or event tracking based on content type

@@ -956,10 +956,10 @@ var g=null;
 var f=true;
 var d="";
 var h="";
-var i=NICK.config.SOLR_SITENAME==undefined?"solr_nick":NICK.config.SOLR_SITENAME;
-var k=$.extend({wait:500,fields:["title_t","contentSuperType_s","wideThumbnail_s","thumbnail_t","showLookupUrlAlias_s","primaryTypeTag_s","urlAlias_s"],complete:function(){NickLog.error("NickSearch: No Callback Specified!")
+var i="nick_v2";
+var k=$.extend({wait:500,fields:["title_t","contentType_s","thumbnail_s_mv","showHierarchyUrlKey_s","urlKey_s","url_s","videoPlaylistTypeName_s"],complete:function(){NickLog.error("NickSearch: No Callback Specified!")
 }},a);
-function b(m){if(h.length==0||d.length==0){return false
+function b(m){if(h.length===0||d.length===0){return false
 }if(h!=d){j()
 }else{h=""
 }f=true;
@@ -1002,13 +1002,14 @@ var c,b,e;
 for(var a=0;
 a<Math.min(d.items.length,(NICK.search.compressedView?5:6));
 a++){c=d.items[a];
-b=NICK.search.getItemTemplate(c.contentSuperType_s[0]);
-e=c.wideThumbnail_s?c.wideThumbnail_s[0]:c.thumbnail_t[0];
-b.find(".NickSearchUI_Link ").attr("href",NICK.search.getURL(c));
+b=NICK.search.getItemTemplate(c.contentType_s);
+if(c.thumbnail_s_mv){e=c.thumbnail_s_mv[0].substr(c.thumbnail_s_mv[0].indexOf("/"),c.thumbnail_s_mv[0].length)
+}else{e="/nick-assets/404.gif"
+}b.find(".NickSearchUI_Link ").attr("href",NICK.search.getURL(c));
 b.find(".NickSearchUI_Image").attr("src",NICK.utils.getImage(e,66,126));
-b.find(".NickSearchUI_Title").text(c.title_t[0]);
-b.appendTo(NICK.search.getSectionByType(c.contentSuperType_s[0],"ul"))
-}$(".NickSearchUI_Section").each(function(f){if($(this).find("li").size()==0){$(this).hide()
+b.find(".NickSearchUI_Title").text(c.title_t);
+b.appendTo(NICK.search.getSectionByType(c.contentType_s,"ul"))
+}$(".NickSearchUI_Section").each(function(f){if($(this).find("li").size()===0){$(this).hide()
 }else{$(this).show()
 }});
 NICK.search.showSuggest();
@@ -1016,29 +1017,44 @@ $(".NickSearchUI_Section").removeClass("last").filter(":visible:last").addClass(
 }else{NICK.search.hideSuggest()
 }};
 NICK.search.getSectionByType=function(a,c){var b;
-switch(a){case"video":b=$("#NickSearchUI_Videos");
+switch(a){case"Standard:ShowVideo":b=$("#NickSearchUI_Videos");
 break;
-case"game":b=$("#NickSearchUI_Games");
+case"Standard:MusicVideo":b=$("#NickSearchUI_Videos");
 break;
-case"show":b=$("#NickSearchUI_Shows");
+case"Standard:VideoPlaylist":b=$("#NickSearchUI_Videos");
+break;
+case"Standard:Game":b=$("#NickSearchUI_Games");
+break;
+case"Standard:ExternalContent":b=$("#NickSearchUI_Games");
+break;
+case"Standard:Series":b=$("#NickSearchUI_Shows");
+break;
+case"Standard:Quiz":b=$("#NickSearchUI_Quizzes");
+break;
+case"Standard:Article":b=$("#NickSearchUI_Articles");
+break;
+case"Standard:PhotoGallery":b=$("#NickSearchUI_Photos");
 break
 }if(c){b=b.find(c)
 }return b
 };
-NICK.search.getURL=function(a){switch(a.contentSuperType_s[0]){case"video":return"/videos/clip/"+a.urlAlias_s[0]+".html";
-case"game":if(a.primaryTypeTag_s){switch(a.primaryTypeTag_s[0]){case"ClubHouses":return"/club/clubhouses/"+a.urlAlias_s[0]+".html";
-case"ClubGame":return"/club/"+a.urlAlias_s[0]+".html";
-case"ClubCinema":return"/club/clubhouses/club-cinema/"+a.urlAlias_s[0]+".html";
-case"Mall":return"/club/mall/"+a.urlAlias_s[0]+".html";
-default:return"/games/"+a.urlAlias_s[0]+".html"
-}}else{return"/games/"+a.urlAlias_s[0]+".html"
-}case"show":return a.showLookupUrlAlias_s?"/shows/"+a.showLookupUrlAlias_s[0]:"/"
+NICK.search.getURL=function(a){switch(a.contentType_s){case"Standard:ShowVideo":return"/videos/clip/"+a.urlKey_s+".html";
+case"Standard:MusicVideo":return"/videos/clip/"+a.urlKey_s+".html";
+case"Standard:VideoPlaylist":if(a.videoPlaylistTypeName_s=="Editorial"){return"/videos/playlist/play/"+a.urlKey_s+".html"
+}else{return"/videos/clip/"+a.urlKey_s+".html"
+}break;
+case"Standard:Game":return"/games/"+a.urlKey_s+".html";
+case"Standard:ExternalContent":return a.url_s;
+case"Standard:Series":return"/shows/"+a.showHierarchyUrlKey_s+"/";
+case"Standard:Quiz":return"/quizzes/"+a.urlKey_s+".html";
+case"Standard:Article":return"/celebrity/news/"+a.urlKey_s+".html";
+case"Standard:PhotoGallery":return"/pictures/"+a.urlKey_s+".html"
 }};
 NICK.search.getItemTemplate=function(b){var a='<li class="clearfix">';
 a+='<a class="NickSearchUI_Link" href="#">';
 a+='<div class="NickSearchUI_Image_Wrapper">';
 a+='<img class="NickSearchUI_Image" />';
-if(b=="video"){a+='<div class="NickSearchUI_Video_Icon"></div>'
+if(b=="Standard:ShowVideo"||b=="Standard:MusicVideo"||b=="Standard:VideoPlaylist"){a+='<div class="NickSearchUI_Video_Icon"></div>'
 }a+="</div>";
 a+='<span class="NickSearchUI_Title"></span>';
 a+="</a>";
@@ -1046,7 +1062,7 @@ a+="</li>";
 return $(a)
 };
 NICK.search.showSuggest=function(){$("#NickSearchUI").show();
-$(document).bind("click.NickSearch",function(a){if($(a.originalTarget).parents("#NickSearchUI").size()==0){NICK.search.hideSuggest()
+$(document).bind("click.NickSearch",function(a){if($(a.originalTarget).parents("#NickSearchUI").size()===0){NICK.search.hideSuggest()
 }})
 };
 NICK.search.hideSuggest=function(){$("#NickSearchUI").hide();

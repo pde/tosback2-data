@@ -1,0 +1,33 @@
+var _gaq = _gaq || [];
+_ahv = [['_setAccount',_aha[0]]];
+if (location.href.split('/')[2] == document.referrer.split('/')[2]) { 
+   if (0 <= location.search.search(new RegExp("[#&]int_campaign=([^&$]*)", "i"))) { int_campaign = RegExp.$1 };
+   if (0 <= location.search.search(new RegExp("[#&]int_source=([^&$]*)", "i"))) { int_source = RegExp.$1 };
+   if (0 <= location.search.search(new RegExp("[#&]int_medium=([^&$]*)", "i"))) { int_medium = RegExp.$1 };
+   if (0 <= location.search.search(new RegExp("[#&]int_content=([^&$]*)", "i"))) { int_content = RegExp.$1 };
+   if (typeof int_campaign != "undefined" && typeof int_source != "undefined" && typeof int_medium != "undefined" && typeof int_content != "undefined") { 
+      _ahv.push(["_setCustomVar", 1, "Internal Campaign", unescape(int_campaign), 1]); 
+      _ahv.push(["_setCustomVar", 2, "Internal Source", unescape(int_source), 1]); 
+      _ahv.push(["_setCustomVar", 3, "Internal Medium", unescape(int_medium), 1]); 
+      _ahv.push(["_setCustomVar", 4, "Internal Content", unescape(int_content), 1]); 
+      _ahv.push(["_trackEvent","Internal Campaign", "Click", unescape(int_campaign) + " | " + unescape(int_source) + " | " + unescape(int_medium) + " | " + unescape(int_content)]); 
+   } else { 
+      int_campaign = int_source = int_medium = int_content = void(0); 
+   }; 
+};
+_cohorts = {}; 
+if (typeof _ahc != 'undefined') { 
+   for (var l = _ahc.length, i = 0; i < l; ++i) { 
+      _cohorts[_ahc[i].id] = new Cohorts.Test(_ahc[i].cfg); 
+   };
+}; 
+if (typeof int_campaign != 'undefined') { 
+   _ahv.push(['_trackPageview', location.pathname + (location.search || '?') + ('&icn=' + int_campaign) + (location.hash || '') ]); 
+} else { 
+   _ahv.push(['_trackPageview']); 
+}; 
+_ahv.push(['_trackPageLoadTime']); 
+_ahv.push(['b._setAccount',_aha[1]]); 
+_ahv.push(['b._trackPageview']); 
+_gaq.push.apply(_gaq, _ahv); 
+(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();

@@ -1669,8 +1669,10 @@ function changeTab(type,url,aID) {
 			$("#comDating > #female").removeClass("hide");
 	 }
 
+		var id3 = aID.replace(/&/g,";");
+
 		$.ajax({
-		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+url+'&aID='+aID+'&genderfromURL='+gen,
+		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+url+'&aID='+id3+'&genderfromURL='+gen,
 		  cache: false,
 		  success: function(html){
 		    $("#"+type).html(html);
@@ -1704,8 +1706,10 @@ function viewNext(variable,gend,id){
 		var gen = 'male';
 	}
 	
+		var id2 = id.replace(/&/g,";"); 
+	
 	$.ajax({
-		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
+		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id2+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
 		  cache: false,
 		  success: function(html){
 		    $("#"+gen).html(html);
@@ -1748,6 +1752,7 @@ function cycle() {
     }
         	
         	var id = document.getElementById('aIDRef').value;
+		var id1 = id.replace(/&/g,";"); 
         	if(gend == 'FEMALE'){
         		var xml = 'dating-file-female';
         		var gen = 'female';
@@ -1757,7 +1762,7 @@ function cycle() {
         		var gen = 'male';
         	}
         	$.ajax({
-      		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
+      		  url: 'http://' + window.location.host + '/template/ver1-0/templates/fragments/dating/datingLargeTab.jsp?xmlUrl='+xml+'&aID='+id1+'&profileNumber='+xmlNext+'&genderfromURL='+gend,
       		  cache: false,
       		  success: function(html){
       		    $("#"+gen).html(html);
