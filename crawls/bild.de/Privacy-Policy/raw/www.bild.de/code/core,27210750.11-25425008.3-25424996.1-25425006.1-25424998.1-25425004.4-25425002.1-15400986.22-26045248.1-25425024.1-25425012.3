@@ -963,7 +963,7 @@ de.bild.settings = (function(){
 })(); 
 
 
-/*de.lib:25425010.1*/
+/*de.lib:25425010.2*/
 
 var de = de || {};
 
@@ -1019,14 +1019,12 @@ de.lib = (function($){
     function replaceWith($target,response) {
         if (arguments.length < 2) return false;
         // jQuery.support.leadingWhitespace === false in ie6-8 (jquery docs)
-        if ($.support.leadingWhitespace === false) {
+        
                 var $temp = $('<div/>'),
                 temp = $temp.get(0);
                 temp.innerHTML = response;
                 $target.replaceWith(temp.innerHTML);
-        } else {
-            $target.replaceWith(response);
-        }
+        
     };
 
     
@@ -1041,7 +1039,7 @@ de.lib = (function($){
     };
 
 }(jQuery));
-/*de.bild.utils:25424994.5*/
+/*de.bild.utils:25424994.6*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -4599,7 +4597,7 @@ de.bild.video = (function($){
         }
     }
 }(jQuery));
-/*de.bild.init:27524116.15*/
+/*de.bild.init:27524116.16*/
 
 /**
  * de.bild.init
@@ -4608,26 +4606,118 @@ de.bild.video = (function($){
  * CSS Klassen:
  * keine
  */
-jQuery.noConflict()
+jQuery.noConflict();
 var de = de || {};
 de.bild = de.bild || {};
 de.bild.init = ( function($) {
- var siteInitalised = false;
- 
- 
- 
- function initializeOnce($context) {
-  
-  
-  //init SandBox  
-  if(de.bild.globalSandBox) {   
-   de.bild.globalSandBox.init();   
-  }
-  
-  if(de.bild.user) {           
-            de.bild.user.init();          
+    var siteInitalised = false;
+    var mandatoryModulesInitalised = false;
+    var moduleController = {
+        moduleNamespace : 'de.bild.',
+        modules: {
+            autoLoad: {
+                identifier: 'common',
+                init: function($context){
+                    de.bild.common.autoLoadModule( $context );
+                }
+            },
+            vp: {
+                identifier: 'videoTeaser',
+                init: function($context){
+                    de.bild.videoTeaser.init( $context );
+                }
+            },
+            mediacenter: {
+                identifier: 'galleryCenter',
+                init: function($context){
+                    de.bild.galleryCenter.init( $context );
+                }
+            },
+            gallery: {
+                identifier: 'mediaGallery',
+                init: function($context){
+                    de.bild.mediaGallery.init( $context );
+                }
+            },
+            bildLive: {
+                identifier: 'bildLive',
+                init: function($context){
+                    de.bild.bildLive.init( $context );
+                }
+            },
+            ntoverview: {
+                identifier: 'newstickerOverview',
+                init: function($context){
+                    de.bild.newstickerOverview.init( $context );
+                }
+            },
+            maps: {
+                identifier: 'maps',
+                init: function($context){
+                    de.bild.maps.init( $context );
+                }
+            }
+        },
+        isLoaded: function(module){
+            return de.bild[ module.identifier ];
+        },
+        load: function(moduleName, $context){
+            var self = this;
+            var module = this.modules[moduleName];
+            if(!module) {
+                console.warn('INIT: Unknown module - ' + moduleName);
+                return false;
+            }
+            if(this.isLoaded(module)) {
+                module.init($context);
+            } else {
+                var filename = this.moduleNamespace + module.identifier;
+                de.bild.moduleLoader.load(filename, function(){
+                    module.init($context);
+                });
+            }
+        }
+    };
+    de.bild.events.subscribe('initModule', function(e, moduleName, selector){
+        if(!mandatoryModulesInitalised) {
+            mandatoryModulesInitalisation();
+        }
+        if(moduleName === 'maps') {
+            if(de.bild.maps) {
+                de.bild.maps.init( $(selector) );
+            } else if(de.bild.moduleLoader) {
+                de.bild.moduleLoader.load('maps', function(){
+                    de.bild.maps.init( $(selector) );
+                });
+            }
+        } else {
+            moduleController.load(moduleName, $(selector).last());
+        }
+    });
+    function mandatoryModulesInitalisation($context) {
+        mandatoryModulesInitalised = true;
+        if(de.bild.globalSandBox) {
+            de.bild.globalSandBox.init();
         }
         
+        if(de.bild.user) {
+            de.bild.user.init();
+        }
+        
+    }
+    function initializeOnce($context) {
+        if(!mandatoryModulesInitalised) {
+            mandatoryModulesInitalisation($context);
+        }
+        // Live event binding for simple functions
+        if(de.bild.common) {
+    
+            de.bild.common.initLightboxes($context);
+            de.bild.common.initTabModules($context);
+            de.bild.common.initPagination($context);
+            de.bild.common.initCommentsAndColumns($context);
+            
+        }
         /* social */
         if(de.bild.social) {
             de.bild.social.init();
@@ -4637,161 +4727,138 @@ de.bild.init = ( function($) {
         if(de.bild.community) {
             de.bild.community.init();
         }
-  
-  
-  
-  // Live event binding for simple functions
-  if(de.bild.common) {
- 
-   de.bild.common.initLightboxes($context);
-   de.bild.common.initTabModules($context);
-   de.bild.common.initPagination($context);
-   de.bild.common.initCommentsAndColumns($context);
-   
-  }
-  
-  
+                
+        
         if(de.bild.onDemand) {
-            de.bild.onDemand.init($context); 
+            de.bild.onDemand.init($context);
         }
         
         /* Sliding Social Bar */
         if(de.bild.socialBar) {
             var $socialBarLeftAndMiddle = $context.find('.social-sharing');
-            if($socialBarLeftAndMiddle.length && $socialBarLeftAndMiddle.length > 1) {        
+            if($socialBarLeftAndMiddle.length && $socialBarLeftAndMiddle.length > 1) {
                 de.bild.socialBar.init( $socialBarLeftAndMiddle );
-            }         
+            }
         }
         
         /* Live Article */
         if(de.bild.liveArticle) {
             var $liveArticle = $context.find('.liveticker');
-            if($liveArticle.length) {        
+            if($liveArticle.length) {
                 de.bild.liveArticle.init( $liveArticle );
-            }         
+            }
         }
-  
- }
- 
- 
- 
- // run once
- function init($context) {
-  if( typeof $context === 'undefined' || $context.length === 0) {
-   return false;
-  }
-  // sso.init : see navi.js
-  // run once
-  if(siteInitalised === false) {   
-   initializeOnce($context);   
-   siteInitalised = true;
-  }
-  
-  // A-Teasers
-  if(de.bild.rotationTeaser) {
-   var $rotationTeaser = $context.find('div.rotate');
-   if($rotationTeaser.length) {
-    de.bild.rotationTeaser.init($rotationTeaser);
-   }
-  }
-  //Breaking news
-  if(de.bild.breakingNews) {
-   var $breaking = $context.find('#breaking');
-   if($breaking.length) {
-    de.bild.breakingNews.init();
-   }
-  }
-  
-  // Bildlaufleiste
-  if(de.bild.slider) {
-   var $collection = $context.find('.slideshow');
-   if($collection.length) {
-    de.bild.slider.init($collection);
-   }
-  }
-  // Videos
-  if(de.bild.video) {
-   de.bild.video.init();
-  }
-  // Jalousie
-  if(de.bild.jalousie) {
-   var $collection = $context.find('.jalousie');
-   if($collection.length) {
-    de.bild.jalousie.init($collection);
-   }
-  }
-  
-  
-  // Newsticker
-  if(de.bild.newsTicker) {
-   var $collection = $context.find('.nticker');
-   if($collection.length) {
-    de.bild.newsTicker.init($collection);
-   }
-  }
-  
-  
-  // MediaCenter
-  if(de.bild.galleryCenter) {
-   var $collection = $context.find('.mediacenter');
-   if($collection.length) {
-    de.bild.galleryCenter.init($collection);
-   }
-  }
-  
-  
-  // VideoTeaser
-  if(de.bild.videoTeaser) {
-   var $collection = $context.find('.vp');
-   if($collection.length) {
-    de.bild.videoTeaser.init($collection);
-   }
-  }
-  
-  
-  // FG & Galeriemodule
-  if(de.bild.mediaGallery) {
-   var $collection = $context.find('figure.gallery');
-   if($collection.length) {
-    de.bild.mediaGallery.init($collection);
-   }
-  } 
-  // Top Nachrichten, Bilder, Videos des Tages
-  if(de.bild.topNews) {
-   var $collection = $context.find('.ateaser');
-   if($collection.length) {
-    de.bild.topNews.init($collection);
-   }
-  }
-  // Accordion module
-  if(de.bild.accordion) {
-   var $collection = $context.find('.accordion, .ktgacc');
-   if($collection.length) {
-    de.bild.accordion.init($collection);
-   }
-  }
-  
-  /* personalised Teaser */
-  if(de.bild.personalisedTeaser) {
-   var $pTeasers = $context.find('.personalised-teaser');
-   if($pTeasers.length) {
-     de.bild.personalisedTeaser.init($pTeasers);
-   }
-  }
-  
-  
-  if(de.bild.rssRotationTeaser){
-   var $rssRotationTeaser = $context.find('#rssBRotate');
-   if($rssRotationTeaser.length) {
-     de.bild.rssRotationTeaser.init();
-   }
-  }
-  
-  /* Artikelgalerie */
-  if(de.bild.articleGallery) {
-            var $articleGalleries = $context.find('.articleSlide');
-            if($articleGalleries.length) {
-                de.bild.articleGallery.init( $articleGalleries );
+        
+    }
+    // run once
+    function init($context) {
+        if( typeof $context === 'undefined' || $context.length === 0) {
+            return false;
+        }
+        // sso.init : see navi.js
+        // run once
+        if(siteInitalised === false) {
+            initializeOnce($context);
+            siteInitalised = true;
+        }
+        
+        // A-Teasers
+        if(de.bild.rotationTeaser) {
+            var $rotationTeaser = $context.find('div.rotate');
+            if($rotationTeaser.length) {
+                de.bild.rotationTeaser.init($rotationTeaser);
+            }
+        }
+        //Breaking news
+        if(de.bild.breakingNews) {
+            var $breaking = $context.find('#breaking');
+            if($breaking.length) {
+                de.bild.breakingNews.init();
+            }
+        }
+        
+        // Bildlaufleiste
+        if(de.bild.slider) {
+            var $collection = $context.find('.slideshow');
+            if($collection.length) {
+                de.bild.slider.init($collection);
+            }
+        }
+        // Videos
+        if(de.bild.video) {
+            de.bild.video.initVideoIn($context);
+        }
+        // Jalousie
+        if(de.bild.jalousie) {
+            var $jalousieCollection = $context.find('.jalousie');
+            if($jalousieCollection.length) {
+                de.bild.jalousie.init($jalousieCollection);
+            }
+        }
+        
+        
+        // Newsticker
+        if(de.bild.newsTicker) {
+            var $ntCollection = $context.find('.nticker');
+            if($ntCollection.length) {
+                de.bild.newsTicker.init($ntCollection);
+            }
+        }
+        
+        
+        // MediaCenter
+        if(de.bild.galleryCenter) {
+            var $gcCollection = $context.find('.mediacenter');
+            if($gcCollection.length) {
+                de.bild.galleryCenter.init($gcCollection);
+            }
+        }
+        
+        
+        // VideoTeaser
+        if(de.bild.videoTeaser) {
+            var $vtCollection = $context.find('.vp');
+            if($vtCollection.length) {
+                de.bild.videoTeaser.init($vtCollection);
+            }
+        }
+        
+        
+        // FG & Galeriemodule
+        if(de.bild.mediaGallery) {
+            var $mgGollection = $context.find('figure.gallery');
+            if($mgGollection.length) {
+                de.bild.mediaGallery.init($mgGollection);
+            }
+        }
+        // Top Nachrichten, Bilder, Videos des Tages
+        if(de.bild.topNews) {
+            var $tnCollection = $context.find('section.ateaser');
+            if($tnCollection.length) {
+                de.bild.topNews.init($tnCollection);
+            }
+        }
+        // Accordion module
+        if(de.bild.accordion) {
+            var $accCollection = $context.find('.accordion, .ktgacc');
+            if($accCollection.length) {
+                de.bild.accordion.init($accCollection);
+            }
+        }
+        
+        /* personalised Teaser */
+        if(de.bild.personalisedTeaser) {
+            var $pTeasers = $context.find('.personalised-teaser');
+            if($pTeasers.length) {
+                    de.bild.personalisedTeaser.init($pTeasers);
+            }
+        }
+        
+        
+        if(de.bild.rssRotationTeaser){
+            var $rssRotationTeaser = $context.find('#rssBRotate');
+            if($rssRotationTeaser.length) {
+                    de.bild.rssRotationTeaser.init();
             }
         }
         
@@ -4803,20 +4870,32 @@ de.bild.init = ( function($) {
             }
         }
         
+
+        
         if(de.bild.community.teaserComments){            
             if($context.prop('nodeName').toLowerCase()!="body"){
                 de.bild.community.teaserComments.checkForTeaserComments($context);
             }
             
-        }       
+        }    
+
         
+        if(de.bild.user && de.bild.user.isLoggedIn()) {
+            $context.find('.btnLogin').hide();
+        }
+        if(de.bild.social) {
+            var $socialMediaButtons = $context.find('.social-button');
+            if($socialMediaButtons.length) {
+                de.bild.social.initSocialButtons($context);
+            }            
+        }
         
         
         /** OLD Modules! */
        
         /* accordeon */
         if(de.bild.accordeon) {
-            var $acs = $context.find('div.ranking, div.simVids, div.topVids, div.simPhotos, div.discussed, div.regComments');
+            var $acs = $context.find('div.ranking, div.simVids, div.topVids, div.simPhotos, div.discussed, div.regComments, h5.acctoggle');
             if($acs.length) {
                 de.bild.accordeon.init($acs);
             }
@@ -4830,16 +4909,14 @@ de.bild.init = ( function($) {
             }
         }
         
-        
-  
-  return siteInitalised;
- };
- //document.ready
- $(function() {
-  init($('body'));
- });
- 
- return init;
+        return siteInitalised;
+    }
+    //document.ready
+    $(function() {
+        init($('body'));
+    });
+    
+    return init;
 }(jQuery));
 /*de.bild.globalSandBox:29369344.2*/
 
@@ -5151,7 +5228,7 @@ de.bild.globalSandBox = (function($) {
  
  
 })(jQuery);
-/*de.bild.community:27210474.10*/
+/*de.bild.community:27210474.12*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -5205,17 +5282,18 @@ de.bild.community = (function($, SandBox) {
                 'ajaxType':$.ajax,
                 'callback' : function(response, $target) {                   
                     //global init since p2r4 BILD-Markuped elements are rendered by KIT
-                    //de.bild.init($target);
-
-if(de.bild.jalousie) {
-            var $jalousieCollection = $target.find('.jalousie');
-            if($jalousieCollection.length) {
-                de.bild.jalousie.init($jalousieCollection);
-            }
-        }
                     
+                    //jalousie init
+                    if(de.bild.jalousie) {
+                        var $jalousieCollection = $target.find('.jalousie');
+                        if($jalousieCollection.length) {
+                            de.bild.jalousie.init($jalousieCollection);
+                        }
+                    }
+                    
+                                        
                     //normal Comunity Init
-                    init();
+                    init($target);
                     /* set up only when needed onload*/
                     if($('div.comments').length) {
                         setTimeout(function() {
@@ -5243,7 +5321,7 @@ if(de.bild.jalousie) {
                                     }
                                     /* if  live don't show the returned error show a message*/
                                     else {
-                                        $target.replaceWith(templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', lang.error));
+                                        $target.replaceWith(templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', xhr.status + ' : ' +lang.error));
                                     }
                                 }
                             })
@@ -5254,7 +5332,7 @@ if(de.bild.jalousie) {
                         }
                         /* if  live don't show the returned error show a message*/
                         else {
-                            $target.replaceWith(templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', lang.error));
+                            $target.replaceWith(templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%',xhr.status + ' : ' + lang.error));
                         }
                     }
                 }
@@ -5325,7 +5403,28 @@ if(de.bild.jalousie) {
         //prevent default for .drop class
         de.lib.live($contentWrapper, '.btn-def.drop','click', function(e){
             e.preventDefault();
+            
+            //Hide all other open elements
+            $('.btn-def.drop').siblings('ul').hide();
+            $doc.unbind('click.fnc');
+            
+            
+            $this = $(this);
+            var $elem = $this.siblings('ul');
+            $elem.show();
+            
+            docClickHandler = function(e) {            
+                    var $target = $(e.target);
+                    /* don't catch clicks on the fnc */
+                    if($target.parents('.fnc').length === 0) {
+                        $doc.off('click.fnc');
+                        $elem.hide();
+                    }
+            };
+             
+            $doc.on('click.fnc', docClickHandler);            
         });        
+        
         /* Extra close button in lightbox form
          reset button in light box form - even though it's a reset button :) */
         de.lib.live($body, 'div.com-lightbox input.btn-close,div.com-lightbox a.btn-close, div.com-lightbox input.btn-reset','click', function(e){
@@ -5754,7 +5853,14 @@ if(de.bild.jalousie) {
         }
         if(de.bild.community.qotd) {
             de.bild.community.qotd.init();
-        }        
+        }      
+        
+        if(de.bild.community.teaserComments && $target) {
+            de.bild.community.teaserComments.checkForTeaserComments($target);
+        } 
+        
+        
+          
         /* Notifications initialises itsself
         if(de.bild.community.notification) {
             de.bild.community.notification.init();
@@ -5810,7 +5916,8 @@ if(de.bild.jalousie) {
         'updateCount' : updateCount,
         'validateForm' : validateForm,
         'online': function(){ return online},
-        'setCommunityStatus':function(v){online = v; return online;}
+        'setCommunityStatus':function(v){online = v; return online;},
+        'storage':de.bild.utils.storage
     }
 })(jQuery, de.bild.globalSandBox)
 /*de.bild.community.comments:27210484.4*/
@@ -8749,7 +8856,7 @@ de.bild.community.profile = (function($, Community) {
  } 
  
 })(jQuery, de.bild.community) 
-/*de.bild.community.qotd:29369472.6*/
+/*de.bild.community.qotd:29369472.7*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8792,8 +8899,12 @@ de.bild.community.qotd = (function($, Community) {
                      //set lightbox that doesn't queue
                      
                      if(response.status=="success"){
+                         
+                         var $form = $(response.form);
+                         $form.find('header h2').text("Kommentar abschicken");
+                         
                         Community.showLightBox({
-                            "content":response.form,
+                            "content":$('<div></div>').append($form).html(),
                             dominant:true,
                             "wrapperClass":"com-lightbox qotd"
                             }
@@ -8809,13 +8920,10 @@ de.bild.community.qotd = (function($, Community) {
         if(!de.bild.sso.isLoggedIn() || !de.bild.sso.isFBConnected())
             $('#sn-fb').parents('.socials').remove();
         //check ob user hat gerade ein Kommentar gesendet
-        if(de.bild.sso.isLoggedIn() && $.cookie('qotdLogin') != null) {
+        if(de.bild.sso.isLoggedIn() && Community.storage.get('qotdLogin')!=null) {
             //remove Cookie
-            $.cookie('qotdLogin', null, {
-                    path : '/',
-                    expires : -1,
-                    domain : de.bild.env.domain
-                });
+            Community.storage.remove('qotdLogin');
+            
             var form = $('.com-question').last();
             var $fieldset = form.find('.com-buttons, fieldset');
             
@@ -8841,11 +8949,8 @@ de.bild.community.qotd = (function($, Community) {
                 //Cookie Login für 2 minuten setzen
                 var expires = new Date();
                 expires.setMinutes(expires.getMinutes() + 5);
-                $.cookie('qotdLogin', 1, {
-                    path : '/',
-                    expires : expires,
-                    domain : de.bild.env.domain
-                });
+                
+                Community.storage.set('qotdLogin', 1,false);
                 Community.showLightBox({
                     'wrapperId' : 'sso-lightbox',
                     'content' : data.html,

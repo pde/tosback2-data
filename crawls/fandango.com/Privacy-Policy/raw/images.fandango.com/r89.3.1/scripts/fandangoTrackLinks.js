@@ -80,15 +80,8 @@ fandangoTrackLinks = {
     trackClick: function(event){
         var props;
         var isAllowRedirect = fandangoTrackLinks.allowRedirect;
-        var attachedEvents = $(this).data("events");
-
-        //TODO: We can go further and check $(document).data("events") and find
-        //      what click event is attached to document - and what "selector"
-        //      is affected. Then look if $(this) has these selectors, then 
-        //      change isAllowRedirect to "false".
-        //      Using this as we are still using JQuery 1.7.1.
-        //      In newer version of JQuery, need to use: $._data( $(this)[0], "events" );
-
+        //look for attached events using jquery's internal function $._data( $(this)[0], "events" );
+        var attachedEvents = $._data(this, "events");
 
         if(thisLinkName = $(this).attr("name")) {
             props = fandangoTrackLinks.getWssProps(thisLinkName);
@@ -103,7 +96,6 @@ fandangoTrackLinks = {
         // we won't redirect...assuming those click event is "preventDefault" 
         // This is pretty big assumption, but looking at current codes, 
         // looks like we can do this for <a href> links.
-
         if(typeof attachedEvents != "undefined") {
             $.each(attachedEvents, function(eventName, eventObj) {
                if(eventName == "click") {
@@ -115,8 +107,7 @@ fandangoTrackLinks = {
         // Some inline onclick is not detected, so trying this route.
         // This is not checking if this is "onclick" has "return false" - or not
         // - as the function may be calling "return false" instead.
-        // As attachedEvents related function above, this is a big assumption.
-        
+        // As attachedEvents related function above, this is a big assumption.        
         if($(this).attr("onclick")){
             isAllowRedirect = false; 
         }

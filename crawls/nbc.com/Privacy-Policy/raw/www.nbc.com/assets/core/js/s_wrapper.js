@@ -1,22 +1,13 @@
 s_linkInternalFilters="javascript:,nbcvoicelive.com,latenightwithjimmyfallon.com,nbc.com,9thwonders.com,startomorrow.com,studio60theseries.com,fridaynightlightstheseries.com,itsyourshowtv.com,jaylenosgarage.com,my.nbc.com";
 
-
-//var s_account="nbcudev";
 var s_account="nbcuglobal,nbcunetworkbu"; 
 var s_prop8 ="TV Entertainment";
 var s_prop9 ="NBC Network";
-//var s_prop10="Global";
-
 var __domain = document.domain;
 
-if (document.domain.substring(0, 3) == "dev") {
-	__domain = "dev.nbc.com"
-	s_account = "nbcudev2";
-} else if (document.domain.substring(0, 5) == "stage") {
-	__domain = "stage.nbc.com"
+if (__domain.substring(0, 3) == "dev" || __domain.substring(0, 5) == "stage") {
 	s_account = "nbcudev2";
 } else {
-	__domain = "www.nbc.com";
 	_qacct="p-9eJ8k4iSzux46";
 }
 
@@ -50,8 +41,10 @@ try {
 
 document.write('<s'+'cript src="/assets/core/js/s_code.js"></s'+'cript>');
 
+/*
 if (window.location.protocol == 'https:') {
 	document.write('<s'+'cript src="https://www.nbcudigitaladops.com/hosted/global_header.js"></s'+'cript>');		
 } else {
 	document.write('<s'+'cript src="http://www.nbcudigitaladops.com/hosted/global_header.js"></s'+'cript>');		
 }
+*/

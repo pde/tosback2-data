@@ -1,0 +1,104 @@
+
+
+		var masterSwitchData = 
+		
+
+
+
+		
+	
+
+
+
+				
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	    
+		
+	
+
+
+
+
+
+
+
+
+
+
+ {
+	"refreshRate":"120000",
+	
+	"showProgress":"preShow",
+	"pageTitle":"FROM THE ORANGE CARPET",
+	
+    	"countDownClock":"on",
+    	
+    	"livePoll": {
+    		"enabled":"off",
+	    	"phase":"3",
+	    	"collection":"live-vote-1"
+    	},
+    	"news":"twitter",
+	
+	"categoryVoting":"vote",
+	
+    	"fcdm":"off",
+    	
+		"showBackground":""
+}
+
+
+
+		var overlayConfig = {};
+
+		if (typeof masterSwitchData.livePoll !== 'undefined' && masterSwitchData.livePoll.enabled == 'on') {
+
+			if ((KIDS.get('uri') == '' || KIDS.get('uri') == '/') && KIDS.utils.isIpad() === false) {
+				overlayConfig.enabled = false;
+			} else {
+				overlayConfig.enabled = true;
+				overlayConfig.cookieID = "NICKKCAOverlayLiveVote";
+				overlayConfig.deferCookie = true;
+				overlayConfig.cookieValue = masterSwitchData.livePoll.collection;
+				overlayConfig.path = "/nick-assets/kca-2013/vote/" + masterSwitchData.livePoll.collection + "/";
+			}
+
+		} else {
+
+		
+
+		}
+
+		$(document).ready(function (){
+			if (overlayConfig.enabled === true) {
+				NICK.roadblock.create(overlayConfig);
+			}
+		});
+
+ 

@@ -76,10 +76,16 @@
 						obj.$lightBoxContent.find('.close').hide();
 					}else{
 						obj.$lightBoxContent.find('.close').click(function(){
+							 if(obj.callBacks['exit']){
+								   obj.callBacks['exit'].call(obj,this.sourceElement);
+							   }
 							obj.closeOverlay();
 						});
 						
 						obj.$backDropContent.click(function(){
+							 if(obj.callBacks['exit']){
+								   obj.callBacks['exit'].call(obj,this.sourceElement);
+							   }
 							obj.closeOverlay();
 						});
 					}

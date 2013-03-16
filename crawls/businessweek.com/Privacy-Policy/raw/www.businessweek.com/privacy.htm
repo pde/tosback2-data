@@ -12,11 +12,6 @@
 
 <meta content="L7zxW9ChzqzPwbLIMzRbGzhn-Mly9AIDiF64J6DgQl0" name="google-site-verification"></meta>
 <meta content="dEHOKZR1s6GmOfGrPHHJFrXJwDoZXW6BjpnhmxPzRCE" name="google-site-verification"></meta>
-<meta content="L7zxW9ChzqzPwbLIMzRbGzhn-Mly9AIDiF64J6DgQl0" name="google-site-verification"></meta>
-<meta content="dEHOKZR1s6GmOfGrPHHJFrXJwDoZXW6BjpnhmxPzRCE" name="google-site-verification"></meta>
-<meta content="L7zxW9ChzqzPwbLIMzRbGzhn-Mly9AIDiF64J6DgQl0" name="google-site-verification"></meta>
-<meta content="dEHOKZR1s6GmOfGrPHHJFrXJwDoZXW6BjpnhmxPzRCE" name="google-site-verification"></meta>
-<meta content="nm_Na3kYYwG-eQKKUQs9A07nqn-GlhmC2qMzvutTDRA" name="google-site-verification"></meta>
 <script>
   //<![CDATA[
     var AVAILABLE_BUCKETS = [{"active":true,"created_at":"2013-02-27T17:42:47-05:00","end_date":"2013-03-27T17:42:00-04:00","id":12,"name":"toaster_ad","percentage_of_users":4,"updated_at":"2013-02-27T17:42:47-05:00","bucket_groups":[{"bucket_id":12,"created_at":"2013-02-27T17:42:47-05:00","custom_css":"","custom_js":"(function(){\r\n  TOASTER_AD_CONTROL = true;\r\n})();\r\n","id":22,"is_control":null,"name":"Control","percentage_of_users":null,"tracking":null,"updated_at":"2013-02-27T17:42:47-05:00"},{"bucket_id":12,"created_at":"2013-02-27T17:42:47-05:00","custom_css":"","custom_js":"(function(){\r\n  TOASTER_AD_EXPERIMENT = true;\r\n})();\r\n","id":24,"is_control":null,"name":"Experiment","percentage_of_users":null,"tracking":null,"updated_at":"2013-02-27T17:42:47-05:00"}]}]
@@ -141,7 +136,7 @@
     }
   /*]]>*/
 </style>
-<link href="../static.btrd.net/assets/application-e396c8c6377f02320eb756ee7d3691b9.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="../static.btrd.net/assets/application-5922b09147d1f481c9e320e0bb5701b2.css" media="screen" rel="stylesheet" type="text/css" />
 
 
 
@@ -278,7 +273,7 @@ Sign in with Facebook
 </span>
 <span class='login'>Or use your Businessweek account</span>
 <div class='login_form'>
-<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="WPBphUZ/mFaYMn0qdFrMf/1yOWfYd140P5ZfWccancM=" /></div>
+<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="KTdGRub+k8KYGhc1o6OKvtUuV88hgX9ce6HDhNJRkzs=" /></div>
 <label class="for_email" for="user_form_email">Email</label>
 <input class="" id="user_form_email" name="user_form[email]" size="30" type="text" />
 <label class="password" for="user_form_password">Password</label>
@@ -509,10 +504,10 @@ Don't have an account?
 <div class='current_issue module clearfix'>
 <h3>Get Businessweek Delivered</h3>
 <a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08" id='cover_image_thumbnail'>
-<img alt="May the Mouse Be With You" height="155" src="../images.bwbx.io/cms/2013-03-07/1311cov_110x155.jpg" width="110" />
+<img alt="Who&#x27;s Afraid of the NRA?" height="155" src="../images.bwbx.io/cms/2013-03-14/1312cov_110x155.jpg" width="110" />
 </a>
 <h6>
-<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">May the Mouse Be With You</a>
+<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Who's Afraid of the NRA?</a>
 </h6>
 <a class='subscribe_button' href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Subscribe</a>
 </div>
@@ -658,7 +653,9 @@ Don't have an account?
       e.preventDefault();
       FB.login(function(response) {
         FB.api('/me', function(response) {
-          link_account(response);
+          if(response && response.status == 'connected' ){
+            link_account(response);
+          }
         });
        }, {scope: 'email'});
     });
@@ -727,7 +724,7 @@ Don't have an account?
           });
         },
         error: function(response){
-          $('.errors').append(response.responseText);
+          $('.errors').append(JSON.parse(response.responseText)["message"]);
         }
       });
     }
@@ -816,7 +813,7 @@ Don't have an account?
 
 
 
-<!-- Last Update: 2013-03-13 08:18:03 -0400 -->
+<!-- Last Update: 2013-03-16 08:18:07 -0400 -->
 
 <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
 NREUMQ.push(["load",new Date().getTime()]);
@@ -829,5 +826,5 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848","138689","c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,55,new Date().getTime(),"","","","",""]);</script></body>
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848","138689","c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,46,new Date().getTime(),"","","","",""]);</script></body>
 </html>

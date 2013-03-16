@@ -174,8 +174,8 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 				if(jCurrentForm.find('.formConfirmation').length>0){ // display form confirmation modal if it exists
 					jCurrentForm.find('.formConfirmation').modal({
 						onShow:function(dialog){
-							dialog.container.width(450);
-							dialog.container.height(350);
+							dialog.container.width(600);
+							dialog.container.height(450);
 							$(window).trigger('resize.simplemodal'); // required for ie6 to resize modal
 						}
 					});
@@ -185,15 +185,16 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 				else if(jCurrentForm.next('#formConfirmation').length>0){ // display form confirmation modal if it exists
 					jCurrentForm.next('#formConfirmation').modal({
 						onShow:function(dialog){
-							dialog.container.width(450);
-							dialog.container.height(350);
+							dialog.container.width(600);
+							dialog.container.height(450);
 							$(window).trigger('resize.simplemodal'); // required for ie6 to resize modal
 						}
 					});
 				}
 				// legacy forms end
-				
-				$(':input',jCurrentForm).not(':button, :submit, :reset, :hidden, :radio').val('').removeAttr('checked').removeAttr('selected');
+				 
+				$(':input',jCurrentForm).not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('').removeAttr('selected');
+				$('input:checkbox').removeAttr('checked');
 				jCurrentForm.find(".loadingwheel").hide();
 				jCurrentForm.find(".submitButton").show();
 			  },
@@ -587,7 +588,7 @@ function displayFormSummary(jCurrentForm){
 
 	formSummaryContainer.modal({
 		onShow:function(dialog){
-			dialog.container.width(450);
+			dialog.container.width(600);
 			$(window).trigger('resize.simplemodal'); // required for ie6 to resize modal
 		},
 		onClose:function(){

@@ -18,8 +18,8 @@ var HL = (function () {
   var Resources,
       config = {
         useHttps : false,
-        srcPathHL : '/js/HL/modules/{file}.v1.20130312110652.js',
-        srcPathPartner : '/partner/{partner}/js/modules/{file}.v1.20130312110652.js'
+        srcPathHL : '/js/HL/modules/{file}.v1.20130228110439.js',
+        srcPathPartner : '/partner/{partner}/js/modules/{file}.v1.20130228110439.js'
       },
       windowLoaded = false,
       domLoaded = false;

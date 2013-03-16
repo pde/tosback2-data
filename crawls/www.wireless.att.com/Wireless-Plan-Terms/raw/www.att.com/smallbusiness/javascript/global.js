@@ -678,20 +678,20 @@ $(document).ready(function() {
 	    });
     }init_enableGoButton();
     
+    var overlayExitReport = false;
     var locationOverlayHandlers = {
+    		
+    		
             beforeOpen : function(e){
+            	overlayExitReport = false;
             	if($("#wtZipCode").val() == ""){
-            		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg", 
-            									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_ChangeAddress",
-            									WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalAddressNotFound_Body");*/
-            		
-            		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown Pg");
+					WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            		WebMetrics.overlayPageDispatch(WebMetrics.getPageName() + " Overlay Address Modal Information Address Unknown");
             	}else{
-            		/*WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg", 
-							WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Go",
-							WebMetrics.getMetaTagValue('DCSext.wtPN') + "_OverlayAddressModalInformationKnownPg_Body");*/
-            		WebMetrics.overlayLoadPage(WebMetrics.getPageName() + " Overlay Address Modal Information Address Known Pg");
+            		WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            		WebMetrics.overlayPageDispatch(WebMetrics.getPageName() + " Overlay Address Modal Information Known");
             	}
+            	
                 if($('#isCartEmpty').val() == 'false'){
                     $('#addressOptions').hide();
                     $('#errorContainer').hide();
@@ -723,6 +723,44 @@ $(document).ready(function() {
                     $('#showphoneNumber').hide();
                     $('#evaluateForBTNNumber').val("true");
                 }
+            },
+            
+            exit : function(e){
+            	
+            	if(!overlayExitReport){
+            		overlayExitReport = true;
+            		var pageName = WebMetrics.getMetaTagValue('DCSext.wtPN');
+            		var onTelephoneEntryPage = ($('#showphoneNumber').is(":visible"))?true:false;
+            		var addressNotFound = ($('#errorContainer').is(":visible"))?true:false;
+            		var singleCorrecteAddress = false;
+            		var multiAddressRetured = false;
+            		var rangeAddressRetured = false;
+            		
+            		var addressOptions = ($('#addressOptions').is(":visible"))?true:false;
+            		if($('#addressReturnBtn').hasClass('singleReturnAddress')){
+            			singleCorrecteAddress = true;
+            		}else if($('#addressReturnBtn').hasClass('rangedAddressReturn')){
+            			rangeAddressRetured = true;
+            		}else if($('#addressReturnBtn').hasClass('multipleAddressReturn')){
+            			multiAddressRetured = true;
+            		}
+            		
+            		if(addressOptions && rangeAddressRetured){
+            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalAddressMultipleAddressRangesReturned_Exit");
+            		}else if(addressOptions && multiAddressRetured){
+            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalAddressMultipleAddressesReturned_Exit");
+            		}else if(addressOptions && singleCorrecteAddress){
+            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalSingleCorrectedAddressReturned_Exit");
+            		}else if(addressNotFound){
+            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModalAddressNotFound_Exit");
+            		}else if(onTelephoneEntryPage){
+            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModalBusinessTelephoneNumberEntry_Exit");
+            		}else{
+            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModal_Exit");
+            		}
+            		
+            		
+            	}
             }
     }
     /*function to attach loaction overlay to "set loaction" */

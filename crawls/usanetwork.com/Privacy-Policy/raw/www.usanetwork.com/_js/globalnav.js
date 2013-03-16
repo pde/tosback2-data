@@ -456,7 +456,7 @@ var usa_globalMenu = {
 						/* Featured Slot 3 */
 						{
 							"title" : "The Moment",
-							"url" : usa_baseUrlDomain + "/series/themoment/screeningroom.html",
+							"url" : usa_baseUrlDomain + "/series/themoment/index.html",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_themoment.png",
 							"tuneIn" : "PREMIERES APRIL 11 10/9C"
 						},

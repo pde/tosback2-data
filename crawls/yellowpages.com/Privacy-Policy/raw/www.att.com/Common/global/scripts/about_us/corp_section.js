@@ -11,13 +11,13 @@ jQuery(document).ready(function() {
 if (document.domain == 'bargaining.att.com' ) {
 		if (window.location.href.indexOf("corewireline") != -1) {
 			//alert('test');
-			jQuery('<div style="border:0px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:0px 30px 0px 0px;"><p style="font-size:14px;color:#000;"><em></p><p style="font-size:14px;color:#000;margin-bottom:0;"></em></p><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights West\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_west.pdf" title="Click here to view the West Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/westtah.jpg" title="Read the West Tentative Agreement Highlights" alt="Read the West Tentative Agreement Highlights" /></div>').insertAfter('#logoHeaderBA');
+			jQuery('<div style="border:0px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:0px 30px 0px 0px;"><p style="font-size:14px;color:#000;"><em></p><p style="font-size:14px;color:#000;margin-bottom:0;"></em></p><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights West\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_west.pdf" title="Click here to view the West Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/westtah.jpg" title="Read the West Tentative Agreement Highlights" alt="Read the West Tentative Agreement Highlights" /></a></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilitybenefits") != -1){
 			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On September 13, AT&amp;T announced that AT&amp;T Mobility reached a tentative agreement with the Communications Workers of America in benefits negotiations covering all CWA bargained-for Mobility employees nationwide &ndash; more than 40,000 employees.</p><p style="font-size:14px;color:#000;">The tentative agreement is focused on benefits, including health care. Wages, pension and work rules for bargained-for Mobility employees are negotiated under separate contracts.</p><p style="font-size:14px;color:#000;">This website is designed to provide additional information to employees about the tentative agreement.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilityorange") != -1){
-			jQuery('<div style="border:1px solid #eaeaea;margin:40px 0 40px 20px"><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights Orange\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_orange.pdf" title="Click here to view the Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/orangeha.jpg" title="Read the Tentative Agreement Highlights" alt="Read the Tentative Agreement Highlights" /></div>').insertAfter('#logoHeaderBA');
+			jQuery('<div style="border:1px solid #eaeaea;margin:40px 0 40px 20px"><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights Orange\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_orange.pdf" title="Click here to view the Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/orangeha.jpg" title="Read the Tentative Agreement Highlights" alt="Read the Tentative Agreement Highlights" /></a></div>').insertAfter('#logoHeaderBA');
 		}
 		else {
 		//no message;
@@ -25,14 +25,13 @@ if (document.domain == 'bargaining.att.com' ) {
 }
 else if (document.domain == 'preview.att.net' ) {
 		if (window.location.href.indexOf("corewireline") != -1) {
-			//alert('test');
 			jQuery('<div><p><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights West\']);" target="_blank" title="Tentative Agreement Highlights West" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_west.pdf"><img src="http://www.att.com/Common/about_us/images/core_bargaining/westtah.jpg" alt="Download West Tentative Agreement Highlights"></a></p></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilitybenefits") != -1){
 			jQuery('<div style="border:1px solid #eaeaea;background:#f5f5f5;margin:0 20px 40px 20px;padding:15px 30px 15px 15px;"><p style="font-size:14px;color:#000;">On September 13, AT&amp;T announced that AT&amp;T Mobility reached a tentative agreement with the Communications Workers of America in benefits negotiations covering all CWA bargained-for Mobility employees nationwide &ndash; more than 40,000 employees.</p><p style="font-size:14px;color:#000;">The tentative agreement is focused on benefits, including health care. Wages, pension and work rules for bargained-for Mobility employees are negotiated under separate contracts.</p><p style="font-size:14px;color:#000;">This website is designed to provide additional information to employees about the tentative agreement.</p></div>').insertAfter('#logoHeaderBA');
 		}
 		else if (window.location.href.indexOf("mobilityorange") != -1){
-			jQuery('<div style="border:1px solid #eaeaea;margin:40px 0 40px 20px"><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights Orange\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_orange.pdf" title="Click here to view the Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/orangeha.jpg" title="Read the Tentative Agreement Highlights" alt="Read the Tentative Agreement Highlights" /></div>').insertAfter('#logoHeaderBA');
+			jQuery('<div style="border:1px solid #eaeaea;margin:40px 0 40px 20px"><a onclick="_gaq.push([\'_trackEvent\', \'PDF\', \'Download\', \'Highlights Orange\']);" target="_blank" href="http://www.att.com/Common/about_us/files/pdf/bargain/highlights_orange.pdf" title="Click here to view the Highlights Document"><img src="http://www.att.com/Common/about_us/images/core_bargaining/orangeha.jpg" title="Read the Tentative Agreement Highlights" alt="Read the Tentative Agreement Highlights" /></a></div>').insertAfter('#logoHeaderBA');
 		}
 		else {
 		//no message;

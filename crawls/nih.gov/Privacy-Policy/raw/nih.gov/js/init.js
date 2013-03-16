@@ -47,40 +47,19 @@ function zebraStripeTable() {
 	}
 }
 
-// HIGHLIGHT LINK TO CURRENT PAGE (REPLACES <A> WITH <SPAN> SO THAT PAGE DOESN'T LINK TO ITSELF)
-/*
-CLCP v2.1 Clear Links to Current Page
-Jonathan Snook
-This code is offered unto the public domain
-http://www.snook.ca/jonathan/
-*/
-
-function clearCurrentLink(){
+// REMOVE HREF ATTRIBUTE FROM <A> AND ADD "DISABLEDLINK" CLASS FOR LINKS TO CURRENT PAGE
+function removeCurrentPageLinks(){
 	if (!document.getElementsByTagName) return false;
     var a = document.getElementById("content").getElementsByTagName("A");
     for(var i=0; i< a.length; i++) {
-    	if (!a[i].getAttribute("class")) { // Modified by RJB to look for elements without class attribute - we don't want to modify links that display an icon with the class attribute. 
-        	if(a[i].href == window.location.href.split("#")[0])
-				removeNode(a[i]);
+		if(a[i].href == window.location.href.split("#")[0]) {
+			a[i].removeAttribute("href");
+			$(a[i]).addClass("disabledlink"); // jQuery method
         }
     }
-}
-
-function removeNode(n){
-	if (!document.getElementsByTagName) return false;
-    if(n.hasChildNodes())
-	// gets the text from the link and moves it to the previous node.
-        for(var i=0; i<n.childNodes.length; i++) {
-            	var span = document.createElement('span');
-		var label = n.childNodes[i].cloneNode(true);
-		span.appendChild(label);
-		n.parentNode.appendChild(span);
-	}
-		n.parentNode.removeChild(n);
-
 }
 
 // LOAD THE FUNCTIONS
 addLoadEvent(createTitleTags);
 addLoadEvent(zebraStripeTable);
-addLoadEvent(clearCurrentLink);
+addLoadEvent(removeCurrentPageLinks);

@@ -1465,3 +1465,71 @@ NICK.polls.addListener=function(a,b,c){if(NICK.polls.resultsListeners==null){NIC
 NICK.polls.removeListener=function(a){if(NICK.polls.resultsListeners==null){return
 }NICK.polls.resultsListeners[a]=null
 };
+if(typeof NICK=="undefined"||!NICK){var NICK={}
+}if(typeof NICK.namespace=="undefined"){NICK.roadblock={}
+}else{NICK.namespace("roadblock",NICK)
+}NICK.roadblock.OVERLAY_ID="RoadBlockModal";
+NICK.roadblock.FRAME_ID="RoadBlockFrame";
+NICK.roadblock.create=function(c){var h,a,d,e,g,f;
+f={cookieID:"NICKRoadBlock",cookieValue:"NICKRoadBlockSet",width:700,height:500,includes:[],excludes:[],deferCookie:false};
+c=$.extend({},f,c);
+g=KIDS.get("adfree")=="true"||KIDS.get("adfree")===true;
+a=false;
+e=KIDS.get("uri").length===0?"/":KIDS.get("uri");
+if(c.includes.length>0){for(d=0;
+d<c.includes.length;
+d++){if(!!e.match(c.includes[d])===true){a=true;
+break
+}}}else{a=true
+}if(c.excludes.length>0){for(d=0;
+d<c.excludes.length;
+d++){if(!!e.match(c.excludes[d])===true){a=false;
+break
+}}}if(a===true&&g===false){h=NICK.utils.getCookie(c.cookieID);
+if(h!==c.cookieValue){if(c.deferCookie===false){var b=new Date();
+b.setTime(b.getTime()+(24*60*60*1000));
+NICK.utils.setCookie2(c.cookieID,c.cookieValue,b)
+}NICK.utils.hideSwfs();
+NICK.roadblock.createFrame(c.path,c.width,c.height)
+}}};
+NICK.roadblock.createFrame=function(c,b,a){var d=document.createElement("iframe");
+d.id=NICK.roadblock.FRAME_ID;
+d.style.position="fixed";
+d.style.backgroundColor="transparent";
+d.style.border="none";
+d.style.width=b+"px";
+d.style.height=a+"px";
+d.style.top="50%";
+d.style.left="50%";
+d.style.zIndex=2147483645;
+d.style.marginLeft="-"+Math.floor(b/2)+"px";
+d.style.marginTop="-"+Math.floor(a/2)+"px";
+d.allowTransparency="true";
+d.frameBorder=0;
+d.scrolling="no";
+d.src=c;
+d.style.display="none";
+$(d).bind("load",d,NICK.roadblock.displayFrame);
+document.body.appendChild(d)
+};
+NICK.roadblock.displayFrame=function(a){NICK.roadblock.createModal();
+a.data.style.display="block"
+};
+NICK.roadblock.createModal=function(){var a=document.createElement("div");
+a.id=NICK.roadblock.OVERLAY_ID;
+a.style.position="absolute";
+a.style.top=0;
+a.style.left=0;
+a.style.width="100%";
+a.style.height=(Math.max(document.documentElement.clientHeight,document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight,document.documentElement.offsetHeight))+"px";
+a.style.backgroundColor="#fff";
+a.style.zIndex=2147483644;
+a.style.opacity=0.8;
+a.style.filter="alpha(opacity=80);";
+a.onclick=NICK.roadblock.remove;
+document.body.appendChild(a)
+};
+NICK.roadblock.remove=function(){document.body.removeChild(document.getElementById(NICK.roadblock.OVERLAY_ID));
+document.body.removeChild(document.getElementById(NICK.roadblock.FRAME_ID));
+NICK.utils.showSwfs()
+};

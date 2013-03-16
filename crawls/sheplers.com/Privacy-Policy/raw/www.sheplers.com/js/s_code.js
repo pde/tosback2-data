@@ -109,7 +109,7 @@ function s_doPlugins(s)
 	s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
 
 	// Silverpop Integration
-	s.eVar18=s.getQueryParam('sp_rid');
+	s.tempVar18=s.getQueryParam('sp_rid');
 	s.eVar19=s.getQueryParam('sp_mid');
 
 	// Automate Internal Campaign Code Extraction based on icid parameter*/
@@ -338,6 +338,7 @@ function s_doPlugins(s)
 
 	//Lowercase all variables
 	s.manageVars('lowercaseVars');
+	s.eVar18=s.tempVar18;
 
 	//Setup Clickmap Object IDs
 	s.setupDynamicObjectIDs();

@@ -18,7 +18,7 @@ $(document).ready(function(){
  * 
  * @author rray
  */
-/* $Id: videobelt.js 4074 2012-07-18 18:23:57Z agersho $ */
+/* $Id$ */
 
 $(document).ready(function(){
 	var volVideoSlide = new Object();
@@ -222,7 +222,7 @@ $(document).ready(function(){
 	});
 	
 });
-/* $Id: versiona.js 3823 2012-07-03 18:18:05Z rray $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	// Tab Control
@@ -240,6 +240,9 @@ $(document).ready(function() {
 		var target = $(this).attr('target');
 		$('.'+target).siblings().removeClass('active');
 		$('.'+target).addClass('active');
+		
+		//Fix product tile heights in column controls within a tab
+		fixProductTileHeights();
 	});
 });
 /* $Id: versiona.js 3823 2012-07-03 18:18:05Z rray $ */
@@ -428,6 +431,11 @@ function resetMap() {
 		var newLoc = oldLoc.substring(0, indexOfHash);
 		window.location.href = newLoc;
 	}
+	var indexOfQmark = oldLoc.indexOf('?');
+	if (indexOfQmark > 0) {
+		var newLoc = oldLoc.substring(0, indexOfQmark);
+		window.location.href = newLoc;
+	}
 }
 function switchMaps(isStatic, fromWhere) {
 	debugAlert('enter func switchMaps(): ' + fromWhere);
@@ -450,6 +458,11 @@ function switchMaps(isStatic, fromWhere) {
 						var newLoc = oldLoc.substring(0, indexOfHash);
 						window.location.href = newLoc;
 					}
+					var indexOfQmark = oldLoc.indexOf('?');
+                	if (indexOfQmark > 0) {
+                		var newLoc = oldLoc.substring(0, indexOfQmark);
+                		window.location.href = newLoc;
+                	}
 				}
 			}
 		}
@@ -460,6 +473,11 @@ function switchMaps(isStatic, fromWhere) {
 				var newLoc = oldLoc.substring(0, indexOfHash);
 				window.location.href = newLoc;
 			}
+			var indexOfQmark = oldLoc.indexOf('?');
+            if (indexOfQmark > 0) {
+                var newLoc = oldLoc.substring(0, indexOfQmark);
+                window.location.href = newLoc;
+            }
 		}
 	}
 }
@@ -647,7 +665,7 @@ function getDirections(storeName, storeNumber) {
 	debugAlert('enter func getDirections: ' +storeName);
 	var storeInfo = getStoreInfo(storeNumber);
 	
-	var storeDetails = "<span class=\"p2\">" + storeInfo[0] + " REI Store</span>" + "<br/>" + storeInfo[4] + "<br/>" +
+	var storeDetails = "<span class=\"p2\">" + storeInfo[0] + "</span>" + "<br/>" + storeInfo[4] + "<br/>" +
 	storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7] + "<br/>" + storeInfo[9];
 	curStoreAddress = storeInfo[4] + " " + storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7];
 	curStorePoint = new google.maps.LatLng(storeInfo[2], storeInfo[3]);
@@ -660,7 +678,7 @@ function getDirections(storeName, storeNumber) {
 	$('.storeLng', '.frmDirections').val(storeInfo[3]);	
 	
 	document.getElementById('storePage').href = storeInfo[8];
-	$('.hdrBar', '.leftSideBar').html(storeName + ' REI Store');
+	$('.hdrBar', '.leftSideBar').html(storeName);
 	
 	$('.userTravelModeMsg').html('Get Directions:');
 	$('.findDiv').hide();
@@ -931,7 +949,7 @@ BEGIN: these funcs are used to update the leftSideBar Store Listing as the map i
 		var storeLink = document.createElement('a');
 			storeLink.href = storeInfo[8];
 			storeLink.className = 'storeLink';
-			storeLink.innerHTML = storeInfo[0].toString() + ' REI Store';
+			storeLink.innerHTML = storeInfo[0].toString();
 		
 		var storeAddress = document.createElement('div');
 			storeAddress.innerHTML = storeInfo[4] + '<br/>' + storeInfo[5] + ', ' + storeInfo[6] + ' ' + storeInfo[7];
@@ -1258,7 +1276,7 @@ $(document).ready(function () {
 								position: latlng,
 								map: map,
 								icon: newIcon.icon,
-								title: arrStore[0] + ' REI Store',
+								title: arrStore[0],
 								visible: showMarkers
 							});
 							
@@ -1289,11 +1307,20 @@ $(document).ready(function () {
 							arrMarkers[xx] = marker;
 							//-- now add storeArr to array
 							arrStoreInfo[xx] = arrStore;														
-								
+							arrStoreInfo['s' + arrStore[14]] =  arrStore;
+							var storeId = getSLQueryString()['storeId'];
+							if(storeId == arrStore[14]){
+								try{
+									geoCodeAddress(arrStore[1], true,13,false)
+								}
+								catch(err){									
+								}
+							}
+							
 							var contentString = '<div class="infoWrapper">' + 
 								'<div class="infoContent">' + 
 								'<div class="infoDiv"><strong>' +
-								'<a href="' + arrStore[8] + '">' + arrStore[0] + ' REI Store</a>' + '</strong> <br/>' +
+								'<a href="' + arrStore[8] + '">' + arrStore[0] + '</a>' + '</strong> <br/>' +
 								arrStore[4] + '<br/>' + arrStore[5] + ', ' + arrStore[6] + ' ' + arrStore[7] + '<br/>' + arrStore[9] +
 								'<br/><a href="#mapTop" onClick="getDirections(\'' + arrStore[0] + '\', \'' + arrStore[14] + '\');">Get Directions</a><br/><br/>' +
 								'<a href="/stores/' + arrStore[14] + '">More About this REI Store</a><br/><br/></div>' +
@@ -1310,6 +1337,8 @@ $(document).ready(function () {
 								});
 								infowindow.open(map, marker);
 							});
+							
+							
 						});
 						//end find	
 						
@@ -1363,7 +1392,7 @@ $(document).ready(function () {
 					}*/
 					
 					
-					
+
 				} else {
 					var errMsg = "Geocode was not successful for the following reason: " + status;
 					window.location.href = '/content/rei/en_us/site/store-locator.html';
@@ -1373,6 +1402,7 @@ $(document).ready(function () {
 			alert('GeoCoder service not available at this time. \n Please. refresh your browser and try again.');
 		}
 		
+
 	}
 	//end init
 	
@@ -1387,7 +1417,11 @@ function getReqParam(name){
 }
 
 
-
+function geoCodeStoreNumber(storeNumber){
+	$.get("/cemservices/stores.xml", {}, function(reiStores){
+		
+	});
+}
 
 /*------------------------------------------------------------------------------------------
 this function maps an address from param:theAddress
@@ -1432,6 +1466,17 @@ function geoCodeAddress(theAddress, centerMap, zoomLevel, userSearch) {
 }
 
 
+function getSLQueryString() {
+	  var result = {}, queryString = location.search.substring(1),
+	      re = /([^&=]+)=([^&]*)/g, m;
+
+	  while (m = re.exec(queryString)) {
+	    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+	  }
+
+	  return result;
+}
+
 $(window).load(function () {
 	if(!$("#storeLocatorMap").is('*')){
 		return;
@@ -1452,6 +1497,8 @@ $(window).load(function () {
 			}
 		}, 500);
 	}
+	
+	
 });
 /* $Id: ticker.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
@@ -1639,9 +1686,9 @@ $.userprofile.paginateNewestGrid = function( pageSize ) {
     } );
 }
 /* $Id: sharethis.js 1918 2012-03-30 17:55:27Z jowilso $ */
-/* $Id: rssfeed.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 /* $Id: questionsummary.js 1918 2012-03-30 17:55:27Z jowilso $ */
-/* $Id: questionprompt.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	
@@ -1657,7 +1704,7 @@ $(document).ready(function() {
 	});
 	
 });
-/* $Id: questionform.js 4805 2012-08-17 17:37:05Z sfleshe $ */
+/* $Id$ */
 
 /**
  * @(#)questionform.js
@@ -1749,7 +1796,7 @@ $(document).ready(function() {
 	});
 	
 });
-/* $Id: postedquestion.js 4805 2012-08-17 17:37:05Z sfleshe $ */
+/* $Id$ */
 
 /**
  * @(#)postedquestion.js
@@ -1832,7 +1879,7 @@ $(document).ready(function() {
 //	});
 	
 });
-/* $Id: listing.js 3823 2012-07-03 18:18:05Z rray $ */
+/* $Id$ */
 $(document).ready(function() {
 	// Tab Control
 	$('.listing .tabs li').click(function() {
@@ -1936,8 +1983,8 @@ $( document ).ready( function() {
         } );
     } );
 } );
-/* $Id: featuredqa.js 1918 2012-03-30 17:55:27Z jowilso $ */
-/* $Id: categoryaccordion.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
+/* $Id$ */
 
 // Yes, that's right, this file does nothing and can safely be removed. 
 // It's init() function was conflicting with helpShared.js.
@@ -2005,7 +2052,7 @@ $(document).ready(function() {
 	
 });
 /* $Id: answerform.js 2270 2012-04-12 19:27:33Z rray $ */
-/* $Id: answerdetail.js 3823 2012-07-03 18:18:05Z rray $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	// Tab Control
@@ -2093,9 +2140,9 @@ $(document).ready(function() {
 $(document).ready(function() {
 	if (document.getElementById("photoMap")) {
 		var lat = $("#photolocation-latitude").attr('value');
-		var long = $("#photolocation-longitude").attr('value');
+		var lng = $("#photolocation-longitude").attr('value');
 		var myOptions = {
-		  center: new google.maps.LatLng(lat, long),
+		  center: new google.maps.LatLng(lat, lng),
 		  zoom: 8,
 		  mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
@@ -2128,7 +2175,7 @@ $(document).ready(function() {
 		$('.'+target).addClass('active');
 	});
 });
-/* $Id: login.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 /**
  * @(#)flag.js
  *
@@ -2180,8 +2227,8 @@ $( document ).ready( function () {
     } );
 
 } );
-/* $Id: roll.js 1918 2012-03-30 17:55:27Z jowilso $ */
-/* $Id: postlist.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
+/* $Id$ */
 
 function blogSearchTrackPageClick(blogPageNumber) {
 
@@ -2194,7 +2241,7 @@ CQ_Analytics.record({event: 'blogPageClicked',
     });
     return false;
 }
-/* $Id: ratings.js 4279 2012-07-30 22:06:15Z sfleshe $ */
+/* $Id$ */
 
 function reiRatingProcessResults( data, isLoggedIn ) {
     try {
@@ -2289,7 +2336,7 @@ $( document ).ready( function() {
 
 } );
 
-/* $Id: featuredpost.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 $( document ).ready( function() {
 
     if ( /commentSortOrder=oldest/.exec( location.href ) ) {
@@ -2316,7 +2363,7 @@ $( document ).ready( function() {
  $('#commentSortOrder').change(function(e) {
 	if ($('#commentSortOrder').val() == 'newest') {
 		
-		var href2 = location.href.replace(/\?commentSortOrder=.*\&/, '');
+		var href2 = location.href.replace(/commentSortOrder=.*\&/, '');
 		if (/&/.exec(href2))
 			href2= href2.replace(/\&/, '?');
 		
@@ -2465,7 +2512,7 @@ $( document ).ready( function() {
 
     window.resizeTo( width, height );
 } );
-/* $Id: videottt.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	$('.videos').fancybox({
@@ -2478,8 +2525,8 @@ $(document).ready(function() {
 	'type': 'iframe'
 	});
 });
-$( document ).ready( function() {
-    jQuery( '.reiDifference-popupLauncher' ).fancybox( {
+$(document).ready(function() {
+    $('.reiDifference-popupLauncher').fancybox( {
         'height': 615,
         'padding': 10,
         'width': 690,
@@ -2488,7 +2535,7 @@ $( document ).ready( function() {
         'titleShow': false,
         'type': 'iframe'
     } );
-} );
+});
 
 /* $Id:  $ */
 /* $Id: popupgameteaser.js 1958 2012-04-02 21:29:19Z rray $ */
@@ -2567,58 +2614,15 @@ $(document).ready(function(){
 		'type': 'iframe'
 	});
 });
-/* $Id: ticker.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	$('.tickerContainer').each(function() {
 		$(this).ticker();
 	});
 });
-$( function() {
-
-    // Set up click event on "go" button.
-    $( "#storeDropdown-button" ).click( function( e ) {
-
-        e.preventDefault();
-
-        var form = $( "#selectMenu" );
-        if ( form == null ) return;
-
-        var url = $( form ).val();
-        if ( url != null && url != "" ) window.location = url;
-
-        return false;
-    } );
-
-    if (
-        typeof STORE_DATA_XML_FEED == 'undefined' ||
-        STORE_DATA_XML_FEED == null ||
-        STORE_DATA_XML_FEED == "" ) return;
-
-    $.get( STORE_DATA_XML_FEED, {}, function( reiStores ) {
-
-        var stores = [];
-
-        // Locate all 'item' elements and collect store data
-        $( reiStores ).find( 'item' ).each( function() {
-            stores.push( {
-                link:  $( this ).find( 'link'  ).text(),
-                state: $( this ).find( 'state' ).text(),
-                title: $( this ).find( 'title' ).text()
-            } )
-        } );
-
-        // Build an <option> element for every store
-        $( stores ).each( function() {
-            var link  = this.link;
-            var text = this.state + " - " + this.title;
-            var option = "<option value=" + link + ">" + text + "</option>";
-            $( "#selectMenu" ).append( option );
-        } );
-    } );
-} );
 $( document ).ready( function() {
-    jQuery( '.reiDifference-popupLauncher' ).fancybox( {
+    $( '.reiDifference-popupLauncher' ).fancybox( {
         'height': 615,
         'padding': 10,
         'width': 690,
@@ -2713,7 +2717,7 @@ rei.hover = {
  * 
  * @author rray
  */
-/* $Id: basicmarquee.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 
 $(document).ready(function() {
 	$('.marqueeImage').each(function(index) {
@@ -2742,7 +2746,7 @@ $(document).ready(function() {
  * 
  * @author rray
  */
-/* $Id: accordion.js 1918 2012-03-30 17:55:27Z jowilso $ */
+/* $Id$ */
 
 $(document).ready(function(){
 	helpAccordion.init();
@@ -3013,7 +3017,6 @@ $(document).ready(function() {
 	'type': 'iframe'
 	});
 });
-
 /* $Id: shippingtimelinetable.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $( document ).ready( function() {

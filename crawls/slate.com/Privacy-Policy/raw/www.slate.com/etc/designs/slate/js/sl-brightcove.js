@@ -20,6 +20,7 @@ function onTemplateReady(evt) {
 
 //Note: Brightcove players call this function by name. We can't change it.
 function slateAdHandler(xml, expId){
+	//console.log("----expId::" + expId);
 	companionAds = getXMLDoc(xml);
 	companionUrl = $(companionAds).find('StaticResource').first().text();
 	clickThruUrl = $(companionAds).find('CompanionClickThrough').first().text();

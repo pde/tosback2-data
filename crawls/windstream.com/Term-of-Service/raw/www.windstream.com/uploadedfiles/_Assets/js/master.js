@@ -1113,8 +1113,10 @@ $(function () {
         e.preventDefault();
 
         $(this).closest(".mod-008").toggleClass("hide").siblings(".mod-008").toggleClass("hide").each(function () {
-            normalizePlanHeight(true);
+            //normalizePlanHeight(true);
         });
+
+        normalizePlanHeight();
     });
 });
 
@@ -1123,7 +1125,7 @@ var normalizePlanHeight = function (refire) {
     if ($('.mod-008').length === 0) return false;
     if ($('body').hasClass('snap-320')) return false;
 
-    if (refire == true) {
+    if (refire === true) {
         $('.resolution-big h2').each(function () {
             $(this).css('height', 'auto');
         });
@@ -1137,7 +1139,7 @@ var normalizePlanHeight = function (refire) {
         });
     }
 
-    var $mod8 = $('.mod-008');
+    var $mod8 = $('.mod-008:visible');
 
     $mod8.each(function () {
         var column = $(this).find('.column');
@@ -1163,7 +1165,7 @@ var normalizePlanHeight = function (refire) {
             });
 
             // Price block
-            var priceblock = column.find('.price-block');
+            var priceblock = column.find('.center-content');
             var priceHt = priceblock.map(function () {
                 return $(this).height();
             }).get(),

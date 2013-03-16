@@ -976,7 +976,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "03/13/2013 08:12 AM",
+            DATE_IN_USE: "03/16/2013 08:11 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -3916,7 +3916,6 @@ if (window.navigationService && navigationService.controller && navigationServic
 
 
 <!-- End CNOV-34: productSearchServiceLink XSS fix -->
-
 <!-- Begin CNOV-38 Search autocorrect omniture -->
 <script type="text/javascript">
 // <![CDATA[
@@ -3942,14 +3941,27 @@ if (window.reportingService && reportingService.controller && reportingService.c
     			model.searchKeyword = searchAppManager.getSiteSearchActiveKeyword();
     				
     			var searchVariableValue = model.searchKeyword;
-    			if (data != undefined && model.searchKeyword != data.productCategoryFacetedSearch.searchText) {
-    				searchVariableValue = model.searchKeyword + " -> " + data.productCategoryFacetedSearch.searchText;
+    			if (data != undefined && data.productCategoryFacetedSearch.searchText &&
+    				model.searchKeyword != data.productCategoryFacetedSearch.searchText) {
+    				
+				searchVariableValue = model.searchKeyword + " -> " + data.productCategoryFacetedSearch.searchText;
 
-    				var brandPrefix = reportingService.controller.viewManagers.commonViewManager.model.commonBrandPrefix;
+	    			var brandPrefix = reportingService.controller.viewManagers.commonViewManager.model.commonBrandPrefix;
+    				
+    				s.prop17 = brandPrefix + ":" + searchVariableValue;
+    				s.eVar20 = brandPrefix + ":" + searchVariableValue;
+    			} else if (data != undefined && data.productCategoryFacetedSearch.autoCorrectedText != undefined && 
+    				model.searchKeyword != data.productCategoryFacetedSearch.autoCorrectedText) {
+    				
+				searchVariableValue = model.searchKeyword + " -> " + data.productCategoryFacetedSearch.autoCorrectedText;
+
+	    			var brandPrefix = reportingService.controller.viewManagers.commonViewManager.model.commonBrandPrefix;
     				
     				s.prop17 = brandPrefix + ":" + searchVariableValue;
     				s.eVar20 = brandPrefix + ":" + searchVariableValue;
 			}
+
+
 		}
 	});
 }
@@ -4055,8 +4067,17 @@ if (thisBrowser.indexOf("MSIE") != -1){ // if IE
 } else { // all other browsers
 	document.observe('updateDomWithPersonalizationData:completed', wcd_VV); // show VV
 }
-
-
+// hide redeem rewards button -remove when fixed.
+var hideVVRedeemRewardButtons = function() {
+	if($("rewardsInformation")){
+		var tohide = $("rewardsInformation").select("a.applyRewards");
+		for (i = 0; i < tohide.length; i++){
+			tohide[i].hide();
+		}
+	}
+}
+document.observe('updateDomWithPersonalizationData:completed', hideVVRedeemRewardButtons);
+// end hide
 </script>
 <!-- End VV override -->
 
@@ -4083,6 +4104,115 @@ if (window['ccm'] && ccm && ccm.signIn ) {
 </script>
 
 <!-- End Checkout: CNOV-42 -->
+
+<!-- CNOV-45: Search omniture fixes-->
+<script type="text/javascript">
+// <![CDATA[
+
+if (
+	reportingService &&
+	reportingService.controller &&
+	reportingService.controller.viewManagers &&
+	reportingService.controller.viewManagers.productpageViewManager &&
+	reportingService.controller.viewManagers.productpageViewManager.controller) {
+// 1.  Only reporting v20 on product page (no c17).  
+// If not arriving via search, v20 will be "no keyword"
+
+reportingService.controller.viewManagers.productpageViewManager.controller.setReportTransmissionVars = reportingService.controller.viewManagers.productpageViewManager.controller.setReportTransmissionVars.wrap(function(oMethod) {
+	oMethod();
+
+	var model = reportingService.controller.viewManagers.productpageViewManager.model;
+        s.prop17 = '';
+    	s.eVar20 = model.commonBrandPrefix + ":" + model.keyword;
+
+});
+
+reportingService.controller.viewManagers.productpageViewManager.controller.setReportModel = reportingService.controller.viewManagers.productpageViewManager.controller.setReportModel.wrap(function(oMethod) {
+	oMethod();
+
+	var product = productPage.objP;
+	var brandCode = product.brandCode;
+        var brandSite = gidLib.reporting.getBrandSite(brandCode);
+	var brandAbbr = (brandSite ? brandSite.brandAbbr : "");
+	var productId = product.strProductId;
+	var productEvents = reportingService.controller.viewManagers.productpageViewManager.controller.getProductEvents();
+
+	var model = reportingService.controller.viewManagers.productpageViewManager.model;
+	model.products = [brandAbbr, productId,null,null,productEvents.productStringEvents,'evar2=' + getEvar2Hierarchy()].join(';');
+});
+
+}
+
+// 2.  No event36 on department selection
+
+if (
+	reportingService &&
+	reportingService.controller &&
+	reportingService.controller.viewManagers &&
+	reportingService.controller.viewManagers.categoryFacetedSearchViewManager &&
+	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller
+) {
+
+reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.isEvent36 = function() {
+    			var isEvent36 = 
+    				reportingService.controller.viewManagers.categoryFacetedSearchViewManager.facetSearchManager.model.isInitialPageLoad &&
+    					navigationService.paginationHelper.api.getUrlParams().department === undefined;
+    			
+    			return isEvent36;
+};
+
+reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars.wrap(function(oMethod) {
+	oMethod();
+	
+	var isSearchModel = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.facetSearchManager.model.isSearch;
+	var isSearch = isSearchModel === true || isSearchModel === 'true';
+
+	if (isSearch && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.isEvent36() && !/event36/.test(s.events)) {
+		if (s.events) {
+    			s.events += ",";
+    		}
+
+		s.events = 'event36';
+	}
+
+	// 3.  correct evar2 on product page
+	if (!isSearch) {
+		var searchAppManager = reportingService.controller.appManagers.searchAppManager;
+		searchAppManager.setSiteSearchActive(false);
+	}
+});
+
+var getEvar2Hierarchy = function() {
+	var model = reportingService.controller.viewManagers.commonViewManager.model;
+				
+        var evar2Hierarchy = model.getHierarchy1();
+        		
+	var searchAppManager = reportingService.controller.appManagers.searchAppManager;
+        if (searchAppManager.getSiteSearchActive()) {
+        	evar2Hierarchy = gidLib.getCookieVar("omniSession","searchPageName");
+        }
+        		
+        return evar2Hierarchy;
+};
+
+
+reportingService.controller.appManagers.searchAppManager.setSiteSearchActive = reportingService.controller.appManagers.searchAppManager.setSiteSearchActive.wrap(function (oMethod,bool) {
+	oMethod(bool);
+
+	if (bool) {
+		setCookieVar("omniSession","searchPageName", reportingService.controller.viewManagers.commonViewManager.model.commonCurrentPageName);
+	} else {
+		setCookieVar("omniSession","searchPageName", "");
+	}
+
+});
+
+}
+
+
+// ]]>
+</script>
+<!-- End CNOV-45 -->
 
 <!-- GCO (Guest Checkout) override -->
 <script type="text/javascript">
@@ -4473,39 +4603,49 @@ if( window["shippingOptionsService"] ) {
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/300/348/cn6300348.html -->
+<!-- BEGIN Content Item File: /content/0006/237/378/cn6237378.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
 var contentInfo = {};
 
 contentInfo.mobileContent = {
-
 	"home" : 
 	{
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/300/348/assets/020613_Skimmer_mobile_US.jpg",
-				"url" : "http://m.gap.com/browse/subDivision.do?cid=5646&mlink,6300348,MOB_Main_W&clink=6300348"
-
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/031413_ADU_BoyfriendShirt_MOBMAIN_US.jpg",
+				"url" : "http://m.gap.com/browse/category.do?cid=91919&mlink,6237378,MOB_Main_W&clink=6237378"
 			}
-		]
+		],
+		"skinnyBanner":
+		{
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/031413_ALL_FriendsEvent_mobile_US.gif",
+			"command" : "displayOverlay",
+			"parameters" : { "path":"http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/skinny_popup.html" }
+		}
   	},
 	  	
 	"global" : 
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/300/348/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/300/348/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/edfs_popup.html" }
+		},
+		"skinnyBanner":
+		{
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/031413_ALL_FriendsEvent_mobile_US.gif",
+			"command" : "displayOverlay",
+			"parameters" : { "path":"http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/378/assets/skinny_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/300/348/cn6300348.html -->
+<!-- END Content Item File: /content/0006/237/378/cn6237378.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
@@ -4624,17 +4764,17 @@ searchABTest.prototype = {
 
 
 	segmentASpecificCode : function() {
-		if ($("topSearch_SegA")){
-			$(topSearch_SegA).style.display = "block";
-			$(topSearch_SegB).style.display = "none";
+		if ($('topSearch_SegA')){
+			$('topSearch_SegA').style.display = "block";
+			$('topSearch_SegB').style.display = "none";
 		}
 	},
 
 	segmentBSpecificCode : function() {
-		if ($("topSearch_SegB")){
-			$(topSearch_SegA).style.display = "none";
-			$(topSearch_SegB).style.display = "block";
-			$(topNavQuickLinkButtonWrapper).style.marginRight = "10px";
+		if ($('topSearch_SegB')){
+			$('topSearch_SegA').style.display = "none";
+			$('topSearch_SegB').style.display = "block";
+			$('topNavQuickLinkButtonWrapper').style.marginRight = "10px";
 		}
 	},
 
@@ -6168,27 +6308,203 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
-<div id="contentItemContainer10000395" class="4281898" >
+    	<!-- BEGIN Content Item File: /content/0006/237/377/cn6237377.html -->
+<div id="contentItemContainer10000395" class="6237377" >
 
 <style type="text/css">
-/*Override Deals Categories due to no PCM publish 3.12.13 remove after date */
+#globalBanner {
+	width: 473px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+}
 
-/*W Deals */
-#categoryNav48563, #categoryNav87083, #categoryNav68446, #categoryNav68446, #categoryNav74907, #categoryNav70824  {display:none;}
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000000;
+	text-decoration: none;
+}
 
-/*Body */
-#categoryNav68445, #categoryNav68444, #categoryNav87081  {display:none;}
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
 
-/*TG, TB, IG, IB */
-/* #categoryNav89274, #categoryNav77650, #categoryNav93703, #categoryNav93704  {display:none;} */
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
 
+.promoCode {
+	background-color: black;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+}
 </style>
- 
+
+<div id="globalBanner">
+
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/377/assets/031413_ALL_FriendsEvent_GB_US.png" alt="ENDS SUNDAY! THE GAP GIFT EVENT 30% OFF YOU PURCHASE. ONLINE &amp; IN STORES. ENTER GAPFRIENDS." title="ENDS SUNDAY! THE GAP GIFT EVENT 30% OFF YOU PURCHASE. ONLINE &amp; IN STORES. ENTER GAPFRIENDS." usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,473,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/237/377/assets/legal.html" data-jbox-width="350" data-jbox-height="375">
+		</map>
+	</div><!-- /Global Banner Text -->
+
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/237/377/assets/031413_ALL_FriendsEvent_DISR_US.gif" alt="ENDS SUNDAY! THE GAP GIFT EVENT 30% OFF YOU PURCHASE. ONLINE &amp; IN STORES. ENTER GAPFRIENDS." title="ENDS SUNDAY! THE GAP GIFT EVENT 30% OFF YOU PURCHASE. ONLINE &amp; IN STORES. ENTER GAPFRIENDS." usemap="#disruptorMap">
+		<map name="disruptorMap">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/237/377/assets/legal.html" data-jbox-width="350" data-jbox-height="375" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
+</div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('031413_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
+<!-- END Content Item File: /content/0006/237/377/cn6237377.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7451,7 +7767,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,4281898,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6237377,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

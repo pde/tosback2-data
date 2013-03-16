@@ -166,6 +166,11 @@
                     wpAd.cache.author[i]=wp_meta_data.author[i].replace(" ","_").toLowerCase();
                 }
             }
+            if (typeof wp_meta_data !== 'undefined' && wp_meta_data.blogger) {
+                for (var j=0; j < wp_meta_data.blogger.length; j++) {
+                    wpAd.cache.author.push(wp_meta_data.blogger[j].replace(" ","_").toLowerCase());
+                }
+            }
             return wpAd.cache.author;
         })();
     },
@@ -460,6 +465,11 @@
     return wpAd.flags.test_ads ? false : true;
   };
 
+  //gog temp /front hack
+  if(commercialNode === 'cityguide' && /^\/gog\/(index\.html)?/.test(location.pathname)){
+    commercialNode += '/front';
+  }
+
   //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {
 
@@ -511,7 +521,6 @@
         }
       }
     }
-
 
     if(tempcase.what === 'featrent' && window.jQuery){
       $('#wpni_adi_featrent').css({

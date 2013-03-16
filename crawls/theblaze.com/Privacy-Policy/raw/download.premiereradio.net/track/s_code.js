@@ -11,7 +11,6 @@ var items = {
          "delilahstore.com":"ccpremiere04",
             "glennbeck.com":"ccpremiere06,ccpremiereconservativetalk",
              "glenbeck.com":"ccpremiere06,ccpremiereconservativetalk",
-              "jimrome.com":"ccpremiere07,ccpremierefsr",
          "rushlimbaugh.com":"ccpremiere08,ccpremiereconservativetalk",
               "hannity.com":"ccpremiere10,ccpremiereconservativetalk",
      "seanhannitystore.com":"ccpremiere10,ccpremiereconservativetalk",
@@ -40,13 +39,13 @@ var items = {
                  "gbtv.com":"ccpremiere58,ccpremiereconservativetalk",
                   "twit.tv":"ccpremiere59",
    "electricsoundstage.com":"ccpremiere61",
-         "trancidradio.com":"ccpremiere62",
        "ronniewoodshow.com":"ccpremiere63",
            "bobbybones.com":"ccpremiere64",
           "onwithmario.com":"ccpremiere65",
-       "jojowrightlive.com":"ccpremiere66",
           "techguylabs.com":"ccpremiere67",
-          	"247comedy.com":"ccpremiere68"
+            "247comedy.com":"ccpremiere68",
+         "nickandartie.com":"ccpremiere69",
+  "remixtop30countdown.com":"ccpremiere72"
 }
 	
 if (typeof(items[dom]) != "undefined"){

@@ -181,7 +181,7 @@ if(window.location.pathname.length > 1 && mistats.pagelevel.match(/^\*Home/i)) {
 
 // Convert MI variables to Omniture variables
 s_account  = mistats.account;
-s.pageName = mistats.pagename;
+s.pageName = mistats.pagename && !mistats.pagename.match(/^pubsys:/i) ? mistats.pagename : ('pubsys:' + location.href);
 s.channel  = mistats.sitename + ": " + mistats.channel;
 s.server   = mistats.server;
 
@@ -677,9 +677,10 @@ if (!mistats.tagSentV15 && mistats.bizunit && mistats.bizunit === 'MER')
    s.sa(mistats.account);
 }
 
-
+/*
 if ((location.hash || '').match(/wgt=|navlinks*=|storylink=/) && !(mistats.bizunit || '').match(/SAC/))
    location.hash = '';
+*/
 
 
 /*

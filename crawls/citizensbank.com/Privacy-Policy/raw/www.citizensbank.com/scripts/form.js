@@ -1,3 +1,23 @@
+function contactMeSubmitControl() {
+    validateCookie();
+    return validateForm();
+}
+
+function validateCookie() {
+    var cookieName = "contactMe" + document.location.pathname.toLowerCase().replace(/\//g, "_");
+    var cookieValue = getCookie(cookieName);
+    if (cookieValue == "0" || cookieValue == "") { 
+        cookieValue = "1";
+    }
+    else if (cookieValue == "1") { 
+        cookieValue = "2";
+    }
+    else {
+        cookieValue = "2";
+    }
+    setCookie(cookieName, cookieValue);
+}
+
 function isEmpty(obj, val) {	
 	if (!obj) return false;
 	if (val == null) val = '';

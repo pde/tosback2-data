@@ -349,7 +349,7 @@ var noneIndex;
 function s_doPlugins(s) {
 
 		/*s_code date*/
-		s.prop48="1/8/2013";
+		s.prop48="2/19/2013";
                 
 		if ((!s.prop3) && (!s.eVar6)) {
             s.eVar6 = s.prop3 = "corporate";
@@ -391,7 +391,7 @@ function s_doPlugins(s) {
 			var modId = modPath[1];			
 			s.pageName = "rent > " + modId;
 		}
-		if ( s.inList("event66",s.events) ){
+		if (typeof s.events !== "undefined" && s.inList("event66",s.events) ){		
 			var modPath2 = s.pageName.split(" > "); 
 			var modId2 = modPath2[1];	
 			s.eVar7 = s.eVar7 + "|" + modId2;

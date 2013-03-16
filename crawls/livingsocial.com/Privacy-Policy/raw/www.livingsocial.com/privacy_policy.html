@@ -25,7 +25,7 @@
 
     <link href="../a1.lscdn.net/lsui/system/stylesheets/lsui-6d8cfa2.css" media="screen" rel="stylesheet" type="text/css" />
 
-    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-77f6c32f8a9e7f113a4e01c806a4f959.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-88e7435923419493e866eea7f0aebd68.css" media="screen" rel="stylesheet" type="text/css" />
 
     
     
@@ -49,9 +49,9 @@
   dls.viewer = {};
   dls.mePresent = false;
 
-  dls.preferredCity = {"thumb":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/100.jpg","name":"San Francisco","image":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/original_q60.jpg","id":15};
+  dls.preferredCity = {"image":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/original_q60.jpg","thumb":"http://a1.lscdn.net/imgs/689d624f-ebcb-441c-85c3-a0be9656e0e9/100.jpg","name":"San Francisco","id":15};
 
-  dls.i18n = {currency: {"unit":"$","format":"%u%n","escapes":"$","precision":2,"separator":".","delimiter":","} };
+  dls.i18n = {currency: {"escapes":"$","delimiter":",","format":"%u%n","unit":"$","precision":2,"separator":"."} };
 </script>
 <script type='text/javascript' src='payments/javascripts/payment.js%3Fv=53bafa26370d6696f8587869b2a66315d8c4ab98'></script>
 <script type="text/javascript">
@@ -157,16 +157,37 @@ body { padding-top: 60px; }
 </div>
 
     
-<span id="target-0d4e9fcd31771b24">
-  <ul class="actions logged-out">
-    
+<span id="target-9ecbc573d84c319a">
+</span>
+<script id="template-9ecbc573d84c319a" type="text/mustache">
+</script>
 
+<script>
+(function() {
+  Stached.expireCheck();
+    // {"hide":true}
+  var options = {"hide":true};
+  var frame   = ["9ecbc573d84c319a", {"me":[{"ts":true,"when":{"cookie":"authd"},"cache":"page","url":"/me/info.json"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
+  var when    = null;
+
+  if (when && typeof(when) == 'object' && when.cookie && document.cookie.match(when.cookie) && Cache.Cookie.Helpers.readFor(when.cookie)) {
+    Stached.render.call(frame);
+  }
+  else {
+    Stached.render.call(frame);
+  }
+})();
+</script>
+
+<div id="control_bar_v2">
+  <ul class="actions logged-out">
     <li class="my-account"><a href="http://www.livingsocial.com/vouchers">my vouchers</a></li>
     <li><a href="https://login.livingsocial.com/?return_to=http://livingsocial.com/privacy_policy" class="ga-track-accts" data-ga-data="UtilityNav, Log In">log in</a></li>
     <li><a href="https://login.livingsocial.com/signup/?return_to=http://livingsocial.com/privacy_policy" class="ga-track-accts" data-ga-data="UtilityNav, Sign Up">sign up</a></li>
   </ul>
-</span>
-<script id="template-0d4e9fcd31771b24" type="text/mustache">
+</div>
+<script id="control_bar_v2_template" type="text/x-mustache"
+          data-toggle_languages="[]">
 {{#me.loggedIn}}
 <ul class="actions logged-in">
   
@@ -211,7 +232,7 @@ body { padding-top: 60px; }
   <li class="user{{#me.isfbVisible}} fb-badge{{/me.isfbVisible}}">
     <div class="user-content">
 <a href="http://www.livingsocial.com/purchases" class="user-name" id="my-account-handle">        {{#me.isfbVisible}}
-          <span class="thumb" id="facebook-icon"> 
+          <span class="thumb" id="facebook-icon">
           </span>
         {{/me.isfbVisible}}
         <span class="name" {{#me.isfbVisible}}id="facebook_display_name"{{/me.isfbVisible}}>{{ me.display_name }}&nbsp;</span>
@@ -258,22 +279,6 @@ body { padding-top: 60px; }
 {{/me.loggedIn}}
 </script>
 
-<script>
-(function() {
-  Stached.expireCheck();
-    // {"when":{"cookie":"authd"},"name":"me","template_key":"control_bar_v2","hide":true}
-  var options = {"name":"me","template_key":"control_bar_v2","hide":true};
-  var frame   = ["0d4e9fcd31771b24", {"me":[{"when":{"cookie":"authd"},"cache":"page","ts":true,"url":"/me/info.json"},{"object":{"loggedIn":false}},{"object":"Me"},{"object":"FbMe"}]}, options];
-  var when    = {"cookie":"authd"};
-
-  if (when && typeof(when) == 'object' && when.cookie && document.cookie.match(when.cookie) && Cache.Cookie.Helpers.readFor(when.cookie)) {
-    Stached.render.call(frame);
-  }
-  else {
-    Stached.render.call(frame);
-  }
-})();
-</script>
 
 
   </div>
@@ -607,13 +612,25 @@ Stached._bind("url:/me/info.json", noficationsUpdate);
 </script>
 
   <script type="text/javascript">
-    function trackSubnav (){
-      $(function(){
-          dls = dls || {};
-          dls.gaTrack(['.ga-track-accts']);
-      })
+  $(function() {
+    function processAccountNav(evt, ctx) {
+      var toggle_languages_data = $("#control_bar_v2_template").attr("data-toggle_languages");
+      var context = {
+        toggle_languages: toggle_languages_data,
+        me: $.extend(ctx.body, Me, FbMe)
+      };
+      $("#control_bar_v2_template").replaceWith(Mustache.to_html($("#control_bar_v2_template").html(), context));
+      $("#control_bar_v2").html($("#control_bar_v2_template").html());
+      dls = dls || {};
+      dls.gaTrack(['.ga-track-accts']);
     }
-  setTimeout(trackSubnav, 1000);
+    
+    if (Me.loggedIn()()) {
+      Stached._bind("url:/me/info.json", processAccountNav);
+    } else {
+      processAccountNav({}, {body: {}});
+    }
+  });
   </script>
 
     
@@ -721,7 +738,7 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,6311118,new Date().getTime(),"","","","",""])</script>
+NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,24520807,new Date().getTime(),"","","","",""])</script>
     <div id="fb-root"></div>
   </body>
 </html>

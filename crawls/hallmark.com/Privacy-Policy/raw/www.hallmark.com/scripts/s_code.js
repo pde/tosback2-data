@@ -78,6 +78,8 @@ function s_doPlugins(s) {
     sTextLength = sText.length;
     if (s.pageName == "") {
         s.pageName = document.location.pathname;
+        if(-1 == s.pageName.indexOf("/",(s.pageName.length-1)))
+            s.pageName = s.pageName + "/";
         s.pageName = s.pageName.replace(/\//g, ">");
     }
     if (s.pageName.indexOf(sText) >= 0) {
@@ -207,6 +209,8 @@ function s_doPlugins(s) {
     }
     if (!s.campaign) {
         s.campaign = s.getQueryParam('mc');
+        var campaign = s.campaign.split('#');
+        s.campaign = campaign[0];
         s.campaign = s.getValOnce(s.campaign, 'v0');
     }
     if (!s.prop21)

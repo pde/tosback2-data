@@ -1,4 +1,4 @@
-/* $Id: jquery-current.min.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /*!
  * jQuery JavaScript Library v1.4.4
  * http://jquery.com/
@@ -166,7 +166,7 @@ e):f.css(e)}};c.fn.extend({position:function(){if(!this[0])return null;var a=thi
 c.css(a,"position")==="static";)a=a.offsetParent;return a})}});c.each(["Left","Top"],function(a,b){var d="scroll"+b;c.fn[d]=function(e){var f=this[0],h;if(!f)return null;if(e!==B)return this.each(function(){if(h=fa(this))h.scrollTo(!a?e:c(h).scrollLeft(),a?e:c(h).scrollTop());else this[d]=e});else return(h=fa(f))?"pageXOffset"in h?h[a?"pageYOffset":"pageXOffset"]:c.support.boxModel&&h.document.documentElement[d]||h.document.body[d]:f[d]}});c.each(["Height","Width"],function(a,b){var d=b.toLowerCase();
 c.fn["inner"+b]=function(){return this[0]?parseFloat(c.css(this[0],d,"padding")):null};c.fn["outer"+b]=function(e){return this[0]?parseFloat(c.css(this[0],d,e?"margin":"border")):null};c.fn[d]=function(e){var f=this[0];if(!f)return e==null?null:this;if(c.isFunction(e))return this.each(function(l){var k=c(this);k[d](e.call(this,l,k[d]()))});if(c.isWindow(f))return f.document.compatMode==="CSS1Compat"&&f.document.documentElement["client"+b]||f.document.body["client"+b];else if(f.nodeType===9)return Math.max(f.documentElement["client"+
 b],f.body["scroll"+b],f.documentElement["scroll"+b],f.body["offset"+b],f.documentElement["offset"+b]);else if(e===B){f=c.css(f,d);var h=parseFloat(f);return c.isNaN(h)?f:h}else return this.css(d,typeof e==="string"?e:e+"px")}})})(window);
-/* $Id: jquery.cookie.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /**
  * Cookie plugin
  *
@@ -263,7 +263,7 @@ jQuery.cookie = function(name, value, options) {
         return cookieValue;
     }
 };
-/* $Id: jquery.jcarousel.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /*!
  * jCarousel version 0.2.7 2010 Oct 28
  * http://github.com/jsor/jcarousel/raw/master/lib/jquery.jcarousel.js
@@ -1315,7 +1315,7 @@ jQuery.cookie = function(name, value, options) {
     };
 
 })(jQuery);
-/* $Id: jquery.highlightFade.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /**
  *  jQuery Plugin highlightFade (jquery.offput.ca/highlightFade)
  *  (c) 2006 Blair Mitchelmore (offput.ca) blair@offput.ca
@@ -1466,7 +1466,7 @@ jQuery.highlightFade.checkColorName = function(c) {
 		case 'yellow': return [255,255,0];
 	}
 };
-/* $Id: jquery-ui.custom.min.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /*!
  * jmontgo 2011 Feb:
  * 
@@ -1601,7 +1601,7 @@ D.append(j=b('<div id="fancybox-content"></div>'),E=b('<a id="fancybox-close"></
 b.fn.mousewheel&&f.bind("mousewheel.fb",function(a,c){if(h)a.preventDefault();else if(b(a.target).get(0).clientHeight==0||b(a.target).get(0).scrollHeight===b(a.target).get(0).clientHeight){a.preventDefault();b.fancybox[c>0?"prev":"next"]()}});b.support.opacity||f.addClass("fancybox-ie");if(M){t.addClass("fancybox-ie6");f.addClass("fancybox-ie6");b('<iframe id="fancybox-hide-sel-frame" src="'+(/^https/i.test(window.location.href||"")?"javascript:void(false)":"about:blank")+'" scrolling="no" border="0" frameborder="0" tabindex="-1"></iframe>').prependTo(D)}}};
 b.fn.fancybox.defaults={padding:10,margin:40,opacity:false,modal:false,cyclic:false,scrolling:"auto",width:560,height:340,autoScale:true,autoDimensions:true,centerOnScroll:false,ajax:{},swf:{wmode:"transparent"},hideOnOverlayClick:true,hideOnContentClick:false,overlayShow:true,overlayOpacity:0.7,overlayColor:"#777",titleShow:true,titlePosition:"float",titleFormat:null,titleFromAlt:false,transitionIn:"fade",transitionOut:"fade",speedIn:300,speedOut:300,changeSpeed:300,changeFade:"fast",easingIn:"swing",
 easingOut:"swing",showCloseButton:true,showNavArrows:true,enableEscapeButton:true,enableKeyboardNav:true,onStart:function(){},onCancel:function(){},onComplete:function(){},onCleanup:function(){},onClosed:function(){},onError:function(){}};b(document).ready(function(){b.fancybox.init()})})(jQuery);
-/* $Id: jquery.sidebar_toggle.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 (function($) {
 /* sidebar_toggle adapted from menu_toggle_adder */
 $.fn.menu_toggle = function(options){
@@ -1749,7 +1749,7 @@ sidebarItems = $(sidebarItems.getElementsByTagName('li'));
                 sidebarItems.find("ul li:has(h3.menu_selected)").removeClass('menu_selected_holder');
 }
 })(jQuery);
-/* $Id: jquery.jscrollpane.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
  * Licensed under the MIT License (LICENSE.txt).
  *
@@ -1835,7 +1835,7 @@ if(ay.arrowScrollOnHover){ax.bind("mouseover.jsp",aD(-1,0,ax));y.bind("mouseover
 }else{i.css("left",aI);ad(aI)}}function ad(aI){if(aI===c){aI=i.position().left}al.scrollTop(0);Z=aI;var aL=Z===0,aK=Z==k,aJ=aI/k,s=-aJ*(S-aj);if(O!=aL||l!=aK){O=aL;l=aK;D.trigger("jsp-arrow-change",[ai,aG,O,l])}t(aL,aK);X.css("left",s);D.trigger("jsp-scroll-x",[-s,aL,aK]).trigger("scroll")}function v(aI,s){if(ay.showArrows){aq[aI?"addClass":"removeClass"]("jspDisabled");ae[s?"addClass":"removeClass"]("jspDisabled")}}function t(aI,s){if(ay.showArrows){ax[aI?"addClass":"removeClass"]("jspDisabled");y[s?"addClass":"removeClass"]("jspDisabled")}}function L(s,aI){var aJ=s/(Y-w);U(aJ*j,aI)}function M(aI,s){var aJ=aI/(S-aj);V(aJ*k,s)}function aa(aU,aP,aJ){var aN,aK,aL,s=0,aT=0,aI,aO,aR,aQ,aS;try{aN=b(aU)}catch(aM){return}aK=aN.outerHeight();aL=aN.outerWidth();al.scrollTop(0);al.scrollLeft(0);while(!aN.is(".jspPane")){s+=aN.position().top;aT+=aN.position().left;aN=aN.offsetParent();if(/^body|html$/i.test(aN[0].nodeName)){return}}aI=aA();aO=aI+w;if(s<aI||aP){aQ=s-ay.verticalGutter}else{if(s+aK>aO){aQ=s-w+aK+ay.verticalGutter}}if(aQ){L(aQ,aJ)}viewportLeft=aC();aR=viewportLeft+aj;if(aT<viewportLeft||aP){aS=aT-ay.horizontalGutter}else{if(aT+aL>aR){aS=aT-aj+aL+ay.horizontalGutter}}if(aS){M(aS,aJ)}}function aC(){return -X.position().left}function aA(){return -X.position().top}function af(){al.unbind(ab).bind(ab,function(aL,aM,aK,aI){var aJ=Z,s=I;P.scrollBy(aK*ay.mouseWheelSpeed,-aI*ay.mouseWheelSpeed,false);return aJ==Z&&s==I})}function o(){al.unbind(ab)}function aB(){return false}function J(){X.find(":input,a").unbind("focus.jsp").bind("focus.jsp",function(s){aa(s.target,false)})}function E(){X.find(":input,a").unbind("focus.jsp")}function R(){var s,aI;X.focus(function(){D.focus()});D.attr("tabindex",0).unbind("keydown.jsp keypress.jsp").bind("keydown.jsp",function(aM){if(aM.target!==this){return}var aL=Z,aK=I;switch(aM.keyCode){case 40:case 38:case 34:case 32:case 33:case 39:case 37:s=aM.keyCode;aJ();break;case 35:L(Y-w);s=null;break;case 36:L(0);s=null;break}aI=aM.keyCode==s&&aL!=Z||aK!=I;return !aI}).bind("keypress.jsp",function(aK){if(aK.keyCode==s){aJ()}return !aI});if(ay.hideFocus){D.css("outline","none");if("hideFocus" in al[0]){D.attr("hideFocus",true)}}else{D.css("outline","");if("hideFocus" in al[0]){D.attr("hideFocus",false)}}function aJ(){var aL=Z,aK=I;switch(s){case 40:P.scrollByY(ay.keyboardSpeed,false);break;case 38:P.scrollByY(-ay.keyboardSpeed,false);break;case 34:case 32:P.scrollByY(w*ay.scrollPagePercent,false);break;case 33:P.scrollByY(-w*ay.scrollPagePercent,false);break;case 39:P.scrollByX(ay.keyboardSpeed,false);break;case 37:P.scrollByX(-ay.keyboardSpeed,false);break}aI=aL!=Z||aK!=I;return aI}}function Q(){D.attr("tabindex","-1").removeAttr("tabindex").unbind("keydown.jsp keypress.jsp")}function C(){if(location.hash&&location.hash.length>1){var aJ,aI;try{aJ=b(location.hash)}catch(s){return}if(aJ.length&&X.find(location.hash)){if(al.scrollTop()===0){aI=setInterval(function(){if(al.scrollTop()>0){aa(location.hash,true);b(document).scrollTop(al.position().top);clearInterval(aI)}},50)}else{aa(location.hash,true);b(document).scrollTop(al.position().top)}}}}function ah(){b("a.jspHijack").unbind("click.jsp-hijack").removeClass("jspHijack")}function n(){ah();b("a[href^=#]").addClass("jspHijack").bind("click.jsp-hijack",function(){var s=this.href.split("#"),aI;if(s.length>1){aI=s[1];if(aI.length>0&&X.find("#"+aI).length>0){aa("#"+aI,true);return false}}})}function an(){var aJ,aI,aL,aK,aM,s=false;al.unbind("touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick").bind("touchstart.jsp",function(aN){var aO=aN.originalEvent.touches[0];aJ=aC();aI=aA();aL=aO.pageX;aK=aO.pageY;aM=false;s=true}).bind("touchmove.jsp",function(aQ){if(!s){return}var aP=aQ.originalEvent.touches[0],aO=Z,aN=I;P.scrollTo(aJ+aL-aP.pageX,aI+aK-aP.pageY);aM=aM||Math.abs(aL-aP.pageX)>5||Math.abs(aK-aP.pageY)>5;return aO==Z&&aN==I}).bind("touchend.jsp",function(aN){s=false}).bind("click.jsp-touchclick",function(aN){if(aM){aM=false;return false}})}function h(){var s=aA(),aI=aC();
 D.removeClass("jspScrollable").unbind(".jsp");D.replaceWith(ao.append(X.children()));ao.scrollTop(s);ao.scrollLeft(aI)}b.extend(P,{reinitialise:function(aI){aI=b.extend({},ay,aI);ar(aI)},scrollToElement:function(aJ,aI,s){aa(aJ,aI,s)},scrollTo:function(aJ,s,aI){M(aJ,aI);L(s,aI)},scrollToX:function(aI,s){M(aI,s)},scrollToY:function(s,aI){L(s,aI)},scrollToPercentX:function(aI,s){M(aI*(S-aj),s)},scrollToPercentY:function(aI,s){L(aI*(Y-w),s)},scrollBy:function(aI,s,aJ){P.scrollByX(aI,aJ);P.scrollByY(s,aJ)},scrollByX:function(s,aJ){var aI=aC()+s,aK=aI/(S-aj);V(aK*k,aJ)},scrollByY:function(s,aJ){var aI=aA()+s,aK=aI/(Y-w);U(aK*j,aJ)},positionDragX:function(s,aI){V(s,aI)},positionDragY:function(aI,s){V(aI,s)},animate:function(aI,aL,s,aK){var aJ={};aJ[aL]=s;aI.animate(aJ,{duration:ay.animateDuration,ease:ay.animateEase,queue:false,step:aK})},getContentPositionX:function(){return aC()},getContentPositionY:function(){return aA()},getContentWidth:function(){return S()},getContentHeight:function(){return Y()},getPercentScrolledX:function(){return aC()/(S-aj)},getPercentScrolledY:function(){return aA()/(Y-w)},getIsScrollableH:function(){return aE},getIsScrollableV:function(){return az},getContentPane:function(){return X},scrollToBottom:function(s){U(j,s)},hijackInternalLinks:function(){n()},destroy:function(){h()}});ar(N)}f=b.extend({},b.fn.jScrollPane.defaults,f);b.each(["mouseWheelSpeed","arrowButtonSpeed","trackClickSpeed","keyboardSpeed"],function(){f[this]=f[this]||f.speed});var e;this.each(function(){var g=b(this),h=g.data("jsp");if(h){h.reinitialise(f)}else{h=new d(g,f);g.data("jsp",h)}e=e?e.add(g):g});return e};b.fn.jScrollPane.defaults={showArrows:false,maintainPosition:true,clickOnTrack:true,autoReinitialise:false,autoReinitialiseDelay:500,verticalDragMinHeight:0,verticalDragMaxHeight:99999,horizontalDragMinWidth:0,horizontalDragMaxWidth:99999,animateScroll:false,animateDuration:300,animateEase:"linear",hijackInternalLinks:false,verticalGutter:4,horizontalGutter:4,mouseWheelSpeed:0,arrowButtonSpeed:0,arrowRepeatFreq:50,arrowScrollOnHover:false,trackClickSpeed:0,trackClickRepeatFreq:70,verticalArrowPositions:"split",horizontalArrowPositions:"split",enableKeyboardNavigation:true,hideFocus:false,keyboardSpeed:0,initialDelay:300,speed:30,scrollPagePercent:0.8}})(jQuery,this);
 
-/* $Id: jquery.fn.ticker.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 jQuery.fn.ticker = function(settings) {
 	// adapted from danielvlopes jquery.ticker
 	// https://github.com/danielvlopes/jquery.ticker
@@ -1896,7 +1896,7 @@ jQuery.fn.ticker = function(settings) {
 		setInterval(tick,interval);
 	}
 };
-/* $Id: jquery.validate.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /**
  * jQuery Validation Plugin 1.9.0
  *
@@ -3085,7 +3085,7 @@ $.format = $.validator.format;
 		}
 	});
 })(jQuery);
-/* $Id: jquery.form.js 2146 2012-04-09 21:08:46Z jowilso $ */
+/* $Id$ */
 /*!
  * jQuery Form Plugin
  * version: 3.02 (07-MAR-2012)
@@ -4785,87 +4785,129 @@ function log() {
 	}
 	
 })(jQuery);
-;(function($){
-/*******************************************************************************************/	
-// jquery.pajinate.js - version 0.2
-// A jQuery plugin for paginating through any number of DOM elements
-// 
-// Copyright (c) 2010, Wes Nolte (http://wesnolte.com)
-// Liscensed under the MIT License (MIT-LICENSE.txt)
-// http://www.opensource.org/licenses/mit-license.php
-// Created: 2010-04-16 | Updated: 2010-04-26
-/*******************************************************************************************/
+;
+(function($) { /*******************************************************************************************/
+	// jquery.pajinate.js - version 0.4
+	// A jQuery plugin for paginating through any number of DOM elements
+	// 
+	// Copyright (c) 2010, Wes Nolte (http://wesnolte.com)
+	// Licensed under the MIT License (MIT-LICENSE.txt)
+	// http://www.opensource.org/licenses/mit-license.php
+	// Created: 2010-04-16 | Updated: 2010-04-26
+	//
+	/*******************************************************************************************/
 
-	$.fn.pajinate = function(options){
+	$.fn.pajinate = function(options) {
 		// Set some state information
 		var current_page = 'current_page';
 		var items_per_page = 'items_per_page';
-		
+
 		var meta;
-	
+
 		// Setup default option values
 		var defaults = {
-			item_container_id : '.content',
-			items_per_page : 10,			
-			nav_panel_id : '.page_navigation',
-			num_page_links_to_display : 20,			
-			start_page : 0,
-			nav_label_first : 'First',
-			nav_label_prev : 'Prev',
-			nav_label_next : 'Next',
-			nav_label_last : 'Last'
+			item_container_id: '.content',
+			items_per_page: 10,
+			nav_panel_id: '.page_navigation',
+			nav_info_id: '.info_text',
+			num_page_links_to_display: 20,
+			start_page: 0,
+			wrap_around: false,
+			nav_label_first: 'First',
+			nav_label_prev: 'Prev',
+			nav_label_next: 'Next',
+			nav_label_last: 'Last',
+			nav_order: ["first", "prev", "num", "next", "last"],
+			nav_label_info: 'Showing {0}-{1} of {2} results',
+			show_first_last: true,
+			abort_on_small_lists: false,
+			jquery_ui: false,
+			jquery_ui_active: "ui-state-highlight",
+			jquery_ui_default: "ui-state-default",
+			jquery_ui_disabled: "ui-state-disabled"
 		};
-		var options = $.extend(defaults,options);
+
+		var options = $.extend(defaults, options);
 		var $item_container;
 		var $page_container;
 		var $items;
 		var $nav_panels;
-	
-		return this.each(function(){
+		var total_page_no_links;
+		var jquery_ui_default_class = options.jquery_ui ? options.jquery_ui_default : '';
+		var jquery_ui_active_class = options.jquery_ui ? options.jquery_ui_active : '';
+		var jquery_ui_disabled_class = options.jquery_ui ? options.jquery_ui_disabled : '';
+
+		return this.each(function() {
 			$page_container = $(this);
 			$item_container = $(this).find(options.item_container_id);
 			$items = $page_container.find(options.item_container_id).children();
+
+			if (options.abort_on_small_lists && options.items_per_page >= $items.size()) return $page_container;
+
 			meta = $page_container;
-			
-			// Initialise meta data
-			meta.data(current_page,0);
+
+			// Initialize meta data
+			meta.data(current_page, 0);
 			meta.data(items_per_page, options.items_per_page);
-					
+
 			// Get the total number of items
 			var total_items = $item_container.children().size();
-			
+
 			// Calculate the number of pages needed
-			var number_of_pages = Math.ceil(total_items/options.items_per_page);
-			
+			var number_of_pages = Math.ceil(total_items / options.items_per_page);
+
 			// Construct the nav bar
-			var more = '<span class="ellipse more">...</span> ';
-			var less = '<span class="ellipse less">...</span> ';
-			
-			var navigation_html = '<a class="first_link" href="">'+ options.nav_label_first +'</a> ';
-			navigation_html += '<a class="arrowLeft" href="">'+ options.nav_label_prev +'</a> '+ less;
-			var current_link = 0;
-			while(number_of_pages > current_link){
-				navigation_html += '<a class="page_link" href="" longdesc="' + current_link +'">'+ (current_link + 1) +'</a> ';
-				current_link++;
+			var more = '<span class="ellipse more">...</span>';
+			var less = '<span class="ellipse less">...</span>';
+			var first = !options.show_first_last ? '' : '<a class="first_link ' + jquery_ui_default_class + '" href="">' + options.nav_label_first + '</a>';
+			var last = !options.show_first_last ? '' : '<a class="last_link ' + jquery_ui_default_class + '" href="">' + options.nav_label_last + '</a>';
+
+			var navigation_html = "";
+
+			for (var i = 0; i < options.nav_order.length; i++) {
+				switch (options.nav_order[i]) {
+				case "first":
+					navigation_html += first;
+					break;
+				case "last":
+					navigation_html += last;
+					break;
+				case "next":
+					navigation_html += '<a class="next_link ' + jquery_ui_default_class + '" href="">' + options.nav_label_next + '</a>';
+					break;
+				case "prev":
+					navigation_html += '<a class="previous_link ' + jquery_ui_default_class + '" href="">' + options.nav_label_prev + '</a>';
+					break;
+				case "num":
+					navigation_html += less;
+					var current_link = 0;
+					while (number_of_pages > current_link) {
+						navigation_html += '<a class="page_link ' + jquery_ui_default_class + '" href="" longdesc="' + current_link + '">' + (current_link + 1) + '</a>';
+						current_link++;
+					}
+					navigation_html += more;
+					break;
+				default:
+					break;
+				}
+
 			}
-			navigation_html += more + '<a class="arrowRight" href="">'+ options.nav_label_next +'</a> ';
-			navigation_html += ' <a class="last_link" href="">'+ options.nav_label_last +'</a>';
-			
+
 			// And add it to the appropriate area of the DOM	
-			$nav_panels = $page_container.find(options.nav_panel_id);			
-			$nav_panels.html(navigation_html).each(function(){
-			
+			$nav_panels = $page_container.find(options.nav_panel_id);
+			$nav_panels.html(navigation_html).each(function() {
+
 				$(this).find('.page_link:first').addClass('first');
 				$(this).find('.page_link:last').addClass('last');
-				
+
 			});
-			
+
 			// Hide the more/less indicators
 			$nav_panels.children('.ellipse').hide();
-			
+
 			// Set the active page link styling
-			$nav_panels.find('.arrowLeft').next().next().addClass('active_page');
-			
+			$nav_panels.find('.previous_link').next().next().addClass('active_page ' + jquery_ui_active_class);
+
 			/* Setup Page Display */
 			// And hide all pages
 			$items.hide();
@@ -4874,161 +4916,188 @@ function log() {
 
 			/* Setup Nav Menu Display */
 			// Page number slices
-			
-			var total_page_no_links = $page_container.children(options.nav_panel_id+':first').children('.page_link').size();
-			options.num_page_links_to_display = Math.min(options.num_page_links_to_display,total_page_no_links);
+			total_page_no_links = $page_container.children(options.nav_panel_id + ':first').children('.page_link').size();
+			options.num_page_links_to_display = Math.min(options.num_page_links_to_display, total_page_no_links);
 
 			$nav_panels.children('.page_link').hide(); // Hide all the page links
-			
 			// And only show the number we should be seeing
-			$nav_panels.each(function(){
-				$(this).children('.page_link').slice(0, options.num_page_links_to_display).show();			
+			$nav_panels.each(function() {
+				$(this).children('.page_link').slice(0, options.num_page_links_to_display).show();
 			});
-			
+
 			/* Bind the actions to their respective links */
-			 
+
 			// Event handler for 'First' link
-			$page_container.find('.first_link').click(function(e){
+			$page_container.find('.first_link').click(function(e) {
 				e.preventDefault();
-				
-				movePageNumbersRight($(this),0);
-				goto(0);				
-			});			
-			
+
+				movePageNumbersRight($(this), 0);
+				gotopage(0);
+			});
+
 			// Event handler for 'Last' link
-			$page_container.find('.last_link').click(function(e){
+			$page_container.find('.last_link').click(function(e) {
 				e.preventDefault();
 				var lastPage = total_page_no_links - 1;
-				movePageNumbersLeft($(this),lastPage);
-				goto(lastPage);				
-			});			
-			
+				movePageNumbersLeft($(this), lastPage);
+				gotopage(lastPage);
+			});
+
 			// Event handler for 'Prev' link
-			$page_container.find('.arrowLeft').click(function(e){
+			$page_container.find('.previous_link').click(function(e) {
 				e.preventDefault();
 				showPrevPage($(this));
 			});
-			
-			
+
+
 			// Event handler for 'Next' link
-			$page_container.find('.arrowRight').click(function(e){
-				e.preventDefault();				
+			$page_container.find('.next_link').click(function(e) {
+				e.preventDefault();
 				showNextPage($(this));
 			});
-			
+
 			// Event handler for each 'Page' link
-			$page_container.find('.page_link').click(function(e){
+			$page_container.find('.page_link').click(function(e) {
 				e.preventDefault();
-				goto($(this).attr('longdesc'));
-			});			
-			
+				gotopage($(this).attr('longdesc'));
+			});
+
 			// Goto the required page
-			goto(parseInt(options.start_page));
+			gotopage(parseInt(options.start_page));
 			toggleMoreLess();
+			if (!options.wrap_around) tagNextPrev();
 		});
-		
-		function showPrevPage(e){
-			new_page = parseInt(meta.data(current_page)) - 1;						
-			
+
+		function showPrevPage(e) {
+			new_page = parseInt(meta.data(current_page)) - 1;
+
 			// Check that we aren't on a boundary link
-			if($(e).siblings('.active_page').prev('.page_link').length==true){
-				movePageNumbersRight(e,new_page);
-				goto(new_page);
+			if ($(e).siblings('.active_page').prev('.page_link').length == true) {
+				movePageNumbersRight(e, new_page);
+				gotopage(new_page);
 			}
-				
+			else if (options.wrap_around) {
+				gotopage(total_page_no_links - 1);
+			}
+
 		};
-			
-		function showNextPage(e){
+
+		function showNextPage(e) {
 			new_page = parseInt(meta.data(current_page)) + 1;
-			
+
 			// Check that we aren't on a boundary link
-			if($(e).siblings('.active_page').next('.page_link').length==true){		
-				movePageNumbersLeft(e,new_page);
-				goto(new_page);
+			if ($(e).siblings('.active_page').next('.page_link').length == true) {
+				movePageNumbersLeft(e, new_page);
+				gotopage(new_page);
 			}
-				
+			else if (options.wrap_around) {
+				gotopage(0);
+			}
+
 		};
-			
-		function goto(page_num){
-			
-			var ipp = meta.data(items_per_page);
-			
-			var isLastPage = false;
-			
+
+		function gotopage(page_num) {
+
+			var ipp = parseInt(meta.data(items_per_page));
+
 			// Find the start of the next slice
 			start_from = page_num * ipp;
-			
+
 			// Find the end of the next slice
 			end_on = start_from + ipp;
 			// Hide the current page	
-			$items.hide()
-					.slice(start_from, end_on)
-					.show();
-			
+			var items = $items.hide().slice(start_from, end_on);
+
+			items.show();
+
 			// Reassign the active class
-			$page_container.find(options.nav_panel_id).children('.page_link[longdesc=' + page_num +']').addClass('active_page')
-													 .siblings('.active_page')
-													 .removeClass('active_page');										 
-			
+			$page_container.find(options.nav_panel_id).children('.page_link[longdesc=' + page_num + ']').addClass('active_page ' + jquery_ui_active_class).siblings('.active_page').removeClass('active_page ' + jquery_ui_active_class);
+
 			// Set the current page meta data							
-			meta.data(current_page,page_num);
-			
+			meta.data(current_page, page_num);
+
+			$page_container.find(options.nav_info_id).html(options.nav_label_info.replace("{0}", start_from + 1).
+			replace("{1}", start_from + items.length).replace("{2}", $items.length));
+
 			// Hide the more and/or less indicators
 			toggleMoreLess();
-		};	
-		
+
+			// Add a class to the next or prev links if there are no more pages next or previous to the active page
+			tagNextPrev();
+		}
+
 		// Methods to shift the diplayed index of page numbers to the left or right
-		function movePageNumbersLeft(e, new_p){
+
+
+		function movePageNumbersLeft(e, new_p) {
 			var new_page = new_p;
-			
+
 			var $current_active_link = $(e).siblings('.active_page');
-		
-			if($current_active_link.siblings('.page_link[longdesc=' + new_page +']').css('display') == 'none'){
-				
-				$nav_panels.each(function(){
-							$(this).children('.page_link')
-								.hide() // Hide all the page links
-								.slice(parseInt(new_page - options.num_page_links_to_display + 1) , new_page + 1)
-								.show();		
-							});
+
+			if ($current_active_link.siblings('.page_link[longdesc=' + new_page + ']').css('display') == 'none') {
+
+				$nav_panels.each(function() {
+					$(this).children('.page_link').hide() // Hide all the page links
+					.slice(parseInt(new_page - options.num_page_links_to_display + 1), new_page + 1).show();
+				});
 			}
-			
-		} 
-		
-		function movePageNumbersRight(e, new_p){
+
+		}
+
+		function movePageNumbersRight(e, new_p) {
 			var new_page = new_p;
-			
+
 			var $current_active_link = $(e).siblings('.active_page');
-			
-			if($current_active_link.siblings('.page_link[longdesc=' + new_page +']').css('display') == 'none'){
-												
-				$nav_panels.each(function(){
-							$(this).children('.page_link')
-								.hide() // Hide all the page links
-								.slice( new_page , new_page + parseInt(options.num_page_links_to_display))
-								.show();
-							});
+
+			if ($current_active_link.siblings('.page_link[longdesc=' + new_page + ']').css('display') == 'none') {
+
+				$nav_panels.each(function() {
+					$(this).children('.page_link').hide() // Hide all the page links
+					.slice(new_page, new_page + parseInt(options.num_page_links_to_display)).show();
+				});
 			}
 		}
-		
+
 		// Show or remove the ellipses that indicate that more page numbers exist in the page index than are currently shown
-		function toggleMoreLess(){
-													 
-			if(!$nav_panels.children('.page_link:visible').hasClass('last')){					
+
+
+		function toggleMoreLess() {
+
+			if (!$nav_panels.children('.page_link:visible').hasClass('last')) {
 				$nav_panels.children('.more').show();
-			}else {
+			}
+			else {
 				$nav_panels.children('.more').hide();
 			}
-			
-			if(!$nav_panels.children('.page_link:visible').hasClass('first')){
+
+			if (!$nav_panels.children('.page_link:visible').hasClass('first')) {
 				$nav_panels.children('.less').show();
-			}else {
+			}
+			else {
 				$nav_panels.children('.less').hide();
-			}			
+			}
 		}
-		
+
+		/* Add the style class ".no_more" to the first/prev and last/next links to allow custom styling */
+
+		function tagNextPrev() {
+			if ($nav_panels.children('.last').hasClass('active_page')) {
+				$nav_panels.children('.next_link').add('.last_link').addClass('no_more ' + jquery_ui_disabled_class);
+			}
+			else {
+				$nav_panels.children('.next_link').add('.last_link').removeClass('no_more ' + jquery_ui_disabled_class);
+			}
+
+			if ($nav_panels.children('.first').hasClass('active_page')) {
+				$nav_panels.children('.previous_link').add('.first_link').addClass('no_more ' + jquery_ui_disabled_class);
+			}
+			else {
+				$nav_panels.children('.previous_link').add('.first_link').removeClass('no_more ' + jquery_ui_disabled_class);
+			}
+		}
+
 	};
-	
+
 })(jQuery);
 $.loggedInScan = function() {
 

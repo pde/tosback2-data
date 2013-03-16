@@ -120,25 +120,7 @@ function initialize_header(){
 }
 
 $(document).ready(function() {
-    var location = document.location.href.toLowerCase();
-    if (window.Msn !== undefined && typeof(Msn) === 'object' && Msn.Flash !== undefined) {
-        var path_exceptions = [];
-        path_exceptions.push(/^\/$/);
-        path_exceptions.push(/photo_gallery/);
-        var valid = true;
-        for (var i=0; i<path_exceptions.length; i++) {
-            if (location.match(path_exceptions[i])) {
-                valid = false;
-                break;
-            }
-        }
-        if (valid) {
-            //DARTad.startRefreshTimer('AUTOREFRESH', 120, 'AUTO');
-        }
-    } else if((document.title != 'Mainsite | Telemundo' )
-        && (document.title != 'videos | Telemundo') 
-        && (location.indexOf('/tras_el_lente') == -1)) //WO 14320
-    {
-        //DARTad.startRefreshTimer('AUTOREFRESH', 60, 'AUTO');
+    if (document.title != 'Mainsite | Telemundo') {
+        DARTad.startRefreshTimer('AUTOREFRESH', 120, 'AUTO');
     }
 });

@@ -3,11 +3,11 @@ try{
 	var __nbcudigitaladops_dtparams = "pm=1;";
 	var __nbcudigitaladops_inject = {
 		init : function(){
-			this.version = '2.2';
+			this.version = '2.5';
 
 			var site = ''+location.hostname;
 			site = site.replace(/^www\./,'').replace(/\./g,'_');
-			document.write('<scr'+'ipt src="//www.nbcudigitaladops.com/hosted/js/'+site+'_header.js"></scr'+'ipt>');
+			document.write('<scr'+'ipt src="//www.nbcudigitaladops.com/hosted/jscript/'+site+'_header.js"></scr'+'ipt>');
 
 			this.qsparam = 'dart';
 			this.sitefilter = ['google.com','go','ask.com','as','aol.com','ao','yahoo.com','ya'];

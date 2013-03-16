@@ -1264,12 +1264,36 @@
 				}
 			},
 			insertScript: function(id,automate){
+ 				window.wordnikChorus = {};
+ 
+				(function(d, a) {
+					window.wordnikChorus.apiKey ="c1fcbd0337d020b003f7d1620032d3f49a53373b54970b7";
+					var s = d.createElement(a),
+					x = d.getElementsByTagName(a)[0];
+					s.async = true;
+    				s.src = 'http://choruswp.nik.io/v1/sim_visit.js';
+					x.parentNode.insertBefore(s, x);
+				})(document, 'script');					
+			}
+		},			
+		stippleq:{
+			init: function(d){
+				var root = this;	
+				if($.ad._meta.channel.indexOf("fnc") > -1 && d.ptype === "slideshow" ){
+					root.insertScript();
+				}
+			},
+			insertScript: function(id,automate){
+				
+				window._stippleq = window._stippleq || [];				
+ 				
+				_stippleq.push(['load', '34oQet', {}]);
  
 				(function(d, a) {
 					var s = d.createElement(a),
 					x = d.getElementsByTagName(a)[0];
 					s.async = true;
-					s.src = 'http://nik.io/v1/nikio.js'; 
+					s.src = '//stipple.cachefly.net/production/stipple.js'; 
 					x.parentNode.insertBefore(s, x);
 				})(document, 'script');					
 			}

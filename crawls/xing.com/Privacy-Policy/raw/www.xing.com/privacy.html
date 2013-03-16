@@ -25,10 +25,10 @@
 
 
 
-<link rel="stylesheet" media="all" href="css/v/10241/general.min.css">
+<link rel="stylesheet" media="all" href="css/v/10242/general.min.css">
 
 
-<link rel="stylesheet" media="all" href="css/v/10100/loggedout.min.css">
+<link rel="stylesheet" media="all" href="css/v/10101/loggedout.min.css">
 
 
 
@@ -41,22 +41,22 @@
 
 <!--[if IE 8]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10072/ie8.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10073/ie8.min.css">
 
 <![endif]-->
 <!--[if IE 7]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10172/ie7.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10173/ie7.min.css">
 
 <![endif]-->
 <!--[if lte IE 6]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10179/ie6.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10180/ie6.min.css">
 
 <![endif]-->
 
 
-<script src="js/v/10134/xing.min.js"></script>
+<script src="js/v/10136/xing.min.js"></script>
 
 <script src="js/v/10051/loggedout.min.js"></script>
 
@@ -170,12 +170,12 @@ xing.controls.TopScroller.observe("Nach oben");
 <div id="login-dropdown">
 <form accept-charset="UTF-8" action="https://login.xing.com/login" class="clfx" method="post">
 
-<script src="../login.xing.com/check%3Flogged_out_sid=657380c82c9593eb57f64bc033e826ff%3Bdest_url=https%253a%252f%252fwww.xing.com%252fapp%252fuser%253fop%253dlogin%253bdest%253d%252" defer></script>
+<script src="../login.xing.com/check%3Flogged_out_sid=bde0a02058ea1585102221509a01c788%3Bdest_url=https%253a%252f%252fwww.xing.com%252fapp%252fuser%253fop%253dlogin%253bdest%253d%252" defer></script>
 <script>
 try { sessionStorage.myXing = ""; } catch(e) {}
 </script>
 <input name="utf8" type="hidden" value="&#x2713;">
-<input name="logged_out_sid" type="hidden" value="657380c82c9593eb57f64bc033e826ff">
+<input name="logged_out_sid" type="hidden" value="bde0a02058ea1585102221509a01c788">
 <input name="locale" type="hidden" value="de">
 <input name="login_form[dest_url]" type="hidden" value="https://www.xing.com/app/user?op=login;dest=%2fprivacy">
 <input name="login_form[section]" type="hidden" value="core">
@@ -195,9 +195,9 @@ try { sessionStorage.myXing = ""; } catch(e) {}
 <input class="text" name="login_form[password]" maxlength="80" tabindex="2" type="password">
 </label>
 </fieldset>
-<label class="login-perm">
+<label for="remember-login-dropdown" class="login-perm">
 <input name="login_form[perm]" type="hidden" value="0">
-<input name="login_form[perm]" tabindex="3" type="checkbox" value="1">
+<input id="remember-login-dropdown" name="login_form[perm]" tabindex="3" type="checkbox" value="1">
 Eingeloggt bleiben
 </label>
 <a href="http://www.xing.com/app/user?op=lostpassword" class="lost-password" data-preloader data-switch="href">Passwort vergessen?</a>
@@ -241,7 +241,6 @@ $('#username-field, [name="login_form[username]"]')[0].focus();
 </div>
 
 </div>
-
 
 
 
@@ -457,10 +456,11 @@ Wir nutzen das „Skalierbare Zentrale Messverfahren“ (SZM) der Fa. INFOnline 
 </div>
 
 
+
+
 </div>
 
 <div id="footer">
-
 
 <div class="confine" id="quicklinks">
 
@@ -507,7 +507,7 @@ Wir nutzen das „Skalierbare Zentrale Messverfahren“ (SZM) der Fa. INFOnline 
 
 <dd><a href="http://www.xing.com/app/billing?op=premium_upsell">Premium-Mitgliedschaft</a></dd>
 
-<dd><a href="http://talentmanager.xing.com">XING Talentmanager</a></dd>
+<dd><a href="http://talentmanager.xing.com">Personalbeschaffung mit XING</a></dd>
 <dd><a href="http://www.xing.com/advertise">Werben</a></dd>
 
 
@@ -565,7 +565,6 @@ Sprache: <a href="http://www.xing.com/app/settings?op=language_landingpage">Deut
 <output></output>
 </div>
 </div>
-
 <script>
 $(function() {
 if ($("#mini-signup").length) {
@@ -582,12 +581,21 @@ browserAutoComplete: true
 });
 </script>
 
-
 <div id="lightbox" style="display: none;" class="lightbox">
 <div class="lightbox-handle"></div>
 <div class="lightbox-inner">
 <a class="lightbox-close icn icn-ext-ctr-close-lightbox">Fenster schließen</a>
 <output></output>
+</div>
+</div>
+<div id="lightbox-preview" style="display: none;" class="lightbox">
+<div class="lightbox-handle"></div>
+<div class="lightbox-inner">
+<a class="lightbox-close icn icn-ext-ctr-close-lightbox">Fenster schließen</a>
+<output></output>
+<div class="txr pt10">
+<a href="privacy.html#" class="lightbox-close bold">Zurück</a>
+</div>
 </div>
 </div>
 <div id="confirm-dialog" style="display: none;">
@@ -597,7 +605,7 @@ browserAutoComplete: true
 <h3 id="confirm-dialog:title" class="title"></h3>
 <p id="confirm-dialog:text" class="text"></p>
 <div class="txr clfx">
-<button id="confirm-dialog:ok" class="do-confirm" data-qa="a8a26883">OK</button>
+<button type="button" id="confirm-dialog:ok" class="do-confirm" data-qa="a8a26883">OK</button>
 <a href="privacy.html#" id="confirm-dialog:cancel" class="do-cancel cancel-link">Abbrechen</a>
 </div>
 </div>
@@ -644,7 +652,7 @@ ivwUrl: "https://xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm?r=&d="
 });
 </script>
 
-<img src="../xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm%3Fr=&amp;d=598199272" alt="" width="1" height="1" id="ivw-pixel">
+<img src="../xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm%3Fr=&amp;d=178697477" alt="" width="1" height="1" id="ivw-pixel">
 
 
 

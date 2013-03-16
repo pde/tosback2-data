@@ -125,6 +125,10 @@ function s_doPlugins(s) {
 	
 	s.tnt=s.trackTNT();
 	s.setupDynamicObjectIDs();
+
+/*socialPlatforms v1.0 - used for SocialAnalytics*/
+	s.socialPlatforms('eVar66');
+
 }
 s.doPlugins=s_doPlugins
 
@@ -136,7 +140,14 @@ s.Media.trackWhilePlaying=true
 s.Media.trackVars="None"
 s.Media.trackEvents="None"
 
+s.maxDelay='3000';
 s.loadModule("Integrate")
+s.Integrate.onLoad=function(s,m){
+	s.socialAuthors();
+	//add other integrate dependent functions here
+};
+
+
 
 /************************** PLUGINS SECTION *************************/
 /*
@@ -272,6 +283,34 @@ s.setOIDs=new Function("e",""
 +"s_oc?this.s_oc(e):true';if(s.isns&&s.apv>=5)l.setAttribute(o,x);l[o"
 +"]=new Function('e',x)}}}s.wd.s_semaphore=0;return true");
 
+/*
+ * Plugin: socialPlatforms v1.0
+ */
+s.socialPlatforms=new Function("a",""
++"var s=this,g,K,D,E,F;g=s.referrer?s.referrer:document.referrer;g=g."
++"toLowerCase();K=s.split(s.socPlatList,'|');for(i=0;i<K.length;i++){"
++"D=s.split(K[i],'>');if(g.indexOf(D[0])!=-1){if(a){s[a]=D[1];}}}");
+s.socPlatList="facebook.com>Facebook|twitter.com>Twitter|t.co/>Twitter|youtube.com>Youtube|clipmarks.com>Clipmarks|dailymotion.com>Dailymotion|delicious.com>Delicious|digg.com>Digg|diigo.com>Diigo|flickr.com>Flickr|flixster.com>Flixster|fotolog.com>Fotolog|friendfeed.com>FriendFeed|google.com/buzz>Google Buzz|buzz.googleapis.com>Google Buzz|plus.google.com>Google+|hulu.com>Hulu|identi.ca>identi.ca|ilike.com>iLike|intensedebate.com>IntenseDebate|myspace.com>MySpace|newsgator.com>Newsgator|photobucket.com>Photobucket|plurk.com>Plurk|slideshare.net>SlideShare|smugmug.com>SmugMug|stumbleupon.com>StumbleUpon|tumblr.com>Tumblr|vimeo.com>Vimeo|wordpress.com>WordPress|xanga.com>Xanga|metacafe.com>Metacafe|pinterest.com>Pinterest";
+
+/*  
+ * socialAuthors v1.3
+ */
+s.socialAuthors=new Function("",""
++"var s=this,g,tco;g=s.referrer?s.referrer:document.referrer;if(g.ind"
++"exOf('t.co/')!=-1){s.tco=escape(s.split(g,'/')[3]);s.Integrate.add("
++"'SocialAuthor');s.Integrate.SocialAuthor.tEvar='eVar67';s.Integrate"
++".SocialAuthor.get('search.twitter.com/search.json?var=[VAR]&"
++"callback=s.twitterSearch&q=http%3A%2F%2Ft.co%2F'+s.tco);s.Integrate"
++".SocialAuthor.delay();s.Integrate.SocialAuthor.setVars=function(s,p"
++"){s[p.tEvar]=s.user;}}");
+s.twitterSearch=new Function("obj",""
++"var s=this,txt,txtRT,txtEnd,txtAuthor;txt=obj.results[0].text;txtRT"
++"=txt.indexOf('RT @');if(txtRT!=-1){txtEnd=txt.indexOf(' ',txtRT+4);"
++"txtAuthor=txt.substring(txtRT+4,txtEnd);s.user=txtAuthor.replace(':"
++"','');}else{s.user=obj.results[0].from_user;}s.Integrate.SocialAuth"
++"or.ready();");
+
+
 
 /********************************************************************
  *
@@ -284,6 +323,7 @@ s.setOIDs=new Function("e",""
 s.repl=new Function("x","o","n",""
 +"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
 +"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
+
 
 
 /****************************** MODULES *****************************/
@@ -502,4 +542,3 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-

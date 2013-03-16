@@ -12,6 +12,7 @@ metric.eGainActive = true;     // set to true if you want eGain activated for le
 metric.eGainActiveCanvas = true; //set to true if you want eGain activated for canvas 
 metric.criteoActive = false;    // set to true if you want Criteo activated for lestore
 metric.criteoActiveCanvas = false;    // set to true if you want Criteo activated for canvas
+metric.rocketFuelActive = false;    // set to true if you want RocketFuel activated
 metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated
 metric.commissionJunctionActive = true; // set to true if you want Comission Junction activated
@@ -52,8 +53,19 @@ metric.writeTags = function() {
 	var isCore = location.host.match("canvas") == null;
 	var isCanvas = location.host.match("canvas") != null;
 	
+	// code for Criteo vs. RocketFuel A/B Test
+	if ($.cookie("CVR032713") == "B") {
+		metric.criteoActive = true;
+	} else if ($.cookie("CVR032713") == "C") {
+		metric.rocketFuelActive = true;
+	}
+	
 	if ((isCore && metric.criteoActive) || (isCanvas && metric.criteoActiveCanvas)) {
 		metric.sendCriteo();
+	}	
+
+	if (metric.rocketFuelActive) {
+		metric.sendRocketFuel();
 	}	
 	
 	if ((isCore && metric.eGainActive) || (isCanvas && metric.eGainActiveCanvas)) {
@@ -188,6 +200,94 @@ metric.sendCriteo = function() {
 	}
 };
 
+metric.sendRocketFuel = function() {
+	if (window.location.pathname.indexOf("/pp/") != -1 && resx.itemid != null) {
+		// Product Tag
+		var itemid = resx.itemid.split(":", 1);
+		// Begin Rocket Fuel Universal Pixel
+		  (function () {
+		    var cachebust = (Math.random() + "").substr(2);
+		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
+			var prodIDs = itemid;
+		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"scs=product:"+prodIDs;
+		})();
+		// End Rocket Fuel Universal Pixel
+	} else if (window.location.pathname.indexOf("/ix/") != -1 && resx.links != null) {
+		// Search and Index Tag
+		var items = resx.links.split(";");
+		var productIDs = new Array();
+
+		// only send the first three items
+		for(var i=0; i < items.length && i < 3; i++) {
+			productIDs.push(items[i].split(":")[0]);
+		}
+		// Begin Rocket Fuel Universal Pixel
+		  (function () {
+		    var cachebust = (Math.random() + "").substr(2);
+		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
+			var prodIDs = productIDs;
+		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"scs=product:"+prodIDs;
+		})();
+		// End Rocket Fuel Universal Pixel
+		
+	} else if (window.location.pathname.indexOf("ShoppingBag.html") != -1 && com.landsend.shoppingBag.shoppingBagModel != null) {
+		// Basket Tag
+		var model = com.landsend.shoppingBag.shoppingBagModel;
+		var basket = model.getBasket();
+		var skuItem;
+		
+		var productIDs = new Array();
+
+		for(var i = 0; basket.shipToArray != null && i < basket.shipToArray.length; i++) {
+			for(var j = 0; basket.shipToArray[i].skuItemArray != null && j < basket.shipToArray[i].skuItemArray.length; j++) {
+				skuItem = basket.shipToArray[i].skuItemArray[j];
+				
+				productIDs.push(skuItem.styleNum);
+			}
+		}
+		
+		// Begin Rocket Fuel Shopping Cart Pixel
+		  (function () {
+		    var cachebust = (Math.random() + "").substr(2);
+		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
+			var prodIDs = productIDs.join(";");
+		    new Image().src = protocol+"//20505545p.rfihub.com/ca.gif?rb=2239&ca=20505545&ra="+cachebust+"scs=product:"+prodIDs;
+		})();
+		// End Rocket Fuel Shopping Cart Pixel
+	} else if (window.location.pathname.indexOf("OrderConfirm") != -1 && resx.itemid != null) {
+		// Purchase Confirmation Tag
+		var resxItems = resx.itemid.split(",");
+		var resxQuantities = resx.qty.split(",");
+		
+		var productIDs = new Array();
+		var quantities = new Array();
+		var customerType = 2; // default to existing customer
+		
+		// if it's the first visit, then it's probably a new customer
+		if (s_omtr.getVisitNum() == 1) {
+			customerType = 1;
+		}
+
+		for(var i=0; i < resxItems.length; i++) {
+			productIDs.push(resxItems[i].split(":")[0]);
+			quantities.push(resxQuantities[i]);
+		}
+		
+		// Begin Rocket Fuel Conversion Pixel
+		  (function () {
+		    var cachebust = (Math.random() + "").substr(2);
+		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
+			var prodIDs = productIDs.join(";"); 	//PRODUCT IDs
+			var prodQuan = quantities.join(";"); 	//PRODUCT QUANTITY
+			var ordrev = resx.total;	//ORDER REVENUES
+			var trid = resx.transactionid; 	//TRANSACTION IDs 
+			var ctype = customerType; 	//1 FOR NEW, 2 FOR EXISTING
+		    new Image().src = protocol+"//20505543p.rfihub.com/ca.gif?rb=2239&ca=20505543&ra="+cachebust+"&scs=product:"+prodIDs+",ProdQuantity:"+prodQuan+",Revenue:"+ordrev+",TransID:"+trid+",custype:"+ctype;
+		})();
+		// End Rocket Fuel Conversion Pixel
+	} 
+};
+
 metric.sendCommissionJunction = function() {
 	var cm_mmc = $.query.get("cm_mmc");
 	
@@ -234,6 +334,11 @@ metric.sendCommissionJunction = function() {
 	if (cm_mmc != null && cm_mmc.length > 2 && cm_mmc.substring(0,2).toLowerCase() == "cj") {
 		$.cookie("aff_trck",
 				cm_mmc, {
+				expires : 1, 
+				path : '/', 
+				domain : '.landsend.com'});
+		$.cookie("aff_trck_cjsid",
+				$.query.get("CJSID"), {
 				expires : 1, 
 				path : '/', 
 				domain : '.landsend.com'});
@@ -311,11 +416,7 @@ if (getCookie("kiosk") != "") {
 	metric.criteoActiveCanvas = false;		
 }
 
-if (metric.criteoActive) {
-	// this needs to be written to the page before we get to the footer
-	document.write("<scr" + "ipt type=\"text/javascript\" src=\"/js/criteo_ld.js\"><\/scr" + "ipt>");
-}
-
+document.write("<scr" + "ipt type=\"text/javascript\" src=\"/js/criteo_ld.js\"><\/scr" + "ipt>");
 var resx = {
 	"appid":"landsend01",
 	"top1":100000, 

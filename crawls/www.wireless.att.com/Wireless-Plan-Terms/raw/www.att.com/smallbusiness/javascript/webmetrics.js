@@ -5,6 +5,18 @@ WebMetrics = {
 		dcsref: document.referrer
 	},
 	
+	Overlay: {
+		DCS: {
+			dcsuri: "",
+			dcsref: window.location
+		},
+		
+		DCSext: {
+			wtNoHit: "0",
+			wtSuccessFlag: "1"
+		}
+	},
+	
 	DCSext: {
 		wtNoHit: "1",
 		wtSuccessFlag: "1"
@@ -82,8 +94,14 @@ WebMetrics = {
 		window.eval(execute);
 		
 		//RESET ELIGIBLE VARIABLES FOR NEXT REPORT ON SAME PAGE.
-		WebMetrics.DCSext.LinkLoc = "";
-		WebMetrics.DCSext.LinkName = "";
+		for(DCSname in WebMetrics.DCSext) {
+			if(WebMetrics.DCSext[DCSname] != undefined && WebMetrics.DCSext[DCSname] != "" ) {
+				WebMetrics.DCSext[DCSname] = "";
+			}
+		}
+		
+		this.defaults();
+		
 		var timeoutInterval = setTimeout(function() { //EVENTS ARE NOT GENERATING FOR CHECKOUT PAGES SO DELAYING CLICK CONTINUE
 
 			},1000);
@@ -119,6 +137,42 @@ WebMetrics = {
 	overlayLoadPage: function(pn){
 		/*dcsMultiTrack("DCSext.wtPN",pn,"DCSext.wtLinkName",ln,"DCSext.wtLinkLoc",ll);*/
 		dcsMultiTrack("DCSext.wtPN",pn);
+	},
+	
+	overlayPageDispatch: function(wtPN) {
+		var wtArgs = "'DCSext.wtPN', '"+wtPN+"', ";
+		for(DCSname in WebMetrics.Overlay.DCS) {
+			if(WebMetrics.Overlay.DCS[DCSname] != undefined && WebMetrics.Overlay.DCS[DCSname] != "" ) {
+				wtArgs  = wtArgs  + "'DCS." + DCSname + "', '" + this.Overlay.DCS[DCSname] + "', "
+			}
+		}
+		
+		for(DCSname in WebMetrics.Overlay.DCSext) {
+			if(WebMetrics.Overlay.DCSext[DCSname] != undefined && WebMetrics.Overlay.DCSext[DCSname] != "" ) {
+				wtArgs  = wtArgs  + "'DCSext." + DCSname + "', '" + this.Overlay.DCSext[DCSname] + "', "
+			}
+		}
+		
+		execute = "dcsMultiTrack(" + wtArgs.substr(0,wtArgs.length-2) + ")";
+		
+		window.eval(execute);
+		
+		WebMetrics.Overlay.DCS.dcsuri = "";
+		
+		//CLEAR ALL SETTING IN CURRENT EVENT AND ADDING DEFAULTS
+		for(DCSname in WebMetrics.Overlay.DCSext) {
+			if(WebMetrics.Overlay.DCSext[DCSname] != undefined && WebMetrics.Overlay.DCSext[DCSname] != "" ) {
+				WebMetrics.Overlay.DCSext[DCSname] = "";
+			}
+		}
+		
+		this.Overlay.DCSext.wtNoHit = "0";
+		this.Overlay.DCSext.wtSuccessFlag = "1";
+	},
+	
+	defaults: function() {
+		this.DCSext.wtNoHit = "1";
+		this.DCSext.wtSuccessFlag = "1"
 	}
 }
 

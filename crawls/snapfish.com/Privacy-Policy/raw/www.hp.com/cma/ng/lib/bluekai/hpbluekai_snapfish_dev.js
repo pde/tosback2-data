@@ -731,6 +731,7 @@
                 };
             }), define("mobile", [ "../vendor/fortyone", "../src/core", "../src/aliases" ], function() {}), require("mobile");
         })(), BKTAG.version = "3.0.5";
+        
         var commonMap={
         };
         

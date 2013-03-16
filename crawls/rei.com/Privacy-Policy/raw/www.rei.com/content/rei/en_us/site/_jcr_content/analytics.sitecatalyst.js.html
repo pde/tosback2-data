@@ -346,6 +346,11 @@ s.campaign = s.eVar6 = s.eVar7 = s.eVar31 = s.eVar33 = s.getValOnce(s.getQueryPa
 if(!s.pageName)
 s.pageName=s.getPageName();
 
+/*pageName for search*/
+if (!(typeof searchPageName === 'undefined') && searchPageName) {
+    s.pageName=searchPageName;
+}
+
 s.eVar13=s.getNewRepeat();
 
 // Fix for CEM-1770 - see comment in ExpertAdviceArticle/additionalanalyticsvariables.jsp for details
@@ -430,6 +435,23 @@ s.tnt=s.trackTNT();
 
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here. */
+
+/*
+* Plugin: getPreviousValue_v1.0 - return previous value of designated
+* variable (requires split utility)
+*/
+s.getPreviousValue=new Function("v","c","el",""
++"var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
++"){if(s.events){i=s.split(el,',');j=s.split(s.events,',');for(x in i"
++"){for(y in j){if(i[x]==j[y]){if(s.c_r(c)) r=s.c_r(c);v?s.c_w(c,v,t)"
++":s.c_w(c,'no value',t);return r}}}}}else{if(s.c_r(c)) r=s.c_r(c);v?"
++"s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");
+/*
+* Utility Function: split v1.5 - split a string (JS 1.0 compatible)
+*/
+s.split=new Function("l","d",""
++"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++"++]=l.substring(0,i);l=l.substring(i+d.length);}return a"); 
 
 /*
 * TNT Integration Pluginv1.0

@@ -224,7 +224,9 @@ $(document).ready(function() {
 			var domain = '';
 			if (slate_public_url.indexOf("dev") != -1 || slate_public_url.indexOf("local") != -1) {
 				domain = 'iddev.dev.slate.com';
-			} else {
+			} else if (slate_public_url.indexOf("stage") != -1) {
+				domain = 'id.stage.slate.com';
+			 } else {
 				domain = 'id.slate.com';
 			}
 			$(".echo-ui .echo-button").html('<a class="thickbox" href="http://' + 

@@ -98,7 +98,6 @@ jQuery(document).keyup(function(e) {
 function cpwm_checkoutStepVisible(nameOfStep) {
 	window.optimizely = window.optimizely || [];
 	window.optimizely.push(["activate"]);
-	console.log('checkout: '+nameOfStep)
 }
 
 // override ml funciton processQVE 

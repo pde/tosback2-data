@@ -1486,7 +1486,7 @@ eol.create("page", function($) {
         $(document).ready(function() {
             $("div.eol-modalwrap, div.eol-modaldropshadow").remove();
             if ( defaults.show ) {
-                $("body").append("<div class='eol-modaldropshadow'> </div><div class='eol-modalwrap' >" + defaults.html + "</div>");
+                $("body").append("<div class='eol-modaldropshadow'>&nbsp;</div><div class='eol-modalwrap' >" + defaults.html + "</div>");
                         
                 $("div.eol-modaldropshadow").css({
                     height: $(document).height() + "px"

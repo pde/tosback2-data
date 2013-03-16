@@ -999,7 +999,7 @@ var $window = $(window),
             var out = "";
             for(var service in services) {
                 if(services.hasOwnProperty(service)) {
-                    if(typeof services[service] === 'boolean' && services[service] === true)  out += '<div class="service_' + service + '">'+niceNameMap.service[service]+'</div>';
+                    if(services[service] == 'true')  out += '<div class="service_' + service + '">'+niceNameMap.service[service]+'</div>';
                 }
             }
             return(out);
@@ -1014,7 +1014,7 @@ var $window = $(window),
             var out = "";
             for(var pType in types) {
                 if(types.hasOwnProperty(pType)) {
-                    if(typeof types[pType] === 'boolean' && types[pType] === true) out += '<div class="pType pType_'+ pType + '"></div>';
+                    if(types[pType] == 'true') out += '<div class="pType pType_'+ pType + '"></div>';
                 }
             }
             return(out + '<br/>');
@@ -1826,6 +1826,101 @@ function timerIncrement() {
     }
 
 }(jQuery, this));
+function isValidZipCode(elementValue) {
+    var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
+    return zipCodePattern.test(elementValue);
+}
+function getGeoLocationFromCookie() {
+    var geoData;
+    if($.cookie('twc-user-profile')) {
+        geoData = jQuery.parseJSON($.cookie('twc-user-profile'));
+    }
+    return(geoData);
+}
+function updateZip(zipCode, divID) {
+    if (isValidZipCode(zipCode)) {
+	var options = {
+	        path: '/'
+	        };
+	$.cookie("zipPromptCookie","zipPrompt",options);
+	var locationEl = $(document).find('#twc-location-popup input');
+	var locationElButton = $(document).find('#twc-location-popup button');
+	locationEl.val(zipCode);
+	locationElButton.trigger('click');
+    } else {
+        // Missing required elements, display error
+        $('.form_error').show();
+        return false;
+    }
+    $.fancybox.close(true);
+}
+// Handle click submitting address data
+$('#inServiceAddressForm input[type=button]').click(function() {
+    var zipCode = $('#inServiceZIP').val();
+    var divID = '#inServiceAddressForm';
+    updateZip(zipCode,divID);
+});
+
+$('#outServiceAddressForm input[type=button]').click(function() {
+    var zipCode = $('#outServiceZIP').val();
+    var divID = '#outServiceAddressForm';
+    updateZip(zipCode,divID);
+});
+jQuery(document).ready(function () {
+    if(! $.cookie('zipPromptCookie')) {
+        var configText = $('.serviceText').html();
+        if(!configText){//Author need to configure the component.
+            return;
+        }
+        var divID = '';
+        var geoLocation = getGeoLocationFromCookie();
+        if(geoLocation) {
+            if(geoLocation && geoLocation.region && geoLocation.region.length > 0){
+                divID = '#inServiceAddressForm';
+            }else{
+                divID = '#outServiceAddressForm';
+            }
+        }else{
+            divID = '#inServiceAddressForm';
+        }
+
+       // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
+         $.fancybox({
+                'href'   : divID,
+                padding: 0,
+                margin: 0,
+                maxHeight:700,
+                makWidth:600,
+                width:'auto',
+                height:'auto',
+                autoSize:false,
+                scrolling: 'no'
+            })
+    }
+  //onfocus of zip field if someone hits return trigger ZIP code validation
+    $('#outServiceZIP').keypress(function(e) {
+	var zipCode = $('#outServiceZIP').val();
+        var divID = '#outServiceAddressForm';
+        var code =null;
+        code= (e.keyCode ? e.keyCode : e.which);
+
+        if (code==13) {//keycode - Enter.
+            updateZip(zipCode,divID);
+		return false;
+        }
+    })
+    $('#inServiceZIP').keypress(function(e) {
+        var zipCode = $('#inServiceZIP').val();
+        var divID = '#inServiceAddressForm';
+        var code =null;
+        code= (e.keyCode ? e.keyCode : e.which);
+
+        if (code==13) {//keycode - Enter.
+            updateZip(zipCode,divID);
+		return false;
+        }
+    })
+})
 /*jslint browser: true*/
 /*global $, jQuery*/
 function synchNow(epcDataSynchServletPath, buttonLabel, defaultFailureMsg) {

@@ -272,6 +272,6 @@
 	
 	if( ! is_contained){
 		write('<\/body><\/html>');
-		if (navigator.userAgent.indexOf("Firefox")>=0) { i.document.close(); }
+				if (/safari|firefox/i.test(navigator.userAgent)) { i.document.close(); }
 	}
 })();

@@ -1071,6 +1071,10 @@ var Class = (function() {
       return this.items[this.paginator.currentPage];
     };
 
+    Gallery.prototype.isBusy = function() {
+      return this.viewport.isBusy();
+    };
+
     Gallery.prototype.release = function() {
       var item, _i, _len, _ref, _results;
       this.autoRotator.stop();
@@ -1141,6 +1145,10 @@ var Class = (function() {
       var itemWidth, viewportElement;
       itemWidth = this.element.find(ITEM_SELECTOR).width();
       viewportElement = this.element.find('div.hero-gallery-scroller, .gallery-viewport');
+      if (viewportElement.length === 0) {
+        this.element.wrapInner($('<div class="gallery-viewport"></div>'));
+        viewportElement = this.element.find('.gallery-viewport');
+      }
       this.viewport = new $.TNF.BRAND.Gallery.Viewport(viewportElement, itemWidth);
       return this.viewport.setWidth(itemWidth * this.items.length);
     };
@@ -1250,6 +1258,10 @@ var Class = (function() {
       return this.el.animate({
         left: -(page * this.itemWidth)
       }, 500, 'easeInOutSine');
+    };
+
+    Viewport.prototype.isBusy = function() {
+      return this.el.is(':animated');
     };
 
     Viewport.prototype._bindEvents = function() {
@@ -2820,6 +2832,9 @@ $.TNF.BRAND.Gallery.Rotator = {};
     };
 
     Paginator.prototype.jumpToPage = function(page) {
+      if (this.responder.isBusy()) {
+        return;
+      }
       if (page === this.currentPage) {
         return;
       }

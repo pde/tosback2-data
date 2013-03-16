@@ -1,0 +1,148 @@
+﻿$jq.namespace('MatchCore.Header');
+$jq.namespace('MatchCore.UI.Site.Header');
+
+MatchCore.Header.GlobalLogin = function() {
+	return {
+		show : function() {
+			$jq('.sharkFinInner').hide();
+			$jq('.globalLoginPanel').fadeIn('normal');
+		},
+		
+		hide : function() {
+			$jq('.sharkFinInner').fadeIn('normal');
+			$jq('.globalLoginPanel').hide();
+		}
+	};
+}();
+
+//$jq(document).ready(function() {
+//	$jq('.glblSignin A').bind('click', function() {
+//		MatchCore.Header.GlobalLogin.show();
+//		return false;
+//	});
+//});
+
+MatchCore.UI.Site.Header.ReactivateSubscription = function() {
+	var _container;
+	var _resub = new MatchCore.Header.Subscription();
+
+	var showConfirmation = function() {
+		$jq(".view1").hide();
+		$jq(".view2").show();
+		setTimeout(function() { $jq(_container).hide(1000) }, 3000);
+	};
+
+	var wireUpControls = function() {
+		$jq(_container).hover(
+            function() { $jq(".prompt", _container).show() },
+            function() {
+		if ($jq(".tooltip", _container).hasClass("prompt")) {
+		    $jq(".prompt", _container).hide()
+					}
+					else {}
+            }
+        );
+
+        $jq(".resubBtn", _container).click(function() {
+			$jq(".tooltip", _container).removeClass("prompt");
+			
+			var opts = {};
+			opts.success = showConfirmation;
+			_resub.reactivateSubscription(opts);
+		});
+	};
+
+	var self = {
+		init: function(opts) {
+			if (opts && opts.container)
+				_container = opts.container;
+
+			wireUpControls();
+		}
+	};
+	return self;
+
+}
+
+MatchCore.Header.Subscription = function() {
+    var _service = new MatchCore.ServiceProxy(MatchCore.Application.resolveUrl('~/rest/MainService.ashx'));
+    var self = {
+        reactivateSubscription : function(opts) {
+            _service.invoke({
+                method: 'ReactivateSubscription',
+                data: {
+                    'sid': MatchCore.Session.SID(),
+                    'theme': MatchCore.Session.ServerId()
+                },
+                failure: function(xmlhttp, status, exception) {
+                    if (opts.failure)
+                        opts.failure(xmlhttp, status, exception);
+                },
+                success: function(response) {
+                    if (opts.success)
+                        opts.success(response);
+                }
+            });
+        }
+    };
+    return self;
+}
+
+MatchCore.Header.ShowProfile = function() {
+    var _service = new MatchCore.ServiceProxy(MatchCore.Application.resolveUrl('~/rest/MainService.ashx'));
+    var self = {
+        init: function(opts) {
+            if (opts.container)
+                $jq(opts.container).click(
+                function() {
+                    _service.invoke(
+                    {
+                        method: 'UnhideProfile',
+                        data: {
+                            'sid': MatchCore.Session.SID(),
+                            'theme': MatchCore.Session.ServerId()
+                        },
+                        failure: function(xmlhttp, status, exception) {
+                        },
+                        success: function(response) {
+                            if (response.Success) {
+                                $jq("#SharkFinModal").behavior('MatchCore.UI.Site.ModalDialog', function(modal) {
+                                    modal.show();
+                                });
+                            }
+                        }
+                    });
+                }
+            );
+        }
+    };
+    return self;
+}
+
+MatchCore.Header.Navigation = function () {
+    var _container = null;
+    var _minWidth = ($jq('body').hasClass('ie6')) ? "width" : "minWidth";
+
+    var wireUpControls = function () {
+        $jq(_container).children('li').hover(
+			function () {
+			    $jq(".menuItem", this).show().css(_minWidth, $jq(this).outerWidth())
+			    $jq(".navItem", this).addClass("navItemHighlight");
+			},
+			function () {
+			    $jq(".menuItem", this).hide()
+			    $jq(".navItem", this).removeClass("navItemHighlight");
+			}
+		);
+    };
+
+    var self = {
+        init: function (opts) {
+            if (opts.container) {
+                _container = opts.container;
+                wireUpControls();
+            } 
+        }
+    };
+    return self;
+};

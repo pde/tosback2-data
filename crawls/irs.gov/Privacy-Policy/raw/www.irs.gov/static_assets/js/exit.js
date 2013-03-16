@@ -84,7 +84,9 @@ jQuery(function ($) {
 	    }
 	    
 	    if (!isValidSite) {
+            var inner_url = this.innerHTML;
 	    	this.href = "http://apps.irs.gov/app/scripts/exit.jsp?" + languageParam + "dest=" + thisUrl;
+            this.innerHTML = inner_url;
 	    }
 	});
 });
