@@ -1,10 +1,12 @@
 // use this variable to see if command runs at all
 IXQV102912 = false;
-IXQV102912_ACTIVE = true;
+IXQV102912_ACTIVE = false;
 
 le.uxd.ui.abtest.manager.execute('IXQV102912', {
 	allocation: [0,50,50],
-	eVar: 'eVar20',
+	// TEST FOR EMPTY eVar
+	//eVar: 'eVar20',
+	eVar: '',
 	eVarFormat: function(testName, group){
 		return testName + "-_-" + group;
 	},
@@ -14,117 +16,77 @@ le.uxd.ui.abtest.manager.execute('IXQV102912', {
 		
 		// if we made it here, the ab-test error handling should take over
 		IXQV102912 = true;
-		
+
 		$(document).ready(function(){
+
+			// Turn this into a wrapper
+			var isTouch = $('.touch').length;
+			if (isTouch > 0) {
+				return;
+			} else {
 			
-			if(!IXQV102912_ACTIVE){
-				
-				// Control
-				
+				if(!IXQV102912_ACTIVE){
+					
+					if ($('#products-wrapper').length > 0) $('#products-wrapper').addClass('IXQV102912-B');
+					
+					if ($('.IXQV102912-B').length > 0) {
+						$(".fn-index-quickview-link").live("click",function(e){
+		
+							e.preventDefault();
+		
+							var $parent = $(this).closest("li");
+		
+							var productNumber = $parent.attr("data-product-number");
+		
+							var featureNumber = $parent.attr("data-feature-number");
+		
+							var cmMerchString = $parent.attr("data-cm-merch");
+							
+							var colorCode = $parent.find('ul.swatches a.selected').attr('data-color-code');
+	
+							if (productNumber && featureNumber && cmMerchString){
+								if(colorCode){
+									com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,{colorCode:colorCode}, null);
+								} else {
+									com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,null, null);
+								}
+		
+							}
+		
+						});
+		
+						$("#products-wrapper").find("li.product").each(function(i){
+		
+							var dataBundleTrue = false;
+							if ($(this).attr('data-is-bundle') == 'true') {
+							    dataBundleTrue = true;
+							}
+	
+							if (dataBundleTrue == false) {
+								$(this).find('a.product-image').append('<span class="oo-fe oo-btn btnp quickview-button-container"><span class="first-child"><a href="javascript:void(0);" class="fn-index-quickview-link quickview-link" >Quick View</a></span></span>');		
+							}
+							
+						});
+					}
+					
+				}
+			
 				return;
 			}
 		
 			if (group == 'A' && IXQV102912_ACTIVE){
-				
-				// Control
-				
+
 				return;
 			}
 
 			if (group == 'B' && IXQV102912_ACTIVE){
 
-				if ($('#products-wrapper').length > 0) $('#products-wrapper').addClass('IXQV102912-B');
-				
-				if ($('.IXQV102912-B').length > 0) {
-					$(".fn-index-quickview-link").live("click",function(e){
-	
-						e.preventDefault();
-	
-						var $parent = $(this).closest("li");
-	
-						var productNumber = $parent.attr("data-product-number");
-	
-						var featureNumber = $parent.attr("data-feature-number");
-	
-						var cmMerchString = $parent.attr("data-cm-merch");
-						
-						var colorCode = $parent.find('ul.swatches a.selected').attr('data-color-code');
-
-						if (productNumber && featureNumber && cmMerchString){
-							if(colorCode){
-								com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,{colorCode:colorCode}, null);
-							} else {
-								com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,null, null);
-							}
-	
-						}
-	
-					});
-	
-					$("#products-wrapper").find("li.product").each(function(i){
-	
-						var dataBundleTrue = false;
-						if ($(this).attr('data-is-bundle') == 'true') {
-						    dataBundleTrue = true;
-						}
-
-						if (dataBundleTrue == false) {
-							$(this).find('a.product-image').append('<span class="oo-fe oo-btn btnp quickview-button-container"><span class="first-child"><a href="javascript:void(0);" class="fn-index-quickview-link quickview-link" >Quick View</a></span></span>');		
-						}
-						
-					});
-				}
-				
 				return;
 				
 			}
 
 			if (group == 'C' && IXQV102912_ACTIVE){
 
-				// Test
-				
-				if ($('#products-wrapper').length > 0) $('#products-wrapper').addClass('IXQV102912-C');
-				
-				if ($('.IXQV102912-C').length > 0) {
-					$(".fn-index-quickview-link").live("click",function(e){
-	
-						e.preventDefault();
-	
-						var $parent = $(this).closest("li");
-	
-						var productNumber = $parent.attr("data-product-number");
-	
-						var featureNumber = $parent.attr("data-feature-number");
-	
-						var cmMerchString = $parent.attr("data-cm-merch");
-						
-						var colorCode = $parent.find('ul.swatches a.selected').attr('data-color-code');
-
-						if (productNumber && featureNumber && cmMerchString){
-							if(colorCode){
-								com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,{colorCode:colorCode}, null);
-							} else {
-								com.landsend.quickViewService.getQuickView(productNumber,featureNumber,cmMerchString,null, null);
-							}
-
-						}
-	
-					});
-	
-					$("#products-wrapper").find("li.product").each(function(i){
-	
-						var dataBundleTrue = false;
-						if ($(this).attr('data-is-bundle') == 'true') {
-						    dataBundleTrue = true;
-						}
-
-						if (dataBundleTrue == false) {
-							$(this).find('a.product-image').append('<span class="oo-fe oo-btn btnp quickview-button-container"><span class="first-child"><a href="javascript:void(0);" class="fn-index-quickview-link quickview-link" >Quick View</a></span></span>');		
-						}
-						
-					});
-				}
-				
 				return;
 			}
 					

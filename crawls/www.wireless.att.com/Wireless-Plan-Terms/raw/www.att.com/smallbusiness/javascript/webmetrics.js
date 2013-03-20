@@ -170,6 +170,38 @@ WebMetrics = {
 		this.Overlay.DCSext.wtSuccessFlag = "1";
 	},
 	
+	overlayEventDispatch: function(wtEvent) {
+		var wtArgs = "'DCSext.wtEvent', '"+wtEvent+"', ";
+		this.Overlay.DCSext.wtNoHit = "1";
+		
+		for(DCSname in WebMetrics.Overlay.DCS) {
+			if(WebMetrics.Overlay.DCS[DCSname] != undefined && WebMetrics.Overlay.DCS[DCSname] != "" ) {
+				wtArgs  = wtArgs  + "'DCS." + DCSname + "', '" + this.Overlay.DCS[DCSname] + "', "
+			}
+		}
+		
+		for(DCSname in WebMetrics.Overlay.DCSext) {
+			if(WebMetrics.Overlay.DCSext[DCSname] != undefined && WebMetrics.Overlay.DCSext[DCSname] != "" ) {
+				wtArgs  = wtArgs  + "'DCSext." + DCSname + "', '" + this.Overlay.DCSext[DCSname] + "', "
+			}
+		}
+		
+		execute = "dcsMultiTrack(" + wtArgs.substr(0,wtArgs.length-2) + ")";
+		
+		window.eval(execute);
+		
+		WebMetrics.Overlay.DCS.dcsuri = "";
+		
+		//CLEAR ALL SETTING IN CURRENT EVENT AND ADDING DEFAULTS
+		for(DCSname in WebMetrics.Overlay.DCSext) {
+			if(WebMetrics.Overlay.DCSext[DCSname] != undefined && WebMetrics.Overlay.DCSext[DCSname] != "" ) {
+				WebMetrics.Overlay.DCSext[DCSname] = "";
+			}
+		}
+		
+		this.Overlay.DCSext.wtNoHit = "0";
+		this.Overlay.DCSext.wtSuccessFlag = "1";
+	},
 	defaults: function() {
 		this.DCSext.wtNoHit = "1";
 		this.DCSext.wtSuccessFlag = "1"

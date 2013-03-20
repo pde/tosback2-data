@@ -28,10 +28,11 @@ if (/^secure-(?:www|vip)\./.test(window.location.hostname)) {
   var zfcUPU = '/c/privacy-policy';
   var zfcAHW = [{h: 'a1.zassets.com', r:   2}, {h: 'a2.zassets.com', r:   2}, {h: 'a3.zassets.com', r:   2}, {h: 'l3.zassets.com', r:   3}, {h: 'l4.zassets.com', r:   3}];
   var hydraTests = [
-    {name:'arp',phase:7,url:/./,variants:[{chance:0.8,setup:function(){window.hideAmazonRetargetingPixel=1;}},{chance:0.2,setup:function(){window.hideCriteoPixel=1;}}]}
+    {name:'arp',phase:7,url:/./,variants:[{chance:0.8,setup:function(){window.hideAmazonRetargetingPixel=1;}},{chance:0.2,setup:function(){window.hideCriteoPixel=1;}}]},
+    {name:'azc',phase:1,url:/^\/product\/\d/,variants:[{chance:0.95,setup:function(){window.azc=0}},{chance:0.05,setup:function(){window.azc=1}}]}
   ];
   var zfc = [];
-  zfc.push(['initialize', '1363436393505', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, 'ce97a4c2-8e33-11e2-9464-0010184bda34', zfcUUID]);
+  zfc.push(['initialize', '1363782225587', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, '029374b8-9159-11e2-aa74-001018b3e408', zfcUUID]);
   zfc.push(['setEventUrl', '/event.cgi']);
 </script><script type="text/javascript">
 (function(e,t){function i(){e.todo=e.todo||[],e.K2={cookieDomain:e.zfcCookieDomain,clickCookie:"click",clickAckCookie:"clickAck",hydra:{testParam:"zfcTest"},tryst:{read:"holmes",write:"watson"}}}function s(i){if(!r){var s,o,u=e.zfcUPU||e.location.toString();i.url&&(s=new RegExp(i.url),o=s.test(u));if(o||!i.url||i.pre||i.post)return r=!0,t.write('<script src="http://www.zappos.com/'+n+'" type="text/javascript"></scr'+"ipt>"),!0}}function o(){var t,n,r=e.hydraTests||[];for(t=0,n=r.length;t<n;t++)if(s(r[t]))return!0}function u(){var e;if(!r){r=!0;var e=t.createElement("script");e.type="text/javascript",e.src=n,e.async=!0,(t.getElementsByTagName("head")[0]||t.getElementsByTagName("body")[0]).appendChild(e)}}function a(){e.zfc&&zfc.push(["createWindowId",zfcUUID]),i(),e.Gasherbrum.load("sync")}var n="/karakoram/js/main.dc1fdbe.js",r=!1;e.hq={addTest:function(t){e.hydraTests.push(t),s(t)}},e.Gasherbrum={load:function(e){e==="sync"?o():e==="async"&&u()}},a()})(window,document);</script>
@@ -74,7 +75,7 @@ for (var i = 0; i < names.length; ++i) w.console[names[i]] = function() {};
 // From /js/z/z.js
 var z = {init:[],choiceStreamQueue:[],runChoiceStreamQueue:function(){var q=z.choiceStreamQueue;for(var i=0;i<q.length;i++)q[i]();}};
 // global perpetual cart object
-z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecba1d415750286ad21dda6c7cb9866e82fce70651b1d260f7cb27197f16709ebea4dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
+z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecbf7730b60d45ea8a81fbcdce21bf55cebe6f93f5d771b2d06693444b0584bad074dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
 z.hideChoicestream = false;
 // From /js/z/cookies.js
 //the reference to ticket in this readCookie function is for sandbox, which may not be receive the Tryst treatment
@@ -108,7 +109,7 @@ z.site.shortname = 'Zappos';
 z.atgChatId = '42995';
 z.imagesSecureUrl = 'https://secure-www.zappos.com';
 z.token = z.token || {};
-z.token.cart = '4fd01eb2727b220c84809bc3f98f3ecba1d415750286ad21dda6c7cb9866e82fce70651b1d260f7cb27197f16709ebea4dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06';
+z.token.cart = '4fd01eb2727b220c84809bc3f98f3ecbf7730b60d45ea8a81fbcdce21bf55cebe6f93f5d771b2d06693444b0584bad074dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06';
 </script>
 <script type="text/javascript">
 var _denali = [];
@@ -638,6 +639,6 @@ afterEverything();
 (function(e){/^\/product\/\d/.test(e.zfcUPU)&&(e.styleId?zfc.push(["addVar","styleId",e.styleId]):e.Product&&e.Product.shownStyle&&zfc.push(["addVar","styleId",e.Product.shownStyle]))})(window),zfc.push(["leaveBody",(new Date).getTime()]),function(){function t(t,n){var r=window[t];window[t]=function(){typeof r=="function"&&r(),e||(e=!0,zfc.push(["onload","/onload.cgi",(new Date).getTime(),n]))}}var e=!1;t("onload",!1),t("onunload",!0)}(),zfc.push(["tracker","/track.cgi"]),window.todo&&(window.todo.push(function(){var e=this,t=e.K2;e.LazyEye?new LazyEye(Protobuf.Messages.zfcLazyEye,"zfc.LazyEye",{maxDataLength:700,listenDuration:1e3,textNodeMaxLength:64,cookieDomain:t.cookieDomain,clickCookie:t.clickCookie,clickAckCookie:t.clickAckCookie}):e.Annapurna&&Annapurna.error("Lazy Eye was not found on "+zfcUPU+" at "+ +(new Date))}),window.todo.push(function(){Hydra.Storage&&Hydra.Storage.scheduler(),Annapurna.Scheduler&&Annapurna.Scheduler.cleanse()}));</script></body>
 <!-- -->
 <!-- -->
-<!-- zfc05 www dcache 2013/03/16 05:19:53 2 ms uplat 1.252 ms rwlat 15 execs 6209 trans 58094 bytes 156 lrw 170 lex 232 texts 2892 words 4 links ce97a4c2-8e33-11e2-9464-0010184bda34 --></html>
+<!-- zfc06 www dcache 2013/03/20 05:23:45 0 ms uplat 0.538 ms rwlat 15 execs 6209 trans 58094 bytes 156 lrw 170 lex 232 texts 2892 words 4 links 029374b8-9159-11e2-aa74-001018b3e408 --></html>
 
 

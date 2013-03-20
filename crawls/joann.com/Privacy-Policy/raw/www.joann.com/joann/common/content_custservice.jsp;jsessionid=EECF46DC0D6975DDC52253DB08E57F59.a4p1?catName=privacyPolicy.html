@@ -17,9 +17,10 @@
 <link rel="stylesheet" type="text/css" href="../../css/lytebox.css" /> 
 <link rel="stylesheet" type="text/css" href="../../css/print.css" media="print" />
 <link rel="stylesheet" type="text/css" href="../../css/inventory.css" />
-<script type="text/javascript" src="../js/common.js"></script>  
 <script type="text/javascript" src="../js/jquery-1.6.4.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script> 
+<script type="text/javascript" src="../js/jquery.form.js" charset="utf-8"></script>
 <script type="text/javascript" src="../js/lytebox.js"></script>
 <script type="text/javascript" src="../js/jquery.nyroModal.custom.js"></script>
 <script type="text/javascript" src="../js/urlEncode.js"></script> 
@@ -42,20 +43,43 @@ function pinterestClick(baseUrl, largeimage) {
 
 <!-- Predictive Search -->
 <script type="text/javascript">
-	
-  jQuery(function () {	
-		jQuery( "#qsearch" ).autocomplete({
-               source: "/joann/common/searchSuggestions.jsp",
-               minLength: 3,
-               select: function(e, ui) {
-     			   $( "#qsearch" ).val( ui.item.value );
-					emptykey('qsearch');
-					return false;
-    			}
+
+$(document).ready(function() { <!-- here -->	
+		jQuery("#qsearch").autocomplete({
+			source: function(request, response) {
+				textField = document.getElementById("qsearch").value
+                jQuery.ajax({
+					url: 'http://www.joann.com/rest/bean/com/joann/kiosk/service/JoannServiceManager/service?name=searchSuggestions',
+					data: {
+                        "term": jQuery("#qsearch").val()
+                    },
+					success: function(data) {
+                        response($.map( data.service.searchSuggestionsList.suggestions, function(item) {
+                            return {
+                                label: item,
+                                value: item
+                            }
+                        }))
+                    }
+                })
+            },
+		   minLength: 3,
+		   select: function(e, ui) {
+			   $("#qsearch").val(ui.item.value);
+				emptykey('qsearch');
+				return false;
+			}
         });
     });
-		</script>
+	</script>
+<script type="text/javascript">
+$(document).ready(function() {
 
+	$(".below a").hover(function(){
+		$("#popupcart").slideDown(700);
+					});
+});
+</script>
 <style type="text/css">
 ul.ui-autocomplete { border: 1px solid #ededed; width: 400px !important;}
 li.ui-menu-item { list-style: none; text-align: left; font-style: italic; border-bottom: 1px solid #ededed !important; color: #0a3b31; background: #fffbe5 !important; padding: 10px; cursor: pointer; text-transform: capitalize !important;}
@@ -73,7 +97,7 @@ li.ui-menu-item:hover { background: #e4ebdc !important;}
           <a href= 'http://www.joann.com/'>
             <img src="../images/logo.jpg" alt="Joann Fabric and Craft Stores Home Page" id="logo" /></a>
           <a href='http://designyourdecor.joann.com/designyourdecor/?topnavlink=true'>
-            <img src="../../images/bg/dyd-logo.jpg" alt="Design Your Decor" id="dyd" /></a>
+            <img src="../../images/bg/dyd-logo.jpg" alt="Design Your Decor" id="dyd" style="width: 100px;" /></a>
       </div>	
 		<div id="account">
 		  <p class="above">
@@ -81,7 +105,8 @@ li.ui-menu-item:hover { background: #e4ebdc !important;}
 				<a href="http://www.joann.com/joann/profile/login.jsp">My Account</a> &#124;<a href="http://www.joann.com/joann/profile/login.jsp">(login</a>)
 				</p>
 		  <p class="below">
-		  <a href="http://www.joann.com/joann/checkout/cartnoitems.jsp">Shopping Cart: (0 items)</a></p>
+			<a href="http://www.joann.com/joann/checkout/cartnoitems.jsp">Shopping Cart: (0)</a><!-- 	<a href="/joann/checkout/cart.jsp" class="button126-arr">checkout</a> -->
+</p>
 	  	 <div id="search" role="search" aria-label="Quick Search">	
 			 <form id="quick-search" action="http://www.joann.com/privacypolicy/search" method="get">
 			    <input id="qsearch" type="text" class="tbox" name="qsearch" onkeypress="return handleEnter('qsearch');"/>
@@ -91,6 +116,7 @@ li.ui-menu-item:hover { background: #e4ebdc !important;}
 		</div>
 		</div>
 		<div id="globalnav" role="navigation">
+
 		   <!-- start of Compare droplet -->
 		    <!-- start of Compare droplet -->
 		    <p><a href= 'http://www.joann.com/' title="shopping" class="current">shopping</a>&#124;<a href="http://www.joann.com/project-home/" title="projects">projects</a>&#124;<a href="http://www.joann.com/community" onClick='cmCreateManualPageviewTag("community","cat1303850","/community",window.location.href)'
@@ -105,6 +131,8 @@ li.ui-menu-item:hover { background: #e4ebdc !important;}
                   </div>        
 	      </div>
 	</div><!-- end #masthead -->
+	<!--  CALLING POPUP CART INCLUDE HERE -->			
+<div id="output" style="display:none"></div>
 <div id="nav" class="block" role="navigation">
 		<ul>
 		<li><a href="http://www.joann.com/fabric/">fabric</a>&#124;</li>
@@ -156,8 +184,7 @@ document.write('<iframe src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivitySer
 }
 </script>
 <noscript>
-<img width="1" height="1" style="border:0" src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivityServer.bs?
-cn=as&amp;ActivityID=172267&amp;Session=ebSession&amp;ns=1"/>
+<img width="1" height="1" style="border:0" src="../../../bs.serving-sys.com/BurstingPipe/ActivityServer.bs%3Fcn=as&amp;ActivityID=172267&amp;Session=ebSession&amp;ns=1.html"/>
 </noscript>
 
 <script type='text/javascript'>
@@ -171,7 +198,7 @@ document.write('<iframe src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivitySer
 }
 </script>
 <noscript>
-<img width="1" height="1" style="border:0" src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivityServer.bs?cn=as&amp;ActivityID=172270&amp;Session=ebSession&amp;ns=1"/>
+<img width="1" height="1" style="border:0" src="../../../bs.serving-sys.com/BurstingPipe/ActivityServer.bs%3Fcn=as&amp;ActivityID=172270&amp;Session=ebSession&amp;ns=1.html"/>
 </noscript>
 
 
@@ -186,7 +213,7 @@ document.write('<iframe src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivitySer
 }
 </script>
 <noscript>
-<img width="1" height="1" style="border:0" src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivityServer.bs?cn=as&amp;ActivityID=172273&amp;Session=ebSession&amp;ns=1"/>
+<img width="1" height="1" style="border:0" src="../../../bs.serving-sys.com/BurstingPipe/ActivityServer.bs%3Fcn=as&amp;ActivityID=172273&amp;Session=ebSession&amp;ns=1.html"/>
 </noscript>
 
 
@@ -487,7 +514,7 @@ function handleEnterFunct(){
 <div id="footer" class="block" role="footer">		<div id="footerform" role="form" aria-label="Email signup form">
    <div id="email_submit">
 			<p>Sign up for e-mail updates.</p>
-				<form action="http://www.joann.com/joann/common/content_custservice.jsp?_DARGS=/joann/common/footer.jsp" method="post" id="email_submit"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="5329904691945002684" type="hidden" name="_dynSessConf"></input><label id="esubmit_label" for="esubmit">e-mail address:</label>
+				<form action="http://www.joann.com/joann/common/content_custservice.jsp?_DARGS=/joann/common/footer.jsp" method="post" id="email_submit"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="4876792435996445861" type="hidden" name="_dynSessConf"></input><label id="esubmit_label" for="esubmit">e-mail address:</label>
 					<div class="form-row"><input value="" maxlength="255" type="text" onkeypress="return handleEnterFunct();" class="e_tbox" style="height:16px" name="esubmit" id="esubmit"><input value=" " type="hidden" name="_D:esubmit"><input value="/joann/common/content_custservice.jsp?SEOURL=true&CATID=cat30050&categoryPath=/privacypolicy/" type="hidden" name="/com/joann/commerce/profile/FooterEmailFormHandler.URIWithQueryString"><input value=" " type="hidden" name="_D:/com/joann/commerce/profile/FooterEmailFormHandler.URIWithQueryString"><input value="go" type="submit" name="/com/joann/commerce/profile/FooterEmailFormHandler.emailFooterAccount" id="email_submit_btn"><input value=" " type="hidden" name="_D:/com/joann/commerce/profile/FooterEmailFormHandler.emailFooterAccount"><br /></div>
 				<input value="/joann/common/footer.jsp" type="hidden" name="_DARGS"></input></form></div>
 		</div>
@@ -542,7 +569,7 @@ function handleEnterFunct(){
 				<ul>
 					<li><a href='http://www.joann.com/safeShopping/' title="">safe shopping guarantee</a></li>
 						<li><a href='http://www.joann.com/termsConditions/' title="">terms &amp; conditions</a></li>
-						<li><a href='http://www.joann.com/privacyPolicy/' title="">privacy policy</a></li>
+						<li><a href='http://www.joann.com/privacyPolicy/' title="">your privacy rights</a></li>
 						<li><a href='http://www.joann.com/supplyChainDisclosure/' title="">California Supply Chain Disclosure</a></li>
 						<li><a href='http://www.joann.com/productRecall/' title="" style="color: #f00;">
 								product recall
@@ -578,7 +605,7 @@ function handleEnterFunct(){
 		</div>
 
 		<div id="root" class="block" role="contentinfo" aria-label="Customer Service Contact Information and Copyright Information">
-			<p>1-888-739-4120&nbsp;&#124;
+			<p>888-739-4120&nbsp;&#124;
 			 <a href="http://www.joann.com/joann/common/contactus.jsp" title="email customer service">E-mail Customer Service</a><span><a href= 'http://www.joann.com/' title="Joann.com home">&copy;&nbsp;2007-2012 JO-ANN STORES, INC. all rights reserved. JOANN.COM&reg;&nbsp; is a registered trademark of Jo-Ann Stores, Inc.</a></span></p>
 		</div>
 </div>	
@@ -611,7 +638,7 @@ document.write('<iframe src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivitySer
 //]]>
 </script>
 <noscript>
-<img width="1" height="1" style="border:0" src="HTTPS://bs.serving-sys.com/BurstingPipe/ActivityServer.bs?cn=as&amp;ActivityID=172257&amp;Session=ebSession&amp;ns=1"/>
+<img width="1" height="1" style="border:0" src="../../../bs.serving-sys.com/BurstingPipe/ActivityServer.bs%3Fcn=as&amp;ActivityID=172257&amp;Session=ebSession&amp;ns=1.html"/>
 </noscript>
 <!-- End Media Mind  -->                       
  

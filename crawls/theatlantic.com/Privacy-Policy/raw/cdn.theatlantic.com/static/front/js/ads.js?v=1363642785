@@ -1,0 +1,232 @@
+if (typeof window.console === "undefined") {
+    window.console = {};
+    console.log = function() {};
+}
+/***************
+ * Atlantic Ad *
+ ***************/
+
+// Namespace everything.
+window.Atlantic = window.Atlantic || {};
+window.Atlantic.Ad = window.Atlantic.Ad || {};
+window.Atlantic.Ad.adSlots = window.Atlantic.Ad.adSlots || {};
+
+Atlantic.Ad.activateIframeAd = function(iframeAd) {
+    var newIframeUrl = $(iframeAd).attr('realsrc');
+    if (newIframeUrl !== undefined) {
+        $(iframeAd).attr('src', newIframeUrl);
+        $(iframeAd).removeAttr('realsrc');
+    }
+};
+
+/**
+ * Check if googletag is defined.
+ */
+Atlantic.Ad.checkGPT = function () {
+    if (typeof googletag === "undefined") {
+        throw Error("googletag is not defined.");
+    }
+};
+
+/**
+ * Validate ad slot definitions.
+ *
+ * This is not very rigorous, just trying to keep the single request from
+ * failing if one of the ad slot definitions is missing a required component.
+ *
+ * @param {Object} definition The slot definition. An example can be seen in
+ *     the docs for Atlantic.Ad.createDefinitions.
+ * @param {String} id The id of the slot. Used for reporting which ad
+ *     definition is broken.
+ */
+Atlantic.Ad.validateSlot = function (definition, id) {
+    var valid = true;
+    if (!('sizes' in definition) || !(definition.sizes instanceof Array)) {
+        console.log(id + ".sizes is not set correctly.");
+        valid = false;
+    }
+
+    if (!('zone' in definition)) {
+        console.log(id + ".zone is not set.");
+        valid = false;
+    }
+
+    return valid;
+};
+
+/**
+ * Mixin our bizo data to the targeting properties.
+ *
+ * @param {Object} The properties object of the slot definition object.
+ */
+Atlantic.Ad.bizoMixin = function (receivingObject) {
+    if (typeof Atlantic.bizoKeys === "undefined") { return; }
+    for (var bizoKey in Atlantic.bizoKeys) {
+        var key = Atlantic.bizoKeys[bizoKey];
+        var val = Atlantic.Utils.readCookie(key);
+        if (val !== null && !receivingObject.hasOwnProperty(key)) {
+            receivingObject[key] = val;
+        }
+    }
+};
+
+/**
+ * Generate our ad slot definitions and store them in an object so we can
+ * access and modify them later. `googletag` must be defined for this to work.
+ *
+ * Here is an example definitions object:
+ *     {
+ *      "adWelcometest1":
+ *          {"sizes":[[640,480]],
+ *           "properties":{"src":"landing","pos":"welcometest"},
+ *           "zone":"\/4624\/dctestsite\/atlantic_online_homepage",
+ *           "cookie":"seen_welcome_screen"
+ *          },
+ *      "adPush2":
+ *          {"sizes":[[970,66]],
+ *           "properties":{"src":"landing","pos":"push"},
+ *           "zone":"\/4624\/dctestsite\/atlantic_online_homepage"
+ *          }
+ *     }
+ *
+ * Some non-obvious things:
+ *  - The top level keys are the IDs of the div containing the ad display code.
+ *  - The "cookie" key tells the method only to create the ad definition if the
+ *    cookie doesn't exist.
+ *
+ * @param {Object} definitions An object that contains slot definitions.
+ */
+Atlantic.Ad.createDefinitions = function (definitions) {
+    Atlantic.Ad.checkGPT();
+
+    for (var slotId in definitions) {
+        var slotDef = Atlantic.Ad.definitions[slotId];
+
+        // Validate the slot. This will only affect this one definition.
+        if (!Atlantic.Ad.validateSlot(slotDef, slotId)) {
+            continue;
+        }
+
+        // If the cookie key exists and the cookie exists, move on.
+        if (typeof slotDef.cookie !== "undefined" && Atlantic.Utils.readCookie(slotDef.cookie)) {
+            continue;
+        }
+
+        Atlantic.Ad.bizoMixin(slotDef.properties);
+        var adSlot = googletag.defineSlot(slotDef.zone, slotDef.sizes,
+                slotId).addService(googletag.pubads());
+
+        for (var property in slotDef.properties) {
+            adSlot.setTargeting(property, slotDef.properties[property]);
+        }
+
+        Atlantic.Ad.adSlots[slotId] = adSlot;
+    }
+};
+
+/**
+ * Listen to the googletag rendering event and pass the size of the loaded unit
+ * to a callback.
+ *
+ * Normally this works smoothly because the ads are loaded asynchronously so
+ * the "render" event isn't executed immediately. For later units on longer
+ * pages, this assumption is incorrect. Typically by the time the DOM gets to
+ * the bottomboxright unit, the render events are immediate. This means we
+ * have to attach the event before the googletag.cmd.push function that queues
+ * up the display method.
+ *
+ * @param {String} id The ID of the ad unit.
+ * @param {Function} callback This will be passed the ad elemnt or an array with
+ *      the size of the loaded ad unit (false if the unit is hidden).
+ */
+Atlantic.Ad.sizeListener = function (pos, callback) {
+    Atlantic.Ad.checkGPT();
+
+    $(googletag).on('gpt-slot_rendered.'+pos,  function(event, level, message, service, slot, reference) {
+        var id = slot.getSlotId().getDomId();
+        var $unit = $("#" + id);
+
+        if (typeof slot.d.pos === "object" && slot.d.pos[0] === pos) {
+            var size = false;
+
+            if (!$unit.is(":hidden") || $unit.css("display") !== "none") {
+                var $unit_iframe = $unit.children("iframe");
+                size = [parseInt($unit_iframe.attr("width"), 10),
+                    parseInt($unit_iframe.attr("height"), 10)];
+            }
+
+            callback($unit, size);
+            $(googletag).unbind('gpt-slot_rendered.'+pos);
+        }
+    });
+};
+
+/****************
+ * Ad Detection *
+ ****************/
+window.Atlantic.Ad.detect = window.Atlantic.Ad.detect || {};
+
+/**
+ * If an ad is too big, hide the "More At" box. If an ad is too small, add
+ * padding and a border.
+ *
+ * @param {jQuery} unit The containing element of the ad.
+ * @param {Array} size The size of the iframe that was loaded.
+ */
+Atlantic.Ad.detect.BTF = function(unit, size) {
+    if(size[0] > 600){
+        $("#moreAt").hide();
+        $unit.css("border", 'none');
+    }else if(size[0] < 330){
+        $unit.css("padding","15px");
+        $unit.css("border", "1px solid eaeaeb");
+    }
+};
+
+/**
+ * Asynchronous + asynchronous means that we can't guarantee that our ad will
+ * be loaded after the outbrain content so we just have to try until the
+ * outbrain content *is* loaded (max 10 times).
+ *
+ * @param {jQuery} unit The containing element of the ad.
+ * @param {Array} size The size of the iframe that was loaded.
+ * @param {Number} tries The number of tries that have been made to detect the
+ *     outbrain column
+ */
+Atlantic.Ad.detect.outbrain = function(unit, size, tries, outbrainId) {
+    if (typeof tries === "undefined") { tries = 0; }
+
+    if (!$('.outbrain-column').length && tries < 10) {
+        setTimeout(function() { Atlantic.Ad.detect.outbrain(unit, size, tries+1); });
+    } else if (size && size[0] >= 600) {
+        $outbrain = $('#' + outbrainId );
+        $outbrain.find('.outbrain-column').hide();
+        $outbrain.css("border-top", "1px solid #eaebeb");
+        $outbrain.css("padding-top", "15px");
+    } else if (size && size[0] < 600) {
+        $outbrain = $('#' + outbrainId );
+        $outbrain.find('.outbrain-column').css('width', (600 - size[0]) + 'px').css('float', 'left');
+        $outbrain.find('.adBottomboxleft').css('float', 'right');
+    } else {
+        $outbrain.find('.outbrain-column').css('width', '615px');
+    }
+};
+
+/**
+ * If an ad is too small, add padding and a border.
+ *
+ * @param {jQuery} unit The containing element of the ad.
+ * @param {Array} size The size of the iframe that was loaded.
+ */
+Atlantic.Ad.detect.promoColumn = function(unit, size) {
+    if (size && size[0] < 334){
+        $(unit).css("padding-bottom","15px");
+        $(unit).css("padding-top","15px");
+    } else if (size) {
+        $(unit).css("padding-bottom","0");
+        $(unit).css("padding-top","0");
+        $(unit).css("width","336px");
+        $(unit).css("border", "none");
+    }
+};
+

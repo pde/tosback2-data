@@ -1,4 +1,4 @@
-// JavaScript Document
+﻿// JavaScript Document
 
 
 
@@ -39,7 +39,7 @@ brow = navigator.userAgent;
 x = brow.lastIndexOf('6.0');
 if(x != '-1') { browser = 'IE6'}
 else{ browser = 'realBrowser';}
- 
+  if(section != 'residential_customers'){$('#state-select').css('display','none')}; 
 state = getState();  
 
  
@@ -323,8 +323,7 @@ document.write('<div id="global-nav">');
 	document.write('</div>'); 
 }
  
-function renderStateSelect(whichPage) {  
-	if(directory == 'thank_you.html')  {}
+function renderStateSelect(whichPage) {   if(section != 'residential_customers'){$('#state-select').css('display','none')}	if(directory == 'thank_you.html')  {}
 	else {
 	document.write('<div  id="state-select"><ul>');
  if($('body').is('#home') || $('body').is('#page-404') || state == 'nostate'){
@@ -398,7 +397,9 @@ function getState() {
 }
 
 
+
 function displayState(stateID) {
+	if(section != 'residential_customers') {stateID = 'nostate';}
 	if(stateID == 'northcarolina') {capState = 'Carolina del Norte'}
 	else if(stateID == 'southcarolina') {capState = 'Carolina del Sur'}
 	else {

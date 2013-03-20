@@ -3015,7 +3015,11 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 		},
 
 		init: function (elm, options) {
-			this.loadTweets($(elm));
+			if (typeof (this.options.loadTweets) == 'function') {
+				this.options.loadTweets($(elm));
+			} else {
+				this.loadTweets($(elm));
+			}
 		},
 
 		loadTweets: function (container) {
@@ -3442,22 +3446,31 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 	$Crabapple.extend($Crabapple.Module, $Crabapple.Player, {
 
 		player: new Array(),				
-		
-	
 
 		init: function (elm, options) {
-			//this.onReady = this.options.onReady;
-
-			//********************
+			
 			var autoPlay = $(elm).attr('data-autoplay');
 			var endCapAutoPlay = $(elm).attr('data-endcapautoplay');
+			var nextvideo = $(elm).attr('data-nextvideo');
 			var configParams = escape("site=" + config.getMediaConfigParamSite());
-			if (config.getMediaFreewheelNID()) {
+			if (config.getMediaFreewheelNID) {
 				configParams += escape("&nid=" + config.getMediaFreewheelNID());	
-			} 
-			if (typeof(siteSectionId) == 'undefined') { siteSectionId = 'Unknown_ComedyCentral'; }
+			}
+			var siteSectionId = $(elm).attr('data-sitesectionid');
+			
+			//this code is needed to preserve compatibility with other sites that use this js
+			if(!siteSectionId){
+				if(window.siteSectionId){
+					siteSectionId = window.siteSectionId;
+				}else{
+					siteSectionId = 'Unknown_ComedyCentral';
+				}
+			}
+			
+			//if (typeof(siteSectionId) == 'undefined') { siteSectionId = 'Unknown_ComedyCentral'; }
 		
-			var flashvars = { sid:siteSectionId, autoPlay:autoPlay, endCapAutoPlay:endCapAutoPlay, configParams:configParams };
+			var flashvars = { sid:siteSectionId, autoPlay:autoPlay, endCapAutoPlay:endCapAutoPlay, configParams:configParams, nextvideo: nextvideo };
+
 		
 			var parobj = {
 				wmode:'opaque',

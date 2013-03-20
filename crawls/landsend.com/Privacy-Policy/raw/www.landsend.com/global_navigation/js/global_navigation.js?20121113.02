@@ -848,11 +848,11 @@ le.uxd.ui.abtest.manager = function(){
 			// Account Status (Sign In & Sign Out)
 			if($.cookie){
 				if ($.cookie("signedIn") == "1" || $.cookie("cid") != null){
-					$('#account-tool-status, #sign-in').text('Sign Out').attr({href:"http://" + location.host + "/cgi-bin/SignOut.cgi?resetSID=Y"});
-					$('#account-tool-access').text('My Account').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
+					$('#account-tool-status, #sign-in').text('Sign Out').attr({href:"http://" + location.host + "/co/LoginPage?action=LOG_OUT&resetSID=Y&cm_re=core-_-FT-_-signout"});
+					$('#account-tool-access').text('My Account').attr({href:"https://" + location.host + "/co/LoginPage?cm_re=core-_-FT-_-accessaccount"});
 				} else {
-					$('#account-tool-status, #sign-in').text('Sign In').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
-					$('#account-tool-access').text('Create Account').attr({href:"https://" + location.host + "/cgi-bin/Login.cgi?redirect=/cgi-bin/AccountPortal.cgi&type=GenLogin"});
+					$('#account-tool-status, #sign-in').text('Sign In').attr({href:"https://" + location.host + "/co/LoginPage?cm_re=core-_-FT-_-signin"});
+					$('#account-tool-access').text('Create Account').attr({href:"https://" + location.host + "/co/LoginPage?cm_re=core-_-FT-_-createaccount"});
 					$.cookie("signedIn", null);
 				}
 			}
@@ -904,8 +904,7 @@ le.uxd.ui.abtest.manager = function(){
 		
 			var email = $('#sitewide-email-signup-input').val();
 			
-			var re = new RegExp(/^[A-Z1-9][\w.+-]*@[\w.-]+\.[A-Z]{2,6}$/i);
-			
+			var re = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 			
 			if (email.length == 0 || !re.test(email)) {
 			

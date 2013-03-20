@@ -201,7 +201,7 @@ $(function(){
       prev: ".prev-testimonial"
     });
     var scrollable = jQuery(".scrollable-testimonial").data("scrollable");
-    var size = 6;
+    var size = 5;
     scrollable.onSeek(function(event, index) {
       if (this.getIndex() >= this.getSize() - size) {
         jQuery("a.next").addClass("disabled");

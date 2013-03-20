@@ -373,3 +373,72 @@ function emptykey(strId) {
 	//	alert('exp');
 	}
 }
+
+
+function showRequest(formData, jqForm, options) {
+//alert('validation');
+}
+/*
+$(".below a").hover(function(){
+	$("#popupcart").slideDown(700);
+});
+*/
+
+
+function showResponse(responseText, statusText, xhr, $form) {
+	
+
+	 //alert(responseText);
+	if(responseText.search('error_handler') > -1)
+	{
+			$("#showCartErrors").show();
+			$("#output").load("/joann/catalog/popupcart.jsp");
+	}
+	else if(responseText.search('popupcart') > -1)
+	{
+			$("#output").show();
+			$("#popupcart").slideDown(700).delay(2000).slideUp(700);
+			$("#account .below").load("/joann/common/commerceItemCount.jsp");
+	}
+
+   return false;
+}
+
+
+function cartFormSubmit(formId) {
+	//alert($('#'+formId).html());
+	var options = { 
+			target:        '#output,#showCartErrors',   // target element(s) to be updated with server response 
+			beforeSubmit:  showRequest,  // pre-submit callback 
+			success:       showResponse,  // post-submit callback 
+			error: showError
+			
+		}; 
+	 $('#'+formId).ajaxSubmit(options); 
+}
+function closeCartPopup() {
+	$("#popupcart").slideUp(700);
+	$("#output").hide();
+}
+function showError() {
+	//alert("Some Error Has Occured");
+	$("#popupcart").slideUp(700);
+	$("#output").hide();
+}
+
+
+function openCartPopup() {
+	$("#output").show();
+	$("#popupcart").slideDown(700);
+}
+
+$(document).ready(function(){
+	$("#output").empty();
+	$("#output").load("/joann/catalog/popupcart.jsp");
+
+	$("body, #popupcarthead a").click(function(e){
+		$("#popupcart").slideUp(700);
+		e.stopPropagation();
+		return true;
+		});	 
+});

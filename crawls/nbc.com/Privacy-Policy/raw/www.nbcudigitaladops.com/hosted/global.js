@@ -2,7 +2,7 @@ try{
   if (!top.__nbcudigitaladops){
 	var __nbcudigitaladops = {
 		init : function(){
-			this.version = '2.4';
+			this.version = '2.5';
 			this.c_name = 'adops_master_kvs';
 			this.c_expire_hour = 1440;
 
@@ -10,7 +10,7 @@ try{
 
 			var site = ''+location.hostname;
 			site = site.replace(/^www\./,'').replace(/\./g,'_');
-			document.write('<scr'+'ipt src="//www.nbcudigitaladops.com/hosted/js/'+site+'.js"></scr'+'ipt>');
+			document.write('<scr'+'ipt src="//www.nbcudigitaladops.com/hosted/jscript/'+site+'.js"></scr'+'ipt>');
 		},
 		dtprm : function(p){
 			if(p==''||p==undefined){
@@ -47,6 +47,4 @@ try{
 
 	__nbcudigitaladops.init();
   }
-
-
 }catch(e){};

@@ -79,6 +79,30 @@ if( typeof jQuery != 'undefined' ){
         }
     };
 
+    // Prevent link click on touch events
+    avast.touchEvts = avast.prototype = {        
+        enable: function(){
+            if(typeof jQuery !== "undefined"){
+                if ('ontouchstart' in document.documentElement) {
+                    $(document).on('click.touchEvts', 'ul.navlevel-0 li>a', function(e){
+                        var par = $(this).parent('li').attr("id");
+                        if(par){
+                            var id = par.split("-")[1];
+                        }
+                        if($("#submenu .navparent-" + id).length > 0){
+                            e.preventDefault();
+                        }
+                    });
+                }
+            }
+        }(),
+        disable: function(){
+            if ('ontouchstart' in document.documentElement) {
+                    $(document).off('click.touchEvts', 'ul.navlevel-0 li>a')
+            }
+        }
+    }
+
     avast.gaTracking = avast.prototype = {
         init:function(){
             $("a").each(function(){

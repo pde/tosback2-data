@@ -629,8 +629,10 @@ llg_ab.writeTag=function(lbl){
    conversionjs.setAttribute('src', '//www.googleadservices.com/pagead/conversion.js');
    var head = document.getElementsByTagName('head')[0];
    head.appendChild(conversionjs);
-   if ( typeof util.hideGoogleAdd === 'function' ) {
-      util.hideGoogleAdd();
+   if ( typeof util !== 'undefined' && typeof util.hideGoogleAdd === 'function' ) {
+      setTimeout(function(){
+        util.hideGoogleAdd();
+      }, 1000);
    }
 }
 

@@ -76,7 +76,7 @@ function CheckExcludes(Excludes, Pvalue) {
     if (Excludes != "") {
         var ExArray = Excludes.split(",");
         for (var i = 0; i < ExArray.length; i++) {
-            if (Pvalue.toUpperCase() == ExArray[i].toUpperCase()) return false;
+            if(Pvalue.toUpperCase().indexOf(ExArray[i].toUpperCase()) != -1) return false;
         }
     }
     else return true;

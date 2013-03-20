@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 121437 2013-02-22 16:25:29Z richard.pinales $
+* $Id: trackingTags_v1.1.js 122499 2013-03-11 13:55:08Z richard.pinales $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -691,6 +691,7 @@ NYTD.pageEventTracker = (function (updateFrequency) {
         subject: 'page',
         url: document.location.href,
         referrer: document.referrer,
+        sourceApp: 'nyt4',
         totalTime: 0
     }, {
         sendMeta: true,

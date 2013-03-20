@@ -13,7 +13,7 @@
 */
 $(function () {
 
-    var timeout = 500;
+    var timeout    = 500;
     var closetimer = 0;
     var ddmenuitem = 0;
 
@@ -33,21 +33,18 @@ $(function () {
     { if (ddmenuitem) ddmenuitem.css('visibility', 'hidden'); }
 
     function jsddm_timer()
-    { closetimer = window.setTimeout(jsddm_close, timeout); }
-
-    function jsddm_canceltimer() {
-        if (closetimer) {
-            window.clearTimeout(closetimer);
-            closetimer = null;
-        } 
-    }
-
-    $(document).ready(function () {
-        $('#dd-menu > li').bind('mouseover', jsddm_open)
-        $('#dd-menu > li > a').bind('focus', jsddm_open_a)
-        $('#dd-menu > li').bind('mouseout', jsddm_timer)
-        $('#dd-menu > li > a').bind('blur', jsddm_canceltimer)
-    });
+    {  closetimer = window.setTimeout(jsddm_close, timeout);}
+    
+    function jsddm_canceltimer()
+    {  if(closetimer)
+       {  window.clearTimeout(closetimer);
+          closetimer = null;}}
+    
+    $(document).ready(function()
+    {  $('#dd-menu > li').bind('mouseover', jsddm_open)
+       $('#dd-menu > li > a').bind('focus', jsddm_open_a)
+       $('#dd-menu > li').bind('mouseout',  jsddm_timer)
+       $('#dd-menu > li > a').bind('blur',  jsddm_canceltimer)});   
 });
 
 /**
@@ -57,6 +54,7 @@ function sTracklink(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|eVar46=Share:" + name + ":" + s.getPageName() + "", "Share");
     }
+    googAE(this);
 }
 
 /**
@@ -66,6 +64,7 @@ function sCustomTrack(name) {
     if (typeof (s) !== 'undefined' && s && s.customTrack) {
         s.customTrack("pageName=" + s.getPageName() + ":" + name);
     }
+    googAE(this);
 }
 
 /**
@@ -75,6 +74,7 @@ function sTrackAccordion(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("prop16=" + s.getPageName() + " - " + name, "Accordion");
     }
+    googAE(this);
 }
 
 /**
@@ -84,6 +84,7 @@ function sTrackEmbedVideo(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("prop16=" + name + ":" + s.getPageName(), "EmbedVideo");
     }
+    googAE(this);
 }
 
 
@@ -95,6 +96,7 @@ function sTrackRSS(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|prop16=RSS:" + name + "|eVar46=RSS:" + name, "RSS");
     }
+    googAE(this);
 }
 
 /**
@@ -104,6 +106,7 @@ function sTrackShare(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|prop16=share:" + name + ":" + s.getPageName() + "|eVar46=Share:" + name + ":" + s.getPageName() + "", "Share");
     }
+    googAE(this);
 }
 
 /**
@@ -127,39 +130,3 @@ function loadDelayedItems() {
 }
 
 var t = setTimeout(loadDelayedItems, 500);
-
-/**
-* code to call omniture to track on a click on link on FcousShares site
-*/
-function sTracklink_FS(name) {
-    if (typeof (s) !== 'undefined' && s && s.tl) {
-        if (name == "Contact Us") {
-            var s = s_gi(scottradefocussharedev);
-            s.events = 'event33';
-            s.linkTrackEvents + 'event33';
-            s.linkTrackVars = 'events';
-            s.tl(this, 'o', 'Contact Us');
-        }
-        else if (name == "Receive Updates") {
-            var s = s_gi(scottradefocussharedev);
-            s.prop20 = 12345
-            s.events = 'event4' + ':' + s.prop20;
-            s.linkTrackEvents + 'event4';
-            s.linkTrackVars = 'prop20,events';
-            s.tl(this, 'o', 'FS Lead');
-        }
-    }
-}
-
-/**
-* code to call omniture to track on a click on link on and excel export
-*/
-function sTracklink_ExcelExport(name) {
-    if (typeof (s) !== 'undefined' && s && s.tl) {
-        var s = s_gi("scottradefocusshareprod,scottradeglobal");
-        s.eVar42 = name;
-        s.linkTrackVars = "eVar42";
-        s.linkTrackEvents = "None";
-        s.tl(true, 'd', name);
-    }
-}

@@ -9,6 +9,7 @@
     
     newNavLexusS.categoryModelLS= 'LS';
     newNavLexusS.categoryModelPriceLS= 'Starting at $71,990';
+    newNavLexusS.categoryModelPriceLSFSPORT= 'Starting at $81,990';
     newNavLexusS.categoryModelEndPriceLS= '';
     newNavLexusS.categoryModelCodeLS= '91';
     
@@ -29,6 +30,7 @@
     
     newNavLexusS.categoryModelGS= 'GS';
     newNavLexusS.categoryModelPriceGS= 'Starting at $47,250';
+    newNavLexusS.categoryModelPriceGSFSPORT= 'Starting at $52,940';
     newNavLexusS.categoryModelEndPriceGS= '';
     newNavLexusS.categoryModelCodeGS= '9399';
     
@@ -48,7 +50,7 @@
 	 
     
     newNavLexusS.categoryModelES= 'ES';
-    newNavLexusS.categoryModelPriceES= 'Starting at $36,100';
+    newNavLexusS.categoryModelPriceES= 'Starting at $36,370';
     newNavLexusS.categoryModelEndPriceES= '';
     newNavLexusS.categoryModelCodeES= '9000';
     
@@ -69,6 +71,7 @@
     
     newNavLexusS.categoryModelIS= 'IS';
     newNavLexusS.categoryModelPriceIS= 'Starting at $35,065';
+    newNavLexusS.categoryModelPriceISFSPORT= 'Starting at $37,505';
     newNavLexusS.categoryModelEndPriceIS= '';
     newNavLexusS.categoryModelCodeIS= '95';
     
@@ -143,6 +146,7 @@
     
     newNavLexusC.categoryModelISC= 'ISC';
     newNavLexusC.categoryModelPriceISC= 'Starting at $42,610';
+    newNavLexusC.categoryModelPriceISCFSPORT= 'Starting at $45,160';
     newNavLexusC.categoryModelEndPriceISC= '';
     newNavLexusC.categoryModelCodeISC= '9529';
     
@@ -212,6 +216,7 @@
     
     newNavLexusLU.categoryModelRX= 'RX';
     newNavLexusLU.categoryModelPriceRX= 'Starting at $39,660';
+    newNavLexusLU.categoryModelPriceRXFSPORT= 'Starting at $47,350';
     newNavLexusLU.categoryModelEndPriceRX= '';
     newNavLexusLU.categoryModelCodeRX= '9499';
     
@@ -278,7 +283,7 @@
 	 
     
     newNavLexusH.categoryModelESh= 'ESh';
-    newNavLexusH.categoryModelPriceESh= 'Starting at $38,850';
+    newNavLexusH.categoryModelPriceESh= 'Starting at $39,250';
     newNavLexusH.categoryModelEndPriceESh= '';
     newNavLexusH.categoryModelCodeESh= '9000';
     
@@ -319,6 +324,7 @@
     
     newNavLexusH.categoryModelCTh= 'CTh';
     newNavLexusH.categoryModelPriceCTh= 'Starting at $32,050';
+    newNavLexusH.categoryModelPriceCThFSPORT= 'Starting at $33,050';
     newNavLexusH.categoryModelEndPriceCTh= '';
     newNavLexusH.categoryModelCodeCTh= '9535';
     

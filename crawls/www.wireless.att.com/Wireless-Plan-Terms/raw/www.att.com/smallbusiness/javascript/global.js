@@ -746,17 +746,23 @@ $(document).ready(function() {
             		}
             		
             		if(addressOptions && rangeAddressRetured){
-            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalAddressMultipleAddressRangesReturned_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_Overlay AddressModalAddressMultipleAddressRangesReturned_Exit");
             		}else if(addressOptions && multiAddressRetured){
-            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalAddressMultipleAddressesReturned_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_Overlay AddressModalAddressMultipleAddressesReturned_Exit");
             		}else if(addressOptions && singleCorrecteAddress){
-            			WebMetrics.dispatchReport(pageName+"_Overlay AddressModalSingleCorrectedAddressReturned_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_Overlay AddressModalSingleCorrectedAddressReturned_Exit");
             		}else if(addressNotFound){
-            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModalAddressNotFound_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_OverlayAddressModalAddressNotFound_Exit");
             		}else if(onTelephoneEntryPage){
-            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModalBusinessTelephoneNumberEntry_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_OverlayAddressModalBusinessTelephoneNumberEntry_Exit");
             		}else{
-            			WebMetrics.dispatchReport(pageName+"_OverlayAddressModal_Exit");
+            			WebMetrics.Overlay.DCS.dcsuri = "/smallbusiness/overlay/addressEligibility.jsp";
+            			WebMetrics.overlayEventDispatch(pageName+"_OverlayAddressModal_Exit");
             		}
             		
             		

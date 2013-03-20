@@ -75,7 +75,8 @@ function output_creative (id)
 				var width	= index == 3 ? '160' : ( index == 1 || index == 5 ? '728' : '300' );
 				var height	= index == 3 ? '600' : ( index == 1 || index == 5 ? '90' : '250' );
 				var ord		= 2147483648*Math.random() + '.' + new Date().getTime();
-				var tag = '<iframe id="ad-spot-' + index + '" src="../ad-tags/reload.php%3Fid='%2520+%2520id%2520+%2520'&amp;unit=34444486%252FMerriam-Webster%252F'%2520+%2520dfp_unit%2520+%2520'&amp;ord='%2520+%2520ord%2520+%2520'.html" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="margin: 0; padding: 0; width: ' + width + 'px; height: ' + height + 'px;"></iframe>';
+				 var tag = '<div id="mw-ad-div-' + index + '" style="' + ( index == 5 ? 'margin: 0 auto;' : '' ) + ' width: ' + width + 'px; height: ' + height + 'px;"><iframe id="ad-spot-' + index + '" src="../ad-tags/reload.php%3Fid='%2520+%2520id%2520+%2520'&amp;unit=34444486%252FMerriam-Webster%252F'%2520+%2520dfp_unit%2520+%2520'&amp;ord='%2520+%2520ord%2520+%2520'.html" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="margin: 0; padding: 0; width: ' + width + 'px; height: ' + height + 'px;"></iframe></div>';
+
 				document.write(tag);
 			}
 
@@ -90,21 +91,24 @@ function output_creative (id)
 	};
 
 function reloadCreatives (url)
-	{	for ( var index = 1; index <= 5; index++ )
-			{	var ad = document.getElementById('ad-spot-' + index);
-				if ( ad )
-					{	var src = ad.src.substring(0, ad.src.indexOf('&ord='));
-						src += '&ord=' + 2147483648*Math.random() + '.' + new Date().getTime();
-						ad.src = src;
-					};
-			};
+      {       for ( var index = 1; index <= 5; index++ )
+                        {       var ad = document.getElementById('ad-spot-' + index);
+                                if ( ad )
+                                        {       var src = ad.src.substring(0, ad.src.indexOf('&ord='));
+                                                src += '&ord=' + 2147483648*Math.random() + '.' + new Date().getTime();
+                                                ad.src = src;
+                                                var parent = document.getElementById('mw-ad-div-' + index);
+                                                parent.innerHTML = '';
+                                                parent.innerHTML = '<iframe id="ad-spot-' + index + '" src="http://www.merriam-webster.com/info/'&#32;+&#32;src&#32;+&#32;'" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="margin: 0; padding: 0; width: ' + parent.style.width + '; height: ' + parent.style.height + '"></iframe>';
+                                        };
+                        };
 
-	// Track the virtual page.
+        // Track the virtual page.
                 if ( url != null )
                         {       url = typeof(url) != 'undefined' ? url : '' + document.location;
                                 _gaq.push(['_trackPageview', url]);
                         };
-	};
+        };
 
 </script>
 <!-- End: GPT -->

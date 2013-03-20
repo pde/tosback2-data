@@ -677,11 +677,17 @@ if (!mistats.tagSentV15 && mistats.bizunit && mistats.bizunit === 'MER')
    s.sa(mistats.account);
 }
 
-/*
-if ((location.hash || '').match(/wgt=|navlinks*=|storylink=/) && !(mistats.bizunit || '').match(/SAC/))
-   location.hash = '';
-*/
+if ((location.search || '').match(/hashtagtest/i))
+   s.c_w('mi_httest', '1', new Date((new Date()).getTime() + 604800000));
 
+if (s.c_r('mi_httest') == '1')
+   if (location.href.match(/#\s*$/) || (location.hash || '').match(/wgt=|navlinks*=|storylink=/))
+   {
+      if (history.replaceState)
+         history.replaceState('', document.title, location.pathname + (location.search || ''))
+      else if (location.hash !== '#')
+         location.hash = '';
+   }
 
 /*
 // Temporary "survey" for No Referrer traffic

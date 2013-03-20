@@ -1,7 +1,10 @@
 
 
+		var isEsi = "true";
 		var masterSwitchData = 
 		
+				
+					
 
 
 
@@ -74,12 +77,14 @@
 }
 
 
+				
+			;
 
 		var overlayConfig = {};
 
 		if (typeof masterSwitchData.livePoll !== 'undefined' && masterSwitchData.livePoll.enabled == 'on') {
 
-			if ((KIDS.get('uri') == '' || KIDS.get('uri') == '/') && KIDS.utils.isIpad() === false) {
+			if (KIDS.get('uri') == '' || KIDS.get('uri') == '/') {
 				overlayConfig.enabled = false;
 			} else {
 				overlayConfig.enabled = true;
@@ -87,11 +92,27 @@
 				overlayConfig.deferCookie = true;
 				overlayConfig.cookieValue = masterSwitchData.livePoll.collection;
 				overlayConfig.path = "/nick-assets/kca-2013/vote/" + masterSwitchData.livePoll.collection + "/";
+				overlayConfig.width = 764;
+				overlayConfig.height = 601;
+					
+				if (KIDS.get('uri') === '/kca') {
+					overlayConfig.adfree = false;
+				}
 			}
 
 		} else {
 
 		
+
+			overlayConfig.enabled = true;
+			overlayConfig.cookieID = "NICKKCAOverlay";
+			overlayConfig.cookieValue = "three-days-left";
+			overlayConfig.path = "/nick-assets/kca-2013/overlay/three-days/";
+			
+			overlayConfig.includes = "^/shows/(.*)$,^/games/(.*)$,^/videos/?(.*)$,^/pictures/?(.*)$,^/quizzes/?(.*)$,^/kids-choice-awards/?(.*)$,^/news/?(.*)$".split(',');
+			
+			overlayConfig.excludes = "^/games/kca-2013-multiplayer-trivia.html$".split(',');
+			
 
 		}
 

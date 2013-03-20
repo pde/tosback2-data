@@ -89,7 +89,7 @@ var Langs ={
 'ur':['Urdu','اردو',''],
 'vi':['Vietnamese','Tiếng Việt','']
 }
-function srp(s) {sources.push(s);if(MoreAds) write_ads(AdsNum, 0, 1)}
+function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 1)}
 function wiki(){srp('wiki')}
 function foldoc(){dw('<br><div class=brand_copy>This article is provided by FOLDOC - Free Online Dictionary of Computing (<a target=_blank href="http:/'+'/foldoc.org">foldoc.org</a>)</div><br>');srp('foldoc')};
 function cde(){dw('<br><div class=brand_copy>Computer Desktop Encyclopedia copyright ©1981-2013 by <a target=_blank href=http:/'+'/www.computerlanguage.com/tfd.html>The Computer Language Company Inc</a>. All Right reserved. THIS DEFINITION IS FOR PERSONAL USE ONLY. All other reproduction is strictly prohibited without permission from the publisher.</div><br>');srp('cde')}
@@ -285,9 +285,9 @@ function write_ad(ad,pos) {
 	var t1=ad.line1, t2=ad.line2+' '+ad.line3;
 	var link='<a href="http:/'+'/www.thefreedictionary.com/_/gr.aspx?pos='+pos+'&source='+loc+'&url='+encodeURIComponent(ad.url)+'" onMouseOver="return m_over(\''+(IsG?'go to ':'http://')+encodeURIComponent(ad.visible_url)+'\')" onMouseOut="m_out()">';
 	if(IsG) 
-		res+=link+'<span class=OvTitle>'+t1+'</span></a><br><span class=OvDescr>'+t2+'</span><br>'+link+'<span class=OvURL>'+ad.visible_url+'</span></a>';
+		res+=link+'<span class=OvTitle>'+highlight(t1)+'</span></a><br><span class=OvDescr>'+highlight(t2)+'</span><br>'+link+'<span class=OvURL>'+highlight(ad.visible_url)+'</span></a>';
 	 else
-		res+=link+'<span class=OvTitle>'+t1+'</span><br><span class=OvDescr>'+t2+'</span><br><span class=OvURL>'+ad.visible_url+'</span></a>';
+		res+=link+'<span class=OvTitle>'+highlight(t1)+'</span><br><span class=OvDescr>'+highlight(t2)+'</span><br><span class=OvURL>'+highlight(ad.visible_url)+'</span></a>';
  	return res +'</div>';
  }
  function write_ads(AdsNum,Br,pos) {

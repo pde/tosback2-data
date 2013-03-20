@@ -32,12 +32,23 @@ $(document).ready(function() {
 	var strHostName = "HOSTNAME";
 	var Result1 = RETURN_URL.search(strHostName);
 	var Result2 = RETURN_URL.search("&AUTHNLEVEL");
-	var Result3 = RETURN_URL.substring(Result1 + (strHostName.length + 1), Result2);
-	var str_URL = "URL";
-	Result1 = RETURN_URL.search(str_URL);
-	Result2 = RETURN_URL.search("tucd");
-	var Result4 = RETURN_URL.substring(Result1 + (str_URL.length + 1), Result2);
-	RETURN_URL = "https://" + Result3 + Result4 + "test=success";
+	if (Result1 > 0 && Result2 > 0) {
+	
+	    var Result3 = RETURN_URL.substring(Result1 + (strHostName.length + 1), Result2);
+	    var str_URL = "URL";
+	    Result1 = RETURN_URL.search(str_URL);
+	    Result2 = RETURN_URL.search("tucd");
+	    if (Result1 > 0 && Result2 > 0) {
+	        var Result4 = RETURN_URL.substring(Result1 + (str_URL.length + 1), Result2);
+	        RETURN_URL = "https://" + Result3 + Result4 + "test=success";
+	    }
+	    else{
+	        RETURN_URL = RETURN_URL + "?test=success";
+	    }
+	}
+	else {
+        RETURN_URL = RETURN_URL + "?test=success";
+    }
 	//Return_URL format (from login page URL): "https://" + @HOSTNAME (till &AUTHNLEVEL) + &URL (till &REFERER)
 	$('#fgtPwd').attr('href', "https://www.att.com/olam/enterUserIdSlidFpwd.myworld?origination_point=" + ORIGINATION_POINT_URL + "&Return_URL=" + RETURN_URL + "&Cancel_URL=" + CANCEL_URL);
 	
@@ -62,7 +73,7 @@ $(document).ready(function() {
 	if (!!agent.match(/iPad/i)) {
 		var referer = gup('REFERER');
 			
-		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i) || referer.match(/univision/i) || referer.match(/nick/i) || referer.match(/espn/i) || referer.match(/disney/i) || referer.match(/ncaa/i) || referer.match(/hulu/i)) {
+		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i) || referer.match(/movieplexplay/i) || referer.match(/univision/i) || referer.match(/nick/i) || referer.match(/espn/i) || referer.match(/disney/i) || referer.match(/ncaa/i) || referer.match(/hulu/i) || referer.match(/travelchannel/i) || referer.match(/foodnetwork/i) || referer.match(/hgtv/i) || referer.match(/diynetwork/i) || referer.match(/cookingchannel/i)) {
 			var turnerURL = 0;
 
 			//For form sheet modal need to reset the meta tag

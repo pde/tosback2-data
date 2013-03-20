@@ -5,8 +5,12 @@ function getLoginIframe(){
 		}
 		welcomeIframe = document.createElement('iframe');		
 		welcomeIframe.setAttribute('id', 'welcomeIframeId');
-		welcomeIframe.height = '75';
-		welcomeIframe.width = '250';
+		if(capurl != "")
+			{
+		welcomeIframe.height = '300';
+			}
+		else{welcomeIframe.height = '75';}
+		welcomeIframe.width = '260';
 		welcomeIframe.style.position = 'relative';
 		welcomeIframe.style.border = '0';
 		welcomeIframe.frameBorder = 0;

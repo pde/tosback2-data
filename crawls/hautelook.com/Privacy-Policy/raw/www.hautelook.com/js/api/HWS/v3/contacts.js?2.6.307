@@ -1,0 +1,104 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.contacts = {};
+HWS.v3.contacts.auth = {};
+HWS.v3.contacts.status = {};
+
+HWS.v3.contacts.auth.get = function(params) {
+    $.ajax({
+        url: '/v3/contacts/auth/' + params.provider,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+            if (typeof params.onSuccess == 'function') {
+                var responseObj = {};
+                responseObj.url = response.import_id.url;
+                responseObj.import_id = response.import_id.import_id;
+                
+                params.onSuccess(responseObj, status, XHR);
+            }
+        },
+
+        complete: params.complete
+    });
+};
+
+HWS.v3.contacts.status.get = function(params) {
+    $.ajax({
+        url: '/v3/contacts/status/' + params.import_id,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+            var event = response.events.length > 0 ? response.events[0] : null;
+
+            if (event != null && (event.event_type == "COMPLETE" && event.status == "COMPLETED")) {
+                if (typeof params.onSuccess == 'function') {
+                    var responseObj = {};
+                        responseObj.import_id = response.import_id;
+
+                    params.onSuccess(responseObj, status, XHR);
+                }
+            } else {
+                if (typeof params.onFailure == 'function') {
+                    params.onFailure(response, status, XHR);
+                }
+            }
+        },
+
+        complete: params.complete
+    });
+};
+
+
+HWS.v3.contacts.get = function(params) {
+    function convertContacts(response){
+        var contacts = [];
+        
+        for (var i = 0; i < response.contacts.contacts.length; i++) {
+            if (response.contacts.contacts[i].email.length > 0) {
+                contacts.push(new HWS.models.contact(response.contacts.contacts[i]));
+            }
+        }
+
+        return contacts;
+    }
+    
+    $.ajax({
+        url: '/v3/contacts/' + params.import_id,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+            if (typeof params.onSuccess == 'function') {
+                var contacts = convertContacts(response);
+
+                params.onSuccess(contacts, status, XHR);
+            }
+        },
+
+        complete: params.complete
+    });
+};
+
+
+

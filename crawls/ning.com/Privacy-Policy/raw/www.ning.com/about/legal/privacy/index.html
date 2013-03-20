@@ -295,5 +295,98 @@ $(function() {
 	}, false);
 });
 </script>
+<script>
+    try {
+        function getUrlParameter(name) {
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var re = new RegExp("[\\?&]"+name+"=([^&#]*)");
+        var results = re.exec(window.location.href);
+        if (results == null) return "";
+        return results[1];
+    }
+
+    // Parse a string and return a specific piece.
+    var _uGC = function(l,n,s) {
+        if (!l || l=="" || !n || n=="" || !s || s=="") return "";
+        var i,i2,i3,c="";
+        i=l.indexOf(n);
+        i3=n.indexOf("=")+1;
+
+        if (i > -1) {
+            i2=l.indexOf(s,i); if (i2 < 0) { i2=l.length; }
+            c=l.substring((i+i3),i2);
+        }
+        return c;
+    }
+
+    function setFirstTouchCookie() {
+        // Only need to set if we don't have one already
+        if (_uGC(document.cookie, 'ning_ft=', ';') !== "") return;
+
+        // Parse visitor source cookie and extract various pieces of information
+        var z = _uGC(document.cookie, '2__utmz=', ';');
+        if (z === "") return;
+        // PPEARSON need to pick up the one from the correct namespace?
+
+        // Extract a variable from the utmz cookie
+        var extract = function(key) {
+            return _uGC(z, key + "=", '|');
+        }
+        var source   = extract('utmcsr');
+        var medium   = extract('utmcmd');
+        var term     = extract('utmctr');
+        var content  = extract('utmcct');
+        var campaign = extract('utmccn');
+        var gclid    = extract('utmgclid');
+        if (gclid !== "") {
+            source = 'google';
+            medium = 'cpc';
+        }
+
+        // Build a string that holds the visitor’s source
+        var utmString = "S:"+source;
+            utmString=utmString+"|M:"+medium;
+            utmString=utmString+"|C:"+campaign;
+            utmString=utmString+"|T:"+term;
+            utmString=utmString+"|A:"+content;
+
+        // Stash it in the ning_ft cookie
+        var expiry = new Date();
+        expiry.setDate(expiry.getDate() + 120); // Keep first touch info for 120 days
+        document.cookie = "ning_ft=" + escape(utmString) + "; domain=.ning.com; path=/; expires=" + expiry.toUTCString();
+    }
+
+    var ning_gaq = ning_gaq || [];
+
+    var realreferrer = _uGC(document.cookie, 'realreferrer=', ';');
+    if (realreferrer) {
+        ning_gaq.push(['pageTracker._setReferrerOverride',realreferrer]);
+        ning_gaq.push(['ningPlatformPageTracker._setReferrerOverride',realreferrer]);
+        document.cookie = "realreferrer=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT";
+    }
+    ning_gaq.push(['pageTracker._setAccount',"UA-2270114-1"]);
+    ning_gaq.push(['pageTracker._setNamespace',"ning_rollup"]);
+    ning_gaq.push(['pageTracker._setDomainName',".ning.com"]);
+    ning_gaq.push(['pageTracker._setAllowLinker',true]);
+    ning_gaq.push(['pageTracker._setAllowHash',false]);
+    ning_gaq.push(['pageTracker._setCustomVar',1,'member_type',"NC",3]);
+    ning_gaq.push(['pageTracker._trackPageview']);
+    setFirstTouchCookie(); // set ning_ft cookie from 2__utmz if it is currently unset
+
+    ning_gaq.push(['ningPlatformPageTracker._setAccount',"UA-2270114-6"]);
+    ning_gaq.push(['ningPlatformPageTracker._setNamespace',"ning"]);
+    ning_gaq.push(['ningPlatformPageTracker._setDomainName',".ning.com"]);
+    ning_gaq.push(['ningPlatformPageTracker._setAllowLinker',true]);
+    ning_gaq.push(['ningPlatformPageTracker._setAllowHash',false]);
+    ning_gaq.push(['ningPlatformPageTracker._trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = "http://www.ning.com/0/xn_resources/lib/js/ga/ga.js";
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+} catch(err) {}
+</script>
 
 </body></html>

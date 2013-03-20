@@ -66,8 +66,10 @@
             
             if (options.pagetype == 'main')
                 w = 990;
-            else
-                w = 820;
+            else  if (options.pagetype == 'swim')
+                w = 225;
+			else
+				w = 820;
 
             var h = $("li", obj).height();
             var clickable = true;

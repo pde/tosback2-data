@@ -1,6 +1,16 @@
 var blazeuser = null; 
 
-
+(function(){
+	/*
+	 * THIS IS FOR TESTING ONLY ON DEV, it will not run on prod
+	 */
+	if( /dev\./.test(window.location.hostname) &&  /http\:\/\/dev\./.test(window.location.href)) {
+		jQuery('body').append('<div class="utility-wrap active" id="on-select-overlay"></div>')
+		jQuery('ul.social-tools.social-tools-bottom ').attr('data-engines', 'onselect,twitter,facebook,google,linkedin');
+		
+	}
+	//END OF DEV TESTING 
+})();
 function is_touch_device() {
 	try {
 		document.createEvent("TouchEvent");  

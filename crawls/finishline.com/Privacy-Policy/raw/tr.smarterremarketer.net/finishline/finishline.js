@@ -759,7 +759,7 @@
                     } else {
                         if (FL && FL.setup && FL.setup.categoryId && FL.setup.categoryId.length > 0) {
                             cid = FL.setup.categoryId;
-                            cn = (s && s.prop5 && s.prop5.length > 0) ? s.prop5 : (document.title.length > 0) ? document.title : cid;
+                            cn = (typeof(s) != 'undefined' && s && s.prop5 && s.prop5.length > 0) ? s.prop5 : (document.title.length > 0) ? document.title : cid;
                         }
                     }
                     if (cn !== null) {

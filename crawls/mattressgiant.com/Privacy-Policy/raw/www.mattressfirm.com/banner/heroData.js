@@ -4,11 +4,10 @@ var endDate = "01/01/2020 00:00 ";
 
 //minal length 2: "01/01/2010 00:00 ","01/01/2020 00:00 "
 //add one more day for public
-var dateTimeList = new Array(  startDate,							 
-							   endDate);
+var dateTimeList = new Array(startDate, endDate);
 
-var heroImgList = new Array("banner/home/01_WK49_PillowTop_299.gif;banner/home/02_WK49_Tempur_4Years.gif");
-var heroLinkList = new Array("H-R-8-5-Firm-Pillow-Top-P293.aspx?ref=Home&tag=01_WK49_PillowTop_299;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK49_Tempur_4Years");
+var heroImgList = new Array("Banner/home/01_WK4_Special_399.gif;Banner/home/02_WK8_Tempur_3Years.gif");
+var heroLinkList = new Array("Hampton-and-Rhodes-11-Luxury-Pillow-Top-P265.aspx?ref=Home&tag=01_WK4_Special_399;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK8_Tempur_3Years");
 
 //specify images
 //current data if no chnage needed
@@ -27,9 +26,8 @@ for (m = 0; m < len; m++) {
         slideimages = heroImgList[0].split(";");
         slidelinks = heroLinkList[0].split(";");
         break;
-
-    } else if (m < len - 1) {
-
+    } 
+    else if (m < len - 1) {
         if (curDate.valueOf() > Date.parse(dateTimeList[m]) && curDate.valueOf() < Date.parse(dateTimeList[m + 1])) {
             // document.write("<br><br>else if2   m=" + m);
 
@@ -52,6 +50,4 @@ temp = "<br>url<br> " + slidelinks[0] + "<br>" + slidelinks[1]
 document.write(temp);
 */
 //specify interval between slide (in mili seconds)
-var slidespeed = 6000
-
-
+var slidespeed = 6000;

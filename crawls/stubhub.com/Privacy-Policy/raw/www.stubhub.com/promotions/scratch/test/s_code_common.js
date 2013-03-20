@@ -1,7 +1,7 @@
 /* SiteCatalyst code version: H.24.4
 Copyright 1996-2012 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
-/* Last Updated 2013-21-02
+/* Last Updated 2013-18-03 - Atlas partner plugin removed, Utility Function VPR is introduced & DFA variables added, Uppercase vid value for mobile app to mobile checkout
 2013-20-02 - TnT PC and Session ID to SC 
 2012-10-03 - Facebook tracking
 2012-07-26 - Go together codes
@@ -342,7 +342,7 @@ function s_doPlugins(s)
 	if(!s.eVar33)
 		s.eVar33=s.getQueryParam('creative')
 	
-	s.prop28="H.24.4_20132102"	
+	s.prop28="H.24.4_20131803"	
 	s.prop31=s.c_r('currentCTC');
 	s.prop32=s.c_r('currentCVP');
 	
@@ -382,6 +382,7 @@ function s_doPlugins(s)
 	{
 		var mobileSource=s.getQueryParam('ms');
 		var vID=s.getQueryParam('vid');
+		vID=vID.toUpperCase();
 		if(!mobileSource)
 			mobileSource=s.c_r('mspersist');
 		if(mobileSource)
@@ -413,31 +414,6 @@ s.trackTNT=new Function("v","p","b",""
 +"getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
 +"]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
 /*********************** Test&Target Plugin End *************************/
-/*
- * Partner Plugin: Atlas Check 0.2 
- */
-
-s.maxDelay=750
-s.loadModule("Integrate")
-s.Integrate.onLoad=function(s,m)
-{
-	s.Integrate.add("Atlas_DMT")
-	s.Integrate.Atlas_DMT.PartnerTag="sf1stu_OmnitureConfirmationPage_1"
-	s.Integrate.Atlas_DMT.adVar="eVar51"
-	s.Integrate.Atlas_DMT.get("http://view.atdmt.com/partner/OMTR?ID=[PartnerTag]&var=[VAR]")
-	s.Integrate.Atlas_DMT.setVars=function(s,p)
-	{
-		var	at=p.lastImpTime,
-		a1=p.lastImpSId,
-		a2=p.lastImpPId,
-		a3=p.lastImpAId,
-		bt=p.lastClkTime,
-		b1=p.lastClkSId,
-		b2=p.lastClkPId,
-		b3=p.lastClkAId;
-		if(((at&&a1&&a2&&a3)||(bt&&b1&&b2&&b3))&&!p.errorCode)s[p.adVar]="ATL:"+(at?at:0)+":"+(a1?a1:0)+":"+(a2?a2:0)+":"+(a3?a3:0)+":"+(bt?bt:0)+":"+(b1?b1:0)+":"+(b2?b2:0)+":"+(b3?b3:0)
-	}
-}
 
 /*
  * Plugin: getAndPersistValue 0.3 - get a value on every page
@@ -551,6 +527,11 @@ s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
 +",'');return r;");
 
 
+/*
+ * Utility Function: vpr - set the variable vs with value v
+ */
+s.vpr=new Function("vs","v",
+"if(typeof(v)!='undefined' && vs){var s=this; eval('s.'+vs+'=\"'+v+'\"')}");
 
 /*
  * Utility Function: split v1.5 (JS 1.0 compatible)
@@ -663,6 +644,82 @@ s.seList="altavista.co,altavista.de|q,r|AltaVista>.aol.,suche.aolsvc."
 +"|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net"
 +"|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.c"
 +"om|qs|RoadRunner Search>optimum.net|q|Optimum Search";
+
+/************************** DFA VARIABLES **************************/
+/* @TODO: Fill in these variables with the settings mapped in the 
+ * DFA wizard and that match your desired preferences. Some of the 
+ * variables are optional and have been labeled as such below. 
+ * @TODO: Comments should be removed in a production deployment. */
+var dfaConfig = {
+	CSID:               '1528319', // DFA Client Site ID
+	SPOTID:             '3791772', // DFA Spotlight ID
+	tEvar:              'eVar53', // Transfer variable, typically the "View Through" eVar.
+	errorEvar:          'eVar51', // DFA error tracking (optional)
+	timeoutEvent:       'event33', // Tracks timeouts/empty responses (optional)
+	requestURL:         "http://fls.doubleclick.net/json?spot=[SPOTID]&src=[CSID]&var=[VAR]&host=integrate.112.2o7.net%2Fdfa_echo%3Fvar%3D[VAR]%26AQE%3D1%26A2S%3D1&ord=[RAND]", // the DFA request URL
+	maxDelay:           "750", // The maximum time to wait for DFA servers to respond, in milliseconds.
+	visitCookie:        "s_dfa", // The name of the visitor cookie to use to restrict DFA calls to once per visit.
+	clickThroughParam:  "CID", // A query string paramter that will force the DFA call to occur.
+	searchCenterParam:  undefined, // SearchCenter identifier.
+	newRsidsProp:       undefined //"prop34" // Stores the new report suites that need the DFA tracking code. (optional)
+};
+
+//if statement to determine if it is a UK Report Suite
+if (s_account==="stubhubukprod"||s_account==="stubhubukdev"||s_account==="stubhubmobilewebukprod"){
+var dfaConfig = {
+	CSID:               '1528320', // DFA Client Site ID
+	SPOTID:             '3791773', // DFA Spotlight ID
+	tEvar:              'eVar53', // Transfer variable, typically the "View Through" eVar.
+	errorEvar:          'eVar51', // DFA error tracking (optional)
+	timeoutEvent:       'event33', // Tracks timeouts/empty responses (optional)
+	requestURL:         "http://fls.doubleclick.net/json?spot=[SPOTID]&src=[CSID]&var=[VAR]&host=integrate.112.2o7.net%2Fdfa_echo%3Fvar%3D[VAR]%26AQE%3D1%26A2S%3D1&ord=[RAND]", // the DFA request URL
+	maxDelay:           "750", // The maximum time to wait for DFA servers to respond, in milliseconds.
+	visitCookie:        "s_dfa", // The name of the visitor cookie to use to restrict DFA calls to once per visit.
+	clickThroughParam:  "CID", // A query string paramter that will force the DFA call to occur.
+	searchCenterParam:  undefined, // SearchCenter identifier.
+	newRsidsProp:       undefined //"prop34" // Stores the new report suites that need the DFA tracking code. (optional)
+};
+};
+
+/************************ END DFA Variables ************************/
+
+s.maxDelay = dfaConfig.maxDelay;
+s.loadModule("Integrate")
+s.Integrate.onLoad=function(s,m) {
+	var dfaCheck = s.partnerDFACheck(dfaConfig);
+	if (dfaCheck) {
+		s.Integrate.add("DFA");
+		s.Integrate.DFA.tEvar=dfaConfig.tEvar;
+		s.Integrate.DFA.errorEvar=dfaConfig.errorEvar;
+		s.Integrate.DFA.timeoutEvent=dfaConfig.timeoutEvent;
+		s.Integrate.DFA.CSID=dfaConfig.CSID;
+		s.Integrate.DFA.SPOTID=dfaConfig.SPOTID;
+		s.Integrate.DFA.get(dfaConfig.requestURL);
+		s.Integrate.DFA.setVars=function(s,p) {
+			if (window[p.VAR]) { // got a response
+				if(!p.ec) { // no errors
+					s[p.tEvar]="DFA-"+(p.lis?p.lis:0)+"-"+(p.lip?p.lip:0)+"-"+(p.lastimp?p.lastimp:0)+"-"+(p.lastimptime?p.lastimptime:0)+"-"+(p.lcs?p.lcs:0)+"-"+(p.lcp?p.lcp:0)+"-"+(p.lastclk?p.lastclk:0)+"-"+(p.lastclktime?p.lastclktime:0)
+				} else if (p.errorEvar) { // got an error response, track
+					s[p.errorEvar] = p.ec;
+				}
+			} else if (p.timeoutEvent) { // empty response or timeout
+				s.events = ((!s.events || s.events == '') ? '' : (s.events + ',')) + p.timeoutEvent; // timeout event
+			}
+		}
+	}
+}
+
+/*
+ * Partner Plugin: DFA Check 1.0 - Restrict DFA calls to once a visit, per report suite, per click 
+ * through. Used in conjunction with VISTA. Deduplicates SCM hits.
+ */
+s.partnerDFACheck=new Function("cfg","" 
++"var s=this,c=cfg.visitCookie,src=cfg.clickThroughParam,scp=cfg.searchCenterParam,p=cfg.newRsidsProp,tv=cfg.tEvar,dl=',',cr,nc,q,g,gs,i,j,k,fnd,v=1,t=new Date,cn=0,ca=new Array,aa=new Array,cs=new A"
++"rray;t.setTime(t.getTime()+1800000);cr=s.c_r(c);if(cr){v=0;}ca=s.split(cr,dl);aa=s.split(s.un,dl);for(i=0;i<aa.length;i++){fnd = 0;for(j=0;j<ca.length;j++){if(aa[i] == ca[j]){fnd=1;}}if(!fnd){cs[cn"
++"]=aa[i];cn++;}}if(cs.length){for(k=0;k<cs.length;k++){nc=(nc?nc+dl:'')+cs[k];}cr=(cr?cr+dl:'')+nc;s.vpr(p,nc);v=1;}q=s.wd.location.search.toLowerCase();q=s.repl(q,'?','&');g=q.indexOf('&'+src.toLow"
++"erCase()+'=');gs=(scp)?q.indexOf('&'+scp.toLowerCase()+'='):-1;if(g>-1){s.vpr(p,cr);v=1;}else if(gs>-1){v=0;s.vpr(tv,'SearchCenter Visitors');}if(!s.c_w(c,cr,t)){s.c_w(c,cr,0);}if(!s.c_r(c)){v=0;}r"
++"eturn v>=1;"); 
+
 
 /****************************** MODULES *****************************/
 /* Module: Integrate */

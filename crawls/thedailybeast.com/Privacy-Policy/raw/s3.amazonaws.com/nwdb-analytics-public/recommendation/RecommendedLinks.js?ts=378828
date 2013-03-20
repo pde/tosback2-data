@@ -1,0 +1,1605 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/rapper-lil-wayne-hospitalized-for-seizures-for-second-time-this-week.html",' +
+                '"title": "Rapper Lil Wayne Hospitalized For Seizures For Second Time This Week",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "68ed784681773093bde4b8fa79a9a61f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/bates-motel-freddie-highmore-talks-sex-incest-and-young-norman-bates.html",' +
+                '"title": "&lsquo;Bates Motel&rsquo;: Freddie Highmore Talks Sex, Incest, and Young Norman Bates",' +
+                '"rubric": "Teen Psycho",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cdcfc8240cabf0f82ba08fd595fefd99"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/14/pope-francis-is-a-jesuit-seven-things-you-need-to-know-about-the-society-of-jesus.html",' +
+                '"title": "Pope Francis Is a Jesuit: Seven Things You Need to Know About the Society of Jesus",' +
+                '"rubric": "GOD&rsquo;S MARINES",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5513f99727d15814ce2ce3fb4de0481a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/12/amanda-bynes-s-makeover-picture-wtf.html",' +
+                '"title": "Amanda Bynes&rsquo;s Makeover Picture: WTF?!",' +
+                '"rubric": "WTF",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "845bbef007e65585dc5e7cb38b470c13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/justin-timberlake-closes-out-sxsw-in-style-at-myspace-bash.html",' +
+                '"title": "Justin Timberlake Closes Out SXSW in Style at Myspace Bash",' +
+                '"rubric": "&lsquo;SUIT &amp; TIE&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e62066e9b7dfd595ec1e9b2370ec8a74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/sarah-palin-plays-cpac-for-laughs.html",' +
+                '"title": "Sarah Palin Plays CPAC for Laughs",' +
+                '"rubric": "Yuks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f2e9c34487dd977062dcbe94f0e672f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/mental-health-breakdown-when-harvard-fails-its-students.html",' +
+                '"title": "Mental-Health Breakdown: When Harvard Fails Its Students",' +
+                '"rubric": "Sad Face",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "721a005de78020ec537618371fa47485"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/plouffe-hillary-clinton-probably-the-strongest-candidate-for-2016.html",' +
+                '"title": "Plouffe: Hillary Clinton &lsquo;Probably the Strongest Candidate&rsquo; for 2016",' +
+                '"rubric": "Plouffe Pick",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4625517d2467866a75a358c64668c073"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/on-st-patrick-s-day-beware-those-sly-green-eyes.html",' +
+                '"title": "On St. Patrick&rsquo;s Day, Beware Those Sly Green Eyes",' +
+                '"rubric": "Irish, Beware",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "cca0824bcded637dbc08812370ee7851"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/sorry-folks-one-way-or-the-other-you-ll-never-be-able-to-count-on-retirement.html",' +
+                '"title": "Sorry, Folks: One Way or the Other, You\'ll Never Be Able to Completely Count on Retirement",' +
+                '"rubric": "401k Nation",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c0fa99749c81f249e7a293b77b309be2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/blowing-sunshine-florida-s-fraught-relationship-with-the-truth.html",' +
+                '"title": "Sunshine: Florida&rsquo;s Fraught Relationship With the Truth",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "03f0e9d8b520546d99e031c46211e225"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/kate-middleton-s-heel-almost-caused-a-fall-anna-wintour-s-new-job-responsibilities-still-unclear.html",' +
+                '"title": "Kate Middleton\'s Heel Almost Caused a Fall; Anna Wintour\'s New Job Responsibilities Still Unclear",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "01ce45490a32479454af98db99bed610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/satan-s-makeup-artist-speaks.html",' +
+                '"title": "Satan&rsquo;s Makeup Artist Speaks! Why the Devil in \'The Bible\' Isn\'t Obama",' +
+                '"rubric": "Devilish",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0debe9bed8de7886035225683dcb55b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/sarah-palin-plays-cpac-for-laughs.html",' +
+                '"title": "Sarah Palin Plays CPAC for Laughs",' +
+                '"rubric": "Yuks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f2e9c34487dd977062dcbe94f0e672f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/plouffe-hillary-clinton-probably-the-strongest-candidate-for-2016.html",' +
+                '"title": "Plouffe: Hillary Clinton &lsquo;Probably the Strongest Candidate&rsquo; for 2016",' +
+                '"rubric": "Plouffe Pick",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4625517d2467866a75a358c64668c073"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/blowing-sunshine-florida-s-fraught-relationship-with-the-truth.html",' +
+                '"title": "Sunshine: Florida&rsquo;s Fraught Relationship With the Truth",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "03f0e9d8b520546d99e031c46211e225"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/mental-health-breakdown-when-harvard-fails-its-students.html",' +
+                '"title": "Mental-Health Breakdown: When Harvard Fails Its Students",' +
+                '"rubric": "Sad Face",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "721a005de78020ec537618371fa47485"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/few-regrets-as-neoconservative-advocates-for-iraq-invasion-look-back.html",' +
+                '"title": "Few Regrets as Neoconservative Advocates for Iraq Invasion Look Back",' +
+                '"rubric": "Iraq 10 Years Later",' +
+                '"topic": "World",' +
+                '"urlHashCode": "366dfbeebccb325e4463803aa5dcd37a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-gop-s-inept-autopsy.html",' +
+                '"title": "The GOP&rsquo;s Inept Autopsy",' +
+                '"rubric": "Try Again",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "66bbb14e332f439790f616523a15fe3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/more-sarah-palin-than-ronald-reagan-cpac-s-paranoid-style.html",' +
+                '"title": "More Sarah Palin Than Ronald Reagan: CPAC&rsquo;s Paranoid Style",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a0f954ec5d3ad7a04828c309f000cc36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-religious-liberty-bullies-and-their-fight-against-lgbt-equality.html",' +
+                '"title": "The &lsquo;Religious Liberty&rsquo; Bullies and Their Fight Against LGBT Equality",' +
+                '"rubric": "WHO&rsquo;S DISCRIMINATING?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "381827fc1daf98f4796dd2b75be0bbfb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/satan-s-makeup-artist-speaks.html",' +
+                '"title": "Satan&rsquo;s Makeup Artist Speaks! Why the Devil in \'The Bible\' Isn\'t Obama",' +
+                '"rubric": "Devilish",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0debe9bed8de7886035225683dcb55b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/lindsay-lohan-due-in-court-for-allegedly-lying-to-cops-over-car-crash.html",' +
+                '"title": "Lindsay Lohan Due in Court for Allegedly Lying to Cops Over Car Crash",' +
+                '"rubric": "Flight Troubles",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "daa22db52efe46e8f968d58cc0213829"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/on-st-patrick-s-day-beware-those-sly-green-eyes.html",' +
+                '"title": "On St. Patrick&rsquo;s Day, Beware Those Sly Green Eyes",' +
+                '"rubric": "Irish, Beware",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "cca0824bcded637dbc08812370ee7851"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/michele-bachmann-saves-day-three-of-cpac.html",' +
+                '"title": "Michele Bachmann Saves Day Three of CPAC",' +
+                '"rubric": "GOP Confab",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "441ca294aeeb1d54d14ae2da10339094"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/rapper-lil-wayne-hospitalized-for-seizures-for-second-time-this-week.html",' +
+                '"title": "Rapper Lil Wayne Hospitalized For Seizures For Second Time This Week",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "68ed784681773093bde4b8fa79a9a61f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/jill-zarin-s-fashion-savvy-reaps-reality-tv-s-rewards-with-a-line-called-skweez-couture.html",' +
+                '"title": "Jill Zarin&rsquo;s Fashion Savvy Reaps Reality TV&rsquo;s Rewards With a Line Called Skweez Couture",' +
+                '"rubric": "Reality Check",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "763cdc4b5721d13f9fd5b8de0be171ad"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/richard-hell-was-the-first-person-to-shoot-up-heroin-in-front-of-me.html",' +
+                '"title": "Richard Hell Was the First Person to Shoot Up Heroin in Front of Me",' +
+                '"rubric": "Richard Hell",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7586f8b0d6cf2c785ac828914d753179"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/fighting-the-anti-gunners-the-nra-makes-its-presence-felt-at-cpac.html",' +
+                '"title": "Fighting the Anti-Gunners: The NRA Makes Its Presence Felt at CPAC",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a95740bdeced0c0099887ad0355ade1b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/from-dirty-war-to-child-abuse-church-s-past-confronts-pope-francis.html",' +
+                '"title": "From Dirty War to Child Abuse, Church&rsquo;s Past Confronts Pope Francis",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9927e90a6893451e87433600aa182978"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/12/20/aurora-snow-on-the-sasha-grey-school-controversy.html",' +
+                '"title": "Pornstar Aurora Snow on the Sasha Grey School Controversy",' +
+                '"rubric": "School for Scandal",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4294bdd669a8cbe1a5e845f73ba77d8c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/27/the-paralyzed-bride-talks-life-sex-as-a-27-year-old-quadriplegic.html",' +
+                '"title": "&lsquo;The Paralyzed Bride&rsquo; Talks Life &amp; Sex as a 27-Year-Old Quadriplegic",' +
+                '"rubric": "Inspiring",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2349ea0103114e20f070994568e61395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2013/01/15/embarrassing-celebrity-splits-lady-gaga-sofia-vergara-more-photos.html",' +
+                '"title": "Embarrassing Celebrity Splits: Lady Gaga, Sofia Vergara &amp; More (PHOTOS)",' +
+                '"rubric": "Oooops!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7348c6acbfacd2942012c099c96ef040"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/11/girls-shows-us-the-real-ocd-with-hannah-s-brutal-q-tip-scene.html",' +
+                '"title": "&lsquo;Girls&rsquo; Shows Us the Real OCD With Hannah&rsquo;s Brutal Q-Tip Scene",' +
+                '"rubric": "That Q-Tip!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2cb23e9c61f25aad093eb607a90514d8"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/sorry-folks-one-way-or-the-other-you-ll-never-be-able-to-count-on-retirement.html",' +
+                '"title": "Sorry, Folks: One Way or the Other, You\'ll Never Be Able to Completely Count on Retirement",' +
+                '"rubric": "401k Nation",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c0fa99749c81f249e7a293b77b309be2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/sarah-palin-plays-cpac-for-laughs.html",' +
+                '"title": "Sarah Palin Plays CPAC for Laughs",' +
+                '"rubric": "Yuks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f2e9c34487dd977062dcbe94f0e672f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/when-celebrities-like-mila-kunis-talk-stocks-it-s-time-to-get-out-of-the-market.html",' +
+                '"title": "When Celebrities Like Mila Kunis Talk Stocks, It&rsquo;s Time to Get Out of the Market",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "ec319afbba03494c4ec649816967fa65"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/blowing-sunshine-florida-s-fraught-relationship-with-the-truth.html",' +
+                '"title": "Sunshine: Florida&rsquo;s Fraught Relationship With the Truth",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "03f0e9d8b520546d99e031c46211e225"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/14/pope-francis-is-a-jesuit-seven-things-you-need-to-know-about-the-society-of-jesus.html",' +
+                '"title": "Pope Francis Is a Jesuit: Seven Things You Need to Know About the Society of Jesus",' +
+                '"rubric": "GOD&rsquo;S MARINES",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5513f99727d15814ce2ce3fb4de0481a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/rapper-lil-wayne-hospitalized-for-seizures-for-second-time-this-week.html",' +
+                '"title": "Rapper Lil Wayne Hospitalized For Seizures For Second Time This Week",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "68ed784681773093bde4b8fa79a9a61f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/obama-and-netanyahu-have-reached-detente-in-time-for-israel-visit.html",' +
+                '"title": "Obama and Netanyahu Have Reached Detente in Time for Israel Visit",' +
+                '"rubric": "Israel Trip",' +
+                '"topic": "World",' +
+                '"urlHashCode": "18f8f9447d0b815a1c69900a6f49f514"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/jill-zarin-s-fashion-savvy-reaps-reality-tv-s-rewards-with-a-line-called-skweez-couture.html",' +
+                '"title": "Jill Zarin&rsquo;s Fashion Savvy Reaps Reality TV&rsquo;s Rewards With a Line Called Skweez Couture",' +
+                '"rubric": "Reality Check",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "763cdc4b5721d13f9fd5b8de0be171ad"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/inside-msnbc-s-shakeup-now-chris-hayes-will-take-on-bill-o-reilly.html",' +
+                '"title": "Inside MSNBC&rsquo;s Shakeup: Now Chris Hayes Will Take On Bill O&rsquo;Reilly",' +
+                '"rubric": "Cable-News Wars",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "8f13d715f8b7e0dde5f91188aee533f5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/mental-health-breakdown-when-harvard-fails-its-students.html",' +
+                '"title": "Mental-Health Breakdown: When Harvard Fails Its Students",' +
+                '"rubric": "Sad Face",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "721a005de78020ec537618371fa47485"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/bates-motel-freddie-highmore-talks-sex-incest-and-young-norman-bates.html",' +
+                '"title": "&lsquo;Bates Motel&rsquo;: Freddie Highmore Talks Sex, Incest, and Young Norman Bates",' +
+                '"rubric": "Teen Psycho",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cdcfc8240cabf0f82ba08fd595fefd99"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/lindsay-lohan-due-in-court-for-allegedly-lying-to-cops-over-car-crash.html",' +
+                '"title": "Lindsay Lohan Due in Court for Allegedly Lying to Cops Over Car Crash",' +
+                '"rubric": "Flight Troubles",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "daa22db52efe46e8f968d58cc0213829"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/few-regrets-as-neoconservative-advocates-for-iraq-invasion-look-back.html",' +
+                '"title": "Few Regrets as Neoconservative Advocates for Iraq Invasion Look Back",' +
+                '"rubric": "Iraq 10 Years Later",' +
+                '"topic": "World",' +
+                '"urlHashCode": "366dfbeebccb325e4463803aa5dcd37a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/satan-s-makeup-artist-speaks.html",' +
+                '"title": "Satan&rsquo;s Makeup Artist Speaks! Why the Devil in \'The Bible\' Isn\'t Obama",' +
+                '"rubric": "Devilish",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0debe9bed8de7886035225683dcb55b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2013/03/17/dancing-with-the-stars-fails.html",' +
+                '"title": "Dancing With the Stars Fails",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c45acfcbba529c636dc3d443665700d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/15/girls-season-2-in-180-seconds.html",' +
+                '"title": "\'Girls\' Season 2 In 180 Seconds",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7d55f53ec5d4ec754b9559977156b553"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/18/lil-wayne-sips-on-syrup.html",' +
+                '"title": "Lil\' Wayne Sips On Syrup",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0752908051db7ec82abb70f7252d8662"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/bates-motel-freddie-highmore-talks-sex-incest-and-young-norman-bates.html",' +
+                '"title": "&lsquo;Bates Motel&rsquo;: Freddie Highmore Talks Sex, Incest, and Young Norman Bates",' +
+                '"rubric": "Teen Psycho",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cdcfc8240cabf0f82ba08fd595fefd99"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/jake-johnson-on-his-sxsw-comedy-drinking-buddies-new-girl-success.html",' +
+                '"title": "Jake Johnson on His SXSW Comedy &lsquo;Drinking Buddies,&rsquo; &lsquo;New Girl&rsquo; Success",' +
+                '"rubric": "Bar Keep",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7eafa4e3902778ce94bfc3fb80162c86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/after-ever-after-13-questions-with-youtube-sensation-jon-cozart.html",' +
+                '"title": "&lsquo;After Ever After&rsquo;: 13 Questions With YouTube Sensation Jon Cozart",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "881bd879947cf636fec5f980653e16c8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/lindsay-lohan-due-in-court-for-allegedly-lying-to-cops-over-car-crash.html",' +
+                '"title": "Lindsay Lohan Due in Court for Allegedly Lying to Cops Over Car Crash",' +
+                '"rubric": "Flight Troubles",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "daa22db52efe46e8f968d58cc0213829"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/justin-timberlake-closes-out-sxsw-in-style-at-myspace-bash.html",' +
+                '"title": "Justin Timberlake Closes Out SXSW in Style at Myspace Bash",' +
+                '"rubric": "&lsquo;SUIT &amp; TIE&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e62066e9b7dfd595ec1e9b2370ec8a74"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/jake-johnson-on-his-sxsw-comedy-drinking-buddies-new-girl-success.html",' +
+                '"title": "Jake Johnson on His SXSW Comedy &lsquo;Drinking Buddies,&rsquo; &lsquo;New Girl&rsquo; Success",' +
+                '"rubric": "Bar Keep",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7eafa4e3902778ce94bfc3fb80162c86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/10/an-auschwitz-survivor-searches-for-his-twin-on-facebook.html",' +
+                '"title": "An Auschwitz Survivor Searches for His Twin on Facebook",' +
+                '"rubric": "Long Lost",' +
+                '"topic": "World",' +
+                '"urlHashCode": "717959746a45ee312910d6350affc9f7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/satan-s-makeup-artist-speaks.html",' +
+                '"title": "Satan&rsquo;s Makeup Artist Speaks! Why the Devil in \'The Bible\' Isn\'t Obama",' +
+                '"rubric": "Devilish",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0debe9bed8de7886035225683dcb55b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/rapper-lil-wayne-hospitalized-for-seizures-for-second-time-this-week.html",' +
+                '"title": "Rapper Lil Wayne Hospitalized For Seizures For Second Time This Week",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "68ed784681773093bde4b8fa79a9a61f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/mental-health-breakdown-when-harvard-fails-its-students.html",' +
+                '"title": "Mental-Health Breakdown: When Harvard Fails Its Students",' +
+                '"rubric": "Sad Face",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "721a005de78020ec537618371fa47485"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/on-st-patrick-s-day-beware-those-sly-green-eyes.html",' +
+                '"title": "On St. Patrick&rsquo;s Day, Beware Those Sly Green Eyes",' +
+                '"rubric": "Irish, Beware",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "cca0824bcded637dbc08812370ee7851"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/18/lil-wayne-sips-on-syrup.html",' +
+                '"title": "Lil\' Wayne Sips On Syrup",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0752908051db7ec82abb70f7252d8662"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/17/tears-in-steubenville.html",' +
+                '"title": "Tears in Steubenville",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "10ec1d9ead428836fffa3011bb95b4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/cpac-panel-on-transcending-racist-label-breaks-down-into-verbal-chaos.html",' +
+                '"title": "CPAC Panel on Transcending Racist Label Breaks Down Into Verbal Chaos",' +
+                '"rubric": "Minority Outreach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "95c5d598fbf81877218c67787e5ee54a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-religious-liberty-bullies-and-their-fight-against-lgbt-equality.html",' +
+                '"title": "The &lsquo;Religious Liberty&rsquo; Bullies and Their Fight Against LGBT Equality",' +
+                '"rubric": "WHO&rsquo;S DISCRIMINATING?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "381827fc1daf98f4796dd2b75be0bbfb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/plouffe-hillary-clinton-probably-the-strongest-candidate-for-2016.html",' +
+                '"title": "Plouffe: Hillary Clinton &lsquo;Probably the Strongest Candidate&rsquo; for 2016",' +
+                '"rubric": "Plouffe Pick",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4625517d2467866a75a358c64668c073"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/when-celebrities-like-mila-kunis-talk-stocks-it-s-time-to-get-out-of-the-market.html",' +
+                '"title": "When Celebrities Like Mila Kunis Talk Stocks, It&rsquo;s Time to Get Out of the Market",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "ec319afbba03494c4ec649816967fa65"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/14/pope-francis-is-a-jesuit-seven-things-you-need-to-know-about-the-society-of-jesus.html",' +
+                '"title": "Pope Francis Is a Jesuit: Seven Things You Need to Know About the Society of Jesus",' +
+                '"rubric": "GOD&rsquo;S MARINES",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5513f99727d15814ce2ce3fb4de0481a"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/03/16/michele-bachmann-saves-day-three-of-cpac.html",' +
+                '"title": "Michele Bachmann Saves Day Three of CPAC",' +
+                '"rubric": "GOP Confab",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "441ca294aeeb1d54d14ae2da10339094"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/sarah-palin-plays-cpac-for-laughs.html",' +
+                '"title": "Sarah Palin Plays CPAC for Laughs",' +
+                '"rubric": "Yuks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f2e9c34487dd977062dcbe94f0e672f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/more-sarah-palin-than-ronald-reagan-cpac-s-paranoid-style.html",' +
+                '"title": "More Sarah Palin Than Ronald Reagan: CPAC&rsquo;s Paranoid Style",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a0f954ec5d3ad7a04828c309f000cc36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/plouffe-hillary-clinton-probably-the-strongest-candidate-for-2016.html",' +
+                '"title": "Plouffe: Hillary Clinton &lsquo;Probably the Strongest Candidate&rsquo; for 2016",' +
+                '"rubric": "Plouffe Pick",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4625517d2467866a75a358c64668c073"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/blowing-sunshine-florida-s-fraught-relationship-with-the-truth.html",' +
+                '"title": "Sunshine: Florida&rsquo;s Fraught Relationship With the Truth",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "03f0e9d8b520546d99e031c46211e225"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/few-regrets-as-neoconservative-advocates-for-iraq-invasion-look-back.html",' +
+                '"title": "Few Regrets as Neoconservative Advocates for Iraq Invasion Look Back",' +
+                '"rubric": "Iraq 10 Years Later",' +
+                '"topic": "World",' +
+                '"urlHashCode": "366dfbeebccb325e4463803aa5dcd37a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-religious-liberty-bullies-and-their-fight-against-lgbt-equality.html",' +
+                '"title": "The &lsquo;Religious Liberty&rsquo; Bullies and Their Fight Against LGBT Equality",' +
+                '"rubric": "WHO&rsquo;S DISCRIMINATING?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "381827fc1daf98f4796dd2b75be0bbfb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/cpac-panel-on-transcending-racist-label-breaks-down-into-verbal-chaos.html",' +
+                '"title": "CPAC Panel on Transcending Racist Label Breaks Down Into Verbal Chaos",' +
+                '"rubric": "Minority Outreach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "95c5d598fbf81877218c67787e5ee54a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/satan-s-makeup-artist-speaks.html",' +
+                '"title": "Satan&rsquo;s Makeup Artist Speaks! Why the Devil in \'The Bible\' Isn\'t Obama",' +
+                '"rubric": "Devilish",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0debe9bed8de7886035225683dcb55b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-gop-s-inept-autopsy.html",' +
+                '"title": "The GOP&rsquo;s Inept Autopsy",' +
+                '"rubric": "Try Again",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "66bbb14e332f439790f616523a15fe3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/lindsay-lohan-due-in-court-for-allegedly-lying-to-cops-over-car-crash.html",' +
+                '"title": "Lindsay Lohan Due in Court for Allegedly Lying to Cops Over Car Crash",' +
+                '"rubric": "Flight Troubles",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "daa22db52efe46e8f968d58cc0213829"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/rapper-lil-wayne-hospitalized-for-seizures-for-second-time-this-week.html",' +
+                '"title": "Rapper Lil Wayne Hospitalized For Seizures For Second Time This Week",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "68ed784681773093bde4b8fa79a9a61f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/fighting-the-anti-gunners-the-nra-makes-its-presence-felt-at-cpac.html",' +
+                '"title": "Fighting the Anti-Gunners: The NRA Makes Its Presence Felt at CPAC",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a95740bdeced0c0099887ad0355ade1b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/mental-health-breakdown-when-harvard-fails-its-students.html",' +
+                '"title": "Mental-Health Breakdown: When Harvard Fails Its Students",' +
+                '"rubric": "Sad Face",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "721a005de78020ec537618371fa47485"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/inside-msnbc-s-shakeup-now-chris-hayes-will-take-on-bill-o-reilly.html",' +
+                '"title": "Inside MSNBC&rsquo;s Shakeup: Now Chris Hayes Will Take On Bill O&rsquo;Reilly",' +
+                '"rubric": "Cable-News Wars",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "8f13d715f8b7e0dde5f91188aee533f5"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/03/15/brad-pitt-reportedly-wears-man-spanx-lena-dunham-doesn-t-want-a-victoria-s-secret-model-body.html",' +
+                '"title": "Brad Pitt Might Wear Man Spanx; Lena Dunham Doesn\'t Want a Victoria\'s Secret Model Body",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "c68dc2164bcef08f068fd7917d1b5c96"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/jill-zarin-s-fashion-savvy-reaps-reality-tv-s-rewards-with-a-line-called-skweez-couture.html",' +
+                '"title": "Jill Zarin&rsquo;s Fashion Savvy Reaps Reality TV&rsquo;s Rewards With a Line Called Skweez Couture",' +
+                '"rubric": "Reality Check",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "763cdc4b5721d13f9fd5b8de0be171ad"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-gop-s-inept-autopsy.html",' +
+                '"title": "The GOP&rsquo;s Inept Autopsy",' +
+                '"rubric": "Try Again",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "66bbb14e332f439790f616523a15fe3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-religious-liberty-bullies-and-their-fight-against-lgbt-equality.html",' +
+                '"title": "The &lsquo;Religious Liberty&rsquo; Bullies and Their Fight Against LGBT Equality",' +
+                '"rubric": "WHO&rsquo;S DISCRIMINATING?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "381827fc1daf98f4796dd2b75be0bbfb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/03/16/tea-fueled-republican-resistance-compels-barack-obama-to-keep-running.html",' +
+                '"title": "Tea-Fueled Republican Resistance Compels Barack Obama To Keep Running",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "556d69c13a295942647d2ebae90f866d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/when-celebrities-like-mila-kunis-talk-stocks-it-s-time-to-get-out-of-the-market.html",' +
+                '"title": "When Celebrities Like Mila Kunis Talk Stocks, It&rsquo;s Time to Get Out of the Market",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "ec319afbba03494c4ec649816967fa65"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/inside-msnbc-s-shakeup-now-chris-hayes-will-take-on-bill-o-reilly.html",' +
+                '"title": "Inside MSNBC&rsquo;s Shakeup: Now Chris Hayes Will Take On Bill O&rsquo;Reilly",' +
+                '"rubric": "Cable-News Wars",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "8f13d715f8b7e0dde5f91188aee533f5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/which-politicians-are-in-the-tea-party-s-crosshairs.html",' +
+                '"title": "Which Politicians Are in the Tea Party&rsquo;s Crosshairs?",' +
+                '"rubric": "Targets",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4deb0035ecc10cbcd2b8f6fb60fd982d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/sorry-folks-one-way-or-the-other-you-ll-never-be-able-to-count-on-retirement.html",' +
+                '"title": "Sorry, Folks: One Way or the Other, You\'ll Never Be Able to Completely Count on Retirement",' +
+                '"rubric": "401k Nation",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c0fa99749c81f249e7a293b77b309be2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/05/interracial-sex-still-taboo-for-many-porn-stars.html",' +
+                '"title": "Interracial Sex Still Taboo for Many Porn Stars",' +
+                '"rubric": "Race Relations",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "60d5d77207f75d1ea119d7eb6bad6d62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/obama-and-netanyahu-have-reached-detente-in-time-for-israel-visit.html",' +
+                '"title": "Obama and Netanyahu Have Reached Detente in Time for Israel Visit",' +
+                '"rubric": "Israel Trip",' +
+                '"topic": "World",' +
+                '"urlHashCode": "18f8f9447d0b815a1c69900a6f49f514"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/sarah-palin-plays-cpac-for-laughs.html",' +
+                '"title": "Sarah Palin Plays CPAC for Laughs",' +
+                '"rubric": "Yuks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8f2e9c34487dd977062dcbe94f0e672f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/13/meet-the-germans-having-sex-to-save-the-world.html",' +
+                '"title": "Meet the Germans Having Sex to Save the World",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "69626d3b149842209cf2d6b1064f856f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/sore-losers-7-juicy-bits-from-the-gop-s-autopsy-report.html",' +
+                '"title": "Sore Losers: 7 Juicy Bits From the GOP&rsquo;s Autopsy Report",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c347adf670d462d3043e5ed63a23d3f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/plouffe-hillary-clinton-probably-the-strongest-candidate-for-2016.html",' +
+                '"title": "Plouffe: Hillary Clinton &lsquo;Probably the Strongest Candidate&rsquo; for 2016",' +
+                '"rubric": "Plouffe Pick",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4625517d2467866a75a358c64668c073"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/more-sarah-palin-than-ronald-reagan-cpac-s-paranoid-style.html",' +
+                '"title": "More Sarah Palin Than Ronald Reagan: CPAC&rsquo;s Paranoid Style",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a0f954ec5d3ad7a04828c309f000cc36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/michele-bachmann-saves-day-three-of-cpac.html",' +
+                '"title": "Michele Bachmann Saves Day Three of CPAC",' +
+                '"rubric": "GOP Confab",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "441ca294aeeb1d54d14ae2da10339094"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/blowing-sunshine-florida-s-fraught-relationship-with-the-truth.html",' +
+                '"title": "Sunshine: Florida&rsquo;s Fraught Relationship With the Truth",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "03f0e9d8b520546d99e031c46211e225"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/thank-god-pope-francis-is-a-jesuit.html",' +
+                '"title": "Thank God Pope Francis Is a Jesuit",' +
+                '"rubric": "Pope Francis",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "882d6257833ce540dcaea849acf0788a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/few-regrets-as-neoconservative-advocates-for-iraq-invasion-look-back.html",' +
+                '"title": "Few Regrets as Neoconservative Advocates for Iraq Invasion Look Back",' +
+                '"rubric": "Iraq 10 Years Later",' +
+                '"topic": "World",' +
+                '"urlHashCode": "366dfbeebccb325e4463803aa5dcd37a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-gop-s-inept-autopsy.html",' +
+                '"title": "The GOP&rsquo;s Inept Autopsy",' +
+                '"rubric": "Try Again",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "66bbb14e332f439790f616523a15fe3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/the-veronica-mars-kickstarter-smash-5-burning-questions.html",' +
+                '"title": "The &lsquo;Veronica Mars&rsquo; Kickstarter Smash: 5 Burning Questions",' +
+                '"rubric": "Geek Out!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "30aa929b9f57e5b862e78d9f86e61369"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/scientists-find-bacteria-where-it-isn-t-supposed-to-be-the-brain.html",' +
+                '"title": "Scientists Find Bacteria Where It Isn&rsquo;t Supposed to Be: The Brain",' +
+                '"rubric": "Not So Clean Mind",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "db6805811df16c6b98d6892e64cfb53f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/at-cpac-calls-for-fresh-ideas-are-followed-by-the-same-stale-shtick.html",' +
+                '"title": "At CPAC, Calls for Fresh Ideas Are Followed by the Same Stale Shtick",' +
+                '"rubric": "Freak Show",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85d7e93d71ac3ce575f42c9d1cf3e39b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/the-religious-liberty-bullies-and-their-fight-against-lgbt-equality.html",' +
+                '"title": "The &lsquo;Religious Liberty&rsquo; Bullies and Their Fight Against LGBT Equality",' +
+                '"rubric": "WHO&rsquo;S DISCRIMINATING?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "381827fc1daf98f4796dd2b75be0bbfb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/30/hitler-s-strange-afterlife-in-india.html",' +
+                '"title": "Hitler&rsquo;s Strange Afterlife in India",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ed1ee990084d1d45073f0cf432b710a9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/03/13/the-fashion-world-is-getting-sick-of-the-street-style-circus.html",' +
+                '"title": "The Fashion World Is Getting Sick of the &lsquo;Street Style Circus&rsquo;",' +
+                '"rubric": "Fashion",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "d117a176c38d00a568e45c131d5ffc3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/be-afraid-of-your-food-an-epidemiologist-s-sensible-advice.html",' +
+                '"title": "Be Afraid of Your Food: An Epidemiologist&rsquo;s Sensible Advice",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "2886f9eff63ad7315fc2f45aedb78c6d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/16/cpac-panel-on-transcending-racist-label-breaks-down-into-verbal-chaos.html",' +
+                '"title": "CPAC Panel on Transcending Racist Label Breaks Down Into Verbal Chaos",' +
+                '"rubric": "Minority Outreach",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "95c5d598fbf81877218c67787e5ee54a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/08/steubenville-rape-case-reminds-traci-lords-of-her-own-assault-in-ohio-town.html",' +
+                '"title": "Steubenville Rape Case Reminds Traci Lords of Her Own Assault in Ohio Town",' +
+                '"rubric": "Raped at Age 10",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f7405859df24832780a0e331a1112a3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/25/oops-dkny-admits-using-blogger-s-photos-without-permission.html",' +
+                '"title": "Oops: DKNY Admits Using Blogger&rsquo;s Photos Without Permission",' +
+                '"rubric": "Seeing Double",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "e2e27bd5e60575b2e7ddadfc4025d557"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/cnn-feels-sorry-for-steubenville-rapists-world-can-t-believe-its-ears.html",' +
+                '"title": "CNN Feels Sorry for Steubenville Rapists; World Can&rsquo;t Believe its Ears",' +
+                '"rubric": "MEDIA FAIL",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "f13cad31a5512b63083147b637e7d9a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/17/lil-wayne-hospitalization-what-the-hell-is-sizzurp.html",' +
+                '"title": "Lil Wayne Hospitalization: What the Hell Is Sizzurp?",' +
+                '"rubric": "Lil Wayne",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4eea8f80715770d8b1deda987097f241"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/15/rand-paul-rock-star-libertarians-run-the-show-at-cpac.html",' +
+                '"title": "Rand Paul, Rock Star: Libertarians Run the Show at CPAC",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eddc2f7e0e605fc91f286ab0b8104141"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/rapper-lil-wayne-and-his-struggle-with-sizzurp-drank.html",' +
+                '"title": "Rapper Lil Wayne and His Struggle With Sizzurp &lsquo;Drank&rsquo;",' +
+                '"rubric": "Sizzurp",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0df4a6e483b799e249dccc5282b7e037"' +
+            '}' +
+        ']' +
+    '}'
+);

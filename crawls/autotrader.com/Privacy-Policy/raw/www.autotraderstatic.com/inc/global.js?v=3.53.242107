@@ -1,0 +1,2065 @@
+/**
+ * Container for BI logging functions
+ * @author John Napier
+ */
+var BILogUtil = {
+    /**
+     * Build an engine for searching the DOM, capturing reporting code, and associating
+     * a BILogUtil Redirector call for appropriate links
+     *
+     * @param capturedText String or Array prefix(es) to look for when searching for BI
+     *                     reporting information, matched under the associated
+     *                     "supported attribute".
+     * @param supportedAttributes String or Array attributes to search inside for
+     *                            "capturedText" prefixes
+     *
+     * @example An example of an engine built specifically for MIS codes found under the
+     *          "class" or "id" attributes:
+     *
+     *          == Script ==
+     *          BILogUtil.Engine("mis", ["class", "id"]).automate();
+     *
+     *          == Links ==
+     *          <a href="http://autotrader.com" class="mis-123423423">Text</a>
+     *          <a href="http://www.autotrader.com" id="mis-98765MIS">Text</a>
+     *
+     * @example An example of an engine built for MIS codes and RDPage params under just
+     *          the "title" attribute
+     *
+     *          == Script ==
+     *          BILogUtil.Engine(["mis", "rdpage"], "title").automate();
+     *
+     *          == Links ==
+     *          <a href="http://www.autotrader.com" title="mis-1234MISCODES rdpage-MyRDPageParam">Text</a>
+     *
+     * @note It is recommended to supress supported attributes to just class attributes, as this will
+     *       firstly lighten the load on the engine's search, and secondly ensure that bi information
+     *       remains in standards-compliant attributes, and out of important strict attributes like
+     *       "title" and "alt"
+     */
+    Engine : function (capturedText, supportedAttributes){
+        var object = {
+            /** capturedText property */
+            capturedText : [],
+
+            /** regex property */
+            regex : ["^(", ")-([a-zA-Z0-9-_+]+)$"],
+
+            /** supportedAttributes property */
+            supportedAttributes : [],
+
+            /**
+             * Create a new Engine object and set fields
+             * @constructor
+             *
+             * @return BILogUtil.Engine
+             */
+            __construct : function ()
+            {
+                /* Captured text */
+                if (arguments[0] && (typeof arguments[0] == "string" || arguments[0].constructor === Array))
+                    this.enableCapturingFor(arguments[0]);
+
+                /* Supported attributes */
+                if (arguments[1] && (typeof arguments[1] == "string" || arguments[0].constructor === Array))
+                    this.enableSupportFor(arguments[1]);
+
+                return this;
+            },
+
+            /**
+             * Getter for property capturedText
+             *
+             * @return array
+             */
+            getCapturedText : function ()
+            {
+                return this.capturedText;
+            },
+
+            /**
+             * Getter for property supportedAttributes
+             *
+             * @return array
+             */
+            getSupportedAttributes : function ()
+            {
+                return this.supportedAttributes;
+            },
+
+            /**
+             * Getter for property ready
+             *
+             * @return boolean
+             */
+            isReady : function ()
+            {
+                return (this.getSupportedAttributes().length > 0 && this.getCapturedText().length > 0);
+            },
+
+            /**
+             * Enable matching for specified text prefixes. The text, when found,
+             * will act as a trigger for the engine, notifying it to capture the
+             * data immediately following the "[captured text]-", and setup a
+             * redirector accordingly.
+             *
+             * @param captureText String or Array text to match
+             *
+             * @return BILogUtil.Engine
+             */
+            enableCapturingFor : function (captureText)
+            {
+                var i,
+                        invalid = false,
+                        length;
+
+                if (captureText)
+                {
+                    /* Argument is an array of text to capture */
+                    if (captureText.constructor === Array)
+                    {
+                        for (i = 0, length = captureText.length; i < length; i++)
+                        {
+                            this.enableCapturingFor(captureText[i]);
+                        }
+                    }
+
+                    /* Argument is just a single string */
+                    else if (typeof captureText == "string")
+                    {
+                        for (i = 0, length = this.capturedText.length; i < length; i++)
+                        {
+                            if (this.capturedText[i] == captureText)
+                            {
+                                invalid = true;
+                                break;
+                            }
+                        }
+
+                        /* If the text is valid and not already supported, let's enable capturing for it */
+                        if (!invalid)
+                        {
+                            this.capturedText.push(captureText);
+                        }
+                    }
+                }
+
+                return this;
+            },
+
+            /**
+             * Enable support for specified attributes. When the engine executes,
+             * it will search only these attributes' values in the anchors for
+             * all captured text.
+             *
+             * @param attribute String or Array attribute to search in
+             *
+             * @return BILogUtil.Engine
+             */
+            enableSupportFor : function (attribute)
+            {
+                var i,
+                        invalid = false,
+                        length;
+
+                if (attribute)
+                {
+                    /* Argument is an array of attributes to support */
+                    if (attribute.constructor === Array)
+                    {
+                        for (i = 0, length = attribute.length; i < length; i++)
+                        {
+                            this.enableSupportFor(attribute[i]);
+                        }
+                    }
+
+                    /* Argument is just a single string */
+                    else if (typeof attribute == "string")
+                    {
+                        for (i = 0, length = this.supportedAttributes.length; i < length; i++)
+                        {
+                            if (this.supportedAttributes[i] == attribute)
+                            {
+                                invalid = true;
+                                break;
+                            }
+                        }
+
+                        /* If the text is valid and not already supported, let's enable support for it */
+                        if (!invalid)
+                        {
+                            this.supportedAttributes.push(attribute);
+                        }
+                    }
+                }
+
+                return this;
+            },
+
+            /**
+             * When the page finishes loading, start the engine
+             *
+             * @return boolean
+             */
+            automate : function ()
+            {
+                if (this.isReady())
+                    return (window.addEventListener)
+                            ? window.addEventListener("load", this.__exec, false)
+                            : (window.attachEvent)
+                            ? window.attachEvent("onload", this.__exec)
+                            : null;
+
+                return false;
+            },
+
+            /**
+             * Cancel any currently captured events
+             *
+             * @param e Object window event
+             *
+             * @return null
+             */
+            cancelEvent : function (e)
+            {
+                if (e)
+                {
+                    if (e.preventDefault)
+                    {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    else
+                    {
+                        e.cancelBubble = true;
+                        e.returnValue = false;
+                    }
+                }
+
+                return null;
+            },
+
+            /**
+             * Setup all anchors for automated BI recording. Parse the anchor tag's supported attributes
+             * (if available), and if any supported capturable text is captured, add an event listener
+             * to the anchor to cancel the click, then run BILogUtil.Redirector with the provided HREF
+             * and captured BI information.
+             *
+             * @return null
+             */
+            __exec : function ()
+            {
+                var a_length,
+                        attribute,
+                        callback = function (e)
+                        {
+                            var event = e || window.event,
+                                    element = event.srcElement || this;
+
+                            object.cancelEvent(event);
+
+                            if(element.tagName == "IMG" || element.tagName == "img"){
+                                element=element.parentNode;
+                            }
+
+                            return BILogUtil.Redirector(element.getAttribute("href"),
+                                    element.getAttribute("biParams").split(","),
+                                    (element.getAttribute("newWin") == "true"),
+                                    null,
+                                    (element.getAttribute("parentWin") == "true")
+                            ).send();
+                        },
+                        full_text,
+                        e_length,
+                        elems,
+                        f_length,
+                        i,
+                        j,
+                        k,
+                        regexp = new RegExp(object.regex[0]+object.capturedText.join("|")+object.regex[1]),
+                        results,
+                        temp_cache;
+
+                for (i = 0, elems = document.getElementsByTagName("a"), e_length = elems.length; i < e_length; i++)
+                {
+                    results = [];
+                    for (j = 0, a_length = object.supportedAttributes.length; j < a_length; j++)
+                    {
+                        attribute =
+                                (object.supportedAttributes[j] == "class")
+                                        ? elems[i].className
+                                        : elems[i].getAttribute(object.supportedAttributes[j]);
+
+                        if (attribute != null)
+                        {
+                            full_text = attribute.split(" ");
+                            for (k = 0, f_length = full_text.length; k < f_length; k++)
+                            {
+                                if ((temp_cache = regexp.exec(full_text[k])) != null && temp_cache.length > 0)
+                                {
+                                    results.push(temp_cache[1]+"="+temp_cache[2]);
+                                }
+                            }
+                        }
+                    }
+
+                    /* Did we match any capturable text? If so, we need event listeners */
+                    if (results.length > 0)
+                    {
+                        var newWin = (elems[i].getAttribute("target") == "_blank").toString();
+                        elems[i].setAttribute("newWin", newWin);
+
+                        //def 24720 - add support for window.opener & window.close
+                        var parentWin = (elems[i].getAttribute("target") == "_parent").toString();
+                        elems[i].setAttribute("parentWin", parentWin);
+
+                        elems[i].setAttribute("biParams", results.toString());
+
+                        /* Non-IE */
+                        if (elems[i].addEventListener)
+                        {
+                            elems[i].addEventListener("click", callback, false);
+                        }
+                        /* Internet Explorer */
+                        else if (elems[i].attachEvent)
+                        {
+                            elems[i].attachEvent("onclick", callback);
+                        }
+                        /* Fail-safe */
+                        else
+                        {
+                            elems[i].onclick = callback;
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+
+        /* Construct */
+        return object.__construct(capturedText, supportedAttributes);
+    },
+
+    /**
+     * Pass any URL and specified parameters into redirector_link.jsp, as
+     * a popup or just as a link
+     *
+     * @param url String URL to pass into redirector_link.jsp
+     * @param params Array query parameters to pass into redirector_link.jsp
+     * @param popup Boolean should this link open as a popup?
+     * @param winProperties Array if the link should open as a popup, the
+     *        window should adopt these properties
+     * @param useParentWin Boolean - reuse the window that opened the popup where this link is contained.
+     */
+    Redirector : function (url, params, popup, winProperties, useParentWin) {
+        var object = {
+            /** params property */
+            params : [],
+
+            /** popup property */
+            popup : false,
+
+            /** useParentWin property **/
+            useParentWin : false,
+
+            /** ready property */
+            ready : false,
+
+            /** url property */
+            url : null,
+
+            /** winProperties property */
+            winProperties : [],
+
+            /**
+             * Create a new Redirector object and set fields
+             * @constructor
+             *
+             * @return BILogUtil.Engine
+             */
+            __construct : function ()
+            {
+                if (arguments[0]){
+                    this.ready = !!this.setUrl(arguments[0]);
+                }
+                if (arguments[1]){
+                    this.setParams(arguments[1]);
+                }
+                if (arguments[2]){
+                    this.popup = true;
+                }
+                if (arguments[3]){
+                    this.setWinProperties(arguments[3]);
+                }
+                if (arguments[4]){
+                    this.useParentWin = (true === arguments[4]);
+                }
+
+                return this;
+            },
+
+            /**
+             * Getter for property params
+             *
+             * @return array
+             */
+            getParams : function (){
+                return this.params;
+            },
+
+            /**
+             * Getter for property url
+             *
+             * @return string or null
+             */
+            getUrl : function (){
+                return this.url;
+            },
+
+            /**
+             * Getter for property winProperties
+             *
+             * @return array
+             */
+            getWinProperties : function (){
+                return this.winProperties;
+            },
+
+            /**
+             * Getter for property popup
+             *
+             * @return boolean
+             */
+            isPopup : function (){
+                return this.popup;
+            },
+
+            /**
+             * Getter for useParentWin property
+             *
+             * @return boolean
+             */
+            useParentWindow : function(){
+                return this.useParentWin;
+            },
+
+            /**
+             * Getter for property ready
+             *
+             * @return boolean
+             */
+            isReady : function (){
+                return this.ready;
+            },
+
+            /**
+             * Setter for property params
+             *
+             * @param params Array parameters to pass into redirector_link.jsp
+             *
+             * @note These parameters will NOT remain in the URL after the redirect.
+             *       These are simply the query parameters that will be picked up
+             *       and processed inside of redirector_link.jsp
+             *
+             * @return boolean
+             */
+            setParams : function (){
+                var params;
+
+                return ((params = arguments[0]) && (params.constructor === Array))
+                        ? this.params = params
+                        : false;
+            },
+
+            /**
+             * Setter for property url
+             *
+             * @param url String url to redirect to
+             *
+             * @return boolean
+             */
+            setUrl : function (){
+                var url;
+
+                return ((url = arguments[0]) && (typeof url == "string"))
+                        ? this.url = url
+                        : false;
+            },
+
+            /**
+             * Setter for property winProperties
+             *
+             * @param winProperties Array properties the newly created window will
+             *                      adopt
+             *
+             * @return boolean
+             */
+            setWinProperties : function (){
+                var winProperties;
+
+                return ((winProperties = arguments[0]) && (winProperties.constructor === Array))
+                        ? this.winProperties = winProperties
+                        : false;
+            },
+
+            /**
+             * Send the request through redirector_link.jsp, after parsing and encoding all parameters.
+             * If the link is to be treated as a popoup, open it accordingly with any provided window
+             * properties adopted.
+             *
+             * @note For IE only, this will simulate an actual click event to ensure data gets logged
+             * to server access logs
+             *
+             * @return boolean (false)
+             */
+            send : function (){
+
+                var url = "/redirect/redirector_link.jsp?to_url="
+                        +encodeURIComponent(this.url)
+                        +"&"+this.params.join("&");
+                var properties = this.winProperties.join(", ");
+
+                /**
+                 * If the constructor says we're ready to go, let's go
+                 */
+                if (this.isReady()){
+                    if (this.isPopup()){
+                        window.open(url, "", properties);
+                    }
+                    else if (this.useParentWindow()){
+                        window.opener.location.href = url;
+                        window.opener.focus();
+                        window.close();
+                    }
+                    else {
+                        /*
+                         * Removed temporarily as the ie function conflicts with new BI framework
+                         * We now use the same procedure (window.top.location.href)for all browsers
+                         *
+                         * */
+//                        if (navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
+//                            var link = document.createElement("a");
+//                            link.setAttribute("href", url);
+//                            document.getElementsByTagName("body")[0].appendChild(link);
+//                            link.click();
+//                        } else {
+//                            window.top.location.href = url;
+//                        }
+
+                        //window.top.location.href = url;
+                        atc.location.assign(url)
+
+
+                        //return true;
+                    }
+                }
+                /**
+                 * Cancel the initial href request
+                 */
+                return false;
+            }
+        };
+
+        return object.__construct(url, params, popup, winProperties, useParentWin);
+    }
+};
+
+/**
+ * @note Maintains backwards compatibility with previous MIS.Redirect function
+ *       until code is fully refactored
+ */
+var MIS =
+{
+    /**
+     * Cancel HREF requests on click event, re-route request through redirector_link.jsp,
+     * and log full link with appended MIS code to the server logs.
+     *
+     * @note: This is being done to make links searchable by having clear hrefs directly
+     * to destinations, rather than through a common redirector page. Same functionality
+     * with search engine support. THIS FUNCTION WILL REMAIN *NECESSARY* UNLESS/UNTIL VS
+     * REPORTING CHANGES.
+     *
+     * @param href String, URL to pass through redirector_link.jsp
+     * @param mis String, mis code to log
+     * @param new_win Boolean, if true, open in new window with optionally
+     *                provided @param properties
+     * @param properties Array, if set, each key is passed as an option for window.open,
+     *                   e.g. Array("height=400", "width=300") translates to
+     *                   window.open(to_url, "", "height=400, width=300")
+     *
+     * @return false
+     */
+    Redirect : function ()
+    {
+        var to_url = arguments[0];
+        var mis = arguments[1] || null;
+        var popup = arguments[2];
+        var properties = arguments[3] || [];
+        //defect 24720
+        var useParentWin = (arguments[4] === true);
+        return BILogUtil.Redirector(to_url, ["mis="+mis], popup, properties, useParentWin).send();
+    }
+};
+/** end BILogUtil.js **/
+
+
+/** start global.js **/
+
+/**
+ * Methods called by AdServing
+ * @author chris dot keen at autotrader
+ */
+var Ads = {
+    /*
+     this property turns on debugging via console.log (see _logCall)
+     can be enabled with the queryparam debugAds set to true
+     */
+    logToConsole: false || -1 != window.location.search.indexOf("debugAds=true"),
+
+    /**
+     * collapses (hides) the ad matching iframeId
+     * @param iframeId  string  the ID of the iframe AdServing wants to collapse
+     */
+    collapseAd: function(iframeId) {
+        this.handleExpandableAd(iframeId,false);
+    },
+
+    /**
+     * expands (shows) the ad matching iframeId
+     * @param iframeId  string  the ID of the iframe AdServing wants to expand
+     */
+    expandAd: function(iframeId){
+        this.handleExpandableAd(iframeId,true);
+    },
+
+    /**
+     * DRY method to handle the calls from AdServing
+     * @param iframeId - the id of the iframe
+     * @param expand - boolean - should the ad expand (show) or collapse (hide)
+     */
+    handleExpandableAd: function(iframeId,expand){
+        var adIframe = $j('#' + iframeId),
+                parentDiv = adIframe.parent("div");
+
+        if (expand){
+            adIframe.show();
+            parentDiv.show();
+        }
+        else {
+            adIframe.hide();
+            if (parentDiv.hasClass("atcui-ad")){
+                parentDiv.hide();
+            }
+        }
+
+        var textForLog = expand ? "expanding: " : "collapsing: ";
+        textForLog += iframeId;
+
+        this._logCall(textForLog,adIframe);
+    },
+
+    /**
+     * resizes the iframe to fit different ad sizes.  This will NOT effect the adSize parameter in the adTagRequest
+     * @param iframeId  string  the ID of the iframe AdServing wants to resize
+     * @param dimensions - Object - an object with properties ~= height & width.
+     */
+
+    resizeAdIframe: function(iframeId,dimensions){
+        var adIframe = $j('#' + iframeId);
+
+        try{
+            adIframe.attr({ width: dimensions.width, height: dimensions.height});
+        }
+        catch(exception){
+            sendErrorLog(exception,'global.js','resizeAdIframe');
+            this._logCall(exception,adIframe);
+        }
+
+        this._logCall("resizing " + iframeId + " with dimensions: ",[adIframe,dimensions])
+    },
+
+    /**
+     * allows AdServing to tell us the ID of the iframe to show alternate content in place of.
+     * This is usually CMS content (currently only the homepage uses this method).
+     * This should be called with the slykaltopen template for params.styles
+     * The ID will always be the ifid + _alt
+     * @param iframeId - the id of the iframe
+     */
+    showAlternateContent: function(iframeId){
+        var alternateContent = iframeId + '_alt';
+        this.handleExpandableAd(iframeId,false);
+        this.handleExpandableAd(alternateContent,true);
+    },
+
+    _logCall: function(message,objects){
+        if (this.logToConsole && typeof console !== "undefined" && typeof console.log == "function"){
+            console.log("%o  ",message,objects);
+        }
+        else if (this.logToConsole) {
+            alert(message + " " + objects);
+        }
+    }
+};
+
+//Image Rollover
+function rollOver(name, newSrc) {
+    if (document.images) {
+        document.images[name].src = newSrc;
+    }
+}
+
+//Popup Layers
+var hide, delay = 0;
+
+function showLayer(layer) {
+    clearTimeout(hide);
+    if (layer != null && document.getElementById) {
+        document.getElementById(layer).style.visibility = 'visible';
+    }  else if (layer != null && document.all) {
+        document.all[layer].style.visibility = 'visible';
+    } else {
+        openPopWin();
+    }
+}
+
+//Hide a layer by name
+function hideLayer(layer) {
+    if (layer != null && document.getElementById) {
+        document.getElementById(layer).style.visibility = 'hidden';
+    }  else if (layer != null && document.all) {
+        document.all[layer].style.visibility = 'hidden';
+    } else {
+        closePopWin();
+    }
+}
+
+//Hide a layer by name after a specified delay
+function hideLayerDelay(layer, time) {
+    if (time != null && time > 1) {
+        delay = time;
+    }
+    hide = setTimeout("hideLayer('"+layer+"')", delay);
+}
+
+//Popup Windows
+var popwin;
+
+function closePopWin() {
+    if (popwin && self!=popwin){
+        popwin.close();
+    }
+}
+
+//Open a popup window with a specified URL; Set scrolling, resizing, width and height, winName
+function openPopWin(winURL, scrollBar, resizable, winWidth, winHeight,winName) {
+    closePopWin();
+    winName = winName!=null ? winName : 'popwin';
+    var winOptions = 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=' + scrollBar + ',resizable=' + resizable + ',width=' + winWidth + ',height=' + winHeight;
+    try{
+        popwin = window.open(winURL, winName, winOptions);
+    }
+    catch(ex){}
+    if (popwin) {
+        popwin.focus();
+    }
+}
+
+//Full Windows
+var fullwin = '';
+function closeFullWin() {
+    if (fullwin && self!=fullwin){
+        fullwin.close();
+    }
+}
+
+function openFullWin(winURL) {
+    fullwin = window.open(winURL, 'fullwin');
+}
+
+/*  changes the href of the parent window.  If the parent window is gone, opens a new one
+ *   note:  This is different from "fullwin", fullwin being more like a large pop-up and it's contents
+ *   replaced by subsequent calls to openFullWin. */
+function parentWindowRedirect(pWin, url){
+    if (pWin && !pWin.closed){
+        pWin.location.href = url;
+    } else {
+        window.open(url);
+    }
+}
+function printWindow() {
+    var imgObj = new Image();
+    qs = "/redirect/redirector_link.jsp?to_url=/img/blank_dot.gif&ts=" + new Date().getTime();
+    qs += "&MIS=ISPSRLLNPR811";
+    imgObj.src = qs;
+    window.print();
+}
+
+function showElementOffset(element) {
+    var offsetElement = element + "help";
+    if (document.getElementById) {
+        document.getElementById(offsetElement).style.top = document.getElementById(element).offsetTop + "px";
+
+        if(typeof arguments[1] != "undefined" && arguments[1].offset != "undefined"){
+            document.getElementById(offsetElement).style.top = document.getElementById(arguments[1].offset).offsetTop + "px";
+        }
+
+        document.getElementById(offsetElement).style.display="block";
+    } else if (document.all) {
+        document.all[element].style.display="block";
+    } else {
+        openPopWin();
+    }
+}
+
+function showCompareElementOffset(element) {
+    var offsetElement = element + "help";
+    var targetElement = element;
+
+    if (document.getElementById) {
+        if(typeof arguments[1] != "undefined" && arguments[1].offset != "undefined"){
+            targetElement = arguments[1].offset;
+        }
+
+        if(typeof jQuery != "undefined"){
+            document.getElementById(offsetElement).style.top = parseInt(jQuery("#" + targetElement).position().top) + "px";
+        }
+        else{
+            document.getElementById(offsetElement).style.top = document.getElementById(targetElement).offsetTop + "px";
+        }
+        document.getElementById(offsetElement).style.display="block";
+    } else if (document.all) {
+        document.all[element].style.display="block";
+    } else {
+        openPopWin();
+    }
+}
+
+function showElement(element) {
+    if (document.getElementById) {
+        document.getElementById(element).style.display="block";
+    } else if (document.all) {
+        document.all[element].style.display="block";
+    } else {
+        openPopWin();
+    }
+}
+
+function hideElement(element) {
+    if (document.getElementById) {
+        document.getElementById(element).style.display="none";
+    } else if (document.all) {
+        document.all[element].style.display="none";
+    } else {
+        closePopWin();
+    }
+}
+
+function hideElementDelay(layer, time) {
+    if (time != null && time > 1) {
+        delay = time;
+    }
+    hide = setTimeout("hideElement('"+layer+"')", delay);
+}
+
+//toggle the contents of a layer (older version which may be used by other pages)
+function toggle(height, visibility, whichone, whichtwo) {
+    if (document.getElementById) {
+        document.getElementById(whichone).style.height = height;
+        document.getElementById(whichtwo).style.visibility = visibility;
+    }  else {
+        if (document.all) {
+            document.all[whichone].style.height = height;
+            document.all[whichtwo].style.visibility = visibility;
+        }
+    }
+}
+
+//toggle the contents of a label layer (older version which may be used by other pages)
+function toggleLabel(width, visibility, whichone, whichtwo) {
+    if (document.getElementById) {
+        document.getElementById(whichone).style.width = width;
+        document.getElementById(whichtwo).style.visibility = visibility;
+    }  else {
+        if (document.all) {
+            document.all[whichone].style.width = width;
+            document.all[whichtwo].style.visibility = visibility;
+        }
+    }
+}
+
+var enterZip = "Please enter a ZIP Code.";
+var enterValidZip = "Please enter a valid 5-digit US ZIP Code.";
+var enterNoZeros = "ZIP Code must not be all Zeroes (00000).";
+function validateFields(fieldObj,msg) {
+    msg = (!msg) ? "There was a problem with the zip code entered." : msg;
+    var valid = true;
+    var pattern = /[a-zA-z0-9]/;
+    var numPattern = /(^-?\d\d*$)/;
+    var objVal = fieldObj.value;
+    if(fieldObj.name.indexOf("address") != -1){
+        if (!objVal){ alert (enterZip); return false; }
+        if (!numPattern.test(objVal) || objVal.length < 5){ alert (enterValidZip); return false; }
+        if (objVal.indexOf("00000") != -1){ alert (enterNoZeros); return false; }
+    }
+    if(!pattern.test(objVal)){
+        valid = false;
+    }
+    if (!valid) {
+        alert(msg);
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+/*
+ Report to the JavaScript Logger if the page is within the logger frame.
+ If the page is not within the logger frame nothing is logged.
+ */
+function atcJsLogging(logMessage,logType) {
+    if(!window.parent.logger){
+        return;
+    }
+    window.parent.logger.YAHOO.log(logMessage,logType);
+}
+/*
+ Closes Popup window and redirects opening page to specified url (openerUrl)
+ ex:<a href="javascript:changeOpenerURLCloseThenPopup (/index.jsp);>Home</a>
+ */
+function changeOpenerURLThenClosePopup (openerURL) {
+    this.window.opener.document.location = openerURL;
+    window.close();
+}
+/** end /inc/global.js */
+
+/** start /inc/js/log.js */
+function logCall(str){
+    var imgObj = new Image();
+
+    qs = "/inc/log.jsp?Log=0;ts=" + new Date().getTime();
+
+    if(str){ qs += str; }
+    imgObj.src = qs;
+}
+
+function sendErrorLog(msg,url,line){
+    qs = "&jsError=true&jsLine=" + line + "&jsMsg=" + msg + "&jsUrl=" + escape(url);
+    // ignore calls from CA security suite firewall software
+    if (url.search("xpopup.js") == -1 && (url.indexOf(".autotrader.com") >= 0 || url.indexOf(".autotraderstatic.com") >= 0)) {
+        logCall(qs);
+    }
+}
+
+function errorHandler(msg,url,line){
+    sendErrorLog(msg,url,line);
+    return false; /* if set to true will suppress any visual indicators of the error */
+}
+
+window.onerror = errorHandler;
+/** end /inc/log.js */
+
+
+/** Start /inc/util.js */
+// Trim the value of the cookie to avoid pulling in any unwanted data
+String.prototype.trimCookie = function() {
+    return this.replace(/[\;\s].*$/,"");
+}
+
+// Split any string in standard query format: &key=value
+function splitQuery(name,query) {
+    if (!query) {
+        query = location.search.substring(1);
+    }
+    var pairs = query.split("&");
+    for (i=0; i<pairs.length; i++) {
+        var argname = pairs[i].split("=")[0];
+        var argvalue = pairs[i].split("=")[1];
+        if (argname == name) {
+            return argvalue;
+        }
+    }
+    return null;
+}
+
+// Deprecated call
+function Get_Cookie(name) {
+    return getCookie(name);
+}
+// Get the value of a specified cookie
+function getCookie(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var cookie = document.cookie;
+    if (cookie != null) {
+        var clen = cookie.length;
+        var i = 0;
+        while (i < clen) {
+            var j = i + alen;
+            if (cookie.substring(i, j) == arg) {
+                var endstr = cookie.indexOf (/\s*;\s*/, j);
+                if (endstr == -1) {
+                    endstr = clen;
+                    return unescape(cookie.substring(j, endstr).trimCookie());
+                }
+            }
+            i = cookie.indexOf(" ", i) + 1;
+            if (i == 0) {
+                break;
+            }
+        }
+    }
+    return null;
+}
+
+// Get the value of a specified cookie for partner MSN
+function getCookiePartnerATC(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var cookie = document.cookie;
+    if (cookie != null) {
+        var clen = cookie.length;
+        var i = 0;
+        while (i < clen) {
+            var j = i + alen;
+            if (cookie.substring(i, j) == arg) {
+                var endstr = cookie.indexOf (/\s*;\s*/, j);
+                if (endstr == -1) {
+                    endstr = clen;
+                    return unescape(cookie.substring(j, endstr).trimCookie());
+                }
+            }
+            i = cookie.indexOf(" ", i) + 1;
+            if (i == 0) {
+                break;
+            }
+        }
+    }
+    return null;
+}
+
+
+// Get the value of a specified parameter within a cookie
+function getCookieKey(name,key) {
+    var cookieValue = getCookie(name);
+    if (cookieValue != null) {
+        var keyValue = splitQuery(key,cookieValue);
+        if (keyValue != null) {
+            keyValue = keyValue.trimCookie();
+            return keyValue;
+        }
+    }
+    return null;
+}
+
+function deleteCookie(name, path, domain) {
+    if (Get_Cookie(name)) {
+        document.cookie = name + "=" +
+                ((path) ? "; path=" + path : "") +
+                ((domain) ? "; domain=" + domain : "") +
+                ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+    }
+}
+function getCookieValue(name){
+    var cookie = Get_Cookie("ISP_SF");
+    if(cookie != null){
+        var rtrnVal = "";
+        cookieStr = cookie.substring(1);
+        pairs = cookieStr.split("&");
+        for (i = 0; i < pairs.length; i++){
+            pos = pairs[i].indexOf('=');
+            if (pos == -1){ continue; }
+            argname = pairs[i].substring(0,pos);
+            argvalue = pairs[i].substring(pos+1);
+            if(argname == name){ rtrnVal = argvalue; break; }
+        }
+        return rtrnVal;
+    }
+}
+
+/**
+ * Extracts the base domain name (including TLD) from a host name
+ * for use in the domain field of a cookie that is to be shared
+ * across all of the hosts in the domain.
+ * @param host the host name to extract the domain from.
+ * @return the base domain name.
+ */
+function extractDomain(host)
+{
+    var domain = host;
+    if(domain == null)
+    {
+        domain = window.top.location.hostname;
+    }
+    var index = domain.lastIndexOf(".");
+    if(index == -1)
+    {
+        return null;
+    }
+    index = domain.lastIndexOf(".", index - 1);
+    if(index == -1)
+    {
+        return null;
+    }
+    domain = domain.substring(index);
+    return domain;
+}
+
+// Set a cookie
+function setCookie(name,value,expires,path,domain,secure) {
+    var today = new Date().getTime();
+    var expiration = new Date();
+    if (expires != undefined && expires != null) {
+        expiration.setTime(today + expires);
+    }
+    document.cookie = name + "=" + escape (value)
+            + ((expires) ? "; expires=" + expiration.toGMTString() : "")
+            + ((path) ? "; path=" + path : "; path=/")
+            + ((domain) ? "; domain=" + domain : "")
+            + ((secure) ? "; secure" : "");
+}
+
+
+/* Common Variables */
+var cobrandMSN = false;
+var cobrandMSNLA = false;
+var cobrandCOX = false;
+
+var cobrandCookie = getCookie("CBRND");
+var cobrandLnx = null;
+if (cobrandCookie != null) {
+    cobrandCookie = cobrandCookie.trimCookie();
+    cobrandLnx = getCookieKey("CBRND","LNX");
+} else {
+    cobrandCookie = "";
+}
+
+var userCookie = getCookie("USER");
+var userZip = null;
+var userBrowser = null;
+if (userCookie != null) {
+    userCookie = userCookie.trimCookie();
+    userZip = getCookieKey("USER","zip");
+    userBrowser = getCookieKey("USER","compliant");
+} else {
+    userCookie = "";
+}
+
+/* The code below runs on every page */
+
+// Add new cobrand LNX from query string to Cobrand Cookie
+if (cobrandCookie == null || cobrandLnx == null) {
+    var queryLnx = splitQuery("LNX");
+    if (typeof queryLnx != "undefined" && queryLnx != null && queryLnx != ""){
+        cobrandCookie += "&LNX=" + queryLnx;
+        var domain = extractDomain();
+        setCookie("CBRND",cobrandCookie,null,"/",domain);
+        //msn us
+        if (queryLnx.indexOf("MSNAT")  > -1){
+            cobrandMSN = true;
+
+        }
+        //msn latino .. sharing cobrandMSN
+        if (queryLnx.indexOf("MSNLA")  > -1){
+            //cobrandMSN = true;
+            //added to handle ad tagging
+            cobrandMSNLA = true;
+        }
+        if (queryLnx.indexOf("COXTV")  > -1){
+            cobrandCOX = true;
+
+        }
+
+    }
+}
+
+// Add new ZIP code from query string to User Cookie
+var queryZip = splitQuery("address");
+if (typeof queryZip != "undefined" && queryZip != null) {
+    if (userZip == null) {
+        userCookie += "&zip=" + queryZip;
+    } else if (userZip != queryZip) {
+        userCookie = userCookie.replace(userZip,queryZip);
+    }
+    var domain = extractDomain();
+    setCookie("USER",userCookie,null,"/",domain);
+}
+
+//string replacement - replaces text obj with by obj in string obj
+function replaceStr(string,text,by){
+    var strLength = string.length, txtLength = text.length;
+    if ((strLength == 0) || (txtLength == 0)) return string;
+
+    var i = string.indexOf(text);
+    if ((!i) && (text != string.substring(0,txtLength))) return string;
+    if (i == -1) return string;
+
+    var newstr = string.substring(0,i) + by;
+
+    if (i+txtLength < strLength){
+        newstr += replaceStr(string.substring(i+txtLength,strLength),text,by);
+    }
+    return newstr;
+}
+
+//string replacement - remove the decimal point and all the following characters.
+function stripDecimals(string) {
+    var newString = string || "";
+    // remove the spaces
+    newString = newString.replace(/\s/g,"");
+    var strLength = newString.length;
+
+    if (strLength == 0) {
+        return newString;
+    }
+
+    var i = newString.indexOf('.');
+
+    if (i == -1) {
+        return newString;
+    }
+
+    return newString.substring(0, i);
+}
+
+function toggleContent(ele) {
+    var viewEle = document.getElementById('view_' + ele);
+    var hideEle = document.getElementById('hide_' + ele);
+    var contentEle = document.getElementById('content_' + ele);
+    if (hideEle.style.display == 'none') {
+        viewEle.style.display = 'none';
+        hideEle.style.display = 'inline';
+        contentEle.style.display = 'block';
+    } else {
+        hideEle.style.display = 'none';
+        contentEle.style.display = 'none';
+        viewEle.style.display = 'inline';
+    }
+}
+function lineWrapper(str,size) {
+    var stringTokens = str.split(' ');
+    var returnString = '';
+    for (var i=0; i<stringTokens.length; i++) {
+        if (stringTokens[i].length > size) {
+            returnString += stringTokens[i].substring(0,size);
+            returnString += '-<br />';
+            stringTokens[i] = stringTokens[i].substring(size,stringTokens[i].length);
+            i--;
+        } else {
+            returnString += stringTokens[i] + ' ';
+        }
+    }
+    return returnString;
+}
+function quoteEscape(str) {
+    var returnString = '';
+    for (var i=0; i<str.length; i++) {
+        var tmpChar = str.charAt(i);
+        if (tmpChar == "'") {
+            returnString += "\'";
+        } else {
+            returnString += tmpChar;
+        }
+    }
+    return returnString;
+}
+function updateSavedCarVDP(carId,carName,carBookmarkId,updateCount,searchString) {
+    if (popwin && popwin.open) popwin.close();
+    carName = quoteEscape(carName);
+
+    /*** This check is for the new vdp-AB-EVE2b test page and will be removed or consolidated. The ***
+     *** new toolbar/text presentation is different so need to make  applicable when written back  ***/
+
+    if (searchString.indexOf("vdp.jsp") != -1){
+        document.getElementById('myCar_' + carId).innerHTML = '<span class="renameLink fixWidth">Saved to <a class="noPlusImage" href="/myatc/my_cars.xhtml">My Cars</a></span>';
+    }else{
+        document.getElementById('myCar_' + carId).innerHTML = '<img src="/img/myatc/gfx_blue_arrows_18x9.gif" alt="" /><span class="renameLink"><strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong></span>';
+    }
+    if (updateCount) updateHdrCarCount(true);
+}
+function updateSavedCarSpotlight(carId,carName,carBookmarkId,updateCount,overwrittenCarId,searchString) {
+    if (popwin && popwin.open) popwin.close();
+    document.getElementById('spotlight_' + carId).innerHTML = '<img src="/img/myatc/gfx_blue_arrows_18x9.gif" alt="" /><strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong>';
+    var carListingEle = document.getElementById('myCar_' + carId);
+    if (carListingEle) {
+        carListingEle.innerHTML = '<img src="/img/myatc/gfx_blue_arrows_18x9.gif" alt="" /><strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong>';
+    }
+    if (parseInt(overwrittenCarId) > 0) {
+        var overwriteSpotlightEle = document.getElementById('spotlight_' + overwrittenCarId);
+        if (overwriteSpotlightEle) {
+            overwriteSpotlightEle.innerHTML = '<a href="/myatc/save_car.jsp?car_id=' + overwrittenCarId + '&search_string=' + escape(searchString) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;"><img src="/img/myatc/buttons/btn_saveCar_117x17.gif" width="117" height="17" border="0" alt="Save this Car" /></a>';
+        }
+        var overwriteCarEle = document.getElementById('myCar_' + overwrittenCarId);
+        if (overwriteCarEle) {
+            var reSearchString = 'spotlight';
+            var replaceString = 'srp';
+            var re = new RegExp(reSearchString,"g");
+            var reResult = searchString.replace(re,replaceString);
+            overwriteCarEle.innerHTML = '<a href="/myatc/save_car.jsp?car_id=' + overwrittenCarId + '&search_string=' + escape(reResult) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;"><img src="/img/myatc/buttons/btn_saveCar_117x17.gif" width="117" height="17" border="0" alt="Save this Car" /></a>';
+        }
+    } else if (updateCount) {
+        updateHdrCarCount(true)
+    }
+
+}
+function updateSavedCarSRL(carId,carName,carBookmarkId,updateCount,overwrittenCarId,searchString,isFrm) {
+    if (popwin && popwin.open) popwin.close();
+    if (searchString.indexOf("ref=srp") > -1) {
+        if (typeof newNCAL != "undefined") {
+            newNCAL.updateSavedCarSRL(carId,overwrittenCarId);
+        }
+    }
+    var myCarLink = document.getElementById('myCar_' + carId);
+    if (myCarLink) {
+        if (searchString.indexOf("ref=ncal") > -1) {
+            myCarLink = myCarLink.parentNode;
+            myCarLink.innerHTML = 'Saved to <span id="myCar_' + carId + '"><a target="_top" href="/myatc/my_cars.xhtml">My&nbsp;Cars</a></span>';
+        } else {
+            myCarLink.innerHTML = '<strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong>';
+        }
+    }
+    var spotlightListingEle = document.getElementById('spotlight_' + carId);
+    if (spotlightListingEle) {
+        spotlightListingEle.innerHTML = '<img src="/img/myatc/gfx_blue_arrows_18x9.gif" alt="" /><strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong>';
+    }
+    if (parseInt(overwrittenCarId) > 0) {
+        var overwriteCarEle = document.getElementById('myCar_' + overwrittenCarId);
+        if (overwriteCarEle) {
+            overwriteCarEle.innerHTML = '<a href="/myatc/save_car.jsp?car_id=' + overwrittenCarId + '&search_string=' + escape(searchString) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;"><img src="/img/myatc/buttons/btn_saveCar_117x17.gif" width="117" height="17" border="0" alt="Save this Car" /></a>';
+        }
+        var overwriteSpotlightEle = document.getElementById('spotlight_' + overwrittenCarId);
+        if (overwriteSpotlightEle) {
+            var reSearchString = 'srp';
+            var replaceString = 'spotlight';
+            var re = new RegExp(reSearchString,"g");
+            var reResult = searchString.replace(re,replaceString);
+            overwriteSpotlightEle.innerHTML = '<a href="/myatc/save_car.jsp?car_id=' + overwrittenCarId + '&search_string=' + escape(reResult) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;"><img src="/img/myatc/buttons/btn_saveCar_117x17.gif" width="117" height="17" border="0" alt="Save this Car" /></a>';
+        }
+    } else if (updateCount) {
+        updateHdrCarCount(true,isFrm)
+    }
+}
+function updateSavedCarMyCars(carId,carName,carBookmarkId,overwrittenCarId,overwrittenBookmarkId) {
+    if (popwin && popwin.open) popwin.close();
+    carName = unescape(carName);
+    carName = lineWrapper(carName,13);
+    carName = quoteEscape(carName);
+    document.getElementById('myCar_' + carId).innerHTML = carName;
+    if (parseInt(overwrittenCarId) > 0) {
+        updateHdrCarCount(false)
+        if (overwrittenBookmarkId) {
+            document.getElementById('car_' + overwrittenBookmarkId + '_row').style.display = 'none';
+        }
+    }
+}
+function updateSavedCarCompare(carId,carName,carBookmarkId,updateCount,overwrittenCarId,searchString) {
+    if (popwin && popwin.open) popwin.close();
+    document.getElementById('myCar_' + carId).innerHTML = '<img src="/img/myatc/gfx_blue_arrows_18x9.gif" alt="" /><span class="renameLink"><strong>Saved to <a href="/myatc/my_cars.xhtml">My Cars</a></strong></span>';
+    if (parseInt(overwrittenCarId) > 0) {
+        var overwriteCarEle = document.getElementById('myCar_' + overwrittenCarId);
+        if (overwriteCarEle) {
+            overwriteCarEle.innerHTML = '<a href="/myatc/save_car.jsp?car_id=' + overwrittenCarId + '&search_string=' + escape(searchString) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;"><img src="/img/myatc/buttons/btn_saveCar_117x17.gif" width="117" height="17" border="0" alt="Save this Car" /></a>';
+        }
+    } else if (updateCount) {
+        updateHdrCarCount(true)
+    }
+}
+
+function updateSavedSearchSRL(bookmarkId,bookmarkName,updateCount,searchString,overwrittenBookmarkId,isRename,setupAlerts) {
+    window.location.reload();
+}
+
+function updateSavedSearchMySearches(bookmarkId,bookmarkName,updateCount,dateString,overwrittenBookmarkId) {
+    if (popwin && popwin.open) {
+        popwin.close();
+    }
+    bookmarkName = lineWrapper(bookmarkName,18);
+    bookmarkName = quoteEscape(bookmarkName);
+    document.getElementById('searchName_' + bookmarkId).innerHTML = bookmarkName;
+    document.getElementById('date_' + bookmarkId).innerHTML = dateString;
+    if (parseInt(overwrittenBookmarkId) > 0) {
+        updateHdrSearchCount(false);
+        var searchCountEle = document.getElementById('searchCount');
+        var searchCount = parseInt(searchCountEle.innerHTML);
+        searchCountEle.innerHTML = (searchCount - 1);
+        document.getElementById('srchRow_' + overwrittenBookmarkId).style.display = 'none';
+    }
+}
+function updateSavedSearchMySearches() {
+    if (popwin && popwin.open) {
+        popwin.close();
+    }
+}
+function updateModifiedSearch(bookmarkId,bookmarkName,updateCount,searchString) {
+    if (popwin && popwin.open) popwin.close();
+    bookmarkName = quoteEscape(bookmarkName);
+    document.getElementById('mySearch').innerHTML = '<div id="mySearch"><div><strong class="renameLink">Saved to <a href="/myatc/my_searches.xhtml">My Searches</a>:' + bookmarkName + ' <a class="renameLink" href="/myatc/rename_search.jsp?bookmark_id=' + bookmarkId + '&search_string=' + escape(searchString) + '" onclick="openPopWin(this,\'yes\',\'yes\',\'450\',\'400\');return false;">Rename</a></div></div>';
+    if(updateCount) updateHdrSearchCount(true);
+}
+function redirectTo(url,bReplace) {
+
+    if (popwin && popwin.open) popwin.close();
+
+    if (BIRF&&BIRF.redirect)
+    {
+        BIRF.redirect(url,bReplace);
+    }
+    else
+    {
+        if (!bReplace)
+        {
+            window.location.href = url;
+        }
+        else
+        {
+            window.location.replace(url);
+        }
+    }
+
+}
+function redirectToRelative(url) {
+    if (popwin && popwin.open) popwin.close();
+    // fully qualify URL so it works in Netscape 8.1 as well.
+    var destinationUrl = 'http://';
+    if (location.port == 80) {
+        destinationUrl += location.hostname + url;
+    } else {
+        destinationUrl += location.host + url; // preserve ports for dev.
+    }
+
+    if (self == top) {
+        window.location.href = destinationUrl;
+    } else {
+        top.location.href = destinationUrl;
+    }
+}
+function updateHdrCarCount(add) {
+    var hdrCarCountEle  = document.getElementById('headerCarCount');
+
+    /*case for the ncal where we are using a frame*/
+    try{
+        hdrCarCountEle.innerHTML
+    } catch(ex){
+        hdrCarCountEle = parent.document.getElementById('headerCarCount');
+    }
+
+    var hdrCarCount = parseInt(hdrCarCountEle.innerHTML);
+    if (add) {
+        hdrCarCountEle.innerHTML = (hdrCarCount + 1);
+    } else {
+        hdrCarCountEle.innerHTML = (hdrCarCount - 1);
+    }
+}
+function updateHdrSearchCount(add) {
+    var hdrSearchCountEle = document.getElementById('headerSearchCount');
+    var hdrSearchCount = parseInt(hdrSearchCountEle.innerHTML);
+    if (add) {
+        hdrSearchCountEle.innerHTML = (hdrSearchCount + 1);
+    } else {
+        hdrSearchCountEle.innerHTML = (hdrSearchCount - 1);
+    }
+}
+
+function discardEvent(e) {
+    if (!e) {
+        e = window.event;
+        e.cancelBubble = true;
+    }
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    //e.returnValue = false;
+    return false;
+}
+
+function changeBackground(eleId, bg) {
+    if (eleId && document.getElementById(eleId)) {
+        document.getElementById(eleId).style.background = bg;
+    }
+}
+
+// @depricated.  Use asis().
+function countClick(asisURI) {
+    asisURI = "/no_cache/vs/" + asisURI;
+    asis(asisURI);
+}
+
+/** end of /inc/js/util.js */
+
+/**
+ * conditonally creates a Prototip, if the tipId can be found on the page (prevents Prototip Exceptions).
+ * @param String tipId the id of the element you are binding the tip to
+ * @param String tipContent what will show up in the tip
+ * @param Array options of the tip.  This should be a properties array.
+ * @return boolean - false if ID not present, else a reference to the new tip object
+ */
+function bindTip(tipId,tipContent,tipOptions){
+    if (!$(tipId)){ return false;}
+    else {return new Tip(tipId,tipContent,tipOptions);}
+}
+
+function cache_kill(url) {
+    var ck = new Date().getTime();
+    if (/\@\@ord\@\@/i.test(url)) {
+        url = url.replace("@@ORD@@",ck).replace("@@ord@@",ck);
+    } else if (/http:/i.test(url)) {
+    } else {
+        if (!/cache.?kill/i.test(url)) {
+            var seperator = url.indexOf("?") == -1 ? "?" : "&";
+            url += seperator + "cache_kill=" + ck;
+        } else {
+            url = asisReplace(url,"cache_kill",ck);
+        }
+    }
+    return url;
+}
+
+var bi_Q = new Array();
+var bi_dom_loaded = false;
+var bi_no_observe = true;
+if (document.observe != undefined) {
+    bi_no_observe = false;
+    document.observe("dom:loaded", function() {
+        bi_dom_loaded = true;
+        // DOM loaded so fire queued events
+        if (bi_Q != null) {
+            for (var i=0; i<bi_Q.length; i++) {
+                asisQ(bi_Q[i]);
+            }
+        }
+        bi_Q = null;
+    });
+}
+/**
+ * Fires an ASIS tag after DOM loaded.  A cache_kill parameter will be added if one does not already exist.
+ * @param url the URL of an ASIS tag.
+ * @return - int - exit value - NCME must account for null & the empty string.  Instead of an exception, let's return -1 for invalid asis strings, and 0 if we "exited cleanly"  TODO: clean this up so we don't have to account for NCME
+ */
+function asisQ(url){
+    if( url == null || url == "" ){
+        return -1;
+    }
+    if (bi_no_observe) { // Can't tell when DOM is loaded so just add image object and hope it works in IE
+        var asisImg = new Image();
+        asisImg.src = cache_kill(url);
+    } else {
+        if (bi_dom_loaded) { // If DOM loaded fire event
+            var img = document.createElement("img"); // This works better in IE
+            img.src = cache_kill(url);
+            document.body.appendChild(img);
+        } else { // If DOM not loaded queue event
+            bi_Q[bi_Q.length] = url;
+        }
+    }
+    return url;
+}
+/**
+ * Fires an ASIS tag.  A cache_kill parameter will be added if one does not already exist.
+ * @param url the URL of an ASIS tag.
+ * @return - int - exit value - NCME must account for null & the empty string.  Instead of an exception, let's return -1 for invalid asis strings, and 0 if we "exited cleanly"  TODO: clean this up so we don't have to account for NCME
+ */
+function asis(url){
+    if( url == null || url == "" ){
+        return -1;
+    }
+
+    var ck = new Date().getTime();
+    if (!/cache.?kill/i.test(url)) {
+        var seperator = url.indexOf("?") == -1 ? "?" : "&";
+        url += seperator + "cache_kill=" + ck;
+    } else {
+        url = asisReplace(url,"cache_kill",ck);
+    }
+
+    if (typeof jQuery == "function") {
+        jQuery.ajax({
+            type: "GET",
+            url: url
+        });
+    } else {
+        var asisImg = new Image();
+        asisImg.src = url;
+    }
+    return url;
+}
+function asisRel(what) { // TODO: attach to brochure click events
+    var link = $j(what);
+    var rel = link.attr("rel");
+    if (typeof rel != "undefined") {
+        rel = rel.replace(/\'/g,'\"');
+        if (typeof jQuery.parseJSON != "undefined") {
+            var obj = jQuery.parseJSON(rel);
+        } else {
+            var obj = eval('('+rel+')');
+        }
+        if (typeof obj.thirdPartyClickTag != "undefined") {
+            var url = cache_kill(obj.thirdPartyClickTag);
+            var asisImg = new Image();
+            asisImg.src = url;
+        }
+        if (typeof obj.clickTag != "undefined") {
+            asis(obj.clickTag);
+        }
+    }
+}
+biPreserves = {};
+function biPreserve() {
+    if (arguments.length == 2) {
+        var name=arguments[0];
+        var val=arguments[1];
+        biPreserves[name]=val;
+//document.title=name+":"+biPreserves[name];
+    } else if (arguments.length == 1) {
+        var params = arguments[0];
+        if (typeof params == "object") {
+            var ttl="";
+            for (var name in params) {
+                var val=params[name];
+                biPreserves[name]=val;
+                ttl += name+":"+biPreserves[name]+" ";
+            }
+        }
+//document.title=ttl;
+    }
+}
+function getSafeValue(val) {
+    if (typeof val == "undefined") { val = ""; }
+    if (val == null) { val = ""; }
+    return val;
+}
+function getPreserveDefault(pId,value) {  // return preserve first unless no value
+    var biP = getSafeValue(biPreserves[pId]);
+    var value = getSafeValue(value);
+    if ((biP != "") || (value == "*")) { return biP; }
+    return value;
+}
+function getDefaultPreserve(pId,value) { // return default first unless no value
+    var biP = getSafeValue(biPreserves[pId]);
+    var value = getSafeValue(value);
+    if ((value == "") || (value == "*")) { return biP; }
+    return value;
+}
+function clickASIS(params) {
+    var biASIS = params["biASIS"];
+    var biType = params["biType"];
+    var biStr = "/no_cache/" + biType + "/" + biASIS + ".asis";
+    var first = true;
+    for (var name in params) {
+        if ((name != "biASIS") && (name != "biType")) {
+            if (first) {
+                biStr += "?";
+                first = false;
+            } else {
+                biStr += "&";
+            }
+            var val=params[name];
+            if (val == "*") {
+                val = biPreserves[name];
+            } else if (val.charAt && val.charAt(0) == "*") {
+                var altName = val.substring(1);
+                val = biPreserves[altName];
+            }
+            biStr += name + "=" + val;
+        }
+    }
+    asis(biStr);
+}
+
+/**
+ * Calls asis after a delay.
+ * @param url the url of the asis.
+ * @param wen how long to wait before firing the asis.  Defaults to 500 milliseconds if not specified.
+ */
+function asisLater(url, wen) {
+    var delay = wen || 500;
+    window.setTimeout(function() {asis(url, "newck");}, delay);
+}
+
+function getURLparam(param) {
+    var regexS = "[\\?&]"+param+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec(window.location);
+    if (results != null) {
+        return results[1];
+    } else {
+        return "";
+    }
+}
+
+function asisReplace(url,param,value) {
+    var regexS = "[\\?&]"+param+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec(url);
+    if (results != null) {
+        if ((value == null) || (value == "")) {
+            url = url.replace(results[0],"");
+        } else {
+            url = url.replace("="+results[1],"="+value);
+        }
+    }
+
+    regexS = "[\\?&%]3F"+param+"%3D([^&#%]*)";
+    regex = new RegExp( regexS );
+    results = regex.exec(url);
+    if (results != null) {
+        if ((value == null) || (value == "")) {
+            url = url.replace(results[0],"");
+        } else {
+            url = url.replace("%3D"+results[1],"%3D"+value);
+        }
+    }
+
+    regexS = "[\\?&%]26"+param+"%3D([^&#%]*)";
+    regex = new RegExp( regexS );
+    results = regex.exec(url);
+    if (results != null) {
+        if ((value == null) || (value == "")) {
+            url = url.replace(results[0],"");
+        } else {
+            url = url.replace("%3D"+results[1],"%3D"+value);
+        }
+    }
+
+    return url;
+}
+/**
+ * Delays redirecting the page to a new URL by 1 second
+ * to allow an ASIS image to be requested before the page redirect cancels the request.
+ * @param url the url to go to.
+ */
+function delayLink(url){
+    window.setTimeout(function(){window.location.href = url;}, 1000);
+}
+
+var FormUtilities = {
+    RadioButtons: {
+        /**
+         * execute the startup methods for this class
+         * @param options - Object literal - used to override default options.  See this.setOptions for more details.
+         */
+        init: function(options){
+            this.setOptions(options);
+            this.bindRadioListeners();
+            this.highlightCheckedButtons();
+        },
+
+        /**
+         * override the defaults
+         * @param options - object literal - contains the variables necessary to change the operation of this object
+         *    closestAncestorElement - a string or DOM node representing a selector that can be used to traverse up the tree to the closest point above the input buttons
+         *    textContainer - a string or DOM node representing a selector that can be used to find the text that needs to be bolded
+         */
+        setOptions: function(options){
+            this.options = $j.extend({
+                checkedSelector: ":checked",
+                closestAncestorElement: 'div',
+                radioSelector: 'input:radio',
+                selectedClass: 'radioSelected',
+                textContainer: 'label'
+            } ,options || {});
+        },
+
+        /**
+         * binds the click event listener
+         */
+        bindRadioListeners: function(){
+            var self = FormUtilities.RadioButtons;
+            $j(this.options.radioSelector).live('click',self.highlightCurrentButton);
+        },
+
+        /**
+         * adds the selectedClass to all textContainer(s) who are siblings of radio buttons who meet the checked selector criteria
+         */
+        highlightCheckedButtons: function(){
+            var self = FormUtilities.RadioButtons;
+            $j(this.options.radioSelector + this.options.checkedSelector)
+                    .siblings(this.options.textContainer)
+                    .each(function(){
+                        $j(this).addClass(self.options.selectedClass);
+                    });
+        },
+
+        /**
+         * remove selectedClass from sibling elements defined in options, and bold the element(s) near this click.
+         */
+        highlightCurrentButton: function(){
+            var self = FormUtilities.RadioButtons;
+            self.deselectAdjacentElements(this);
+            $j(this).siblings(self.options.textContainer).each(function(){
+                $j(this).addClass(self.options.selectedClass);
+            });
+        },
+
+        /**
+         * traverse up the tree to the closestAncestorElement, then back down to find textContainer with the selectedClass, removing said class
+         * @param pointer - the starting point, usually the element whose event handler triggered this method
+         */
+        deselectAdjacentElements: function(pointer){
+            var self = FormUtilities.RadioButtons;
+            $j(pointer).closest(this.options.closestAncestorElement)
+                    .find(this.options.textContainer + "." + this.options.selectedClass)
+                    .each(function(){
+                        $j(this).removeClass(self.options.selectedClass);
+                    });
+        }
+    }
+};
+
+function offsiteHover(what,hover) {
+    if(what.tagName == "A") {
+        if(what.className == "partner-link") {
+            if (hover) {
+                $(what).next("span").className="offsitespanhover";
+            } else {
+                $(what).next("span").className="offsitespan";
+            }
+        } else {
+            if (hover) {
+                $(what).next("a").removeClassName("partner-link").addClassName("m-over");
+                $(what).next("span").className="offsitespanhover";
+            } else {
+                $(what).next("a").removeClassName("m-over").addClassName("partner-link");
+                $(what).next("span").className="offsitespan";
+            }
+        }
+    } else if (what.tagName == "SPAN") {
+        if (hover) {
+            $(what).className="offsitespanhover";
+            $(what).previous("a").removeClassName("partner-link").addClassName("m-over");
+        } else {
+            $(what).className="offsitespan";
+            $(what).previous("a").removeClassName("m-over").addClassName("partner-link");
+        }
+    }
+}
+function offsiteClick(what) {
+    var prev = $(what).previous("a");
+    if (prev != null) openFullWin(prev.href);
+}
+
+/**
+ * Collects beacons to be logged by Adify.
+ */
+function addBeacon(beacon)
+{
+    if(typeof(sr_actions) == "undefined") {
+        sr_actions = "";
+    } else {
+        sr_actions += ",";
+    }
+    sr_actions += beacon;
+}
+
+/**
+ * Send beacons.
+ */
+function sendBeacons() {
+    // See if we are logged in to MyATC.
+    var autotradercookie = getCookie("ATC_ID");
+    if(autotradercookie != null) {
+        if(autotradermyatcuserid != "") {
+            // Make sure we only log the login event once per login.
+            var autotradermyatclogin = getCookie("autotradermyatclogin");
+            if(autotradermyatclogin == null) {
+                // Add the autotradermyatclogin beacon.
+                autotradercookie = autotradercookie.replace(/\./g, "-");
+                addBeacon("autotradermyatclogin,autotradercookie" + autotradercookie + ",autotradermyatcuserid" + autotradermyatcuserid);
+                // Set a session cookie to prevent extra log entries.
+                setCookie("autotradermyatclogin", "true");
+            }
+        }
+    }
+    // Don't do anything if there are no beacons.
+    if( (typeof(sr_actions) != "string") || (sr_actions == null) || (sr_actions == "") ) {
+        return;
+    }
+    // Log the beacons.
+    document.write("<scr"+"ipt type='text/javascr"+"ipt' src='"+(location.protocol.indexOf('https')>-1 ? "https://" : "http://")+"beacon.afy11.net/srbeacon.js?behavioralGroupId=0'>");
+    document.write("</scr"+"ipt>");
+}
+
+/**************************************************************************************************
+ *** To ensure reuse-ability have to error-check to make sure various modules exists on the page
+ *** This function is shared by "dealer-info.jspf", "contact-seller.jspf" and "pricing-overlap.jsp"
+ **************************************************************************************************/
+function displayContactSellerPhone(p1,p2,p3,p4,p5) {
+
+    var phoneLinks = ['private-seller-phone','seller-phone','dealer-phone','overlay-phone'];
+    var d = null;
+    var c = null;
+
+    for (var i=0;i<phoneLinks.length;i++) {
+        try {
+            document.getElementById(phoneLinks[i]).style.display='block';
+            d=document.getElementById(phoneLinks[i]+'-link');
+            c=d.firstChild;
+            d.removeChild(c);
+        }catch(eRR){
+            //Do Nothing    
+        }
+    }
+
+    if (typeof countClick !== "undefined" && typeof countClick == "function") {
+
+        if ((getSafeValue(p3) == "") || (p3 == "*")) { // When view phone link is clicked from overlay, overlay does not have value for p3
+            p3 = (getSafeValue("isPrivateSeller") == "true") ? "p" : "d";
+        }
+
+        countClick('click_an_nocount.asis?page_id=fyc_vdp&link_id=get_phone&search_type='+p1+'&fsb='+p2+'&seller_type='+p3);
+
+        // The following line is for the EVE VS test to track get phone clicks, please check with the EVE team before removing.
+        countClick('vdp_get_phone.asis');
+    }
+
+    var orig = "FYC";
+    var cert = "";
+    if (window.location.href.indexOf("/dda/detail.jsp") > 0) {
+        orig = "DEALERS_";
+        cert = getURLparam("CERTIFIED");
+        if (cert != "") {
+            if (cert == "CAD_CDA") {
+                cert = "GM_CDA";
+            }
+            orig += "CDA";
+            cert = "_CERTIFIED_" + cert;
+        } else {
+            cert = getURLparam("lcat");
+            if (cert != "") {
+                orig += "LDA";
+                cert = "_" + cert;
+            } else {
+                orig += "DDA";
+            }
+        }
+    } else if (window.location.href.indexOf("/inview/detail.jsp") > 0) {
+        orig = "DEALERS_INVIEW";
+    }
+
+    orig += "_VDP_GET_PHONE" + cert;
+
+    var zip = "";
+    if (typeof global_zip !== "undefined") {
+        zip = global_zip;
+    }
+
+    // When view phone link is clicked from overlay, overlay does not always have value for p4 or p5
+    p4 = getDefaultPreserve("carId",p4);
+    p5 = getDefaultPreserve("ownerId",p5);
+
+    /*** Add Phone lead to ERL Database ***/
+    /*** NOTE: lead_type parameter value "PHONE" is ERL inserted as "FSBOPHONE" ***/
+    var BI_T1D3_Url = '/ajax/sendPhoneLead.jsp?Log=0';
+    BI_T1D3_Url += '&origin_page=' + orig;
+    BI_T1D3_Url += '&lead_type=PHONE';
+    BI_T1D3_Url += '&car_id=' + p4;
+    BI_T1D3_Url += '&dealer_id=' + p5;
+    BI_T1D3_Url += '&address=' + zip;
+
+    if (typeof jQuery == "function") {
+        jQuery.ajax({
+            type: "GET",
+            url: BI_T1D3_Url
+        });
+    } else {
+        if (typeof ajaxEngine !== "undefined" && typeof ajaxEngine.call == "function") {
+            ajaxEngine.call(BI_T1D3_Url, 'defaultCallback');
+        } else {
+        }
+    }
+}
+
+
+(function(window, undefined) {
+    if(!window.atc) {window.atc = {};}
+    atc.location = {
+        /**
+         * Redirect the current page to the specified url with a timeout.
+         * This is to enable us to intercept window.location method calls
+         * and provide a delay in order to preserve BI ajax requests
+         *
+         * @note Duplicate of atc.location object in /web (/resources/js/components/atc/atc.location.js)
+         * @param {String} url Path to which the current page should be redirected
+         * @param {Object} options Settings object
+         * @param {int} options.delay Delay before firing window.location (in ms)
+         */
+        assign:function(url, options) {
+            function _extend (destination, source) {
+                for (var property in source)
+                    destination[property] = source[property];
+                return destination;
+            }
+
+            var opts = _extend({
+                delay: 500
+                ,isPopUp: false
+                ,properties: ''
+            }, options);
+
+            window.setTimeout(function() {
+                if(!opts.isPopUp){
+                    window.location.assign(url);
+                }else{
+                    window.open(url, "", opts.properties);
+                }
+            }, opts.delay);
+        }
+    }
+})(window);
+
+/* BEGIN REMO code */
+function sitePerformedInvite(id) {
+    var r = /(REMO_INVITE)=([^;]*)/gi.exec(document.cookie);
+    return (r && unescape(r[2]));
+}
+function siteInvited(id) {
+    id != undefined || ( id = '1');
+    var ex = new Date(new Date().getTime() + (86400000 * 15));
+    document.cookie = 'REMO_INVITE' + '=' + escape(id) + ((!ex || !(ex instanceof Date)) ? '' : ('; expires=' + ex.toGMTString())) + ';path=/; domain=autotrader.com';
+}
+/* END REMO code */
+
+
+/* BEGIN Gigya sharebar code */
+window.initGigya = function() {
+    if (!gigya) return;
+    var ua = new gigya.socialize.UserAction();
+    ua.setTitle(window.gigyaSharebarPageTitle);
+
+    if($j('#media-viewport img').size()>0 ) {
+        ua.addMediaItem({
+            type: 'image',
+            src: $j('#media-viewport img').attr('src')
+        });
+    }
+
+
+    var params = {
+        userAction:ua,
+        moreEnabledProviders: 'pinterest, digg, stumbleupon, reddit, delicious, tumblr,facebook',
+        showEmailButton: false,
+        shortURLs: 'never',
+        shareButtons:
+        [
+            {provider:'facebook-like'},
+            {provider:'twitter-tweet',via:'AutoTrader_com'},
+            {provider:'google-plusone'},
+            {provider:'share'},
+            {provider:'email'},
+            {provider:'print'}
+        ]
+    };
+    //to place gigya sharebar in page create a block element with a unique id and class="article_gigya_sharebar"
+    $j(".article_gigya_sharebar").each(function(){
+        params.containerID = this.id;
+        gigya.socialize.showShareBarUI(params);
+    });
+}
+
+/* END  Gigya sharebar code */
+
+/* BEGIN Ethnio code */
+function ethnio(probabilityFactor, url) {
+    if (isNaN(probabilityFactor=parseFloat(probabilityFactor))) return; //Handle blank strings from CMS
+    if(Math.floor(Math.random()*probabilityFactor)==0) document.write('<script type=\"text/javascript\" language=\"javascript\" src=\"'+url+'\" async=\"true\" charset=\"utf-8\"> <\/script>');
+}
+/* END Ethnio code */

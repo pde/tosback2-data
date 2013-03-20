@@ -79,13 +79,10 @@
 
 
 
-<script id="hdmglobalscript" src="../cm/shared/scripts/hdm-lib.resp.js"></script>
-
 
 
 	<script src="../cm/shared/scripts/jquery-1.6.min.js" language="javascript" type="text/javascript"></script>
 
-<script src="../cm/cosmopolitan/redesign/scripts/global.js"></script>
 
 <script>
 	var docCookies = document.cookie.split(';');
@@ -98,7 +95,7 @@
 		}
 	}
 	
-	var script_src = '/ams/page-ads.js?ad_category_prefix=&ad_sub_category_prefix=&ams_promo=&amz_browse_node_ids=&amz_search_indexes=&article_type_prefix=article&browser_path=%2Fabout%2Fprivacy-policy&cat_prefixes=&keywords=&position_list=ams_app_cos_nav_link%2Cams_circ_cos_ad_hp_bot%2Cams_circ_cos_arrival%2Cams_circ_cos_sub_nav_link%2Cams_cos_circ_test_300%2Cams_cos_epic%2Cams_cos_like_gate%2Cams_cos_og2_reactions_social_amp%2Cams_cos_social_ad%2Cams_cos_twitter_gate%2Cams_cosmo_fixed_panel%2Cams_cosmo_footer%2Cams_cosmo_gallery%2Cams_cosmo_meebo%2Cams_cosmo_stereo_left%2Cams_cosmo_stereo_right%2Cams_cosmo_windowshade%2Cams_cosmopolitan_hpto_inner&section_prefix=about&site_prefix=cosmopolitan&sub_cat_prefixes=&subdomain=www&url_name=privacy-policy';
+	var script_src = '/ams/page-ads.js?ad_category_prefix=&ad_sub_category_prefix=&ams_promo=&amz_browse_node_ids=&amz_search_indexes=&article_type_prefix=article&browser_path=%2Fabout%2Fprivacy-policy&cat_prefixes=&keywords=&position_list=ams_app_cos_nav_link%2Cams_circ_cos_ad_hp_bot%2Cams_circ_cos_arrival%2Cams_circ_cos_sub_nav_link%2Cams_cos_circ_test_300%2Cams_cos_epic%2Cams_cos_like_gate%2Cams_cos_og2_reactions_social_amp%2Cams_cos_social_ad%2Cams_cos_twitter_gate%2Cams_cosmo_fixed_panel%2Cams_cosmo_footer%2Cams_cosmo_gallery%2Cams_cosmo_meebo%2Cams_cosmo_top%2Cams_cosmopolitan_hpto_inner&section_prefix=about&site_prefix=cosmopolitan&sub_cat_prefixes=&subdomain=www&url_name=privacy-policy';
 	if(origRefer == null){
 		origRefer = document.referrer;
 		script_src = script_src+'&original_referrer='+origRefer;
@@ -136,8 +133,31 @@
 	
 	document.write('<scr' + 'ipt src="'+script_src+'" type="text/javascript"></scr' + 'ipt>');
 </script>
-		
+<!--user_session only when on non-reps sites-->
 
+<!-- xs_script_include_user_session.tmpl-->
+
+    
+    <script src="../cm/shared/scripts/modernizr-1.7.min.js"></script>
+    <script src="../cm/shared/scripts/hdm-lib.js"></script>
+        <script>
+            var Site = {
+                articleID: 136462,
+                adRefreshInterval: 1,
+                pageAdsParams: window.pageAdsParams ? pageAdsParams : {},
+                facebookAppID: 134662310036632
+            };
+   
+   HDM.init(Site);
+        </script>
+    
+
+<!-- /TEST script includes  xs_script_include_user_session.tmpl live-->
+
+
+<script src="../cm/cosmopolitan/redesign/scripts/hdm-lib.temp.resp.js"></script>
+
+<script src="../cm/cosmopolitan/redesign/scripts/global.js"></script>
 
 <script language="javascript"type="text/javascript">var docCookies=document.cookie.split(';');var origRefer=null;for(var i=0;i<docCookies.length;i++){var c=docCookies[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf("original_referrer=")==0){origRefer=c.substring("original_referrer=".length,c.length)}}if(origRefer==null){document.cookie="original_referrer="+document.referrer+"; path=/"}</script>
 <!-- TMPL xs_meta_head_sprop49 -->
@@ -375,9 +395,11 @@ $(function(){
 
 <link rel="stylesheet" href="../cm/cosmopolitan/redesign/styles/large.rev.css">
 
+
 <!--[if IE 8 ]>
-	<script src="/cm/cosmopolitan/redesign/scripts/ie8.hdm-lib.patch.js"></script>
+	<script src="/cm/cosmopolitan/redesign/scripts/ie8.interior.patch.js"></script>
 <![endif]-->
+
 
 </head>
 
@@ -401,13 +423,18 @@ $(function(){
 <div id="siteSkinWrap">
 <div id="HDM_site" role="screen-top">
 
-<div class="adOuter">
-	<div class="adInner">
-		<!-- ams_cosmo_windowshade -->
-<div id="pos_ams_cosmo_windowshade" class="g1116"><span id="ams_cosmo_windowshade"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_windowshade);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_windowshade);int=window.clearInterval(int);}},50);}</script></span></div>
-<!-- /ams_cosmo_windowshade -->
-	</div>
-</div>
+
+			
+	
+	
+	<div id="adBanner">
+	<table border="0" cellspacing="3" cellpadding="0" align="center" width="100%" id="ad_Banner">
+	<tr><td align="right" valign="middle" width="13%"><img src="../cm/cosmopolitan/images/redesign/logos_headers/adTitleLeaderboard.gif" width="8" height="90" border="0" alt="Advertisement" align="right" /></td><td align="left" valign="middle"><span id="ams_cosmo_top"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_top);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_top);int=window.clearInterval(int);}},50);}</script></span></td></tr></table>
+	</div><br clear="left" />
+	<!-- test comment can be removed -->
+
+
+
 <!-- components/header.tmpl -->
 <header id="HDM_panelHeader" class="g1116">
 	<nav id="metaNav">
@@ -425,7 +452,7 @@ $(function(){
 		</ul>
 		</div>
 		<div id="loginArea" class="metaArea">
-			<ul id="hdmLoginLinks" registration="loginlinks1">
+			<ul id="hdmLoginLinks" registration="loginlinks">
 				<li class="joinFree"><a class="trackSender" href="http://www.cosmopolitan.com/registration/">Join Free</a></li>
 				<li class="facebookSignIn"><a id="iconFB" href="privacy-policy.html#" class="fbLink trackSender">Sign in with Facebook</a></li></span>
 				<li><a class="trackSender" href="http://www.cosmopolitan.com/login/">Sign In</a></li>
@@ -433,10 +460,10 @@ $(function(){
 		</div>
 	</nav>
 	<div id="mainheader">
-          <div class="ad_stereo234x60_l"><span id="ams_cosmo_stereo_left"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_stereo_left);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_stereo_left);int=window.clearInterval(int);}},50);}</script></span></div>
+          <div class="ad_stereo234x60_l"></div>
           <!--2 - LOGO-->
           <a class="logo" href="http://www.cosmopolitan.com/"></a>
-          <div class="ad_stereo234x60_r"><span id="ams_cosmo_stereo_right"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_stereo_right);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_cosmo_stereo_right);int=window.clearInterval(int);}},50);}</script></span></div>
+          <div class="ad_stereo234x60_r"></div>
 	</div>
 	
 	<nav id="mainnav" role="navigation">
@@ -500,7 +527,7 @@ $(function(){
 					<li class="lastitem"><a href="http://www.cosmopolitan.com/advice/sun-safe/cosmo-practice-safe-sun-campaign">Practice Safe Sun</a></li>
 					
 						<li class="flyout">
-							<article><figure><a href="http://www.cosmopolitan.com/hairstyles-beauty/tiptool/guys-secret-beauty-thoughts"><img src="../cm/cosmopolitan/images/30/cos0706whydontyou001-mv-small_new.jpg" alt="" width="" height="" /></a><p><a href="http://www.cosmopolitan.com/hairstyles-beauty/tiptool/guys-secret-beauty-thoughts">What Guys Secretly Think of Your Hair & Makeup: The Truth Revealed!</a></p></figure></article>
+							<article><figure><a href="http://www.cosmopolitan.com/hairstyles-beauty/skin-care-makeup/makeup-looks-men-love"><img src="../cm/cosmopolitan/images/30/cos0706whydontyou001-mv-small_new.jpg" alt="" width="" height="" /></a><p><a href="http://www.cosmopolitan.com/hairstyles-beauty/skin-care-makeup/makeup-looks-men-love">Ever wonder what makeup looks your guy likes? We got hotties to tell us what turns them on when it comes to the makeup you wear.</a></p></figure></article>
 						</li>
 					
 				</ul>
@@ -529,7 +556,7 @@ $(function(){
 				<li class="lastitem"><a href="http://www.cosmopolitan.com/food/cocktails/frozen-drinks">Frozen Drinks</a></li>
 				
 					<li class="flyout">
-						<article><figure><a href="http://www.cosmopolitan.com/food/cocktails/vodka-drinks"><img src="../cm/cosmopolitan/images/6B/CSL050112Drinks6_smn.jpg" alt="" width="" height="" /></a><p><a href="http://www.cosmopolitan.com/food/cocktails/vodka-drinks">Easy Recipes for Vodka Cocktails</a></p></figure></article>
+						<article><figure><a href="http://www.cosmopolitan.com/food/cocktails/vodka-drinks"><img src="../cm/cosmopolitan/images/6B/CSL050112Drinks6_smn.jpg" alt="" width="" height="" /></a><p><a href="http://www.cosmopolitan.com/food/cocktails/vodka-drinks">We rounded up the best vodka cocktail recipes that'll drive your taste buds wild.</a></p></figure></article>
 					</li>
 				
                 </ul>
@@ -811,6 +838,7 @@ $(function(){
 		
 	</center>
 </div>
+
 			
 			<div id="ams_cos_circ"><span id="ams_cos_circ_test_300"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_cos_circ_test_300);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_cos_circ_test_300);int=window.clearInterval(int);}},50);}</script></span></div>
 		</div>
@@ -823,12 +851,13 @@ $(function(){
     <dd style="display: none;">
         <div class="container">
 				<div class="units">
-                    <a href="http://www.cosmopolitan.com/sweepstakes/26469"><img class="thumb" src="../../subscribe.hearstmags.com/circulation/shared/images/cos-alicia-keys.jpg" /></a>      
-                    <a href="http://www.cosmopolitan.com/sweepstakes/26469"><img src="../cm/cosmopolitan/images/redesign/arrow_buttons/enterNow.png" onmouseover="this.src='/cm/cosmopolitan/images/redesign/arrow_buttons/enterNow_hover.png'" onmouseout="this.src='/cm/cosmopolitan/images/redesign/arrow_buttons/enterNow.png'" height="27" width="121" alt="Enter Now" /></a>    
+                    <a href="http://www.cosmopolitan.com/sweepstakes/26448"><img class="thumb" src="../../subscribe.hearstmags.com/circulation/shared/images/cos_mlaccessories_dropearrings_120x120.jpg" /></a>      
+                    <a href="http://www.cosmopolitan.com/sweepstakes/26448"><img src="../cm/cosmopolitan/images/redesign/arrow_buttons/enterNow.png" onmouseover="this.src='/cm/cosmopolitan/images/redesign/arrow_buttons/enterNow_hover.png'" onmouseout="this.src='/cm/cosmopolitan/images/redesign/arrow_buttons/enterNow.png'" height="27" width="121" alt="Enter Now" /></a>    
                 </div>
 				<div class="body">
                 
-                	<p><a href="http://www.cosmopolitan.com/sweepstakes/26469">Win Tickets to See Alicia Keys in the Set The World On Fire Tour!<img src="../cm/cosmopolitan/images/redesign/arrow_buttons/arrow_white_onBlack.gif" class="arrow_right"/></a></p>
+                	<p><a href="http://www.cosmopolitan.com/sweepstakes/26448">Chain Drop Earrings - ML Accessories
+<img src="../cm/cosmopolitan/images/redesign/arrow_buttons/arrow_white_onBlack.gif" class="arrow_right"/></a></p>
                 
                 </div>                
         </div>
@@ -984,7 +1013,7 @@ $(function(){
 	
 		<div class="fsegment">
 			
-				<img class="smartload noimg" hdmimg="smart" src="../cm/cosmopolitan/redesign/site_images/placeholder16x9.gif"  hdmimgcut_120x120="/cm/cosmopolitan/images/Di/love-seat-sp-sm.jpg" alt="the love seat sex position"/>
+				<img class="smartload noimg" hdmimg="smart" src="../cm/cosmopolitan/redesign/site_images/placeholder16x9.gif"  hdmimgcut_400x400="/cm/cosmopolitan/images/bD/cos-02-sexy-naked-couple-smiling-bed-smn.jpg" alt="sexy naked couple smiling"/>
 			
 			
 			
