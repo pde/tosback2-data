@@ -163,6 +163,26 @@ DFUtils.makeSize = function(sz) {
 	return sz + ' ' + sizes[cursize];
 };
 
+DFUtils.getCountItems = function(obj) {
+	var count = 0, i;
+	for (i in obj) {
+		if (obj.hasOwnProperty(i)) {
+			count++;
+		}
+	}
+	return count;
+};
+
+DFUtils.get_message = function(code) {
+	var msg = code;
+	code = code ? code.replace(/[^a-zA-Z0-9_]/g, '') : 'UNKNOWN_ERROR';
+	msg = window[lang] && window[lang][code] ? window[lang][code] : msg;
+	if (code == 'incorrect_file_name') {
+		msg += ' *|\:"<>?/';
+	}
+	return msg;
+};
+
 DFUtils.zebra = function($wrapper) {
 	if ($wrapper.is('tbody')) {
 		$wrapper.parent().find('tbody tr').removeClass('odd even').filter(':visible:odd').addClass('odd').end().filter(':visible:even').addClass('even');

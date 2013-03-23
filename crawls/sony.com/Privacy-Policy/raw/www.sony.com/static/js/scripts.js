@@ -292,6 +292,7 @@ var nav = (function(){
             }else if(showOrHide == 'hide'){
                 $menuBtn.parent().removeClass('open').addClass('closed');
                 $navContent.css({'left': 480});
+                $navContent.find('.current').removeClass('current');
                 navTracker = 0;
             }
         }
@@ -357,7 +358,6 @@ var nav = (function(){
                 return false;
 
             }else if($parent.hasClass('title') == true){
-                $this.html('title');
                 slideNav("back");
                 $parent.parent().parent().addClass('previous');
                 return false;

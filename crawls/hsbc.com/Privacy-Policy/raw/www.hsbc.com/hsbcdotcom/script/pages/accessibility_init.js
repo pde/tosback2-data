@@ -51,14 +51,21 @@ $(document).ready(function () {
         obj.updateToolTip(500);
         obj.setFocus($("footer").find("a").eq(0));
     }
+	accessibility.showInstructions = function (e, node, group, obj) {
+		//alt + A
+		if(e.keyCode==65 && e.altKey==true)
+		{
+			obj.toggleInfoBox();
+		}
+	}
     accessibility.setInstructions($(".accessibility"));
     accessibility.setHideOnMouseMove(true);
     accessibility.setToolTipTemplate("<div class='tooltip'><!--text--><span class='point'></span></div>");
     //accessibility.addDirection($(".language select"),"bottom");
     //accessibility.addDirection($(".global-search-input input"),"bottom");
 
-    accessibility.addToolTip($(".navigation > li > a"), "Press down arrow to navigate to sub menu items. Then press tab.");
-    accessibility.addToolTip($(".dir-link > .arrow").parent(), "Press right/ left arrows to show/ hide menu items. And press tab to access items.");
+    accessibility.addToolTip($(".navigation > li > a"), "Press alt + down arrow to navigate to sub menu items. Then press tab.");
+    accessibility.addToolTip($(".dir-link > .arrow").parent(), "Press alt + right/ left arrows to show/ hide menu items. And press tab to access items.");
     accessibility.addToolTip($("select"), "Press Alt + Up/ Down arrow");
     accessibility.addToolTip($(".global-search-input input"), "Type keywords to search");
     accessibility.addToolTip($(".search input"), "Press enter to search.");
@@ -77,6 +84,7 @@ $(document).ready(function () {
     accessibility.addRule("click on #gotoNav run gotoNav(e,node,group,obj)");
     accessibility.addRule("click on #gotoContent run gotoContent(e,node,group,obj)");
     accessibility.addRule("click on #gotoFooter run gotoFooter(e,node,group,obj)");
+	accessibility.addRule("keydown on document run showInstructions(e,node,group,obj)");
     if (docWidth > 640) {
         accessibility.init();
     }

@@ -18,11 +18,7 @@ function areTheseElementsFilled()
 
 function checkname(txtFName) {
 	var filter = /[^A-Za-z0-9\s]/;
-	if (txtFName == "") {
-		alert("Name is a required field");
-		return false;
-	}
-	else if (filter.test(txtFName)) {
+	if (filter.test(txtFName)) {
 		alert("Please enter a valid name");
 		return false;
 	} 
@@ -94,9 +90,12 @@ function checkpwd(txtpwd1, txtpwd2){
 	}
 }
 
-function validate(txtemail, txtpwd1, txtpwd2, txtLName) {
-    if (document.layers || document.getElementById || document.all) {  
-         if (checkLname(txtLName) == false) {
+function validate(txtemail, txtpwd1, txtpwd2, txtLName, txtFName) {
+	if (document.layers || document.getElementById || document.all) {
+		if (checkname(txtFName) == false) {
+			return false;
+		}
+        else if (checkLname(txtLName) == false) {
             return false;
          }
         else if (checkemail(txtemail) == false) {

@@ -7,7 +7,8 @@ The following code is Copyright 1998-2012 Opinionlab, Inc.  All rights reserved.
 */
 
 /* [+] Tab Icon configuration */
+	//	newWindowSize: [545, 385]
 var oo_tab = new OOo.Ocode({
 	tab: {},
-	newWindowSize: [545, 385]
+	newWindowSize: [545, 425]
 });

@@ -730,6 +730,6 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			f:[],done:false,timer:null
 		};
 	})();
-	
+
 	COMSCORE.SiteRecruit.OnReady.listen();
 }// namespace (if statement at the top)

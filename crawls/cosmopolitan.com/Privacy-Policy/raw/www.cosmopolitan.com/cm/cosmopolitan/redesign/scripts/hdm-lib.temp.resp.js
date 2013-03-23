@@ -2081,6 +2081,294 @@ COSHDM.registration = {
 
 
 
+/**********************************************************
+ *
+ * HDM smartImages
+ *
+ * Handles the lazy loading scripts, along with choosing the appropriate cut sizes
+ * based on dom attributes. The attribute syntax looks something like this:
+ *
+ * hdmimgcut_[width]x[height]="path/to/file.jpg"
+ *
+ * make sure we have hdmimg="smart" attribute in the dom node as well. Classnames
+ * smartload and noimg will change dynamically and only have a visual impact, mostly
+ * for fancy fadin effects and stuff
+ *
+ * <img class="smartload noimg" hdmimg="smart" src="placeholder16x9.gif" hdmimgcut_1280x768="reallylargefile.jpg" hdmimgcut_960x576="largefile.jpg" hdmimgcut_640x384="mediumfile.jpg" hdmimgcut_320x192="smallfile.jpg" hdmimgcut_160x96="thumbfile.jpg" >
+ *
+ * attributes:
+ *		hdmimg
+ *			- smart - standard attribute name
+ *			- unique - there is only one image being used here, so replace common images
+ *
+ *
+ **********************************************************/
+COSHDM.smartImages = {
+	_vars : {
+		devicePixelRatio : 1, // lets default this to one..
+		imglist : [],
+		windowHeight : null,
+		jqwindowobj : null/*,
+		loadQueue : []*/
+	},
+	fn : {
+		checksize : function(){
+		},
+		loadByimg : function(imgObj){
+			var imglist = COSHDM.smartImages._vars.imglist;
+			var foundsmartimg = null;
+			for (var i = 0; i < imglist.length; i++){
+				if (imglist[i].img = imgObj){
+					foundsmartimg = imglist[i];
+					break;
+				}
+			}
+//			console.log("DURD ER FURD ERT?",foundsmartimg,foundsmartimg.img)
+			if (foundsmartimg != null){
+				COSHDM.smartImages.fn.loadIt(foundsmartimg);
+			}
+
+		},
+		loadIt: function(smartimg,force){
+			// ok even before all that, lets' find out if this element is attached to the dom..
+			var elementInDocument = function(e) {
+				while (e = e.parentNode) {
+					if (e == document) {return true;}
+				}
+				return false;
+			}
+			if (!elementInDocument(smartimg.img)){
+//				console.warn("[COSHDM.smargImages.fb.loadInt] imagen not in dom",smartimg);
+				return false;
+			}
+			// before we do antyhing, lets check smartimg and see if the idealURL is already being used as the src
+			if ((smartimg.img.src == smartimg.selectedCut[0]) && (!force)){
+//				console.warn("***** same url found",smartimg.img.src,smartimg.selectedCut);
+				return false;
+			}
+			if ((smartimg.top == -1)&&(!force)){
+				return false;
+			}
+			// lets see if it is hidden..
+			if ((window.getComputedStyle(smartimg.img,null).getPropertyValue("display") == "none")&&(!force)){
+				return false;
+			}
+			if (smartimg.img.src == smartimg.selectedCut[0]){
+				return false; // if the same img is attempted to being loaded, lets pass..
+			}
+			var newimg = new Image();
+//			alert("load it"); return false;
+			function loadme(){
+				smartimg.jqobj.removeClass("noimg");
+				smartimg.img.src = this.src;
+				smartimg.jqobj.addClass("loaded");
+			}
+			newimg.addEventListener('load',loadme,false);
+			newimg.src = smartimg.selectedCut[0];
+		},
+		lazyLoadit : function(){
+		},
+		selectImageSrc : function(index){
+			// let's get the img object..
+			myimg = COSHDM.smartImages._vars.imglist[index];
+
+		},
+		register : function(imgObj,imgType,nosave){
+			var jqsmart = $(imgObj)
+			// lets find all the cuts...
+			var cuts = [];
+			var attributes = imgObj.attributes;
+			for (var i = 0; i < attributes.length; i++){
+				var name = attributes[i].nodeName.toLowerCase();
+				if (/hdmimgcut_\d+x\d+$/.test(name)){
+					var dimensions = name.split("hdmimgcut_")[1].split("x");
+					cuts.push([attributes[i].nodeValue,parseInt(dimensions[0]),parseInt(dimensions[1])]);
+					// array format: [hdmimgcut_1280x768,1280,768]
+					// or [name, width, height]
+				}
+
+			}
+
+			if (cuts.length == 0){
+				console.warn("[COSHDM.smartImages.fn.register] no image cuts found",imgObj);
+				return false;
+			}
+			cuts.sort(function(a,b){return b[1]-a[1]});// sort it by width value - I love these slick functions, always so fancy
+			var smartimg = {
+				height : jqsmart.height(),
+				width : jqsmart.width(), // needed when image is resized and need to check to see if the url we need is good enough
+				top : -1,
+				loaded : false,
+				cuts : cuts,
+				selectedCut : [],
+				imgType : imgType,
+				jqobj : jqsmart,
+				img : imgObj // may not need these..
+			}
+/*			jqsmart.load(function(){
+//				smartimg.top = smartimg.jqobj.offset().top;
+				console.log("smartimg test "+smartimg.jqobj.offset().top,smartimg,this)
+			});*/
+			// keep in mind that if there are redundant image
+			var found = false;
+			if (imgType == "unique"){
+				var imglist = COSHDM.smartImages._vars.imglist;
+				for (var i = 0; i < imglist.length; i++){
+					var testimg = imglist[i];
+					if (testimg.img.src == smartimg.img.src){
+						// reference has already been found, lets replace it..
+						COSHDM.smartImages._vars.imglist[i] = smartimg;
+						found = true;
+						break;
+					}
+				}
+			} else {
+			// okay, so we will also need to make sure any redundant files pointing to the same src file will
+			// not be referenced twice..
+				var imglist = COSHDM.smartImages._vars.imglist;
+				for (var i = 0; i < imglist.length; i++){
+					var testimg = imglist[i];
+					if (testimg.img == smartimg.img){
+						// reference has already been found, lets replace it..
+//						console.error("[COSHDM.smartImages.fn.register] duplicate img ref found, ignoring..",smartimg)
+						found = true;
+						break;
+					}
+				}
+			}
+
+			console.warn("regme",imgType)
+
+			if (!found && (imgType != "carousel") && (imgType != "flipbook")){
+				COSHDM.smartImages._vars.imglist.push(smartimg);
+				return smartimg;
+			} else if ((imgType == "carousel")||(imgType == "flipbook")){
+				// we do not store carousel images in the smartImage bank, carousels have their own management
+				// same thing with flipbook..
+				return smartimg;
+			} else if (nosave){
+				console.warn("not saving this smartimg in the registry, simply just pass the obj back")
+				return smartimg;
+			} else {
+				return smartimg;
+			}
+		},
+		findIdealImageSrc : function(smartimg){
+			smartimg.loaded = false;
+			var currentwidth = smartimg.width*COSHDM.smartImages._vars.devicePixelRatio;
+
+			var cuts = smartimg.cuts;
+			var chosencut;
+			for (var i = 0; i < cuts.length; i++){
+				var mywidth = cuts[i][1];
+				if (mywidth > currentwidth){// this sucker works because it's sorted.. remember?
+					chosencut = cuts[i];
+				}
+			}
+			if (!chosencut){
+				chosencut = cuts[0];
+			}
+			if (smartimg.selectedCut.length < 1){
+				smartimg.selectedCut = chosencut;
+			} else 	if (chosencut[1] > smartimg.selectedCut[1]){
+//				console.log("chosen cut changed!",chosencut[1],smartimg.selectedCut[1]);
+				smartimg.selectedCut  = chosencut
+			} else if (!chosencut){
+				smartimg.selectedCut = cuts[0];
+			}
+//			console.log("selected cut found",smartimg.selectedCut)
+			/*
+				in addition to this, we need to be able to detect things like retina display.. also, I kinda wanna do a load comparison to see if it is worth checking the load times
+				that way I can figure out if I need to load up a smaller image next time around... you know what, tat's really complicated, lol
+				yeah scratch that. I'll do that later, right now I"m just pressed for time.
+			*/
+			return smartimg;// after it is all found and set to idealURL, pass the var back..
+		}
+	},
+	event : {
+		repositionCheck : function(e){
+			// do we need to grab the window for anything? oh yeah, to determine the bottom..
+			COSHDM.smartImages._vars.windowHeight = COSHDM.smartImages._vars.jqwindowobj.height();
+			for(var i = 0; i < COSHDM.smartImages._vars.imglist.length; i++){
+				var smartimg = COSHDM.smartImages._vars.imglist[i];
+				var ttop = smartimg.jqobj.offset().top;
+				if (smartimg.top != ttop){
+					COSHDM.smartImages._vars.imglist[i].top = ttop;
+					// hopefully this isn't too taxing...
+				}
+				var twidth = smartimg.jqobj.width()
+				if (smartimg.width != twidth){
+					// find the ideal image width
+					COSHDM.smartImages._vars.imglist[i].width = twidth;
+					if (COSHDM.smartImages._vars.imglist[i].imgType == "carousel"){// ok thing about the carousels, they will have to manage their own images.. hrm how the frig
+						continue; // bail out for carousels
+					}
+
+					COSHDM.smartImages.fn.loadIt(COSHDM.smartImages.fn.findIdealImageSrc(COSHDM.smartImages._vars.imglist[i]));
+				}
+			}
+		},
+		scrollCheck : function(e){
+			/*			// initially used to throttle down the scrollCheck event.. but prolly not necessary
+			var timegate = true;
+			if (e && (e.timeStamp > (COSHDM.smartImages._vars.scrollTimestamp+100))){
+				console.log("DO EEET")
+				timegate = false;
+				COSHDM.smartImages._vars.scrollTimestamp = e.timeStamp;
+			}
+			if (timegate){
+				return;
+			}*/
+			var scrollValue = COSHDM.smartImages._vars.jqwindowobj.scrollTop();
+			for(var i = 0; i < COSHDM.smartImages._vars.imglist.length; i++){
+				if (COSHDM.smartImages._vars.imglist[i].loaded){
+					continue;
+				}
+				if (COSHDM.smartImages._vars.imglist[i].imgType == "carousel"){
+					// ok thing about the carousels, they will have to manage their own images.. hrm how the frig
+					continue;
+				}
+				var smartimg = COSHDM.smartImages._vars.imglist[i];
+				smartimg.top = smartimg.jqobj.offset().top; // man.. I really didn't want to call this like this..
+				if ((smartimg.top-(COSHDM.smartImages._vars.windowHeight*2)) < scrollValue){
+					if (!smartimg.loaded){
+						COSHDM.smartImages._vars.imglist[i].loaded = true;
+						COSHDM.smartImages.fn.loadIt(smartimg);
+//						console.warn("load it!",smartimg,smartimg.top,COSHDM.smartImages._vars.windowHeight,scrollValue,smartimg.jqobj.offset().top)
+					}
+				}
+			}
+		}
+	},
+	init : function(){
+		COSHDM.smartImages._vars.devicePixelRatio = window["devicePixelRatio"] ? window["devicePixelRatio"] : 1;
+		COSHDM.smartImages._vars.jqwindowobj = $(window);
+		/*
+		 scan the loaded page, look for all images
+		 register all lazyloading images
+		 load up initial set, then bind events to resize and scroll
+		*/
+
+		var unculledimages = $("img.smartload");
+		unculledimages.each(function(index){
+			var attr = this.getAttribute("hdmimg")
+			if ((attr) && (attr != "carousel")){
+				COSHDM.smartImages.fn.register(this,attr);
+			}
+		})
+		// let's test this out..
+		COSHDM.smartImages._vars.jqwindowobj.resize(COSHDM.smartImages.event.repositionCheck);
+		COSHDM.smartImages._vars.windowHeight = COSHDM.smartImages._vars.jqwindowobj.height();
+		for(var i = 0; i < COSHDM.smartImages._vars.imglist.length; i++){
+				// write code here to generate idealURL
+				COSHDM.smartImages.fn.findIdealImageSrc(COSHDM.smartImages._vars.imglist[i])
+		}
+		// bind scroll event
+		$(document).scroll(COSHDM.smartImages.event.scrollCheck);
+		// let's initiate reposition event
+	}
+}
+
 
 
 
@@ -2089,6 +2377,7 @@ $(document).ready(function() {
 	COSHDM.menu.init();
 	COSHDM.footer.init();
 	COSHDM.search.init();
+	COSHDM.smartImages.init();
 	COSHDM.registration.init();
 });
 	

@@ -1,61 +1,26 @@
-/* Omniture Suite selection logic. */
 var reDev = /^(localhost|hq-scprod|hq-scqa|blzorig|backstage)/i;
 var s_account = (reDev.test(window.location.hostname)) ? "NWFTestBackstage" : "NWFTest";
 var s = s_gi(s_account);
 
-/************************** CONFIG SECTION **************************/
-/* You may add or alter any code config here. */
-/* Link Tracking Config */
 s.trackDownloadLinks = true;
 s.trackExternalLinks = true;
 s.trackInlineStats = true;
-
-// DFR 3/10/2009: added swf download tracking
 s.linkDownloadFileTypes = "exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,swf,flv";
 s.linkInternalFilters = "javascript:,nwf.org";
 s.linkLeaveQueryString = false;
 s.linkTrackVars = "None";
 s.linkTrackEvents = "None";
-
-/* 
- * Form Analysis Config (should be above doPlugins section) 
- * DFR 9/26/2011: Commented out per Kelley Wine.
- */
-/*
-s.formList = "TRACK_ALL_OTHERS";
-s.trackFormList = false;
-s.trackPageName = true;
-s.useCommerce = false;
-s.varUsed = "prop21";
-s.eventList = ""; // Abandon,Success,Error
-*/
-
-/* NL 12/16/2009: Testing for Ad list props */
-//if (s_account == "NWFTestBackstage") {
-//    s.prop44 = "121|122|123|124|125|126";   // Campaign ID
-//    s.prop45 = "221|222|223|224|225|226";   // Advertisement ID
-//}
-
-// Specify the server
 s.server = window.location.hostname.match(/^[\w-]+/).toString().toLowerCase();
 
-/* Plugin Config */
 s.usePlugins = true;
 
-// Sample variables to be supplied by Convio
-// var transactionId = "ABC12345";
-// var donationAmount = "$30.00";
-// var formId = "12345";
-
 function s_doPlugins(s) {
-    // Define basic variables
     var host = window.location.hostname;
     var qs = window.location.search;
     var path = window.location.pathname;
     var file = path.split("/").pop();
     var re;
 
-    // 7-11-2011 DFR: tracking for Convio Action Alert forms
     if (window.location.href.match("online.nwf.org/site/Advocacy")) {
         if (window.location.href.match("OnScreenThanks")) {
             s.events = s.apl(s.events, "event6", ",", 1);   // Form Completed
@@ -73,7 +38,6 @@ function s_doPlugins(s) {
         }
     }
 
-    // 7-11-2011 DFR: tracking for Convio eCards
     if (window.location.href.match("online.nwf.org/site/Ecard")) {
         if (window.location.href.match("thank_you")) {
             s.events = s.apl(s.events, "event6", ",", 1);   // Form Completed
@@ -382,12 +346,6 @@ function getCookie(c_name) {
     }
 }
 
-/************************** PLUGINS SECTION *************************/
-/* You may insert any plugins you wish to use here.                 */
-
-/*
- * Plugin: getQueryParam 2.1 - return query string parameter(s)
- */
 s.getQueryParam=new Function("p","d","u",""
 +"var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
 +"on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
@@ -458,67 +416,6 @@ s.getTimeParting=new Function("t","z","y",""
 +":'+mint+ap;var daystring=dow;var endstring=dt;if(t=='h'){return tim"
 +"estring}if(t=='d'){return daystring};if(t=='w'){return en"
 +"dstring}}};");
-/*
- * Plugin: Form Analysis 2.1 (Success, Error, Abandonment)
- * DFR 9/26/2011: Commented out per Kelley Wine.
- */
- /*
-s.setupFormAnalysis=new Function(""
-+"var s=this;if(!s.fa){s.fa=new Object;var f=s.fa;f.ol=s.wd.onload;s."
-+"wd.onload=s.faol;f.uc=s.useCommerce;f.vu=s.varUsed;f.vl=f.uc?s.even"
-+"tList:'';f.tfl=s.trackFormList;f.fl=s.formList;f.va=new Array('',''"
-+",'','')}");
-s.sendFormEvent=new Function("t","pn","fn","en",""
-+"var s=this,f=s.fa;t=t=='s'?t:'e';f.va[0]=pn;f.va[1]=fn;f.va[3]=t=='"
-+"s'?'Success':en;s.fasl(t);f.va[1]='';f.va[3]='';");
-s.faol=new Function("e",""
-+"var s=s_c_il["+s._in+"],f=s.fa,r=true,fo,fn,i,en,t,tf;if(!e)e=s.wd."
-+"event;f.os=new Array;if(f.ol)r=f.ol(e);if(s.d.forms&&s.d.forms.leng"
-+"th>0){for(i=s.d.forms.length-1;i>=0;i--){fo=s.d.forms[i];fn=fo.name"
-+";tf=f.tfl&&s.pt(f.fl,',','ee',fn)||!f.tfl&&!s.pt(f.fl,',','ee',fn);"
-+"if(tf){f.os[fn]=fo.onsubmit;fo.onsubmit=s.faos;f.va[1]=fn;f.va[3]='"
-+"No Data Entered';for(en=0;en<fo.elements.length;en++){el=fo.element"
-+"s[en];t=el.type;if(t&&t.toUpperCase){t=t.toUpperCase();var md=el.on"
-+"mousedown,kd=el.onkeydown,omd=md?md.toString():'',okd=kd?kd.toStrin"
-+"g():'';if(omd.indexOf('.fam(')<0&&okd.indexOf('.fam(')<0){el.s_famd"
-+"=md;el.s_fakd=kd;el.onmousedown=s.fam;el.onkeydown=s.fam}}}}}f.ul=s"
-+".wd.onunload;s.wd.onunload=s.fasl;}return r;");
-s.faos=new Function("e",""
-+"var s=s_c_il["+s._in+"],f=s.fa,su;if(!e)e=s.wd.event;if(f.vu){s[f.v"
-+"u]='';f.va[1]='';f.va[3]='';}su=f.os[this.name];return su?su(e):tru"
-+"e;");
-s.fasl=new Function("e",""
-+"var s=s_c_il["+s._in+"],f=s.fa,a=f.va,l=s.wd.location,ip=s.trackPag"
-+"eName,p=s.pageName;if(a[1]!=''&&a[3]!=''){a[0]=!p&&ip?l.host+l.path"
-+"name:a[0]?a[0]:p;if(!f.uc&&a[3]!='No Data Entered'){if(e=='e')a[2]="
-+"'Error';else if(e=='s')a[2]='Success';else a[2]='Abandon'}else a[2]"
-+"='';var tp=ip?a[0]+':':'',t3=e!='s'?':('+a[3]+')':'',ym=!f.uc&&a[3]"
-+"!='No Data Entered'?tp+a[1]+':'+a[2]+t3:tp+a[1]+t3,ltv=s.linkTrackV"
-+"ars,lte=s.linkTrackEvents,up=s.usePlugins;if(f.uc){s.linkTrackVars="
-+"ltv=='None'?f.vu+',events':ltv+',events,'+f.vu;s.linkTrackEvents=lt"
-+"e=='None'?f.vl:lte+','+f.vl;f.cnt=-1;if(e=='e')s.events=s.pt(f.vl,'"
-+",','fage',2);else if(e=='s')s.events=s.pt(f.vl,',','fage',1);else s"
-+".events=s.pt(f.vl,',','fage',0)}else{s.linkTrackVars=ltv=='None'?f."
-+"vu:ltv+','+f.vu}s[f.vu]=ym;s.usePlugins=false;var faLink=new Object"
-+"();faLink.href='#';s.tl(faLink,'o','Form Analysis');s[f.vu]='';s.us"
-+"ePlugins=up}return f.ul&&e!='e'&&e!='s'?f.ul(e):true;");
-s.fam=new Function("e",""
-+"var s=s_c_il["+s._in+"],f=s.fa;if(!e) e=s.wd.event;var o=s.trackLas"
-+"tChanged,et=e.type.toUpperCase(),t=this.type.toUpperCase(),fn=this."
-+"form.name,en=this.name,sc=false;if(document.layers){kp=e.which;b=e."
-+"which}else{kp=e.keyCode;b=e.button}et=et=='MOUSEDOWN'?1:et=='KEYDOW"
-+"N'?2:et;if(f.ce!=en||f.cf!=fn){if(et==1&&b!=2&&'BUTTONSUBMITRESETIM"
-+"AGERADIOCHECKBOXSELECT-ONEFILE'.indexOf(t)>-1){f.va[1]=fn;f.va[3]=e"
-+"n;sc=true}else if(et==1&&b==2&&'TEXTAREAPASSWORDFILE'.indexOf(t)>-1"
-+"){f.va[1]=fn;f.va[3]=en;sc=true}else if(et==2&&kp!=9&&kp!=13){f.va["
-+"1]=fn;f.va[3]=en;sc=true}if(sc){nface=en;nfacf=fn}}if(et==1&&this.s"
-+"_famd)return this.s_famd(e);if(et==2&&this.s_fakd)return this.s_fak"
-+"d(e);");
-s.ee=new Function("e","n",""
-+"return n&&n.toLowerCase?e.toLowerCase()==n.toLowerCase():false;");
-s.fage=new Function("e","a",""
-+ "var s=this,f=s.fa,x=f.cnt;x=x?x+1:1;f.cnt=x;return x==a?e:'';");
-*/
 
 /* Module: Media */
 s.m_Media_c="var m=s.m_i('Media');m.cn=function(n){var m=this;return m.s.rep(m.s.rep(m.s.rep(n,\"\\n\",''),\"\\r\",''),'--**--','')};m.open=function(n,l,p,b){var m=this,i=new Object,tm=new Date,a='',"

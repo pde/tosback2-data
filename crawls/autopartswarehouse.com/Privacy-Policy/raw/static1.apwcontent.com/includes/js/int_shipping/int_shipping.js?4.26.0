@@ -1,0 +1,65 @@
+function Set_CPO_Cookie(name, value, expires)
+{
+    // set time, it's in milliseconds
+    var today = new Date();
+    today.setTime( today.getTime() );
+
+    /*
+    if the expires variable is set, make the correct
+    expires time, the current script below will set
+    it for x number of days, to make it for hours,
+    delete * 24, for minutes, delete * 60 * 24
+    */
+    if ( expires )
+    {
+        expires = expires * 1000 * 60 * 60 * 24;
+    }
+    var expires_date = new Date( today.getTime() + (expires) );
+    var path = '/';
+    
+    document.cookie = name + "=" +escape( value ) +
+    ";path=" + path + ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" );
+}
+
+$(function(){
+	CookieName = false;
+    if (getCookie('cpo') == 'true' ){
+		CookieName = 'cpo';
+	}else {
+		if(getCookie('bongo_cc') == 'true') 
+		CookieName = 'bongo_cc';
+	}
+	
+	if(CookieName != false) {
+		$("#intl-shipping").show();
+        
+        if ( 'cpo' == CookieName ) {
+            $("#div_cpo").show();
+        } else {
+            $("#div_bongo_cc").show();
+        }
+        
+        
+		$("#intl-shipping > div.intl-close").click(function () {
+			$("#intl-shipping").slideUp(100);
+			$('.sp-area').animate({ marginTop: '202px'}, 100);
+			Set_CPO_Cookie(CookieName, false);
+			return true;
+		});
+	}
+	
+	if(CookieName){
+		if(!header_ref || 0 === header_ref.length){$('.sp-area').css('margin-top','232px');}	
+	}else{
+		if(!header_ref || 0 === header_ref.length){$('.sp-area').css('margin-top','202px');}
+	}
+	
+    $(".new-c").hover(
+      function () {
+        $(".new-c-tx").addClass("new-c-ul");
+      },
+      function () {
+        $(".new-c-tx").removeClass("new-c-ul");
+      }
+    );
+});

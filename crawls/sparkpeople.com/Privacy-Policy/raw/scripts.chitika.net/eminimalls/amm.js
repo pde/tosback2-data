@@ -5,11 +5,12 @@ String.prototype.ltrim = function() {
 ch_ad_url = '';
 ch_oeh = window.onerror;
 ch_chitika_loaded = true;
-ch_amm_version = "1.13.4";
+ch_amm_version = "1.14.0";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
 function ch_aue(p,v) { if (v) { ch_au(p,encodeURIComponent(v)); } }
+function ch_aun(p, v) { if (v) { ch_au(p, v.replace(/[\W]+/, '_').toLowerCase()); } }
 function ch_def(v, def) { return (v) ? v : def; }
 
 function ch_ad_render_search(response) {
@@ -402,7 +403,7 @@ function ch_mm() {
     ch_aue('h', w.ch_height);
     ch_aue('client', w.ch_client);
     ch_aue('sid', w.ch_sid);
-    ch_aue('cid', w.ch_cid);
+    ch_aun('cid', w.ch_cid);
     ch_aue('nump', w.ch_nump);
     ch_aue('query', w.ch_query);
     if (w.ch_type) {
@@ -416,7 +417,6 @@ function ch_mm() {
     ch_aue('tptracker', w.ch_third_party_tracker);
     ch_aue('cttarget', w.ch_target);
     ch_aue('noborders', w.ch_noborders);
-    ch_aue('backfill',w.ch_backfill);
     ch_aue('cl_border', w.ch_color_border);
     ch_aue('cl_bg', w.ch_color_bg);
     ch_aue('cl_title', w.ch_color_title);
@@ -564,7 +564,6 @@ function ch_clear() {
     w.ch_alternate_ad_url = undefined;
     w.ch_alternate_css_url = undefined;
     w.ch_append_tracking = undefined;
-    w.ch_backfill = undefined;
     w.ch_behavioral_window = undefined;
     w.ch_cat_id = undefined;
     w.ch_cid = undefined;

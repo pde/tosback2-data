@@ -1,4 +1,6 @@
-﻿//top nav
+﻿//uses functions declared in main.master
+
+//top nav
 $(".main-nav a, .slide-menu ul a, .mobile-main-nav a").click(function () {
     var text = $(this).text().trim();
     if ($(this).closest(".sub-nav").length > 0)
@@ -121,3 +123,44 @@ $(".save-cart, .cart-link, .cart-buttons a").click(function () {
 //shopping cart submit order
 
 //shopping cart confirmation
+
+//search
+$(".search-right .btn-cta-sm").click(function () {
+    var s = s_gi(s_account);
+    s.linkTrackVars = "eVar3,prop4";
+    s.linkTrackEvents = "event2";
+    s.eVarX = s.propX = $(this).parent().children(".search-left").children("input").val();
+    s.events = "event2";
+    s.tl(true, 'o', "Search");
+});
+
+//wendy
+$("a.agent").click(function () {
+    var s = s_gi(s_account);
+    s.linkTrackEvents = "event6";
+    s.events = "event6";
+    s.tl(true, "o", "Wendy");
+});
+
+//my location
+$("#myLocationNew").click(function () {
+    var s = s_gi(s_account); 
+    s.linkTrackEvents = "event7"; 
+    s.events = "event";
+    s.tl(true, "o", "Confirm Location");
+});
+
+$("#myLocationExisting").click(function () {
+    var s = s_gi(s_account); 
+    s.linkTrackEvents = "event7"; 
+    s.events = "event";
+    s.tl(true, "o", "Sign In");
+});
+
+//social
+$(".social a").click(function () {
+    var s = s_gi(s_account);
+    s.linkTrackVars = "prop14";
+    s.prop14 = $(this).attr("title");
+    s.tl(this, "o", $(this).attr("title"));
+});

@@ -151,7 +151,7 @@ function ajaxRequestComplete() {
         $('.dropkick').dropkick();
     $('.bundlizer-hsi').each(function () { modSlide($(this)); });
     $('.bundlizer-tv').each(function () { modSlide($(this)); });
-    wireupAdvancedSearch();
+    /*wireupAdvancedSearch();*/
     supportTabSlide();
     supportMapImage();
 };
@@ -640,19 +640,21 @@ $(function () {
 
 /* Search for Support */
 $(function () {
-    $('.support-search .search-left .adv-search').hide();
-    $('.support-search .search-left .search-adv').live('click', function () {
-        $('.support-search .search-left .adv-search').show();
-        $('.support-search .search-left .search-adv').hide();
-    });
-    $('.support-search .search-left .search-basic').live('click', function () {
+    if ( $('.support-search').length === 1) {
         $('.support-search .search-left .adv-search').hide();
-        $('.support-search .search-left .search-adv').show();
-    });
+        $('.support-search .search-left .search-adv').live('click', function () {
+            $('.support-search .search-left .adv-search').show();
+            $('.support-search .search-left .search-adv').hide();
+        });
+        $('.support-search .search-left .search-basic').live('click', function () {
+            $('.support-search .search-left .adv-search').hide();
+            $('.support-search .search-left .search-adv').show();
+        });
+    }
 });
 
 
-/* Advanced Search */
+/* Advanced Search
 $(wireupAdvancedSearch());
 function wireupAdvancedSearch() {
     $('.advanced-search-btn').on('click', function (e) {
@@ -665,7 +667,7 @@ function wireupAdvancedSearch() {
         }
         e.preventDefault();
     });
-}
+} */
 
 /* MOD-003 IMAGE SWAP CONTROL */
 $(function () {
@@ -1246,6 +1248,10 @@ var promoBar320 = function () {
 
 /* 320 Support Tab Slide  */
 var supportTabSlide = function () {
+
+    if ( $('.tab-navigation').length === 0 || !$('.tabbed-content .nav-arrow-left').is(':visible') || layoutWidth !== 320 || layoutWidth !== 768 ) {
+        return false;
+    }
 
     var $tabNavList = $('.tab-navigation ul'),
         totalTabNav = $('.tab-navigation ul li').length,

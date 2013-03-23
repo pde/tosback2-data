@@ -1,0 +1,1 @@
+function formatPath(a){return((a.startsWith("/")&&typeof(publicSiteUrl)!="undefined")?publicSiteUrl:"")+String.format(a,publicSiteVersion)};;

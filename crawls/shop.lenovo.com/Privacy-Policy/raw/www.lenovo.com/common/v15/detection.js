@@ -9,3 +9,8 @@ if((navigator.appName == "Microsoft Internet Explorer") && (parseInt(navigator.a
 // Surfaid dummy function for preloading
 function sa_onclick(p1, p2) { return true; }
 
+window.onload = function(){
+	if(window.location.href.indexOf("csr_policies") > -1){
+		$('.subheads').siblings("img").css({width: '236px', height: '215px'});
+	}
+}

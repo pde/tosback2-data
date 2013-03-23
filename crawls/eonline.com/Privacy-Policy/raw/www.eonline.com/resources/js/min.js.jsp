@@ -1351,7 +1351,7 @@ eol.create("page", function($) {
         	dart.networkId = "N4295";
         }
        
-        if( !(dart.type || "").match(/^pfadx$/) || (adEdition === "us" || adEdition === "ca" || adEdition === "nz") ) { 
+        if( !(dart.type || "").match(/^pfadx$/) || (adEdition === "us" || adEdition === "ca") ) { 
 	        //not used for pfadx ad calls unless the adEdition is us, ca, OR nz
         	advertisement.push("http://ad.doubleclick.net" + "/" + (dart.networkId.length > 0 ? dart.networkId + "/" : "") + dart.type + "/" + dart.site + "." + adEdition + "." + dart.domain + "/" + dart.zone );
 	        if ( parseInt(dart.tile,10) === 1 ) {
@@ -1380,6 +1380,9 @@ eol.create("page", function($) {
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         } else if (adEdition === "it") {
         	advertisement.push("http://video.bal.ad.dotandad.com/mediamond.jsp?mpo=vast_eonline&mpt=nbc_eo_vid_art&rnd=%n");
+        	retVal = advertisement.join(";").replace(/\;\;/,";");
+        } else if (adEdition === "nz") {
+        	advertisement.push("http://pubads.g.doubleclick.net/gampad/ads?sz=480x360&iu=/3595/NZ_Entertainment_EOnline&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]");
         	retVal = advertisement.join(";").replace(/\;\;/,";");
         }
         else {

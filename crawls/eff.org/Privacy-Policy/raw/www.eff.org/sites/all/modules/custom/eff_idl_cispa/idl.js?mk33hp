@@ -1,0 +1,16 @@
+(function ($) {
+  $(function(){
+    // detect if we're in a frame
+    function in_frame() {
+      var r = Math.random();
+      window.frame_detection = r;
+      return !(window.parent && window.parent.frame_detection == r);
+    }
+
+    if(!in_frame()) {
+      // we're not in a frame
+      $('body').append('<iframe id="idl_alert" scrolling="no" frameborder="0" style="z-index: 100; box-shadow: 0 -1px 4px 0 #000000; height: 90px; left: 0; top: 0; width: 100%; border: 0 none; position: fixed; text-decoration: none; max-width: 100%;" src="/sites/all/modules/custom/eff_idl_cispa/banner.html">');
+      $('html').css('padding-top', '90px');
+    }
+  });
+})(jQuery);

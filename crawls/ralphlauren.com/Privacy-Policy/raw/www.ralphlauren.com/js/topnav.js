@@ -174,6 +174,9 @@ jQuery(document).ready(function() {
 					case 'flynavId-10848464':
 						jQuery('#d3-10848464').css('background-image','url(/images/3d-women-rlx_920x245.jpg)').show();
 					break;
+					case 'flynavId-18779106':
+						jQuery('#d3-18779106').css('background-image','url(/images/3d-women-rrl_920x245.jpg)').show();
+					break;
 					case 'flynavId-1766613':
 						jQuery('#d3-1766613').css('background-image','url(/images/3d-women-lauren_920x245.jpg)').show();
 					break;

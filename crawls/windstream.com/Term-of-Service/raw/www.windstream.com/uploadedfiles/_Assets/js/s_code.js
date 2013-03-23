@@ -203,3 +203,94 @@ s.p_gvf=new Function("t","k",""
 +"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
 +"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
 +"epa(v)}return ''");
+
+/*
+* Plugin: getPreviousValue_v1.0 - return previous value of designated
+*   variable (requires split utility)
+*/
+s.getPreviousValue = new Function("v", "c", "el", ""
++ "var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
++ "){if(s.events){i=s.split(el,',');j=s.split(s.events,',');for(x in i"
++ "){for(y in j){if(i[x]==j[y]){if(s.c_r(c)) r=s.c_r(c);v?s.c_w(c,v,t)"
++ ":s.c_w(c,'no value',t);return r}}}}}else{if(s.c_r(c)) r=s.c_r(c);v?"
++ "s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");
+
+/*
+ * Plugin: getNewRepeat 1.2 - Returns whether user is new or repeat
+ */
+s.getNewRepeat=new Function("d","cn",""
++"var s=this,e=new Date(),cval,sval,ct=e.getTime();d=d?d:30;cn=cn?cn:"
++"'s_nr';e.setTime(ct+d*24*60*60*1000);cval=s.c_r(cn);if(cval.length="
++"=0){s.c_w(cn,ct+'-New',e);return'New';}sval=s.split(cval,'-');if(ct"
++"-sval[0]<30*60*1000&&sval[1]=='New'){s.c_w(cn,ct+'-New',e);return'N"
++"ew';}else{s.c_w(cn,ct+'-Repeat',e);return'Repeat';}");
+/*
+* Utility Function: split v1.5 (JS 1.0 compatible)
+*/
+s.split=new Function("l","d",""
++"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++ "++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
+
+/*
+ * Plugin: Visit Number By Month 2.0 - Return the user visit number 
+ */
+s.getVisitNum=new Function(""
++"var s=this,e=new Date(),cval,cvisit,ct=e.getTime(),c='s_vnum',c2='s"
++"_invisit';e.setTime(ct+30*24*60*60*1000);cval=s.c_r(c);if(cval){var"
++" i=cval.indexOf('&vn='),str=cval.substring(i+4,cval.length),k;}cvis"
++"it=s.c_r(c2);if(cvisit){if(str){e.setTime(ct+30*60*1000);s.c_w(c2,'"
++"true',e);return str;}else return 'unknown visit number';}else{if(st"
++"r){str++;k=cval.substring(0,i);e.setTime(k);s.c_w(c,k+'&vn='+str,e)"
++";e.setTime(ct+30*60*1000);s.c_w(c2,'true',e);return str;}else{s.c_w"
++"(c,ct+30*24*60*60*1000+'&vn=1',e);e.setTime(ct+30*60*1000);s.c_w(c2"
++",'true',e);return 1;}}"
+);
+
+/*
+ * Plugin: Days since last Visit 1.1 - capture time from last visit
+ */
+s.getDaysSinceLastVisit=new Function("c",""
++"var s=this,e=new Date(),es=new Date(),cval,cval_s,cval_ss,ct=e.getT"
++"ime(),day=24*60*60*1000,f1,f2,f3,f4,f5;e.setTime(ct+3*365*day);es.s"
++"etTime(ct+30*60*1000);f0='Cookies Not Supported';f1='First Visit';f"
++"2='More than 30 days';f3='More than 7 days';f4='Less than 7 days';f"
++"5='Less than 1 day';cval=s.c_r(c);if(cval.length==0){s.c_w(c,ct,e);"
++"s.c_w(c+'_s',f1,es);}else{var d=ct-cval;if(d>30*60*1000){if(d>30*da"
++"y){s.c_w(c,ct,e);s.c_w(c+'_s',f2,es);}else if(d<30*day+1 && d>7*day"
++"){s.c_w(c,ct,e);s.c_w(c+'_s',f3,es);}else if(d<7*day+1 && d>day){s."
++"c_w(c,ct,e);s.c_w(c+'_s',f4,es);}else if(d<day+1){s.c_w(c,ct,e);s.c"
++"_w(c+'_s',f5,es);}}else{s.c_w(c,ct,e);cval_ss=s.c_r(c+'_s');s.c_w(c"
++"+'_s',cval_ss,es);}}cval_s=s.c_r(c+'_s');if(cval_s.length==0) retur"
++"n f0;else if(cval_s!=f1&&cval_s!=f2&&cval_s!=f3&&cval_s!=f4&&cval_s"
++ "!=f5) return '';else return cval_s;");
+
+/*
+* Plugin: getPercentPageViewed v1.4
+*/
+s.handlePPVevents=new Function("",""
++"if(!s.getPPVid)return;var dh=Math.max(Math.max(s.d.body.scrollHeigh"
++"t,s.d.documentElement.scrollHeight),Math.max(s.d.body.offsetHeight,"
++"s.d.documentElement.offsetHeight),Math.max(s.d.body.clientHeight,s."
++"d.documentElement.clientHeight)),vph=s.wd.innerHeight||(s.d.documen"
++"tElement.clientHeight||s.d.body.clientHeight),st=s.wd.pageYOffset||"
++"(s.wd.document.documentElement.scrollTop||s.wd.document.body.scroll"
++"Top),vh=st+vph,pv=Math.min(Math.round(vh/dh*100),100),c=s.c_r('s_pp"
++"v'),a=(c.indexOf(',')>-1)?c.split(',',4):[],id=(a.length>0)?(a[0]):"
++"escape(s.getPPVid),cv=(a.length>1)?parseInt(a[1]):(0),p0=(a.length>"
++"2)?parseInt(a[2]):(pv),cy=(a.length>3)?parseInt(a[3]):(0),cn=(pv>0)"
++"?(id+','+((pv>cv)?pv:cv)+','+p0+','+((vh>cy)?vh:cy)):'';s.c_w('s_pp"
++"v',cn);");
+s.getPercentPageViewed=new Function("pid",""
++"pid=pid?pid:'-';var s=this,ist=!s.getPPVid?true:false;if(typeof(s.l"
++"inkType)!='undefined'&&s.linkType!='e')return'';var v=s.c_r('s_ppv'"
++"),a=(v.indexOf(',')>-1)?v.split(',',4):[];if(a.length<4){for(var i="
++"3;i>0;i--){a[i]=(i<a.length)?(a[i-1]):('');}a[0]='';}a[0]=unescape("
++"a[0]);s.getPPVpid=pid;s.c_w('s_ppv',escape(pid));if(ist){s.getPPVid"
++"=(pid)?(pid):(s.pageName?s.pageName:document.location.href);s.c_w('"
++"s_ppv',escape(s.getPPVid));if(s.wd.addEventListener){s.wd.addEventL"
++"istener('load',s.handlePPVevents,false);s.wd.addEventListener('scro"
++"ll',s.handlePPVevents,false);s.wd.addEventListener('resize',s.handl"
++"ePPVevents,false);}else if(s.wd.attachEvent){s.wd.attachEvent('onlo"
++"ad',s.handlePPVevents);s.wd.attachEvent('onscroll',s.handlePPVevent"
++"s);s.wd.attachEvent('onresize',s.handlePPVevents);}}return(pid!='-'"
++")?(a):(a[1]);");

@@ -753,7 +753,7 @@ de.bild.env = {
 
 
 
-/*de.bild.settings:27210766.7*/
+/*de.bild.settings:27210766.8*/
 
 /*
  @ignore;
@@ -831,7 +831,10 @@ de.bild.settings = (function(){
                 
                 'getQODcomment': '/ka/private/qodregconf', 
                 //Promotion Layer
-              promoLayer: '/CommunityAppageKA/promotionLayer.bild.html',
+              'promoLayer': '/CommunityAppageKA/promotionLayer.bild.html', 
+              'qotdPromoBox' : '/CommunityAppageKA/promotionLayerQotD.bild.html',  
+              'promoLayerLike' : '/CommunityAppageKA/promotionLayerLike.bild.html',  
+
 
 
    // teaser comments
@@ -1995,7 +1998,7 @@ de.bild.httpFist = (function($){
     };
    
 }(jQuery));
-/*de.bild.sso:27401092.5*/
+/*de.bild.sso:27401092.6*/
 
 /**
 * de.bild.sso - main SSO functionality
@@ -2050,11 +2053,11 @@ de.bild.sso = (function($){
     //15 Spalten
     _15_spalten = false,
     $comloginLoggedInList,
-    $comUserList,
-    $comUserListUl,
     $comNewUser,
     $comLoginLink,
     $comUsername,
+    $comUserList,
+    $comUserListUl,
     $comLogoutLink;
     /* UTILS
     ///////////////////////////       */
@@ -2330,15 +2333,12 @@ de.bild.sso = (function($){
                     var html = templates.loggedin.replace('%CLASS%',cssClass).replace('%NAME%', userName);
                     $comlogin.html(html);
                 }
-
                 // Hover auf die Login-Navi
                 $comUserList.mouseenter(function() {
                     $comUserListUl.show();
                 }).mouseleave(function() {
                     $comUserListUl.hide();
                 });
-
-
                 /* change on the profile page too but only if it is your page
                     this is generally used after an SSO gateway callback
                 */
@@ -2424,7 +2424,10 @@ de.bild.sso = (function($){
             window.location.reload();
             return;
         }
-        $.ajax(de.bild.settings.community.urls.ssoLoginLightBox, {
+        
+        var url = data.url?data.url:de.bild.settings.community.urls.ssoLoginLightBox;
+        
+        $.ajax(url, {
             dataType: 'json',
             cache : true
         }).done(function(data) {
@@ -2515,8 +2518,7 @@ de.bild.sso = (function($){
         }
         renderUserBar();
         getStatus();
-        setupEvents();
-
+        setupEvents();     
         return true;
     };
     //public methods
@@ -5920,7 +5922,7 @@ de.bild.community = (function($, SandBox) {
         'storage':de.bild.utils.storage
     }
 })(jQuery, de.bild.globalSandBox)
-/*de.bild.community.comments:27210484.4*/
+/*de.bild.community.comments:27210484.5*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -5998,15 +6000,11 @@ de.bild.community.comments = (function($,Community) {
             sendComment(this);                            
             return false;
         });
+       
         /* Loading new comments for real-time comments and sub-comments*/
-        de.lib.live($contentWrapper, '.js-load', 'click', function(e) {
-           
-            var $this = $(this);        
-            
-            e.preventDefault();
-            
-                        
-                        
+        de.lib.live($contentWrapper, '.js-load', 'click', function(e) {           
+            var $this = $(this);                    
+            e.preventDefault();                        
             //adding the new comments or loading the comment answers            
             var $parent = $this.parent();
             var subComments = $this.parents('.sub-comment-list');
@@ -6082,7 +6080,11 @@ de.bild.community.comments = (function($,Community) {
                         //server returns JSON (contact follower/following List)             
                         userList.append(response.html);
                         userList.find('.js-load').first().parents('li:eq(0)').remove();
-                    }                   
+                    } 
+                    
+                    //Bind autoload to more button
+                    bindAutoLoad();
+                                      
                 },
                 'error' : function() {
                     Community.loadingLayer($this);
@@ -6149,7 +6151,7 @@ function  showSimilarEvents($load){
                         if (response.status === 'error') {
                             if (response.message) {
                                 showLightBox({
-                                    'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'hint').replace('%HEADING%', Community.lang().error)
+                                    'content' : Community.templates().lbMessage.replace('%CONTENT%',response.message).replace('%CLASS%', 'hint').replace('%HEADING%', Community.lang().error)
                                 });
                             }
                             return;
@@ -6317,8 +6319,8 @@ function  showSimilarEvents($load){
                     /* no response? network fail */   
                     } else {
                         /*PROCO-994*/
-                       
-                       var errorMsg = $(Community.templates().message.replace('%CONTENT%', Community.lang().error + '. ' + Community.lang().tryagain).replace('%CLASS%', 'hint')).show();
+                       var errorCode = xhr?xhr.status:'';
+                       var errorMsg = $(Community.templates().message.replace('%CONTENT%', errorCode+': '+Community.lang().error + '. ' + Community.lang().tryagain).replace('%CLASS%', 'hint')).show();
                        var comButtons = $elem.find('.com-buttons');
                        
                         $elem.find('fieldset').hide();
@@ -6498,7 +6500,7 @@ function getCommentbox(elem){
                 var isQotd = $oneComment.parents('.com-question').length>0;
                 
                 var clength = !isForumComment?Community.settings().shrinkCommentLength:Community.settings().shrinkCommentLengthForum;
-                
+                clength = isQotd?110:clength;
                 
                 //comment lines
                 var commentLines = isQotd?2:3;
@@ -6772,6 +6774,20 @@ function getCommentbox(elem){
                     $this.val(value);
                 }
             }
+ 
+    
+    /**
+     * Function that binds a autoload to #mmore if this elem becomes in viewport
+     */    
+    function bindAutoLoad() {        
+        if($('#mmore').length > 0) {
+            $('#mmore').unbind('inSight');
+            $('#mmore').bind('inSight', function() {
+                $(this).find('a').trigger('click');
+            })
+        }
+    }
+ 
     
     function init(callback) {
         
@@ -6781,6 +6797,7 @@ function getCommentbox(elem){
             setupCommentEvents();
             setupReportFormEvents();
             setupThreadForm();
+            bindAutoLoad();
             initialised = true;
         }
         shrinkComments();
@@ -8856,7 +8873,7 @@ de.bild.community.profile = (function($, Community) {
  } 
  
 })(jQuery, de.bild.community) 
-/*de.bild.community.qotd:29369472.7*/
+/*de.bild.community.qotd:29369472.9*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8900,11 +8917,10 @@ de.bild.community.qotd = (function($, Community) {
                      
                      if(response.status=="success"){
                          
-                         var $form = $(response.form);
-                         $form.find('header h2').text("Kommentar abschicken");
+                         
                          
                         Community.showLightBox({
-                            "content":$('<div></div>').append($form).html(),
+                            "content":response.form,
                             dominant:true,
                             "wrapperClass":"com-lightbox qotd"
                             }
@@ -8917,19 +8933,23 @@ de.bild.community.qotd = (function($, Community) {
     //Subscriptions QOD
     //initialised when user is logged in and all required items are rendered
     $.subscribe('qotd.checkFB', function() {
+        
+        var form = $('.com-question').last();
+        var $fieldset = form.find('.com-buttons, fieldset');
+        $fieldset.find('textarea').val('');
+        
+        
         if(!de.bild.sso.isLoggedIn() || !de.bild.sso.isFBConnected())
             $('#sn-fb').parents('.socials').remove();
         //check ob user hat gerade ein Kommentar gesendet
-        if(de.bild.sso.isLoggedIn() && Community.storage.get('qotdLogin')!=null) {
+        if(de.bild.sso.isLoggedIn() && Community.storage.get('qotdLogin')) {
             //remove Cookie
             Community.storage.remove('qotdLogin');
             
-            var form = $('.com-question').last();
-            var $fieldset = form.find('.com-buttons, fieldset');
             
             if($fieldset.siblings('p.hint').size() > 0) return false;
             
-            var successMSG = $(de.bild.settings.community.templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', 'Vielen Dank für Ihren Beitrag.'));
+            var successMSG = $(de.bild.settings.community.templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', 'Vielen Dank für Ihren Kommentar!'));
             $fieldset.hide();
             $fieldset.first().after(successMSG);
            de.bild.community.comments.delayToFade(successMSG, de.bild.settings.community.options.fadeDelay, function() {
@@ -8938,43 +8958,38 @@ de.bild.community.qotd = (function($, Community) {
                 $fieldset.show();
             });
         }
+        else{
+            //ensure no storage object is set.
+            Community.storage.remove('qotdLogin');            
+        }
     });
     function handleLoginRequired(response) {
         //do login with special qod parameters
-        $.ajax(response.url, {
-            dataType : 'json',
+        var qodPromoBox = Community.urls().qotdPromoBox;
+        $.ajax(qodPromoBox, {
+            dataType : 'html',
             cache : true
         }).done(function(data) {
-            if(data && data.html && !de.bild.sso.isLoggedIn()) {
-                //Cookie Login für 2 minuten setzen
-                var expires = new Date();
-                expires.setMinutes(expires.getMinutes() + 5);
-                
-                Community.storage.set('qotdLogin', 1,false);
+            if (data && !de.bild.sso.isLoggedIn()) {
                 Community.showLightBox({
                     'wrapperId' : 'sso-lightbox',
-                    'content' : data.html,
-                    'onClose' : function() {
-                        //delete cookie
-                        $.cookie('qotdLogin', null);
+                    'content' : data,
+                    'callback' : function() {
                         
-                        var form = $('.com-question').last();
-                        var $fieldset = form.find('.com-buttons, fieldset');
-                        if($fieldset.siblings('p.hint').size() > 0)
-                            return false;
-                        var successMSG = $(de.bild.settings.community.templates.message.replace('%CLASS%', 'hint').replace('%CONTENT%', 'Vielen Dank für Ihren Beitrag.'));
-                        $fieldset.hide();
-                        $fieldset.first().after(successMSG);
-                        de.bild.community.comments.delayToFade(successMSG, de.bild.settings.community.options.fadeDelay, function() {
-                            $fieldset.find('textarea').val('');
-                            $fieldset.show();
+                        $('#qod-login').on('click', function(e) {
+                            Community.storage.set('qotdLogin', 1,false);
+                            e.preventDefault();
+                            
+                            de.bild.sso.login({
+                                url : response.url
+                            });
                         });
+                    },
+                    'onClose' : function() {
                     }
                 });
             }
-        }).fail(function(xhr) {
         });
-        return;
     }
     function init(){
         

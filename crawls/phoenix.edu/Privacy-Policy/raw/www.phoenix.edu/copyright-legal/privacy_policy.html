@@ -16,9 +16,15 @@
            <meta name="description" content="University of Phoenix offers campus and online degree programs, certificate courses, and individual online classes. Learn more about admissions, accreditation, tuition and financial aid options, or get started with your enrollment today.">
             
         
-        <title>Privacy Policy - University of Phoenix
-        </title>
-		<link rel="canonical" href="privacy_policy.html">
+        
+<title>
+    
+        
+        Privacy Policy - University of Phoenix
+    
+</title> 
+        
+        <link rel="canonical" href="privacy_policy.html">
     <meta property="og:image" content="/etc/designs/ac/img/logo_header_upx.png">
     
     
@@ -59,7 +65,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.34.18";
+        var acVersion = "4.35.12";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -2336,7 +2342,7 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
 
 
     if(typeof(sc) !== 'object') var sc = {};
-    sc.hostName = 'cq02.dc1.aptimus.net';
+    sc.hostName = 'cq03.dc1.aptimus.net';
     sc.pageName = 'privacy_policy';
     sc.pageTitle = 'privacy policy'
     sc.pagePath = '/copyright-legal/privacy_policy';
@@ -2410,6 +2416,7 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
       try{ if( isNaN(parseInt(s.getQueryParam('orderID'),10)) === false ){
         s.eVar5= "+1";
         s.eVar14 = s.getQueryParam('orderID');   
+        s.eVar36 = 'yes' 
       }}catch(e){} 
       s.eVar15 = "D=c13";
       s.eVar16 = "D=c19";
@@ -2440,9 +2447,14 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
         if(typeof(n) === 'undefined') return;
         if(typeof(a) === 'undefined') a = true;
         if(typeof(t) === 'undefined') t = 'o';
-        s.linkTrackVars='prop27';
+        //check for predefined linkTrackVars to attach to event
+        if(s.linkTrackVars == "None") s.linkTrackVars = 'prop27,eVar34';
+        else s.linkTrackVars += ',prop27,eVar34';
         s.prop27 = n;
+        s.eVar34 = n;
         s.tl(a,t,n);
+        //restore default linkTrackVars value
+        s.linkTrackVars = "None";
       }catch(e){}
     }
     /*track video function, currently integrated with flow player*/
@@ -2464,15 +2476,15 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
         if(!title && flvName != 'undefined') title = flvName;
         if(typeof(flvId) === 'string') title += ' | ' + flvId;
         if (mode == 'open'){//s.Media.open & s.Media.play
-          s.Media.open(title,duration,url);
-          s.Media.play(title,0);
+          s.Media.open(title.toLowerCase(),duration,url);
+          s.Media.play(title.toLowerCase(),0);
         }else if(mode == 'play'){//s.Media.play
-          s.Media.play(title,clipTime);
+          s.Media.play(title.toLowerCase(),clipTime);
         }else if(mode == 'stop'){//s.Media.stop
-          s.Media.stop(title,clipTime);
+          s.Media.stop(title.toLowerCase(),clipTime);
         }else if(mode == 'close'){//s.Media.stop & s.Media.close
-          s.Media.stop(title,clipTime);
-          s.Media.close(title);
+          s.Media.stop(title.toLowerCase(),clipTime);
+          s.Media.close(title.toLowerCase());
         }
       }catch(e){};
     }
@@ -2507,8 +2519,8 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
           $('#message',window.parent.document).bind('focus.chatStart',function(){
             var s=s_gi(s_account);
             s.linkTrackVars='eVar28,events';
-            s.linkTrackEvents='event23';
             s.eVar28 = window.parent.sessionName;
+            s.linkTrackEvents='event23';
             s.events ='event23';
             sc.trackCustomLink(s.pageName+' |live chat|chat start')
             $('#message',window.parent.document).unbind('focus.chatStart');
@@ -2593,7 +2605,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
   
   </body>
 <!--
-[Instance=cq02.dc1.aptimus.net; Elapsed=1 ms; Last Generated=Wed Mar 20 00:17:31 GMT 2013; ]
+[Instance=cq03.dc1.aptimus.net; Elapsed=0 ms; Last Generated=Fri Mar 22 22:54:16 GMT 2013; ]
 -->
 
 

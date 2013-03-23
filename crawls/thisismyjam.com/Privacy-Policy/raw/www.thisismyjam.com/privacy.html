@@ -29,7 +29,7 @@ Privacy | This Is My Jam        </title>
         <link rel="apple-touch-icon" sizes="114x114" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@2x.png" />
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <link rel="stylesheet" href="../static02.thisismyjam.com/css/all_a252efbc284a5cc03967d165690738fb73040c2e.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="../static04.thisismyjam.com/css/all_f33cd65c21a7da18a6ce05bd1d2bb87c05be1593.css" type="text/css" media="all"/>
     
         <link rel="stylesheet" href="includes/css/retina.css" type="text/css" media="screen and min-device-pixel-ratio: 2" />
     <link rel="stylesheet" href="includes/css/flashblock.css" type="text/css" media="all" />
@@ -59,7 +59,7 @@ Privacy | This Is My Jam        </title>
     
             <p>
                               Share your favorite song. Play all your friends’ songs in one click. It’s that simple. Slow music = good music! 
-                &nbsp;<a href="privacy.html#sign-up-box" title="Sign Up" id="stripeSignup" class="button yellow sign-up">Yes yes, Sign Me Up</a> 
+                &nbsp;<a href="privacy.html#sign-up-box" title="Sign Up" id="stripeSignup" class="button yellow sign-up">Yes yes, sign me up</a> 
             </p>
 
     </div></div>
@@ -178,19 +178,19 @@ Privacy | This Is My Jam        </title>
             <br class="clearfix" />
 
 </div> 
-    <div id="player-bar" class="glossy">
+    <div id="player-bar">
     <hr class="hairline" />
     <div id="player-inner" class="container nine columns flush">
         <ul id="controls">
             <li id="backwards" class=""></li>
             <li id="playPause" class="paused"></li>
-            <li id="controlLike" class="liked disabled"></li>
+            <li id="controlLike" class="disabled"></li>
             <li id="forwards" class="disabled"></li>
 
             <li class="js-gotoCurrent left control" title="Go to current jam"></li>
 
         </ul>
-        <a class="now-playing js-jamlink glossy relative">
+        <a class="now-playing js-jamlink relative">
             <span id="timeAndJammer">
                 <span class="detail" id="currentTime"></span>
                 <span class="detail" id="totalTime"></span>
@@ -260,7 +260,7 @@ Privacy | This Is My Jam        </title>
         <form id="emailForm_signIn" method="POST" action="http://www.thisismyjam.com/signin/emailsignin?&amp;backto=%2Fprivacy">
             <input id="emailUsername" name="emailUsername" type="text" placeholder="Email address"  />
             <input class="email-sign-in" id="signInPassword" name="password" type="password" placeholder="Password" />
-            <input class="email-sign-in right" id="signInSubmit" type="submit" value="Sign In" />
+            <input class="email-sign-in right" id="signInSubmit" type="submit" value="Sign in" />
             <div class="loading-spinner white right" style="left: -8px"></div>
         </form>
 
@@ -310,7 +310,7 @@ Privacy | This Is My Jam        </title>
 </section>   </div>
 
 
-        <script src="../static02.thisismyjam.com/js/all_1ac090944241ec9dbc8c3abbeffe960b3ba5ef90.js"></script>
+        <script src="../static02.thisismyjam.com/js/all_aa10d828392f473be1155bab7fd01b1a664c7e53.js"></script>
     
 <script>
     window.realtime = new Realtime('ec2-50-19-158-76.compute-1.amazonaws.com', 8080);
@@ -393,6 +393,8 @@ function userIsConnectedToFacebook() {
   <div id="jamYtPlayer"></div>
 </div>
 
+
+
 <script type="text/javascript">
 
 window.sexyPreloadAnImg = function(urlArr){
@@ -413,36 +415,46 @@ window.sexyPreloadAnImg = function(urlArr){
 var smTimeouts = 0;
 soundManager.url = '/includes/swf/';
 soundManager.flashVersion = 9; // optional: shiny features (default = 8)
-soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+soundManager.useFlashBlock = true;
 soundManager.useHighPerformance = true; // keep flash on screen, boost performance
 soundManager.wmode = 'transparent'; // transparent SWF, if possible
 soundManager.useFastPolling = true; // increased JS callback frequency
 soundManager.useHTML5Audio = true;
 soundManager.preferFlash = true;
-soundManager.flashLoadTimeout = 4000; // 4 seconds to load
+soundManager.flashLoadTimeout = 1000;
 soundManager.debugMode = false;
 soundManager.consoleOnly = true;
 soundManager.ontimeout(function(status) {
-    //console.log("TIMEOUT",status);
+    
+    if(soundManager.isReady || soundManager.flashIsMissing)
+      return;
+
+    console.log('SoundManager initialisation error:', status.error);
+
     if(status.error.type == 'FLASHBLOCK'){
-        soundManager.useFlashBlock = false;
-        soundManager.flashLoadTimeout = 0;
-        JamError.show('Oops, Flash may be blocked in your browser. Check your browser settings to enable playback.', 2e4); // show this message
-        var $clicker = $('#sm2-container');
-            $clicker.parent().on('click',function(e){
-                soundManager.reboot();
-                return true;
-            });
-        JamError.$box.append($clicker);
+        soundManager.flashIsMissing = true;
+
+        if(!Modernizr.video || !(Modernizr.audio && Modernizr.audio.mp3)) {
+            JamError.show('Oops, it looks like you have Flash disabled. Some jams might not play.');
+        }
+        else {
+	  //soundManager.useFlashBlock = false;
+	  //soundManager.html5Only = true;
+            soundManager.preferFlash = false;
+            soundManager.flashLoadTimeout = 0;
+            soundManager.reboot();
+            $('#sm2-container').hide();
+            if(!window.ytPlayer.isReady)
+                window.ytPlayer.forceHTML5();
+        }
     } else {
         smTimeouts++;
         //console.log(soundManager.flashLoadTimeout * smTimeouts);
-        soundManager.onerror = {}; // Prevent an infinite loop, in case it's not flashblock
         soundManager.flashLoadTimeout = soundManager.flashLoadTimeout * smTimeouts; // Keep bumpin.
     }
 });
 
-window.ytPlayer = new YoutubePlayer('ytPlayer', $("#ytContainer"), !window.hasFlash());
+window.ytPlayer = new YoutubePlayer('ytPlayer', $("#ytContainer"));
 window.vimeoPlayer = new VimeoPlayer($("#vimeoContainer"), !window.hasFlash());
 
 if(true || !window.hasFlash() || window.isIOS()) {
@@ -476,12 +488,16 @@ $(function(){
     sexyPreloadAnImg(["/includes/image/ajax-loader.gif"]);
 
     window.soundManager.onready(function() {
-            //        window.player = new Player();
+            window.soundManager.isReady = true;
     });
 
     // soundmanager not quite ready yet
     window.soundManager.onerror = function(e) {
-        setTimeout(window.soundManager.reboot, 20);
+        console.log('SoundManager error:', e);
+        if(e.type == 'INIT_TIMEOUT')
+            JamError.show('Oops, we had trouble setting up our music player. Please refresh the page, or try disabling any ad or flash blocking extensions if you have them.');
+               
+      //setTimeout(window.soundManager.reboot, 20);
     }
 
 });
@@ -512,7 +528,7 @@ function bg(path) {
     return path;
 }
 
-window.JS_VERSION = '1ac090944241ec9dbc8c3abbeffe960b3ba5ef90';
+window.JS_VERSION = 'aa10d828392f473be1155bab7fd01b1a664c7e53';
 
 // THIS NEEDS TO BE IN THE FOOTER, AS IT DEPENDS ON PHP, AND IT SHOULD
 // ALWAYS, ALWAYS WORK

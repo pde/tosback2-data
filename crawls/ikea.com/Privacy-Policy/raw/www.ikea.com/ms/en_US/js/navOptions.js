@@ -258,6 +258,19 @@ function getProducts() {
     
     
     
+    
+    
+    document.write('                <td>');
+    document.write('                    <div class="contentRight noBorder">');
+    document.write('                        <a href="/us/en/catalog/categories/seasonal/summer"><img src="/ms/img/menu/products/32x32/summer_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Summer</span></a>');
+    document.write('                    </div>');
+    document.write('                </td>');
+    
+    document.write('            </tr>');
+    
+    
+    
+    
 
     document.write('        </table>');
     document.write('    </div>');

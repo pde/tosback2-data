@@ -1882,6 +1882,10 @@ div.key-benefits-callout { background-repeat: repeat-x; }
 
 #access-account-content a { display: block; }
 
+#access-account-content form#givingLoginHeader a{
+	display: inline;
+}
+
 table.basic th,
 table.basic td {
 	padding: 10px;
@@ -2167,6 +2171,19 @@ table.browse-table tbody tr td.last a { display:block; }
 	font-weight: bold;
 	font-size: 13px;
 }
+table.browse-table td.credit-level span.stars { margin: 5px auto 0; }
+table.browse-table td.credit-level span.stars, table.browse-table td.credit-level span.stars span {
+      display: block;
+      background: url(../../img/global/icon/sprite/stars_sm.png) 0 -16px repeat-x;
+      width: 80px;
+      height: 16px;
+      text-indent: -999em;
+      overflow: hidden;
+}
+            
+table.browse-table td.credit-level span.stars span { background-position: 0 0; float: left;}
+table.browse-table td.credit-level span.BVRRCount, table.browse-table td.credit-level span.BVRRCount span { font-weight: normal; display: inline; font-size: 12px;}
+
 .credit_level_0_wrapper,
 .credit_level_1_wrapper {
 	padding: 4px 0;
@@ -2955,7 +2972,11 @@ a.skip-link:focus {
 }
 .nav-primary-menu li li a:focus,
 .nav-primary-menu li li a:hover,
-.nav-primary-menu li li a:active { background-color: #1a4e7e; }
+/*.nav-primary-menu li li a:active { background-color: #1a4e7e; }
+.nav-primary-menu li li a:active { background-color: transparent; }*/
+
+
+
 .nav-primary-menu li ul.first {
 	padding-left: 0;
 	margin-left: 6px;
@@ -3524,8 +3545,10 @@ div.zip { background-color:#ffffff; }
 	text-indent:-9999px;
 }
 #cboxNext.hover { background-position:-50px -25px; }
-#cboxLoadingOverlay { background:url(../images/loading_background.png) center center no-repeat; }
-#cboxLoadingGraphic { background:url(../images/loading.gif) center center no-repeat; }
+/*#cboxLoadingOverlay { background:url(/assets/css/images/loading_background.png) center center no-repeat; }*/
+#cboxLoadingOverlay { background:url("../images/loading_background.png") no-repeat scroll center center transparent; }
+/*#cboxLoadingGraphic { background:url(/assets/css/images/loading.gif) center center no-repeat; }*/
+#cboxLoadingGraphic { background: url("../images/loading.gif") no-repeat scroll center center transparent; }
 /* #cboxClose{position:absolute; */
 /* top:0; */
 /* right:0; */
@@ -3695,7 +3718,7 @@ modal colorbox overrides and customization
 #oo_bar .screen_reader { color: transparent; display: block; position: relative; height: 0; width: 0; line-height: 0; font-size: 0; }
 #oo_bar span { background: url(http://www.capitalone.com/assets/img/opinionlab/oo_bar_icon.gif) left no-repeat; display: block; margin: 0 15px; height: 100%; padding-left: 17px; }
 
-#oo_tab { background-color: #ffffff; border: 1px solid #cccccc; display: block; position: fixed; bottom: 2%; height: 110px; width: 35px; z-index: 999995; cursor: pointer; }
+#oo_tab { background-color: #ffffff; border: 1px solid #cccccc; display: block; position: fixed; top: 45%; height: 110px; width: 35px; z-index: 999995; cursor: pointer; }
 #oo_tab span { bottom: 15px; _bottom: 5px; display: block; background: url(../../img/opinionlab/oo_tab_icon.gif) no-repeat; height: 9px; position: absolute; width: 9px; }
 #oo_tab div { background-image: url(../../img/opinionlab/oo_tab.png); _background-image: url(../../img/opinionlab/oo_tabie6.png); background-repeat: no-repeat; position: absolute; display: block; height: 100%; left: 0; top: 0; width: 100%; }
 
@@ -3864,4 +3887,36 @@ table.detailed-compare tbody tr.last td.first, table.detailed-compare tbody tr.l
 table.detailed-compare tfoot td, table.detailed-compare tfoot th, table.detailed-compare tbody tr.first td, table.detailed-compare tbody tr.first th {
     background: url("http://www.capitalone.com/assets/img/global/bg/compare-table-gradient1.jpg") repeat-x scroll 0 top transparent;
     border-top: 1px solid hsl(0, 0%, 90%);
-}	
+}
+
+/*--------------------[ Accordion ]--------------------*/
+.accordion h2 {
+	display: block;
+	padding: 6px 5px;
+	/*border: 1px solid #003A6F;*/
+	background-color: #454545;
+	background-image: url(../../img/global/bg/drawer-closed.jpg);
+	background-repeat: repeat-x;
+	color: #fff;
+	margin-bottom: 10px;
+}
+.accordion h2.open {
+	background-color: #003d78;
+	background-image: url(../../img/global/bg/drawer-open.jpg);
+}
+.accordion h2 a {
+	display: block; 
+	padding-left: 20px;
+	background-position: -5px -2px;
+	background-repeat: no-repeat;
+	color: #fff;
+	text-decoration: none;
+	background-image: url(../../img/global/icon/accordion-expand-collapse.gif);
+}
+.accordion h2.open a { background-position: -5px -32px; }
+.accordion-content { display: none; }
+.no-js .accordion-content { display: block; }
+.accordion-content { padding: 0 5px 15px; }
+.accordion-content h3 { margin-bottom: 0; }
+.accordion-content p { margin: 0 0 .75em; }
+	

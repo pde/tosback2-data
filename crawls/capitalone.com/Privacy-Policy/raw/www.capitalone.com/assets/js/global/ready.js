@@ -44,7 +44,20 @@ var zipOptOutFlag = false;
 				$('.faq dl dt').click(function(){
 					$(this).next().slideToggle();
 				});
-			}
+			}			
+			// Accordion
+		$('.accordion').each(function () { 
+		$(this).find('h2:first').addClass('open').attr("aria-expanded", "true").next('.accordion-content').show().attr("aria-hidden", "false");
+		});
+		$('.accordion h2 a').bind('click', function(e) {
+		if (!$(this).parent().hasClass('open')) {
+		$(this).parent().parent().find('h2.open').removeClass('open').attr("aria-expanded", "false").next('.accordion-content').slideUp().attr("aria-hidden", "true");
+		$(this).parent().addClass('open').attr("aria-expanded", "true").next('.accordion-content').slideDown().attr("aria-hidden", "false");
+		}
+		e.preventDefault();
+		});
+		// Accordion end
+		
 	});
 		
 	// [drew.liverman | 02.04.10]
@@ -1417,4 +1430,19 @@ function capitalOne360PopUp(url){
 		      window.open("http://"+window.location.hostname+"/misc/error/404.html")
 		   }
 	  }
+}
+
+//this entry used for displaying dynamic rating stars for each product.
+$.fn.stars = function() {
+    return $(this).each(function() {
+            var val = parseFloat($(this).text());
+                  // Make sure that the value is in 0 - 5 range, multiply to get width
+                  var size = Math.max(0, (Math.min(5, val))) * 16;
+                  // Create stars holder
+                  var $spanText = Math.round(val*10)/10 + " stars out of 5";
+                  var $span = $('<span />').width(size).text($spanText);
+                  // Replace the numerical value with stars
+                  $(this).html($span);
+        
+   });
 }

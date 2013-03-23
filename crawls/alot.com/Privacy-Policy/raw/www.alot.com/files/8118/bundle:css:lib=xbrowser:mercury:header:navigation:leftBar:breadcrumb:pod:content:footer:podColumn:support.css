@@ -1,0 +1,616 @@
+/*
+Copyright (c) 2007, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.2.1
+*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}
+
+
+html, body {
+	height: 100%;
+	min-width: 960px;
+}
+
+body {
+	font-family: arial, sans-serif;
+	font-size: 62.5%;
+}
+
+p {
+	margin-top: 1em;
+}
+
+p.first {
+	margin-top: 0;
+}
+
+strong {
+	font-weight: bold;
+}
+
+#container {
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+	min-width: 600px;
+
+	background: #3c475d url(../../../files.alotimg.com/mercury/img/body-bg.jpg);
+}
+
+.clear {
+	clear: both;
+
+	height: 0;
+
+	font-size: 0;
+	line-height: 0;
+}
+
+.nowrap {
+	white-space: nowrap;	
+}
+
+.hidden {
+	display: none;
+}
+
+
+@font-face {
+	font-family: anivers;
+	src: local("Anivers-Regular"),
+		url(../font/anivers-regular.ttf);
+}
+
+@font-face {
+	font-family: aniversIe;
+	src: url(../font/anivers-regular.eot);
+}
+
+.header {
+	height: 150px;
+
+	overflow: hidden;
+
+	background: #051546 url(../../../files.alotimg.com/mercury/img/header-bg.jpg) no-repeat;
+
+	color: #fff;
+}
+
+.logo {
+	float: left;
+}
+
+.logoLink {
+	display: block;
+	float: left;
+
+	height: 80px;
+	width: 151px;
+	overflow: hidden;
+
+	margin: 26px 0 0 20px;
+	background: url(../../../files.alotimg.com/mercury/img/alot-logo.png) no-repeat;
+
+	font-size: 0;
+	line-height: 0;
+	text-indent: -999px;
+}
+
+.ie6 .logoLink {
+	margin-left: 10px;
+	background: url(../../../files.alotimg.com/mercury/img/alot-logo.gif) no-repeat;
+}
+
+.logoLink:focus {
+	outline: 0;
+}
+
+.tagline {
+	float: left;
+	clear: left;
+
+	margin-left: 24px;
+
+	font-size: 2em;
+	font-family: anivers, aniversIe, arial, sans-serif;
+	text-shadow: 0 1px 0 #000;
+}
+
+
+.navSprite {
+	background: url(../../../files.alotimg.com/mercury/img/nav-sprite/v2.png) no-repeat;
+}
+
+.navigationContainer {
+	height: 54px;
+
+	background: #004187 url(../../../files.alotimg.com/mercury/img/nav-bg.jpg) repeat-x;
+}
+
+.navigation {
+	max-width: 960px;
+	min-width: 600px;
+	width: auto !important;
+	width: 960px;
+}
+
+.navButton {
+	display: block;
+	float: left;
+
+	height: 54px;
+
+	margin-left: 18px;
+	padding-left: 45px;
+
+	font-size: 1.5em;
+	font-weight: bold;
+	line-height: 54px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #000;
+	overflow: hidden;
+}
+
+.navButton, .navButton:hover {
+	color: #b8dcfd;
+}
+
+.navAddApp {
+	width: 87px;
+
+	background-position: 0 -54px;
+}
+
+.navAddApp:hover {
+	background-position: 0 -108px;
+}
+
+.navButtonAddAppActive, .navButtonAddAppActive:hover {
+	background-position: 0 0;
+}
+
+.navCreate {
+	width: 113px;
+
+	background-position: -458px -54px;
+}
+
+.navCreate:hover {
+	background-position: -458px -108px;
+}
+
+.navManage {
+	width: 122px;
+
+	background-position: -132px -54px;
+}
+
+.navManage:hover {
+	background-position: -132px -108px;
+}
+
+.navButtonManageActive, .navButtonManageActive:hover {
+	background-position: -132px 0;
+}
+
+.navAbout {
+	width: 112px;
+
+	background-position: -301px -54px;
+}
+
+.navAbout:hover {
+	background-position: -301px -108px;
+}
+
+.navButtonAboutActive, .navButtonAboutActive:hover {
+	background-position: -301px 0;
+}
+
+.navButtonAddAppActive, .navButtonManageActive, .navButtonAboutActive {
+	color: #fff;
+}
+
+.searchSprite {
+	background-image: url(../../../files.alotimg.com/mercury/img/search-sprite/v1.png);
+}
+
+.searchForm {
+	float: right;
+
+	height: 35px;
+	width: 245px;
+
+	margin-top: 9px;
+}
+
+.searchInput {
+	float: left;
+
+	height: 20px;
+
+	width: 140px;
+
+	margin: 8px 5px 0 30px;
+	border: 0;
+}
+
+.searchForm .prepop {
+	color: #888;
+}
+
+.searchButton {
+	float: right;
+
+	height: 30px;
+	width: 65px;
+
+	margin: 2px 2px 0 0;
+	border: 0;
+	background-color: #1e91ea;
+	background-position: 0 -35px;
+
+	color: #cfecfe;
+	font-family: tahoma, sans-serif;
+	font-size: 1.1em;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #000d3a;
+
+	cursor: pointer;
+}
+
+.searchButton:hover, .searchButtonHover {
+	background-color: #1480da;
+	background-position: -65px -35px;
+}
+
+
+.leftBar {
+	float: left;
+
+	width: 170px;
+}
+
+.leftBarHeader {
+	position: relative;
+	left: 0;
+	top: 0;
+
+	height: 42px;
+
+	padding-left: 45px;
+	background: #373f52 url(../../../files.alotimg.com/mercury/img/left-bar-header-bg.jpg) repeat-x;
+
+	color: #d0d2d9;
+	font-size: 1.6em;
+	line-height: 42px;
+}
+
+.leftBarIcon {
+	position: absolute;
+	left: 8px;
+	top: 10px;
+}
+
+.aboutHeader .leftBarIcon {
+	left: 11px;
+}
+
+.categorySprite {
+	background: url(../../../files.alotimg.com/mercury/img/category.png) no-repeat;
+}
+
+.topLevelCategoryLink {
+	display: block;
+	position: relative;
+
+	height: 35px;
+	overflow: hidden;
+
+	padding: 0 30px 0 10px;
+
+	color: #2d3647;
+	font-size: 1.3em;
+	font-weight: bold;
+	line-height: 35px;
+	text-decoration: none;
+	text-shadow: #d7dbe3 0 1px 0;
+}
+
+.topLevelCategoryLink:hover {
+	background-position: 0 -70px;
+}
+
+.topLevelCategoryLinkActive, .topLevelCategoryLinkActive:hover {
+	background-position: 0 -35px;
+
+	color: #fff;
+	text-shadow: #0e3c6a 0 1px 0;
+}
+
+.leftBarAbout {
+	padding: 11px 10px;
+
+	color: #5e6f91;
+	font-size: 1.1em;
+}
+
+.leftBarAbout strong {
+	color: #0d7bdf;
+}
+
+.leftBarAbout a {
+	color: #0d7bdf;
+	font-weight: bold;
+}
+
+.facebookBox {
+	height: 420px;
+	width: 150px; 
+	overflow: hidden;
+
+	margin-top: 10px;
+	border: none;
+	background: #fff;
+}
+
+.shields {
+	text-align: center;
+}
+
+.truste {
+	margin-top: 10px;
+}
+
+.mcafee {
+	margin-top: 7px;
+}
+
+
+.breadcrumbSprite {
+	background: url(../../../files.alotimg.com/mercury/img/breadcrumb/sprite.png);
+}
+
+#breadcrumbsContainer {
+	height: 42px;
+
+	margin-left: 174px;
+	background-color: #d4d8e1;
+	background-repeat: repeat-x;
+	padding-left: 3px;
+}
+
+.ie6 #breadcrumbsContainer {
+	margin-left: 171px;
+}
+
+.breadcrumb {
+	line-height: 42px;
+}
+
+.ltie8 .breadcrumb {
+	float: left;
+}
+
+.breadcrumbLink {
+	display: block;
+	float: left;
+
+	background-position: right -42px;
+	background-repeat: no-repeat;
+	padding: 0 17px 0 8px;
+
+	color: #656e7d;
+	font-size: 1.4em;
+	text-decoration: none;
+}
+
+.lastBreadcrumb .breadcrumbLink {
+	background: none;
+	padding-right: 8px;
+
+	font-weight: bold;
+}
+
+
+.podSprite {
+	background: url(../../../files.alotimg.com/mercury/img/pod-sprite/v1.png) no-repeat;
+}
+
+.pod {
+	float: left;
+
+	width: 782px;
+
+	margin: 0 0 7px 7px;
+}
+
+.podHeader {
+	height: 32px;
+	overflow: hidden;
+
+	padding: 0 10px;
+
+	line-height: 32px;
+}
+
+.podHeader h3, .podHeader h2 {
+	color: #0085d4;
+	font-size: 1.8em;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #fff;
+}
+
+.podBottom {
+	position: relative;	
+
+	border: 1px solid #777b89;
+	border-top: 0;
+
+	background: #8991a2;
+	padding: 10px 0;
+
+	color: #fff;
+}
+
+.podBody {
+	width: 780px;
+}
+
+.podBody a {
+	color: #0062bd;
+	font-weight: bold;
+}
+
+.podCorner {
+	position: absolute;
+	bottom: -1px;
+
+	height: 5px !important;
+	height: 0;
+	width: 5px !important;
+	width: 0;
+	overflow: hidden;
+
+	line-height: 1px;
+}
+
+.podCornerLeft {
+	left: -1px;
+
+	background-position: 0 -64px;
+}
+
+.podCornerRight {
+	right: -1px;
+
+	background-position: -5px -64px;
+}
+
+
+.contentContainer {
+	background: #acb3c3 url(../../../files.alotimg.com/mercury/img/left-bar-bg.jpg) repeat-y;
+}
+
+.content {
+	max-width: 790px;
+	width: auto !important;
+	width: 790px;
+
+	margin-left: 170px;
+	padding-top: 8px;
+}
+
+
+.footer {
+	background: url(../../../files.alotimg.com/mercury/img/footer-shadow.jpg) repeat-x;
+	padding: 0 0 20px 170px;
+}
+
+.footer .links, .footer .copyright {
+	max-width: 790px;
+	width: auto !important;
+	width: 790px;
+
+	color: #fff;
+	font-size: 1.2em;
+	text-align: center;
+}
+
+.footer .links {
+	padding-top: 20px;
+}
+
+.footerLink {
+	color: #fff;
+	text-decoration: none;
+}
+
+.footer .copyright {
+	color: #d2d1e0;
+}
+
+
+.podColumn .podHeader {
+	background-position: 0 -32px;
+}
+
+.podColumn .podBottom {
+	border-left: 0;
+	background: #fff url(../../../files.alotimg.com/mercury/img/app-details-left-bar-bg.jpg) repeat-y;
+	padding: 19px;
+	padding-left: 145px;
+}
+
+.podColumn .podBody {
+	height: auto !important;
+	height: 200px;
+	min-height: 200px;
+
+	width: 616px;
+	padding: 0;
+
+	color: #505c71;
+}
+
+.podColumn .podCornerLeft {
+	left: 0;
+}
+
+.podColumn .podHeader h2 {
+	color: #3e4a5f;
+	text-shadow: 0 1px 0 #f8f8fb;
+}
+
+.podColumnLeftBar {
+	float: left;
+
+	/* IE6 does not handle the backgrounds of floating siblings properly. */
+	position: absolute;
+	left: 0 !important;
+	left: -145px;
+
+	width: 131px;
+
+	color: #fff;
+	text-align: center;
+
+	z-index: 2;
+}
+
+.podCornerRight {
+	right: -1px;
+
+	background-position: -10px -64px;
+}
+
+
+.topPart {
+	margin-left: 10px;
+}
+
+.topPart a {
+	color: #3e4a5f;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.topPart hr {
+	margin: 15px 0;
+}
+
+.podBody {
+	padding: 10px;
+
+	font-size: 1.1em;
+}
+
+.support {
+	margin-bottom: 15px;
+}
+
+.support .podBody h3 {
+	font-weight: bold;
+}
+

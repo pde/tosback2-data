@@ -161,14 +161,22 @@ function miniPromo(){
 		onContainerInit: function() {
 			var self = this
 			
-			var superLink = function(e) {
+				var superLink = function(e) {
 				var e = e || window.event;
 				tg = e.target || e.srcElement;
-				if(tg.nodeName != 'A')
+				if(tg.nodeName !='A')
+				{
+		
 					self.getElementsByTagName('a')[0].onclick();
 					window.location = self.getElementsByTagName('a')[0].href;
+				}
+				if(e.stopPropagation)
+					e.stopPropagation();
+				else
+					e.cancelBubble=true;
 				return false;
 			}
+
 			
 			this.getElementsByTagName('div')[0].onclick = superLink;
 			this.getElementsByTagName('div')[1].onclick = superLink;

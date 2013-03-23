@@ -90,7 +90,6 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/le-vian%C2%AE/
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/shades-of-wonder%C2%99-100348/1003480000/100020/1/0/0/0/100020.100023.100348">Shades of Wonder&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/sea-magic-cultured-pearls%C2%AE-by-mikimoto/1000570000/100020/1/0/0/0/100020.100023.100057">Sea Magic Cultured Pearls&reg; by Mikimoto</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/family-and-mothers-jewelry/1000580000/100020/1/0/0/0/100020.100023.100058">Family and Mother\'s Jewelry</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/color-obsession-made-with-swarovski-elements%C2%99/1000600000/100020/1/0/0/0/100020.100023.100060">COLOR OBSESSION MADE WITH SWAROVSKI ELEMENTS&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/artistry-diamonds%C2%99/1003670000/100020/1/0/0/0/100020.100023.100367">Artistry Diamonds&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/diamond-revelations-100062--1/1000620000/100020/1/0/0/0/100020.100023.100062">Diamond Revelations</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100304--1/1003040000/100020/1/0/0/0/100020.100023.100304">Triton</a></li>');
@@ -131,6 +130,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100084-
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/scott-kay-100085--1/1000850000/100063/1/0/0/0/100063.100066.100085">Scott Kay</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/black-hills-gold/1000870000/100063/1/0/0/0/100063.100066.100087">Black Hills Gold</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/music-rocks%C2%99-by-lyric-culture%C2%99-100316--1/1003160000/100063/1/0/0/0/100063.100066.100316">Music Rocks&reg;</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/color-obsession-made-with-swarovski-elements%C2%99-100382/1003820000/100063/1/0/0/0/100063.100066.100382">COLOR OBSESSION MADE WITH SWAROVSKI ELEMENTS&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100066|1000660000|1|0|||100063|100063.100066">View All</a></li>');
 writeMegaMenu('</ul>');
 writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" target="_top"> Ring Size Help </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=gold" target="_top"> Metal Guide: Gold </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_detail_metal_guide" target="_top"> Metal Guide: Platinum </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=sterling_silver" target="_top"> Metal Guide: Sterling Silver </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=alternative_metals" target="_top"> Metal Guide: Alternative Metals </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=metal_care" target="_top"> Metal Care </a></li></ul>');
@@ -179,7 +179,6 @@ writeMegaMenu('<li class="megamenu-submenu-header">Gifts</li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/top-10-gifts/1001080000/100101/1/0/0/0/100101.100102.100108">Top 10 Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/for-her/1001040000/100101/1/0/0/0/100101.100102.100104">For Her</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/for-him/1001030000/100101/1/0/0/0/100101.100102.100103">For Him</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/st-patricks-day-gifts/1003770000/100101/1/0/0/0/100101.100102.100377">St. Patrick\'s Day Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/easter-gifts/1003780000/100101/1/0/0/0/100101.100102.100378">Easter Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bridal-party-gifts-100343--1/1003430000/100101/1/0/0/0/100101.100102.100343">Bridal Party Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/gifts-for-the-bride-100370/1003700000/100101/1/0/0/0/100101.100102.100370">Gifts for the Bride</a></li>');

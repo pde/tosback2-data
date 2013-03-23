@@ -171,6 +171,81 @@ $(function () {
 		});
 });	
 
+// Google Analytics event tracking (Youtube video plays on pwc.com). TvH 20-MAR-2013
+var tag = document.createElement('script');
+tag.src = "//www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var _ytIframes = new Array();
+var _ytIDs = new Array();
+var _ytPlayerArray = new Array();
+
+function onYouTubeIframeAPIReady() {
+	for (var i = 0; i < _ytIframes.length; i++) {
+		//console.log(_ytIframes[i]);
+		_ytPlayerArray[i] = new YT.Player(_ytIframes[i], {
+			events: {
+			'onStateChange': onPlayerStateChange
+			}
+		});		
+		
+	}
+}
+
+function onPlayerStateChange(event) { 
+
+	var videoarraynum = event.target.id - 1;
+	if (event.data ==YT.PlayerState.PLAYING){
+		//console.log("TRACKING PLAY EVENT:  "+ _ytIDs[videoarraynum] );
+		_gaq.push(['_trackEvent', 'YouTubeVideo', 'Play', _ytIDs[videoarraynum]]);   
+	} 
+
+} 
+
+(function($) {
+	function trackYouTube()
+	{
+		var i= 0;
+		jQuery('iframe').each(function() {
+			
+			var video = $(this);
+			var vidSrc = "";
+			vidSrc = video.attr('src');
+			var ytid = "";
+			ytid = youtube_parser(vidSrc);
+			if (ytid != "nope") {
+				var tempIframeID = "";
+				
+					//determine ID of iframe and assign new one if necessary
+					if ($(this).attr("id")) {
+						tempIframeID = $(this).attr("id")
+					} else {
+						tempIframeID = "yt-"+ytid;	
+						$(this).attr("id", tempIframeID);
+					}
+								
+					_ytIframes[i] = tempIframeID;
+					_ytIDs[i] = ytid;
+					i++;
+			} else {};		
+		});	
+		function youtube_parser(url){
+			var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+			var match = url.match(regExp);
+			if (match&&match[7].length==11){
+				return match[7];
+			}else{
+				return "nope";
+			}
+		}
+	}
+
+	$(document).ready(function() {
+
+		trackYouTube();
+	});
+})(jQuery);
+
 // Google Analytics video tracking for the Akamai-based media player. D.Montana 05-MAR-2013
 function sendToHtml(val4, val2, val1){ 
 	var ga4 = val4; 

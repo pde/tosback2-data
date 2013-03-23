@@ -22,7 +22,8 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 typeof ClientContext.get('/profile/city') === "undefined" &&
                 typeof ClientContext.get('/profile/state') === "undefined" &&
                 typeof ClientContext.get('/profile/soaId') === "undefined" &&
-                typeof ClientContext.get('/profile/region') === "undefined"){
+                typeof ClientContext.get('/profile/region') === "undefined" &&
+                typeof ClientContext.get('/profile/bcRegion') === "undefined"){
                 var geoLocation = getGeoLocationFromCookie();
                 updateGeoLocationProfile(geoLocation);
             }
@@ -41,7 +42,8 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 state:      'NY',
                 postalCode: '10019',
                 soaID:      'NYC.8150',
-                region:     'NYC'
+                region:     'NYC',
+                bcRegion:   'NYC'
             }
         }, opts);
 
@@ -137,6 +139,7 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 CQ_Analytics.ProfileDataMgr.setProperty('zip', geoLocation['postalCode']);
                 CQ_Analytics.ProfileDataMgr.setProperty('soaId', geoLocation['soaID']);
                 CQ_Analytics.ProfileDataMgr.setProperty('region', geoLocation['region']);
+                CQ_Analytics.ProfileDataMgr.setProperty('bcRegion', geoLocation['bcRegion']);
             }
         }
 
@@ -1921,6 +1924,96 @@ jQuery(document).ready(function () {
         }
     })
 })
+var chatPrompt = chatPrompt || {};
+chatPromptIdleTime = 0;
+chatPrompt.presetTime = 1000; // setting time to go by milliseconds
+var chatIdleInterval;
+var chatModalLink = "";
+var enabledVal = "";
+chatTimerLength = 180;
+$(document).ready(function () {
+    if ($('#chat-prompt-module').length > 0) {
+        var currentSoaId;
+        
+        //Zero the idle timer on mouse movement.
+        $(this).mousemove(function (e) {
+            chatPromptIdleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            chatPromptIdleTime = 0;
+        });
+
+        // get users soaid and if they have not entered one use default New York soaid
+        var soaid = CQ_Analytics.ProfileDataMgr.getProperty('soaId');
+        if (typeof(soaid)==='string' && soaid!=='') {
+            currentSoaId = soaid;
+        } else {
+            currentSoaId = "NYC.8150";
+        }
+
+        $.getJSON('/content/bin/soaid/proactiveChatPrompt', function(data) {
+            var soaObj = data[currentSoaId];
+            var chatObj = soaObj["proactiveChatPrompt"];
+            enabledVal = chatObj["enabled"].toString();
+            
+            if (enabledVal === 'true'){
+                var disabled = $('#disabled').val();
+                if (disabled !== 'true') {
+                    if(! $.cookie('chatPromptCookie')) {
+                        chatModalLink = $('#modalLink').val();
+                        chatTimerLength = $('#timerlength').val();
+
+                        if (chatModalLink !== '') {
+                            //Increment the idle time counter
+                            chatIdleInterval = setInterval("timerIncrement()", chatPrompt.presetTime);
+
+                           
+                        }
+                    }
+                }
+            }
+        });
+    }
+})
+function timerIncrement() {
+    chatPromptIdleTime = chatPromptIdleTime + 1;
+    if (chatPromptIdleTime > chatTimerLength) {
+        clearInterval(chatIdleInterval);
+        $.get(chatModalLink + '.html #chatPrompt', function(data) {
+            var chatPromptDiv = $(data).find('#chatPromptModal').html();
+
+            if (typeof(s) !== 'undefined') {
+                // analytics code for when the modal appears
+                var oldPageName = s.pageName;
+                s.events="event97";
+                s.pageName="chatpop_idle";
+                s.channel="chatpop_idle";
+                s.eVar50="chatpop_idle|"+oldPageName;
+                s.eVar67="ChatPop_idle";
+                s.eVar68=oldPageName;
+                s.t();
+            }
+
+            var options = {
+                path: '/'
+            };
+            // cookie to prevent multiple popups in single browser session
+            $.cookie("chatPromptCookie","chatPrompt",options);
+
+            // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
+            $.fancybox(chatPromptDiv, {
+                padding: 0,
+                margin: 0,
+                maxHeight:600,
+                makWidth:600,
+                width:'auto',
+                height:'auto',
+                autoSize:false,
+                scrolling: 'no'
+            });
+        });
+    }
+}
 /*jslint browser: true*/
 /*global $, jQuery*/
 function synchNow(epcDataSynchServletPath, buttonLabel, defaultFailureMsg) {
@@ -17282,6 +17375,7 @@ function getUrl() {
     }
     return(queryURI);
 }
+
 function buildModalHTML(titles, descriptions, channels, bottomMessages) {
     var modalHTMLStart = "<div class=\"miniCLUTVPlans\">";
     var modalHTMLTitle = buildModalTitles(titles);
@@ -17363,7 +17457,7 @@ function showMiniCLUFromTVPage(packageName){
             var bottomMessages = new Array();
             for (i=0; i<data.length; i++){
                 titles[i] = data[i].title;
-                var decodeTitle = $('<div />').html(titles[i]).text();
+                var decodeTitle = $('<div />').html(titles[i]).text().replace("\u00F1","&ntilde;");
                 if(packageName == decodeTitle) {//on TV overview page, detail panel need to find it's TV plan.
                     pos = i;
                 }
@@ -17376,6 +17470,30 @@ function showMiniCLUFromTVPage(packageName){
             showChannelTab(pos);
         });
     }
+    return false;   //prevent browser destination
+}
+
+/* @packageName Package Title
+*
+*/
+function showMiniCLUFromPackagesPage(packageName){
+    $.getJSON("/bin/miniclu.json?region=all", function(data){
+        var titles = new Array();
+        var descriptions = new Array();
+        var channels = new Array();
+        var bottomMessages = new Array();
+        for (i=0; i<data.length; i++){
+            if (data[i].title == packageName) {
+                titles[0] = data[i].title;
+                descriptions[0] = data[i].description;
+                channels[0] = data[i].tableData;
+                bottomMessages[0] = data[i].bottomMessage;
+            }
+        }
+        var modalHTML = buildModalHTML(titles, descriptions, channels, bottomMessages);
+        $.fancybox(modalHTML, {'width': 778, 'height': 440, 'autoSize': false, 'scrolling': 'no'});
+        showChannelTab(0);
+    });
     return false;   //prevent browser destination
 }
 

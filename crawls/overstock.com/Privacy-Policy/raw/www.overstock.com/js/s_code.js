@@ -24,11 +24,6 @@ s.linkTrackEvents="None"
 s.fpCookieDomainPeriods=3 // write cookies to www.overstock.com where possible
 s.dc=112
 
-/* BloomReach */
-
-if(!s.prop48) s.prop48 = (typeof(br_track) == "undefined" ? "" : br_track);
-if(!s.eVar48) s.eVar48 = (typeof(br_track) == "undefined" ? "" : br_track);
-
 /* Form Analysis Config */
 s.formList="subscribeForm,myForm"     /* NEED FORM NAME FOR CC APP */
 s.trackFormList=true
@@ -49,7 +44,7 @@ function s_doPlugins(s) {
 
   /* QUERY PARAM */
     // MKT-4145: tracking keywords on static pages from mercado redirects
-    if(!s.prop11)s.prop11=s.getQueryParam('keywords');
+  if(!s.prop11)s.prop11=s.getQueryParam('keywords');
   if(!s.prop31)s.prop31=s.getQueryParam('PAGE');
   if(!s.prop32)s.prop32=s.getQueryParam('track');
   if(!s.prop33)s.prop33=s.getQueryParam('SEC_IID');
@@ -59,7 +54,6 @@ function s_doPlugins(s) {
 
   if(!s.eVar4)s.eVar4=s.getQueryParam('tid');
   if(!s.eVar14)s.eVar14=s.getQueryParam('searchtype');
-  if(!s.eVar15)s.eVar15=s.getQueryParam('keywords');
   if(!s.eVar32)s.eVar32=s.getQueryParam('ak');
   if(!s.eVar33)s.eVar33=s.getQueryParam('kid');
   if(!s.eVar35)s.eVar35=s.getQueryParam('pid');
@@ -123,8 +117,7 @@ function s_doPlugins(s) {
   /* Perform Mercado Omniture Analysis */
    s.integrateSearch("search_type:prop43,numrecords:prop13,search:prop11,"
     +"correct:prop19,sort:prop18,numchosen:prop12,ref_name_val_1:prop35,"
-    +"cat_ids:prop7,Dominant_category:prop8,"
-    +"Dominant_category_id:prop9,surftype:prop44");
+    +"surftype:prop44");
 
   if (s.pageName){
     if (s.pageName.indexOf('Home & Garden Store')>-1)
@@ -250,9 +243,7 @@ function s7track(eventInfo) {
     s.internalCounter--;//only count tracked events
 }
 
-/* end of S7 LIGHTBOX */
-
-
+/* end of S7 LIGHTBOX -- */
 
 /************************** PLUGINS SECTION *************************/
 /*

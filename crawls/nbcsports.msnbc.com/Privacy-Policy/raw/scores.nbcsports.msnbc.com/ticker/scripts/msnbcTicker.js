@@ -9,9 +9,11 @@
 			SHS = {
 			};
 		}
-		
+
 		SHS.MSNBCTicker = function(params) {
+
 			this.showSports = "";//"mlb|nfl|nba|nhl|cfb|cbk|nascar|golf" //override this to change the sports that are shown
+
 			if (params.sports)
 				this.showSports = params.sports;
 			
@@ -39,6 +41,7 @@
 			this.sportsUpdateTimer = 60; //300;
 			this.gamesUpdateTimer = 15;
 			this.updateThread = null;
+			
 			
 			//loadStatfox - loads the statfox team names that are used to build head-to-head links
 			this.loadStatfox = function(sports) {
@@ -80,7 +83,7 @@
 				var now = new Date();
 				nowSecs = now.getTime();
 				this.lastSportsUpdate = nowSecs;
-				
+
 				var ticker = this;
 				if (this.useJSONP) {
 					$.ajax({
@@ -111,7 +114,7 @@
 			this.loadSportsData = function(data) {
 				//alert("load sports data");
 				var ticker = this;
-				
+
 				var current_sport_name  = "";
 				var current_period_name = "";
 				if (ticker.sportsData != "") {
@@ -123,6 +126,7 @@
 				//loop through all the sports, updating or adding them to the list
 				for (var x = 0; x < data.length; x++) {
 					var this_sport_nav = $(".shs_sportNav ul li:eq("+x+") a");
+	
 					if (this_sport_nav != null && this_sport_nav.length != 0) {
 						//there was already a sport in this spot, we'll need to update it
 						
@@ -140,7 +144,7 @@
 									if (label.substr(label.length-1) == '.') label = label.substr(0,label.length-1);
 									
 									var title = '';
-									if (data[x].sport.toUpperCase() != "GOLF" && data[x].sport.toUpperCase() != "NASCAR")
+									if (data[x].sport.toUpperCase() != "GOLF" && data[x].sport.toUpperCase() != "NASCAR" && data[x].sport.toUpperCase() != "FORM1")
 										title = this.formatDatestamp(this_period.period);
 									
 									var this_period_nav = $(".shs_schedNav ul li:eq("+y+") a");
@@ -201,10 +205,15 @@
 						}
 					}
 					else {
+
+						var showSportInNav = data[x].sport;
+						if (showSportInNav == 'FORM1') 
+							showSportInNav = 'F1';
+
 						//the old list of sports wasn't this long, let's add a new sport
 						if (ticker.selectedSport == -1) {
 							//there was no sport selected previously, so this one will be it
-							$(".shs_sportNav ul").append('<li><a href="#" class="shs_active" index="'+x+'" name="'+data[x].sport+'">'+data[x].sport+'</a></li>').find("li:last a").click(function() {
+							$(".shs_sportNav ul").append('<li><a href="#" class="shs_active" index="'+x+'" name="'+data[x].sport+'">'+showSportInNav+'</a></li>').find("li:last a").click(function() {
 								var x = parseInt($(this).attr("index"));
 								if (x != ticker.selectedSport) {
 									$(".shs_sportNav ul li a").removeClass("shs_active");
@@ -220,7 +229,7 @@
 						}
 						else {
 							//there is already a selected sport, so just add this one unselected
-							$(".shs_sportNav ul").append('<li><a href="#" index="'+x+'" name="'+data[x].sport+'">'+data[x].sport+'</a></li>').find("li:last a").click(function() {
+							$(".shs_sportNav ul").append('<li><a href="#" index="'+x+'" name="'+data[x].sport+'">'+showSportInNav+'</a></li>').find("li:last a").click(function() {
 								var x = parseInt($(this).attr("index"));
 								if (x != ticker.selectedSport) {
 									$(".shs_sportNav ul li a").removeClass("shs_active");
@@ -264,7 +273,7 @@
 					
 					//if this is a team sport let's set a mouseover title that gives the actual date that goes with "Wed"
 					var title = '';
-					if (ticker.sportsData[index].sport.toUpperCase() != "GOLF" && ticker.sportsData[index].sport.toUpperCase() != "NASCAR")
+					if (ticker.sportsData[index].sport.toUpperCase() != "GOLF" && ticker.sportsData[index].sport.toUpperCase() != "NASCAR" && ticker.sportsData[index].sport.toUpperCase() != "FORM1")
 						title = this.formatDatestamp(this_period.period);
 					
 					//add this period and it's click behavior
@@ -396,7 +405,7 @@
 				var is_new_period = false;
 				//alert("load game data");
 				var ticker = this;
-				
+								
 				//save the current number of scores, so that we can tell if it changed (to reset to position #1 if so)
 				var num_old_games = $(".shs_scrollableArea div.shs_board").length;
 				
@@ -407,7 +416,7 @@
 					var eventType = "Games";
 					if (data.sport.toUpperCase() == "GOLF")
 						eventType = "Round";
-					else if (data.sport.toUpperCase() == "NASCAR")
+					else if (data.sport.toUpperCase() == "NASCAR" || data.sport.toUpperCase() == "FORM1")
 						eventType = "Race";
 					else if (data.sport.toUpperCase() == "CYCLING" || data.sport.toUpperCase() == "TOUR")
 						eventType = "Stage";
@@ -545,7 +554,7 @@
 						}
 					}
 				}
-				else if (data.sport.toUpperCase() == "NASCAR") {
+				else if (data.sport.toUpperCase() == "NASCAR" || data.sport.toUpperCase() == "FORM1") {
 					var raceXML = $.parseXML(data.games[0]);
 					var details    = $(raceXML).find("race");
 					

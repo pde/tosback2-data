@@ -534,6 +534,10 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 
 #filemanager .filelist_s .menu .create {background-position: 0 -890px;}
 #filemanager .filelist_s .menu .create.disabled {background-position: 0 -922px;}
+
+#filemanager .filelist_s .menu .share_folder, #filemanager .filelist_s .menu .new_share_folder {background: url(http://static303.depositfiles.com/images/new/btn_share_folder.png) no-repeat 50% 50%;}
+#filemanager .filelist_s .menu .share_folder.disabled {background: url(http://static303.depositfiles.com/images/new/btn_share_folder_disabled.png) no-repeat 50% 50%;}
+
 #filemanager .filelist_s .menu .rename {background-position: 0 -954px;}
 #filemanager .filelist_s .menu .rename.disabled {background-position: 0 -986px;}
 #filemanager .filelist_s .menu .move {background-position: 0 -1018px;}
@@ -556,8 +560,6 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 #filemanager .filelist_s .menu a.link_edit.disabled {background-position: 0 -1434px;}
 #filemanager .filelist_s .menu a.link_remove {background-position: 0 -1466px;}
 #filemanager .filelist_s .menu a.link_remove.disabled {background-position: 0 -1498px;}
-
-
 
 #filemanager .filelist_s .menu .buttons {float: left;}
 #filemanager .filelist_s .menu .search {float: right; width: 200px; margin: 5px 0 0 0;}
@@ -608,7 +610,6 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .filelist_tab .uploadifive-queue-item .fileinfo {float: right; display: inline-block;}
 .filelist_tab tr .finished {color: #5a9d00;}
 .filelist_tab tr .error {color: #f0370e;}
-
 
 /* breadcrumbs */
 .breadcrumbs, .breadcrumbs ul {margin: 0; list-style: none;}
@@ -664,7 +665,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 
 .dir_list li.odd {background: #fff;}
 .dir_list li.even {background: #f6f6f6;}
-.dir_list li:hover {background: #f0f0f0;}
+.dir_list li:hover {background: #e6e6e6;}
 .dir_list li.ui-selected {background: #afdeff;}
 .diag_inner .dir_list li input {width: auto; padding: 1px; background: transparent;}
 
@@ -676,12 +677,15 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 
 .filelist_tab .share_btn, .filelist_tab .share_link_btn {background-position: 0 -282px;}
 .filelist_tab .protect_btn, .filelist_tab .protect_link_btn {background-position: 0 -666px;}
+.filelist_tab .options_btn {background: url(http://static303.depositfiles.com/images/new/options.png) no-repeat;}
 
-.preloader_small {display: inline-block; width: 20px; height: 20px; background: url(../images/preloader_small.gif) no-repeat;}
-.ajax_status {display: none; position: fixed; top: 0; left: 50%; padding: 5px 10px; z-index: 10000;  background-color: #ffc; text-align: center; font-weight: bold; color: #000;}
+.preloader_small {display: none; width: 20px; height: 20px; background: url(../images/preloader_small.gif) no-repeat;}
+.ajax_status {display: none; position: fixed; top: 0; left: 50%; padding: 5px 10px; z-index: 10000;  background: #ffc; font-weight: bold;}
 .ajax_status * {vertical-align: middle;}
 .ajax_status.error {color: #f30;}
-.ajax_status .preloader_small {margin: 0 10px 0 0;}
+.ajax_status.complete {color: #000;}
+.ajax_status.loading .preloader_small {display: inline-block; margin: 0 10px 0 0;}
+.diag_inner .preloader_small {margin: 20px auto;}
 
 
 .diag_inner .headline {margin: 0 0 10px 0; font-weight: bold;}
@@ -711,6 +715,37 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 #restore_diag #exist_list input {width: 100%; border: none; padding: 2px 0; background: none;}
 
 
+
+.add_user_icon {width: 32px; height: 32px; background: url(http://static303.depositfiles.com/images/new/add_user.png) no-repeat 50% 50%;}
+
+#share_folder_diag {background: #fff;}
+#share_folder_diag input[type=text] {width: 230px;}
+#share_folder_diag .add_user_btn {margin: 0 0 10px 0; cursor: pointer;}
+#share_folder_diag .userlist_tab td:first-child {white-space: nowrap;}
+
+
+
+.userlist_wrapper {height: 201px; border: 1px solid #ccc; overflow: auto;}
+.userlist_wrapper.empty {border: none;}
+.userlist_tab {width: 100%;}
+.userlist_tab thead {background: #f2f2f2; border-bottom: 1px solid #ccc;}
+.userlist_tab thead th:first-child {text-align: left;}
+
+
+.userlist_tab tr.even {background: #fff;}
+.userlist_tab tr.odd {background: #f2f2f2;}
+.userlist_tab td, .userlist_tab th {padding: 8px;}
+.userlist_tab td * {vertical-align: middle;}
+
+.userlist_tab .name {display: inline-block; width: 250px; overflow: hidden; white-space: nowrap;}
+.userlist_tab .name a {display: inline-block; text-decoration: none; border-bottom: 1px dotted transparent;}
+.userlist_tab .name a:hover {border-color: #444;}
+.userlist_tab .spritefm {height: 16px; width: 16px;}
+.userlist_tab .user_icon_16 {margin: 0 8px 0 0; background: url(http://static303.depositfiles.com/images/new/user.png) no-repeat;}
+.userlist_tab .remove_icon {float: right; background: url(http://static303.depositfiles.com/images/new/menu_icon_remove.png) no-repeat;}
+
+
+
 .ui_context_menu_diag {border: none !important; background: none !important;}
 .ui_context_menu_diag .ui-dialog-titlebar {display: none;}
 .ui_context_menu_diag .diag_inner {padding: 0;}
@@ -731,11 +766,13 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .dial .size{top: 43px; font-weight: bold;}
 .dial .free {bottom: 5px;}
 
+
+
 /* end filemanager_s */
 
 
 
-#ajaxStatus { position: fixed; top: 0; width: 100%; height: 25px; text-align: center }
+#ajaxStatus { position: fixed; top: 0; width: 100%; height: 25px; text-align: center; z-index: 2000;}
 #ajaxStatus .error, #ajaxStatus .complete, #ajaxStatus .loading { display: inline-block; margin: 0 auto; padding: 5px 10px; font-weight: bold }
 #ajaxStatus .loading { color: #000; padding-left: 33px; background: #ffc url(../images/preloader_small.gif) 5px 2px no-repeat }
 #ajaxStatus .complete { background: #ffc; color: #000 }
@@ -1426,6 +1463,7 @@ ol.agreement li { font-weight: bold }
 .contextMenu li.movess {background: url(../images/icons/menu_icon_movess.png) 3px center no-repeat;}
 .contextMenu li.recovery {background: url(../images/icons/menu_icon_recovery.png) 3px center no-repeat;}
 .contextMenu li.edit2 {background: url(../images/icons/edit.png) 3px center no-repeat;}
+.contextMenu li.share_folder {background: url(http://static303.depositfiles.com/images/new/user.png) 3px center no-repeat;}
 .contextMenu li.hidden { display: none }
 
 .remoteuploadinstance label { display: block; width: 50%; position: relative; height: 26px; line-height: 26px; margin: 10px 0 }
@@ -2537,9 +2575,12 @@ div.aug2011d_one_year {
 /* ui_diag */
 .ui_diag {/*width: 430px !important;*/ border: none; border-bottom: 2px solid #666; background: #f2f2f2;}
 .ui_diag .ui-dialog-titlebar {background: #666; padding: 6px 10px; border: none; color: #fff;}
+.ui_diag .ui-dialog-title {display: block; overflow: hidden; margin: 0 15px 0 0;}
 .ui_diag .ui-dialog-titlebar-close {width: 16px; height: 16px; margin: -8px 0 0 0; background: url(../images/button_close.gif) no-repeat 50% 50%;}
 
+.diag_inner {display: none;}
 .ui_diag .diag_inner {min-height: 0 !important;}
+
 .diag_inner .diag_tab {width: 100%;}
 .diag_inner .diag_tab th, .diag_inner .diag_tab td {padding: 2px 0;}
 .diag_inner .diag_tab th {padding-right: 10px; text-align: left; font-weight: normal;}

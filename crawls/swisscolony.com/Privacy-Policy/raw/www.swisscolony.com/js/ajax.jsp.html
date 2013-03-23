@@ -57,6 +57,8 @@ if (!pathContains(path)) {
 	var ajaxUtagURL = site_base_url + "/js/utag_call.jsp";
 	var utagParams = "path="+path+"&referrer="+encodeURIComponent(document.referrer);
 	
+		utagParams += "&errorType=";
+	
 	$.ajax({    
 	    url: ajaxUtagURL,
 	    data: utagParams,    
@@ -74,7 +76,7 @@ function pathContains(path) {
 	nonAjaxPages.push('.ens');
 	nonAjaxPages.push('basket.jsp');
 	nonAjaxPages.push('billing.jsp');
-	nonAjaxPages.push('review.jsp');
+	nonAjaxPages.push('checkout/review.jsp');
 	nonAjaxPages.push('receipt.jsp');
 	nonAjaxPages.push('down_payment_default.jsp');
 	nonAjaxPages.push('payment_method_default.jsp');
@@ -85,6 +87,7 @@ function pathContains(path) {
 	nonAjaxPages.push('ensemble.jsp');
 	nonAjaxPages.push('custserv.jsp');
 	nonAjaxPages.push('process_item.cmd');
+	nonAjaxPages.push('search.cmd');
    for (i in nonAjaxPages) {
        if (path.contains(nonAjaxPages[i])) return true;
    }

@@ -55,7 +55,7 @@
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = '';
+OAS_listpos = ',x32';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -159,7 +159,7 @@ function OAS_AD(pos) {
 	<ul class="sf-menu">
 		<li><a href="http://adage.com/events">Events</a><ul>
 	<li class="home_menu">
-		<a  href="http://events.adage.com/digital2013/">Digital Conference</a><a  href="http://adage.com/article/ad-age-events/ad-age-agency-a-list-cocktail-party/238538/">Agency A-List Cocktail Party</a>
+		<a  href="http://events.adage.com/digital2013/">Digital Conference</a><a  href="http://events.adage.com/cmo2013/index.php">CMO Strategy Summit</a>
 	</li>
 </ul>
 </li><li><a href="http://adage.com/webcasts/">Webcasts</a><ul>
@@ -204,7 +204,7 @@ menu item
 --><li>
 	<a href="http://adage.com/channel/media/1" class="bottom_menu">Media</a>
 	<ul>
-	<li><a href="http://adage.com/channel/media/1">Latest News</a></li>						<li><a href="http://adage.com/article/special-report-tv-upfront/2013-tv-upfronts-calendar/239918/">2013 TV Upfronts</a></li>						<li><a href="http://adage.com/article/special-report-super-bowl/search-2013-super-bowl-spots-place/239485/">All the Super Bowl Ads in One Place</a></li>						<li><a href="http://adage.com/special-reports/superbowl/148">Complete Super Bowl Coverage</a></li>						<li><a href="http://adage.com/section/the-media-guy/269">The Media Guy</a></li>						<li><a href="http://adage.com/section/trending-topics/732">Social TV and Trending Topics</a></li>						<li><a href="http://adage.com/section/tuning-in/779">Tuning in</a></li>						
+	<li><a href="http://adage.com/channel/media/1">Latest News</a></li>						<li><a href="http://adage.com/article/special-report-tv-upfront/2013-tv-upfront-calendar/239918/">Upfront Calendar</a></li>						<li><a href="http://adage.com/special-reports/tvupfront/155">Complete Upfront Coverage</a></li>						<li><a href="http://adage.com/section/the-media-guy/269">The Media Guy</a></li>						<li><a href="http://adage.com/section/trending-topics/732">Social TV and Trending Topics</a></li>						
 </ul>
 
 </li>
@@ -297,6 +297,84 @@ menu item
 
 
 		
+<script type="text/javascript">
+Interstitial = {
+	parentId:'home',
+	id:'interstitial',
+	ad_id:'interstitial-ad',
+	timer:null,
+
+	setOpacity:function(id, opacity) {
+    	el=document.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+
+				if(end == i) {
+					setTimeout("Interstitial.destroy()", time);
+				}
+			}
+			clearTimeout(this.timer);
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+			clearTimeout(this.timer);
+		}
+	},
+
+	hide:function() {
+		if(document.getElementById(this.id)) {
+			// this.fade(this.id, 100, 0, 300);
+			this.destroy();
+		}
+	},
+
+	destroy:function() {
+		var hpto = document.getElementById(this.id);
+		hpto.removeChild(document.getElementById(this.ad_id));
+		hpto.style.visibility='hidden';
+		hpto.style.display='none';
+	}
+}
+
+Interstitial.timer = setTimeout('Interstitial.hide()', 9*1000);
+
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
+
+<div id="interstitial">
+	<div id="interstitial-head">
+		<div id="interstitial-logo">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
+		</div>
+		<div id="interstitial-skip">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
+		</div>
+	</div>
+
+	<div id="interstitial-ad">
+		<!-- OAS Interstitial AD POSITION -->
+		<script language="JavaScript">
+			OAS_AD('x32');
+		</script>
+	</div>
+</div>
+
 	</div>
 </div>
 
@@ -443,6 +521,16 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
     <div class="rss_col">
 	<div class="logo_auto"></div>
     <ul><li>
+<a href="http://www.autonews.com/article/20130322/RETAIL03/130329959/ford-plans-ecoboost-engine-ad-campaign" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ford plans EcoBoost engine ad campaign', 'http://www.autonews.com/article/20130322/RETAIL03/130329959/ford-plans-ecoboost-engine-ad-campaign']);" target="_new">
+Ford plans EcoBoost engine ad campaign
+</a>
+</li>
+<li>
+<a href="http://www.autonews.com/article/20130321/RETAIL03/130329967/chrysler-brand-boss-says-imported-from-detroit-campaign-will-grow" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Chrysler brand boss says \&#039;Imported from Detroit\&#039; campaign will grow', 'http://www.autonews.com/article/20130321/RETAIL03/130329967/chrysler-brand-boss-says-imported-from-detroit-campaign-will-grow']);" target="_new">
+Chrysler brand boss says 'Imported from Detroit' campaign will grow
+</a>
+</li>
+<li>
 <a href="http://www.autonews.comhttp://europe.autonews.com/article/20130319/ANE/130319911/bmw-details-driving-range-of-i3-ev" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'BMW details driving range of i3 EV', 'http://www.autonews.comhttp://europe.autonews.com/article/20130319/ANE/130319911/bmw-details-driving-range-of-i3-ev']);" target="_new">
 BMW details driving range of i3 EV
 </a>
@@ -452,34 +540,24 @@ BMW details driving range of i3 EV
 Why no Disneyland of cars in Detroit?
 </a>
 </li>
-<li>
-<a href="http://www.autonews.com/article/20130318/RETAIL03/130319916/american-honda-keeps-rpa-as-creative-agency-for-honda-mullen-picked" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'American Honda keeps RPA as creative agency for Honda; Mullen picked for Acura', 'http://www.autonews.com/article/20130318/RETAIL03/130319916/american-honda-keeps-rpa-as-creative-agency-for-honda-mullen-picked']);" target="_new">
-American Honda keeps RPA as creative agency for Honda; Mullen picked for Acura
-</a>
-</li>
-<li>
-<a href="http://www.autonews.com/article/20130318/RETAIL03/303189997/lexus-global-brand-effort-starts-in-may" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Lexus global brand effort starts in May', 'http://www.autonews.com/article/20130318/RETAIL03/303189997/lexus-global-brand-effort-starts-in-may']);" target="_new">
-Lexus global brand effort starts in May
-</a>
-</li>
   <ul>
   </div>
   <!-- close rss column -->
     <div class="rss_col">
 	<div class="logo_b2b"></div>
     <ul><li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130320/SOCIAL0101/303199998/1500/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'How the Facebook redesign will affect marketers', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130320/SOCIAL0101/303199998/1500/rss998&rssfeed=rss998']);" target="_new">
+How the Facebook redesign will affect marketers
+</a>
+</li>
+<li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130320/SOCIAL/303199999/1501/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Using social media to shorten the sales cycle', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130320/SOCIAL/303199999/1501/rss998&rssfeed=rss998']);" target="_new">
+Using social media to shorten the sales cycle
+</a>
+</li>
+<li>
 <a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130319/SOCIAL06/303159998/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Search budgets rise to accommodate new channels, devices', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130319/SOCIAL06/303159998/1429/rss998&rssfeed=rss998']);" target="_new">
 Search budgets rise to accommodate new channels, devices
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130314/EMAIL03/303089993/1084/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'How can email marketers use Big Data?', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130314/EMAIL03/303089993/1084/rss998&rssfeed=rss998']);" target="_new">
-How can email marketers use Big Data?
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130314/EMAIL03/303089994/1085/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Taking a page from b-to-c', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130314/EMAIL03/303089994/1085/rss998&rssfeed=rss998']);" target="_new">
-Taking a page from b-to-c
 </a>
 </li>
   <ul>
@@ -488,23 +566,23 @@ Taking a page from b-to-c
     <div class="rss_col">
 	<div class="logo_cnn"></div>
     <ul><li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/32B7dSfFpjY/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'States eye Medicaid private insurance', 'http://rss.cnn.com/~r/rss/money_latest/~3/32B7dSfFpjY/index.html']);" target="_new">
-States eye Medicaid private insurance
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/0iHvsYaCOAI/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Cyprus moves closer to bailout', 'http://rss.cnn.com/~r/rss/money_latest/~3/0iHvsYaCOAI/index.html']);" target="_new">
+Cyprus moves closer to bailout
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/VhaBfAEgtvA/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks: Fed on deck amid Cyprus turmoil', 'http://rss.cnn.com/~r/rss/money_latest/~3/VhaBfAEgtvA/index.html']);" target="_new">
-Stocks: Fed on deck amid Cyprus turmoil
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/coqotFk654w/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Google Keep is a note-taking app with great potential', 'http://rss.cnn.com/~r/rss/money_latest/~3/coqotFk654w/index.html']);" target="_new">
+Google Keep is a note-taking app with great potential
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/ocJlgQn7M3A/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Donate to disaster relief? Don\&#039;t expect a tax break', 'http://rss.cnn.com/~r/rss/money_latest/~3/ocJlgQn7M3A/index.html']);" target="_new">
-Donate to disaster relief? Don't expect a tax break
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/oDP2QY77oQk/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Fortune Brainstorm podcast: Sheryl Sandberg', 'http://rss.cnn.com/~r/rss/money_latest/~3/oDP2QY77oQk/index.html']);" target="_new">
+Fortune Brainstorm podcast: Sheryl Sandberg
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/tR6xApH71yw/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'BlackBerry Z10 review: A noble failure', 'http://rss.cnn.com/~r/rss/money_latest/~3/tR6xApH71yw/index.html']);" target="_new">
-BlackBerry Z10 review: A noble failure
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/zYK-AGCY5JI/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks rise on Cyprus hopes', 'http://rss.cnn.com/~r/rss/money_latest/~3/zYK-AGCY5JI/index.html']);" target="_new">
+Stocks rise on Cyprus hopes
 </a>
 </li>
   <ul>
@@ -513,6 +591,11 @@ BlackBerry Z10 review: A noble failure
     <div class="rss_col">
 	<div class="logo_crain"></div>
     <ul><li>
+<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/yUJ4m6VAFBE/130329987" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Gotham swoons for country radio', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/yUJ4m6VAFBE/130329987']);" target="_new">
+Gotham swoons for country radio
+</a>
+</li>
+<li>
 <a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/CpiOyf4gdAk/130319864" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'NewsCred raises $15M in funding', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/CpiOyf4gdAk/130319864']);" target="_new">
 NewsCred raises $15M in funding
 </a>
@@ -527,34 +610,29 @@ Branding agency Arnell Group closes its doors
 Get your manly mag here! Maxim up for sale
 </a>
 </li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/ZX5DAHz90IU/130309896" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Time Inc. spinoff: streamlined, but leaderless', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/ZX5DAHz90IU/130309896']);" target="_new">
-Time Inc. spinoff: streamlined, but leaderless
-</a>
-</li>
   <ul>
   </div>
   <!-- close rss column -->
     <div class="rss_col">
 	<div class="logo_msn"></div>
     <ul><li>
-<a href="http://www.nbcnews.com/business/should-you-tell-stores-your-zip-code-privacy-advocates-say-1C8912007" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Why you shouldn\&#039;t tell stores your ZIP code', 'http://www.nbcnews.com/business/should-you-tell-stores-your-zip-code-privacy-advocates-say-1C8912007']);" target="_new">
-Why you shouldn't tell stores your ZIP code
+<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/29e3c122/l/0Lworldnews0Bnbcnews0N0C0Inews0C20A130C0A30C220C174189140Ecyprus0Epasses0Ebills0Efor0Eeu0Ebailout0Egreece0Eto0Etake0Eover0Ebank0Ebranches0Dlite/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Cyprus passes bills for EU bailout; Greece to take over bank branches', 'http://feeds.nbcnews.com/c/35002/f/653351/s/29e3c122/l/0Lworldnews0Bnbcnews0N0C0Inews0C20A130C0A30C220C174189140Ecyprus0Epasses0Ebills0Efor0Eeu0Ebailout0Egreece0Eto0Etake0Eover0Ebank0Ebranches0Dlite/story01.htm']);" target="_new">
+Cyprus passes bills for EU bailout; Greece to take over bank branches
 </a>
 </li>
 <li>
-<a href="http://lifeinc.today.com/_news/2013/03/18/17360301-what-pope-francis-can-teach-ceos-about-leadership?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'What Pope Francis can teach CEOs about leadership', 'http://lifeinc.today.com/_news/2013/03/18/17360301-what-pope-francis-can-teach-ceos-about-leadership?lite']);" target="_new">
-What Pope Francis can teach CEOs about leadership
+<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/29e32c6d/l/0L0Snbcnews0N0Ctechnology0Cgadgetbox0Cbuy0Enook0Etablet0Eget0Efree0Ee0Ereader0E1B90A32163/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Buy a Nook tablet, get a free e-reader', 'http://feeds.nbcnews.com/c/35002/f/653351/s/29e32c6d/l/0L0Snbcnews0N0Ctechnology0Cgadgetbox0Cbuy0Enook0Etablet0Eget0Efree0Ee0Ereader0E1B90A32163/story01.htm']);" target="_new">
+Buy a Nook tablet, get a free e-reader
 </a>
 </li>
 <li>
-<a href="http://www.nbcnews.com/business/how-vaticans-finances-work-1C8930020" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'How the Vatican\&#039;s finances work', 'http://www.nbcnews.com/business/how-vaticans-finances-work-1C8930020']);" target="_new">
-How the Vatican's finances work
+<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/29e325bb/l/0L0Snbcnews0N0Cbusiness0Cstocks0Eend0Ehigher0Eamid0Ecyprus0Edeal0E1C90A24770A/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Stocks end higher amid Cyprus deal', 'http://feeds.nbcnews.com/c/35002/f/653351/s/29e325bb/l/0L0Snbcnews0N0Cbusiness0Cstocks0Eend0Ehigher0Eamid0Ecyprus0Edeal0E1C90A24770A/story01.htm']);" target="_new">
+Stocks end higher amid Cyprus deal
 </a>
 </li>
 <li>
-<a href="http://www.nbcnews.com/business/starbucks-buys-first-coffee-farm-research-beans-1C8957666" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Starbucks buys first coffee farm for research', 'http://www.nbcnews.com/business/starbucks-buys-first-coffee-farm-research-beans-1C8957666']);" target="_new">
-Starbucks buys first coffee farm for research
+<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/29e1fbeb/l/0L0Snbcnews0N0Cbusiness0Cveronica0Emars0Ekickstarter0Ecampaign0Erattles0Emovie0Eindustry0E1C90A30A691/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', '\&#039;Veronica Mars\&#039; Kickstarter campaign rattles movie industry', 'http://feeds.nbcnews.com/c/35002/f/653351/s/29e1fbeb/l/0L0Snbcnews0N0Cbusiness0Cveronica0Emars0Ekickstarter0Ecampaign0Erattles0Emovie0Eindustry0E1C90A30A691/story01.htm']);" target="_new">
+'Veronica Mars' Kickstarter campaign rattles movie industry
 </a>
 </li>
   <ul>
@@ -624,7 +702,7 @@ Starbucks buys first coffee farm for research
 		<a href="http://www.crain.com/">Crain Communications</a> | <a href="privacy.html">Privacy Statement</a> | <a href="http://adage.com/terms/">Terms of Use</a> | <a href="http://adage.com/help/faq#contactus">Contact Us</a>
 	</div>
 </div>
-<!-- Total time: 4.51198101044 -->
+<!-- Total time: 4.29324579239 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->

@@ -179,9 +179,6 @@ function processQVE(classId, callback){
 				// now remove any price sections where we show $0.00 - these are families (or some other issue)
 				jQuery("div.thumbPrices:contains('$0.00')").remove()
 
-
-
-				switchToMobile();
 				if (typeof(callback)==="function") {
 					callback();
 				}

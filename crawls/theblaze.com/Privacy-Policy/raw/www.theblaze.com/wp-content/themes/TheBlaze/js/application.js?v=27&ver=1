@@ -40,6 +40,25 @@ function isBot(){
 		return false;
 	}
 }
+
+function GATrackLink(link, scope, desc) {
+  	if(!link) return '';
+  	if(!desc) var desc = '';
+  	if(!scope) var scope = '';
+  	if(scope === 'internal') {
+  		_gat._getTrackerByName()._trackEvent('Internal Links', link.href, desc);
+  		setTimeout('document.location = "' + link.href + '"', 100);
+  	} else if(scope === 'flyout') {
+  		_gat._getTrackerByName()._trackEvent('NextStoryFlyout', 'clicked-' + desc, link.href);
+  		setTimeout('document.location = "' + link.href + '"', 100);
+  	} else if(scope === 'radio-popout') {
+  	  	_gat._getTrackerByName()._trackEvent('Internal Links', link.href, desc);
+  		window.open(link.href,'winBRNLivePlayer','width=650,height=330,scrollbars=no,toolbar=no,status=no,menubar=no,resizable=no,location=no,directories=no');
+  	} else {
+  		scope = 'external';
+  		_gat._getTrackerByName()._trackEvent('Outbound Links', link.href, desc);
+  	}
+}
 (function(){
 	if(jQuery('.social-tools,.tools').length > 0  && !isBot() ){
 		TBZ.shareTools.init('.social-tools');
@@ -93,6 +112,25 @@ jQuery.fn.popIn = function (options) {
 		}
 	};
 };
+
+jQuery('.theblaze-promotext').on('click', 'a', function(e) {
+	link = jQuery(this).attr('href');
+	_gat._getTrackerByName()._trackEvent('Marketing Links', link.href, 'Promotext');
+	if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
+		e.preventDefault();
+		setTimeout('document.location = "' + link + '"', 100);
+	}
+});
+
+jQuery('#home-content-heading').on('click', 'a', function(e) {
+	link = jQuery(this).attr('href');
+	_gat._getTrackerByName()._trackEvent('Marketing Links', link, 'Home-Content-Heading');
+	if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
+		e.preventDefault();
+		setTimeout('document.location = "' + link + '"', 100);
+	}
+});
+
 
 jQuery(document).ready(function($) {
 	$.theBlazerBrowser({'capabilities' : true, 'type' :true, 'system':true, 'tag_id':'body' });

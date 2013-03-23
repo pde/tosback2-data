@@ -409,7 +409,8 @@ LoginModule.onShowLoginWindow = function () {
 	}
 	
 	if(document.getElementById('displayBlock')){
-		if(typeof(unityPlayerMinimize) == undefined){
+
+		if(typeof(unityPlayerMinimize) == "undefined"){
 			document.getElementById('displayBlock').style.visibility = "hidden";
 		}
 	}
@@ -435,7 +436,8 @@ LoginModule.onHideLoginWindow = function () {
 	}
 	
 	if(document.getElementById('displayBlock')){
-		if(typeof(unityPlayerMinimize) == undefined){
+
+		if(typeof(unityPlayerMinimize) == "undefined"){
 			document.getElementById('displayBlock').style.visibility = "visible";
 		}
 	}

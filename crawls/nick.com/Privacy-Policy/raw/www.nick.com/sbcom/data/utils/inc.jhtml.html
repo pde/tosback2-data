@@ -1,0 +1,24 @@
+if (typeof overlayConfig !== 'undefined' && typeof overlayConfig.path !== 'undefined') {
+overlayConfig.path = overlayConfig.path + 'index.html';
+}
+
+if (typeof KIDS !== 'undefined' && typeof KIDS.utils !== 'undefined') {
+
+KIDS.utils.setCookie2 = function(name, value, expires, path, domain, secure){
+
+if (typeof path === 'undefined') {
+path = '/';
+}
+
+var curCookie = name + "=" + escape(value) +
+((expires) ? "; expires=" + expires.toGMTString() : "") +
+((path) ? "; path=" + path : "") +
+((domain) ? "; domain=" + domain : "") +
+((secure) ? "; secure" : "");
+document.cookie = curCookie;
+};
+
+// Override for spring.
+NICK.utils.setCookie2 = KIDS.utils.setCookie2;
+
+}

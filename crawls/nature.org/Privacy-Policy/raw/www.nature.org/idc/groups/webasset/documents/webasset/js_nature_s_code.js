@@ -38,6 +38,8 @@ function getAccount() {
 			"voice.nature.org"	:"tncglobalprod1",
 			"vote.nature.org"	:"tncoucmtest",
 			"www.adoptanacre.org"	:"tncglobalprod1",
+			"www.dedondevienetuagua.org"	:"tncglobalprod1",
+			"www.dedondevienetuagua.co"	:"tncglobalprod1",
 			"www.greatriverspartnership.org"   : "tncgreatrivers",
 			"www.natureaustralia.org.au"   :"tncglobalprod1",
 			"www.natureconservancy.planyourlegacy.org" :"tncglobalprod1",
@@ -66,7 +68,7 @@ s.trackingServer="thenatureconservancy.112.2o7.net"
 /* Dynamically select report suite */
 s.dynamicAccountSelection=false;
 s.dynamicAccountMatch=window.location.hostname;
-s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au";
+s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co";
 
 s.charSet="UTF-8"
 /* Conversion Config */
@@ -76,7 +78,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,docx,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au"
+s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co"
 
 s.linkLeaveQueryString=false
 s.linkTrackVars="prop36,prop10,eVar10"

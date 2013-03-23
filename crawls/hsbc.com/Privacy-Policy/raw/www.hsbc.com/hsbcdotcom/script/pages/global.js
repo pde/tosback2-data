@@ -5,6 +5,7 @@ lang.init();
 
 var deviceRange = [640,768];
 var linkbox = null;
+var lastClick = null;
 var content = "";
 
 $(document).ready(function () {
@@ -300,6 +301,17 @@ $(document).ready(function () {
 			
 		});
 	}
+	var onLinkboxShow = function()
+	{
+		linkbox.content.find("a, input").eq(0).focus();
+	}
+	var onLinkboxHide = function()
+	{
+		if(lastClick != null)
+		lastClick.focus();
+	}
+	linkbox.setOnShow(onLinkboxShow);
+	linkbox.setOnHide(onLinkboxHide);
 	linkbox.setCallback(callback);
 	linkbox.setContent($(".data-loader-container"));
 	linkbox.setAsync(true);
@@ -315,9 +327,12 @@ $(document).ready(function () {
 			if (url !== undefined && el.hasClass("no-popup") == false)
 			{
 				var domain = window.location.host;
-				if(url.indexOf("http")==0 && url.indexOf(domain)<0)
+				var patt = new RegExp(domain+"(?!\\.)","g");
+				var isSameDomain = patt.test(url);
+				if(url.indexOf("http")==0 && isSameDomain==false)
 				{
 					e.preventDefault();
+					lastClick = el;
 					handleLink(url);
 				}
 			}
@@ -359,8 +374,10 @@ $(document).ready(function () {
 var handleLink = function(url) {
 	
 	var domain = window.location.host;
+	var patt = new RegExp(domain+"(?!\\.)","g");
+	var isSameDomain = patt.test(url);
 	
-	if(url.indexOf("http")==0 && url.indexOf(domain)<0)
+	if(url.indexOf("http")==0 && isSameDomain==false)
 	{
 		linkbox.show();
 		

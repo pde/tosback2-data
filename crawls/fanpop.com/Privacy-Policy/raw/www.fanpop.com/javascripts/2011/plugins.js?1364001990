@@ -1,0 +1,251 @@
+jQuery( function($) {
+
+	/*
+	// All these plugins have documentation on their respective websites if you'd like to tweak things.
+	*/
+	
+	// This is history.js ajax support
+	$.getScript('/javascripts/2011/libs/jquery.history.js', function(){
+    // Prepare
+    var History = window.History; // Note: We are using a capital H instead of a lower h
+    if ( !History.enabled ) {
+         // History.js is disabled for this browser.
+         // This is because we can optionally choose to support HTML4 browsers or not.
+        return false;
+    }
+   // Bind to StateChange Event
+    History.Adapter.bind(window,'statechange',function() { // Note: We are using statechange instead of popstate
+        var State = History.getState();
+        $('#ajax_handler_div').load(State.url);
+    });
+    bindAjaxLinks();
+	});
+
+	// This is to make sure the user gets the hover effect on things like the Add an Image or Video dropdowns.
+	// http://cherne.net/brian/resources/jquery.hoverIntent.html
+	$.getScript('/javascripts/2011/libs/jquery.hoverIntent.min.js', function(){
+		$('.user-dropdown').hoverIntent({
+			over: function() {
+					$(this).addClass('hover');
+				}, 
+			timeout: 250,
+			out: function() {
+				$(this).removeClass('hover');
+				}
+		});
+		
+		$('.input-dropdown').hoverIntent({
+			over: function() {
+					$(this).addClass('hover');
+				}, 
+			timeout: 250,
+			out: function() {
+				$(this).removeClass('hover');
+				}
+		});
+	});
+	
+	// For all the popup modal windows.
+	// http://leanmodal.finelysliced.com.au/
+	$.getScript('/javascripts/2011/libs/jquery.leanModal.min.js', function(){
+		$('a.modal').click( function() {
+			$('.modal-wrap:visible').hide();
+		}).leanModal();
+		$("a[rel*=modalGallery]").click( function(){
+			$('.modal-wrap').hide();
+		}).leanModal();	
+	});
+	
+	// All the sliders.
+	// http://cssglobe.com/post/5780/easy-slider-17-numeric-navigation-jquery-slider
+	if( $('#my-clubs').length > 0 || $('#page-footer').length > 0 || $('#about').length > 0 || $('#home .tab_container ul.list').length > 0 || $('#home-content .controls li').length > 0 ) {
+		$.getScript('/javascripts/2011/libs/jquery.easySlider.js', function(){
+			$('#my-clubs .wall-slider').easySlider({
+				prevId: 'wall-prev',
+				nextId: 'wall-next',
+				speed: 400,
+				overflow: false,
+				buttonClass: 'ir'
+			});
+			
+			$('#page-footer .wrap').easySlider({
+				prevId: 'footer-prev',
+				nextId: 'footer-next',
+				speed: 400,
+				buttonClass: 'ir'
+			});
+			
+			$('#about .slider').easySlider({
+				speed: 400,
+				numeric: true,
+				nextClass: 'next'
+			});
+			
+			$('#home .tab_container .wrap')
+			.parent().append('<span class="ir next">Next</span><span class="ir prev">Previous</span>').end()
+			.easySlider({
+				prevClass: 'prev',
+				nextClass: 'next',
+				speed: 400,
+				continuous: true,
+				controlsShow: false
+			});
+			
+			$('#content-tabs').each( function() {
+				$(".tab_container", this).children().hide().first().show();
+				$("ul.tabs a", this).click(function() {
+					$(this).addClass("active").parent().siblings().children().removeClass('active');
+					$(".tab_container").children().hide();
+			
+					var activeTab = $(this).attr("href");
+					$(activeTab).fadeIn();
+					return false;
+				}).first().addClass('active');
+			});
+			
+			$('#home-content .controls .wrap').easySlider({
+				speed: 400,
+				buttonClass: 'ir'
+			});
+			
+		});
+	}
+	
+	// For styling of input[type=file]
+	// https://github.com/mamuso/jquery.prettyfile
+	if( $('input[type=file].replace').length > 0 ) {
+		$.getScript('/javascripts/2011/libs/jquery.prettyfile.js', function(){
+			$('input[type=file].replace').prettyfile({
+				html: "<span class='button'>Choose File</span><span class='file'>No file selected</span>",
+				phclass: 'file',
+				phcontclass: 'wrap'
+			});
+			
+			$('#article-new a.add').click(function() {
+				$('<input type="file" class="replace" />').insertBefore( this).wrap('<div class="image cf" />').before('<span class="alignright">JPEG, GIF, or PNG, Max 10 MB<br />Resized if over 560 x 560</span>').prettyfile({
+					html: "<span class='button'>Choose File</span><span class='file'>No file selected</span>",
+					phclass: 'file',
+					phcontclass: 'wrap'
+				});
+			});
+		});
+	}
+	
+	add_image_browser_scrollbar();
+	
+	$('#slideshow .slides li .image').each( function() {
+		$(this).width( $(this).find('img').width() );
+	});
+	
+	// $('#slideshow .slides-wrap .ir').css( 'top', $('#slideshow .slides .image img').height() / 2 );
+	
+	/* This was the image viewer slideshow but we removed that functionality so that the ads could reload for each image.
+	
+	if( $('#slideshow .slides li').length > 0 ) {		
+		$.getScript('/javascripts/2011/libs/jquery.cycle.js', function(){
+			$prev = $('<a href="#" class="nc ir prev">Previous</a>').appendTo( $('#slideshow .slides-wrap') );
+			$next = $('<a href="#" class="nc ir next">Next</a>').appendTo( $('#slideshow .slides-wrap') );
+			$('#slideshow .slides').height( $('#slideshow .slides li:first').height() );
+			$('#slideshow .slides li .image').each( function() {
+				$(this).width( $(this).find('img').width() );
+			});
+			$('#slideshow .slides').cycle({
+				fx: 'fade',
+				prev: $prev,
+				next: $next,
+				timeout: 0,
+				speed: 500,
+				pager: $('#slideshow .thumbs'),
+				pagerAnchorBuilder: function(idx, slide) { 
+					// return selector string for existing anchor 
+					return '#slideshow .thumbs li:eq(' + idx + ')'; 
+				},
+				before: function() {
+					$('#slideshow .slides').animate({
+						height: $(this).outerHeight()
+					});
+					
+					$('#slideshow .ir').animate({
+						top: $(this).find('img').height()/2
+					});
+				}
+			});
+		});
+	} */
+	
+	// HTML5 placeholder support for inputs	
+	if( !$.support.placeholder && $('input[placeholder]').length > 0 ) {;	
+		$.getScript('/javascripts/2011/libs/jquery.placeholder.js', function(){
+			$('input[placeholder]').placeholder();
+		});
+	}
+});
+
+// This is the little scrolling bit at the top of the image browser
+// http://jscrollpane.kelvinluck.com/
+function add_image_browser_scrollbar() {
+	if( $('#image-browser .thumbs').length > 0 ) {
+		$.getScript('/javascripts/2011/libs/jquery.jscrollpane.min.js', function(){
+			thumbW = 0;
+			$('#image-browser .thumbs li').each( function() {
+				thumbW = thumbW + $(this).outerWidth(true);
+			}).parent().width( thumbW+70 ).parent().jScrollPane({
+				contentWidth: thumbW+70,
+				hideFocus: true
+			});
+		});
+	}
+}
+
+var bindAjaxLinks = function(scope) {
+	if ( !History.enabled ) {
+		// History.js is disabled for this browser.
+		// This is because we can optionally choose to support HTML4 browsers or not.
+		return false;
+	}
+	$('a.ajax',scope).click(function(event) {
+			event.preventDefault();
+			History.pushState(null, null, $(this).attr('href'));
+	});
+};
+
+
+jQuery.support.placeholder = (function(){
+    var i = document.createElement('input');
+    return 'placeholder' in i;
+})();
+
+(function($){
+	$.fn.extend({
+ 
+		selectbox : function(options) {
+			if(!$.browser.msie || ($.browser.msie&&$.browser.version>6)){
+				return this.each(function() {
+	  
+					var currentSelected = $(this).find(':selected');
+					$(this).after('<span class="select"><span class="select-inner">'+currentSelected.text()+'</span></span>').css({position:'absolute', opacity:0,fontSize:$(this).next().css('font-size')});
+					var selectBoxSpan = $(this).next();
+					selectBoxSpan.addClass( $(this).attr('class') );
+					var selectBoxWidth = parseInt($(this).width()) - parseInt(selectBoxSpan.css('padding-left')) -parseInt(selectBoxSpan.css('padding-right'));			
+					var selectBoxSpanInner = selectBoxSpan.find(':first-child');
+					selectBoxSpan.css({width:selectBoxWidth, display:'inline-block'});
+					selectBoxSpanInner.css({width:selectBoxWidth, display:'inline-block'});
+					var selectBoxHeight = parseInt(selectBoxSpan.height()) + parseInt(selectBoxSpan.css('padding-top')) + parseInt(selectBoxSpan.css('padding-bottom'));
+					$(this).height(selectBoxHeight).change(function(){
+						// selectBoxSpanInner.text($(this).val()).parent().addClass('changed');   This was not ideal
+						selectBoxSpanInner.text($(this).find(':selected').text()).parent().addClass('changed');
+					});
+				});
+			}
+		}
+	});
+})(jQuery);
+
+
+window.log = function(){
+  log.history = log.history || [];  
+  log.history.push(arguments);
+  arguments.callee = arguments.callee.caller;  
+  if(this.console) console.log( Array.prototype.slice.call(arguments) );
+};
+(function(b){function c(){}for(var d="assert,count,debug,dir,dirxml,error,exception,group,groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,time,timeEnd,trace,warn".split(","),a;a=d.pop();)b[a]=b[a]||c})(window.console=window.console||{});
