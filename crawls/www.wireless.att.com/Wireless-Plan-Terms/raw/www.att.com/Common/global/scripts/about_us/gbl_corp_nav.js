@@ -759,7 +759,7 @@ function bn_small_business_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=12201" title="Business Customer News">Business Customer News</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=17789" title="Small Business Mobility Overview">Small Business Mobility Overview</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=2810" title="Tech Support 360">Tech Support 360</a></li>'
-				 + '<li><a href="' + site + '/gen/press-room?pid=18687" title="Small Business Technology Poll">Small Business Technology Poll 2011</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=23878" title="Small Business Technology Poll">Small Business Technology Poll 2013</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '</ul>');

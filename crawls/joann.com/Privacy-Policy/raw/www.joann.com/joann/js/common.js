@@ -433,12 +433,15 @@ function openCartPopup() {
 }
 
 $(document).ready(function(){
+	var newProtocol = window.location.protocol;
+	if(newProtocol=="http:") {
 	$("#output").empty();
 	$("#output").load("/joann/catalog/popupcart.jsp");
 
-	$("body, #popupcarthead a").click(function(e){
-		$("#popupcart").slideUp(700);
-		e.stopPropagation();
-		return true;
+		$("body, #popupcarthead a").click(function(e){
+			$("#popupcart").slideUp(700);
+			e.stopPropagation();
+			return true;
 		});	 
+	}
 });

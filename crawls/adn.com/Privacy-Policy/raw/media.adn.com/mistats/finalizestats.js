@@ -137,6 +137,16 @@ if (!mistats.insiteid)
    mistats.segments = getMIcookie(mistats.segcookie,'segment');
 }
 
+if (navigator.cookieEnabled && (navigator.userAgent || '').match(/ipod|ipad|iphone/i))
+{
+   mistats.visitorId = s.c_r(mistats.pressPlus.MI_COOKIE) || s.c_r('mi_svid');
+   if (!mistats.visitorId)
+   {
+      mistats.visitorId = Math.round(Math.random() * 1000000) + '.' + (new Date()).getTime();
+      s.c_w('mi_svid', mistats.visitorId, new Date((new Date()).getTime() + 63072000000));
+   }
+}
+
 // Error Checking and Code Enhancements
 ///////////////////////////////////////////////////////////////
 
@@ -205,6 +215,9 @@ s.prop37 = mistats.popular;
 s.prop39 = mistats.querystring;
 s.prop47 = mistats.widgets;
 s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
+
+if (mistats.visitorId)
+   s.visitorID = mistats.visitorId;
 
 s.prop2 = function ()
 {
@@ -655,6 +668,27 @@ s.prop46 = function ()
    }
    return 'dnt:off';
 }();
+
+if ((mistats.bizunit || '') === 'DFW')
+   (function ()
+   {
+       var adList;
+       var hasApt;
+       var i;
+       var scripts;
+
+       adList = [];
+       scripts = document.getElementsByTagName('script');
+
+       for (i = 0; i < scripts.length; i++)
+           if ((scripts[i].src || '').match(/https*:\/\/open.ad.yieldmanager.net/i))
+               hasApt = true;
+           else if ((scripts[i].innerHTML || '').match(/yld_mgr.place_ad_here/))
+              adList[adList.length] = (scripts[i].parentNode.nodeName || 'UnknownNode') + '#' + (scripts[i].parentNode.id || 'UnknownID');
+
+       if (hasApt || adList.length)
+           s.prop38 = 'apt|' + location.hostname + location.pathname + '|' + adList.join(',');
+   })();
 
 // IMG tag call
 // Double Tag Check - Added 11/31/2007 - JJ

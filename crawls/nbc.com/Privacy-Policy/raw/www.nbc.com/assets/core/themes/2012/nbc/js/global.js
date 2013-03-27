@@ -605,14 +605,14 @@ function loadGlobalFooterTrending() {
                     }
                     if (isSite) {
                         output += '<li>';
-                        output += '<a href="/vid/' + videoId + '" class="trending-footer-link">' + node.videoTitle + '</a>';
+                        output += '<a href="http://www.nbc.com/vid/' + videoId + '" class="trending-footer-link">' + node.videoTitle + '</a>';
                         output += '</li>';
                         trendingFooter.append(output);
                     } else {
                         var id = node.campaignName.split('-')[1];
                         if(NBC.inArray(id, ids) == -1 && node.campaignTitle !== undefined) {
                             output += '<li>';
-                            output += '<a href="/vid/' + videoId + '" class="trending-footer-link">' + node.campaignTitle + ': ' + node.videoTitle + '</a>';
+                            output += '<a href="http://www.nbc.com/vid/' + videoId + '" class="trending-footer-link">' + node.campaignTitle + ': ' + node.videoTitle + '</a>';
                             output += '</li>';
                             trendingFooter.append(output);
 

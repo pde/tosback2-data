@@ -164,7 +164,9 @@ href="../css/charlie/screen.jhtml.css"/>
 <![endif]--> 
 
 <script type="text/javascript">
-var inputTheme = (MTV.getTheme()!=undefined) ? MTV.getTheme() : "";
+try{
+
+var inputTheme = (MTV.getTheme()!= undefined) ? MTV.getTheme() : "";
 
 var tempTheme = '';
 var mtv_TS = new ThemeScheduler();
@@ -173,16 +175,21 @@ mtv_TS.makeSchedule();
 if (mtv_TS.scheduledTheme != null) inputTheme = mtv_TS.scheduledTheme;
 
 if(inputTheme==""){
-if(MTV.getHat()!=undefined) inputTheme = "/sitewide/css/charlie/hats.jhtml";
+if(MTV.getHat() != undefined ){
+inputTheme = "/sitewide/css/charlie/hats.jhtml";
+}else{
 
-else{
 var themeNum = Math.floor(66*Math.random());
 inputTheme = "/sitewide/css/charlie/themes/" + themeNum + "/theme.jhtml";
+
 }
 }
 if(inputTheme.charAt(0)!="/" && inputTheme.indexOf("http://") == -1) inputTheme = "/sitewide/css/charlie/theme" + inputTheme + "/theme.css"; // support for old themes
 
 document.write('<link id="theme" rel="stylesheet" type="text/css" media="screen, projection" href="http://www.mtv.com/sitewide/legal/'&#32;+&#32;inputTheme&#32;+&#32;'" />');
+}catch(e){
+//Do nothing
+}
 </script>
 </head>
 
@@ -710,7 +717,7 @@ MTV.BTG.init();</script><div id="header">
 <div id="container-outer">
 <div id="backgroundAd" style="position: absolute; width:100%; height:100%;"> </div>
 <div id="container">
-<div id="container-inner" class="">
+<div id="container-inner">
 <div id="wrap">
 <div id="wrap-inner" class="w-180x600x180">
 <div id="inner" class="group">

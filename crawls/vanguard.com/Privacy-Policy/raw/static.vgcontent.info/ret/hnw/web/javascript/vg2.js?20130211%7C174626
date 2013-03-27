@@ -38,7 +38,6 @@ cbd={};
 }
 window.cbdConfig=window.cbdConfig||{};
 cbd.page={};
-cbd.gh={};
 cbd.page.BASEDOMAIN="vanguard.com";
 cbd.page.initExGlobs=false;
 cbd.page.basePageLoaded=false;
@@ -99,26 +98,6 @@ else if(!nav&&!firefox&&document.domain!="www"&&!window._cbdHistory)
 {
 document.domain=cbd.page.BASEDOMAIN;
 }
-}
-_cbdTrackHGlink=function()
-{
-var ghTrackInfo=null;
-var whiteSpaceRegExp=/\s+/g;
-var andRegExp=/&amp;|&/g;
-if(ghFirstNavSelectedTab!=null)
-{
-ghTrackInfo=ghFirstNavSelectedTab;
-}
-if(ghSecondNavSelectedTab!=null)
-{
-ghTrackInfo=ghTrackInfo+'_'+ghSecondNavSelectedTab;
-}
-if(ghTrackInfo!=null)
-{
-ghTrackInfo=ghTrackInfo.replace(whiteSpaceRegExp,'');
-ghTrackInfo=ghTrackInfo.replace(andRegExp, "_");
-}
-vg.wu.trackLink("OpenAccountGH", ghTrackInfo);
 }
 _cbdCheckUnsupportedBrowser=function()
 {
@@ -215,7 +194,9 @@ ie8orLess=(ie&&(!document.documentMode||document.documentMode < 9))?true:false;
 ieQuirksMode=ie8orLess||(ie&&!window.isNextGen);
 cbd.browser.isWebkit=(navigator.userAgent.indexOf('AppleWebKit') > 0);
 cbd.browser.isChrome=chrome=(navigator.userAgent.indexOf('Chrome') > 0);
-cbd.browser.isTouchScreen=cbd.browser.isIPad=(navigator.userAgent.indexOf('iPad') > 0)||(navigator.userAgent.indexOf('iPhone') > 0)||(navigator.userAgent.indexOf('iPod') > 0);
+cbd.browser.isIPad=(navigator.userAgent.indexOf('iPad') > 0)||(navigator.userAgent.indexOf('iPhone') > 0)||(navigator.userAgent.indexOf('iPod') > 0);
+cbd.browser.isAndroid=(navigator.userAgent.indexOf('Android') > 0)||(navigator.userAgent.indexOf('Silk') > 0)||(navigator.userAgent.indexOf('Kindle') > 0);
+cbd.browser.isTouchScreen=cbd.browser.isIPad||cbd.browser.isAndroid;
 safari=(navigator.userAgent.indexOf('Safari') > 0);
 cbd.browser.isSafari=safariProper=safari&&!chrome;
 safari1=(navigator.userAgent.indexOf('Safari/85') > 0);
@@ -2274,22 +2255,22 @@ var FLASH_CHARTS_PATH=window._cbdFlashPath?window._cbdFlashPath+"charts/":"/web/
 var FLASH_IMAGES_PATH=window._cbdImagePath?window._cbdImagePath:"/web/images/";
 var _chartConfigs=
 {
-balance_trend:{chartObj:"vg.charting.BalanceTrend", toolTip:{orientation:"horizontal", showKey:false, format:"dollar", footer:{value:"%date", format:"%m/%d/%y"}}},
-inv_returns:{chartObj:"vg.charting.BalanceTrend", toolTip:{orientation:"horizontal", showKey:false, format:"dollar", footer:{value:"%date", format:"%m/%d/%y"}}},
-growth10k_sl:{chartObj:"vg.charting.G10K"},
-growth10k_sl_compare:{chartObj:"vg.charting.G10K", compare:true},
-market_summary:{chartObj:"vg.charting.PriceHistory", summary:true, grid:{w:275, h:115}},
-market_summary_compare:{chartObj:"vg.charting.PriceHistory", grid:{w:500, h:200}},
+balance_trend:{chartObj:"cbd.charting.BalanceTrend", toolTip:{orientation:"horizontal", showKey:false, format:"dollar", footer:{value:"%date", format:"%m/%d/%y"}}},
+inv_returns:{chartObj:"cbd.charting.BalanceTrend", toolTip:{orientation:"horizontal", showKey:false, format:"dollar", footer:{value:"%date", format:"%m/%d/%y"}}},
+growth10k_sl:{chartObj:"cbd.charting.G10K"},
+growth10k_sl_compare:{chartObj:"cbd.charting.G10K", compare:true},
+market_summary:{chartObj:"cbd.charting.PriceHistory", summary:true, grid:{w:275, h:115}},
+market_summary_compare:{chartObj:"cbd.charting.PriceHistory", grid:{w:500, h:200}},
 pie_bcm_aa_target:{chartType:'pie', series:{errorCoords:{w:36, h:30}, zeroSumCoords:{w:36, h:30}, errorText:"Target <br/> NotSet", zeroSumError:"Target<br/>NotSet", errorCss:"pie_bcm_aa_target", zeroSumCss:"pie_bcm_aa_target", colors:["#96151D", "#005293", "#69923A"], radius:18, center:{x:18, y:18}}, labels:{show:false}},
 pie_bcm_aa_current:{chartType:'pie', series:{colors:["#96151D", "#005293", "#69923A", "#999999"], zeroSumError:"Data<br/>Unavailable", radius:36, center:{x:36, y:36}}, labels:{show:false}},
 bar_atrc:{chartType:'verticalBar', margins:{left:"auto", right:6, top:38, bottom:39}, grid:{w:394, h:177, yAxis:{axisColor:'black', title:"%", maxIntervals:4, minIntervals:2, tickLength:5, tickColor:'black'}, xAxis:{showTicks:false, min:0, delta:1, precision:2, firstTickOffset:.5, showAxis:false, showOrigin:true, originColor:'black'}}},
-ETFFeesChart:{chartObj:"vg.charting.EtfFees"},
-tax_and_income:{chartType:'verticalBar', processDataFunc:"vg.charting.processTaxAndIncomeData", series:{format:"dollar", colors:['#336699','#6699CC']}, margins:{left:70, right:20, top:20, bottom:20}, schema:{seriesNode:"distribution"}, legend:{align:'horizontal'}, grid:{w:300, h:170, yAxis:{formatFirstAndLast:false, format:"dollar", maxIntervals:4, minIntervals:2}, xAxis:{showTicks:false, min:0, delta:1, precision:0, firstTickOffset:.5, labels:["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]}}},
-acct_progress:{chartObj:"vg.charting.AcctProgress", chartType:'line', schema:{xpath:true, seriesNode:"//chartdata", dataPt:"//ph/@p", labelPt:"//priceHistory/@timePeriod", ttLabelPt:"//ph/@t"}, grid:{w:296, h:130, xAxis:{tickLength:5, showAxis:true, axisColor:'black', showOrigin:true, originColor:'black', showAllLabels:true, labelPos:"midinterval"}, yAxis:{precision:2, formatFirstAndLast:false, format:"dollar", maxIntervals:4, minIntervals:2, axisColor:'black', tickLength:5}}, series:{fillColor:'#5190CD'},margins:{left:"auto", top:5, right:5, bottom:15}},
+ETFFeesChart:{chartObj:"cbd.charting.EtfFees"},
+tax_and_income:{chartObj:"cbd.charting.Chart", chartType:'verticalBar', processDataFunc:"cbd.charting.processTaxAndIncomeData", series:{showNull:false, format:"dollar", colors:['#336699','#6699CC']}, margins:{left:70, right:20, top:20, bottom:20}, schema:{seriesNode:"distribution"}, legend:{align:'horizontal'}, grid:{w:300, h:170, yAxis:{formatFirstAndLast:false, format:"dollar", maxIntervals:4, minIntervals:2}, xAxis:{showTicks:false, min:0, delta:1, precision:0, firstTickOffset:.5, labels:["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]}}},
+acct_progress:{chartObj:"cbd.charting.AcctProgress", chartType:'line', schema:{xpath:true, seriesNode:"//chartdata", dataPt:"//ph/@p", labelPt:"//priceHistory/@timePeriod", ttLabelPt:"//ph/@t"}, grid:{w:296, h:130, xAxis:{tickLength:5, showAxis:true, axisColor:'black', showOrigin:true, originColor:'black', showAllLabels:true, labelPos:"midinterval"}, yAxis:{precision:2, formatFirstAndLast:false, format:"dollar", maxIntervals:4, minIntervals:2, axisColor:'black', tickLength:5}}, series:{fillColor:'#5190CD'},margins:{left:"auto", top:5, right:5, bottom:15}},
 pie_pw_dt_s:{chartType:'pie', series:{strokeWidth:0.5, counterClockwise:true, strokeColor:'#000000', radius:30, center:{x:40, y:37}, zeroSumError:"No assets", zeroSumCss:"noAssetsCss", zeroSumCoords:{x:10, y:10, w:60, h:40}, showError:true}, legend:{pos:'right',precision:1, layout:["%label", "%percent"]}},
 pie_aa_s:{chartType:'pie', series:{strokeWidth:0.5, strokeColor:'#666666', radius:50, center:{x:55, y:55}, zeroSumError:"No assets", zeroSumCss:"noAssetsCss", zeroSumCoords:{x:10, y:10, w:60, h:40}, showError:true}, legend:{pos:'right',precision:2, layout:["%percent", "%label"]},  schema:{xpath:true, seriesNode:"//chartdata", dataPt:"//data/@value", seriesLabelPt:"//data/@label", colorPt:"//data/@color"}},
 pie_ov_s:{chartType:'pie', series:{strokeWidth:0.5, counterClockwise:true, strokeColor:'#000000', radius:30, center:{x:40, y:37}, zeroSumError:"No assets", zeroSumCss:"noAssetsCss", zeroSumCoords:{x:10, y:10, w:60, h:40}, showError:true}, legend:{pos:'right',precision:1, layout:["%label", "%percent"]}},
-performance:{chartObj:"vg.charting.Performance", chartType:'line', margins:{bottom:39}, series:{colors:['#000000'], fillColor:'#967D46'}, grid:{yAxis:{format:"dollar", showAxis:false, showTicks:false, precision:0}}, toolTip:{type:"fixed", bar:"range", layout:['%title','%value'], format:"dollar", header:{value:"%date", format:"%M %y"}, showKey:false, persistent:true}}
+performance:{chartObj:"cbd.charting.Performance", chartType:'line', margins:{bottom:39}, series:{colors:['#000000'], fillColor:'#967D46'}, grid:{yAxis:{format:"dollar", showAxis:false, showTicks:false, precision:0}}, toolTip:{type:"fixed", bar:"range", layout:['%title','%value'], format:"dollar", header:{value:"%date", format:"%M %y"}, showKey:false, persistent:true}}
 };
 _cbdGetChartConfig=function(chartName)
 {
@@ -2318,7 +2299,7 @@ if(!document.createElement('canvas').getContext)
 cbd.loader.require('excanvas');
 }
 cbd.loader.addCallback(function(){
-vg.charting.buildCanvasChartFromFlash(id, opts);
+cbd.charting.buildCanvasChartFromFlash(id, opts);
 });
 cbd.loader.load();
 }
@@ -2405,9 +2386,10 @@ var loadVideo=function()
 var video=new vg.Video({
 width:width,
 height:height,
-node:targetId,
+nodeId:targetId,
 mp4Source:src});
 }
+cbd.loader.require('cbdVideoCSS' );
 vg.util.loadClientSideComp({module:'cbdVideo', callback:loadVideo});
 }
 cbd.media._createHTML5AudioPlayer=function(width, height, targetId, src )
@@ -2417,7 +2399,7 @@ var loadAudio=function()
 var audio=new vg.Audio({
 width:width,
 height:height,
-node:targetId,
+nodeId:targetId,
 mp3Source:src});
 }
 vg.util.loadClientSideComp({module:'cbdAudio', callback:loadAudio});
@@ -4830,11 +4812,101 @@ params=jsCBDaddQueryStringParam(params, "refreshToMonth", month);
 params=jsCBDaddQueryStringParam(params, "refreshToYear", year);
 jsCBDupdateComponent("calId", null, null, params);
 }
+cbd.gh=cbd.gh||{};
+var ghopt={};
 var GH_SEARCHBOX_ID="_cbdSearchBox";
 var DEFAULT_TEXT="Get a quote or search the site";
 var GH_DEFAULT_FAS_TEXT="Search the site";
 var ASINPUT_FOCUS_CLASS='asFocus';
 var ASINPUT_NOFOCUS_CLASS='asNoFocus';
+cbd.gh.initGH=function(params)
+{
+"use strict";
+var globalHeaderElement=document.getElementById("gh"),
+searchButton=document.getElementById("_cbdSearchButton"),
+cbdLogo=document.getElementById("_cbdBrand"),
+cbdSecondaryLogo=document.getElementById("_cbdCobrand"),
+navLinks=vg.html.getElements(globalHeaderElement,{attrName:"class", attrValue:"x-ghSubSiloItemLink"}),
+navLinksLength=navLinks.length,
+logLink=function(event){jsCBDLogLinkEvent(event);},
+trackLink=function(){cbdcommon.wu.trackLink('flyoutNav');},
+siloNoSubMenu=vg.html.getElements(globalHeaderElement,{attrName:"class", attrValue:"x-noDoubleClick"}),
+siloNoSubMenuLength=siloNoSubMenu.length,
+preventDoubleClick=function(event){cbdcommon.util.preventDoubleClick(this);},
+searchBox=document.getElementById(GH_SEARCHBOX_ID),
+menu=document.getElementById(params.id),
+addPressClass=function(){jsCBDaddStyle(searchButton, 'press');},
+removePressClass=function(){jsCBDdeleteStyle(searchButton, 'press');},
+asProps=cbd.gh.asProps,
+i,
+searchParam,
+searchParamArray,
+url,
+site,
+state,
+as,
+selectedItem,
+selectedItemHTML,
+idStart;
+if(asProps)
+{
+searchParam=asProps.searchParams;
+searchParamArray=searchParam.split(',');
+url=searchParamArray[0];
+site=searchParamArray[1];
+state=searchParamArray[2];
+if(searchButton)
+{
+vg.html.addEventListener(searchButton, 'mousedown', addPressClass);
+vg.html.addEventListener(searchButton, 'keydown', addPressClass);
+vg.html.addEventListener(searchButton, 'keyup', removePressClass);
+vg.html.addEventListener(searchButton, 'blur', removePressClass);
+vg.html.addEventListener(searchButton, 'mouseup', removePressClass);
+vg.html.addEventListener(searchButton, 'click', function(){doGHSearch(url, site, state);});
+}
+if(searchBox)
+{
+as=new AutoSuggest("_cbdSearchBox", 2, 0, asProps.tableUrl, function(){return true;}, _cbdGHAutoSuggestValueChange, 0, 'right', asProps.defaultText, "", "", false, false, asProps.cellSpans);
+}
+}
+if(cbdLogo)
+{
+vg.html.addEventListener(cbdLogo, 'click', logLink );
+}
+if(cbdSecondaryLogo)
+{
+vg.html.addEventListener(cbdSecondaryLogo, 'click', logLink);
+}
+if(navLinksLength)
+{
+for(i=0;i < navLinksLength;i++)
+{
+vg.html.addEventListener(navLinks[i], 'click', trackLink);
+}
+}
+if(siloNoSubMenuLength)
+{
+for(i=0;i < siloNoSubMenuLength;i++)
+{
+vg.html.addEventListener(siloNoSubMenu[i], 'click', preventDoubleClick);
+}
+}
+if(menu)
+{
+menu=new vg.Menu(params);
+}
+selectedItem=document.getElementById('gh-current');
+if(selectedItem)
+{
+selectedItemHTML=selectedItem.innerHTML;
+idStart=selectedItemHTML.indexOf('CBD_NAV');
+ghopt.selected1=selectedItemHTML.substring(idStart, selectedItemHTML.indexOf("'", idStart));
+}
+else
+{
+ghopt.selected1='CBD_NAV_NONE';
+}
+};
 function doGHSearch(url, site, state)
 {
 var input=document.getElementById(GH_SEARCHBOX_ID);
@@ -4854,7 +4926,7 @@ input.value='';
 _cbdSetInputDefaultText(input,defaultText);
 return;
 }
-if(arguments.length==0)
+if(arguments.length==0||(!url&&!site&&!state ))
 {
 url=jsCBDgetContextRoot()+"JSP/UtilityBar/Search/SearchGlobalContent.jsf";
 }
@@ -5498,7 +5570,7 @@ return;
 }
 else if(_cbdFindAncestor(node,{tagName:'DIV',attrName:'class',attrValue:'FOCTitle'})!=null )
 {
-var FOCContainer=_cbdFindAncestor(node,{tagName:'DIV',attrName:'class',attrValue:'FOCContainer'});
+var FOCContainer=_cbdFindAncestor(node,{tagName:'DIV',attrName:'class',attrValue:'FOCContainerBegin'});
 var FOCId=FOCContainer.parentNode.getAttribute('id');
 vg.comp.getController(document.getElementById(FOCId)).toggleOpenClose();
 jsCBDcloseFOCs(FOCId);
@@ -5587,12 +5659,7 @@ return true;
 }
 _cbdExecAndDisableLink=function(link)
 {
-var currOnClick=link.getAttribute('onclick');
-link.setAttribute('clickJs', currOnClick);
-var noAction=typeof(currOnClick)=='string'?'return false':function(){return false};
-link.setAttribute('onclick', noAction);
-var thisLink=link;
-setTimeout(function(){thisLink.setAttribute('onclick', thisLink.getAttribute('clickJs'))}, 1000 );
+cbdcommon.util.preventDoubleClick(link);
 }
 jsCBDtriggerEventOnNode=function(nodeId, event)
 {
@@ -6114,21 +6181,14 @@ eval('_u=_u.replace(/'+_aA[_iI]+'/g,_aA[_iI+5])')
 }
 return _u
 };
-function O_LC(useServlet){
+function O_LC(){
 tleaf_cv=TLGetCookie('TLTSID')+'|';
-if(useServlet)
-{
 var url=jsCBDgetContextRoot()+"opinionLab";
 if(typeof cbdConfig.opLabDomain=="string")
 {
 url=cbdConfig.opLabDomain+url;
 }
-_w.open(url+"?time1="+_tm+'&time2='+(new Date()).getTime()+'&prev='+_fC(escape(_hr))+'&referer='+_fC(_ht)+'&height='+_sH+'&width='+_sW+'&custom_var='+tleaf_cv, 'comments', 'width=535,height=192,screenX='+((_sW - 535)/2)+',screenY='+((_sH - 192)/2)+',top='+((_sH - 192)/2)+',left='+((_sW - 535)/2)+',resizable=yes,copyhistory=yes,scrollbars=no');
-}
-else
-{
-_w.open("https://secure.opinionlab.com/ccc01/comment_card.asp?time1="+_tm+'&time2='+(new Date()).getTime()+'&prev='+_fC(escape(_hr))+'&referer='+_fC(_ht)+'&height='+_sH+'&width='+_sW+'&custom_var='+tleaf_cv+custom_var, 'comments', 'width=535,height=192,screenX='+((_sW - 535)/2)+',screenY='+((_sH - 192)/2)+',top='+((_sH - 192)/2)+',left='+((_sW - 535)/2)+',resizable=yes,copyhistory=yes,scrollbars=no');
-}
+_w.open(url+"?time1="+_tm+'&time2='+(new Date()).getTime()+'&prev='+_fC(escape(_hr))+'&referer='+_fC(_ht)+'&height='+_sH+'&width='+_sW+'&custom_var='+tleaf_cv, 'comments', 'width=535,height=192,screenX='+((_sW - 535)/2)+',screenY='+((_sH - 192)/2)+',top='+((_sH - 192)/2)+',left='+((_sW - 535)/2)+',resizable=yes,copyhistory=yes,scrollbars=no')
 };
 function _fPe(){
 if(Math.random() >=1.0 - _poE){
@@ -7147,7 +7207,10 @@ if(vg.comp.isCompLoaded('SelectOneMenu' ) )
 var selectedPulldownId=SelectOneMenu.selectedPulldownId;
 if(e.type=='scroll'&&selectedPulldownId!=null)
 {
+if(!cbd.browser.isTouchScreen)
+{
 _cbdClosePrevSelectOneMenu();
+}
 }
 else
 {
@@ -7213,6 +7276,7 @@ PLAYER_CONTROLLER_STYLE:"deckPlayerController",
 SELECTED_STYLE:"roDeck-sel",
 LINK_CONTROLS_STYLE:"linkControls",
 CONTENT_CONTROLS_STYLE:"contentControls",
+CAROUSEL_DISABLED_STYLE:"disabled",
 isAutoplay:function(){return this.autoplay},
 turnOffAutoplay:function(){this.autoplay=false},
 turnOnAutoplay:function(){this.autoplay=true},
@@ -7233,7 +7297,9 @@ this.currentTd=this.firstTd;
 this.lastTd=allTds[noOfTds-1];
 if(window.isNextGen )
 {
-var outerDescrTable=vg.html.findAncestor(this.linkControls,{tagName:'div', attrName:'class', attrValue:'deckPlayer'});
+this.isCarousel=this.viewNode.getAttribute('type')=='carousel';
+this.deckPlayerCont=document.getElementById(this.viewNodeId+"_dpContainer");
+var outerDescrTable=vg.html.findAncestor(this.deckPlayerCont,{tagName:'div', attrName:'class', attrValue:'deckPlayer'});
 this.deck=vg.html.getElements(outerDescrTable,{tagName:'div', attrName:'selectedCardIdx'})[0];
 this.deckPlayerCont=document.getElementById(this.viewNodeId+"_dpContainer");
 if(cbd.browser.isTouchScreen&&vg.html.isFixedHeight(this.deckPlayerCont))
@@ -7241,6 +7307,7 @@ if(cbd.browser.isTouchScreen&&vg.html.isFixedHeight(this.deckPlayerCont))
 this._updateScrollingProperties();
 vg.html.addEventListenerMethod(this.viewNode, vg.event.DOM_CHANGE, this, '_updateScrollingProperties' );
 }
+this.currentTd=allTds[this.deck.getAttribute('selectedcardidx')];
 }
 else
 {
@@ -7270,6 +7337,102 @@ if(this.playORpauseLink!=null)
 this.playORpauseTd=this.playORpauseLink.parentNode;
 }
 this.playerName=playerName;
+if(window.isNextGen&&this.isCarousel)
+{
+this._initCarousel();
+}
+},
+_initCarousel:function()
+{
+this.dcWidth=vg.html.getObjWidth(this.deckController.viewNode);
+this.dcItemsLength=this.deckController.items.length-1;
+this.minPos=0;
+this.maxPos=-100*this.dcItemsLength;
+this.minSlidePos=6;
+this.maxSlidePos=-100*this.dcItemsLength - this.minSlidePos;
+this.directionIsLeft=true;
+this.animationVelocity=1500;
+if(this.linkControls)
+{
+this.linkControlCarLft=vg.html.getElements(this.linkControls,{tagName:'a', attrName:'class', attrValue:"carLftCont"})[0];
+this.linkControlCarRgt=vg.html.getElements(this.linkControls,{tagName:'a', attrName:'class', attrValue:"carRgtCont"})[0];
+}
+this.smallCarouselControls=document.getElementById(this.viewNodeId+"_smlCarControls");
+if(this.smallCarouselControls)
+{
+this.smallControlCarLft=vg.html.getElements(this.smallCarouselControls,{tagName:'a', attrName:'class', attrValue:"carLftCont"})[0];
+this.smallControlCarRgt=vg.html.getElements(this.smallCarouselControls,{tagName:'a', attrName:'class', attrValue:"carRgtCont"})[0];
+}
+if(this.deckController.horizSlide)
+{
+var THIS=this;
+vg.html.addEventListener(this.deckController.slider, vg.event.GSTR_DRAG_START, function(event){THIS._horizSlideTouchStart(event)}, "_horizSlideTouchStart");
+vg.html.addEventListener(this.deckController.slider, vg.event.GSTR_DRAG_END,   function(event){THIS._horizSlideTouchEnd(event)},  "_horizSlideTouchEnd");
+}
+this._configCarouselControls();
+},
+_horizSlideTouchStart:function(event)
+{
+this.touchstartX=vg.event.getPosition(event).x;
+this.touchstartY=vg.event.getPosition(event).y;
+this.cardOffset=parseInt(this.deckController.slider.style.left.toString().replace("%",""), 10);
+this.deckController.items[this.deckController.selectedIndex].horizSlideAnim.stop();
+this.pause();
+this._setWasPausedBeforeHover(true);
+var THIS=this;
+vg.html.addEventListener(this.deckController.slider, vg.event.GSTR_MOVE, function(event){THIS._horizSlideTouchMove(event);},  "_horizSlideTouchMove");
+},
+_horizSlideTouchEnd:function(event)
+{
+vg.html.removeEventListenerById(this.deckController.slider, "_horizSlideTouchMove");
+var	end=vg.event.getPosition(event).x,
+dist=end - this.touchstartX,
+direction=(this.directionIsLeft)?NEXT:PREV,
+currentPos=vg.event.getPosition(event).x,
+newPos=this.cardOffset+(currentPos - this.touchstartX)/this.dcWidth*100,
+doNotGotoCard=(this.deckController._isFirstCard()&&direction===PREV)||(this.deckController._isLastCard()&&direction===NEXT);
+if(newPos >=this.minPos||newPos <=this.maxPos)
+{
+this._horizSlideTouchReturnFirstLastCard(currentPos,newPos);
+}
+else if(!doNotGotoCard&&Math.abs(dist) > 15&&this.horizontalSlide)
+{
+jsCBDselectDeckPlayerCard(direction, this.viewNodeId);
+}
+else
+{
+this.deckController.slider.style.left=this.deckController.selectedIndex*-100+"%";
+}
+},
+_horizSlideTouchMove:function(event)
+{
+var currentPosX=vg.event.getPosition(event).x,
+currentPosY=vg.event.getPosition(event).y,
+distanceX=Math.abs(currentPosX - this.touchstartX),
+distanceY=Math.abs(currentPosY - this.touchstartY),
+newPos=this.cardOffset+(currentPosX - this.touchstartX)/this.dcWidth*100,
+gestureThreshold=15;
+if(distanceX < gestureThreshold||distanceY < gestureThreshold)
+{
+this.horizontalSlide=distanceX > distanceY;
+}
+if(this.horizontalSlide)
+{
+vg.html.preventDefault(event);
+if(newPos <=this.minSlidePos&&newPos >=this.maxSlidePos)
+{
+this.directionIsLeft=currentPosX < this.prevCurrentPosX;
+this.prevCurrentPosX=currentPosX;
+this.deckController.slider.style.left=newPos+"%";
+}
+}
+},
+_horizSlideTouchReturnFirstLastCard:function(currentPos,newPos)
+{
+var	leftend=this.deckController.selectedIndex==0,
+toPos=(leftend)?this.minPos:this.maxPos,
+attributes={left:{from:currentPos, to:toPos, unit:"%"}};
+vg.smil.animateElement({target:this.deckController.slider, attr:attributes, duration:".25", easing:this.deckController.easing});
 },
 play:function()
 {
@@ -7385,6 +7548,16 @@ if(this.onCardChange)
 {
 this.onCardChange.call(window, jsCBDgetSelectedDeckCardIndex(this.deck.id),!this.isAutoplay());
 }
+if(this.isCarousel&&(cardIdx==NEXT||cardIdx==PREV))
+{
+this.turnOffAutoplay();
+var controlLinkItem=document.getElementById(this.deckController.id+":linkControl_"+this.deckController.selectedIndex);
+if(controlLinkItem)
+{
+this.selectLinkControl(controlLinkItem);
+}
+this._configCarouselControls();
+}
 },
 selectLinkControl:function(linkControl)
 {
@@ -7396,6 +7569,10 @@ eval(linkControl.getAttribute("clickTarget"));
 if(!window.isNextGen )
 {
 this.counterSpan.innerHTML=this.deckController.selectedIndex+1;
+}
+if(this.isCarousel)
+{
+this._configCarouselControls();
 }
 },
 displayNextCardDesc:function()
@@ -7435,6 +7612,71 @@ _updateScrollingProperties:function()
 if(cbd.browser.isTouchScreen&&window.isNextGen&&vg.html.isFixedHeight(this.deckPlayerCont))
 {
 vg.touchScreen._makeNodeScrollable(this.deckPlayerCont.getAttribute("id"));
+}
+},
+_configCarouselControls:function()
+{
+if(this.deckController.selectedIndex==0||this.deckController.selectedIndex==this.deckController.items.length-1)
+{
+this._disableCarouselControls();
+}
+else
+{
+this._enableCarouselControls();
+}
+},
+_disableCarouselControls:function()
+{
+this._enableCarouselControls();
+var cIndex=this.deckController.selectedIndex;
+var cDeckItemLength=this.deckController.items.length-1;
+var disabledStyle=this.CAROUSEL_DISABLED_STYLE;
+if(this.linkControls)
+{
+if(cIndex==0)
+{
+vg.html.addStyle(disabledStyle, this.linkControlCarLft );
+jsCBDtoggleLink(this.linkControlCarLft,false,disabledStyle);
+}
+if(cIndex==cDeckItemLength)
+{
+vg.html.addStyle(disabledStyle, this.linkControlCarRgt );
+jsCBDtoggleLink(this.linkControlCarRgt,false,disabledStyle);
+}
+}
+if(this.smallCarouselControls)
+{
+if(cIndex==0)
+{
+vg.html.addStyle(disabledStyle, this.smallControlCarLft );
+jsCBDtoggleLink(this.smallControlCarLft,false,disabledStyle);
+}
+if(cIndex==cDeckItemLength)
+{
+vg.html.addStyle(disabledStyle, this.smallControlCarRgt );
+jsCBDtoggleLink(this.smallControlCarRgt,false,disabledStyle);
+}
+}
+},
+_enableCarouselControls:function()
+{
+var disabledStyle=this.CAROUSEL_DISABLED_STYLE;
+if(this.deckController.selectedIndex!=0||this.deckController.selectedIndex!=this.deckController.items.length-1)
+{
+if(this.linkControls)
+{
+vg.html.removeStyle(disabledStyle, this.linkControlCarLft );
+vg.html.removeStyle(disabledStyle, this.linkControlCarRgt );
+jsCBDtoggleLink(this.linkControlCarLft,true,disabledStyle);
+jsCBDtoggleLink(this.linkControlCarRgt,true,disabledStyle);
+}
+if(this.smallCarouselControls)
+{
+vg.html.removeStyle(disabledStyle, this.smallControlCarLft );
+vg.html.removeStyle(disabledStyle, this.smallControlCarRgt );
+jsCBDtoggleLink(this.smallControlCarLft,true,disabledStyle);
+jsCBDtoggleLink(this.smallControlCarRgt,true,disabledStyle);
+}
 }
 }
 }
@@ -7796,7 +8038,7 @@ if(!document.getElementById(newLdrDivId))
 {
 var newLdrDiv=document.createElement("div");
 newLdrDiv.setAttribute("id", newLdrDivId);
-newLdrDiv.setAttribute(checkAttrName('class', newLdrDiv), ldrType);
+newLdrDiv.setAttribute(checkAttrName('class',newLdrDiv), ldrType);
 if(displayObjId==CBD_GLOBAL_INFO_BOX)
 {
 var dynamicCssDiv=vg.html.getElement(CBD_DYNAMIC_CSS_ID);
@@ -7973,7 +8215,7 @@ if(res[1]=="-" )
 {
 ret=-1;
 }
-ret*=parseInt(res[2]);
+ret*=parseInt(res[2], 10 );
 if(res[3]=="s" )
 {
 ret*=1000;
@@ -8104,14 +8346,14 @@ var ba=jsCBDMath.hex2dec(a.substring(5, 7 ) );
 var rb=jsCBDMath.hex2dec(b.substring(1, 3 ) );
 var gb=jsCBDMath.hex2dec(b.substring(3, 5 ) );
 var bb=jsCBDMath.hex2dec(b.substring(5, 7 ) );
-var rc=jsCBDMath.dec2hex(parseInt(((rb - ra )*perc )+ra ) );
-var gc=jsCBDMath.dec2hex(parseInt(((gb - ga )*perc )+ga ) );
-var bc=jsCBDMath.dec2hex(parseInt(((bb - ba )*perc )+ba ) );
+var rc=jsCBDMath.dec2hex(parseInt(((rb - ra )*perc )+ra, 10 ) );
+var gc=jsCBDMath.dec2hex(parseInt(((gb - ga )*perc )+ga, 10 ) );
+var bc=jsCBDMath.dec2hex(parseInt(((bb - ba )*perc )+ba, 10 ) );
 return '#'+rc+gc+bc;
 }
 jsCBDAnimation._setHeight=function(element, value )
 {
-if(value!='0px'&&parseInt(value )!=0 )
+if(value!='0px'&&parseInt(value, 10 )!=0 )
 {
 element.style.height=value;
 }
@@ -9155,6 +9397,9 @@ else if(html.indexOf('type=\"ProcNav\"') > 0||html.indexOf('type=\"typeProcNav\"
 jsCBDsetElementInnerHtml(_cbdGetProcNavHolder(), html);
 if(navDeckNode!=null)	jsCBDdeleteStyle(navDeckNode, "noProcNavUI");
 cbd.Navigator.procNavHtmlReceived=true;
+if(html.indexOf("cbdMetaTags") > -1){
+vg.util.execOnPageReady(vg.procNav._sendMetaTags(html));
+}
 }
 else
 {
@@ -9165,7 +9410,7 @@ if(document.getElementById(compId)==null)
 jsCBDsetElementInnerHtml(cardId, html);
 logPage=vg.wu.isLogSPIFirstPage();
 }
-if(logPage)
+if(vg.wu.isLogSPISndURLChg()&&logPage)
 {
 vg.util.execOnPageReady(function sendWebUsage(){
 var comp=document.getElementById(compId);
@@ -10446,14 +10691,27 @@ isTime=function(time, label_id, msg_id)
 var result=time.match("(^((0[1-9]|[1-9])|(1[0-2])):{0,1}([0-5][0-9])$)");
 if(result==null)
 {
-return handleErr(F, label_id, msg_id );
+return handleErr(false, label_id, msg_id );
 }
 else
 {
-return handleErr(T, label_id, msg_id );
+return handleErr(true, label_id, msg_id );
 }
 }
 _cbdLooseFuncs.isTime=isTime;
+isTimeWithSeconds=function(time, label_id, msg_id)
+{
+var result=time.match("(^((0[1-9]|[1-9])|(1[0-2])):{0,1}([0-5][0-9]):{0,1}([0-5][0-9])$)");
+if(result==null)
+{
+return handleErr(false, label_id, msg_id );
+}
+else
+{
+return handleErr(true, label_id, msg_id );
+}
+}
+_cbdLooseFuncs.isTimeWithSeconds=isTimeWithSeconds;
 isMilitaryTimeWithSeconds=function(time, label_id, msg_id)
 {
 var result=time.match("(^((0[0-9]|[0-9])|(1[0-9])|(2[0-3]))::{0,1}([0-5][0-9])::{0,2}([0-5][0-9])$)");
@@ -11140,6 +11398,58 @@ date+="/";
 return date;
 }
 _cbdLooseFuncs._insertDateSeparators=_insertDateSeparators;
+function _formatTime(key)
+{
+_formatTimeHelper(key, _formatTime, false);
+}
+_cbdLooseFuncs._formatTime=_formatTime;
+function _formatTimeWithSeconds(key)
+{
+_formatTimeHelper(key, _formatTimeWithSeconds, true);
+}
+_cbdLooseFuncs._formatTimeWithSeconds=_formatTimeWithSeconds;
+function _formatTimeHelper(key, func, seconds)
+{
+var inputElement=func.dataSource;
+var caret=_getCaretPosition(inputElement);
+var rawData=inputElement.value;
+var time=_insertTimeSeparators(inputElement, seconds);
+if(rawData.length!=time.length&&caret!=null )
+{
+caret+=time.length - rawData.length;
+}
+_synchValues(func, time);
+if(vg.html.hasFocus(inputElement) )
+{
+_setCaretPosition(inputElement,caret);
+}
+}
+_cbdLooseFuncs._formatTimeHelper=_formatTimeHelper;
+function _insertTimeSeparators(input, seconds)
+{
+var currVal=input.value,
+fixHourPattern=/^([\d]{1})[:]/,
+fixMinPattern=/[:]([\d]{1})[:]/,
+fixLastPattern=/[:]([\d]{1})$/,
+colonsPattern=/[:]/g;
+currVal=currVal.replace(fixHourPattern, "0$1:");
+if(seconds)
+{
+currVal=currVal.replace(fixMinPattern, ":0$1:");
+}
+if(!vg.html.hasFocus(input) )
+{
+currVal=currVal.replace(fixLastPattern, ":0$1");
+}
+currVal=currVal.replace(colonsPattern, "");
+currVal=currVal.replace(/(.{2})/,"$1:");
+if(seconds)
+{
+currVal=currVal.replace(/(.{5})/,"$1:");
+}
+return currVal;
+}
+_cbdLooseFuncs._insertTimeSeparators=_insertTimeSeparators;
 function _getCaretPosition(field)
 {
 if(!vg.html.hasFocus(field) )
@@ -11651,28 +11961,22 @@ requires:[],
 fullpath:loaderWebBase+loaderWebContextRoot+'/extjs/examples/ux/css/LockingGridView.css'
 });
 loader.addModule({
-name:'cbdPlsAdapter',
-type:'js',
-requires:['cbdToolTip'],
-fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/plsAdapter.js'
-});
-loader.addModule({
 name:'cbdCharts',
 type:'js',
 requires:['cbdChartsRender','cbdPlsAdapter'],
-fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/charting.js'
+fullpath:_cbdCommonPath+'comp/charting.js'
 });
 loader.addModule({
 name:'cbdChartsRender',
 type:'js',
 requires:['cbdPlsAdapter'],
-fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/ChartRenderer.js'
+fullpath:_cbdCommonPath+'comp/ChartRenderer.js'
 });
 loader.addModule({
 name:'cbdSimpleCharts',
 type:'js',
 requires:['cbdCharts','cbdPlsAdapter'],
-fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/simpleCharts.js'
+fullpath:_cbdCommonPath+'comp/simpleCharts.js'
 });
 loader.addModule({
 name:'cbdComplexCharts',
@@ -11765,6 +12069,12 @@ requires:[],
 fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/Video.js'
 });
 loader.addModule({
+name:'cbdVideoCSS',
+type:'css',
+requires:[],
+fullpath:loaderWebBase+loaderWebContextRoot+'/stylesheet/mediaPlayer.css'
+});
+loader.addModule({
 name:'cbdAudio',
 type:'js',
 requires:[],
@@ -11814,7 +12124,7 @@ fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/debug.js'
 });
 var loadRollups=_cbdIsEnabled('loader_rollups' );
 cbd.loader.rollupFiles=new Array('cbdLayer', 'cbdInfoBox', 'cbdSelectOneMenu', 'cbdCalendar', 'cbdSliderTab', 'cbdSelectListComp', 'cbdTreeView', 'cbdNavBox', 'cbdLinkBar', 'cbdAlertBox', 'cbdSideTab', 'cbdAccordion', 'cbdNineBoxFilter');
-cbd.loader.rollupChartingFiles=new Array('cbdPlsAdapter','cbdToolTip', 'cbdCharts', 'cbdChartsRender', 'cbdSimpleCharts');
+cbd.loader.rollupChartingFiles=new Array('cbdCharts', 'cbdChartsRender', 'cbdSimpleCharts');
 cbd.loader.rollupFilesHash=[];
 for(var i=0;i < loader.rollupFiles.length;i++)
 {
@@ -11837,7 +12147,7 @@ rollup:1
 loader.addModule({
 name:'cbdAllCharts',
 type:'js',
-fullpath:loaderWebBase+loaderWebContextRoot+'/javascript/comp/allCharts.js',
+fullpath:_cbdCommonPath+'/comp/allCharts.js',
 supersedes:cbd.loader.rollupChartingFiles,
 rollup:1
 });
@@ -12137,4 +12447,129 @@ cbd.loader.onSuccess();
 cbd.loader.initModules();
 cbd.testNSFunc=function(){
 _debug("log", "Hosting-App cbd object");
+}
+
+cbd.adapter=
+{
+getGSTR_MOVE:function()
+{
+return vg.event.GSTR_MOVE;
+},
+getGSTR_DRAG_START:function()
+{
+return vg.event.GSTR_DRAG_START;
+},
+isNextGen:function()
+{
+return cbd.page.isNextGen;
+},
+inheritPrototype:function(child, parent )
+{
+vg.comp.inheritPrototype(child, parent);
+},
+getToolTip:function()
+{
+return vg.ToolTip;
+},
+copy:function(node )
+{
+return vg.util.copyJsonOptions(node );
+},
+deepAttach:function(defaults, options )
+{
+vg.util.deepAttachOptions(defaults, options );
+},
+attach:function(defaults, options )
+{
+vg.util.attachJsonOptions(defaults, options );
+},
+getAncestor:function(opts)
+{
+var searchOpts=this._getSearchOpt(opts.tag, opts.id ),
+findClass;
+if(opts.cssClass )
+{
+findClass=this._getClassFunc(opts.cssClass);
+}
+return vg.html.findAncestor(opts.node, searchOpts, findClass );
+},
+getElement:function(opts )
+{
+var searchOpts=this._getSearchOpt(opts.tag, opts.id ),
+findClass;
+if(opts.cssClass )
+{
+findClass=this._getClassFunc(opts.cssClass);
+}
+return vg.html.getElements(opts.node, searchOpts, findClass )[0];
+},
+_getSearchOpt:function(tag, id )
+{
+var opts={tagName:tag};
+if(id )
+{
+opts.attrName='id';
+opts.attrValue=id;
+}
+return opts;
+},
+_getClassFunc:function(cssClass )
+{
+return function(elem){return vg.html.hasStyle(cssClass, elem);};
+},
+getSiblings:function(opts )
+{
+return vg.html.getSiblings(opts.node,{tagName:opts.tag}, "+");
+},
+getWidth:function(node )
+{
+return vg.html.getObjWidth(node);
+},
+getHeight:function(node )
+{
+return vg.html.getObjHeight(node);
+},
+getSize:function(node )
+{
+return vg.html.getObjSizeInHiddenAncestor(node );
+},
+addEventListener:function(opts )
+{
+var controller=opts.controller;
+if(controller )
+{
+vg.html.addEventListenerMethod(opts.node, opts.event, opts.controller, opts.func);
+}
+else
+{
+vg.html.addEventListener(opts.node, opts.event, opts.func);
+}
+},
+onReady:function(func )
+{
+vg.util.execOnPageReady(func );
+},
+getRelativeEventPos:function(event, node )
+{
+return vg.event.getPositionRelativeToElem(event, node);
+},
+getController:function(id)
+{
+return vg.comp.getController(id);
+},
+setController:function(comp, id )
+{
+comp.base=vg.Controller;
+comp.base(id, id , true);
+},
+formatNumber:function(field, precision, removeLeadingZero )
+{
+jsCBDformatNumber(field, precision, undefined, undefined, removeLeadingZero);
+},
+loadJS:function(cbdJSName, callback )
+{
+cbd.loader.require(cbdJSName);
+cbd.loader.addCallback(callback);
+cbd.loader.load();
+}
 }

@@ -1,0 +1,415 @@
+/* files: js/horizon-adaptive.js,js/jquery/jquery.vkloader.js,js/lj.api.js 
+*/
+
+/* file: js/horizon-adaptive.js 
+----------------------------------------------------------------------------------*/
+(function($) {
+	"use strict";
+
+	var options = {
+			item: '.s-navmenu-item',
+			submenu: '.s-navmenu-submenu',
+			activeItem: 's-navmenu-item-active'
+		},
+		currentActive = null,
+		menuClicked = false;
+
+	function changeLang() {
+		if (this.value) {
+			window.location = Site.siteroot + "/tools/setlang.bml?lang=" + this.value + "&returnto=" + encodeURIComponent(window.location);
+		}
+	}
+
+	function docClick(ev) {
+		if (currentActive && !menuClicked) {
+			currentActive.removeClass(options.activeItem);
+			currentActive = null;
+		}
+
+		menuClicked = false;
+	}
+
+	function menuClick(ev) {
+		var newActive = jQuery(this).closest(options.item);
+
+		//for touch devices we should just expand menu on first tap
+		if (newActive.hasClass(options.activeItem) || newActive.find(options.submenu).length === 0) {
+			return; //we should pass the handler here
+		}
+
+		if (currentActive) {
+			currentActive.removeClass(options.activeItem);
+		}
+
+		currentActive = jQuery(this).closest(options.item);
+		currentActive.addClass(options.activeItem);
+		menuClicked = true;
+
+		ev.preventDefault();
+	}
+
+	function initScheme() {
+		$('#footer_lang_list').on('change', changeLang);
+
+		if (LJ.Support.touch && window.vertigo) {
+			$('.s-navmenu').on('click', '.s-navmenu-rootlink', menuClick);
+			$(document).on('touchstart', docClick);
+		}
+	}
+
+	LiveJournal.register_hook('page_load', initScheme);
+
+	// toggle between menu / search field
+	$(function () {
+		var navbar = $('.s-navbar');
+
+		navbar
+			.find('.s-nav-local')
+			.on('click', 'a', function () {
+				navbar.toggleClass('s-show-local-search s-show-local-menu');
+			});
+	});
+}(jQuery));
+
+/* file: js/jquery/jquery.vkloader.js 
+----------------------------------------------------------------------------------*/
+/*!
+ * LiveJournal loader for vkontakte like buttons.
+ *
+ * Copyright 2011, dmitry.petrov@sup.com
+ *
+ * VK script is often loaded with notable delay, so
+ * plugin just loads it after the page rendering and
+ * allows to display page faster.
+ *
+ */
+(function ($) {
+	'use strict';
+
+	if ($.VK) {
+		return;
+	}
+
+	$.VK = {};
+
+	var onloads = [],
+		buttons = [],
+		onloadPassed = false,
+		scriptLoaded = false,
+		scriptLoading = false;
+
+	/**
+	 * Public API
+	 *
+	 * @namespase $.VK
+	 */
+	$.VK = {
+
+		/**
+		 * Init VK object after the script load.
+		 *     Function passes all option to the VK.init
+		 *  @param {Object} options
+		 */
+		init: function( options ) {
+			onloads.push(function() {
+				VK.init( options );
+			});
+		},
+
+		/**
+		 * Add button to init after script load.
+		 *    If this method was called after the page load, and script wasn't downloaded yet,
+		 *    it will trigger downloading.
+		 */
+		addButton: function( elementId, options ) {
+			buttons.push( {
+				id: elementId,
+				options: options
+			} );
+
+			if( onloadPassed && !scriptLoading ) {
+				if( scriptLoaded ) {
+					initButtons();
+				} else {
+					loadScript( initButtons );
+				}
+			}
+		}
+	};
+
+	function initButtons() {
+		for( var i = 0; i < buttons.length; ++i ) {
+			VK.Widgets.Like( buttons[ i ].id, buttons[ i ].options );
+		}
+
+		buttons = [];
+	}
+
+	function loadScript( onload ) {
+		onload = onload || $.noop;
+		scriptLoading = true;
+
+		$.getScript( 'http://userapi.com/js/api/openapi.js?31', function() {
+			scriptLoading = false;
+			scriptLoaded = true;
+			for( var i = 0; i < onloads.length; ++i ) {
+
+				onloads[ i ]();
+			}
+			onloads = [];
+			onload();
+		} );
+	}
+
+	LiveJournal.register_hook('page_load', function() {
+		//Do not download the script if the widgets were not added yet.
+		if (buttons.length) {
+			//Do not load the script directly after the page load.
+			//We don't want to delay other onload functions somehow.
+			setTimeout(function () {
+				loadScript(initButtons);
+			}, 500);
+		}
+
+		onloadPassed = true;
+	});
+}(jQuery));
+
+/* file: js/lj.api.js 
+----------------------------------------------------------------------------------*/
+(function ($) {
+	"use strict";
+	/**
+	 * TODO:
+	 *
+	 * If this api will go outside of livejournal.com it should get rid of all dependencies
+	 * from jquery.js and basic.js and should require only a few libs from LJ namespace through LJ.require
+	 * to handle everything.
+	 */
+
+	/**
+	 * @namespace LJ.Api
+	 * @requires basic.js, jquery.js, livejournal.js, jquery/jquery.xdomainrequest.js, lj.postmessage.js
+	 * @description Api provides an unified method to handle communications with the server.
+	 * @author dmitry.petrov@sup.com (Dmitry Petrov), anazarov@sup.com (Alexander Nazarov)
+	 */
+	LJ.define('LJ.Api');
+
+	LJ.require('LJ.console');
+	LJ.require('LJ.Support');
+
+	var origin = location.protocol + '//' + location.host,
+		siteroot = window.Site? Site.siteroot : origin,
+		url = '/__api/',
+		cdn = {
+			endpoint: (window.Site && location.protocol === 'http:')? (Site.jsonrpcprefix || Site.statprefix) : null,
+			time: (window.Site? Site.server_time * 1000 : +new Date()),
+			methods: {}
+		},
+		context = {
+			options: {},
+			endpoint: siteroot,
+			sameDomain: siteroot === origin,
+			batchTimeout: 125
+		},
+		batchQueue = [],
+		batchTimeout,
+		corsParameters = $.extend({
+			url: context.endpoint + url,
+			type: 'POST',
+			dataType: 'json',
+			contentType: 'text/plain'
+		}, context.sameDomain? {} : {
+			xhrFields: {
+				withCredentials: true
+			}
+		});
+
+	cdn.time -= cdn.time % 9E+5;
+
+	function createRequestBody(name, params) {
+		return {
+			jsonrpc: '2.0',
+			method: name,
+			params: $.extend({}, params, { auth_token: context.options.auth_token }),
+			id: Unique.id()
+		};
+	}
+
+	function handleAnswer (name, params, callback, answer) {
+		if (answer.result) {
+			if (!answer.result.auth_token) {
+				LJ.console.warn('Server did not return the new auth_token, further request may fail');
+			} else {
+				context.options.auth_token = answer.result.auth_token;
+				delete answer.result.auth_token;
+			}
+
+			if (callback) {
+				callback(answer.result);
+			}
+		} else if (answer.error) {
+			if (callback) {
+				callback({ error: answer.error });
+			}
+		} else {
+			LJ.warn('Server did not return error or result in response for method ' + name);
+
+			if (callback) {
+				callback({
+					error: {
+						message: 'Invalid response',
+						code: 2
+					}
+				});
+			}
+		}
+	}
+
+	function handleError (name, params, callback) {
+		LJ.warn('An internal error has occured while calling the method ', name);
+
+		if (callback) {
+			callback({
+				error: {
+					message: 'Internal error',
+					code: 1
+				}
+			});
+		}
+	}
+
+	function defer (request, params, callback) {
+		var promise = new $.Deferred();
+
+		batchQueue.push({
+			data: request,
+			params: params,
+			callback: callback,
+			promise: promise
+		});
+
+		if (!batchTimeout) {
+			batchTimeout = setTimeout(function () {
+				var query = batchQueue.splice(0, batchQueue.length);
+
+				$.ajax($.extend(corsParameters, {
+					data: LiveJournal.JSON.stringify(query.map(function (request) { return request.data; }))
+				})).success(function (data) {
+					var i, j, l, k, response, request;
+
+					for (i = 0, l = data.length; i < l; i++) {
+						response = data[i];
+
+						for (j = 0, k = query.length; j < k; j++) {
+							request = query[j];
+
+							if (request.data.id === response.id) {
+								if (request.promise.state() === 'pending') {
+									/* Return result */
+									handleAnswer(request.data.method, request.params, request.callback, response);
+									request.promise.resolve();
+								}
+							}
+						}
+					}
+
+					/* Some requests left unresolved */
+					for (j = 0, k = query.length; j < k; j++) {
+						request = query[j];
+
+						if (request.promise.state() === 'pending') {
+							handleError(request.data.method, request.params, request.callback);
+							request.promise.resolve();
+						}
+					}
+				}).error(function () {
+					var i, l, request;
+
+					for (i = 0, l = query.length; i < l; i++) {
+						request = query[i];
+
+						if (request.promise.state() === 'pending') {
+							/* Return error */
+							handleError(request.data.method, request.params, request.callback);
+							request.promise.resolve();
+						}
+					}
+				});
+
+				batchTimeout = null;
+			}, context.batchTimeout);
+		}
+
+		return promise;
+	}
+
+	/**
+	 * Init LJ functionality.
+	 *
+	 * @param {Object} options Options for init object. auth_token field is required for further actions.
+	 */
+	LJ.Api.init = function(options) {
+		options = options || {};
+
+		if (context._initFired) {
+			LJ.console.warn('LJ.Api.init was already called before');
+		}
+
+		context._initFired = true;
+		context.options = $.extend({}, options);
+
+		if (!context.options.auth_token) {
+			LJ.console.warn('Auth token has not been specified, request may fail');
+		}
+
+		if (cdn.endpoint) {
+			if (Site.rpc && Array.isArray(Site.rpc.public)) {
+				Site.rpc.public.forEach(function (method) {
+					cdn.methods[method] = true;
+				});
+			}
+		}
+
+		LJ.UI.bootstrap('lj-api');
+	};
+
+	/**
+	 * Call api method on the server.
+	 *
+	 * @param {string} name Method name.
+	 * @param {Object=} params A hash with parameters to send to the server.
+	 * @param {Function=} callback Callback will be fired with results from the server.
+	 */
+	LJ.Api.call = function (name, params, callback) {
+		var request = createRequestBody(name, params),
+			publicMethod = !!cdn.methods.hasOwnProperty(name),
+			endpoint = publicMethod? cdn.endpoint : context.endpoint,
+			ajax, reqstr;
+
+		if (!publicMethod && (LJ.Support.cors || context.sameDomain)) {
+			/* CORS support detected or is not needed */
+			return defer(request, params, callback);
+		}
+
+		/* Fall back to JSONP */
+		if (publicMethod) {
+			delete request.params.auth_token;
+			request.id = cdn.time;
+		}
+
+		reqstr = LiveJournal.JSON.stringify(request);
+
+		ajax = $.ajax($.extend({
+			url: endpoint + url,
+			dataType: 'jsonp',
+			data: { request: reqstr }
+		}, publicMethod? { cache: true, jsonpCallback: 'jQuery' + cdn.time } : {}));
+
+		ajax
+			.success(handleAnswer.bind(null, name, params, callback))
+			.error(handleError.bind(null, name, params, callback));
+
+		return ajax.promise();
+	};
+}(jQuery));

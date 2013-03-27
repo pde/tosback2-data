@@ -1,0 +1,2 @@
+/* Copyright 2011, SiteSpect, Inc. All Rights Reserved. */
+SS.Descriptors=(function(){var e=[];function d(j,l){var k;if(!j.length){return -1}for(k=0;k<j.length;k+=1){if(j[k]===l){return k}}return -1}function b(i){return d(e,i)!==-1}function g(i){if(!b(i)){e.push(i)}}function f(){e=[]}function c(i){var j="_";if(i){j=i}e.sort();return e.join(j)}function a(i){if(b(i)){e.splice(d(e,i),1)}}function h(k,j){var i=c();if(i.length>0){i="_"+i}SS.EventTrack.rp(k+i,j)}return{add:g,clear:f,get:c,is:b,rem:a,rp:h}}());

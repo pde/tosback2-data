@@ -122,7 +122,7 @@ return ajax.apply(this, arguments);
 /*
 * Autocomplete - jQuery plugin 1.0.2
 *
-* Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, Jörn Zaefferer
+* Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, JÃ¶rn Zaefferer
 *
 * Dual licensed under the MIT and GPL licenses:
 * http://www.opensource.org/licenses/mit-license.php
@@ -3351,7 +3351,6 @@ $j("a.dynLink").click(function (e) {
 e.preventDefault();
 });
 });
-
 $j(function() {
 if($j("div.player-placeholder").length > 0) {
 MTVN.LitePlayer.init();
@@ -4183,6 +4182,12 @@ MTV.load6x6POE = function() {
 mtvn.btg.Controller.placeAd({size:'6x6'});
 }
 
+MTV.loadMarketingPixel = function(u1, u2, u3) {
+var axel = Math.random() + "";
+var a = axel * 10000000000000;
+document.write('<iframe src="http://3658395.fls.doubleclick.net/activityi;src=3658395;type=pages875;cat=mtvmu207;u3=' + u3 + ';u2=' + u2 + ';u1=' + u1 + ';ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+}
+
 function postedDateTime(postedDateTime) {
 var utc = new Date(postedDateTime);
 var offset = -utc.getTimezoneOffset()*60;
@@ -4516,6 +4521,20 @@ widget.onShared = function (method, contentUri) {
 mboxUpdate('GDM_SocialTest_Empty','click=true');
 } 
 }*/
+}
+},
+
+"videoGSPShareVert": {
+"name": "Share",
+"opts": {
+title: " ",
+layout: 'vertical',
+elements: [
+{ id: 'Facebook', type: 'fblike', colorScheme: 'light', send: false },
+{ id: 'Twitter', originalButton: true, urlSettings: { related: 'mtvnews', via: "MTV" } },
+{ id: 'GooglePlusOne', count:false},	
+{ id: 'More', title: 'More&raquo;' }
+]
 }
 },
 

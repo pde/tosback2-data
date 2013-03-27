@@ -519,7 +519,6 @@ siNav.load({
 		{ "u": "/magazine/sportsman/?eref=sinav",			"l":"Sportsman" }
 	],
 	"video" : [
-		{ "u": "/basketball/ncaa/seth-davis/fresh-takes/?eref=sinav",			"l":"Bracket Advice" },
 		{ "u": "/specials/college-basketball-75th-anniversary/moments.html?eref=sinav",			"l":"10 Greatest Moments" },
 		{ "u": "/basketball/ncaa/specials/road-to-atlanta/?eref=sinav",			"l":"Road To Atlanta" },
 		{ "u": "/basketball/ncaa/specials/fast-break/?eref=sinav",			"l":"Fast Break" },

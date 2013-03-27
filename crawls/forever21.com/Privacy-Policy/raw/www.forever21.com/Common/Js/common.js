@@ -585,17 +585,17 @@ function GoSubScribe(sBr)
     var sCurrentUrl = location.href;
     var sBrandFolder = "";
     
-    if ($("ibEmailAddress").value == "") 
+    if (document.getElementById("ibEmailAddress").value == "") 
     {
         alert("Please enter email address");
-        $("ibEmailAddress").focus();
+        document.getElementById("ibEmailAddress").focus();
         return false;
     }
     
-    if (objRegExpEmail.test($("ibEmailAddress").value) == false) 
+    if (objRegExpEmail.test(document.getElementById("ibEmailAddress").value) == false) 
     {
         alert("Please re-enter email address");
-        $("ibEmailAddress").focus();
+        document.getElementById("ibEmailAddress").focus();
         return false;
     }
 
@@ -605,7 +605,7 @@ function GoSubScribe(sBr)
     //$("form1").method = "post";
     //$("form1").submit();    
 
-    location.href = "/SubScribe/SubScribe.aspx?br=" + sBr + "&email=" + $("ibEmailAddress").value;
+    location.href = "/SubScribe/SubScribe.aspx?br=" + sBr + "&email=" + document.getElementById("ibEmailAddress").value;
 
     return true;
 }
@@ -724,3 +724,8 @@ function oosPopup()
 function _log(msg) {
     if (typeof console == "object" && typeof console.log == "function") console.log(msg);
 }
+
+
+function ShowNewWindow(URL) {
+    window.open(URL);
+} 

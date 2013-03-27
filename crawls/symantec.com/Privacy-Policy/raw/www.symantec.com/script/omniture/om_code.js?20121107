@@ -6,6 +6,7 @@
 // Changes 2011-08-07:  DemandBase code added. -- rperez
 // Changes 2011-08-16:  symanteccom had to be added back due to Norton fixhomepage
 // Changes 2012-09-24:	Added trackDownloadLink function for tracking downloads
+// Changes 2013-03-25:	Updated trackDownloadLink function to reset variables after being set.
 
 //adding some weight
 //adding some weight
@@ -232,12 +233,13 @@ function closeOverlay() {
 }
 
 function trackPageView(label) {
-	s.linkTrackVars="";
-	s.linkTrackEvents="";
 	var pn = s.pageName;
+	var p48 = s.prop48;
 	s.pageName+=': '+label.toLowerCase();
+	s.prop48+=': '+label.toLowerCase();
 	s.t();
 	s.pageName=pn;
+	s.prop48=p48;
 }
 
 function trackPromoClick(obj) {
@@ -260,8 +262,6 @@ function trackEvent(events, description) {
 }
 function trackSBWidget(label) {
 
-	s.linkTrackVars="";
-	s.linkTrackEvents="";
 	var segment=metaData['visitor_segment'].toLowerCase();
 	var name=metaData['site_language'] + '/' + metaData['site_country'] + ': ' + segment + ': ' + label;
 	var pn = s.pageName;
@@ -287,12 +287,16 @@ function trackDownloadLink(url_file, url_redir){
 		s.prop33 = urlLink;
 		s.prop46 = filetype;
 		s.prop47 = "download";
-		s.eVar57 = "download";
 		s.prop48 = filename;
 		s.eVar49 = filename;
-		s.linkTrackVars="";
-		s.linkTrackEvents="";
 		s.t();
+		s.events = "";
+		s.eVar1 = "";
+		s.prop33 = "";
+		s.prop46 = "";
+		s.prop47 = "";
+		s.prop48 = "";
+		s.eVar49 = "";
 }
 
 function trackDownload(url_file, url_redir) {

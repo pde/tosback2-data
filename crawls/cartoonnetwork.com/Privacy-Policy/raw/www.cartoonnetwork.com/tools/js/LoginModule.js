@@ -171,6 +171,7 @@ LoginModule.doReload = function (){
 	gArr[0] = "/exonaut";
 	gArr[1] = "/tko";
 	gArr[2] = "/formula-cartoon";
+	gArr[3] = "/fusionfall-heroes/your-heroes.html";
 //	gArr[2] = "/conqueror-of-all-worlds";
 
 	for(var i=0; i <= sArr.length-1; i++){

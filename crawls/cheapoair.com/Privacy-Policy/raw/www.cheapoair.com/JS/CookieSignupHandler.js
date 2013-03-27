@@ -171,33 +171,27 @@ window.opener.document.cookie = name + "=" + escape(value) +
                     if (document.getElementById('sepaSignOut') != null) {
                         document.getElementById('sepaSignOut').style.display = 'inline';
                     }
-
-                    if (document.getElementById('lnkSignedIn') != null) {
-                        document.getElementById('lnkSignedIn').style.display = 'inline';
-                    }
-
-                    if (document.getElementById('lnkSignIn') != null) {
-                        document.getElementById('lnkSignIn').style.display = 'none';
-                    }
-
-                    if (UserName != "") {
-                        $('#lblUserDetail').html("Welcome " + UserName + ", ");
-                        document.getElementById('hypMyAccount').style.display = 'inline';
-                        document.getElementById('hypMyAccount').setAttribute('href', '/default.aspx?tabid=' + tabId);
-                    }
-                    else {
-                        if (document.getElementById('hypMyAccount') != null) {
-                            document.getElementById('hypMyAccount').style.display = 'none';
+                    if (document.cookie.length > 0) {
+                        userFirstName = UserName;
+                        if (userFirstName != "null") {
+                            $('#lblUserDetail').html("Welcome " + userFirstName + ", ");
+                            document.getElementById('hypMyAccount').style.display = 'inline';
+                            document.getElementById('hypMyAccount').setAttribute('href', '/default.aspx?tabid=' + tabId);
                         }
-                        if (document.getElementById('sepaSignOut') != null) {
-                            document.getElementById('sepaSignOut').style.display = 'none';
+                        else {
+                            if (document.getElementById('hypMyAccount') != null) {
+                                document.getElementById('hypMyAccount').style.display = 'none';
+                            }
+                            if (document.getElementById('sepaSignOut') != null) {
+                                document.getElementById('sepaSignOut').style.display = 'none';
+                            }
+                            if (document.getElementById(rowSignOutId) != null) {
+                                document.getElementById(rowSignOutId).style.display = 'none';
+                            }
+                            if (document.getElementById(rowSignInId) != null) {
+                                document.getElementById(rowSignInId).style.display = 'inline';
+                            }
                         }
-                        if (document.getElementById(rowSignOutId) != null) {
-                            document.getElementById(rowSignOutId).style.display = 'none';
-                        }
-                        if (document.getElementById(rowSignInId) != null) {
-                            document.getElementById(rowSignInId).style.display = 'inline';
-                        }                       
                     }
                 }
                 else {

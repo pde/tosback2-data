@@ -693,18 +693,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "THE 40 YEAR OLD VIRGIN",
-							"subtitle" : "SATURDAY MARCH 16 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_40yearoldvirgin.png"
-						},
-						{
-							"title" : "CASINO ROYALE",
-							"subtitle" : "FRIDAY MARCH 22 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_casinoroyale.png"
-						},
-						{
 							"title" : "G. I. JOE: THE RISE OF COBRA",
 							"subtitle" : "FRIDAY MARCH 29 8/7C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -715,6 +703,18 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY MARCH 31 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gonein60seconds.png"
+						},
+						{
+							"title" : "NATIONAL TREASURE: BOOK OF SECRETS",
+							"subtitle" : "SUNDAY APRIL 7 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nationaltreasure.png"
+						},
+						{
+							"title" : "LITTLE FOCKERS",
+							"subtitle" : "FRIDAY APRIL 12 9/8C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
 						}
 					]
 				}

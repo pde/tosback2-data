@@ -81,7 +81,7 @@ src:url("webfonts/dd077a5a-5331-4833-8a24-e3afbe24d92e.eot.html") format("eot"),
 */
 	margin-left: auto;
 	margin-right: auto;
-	width: 1140px;	
+	width: 1092px;	
 	background-color:white;
 }
 
@@ -108,7 +108,7 @@ src:url("webfonts/dd077a5a-5331-4833-8a24-e3afbe24d92e.eot.html") format("eot"),
 .g62, .g124, .g186, .g248, .g310, .g372, .g434, .g496, .g558, .g620, .g682, .g744, .g806, .g868, .g930, .g992, .g1054, .g1116 {
 	display: inline;
 	float: left;
-	margin-left: 24px; /*2.10%*/
+	margin-left: 0px; /*2.10%*/
 }
 
 /* =Grid >> 18 Columns
@@ -517,7 +517,7 @@ ul.nav a:visited{
 	box-shadow:         4px 4px 21px rgba(0, 0, 0, 0.34);
 	font-size: 10pt;
 	line-height: 19pt;
-	z-index: 99;
+	z-index: 5999999;
 	border: solid 1px #000;
 	font-family: 'ITCFranklinGothicBook' !important;
 	min-height: 220px;
@@ -559,7 +559,7 @@ ul.nav a:visited{
 }
 .tier2 .flyout{
 	width:161px;
-/*	border-left:1px solid #ccc;*/
+	border-bottom: none;
 	margin-top:11px;
 	padding-left:17px;
 	position: absolute;
@@ -568,8 +568,6 @@ ul.nav a:visited{
 }
 .tier2 .flyout article{
 	margin-bottom: 7px;
-	border-bottom: 1px dashed #CCC;
-	/* padding-right: 30px; */
 	padding-bottom: 7px;
 	margin-right: 20px;
 }
@@ -610,8 +608,9 @@ ul.nav a:visited{
 	width: auto;
 	padding: 7px 14px 6px 0;
 }
-/* ie9 fix for flyout img */
-.ie9 .tier2 .flyout img {
+/* ie9 and ie8 fix for flyout img */
+.ie9 .tier2 .flyout img,
+.ie8 .tier2 .flyout img {
 	min-width: 120px;
 	min-height: 120px;
 }
@@ -829,10 +828,9 @@ button.icon {
 /* social viral tooltip */
 #rr_social_tooltip{}
 
-#rr_social_tooltip .tooltip_body{ border-left: 1px solid #cccccc; border-right: 1px solid #cccccc;}
-#rr_social_tooltip.bottom .tooltip_body {border-top: 1px solid #cccccc;}
-#rr_social_tooltip.top .tooltip_body, #rr_social_tooltip #rr_social_tooltip_nl .tooltip_body{border-bottom: 1px solid #cccccc;}
- 
+#rr_social_tooltip.bottom .tooltip_body, #rr_social_tooltip.top .tooltip_body { border: 1px solid #cccccc;}
+#rr_social_tooltip.bottom .tooltip_body {border-bottom: none;}
+#rr_social_tooltip.top .tooltip_body {border-top: none;}
 
 #rr_social_tooltip_fb { display: block; height: 288px; width: 330px;}
 #rr_social_tooltip_fb .tooltip_head{background-image:url(../site_images/popup_border_top_arrow.png);background-position: -106px 12px;height: 12px;}
@@ -888,7 +886,7 @@ button.icon {
 #rr_social_tooltip_in .tooltip_body .in_f{ height: 27px; left: 198px; position: absolute; top: 19px;width: 89px;}
 
 
-#rr_social_tooltip_nl{ display: block; width: 298px;}
+#rr_social_tooltip_nl{ display: block; width: 310px;}
 #rr_social_tooltip_nl .tooltip_head{background-image:url(../site_images/popup_border_top_arrow.png);background-position: -12px 12px;height: 12px;}
 #rr_social_tooltip_nl .tooltip_footer{background-image:url(../site_images/popup_border_top_arrow.png);background-position: -14px 0;height: 12px;margin-top: -1px;}
 #rr_social_tooltip_nl .tooltip_body{background-color: #FFFFFF;padding: 9px;}
@@ -1001,23 +999,25 @@ button.icon {
 
 /* footer links */
 .fcolcontainer2 .f2segment {
-	border-right: 1px solid #e2e2e2!important;
+	border-right: 1px solid #e2e2e2;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-right: -1px;
 	text-align: left;
 	
-	margin-left: 14px;
+	margin-left: 18px;
 	padding-right: 9px;
-	height: 323px;
+	height: 335px;
 }
 .fcolcontainer2 .f2segment.first {
-	margin-left: 24px !important;
-	margin-right: -1px !important;
+	margin-left:0px;
+	width:165px;
 }
 
 .fcolcontainer2 .f2segment.last {
 	border: none;
+	width:132px;
+	padding-right:0px;
 }
 
 .fcolcontainer2 .f2segment {
@@ -1027,6 +1027,7 @@ button.icon {
 	letter-spacing: normal;
 	word-spacing: normal;
 	vertical-align: top;
+	width:165px;
 }
 
 .fcolcontainer2 h2 {
@@ -1088,22 +1089,29 @@ button.icon {
 	line-height: 1.3em;
 	margin: auto;
 	padding: 0px;
-	width: 1092px;
+	background-color:#fff;
 }
 
 
 .footerbottomstuff .socialConnect {
 	float: left;
-	margin: 0px;
+	margin: 0;
 	padding: 0px;
 	position: relative;
 	text-align: left;
-	top: -8px;
+	top: 20px;
 }
+
+.footerbottomstuff .socialConnect.modContent{
+	top:-10px;
+	margin-left:0;
+}
+
 .footerbottomstuff .socialConnect #footerConnectText {
 	float: left;
 	font-family: 'ITCFranklinGothicDemi';
 	font-size: 1.1em;
+	
 }
 .footerbottomstuff .socialConnect .socialIcon { 
 	float: left;
@@ -1132,6 +1140,7 @@ button.icon {
 	float: right;
 	margin-bottom: 15px;
 	text-align: right;
+	margin-top:13px;
 }
 
 .footerbottomstuff #bottomimportantfooterlinks a:link,
@@ -1395,3 +1404,4 @@ i{font-style:italic;}
 
 .post_body p{margin-bottom:16px;}
 .post_body p:first-child{margin-bottom:0;}
+

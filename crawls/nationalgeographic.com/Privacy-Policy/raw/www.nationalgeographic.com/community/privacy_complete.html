@@ -280,8 +280,8 @@ if ('undefined' == typeof livefyreConfig) {
     // width: 340
     // height: 475
     // keywords: 
-    // bust: 592739502
-    // tile: 106
+    // bust: 355428853
+    // tile: 137
     // refreshable: False
     // regex: 
     // page_taxonomy: 
@@ -352,8 +352,8 @@ try{
     // width: 1
     // height: 1
     // keywords: 
-    // bust: 555037600
-    // tile: 109
+    // bust: 956693726
+    // tile: 182
     // refreshable: False
     // regex: 
     // page_taxonomy: 
@@ -408,13 +408,34 @@ try{
 
 
 
-<link href="../../images.nationalgeographic.com/wpf/sites/themes/global/c/global_nav-cb1361987874.css" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    isHTTPS = !!document.location.protocol.match('https:');
+
+    // Set variable to the window as we need to reference it in a few other locations on this page
+    // Need to see if we need to load assets for HTTPS sites
+    window.globalnavURL = (isHTTPS ? "https://www-s.nationalgeographic.com/wpf/" : "http://images.nationalgeographic.com/wpf/");
+
+    if (!$("link[href='" + window.globalnavURL + "sites/themes/global/c/global_nav.css']").length) {
+        if (document.createStyleSheet) {
+            // Covers all IE, but needed to load the CSS in IE8
+            document.createStyleSheet(window.globalnavURL + 'sites/themes/global/c/global_nav.css');
+        } else {
+            console.log("Loading the global nav css");
+            $('<link href="http://www.nationalgeographic.com/community/'&#32;+&#32;window.globalnavURL&#32;+&#32;'sites/themes/global/c/global_nav.css" media="screen" rel="stylesheet">').appendTo("head");
+        };
+    };
+</script>
 <link href="../../media-members.nationalgeographic.com/static-media/header-built/header.css" rel="stylesheet" type="text/css" />
 
 
 
     <!--[if IE 8]>
-        <link href="http://images.nationalgeographic.com/wpf/sites/themes/global/c/ie8-cb1359385224.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            var ie8CSS = window.globalnavURL + 'sites/themes/global/c/ie8.css';
+            if (document.createStyleSheet) {
+                document.createStyleSheet(ie8CSS);
+            };
+        </script>
     <![endif]-->
 
 
@@ -444,7 +465,9 @@ try{
 
 
 
-<script src="../../images.nationalgeographic.com/wpf/sites/common/j/html5shiv-cb1345725134.js"></script>
+<script type="text/javascript">
+    $.getScript(window.globalnavURL + 'sites/common/j/html5shiv.js');
+</script>
 
 
 <div id="navigation_tophat_container">
@@ -474,8 +497,8 @@ try{
     // width: 970
     // height: 66
     // keywords: 
-    // bust: 406111857
-    // tile: 130
+    // bust: 249267329
+    // tile: 194
     // refreshable: False
     // regex: 
     // page_taxonomy: 
@@ -540,8 +563,8 @@ try{
     // width: 728
     // height: 90
     // keywords: 
-    // bust: 512846846
-    // tile: 141
+    // bust: 523455632
+    // tile: 127
     // refreshable: False
     // regex: 
     // page_taxonomy: 
@@ -607,8 +630,8 @@ try{
     // width: 257
     // height: 90
     // keywords: 
-    // bust: 334324935
-    // tile: 168
+    // bust: 308240355
+    // tile: 193
     // refreshable: False
     // regex: 
     // page_taxonomy: 
@@ -792,6 +815,7 @@ try{
                             <li ><a href="http://www.nationalgeographic.com/photography/wallpapers/">Wallpapers</a></li>
                             <li ><a href="http://www.nationalgeographic.com/photography/photo-tips/">Photo Tips</a></li>
                             <li ><a href="http://www.nationalgeographic.com/photography/photographers/">Photographers</a></li>
+                            <li ><a href="http://ngm.nationalgeographic.com/your-shot/">Your Shot</a></li>
                             <li ><a href="http://national-geographic.cafepress.com/art">Buy Prints</a></li>
                             <li ><a href="http://video.nationalgeographic.com/video/player/photography/">Video</a></li>
                             <li ><a href="http://www.nationalgeographic.com/newsletter/">Newsletters</a></li>
@@ -940,7 +964,9 @@ try{
 
 
 
-<script src="../../images.nationalgeographic.com/wpf/sites/themes/global/j/global-nav-cb1359385224.js"></script>
+<script type="text/javascript">
+    $.getScript(window.globalnavURL + 'sites/themes/global/j/global-nav.js');
+</script>
 
 
         
@@ -977,8 +1003,8 @@ try{
     // width: 210
     // height: 50
     // keywords: 
-    // bust: 385750120
-    // tile: 152
+    // bust: 56507631
+    // tile: 166
     // refreshable: False
     // regex: 
     // page_taxonomy: 

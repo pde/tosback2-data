@@ -10,9 +10,9 @@
 <link href="../imagescommunaute/4/communaute.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">var nugg4Rubicon ="";var nuggrid= encodeURIComponent(top.location.href);document.write('<scr'+'ipt type=\"text/javascript\" src=\"http://lpm-aufeminin.nuggad.net/rc?nuggn=1076826962&nuggsid=1064130446&nuggrid='+nuggrid+'"><\/scr'+'ipt>');</script>
 <script type="text/javascript">afAd_err={ n:0 };</script>
-<script type="text/javascript" src="../../../static.afcdn.com/world/ads.js%3F1.58"></script>
+<script type="text/javascript" src="../../../static.afcdn.com/world/ads.js%3F1.60"></script>
 <script type="text/javascript">
-sas_target='popoutok;popoutbarterok;opnew=1;france=1;new_page;new_visit;ajax=0;login=0;ae=0;new_ref';
+sas_target='popoutok;popoutbarterok;opnew=1;france=1;new_page;ajax=0;login=0;ae=0;new_ref;new_visit';
 if (typeof afAd=='object')
 afAd.call('network.aufeminin.com',1,10435,'3,5,12,19,117,300,3206,3243,4008,4040,4856,5222,6965,7938,8047,8119,9888,11478,12970,14140,16864,16865,16867,17231,15132,15133,16543,16544,16545',sas_target,'');
 else afAd=false;
@@ -26,7 +26,7 @@ else afAd=false;
 		if (sas_ddotpos>0) document.domain=document.domain.substr(sas_ddotpos+1);
 	} catch (e) {}
 	</script><div id="SaS_render_6965"><script type="text/javascript">if (afAd) afAd.render('6965');</script></div>
-<link href="../../edito/af-site-v1.css%3F20121106.css" rel="stylesheet" type="text/css" />
+<link href="../../edito/af-site-v1.css%3F20121107.css" rel="stylesheet" type="text/css" />
 	<style>
 	.HeaderLogo { width: 491px; height: 83px; }
 	
@@ -141,15 +141,19 @@ function af_displayNavDiv(divID,displayVal) {
 	</table>
 
 <script type="text/javascript">
-if (typeof(af_initSmartAdServerAjax)!='undefined' && typeof(SmartAdServerAjax)!='undefined') {
+if (typeof(af_initSmartAdServerAjax)!='undefined') {
 	af_initSmartAdServerAjax();
-	SmartAdServerAjax('1/0',15134,'');
-	SmartAdServerAjax('1/0',15135,'');
+	sas_pageid_nav=0;
+	sas_fa=new Array(); sas_ta=new Array();
+	sas_fa.push(15134); sas_ta.push('');
+	sas_fa.push(15135); sas_ta.push('');
 }
 </script>
+<div id="sas_15134"></div>
+<div id="sas_15135"></div>
 
 <div class="af_nav" id="af_nav">
-	<img src="../../../network.aufeminin.com/call/pubimppixel/7451717/99621" style="position:absolute;" border=0 width=1 height=1>
+	<img src="../../../network.aufeminin.com/call/pubimppixel/7451717/5682" style="position:absolute;" border=0 width=1 height=1>
 	<ul class="af_navList">
 		<li id="af_nav_accueil">
 			<span class="af_navLine">&nbsp;</span>
@@ -189,7 +193,7 @@ if (typeof(af_initSmartAdServerAjax)!='undefined' && typeof(SmartAdServerAjax)!=
 			<li><a href="http://www.aufeminin.com/world/communaute/message/messlist__l=received.html">Messages Privés</a><span>&nbsp;</span></li>
 		</ul>
 	</div>
-	<div class="af_nav_bottom_club">&nbsp;</div><script type="text/javascript">afNavLight=true;</script><script type="text/javascript">afDdData_rollover=true;</script><script type="text/javascript" src="../../_auto/static/global_light.js%3F201302281700"></script>
+	<div class="af_nav_bottom_club">&nbsp;</div><script type="text/javascript">afNavLight=true;</script><script type="text/javascript">afDdData_rollover=true;</script><script type="text/javascript" src="../../_auto/static/global_light.js%3F201303251800"></script>
 </div></div>	
 <div class="af_contentBack" align="center">
 	<div class="af_contentDiv" style="width:1001px;" align="left">
@@ -454,7 +458,15 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 	
 <script type="text/javascript">
 var heatmap_ext = {
-   getAuthor : function() { return ''; }
+   getAuthor: function() { return ''; },
+   isActive: function (o) { 
+      if (o.tagName=='TABLE' && o.id && o.id.match(/^af_storyDiapo_\d+_/)) return true;
+      return false;
+   },
+   getURL: function (o) { 
+      if (o.tagName=='TABLE' && o.id && o.id.match(/^af_storyDiapo_\d+_/)) return o.id;
+      return '';
+   }
 };
 (function() {
 var hm = document.createElement('script'); hm.type ='text/javascript'; hm.async = true;

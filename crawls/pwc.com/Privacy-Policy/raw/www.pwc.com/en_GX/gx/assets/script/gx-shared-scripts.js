@@ -196,8 +196,10 @@ function onPlayerStateChange(event) {
 
 	var videoarraynum = event.target.id - 1;
 	if (event.data ==YT.PlayerState.PLAYING){
-		//console.log("TRACKING PLAY EVENT:  "+ _ytIDs[videoarraynum] );
 		_gaq.push(['_trackEvent', 'YouTubeVideo', 'Play', _ytIDs[videoarraynum]]);   
+		var yturl = "http://www.youtube.com/watch?v=" + _ytIDs[videoarraynum];
+		var yttitle = "Video: " + _ytIDs[videoarraynum];
+		dcsMultiTrack('DCS.dcsuri',yturl,'WT.ti', yttitle,'WT.z_event', 'Play');
 	} 
 
 } 

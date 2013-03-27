@@ -663,11 +663,31 @@
           success: function(data){
             wpAd.brandConnect.init();
             if(wpAd.flags.debug){
-              try{win.console.log('brandConnectTracking.js', 'loaded:');}catch(e){}
+              try{win.console.log('brandConnectTracking.js', 'loaded');}catch(e){}
             }
           }
         });
       }
+
+      //wp+ pixels
+      $.ajax({
+        cache: true,
+        dataType: 'script',
+        crossDomain: true,
+        url: 'http://js.washingtonpost.com/wp-srv/ad/wpPlusPixels.js',
+        timeout: 2000,
+        error: function(err){
+          if(wpAd.flags.debug){
+            try{win.console.log('wpPlusPixels.js timeout error:', err);}catch(e){}
+          }
+        },
+        success: function(data){
+          if(wpAd.flags.debug){
+            try{win.console.log('wpPlusPixels.js', 'loaded');}catch(e){}
+          }
+        }
+      });
+
     });
   }
 

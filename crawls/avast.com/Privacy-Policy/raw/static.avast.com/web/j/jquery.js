@@ -435,7 +435,7 @@ return this.each(function(){f.on("click.toggleSlide",function(a){var b=c(this).i
   * @author Milan Adam
   * @copyright Avast Software s.r.o &copy;2013
   */
-(function(b){var d={init:function(a){a=b.extend({},b.fn.slideTop.defaults,a);b(this);return this.waypoint(function(c){"down"===c?(c=a.sliderHTML.replace("#id#",a.sliderID).replace("#text#",a.sliderText),c=b(c),b("body").append(c),b("#"+a.sliderID).fadeIn(a.sliderFadeInSpeed),b("#"+a.sliderID).on("click",function(){b("html,body").animate({scrollTop:b("#"+a.slideToID).offset().top},a.scrollSpeed)})):"up"===c&&b("#"+a.sliderID).remove()},{offset:a.headerOffset})}};b.fn.slideTop=function(a){if(d[a])return d[a].apply(this,
+(function(b){var d={init:function(a){a=b.extend({},b.fn.slideTop.defaults,a);b(this);return this.waypoint(function(c){"down"===c?($(document).trigger('slideTop.show'),c=a.sliderHTML.replace("#id#",a.sliderID).replace("#text#",a.sliderText),c=b(c),b("body").append(c),b("#"+a.sliderID).fadeIn(a.sliderFadeInSpeed),b("#"+a.sliderID).on("click",function(){b("html,body").animate({scrollTop:b("#"+a.slideToID).offset().top},a.scrollSpeed)})):$(document).trigger('slideTop.hide'),"up"===c&&b("#"+a.sliderID).remove()},{offset:a.headerOffset})}};b.fn.slideTop=function(a){if(d[a])return d[a].apply(this,
 Array.prototype.slice.call(arguments,1));if("object"==typeof a||!a)return d.init.apply(this,arguments);b.error("Method "+a+" doesnt exists in slideTop plugin")};b.fn.slideTop.defaults={sliderHTML:'<div id="#id#"><span>#text#</span></div>',sliderID:"slide-top",slideToID:"header",sliderText:"&nbsp;",sliderFadeInSpeed:1500,scrollSpeed:1E3,headerOffset:-200}})(jQuery);
 
 /*

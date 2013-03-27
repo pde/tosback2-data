@@ -1,4 +1,3 @@
-//LIVE
 (function($) { 
     $.ad = {
 		_tile: 0,
@@ -446,7 +445,7 @@
 		adBlade: {
 			isAdBlade : function(qu_id) {
 				var section = $('meta[name="prism.section"]').attr("content");
-				return (qu_id == "qu_story_1" && (	section === "world" || section === "politics" )	) ? true : false;
+				return (qu_id == "qu_story_1" && (	section === "world" || section === "politics" || $.ad._meta.channel.indexOf("fbn") > -1)	) ? true : false;
 			},
 			init : function() {
 				var section = $('meta[name="prism.section"]').attr("content");
@@ -455,12 +454,14 @@
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=1291-1494141695&output=html";
 					$('#qu_story_1').append(ifr);
-				}/*
-				if( $('#qu_story_1').size() > 0 && section === "us" ){
+				}
+
+				if( $('#qu_story_1').size() > 0 && $.ad._meta.channel.indexOf("fbn") > -1){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
-					ifr.src = "http://web.adblade.com/impsc.php?cid=1978-2998053441&output=html";
+					ifr.src = "http://web.adblade.com/impsc.php?cid=2157-2754594435&output=html";
 					$('#qu_story_1').append(ifr);
-				}	*/
+				}
+
 				if( $('#qu_story_1').size() > 0 && section === "politics" ){
 					var ifr = $.ad.util.iframe.create(660, 250, "adBlader");
 					ifr.src = "http://web.adblade.com/impsc.php?cid=2082-3105684236&output=html";

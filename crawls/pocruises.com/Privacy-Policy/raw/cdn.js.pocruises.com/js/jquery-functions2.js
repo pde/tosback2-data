@@ -33,7 +33,7 @@ $(document).ready(function() {
 });
 
 function loadCompBox() {
-    if ($("body#home, body.ExperienceDefault, body.wrapperCruiseItem").length < 1) {
+    if ($("body#home, body.ExperienceDefault, body.wrapperCruiseItem, body.TVLandingDefault, body.PreReg2014, body.HomePage").length < 1) {
         if ($("#floatingCompBox #compPlaceholder").length > 0) {
             if (getCookie("floatingcompbox") == null) {
               $("#compPlaceholder").load('/templates/pando/ajax/homepagecompbox.aspx', function() {
@@ -91,26 +91,29 @@ function wireGAExternal() {
 
 }
 
+var gaWired = false;
+
 function wireGAattributes() {
   if (typeof (_gaq) != "undefined") {
-    $("body").delegate(".GA", "click", function() {
-      var category = $(this).attr("data-ga-category");
-      var action = $(this).attr("data-ga-action");
-      var label = $(this).attr("data-ga-label");
-      _gaq.push(['_trackEvent', category, action, label]);
-      return true;
+    if (!gaWired) {
+    gaWired = true;
+    $("body").delegate(".GA", "click", function(event) {
+        var category = $(this).attr("data-ga-category");
+        var action = $(this).attr("data-ga-action");
+        var label = $(this).attr("data-ga-label");
+        _gaq.push(['_trackEvent', category, action, label]);
     });
+
+    }
   }
 }
 
-
 function unwireGAattributes() {
-  $("body").undelegate(".GA", "click", function() {
+  $("body").undelegate(".GA", "click", function(event) {
     var category = $(this).attr("data-ga-category");
     var action = $(this).attr("data-ga-action");
     var label = $(this).attr("data-ga-label");
     _gaq.push(['_trackEvent', category, action, label]);
-    return true;
   });
 
 }
@@ -675,6 +678,7 @@ function wireCruiseDetailsPage() {
 var bkg_pos;
 
 function toggleDisplayFooter() {
+
     $(".closefooter").fadeToggle(0);
 
     if ($('DIV#footer H2.footerquicklinks SPAN.sIFR-alternate').length == 0) {
@@ -684,7 +688,16 @@ function toggleDisplayFooter() {
             $(".closefooter").fadeToggle(0, "swing", function() { $(".openfooter").fadeToggle(0); });
 
         });
-    }      
+    }
+
+    if ($('DIV#footer H2.footerquicklinks SPAN').length == 0) {
+        $("#footer-links").slideToggle(0);
+        $(".footerquicklinks").click(function() {
+            $("#footer-links").slideToggle("fast");
+            $(".closefooter").fadeToggle(0, "swing", function() { $(".openfooter").fadeToggle(0); });
+
+        });
+    }        
     
 
     var ship = Math.floor(Math.random() * 7) + 1;
@@ -2278,7 +2291,7 @@ function getFooterCruises() {
         var cookie;
         cookie = getCookie("pocruises");
         if ((typeof (cookie) != typeof (null)) && (cookie.length > 0)) {
-            if ($('#home').length < 1) {
+            if ($('#home, .TVLandingDefault, .LaunchCruiseTypes, .HomePage').length < 1) { 
                 $('#savedplaceholder').load('/ajaxWishList.aspx?footer=yes #target-footer', function(response, status, xhr) {
                     if (status != "error") {
 
@@ -2338,7 +2351,7 @@ function getFooterCruises() {
             }            
         }
         else {
-            if ($('#home').length < 1) {
+            if ($('#home, .TVLandingDefault, .LaunchCruiseTypes, .HomePage').length < 1) {
                 $('#savedplaceholder').load('/ajaxViewedCruises.aspx?footer=yes #target-footer', function(response, status, xhr) {
                     if (status != "error") {
 
@@ -4990,6 +5003,50 @@ function expandDetailsClickHandler() {
     });
 }
 
+function showMoreClickHandler() {
+    $(".showMore").prev().hide();
+    $(".showMore").click(function(ev) {
+        ev.preventDefault();
+        if ($(this).hasClass("showLess")) {
+            $(this).removeClass("showLess");
+            $(this).prev().hide();
+        }
+        else {
+            $(this).addClass("showLess");
+            $(this).prev().show();
+        }
+    });
+}
+
+function expandAll() {
+    $(".ExpandAll").click(function(event) {
+        event.preventDefault();
+        if ($('.ExpandAllDetails').css('display') == 'none') {
+            $('.ExpandAllDetails').show();
+            $(".ExpandAll").text("hide details");
+        }
+        else {
+            $('.ExpandAllDetails').hide();
+            $(".ExpandAll").html("Show more details &gt;");
+        }
+    });
+}
+
+function showHiddenContainerHander() {
+    $(".ShowHiddenContainer").click(function(event) {
+        event.preventDefault();
+        $('.HiddenContainer').toggle();
+        if ($('.HiddenContainer').is(":visible")) {
+            $(this).css("background-position", "0 -35px");
+        }
+        else {
+            $(this).css("background-position", "0 0");
+        }
+    });
+    
+}
+
+
 
 function loadResultsBackBtn() {
     if ($(".searchBackbutton").length > 0) {
@@ -5080,4 +5137,282 @@ function mergeCategoryValues(initialVal, addedVal) {
     }
     return finalVal;
 }
+
+function checkForVideoContent() {
+    if ($('.resultsIntroRight .CruiseVideo').length == 0) {
+        $('.resultsIntroLeft').css('width', '100%');
+    }
+}
+
+function controlLinksClickHandler() {
+    $("body").delegate(".controlLinksContainer A", "click", function(event) {
+        $(this).parents('.controlLinksContainer').find('A').removeClass('activeControlLink dark').addClass('ControlLinks light');
+        $(this).addClass('activeControlLink dark').removeClass('ControlLinks light');
+    });
+}
+
+function inPageControlClickHandler() {
+    $('.InPageNav').unbind().click(function() {
+        $(this).next('.InPageMenu').toggle();
+    });
+    $('.InPageNavLink, .InPageNavNext A, .InPageNavPrev A').unbind().click(function(e) {
+        e.stopPropagation();
+        $('.InPageMenu').hide();
+        var category = $(this).attr("data-ga-category");
+        var action = $(this).attr("data-ga-action");
+        var label = $(this).attr("data-ga-label");
+        _gaq.push(['_trackEvent', category, action, label]);      
+    });
+}
+
+function lessMoreClassClickHandler(target) {
+    $('.moreText').unbind().click(function() {
+        $('.' + target).remove();
+        $(this).parent().append('<div class="' + target + '"></div>');
+        $("." + target).load('/templates/pando/ajax/HotelDetails.aspx?PageRef=' + $(this).attr("data-hotel-id"), function() {
+            if (status != "error") {
+                $('#hotelslides').carouFredSel({ responsive: true, swipe: true, width: '100%', scroll: 1, prev: '#hotelprev', next: '#hotelnext', auto: false, items: 1 });
+            }
+        });
+        $('.moreText').show();
+        $('.lessText').hide();
+        $(this).hide().next().show();
+    });
+    $('.lessText').unbind().click(function() {
+        $('.' + target).remove();
+        $('.lessText').hide();
+        $('.moreText').show();
+    });
+}
+
+function setHeightOfRow(container, startItem, target, divsInRow, offset) {
+    //set the working row class
+    var divs = $(container);
+    divs.slice(startItem, (startItem + divsInRow)).addClass('workingRow');
+    //find the tallest target element in the working row
+    var containerHeight = 0;
+    $('.workingRow').each(function(index) {
+        var textContainer = $(this).find(target);
+        if (textContainer.height() > containerHeight)
+            containerHeight = textContainer.height() + offset;
+    });
+    //console.log(target + " " + containerHeight);
+    //set the working row elements to the tallest and remove the working class
+    $('.workingRow').each(function(index) {
+        $(this).find(target).height(containerHeight);
+        $(this).removeClass('workingRow');
+    });
+}
+
+function getNumberOfItemsInRow(target) {
+    var divsInRow = 0;
+    $(target).each(function() {
+        if ($(this).prev().length > 0) {
+            if ($(this).position().top != $(this).prev().position().top) return false;
+            divsInRow++;
+        }
+        else {
+            divsInRow++;
+        }
+    });
+    return divsInRow;
+}
+
+function setDivHeightToTallest(target) {
+    var tallestDiv = 0;
+    $(target).each(function(idx) {
+        if ($(this).height() > tallestDiv)
+            tallestDiv = $(this).height();
+    });
+    $(target).height(tallestDiv);
+}
+
+function hasRecentlyViewedCookie() {
+    if (getCookie("pocruisesRecentlyViewed") != null && getCookie("pocruisesRecentlyViewed") != "") {
+        return true;
+    }
+    return false;
+}
+
+function changeHFP(cruiseData, toAdd) {
+    var $resultItem = $(".Res" + cruiseData.CruiseCode);
+    var symbol = cruiseData.Symbol;
+    var tempHfp = cruiseData.hfp;
+    if (toAdd) {
+        if (cruiseData.hfp = 0.0) {
+            return;
+        }
+    }
+    else {
+        tempHfp = 0.0;
+    }
+    //alert(cruiseData.minPrice);
+    if (cruiseData.minPrice != 0.0) {
+        $resultItem.find(".minAll").html($.number(cruiseData.minAll + tempHfp));
+    }
+    //Regular Internal
+    if (cruiseData.minRI != 0.0) {
+        $resultItem.find(".minRI").html(symbol + $.number(cruiseData.minRI + tempHfp));
+    }
+    //Regular Outer
+    if (cruiseData.minRO != 0.0) {
+        $resultItem.find(".minRO").html(symbol + $.number(cruiseData.minRO + tempHfp));
+    }
+    //Regular Balcony
+    if (cruiseData.minRB != 0.0) {
+        $resultItem.find(".minRB").html(symbol + $.number(cruiseData.minRB + tempHfp));
+    }
+    //Regular Suite
+    if (cruiseData.minRS != 0.0) {
+        $resultItem.find(".minRS").html(symbol + $.number(cruiseData.minRS + tempHfp));
+    }
+
+    //Special Internal
+    if (cruiseData.minSI != 0.0) {
+        $resultItem.find(".minSI").html(symbol + $.number(cruiseData.minSI + tempHfp));
+    }
+    //Special Outer
+    if (cruiseData.minSO != 0.0) {
+        $resultItem.find(".minSO").html(symbol + $.number(cruiseData.minSO + tempHfp));
+    }
+    //Special Balcony
+    if (cruiseData.minSB != 0.0) {
+        $resultItem.find(".minSB").html(symbol + $.number(cruiseData.minSB + tempHfp));
+    }
+    //Special Suite
+    if (cruiseData.minSS != 0.0) {
+        $resultItem.find(".minSS").html(symbol + $.number(cruiseData.minSS + tempHfp));
+    }
+
+    //{CruiseCode: '<%=CruiseCode%>', hfp: <%=cruiseHFP%>, Symbol:'<%=currencySymbol%>',  minPrice : <%=minPrice%>, minRI:<%=minRI%>, minRI:<%=minRO%>, minRO:<%=minRB%>, minRS:<%=minRS%>, minSI:<%=minSI%>, minSO:<%=minSO%>, minRB:<%=minSB%>, minSS:<%=minSS%>}, false);"
+}
+
+/*** Gallery functions - Dynamic loading ****/
+
+(function($) {
+    $.fn.CarouFredSelWrapper = function(options) {
+        var numberOfItems = 0;
+        var $galContainer;
+        var isGalLoaded = false;
+        var $galItems;
+
+        var defaultVal = {
+            galItem: ".Slide",
+            itemsBack: 1,
+            imageAnchorClass : "imageReplace",
+            itemsAhead: 2,
+            carouFredSelOptions: { responsive: true, swipe: true, width: '100%', scroll: { items: 1, duration: 1000 }, prev: '#prev', next: '#next', auto: true, items: 1 }
+
+        };
+        $galContainer = $(this);
+        var obj = $.extend(defaultVal, options);
+
+        obj.carouFredSelOptions.scroll.onBefore = function(data) {
+            $galContainer.trigger("currentPosition", function(pos) {
+                //alert("Before scrolling to " + pos);
+                init_gallery(pos)
+            });
+        };
+
+
+
+        var init_gallery = function(startLoadFrom) {
+            //alert(startLoadFrom);
+            var StartPos = startLoadFrom - obj.itemsBack;
+            if (StartPos < 0) {
+                StartPos = 0;
+            }
+            //alert(isGalLoaded);
+            if (isGalLoaded == false) {
+                $galItems = $galContainer.find(obj.galItem);
+                numberOfItems = $galItems.length;
+                //alert(numberOfItems);
+            }
+
+            var imgToLoad = obj.itemsBack + obj.itemsAhead;
+            if (StartPos + imgToLoad > numberOfItems) {
+                imgToLoad = numberOfItems - StartPos;
+            }
+
+            if (imgToLoad > 0) {
+                loadImgBlock(StartPos, imgToLoad);
+            }
+
+        };
+
+
+        var loadImgBlock = function(startpos, numberOfImages) {
+            //alert("loading " + numberOfImages + " images  from " + startpos);
+            for (counter = 1; counter <= numberOfImages; counter++) {
+
+                var imageNumber = startpos - obj.itemsBack + counter - 1;
+                if (imageNumber < 0) {
+                    imageNumber = imageNumber + numberOfItems;
+                }
+                if (imageNumber >= numberOfItems) {
+                    imageNumber = imageNumber - numberOfItems;
+                }
+
+                var imageIdAttr = " Id='galImg" + imageNumber + "' ";
+                var $anch = $($galItems[imageNumber]).find("a." + obj.imageAnchorClass);
+                //alert(imageNumber  +  "!" +  $(imgGal.$galItems[imageNumber - 1]).html());
+                if ($anch.length > 0) {
+                    //alert("Image not loaded counter " + imageNumber);
+                    var imgLink = $anch.attr("href");
+                    var imgAlt = $anch.html();
+                    var itemHtml = "<img src='" + imgLink + "' width='100%' " + imageIdAttr + " alt='" + imgAlt + "' title='" + imgAlt + "' />";
+                    //alert(itemHtml);
+                    $anch.remove();
+                    $($galItems[imageNumber]).prepend(itemHtml);
+
+                }
+                /*
+                else
+                {
+                alert("Image already loaded at " + imageNumber);
+                }
+                */
+
+            }
+            //alert(imgGal.loaded);
+            if (isGalLoaded == false) {
+                $galContainer.find("img#galImg0").bind("load", function() {
+                    //alert("Loaded bound");
+                    galLoaded();
+                });
+            }
+        };
+
+
+        var galLoaded = function() {
+
+            if (isGalLoaded) {
+                //alert("already loaded");
+                return;
+            }
+            //alert("Loaded called");
+            //$(".imagebox").css("display", "block");
+            //alert(obj.carouFredSelOptions.width);
+            $galContainer.carouFredSel(obj.carouFredSelOptions);
+            $galContainer.find("img#galImg0").unbind("load");
+            isGalLoaded = true;
+
+        };
+
+        return $(this).each(function() {
+            init_gallery(0);
+        });
+
+
+    };
+})(jQuery);
+
+
+
+
+
+
+
+
+
 

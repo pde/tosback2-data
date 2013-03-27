@@ -315,11 +315,27 @@ mistats.AdTracker = function ()
             def = (def || scripts[i]).nextSibling || null;
          while (def && def.nodeName.match(/^#/));
 
+         if (def)
+            switch (def.nodeName)
+            {
+               case 'A':
+                  if ((def.getAttribute('href') || '').match(/https*:\/\/ad\.doubleclick\.net\/click/i)
+                   && (def.innerHTML || '').match(/https*:\/\/s0\.2mdn\.net\/viewad\/[^\/]+\.gif/i))
+                     ad += 'D';
+                  break;
+               case 'NOSCRIPT':
+                  if ((def.innerHTML || '').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').match(/\s*<a[^>]+href=.{0,1}https*:\/\/ad\.doubleclick\.net\/jump\/mi\.[^>]+>\s*<img[^>]+src=.{0,1}https*:\/\/ad\.doubleclick\.net\/ad\/mi\./i))
+                     continue;
+                  break;
+            }
+
+/*
          if (def
           && def.nodeName === 'A'
           && (def.href || '').match(/^https*:\/\/ad\.doubleclick\.net\/click\;/i)
           && (def.innerHTML || '').match(/https*:\/\/s0\.2mdn\.net\/viewad\/817-grey\.gif/))
             ad += 'D';
+*/
 
          ads[ads.length] = ad;
 

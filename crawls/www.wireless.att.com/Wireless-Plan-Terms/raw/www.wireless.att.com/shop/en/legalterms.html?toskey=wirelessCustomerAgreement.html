@@ -674,16 +674,13 @@ groups or email use by others; use of the service as a substitute or backup for 
 	<!-- Webtrend global --> 
 <script> 
 //<![CDATA[ 
-  ATT.globalVars.wtCartState = 'I'; 
-  if(~location.href.indexOf('cartsummary')){ 
-  	jQuery('<meta/>', {name: 'DCSext.wtPN', content:'HRock Cart Summary-Incomplete Cart'}).appendTo('head'); 
-  } 
+	ATT.globalVars.wtCartState =  'E';  
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
 ATT.globalVars.ban = ""; 
-ATT.globalVars.flowIndicator = ""; 
+ATT.globalVars.flowIndicator = "AL"; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = "38017"; 
+ATT.globalVars.ckavailUserZip = ""; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -694,15 +691,15 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip ="38017"; 
+		wtzip =""; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
-		flowType =""; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "AL"){ 
+		flowType ="AL"; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
@@ -776,7 +773,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = "COLLIERVILLE"; 
+	    		wtCity = ""; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -785,7 +782,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = "TN"; 
+	    		wtState = ""; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -849,7 +846,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","HptpRMydMr2v1cPQlfGJ1DsX!678037913!1363997437899"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","4WLrRSkP12mc6yNVQv8JH72s!-2001153365!1364386863620"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

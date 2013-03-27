@@ -36,6 +36,45 @@ $(document).ready(function(){
 		$("#SHstate").val( $("#state").val() );
 		$("#SHphoneNumber").val( $("#phoneNumber").val() );
 	});
+
+	$('#sameAddressTrigger').click(function() {
+		var $theTable = $('#shippingAddressTable');
+		if ($(this).is(':checked')) {
+			$("#SHprefixId").val('NONE')
+			$("#SHname").val('');
+			$("#SHcompanyName").val('');
+			$("#SHstreetAddress").val('');
+			$("#SHapt").val('');
+			$("#SHzip").val('');
+			$("#SHcity").val('');
+			$("#SHstate").val('');
+			$("#SHphoneNumber").val('');
+			
+			var $theCon=$('#shippingTableContainer'),
+			    theHeight = $theCon.outerHeight(true),
+			    theWidth = $theCon.outerWidth(1);
+			
+			$('#shippingTableHider').width(theWidth).height(theHeight).show();
+			//$('#shippingTableHiderText').show();
+		} else {
+			$('#shippingTableHider').hide();
+			//$('#shippingTableHiderText').hide();
+		}
+	})
+	
+	$('#customerInformationForm').submit(function(){
+		if ($('#sameAddressTrigger').is(':checked')) {
+			$("#SHprefixId").val($("#prefixId").val())
+			$("#SHname").val( $("#name").val() );
+			$("#SHcompanyName").val( $("#companyName").val() );
+			$("#SHstreetAddress").val( $("#streetAddress").val() );
+			$("#SHapt").val( $("#apt").val() );
+			$("#SHzip").val( $("#zip").val() );
+			$("#SHcity").val( $("#city").val() );
+			$("#SHstate").val( $("#state").val() );
+			$("#SHphoneNumber").val( $("#phoneNumber").val() );
+		}
+	});
 	
 	$("#zip").live("change", function(){
 		$.get('/zip2.php?zip='+$("#zip").val(), function(data){
@@ -201,7 +240,7 @@ $(document).ready(function(){
 		
 	
 	$('#cartBtnRemAll').click(function(e){
-		if (!confirm('Are you sure you want to remove all items from your cart?')) {
+		if (!confirm('Are you sure you want to remove all items for your Shopping Cart?')) {
 			e.preventDefault();
 			e.stopPropagation();
 			return false;

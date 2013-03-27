@@ -88,7 +88,13 @@ processNext: function() {
 if (this.current < this.functions.length) {
 var f = this.functions[this.current];
 var run = function() {
+try {
 f(this.notify.bind(this));
+}
+catch (e) {
+Wicket.Log.error("Wicket.FunctionsExecuter.processNext: " + e);
+this.notify();
+}
 }.bind(this);
 this.current++;
 if (this.depth > 50 || Wicket.Browser.isKHTML() || Wicket.Browser.isSafari()) {
@@ -107,6 +113,9 @@ notify: function() {
 this.processNext();
 }
 }
+
+Wicket.functionExecuterSeq = 0;
+Wicket.functionExecuterCallbacks = {};
 Wicket.replaceOuterHtmlIE = function(element, text) { 
 	var marker = "__WICKET_JS_REMOVE_X9F4A__"; 
 function markIframe(text) {
@@ -130,6 +139,10 @@ eval(script);
 } catch (e) {
 Wicket.Log.error("Wicket.replaceOuterHtmlIE: " + e + ": eval -> " + script);
 }
+return;
+} else if (element.tagName == "TITLE") {
+ var titleText = />(.*?)</.exec(text)[1];
+document.title = titleText;
 return;
 } 
 var parent = element.parentNode;
@@ -161,7 +174,11 @@ scripts.push(s[i]);
 }
 	while(tempParent.childNodes.length > 0) {
 var tempElement = tempParent.childNodes[0];
+if (tempElement.tagName != 'SCRIPT') {
 parent.insertBefore(tempElement, element);
+} else {
+ tempParent.removeChild(tempElement);
+}
 tempElement = null;
 }
 	if(element.style.backgroundImage)
@@ -200,6 +217,9 @@ return;
 }
 var parent = element.parentNode;
 var next = element.nextSibling;
+while (next !== null && next.nodeType == 3) {
+ next = next.nextSibling;
+}
 var index = 0;
 while (parent.childNodes[index] != element) {
 ++index;
@@ -413,7 +433,12 @@ this.busy = false;
 schedule: function(callback) {
 if (this.busy == false) {
 this.busy = true; 
+try { 
 return callback();
+} catch (exception) {
+this.busy = false;
+Wicket.Log.error("An error occurred while executing Ajax request:" + exception);
+}
 } else {
 Wicket.Log.info("Channel busy - postponing...");
 if (this.type == 's')  this.callbacks.push(callback);
@@ -460,12 +485,12 @@ Wicket.channelManager = new Wicket.ChannelManager();
 Wicket.Ajax = {
 	createTransport: function() {
 var transport = null;
-if (window.ActiveXObject) {
-transport = new ActiveXObject("Microsoft.XMLHTTP");
-Wicket.Log.info("Using ActiveX transport");
-} else if (window.XMLHttpRequest) {
+if (window.XMLHttpRequest) {
 transport = new XMLHttpRequest();
 Wicket.Log.info("Using XMLHttpRequest transport");
+} else if (window.ActiveXObject) {
+transport = new ActiveXObject("Microsoft.XMLHTTP");
+Wicket.Log.info("Using ActiveX transport");
 }
 if (transport == null) {
 Wicket.Log.error("Wicket.Ajax.createTransport: Could not locate ajax transport. Your browser does not support the required XMLHttpRequest object or wicket could not gain access to it.");
@@ -810,7 +835,8 @@ var iframeName="wicket-submit-"+(""+Math.random()).substr(2);
 var iframe = Wicket._createIFrame(iframeName);
 document.body.appendChild(iframe);
  form.target=iframe.name;
-form.action=this.request.url + "&wicket:ajax=true";
+var separator = (this.request.url.indexOf("?")>-1 ? "&" : "?");
+form.action=this.request.url + separator + "wicket:ajax=true";
 form.method="post";
 form.enctype="multipart/form-data";
 form.encoding="multipart/form-data";
@@ -926,7 +952,7 @@ text = Wicket.decode(encoding, text);
 }
  var element = Wicket.$(compId);
 if (element == null || typeof(element) == "undefined") { 
-Wicket.Log.error("Wicket.Ajax.Call.processComponent: Component with id [["+compId+"]] a was not found while trying to perform markup update. Make sure you called component.setOutputMarkupId(true) on the component whose markup you are trying to update.");
+Wicket.Log.error("Wicket.Ajax.Call.processComponent: Component with id [["+compId+"]] was not found while trying to perform markup update. Make sure you called component.setOutputMarkupId(true) on the component whose markup you are trying to update.");
 } else {
  Wicket.replaceOuterHtml(element, text);
 }
@@ -999,22 +1025,36 @@ if (Wicket.Browser.isKHTML()) {
 text = text.replace(/<\/script>/g,"</SCRIPT>");
 }
  var xmldoc;
-if (window.ActiveXObject) {
+if (window.DOMParser) {
+var parser = new DOMParser(); 
+xmldoc = parser.parseFromString(text, "text/xml");
+} else if (window.ActiveXObject) {
 xmldoc = new ActiveXObject("Microsoft.XMLDOM");
 if (!xmldoc.loadXML(text)) {
 Wicket.Log.error("Error parsing response: "+text);
 }
-} else {
-var parser = new DOMParser(); 
-xmldoc = parser.parseFromString(text, "text/xml");
 }
 return xmldoc;
+},
+		_checkParserError: function(node) {
+var result = false;
+if (node.tagName != null && node.tagName.toLowerCase() == "parsererror") {
+Wicket.Log.error("Error in parsing: " + node.textContent);
+result = true;
+}
+return result;
 },
 	processContribution: function(steps, headerNode) {
 var xmldoc = this.parse(headerNode);
 var rootNode = xmldoc.documentElement;
+ if (this._checkParserError(rootNode)) {
+return;
+}
  for (var i = 0; i < rootNode.childNodes.length; i++) {
 var node = rootNode.childNodes[i]; 
+ if (this._checkParserError(node)) {
+return;
+}
 if (node.tagName != null) {
 var name = node.tagName.toLowerCase();
   if (name == "wicket:link") { 
@@ -1034,6 +1074,7 @@ this.processScript(steps, node);
 } else if (name == "style") {
 this.processStyle(steps, node);
 }
+} else if (node.nodeType === 8) {  this.processComment(steps, node);
 }
 }
 },
@@ -1049,7 +1090,21 @@ css.rel = node.getAttribute("rel");
 css.href = node.getAttribute("href");
 css.type = node.getAttribute("type");
  Wicket.Head.addElement(css);
- notify();
+    var img = document.createElement('img');
+var notifyCalled = false;
+img.onerror = function() {
+if (!notifyCalled) {
+notifyCalled = true;
+notify();
+}
+}
+img.src = css.href;
+if (img.complete) {
+if (!notifyCalled) {
+notifyCalled = true;
+notify();
+}
+}
 });
 },
 	processStyle: function(steps, node) {
@@ -1094,10 +1149,13 @@ return;
  var src = node.getAttribute("src");
 if (src != null && src != "") {
  
- var onLoad = function(content) { 
-Wicket.Head.addJavascript(content, null, src);
+ var callBackIdentifier = 'script' + (Wicket.functionExecuterSeq++);
+var onLoad = function(content) {
+Wicket.functionExecuterCallbacks[callBackIdentifier] = function() {
 Wicket.Ajax.invokePostCallHandlers();
- notify();
+notify();
+}
+Wicket.Head.addJavascript(content+"; Wicket.functionExecuterCallbacks['"+callBackIdentifier+"'](); delete Wicket.functionExecuterCallbacks['"+callBackIdentifier+"']; ", null, src);
 }
   window.setTimeout(function() {
 var req = new Wicket.Ajax.Request(src, onLoad, false, false);
@@ -1123,6 +1181,13 @@ Wicket.Log.error("Wicket.Head.Contributor.processScript: " + e + ": eval -> " + 
  notify();
 }
 }); 
+},
+	processComment: function(steps, node) {
+steps.push(function(notify) {
+var comment = document.createComment(node.nodeValue);
+Wicket.Head.addElement(comment);
+notify();
+});
 }
 };
 
@@ -1370,6 +1435,8 @@ var KEY_DOWN=40;
 var KEY_SHIFT=16;
 var KEY_CTRL=17;
 var KEY_ALT=18;
+var KEY_END=35;
+var KEY_HOME=36;
 var obj = Wicket.$(elementId);
 obj.setAttribute("autocomplete", "off");
 obj.onchangeoriginal = obj.onchange;
@@ -1387,6 +1454,8 @@ case KEY_LEFT:
 case KEY_SHIFT:
 case KEY_ALT:
 case KEY_CTRL:
+case KEY_HOME:
+case KEY_END:
 return Wicket.stopEvent(event);
 break;
 default:

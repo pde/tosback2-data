@@ -104,7 +104,7 @@
 		});
 	};
 	$.fn.commonWidgetsLoadDivViaXml = function( sUrl ) {  
-				$.ajax({type:"GET", url:sUrl, cache: false,success: function(xml){
+				$.ajax({type:"GET", url:sUrl, cache: true,success: function(xml){
 							var rootNode = $(xml).find('inc');
 							var rootNodeID = rootNode.attr("divid");  
 							var rootNodeText = rootNode.text();   
@@ -476,4 +476,3 @@ function cacheBuster(secondsToCache) {
 	returnedString = "?cachebuster=" + dateTime;
 	return returnedString;
 }
-

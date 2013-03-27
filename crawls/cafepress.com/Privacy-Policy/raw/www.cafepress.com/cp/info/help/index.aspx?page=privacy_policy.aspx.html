@@ -12,99 +12,6 @@
   var TBRUM=TBRUM||{};TBRUM.q=TBRUM.q||[]; TBRUM.q.push(['mark','firstbyte',(new Date).getTime()]);
 </script>
 
-<!-- subtle serp test -->
-<script type="text/javascript">
-function subtleSerpTest(){
-	if($('.serpt').length > 0){
-		var studioTypes = [152,159,161,167,181,251],
-			defaultColors = new Array();
-
-		defaultColors[152] = 22;
-		defaultColors[159] = 60;
-		defaultColors[161] = 9;
-		defaultColors[167] = 10;
-		defaultColors[181] = 26;
-		defaultColors[251] = 46;
-
-		$.each(studioTypes, function(index,value) {
-			var productTypeNo = value;
-			$(".serpt-pt" + value).each(function (index, value) {
-				var productNo = $(this).attr('prod'),
-					designNo  = $(this).attr('img'),
-					thumb = 'http://dfxnkcl1uregw.cloudfront.net/' + productTypeNo  + '/tint/?p=' + productNo + '&h=160&w=160',
-					zoom = thumb +'&zoom',
-					addToCart =  '/cp/catalogExp/addtocarthelper.aspx?q=' + window.cpsearch.searchTerm + '&channel=21&i=' + designNo + '&p=' + productNo + '&ptn=' + productTypeNo + '&color_' + productNo +'=' + defaultColors[productTypeNo] + '&size_' + productNo + '=0&smno=2452714&s=&fromsearch=yes&storeid=search&qty_' + productNo + '=1',
-					_href = $(this).find(".serpt-thumb a").attr('href');
-				
-				$(this).find(".productImage:first").attr('src',thumb);
-				$(this).find(".resultImage:first").attr('imgmouseover',zoom);
-				$(this).find(".serpt-extra:first").attr('hoverThumb',zoom);
-				$(this).find(".saleprice:first").html('$19!');
-				$(this).find(".serpt-buy:first").find('a:first').attr('href',addToCart);
-				$(this).find(".serpt-details:first").parent().attr('href', _href + '?studio=true');
-				$(this).find(".productImage:first").closest('a').attr('href', _href + '?studio=true');
-			});
-		});
-
-		var _oldFadeIn = $.fn.fadeIn;
-
-		$.fn.fadeIn = function(speed, oldCallback) {
-			return $(this).each(function() {
-				var	obj = $(this),
-					newCallback = function() {
-						if ($.isFunction(oldCallback)) {
-							oldCallback.apply(obj);
-						}
-					};
-				
-				_oldFadeIn.apply(obj, [speed, newCallback]);
-			
-				//now override some of the attributes of this pop up�
-				var popUpDiv = $(this);
-				$.each(studioTypes, function(index,value) {
-					if (popUpDiv.closest('.serpt-pt' + value).length > 0) {
-						var productTypeNo = value,
-							productNo = popUpDiv.closest('.serpt-pt' + value).attr('prod'),
-							designNo = popUpDiv.closest('.serpt-pt' + value).attr('img'),
-							addToCart =  '/cp/catalogExp/addtocarthelper.aspx?q=' + window.cpsearch.searchTerm + '&channel=21&i=' + designNo + '&p=' + productNo + '&ptn=' + productTypeNo + '&color_' + productNo +'=' + defaultColors[productTypeNo] + '&size_' + productNo + '=0&smno=2452714&s=&fromsearch=yes&storeid=search&qty_' + productNo + '=1',
-							thumb = 'http://dfxnkcl1uregw.cloudfront.net/' + productTypeNo  + '/tint/?p=' + productNo,
-							zoom = thumb +'&zoom&h=250&h=250',
-							mini = thumb + '&h=75&w=75',
-							_href = popUpDiv.find('.serpt-bubble-design:first').parent().attr('href') + '?studio=true';
-							
-						popUpDiv.find('.serpt-bubble-design:first').attr('src',zoom);
-						popUpDiv.find('.serpt-bubble-design:first').attr('hoversrc',zoom);
-						popUpDiv.find('.serpt-bubble-image-small:first').attr('src',mini);
-						popUpDiv.find('.serpt-bubble-image-small:first').attr('hoversrc',mini);
-						popUpDiv.find('.serpt-bubble-buy:first').find('a:first').attr('href', addToCart);
-						popUpDiv.find('.saleprice:first').html("$19!");
-						
-						popUpDiv.find('.serpt-bubble-design:first').parent().attr('href',_href);
-						popUpDiv.find('.serpt-bubble-product:first').parent().attr('href',_href);
-						popUpDiv.find('.serpt-bubble-caption:first').find('a:first').attr('href',_href);
-						popUpDiv.find('.full-details:first').find('a:first').attr('href',_href);
-					}
-				});
-			
-			});
-		}
-	}
-}
-
-function SBTLcheckForjQuery(){
-	if (window.$){
-		if(window.location.href.indexOf('cafepress.com') !== -1 || window.location.href.indexOf('default.dev') !== -1){
-			subtleSerpTest();
-		}
-	} else {
-		setTimeout(SBTLcheckForjQuery, 200);
-	}
-}
-
-SBTLcheckForjQuery();
-</script>
-<!-- end subtle serp test -->
-
 
 
 <title>CafePress.com : Customer Service : Privacy Policy</title>
@@ -184,7 +91,7 @@ window.cafepress.tracking = window.cafepress.tracking || {};
 window.cafepress.tracking.pageLandingType = 'HelpPage';
 window.cafepress.tracking.productFamily = '';
 window.cafepress.tracking.salesChannel = 'Other';
-window.cafepress.tracking.abTestString = 'AB_CAF-102:C:T,AB_CAF-64:T:F,AB_CPLABS_SUBTLE:T:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,EXP_08_00:T:F,EXP_08_07:T:F,EXP_11_17:T:F';
+window.cafepress.tracking.abTestString = 'AB_CAF-102:C:T,AB_CAF-64:T:F,AB_CPLABS_SUBTLE:C:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,EXP_08_00:C:F,EXP_08_07:T:F,EXP_11_17:T:F';
 window.cafepress.tracking.businessUnit = 'Retail';
 window.cafepress.tracking.searchTerm = '';
 window.cafepress.tracking.trafficMedium = 'Direct';
@@ -211,8 +118,8 @@ Copyright 1997-2005 Omniture, Inc. -->
 	var AFFILIATE_CJ_MASTER_PID="7532081";
 	var AFFILIATE_CJ_PID="0";
 	var LANDING_PAGE_MEMBER_NO="0";
-	var AnalyzableVisitorExperimentAssignment="AB_CAF-102:C:T,AB_CAF-64:T:F,AB_CPLABS_SUBTLE:T:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,EXP_08_00:T:F,EXP_08_07:T:F,EXP_11_17:T:F";
-	var VisitorId="E196374D9108F175A0B86FF2B332A757:371DBC1E4BF6826E9A399C4018B5B4C4";
+	var AnalyzableVisitorExperimentAssignment="AB_CAF-102:C:T,AB_CAF-64:T:F,AB_CPLABS_SUBTLE:C:F,AB_RETL_BS:T:F,AB_RETL-248:T:F,EXP_08_00:C:F,EXP_08_07:T:F,EXP_11_17:T:F";
+	var VisitorId="B0363F73B59B3A6ED538DAB99B467088:C6620184F604150089DA7907D56EE483";
 	var notpurchase_channel_CSR="False";
 	var AFFILIATE_TYPE="direct";
 	var AFFILIATE_MEMBER_NO="8130179";
@@ -226,7 +133,7 @@ Copyright 1997-2005 Omniture, Inc. -->
 <!-- End SiteCatalyst code variables version: H.2. -->
 
 	<!-- Omniture Code Ends -->
-<script src="../../../../content.cpcache.com/js/allglobal.manualv2.min.js%3Fv=f580cc26c9b6f5f0f68e01e7f8c8b7c2" type="text/javascript"></script>
+<script src="../../../../content.cpcache.com/js/allglobal.manualv2.min.js%3Fv=723788b704189561930de0c498ffc842" type="text/javascript"></script>
 <!--test-->
 <script type="text/javascript">
 $(document).ready(function (){
@@ -239,99 +146,6 @@ $("#cartItemCount").html("<u>"+window.cafepress.cartItemCount+"</u>");
 <script type='text/javascript'>
   var TBRUM=TBRUM||{};TBRUM.q=TBRUM.q||[]; TBRUM.q.push(['mark','firstbyte',(new Date).getTime()]);
 </script>
-
-<!-- subtle serp test -->
-<script type="text/javascript">
-function subtleSerpTest(){
-	if($('.serpt').length > 0){
-		var studioTypes = [152,159,161,167,181,251],
-			defaultColors = new Array();
-
-		defaultColors[152] = 22;
-		defaultColors[159] = 60;
-		defaultColors[161] = 9;
-		defaultColors[167] = 10;
-		defaultColors[181] = 26;
-		defaultColors[251] = 46;
-
-		$.each(studioTypes, function(index,value) {
-			var productTypeNo = value;
-			$(".serpt-pt" + value).each(function (index, value) {
-				var productNo = $(this).attr('prod'),
-					designNo  = $(this).attr('img'),
-					thumb = 'http://dfxnkcl1uregw.cloudfront.net/' + productTypeNo  + '/tint/?p=' + productNo + '&h=160&w=160',
-					zoom = thumb +'&zoom',
-					addToCart =  '/cp/catalogExp/addtocarthelper.aspx?q=' + window.cpsearch.searchTerm + '&channel=21&i=' + designNo + '&p=' + productNo + '&ptn=' + productTypeNo + '&color_' + productNo +'=' + defaultColors[productTypeNo] + '&size_' + productNo + '=0&smno=2452714&s=&fromsearch=yes&storeid=search&qty_' + productNo + '=1',
-					_href = $(this).find(".serpt-thumb a").attr('href');
-				
-				$(this).find(".productImage:first").attr('src',thumb);
-				$(this).find(".resultImage:first").attr('imgmouseover',zoom);
-				$(this).find(".serpt-extra:first").attr('hoverThumb',zoom);
-				$(this).find(".saleprice:first").html('$19!');
-				$(this).find(".serpt-buy:first").find('a:first').attr('href',addToCart);
-				$(this).find(".serpt-details:first").parent().attr('href', _href + '?studio=true');
-				$(this).find(".productImage:first").closest('a').attr('href', _href + '?studio=true');
-			});
-		});
-
-		var _oldFadeIn = $.fn.fadeIn;
-
-		$.fn.fadeIn = function(speed, oldCallback) {
-			return $(this).each(function() {
-				var	obj = $(this),
-					newCallback = function() {
-						if ($.isFunction(oldCallback)) {
-							oldCallback.apply(obj);
-						}
-					};
-				
-				_oldFadeIn.apply(obj, [speed, newCallback]);
-			
-				//now override some of the attributes of this pop up�
-				var popUpDiv = $(this);
-				$.each(studioTypes, function(index,value) {
-					if (popUpDiv.closest('.serpt-pt' + value).length > 0) {
-						var productTypeNo = value,
-							productNo = popUpDiv.closest('.serpt-pt' + value).attr('prod'),
-							designNo = popUpDiv.closest('.serpt-pt' + value).attr('img'),
-							addToCart =  '/cp/catalogExp/addtocarthelper.aspx?q=' + window.cpsearch.searchTerm + '&channel=21&i=' + designNo + '&p=' + productNo + '&ptn=' + productTypeNo + '&color_' + productNo +'=' + defaultColors[productTypeNo] + '&size_' + productNo + '=0&smno=2452714&s=&fromsearch=yes&storeid=search&qty_' + productNo + '=1',
-							thumb = 'http://dfxnkcl1uregw.cloudfront.net/' + productTypeNo  + '/tint/?p=' + productNo,
-							zoom = thumb +'&zoom&h=250&h=250',
-							mini = thumb + '&h=75&w=75',
-							_href = popUpDiv.find('.serpt-bubble-design:first').parent().attr('href') + '?studio=true';
-							
-						popUpDiv.find('.serpt-bubble-design:first').attr('src',zoom);
-						popUpDiv.find('.serpt-bubble-design:first').attr('hoversrc',zoom);
-						popUpDiv.find('.serpt-bubble-image-small:first').attr('src',mini);
-						popUpDiv.find('.serpt-bubble-image-small:first').attr('hoversrc',mini);
-						popUpDiv.find('.serpt-bubble-buy:first').find('a:first').attr('href', addToCart);
-						popUpDiv.find('.saleprice:first').html("$19!");
-						
-						popUpDiv.find('.serpt-bubble-design:first').parent().attr('href',_href);
-						popUpDiv.find('.serpt-bubble-product:first').parent().attr('href',_href);
-						popUpDiv.find('.serpt-bubble-caption:first').find('a:first').attr('href',_href);
-						popUpDiv.find('.full-details:first').find('a:first').attr('href',_href);
-					}
-				});
-			
-			});
-		}
-	}
-}
-
-function SBTLcheckForjQuery(){
-	if (window.$){
-		if(window.location.href.indexOf('cafepress.com') !== -1 || window.location.href.indexOf('default.dev') !== -1){
-			subtleSerpTest();
-		}
-	} else {
-		setTimeout(SBTLcheckForjQuery, 200);
-	}
-}
-
-SBTLcheckForjQuery();
-</script>
-<!-- end subtle serp test -->
 
 </head>
 <body>
@@ -1717,7 +1531,7 @@ input[type=submit],input[type=reset],input[type=button]{filter:chroma(color=#000
 
 	<!--Cats Code Begin-->
 		
-		<div id="instrumentation" style="display:none; color:white">{"SumOfAllMeasurementsBelowReportingThreshold":6}</div>
+		<div id="instrumentation" style="display:none; color:white">{"SumOfAllMeasurementsBelowReportingThreshold":3}</div>
 	<!--Cats Code End-->
 
 

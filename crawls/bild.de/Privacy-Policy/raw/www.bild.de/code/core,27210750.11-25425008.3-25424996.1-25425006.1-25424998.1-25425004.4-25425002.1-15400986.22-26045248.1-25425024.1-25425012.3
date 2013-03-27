@@ -753,7 +753,7 @@ de.bild.env = {
 
 
 
-/*de.bild.settings:27210766.8*/
+/*de.bild.settings:27210766.9*/
 
 /*
  @ignore;
@@ -833,7 +833,7 @@ de.bild.settings = (function(){
                 //Promotion Layer
               'promoLayer': '/CommunityAppageKA/promotionLayer.bild.html', 
               'qotdPromoBox' : '/CommunityAppageKA/promotionLayerQotD.bild.html',  
-              'promoLayerLike' : '/CommunityAppageKA/promotionLayerLike.bild.html',  
+              'promoLayerFollow' : '/CommunityAppageKA/promotionLayerFollow.bild.html',   
 
 
 
@@ -5230,7 +5230,7 @@ de.bild.globalSandBox = (function($) {
  
  
 })(jQuery);
-/*de.bild.community:27210474.12*/
+/*de.bild.community:27210474.15*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -5275,7 +5275,7 @@ de.bild.community = (function($, SandBox) {
          Loading passes a url direct from the href attribute*/
         $contentWrapper.find('a.' + settings.ajaxClassLoad).each(function() {
             
-            var obj = this, $target = $(this);
+            var obj = this, $target = $(this);  
             
             SandBox.load({
                 'obj' : obj,
@@ -5829,8 +5829,8 @@ de.bild.community = (function($, SandBox) {
             setupNotificationPopup();
             
             
-            
-            initialised = true;
+           initialised = true; 
+           
         }
         if(de.bild.community.comments) {
             de.bild.community.comments.init();
@@ -5861,6 +5861,7 @@ de.bild.community = (function($, SandBox) {
             de.bild.community.teaserComments.checkForTeaserComments($target);
         } 
         
+         
         
           
         /* Notifications initialises itsself
@@ -7118,7 +7119,7 @@ de.bild.community.comCenter = (function($,Community) {
     }  
    
 })(jQuery,de.bild.community)
-/*de.bild.community.follow:27210478.2*/
+/*de.bild.community.follow:27210478.3*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -7229,7 +7230,7 @@ de.bild.community.follow = (function($, Community) {
                                     //trigger promobox
                                     if(de.bild.sso) {
                                         jQuery.ajax({
-                                            url : Community.urls().promoLayer,
+                                            url : Community.urls().promoLayerFollow,
                                             cache : true
                                         }).done(function(data) {
                                             //close current LB
@@ -7994,7 +7995,7 @@ de.bild.community.lightboxForms = (function($,Community) {
     }
 
 })(jQuery, de.bild.community)
-/*de.bild.community.likeBtn:27210480.2*/
+/*de.bild.community.likeBtn:27210480.4*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -8003,6 +8004,7 @@ de.bild.community.likeBtn = (function($,Community) {
  var initialised = false;
  var $loadObj,likeClickTimeout;
  var promoLayerDisplayed = false;
+ var LikeCount = 0;
     function setupLikeButtonsEvents(){
         de.lib.live($contentWrapper, 'a.like', 'click', function(e){
             e.preventDefault();
@@ -8040,7 +8042,7 @@ de.bild.community.likeBtn = (function($,Community) {
                
                 if ($this.data('clickStatus')%2 === 1) {
                     $this.data('clickStatus',0);   
-                   
+                    LikeCount += 1;
                     $loadObj = Community.load({
                         'obj': obj,
                         'method': 'POST',
@@ -8050,13 +8052,11 @@ de.bild.community.likeBtn = (function($,Community) {
                             var likedata = $.cookie(Community.settings().anonLikes);                            
                             if(likedata) {
                                 var likedataObj = $.parseJSON(likedata);
-                                var count = 0;
-                                for(id in likedataObj) {
-                                    count++;
-                                }
-                                if(!promoLayerDisplayed && (count % 2 == 0) && !de.bild.sso.isLoggedIn()) {
+                                
+                                
+                                if(!promoLayerDisplayed && (LikeCount == 2) && !de.bild.sso.isLoggedIn()) {
                                     jQuery.ajax({
-                                        url : Community.urls().promoLayer,
+                                        url : Community.urls().promoLayer, 
                                         cache : true
                                     }).done(function(data) {
                                         //close current LB
@@ -9019,7 +9019,7 @@ de.bild.community.qotd = (function($, Community) {
     }   
     
 })(jQuery, de.bild.community) 
-/*de.bild.community.teaserComments:27210486.4*/
+/*de.bild.community.teaserComments:27210486.5*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -9135,6 +9135,7 @@ de.bild.community.teaserComments = (function($, Community) {
                     /* only if the element has more than 2 comments, otherwise delete it */
                     if ($elem.length && value > 0) {
                          //in some cases there is a <i>-Tag containing "kommentare" this shouldn't be replaced
+                         $elem.data('countLoaded',true);
                          $elem = $elem.find('i').length>0?$elem.find('em'):$elem;
                          $elem.text(value);
                          $elem.parents('div.ugcGroup, li.comment-count').addClass('active'); 
@@ -9155,7 +9156,10 @@ de.bild.community.teaserComments = (function($, Community) {
         var ugcs = jQuery('.ugcGroup a', $content)
         var json = {};
         ugcs.each(function() {
+            
             var $this = jQuery(this);
+            if($this.data('countLoaded')) return true;
+            
             var linkID = $this.attr('id');
             if(linkID) {
                 var tarr = linkID.split('_');

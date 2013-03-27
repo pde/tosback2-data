@@ -1,25 +1,18 @@
 (function() {
-	var vwindow = window;
-	var vdocument = document;
+	var vemba_referer = document.referrer;
+	var vemba_page = document.URL;
 
-	var zone = "10";
-	var width = "160";
-	var height = "600";
-
-	var referer = vdocument.referer;
-	var page = vdocument.URL;
-
-	if (referer === undefined) {
-		referer = '';
+	if (vemba_referer === undefined) {
+		vemba_referer = '';
 	} else {
-		referer = encodeURIComponent(referer);
+		vemba_referer = encodeURIComponent(vemba_referer);
 	}
 
-	if (page === undefined) {
-		page = '';
+	if (vemba_page === undefined) {
+		vemba_page = '';
 	} else {
-		page = encodeURIComponent(page);
+		vemba_page = encodeURIComponent(vemba_page);
 	}
 
-	document.writeln('<iframe width='+width+' height='+height+' marginwidth=0 marginheight=0 frameborder=0 border=0 scrolling=no src="http://i.vemba.com/'+zone+'?referer='+referer+'&page='+page+'"></iframe>');
+	document.writeln('<iframe width="160" height="600" marginwidth=0 marginheight=0 frameborder=0 border=0 scrolling=no src="http://i.vemba.com/10?referer='+vemba_referer+'&page='+vemba_page+'"></iframe>');
 })();
