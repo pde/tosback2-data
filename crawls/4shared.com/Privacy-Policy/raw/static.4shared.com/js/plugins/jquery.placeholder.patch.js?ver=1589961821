@@ -1,0 +1,118 @@
+/*
+* Placeholder plugin for jQuery
+* ---
+* Copyright 2010, Daniel Stocks (http://webcloud.se)
+* Released under the MIT, BSD, and GPL Licenses.
+*/
+
+//DO NOT REPLACE THIS PLUGIN WITH ANOTHER VERSION!!!!
+// AT LEAST BEFORE CHANGING CHECK HISTORY
+// CAUSE THIS PLUGIN CUSTOMIZED!!!
+(function($) {
+    if (typeof $.fn.placeholder === 'function') return
+    function Placeholder(input) {
+        this.input = input;
+        if (input.attr('type') == 'password') {
+            this.handlePassword();
+        }
+        // Prevent placeholder values from submitting
+        $(input[0].form).submit(function() {
+            if (input.hasClass('placeholder') && input[0].value == input.attr('placeholder')) {
+                input[0].value = '';
+            }
+        });
+    }
+    Placeholder.prototype = {
+        show : function(loading) {
+            // FF and IE saves values when you refresh the page. If the user refreshes the page with
+            // the placeholders showing they will be the default values and the input fields won't be empty.
+            if (this.input[0].value === '' || (loading && this.valueIsPlaceholder())) {
+                if (this.isPassword) {
+                    try {
+                        this.input.attr('type', 'text');
+                    } catch (e) {
+                        this.input.before(this.fakePassword.show()).hide();
+                    }
+                }
+                this.input.addClass('placeholder');
+                this.input[0].value = this.input.attr('placeholder');
+            }
+        },
+        hide : function() {
+            if (this.valueIsPlaceholder() && this.input.hasClass('placeholder')) {
+                this.input.removeClass('placeholder');
+                this.input[0].value = '';
+                if (this.isPassword) {
+                    try {
+                        this.input.attr('type', 'password');
+                    } catch (e) { }
+                    // Restore focus for Opera and IE
+                    this.input.show();
+                    if (this.input.is(':visible'))
+                        this.input[0].focus();
+                }
+            } else if (this.input.val()) {
+                this.input.show()
+            }
+        },
+        valueIsPlaceholder : function() {
+            return this.input[0].value === '' || this.input[0].value == this.input.attr('placeholder');
+        },
+        handlePassword: function() {
+            var input = this.input;
+            input.attr('realtype', 'password');
+            this.isPassword = true;
+            input.outerHTML()
+            var fakeHTML = $(input.outerHTML().replace(/type=(['"])?password\1/gi, 'type=$1text$1'));
+            fakeHTML.removeAttr('name');
+            fakeHTML.attr("id", "__" + fakeHTML.attr("id"));
+            this.fakePassword = fakeHTML.val(input.attr('placeholder')).addClass('placeholder').focus(function() {
+                input.trigger('focus');
+                $(this).hide();
+            });
+            $(input[0].form).submit(function() {
+                fakeHTML.remove();
+                input.show()
+            });
+        }
+    };
+    var NATIVE_SUPPORT = !!("placeholder" in document.createElement( "input" )) && (navigator.platform !== "BlackBerry");
+    $.fn.placeholder = function() {
+        return NATIVE_SUPPORT ? this : this.each(function() {
+            var input = $(this);
+            var placeholder = new Placeholder(input);
+            placeholder.show(true);
+            input.focus(function() {
+                placeholder.hide();
+            });
+            input.blur(function() {
+                placeholder.show(false);
+            });
+
+            // On page refresh, IE doesn't re-populate user input
+            // until the window.onload event is fired.
+            if ($.browser.msie) {
+                $(window).load(function() {
+                    if(input.val()) {
+                        input.removeClass("placeholder");
+                    }
+                    placeholder.show(true);
+                });
+                // What's even worse, the text cursor disappears
+                // when tabbing between text inputs, here's a fix
+                input.focus(function() {
+                    if(this.value == "") {
+                        var range = this.createTextRange();
+                        range.collapse(true);
+                        range.moveStart('character', 0);
+                        range.select();
+                    }
+                });
+            }
+        });
+    }
+})(jQuery);
+
+$(function() {
+    $("[placeholder]").not('.dynamicPlaceholder').placeholder()
+})

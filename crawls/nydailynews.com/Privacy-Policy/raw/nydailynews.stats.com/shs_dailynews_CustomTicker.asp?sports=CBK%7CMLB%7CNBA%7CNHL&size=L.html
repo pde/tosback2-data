@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    
+    <title>SHS Custom Ticker</title>
+    <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.smoothDivScroll-1.1.min.js"></script>
+    <script type="text/javascript" src="scripts/timezone.js"></script>
+    <script type="text/javascript" src="scripts/shs_dailynews_CustomTicker.js%3Fv=1"></script>
+    <link rel="stylesheet" type="text/css" href="styles/shs_dailynews_CustomTicker.css"/>
+    <script type="text/javascript">
+        var shsNYDNTicker = null;
+        $(document).ready(function() {
+            shsNYDNTicker = new SHS.CustomTicker({
+                sportsOrder: "CBK|MLB|NBA|NHL",
+                setTimeZone: "ET",
+                ajaxDataType: "jsonp",
+                dataRefresh: "60",
+                defaultTabisRegion: "",
+                //apiBasePath: "/",
+                apiBasePath: "http://nydailynews.stats.com/",
+                redahc: "xD4f9#",
+                tickerwrapwd: "770",
+                tickerdivwd: "650"
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div class="shs-customTickerWrapper">
+        <div class="shs-scrBx">
+			<div class="shs-scrBg"><div class="shs-scrMatch"></div><div class="shs-scrNameDivider"></div>
+			<div class="shs-scrName">
+			</div> 
+			<div class="shs-scrNameArrow"></div>
+			<div class="clr"></div>
+		</div>
+     </div>
+        <div class="shs_customTickerDv">
+            <div class="shs_leftBlockDv">
+                <div class="shs_sportNavDv">
+                    <div class="shs_sportNavDv_topNav">
+                        <!--Tabs-->
+                    </div>
+                </div>
+                <div id="shs_sportNavDv_botNav" class="shs_sportNavDv_botNav">
+                    <div class="scrollingHotSpotLeft"></div>
+                    <div class="scrollingHotSpotRight"></div>
+                    <div class="scrollWrapper">
+                        <div class="scrollableArea">
+                            <!--Score Boards-->
+                        </div>
+                    </div>
+                    <div class="clr"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clr"></div>
+    </div>
+</body>
+</html>

@@ -314,3 +314,11 @@ function hide_cabins(callee)
 	cabin_list.slideUp('normal', function(){cabin_list.empty()} );
 }
 
+var booking = {
+	changeFareCodeUrl: function(cabinType, oldFareCode){
+		var newFareCode = $('#changeFareCodeUrl').val();
+		var url = $('#fareCodeBookingUrl').val();
+		var redirect = url.replace(cabinType + '_' + oldFareCode, cabinType + '_' + newFareCode);
+		location.href = redirect;
+	}
+}

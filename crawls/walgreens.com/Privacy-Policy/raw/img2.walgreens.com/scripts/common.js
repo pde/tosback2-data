@@ -6,6 +6,10 @@ var offset = 5;
 var defOffSet = 5;
 var cStart;
 var pht=0;
+var restrict_domain = "walgreens.medhelp.ws"; // If planning to restrict all 3rd party sites, make this var as array
+var domaincheck=document.location.href; 
+var disableSessionTimeout=false;
+
 function initializePrescriptionRefil(){
     var pn_default = $('#prescription-number').val();
     $('#prescription-number').focus(function(){
@@ -143,12 +147,12 @@ function initializeZIP(){
 $(document).ready(function(){
 	if($.browser.msie){$('.pharmacy_ab, .photo_ab').corner('top')};	
     //Eternal Links
-	if($('#query')) {
+	if($('#query').length) {
 		var prestxt = 'Enter Prescription, Prescriber Name or RX #';
 		var winloc = window.location+'';
 		var showtext = '';
-		if(winloc.indexOf('webpickup')!=-1)showtext = 'Search your local store'; 
-		else showtext = 'Enter keyword or item #';
+		if(winloc.indexOf('webpickup')!=-1) showtext = "Search your local store"; 
+		else showtext = "Enter keyword or item #";
 		if($('#query').val()=='') {
 			$('#query').val(showtext);
 			$('#query').attr('style','color:#898989');
@@ -977,6 +981,14 @@ function sessionWarning(){
         win.focus();
     }
 }
+
+if (domaincheck.indexOf(restrict_domain)!= -1){ 
+	disableSessionTimeout = true;
+}
+if(disableSessionTimeout == false){	
+	sessionTimeout();
+}
+
 sessionTimeout();
 function clearTxt(field){
     if (field.value == field.id) {
@@ -1116,11 +1128,11 @@ function numValidation(evt, rxValue){
 			}).appendTo('body');
 			$('<span/>',{'style':'position:absolute;left:-1500px;top:0;width:1;height:1;overflow:hidden;'}).html("Beginning of dialog content").appendTo(wOverlay);
 			var wIframe = $('<iframe/>',{
-				'src':this.href,
+				'src':this.href,				
 				'tabindex':'-1',
 				'scrolling':'no',
 				'frameborder':0
-			}).appendTo(wOverlay).focus();
+			}).appendTo(wOverlay).focus();			
 			setTimeout( function() {
 				  $(wIframe).focus();
 				} , 500); 
@@ -1148,24 +1160,15 @@ function numValidation(evt, rxValue){
 				else{ 
 					newTop = currTop; 
 				}
-				if(document.getElementById('chatOption')){
+			
 				$("#wOverlay").css({
 					visibility: "visible",
 					width:newWidth+'px',
 					height:newHeight+'px',
-						left:"auto",
-						right:"20px",
-						top:newTop
-					});
-				}else{
-					$("#wOverlay").css({
-						visibility: "visible",
-						width:newWidth+'px',
-						height:newHeight+'px',
 					left:($(window).width() / 2) - (newWidth / 2)+$(window).scrollLeft(),
 					top:newTop
 				});
-				}
+				
 				$("#wOverlay").fadeIn('slow');
 				
 				checking = setInterval(function() { 
@@ -1185,6 +1188,12 @@ function numValidation(evt, rxValue){
 						 $("#wOverlay").animate({
 							 height:currHeight+'px',
 							 top:newTop
+						 }, function() {
+							 if($.browser.msie && $.browser.version=="6.0") {
+								 $("#wOverlay").css({
+									 overflow: "visible"
+								 });
+							 }
 						 });
 						 newTop = currHeight;
 						 clearInterval(checking);
@@ -1199,6 +1208,12 @@ function numValidation(evt, rxValue){
 							
 					});
 				});
+			$('a.MultiBoxClose').live("blur", function(){
+				$(wIframe).focus();
+			});
+			$(wIframe).live("blur", function(){
+				$("a.MultiBoxClose").focus();
+			});
 			return false;
 		});
 		$("a.MultiBoxClose").live("click", function(){
@@ -1215,6 +1230,7 @@ function numValidation(evt, rxValue){
 			$("#screen").fadeOut();
 			$("#wOverlay").fadeOut();
 		});
+		
 		$("#screen").live("click", function(){
 			var iframeSrc = $(this).parent().find('iframe').attr('src'); 
 			if((iframeSrc.indexOf('.flv'))!=-1){
@@ -1499,9 +1515,9 @@ $(document).ready(function () {
 	var currentSearchResults = '';
 	var listCount;
 	var $searchBox_new = $('#termAutoComp1 input.textfield');
-	$searchBox_new.data('oldVal', $searchBox_new);
+	$searchBox_new.data('oldVal', $('#termAutoComp1 input.textfield').val());
 	$searchBox_new.bind('propertychange keyup input paste', function(e){
-		var currentSearchValue = $searchBox_new.val();
+		var currentSearchValue = $('#termAutoComp1 input.textfield').val();
 				
 		if ($searchBox_new.data('oldVal') != currentSearchValue) {
 			$searchBox_new.data('oldVal', currentSearchValue);
@@ -2046,8 +2062,8 @@ $(document).ready(function () {
 			break;
 			
 			case 13: 
-				e.preventDefault();
-				$("#prescriptionName1").focus();
+				e.preventDefault();	
+			   $("#prescriptionName"+pres_count).focus();
 				$('#searchResultsBox_transfer'+pres_count).hide();				
 			break;
 		}
@@ -2545,7 +2561,13 @@ $(document).ready(function () {
 					$("#warnings-content").addClass('hide');
 					$("#ingredients-content").removeClass('hide');
 					});
-		  });
+		  });		
+		$().ready(function(){
+			$('#freeze1 .termAutoComp_tab #prescription_search').keydown(function(e){
+				if(e.which==9){$(this).blur();$('#pres_search').focusin()};
+			});
+		});
+		
 /* Added for IN-871 - contactus */
 function calcTextLimit(obj, maxCount, showCount){
 	var charText = obj.value;
@@ -2571,4 +2593,14 @@ function calcTextLimit(obj, maxCount, showCount){
 	else { document.getElementById("msg").style.color='Red';
 		document.getElementById("myCounter").style.color='Red'; }
 }
-(function(a){function l(a,b,c){switch(a){case"round":return Math.round(c*(1-Math.cos(Math.asin(b/c))))}}function k(b){while(b){var c=a.css(b,"backgroundColor"),d;if(c&&c!="transparent"&&c!="rgba(0, 0, 0, 0)"){if(c.indexOf("rgb")>=0){d=c.match(/\d+/g);return"#"+j(d[0])+j(d[1])+j(d[2])}return c}if(b.nodeName.toLowerCase()=="html")break;b=b.parentNode}return"#ffffff"}var b=document.createElement("div").style,c=b["MozBorderRadius"]!==undefined,d=b["WebkitBorderRadius"]!==undefined,e=b["borderRadius"]!==undefined||b["BorderRadius"]!==undefined,f=document.documentMode||0,g=a.browser.msie&&(a.browser.version<8&&!f||f<8),h=a.browser.msie&&function(){var a=document.createElement("div");try{a.style.setExpression("width","0+0");a.style.removeExpression("width")}catch(b){return false}return true}();a.support=a.support||{};a.support.borderRadius=c||d||e;a.fn.corner=function(b){if(this.length==0){if(!a.isReady&&this.selector){var f=this.selector,j=this.context;a(function(){a(f,j).corner(b)})}return this}return this.each(function(f){var j=a(this),m=[j.attr(a.fn.corner.defaults.metaAttr)||"",b||""].join(" ").toLowerCase(),n=/keep/.test(m),o=(m.match(/cc:(#[0-9a-f]+)/)||[])[1],p=(m.match(/sc:(#[0-9a-f]+)/)||[])[1],q=parseInt((m.match(/(\d+)px/)||[])[1])||10,r=/round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,s=(m.match(r)||["round"])[0],t=/dogfold|bevelfold/.test(m),u={T:0,B:1},v={TL:/top|tl|left/.test(m),TR:/top|tr|right/.test(m),BL:/bottom|bl|left/.test(m),BR:/bottom|br|right/.test(m)},w,x,y,z,A,B,C,D,E,F,G,H,I,J;if(!v.TL&&!v.TR&&!v.BL&&!v.BR)v={TL:1,TR:1,BL:1,BR:1};w=document.createElement("div");a(w).css({overflow:"hidden",height:"1px",minHeight:"1px",fontSize:"1px",backgroundColor:p||"transparent",borderStyle:"solid"});x={T:parseInt(a.css(this,"paddingTop"))||0,R:parseInt(a.css(this,"paddingRight"))||0,B:parseInt(a.css(this,"paddingBottom"))||0,L:parseInt(a.css(this,"paddingLeft"))||0};if(typeof this.style.zoom!=undefined)this.style.zoom=1;if(!n)this.style.border="none";w.style.borderColor=o||k(this.parentNode);y=a(this).outerHeight();for(z in u){A=u[z];if(A&&(v.BL||v.BR)||!A&&(v.TL||v.TR)){w.style.borderStyle="none "+(v[z+"R"]?"solid":"none")+" none "+(v[z+"L"]?"solid":"none");B=document.createElement("div");a(B).addClass("jquery-corner");C=B.style;A?this.appendChild(B):this.insertBefore(B,this.firstChild);if(A&&y!="auto"){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.bottom=C.left=C.padding=C.margin="0";if(h)C.setExpression("width","this.parentNode.offsetWidth");else C.width="100%"}else if(!A&&a.browser.msie){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.top=C.left=C.right=C.padding=C.margin="0";if(h){C.setExpression("width","this.parentNode.offsetWidth - "+D+'+ "px"')}else C.width="100%"}else{C.position="relative";C.margin=!A?"-"+x.T+"px -"+x.R+"px "+(x.T-q)+"px -"+x.L+"px":x.B-q+"px -"+x.R+"px -"+x.B+"px -"+x.L+"px"}for(E=0;E<q;E++){F=Math.max(0,l(s,E,q));G=w.cloneNode(false);G.style.borderWidth="0 "+(v[z+"R"]?F:0)+"px 0 "+(v[z+"L"]?F:0)+"px";A?B.appendChild(G):B.insertBefore(G,B.firstChild)}if(t&&a.support.boxModel){if(A&&g)continue;for(H in v){if(!v[H])continue;if(A&&(H=="TL"||H=="TR"))continue;if(!A&&(H=="BL"||H=="BR"))continue;I={position:"absolute",border:"none",margin:0,padding:0,overflow:"hidden",backgroundColor:w.style.borderColor};J=a("<div/>").css(I).css({width:q+"px",height:"1px"});switch(H){case"TL":J.css({bottom:0,left:0});break;case"TR":J.css({bottom:0,right:0});break;case"BL":J.css({top:0,left:0});break;case"BR":J.css({top:0,right:0});break}B.appendChild(J[0]);var K=a("<div/>").css(I).css({top:0,bottom:0,width:"1px",height:q+"px"});switch(H){case"TL":K.css({left:q});break;case"TR":K.css({right:q});break;case"BL":K.css({left:q});break;case"BR":K.css({right:q});break}B.appendChild(K[0])}}}}})};a.fn.corner.defaults={useNative:true,metaAttr:"data-corner"}})(jQuery)
+(function(a){function l(a,b,c){switch(a){case"round":return Math.round(c*(1-Math.cos(Math.asin(b/c))))}}function k(b){while(b){var c=a.css(b,"backgroundColor"),d;if(c&&c!="transparent"&&c!="rgba(0, 0, 0, 0)"){if(c.indexOf("rgb")>=0){d=c.match(/\d+/g);return"#FFFFFF";}return c}if(b.nodeName.toLowerCase()=="html")break;b=b.parentNode}return"#ffffff"}var b=document.createElement("div").style,c=b["MozBorderRadius"]!==undefined,d=b["WebkitBorderRadius"]!==undefined,e=b["borderRadius"]!==undefined||b["BorderRadius"]!==undefined,f=document.documentMode||0,g=a.browser.msie&&(a.browser.version<8&&!f||f<8),h=a.browser.msie&&function(){var a=document.createElement("div");try{a.style.setExpression("width","0+0");a.style.removeExpression("width")}catch(b){return false}return true}();a.support=a.support||{};a.support.borderRadius=c||d||e;a.fn.corner=function(b){if(this.length==0){if(!a.isReady&&this.selector){var f=this.selector,j=this.context;a(function(){a(f,j).corner(b)})}return this}return this.each(function(f){var j=a(this),m=[j.attr(a.fn.corner.defaults.metaAttr)||"",b||""].join(" ").toLowerCase(),n=/keep/.test(m),o=(m.match(/cc:(#[0-9a-f]+)/)||[])[1],p=(m.match(/sc:(#[0-9a-f]+)/)||[])[1],q=parseInt((m.match(/(\d+)px/)||[])[1])||10,r=/round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,s=(m.match(r)||["round"])[0],t=/dogfold|bevelfold/.test(m),u={T:0,B:1},v={TL:/top|tl|left/.test(m),TR:/top|tr|right/.test(m),BL:/bottom|bl|left/.test(m),BR:/bottom|br|right/.test(m)},w,x,y,z,A,B,C,D,E,F,G,H,I,J;if(!v.TL&&!v.TR&&!v.BL&&!v.BR)v={TL:1,TR:1,BL:1,BR:1};w=document.createElement("div");a(w).css({overflow:"hidden",height:"1px",minHeight:"1px",fontSize:"1px",backgroundColor:p||"transparent",borderStyle:"solid"});x={T:parseInt(a.css(this,"paddingTop"))||0,R:parseInt(a.css(this,"paddingRight"))||0,B:parseInt(a.css(this,"paddingBottom"))||0,L:parseInt(a.css(this,"paddingLeft"))||0};if(typeof this.style.zoom!=undefined)this.style.zoom=1;if(!n)this.style.border="none";w.style.borderColor=o||k(this.parentNode);y=a(this).outerHeight();for(z in u){A=u[z];if(A&&(v.BL||v.BR)||!A&&(v.TL||v.TR)){w.style.borderStyle="none "+(v[z+"R"]?"solid":"none")+" none "+(v[z+"L"]?"solid":"none");B=document.createElement("div");a(B).addClass("jquery-corner");C=B.style;A?this.appendChild(B):this.insertBefore(B,this.firstChild);if(A&&y!="auto"){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.bottom=C.left=C.padding=C.margin="0";if(h)C.setExpression("width","this.parentNode.offsetWidth");else C.width="100%"}else if(!A&&a.browser.msie){if(a.css(this,"position")=="static")this.style.position="relative";C.position="absolute";C.top=C.left=C.right=C.padding=C.margin="0";if(h){C.setExpression("width","this.parentNode.offsetWidth - "+D+'+ "px"')}else C.width="100%"}else{C.position="relative";C.margin=!A?"-"+x.T+"px -"+x.R+"px "+(x.T-q)+"px -"+x.L+"px":x.B-q+"px -"+x.R+"px -"+x.B+"px -"+x.L+"px"}for(E=0;E<q;E++){F=Math.max(0,l(s,E,q));G=w.cloneNode(false);G.style.borderWidth="0 "+(v[z+"R"]?F:0)+"px 0 "+(v[z+"L"]?F:0)+"px";A?B.appendChild(G):B.insertBefore(G,B.firstChild)}if(t&&a.support.boxModel){if(A&&g)continue;for(H in v){if(!v[H])continue;if(A&&(H=="TL"||H=="TR"))continue;if(!A&&(H=="BL"||H=="BR"))continue;I={position:"absolute",border:"none",margin:0,padding:0,overflow:"hidden",backgroundColor:w.style.borderColor};J=a("<div/>").css(I).css({width:q+"px",height:"1px"});switch(H){case"TL":J.css({bottom:0,left:0});break;case"TR":J.css({bottom:0,right:0});break;case"BL":J.css({top:0,left:0});break;case"BR":J.css({top:0,right:0});break}B.appendChild(J[0]);var K=a("<div/>").css(I).css({top:0,bottom:0,width:"1px",height:q+"px"});switch(H){case"TL":K.css({left:q});break;case"TR":K.css({right:q});break;case"BL":K.css({left:q});break;case"BR":K.css({right:q});break}B.appendChild(K[0])}}}}})};a.fn.corner.defaults={useNative:true,metaAttr:"data-corner"}})(jQuery)
+
+function showStoreLocToolTipTop(){
+	var strtooltip=$('#storeLocToolTip').clone(true);
+	strtooltip.attr('id','dynaToolTip'); 
+	$(".left-shadow").append(strtooltip); 
+	$("#dynaToolTip").css({'position':'absolute','left':210,'top':78}).show();  
+}
+function hideStoreLocToolTipTop(){
+	$('#dynaToolTip').hide().remove();
+}

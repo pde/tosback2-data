@@ -365,15 +365,15 @@ p.anchor span { margin:0 2px 0 2px; font-size: 100%;}
 p.anchor span.selectedLinkInd b { background-color:#96151D; border-bottom: medium none; color: #FFFFFF !important; padding:0 2px; font-weight: normal !important;}
 p.anchor span.selectedLink { background-color:transparent; border-bottom: medium none; color: #333 !important; padding:0 2px; font-weight: normal;}
 p.anchor span b a { padding:0 2px; font-weight: normal !important; text-decoration: disabled; background-color:transparent; }
-p.anchor span.disabled-text b { padding:0 2px; font-weight: normal; text-decoration: disabled; background-color:transparent; color: #B3B3B3 !important;}
+p.anchor span.disabled-text b, p.linkBar-default span b { padding:0 2px; font-weight: normal; text-decoration: disabled; background-color:transparent; }
 p.anchor span a:hover, p.anchor span a:visited:hover, p.anchor span a:active:hover, p.anchor span a:link:hover { text-decoration: none; }
-p.anchor span img { display:none; }
 .selectedLinkIndInternal img { display:none; }
 .selectedLinkIndInternal { background-color:#BBCF9D !important; border-bottom: medium none; color: #333333 !important; font-weight: normal !important; padding:0 2px;}
 .selectedLinkIndInternal b{font-weight: normal; }
 .selectedLinkInternal { background-color: #D3E0C5 !important; color: #333333 !important; padding:0 2px !important;}
 p.linkBar-navigator b {font-weight: normal }
 p.linkBar-default b {font-weight: normal }
+p.linkBar-default span.selectedLinkInd {color:#333;}
 p.linkBar-default span.selectedLinkInd img {display:none;}
 .linkBar {font:75% Arial,sans-serif; margin: 0 0 1em 0;}
 .linkBar span { margin:0 0px 0 0px; font-size: 100%; color:#B3B3B3;}
@@ -585,7 +585,7 @@ table.ntb {border-top: 0px !important}
 .localNav li.int-only a:link, .localNav li.int-only a:visited {background-color:#D5E5BC; }
 .localNav li.int-only a:hover, localNav li.int-only a:visited:hover {background-color:#FFF; }
 .localNav li.arPlanSponsor a.current, .localNav li.arPlanSponsor a.current:hover, .localNav li.arPlanSponsor a.current:visited, .localNav li.arPlanSponsor a.current:visited:hover {background-color:#CCCCCC; color:#333; }
-.localNav li.int-only a.current, .localNav li.int-only a.current:hover, .localNav li.int-only a.current:visited, .localNav li.int-only a.current:visited:hover {background-color:#F7F9E0; }
+.localNav li.int-only a.current, .localNav li.int-only a.current:hover, .localNav li.int-only a.current:visited, .localNav li.int-only a.current:visited:hover {background-color:#F7F9E0; color:#8D4900 }
 .cl-out {border-bottom: solid 1px; border-top: solid 2px; padding: 7px 0; margin-bottom: 15px;}
 .cl-out p, .cl-out h1, .cl-out h2, .cl-out h3, .cl-out form {padding: 0 5px;}
 .one p, .one ul, .one ol, .one dl, .two p, .two ul, .two ol, .two dl, .five p, .five ul, .five ol, .five dl {color:#333; background-color: transparent;}
@@ -734,8 +734,8 @@ html>body #util .fms ul li.trigger { padding-bottom: 0px; }
 .fm .scroll li { width: 137px !important; }
 .fm .scroll[class] li { width: 136px !important; }
 .clicker { margin-right: 0px; }
-.clicker ul li a.trigger:link, .clicker ul li a.trigger:visited { color: #00c; background-color: transparent; background-image: url(../images/icons/nav_dropdown.gif); background-position: 100% 0px; padding-left: 7px !important;}
-.clicker ul li a.trigger:hover, .clicker ul li a.trigger:visited:hover { background-image: url(../images/icons/nav_dropdown_hover.gif); background-color: #F5F8D9;}.fm b {padding-left: 3px;}
+.clicker ul li a.trigger:link, .clicker ul li a.trigger:visited { color: #333333; background-color: transparent; background-image: url(../images/icons/nav_dropdown.gif); background-position: 100% 0px; padding-left: 7px !important;}
+.clicker ul li a.trigger:hover, .clicker ul li a.trigger:visited:hover { background-image: url(../images/icons/nav_dropdown_hover.gif); background-color: #FFFFFF; }.fm b {padding-left: 3px;}
 .clicker b { padding-top: 1px; }
 .fm li.firstItem b {border-top-style: none;}
 .cl-out .fm { float: none; margin: 0 0 0 5px; padding: 0 0 5px 0;}
@@ -992,8 +992,8 @@ a.closeIcon:hover { background-position: -100px 0px; text-decoration: none; }
 .filterSearch li.selected .reset { float: right; }
 .filterSearch li.head { font: bold 110%/130% Arial,sans-serif; color:#333; background-color: transparent; padding: 5px 0px; border-top: 1px solid #EAEAEA; margin-top: 5px;}
 .filterSearch li.subitem { padding-left: 10px; }
-a.enableVisited:visited, .enableVisited a:visited { color:#3FADCC; background-color: transparent;}
-a.enableVisited:visited:hover, .enableVisited a:visited:hover { color:#600; background-color: transparent;}
+a.enableVisited:visited, .enableVisited a:visited { color:#997A59; background-color: transparent;}
+a.enableVisited:visited:hover, .enableVisited a:visited:hover { color:#96151D; background-color: transparent;}
 .floatColDiv { position: absolute; top: 0; visibility: hidden; z-index: 119; overflow: hidden}
 .floatColDiv[class] { position: fixed; }
 .floatColHiddenRow { visibility: hidden; border-width: 0px; height: 0px; overflow: hidden; }
@@ -2001,6 +2001,14 @@ div.vg-listGrid .x-grid3-row-selected { background: none !important; background-
 .vg-listGrid .sort-asc .x-grid3-sort-icon, .vg-listGrid .sort-desc .x-grid3-sort-icon  { display: inline; background-image: url(../images/ng/cbd/icons/nav_icons_ng_15_550.png); }
 .vg-listGrid .sort-asc .x-grid3-sort-icon { background-position: 1px -912px; }
 .vg-listGrid .sort-desc .x-grid3-sort-icon { background-position: 1px -905px; }
+.FOCContainerBegin { position: relative; z-index: 181; visibility: hidden; }
+.FOCTitle { position: absolute; width: 100%; z-index: 181; cursor: pointer; }
+.FOCFlyout { position: absolute; z-index: 182; }
+.FOCLabel_2 { position: relative; height: 100%; }
+.FOCDrop { position: absolute; z-index: 185; }
+.FOCTitleInit { position: relative; visibility: hidden; }
+.FOCContainerFacade { position: relative; z-index: 181; }
+.FOCTitleInitFacade { position: relative;}
 .nearGenComp .displayNone, .nearGenCompDone .displayNone, .nearGenCompReview .displayNone, .nearGenCompNoChange .displayNone, .nearGenCompLegend .displayNone { display: block !important; }
 .nearGenCompLegend .nearGenComp, .nearGenCompLegend .nearGenCompDone, .nearGenCompLegend .nearGenCompReview, .nearGenCompLegend .nearGenCompNoChange { padding: 3px; }
 .nearGenComp, .nearGenCompDone, .nearGenCompReview, .nearGenCompNoChange  {font-size: 10px; font-weight: bold; text-align: center; }

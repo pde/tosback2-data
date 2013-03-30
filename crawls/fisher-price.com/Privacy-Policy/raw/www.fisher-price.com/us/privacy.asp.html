@@ -421,8 +421,9 @@
 <input type="hidden" id="hdncountry" value="United States" />
 <input type="hidden" id="hdnlanguage" value="English" />
 <input type="hidden" id="hdnsiteSection" value="/privacystatement" />
+<!-- <input type="hidden" id="hdnsubType" value="" /> -->
 <input type="hidden" id="hdnsubType" value="" />
-<input type="hidden" id="hdnuserIPAddres" value="64.147.188.8" />
+<input type="hidden" id="hdnuserIPAddres" value="64.147.188.8, 10.61.194.156" />
 <input type="hidden" id="thdnCustomerId" value ="" />
 <input type="hidden" id="thdnpageTitle" value=""/>
 
@@ -492,15 +493,26 @@
     if (document.getElementById('thdnBrandName') != null) {
         Lbrand = document.getElementById('thdnBrandName').value;
     }
-    
+
     var PageId = "US:fp:Home";
+    var PageSubTypeValue = "";
+    var addToBagValue = '';
     if (szProductName == "") 
     {
-        
+        if ( ("Corporate Page" == "Corporate Page") || ("" == "NA"))
+        {
+            PageSubTypeValue = '';
+        }        
     }
     else 
     {
         PageId = PageId + ":" + szProductName;
+        addToBagValue = "Product Detail";
+
+        if ("Corporate Page" == "Brand Page") 
+        {
+            PageSubTypeValue = "Product Detail";
+        }
     }
     /*if (szProductName.length > 0) 
     {
@@ -510,6 +522,11 @@
     if (document.getElementById('hdnpageId') != null) 
     {
         document.getElementById('hdnpageId').value = PageId;
+    }
+
+    if (document.getElementById('hdnsubType') != null) 
+    {
+        document.getElementById('hdnsubType').value = PageSubTypeValue;
     }
 
     var searchReSultsCount = '';
@@ -528,11 +545,13 @@
         language_attr7: "English",                              // Dynamically Retrieved
         site_section_attr8: "/privacystatement",                         // Dynamically Retrieved
         page_name_attr9: Title,                         //  Dynamically Retrieved
-        page_type_attr10: "privacystatement",                         //  Dynamically Retrieved
-        page_subtype_attr11: "",                   //  Dynamically Retrieved
+        //page_type_attr10: "privacystatement",                         //  Dynamically Retrieved
+        page_type_attr10: "Corporate Page",
+        //page_subtype_attr11: "",                   //  Dynamically Retrieved
+        page_subtype_attr11:PageSubTypeValue,
         referring_url_attr12: "",                    //  Dynamically Retrieved
         requested_url_attr13: "http://www.fisher-price.com/en_US/privacystatement.html",                    //  Dynamically Retrieved
-        ip_address_attr14: "64.147.188.8",        //  Dynamically Retrieved       
+        ip_address_attr14: "64.147.188.8, 10.61.194.156",        //  Dynamically Retrieved       
         number_reviews_attr27: szProductReviews,
         average_review_rating_attr28: szProductRating,   
         search_type_attr29: "",                   
@@ -540,10 +559,10 @@
         registration_id2_attr15: "",
         product_id: szProductId,  //Dynamic
         product_name:szProductName,  //Dynamic
-        add_to_cart_method_attr17: "http://www.fisher-price.com/en_US/privacystatement.html",  //Dynamic
+        add_to_cart_method_attr17: addToBagValue,  //Dynamic
         color_attribute:"",  //Dynamic
         size_attribute:"",  //Dynamic
-        brand_attr20: "",
+        brand_attr20: "FP",
         product_sell_price_attr21:szProductSellingPrice,  //Dynamic
         product_base_price_attr22:szProductBasePrice,  //Dynamic
         product_inventory_status_attr25:szProductInventoryStatus,  //Dynamic
@@ -554,6 +573,6 @@
 
   <script type="text/javascript" src="../Resources/js/tealiumtag.js"></script>
   <script type="text/JavaScript" src="../Resources/js/CoreMetrixUpdate.js"></script>
-<!-- PHXWS29 -->
+<!-- PHXWS30 -->
 </body>
 </html>

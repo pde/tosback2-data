@@ -125,7 +125,8 @@ bam.extend({
 							s.prop11 = "";
 						}
 						s.prop56 = props.mw_counter ? props.mw_counter : "";
-						s.prop57 = props.mw_panels ? props.mw_panels : "";
+						//s.prop57 = props.mw_panels ? props.mw_panels : "";
+						s.prop57 = "";
 						s.prop58 = props.club ? props.club : "";
 						s.prop12 = props.compName ? props.compName : ""; 
 						s.prop4 = props.queryText ? props.queryText : ""; 
@@ -154,12 +155,15 @@ bam.extend({
 						s.prop9 = props.Open ? props.Open : "";
 						s.prop10 = props.mwContentId ? props.mwContentId : "";
 						s.eVar19 = s.prop10;
-						s.prop46 = props.linkOrigin ? props.linkOrigin : "";
-						if (props.actionGen == true) {
+						//s.prop46 = props.linkOrigin ? props.linkOrigin : "";
+						s.prop46 = "";
+						/*if (props.actionGen == true) {
 							s.prop15 = "User Generated";
 						} else {
 							s.prop15 = "System Generated";
 						}
+						*/
+						s.prop15 = "";
 						if (omJson.callback) {
 							omJson.callback();
 						}								
@@ -183,11 +187,12 @@ bam.extend({
 						s.pageName = "";
 						s.prop13 = "";
 						s.prop14 = props.compActivity ? props.compActivity : "";
-						if (props.actionGen == true) {
+						/*if (props.actionGen == true) {
 							s.prop15 = "User Generated";
 						} else {
 							s.prop15 = "System Generated";
-						}
+						}*/
+						s.prop15 = "";
 						if (omJson.callback) {
 							omJson.callback();
 						}								
@@ -208,16 +213,18 @@ bam.extend({
 					s.eVar13 = props_media.playerContext ? props_media.playerContext : "";
          			s.prop28 = props_media.contextVersion ? props_media.contextVersion : "";
          			s.prop29 = props_media.streamType ? props_media.streamType : "";
-         			s.prop30 = props_media.bitRate ? props_media.bitRate : "";
+         			s.prop30 = props_media.videoTitle ? props_media.videoTitle : "";
+         			s.prop32 = props_media.videoIndex ? props_media.videoIndex: "";
 					//s.prop31 = props_media.ipid ? props_media.ipid : "";
 					s.prop31 = (typeof (_uidn) !== "undefined") ? _uidn : "";
-					if (props_media.actionGen === true) {
+					/*if (props_media.actionGen === true) {
 						s.prop32 = "User Generated";
 					} else {
 						s.prop32 = "System Generated";
-					}
-					s.prop33 = props_media.sequenceID ? props_media.sequenceID : "Not Available";
-					s.prop34 = props_media.cdn ? props_media.cdn : "Not Available";
+					}*/
+					//s.prop33 = props_media.sequenceID ? props_media.sequenceID : "Not Available";
+					//s.prop34 = props_media.cdn ? props_media.cdn : "Not Available";
+					s.prop33 = s.prop34 = "";
          			s.prop40 = props_media.postRoll ? props_media.postRoll: "";
 					s.prop43 = props_media.playerFlavor ? props_media.playerFlavor : "";
 					/*if ((props_media.playerContext == "Media Player") && ((props_media.contextVersion == "3.1") || (props_media.contextVersion == "4.0"))){
@@ -243,7 +250,8 @@ bam.extend({
 						s.eVar17 = props.feature ? props.feature : ""; //feature that forced the login
 						//possible values: Gameday Audio, Video Access or Premium Stats
 						s.eVar11 = _uidn ? _uidn : "";
-						s.prop44 = props.conversionAction ? props.conversionAction : "";
+						//s.prop44 = props.conversionAction ? props.conversionAction : "";
+						s.prop44 = "";
 						
 						if (omJson.callback) {
 							omJson.callback();
@@ -400,7 +408,7 @@ bam.extend({
 					s.prop2 = s.prop56 = s.prop57 = "";
 					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "";
-					s.prop16 = sve.isVideo ? sve.isVideo : "";
+					s.prop12 = sve.isVideo ? "MP4: " + sve.isVideo : "";
 					
 					if (omJson.callback) {
 							omJson.callback();
@@ -416,7 +424,7 @@ bam.extend({
 					s.prop2 = s.prop56 = s.prop57  =  "";
 					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.events = "";
-					s.prop17 = sp.pageNum ? sp.pageNum : "";
+					s.prop14 = sp.pageNum ? "MP4: " + sp.pageNum : "";
 					
 					if (omJson.callback) {
 							omJson.callback();
@@ -456,10 +464,10 @@ bam.extend({
 					s.tl(callingObj,'o',s.prop44);
 				} else if (s.prop45) {
 					s.tl(callingObj,'o',s.prop45);
-				} else if (s.prop16) {
-					s.tl(callingObj,'o',s.prop16);
-				} else if (s.prop17) {
-					s.tl(callingObj,'o',s.prop17);
+				} else if (s.prop12) {
+					s.tl(callingObj,'o',s.prop12);
+				} else if (s.prop14) {
+					s.tl(callingObj,'o',s.prop14);
 				} else if (s.prop27) {
 					s.tl(callingObj,'o',s.prop27);
 				} else if (s.eVar23) {

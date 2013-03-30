@@ -1000,7 +1000,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "03/27/2013 08:13 AM",
+            DATE_IN_USE: "03/30/2013 08:08 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -4280,31 +4280,6 @@ reportingService.controller.appManagers.searchAppManager.getSiteSearchActiveKeyw
 </script>
 <!-- End CNOV-45 -->
 
-
-
-<!-- GCO (Guest Checkout) override -->
-<script type="text/javascript">
-var gcoURL = document.location.hostname;
-	Event.observe(document, "dom:loaded", function () {
-	if (gcoURL.indexOf("m.") < 0) {
-		clientStateManagementService.api.persist('gcoMode', 'seg', "A");
-	} else {
-		clientStateManagementService.api.persist('gcoMode', 'seg', "C");
-	}
-	  if ($("registrationSaveInfoContainer")){
-		$("registrationSaveInfoContainer").update('<div class="gcoContent" id="gcoTempContent"><div style="width:401px;height:70px;">Creating an account offers several benefits:<br>&nbsp;&nbsp;&nbsp;&nbsp;-Faster checkout<br>&nbsp;&nbsp;&nbsp;&nbsp;-Easy access to order history<br>&nbsp;&nbsp;&nbsp;&nbsp;-Signs you in to all Gap, Inc. websites<br></div></div>');
-	  }
-	  if ($("completeRegistrationTitle")) {
-	  	$("completeRegistrationTitle").update("Save your information (Optional)");
-	  }	
-	});	
-
-	if (window['browserService']) {
-		browserService.controller.managers.mobileBrowserManager.model.isMobileProxyActive = true;
-	}
-</script>
-<!-- GCO (Guest Checkout) override end -->
-
 <!-- END Content Item File: /content/0006/278/864/cn6278864.html -->
 
 <!-- END - WCD Sitewide Container 3 -->
@@ -4675,7 +4650,7 @@ if( window["shippingOptionsService"] ) {
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/368/881/cn6368881.html -->
+<!-- BEGIN Content Item File: /content/0006/334/443/cn6334443.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
@@ -4687,37 +4662,26 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/031413_ADU_BoyfriendShirt_MOBMAIN_US.jpg",
-				"url" : "http://m.gap.com/browse/category.do?cid=91919&mlink,6368881,MOB_Main_W&clink=6368881"
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/443/assets/032813_ALL_XC-Easter-Event_MOBILE_US.gif",
+				"command" : "displayOverlay",
+				"parameters" : { "path":"http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/443/assets/skinny_popup.html" }
 			}
-		],
-		"skinnyBanner":
-		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/25off_MOBAN_US.gif",
-			"command" : "displayOverlay",
-			"parameters" : { "path":"http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/skinny_popup.html" }
-		}
+		]
   	},
 	  	
 	"global" : 
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/443/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/edfs_popup.html" }
-		},
-		"skinnyBanner":
-		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/25off_MOBAN_US.gif",
-			"command" : "displayOverlay",
-			"parameters" : { "path":"http://www.gap.com/Asset_Archive/GPWeb/content/0006/368/881/assets/skinny_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/443/assets/edfs_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/368/881/cn6368881.html -->
+<!-- END Content Item File: /content/0006/334/443/cn6334443.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
@@ -5168,360 +5132,331 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 12 -->
 
 <!-- BEGIN - WCD Sitewide Container 13 -->
-<!-- BEGIN Content Item File: /content/0006/248/990/cn6248990.html -->
-
-<!-- CIID:6248990 GP QuickLooks AB-Test 030713-032713-->
-<script type="text/javascript">
-
-//Begin QuickLooks AB test  - 03_07_2013 to 03_27_2013
-
-var UniversalCookieCutterQL_AB03072013 = Class.create();
-UniversalCookieCutterQL_AB03072013.prototype = {
-	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-		this.EvarToUse = theEvar != "" ? theEvar : false;
-		this.CookieVariableName = CookieVarName;
-		this.CookieUsed = CookieUsedName;
-		this.CookieValueBase = CookieValueBase;
-		this.SegBreakdown = SegmentBreakdown.split("-");
-		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.QuickSegment = '';
-		this.piperlimeException = plExcept;
-		this.userNeedsSync = false;
-		this.ForcedModeBase = ForcedModeBaseName;
-		this.ModeArrayIndex = this.SegBreakdown.length;
-		this.modeArray = new Array();
-		this.modeArray[0] = "a";
-		this.modeArray[1] = "b";
-		this.modeArray[2] = "c";
-		this.modeArray[3] = "d";
-		this.modeArray[4] = "e";
-		this.modeArray[5] = "f";
-		this.modeArray[6] = "g";
-		
-		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-			this.forcedMode();
-		}else{
-			this.cookieScanner();
-		}
-	},
-	forcedMode:function() {
-		for (i = 0; i < this.ModeArrayIndex; i++) {
-			if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-		userNeedsSync = true;
-	},
-	cookieScanner:function() {
-		if (this.DoesTheCookieExist) {
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.RetrievedCookieValue);
-			}
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				}
-			}
-		} else {
-			this.tagManager();
-		}
-	},
-	tagManager:function() {
-		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-		this.FloorThreshold = 0;
-		this.TopThreshold = 0;
-		
-		for (i = 0; i < this.ModeArrayIndex; i++){
-			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-				break;
-			} else {
-				this.FloorThreshold = this.TopThreshold;
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-	},
-	
-	setABTestVariable: function(setValue) {
-		thisEvar = 'eVar' + this.EvarToUse;
-		ABTestVariables[thisEvar] = setValue;
-	}
-};
-
-var promoCookieCutter = new UniversalCookieCutterQL_AB03072013("QL_AB03072013","mktUniversalPersist","QL_AB03072013Placement_SEG","quickLookTest","50-50","41","none");
-	function VolControlQL_AB03072013() {
-		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "QL_AB03072013");
-		
-		//SEGA &quickLookTest=a
-		if( VolControlSegment == "QL_AB03072013Placement_SEGA" ) {
-			
-			var sideNavIsTrueQL_AB03072013 = ['/browse/category.do','/browse/categorySearch.do','/browse/search.do','/browse/product.do']; // only on category, product (for cross sells) and search pages
-					
-					if (sideNavIsTrueQL_AB03072013.include(location.pathname)){
-					
-					   	quickLook.openQuickLookLauncher = quickLook.openQuickLookLauncher.wrap (function() {return false;});
-					
-					}	
-		
-		}
-				
-	
-		//SEGB &quickLookTest=b
-		//if( VolControlSegment == "QL_AB03072013Placement_SEGB" ) {}
-		
-	}//end
-	
-	Event.observe(window, "load", function() {
-	VolControlQL_AB03072013();
-});
-
-//End QuickLooks AB test  - 03_07_2013 to 03_27_2013
-
-</script>
-
-<!-- END Content Item File: /content/0006/248/990/cn6248990.html -->
 
 <!-- END - WCD Sitewide Container 13 -->
 
 <!-- BEGIN - WCD Sitewide Container 14 -->
 <!-- BEGIN Content Item File: /content/0006/368/804/cn6368804.html -->
 
+<!-- CNOV-39: Pre A/B test for Mobile checkout [13.022] / JMM @ 3-7-13 -->
+<!-- GCO (Guest Checkout) override -->
+<script type="text/javascript">
+
+(function(options) {
+
+    if (!window['browserService']) return;
+    
+    function getDomain() {
+        var hostArray = window.location.host.split(':')[0].split('.');
+        if (hostArray.length < 2) return null;
+
+        var domain = '.' + hostArray.slice(hostArray.length - 2).join('.');
+        return domain;
+    }
+
+    function writeCookie(name, value, expirationDate) {
+        var domain = getDomain();
+        document.cookie = name + "=" + value +
+            (expirationDate ? ("; expires=" + expirationDate) : '') + //new Date(gidLib.getFutureDate({weeks: 24})).toGMTString() +
+            "; path=/" +
+            (domain ? ("; domain=" + domain) : '');
+    }
+
+    function isMobileBrowserWithProxyDisabled() {
+        var mobileBrowserManager = browserService.controller.managers.mobileBrowserManager;
+        var mobileManagerModel = mobileBrowserManager.model;
+        var controller = mobileBrowserManager.controller;
+
+        controller.setRedirectBasedOnUserAgent(mobileManagerModel);
+        controller.isMobileBrowserToRedirect();
+        controller.isDesktopSiteActive();
+
+        var isMobileBrowser = mobileManagerModel.isMobileBrowser;
+        var isMobileProxyActive = mobileManagerModel.isMobileProxyActive;
+
+        return !isMobileProxyActive && isMobileBrowser;
+    }
+
+    var isMobileDomain = window.location.host.indexOf('m.') >= 0;
+    var isCheckoutPath = window['browserService'] && browserService.controller.managers.mobileBrowserManager.controller.isCheckoutPath();
+    var isShoppingBag = location.pathname.indexOf("/buy/shopping_bag") >= 0 && window['shoppingBag'];
+    var shouldApplyABCode = isMobileBrowserWithProxyDisabled() && (isShoppingBag || isCheckoutPath);
+
+    function updateGuestCheckoutDom() {
+        Event.observe(document, "dom:loaded", function () {
+            var reservationContainer = $("registrationSaveInfoContainer");
+            var registrationTitle = $("completeRegistrationTitle");
+            if (reservationContainer){
+                reservationContainer.update('<div class="gcoContent" id="gcoTempContent"><div style="width:401px;height:70px;">Creating an account offers several benefits:<br>&nbsp;&nbsp;&nbsp;&nbsp;-Faster checkout<br>&nbsp;&nbsp;&nbsp;&nbsp;-Easy access to order history<br>&nbsp;&nbsp;&nbsp;&nbsp;-Signs you in to all Gap, Inc. websites<br></div></div>');
+            }
+            if (registrationTitle) {
+                registrationTitle.update("Save your information (Optional)");
+            }   
+        }); 
+    }
+
+    function fixGidLibPopupCode() {
+        if (!(window['gidLib'] && gidLib.layeredPopup)) return;
+
+        function popupCloseFixed(old) { 
+        	var popup = jQuery('div #popupContent');
+            if (popup && popup.children()[0]
+            	&& popup.children()[0].id.indexOf('contentItemContainer') >= 0) { 
+                return false; 
+            } else { return old(); } 
+        }
+        gidLib.layeredPopup.closeLayeredPopup = gidLib.layeredPopup.closeLayeredPopup.wrap(popupCloseFixed);
+    }
+
+    function handleGCO() {
+        if (shouldApplyABCode || isMobileDomain) {
+            writeCookie('gcoMode', 'seg%3DC');
+        } else {
+            writeCookie('gcoMode', 'seg%3DA');
+            updateGuestCheckoutDom();
+        }
+    }
+    
+    handleGCO();
+    if (!shouldApplyABCode) return;
+
+    function replaceGetCookieVar() {
+        var oldGetCookieVar = gidLib.getCookieVar;
+        gidLib.getCookieVar = function(name, varName) {
+            var shouldUseNewWay = name === 'mktUniversalPersist' && varName === options.abVarName;
+
+            if (shouldUseNewWay) {
+                return gidLib.getCookie(options.mobileProxyCookieName);
+            }
+
+            return oldGetCookieVar(name, varName);
+        }
+    }
+
+    function replaceSessionId() {
+        var sessionId = gidLib.getCookie('SKAVAJSESSION');
+        if (sessionId && sessionId.length > 2) {
+            writeCookie('JSESSIONID', sessionId);
+        }
+    }
+	
+    function fixPromoPopupCheckout() {
+    	Event.observe(document, 'order:ready', function() {
+        if (!window['checkout']) return;
+        checkout.controller.modules.billing.promotions.openPromoDetailsPopUp = function openPromoDetailsPopUpResponsive(promotionID){
+             window.open('/buy/promo_legal_details.do?promoId=' + promotionID, "_blank", "location=0,menubar=0,toolbar=0");
+        };});
+    }
+
+    function fixLogoLinkAndTopNavOnCheckout() {
+        var logo = jQuery('#gm_headerlogo');
+        if (!logo) return;
+        logo.click(function() { 
+            window.location = browserService.controller.managers.mobileBrowserManager.model.currentBusinessUnitMobileUrl;
+        });
+
+        if (!(window['responsiveService'] && responsiveService.constructors.OrderConfirmPageManager)) return;
+        if (responsiveService.api.isMobile()) {     
+            jQuery('#topNav').hide();
+
+            var orderConfirmViewManager = reportingService.controller.viewManagers.orderConfirmViewManager;
+
+            if (orderConfirmViewManager) {
+                orderConfirmViewManager.controller.setReportModel =
+                    orderConfirmViewManager.controller.setReportModel.wrap(function(old) {
+                        old();
+                        var omniAccount = orderConfirmViewManager.model.sAccount;
+                        var brandMobileSuite = reportingService.controller.reportingManager.brandMobileReportSuites.brandSuites[gidBrandSiteConstruct.currentBrandCode];
+                        if (responsiveService.api.isMobile() && brandMobileSuite &&
+                            omniAccount.indexOf(brandMobileSuite) <0) {
+                            orderConfirmViewManager.model.sAccount = orderConfirmViewManager.model.sAccount + ',' + brandMobileSuite; 
+                        }
+                        
+                    });  
+            }
+        }
+    }
+
+	if (!isMobileDomain) {
+		fixGidLibPopupCode();
+    	replaceSessionId();
+    	replaceGetCookieVar();
+
+    	if (isCheckoutPath) {
+        	fixPromoPopupCheckout();
+        	Event.onDOMReady(fixLogoLinkAndTopNavOnCheckout);
+    	}
+	}
+	
+
+    var MobileProxyCookieCutter = Class.create();
+    MobileProxyCookieCutter.prototype = {
+        initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+            this.EvarToUse = theEvar != "" ? theEvar : false;
+            this.CookieVariableName = CookieVarName;
+            this.CookieUsed = CookieUsedName;
+            this.CookieValueBase = CookieValueBase;
+            this.SegBreakdown = SegmentBreakdown.split("-");
+            this.DoesTheCookieExist = gidLib.getCookie(this.CookieUsed);
+            this.RetrievedCookieValue = gidLib.getCookie(this.CookieUsed);
+            this.QuickSegment = '';
+            this.piperlimeException = plExcept;
+            this.userNeedsSync = false;
+            this.ForcedModeBase = ForcedModeBaseName;
+            this.ModeArrayIndex = this.SegBreakdown.length;
+            this.modeArray = new Array();
+            this.modeArray[0] = "a";
+            this.modeArray[1] = "b";
+            this.modeArray[2] = "c";
+            this.modeArray[3] = "d";
+            this.modeArray[4] = "e";
+            this.modeArray[5] = "f";
+            this.modeArray[6] = "g";
+            
+            if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+                this.forcedMode();
+            }else{
+                this.cookieScanner();
+            }
+        },
+
+        writeSegment: function() {
+            writeCookie(this.CookieUsed, this.UserSegment, new Date(gidLib.getFutureDate({weeks: 24})).toGMTString());
+            if (this.EvarToUse) {
+                this.setABTestVariable(this.UserSegment);
+            }
+        },
+
+        forceSegment: function(seg) {
+            this.UserSegment = this.CookieValueBase + seg.toUpperCase();
+            this.QuickSegment = seg.toUpperCase();
+        },
+
+        forcedMode:function() {
+            if (isMobileDomain && isCheckoutPath) {
+                this.forceSegment('a');
+            } else if (!isMobileDomain && isCheckoutPath) {
+                this.forceSegment('b');
+            } else {
+                for (i = 0; i < this.ModeArrayIndex; i++) {
+                    if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+                        this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+                        this.QuickSegment = this.modeArray[i].toUpperCase();
+                    }
+                }  
+            }
+            
+            this.writeSegment();
+            userNeedsSync = true;
+        },
+
+        cookieScanner:function() {
+            if (this.DoesTheCookieExist) {
+                if (this.EvarToUse) {
+                    this.setABTestVariable(this.RetrievedCookieValue);
+                }
+
+                for (i = 0; i < this.ModeArrayIndex; i++) {
+                    if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+                        this.QuickSegment = this.modeArray[i].toUpperCase();
+                        break;
+                    }
+                }
+            } else {
+                this.tagManager();
+            }
+        },
+
+        setRandomSegment: function() {
+            this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+            this.FloorThreshold = 0;
+            this.TopThreshold = 0;
+            
+            for (i = 0; i < this.ModeArrayIndex; i++){
+                this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+                if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+                    this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+                    this.QuickSegment = this.modeArray[i].toUpperCase();
+                    break;
+                } else {
+                    this.FloorThreshold = this.TopThreshold;
+                }
+            }
+        },
+
+        tagManager:function() {
+            if (isMobileDomain && isCheckoutPath) {
+                this.forceSegment('a');
+            } else if (!isMobileDomain && isCheckoutPath) {
+                this.forceSegment('b');
+            } else {
+                this.setRandomSegment();
+            }
+
+            this.writeSegment();
+        },
+        
+        setABTestVariable: function(setValue) {
+            thisEvar = 'eVar' + this.EvarToUse;
+            ABTestVariables[thisEvar] = setValue;
+        }
+    };
+
+    new MobileProxyCookieCutter(
+        options.abVarName, options.mobileProxyCookieName, options.abSegPrefix, options.forceModeName,
+        options.distribution, options.evar, options.plExcept);
+
+    if (!isShoppingBag) return;
+
+    var MobileProxyTestBuilder = function(options) {
+
+        this.checkoutButtonHandlerHelper = function() {
+            if(!(reportingService||{}).isActive) {
+                omni.setIsFirstCheckoutPage();
+            }
+            else {
+                reportingService.controller.viewManagers.shoppingBagViewManager.model.setIsFirstCheckoutPage();
+            }
+
+            var checkoutPath = '/checkout/order.do';
+                    
+            if(gidLib.getCookie(options.mobileProxyCookieName) == "mobileProxy_SEGB") {
+                checkoutPath = gidBrandSiteConstruct.gidBrandSites[gidBrandSiteConstruct.currentBrandCode].unsecureUrl
+                    + '/checkout/order.do';
+            }
+            window.location = checkoutPath;
+        };
+
+        this.handleShoppingBag = function() {
+            shoppingBag.controller.checkoutManager.checkoutButtonHandlerHelper = this.checkoutButtonHandlerHelper;
+        };
+
+        this.execute = function() {
+            this.handleShoppingBag();
+        }
+    };
+
+    var mobileProxyAB = new MobileProxyTestBuilder(options);
+    mobileProxyAB.execute();
+    
+})({
+    mobileProxyCookieName: 'mobileProxyCheckout05RAMP',
+    abVarName: 'mobileProxyAB',
+    abSegPrefix: "mobileProxy_SEG",
+    forceModeName: "proxyForceMode",
+    distribution: "95-5",
+    evar: '36',
+    plExcept: 'none'
+});
+
+</script>
+<!-- END CNOV-39 -->
 
 <!-- END Content Item File: /content/0006/368/804/cn6368804.html -->
 
 <!-- END - WCD Sitewide Container 14 -->
 
 <!-- BEGIN - WCD Sitewide Container 15 -->
-<!-- BEGIN Content Item File: /content/0006/232/725/cn6232725.html -->
-
-<script type="text/javascript">
-//////////////////////////////////////////////////
-///////  Pinterest A/B Test  - 03.12.13 ///////////////
-/////// Ginger Neece  /////////////
-//////////////////////////////////////////////////
-var UniversalCookieCutter6237770 = Class.create();
-UniversalCookieCutter6237770.prototype = {
-	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-		this.EvarToUse = theEvar != "" ? theEvar : false;
-		this.CookieVariableName = CookieVarName;
-		this.CookieUsed = CookieUsedName;
-		this.CookieValueBase = CookieValueBase;
-		this.SegBreakdown = SegmentBreakdown.split("-");
-		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.QuickSegment = '';
-		this.piperlimeException = plExcept;
-		this.userNeedsSync = false;
-		this.ForcedModeBase = ForcedModeBaseName;
-		this.ModeArrayIndex = this.SegBreakdown.length;
-		this.modeArray = new Array();
-		this.modeArray[0] = "a";
-		this.modeArray[1] = "b";
-		this.modeArray[2] = "c";
-		this.modeArray[3] = "d";
-		this.modeArray[4] = "e";
-		this.modeArray[5] = "f";
-		this.modeArray[6] = "g";
-		
-		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-			this.forcedMode();
-		}else{
-			this.cookieScanner();
-		}
-	},
-
-	forcedMode:function() {
-		for (i = 0; i < this.ModeArrayIndex; i++) {
-			if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-
-		userNeedsSync = true;
-	},
-
-	cookieScanner:function() {
-		if (this.DoesTheCookieExist) {
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.RetrievedCookieValue);
-			}
-
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				}
-			}
-		} else {
-			this.tagManager();
-		}
-	},
-
-	tagManager:function() {
-		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-		this.FloorThreshold = 0;
-		this.TopThreshold = 0;
-		
-		for (i = 0; i < this.ModeArrayIndex; i++){
-			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-				break;
-			} else {
-				this.FloorThreshold = this.TopThreshold;
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-	},
-	
-	setABTestVariable: function(setValue) {
-		thisEvar = 'eVar' + this.EvarToUse;
-		ABTestVariables[thisEvar] = setValue;
-	}
-};
-
-var pinterestCookieCutter = new UniversalCookieCutter6237770("31213PinterestAB","mktUniversalPersist","31213PinterestAB_SEG","forcedModePinterest","50-50","24","none");
-
-	function PinterestABTestMain() {
-
-		var PinterestSegment = gidLib.getCookieVar("mktUniversalPersist", "31213PinterestAB");
-		
-		//SEGA &forcedModePinterest=a
-		if( PinterestSegment == "31213PinterestAB_SEGA" ) {
-			insert_pinIt_Btn();
-		}
-				
-		
-		//SEGB &forcedModePinterest=b
-		if( PinterestSegment == "31213PinterestAB_SEGB" ) {
-			//do nothing
-		}
-	}//end
-
-if (location.pathname == "/browse/product.do") {	
-	Event.observe(document, 'productPage:ready', function(){
-		PinterestABTestMain();
-	});
-}	
-</script>
-
-
-<script type="text/javascript">
-var pinItStr;
-var pinItDiv;
-var pinDesc;
-var pinMedia;
-var pinURL;
-var pinItDivStr;
-
-
-var insert_pinIt_Btn = function() {
-	if ($('fb_like') && !$('pinItDiv'))
-	{
-		jQuery("#fb_like").css({ "margin-left" : "45px", "overflow" : " hidden", "width" : "200px", "margin-top" : "-22px"});
-		pinURL = encodeURIComponent(window.location.href);
-
-		if ($('product_image')){
-			pinMedia = encodeURIComponent($('product_image').src);
-		}
-		if ($('productNameText')){
-			pinDesc = jQuery('.productName').html();
-			//pinDesc = $('productNameText').textContent;
-		}
-		if (jQuery('.description').length > 0){
-			if (jQuery('.description').html() != ''){
-				pinDesc = pinDesc + ' - ' + jQuery('.description').html();
-				//pinDesc = pinDesc + ' - ' + $('quickLookProductDescription').textContent;
-			}		
-		}
-		pinDesc = encodeURIComponent(pinDesc);
-		
-		pinItStr = 'http://pinterest.com/pin/create/button/?url=' + pinURL + '&media=' + pinMedia + '&description=' + pinDesc;
-	
-		pinItDiv = new Element('div', {id:'pinItDiv'});
-		pinItDivStr = '<a href="javascript:void(0);"><img src="http://www.gap.com/Asset_Archive/ATWeb/content/0006/237/770/assets/builder_pinit.png" onclick="window.open(pinItStr,\'pinIt\',\'toolbar=0,status=0,width=620,height=500\');"></a>';
-		pinItDiv.update( pinItDivStr );
-		$('fb_like').insert({ before:pinItDiv });
-
-		Event.observe(colorSwatchContent, "click", updatePinIt);
-		Event.observe(pinItDiv, "click", pinItTracking);
-	}	
-}
-
-var updatePinIt = function() {
-	pinURL = window.location.href;
-	if (pinURL.indexOf("pid=") > 0){
-		pinURL = pinURL.substring(0,pinURL.indexOf("pid=") + 4);
-		pinURL = pinURL + productPage.objV.arrayVariantStyleColors[productPage.selectedColor].strColorCodeId;
-	}
-	pinURL = encodeURIComponent(pinURL);
-	if ($('product_image')){
-		pinMedia = encodeURIComponent($('product_image').src);
-	}
-	if ($('productNameText')){
-		pinDesc = jQuery('.productName').html();
-	}
-	if (jQuery('.description').length > 0){
-		if (jQuery('.description').html() != ''){
-			pinDesc = pinDesc + ' - ' + jQuery('.description').html();
-		}		
-	}
-	pinDesc = encodeURIComponent(pinDesc);
-	pinItStr = 'http://pinterest.com/pin/create/button/?url=' + pinURL + '&media=' + pinMedia + '&description=' + pinDesc;
-	pinItDivStr = '<a href="javascript:void(0);"><img src="http://www.gap.com/Asset_Archive/ATWeb/content/0006/237/770/assets/builder_pinit.png" onclick="window.open(pinItStr,\'pinIt\',\'toolbar=0,status=0,width=620,height=500\');"></a>';
-	pinItDiv.update( pinItDivStr );
-}
-
-var pinItTracking = function() {
-	s.linkTrackVars='eVar6';
-	if (pinURL.indexOf("atol") > 0){
-		s.eVar6='ATOLPin';	
-	}
-	else if (pinURL.indexOf("gol") > 0){
-		s.eVar6='GOLPin';	
-	}
-	else if (pinURL.indexOf("plol") > 0){
-		s.eVar6='PLOLPin';	
-	}
-	else if (pinURL.indexOf("brol") > 0){
-		s.eVar6='BROLPin';	
-	}
-	else {
-		s.eVar6='unknownPin';
-	}
-	s.tl(this,'o',s.eVar6);
-
-	return true; 
-}
-</script>
-
-<!-- END Content Item File: /content/0006/232/725/cn6232725.html -->
 
 <!-- END - WCD Sitewide Container 15 -->
 
@@ -6382,18 +6317,17 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/368/350/cn6368350.html -->
-<div id="contentItemContainer10000395" class="6368350" >
+    	<!-- BEGIN Content Item File: /content/0006/334/408/cn6334408.html -->
+<div id="contentItemContainer10000395" class="6334408" >
 
 <style type="text/css">
 #globalBanner {
-	width: 581px;
+	width: 400px;
 	height: 62px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
-	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6401,7 +6335,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000745;
+	color: #000000;
 	text-decoration: none;
 }
 
@@ -6417,14 +6351,22 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: #000745;
+	background-color: black;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerText {
-	padding-top: 6px;
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
 }
 </style>
 
@@ -6432,18 +6374,149 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/368/350/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-			SPRING FLING! <span class="promoPercent">25% OFF</span> YOUR PURCHASE!
-			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
-			<br /><span class="detailsLink">DETAILS</span>
-		</a>
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/408/assets/032813_ALL_XC-Easter-Event_GB_US.png" alt="HOP TO IT. ONLINE 30% OFF YOUR PURCHASE. IN STORES UP TO 40% OFF SELECT STYLES. ENDS 4/1. ENTER GAPEGG." title="HOP TO IT. ONLINE 30% OFF YOUR PURCHASE. IN STORES UP TO 40% OFF SELECT STYLES. ENDS 4/1. ENTER GAPEGG." usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,400,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/334/408/assets/legal.html" data-jbox-width="350" data-jbox-height="400">
+		</map>
 	</div><!-- /Global Banner Text -->
 
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/334/408/assets/032813_ALL_XC-Easter-Event_DISR_US.png" alt="HOP TO IT. ONLINE 30% OFF YOUR PURCHASE. IN STORES UP TO 40% OFF SELECT STYLES. ENDS 4/1. ENTER GAPEGG." title="HOP TO IT. ONLINE 30% OFF YOUR PURCHASE. IN STORES UP TO 40% OFF SELECT STYLES. ENDS 4/1. ENTER GAPEGG." usemap="#disruptorMap">
+		<map name="disruptorMap">
+			<area shape="rect" class="noHideDisruptor" coords="125,352,157,370" href="http://view.email.gap.com/?j=fecb15787d64077d&amp;m=fe9b13707564037c70&amp;ls=fef51c7775670c&amp;l=ff66107575&amp;s=fef8107377620c&amp;jb=ffce15&amp;ju=fe8d1378756d007d73&amp;r=0" target="_blank" alt="print" />
+
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/334/408/assets/legal.html" data-jbox-width="350" data-jbox-height="400" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
 </div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('032813_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+		wcdBrandDisrupterDidFire = true;
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0006/368/350/cn6368350.html -->
+<!-- END Content Item File: /content/0006/334/408/cn6334408.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7706,7 +7779,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6368350,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6334408,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

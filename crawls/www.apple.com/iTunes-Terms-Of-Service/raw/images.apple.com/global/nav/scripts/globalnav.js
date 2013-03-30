@@ -199,20 +199,21 @@ this.results[u].element.setAttribute("aria-posinset",u+1);q.appendChild(this.res
 }if(v===false&&p===false){q.className="suggestions-quicklinks"}else{if(v!==false&&p===false){q.className="quicklinks"
 }else{if(v===false&&p!==false){q.className="suggestions"}else{if(this.results.length===0&&this.results[0].category==="No Results"){q.className="noresults suggestions-quicklinks"
 }}}}x.appendChild(q);this.resultsPanel.appendChild(n);if(this.shouldVML()){o.style.height=x.offsetHeight+"px";
-o.style.display="block"}this.hideAllQuicktimeMovies()};SearchShortcut.prototype.hideResults=function(d,c){if(this.hideResultsOnMouseOut){AC.removeEvent(document,"mousemove",this.hideResultsOnMouseOut);
-delete this.hideResultsOnMouseOut}this.selected=false;this.shouldHideOnMouseOut=false;
-this.resultsPanel.innerHTML="";this.showAllQuicktimeMovies();this.resultsShowing=false
-};SearchShortcut.prototype.track=function(i,g){if(typeof(s_gi)==="undefined"||!s_gi){return
+o.style.display="block"}this.hideAllQuicktimeMovies()};SearchShortcut.prototype.hideResults=function(d,f){if(this.hideResultsOnMouseOut){AC.removeEvent(document,"mousemove",this.hideResultsOnMouseOut);
+delete this.hideResultsOnMouseOut}var e=this;window.setTimeout(function(){e.selected=false;
+e.shouldHideOnMouseOut=false;e.resultsPanel.innerHTML="";e.showAllQuicktimeMovies();
+e.resultsShowing=false},100)};SearchShortcut.prototype.track=function(i,g){if(typeof(s_gi)==="undefined"||!s_gi){return
 }var j="appleglobal";var h="appleussearch";var f=null;if(typeof(searchCountry)!=="undefined"&&searchCountry&&searchCountry!=="US"){f=SearchShortcut.geoMap[searchCountry.toUpperCase()].code
 }if(f){j="apple"+f+"global";h="apple"+f+"search"}s=s_gi(j+","+h);s.linkTrackVars="eVar2,eVar4,prop7,prop10";
-s.eVar2="WWW-sc: "+i.toLowerCase();s.prop7="WWW-sc: "+i.toLowerCase();s.eVar4=g;
-s.prop10=g;s.tl(this,"o","Shortcut Search")};SearchShortcut.prototype.fullSearch=function(o){this.searchText=this.searchInput.value;
+s.linkTrackEvents="event50";s.events=s.apl(s.events,"event50",",",1);s.eVar2="WWW-sc: "+i.toLowerCase();
+s.prop7="WWW-sc: "+i.toLowerCase();s.eVar4=g;s.prop10=g;s.tl(this,"o","Shortcut Search")
+};SearchShortcut.prototype.fullSearch=function(o){this.searchText=this.searchInput.value;
 this.searchText=this.searchText.replace(/^\s+/g,"").replace(/\s+$/g,"").replace(/\s\s+/g," ");
 var m=this.fullSearchUrl()+this.getQueryParameters(this.searchText);if(typeof(FeedStatistics)!=="undefined"){var n=new FeedStatistics();
 n.inputFeed();var k=n.getStorageItem("query"),p=n.getQueryFromUri(),i=this.searchText,l=n.getStorageItem("next"),j=(document.location.href.indexOf(location.protocol+"//"+document.domain+"/search/")===0);
 if(k&&i!==""&&i!==k){if(!l&&j){n.updateNotViewed()}}n.updateLastQuery(i);n.updateStorageItem("next",false)
-}document.location=m.replace("q=undefined&","")};SearchShortcut.prototype.go=function(b){this.track(this.searchText,b);
-document.location=b};SearchShortcut.prototype.shouldHideQuicktimeMovies=function(){var l=navigator.userAgent,g=/opera/i.test(l),i=(/msie/i.test(l)&&!g),k=/firefox/i.test(l),h=/chrome/i.test(l),j=(/applewebkit/i.test(l)&&!h);
+}document.location=m.replace("q=undefined&","")};SearchShortcut.prototype.go=function(b){document.location=b
+};SearchShortcut.prototype.shouldHideQuicktimeMovies=function(){var l=navigator.userAgent,g=/opera/i.test(l),i=(/msie/i.test(l)&&!g),k=/firefox/i.test(l),h=/chrome/i.test(l),j=(/applewebkit/i.test(l)&&!h);
 win=/windows/i.test(l),mac=/mac/i.test(l);if(mac&&(j||h)){return false}if(win&&(i||j||h)){return false
 }return true};SearchShortcut.prototype.hideAllQuicktimeMovies=function(){if(this.shouldHideQuicktimeMovies()){if(typeof(AC)!=="undefined"&&typeof(AC.Quicktime)!=="undefined"&&typeof(AC.Quicktime.controllers)!=="undefined"){function y(b){var a=curtop=0;
 if(b.offsetParent){a=b.offsetLeft;curtop=b.offsetTop;while(b=b.offsetParent){a+=b.offsetLeft;
@@ -237,11 +238,14 @@ if(this.data.desc){this.data.truncated.desc=unescape(this.data.desc);if(this.dat
 }}this.render()};SearchShortcut.result.prototype.render=function(){var l=document.createDocumentFragment();
 var k=document.createElement("li");var n;var p;var o;var m;var j=this;var q=this.qLinks;
 var r=window.location.protocol+"//"+window.location.hostname;l.appendChild(k);if(this.data.url){n=document.createElement("a");
-if(typeof(window.searchHost)!=="undefined"&&window.searchHost===true){n.href=decodeURIComponent(this.data.url).replace("http://www.apple.com",r)
-}else{n.href=decodeURIComponent(this.data.url)}if(this.data.category==="Suggestions"){n.className="suggestions"
-}AC.addEvent(n,"mousedown",function(b){if(q){q.go(j.data.url);if(typeof(FeedStatistics)!=="undefined"){var a=new FeedStatistics();
-a.updateStorageItem("search type","common searches")}}});k.appendChild(n)}if(this.data.image){p=new Image();
-p.src=this.data.image;p.alt=this.data.title;n.appendChild(p);if(/MSIE (5\.5|6\.)/.test(navigator.userAgent)){p.src="/global/elements/blank.gif";
+if(typeof(window.searchHost)!=="undefined"&&window.searchHost===true){this.data.url=decodeURIComponent(this.data.url).replace("http://www.apple.com",r);
+n.href=this.data.url}else{n.href=decodeURIComponent(this.data.url)}if(this.data.category==="Suggestions"){n.className="suggestions"
+}AC.addEvent(n,"click",function(b){try{b.preventDefault();b.stopPropagation()}catch(a){}if(q){q.go(j.data.url)
+}return false});AC.addEvent(n,"mousedown",function(c){try{c.preventDefault();c.stopPropagation()
+}catch(a){}if(q){if(j.data.category==="Quick Link"){q.track(q.searchText,j.data.url)
+}if(typeof(FeedStatistics)!=="undefined"){var b=new FeedStatistics();b.updateStorageItem("search type","common searches")
+}}return false});k.appendChild(n)}if(this.data.image){p=new Image();p.src=this.data.image;
+p.alt=this.data.title;n.appendChild(p);if(/MSIE (5\.5|6\.)/.test(navigator.userAgent)){p.src="/global/elements/blank.gif";
 p.style.filter='progid:DXImageTransform.Microsoft.AlphaImageLoader(src="'+this.data.image+'",sizingMethod="scale")'
 }}if(this.data.truncated.title){o=document.createElement("h4");o.innerHTML=this.data.truncated.title;
 n.appendChild(o)}if(this.data.truncated.desc){m=document.createElement("p");m.innerHTML=this.data.truncated.desc;

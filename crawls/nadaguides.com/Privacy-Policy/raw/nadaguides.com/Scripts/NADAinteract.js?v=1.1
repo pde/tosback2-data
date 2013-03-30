@@ -1078,7 +1078,6 @@ var NADAjs = {
                     },
                     success: function(atwidgetdata) {
                         var newcarcnt = parseInt(atwidgetdata.carCount);
-
                         //Found cars or done the last search... display, done
                         if (newcarcnt > 0) {
                             hideWaitPanel();
@@ -1140,10 +1139,7 @@ var NADAjs = {
     Marketing: new function() {
 
         var boldMakeLinks = function() {
-            $("#makelist a:contains('Hyundai')").css({ 'font-weight': 'bold' });
-            $("#makelist a:contains('Jaguar')").css({ 'font-weight': 'bold' });
-            $("#makelist a:contains('Land Rover')").css({ 'font-weight': 'bold' });
-            $("#makelist a:contains('Scion')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Mazda')").css({ 'font-weight': 'bold' });
         }
 
 
@@ -1539,7 +1535,6 @@ var NADAjs = {
         var isIE = document.all;
         var isNN = !document.all && document.getElementById;
         var isN4 = document.layers;
-
         var init = function() {
             initRates();
             $('#monthlypayment :input[type=text]').live("keyup", function() {
@@ -1548,12 +1543,13 @@ var NADAjs = {
             $('#canAfford :input[type=text]').live("keyup", function() {
                 hideLoan();
             });
-            $("#monthlypayment").find("#loanTerm2").val().live("change", function() {
-                hideLoanPmt();
+            $('.gentbtnloan').click(function() {
+                calculateLoan();
             });
-            $("#canAfford").find("#loanTerm").val().live("change", function() {
-                hideLoan();
+            $('.gentbtnpmt').click(function() {
+                calculatePmt();
             });
+
         } //init
 
         var setInterestRate = function(rate) {
@@ -1563,7 +1559,6 @@ var NADAjs = {
         var initRates = function() {
             var interestRates = $('#interestRate').val();
             var interestRates2 = $('#interestRate2').val();
-
             if (interestRates.length <= 1) {
                 $('#interestRate').val(4);
             }

@@ -1,0 +1,59 @@
+// JavaScript Document
+
+$(document).ready(function() {
+  hideSubNavs();
+
+  $('#main_nav > ul > li > a').each(function() {
+    var arrow_pos = (parseInt($(this).width()) + 8) + 'px';
+    $(this).css({
+      'background-position':arrow_pos + ' 16px'
+    });
+  });
+
+  // show the subnavs when the user hovers over the nav links
+  $('#main_nav > ul > li').each(function() {
+    $(this).hover(
+      function() {
+        hideSubNavs();
+        $(this).css({
+          'border-top':'7px solid #000000'
+        });
+        $(this).children('h3:first').children('a.hassubnav:first').css({
+          'color':'#ffffff',
+          'background-color':'#000000'
+        });
+        var width = ($(this).width() - 10) + 'px';
+        $(this).children('ul:first').css({
+          'width':width
+        });
+        $(this).find('ul:first > li > a').css({
+          'width':width
+        });
+
+        if (navigator.userAgent.match("MSIE")) {
+          var margin_left = (-1 * $(this).width()) + 'px';
+          $(this).children('ul:first').css({
+						'margin-left':margin_left
+          });
+        }
+        $(this).children('ul:first').show();
+      },
+      function() {
+        $(this).css({
+          'border-top':'7px solid #cccccc'
+        });
+        $(this).children('h3:first').children('a.hassubnav:first').css({
+          'color':'#000000',
+          'background-color':'#ffffff'
+        });
+        $(this).children('ul:first').hide();
+      }
+    );
+  });
+});
+
+function hideSubNavs() {
+  $('#main_nav > ul > li > ul').each(function() {
+    $(this).hide();
+  });  
+}

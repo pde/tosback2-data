@@ -1,3 +1,6 @@
+var getsection = window.location.pathname.substring(1);
+var section = getsection.split("/"); 
+
 /* lopez tonight metadata */
 if (window.location.hostname.indexOf("lopeztonight.com") != -1) {
 	//prop32,eVar32 - template type
@@ -128,6 +131,33 @@ else if (window.location.hostname.indexOf("coco") != -1) {
 		lateral_nav:		"",					//prop3,eVar3
 		franchise:			"conan:(369672)"	//prop31,eVar31
 	};
+
+} else if(window.location.pathname.indexOf("who-gets-the-last-laugh") > -1) {
+	var sections = ["", "about", "comedians"];
+	for(var s=0; s<sections.length; s++) {
+		if(sections[s] == section[2]) {
+			if(sections[s] == "") {
+				tbs_templateType = "index";
+				tbs_contentType = "none";
+			} else if(sections[s] == "about") {
+				tbs_templateType = "video";
+				tbs_contentType = "none";
+			} else if(sections[s] == "comedians") {
+				tbs_templateType = "section front";
+				tbs_contentType = "none";
+			}
+			var tbs_metadata = {
+				section: section[0],
+				subsection: section[1],
+				template_type: tbs_templateType || "misc",
+				content_type: tbs_contentType || "none",
+				friendly_name: tbs_friendlyName || "",
+				research_category: tbs_researchCategory || "",
+				lateral_nav: tbs_lateralNav || "",
+				franchise: tbs_franchise || "" 
+			};
+		}
+	}
 } else if(window.location.hostname.indexOf("tbs") > -1){
 	/**
 	* This file sets the "tbs_metadata" to be used by jsmd.js

@@ -104,15 +104,15 @@
 
 
 
-    <link rel="stylesheet" href="../../../cache-www.pronto.com/css-local/main/pronto3/combined/pronto/combined.ProntoV3_9_0.2013-03-19_15-33.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="../../../cache-www.pronto.com/css-local/main/pronto3/combined/pronto/combined.ProntoV3_9_1.2013-03-27_13-36.css" type="text/css" charset="utf-8" />
 
-<link rel="stylesheet" href="../../../cache-www.pronto.com/css-local/main/pronto3/combined/combined.ProntoV3_9_0.2013-03-19_15-33.css" type="text/css" charset="utf-8" />
-
-
+<link rel="stylesheet" href="../../../cache-www.pronto.com/css-local/main/pronto3/combined/combined.ProntoV3_9_1.2013-03-27_13-36.css" type="text/css" charset="utf-8" />
 
 
 
-<script type="text/javascript" src="../../../cache-www.pronto.com/js/main/pronto3/common_NC/jquery-cookie-ga-lightbox.ProntoV3_9_0.2013-03-19_15-33.js"></script>
+
+
+<script type="text/javascript" src="../../../cache-www.pronto.com/js/main/pronto3/common_NC/jquery-cookie-ga-lightbox.ProntoV3_9_1.2013-03-27_13-36.js"></script>
         
       <script type="text/javascript">
      try {
@@ -2290,11 +2290,11 @@
 		<div class="footerBar clearfix">
 			<ul class="micrositeLinks clearfix">
 				<li class="firstChild"><a href="http://www.pronto.com/">Pronto.com</a></li>
-				<li><a href="http://www.prontostyle.com/?mid=20130327.-9d8f2ec-13dabb1e030--499">ProntoStyle.com</a></li>
-				<li><a href="http://www.prontotech.com/?mid=20130327.-9d8f2ec-13dabb1e030--499">ProntoTech.com</a></li>
-				<li><a href="http://www.prontohome.com/?mid=20130327.-9d8f2ec-13dabb1e030--499">ProntoHome.com</a></li>
-                <li><a href="http://www.prontokids.com/?mid=20130327.-9d8f2ec-13dabb1e030--499">ProntoKids.com</a></li>
-				<li><a href="http://www.babypronto.com/?mid=20130327.-9d8f2ec-13dabb1e030--499">BabyPronto.com</a></li>
+				<li><a href="http://www.prontostyle.com/?mid=20130330.5fe486cd-13dbb34989a--7403">ProntoStyle.com</a></li>
+				<li><a href="http://www.prontotech.com/?mid=20130330.5fe486cd-13dbb34989a--7403">ProntoTech.com</a></li>
+				<li><a href="http://www.prontohome.com/?mid=20130330.5fe486cd-13dbb34989a--7403">ProntoHome.com</a></li>
+                <li><a href="http://www.prontokids.com/?mid=20130330.5fe486cd-13dbb34989a--7403">ProntoKids.com</a></li>
+				<li><a href="http://www.babypronto.com/?mid=20130330.5fe486cd-13dbb34989a--7403">BabyPronto.com</a></li>
 			</ul>
 			<div class="footerSearchContainer">
 				<form action="http://www.pronto.com/searchBox" method="get" id="footerSearchForm">
@@ -2429,7 +2429,7 @@
 
 
 
-<script type="text/javascript" src="../../../cache-www.pronto.com/js/main/pronto3/combined/combined.ProntoV3_9_0.2013-03-19_15-33.js"></script>
+<script type="text/javascript" src="../../../cache-www.pronto.com/js/main/pronto3/combined/combined.ProntoV3_9_1.2013-03-27_13-36.js"></script>
 
 
 
@@ -2447,16 +2447,19 @@
         var registered = "";
 
 
-        var shopConfig = {
-           url: "http://pronto.tracking.asksemtools.com/sp.gif?",
-           ldid: "1.383_2",
-           o: "100028",
-           qsrc: "",
-           ipaddress: "4093bc08",
-           askid: "",
-           dqi: "",
-           useragent: encodeURI(navigator.userAgent)
-        };
+var shopConfig = {
+    debugUrl:"/registerAskSEMPixelFire.do?",
+    url: "http://pronto.tracking.asksemtools.com/sp.gif?",
+    ldid: "1.383_2",
+    o: "100028",
+    qsrc: "",
+    ipaddress: "4093bc08",
+    askid: "EMPTY",
+    dqi: encodeURI(""),
+    prontoAdId: "",
+    useragent: encodeURI(navigator.userAgent),
+    parentId: ""
+};
 
 		//]]></script>
 
@@ -2472,7 +2475,9 @@
             }
 
             $('#fullPageContainer').delegate('a.shopPixel',  'mousedown', function(e){
-                SHOP.firePixel(e, this, shopConfig);
+
+
+                SHOP.firePixel(e, this, shopConfig , true );
             });
         });
 

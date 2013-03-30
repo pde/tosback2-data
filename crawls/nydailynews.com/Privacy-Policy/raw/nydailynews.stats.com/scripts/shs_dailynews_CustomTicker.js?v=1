@@ -1,0 +1,524 @@
+var SHS = {};
+SHS.CustomTicker = function (initParams) {
+    //Parameters for initialization
+    this.sportsOrder = initParams.sportsOrder;
+    this.setTimeZone = initParams.setTimeZone;
+    this.ajaxDataType = initParams.ajaxDataType;
+    this.dataRefresh = initParams.dataRefresh;
+    this.defaultTabisRegion = initParams.defaultTabisRegion;
+    this.apiBasePath = initParams.apiBasePath;
+    this.saveDataFromApi = [];
+    this.selectedTabSport = "";
+    this.varInterval = 0;
+    this.resetScroll = "yes";
+
+    //Setting the width of the ticker
+    $(".shs-customTickerWrapper").css("width", initParams.tickerwrapwd);
+    $(".shs_customTickerDv").css("width", initParams.tickerdivwd);
+
+    //AJAX for fetching scoreboard data
+    this.FetchDataFromApi = function () {
+        var thisParent = this;
+        if (thisParent.ajaxDataType === "jsonp") {
+            $.ajax({
+                type: "GET",
+                url: thisParent.apiBasePath + "ticker_byteam.json.asp?jsonp=true&order=" + thisParent.sportsOrder + "&random=" + (new Date()).getTime(),
+                dataType: "jsonp",
+                cache: true,
+                jsonp: false,
+                jsonpCallback: "loadGamesData"
+            });
+        }
+        else {
+            $.ajax({
+                type: "GET",
+                url: thisParent.apiBasePath + "ticker_byteam.json.asp?order=" + thisParent.sportsOrder + "&random=" + (new Date()).getTime(),
+                dataType: "json",
+                success: function () {
+                    thisParent.loadGamesData(data);
+                }
+            });
+        }
+    };
+
+    //Callback for scoreboard data when available
+    this.loadGamesData = function (dataFromApi) {
+        this.saveDataFromApi = dataFromApi;
+        this.ConstructScoreBoards(this.selectedTabSport, this.saveDataFromApi);
+    };
+
+    //Drawing the scoreboards based on selected sport
+    this.ConstructScoreBoards = function (sportSelected, dataFromApi) {
+        var todayincity = "";
+        var thisParent = this;
+        var appendStr = null;
+        var inappendStr = null;
+        var sportItemSelected = null;
+        var new_games_count = 0;
+        var old_games_count = $(".scrollableArea div.divli").length;
+        var oddcase_sport = sportSelected.toLowerCase();
+        $(".scrollableArea").empty();
+        if (sportSelected.toLowerCase() === "nfl") {
+            oddcase_sport = "fb";
+        }
+        if (sportSelected.indexOf("TODAY") >= 0) {
+            sportItemSelected = (dataFromApi.length) - 1;
+            todayincity = "yes";
+        }
+        else {
+            for (var y = 0; y < dataFromApi.length; y++) {
+                if (dataFromApi[y].sport === sportSelected) {
+                    sportItemSelected = y;
+                    break;
+                }
+            }
+        }
+        if (sportItemSelected != null) {
+            for (var x = 0; x < (dataFromApi[sportItemSelected].games.length); x++) {
+                appendStr = [];
+                var matchXML = $.parseXML(dataFromApi[sportItemSelected].games[x]);
+                var gamestate = $(matchXML).find("gamestate");
+                var home = $(matchXML).find("home-team");
+                var away = $(matchXML).find("visiting-team");
+                var gameCode = $(matchXML).find("ticker-entry").attr("gamecode");
+                var gameStatus = $(gamestate).attr("status");
+                var status1 = $(gamestate).attr("display_status1");
+                var status2 = $(gamestate).attr("display_status2");
+                var hasHref = $(gamestate).attr("href");
+                var hometeamid = $(home).attr("id");
+                var gameweek = $(matchXML).find("ticker-entry").attr("week");
+                var gameDisplayStatus = "";
+                var clsliFinal = "";
+                var clsinacTeamVi = "";
+                var clsinacTeamHo = "";
+                var split_status1 = "";
+                var split_status2 = "";
+                gameDisplayStatus = status1;
+                split_status1 = status1;
+                clsliFinal = "class=\"divpre\"";
+                switch (gameStatus) {
+                    case "Pre-Game":
+                        if ($(gamestate).attr("display_status1") == $(gamestate).attr("gametime")) {
+                            if (typeof getLocalizedDateObject == 'function') {
+                                var localDate = thisParent.GetLocalDate($(gamestate).attr("gamedate"), $(gamestate).attr("is-dst"), status1);
+                                status1 = formatDate(localDate, 'HH:MI am DAY', thisParent.setTimeZone);
+                                status2 = thisParent.setTimeZone;
+                                split_status1 = formatDate(localDate, 'DAY', thisParent.setTimeZone);
+                                split_status2 = formatDate(localDate, 'HH:MI am', thisParent.setTimeZone);
+                            }
+                            else {
+                                status2 = "ET";
+                            }
+                        }
+                        gameDisplayStatus = status1;
+                        break;
+                    case "In-Progress":
+                        clsliFinal = "class=\"divinpro\"";
+                        if (status2 != "") {
+                            gameDisplayStatus = status1 + "/" + status2.toUpperCase();
+                            split_status1 = status2;
+                            split_status2 = status1;
+                        }
+                        else {
+                            gameDisplayStatus = status1.toUpperCase();
+                            split_status1 = status1;
+                        }
+                        break;
+                    case "Final":
+                        clsliFinal = "class=\"divfinal\"";
+                        if (status2 != "") {
+                            gameDisplayStatus = status1.toUpperCase() + "/" + status2.toUpperCase();
+                            split_status1 = status1;
+                            split_status2 = status2;
+                        }
+                        else {
+                            gameDisplayStatus = status1.toUpperCase();
+                            split_status1 = status1;
+                        }
+                        if (parseInt($(away).attr("score")) > parseInt($(home).attr("score"))) {
+                            clsinacTeamVi = " inactive";
+                            clsinacTeamHo = "";
+                        }
+                        else if (parseInt($(home).attr("score")) > parseInt($(away).attr("score"))) {
+                            clsinacTeamVi = "";
+                            clsinacTeamHo = " inactive";
+                        }
+                        break;
+                    case "Cancelled":
+                        clsliFinal = "class=\"divpre\"";
+                        if (status2 != "") {
+                            gameDisplayStatus = status1 + "/" + status2.toUpperCase();
+                            split_status1 = status2;
+                            split_status2 = status1;
+                        }
+                        else if (status1 != "") {
+                            gameDisplayStatus = status1.toUpperCase();
+                            split_status1 = status1;
+                        }
+                        else {
+                            gameDisplayStatus = "Cancelled";
+                        }
+                        break;
+                };
+                appendStr.push('<div class="divli">');
+
+                if (todayincity != "") {
+                    var todayincity_sport = $(matchXML).find("ticker-entry").attr("sport");
+                    if (todayincity_sport === "nfl") {
+                        oddcase_sport = "fb";
+                    }
+                    else {
+                        oddcase_sport = todayincity_sport;
+                    }
+                    var todayincity_span1_away = $(away).attr("score");
+                    var todayincity_span1_home = $(home).attr("score");
+                    var todayincity_span2_away = "";
+                    var todayincity_span2_home = "";
+                    var todayincity_spanboldplain = "shs_ticspanbold";
+                    if (gameStatus === "Pre-Game") {
+                        todayincity_spanboldplain = "shs_ticspanplain";
+                        var todayincity_win_away = $(away).find("team-record").attr("wins");
+                        var todayincity_loss_away = $(away).find("team-record").attr("losses");
+                        var todayincity_tie_away = $(away).find("team-record").attr("ties");
+                        var todayincity_win_home = $(home).find("team-record").attr("wins");
+                        var todayincity_loss_home = $(home).find("team-record").attr("losses");
+                        var todayincity_tie_home = $(home).find("team-record").attr("ties");
+
+                        if (todayincity_sport === "mlb") {
+                            todayincity_span2_away = $(away).find("starting-pitcher").attr("last-name");
+                            todayincity_span2_home = $(home).find("starting-pitcher").attr("last-name");
+                        }
+
+                        switch (todayincity_sport) {
+                            case "nfl":
+                                if (parseInt(todayincity_tie_away) > 0) {
+                                    todayincity_span1_away = todayincity_win_away + "-" + todayincity_loss_away + "-" + todayincity_tie_away;
+                                }
+                                else {
+                                    todayincity_span1_away = todayincity_win_away + "-" + todayincity_loss_away;
+                                }
+                                if (parseInt(todayincity_tie_home) > 0) {
+                                    todayincity_span1_home = todayincity_win_home + "-" + todayincity_loss_home + "-" + todayincity_tie_home;
+                                }
+                                else {
+                                    todayincity_span1_home = todayincity_win_home + "-" + todayincity_loss_home;
+                                }
+                                break;
+                            case "mls":
+                                todayincity_span1_away = todayincity_win_away + "-" + todayincity_loss_away + "-" + todayincity_tie_away;
+                                todayincity_span1_home = todayincity_win_home + "-" + todayincity_loss_home + "-" + todayincity_tie_home;
+                                break;
+                            default:
+                                todayincity_span1_away = todayincity_win_away + "-" + todayincity_loss_away;
+                                todayincity_span1_home = todayincity_win_home + "-" + todayincity_loss_home;
+                                break;
+                        };
+                    };
+                    appendStr.push('<div class="divfinal">');
+                    appendStr.push('<div class="shs_sportCntryLt">');
+                    appendStr.push('<h3>' + $(away).attr("display_name") + '</h3>');
+                    appendStr.push('<span class="' + todayincity_spanboldplain + '">' + todayincity_span1_away + '</span><br />');
+                    appendStr.push('<span class="' + todayincity_spanboldplain + '">' + todayincity_span2_away + '</span>');
+                    appendStr.push('</div>');
+                    appendStr.push('<div class="shs_sportFlgLt"><img src="' + $(away).find("team-logo").attr("link") + '" alt="" width="50" height="33"/></div>');
+                    appendStr.push('<div class="shs_sportVsTxt">VS</div>');
+                    appendStr.push('<div class="shs_sportFlgRt"><img src="' + $(home).find("team-logo").attr("link") + '" alt="" width="50" height="33"/></div>');
+                    appendStr.push('<div class="shs_sportCntryRt">');
+                    appendStr.push('<h3>' + $(home).attr("display_name") + '</h3>');
+                    appendStr.push('<span class="' + todayincity_spanboldplain + '">' + todayincity_span1_home + '</span><br />');
+                    appendStr.push('<span class="' + todayincity_spanboldplain + '">' + todayincity_span2_home + '</span>');
+                    appendStr.push('</div>');
+                    appendStr.push('<div class="shs_sportToday">');
+                    appendStr.push('<strong>' + split_status1 + '</strong><br />');
+                    appendStr.push('<span>' + split_status2 + '</span><br />');
+                    appendStr.push('</div>');
+                    appendStr.push('<div class="clr"></div>');
+                    appendStr.push('</div>');
+                }
+                else {
+                    appendStr.push('<div ' + clsliFinal + '>');
+                    if (hasHref != "") {
+                        var hyperlinkconstruct = "";
+                        var dofweek = "";
+						//alert(oddcase_sport);
+                        switch (gameStatus) {
+                            case "Pre-Game":
+                                hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/preview.asp?g=' + gameCode;
+                                break;
+                            case "In-Progress":
+                                if (typeof getLocalizedDateObject == 'function') {
+                                    dofweek = formatDate(thisParent.GetLocalDate($(gamestate).attr("gamedate"), $(gamestate).attr("is-dst"), $(gamestate).attr("gametime")), 'DAY', thisParent.setTimeZone);
+                                }
+                                if (dofweek === "SUN") {
+                                    //hyperlinkconstruct = "http://live.nydailynews.com/Event/nfl_gameday_week_" + gameweek;
+									hyperlinkconstruct = "http://live.nydailynews.com/Event/NFL_Week_" + gameweek + "_Daily_News_Football_America_Live_Blog_Live";
+                                }
+                                else if (oddcase_sport == 'nba') {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/boxscore.asp?gamecode=' + gameCode;
+								}
+                                else if (oddcase_sport == 'cbk') {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/boxscore.asp?gamecode=' + gameCode;
+								}
+                                else {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/gameview.asp?gamecode=' + gameCode;
+                                }
+                                break;
+                            case "Final":
+                                if (hasHref.indexOf("recap") >= 0) {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/recap.asp?g=' + gameCode;
+                                }
+                                else if (oddcase_sport == 'nba') {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/boxscore.asp?gamecode=' + gameCode;
+								}
+                                else if (oddcase_sport == 'cbk') {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/boxscore.asp?gamecode=' + gameCode;
+								}
+                                else {
+                                    hyperlinkconstruct = thisParent.apiBasePath + oddcase_sport + '/gameview.asp?gamecode=' + gameCode;
+                                }
+                                break;
+                        };
+                        if (gameStatus != "Cancelled")
+                            appendStr.push('<a href="' + hyperlinkconstruct + '" target="_top">');
+                        else
+                            appendStr.push('<a>');
+                    }
+                    appendStr.push('<div><strong>' + gameDisplayStatus + '</strong></div>');
+                    appendStr.push('<div class="shs_mlbtxtLt' + clsinacTeamVi + '">' + $(away).attr("alias").toUpperCase() + '</div>');
+                    appendStr.push('<div class="shs_mlbnumRt">' + $(away).attr("score") + '</div>');
+                    appendStr.push('<div class="clr"></div>');
+                    appendStr.push('<div class="shs_mlbtxtLt' + clsinacTeamHo + '">' + $(home).attr("alias").toUpperCase() + '</div>');
+                    appendStr.push('<div class="shs_mlbnumRt">' + $(home).attr("score") + '</div>');
+                    appendStr.push('<div class="clr"></div>');
+                    if (hasHref != "") {
+                        appendStr.push('</a>');
+                    }
+                    appendStr.push('</div>');
+                }
+                appendStr.push('</div>');
+                $(".scrollableArea").append(appendStr.join("")).find("div.divli:last").bind(
+                    {
+                        mouseenter: function (event) {
+                            /*not implemented*/
+                        },
+                        mouseleave: function () {
+                            /*not implemented*/
+                        }
+                    },
+                    {
+                        navSports: oddcase_sport,
+                        navPath: thisParent.apiBasePath,
+                        navgameCode: gameCode,
+                        navgameStatus: gameStatus,
+                        navHasHref: hasHref,
+                        navistodayincity: todayincity
+                    }
+                );
+            }
+            if (dataFromApi[sportItemSelected].games.length == 1 && todayincity != "") {
+                var ticteamtabs = [];
+                var quirkylinksched = "";
+                var quirkylinkstats = "";
+
+                switch (todayincity_sport) {
+                    case "mlb":
+                        quirkylinksched = "/mlb/teamreports.asp?tm=" + hometeamid + "&report=schedule";
+                        quirkylinkstats = "/mlb/teamreports.asp?tm=" + hometeamid + "&report=stats";
+                        break;
+                    case "nfl":
+                        quirkylinksched = "/fb/teamstats.asp?tm=" + hometeamid + "&type=schedules";
+                        quirkylinkstats = "/fb/teamstats.asp?tm=" + hometeamid + "&type=stats";
+                        break;
+                    case "nba":
+                        quirkylinksched = "/nba/teamstats.asp?teamno=" + hometeamid + "&type=schedule";
+                        quirkylinkstats = "/nba/teamstats.asp?teamno=" + hometeamid + "&type=stats";
+                        break;
+                    case "nhl":
+                        quirkylinksched = "/nhl/teamstats.asp?teamno=" + hometeamid + "&type=schedule";
+                        quirkylinkstats = "/nhl/teamstats.asp?teamno=" + hometeamid + "&type=stats";
+                        break;
+                    case "cfb":
+                        quirkylinksched = "/cfb/teamstats.asp?team=" + hometeamid + "&report=schedule";
+                        quirkylinkstats = "/cfb/teamstats.asp?team=" + hometeamid + "&report=stats";
+                        break;
+                    case "cbk":
+                        quirkylinksched = "/cbk/teamstats.asp?team=" + hometeamid + "&report=schedule";
+                        quirkylinkstats = "/cbk/teamstats.asp?team=" + hometeamid + "&report=stats";
+                        break;
+                    case "mls":
+                        quirkylinksched = "/mls/schedules.asp?team=" + hometeamid;
+                        quirkylinkstats = "/mls/teamstats.asp?team=" + hometeamid;
+                        break;
+                };
+                ticteamtabs.push('<div class="divli">');
+                ticteamtabs.push('<div class="shs_teamboardstyle">');
+                ticteamtabs.push('<div class="shs_sportCntryLt">');
+                ticteamtabs.push('<br/><div class="shs_teamboard_sched"><a href="' + quirkylinksched + '" target="_top">TEAM SCHEDULE ></a></div>');
+                ticteamtabs.push('</div>');
+                ticteamtabs.push('<div class="clr"></div>');
+                ticteamtabs.push('</div>');
+                ticteamtabs.push('<div class="shs_teamboardstyle">');
+                ticteamtabs.push('<div class="shs_sportCntryLt">');
+                ticteamtabs.push('<br/><div class="shs_teamboard_stats"><a href="' + quirkylinkstats + '" target="_top">TEAM STATS ></a></div>');
+                ticteamtabs.push('</div>');
+                ticteamtabs.push('<div class="clr"></div>');
+                ticteamtabs.push('</div>');
+                ticteamtabs.push('</div>');
+                $(".scrollableArea").append(ticteamtabs.join(""));
+            }
+            if (dataFromApi[sportItemSelected].games.length > 1) {
+                //$(".scrollableArea").append('<div class="divli"><div class="lastdivli"></div></div>');
+            }
+        }
+        else {
+            appendStr = [];
+            appendStr.push('<div class="divli">');
+            appendStr.push('<div class="divpre noGame">');
+            appendStr.push('<div><strong>No Games Scheduled</strong></div>');
+            appendStr.push('<div class="shs_mlbtxtLt">&nbsp;</div>');
+            appendStr.push('<div class="shs_mlbnumRt">&nbsp;</div>');
+            appendStr.push('<div class="clr"></div>');
+            appendStr.push('<div class="shs_mlbtxtLt">&nbsp;</div>');
+            appendStr.push('<div class="shs_mlbnumRt">&nbsp;</div>');
+            appendStr.push('<div class="clr"></div>');
+            appendStr.push('</div>');
+            appendStr.push('</div>');
+            $(".scrollableArea").append(appendStr.join(""));
+            //$(".scrollableArea").append('<div class="divli"><div class="lastdivli"></div></div>');
+        }
+        $(".scrollableArea").append('<div class="clr"></div>');
+        new_games_count = $(".scrollableArea div.divli").length;
+        if (sportSelected.toLowerCase() === "cfb" || sportSelected.toLowerCase() === "cbk") {
+            $(".divli div.shs_mlbtxtLt").each(function () {
+                $(this).css("width", "");
+                $(this).css("width", $(this).width() * 2);
+            });
+        };
+        if (thisParent.resetScroll === "yes" || (old_games_count != new_games_count)) {
+            var width_scrollablearea = 0;
+            $(".divli").each(function () {
+                width_scrollablearea = width_scrollablearea + $(this).width();
+            });
+            $(".scrollableArea").width(width_scrollablearea * 2);
+            $("#shs_sportNavDv_botNav").smoothDivScroll(
+                {
+                    scrollStep: 7,
+                    scrollInterval: 30,
+                    countOnlyClass: "div.divli"
+                }
+            );
+            this.SmoothScrollreset();
+            this.SmoothScrollgotoFirst();
+        }
+        thisParent.resetScroll = "";
+    };
+
+    //Creation of sports tabs
+    this.ConstructSportsTabs = function (paramSportsOrder) {
+        var thisParent = this;
+        if (thisParent.defaultTabisRegion != "") {
+            paramSportsOrder = thisParent.defaultTabisRegion + "|" + paramSportsOrder;
+        }
+        var sportsOrderSplit = paramSportsOrder.split("|");
+        $(".shs_sportNavDv_topNav").append('<ul>');
+		$('.shs-scrName').html(''+ sportsOrderSplit[0] +'<h3>scores<h3>');
+		$('.shs-scrName').attr("id",''+ sportsOrderSplit[0] +'');
+        for (var s = 1; s < sportsOrderSplit.length; s++) {
+            $(".shs-scrMatch").append('<p class="clickBind"><a custattsport="' + sportsOrderSplit[s] + '" cusattindex="' + s + '">' + sportsOrderSplit[s] + '</a></p>');
+		};
+		$(".shs-scrMatch").find('.clickBind a').bind(
+        {
+            click: function () {
+                thisParent.OnClickSportTab($(this).attr("cusattindex"), $(this).attr("custattsport"));
+				var prevSel = $('.shs-scrName').attr('id');
+				$('.shs-scrName').html(''+ $(this).attr("custattsport") +'<h3>scores<h3>');
+				$('.shs-scrName').attr("id",''+ $(this).attr("custattsport") +'');
+				$(this).attr("custattsport",''+ prevSel +'');
+				$(this).html(''+ prevSel +'');
+                return false;
+            }
+        });    	
+		
+        $(".shs_sportNavDv_topNav").append('<div class="clr"></div>');
+        $(".shs_sportNavDv_topNav ul li:eq(0) a").addClass("shs_active_new");
+        thisParent.selectedTabSport = sportsOrderSplit[0];
+    };
+
+    //Event handler for click on sports tabs
+    this.OnClickSportTab = function (tabOrder, tabSport) {
+        var thisParent = this;
+        $(".shs_sportNavDv_topNav ul li a").removeClass("shs_active_new");
+        $(".shs_sportNavDv_topNav ul li:eq(" + tabOrder + ") a").addClass("shs_active_new");
+        thisParent.selectedTabSport = tabSport;
+        thisParent.resetScroll = "yes";
+        thisParent.ConstructScoreBoards(thisParent.selectedTabSport, thisParent.saveDataFromApi);
+    };
+
+    //Over-riding public methods of smooth div scroll
+    this.SmoothScrollreset = function () {
+        $("#shs_sportNavDv_botNav").smoothDivScroll("recalculateScrollableArea");
+    };
+    this.SmoothScrollgotoFirst = function () {
+        $("#shs_sportNavDv_botNav").smoothDivScroll("moveToElement", "first");
+    };
+
+    //Javascript date object for the nearest date to MM/DD
+    this.translateShortDate = function (short_date) {
+        var gamedateArr = short_date.split('/');
+        var today = new Date();
+        var lastYear = new Date(today.getFullYear() - 1, parseInt(gamedateArr[0]) - 1, gamedateArr[1]);
+        var thisYear = new Date(today.getFullYear(), parseInt(gamedateArr[0]) - 1, gamedateArr[1]);
+        var nextYear = new Date(today.getFullYear() + 1, parseInt(gamedateArr[0]) - 1, gamedateArr[1]);
+        var lastDiff = Math.abs(lastYear - today);
+        var thisDiff = Math.abs(thisYear - today);
+        var nextDiff = Math.abs(nextYear - today);
+        var gameday = null;
+        if (lastDiff < thisDiff) {
+            if (lastDiff < nextDiff) {
+                return lastYear;
+            }
+            else {
+                return nextYear;
+            }
+        }
+        else if (thisDiff < nextDiff) {
+            return thisYear;
+        }
+        else {
+            return nextYear;
+        }
+    };
+
+    //Converting to local date
+    this.GetLocalDate = function (gamedate, isdst, gamestatus) {
+        var gameday = thisParent.translateShortDate(gamedate);
+        var localDate;
+        if (thisParent.setTimeZone == 'MST' && isdst == '1') {
+            localDate = getLocalizedDateObject('' + (gameday.getMonth() + 1) + '/' + gameday.getDate() + '/' + gameday.getFullYear() + ' ' + gamestatus, 'PT', 'ET');
+        }
+        else if (thisParent.setTimeZone == 'MST') {
+            localDate = getLocalizedDateObject('' + (gameday.getMonth() + 1) + '/' + gameday.getDate() + '/' + gameday.getFullYear() + ' ' + gamestatus, 'MT', 'ET');
+        }
+        else if (thisParent.setTimeZone == 'EST' && isdst == '1') {
+            localDate = getLocalizedDateObject('' + (gameday.getMonth() + 1) + '/' + gameday.getDate() + '/' + gameday.getFullYear() + ' ' + gamestatus, 'CT', 'ET');
+        }
+        else if (thisParent.setTimeZone == 'EST') {
+            localDate = getLocalizedDateObject('' + (gameday.getMonth() + 1) + '/' + gameday.getDate() + '/' + gameday.getFullYear() + ' ' + gamestatus, 'ET', 'ET');
+        }
+        else {
+            localDate = getLocalizedDateObject('' + (gameday.getMonth() + 1) + '/' + gameday.getDate() + '/' + gameday.getFullYear() + ' ' + gamestatus, thisParent.setTimeZone, 'ET');
+        }
+        return localDate;
+    };
+
+    //Invoking functions on first load
+    this.ConstructSportsTabs(this.sportsOrder);
+    this.FetchDataFromApi();
+    var thisParent = this;
+    this.varInterval = setInterval(
+        function () {
+            thisParent.FetchDataFromApi();
+        },
+        thisParent.dataRefresh * 1000
+    );
+};

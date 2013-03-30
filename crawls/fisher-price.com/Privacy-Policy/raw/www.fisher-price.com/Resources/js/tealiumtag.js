@@ -220,24 +220,25 @@ $(document).ready(function () {
     $('.buy-now a').click(function () {
         var currentAnchor = $(this);
         var linkClass = currentAnchor.attr('class');
-        szEventId = szProductName;
-        pageType = 'Product Detail';
-        szEventSubDetail = '';
-        szEventAction = 'Click';
-        szEventType = 'element';
-        szEventPoint = '';
-        szEventActionType = "";
-        if (linkClass == "button-component") 
-        {
-            szEventCategoryId = 'Buy Now';
-            szEventDetail = 'BuyNow';            
+        var linkurl = currentAnchor.attr('href');
+        if (linkurl.indexOf("m.fisher-pricestore.com") < 0) {
+            szEventId = szProductName;
+            pageType = 'Product Detail';
+            szEventSubDetail = '';
+            szEventAction = 'Click';
+            szEventType = 'element';
+            szEventPoint = '';
+            szEventActionType = "";
+            if (linkClass == "button-component") {
+                szEventCategoryId = 'Buy Now';
+                szEventDetail = 'BuyNow';
+            }
+            else if (linkClass == "find-a-retailer") {
+                szEventCategoryId = 'Find a Retailer';
+                szEventDetail = 'Find a Retailer';
+            }
+            setUTagView(pageId);
         }
-        else if (linkClass == "find-a-retailer") 
-        {
-            szEventCategoryId = 'Find a Retailer';
-            szEventDetail = 'Find a Retailer';            
-        }
-        setUTagView(pageId);
         //setUTagViewForEvents(szEventId,szEventCategoryId,'',pageType,szEventAction,szEventDetail,szEventSubDetail);
     });
 
@@ -287,17 +288,21 @@ $(document).ready(function () {
     });
 
     /* For Share your Photo Link */
-    $('.clear-both').click(function () {
-        szEventId = szProductName;
-        szEventCategoryId = 'Share your Photo';
-        pageType = 'Product Detail';
-        szEventDetail = 'Share Your Photo';
-        szEventSubDetail = '';
-        szEventAction = 'Click';
-        szEventType = 'element';
-        szEventPoint = '';
-        szEventActionType = "";
-        setUTagView(pageId);
+    $('.clear-both a').click(function () {
+        var currentAnchor = $(this);
+        var linkId = currentAnchor.attr('id');
+        if (linkId == "PhotoUpload") {
+            szEventId = szProductName;
+            szEventCategoryId = 'Share your Photo';
+            pageType = 'Product Detail';
+            szEventDetail = 'Share Your Photo';
+            szEventSubDetail = '';
+            szEventAction = 'Click';
+            szEventType = 'element';
+            szEventPoint = '';
+            szEventActionType = "";
+            setUTagView(pageId);
+        }
         //setUTagViewForEvents(szEventId,szEventCategoryId,'',pageType,szEventAction,szEventDetail,szEventSubDetail);
     });
 
@@ -399,7 +404,7 @@ $(document).ready(function () {
     });
 
     /* For the product thumbnail section - Event tag -Thumbnail */
-    $('.search-results .product').live('click', function () {
+    $('.search-results .product').on('click', function () {
         var productObj = $(this);
         var productDetailsObj = productObj.find('.product-info .product-name a');
         var productURL = productDetailsObj.attr('href');
@@ -422,26 +427,26 @@ $(document).ready(function () {
 
 
     /* For the Games section - Evevnt tag - Games  */
-    $('.online-vediogame a').click(function () {
-        var gameObj = $(this);
-        var gameAction = gameObj.attr('href');
-        var ImageName = $('.online-vediogame').children('img').attr('src');
-        if (ImageName != undefined) {
-            var startIndex = ImageName.lastIndexOf("/");
-            var endIndex = ImageName.lastIndexOf(".");
-            szEventId = ImageName.substring(startIndex + 1, endIndex);
-            szEventCategoryId = pageName;
-            szEventAction = "Play";
-            pageType = "Games";
-            szEventDetail = gameName;
-            szEventSubDetail = '';
-            szEventType = 'element';
-            szEventPoint = '';
-            szEventActionType = "";
-            setUTagView(pageId);
-            //setUTagViewForEvents(szEventId,szEventCategoryId,'',pageType,szEventAction,szEventDetail,szEventSubDetail);
-        }
-    });
+    /*$('.online-vediogame a').click(function () {
+    var gameObj = $(this);
+    var gameAction = gameObj.attr('href');
+    var ImageName = $('.online-vediogame').children('img').attr('src');
+    if (ImageName != undefined) {
+    var startIndex = ImageName.lastIndexOf("/");
+    var endIndex = ImageName.lastIndexOf(".");
+    szEventId = ImageName.substring(startIndex + 1, endIndex);
+    szEventCategoryId = pageName;
+    szEventAction = "Play";
+    pageType = "Games";
+    szEventDetail = gameName;
+    szEventSubDetail = '';
+    szEventType = 'element';
+    szEventPoint = '';
+    szEventActionType = "";
+    setUTagView(pageId);
+    //setUTagViewForEvents(szEventId,szEventCategoryId,'',pageType,szEventAction,szEventDetail,szEventSubDetail);
+    }
+    });*/
 
     /* For the Articles section -  Article sharing on social site  */
     $('.accordians ul li a').click(function () {
@@ -462,7 +467,7 @@ $(document).ready(function () {
     });
 
     /*For Search */
-    $('.sort-deselected').live("click", function (e) {
+    $('.sort-deselected').on("click", function (e) {
         szEventId = refinementId
         szEventCategoryId = "Search";
         szEventAction = "Refine";
@@ -477,7 +482,7 @@ $(document).ready(function () {
     });
 
     /* For Manual Links in the Home Page */
-    $('.sub-footer ul li a').live("click", function (e) {
+    $('.sub-footer ul li a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.children('img').attr('alt');
@@ -489,7 +494,7 @@ $(document).ready(function () {
     });
 
     /* External Links - Home Page*/
-    $('.footer_column ul li a').live("click", function (e) {
+    $('.footer_column ul li a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.text();
@@ -502,7 +507,7 @@ $(document).ready(function () {
     });
 
     /* For Need help with this product in Product Page*/
-    $('.product-detail-links a').live("click", function (e) {
+    $('.product-detail-links a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.text();
@@ -522,7 +527,7 @@ $(document).ready(function () {
     });
 
     /* External Links - Games & Videos sections*/
-    $('.social-links-embed ul li a').live("click", function (e) {
+    $('.social-links-embed ul li a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var ImageName = currentAnchorObj.children('img').attr('title');
         if ((ImageName == "Facebook Icon") || (ImageName == "Twitter Icon")) {
@@ -532,7 +537,7 @@ $(document).ready(function () {
     });
 
     /* External Links - Family Playtime section*/
-    $('.grayBanner ul li a').live("click", function (e) {
+    $('.grayBanner ul li a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.text();
@@ -541,7 +546,7 @@ $(document).ready(function () {
 
 
     /* For My Account in the Email Sign Up Page 1*/
-    $('#e-sign-up .OrangeOkBtn').live("click", function (e) {
+    $('#e-sign-up .OrangeOkBtn').on("click", function (e) {
         szEVentConvId = "Age Screening";
         szEventCategoryId = "Family Club";
         szEventAction = "";
@@ -557,7 +562,7 @@ $(document).ready(function () {
 
 
     /* For My Account in the Email Sign Up Page 2*/
-    $('.clearfix .right .left').live("click", function (e) {
+    $('.clearfix .right .left').on("click", function (e) {
         szEVentConvId = "Age Screening";
         szEventCategoryId = "Family Club";
         szEventAction = "";
@@ -572,21 +577,21 @@ $(document).ready(function () {
     });
 
     // The blow sections are for the Interstetial links - Starts
-    $('.retailer-content ul li a').live("click", function (e) {
-        var currentAnchorObj = $(this);
-        var manualLink = currentAnchorObj.attr('href');
-        var manualLinkName = currentAnchorObj.children('img').attr('alt');
-        UTagExternalLink(manualLink, manualLinkName, pageId);
-    });
+    /*$('.retailer-content ul li a').on("click", function (e) {
+    var currentAnchorObj = $(this);
+    var manualLink = currentAnchorObj.attr('href');
+    var manualLinkName = currentAnchorObj.children('img').attr('alt');
+    UTagExternalLink(manualLink, manualLinkName, pageId);
+    });*/
 
-    $('.brand-scrollable .items .cloned a').live("click", function (e) {
+    $('.brand-scrollable .items .cloned a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.text();
         UTagExternalLink(manualLink, manualLinkName, pageId);
     });
 
-    $('.brand-tiles .tile a').live("click", function (e) {
+    $('.brand-tiles .tile a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = '';
@@ -598,7 +603,7 @@ $(document).ready(function () {
         UTagExternalLink(manualLink, manualLinkName, pageId);
     });
 
-    $('.sub-footer ul li a').live("click", function (e) {
+    $('.sub-footer ul li a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = currentAnchorObj.children('img').attr('alt');
@@ -607,7 +612,7 @@ $(document).ready(function () {
     });
 
     /* The below code is for Fisher-Price Apps inthe babytoys section */
-    $('#app-products a').live("click", function (e) {
+    $('#app-products a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = '';
@@ -620,7 +625,7 @@ $(document).ready(function () {
     });
 
     /* The below code is for Fisher-Price Apps inthe Games & Activities section */
-    $('#app-baby-products a').live("click", function (e) {
+    $('#app-baby-products a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var manualLink = currentAnchorObj.attr('href');
         var manualLinkName = '';
@@ -633,14 +638,14 @@ $(document).ready(function () {
     });
 
 
-    /*$('.searchNavigation .brand-search ul li a').live("click", function (e) {        
+    /*$('.searchNavigation .brand-search ul li a').on("click", function (e) {        
     var currentAnchorObj = $(this);
     var currentLink = currentAnchorObj.attr('href');        
     setUTagOnSearchRefinement();
     });*/
 
     /* For Demo Video */
-    $('.product-detail-carousel-scroll a').live("click", function (e) {
+    $('.product-detail-carousel-scroll a').on("click", function (e) {
         var currentAnchorObj = $(this);
         var iConText = $(this).attr('rel');
 
@@ -652,14 +657,163 @@ $(document).ready(function () {
         }
     });
 
-    /* Below codes are added for CoreMetrics - Ends */
+
+    /*Manulink click code added for find a retailer page on March 15 by on-site*/
+
+    $('.findretailer-buyonline li > a').click(function () {
+    var currentAnchor = $(this);
+    var currentImg = currentAnchor.children('img');
+    var linkurl = currentAnchor.attr('href');
+    var linktext = currentImg.attr('alt');
+    UTagExternalLink(linkurl, linktext, pageId);
+
+    }); 
+
+    $('#ContinueButton').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = currentAnchor.text();
+        UTagExternalLink(linkurl, linktext, pageId);
+
+    });
+
+
+    /*Applink track*/
+    $('.app_thumbnail a').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = TrimTrackingText(currentAnchor.attr('wt8track'));
+        UTagExternalLink(linkurl, linktext, pageId);
+    });
+
+    $('.app_link a').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = TrimTrackingText(currentAnchor.attr('wt8track'));
+        UTagExternalLink(linkurl, linktext, pageId);
+
+    });
+
+    /*Footer Links*/
+    $('#footer_fullsite a').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = currentAnchor.text();
+        UTagExternalLink(linkurl, linktext, pageId);
+
+    });
+    $('#customer_service a').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = currentAnchor.text();
+        UTagExternalLink(linkurl, linktext, pageId);
+
+    });
+    $('#recall a').click(function () {
+        var currentAnchor = $(this);
+        var linkurl = currentAnchor.attr('href');
+        var linktext = currentAnchor.text();
+        UTagExternalLink(linkurl, linktext, pageId);
+
+    });
+
+    /*Element tag Tracking for Home Page Banners*/
+    $('.rma-tile a').click(function () {
+        var currentAnchor = $(this);
+        var linktext = TrimTrackingText(currentAnchor.attr('track'));
+        setElementTags(linktext, 'Home - Mobile', 'Home Banner', '');
+
+    });
+     /* $('.landing-tiles a').click(function () {
+        var currentAnchor = $(this);
+        var linktext = TrimTrackingText(currentAnchor.attr('track'));
+        setElementTags(linktext, 'Home - Mobile', 'Home Banner', '');
+    }); */
+    $('.landingTilesContainer .tile a').click(function () {
+        var currentAnchor = $(this);
+        var linktext = TrimTrackingText(currentAnchor.attr('track'));
+        setElementTags(linktext, 'Home - Mobile', 'Home Banner', '');
+    });
+
+    /*Buy now button*/
+
+    $('.buy-now a').click(function () {
+        var currentAnchor = $(this);
+        var linktext = currentAnchor.attr('wt8track');
+        var linkurl = currentAnchor.attr('href');
+        if (linkurl.indexOf("m.fisher-pricestore.com") > 0) {
+            var productname = linktext.substring(linktext.indexOf('-') + 1, linktext.indexOf('|'));
+            setElementTags(productname, 'Buy Now - Mobile', 'Buy Now', '');
+        }
+
+    });
+
+    /*Share links*/
+
+    $('.addthis_toolbox a').click(function () {
+        var currentAnchor = $(this);
+        //var product = $('.buy-now a').attr('wt8track');
+        //var productname = product.substring(product.indexOf('-') + 1, product.indexOf('|'));
+        var eventdetail = currentAnchor.attr('title');
+        setElementTags(szProductName, 'Social Share - Mobile', eventdetail, '');
+
+    });
+
+    $('#product_sort input[type="image"]').click(function () {
+        var szSortName = '';
+        $("select option:selected").each(function () {
+            var currentoption = $(this);
+            var sortedby = currentoption.val();
+            //var sortedby = currentoption.text();
+            if (sortedby == "pPrice|0") 
+            {
+                szSortName = "Price: Low->High";
+            }
+            else if (sortedby == "pPrice|1") 
+            {
+                szSortName = "Price: High->low";
+            }
+            else if (sortedby == "pProduct+Name|0") 
+            {
+                szSortName = "Product Name";
+            }
+            else if (sortedby == "pBVRating|1") 
+            {
+                szSortName = "Product Rating";
+            }
+            else if (sortedby == "pCreateDate|1") 
+            {
+                szSortName = "What's New";
+            }
+            //setElementTags(sortedby, 'Search - Mobile', 'Sorted By', '');
+            setElementTags(szSortName, 'Search - Mobile', 'Sorted By', '');
+        });
+    });
 
 });
 
 
+    /* Below codes are added for CoreMetrics - Ends */
+function setElementTags(eventid, categoryid, detailattr, detailsubattr) {
+    utag.view({
+        event_id: eventid,
+        event_category_id: categoryid,
+        event_action_attr46: "Click",
+        event_detail_attr47: detailattr,
+        event_detail_sub_attr48: detailsubattr,
+        event_type: "element"
+    });
+}
+
+function TrimTrackingText(trackingText) 
+{
+    return trackingText.substring(0, trackingText.indexOf('|'));
+}
+
+
 function UTagExternalLink(linkUrl, linkName, pageId) 
-{    
-    utag.link({ link_url: linkUrl, link_name:linkName, page_id: pageId });	
+{   
+    utag.link({ link_url: linkUrl, link_name: linkName, page_id: pageId });    	
 }
 
 function setUTagView(pageid)
@@ -695,7 +849,8 @@ utag.view(
       event_type:szEventType,
       event_points:szEventPoint,
       conv_event_id: szEVentConvId
-      });
+  });
+
       }
 
 
@@ -720,16 +875,9 @@ utag.view(
           szEventAction = "Refine";
           pageType = "Search Results";
           szEventDetail = searchText;
-          szEventSubDetail = "";
-          utag.link({ search_term: searchText, search_results: totalMatches, search_type_attr29: "keyword", search_refinement_attr30: refinementId, event_type: 'search' });
-
-          //utag.view({ search_term: searchText, search_results: totalMatches, search_type_attr29: "keyword", search_refinement_attr30: refinementId,event_type:'search' });
+          szEventSubDetail = "";          
+          utag.view({ search_term: searchText, search_results: totalMatches, search_type_attr29: "keyword", search_refinement_attr30: refinementId,event_type:'search' });
           
-          /*utag_data.search_term = searchText;
-          utag_data.search_results = totalMatches;
-          utag_data.search_type_attr29 = "keyword";
-          utag_data.search_refinement_attr30 = refinementId;
-          utag_data.event_type="search";*/
      }
 
      function setUTagOnSearchRefinement(searchText, refinementId) 
@@ -745,11 +893,12 @@ utag.view(
          {
              thdnpageTitle = document.getElementById('thdnpageTitle').value;
          }
-         //utag.view({ event_id: "Search", event_category_id: szEventCategoryId, page_name_attr9: thdnpageTitle, page_type_attr10: szEventAction, brand_attr20: " ", event_trigger_action: szEventAction, specific_area_of_page: szEventId, sub_specific_area_on_page: "Search Term", event_type: 'search' });
-         utag.link({ event_id: "Search", event_category_id: szEventCategoryId, page_name_attr9: thdnpageTitle, page_type_attr10: szEventAction, brand_attr20: " ", event_trigger_action: szEventAction, specific_area_of_page: szEventId, sub_specific_area_on_page: "Search Term", event_type: 'search' });
+         utag.view({ event_id: "Search", event_category_id: szEventCategoryId, page_name_attr9: thdnpageTitle, page_type_attr10: szEventAction, brand_attr20: " ", event_trigger_action: szEventAction, specific_area_of_page: szEventId, sub_specific_area_on_page: "Search Term", event_type: 'search' });         
+        
      }
 
      function setUTagForDemoVideo(eventId,eventType,eventCategoryId,brandName) 
      {
-         utag.view({ event_id: eventId, event_type:eventType,event_category_id:eventCategoryId, brand_attr20:brandName });
+         utag.view({ event_id: eventId, event_type: eventType, event_category_id: eventCategoryId, brand_attr20: brandName });
+         
      }

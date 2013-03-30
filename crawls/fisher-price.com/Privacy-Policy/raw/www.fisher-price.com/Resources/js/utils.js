@@ -718,12 +718,13 @@ $('#jol-landing-carousel a.videoId').live('click', function (event) {
 
     //Get the Video Id
     var videoId = $(this).attr('href');
+    var subTitle = $(this).attr('rel');
 
     /* Path of Universal Video Player */
     var _path = '/Resources/Images/video_shell.swf';
-    var _flashVarValue = "v0=mi&v3=none&v4=http://mediaservice.mirror-image.com/videos/" + videoId + "/formats/FP_web_high/file.mp4";
+    var _flashVarValue = "v0=mi&v2=" + subTitle + "&v3=none&v4=http://mediaservice.mirror-image.com/videos/" + videoId + "/formats/FP_web_high/file.mp4";
 
-    displayVideos(videoId, _path, _flashVarValue, "561", "356","561", "356")
+    displayVideos(videoId, _path, _flashVarValue, "561", "356", "561", "356")
 
     $(".embed-content").text(output_value);
     $(".email-content").html(url);

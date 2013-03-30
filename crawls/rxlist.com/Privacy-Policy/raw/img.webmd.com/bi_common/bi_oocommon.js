@@ -39,7 +39,7 @@ webmd.omniture = {
 };
 /* END New Namespaced code */
 
-var s_ver='|oocommon|20130219',_ud="undefined",s_live=false,ntc="ntc";
+var s_ver='|oocommon|20130320',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -142,9 +142,6 @@ function _urlClean(a) {
 	return a;
 }
 
-function wmdGetPVCandidate() { 
-/* if(window.jQuery) {$.get('/api/xml/pv.xml?t='+ (+new Date));} */
-}
 function locateCall (defunctFunction) {
 	var _linkTrackVars = s_md.linkTrackVars;
 	var _pn=s_md.pageName;
@@ -278,7 +275,7 @@ function wmdPageview(sPageName,iCount,s_sponUri)
 	s_md.products="";
 	s_md.prop15="";
 	s_md.events=s_orig_events;
-	wmdGetPVCandidate();
+
 	s_pageview_sent="y";
 	if (s_persist40=="1"){
 		s_md.prop40="";
@@ -538,9 +535,9 @@ s_md.eVar46=_haiq;
 var ca = document.cookie.split(';');
 try{s_md.prop24=s_pageview_id;}catch(e){}
 
-// if there is an aiq value, drop it into prop69
+// if there is an aiq value, drop it into eVar45
 if (webmd.omniture.aiqGet()) {
-	s_md.prop69 = webmd.omniture.aiqGet();
+	s_md.eVar45 = webmd.omniture.aiqGet();
 }
 
 s_md.prop71 = (Math.ceil(ca.length/5)*5).toString();

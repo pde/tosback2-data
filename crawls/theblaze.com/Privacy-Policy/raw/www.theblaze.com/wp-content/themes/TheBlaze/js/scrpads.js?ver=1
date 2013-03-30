@@ -139,13 +139,13 @@
 			}
 			this.tile += 1;
 		},
-		create_takeover_ad : function(takeover){
+		create_takeover_ad : function(takeover,cookieName){
 			takeover = takeover||false;
 			if( !isMobile() && (screen.width > 500) && !isBot() && takeover ){
 				var d = new Date();
 				var ckkie_exp = this.ckkie_exp, entryad_name = 'entryad_D'+d.getDay()+'M'+d.getMonth()+'Y'+d.getFullYear() , entryad_cookie = {};
 				ckkie_exp.expires = 3;
-				var entryad_cookie = $.cookie(entryad_name);
+				var entryad_cookie = $.cookie(cookieName);
 				if (entryad_cookie !== 'hide3') {
 					tb_show( '', '#TB_inline?width=750&height=600&modal=true' );
 					ad_content = '<style type="text/css">#TB_window iframe{display:block;margin:0 auto;}</style><div style="margin-bottom:15px;"><span class="timeout">Closes in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="tb_remove();" class="close_link" style="float:right;">Close [x]</a></div>';
@@ -166,7 +166,7 @@
 							}
 							takeover_i+=1;
 						}, 1000);
-						$.cookie(entryad_name, 'hide3',ckkie_exp);
+						$.cookie(cookieName, 'hide3',ckkie_exp);
 					}
 					setTimeout(_StartCountDown,1000);
 				}

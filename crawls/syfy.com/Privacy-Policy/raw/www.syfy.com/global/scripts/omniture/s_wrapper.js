@@ -1,4 +1,4 @@
-s_linkInternalFilters="javascript:,syfy.com,video.syfy.com,gamecenter.syfy.com,forums.syfy.com";
+s_linkInternalFilters="javascript:,syfy.com,video.syfy.com,gamecenter.syfy.com,forums.syfy.com,defiance.com";
 
 
 var s_account="nbcusyfydev";
@@ -22,7 +22,7 @@ if (url.match('http://www.syfy.com')
  || url.match('.bigpoint.com')
  || url.match('.letsimaginegreater.com') 
  || url.match('http://video.syfy.com')) {
-    s_account="nbcuglobal,nbcuscifid,nbcuscifibu"
+    s_account="nbcuglobal,nbcuscifid"
 } 
 
 var s_prop8 ="Cable";

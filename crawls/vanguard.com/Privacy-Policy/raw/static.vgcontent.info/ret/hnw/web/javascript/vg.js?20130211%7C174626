@@ -31,8 +31,9 @@ vg.event.DISP_CHANGE="CBD_DISP_CHANGE";
 vg.event.PAGE_READY="CBD_PAGE_READY";
 vg.event.LAYER_REPOSITION="CBD_LAYER_REPOSITION";
 vg.event.LAYER_OPEN="CBD_LAYER_OPEN";
-vg.event.TEXT_ZOOM_CLICK="CBD_TEXT_ZOOM_CLICK";
 vg.event.LAYER_CLOSE="CBD_LAYER_CLOSE";
+vg.event.TEXT_ZOOM_CLICK="CBD_TEXT_ZOOM_CLICK";
+vg.event.LAYER_CONTENT_LOAD="CBD_LAYER_CONTENT_LOAD";
 vg.event.ELEMENT_DISABLED="CBD_ELEMENT_DISABLED";
 vg.event.CUSTOM_EVENTS=new Array();
 vg.event.GSTR_DRAG_START="CBD_SYNTH_GSTR_DRAG_START";
@@ -852,7 +853,7 @@ elem.viewNode.x=target.x+target.w;
 elem.viewNode.y=target.y+target.h/2 - elem.h/2;
 if(elem.hasLeader)
 {
-elem.ldrLoc="xLdrLft"
+elem.ldrLoc="xLdrLft";
 _cbdAddLeader(elem, target);
 elem.ldrOffSetX=((ie)?10:11 );
 }
@@ -1017,7 +1018,7 @@ elem.viewNode.x=target.x+target.w;
 elem.viewNode.y=target.y;
 if(elem.hasLeader)
 {
-elem.ldrLoc="xLdrLft"
+elem.ldrLoc="xLdrLft";
 _cbdAddLeader(elem, target);
 elem.viewNode.y=target.y - vg.position.LEADER_OFFSET;
 elem.ldrOffSetX=vg.position.LEADER_HEIGHT;
@@ -1029,7 +1030,7 @@ elem.viewNode.x=target.x+target.w;
 elem.viewNode.y=target.y;
 if(elem.hasLeader)
 {
-elem.ldrLoc="xLdrLft"
+elem.ldrLoc="xLdrLft";
 _cbdAddLeader(elem, target);
 elem.viewNode.y=target.y - elem.h+vg.position.LEADER_OFFSET+vg.position.LEADER_WIDTH;
 elem.ldrOffSetX=vg.position.LEADER_HEIGHT;
@@ -1040,23 +1041,253 @@ _cbdAddLeader=function(elem, target)
 _cbdCreateLeader(elem.id, elem.ldrLoc);
 return vg.html.position({elementNode:elem.leaderId, targetNode:target.viewNode, dispLoc:elem.dispLoc, infobox:elem.infobox});
 }
-vg.position._auto=function(elem, horzPos, target, defaultTop)
+vg.position.positions={
+AUTO:"auto",
+TOP:"top",
+RIGHT:"right",
+LEFT:"left",
+BOTTOM:"bottom",
+TOP_LEFT:"topleft",
+TOP_RIGHT:"topright",
+BOTTOM_LEFT:"bottomleft",
+UPPER_LEFT:"upperleft",
+LOWER_LEFT:"lowerleft",
+UPPER_RIGHT:"upperright",
+LOWER_RIGHT:"lowerright",
+FIXED_BOTTOM:"fixedbottom",
+BOTTOM_RIGHT:"bottomright",
+NE:"ne",
+SE:"se",
+SW:"sw",
+NW:"nw"
+};
+vg.position.infobox={
+MIN_WIDTH:vg.constants.COL_2_WIDTH,
+MAX_WIDTH:vg.constants.COL_4_WIDTH,
+MAX_ERR_WIDTH:vg.constants.COL_5_WIDTH
+};
+vg.position._enforceInfoBoxMaxWidth=function(elem)
 {
-var bodyScrollTop=_cbdGetBodyScrollTop();
-var spaceAboveTrigger=target.y_body - bodyScrollTop;
-var spaceBelowTrigger=bodyScrollTop+jsCBDgetScreenHeight() -
-(target.y_body+target.h);
-var dispLoc;
-var heightOfDisplayObj;
-elem.dispLoc=null;
-if(elem.viewNode&&
-elem.viewNode.jsController&&
-(typeof elem.viewNode.jsController.initHeight!='undefined')&&
-(elem.viewNode.jsController.initHeight!=null)&&
-(elem.viewNode.jsController.initHeight!='undefined')
+"use strict";
+var origWidth=elem.w,
+isErrInfoBox=(elem.id==="form-field-info" ),
+infoBox=vg.position.infobox,
+maxWidth=isErrInfoBox?infoBox.MAX_ERR_WIDTH:infoBox.MAX_WIDTH;
+elem.w=(origWidth > maxWidth )?maxWidth:origWidth;
+};
+vg.position._isPosHorizLeft=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.LEFT||dispLoc===position.UPPER_LEFT||dispLoc===position.LOWER_LEFT );
+};
+vg.position._isPosVertLeft=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.BOTTOM_RIGHT||dispLoc===position.TOP_RIGHT );
+};
+vg.position._isPositionedLeft=function(dispLoc)
+{
+"use strict";
+return(vg.position._isPosHorizLeft(dispLoc)||vg.position._isPosVertLeft(dispLoc) );
+};
+vg.position._isPosHorizRight=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.RIGHT||dispLoc===position.UPPER_RIGHT||dispLoc===position.LOWER_RIGHT );
+};
+vg.position._isPosVertRight=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.BOTTOM_LEFT||dispLoc===position.TOP_LEFT );
+};
+vg.position._isPositionedRight=function(dispLoc)
+{
+"use strict";
+return(vg.position._isPosHorizRight(dispLoc)||vg.position._isPosVertRight(dispLoc) );
+};
+vg.position._isPositionedTop=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.TOP||dispLoc===position.TOP_LEFT||dispLoc===position.TOP_RIGHT );
+};
+vg.position._isPositionedBottom=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+return(dispLoc===position.BOTTOM||dispLoc===position.BOTTOM_LEFT||dispLoc===position.BOTTOM_RIGHT );
+};
+vg.position._adjustInfoBoxWidthForViewport=function(elem, target)
+{
+"use strict";
+var origWidth=elem.w,
+dispLoc=elem.dispLoc,
+position=vg.position,
+minWidth=position.infobox.MIN_WIDTH,
+horizPxAvail=position._getAvailHorizSpace(elem, target, dispLoc),
+leftPxAvail=horizPxAvail.left,
+rightPxAvail=horizPxAvail.right,
+isAuto=(dispLoc===position.positions.AUTO ),
+isLeft=position._isPositionedLeft(dispLoc),
+isRight=position._isPositionedRight(dispLoc),
+spaceOnLeft=(leftPxAvail  >=origWidth ),
+spaceOnRight=(rightPxAvail >=origWidth ),
+spaceOnLeftMin=(leftPxAvail  >=minWidth ),
+spaceOnRightMin=(rightPxAvail >=minWidth ),
+hasHorizSpace=(spaceOnLeft||spaceOnRight ),
+newWidth;
+if((isLeft&&spaceOnLeft )||(isRight&&spaceOnRight )||(isAuto&&hasHorizSpace ) )
+{
+newWidth=origWidth;
+}
+else if((isLeft&&!spaceOnLeft )&&(spaceOnLeftMin ) )
+{
+newWidth=leftPxAvail;
+}
+else if((isRight&&!spaceOnRight )&&(spaceOnRightMin ) )
+{
+newWidth=rightPxAvail;
+}
+else if(isAuto )
+{
+if(rightPxAvail >=leftPxAvail )
+{
+newWidth=rightPxAvail;
+}
+else
+{
+newWidth=leftPxAvail;
+}
+}
+else
+{
+newWidth=origWidth;
+}
+elem.w=newWidth;
+};
+vg.position._updateDispLocForViewport=function(elem, target)
+{
+"use strict";
+var dispLoc=elem.dispLoc,
+iBoxWidth=elem.w,
+position=vg.position,
+minWidth=position.infobox.MIN_WIDTH,
+isLeft=position._isPositionedLeft(dispLoc),
+isRight=position._isPositionedRight(dispLoc),
+isTop=position._isPositionedTop(dispLoc),
+isBottom=position._isPositionedBottom(dispLoc),
+horizPxAvail=position._getAvailHorizSpace(elem, target, dispLoc),
+leftPxAvail=horizPxAvail.left,
+rightPxAvail=horizPxAvail.right,
+spaceOnLeft=(leftPxAvail  >=iBoxWidth )||(leftPxAvail  >=minWidth ),
+spaceOnRight=(rightPxAvail >=iBoxWidth )||(rightPxAvail >=minWidth ),
+verticalData=position._getVerticalSpace(elem, target),
+spaceAbove=verticalData.positionAbove,
+spaceBelow=verticalData.positionBelow;
+if((isLeft&&!spaceOnLeft )||(isRight&&!spaceOnRight )||(isTop&&!spaceAbove )||(isBottom&&!spaceBelow ) )
+{
+dispLoc=position.positions.AUTO;
+}
+elem.dispLoc=dispLoc;
+};
+vg.position._adjustNgInfoBoxes=function(elem, target)
+{
+"use strict";
+vg.position._enforceInfoBoxMaxWidth(elem);
+vg.position._updateDispLocForViewport(elem, target);
+vg.position._adjustInfoBoxWidthForViewport(elem, target);
+vg.html.setWidth(elem.viewNode, elem.w+"px");
+vg.html._setDimensions(elem);
+};
+vg.position._isValidDispLoc=function(dispLoc)
+{
+"use strict";
+var position=vg.position.positions;
+switch(dispLoc)
+{
+case position.AUTO:
+case position.TOP:
+case position.RIGHT:
+case position.LEFT:
+case position.BOTTOM:
+case position.TOP_LEFT:
+case position.TOP_RIGHT:
+case position.BOTTOM_LEFT:
+case position.UPPER_LEFT:
+case position.LOWER_LEFT:
+case position.UPPER_RIGHT:
+case position.LOWER_RIGHT:
+case position.FIXED_BOTTOM:
+case position.BOTTOM_RIGHT:
+case position.NE:
+case position.SE:
+case position.SW:
+case position.NW:
+return true;
+break;
+}
+return false;
+};
+vg.position._getNextGen12GridMarginSize=function(screenWidth, scrollLeft)
+{
+"use strict";
+var totalScreenWidth=scrollLeft+screenWidth,
+mainDivWidth=vg.constants.GRID_MAIN_WIDTH,
+mainDivLeft=document.getElementById("main").offsetLeft,
+mainDivRight=mainDivLeft+mainDivWidth,
+mainDivMarginVisible=screenWidth > mainDivWidth,
+mainDivMarginLeftVisible=mainDivMarginVisible&&(mainDivLeft > scrollLeft ),
+mainDivMarginRightVisible=mainDivMarginVisible&&(mainDivRight < totalScreenWidth ),
+mainDivMarginLeftPixels=mainDivMarginLeftVisible?mainDivLeft:0,
+mainDivMarginRightPixels=mainDivMarginRightVisible?(totalScreenWidth - mainDivRight ):0,
+mainDivMarginPixels={left:mainDivMarginLeftPixels, right:mainDivMarginRightPixels};
+return mainDivMarginPixels;
+};
+vg.position._getAvailHorizSpace=function(elem, target, dispLoc)
+{
+"use strict";
+var isInfoBox=elem.infobox&&(elem.id.indexOf("ldr_")!==0 ),
+scrollLeft=_cbdGetScrollLeft(),
+screenWidth=vg.window.getAvailableScreenWidth(),
+isLeft=vg.position._isPosHorizLeft(dispLoc),
+isRight=vg.position._isPosHorizRight(dispLoc),
+isLorR=isInfoBox&&(isLeft||isRight ),
+ldrOffset=isLorR?vg.position.LEADER_HEIGHT:0,
+targetOffsetLft=isLorR?0:target.w,
+targetOffsetRgt=isLorR?(-1*(target.w+ldrOffset ) ):target.w,
+leftPxAvail=(target.x - scrollLeft - ldrOffset )+targetOffsetLft,
+rightPxAvail=(screenWidth - leftPxAvail - ldrOffset )+targetOffsetRgt,
+mainDivMarginSize;
+if(window.isNextGen)
+{
+mainDivMarginSize=vg.position._getNextGen12GridMarginSize(screenWidth, scrollLeft);
+leftPxAvail  -=mainDivMarginSize.left;
+rightPxAvail -=mainDivMarginSize.right;
+}
+return{left:leftPxAvail, right:rightPxAvail};
+};
+vg.position._getVerticalSpace=function(elem, target)
+{
+"use strict";
+var spaceAboveTrigger=target.y_body - _cbdGetBodyScrollTop(),
+spaceBelowTrigger=vg.window.getAvailableScreenHeight() -(spaceAboveTrigger+target.h),
+viewNode=elem.viewNode,
+jsController=viewNode.jsController,
+heightOfDisplayObj,
+positionAbove,
+positionBelow;
+if(viewNode&&
+jsController&&
+(typeof jsController.initHeight!=='undefined')&&
+(jsController.initHeight!==null)&&
+(jsController.initHeight!=='undefined')
 )
 {
-heightOfDisplayObj=elem.viewNode.jsController.initHeight;
+heightOfDisplayObj=jsController.initHeight;
 }
 else
 {
@@ -1066,58 +1297,78 @@ if(elem.hasLeader)
 {
 heightOfDisplayObj=heightOfDisplayObj+26;
 }
-var positionBelow=(spaceBelowTrigger >=heightOfDisplayObj)
-var positionAbove=(spaceAboveTrigger >=heightOfDisplayObj)
-var nextGen=window.isNextGen;
-if(elem.id=="form-field-info"&&nextGen)
+positionAbove=(spaceAboveTrigger >=heightOfDisplayObj );
+positionBelow=(spaceBelowTrigger >=heightOfDisplayObj );
+return{positionAbove:positionAbove, positionBelow:positionBelow};
+};
+vg.position._getVertDispLoc=function(elem, target, defaultTop)
 {
-if(positionBelow)
+"use strict";
+var isErrInfoBox=(elem.id==="form-field-info" ),
+verticalData=vg.position._getVerticalSpace(elem, target),
+positionAbove=verticalData.positionAbove,
+positionBelow=verticalData.positionBelow,
+position=vg.position.positions,
+bottomPos=position.BOTTOM,
+topPos=position.TOP,
+dispLoc;
+if(isErrInfoBox )
 {
-dispLoc='bottom';
+dispLoc=positionBelow?bottomPos:topPos;
 }
 else
 {
-dispLoc='top';
-}
+if((defaultTop&&(positionAbove||!positionBelow ) )||(positionAbove&&!positionBelow ) )
+{
+dispLoc=topPos;
 }
 else
 {
-if((defaultTop&&(positionAbove||!positionBelow))||((positionAbove&&!positionBelow)) )
+dispLoc=bottomPos;
+}
+}
+return dispLoc;
+};
+vg.position._getFinalDispLoc=function(elem, target, dispLoc, horizPos)
 {
-dispLoc='top';
+"use strict";
+var horizPxAvail=vg.position._getAvailHorizSpace(elem, target, dispLoc),
+spaceOnLeft=horizPxAvail.left >=elem.w,
+spaceOnRight=horizPxAvail.right >=elem.w,
+position=vg.position.positions,
+leftPos=position.LEFT,
+rightPos=position.RIGHT;
+if(spaceOnLeft&&spaceOnRight&&horizPos )
+{
+dispLoc=dispLoc+horizPos;
+}
+else if(spaceOnRight )
+{
+dispLoc=dispLoc+leftPos;
+}
+else if(spaceOnLeft )
+{
+dispLoc=dispLoc+rightPos;
 }
 else
 {
-dispLoc='bottom';
+dispLoc=dispLoc+leftPos;
 }
-}
-var scrollLeft=_cbdGetScrollLeft();
-var screenWidth=vg.window.getAvailableScreenWidth();
-var spaceOnLeft=(target.x+target.w) >=elem.w;
-var spaceOnRight=(scrollLeft+screenWidth - target.x) > elem.w;
-if(nextGen)
+return dispLoc;
+};
+vg.position._auto=function(params)
 {
-spaceOnRight=(spaceOnRight&&(vg.constants.GRID_MAIN_WIDTH - target.x) > elem.w );
-}
-if(spaceOnLeft&&spaceOnRight&&horzPos!=null)
-{
-dispLoc=dispLoc+horzPos;
-}
-else if(spaceOnRight)
-{
-dispLoc=dispLoc+'left';
-}
-else if(spaceOnLeft)
-{
-dispLoc=dispLoc+'right';
-}
-else
-{
-dispLoc=dispLoc+'left';
-}
+"use strict";
+var elem=params.elem,
+horizPos=params.horizPos,
+target=params.target,
+defaultTop=params.defaultTop,
+dispLoc=null;
+dispLoc=vg.position._getVertDispLoc(elem, target, defaultTop);
+dispLoc=vg.position._getFinalDispLoc(elem, target, dispLoc, horizPos);
 elem.dispLoc=dispLoc;
-return vg.html.position(elem.viewNode, target.viewNode, dispLoc, elem.infobox, elem.hasLeader);
-}
+return dispLoc;
+};
 vg.html.isAncestor=function(container, node)
 {
 return cbd.getYUI().DOM.contains(container,node);
@@ -1130,7 +1381,8 @@ if(e)
 var aInputArray=e.getElementsByTagName('input');
 if(aInputArray)
 {
-var len=aInputArray.length;
+var len=aInputArray.length,
+i;
 for(i=0;i < len;i++)
 {
 var aInput=aInputArray[i];
@@ -1155,9 +1407,11 @@ return node.nodeType==vg.html.ELEMENT_NODE;
 }
 vg.html._setDimensions=function(obj)
 {
-var prop=vg.html.getObjSizePosition(obj.viewNode);
-obj.x=prop.x;
-obj.y=prop.y;
+var objXY=cbd.getYUI().one(obj.viewNode).getXY(),
+prop=vg.html.getObjSize(obj.viewNode);
+obj.x=Math.round(objXY[0]);
+obj.y=Math.round(objXY[1]);
+obj.y_body=obj.y;
 obj.h=prop.h;
 obj.w=prop.w;
 }
@@ -1178,7 +1432,23 @@ obj.oncontextmenu=function(){return false};
 }
 vg.html.position=function(elementNode, targetNode, dispLoc, infobox, leader, horzPos)
 {
-if(elementNode.elementNode!=null)
+"use strict";
+var globalInfoBox,
+parent,
+newDiv,
+cssContainer,
+target={},
+elem={},
+dpData={},
+ances,
+isLeader,
+isNextGen=window.isNextGen,
+isErrInfoBox,
+isNgInfoBox,
+isInfoBoxNotLdr,
+position=vg.position.positions,
+autoPos=position.AUTO;
+if(elementNode.elementNode)
 {
 targetNode=elementNode.targetNode;
 dispLoc=elementNode.dispLoc;
@@ -1187,21 +1457,16 @@ leader=elementNode.leader;
 horzPos=elementNode.horzPos;
 elementNode=elementNode.elementNode;
 }
-if(typeof infobox=="undefined")
-{
-infobox=false;
-}
-if(dispLoc)
-{
-dispLoc=dispLoc.toLowerCase();
-}
+infobox=infobox||false;
+dispLoc=dispLoc?dispLoc.toLowerCase():autoPos;
+dispLoc=vg.position._isValidDispLoc(dispLoc)?dispLoc:autoPos;
 if(infobox)
 {
-var globalInfoBox=vg.html.getElement(CBD_GLOBAL_INFO_BOX);
-var parent=globalInfoBox.parentNode;
+globalInfoBox=vg.html.getElement(CBD_GLOBAL_INFO_BOX);
+parent=globalInfoBox.parentNode;
 if(!parent.getAttribute(CBD_DYNAMIC_CSS))
 {
-var newDiv=document.createElement("div");
+newDiv=document.createElement("div");
 newDiv.setAttribute('id',CBD_DYNAMIC_CSS_ID);
 newDiv.setAttribute(CBD_DYNAMIC_CSS,'true');
 parent.removeChild(globalInfoBox);
@@ -1209,121 +1474,138 @@ newDiv.appendChild(globalInfoBox);
 parent.appendChild(newDiv);
 parent=newDiv;
 }
-var cssContainer=vg.html._cbdGetCSSContainer(targetNode);
+cssContainer=vg.html._cbdGetCSSContainer(targetNode);
 vg.html.setStyle(cssContainer.className, parent);
 }
-var target=new Object();
 target.viewNode=vg.html.getElement(targetNode);
 vg.html._setDimensions(target);
-target.y_body=(target.y -=_cbdGetTotalScroll(target.viewNode));
-target.x -=_cbdGetTotalScrollLeft(target.viewNode);
-var elemViewNode=vg.html.getElement(elementNode);
-target.y+=_cbdGetScrollOffset(elemViewNode);
-target.x+=_cbdGetScrollOffsetLeft(elemViewNode);
-if(targetNode.inLayoutTopBorderTd&&(ie||safari))
-{
-target.y_body+=10;
-target.y+=10;
-}
-var elem=new Object();
-elem.viewNode=elemViewNode;
 elem.viewNode=vg.html.getElement(elementNode);
 elem.id=elem.viewNode.getAttribute('id');
 elem.dispLoc=dispLoc;
 elem.hasLeader=leader;
 elem.leaderId=null;
 elem.infobox=infobox;
+isLeader=(elem.id.indexOf("ldr_")===0 );
+isErrInfoBox=(elem.id==="form-field-info" );
+isInfoBoxNotLdr=(infobox&&!isLeader );
+isNgInfoBox=(isNextGen&&isInfoBoxNotLdr );
+if(isInfoBoxNotLdr )
+{
+vg.html.setLeft(elem.viewNode, 0);
+vg.html.setObjTop(elem.viewNode, 0);
+if(isErrInfoBox )
+{
+vg.html.setWidth(elem.viewNode, autoPos);
+}
+}
 vg.html._setDimensions(elem);
-elem.y -=_cbdGetTotalScroll(elem.viewNode);
 if(elem.hasLeader)
 {
 elem.leaderId="ldr_"+elem.id;
 elem.ldrOffSetY=0;
 elem.ldrOffSetX=0;
 }
-var dpData=new Object();
+if(isNgInfoBox )
+{
+vg.position._adjustNgInfoBoxes(elem, target);
+dispLoc=elem.dispLoc;
+}
+if(dispLoc===autoPos )
+{
+dispLoc=vg.position._auto({
+elem:elem,
+horizPos:horzPos,
+target:target,
+defaultTop:infobox
+});
+}
 dpData.elem=elem;
 dpData.target=target;
 switch(dispLoc)
 {
-case "top":
+case position.TOP:
 vg.position._top(elem, target);
 break;
-case "right":
+case position.RIGHT:
 vg.position._right(elem, target);
 break;
-case "left":
+case position.LEFT:
 vg.position._left(elem, target);
 break;
-case "bottom":
+case position.BOTTOM:
 vg.position._bottom(elem, target);
 break;
-case "topleft":
+case position.TOP_LEFT:
 vg.position._topLeft(elem, target);
 break;
-case "topright":
+case position.TOP_RIGHT:
 vg.position._topRight(elem, target);
 break;
-case "bottomleft":
+case position.BOTTOM_LEFT:
 vg.position._bottomLeft(elem, target);
 break;
-case "upperleft":
+case position.UPPER_LEFT:
 vg.position._upperLeft(elem, target);
 break;
-case "lowerleft":
+case position.LOWER_LEFT:
 vg.position._lowerLeft(elem, target);
 break;
-case "upperright":
+case position.UPPER_RIGHT:
 vg.position._upperRight(elem, target);
 break;
-case "lowerright":
+case position.LOWER_RIGHT:
 vg.position._lowerRight(elem, target);
 break;
-case "fixedbottom":
+case position.FIXED_BOTTOM:
 vg.position._fixedBottom(elem, target);
 break;
-case "bottomright":
+case position.BOTTOM_RIGHT:
 vg.position._bottomRight(elem, target);
 break;
-case "ne":
+case position.NE:
 vg.position._ne(elem, target);
 break;
-case "se":
+case position.SE:
 vg.position._se(elem, target);
 break;
-case "sw":
+case position.SW:
 vg.position._sw(elem, target);
 break;
-case "nw":
+case position.NW:
 vg.position._nw(elem, target);
 break;
-default:
-dpData=vg.position._auto(elem, horzPos, target, infobox);
-dispLoc=dpData.elem.dispLoc;
 }
-var ances=vg.html.findAncestor(target.viewNode,{tagName:null,attrName:null}, jsCBDCheckFixedStyle);
-if((ances!=null)&&(!ie))
+ances=vg.html.findAncestor(target.viewNode,{tagName:null,attrName:null}, jsCBDCheckFixedStyle);
+if(ances&&!ie )
 {
 elem.viewNode.style.position="fixed";
 }
-else if(elem.viewNode.style.position!="absolute")
+else if(elem.viewNode.style.position!=="absolute")
 {
 elem.viewNode.style.position="absolute";
 }
-elem.x=parseInt(elem.viewNode.x);
-elem.y=parseInt(elem.viewNode.y);
+elem.x=parseInt(elem.viewNode.x, 10);
+elem.y=parseInt(elem.viewNode.y, 10);
 elem.ldrOffSetX=dpData.elem.ldrOffSetX;
 elem.ldrOffSetY=dpData.elem.ldrOffSetY;
-if("fixedbottom"!=dispLoc.toLowerCase())
+if(!isNaN(elem.ldrOffSetX) )
 {
-elem.viewNode.style.left=elem.x+"px";
-elem.viewNode.style.top=elem.y+"px";
+elem.x+=elem.ldrOffSetX;
+}
+if(!isNaN(elem.ldrOffSetY) )
+{
+elem.y+=elem.ldrOffSetY;
+}
+if(position.FIXED_BOTTOM!==dispLoc.toLowerCase())
+{
+vg.html.setLeft(elem.viewNode, elem.x);
+vg.html.setObjTop(elem.viewNode, elem.y);
 }
 dpData.elem.dispLoc=dispLoc;
 dpData.elem=elem;
 dpData.target=target;
 return dpData;
-}
+};
 vg.html.getNodeText=function(node)
 {
 var ret='';
@@ -1731,7 +2013,7 @@ node.style.width=width;
 }
 vg.html.setLeft=function(node, left)
 {
-node.style.left=left+"px";;
+node.style.left=left+"px";
 }
 vg.html.setOpacity=function(node, opacity, adjustZoom)
 {
@@ -1878,7 +2160,7 @@ vg.html.removeStyle(vg.comp.TEMP_VISIBLE_CLASS, currentNode);
 return objData;
 }
 }
-currentNode=vg.html._getParentNode(currentNode);;
+currentNode=vg.html._getParentNode(currentNode);
 }
 return{};
 }
@@ -2105,6 +2387,12 @@ vg.html.getElements=function(context, oFilter, check, map )
 {
 var elements=new Array();
 var tagName=oFilter.tagName;
+var elemsByClass;
+if(!tagName&&oFilter.attrName=='class'&&oFilter.attrValue)
+{
+elemsByClass=cbd.getYUI().all("."+oFilter.attrValue);
+return elemsByClass.getDOMNodes(node);
+}
 if(!context )
 {
 return elements;
@@ -2554,7 +2842,7 @@ vg.util.concat=function(array1, array2)
 {
 for(var i=0;i < array2.length;i++)
 {
-array1.push(array2[i])
+array1.push(array2[i]);
 }
 }
 vg.util.isEmpty=function(s){
@@ -2592,7 +2880,7 @@ vg.html.addEventListener(window, 'load', func);
 }
 vg.util.checkConditionsAndExecute=function(conditions, func, trials)
 {
-_cbdCheckConditionsAndExecute(conditions, func, trials)
+_cbdCheckConditionsAndExecute(conditions, func, trials);
 }
 vg.util.isDefined=function(variable)
 {
@@ -2800,7 +3088,7 @@ return str.charAt(0)==c;
 }
 vg.string.startsWithStr=function(str, strToMatch)
 {
-return(str.match("^"+strToMatch)==strToMatch)
+return(str.match("^"+strToMatch)==strToMatch);
 }
 vg.smil.isLoaded=function()
 {
@@ -2920,7 +3208,7 @@ to:attr.to,
 by:attr.by,
 easing:easing,
 duration:this.duration/1000
-})
+});
 if(!this.colorAnimation&&!disableGeoChangedEvent)
 {
 var targetElement=vg.html.getElement(target );
@@ -3092,7 +3380,23 @@ if(targetPosition&&controller)
 controller.targetPosition=targetPosition;
 }
 THIS.id=id;
+if(cbd.browser.isTouchScreen&&!vg.html.hasEventListeners(link, 'touchend'))
+{
+THIS.linkMouseoverFunction=link.onmouseover;
+THIS.linkMouseoutFunction=link.onmouseout;
+link.onmouseout=null;
+link.onmouseover=null;
+THIS.originalHref=link.href;
+link.href='javascript:void(0)';
+vg.html.addEventListener(link, 'touchend', function(){
+vg.ElementPersistance._touchEnd(THIS, id, link, targetPosition);
+});
 THIS.linkIn();
+}
+else
+{
+THIS.linkIn();
+}
 }
 }
 vg.ElementPersistance.mouseLinkLeave=function(id )
@@ -3101,6 +3405,28 @@ var THIS=document.getElementById(id ).persistObj;
 if(THIS!=null)
 {
 THIS.linkOut();
+}
+}
+vg.ElementPersistance._touchEnd=function(persistObj, id, link, targetPosition)
+{
+var args;
+if(persistObj.openflag)
+{
+args=[];
+persistObj.linkMouseoutFunction.apply(link, args);
+if((persistObj.originalHref.indexOf('javascript') > -1)&&persistObj.originalHref.indexOf('void(0)')===-1 )
+{
+eval(persistObj.originalHref.replace(/return false;?$/g,''));
+}
+else if(persistObj.originalHref.indexOf('#') < 0)
+{
+jsCBDgoToUrl(persistObj.originalHref);
+}
+}
+else
+{
+args=[id, link, targetPosition];
+persistObj.linkMouseoverFunction.apply(link, args);
 }
 }
 vg.ElementPersistance.prototype.addLinkNode=function(node )
@@ -3266,7 +3592,7 @@ if(jsController!=null)
 return jsController;
 }
 node=vg.html._getParentNode(node);
-}while(node!=null)
+}while(node!=null);
 }
 vg.comp.callMethod=function(target, methodName, args)
 {
@@ -3382,7 +3708,7 @@ sliderController.show();
 }
 else
 {
-vg.util.execOnPageReady(function(){sliderController.show()});
+vg.util.execOnPageReady(function(){sliderController.show();});
 }
 }
 }
@@ -3468,7 +3794,7 @@ cont._contentUpdated();
 }
 if(window.openLayers!=null&&window.openLayers.length!=0)
 {
-var layer=vg.html.findAncestor(target,{tagName:'span', attrName:'type', attrValue:'Layer'})
+var layer=vg.html.findAncestor(target,{tagName:'span', attrName:'type', attrValue:'Layer'});
 cont=vg.comp.getController(vg.html.getFirstChild(layer));
 if(cont!=null&&cont._contentUpdated!=null)
 {
@@ -3603,11 +3929,11 @@ return vg.html.getFirstChild(vg.html.getElement(button));
 }
 vg.button._mouseInOut=function(selected, button)
 {
-var isDisabled=vg.button._isDisabled(button);
-var span=vg.button._getSpan(button);
+var isDisabled=vg.button._isDisabled(button),
+span=vg.button._getSpan(button);
 if(selected&&!isDisabled)
 {
-vg.html.replaceClass(span, vg.button.BUTTON_DEFAULT_STYLE, vg.button.BUTTON_HIGHLIGHT_STYLE)
+vg.html.replaceClass(span, vg.button.BUTTON_DEFAULT_STYLE, vg.button.BUTTON_HIGHLIGHT_STYLE);
 }
 else
 {
@@ -4159,7 +4485,7 @@ newPosition=-(this.selectedIndex*100);
 this.slider.style.left=newPosition+"%";
 }
 controller=this;
-if(this.hasCarouselType) vg.util.execOnPageReady(function(){controller._getCarouselControllers()});
+if(this.hasCarouselType) vg.util.execOnPageReady(function(){controller._getCarouselControllers();});
 if(this.easingStr)
 {
 vg.util.execOnPageReady(function(){controller.easing=vg.smil.getEasing(controller.easingStr);});
@@ -4204,7 +4530,7 @@ _setHeight:function()
 {
 if(this.afterInit)
 {
-var curHeight=this.viewNode.style.height
+var curHeight=this.viewNode.style.height;
 this.viewNode.style.height="auto";
 var toHeight=this.items[this.selectedIndex].viewNode.scrollHeight;
 this.viewNode.style.height=curHeight;
@@ -4234,8 +4560,8 @@ _getCarouselControllers:function()
 var controller=this;
 this._carContLft=document.getElementById(this.id+"_carLft");
 this._carContRgt=document.getElementById(this.id+"_carRgt");
-vg.html.addEventListener(this._carContLft, 'click', function(){controller._triggerCarousel('left')});
-vg.html.addEventListener(this._carContRgt, 'click', function(){controller._triggerCarousel('right')});
+vg.html.addEventListener(this._carContLft, 'click', function(){controller._triggerCarousel('left');});
+vg.html.addEventListener(this._carContRgt, 'click', function(){controller._triggerCarousel('right');});
 this._configCarousel();
 },
 _triggerCarousel:function(dir)
@@ -4303,6 +4629,18 @@ if(deckParentController&&deckParentController._updateScrollingProperties)
 {
 deckParentController._updateScrollingProperties();
 }
+},
+_isFirstCard:function()
+{
+return(this.selectedIndex==0);
+},
+_isLastCard:function()
+{
+return(this.selectedIndex==this.items.length-1);
+},
+_isFirstOrLastCard:function()
+{
+return(this._isFirstCard()||this._isLastCard());
 }
 }
 DeckItem=function(id, selected)
@@ -4316,7 +4654,7 @@ this.onTransCallback=null;
 this.deckContr=vg.comp.findController(contentNode, true);
 this.deckContr.addItem(this);
 var contr=this;
-this.onTransCallback=(window.isNextGen)?function(){contr._finishFadeInOut()}:null;
+this.onTransCallback=(window.isNextGen)?function(){contr._finishFadeInOut();}:null;
 if(this.selected)
 {
 if(this.deckContr.vertSlide)
@@ -4402,15 +4740,8 @@ if(!currentPosition)
 {
 currentPosition=0;
 }
-if(mac)
-{
-this.deckContr.slider.style.left=newPosition+'%';
-}
-else
-{
 var attributes={left:{from:currentPosition, to:newPosition, unit:"%"}};
-vg.smil.animateElement({target:this.deckContr.slider, attr:attributes, duration:this.deckContr.transDur, easing:this.deckContr.easing});
-}
+this.horizSlideAnim=vg.smil.animateElement({target:this.deckContr.slider, attr:attributes, duration:this.deckContr.transDur, easing:this.deckContr.easing});
 },
 _fadeInOut:function(fadeOut, callBack)
 {
@@ -4511,7 +4842,7 @@ this.defaultCard=(defaultCardAttr==null)?null:parseInt(defaultCardAttr);
 if(autoplay=='true')
 {
 this.autoplay='true';
-setTimeout(function(){controller._autoplayRMDeck(1)}, 3000);
+setTimeout(function(){controller._autoplayRMDeck(1);}, 3000);
 }
 }
 RollOverMenu.ROLLOVER_HIGHLIGHT_STYLE2=ROLLOVER_HIGHLIGHT_STYLE2="roDeck-sel2";
@@ -4535,12 +4866,12 @@ if(mouseTarget!=null){
 RollOverMenuItem.cbdSelectRMItem(menuItem, mouseTarget);
 }
 var itemCount=++count;
-setTimeout(function(){controller._autoplayRMDeck(itemCount)}, 3000);
+setTimeout(function(){controller._autoplayRMDeck(itemCount);}, 3000);
 if(itemCount==controller.items.length)
 {
 var menuItem=controller.items[0];
 var mouseTarget=menuItem.viewNode.getAttribute('mouseTarget');
-setTimeout(function(){RollOverMenuItem.cbdSelectRMItem(menuItem, mouseTarget)}, 3000);
+setTimeout(function(){RollOverMenuItem.cbdSelectRMItem(menuItem, mouseTarget);}, 3000);
 }
 }
 }
@@ -4554,7 +4885,7 @@ this.isMouseEnter=null;
 var parentController=vg.comp.findController(this.viewNode, true);
 parentController.addItem(this);
 var controller=this;
-vg.html.addEventListener(this.viewNode, 'click', function(){controller.click()});
+vg.html.addEventListener(this.viewNode, 'click', function(){controller.click();});
 vg.html.addEventListener(this.viewNode, 'mouseenter', function(e){controller.highlight();controller.recordEvent(e, 'mouseenter');});
 vg.html.addEventListener(this.viewNode, 'mouseleave', function(e){controller.mouseLeave();controller.recordEvent(e, 'mouseleave');});
 }
@@ -4946,7 +5277,7 @@ this.onTransCallback=null;
 this.nodes={};
 this.nodes['cbdProcNav']=document.getElementById('CBD_PROCESS_NAV'+this.id);
 this.nodes['cbdNavDeck']=document.getElementById('CBD_NAV_DECK'+this.id);
-this.nodes['rbscrolldiv']=vg.html.getElements(this.nodes['cbdNavDeck'],{tagName:'div', attrName:'class', attrValue:'roundBoxScrollDiv'}, null )[0];;
+this.nodes['rbscrolldiv']=vg.html.getElements(this.nodes['cbdNavDeck'],{tagName:'div', attrName:'class', attrValue:'roundBoxScrollDiv'}, null )[0];
 if(!this.isInitState())
 {
 var navDeck=this;
@@ -5518,8 +5849,9 @@ vg.validation.hideErr(false);
 }
 vg.validation.showErr=function(input, parentTd, errorFromServer)
 {
+"use strict";
 input=vg.html.getElement(input);
-if(input==null||input.valid )
+if(input===null||input.valid )
 {
 return;
 }
@@ -5527,75 +5859,62 @@ if(!parentTd)
 {
 parentTd=vg.validation.getTdTarget(input);
 }
-if(parentTd.offsetHeight===0 )
+if(parentTd.offsetHeight&&parentTd.offsetHeight===0 )
 {
 return;
 }
-var errLayer=document.getElementById("form-field-info");
-var errLayerContents=document.getElementById("form-field-info-contents");
+var errLayer=document.getElementById("form-field-info"),
+errLayerContents=document.getElementById("form-field-info-contents"),
+errorMessageIFrame=document.getElementById("rderr_iframe_cover"),
+position=vg.position.positions,
+dispLoc=position.AUTO,
+visibleErrorLayer,
+name;
 errLayerContents.innerHTML=vg.validation.getErrMsg(input);
 clearTimeout(vg.validation.blurErrTimeout);
 jsCBDtoggleElement(errLayer, true);
-var errorMessageIFrame=document.getElementById("rderr_iframe_cover");
 if(errorMessageIFrame)
 {
-var visibleErrorLayer=vg.html.getFirstChild(errLayer);
+visibleErrorLayer=vg.html.getFirstChild(errLayer);
 if(visibleErrorLayer)
 {
-errorMessageIFrame.style.height=visibleErrorLayer.clientHeight+1+"px";
-errorMessageIFrame.style.width=visibleErrorLayer.clientWidth+"px";
+vg.html.setHeight(errorMessageIFrame, visibleErrorLayer.clientHeight+1+"px" );
+vg.html.setWidth(errorMessageIFrame, visibleErrorLayer.clientWidth+"px" );
 }
 }
-var dispLoc="auto";
-if(window.isNextGen){
-errLayer.style.width="auto";
-errLayer.style.left=0;
-var name=input.name
+if(window.isNextGen)
+{
+name=input.name;
 if(vg.comp.getController(name,vg.ErrorManager.TYPE))
 {
 dispLoc=vg.comp.getController(name,vg.ErrorManager.TYPE).getErrMsgPos();
 }
-var errMessageWidth=vg.html.getObjWidth(errLayer);
-var maxWidth=vg.constants.COL_5_WIDTH;
-if(errMessageWidth > maxWidth)
-{
-errLayer.style.width=maxWidth+"px";
-}
-}
-var retVal=vg.html.position({elementNode:errLayer, targetNode:parentTd, dispLoc:dispLoc, horzPos:"left"});
-if(window.isNextGen)
-{
-retVal=vg.html.position({elementNode:errLayer, targetNode:parentTd, dispLoc:dispLoc, horzPos:"left", hasLeader:true, infobox:true, leader:true});
+vg.html.position({elementNode:errLayer, targetNode:parentTd, dispLoc:dispLoc, horzPos:position.LEFT, hasLeader:true, infobox:true, leader:true});
 jsCBDtoggle("ldr_form-field-info", true);
-if(retVal.elem.ldrOffSetX!=undefined)
-{
-var ieOffset=0;
-if(ie&&retVal.elem.ldrOffSetX>0&&!(dispLoc=="upperRight"||dispLoc=="lowerRight") )
-{
-ieOffset=1;
-}
-errLayer.style.left=retVal.elem.x+retVal.elem.ldrOffSetX+ieOffset+"px";
-errLayer.style.top=retVal.elem.y+retVal.elem.ldrOffSetY+"px";
-}
-var errorMessageIFrame=document.getElementById("rderr_iframe_cover");
 if(errorMessageIFrame)
 {
-errorMessageIFrame.style.height=errLayer.clientHeight+"px";
-errorMessageIFrame.style.width=errLayer.clientWidth+"px";
+vg.html.setHeight(errorMessageIFrame, errLayer.clientHeight+"px");
+vg.html.setWidth(errorMessageIFrame, errLayer.clientWidth+"px");
 }
 if(errorFromServer)
 {
 errLayer.errorFromServer=true;
 }
 }
+else
+{
+vg.html.position({elementNode:errLayer, targetNode:parentTd, dispLoc:dispLoc, horzPos:position.LEFT});
 }
+};
 vg.validation.hideErr=function(fade)
 {
-var errorLayerId="form-field-info";
-var errorLayerLeaderId="ldr_form-field-info";
+"use strict";
+var errorLayerId="form-field-info",
+errorLayerLeaderId="ldr_form-field-info",
+errorLayer;
 if(window.isNextGen)
 {
-var errorLayer=document.getElementById(errorLayerId);
+errorLayer=document.getElementById(errorLayerId);
 if(fade)
 {
 vg.smil.cbdFadeOut(errorLayer, 250);
@@ -5613,7 +5932,7 @@ else
 jsCBDtoggle(errorLayerId, false);
 }
 clearTimeout(vg.validation.blurErrTimeout);
-}
+};
 vg.validation.findTargetInput=function(e)
 {
 var eNode=jsCBDgetEventNode(e);
@@ -5708,22 +6027,9 @@ return eNode;
 }
 }
 var isDispersedInputGroup=vg.validation.isDispersedInputGroup(input);
-var booleanCheckbox=input.getAttribute('booleanCheckbox');
-if(!(isDispersedInputGroup||booleanCheckbox=='true')&&
-vg.validation.isInputGroup(input)||_cbdIsRiaSelectOneMenu(input) )
-{
-var inputTD=vg.html.findAncestor(input,{tagName:'td'});
-return vg.html.findAncestor(inputTD,{tagName:'td'});
-}
-else if(input.type==="textarea")
-{
-var compSpan=document.getElementById('comp-'+input.name);
-return vg.html.findAncestor(compSpan,{tagName:'td'});
-}
-else
-{
-return vg.html.findAncestor(input,{tagName:'td'});
-}
+var compSpan=document.getElementById(vg.constants.COMP_ID_PFX+input.name);
+var contextNode=compSpan&&!isDispersedInputGroup?compSpan:input;
+return vg.html.findAncestor(contextNode,{tagName:'td'});
 }
 vg.validation.getStyleTarget=function(input)
 {
@@ -5770,7 +6076,7 @@ vg.util.execOnPageReady(function(){vg.validation.setupErrLayer(customErrorLayerI
 }
 vg.validation.openErrorLayerFinish=function(errLayerId)
 {
-vg.comp.closeAllMenus();
+vg.comp.closeMenus();
 jsCBDopenLayer(errLayerId);
 jsCBDpreventSelectListBleedThru(false);
 }
@@ -5878,7 +6184,7 @@ vg.validation.openErrorLayer();
 if(ajaxVal&&dispErr&&window.isNextGen&&state)
 {
 vg.validation.showErr(targetInputs[0], null, true);
-var dur=vg.comp.getController(input.name,vg.ErrorManager.TYPE).getErrMsgDur();
+var dur=vg.comp.getController(inputId, vg.ErrorManager.TYPE).getErrMsgDur();
 vg.validation.blurErrTimeout=setTimeout(function(){vg.validation.hideErr(true);}, dur );
 }
 if(!vg.validation.valObserversTimeOut)
@@ -6836,7 +7142,7 @@ parentLayerContr=vg.comp.getController(parentLayer);
 }
 if(parentLayer&&parentLayerContr)
 {
-var layerScrollDiv=vg.html.getElements(parentLayer,{tagName:'div', attrName:'class', attrValue:parentLayerContr.scrollDiv_css})[0];
+var layerScrollDiv=vg.Layer.getScrollDiv(parentLayerId);
 var minWidthDiv=vg.html.getElements(parentLayer,{tagName:'div', attrName:'name', attrValue:'min-width'})[0];
 if(minWidthDiv)
 {
@@ -7436,17 +7742,7 @@ return null;
 vg.wu.WU=WU="WU";
 vg.wu.trackLink=function(link)
 {
-var linkLocation=jsCBDgetMetaTag("DCSext.pageid");
-if(isEmpty(link) )
-{
-link="";
-}
-var cont="";
-if(linkLocation)
-{
-cont=linkLocation.content;
-}
-vg.util._addWindowData(vg.wu.WU, link+':'+cont);
+cbdcommon.wu.trackLink(link);
 }
 vg.wu.captureReferrerLink=function()
 {
@@ -7460,9 +7756,10 @@ jsCBDAddMetaTag('LinkLocation',(linkLocationInfoArray.length==2)?linkLocationInf
 }
 vg.wu._addMetaTagsForStrt=function()
 {
-var pageRendered=(_cbdStrtTimes.pageRendered - _cbdStrtTimes.headStart);
-var pageResponsive=(_cbdStrtTimes.pageResponsive - _cbdStrtTimes.headStart);
-var serverTime=_cbdStrtTimes.serverTime;
+var pagePerformance=cbd.pagePerformance;
+var pageRendered=(pagePerformance.pageRendered - pagePerformance.headStart);
+var pageResponsive=(pagePerformance.pageResponsive - pagePerformance.headStart);
+var serverTime=pagePerformance.serverTime;
 jsCBDAddMetaTag('strt.clntRendered', vg.wu._formatStrtTime(pageRendered));
 jsCBDAddMetaTag('strt.clntResponsive', vg.wu._formatStrtTime(pageResponsive));
 jsCBDAddMetaTag('strt.server', vg.wu._formatStrtTime(serverTime));
@@ -7481,6 +7778,15 @@ timeInSec=timeInSec.substring(0, decimalIdx+3);
 return timeInSec
 }
 return "";
+}
+vg.wu._logSPISndURLChg=true;
+vg.wu.setLogSPISndURLChg=function(logSPISndURLChg)
+{
+vg.wu._logSPISndURLChg=logSPISndURLChg;
+}
+vg.wu.isLogSPISndURLChg=function()
+{
+return vg.wu._logSPISndURLChg;
 }
 vg.wu._logSPIFirstPage=false;
 vg.wu.setLogSPIFirstPage=function(logPage)
@@ -7623,10 +7929,26 @@ vg.comp.closeAllMenus(evt);
 }
 vg.comp.closeAllMenus=function(event)
 {
-_cbdClosePrevSelectOneMenu();
+jsCBDcloseSelectOneMenu(event);
 if(vg.Menu)
 {
 vg.Menu._closeMenu(event);
+}
+}
+vg.comp.closeMenus=function()
+{
+if(vg.comp.isCompLoaded('SelectOneMenu' ) )
+{
+_cbdClosePrevSelectOneMenu();
+}
+if(vg.Menu )
+{
+if(openMenuNav!=null )
+{
+var openMenuNav=vg.Menu.selectedMenu,
+openRootMenu=openMenuNav?openMenuNav._rootMenu:null;
+openMenuNav._hideAllSubmenus(openRootMenu);
+}
 }
 }
 vg.Container=function(id)
@@ -7860,12 +8182,65 @@ eval(onclk);
 }catch(err){
 }
 }
+vg.procNav._sendMetaTags=function(html){
+try{
+var metaTags=html.split("{\"cbdMetaTags\":[{");
+if(metaTags&&metaTags.length > 1){
+metaTags=metaTags[1].split("}]}");
+if(metaTags&&metaTags.length > 0){
+metaTags=metaTags[0].split(",");
+if(metaTags&&metaTags.length > 0){
+for(var i=1;i<metaTags.length;i++){
+var metaTag=metaTags[i].split(":");
+if(metaTag.length > 1){
+jsCBDAddMetaTag(metaTag[0].replace(/\"/g,""),
+metaTag[1].replace(/\"/g,""));
+}
+}
+jsCBDupdateDcsUri(
+metaTags[0].split(":")[1].replace(/\"/g,""));
+}
+}
+}
+}catch(err){
+//Can't send
+}
+}
+//map of CommandButtons and their js functions(assigned via the jscommand attribute)
+vg.button.jsCommandsMap={};
+/**
+*Looks up and executes the CommandButton's js function
+*
+*@param  buttonId
+*@param  button
+*@return
+*@see
+*/
+vg.button.execJsCommand=function(button)
+{
+var jsCommand=vg.button.jsCommandsMap[button.id];
+if(jsCommand)
+{
+vg.comp._execEventHandler(jsCommand, button);
+}
+}
+/**
+*Legacy Function used to change the font size of the text
+*
+*@private
+*@param  id         ID of the select list comp(ex:form1:MorningStar)
+*@param  aLink      'A' tag link
+*@param  contentIds ID's of the content to zoom, comma separated
+*@param  fontClass  Style to apply to the text
+*@param  textZoomId ID of the textZoom component
+*/
 vg.textZoom._resize=function(aLink, contentIds, fontClass, textZoomId)
 {
 var A_SIZE1="default";
 var A_SIZE2="A-size2";
 var A_SIZE3="A-size3";
 var content_Ids=contentIds.split(",");
+//span tag element
 var textZoomElement=document.getElementById(textZoomId);
 var selectedFontClass=null;
 if(textZoomElement.selectedSizeClass )
@@ -7876,6 +8251,7 @@ var defaultFont=fontClass==A_SIZE1;
 for(var i=0;i < content_Ids.length;i++)
 {
 content_Ids[i]=trim(content_Ids[i]);
+//Remove the style before applying the new style
 if(selectedFontClass)
 {
 vg.html.removeStyle(textZoomElement.selectedSizeClass, vg.html.getElement(content_Ids[i]));
@@ -7885,9 +8261,20 @@ if(!defaultFont)
 vg.html.addStyle(fontClass, vg.html.getElement(content_Ids[i]));
 }
 }
+//If fontClass is A_SIZE1, then assign null to selectedSizeClass because we do not want to reassign A_SIZE1,
+//since this is the default fontClass, else assign the fontClass that needs to be applied to the content.
 textZoomElement.selectedSizeClass=defaultFont?null:fontClass;
+//Setting the value of suppressDisabledAttr to true(the last parameter) because
+//the disable attribute was causing style issues in IE.
 jsCBDtoggleLink(aLink, true, "A-selected", textZoomId, true);
 }
+/**
+*Resizes the text on the page. Called by the Next Gen TextZoom component.
+*
+*@param aLink The size trigger.
+*@param fontClass The size class of the size trigger.
+*@param onLoadSizeClass The size class on load. If not found in a cookie, then the default is A-size1.
+*/
 vg.textZoomNG._resize=function(aLink, fontClass, onLoadSizeClass)
 {
 var textZoomElement=vg.html.findAncestor(aLink,{}, function(node){return vg.html.hasStyle("A-size", node)});
@@ -7897,16 +8284,24 @@ textZoomElement.currentSizeClass=onLoadSizeClass;
 }
 var sizeNode=vg.html.getElement("body");
 vg.html.removeStyle(textZoomElement.currentSizeClass, sizeNode);
+/*Applying stlye to the body tag for the content*/
 vg.html.addStyle(fontClass, sizeNode);
 var currentSizeTrigger=vg.html.getElements(textZoomElement,{tagName:'span'}, function(node){return vg.html.hasStyle(textZoomElement.currentSizeClass, node)})[0];
 var selectedClass="A-selected";
 jsCBDdeleteStyle(currentSizeTrigger, selectedClass);
 vg.html._fireCustomEvent(vg.event.TEXT_ZOOM_CLICK,null,{textZoomId:textZoomElement.id});
+/*Applying stlye to the text zoom triggers*/
 jsCBDaddStyle(aLink, selectedClass);
 textZoomElement.currentSizeClass=fontClass;
 var cookieValue=vg.textZoomNG.COOKIE_VALUES[fontClass]||"1";
 jsCBDsetConfigInfo(vg.textZoomNG.ZOOM_COOKIE, cookieValue );
 }
+/**
+*Resizes the part of the component that is outside the container that has the textZoomContent CSS class. Used by components such as SelectOneMenu and InfoBox.
+*
+*@param nodeOutsideOfZoomContent The part of the component that is outside the container with the textZoomContent CSS class.
+*@param nodeInsideOfZoomContent The part of the component that is inside the container with the textZoomContent CSS class.
+*/
 vg.textZoomNG._resizeNodeOutsideOfZoomContent=function(nodeOutsideOfZoomContent, nodeInsideOfZoomContent)
 {
 if(window.isNextGen&&(nodeInsideOfZoomContent.textZoom===true||vg.html.findAncestor(nodeInsideOfZoomContent,{}, function(node){return vg.html.hasStyle(vg.textZoomNG.TEXT_ZOOM_CONTENT_CLASS, node)})))
@@ -7915,6 +8310,109 @@ jsCBDaddStyle(nodeOutsideOfZoomContent, vg.textZoomNG.TEXT_ZOOM_CONTENT_CLASS);
 nodeInsideOfZoomContent.textZoom=true;
 }
 }
+//End of Text Zoom
+/**
+*Returns the Computed Border
+*
+*/
+vg.html.getBorderWidth=function(domElement,style)
+{
+var propValue=parseInt(jsCBDGetComputedStylePropertyValue(domElement,style),10);
+if(isNaN(propValue))
+{
+propValue=0;
+}
+return propValue;
+}
+/**
+*@namespace XML manipulation routines
+*/
+vg.XML={};
+/**
+*To parse XML
+*
+*@param  url - URL to the xmlDoc
+*@param  schema - object containing xpath paths to chart data
+*@param  schema -  Callback function that will be invoked after parsing XML JSON object is passed as argument to the callback function
+*/
+vg.XML.parseXML=function(url, schema, callback)
+{
+"use strict";
+var params={"schema":schema ,"callback":callback};
+jsCBDgetContent(url, function(request,error,caller){vg.XML._parseXMLData(request,error,caller,params);},this);
+};
+/**
+*Retrives XML doc from the response and parses XML
+*@param  req
+*@param  error
+*@param  caller
+*@param  params - Object that contains schema and callback function
+*/
+vg.XML._parseXMLData=function(req, error, caller,params)
+{
+"use strict";
+var xmlDoc,xmlData;
+if(req)
+{
+xmlDoc=req.responseXML;
+}
+xmlData=vg.XML._parseXMLDataXPath(xmlDoc,params.schema);
+params.callback(xmlData);
+};
+/**
+*Parses xml document using xPath
+*
+*@param  xmlDoc - xml document
+*@param  schema - object containing xpath paths to chart data
+*@return XML data object
+*/
+vg.XML._parseXMLDataXPath=function(xmlDoc, schema)
+{
+"use strict";
+var xmlData={},
+schemaVal;
+for(schemaVal in schema)
+{
+xmlData[schemaVal]=vg.XML._xPathSelect(xmlDoc, xmlDoc, schema[schemaVal], true);
+}
+return xmlData;
+};
+/**
+*Evaluates xPath expression
+*
+*@param  xmlDoc - xml document
+*@param  contextNode
+*@param  xpath - xPath expression
+*@param  returnValue - true if nodeValue should be returned, false returns the node
+*@return xPath result - either string value or node
+*/
+vg.XML._xPathSelect=function(xmlDoc, contextNode, xpath, returnValue)
+{
+var nodes, node, item;
+var result=new Array();
+if(ie)
+{
+nodes=contextNode.selectNodes(xpath);
+for(var i=0;i<nodes.length;i++)
+{
+item=returnValue?nodes[i].text:nodes[i];
+result.push(item);
+}
+}
+else
+{
+result=new Array();
+nodes=xmlDoc.evaluate(xpath, contextNode, null, XPathResult.ANY_TYPE,null);
+node=nodes.iterateNext();
+while(node)
+{
+item=returnValue?node.textContent:node;
+result.push(item);
+node=nodes.iterateNext();
+}
+}
+return result;
+};
 
 var SELECTED_TAB_CLASS="current";
 var UNSELECTED_TAB_CLASS="unselected";
@@ -8676,14 +9174,14 @@ return value;
 showSuggestions:function()
 {
 this.isSuggestionsOpen=true;
-jsCBDtoggleElement(this.dropdown, true);
+this.dropdown.style.display="block";
 _cbdSelectedAutoSuggest=this;
 this._preventBleedThru(this.fieldIDToHide, true);
 },
 hideSuggestions:function()
 {
 this._cancelSuggestions();
-jsCBDtoggleElement(this.dropdown, false);
+this.dropdown.style.display="none";
 _cbdSelectedAutoSuggest=null;
 if(this.highlightedNodes)
 {
@@ -8892,12 +9390,7 @@ vg.html.setHeight(this.dropdown,(displayHeight - 8)+"px");
 _setDropdownPosition:function()
 {
 this.position=(this.position!="left")?"right":"left";
-var data=vg.html.position({elementNode:this.dropdown, targetNode:this.viewNode, dispLoc:"auto", horzPos:this.position});
-if(data.elem.dispLoc.indexOf("top") > -1)
-{
-var marginTop=parseInt(jsCBDGetComputedStylePropertyValue(this.dropdown, "margin-top"));
-vg.html.setObjTop(this.dropdown, this.dropdown.style.top.replace("px","") - marginTop);
-}
+vg.html.position({elementNode:this.dropdown, targetNode:this.viewNode, dispLoc:"auto", horzPos:this.position});
 },
 _addRowListeners:function(e)
 {

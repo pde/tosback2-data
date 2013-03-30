@@ -753,7 +753,7 @@ de.bild.env = {
 
 
 
-/*de.bild.settings:27210766.9*/
+/*de.bild.settings:27210766.10*/
 
 /*
  @ignore;
@@ -916,6 +916,7 @@ de.bild.settings = (function(){
                 'loggedInAs' : 'Eingeloggt als',
                 'anonUser' : 'Anonymer user',
                 'error' : 'Es ist ein Fehler aufgetreten. Bitte laden Sie die Seite erneut.',
+                'errorNotifications' : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.',
                 'tryagain' : 'Bitte versuchen Sie es später noch einmal',
                 'years' : ' Jahre',
                 'notprovided' : 'nicht eingegeben',
@@ -8153,7 +8154,7 @@ de.bild.community.likeBtn = (function($,Community) {
  } 
  
 })(jQuery,de.bild.community)
-/*de.bild.community.notification:29369464.5*/
+/*de.bild.community.notification:29369464.7*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8243,7 +8244,7 @@ de.bild.community.notification = (function($, Community) {
                     
                     
                     if(cookie.increaseCounter!=null){
-                        console.log('increase active '+cookie.increaseCounter+' times');
+                       // console.log('increase active '+cookie.increaseCounter+' times');
                         if(cookie.increaseCounter>1)
                         {   
                             cookie.increaseCounter = cookie.increaseCounter-1;
@@ -8270,7 +8271,8 @@ de.bild.community.notification = (function($, Community) {
                 requestTimeout = setTimeout(loadNotificationCouter,cookie.notifyTimer*minutes);
                 
             }).fail(function(){
-                    notificationElement.hide();
+                    //show error message
+                    notificationElement.append('<ul style="display:block"><li>'+Community.templates().message.replace('%CLASS%','hint').replace('%CONTENT%',Community.lang().errorNotifications)+'</li></ul>');
                     counter.text('-'); 
                 });
         }
@@ -8282,7 +8284,7 @@ de.bild.community.notification = (function($, Community) {
     function handleNoUpdate(){
                clearTimeout(requestTimeout);
                var lastUpdate = cookie.lastUpdate?cookie.lastUpdate:time; 
-               console.log('next update in '+(((cookie.notifyTimer*minutes) - (time - lastUpdate))/1000) +'s');               
+               //console.log('next update in '+(((cookie.notifyTimer*minutes) - (time - lastUpdate))/1000) +'s');               
                requestTimeout = setTimeout(loadNotificationCouter, (cookie.notifyTimer*minutes) - (time - lastUpdate));
                
                if(typeof(parseInt(cookie.counter))=="number" && parseInt(cookie.counter)>=0){
@@ -8340,7 +8342,7 @@ de.bild.community.notification = (function($, Community) {
             dataType : "html",
             cache : "false",
             dataType : "html",
-            timeout: 10000
+            timeout: 15000 
         }).done(function(data) {
             if(data) {
                 
@@ -8359,14 +8361,7 @@ de.bild.community.notification = (function($, Community) {
                 pagesLoaded++;
                 var list = notificationElement.find('ul').show();
                 
-                $(document).on('click.notification',function(e){                  
-                    if(!$(e.target).hasClass('notifyme') && $(e.target).parents('.notifyme').length==0){
-                        list.hide();
-                        pagesLoaded=1;
-                        $(document).off('click.notification');
-                        e.preventDefault();
-                    }
-                }) 
+                bindDocClick(list);
                                                                      
                 }
                 
@@ -8392,8 +8387,9 @@ de.bild.community.notification = (function($, Community) {
                 })
             }
         }).fail(function(){
-                    notificationElement.hide();
-                    counter.text('-'); 
+                    var list = notificationElement.find('ul').html('<li>'+Community.templates().message.replace('%CLASS%','hint').replace('%CONTENT%',Community.lang().errorNotifications)+'</li>').show();
+                    counter.text('-');                    
+                    bindDocClick(list);                     
                 });
     }
       
@@ -8447,6 +8443,16 @@ de.bild.community.notification = (function($, Community) {
         
         
     }
+function bindDocClick(list){
+    $(document).on('click.notification',function(e){                  
+                    if(!$(e.target).hasClass('notifyme') && $(e.target).parents('.notifyme').length==0){
+                        list.hide();
+                        pagesLoaded=1;
+                        $(document).off('click.notification');
+                        e.preventDefault();
+                    }
+                }) 
+}
     //initialised when user is logged in and all required items are rendered
     $.subscribe('notification.userLoggedIn', function(){
         init();
@@ -9019,7 +9025,7 @@ de.bild.community.qotd = (function($, Community) {
     }   
     
 })(jQuery, de.bild.community) 
-/*de.bild.community.teaserComments:27210486.5*/
+/*de.bild.community.teaserComments:27210486.9*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -9036,6 +9042,8 @@ de.bild.community.teaserComments = (function($, Community) {
     articleCommentsIds = [],
     
     topicMap = {},
+    
+    commentCall = null,
     
     topicIDs = [];
     /**
@@ -9076,7 +9084,7 @@ de.bild.community.teaserComments = (function($, Community) {
             if(articleCommentsIds.length > 0) {
                 url = url + articleCommentsIds.join(':');
                 /* get JSON */
-                $.ajax({
+               commentCall = $.ajax({
                     url : url,
                     type : 'GET',
                     dataType : 'json',
@@ -9084,7 +9092,9 @@ de.bild.community.teaserComments = (function($, Community) {
                 }).done(function(data) {
                     articleCommentsJSON = data.numComments;
                 }).always(function() {
+                    commentCall=null;
                     showTeaserComments();
+                    $.publish('community.teaserCommentsLoaded');
                 });
                 /* ie is crippled */
                 if(!$body.hasClass('modern')) {
@@ -9135,7 +9145,6 @@ de.bild.community.teaserComments = (function($, Community) {
                     /* only if the element has more than 2 comments, otherwise delete it */
                     if ($elem.length && value > 0) {
                          //in some cases there is a <i>-Tag containing "kommentare" this shouldn't be replaced
-                         $elem.data('countLoaded',true);
                          $elem = $elem.find('i').length>0?$elem.find('em'):$elem;
                          $elem.text(value);
                          $elem.parents('div.ugcGroup, li.comment-count').addClass('active'); 
@@ -9156,10 +9165,7 @@ de.bild.community.teaserComments = (function($, Community) {
         var ugcs = jQuery('.ugcGroup a', $content)
         var json = {};
         ugcs.each(function() {
-            
             var $this = jQuery(this);
-            if($this.data('countLoaded')) return true;
-            
             var linkID = $this.attr('id');
             if(linkID) {
                 var tarr = linkID.split('_');
@@ -9180,7 +9186,16 @@ de.bild.community.teaserComments = (function($, Community) {
                 }
             }
         })
-        de.bild.community.loadTeaserComments(json);
+        if(!commentCall){
+            de.bild.community.loadTeaserComments(json);
+        }
+        else{
+            $.subscribe('community.teaserCommentsLoaded',function(){
+                $.unsubscribe('community.teaserCommentsLoaded');
+                de.bild.community.loadTeaserComments(json);
+            });
+        }
+        
     }
     
     
@@ -9340,7 +9355,7 @@ de.bild.user = (function($, SandBox){
 
 
 
-/*de.bild.common:27524118.7*/
+/*de.bild.common:27524118.9*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -9409,6 +9424,12 @@ de.bild.common = (function($, SandBox) {
             if(targetUrl === undefined || targetUrl.length === 0) {
                 return;
             }
+        
+        if($tab.closest('li').hasClass('active')) {
+e.preventDefault();
+            return false;
+        }
+
             /* set active class for clicked element */
             $tabsElem.find('li').removeClass('active');
             $tab.closest('li').addClass('active');

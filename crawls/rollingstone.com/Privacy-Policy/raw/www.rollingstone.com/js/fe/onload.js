@@ -108,6 +108,19 @@ RS.setupSearch = function() {
 };
 
 $(document).ready(function() {
+	if (document.referrer.match(/google\.com/gi) && document.referrer.match(/cd/gi)) {
+		var myString = document.referrer;
+		var r = myString.match(/cd=(.*?)&/);
+		var rank = parseInt(r[1]);
+		var kw = myString.match(/q=(.*?)&/);
+		if (kw[1].length > 0) {
+		var keyWord = decodeURI(kw[1]);
+		//alert("google referred: "+ myString);
+	} else { keyWord = "(not provided)";}
+	var p = document.location.pathname;
+	_gaq.push(['_trackEvent', 'RankTracker', keyWord, p, rank, true]);
+	}
+						   
 	$(".subcolumns.synchronizeHeight").each(function(){
 		$(this).find(".subcl, .subcr").not('.adContainer,.dontSync').addClass('syncedHeight');
 		$(this).find(".syncedHeight .featureBoxContent").equalHeights();

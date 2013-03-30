@@ -13,7 +13,7 @@ document.write('<div id="scrollup" style="height:45px; width:930px;">'
 //
 + '<div class="headline special"><a href="http://www.pcworld.com/article/253808/3g_and_4g_wireless_speed_showdown_which_networks_are_fastest_.html" target="_blank" title="Our 4G LTE service delivered faster average download speeds than any of our competitors in PCWorld&#8217;s most recent speed tests&#46;">Our 4G LTE service delivered faster average download speeds than any of our competitors in PCWorld&#8217;s most recent speed&nbsp;tests&#46;</a></div>'
 //
-+ '<div class="headline special"><a href="/gen/press-room?pid=2943" title="Our 4G LTE footprint is rapidly expanding&#44; available now currently in 158 markets&#46;">Our 4G LTE footprint is rapidly expanding&#44; available now currently in 158 markets&#46;</a></div>'
++ '<div class="headline special"><a href="/gen/press-room?pid=2943" title="Our 4G LTE footprint is rapidly expanding&#44; available now currently in 161 markets&#46;">Our 4G LTE footprint is rapidly expanding&#44; available now currently in 161 markets&#46;</a></div>'
 //
 + '<div class="headline special"><a href="/gen/press-room?pid=23658&cdvn=news&newsarticleid=35923&mapcode=corporate|financial  " title="AT&#38;T is the smartphone leader&#46;  In the last three months of 2012 we sold more than 10 million smartphones&#44; topping our previous record from a year earlier&#46;">AT&#38;T is the smartphone leader&#46;  In the last three months of 2012 we sold more than 10 million smartphones&#44; topping our previous record from a year earlier&#46;</a></div>'
 //

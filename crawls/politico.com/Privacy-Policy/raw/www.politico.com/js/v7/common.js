@@ -108,7 +108,7 @@
 							var rootNode = $(xml).find('inc');
 							var rootNodeID = rootNode.attr("divid");  
 							var rootNodeText = rootNode.text();   
-							var tempIDName="##"+rootNodeID;
+							var tempIDName="#"+rootNodeID;
 							$(tempIDName).html('');
 							$(tempIDName).html(rootNodeText).commonWidgetsJs();
 							}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 	<head>
-				<!-- Version: 5.2.17.1 -->
+				<!-- Version: 5.3.21.1 -->
 
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -21,10 +21,10 @@
 		<title>Network - AT&amp;T U-verse</title>
 
 			<!--[if lte IE 8]>
-				<link rel="stylesheet" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?cache=5.2.17.1" />
+				<link rel="stylesheet" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?cache=5.3.21.1" />
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
-				<link rel="stylesheet" href="../../web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fcache=5.2.17.1.css" />
+				<link rel="stylesheet" href="../../web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fcache=5.3.21.1.css" />
 			<!--<![endif]-->
 
 
@@ -79,6 +79,7 @@
 		}
 		, players: {}
 		, playerExtensions: {}
+		, Enums: {}
 	};
 </script>
 
@@ -86,7 +87,11 @@
 
 		Uverse.config.consoleEnabled = false;
 
-	Uverse.config.buildVersion = "5.2.17.1";
+	Uverse.config.dvr = {
+		dvrMode:  'dvrItems' 
+	};
+
+	Uverse.config.buildVersion = "5.3.21.1";
 	Uverse.config.scriptPath = "/web_files/NEXTGEN/web_files/nes/js/src/";
 	Uverse.config.vendorPath = "/web_files/NEXTGEN/web_files/nes/vendors/";
 	Uverse.config.jsLibPath = "/web_files/NEXTGEN/web_files/nes/js/lib/";
@@ -100,14 +105,6 @@
 	};
 	Uverse.config.cltDomainList = null;
 	Uverse.config.cltAppName = null;
-
-	Uverse.config.dvr = {
-		urls: {
-			dvrItems: '/dvr_items.json'
-			, epgInfo: '/epg_info.json'
-			, record: '/dvr/schedule.json'
-		}
-	};
 
 	Uverse.config.personalization = {
 		urls: {
@@ -217,7 +214,7 @@
 			, lf: 1
 		};
 </script>
-			<script src="../../web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.min.js%3Fcache=5.2.17.1"></script>
+			<script src="../../web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.min.js%3Fcache=5.3.21.1"></script>
 
 
 		
@@ -232,8 +229,11 @@
 		<script src="../../web_files/NEXTGEN/web_files/nes/js/lib/modernizr/modernizr-2.5.3.min.js%3Fcache=true"></script>
 	</head>
 
-	<body>
+	<body class="pageType-default">
 		<section id="pageContainer1" class="page-container">
+
+
+
 
 
 
@@ -287,7 +287,7 @@
 						</li>
 
 						<li class="main-link ">
-							<a href="http://uverseonline.att.net/favorites" style="background-image: url(../../web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksMyAccount.png)" class="track"  data-clicktrack-action="My Account"  data-trk-cat="Top navigation" data-trk-act="My Account">My Account
+							<a href="http://uverseonline.att.net/settings/account" style="background-image: url(../../web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksMyAccount.png)" class="track"  data-clicktrack-action="My Account"  data-trk-cat="Top navigation" data-trk-act="My Account">My Account
 									<div class="badge favoritesCount hidden">
 										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
 										<span class="slice-two"></span>
@@ -300,9 +300,9 @@
 			<div class="profile-links-wrapper track-hasSubcategory"  data-clicktrack-subcategory="Profile">
 				<ul id="profile-links" class="profile-links">
 					<li class="login-link hidden">
-						<a id="logInLink" href="http://www.att.net/globalssosignin?returnurl=http://uverseonline.att.net/login.html?return=http://uverseonline.att.net/sports/network/%7Bsrc%7D" class="track" data-clicktrack-action="Sign In" data-trk-cat="Top navigation" data-trk-act="Sign In">Hi, Please sign in</a>
+						<a id="logInLink" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" class="track" data-clicktrack-action="Sign In" data-trk-cat="Top navigation" data-trk-act="Sign In">Hi, Please sign in</a>
 						<span class="profile-links-split">|</span>
-						<a href="https://attreg.att.net/PortalRegWeb/PortalRegController?callingAppId=ME&returnUrl=http://uverseonline.att.net/login.html?return=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank" class="track external" data-clicktrack-action="Sign Up" data-trk-cat="Top navigation" data-trk-act="Sign Up">Sign up</a>
+						<a href="https://attreg.att.net/PortalRegWeb/PortalRegController?callingAppId=ME?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank" class="track external" data-clicktrack-action="Sign Up" data-trk-cat="Top navigation" data-trk-act="Sign Up">Sign up</a>
 					</li>
 					<li class="current-user-gretting hidden">
 						<a href="http://uverseonline.att.net/uverse/account" class="track"  data-clicktrack-action="Account" data-trk-cat="Top navigation" data-trk-act="Account">Hi <span class="current-user-name"></span></a>
@@ -324,6 +324,7 @@
 			<div id="mainNavigation">
 				<ul class="main-nav-list">
 					<li id="quickSearch" class="quick-search track-hasSubcategory" data-clicktrack-subcategory="Search">
+
 						<form action='http://uverseonline.att.net/search' method="post" class='track-hasAction' data-trk-cat='Search' data-trk-act='Query - Basic' data-clicktrack-action="Submit Query">
 							<span class="quick-search-active">Searching</span>
 <input type="text" name="query" value="" class="U-control U-control-textbox quick-search-textbox"
@@ -338,10 +339,12 @@ placeholder="Search U-verse"
 						</form>
 					</li>
 									<li class="main-nav-item   ">
-										<a href="http://uverseonline.att.net/" class="main-nav-item-label track" data-clicktrack-action="All"  data-trk-cat="Top navigation" data-trk-act="All">All</a>
+
+	<a href="http://uverseonline.att.net/" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="All"  data-trk-cat="Top navigation" data-trk-act="All">All</a>
 									</li>
 									<li class="main-nav-item  with-dropdown  ">
-										<a href="http://uverseonline.att.net/tv" class="main-nav-item-label track" data-clicktrack-action="TV"  data-trk-cat="Top navigation" data-trk-act="TV">TV</a>
+
+	<a href="http://uverseonline.att.net/tv" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="TV"  data-trk-cat="Top navigation" data-trk-act="TV">TV</a>
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/popular" class="main-nav-menu-item-label track" data-clicktrack-action="TV - Most Popular" data-trk-cat="Top navigation" data-trk-act="TV - Most Popular">Most Popular</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/new" class="main-nav-menu-item-label track" data-clicktrack-action="TV - Recently Added" data-trk-cat="Top navigation" data-trk-act="TV - Recently Added">Recently Added</a></li>
@@ -350,7 +353,8 @@ placeholder="Search U-verse"
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown  ">
-										<a href="http://uverseonline.att.net/movies" class="main-nav-item-label track" data-clicktrack-action="Movies"  data-trk-cat="Top navigation" data-trk-act="Movies">Movies</a>
+
+	<a href="http://uverseonline.att.net/movies" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Movies"  data-trk-cat="Top navigation" data-trk-act="Movies">Movies</a>
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/movies/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - Most Popular" data-trk-cat="Top navigation" data-trk-act="Movies - Most Popular">Most Popular</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/movies/new" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - Recently Added" data-trk-cat="Top navigation" data-trk-act="Movies - Recently Added">Recently Added</a></li>
@@ -359,7 +363,8 @@ placeholder="Search U-verse"
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown  ">
-										<a href="http://uverseonline.att.net/music" class="main-nav-item-label track" data-clicktrack-action="Music"  data-trk-cat="Top navigation" data-trk-act="Music">Music</a>
+
+	<a href="http://uverseonline.att.net/music" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Music"  data-trk-cat="Top navigation" data-trk-act="Music">Music</a>
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Most Popular" data-trk-cat="Top navigation" data-trk-act="Music - Most Popular">Most Popular</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/new" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Recently Added" data-trk-cat="Top navigation" data-trk-act="Music - Recently Added">Recently Added</a></li>
@@ -368,7 +373,8 @@ placeholder="Search U-verse"
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown  current">
-										<a href="http://uverseonline.att.net/sports" class="main-nav-item-label track" data-clicktrack-action="Sports"  data-trk-cat="Top navigation" data-trk-act="Sports">Sports</a>
+
+	<a href="http://uverseonline.att.net/sports" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Sports"  data-trk-cat="Top navigation" data-trk-act="Sports">Sports</a>
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/sports/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Most Popular" data-trk-cat="Top navigation" data-trk-act="Sports - Most Popular">Most Popular</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/sports/new" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Recently Added" data-trk-cat="Top navigation" data-trk-act="Sports - Recently Added">Recently Added</a></li>
@@ -378,7 +384,8 @@ placeholder="Search U-verse"
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown last-child ">
-										<a href="http://uverseonline.att.net/networks" class="main-nav-item-label track" data-clicktrack-action="Networks"  data-trk-cat="Top navigation" data-trk-act="Networks">Networks</a>
+
+	<a href="http://uverseonline.att.net/networks" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Networks"  data-trk-cat="Top navigation" data-trk-act="Networks">Networks</a>
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/premium" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - Premium Networks" data-trk-cat="Top navigation" data-trk-act="Networks - Premium Networks">Premium Networks</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/tv" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - TV Networks" data-trk-cat="Top navigation" data-trk-act="Networks - TV Networks">TV Networks</a></li>
@@ -390,6 +397,8 @@ placeholder="Search U-verse"
 				</ul>
 			</div>
 		</div>
+	</div>
+	<div class="flyout-content-container">
 	</div>
 </div>
 
@@ -428,6 +437,8 @@ placeholder="Search U-verse"
 		,id: 'profile-links'
 	});
 </script>
+
+
 			<div role="main" id="main">
 
 				
@@ -752,7 +763,7 @@ data-clicktrack-action="Set">
 						(TITLE)
 				</span>
 			</div>
-			<a class="modal-player-header-close modal-close-button track-hasAction track" href="{src}.html#" data-clicktrack-action="Close Button">x</a>
+	<a class="modal-player-header-close modal-close-button track-hasAction track" href="{src}.html#" data-clicktrack-action="Close Button">x</a>
 		</div>
 
 		<div class="modal-player-media">
@@ -836,7 +847,7 @@ AT&amp;T U-verse Support page				</a>
 
 			<div id="section-header" class="section-header">
 
-					Networks <span>(441 Networks)</span>
+					Networks <span>(445 Networks)</span>
 			</div>
 
 		</header>
@@ -893,7 +904,7 @@ data-clicktrack-label="Most Popular"
 </span>					</div>
 
 						<div class='secondary-filter right'>
-<span class="U-control U-control-dropdown control-filter-bar control-dropdown-horizontal" tabIndex="0">
+<span class="U-control U-control-dropdown control-filter-bar control-dropdown-horizontal " tabIndex="0">
 <span class="U-control-dropdown-selection control-dropdown-selection-default">
 <span class="slice-one contents-go-here">A-Z</span>
 <span class="slice-two">&nbsp;</span>
@@ -1345,7 +1356,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/745425_moneyball_additional_image_1.jpg" alt="Moneyball" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/745429_moneyballextra_additional_image_1.jpg" alt="Moneyball" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/moneyball" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Moneyball</p>
@@ -1356,7 +1367,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/723510_ghostbusters_additional_image_1.jpg" alt="Ghostbusters" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/817394_ghostbusters_additional_image_1.jpg" alt="Ghostbusters" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/ghostbusters" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Ghostbusters</p>
@@ -1428,7 +1439,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/HBO/Real%20Time%20with%20Bill%20Maher/_derived_jpg_q90_310x470_m0/RealTimewithBillMaher-ShowcardVertical.jpg" alt="Real Time with Bill Maher" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/HBO/Real%20Time%20with%20Bill%20Maher/_derived_jpg_q90_444x444_m0/RealTimewithBillMaher-ShowcardVertical.jpg" alt="Real Time with Bill Maher" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/real-time-with-bill-maher" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Real Time with Bill Maher</p>
@@ -1439,7 +1450,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Warner%20Home%20Video/Rock%20of%20Ages/_derived_jpg_q90_310x470_m0/RockofAges-PosterArt.jpg" alt="Rock of Ages" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Warner%20Home%20Video/Rock%20of%20Ages/_derived_jpg_q90_444x444_m0/RockofAges-PosterArt.jpg" alt="Rock of Ages" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/rock-of-ages" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Rock of Ages</p>
@@ -1500,7 +1511,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/806000_kindergartencop_additional_image_1.jpg" alt="Kindergarten Cop" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/810542_kindergartencop_additional_image_1.jpg" alt="Kindergarten Cop" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/kindergarten-cop" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Kindergarten Cop</p>
@@ -1760,7 +1771,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/804858_hopesprings_additional_image_1.jpg" alt="Hope Springs" />
+						<img class="tile-thumbnail" src="http://uverseonline.att.net/web_files/NEXTGEN/web_files/images/category_overrides/hope_springs_STARZ.jpg" alt="Hope Springs" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/hope-springs" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Hope Springs</p>
@@ -1771,7 +1782,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/787321_amazingspidermantheextra_additional_image_1.jpg" alt="The Amazing Spider-Man" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/804854_amazingspidermanthe_additional_image_1.jpg" alt="The Amazing Spider-Man" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/the-amazing-spider-man" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Amazing Spider-Man</p>
@@ -1834,32 +1845,32 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC/Castle/Season%20Five/_derived_jpg_q90_310x470_m0/castleseasonfiveshowcard.jpg" alt="Castle" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC/Scandal/Season%20One/_derived_jpg_q90_444x444_m0/scandalshowcard.jpg" alt="Scandal" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/scandal" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Scandal</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC/Modern%20Family/Season%20Four/_derived_jpg_q90_444x444_m0/modern-family-season-four-showcard.jpg" alt="Modern Family" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/modern-family" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Modern Family</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC/Castle/Season%20Five/_derived_jpg_q90_444x444_m0/castleseasonfiveshowcard.jpg" alt="Castle" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/castle" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Castle</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60196177?size=512x288" alt="Once Upon A Time" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/once-upon-a-time" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Once Upon A Time</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC/Splash/Season%201/_derived_jpg_q90_310x470_m0/splash-showcard.jpg" alt="Splash" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/splash" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Splash</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -1917,7 +1928,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/Pretty%20Little%20Liars/Title%20Treatment/_derived_jpg_q90_310x470_m0/prettylittleliarsshowcard.jpg" alt="Pretty Little Liars" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/Pretty%20Little%20Liars/Title%20Treatment/_derived_jpg_q90_444x444_m0/prettylittleliarsshowcard.jpg" alt="Pretty Little Liars" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/pretty-little-liars" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Pretty Little Liars</p>
@@ -1928,7 +1939,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/The%20Secret%20Life%20of%20the%20American%20Teenager/Title%20Treatment/_derived_jpg_q90_310x470_m0/secretlifeshowcardl.jpg" alt="The Secret Life of the American Teenager" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/The%20Secret%20Life%20of%20the%20American%20Teenager/Title%20Treatment/_derived_jpg_q90_444x444_m0/secretlifeshowcardl.jpg" alt="The Secret Life of the American Teenager" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-secret-life-of-the-american-teenager" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Secret Life of the American Teenager</p>
@@ -1939,7 +1950,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/The%20Lying%20Game/_derived_jpg_q90_310x470_m0/lyinggameshowcard.jpg" alt="The Lying Game" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/ABC%20Family/The%20Lying%20Game/_derived_jpg_q90_444x444_m0/lyinggameshowcard.jpg" alt="The Lying Game" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-lying-game" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Lying Game</p>
@@ -2000,7 +2011,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Fox/Family%20Guy/Season%2010/Showcards/_derived_jpg_q90_310x470_m0/FG_S10_4X3_SC.jpg" alt="Family Guy" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Fox/Family%20Guy/Season%2010/Showcards/_derived_jpg_q90_444x444_m0/FG_S10_4X3_SC.jpg" alt="Family Guy" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/family-guy" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Family Guy</p>
@@ -2011,7 +2022,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Bleach/_derived_jpg_q90_310x470_m0/Bleach-Showcard.jpg" alt="Bleach" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Bleach/_derived_jpg_q90_444x444_m0/Bleach-Showcard.jpg" alt="Bleach" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/bleach" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Bleach</p>
@@ -2022,7 +2033,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Naruto/_derived_jpg_q90_310x470_m0/Naruto-Showcard.jpg" alt="Naruto" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Naruto/_derived_jpg_q90_444x444_m0/Naruto-Showcard.jpg" alt="Naruto" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/naruto" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Naruto</p>
@@ -2083,7 +2094,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/ae/AE_Duck-Dynasty_Phil039s-Classified-Fishing-Hole_36_133519_SF.jpg" alt="Duck Dynasty" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/ae/AE_Duck-Dynasty_Till-Death-Do-Us-Part_32_135304_SF.jpg" alt="Duck Dynasty" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/duck-dynasty" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Duck Dynasty</p>
@@ -2166,10 +2177,21 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/rainbow/AMC_ATT_TWD_315_C3_poster.jpg" alt="The Walking Dead" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/rainbow/AMC_ATT_TWD_315_D4_poster.jpg" alt="The Walking Dead" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-walking-dead" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Walking Dead</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/rainbow/AMC_ATT_TD_315_C3_poster.jpg" alt="Walking Dead" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/walking-dead" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Walking Dead</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2181,17 +2203,6 @@ Filter By				</div>
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/mad-men" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Mad Men</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/rainbow/AMC_ATT_CBM_214_D4_poster.jpg" alt="Comic Book Men" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/comic-book-men" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Comic Book Men</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2316,10 +2327,10 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60113082?size=512x288" alt="Neo Angelique" />
+						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60188218?size=512x288" alt="Marrying the Mafia" />
 						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/neo-angelique" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Neo Angelique</p>
+							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/marrying-the-mafia" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Marrying the Mafia</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2327,10 +2338,10 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60188218?size=512x288" alt="Marrying the Mafia" />
+						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60113082?size=512x288" alt="Neo Angelique" />
 						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/marrying-the-mafia" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Marrying the Mafia</p>
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/neo-angelique" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Neo Angelique</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2399,10 +2410,10 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_axs_gotham_mar13.jpg" alt="Gotham Comedy Live" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_axs_tribut_mar13.jpg" alt="The World's Greatest Tribute Bands" />
 						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/gotham-comedy-live" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Gotham Comedy Live</p>
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-worlds-greatest-tribute-bands" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">The World's Greatest Tribute Bands</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2410,10 +2421,10 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_axs_tribut_mar13.jpg" alt="The World's Greatest Tribute Bands" />
+						<img class="tile-thumbnail" src="http://wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_axs_gotham_mar13.jpg" alt="Gotham Comedy Live" />
 						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-worlds-greatest-tribute-bands" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">The World's Greatest Tribute Bands</p>
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/gotham-comedy-live" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Gotham Comedy Live</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2471,21 +2482,10 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60189476?size=512x288" alt="Ventaneando" />
+						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60197508?size=512x288" alt="Ventaneando" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/ventaneando" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Ventaneando</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60171714?size=512x288" alt="Extranormal" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/extranormal" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Extranormal</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2497,6 +2497,17 @@ Filter By				</div>
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/noticiero-azteca-america" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Noticiero Azteca America</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60103301?size=512x288" alt="El Pelado de la Noche" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/el-pelado-de-la-noche" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">El Pelado de la Noche</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2720,7 +2731,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/The%20Real%20Housewives%20of%20Atlanta/5th%20Season/Showcard/_derived_jpg_q90_310x470_m0/SC_RHAtlanta_S5.jpg" alt="The Real Housewives of Atlanta" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/The%20Real%20Housewives%20of%20Atlanta/5th%20Season/Showcard/_derived_jpg_q90_444x444_m0/SC_RHAtlanta_S5.jpg" alt="The Real Housewives of Atlanta" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-real-housewives-of-atlanta" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Real Housewives of Atlanta</p>
@@ -2731,7 +2742,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/The%20Real%20Housewives%20of%20Beverly%20Hills/Season%202/Showcard/_derived_jpg_q90_310x470_m0/SC_RHBevHills_S2.jpg" alt="The Real Housewives of Beverly Hills" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/The%20Real%20Housewives%20of%20Beverly%20Hills/Season%202/Showcard/_derived_jpg_q90_444x444_m0/SC_RHBevHills_S2.jpg" alt="The Real Housewives of Beverly Hills" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-real-housewives-of-beverly-hills" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Real Housewives of Beverly Hills</p>
@@ -2742,7 +2753,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/Top%20Chef/Seattle/Showcard/_derived_jpg_q90_310x470_m0/SC_TopChefSeattle.jpg" alt="Top Chef" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Bravo/Top%20Chef/Seattle/Showcard/_derived_jpg_q90_444x444_m0/SC_TopChefSeattle.jpg" alt="Top Chef" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/top-chef" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Top Chef</p>
@@ -2803,18 +2814,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Young%20Justice/_derived_jpg_q90_310x470_m0/YoungJustice-Showcard.jpg" alt="Young Justice: Invasion" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/young-justice-invasion" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Young Justice: Invasion</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Adventure%20Time/_derived_jpg_q90_310x470_m0/AdventureTime-Showcard.jpg" alt="Adventure Time" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Adventure%20Time/_derived_jpg_q90_444x444_m0/AdventureTime-Showcard.jpg" alt="Adventure Time" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/adventure-time" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Adventure Time</p>
@@ -2825,10 +2825,21 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/DreamWorks%20Dragons%20Riders%20of%20Berk/_derived_jpg_q90_310x470_m0/DreamWorksDragonsRidersofBerk-Showcard.jpg" alt="DreamWorks Dragons: Riders of Berk" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Regular%20Show/_derived_jpg_q90_444x444_m0/RegularShow-Showcard.jpg" alt="Regular Show" />
 						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/dreamworks-dragons-riders-of-berk" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">DreamWorks Dragons: Riders of Berk</p>
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/regular-show" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Regular Show</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Cartoon%20Network/Young%20Justice/_derived_jpg_q90_444x444_m0/YoungJustice-Showcard.jpg" alt="Young Justice: Invasion" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/young-justice-invasion" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Young Justice: Invasion</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2886,18 +2897,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://thumbnails.cbsig.net/CBS_Production_Entertainment_VMS/96/691/2013/03/20/22648899889/CBS_CSI_1317_IMAGE_thumb_140x80.jpg" alt="CSI" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/csi" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">CSI</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/The%20Good%20Wife/_derived_jpg_q90_310x470_m0/TheGoodWife-Showcard1.jpg" alt="The Good Wife" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/The%20Good%20Wife/_derived_jpg_q90_444x444_m0/TheGoodWife-Showcard1.jpg" alt="The Good Wife" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-good-wife" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">The Good Wife</p>
@@ -2908,10 +2908,21 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/NCIS/_derived_jpg_q90_310x470_m0/NCIS-Showcard1.jpg" alt="NCIS" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/NCIS/_derived_jpg_q90_444x444_m0/NCIS-Showcard1.jpg" alt="NCIS" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/ncis" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">NCIS</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/NCIS%20Los%20Angeles/_derived_jpg_q90_444x444_m0/NCISLosAngeles-Showcard1.jpg" alt="NCIS: Los Angeles" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/ncis-los-angeles" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">NCIS: Los Angeles</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -2969,6 +2980,17 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/48%20Hours%20Mystery/_derived_jpg_q90_444x444_m0/48HoursMystery-Showcard1_CR.jpg" alt="48 Hours" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/48-hours" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">48 Hours</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
 						<img class="tile-thumbnail" src="http://thumbnails.cbsig.net/CBS_Production_News/189/787/us_0314_NCAAscholarships_140x80_2345417342.jpg" alt="U.S." />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/us" class="action track" data-clicktrack-action="Image - Link">
@@ -2980,18 +3002,7 @@ Filter By				</div>
 						</div>
 					</li>
 					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/48%20Hours%20Mystery/_derived_jpg_q90_310x470_m0/48HoursMystery-Showcard1_CR.jpg" alt="48 Hours" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/48-hours" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">48 Hours</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/CBS%20This%20Morning/_derived_jpg_q90_310x470_m0/CBSThisMorning-Showcard.jpg" alt="CBS This Morning" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CBS/CBS%20This%20Morning/_derived_jpg_q90_444x444_m0/CBSThisMorning-Showcard.jpg" alt="CBS This Morning" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/cbs-this-morning" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">CBS This Morning</p>
@@ -3052,7 +3063,7 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Universal%20Studios%20Home%20Ent/Night%20Gallery/_derived_jpg_q90_310x470_m0/Night_Gallery_showcardhoriz.jpg" alt="Night Gallery" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/Universal%20Studios%20Home%20Ent/Night%20Gallery/_derived_jpg_q90_444x444_m0/Night_Gallery_showcardhoriz.jpg" alt="Night Gallery" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/night-gallery" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">Night Gallery</p>
@@ -3135,21 +3146,10 @@ Filter By				</div>
 			<div class="imageWrapper imageType-network">
 				<ul class="networkTileItems">
 					<li class="networkTileItem active">
-						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CNBC/American%20Greed/Showcard/_derived_jpg_q90_310x470_m0/NewSC_Americah-Greed.jpg" alt="American Greed" />
+						<img class="tile-thumbnail" src="http://cps-static.rovicorp.com/2/Open/CNBC/American%20Greed/Showcard/_derived_jpg_q90_444x444_m0/NewSC_Americah-Greed.jpg" alt="American Greed" />
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/american-greed" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">American Greed</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60123596?size=512x288" alt="Crime Inc." />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/crime-inc" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">Crime Inc.</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -3161,6 +3161,17 @@ Filter By				</div>
 						<div class="image-overlay">
 							<div class="standard"><a href="http://uverseonline.att.net/tv/show/cnbc-originals" class="action track" data-clicktrack-action="Image - Link">
 <p class="categoryTitle">CNBC Originals</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="http://ibdp.huluim.com/video/60123596?size=512x288" alt="Crime Inc." />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/crime-inc" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Crime Inc.</p>
 <span class="U-control U-control-button control-overlay">
 <span class="U-control-button-wrapper">
 <span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
@@ -3228,17 +3239,6 @@ Filter By				</div>
 </span> </span> </a></div>
 						</div>
 					</li>
-					<li class="networkTileItem ">
-						<img class="tile-thumbnail" src="http://uverseonline.att.net/web_files/NEXTGEN/web_files/images/teaseroverride/140x80-hln-live.jpg" alt="HLN Live" />
-						<div class="image-overlay">
-							<div class="standard"><a href="http://uverseonline.att.net/tv/show/hln-live" class="action track" data-clicktrack-action="Image - Link">
-<p class="categoryTitle">HLN Live</p>
-<span class="U-control U-control-button control-overlay">
-<span class="U-control-button-wrapper">
-<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
-</span> </span> </a></div>
-						</div>
-					</li>
 				</ul>
 			</div>
 	<div class="networkLogoContainer">
@@ -3252,10 +3252,6 @@ Filter By				</div>
 		<footer>
 			<div class="bottomBar clearfix">
 
-					<ul class="pagination">
-						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
-						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
-					</ul>
 
 			</div>
 
@@ -3311,7 +3307,7 @@ Filter By				</div>
 						<li>
 							<a href="http://www.att.com/?shopFilterId=100004&source=EC00uv000000001UL&wtExtndSource=uv_ftr_att" target="_blank"  class="track" data-clicktrack-action="att.com" data-trk-cat="Footer" data-trk-act="att.com">
 								<strong>att.com</strong>
-								<span>Shop. Service. Support</span>
+								<span>Shop. Service. Support.</span>
 							</a>
 						</li>
 						<li>
@@ -3321,9 +3317,9 @@ Filter By				</div>
 							</a>
 						</li>
 						<li>
-							<a href="http://www.att.com/u-verse/shop/index.jsp?source=ECSFU90000000000L&wtExtndSource=uv_online_ftr" target="_blank" class="track" data-clicktrack-action="Shop Uverse" data-trk-cat="Footer" data-trk-act="Shop Uverse">
+							<a href="http://www.att.com/u-verse/shop/index.jsp?source=ECSFU90000000000L&wtExtndSource=uv_connect_ftr" target="_blank" class="track shop-uverse" data-clicktrack-action="Shop Uverse" data-trk-cat="Footer" data-trk-act="Shop Uverse">
 								<strong>Order AT&T U-verse&reg;</strong>
-								<span>Shop online for our best deals</span>
+								<span>More ways to connect and save</span>
 							</a>
 						</li>
 					</ul>
@@ -3383,17 +3379,17 @@ About Our Ads							</a>
 				<div class="mastfooter-social">
 					<h2 class="social-title">Stay In Contact</h2>
 					<ul class="social-icons">
-						<li>	<a class="social-icon social-icon-facebook track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=facebook&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Facebook">Facebook</a>
+						<li>	<a class="social-icon social-icon-facebook track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=facebook&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Facebook">Facebook</a>
 </li>
-						<li>	<a class="social-icon social-icon-twitter track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=twitter&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Twitter">Twitter</a>
+						<li>	<a class="social-icon social-icon-twitter track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=twitter&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Twitter">Twitter</a>
 </li>
-						<li>	<a class="social-icon social-icon-googleplus track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=googleplus&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Googleplus">Google+</a>
+						<li>	<a class="social-icon social-icon-googleplus track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=googleplus&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Googleplus">Google+</a>
 </li>
-						<li>	<a class="social-icon social-icon-linkedin track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=linkedin&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Linkedin">LinkedIn</a>
+						<li>	<a class="social-icon social-icon-linkedin track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=linkedin&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Linkedin">LinkedIn</a>
 </li>
-						<li>	<a class="social-icon social-icon-delicious track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=delicious&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Delicious">Delicious</a>
+						<li>	<a class="social-icon social-icon-delicious track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=delicious&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Delicious">Delicious</a>
 </li>
-						<li>	<a class="social-icon social-icon-digg track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=digg&via=Uverse&title=&url=http://uverseonline.att.net/sports/network/%7Bsrc%7D" target="_blank"  data-clicktrack-action="Digg">Digg</a>
+						<li>	<a class="social-icon social-icon-digg track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=digg&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2Fsports%2Fnetwork%2F%257Bsrc%257D" target="_blank"  data-clicktrack-action="Digg">Digg</a>
 </li>
 					</ul>
 
@@ -3423,10 +3419,26 @@ Proud sponsor of the U.S Olympic Team							</a>
         <div class="modal-contents"></div>
     </div>
 </div>
-	<!-- Webtrends -->
+<div id="pageBlocker" class="page-blocker hidden">
+	<div class="vertically-centered-wrapper">
+		<span class="page-blocker-spinner"></span>
+		<div class="page-blocker-message-wrapper">
+			<span class="page-blocker-message"></span>
+		</div>
+	</div>
+</div>	<!-- Webtrends -->
 	<noscript><img alt="dcsimg" id="dcsimg" width="1" height="1" src="../../../statse.webtrendslive.com/dcsslzoj37dv0hctv586rtbcg_1v7w/njs.gif%3Fdcsuri=%252Fnojavascript&amp;WT.js=No&amp;WT.tv=10.2.0&amp;dcssip=www.beta.att.yahoo.com"/></noscript>
 
 
-	</body>
+<div id="toast" class="toast">
+	<div class="toast-button">
+		<span class="slice-one"></span>
+		<span class="slice-two"></span>
+	</div>
+	<span class="toast-message">
+		<span class="toast-message-alert"></span>
+		<span class="toast-message-text"></span>
+	</span>
+</div>	</body>
 
 </html>

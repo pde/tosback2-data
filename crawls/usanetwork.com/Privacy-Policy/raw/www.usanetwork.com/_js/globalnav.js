@@ -693,18 +693,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "G. I. JOE: THE RISE OF COBRA",
-							"subtitle" : "FRIDAY MARCH 29 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
-						},
-						{
-							"title" : "GONE IN SIXTY SECONDS",
-							"subtitle" : "SUNDAY MARCH 31 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gonein60seconds.png"
-						},
-						{
 							"title" : "NATIONAL TREASURE: BOOK OF SECRETS",
 							"subtitle" : "SUNDAY APRIL 7 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -715,6 +703,18 @@ var usa_globalMenu = {
 							"subtitle" : "FRIDAY APRIL 12 9/8C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
+						},
+						{
+							"title" : "KNOCKED UP",
+							"subtitle" : "SATURDAY APRIL 13 1/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_knockedup.png"
+						},
+						{
+							"title" : "THE BACK-UP PLAN",
+							"subtitle" : "SUNDAY APRIL 14 10/9C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
 						}
 					]
 				}

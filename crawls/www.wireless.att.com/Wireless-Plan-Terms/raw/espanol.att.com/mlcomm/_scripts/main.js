@@ -47,7 +47,7 @@ state = getState();
 function renderTopNav() {
     document.write('	<ul id="top-nav">');
     document.write(' <li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
-    document.write(' <li><a href="http://att.com/gen/landing-pages?pid=3308" title="AT&amp;T en ingl&eacute;s">AT&amp;T en ingl&eacute;s</a></li>');
+    document.write(' <li><a href="http://www.att.com" title="AT&amp;T en ingl&eacute;s">AT&amp;T en ingl&eacute;s</a></li>');
     document.write(' <li><a href="http://world.att.com" class="nb" title="">Otros Idiomas</a></li>');
     document.write(' <div class="clear"></div>');
     document.write(' </ul>');
@@ -308,7 +308,7 @@ function renderGlobalNavOrderForm() {
     document.write('</li>');
     document.write('<li><a href="http://espanol.att.com/help/index.html?id=' + state + '" title="AYUDA"><img src="https://www.att.com/Common/world_att/sp/mlcomm/_images/template/global_nav/global_ayuda.jpg" alt="Ayuda" /></a>')
     document.write('</li>');
-    document.write('<li><a href="/newsroom/index.html?id=' + state + '" title="NOTICIAS"><img src="https://www.att.com/Common/world_att/sp/mlcomm/_images/template/global_nav/global_noticias');
+    document.write('<li><a href="http://espanol.att.com/newsroom/index.html?id=' + state + '" title="NOTICIAS"><img src="https://www.att.com/Common/world_att/sp/mlcomm/_images/template/global_nav/global_noticias');
     if (checkRSS != '-1') {
         document.write('_on');
     }
@@ -743,7 +743,7 @@ function renderFooter() {
     document.write('<ul id="footerNav">');
     document.write('    	<li><a href="/index.html?id=' + state + '" title="Portada">Portada</a></li>');
     document.write('    	<li><a href="/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&amp;T </a></li>');
-    document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
+    document.write('    	<li><a href="http://att.jobs/" title="Empleos">Empleos</a></li>');
     document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar tienda">Buscar tienda</a></li>');
     document.write('    	<li><a href="/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
     document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de privacidad">Pol&iacute;tica de privacidad</a></li>');
@@ -751,7 +751,7 @@ function renderFooter() {
     document.write('    	<li><a href="/about_att/net_neutrality.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
     document.write('    </ul>');
     document.write('    <div class="clear"></div>');
-    document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
+    document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2013 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
     document.write('</div>');
 
     document.write('<div id="pop"> </div>');
@@ -764,19 +764,19 @@ function renderFooterOrderForm() {
     document.write('<ul id="footerNav">');
     document.write('    	<li><a href="http://espanol.att.com/index.html?id=' + state + '" title="Portada">Portada</a></li>');
     document.write('    	<li><a href="http://espanol.att.com/about_att/index.html?id=' + state + '" title="Acerca de AT&amp;T">Acerca de AT&amp;T </a></li>');
-    document.write('    	<li><a href="http://www.att.com/gen/careers?pid=1" title="Empleos">Empleos</a></li>');
+    document.write('    	<li><a href="http://att.jobs/" title="Empleos">Empleos</a></li>');
     document.write('    	<li><a href="http://www.wireless.att.com/find-a-store/" title="Buscar Tienda">Buscar Tienda</a></li>');
     document.write('    	<li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
-    document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de Privacidad">Pol&iacute;tica de Privacidad</a></li>');
-    document.write('    	<li><a href="/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
+    document.write('    	<li><a href="http://espanol.att.com/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de Privacidad">Pol&iacute;tica de Privacidad</a></li>');
+    document.write('    	<li><a href="http://espanol.att.com/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
     document.write('    	<li><a href="http://espanol.att.com/about_att/net_neutrality.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
     document.write('    </ul>');
     document.write('    <div class="clear"></div>');
-    document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">Â© 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
+    document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2013 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
     document.write('</div>');
     document.write('<div id="pop"> </div>');
     //added 10/11/2012 [KD]
-    document.write('<s' + 'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
+    //document.write('<s' + 'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
 }
 
 

@@ -22,7 +22,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,directv.com,directvbusiness.com"
+s.linkInternalFilters="javascript:,directv.com"
 s.linkLeaveQueryString=false
 
 //changed props for link tracking
@@ -113,11 +113,7 @@ function s_doPlugins(s) {
 		}
 		s.events=e.substring(0,e.length-1);
 	}
-	else
-	{
-		if(!s.products)
-			s.products=';';
-	}
+
 
 	if (s.channel)
 		s.eVar9=s.channel;

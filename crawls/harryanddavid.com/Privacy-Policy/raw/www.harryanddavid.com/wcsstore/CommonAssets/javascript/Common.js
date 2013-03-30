@@ -13,7 +13,8 @@ dojo.require("wc.widget.RefreshArea");
 dojo.require("bec.util.lang");
 dojo.require("bec.util.browser");
 dojo.require("bec.util.search");
-dojo.require("bec.analytics.Coremetrics");	
+dojo.require("bec.analytics.Coremetrics");
+dojo.require("bec.vendors.Tealeaf");
 dojo.require("bec.widget.Button");
 dojo.require("bec.widget.EasyButton");
 dojo.require("bec.widget.PopupDialog");
@@ -233,11 +234,20 @@ function getResetPasswordInstance()
 function processTabletOverrides()
 {
     if(bec.util.browser.isTouchDevice())
-    {   //we are a touch device like tablet so do various overrides.
+    {   // we are a touch device like tablet so do various overrides.
         if(dijit.form.FilteringSelect && bec.widget.form.SelectDropDown)
         {
             dijit.form.FilteringSelect.prototype = bec.widget.form.SelectDropDown.prototype;    
         }
+        
+        // remove PayPal if id is found (comes from registry setting PayPal.TurnOffOnTablet)
+        var paypalTabletRemove =  dojo.byId('paypalTabletRemove');
+		if (paypalTabletRemove)
+		{
+			bec.util.html.hideNode(paypalTabletRemove);
+			
+			//TODO: change button text
+		}
     }
 }
 
@@ -312,4 +322,3 @@ function expireCookie(name, minutes)
 	dateObj.setMinutes(dateObj.getMinutes()+minutes);
 	document.cookie = name + "=" + readCookie(name) + ";path=/;expires=" + dateObj;
 }
-

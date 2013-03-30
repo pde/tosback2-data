@@ -15,7 +15,7 @@
 <link rel="search" type="application/opensearchdescription+xml" href="http://adage.com/xml/AdAge_OpenSearch.php" title="Advertising Age" />
 
 <link href="https://plus.google.com/101792368055128831913/" rel="publisher" />
-<link href="css/style.css%3F1361901923.css" media="all" rel="stylesheet" type="text/css" /><link href="css/1140.css%3F1361485145.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="css/style.css%3F1364406830.css" media="all" rel="stylesheet" type="text/css" /><link href="css/1140.css%3F1361485145.css" media="screen" rel="stylesheet" type="text/css" />
 
 <!--[if lt IE 9]>
 <link href="http://adage.com/css/ie.css?1356963860" media="all" rel="stylesheet" type="text/css" />
@@ -55,7 +55,7 @@
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = '';
+OAS_listpos = ',x32';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -98,7 +98,7 @@ function OAS_AD(pos) {
 
 			<li><a href="http://adage.com/china" onclick="_gaq.push(['_trackEvent', 'Header-CorpNav', this.innerHTML, this.getAttribute('href')]);" id="corp_nav_china" title="Advertising, Marketing and Media in China">Ad Age China</a></li>
 				<li><a href="http://adage.com/adage-on-campus" onclick="_gaq.push(['_trackEvent', 'Header-CorpNav', this.innerHTML, this.getAttribute('href')]);" id="corp_nav_campus" title="For college students and educators alike">Ad Age On Campus</a></li>
-			<li><a href="http://adage.com/insights" onclick="_gaq.push(['_trackEvent', 'Header-CorpNav', this.innerHTML, this.getAttribute('href')]);" id="corp_nav_insights" title="Ad Age Insights">Insights</a></li>
+		
 			<li><a href="http://jobs.adagetalentworks.com/" onclick="_gaq.push(['_trackEvent', 'Header-CorpNav', this.innerHTML, this.getAttribute('href')]);" id="corp_nav_jobs" title="Ad Age TalentWorks">Jobs</a></li>
 			<li><a href="http://adage.com/subscribe/" onclick="_gaq.push(['_trackEvent', 'Header-CorpNav', this.innerHTML, this.getAttribute('href')]);" id="corp_nav_su" title="Ad Age Subscription Center">Subscribe</a></li>
 		</ul>
@@ -124,7 +124,7 @@ function OAS_AD(pos) {
 		</div>
 		
 		<div id="search_form" class="clearfix">
-	<p><a href="http://adage.com/advancedsearch" title="Advanced Search Preferences">Advanced Search</a></p>
+	
 	<form action="http://adage.com/results" id="search" name="search">
 		<input type="hidden" name="endeca" value="1" />
 		<input type="hidden" name="searchprop" value="AdAgeAll" />
@@ -136,7 +136,7 @@ function OAS_AD(pos) {
 
 		<input type="search" name="search_phrase" id="search_phrase" autosave="Advertising Age" results="10" placeholder="Search Advertising Age" />
 	</form>	
-
+<p><a href="http://adage.com/advancedsearch" title="Advanced Search Preferences">Advanced Search</a></p>
 </div>
 				<div id="promo">
 			<ul id="ticker">
@@ -280,15 +280,6 @@ menu item
 </ul>
 
 </li>
-<!--
-menu item
---><li>
-	<a href="http://adage.com/special-reports/4asconference/152" class="bottom_menu">4A's</a>
-	<ul>
-	<li><a href="http://adage.com/article/special-report-4as-conference/p-g-s-marc-pritchard-forget-tech-embrace-idea/240261/">P&G's Marc Pritchard</a></li>						
-</ul>
-
-</li>
 
 	</ul>
 </nav>	</div>
@@ -297,6 +288,84 @@ menu item
 
 
 		
+<script type="text/javascript">
+Interstitial = {
+	parentId:'home',
+	id:'interstitial',
+	ad_id:'interstitial-ad',
+	timer:null,
+
+	setOpacity:function(id, opacity) {
+    	el=document.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+
+				if(end == i) {
+					setTimeout("Interstitial.destroy()", time);
+				}
+			}
+			clearTimeout(this.timer);
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+			clearTimeout(this.timer);
+		}
+	},
+
+	hide:function() {
+		if(document.getElementById(this.id)) {
+			// this.fade(this.id, 100, 0, 300);
+			this.destroy();
+		}
+	},
+
+	destroy:function() {
+		var hpto = document.getElementById(this.id);
+		hpto.removeChild(document.getElementById(this.ad_id));
+		hpto.style.visibility='hidden';
+		hpto.style.display='none';
+	}
+}
+
+Interstitial.timer = setTimeout('Interstitial.hide()', 11*1000);
+
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
+
+<div id="interstitial">
+	<div id="interstitial-head">
+		<div id="interstitial-logo">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
+		</div>
+		<div id="interstitial-skip">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
+		</div>
+	</div>
+
+	<div id="interstitial-ad">
+		<!-- OAS Interstitial AD POSITION -->
+		<script language="JavaScript">
+			OAS_AD('x32');
+		</script>
+	</div>
+</div>
+
 	</div>
 </div>
 
@@ -435,136 +504,25 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
 <div class="container">
 	<div class="row">
 	
-<!-- jquery rss include -->
-<div class="rss_footer">
-<div class="rss_title"><p>News <em>from our Ad Age Partners</em> </p></div>
 
-<p>
-    <div class="rss_col">
-	<div class="logo_auto"></div>
-    <ul><li>
-<a href="http://www.autonews.comhttp://europe.autonews.com/article/20130326/ANE/303269841/wpp-india-unit-sacks-employees-after-sexist-ford-ads" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'WPP India unit sacks employees after sexist Ford ads', 'http://www.autonews.comhttp://europe.autonews.com/article/20130326/ANE/303269841/wpp-india-unit-sacks-employees-after-sexist-ford-ads']);" target="_new">
-WPP India unit sacks employees after sexist Ford ads
-</a>
-</li>
-<li>
-<a href="http://www.autonews.com/article/20130326/RETAIL03/130329918/wpp-india-unit-sacks-employees-after-sexist-ford-ads" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'WPP India unit sacks employees after sexist Ford ads', 'http://www.autonews.com/article/20130326/RETAIL03/130329918/wpp-india-unit-sacks-employees-after-sexist-ford-ads']);" target="_new">
-WPP India unit sacks employees after sexist Ford ads
-</a>
-</li>
-<li>
-<a href="http://www.autonews.comhttp://europe.autonews.com/article/20130326/ANE/303269877/renault-touts-low-running-costs-for-zoe-ev" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Renault touts low running costs for Zoe EV', 'http://www.autonews.comhttp://europe.autonews.com/article/20130326/ANE/303269877/renault-touts-low-running-costs-for-zoe-ev']);" target="_new">
-Renault touts low running costs for Zoe EV
-</a>
-</li>
-<li>
-<a href="http://www.autonews.comhttp://europe.autonews.com/article/20130325/ANE/303259810/ford-apologizes-for-mock-ads-showing-tied-up-women" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ford apologizes for mock ads showing tied-up women', 'http://www.autonews.comhttp://europe.autonews.com/article/20130325/ANE/303259810/ford-apologizes-for-mock-ads-showing-tied-up-women']);" target="_new">
-Ford apologizes for mock ads showing tied-up women
-</a>
-</li>
-  <ul>
-  </div>
-  <!-- close rss column -->
-    <div class="rss_col">
-	<div class="logo_b2b"></div>
-    <ul><li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130326/MEDIABUSINESS12/303219993/1484/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Forbes.com strategy helps grow revenue, unique visitors', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130326/MEDIABUSINESS12/303219993/1484/rss998&rssfeed=rss998']);" target="_new">
-Forbes.com strategy helps grow revenue, unique visitors
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130326/EVENT0401/303269999/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'Microsoft learns lessons from virtual launch event', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20130326/EVENT0401/303269999/1429/rss998&rssfeed=rss998']);" target="_new">
-Microsoft learns lessons from virtual launch event
-</a>
-</li>
-  <ul>
-  </div>
-  <!-- close rss column -->
-    <div class="rss_col">
-	<div class="logo_cnn"></div>
-    <ul><li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/tRANuQqTYhI/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Even small companies are outsourcing', 'http://rss.cnn.com/~r/rss/money_latest/~3/tRANuQqTYhI/index.html']);" target="_new">
-Even small companies are outsourcing
-</a>
-</li>
-<li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/uMJatgTCcFQ/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks: S&amp;P near record high', 'http://rss.cnn.com/~r/rss/money_latest/~3/uMJatgTCcFQ/index.html']);" target="_new">
-Stocks: S&P near record high
-</a>
-</li>
-<li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/qH2KulYuU84/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Agency sacks employees over Ford art depicting tied-up women', 'http://rss.cnn.com/~r/rss/money_latest/~3/qH2KulYuU84/index.html']);" target="_new">
-Agency sacks employees over Ford art depicting tied-up women
-</a>
-</li>
-<li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/BlWNRoa9W4s/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Chevrolet SS: V8-power at New York Auto Show', 'http://rss.cnn.com/~r/rss/money_latest/~3/BlWNRoa9W4s/index.html']);" target="_new">
-Chevrolet SS: V8-power at New York Auto Show
-</a>
-</li>
-  <ul>
-  </div>
-  <!-- close rss column -->
-    <div class="rss_col">
-	<div class="logo_crain"></div>
-    <ul><li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/nc3c8A7MaVY/130329939" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Bloomberg and NRA make public appeal on guns', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/nc3c8A7MaVY/130329939']);" target="_new">
-Bloomberg and NRA make public appeal on guns
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/cT-yIeIk-l4/ariel-foxman" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Ariel Foxman, InStyle', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/cT-yIeIk-l4/ariel-foxman']);" target="_new">
-Ariel Foxman, InStyle
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/GULtBBWnAfA/michael-lazerow" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Michael Lazerow, Salesforce.com', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/GULtBBWnAfA/michael-lazerow']);" target="_new">
-Michael Lazerow, Salesforce.com
-</a>
-</li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/Cegn22nsmCQ/claudia-perlich" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Claudia Perlich, Media6Degrees', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/Cegn22nsmCQ/claudia-perlich']);" target="_new">
-Claudia Perlich, Media6Degrees
-</a>
-</li>
-  <ul>
-  </div>
-  <!-- close rss column -->
-    <div class="rss_col">
-	<div class="logo_msn"></div>
-    <ul><li>
-<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/2a07296f/l/0L0Snbcnews0N0Cbusiness0Ccoming0Esoon0Elockers0Eshoppers0Ewalmart0E1C90A9270A6/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Coming soon: lockers for shoppers at Walmart', 'http://feeds.nbcnews.com/c/35002/f/653351/s/2a07296f/l/0L0Snbcnews0N0Cbusiness0Ccoming0Esoon0Elockers0Eshoppers0Ewalmart0E1C90A9270A6/story01.htm']);" target="_new">
-Coming soon: lockers for shoppers at Walmart
-</a>
-</li>
-<li>
-<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/2a063fb0/l/0L0Snbcnews0N0Cbusiness0Cford0Eprepares0Emustangs0E50Ath0Ebirthday0E1C90A90A40A2/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Ford prepares for Mustang\&#039;s 50th birthday', 'http://feeds.nbcnews.com/c/35002/f/653351/s/2a063fb0/l/0L0Snbcnews0N0Cbusiness0Cford0Eprepares0Emustangs0E50Ath0Ebirthday0E1C90A90A40A2/story01.htm']);" target="_new">
-Ford prepares for Mustang's 50th birthday
-</a>
-</li>
-<li>
-<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/2a059651/l/0L0Snbcnews0N0Ctechnology0Ctechnolog0Cno0Egoogling0Esays0Egoogle0Eunless0Eyou0Ereally0Emean0Eit0E1C90A78566/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'No Googling, says Google&mdash; unless you really mean it', 'http://feeds.nbcnews.com/c/35002/f/653351/s/2a059651/l/0L0Snbcnews0N0Ctechnology0Ctechnolog0Cno0Egoogling0Esays0Egoogle0Eunless0Eyou0Ereally0Emean0Eit0E1C90A78566/story01.htm']);" target="_new">
-No Googling, says Google— unless you really mean it
-</a>
-</li>
-<li>
-<a href="http://feeds.nbcnews.com/c/35002/f/653351/s/2a059650/l/0L0Snbcnews0N0Ctechnology0Ctechnolog0Cwells0Efargo0Ebank0Esite0Eattack0Edisrupts0Eservice0E1C90A87970A/story01.htm" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Wells Fargo bank site attack disrupts service', 'http://feeds.nbcnews.com/c/35002/f/653351/s/2a059650/l/0L0Snbcnews0N0Ctechnology0Ctechnolog0Cwells0Efargo0Ebank0Esite0Eattack0Edisrupts0Eservice0E1C90A87970A/story01.htm']);" target="_new">
-Wells Fargo bank site attack disrupts service
-</a>
-</li>
-  <ul>
-  </div>
-  <!-- close rss column -->
-</p>
-</div>
 
-<div id="footer">
-	<div class="ad-foot">
+	<div id="ad-footer">
+	<div>
+	<center>
 		<!-- OAS Bottom AD POSITION -->
 		<script type="text/javascript" language="JavaScript">
 			OAS_AD('Bottom');
 		</script>
+	</center>
 	</div>
+	</div>
+	
+
+
+
+
+
+<div id="footer">
 	<div id="portal-shadow">
 		<div id="portal">
 			<div id="portal-top">
@@ -619,7 +577,8 @@ Wells Fargo bank site attack disrupts service
 		<a href="http://www.crain.com/">Crain Communications</a> | <a href="privacy.html">Privacy Statement</a> | <a href="http://adage.com/terms/">Terms of Use</a> | <a href="http://adage.com/help/faq#contactus">Contact Us</a>
 	</div>
 </div>
-<!-- Total time: 1.37099909782 -->
+
+<!-- Total time: 0.126382827759 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->

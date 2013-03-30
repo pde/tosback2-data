@@ -22,7 +22,7 @@
                         var imageWidth = img.width, imageHeight = img.height, reflection, reflectionHeight, wrapper, context, gradient;
                         reflectionHeight = Math.floor((options.height > 1) ? Math.min(imageHeight, options.height) : imageHeight * options.height);
 
-                        if ($.browser.msie) {
+                        if ($.browser.msie && $.browser.version < 10) {
                             reflection = $("<img />").attr("src", img.src).css({
                                 width: imageWidth,
                                 height: imageHeight,

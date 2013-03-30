@@ -459,13 +459,13 @@ var imgs1 = new Array("http://images.medicinenet.com/images/module/featured-slid
 					  "http://images.medicinenet.com/images/module/featured-gallery-skin-conditions.jpg",
 					  "http://images.medicinenet.com/images/module/featured-slideshow-ringworm.jpg",
 					  "http://images.medicinenet.com/images/module/featured-slideshow-adhd-in-children.jpg",
-					  "http://images.medicinenet.com/images/module/featured-slideshow-chronic-fatigue-syndrome.jpg");
+					  "http://images.medicinenet.com/images/module/featured-slideshow-atrial-fibrillation.jpg");
 					  
 var lnks1 = new Array("http://www.medicinenet.com/skin-problems-pictures-slideshow/article.htm",
 					  "http://www.medicinenet.com/script/main/art.asp?articlekey=107516",
 					  "http://www.medicinenet.com/ringworm-pictures-slideshow/article.htm",
 					  "http://www.medicinenet.com/adhd_children_pictures_slideshow/article.htm",
-					  "http://www.medicinenet.com/chronic_fatigue_syndrome_pictures_slideshow/article.htm");
+					  "http://www.medicinenet.com/atrial_fibrillation_pictures_slideshow/article.htm");
 					  
 var alt1 = new Array("Adult Skin Problems Slideshow",
 					 "Skin Conditions Gallery",

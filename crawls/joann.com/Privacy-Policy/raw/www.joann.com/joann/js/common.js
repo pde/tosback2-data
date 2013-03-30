@@ -343,7 +343,7 @@ function emptykey(strId) {
 			return false;
 		} else {
 			document.getElementById('keyword').value = '_' + searchkey;
-			searchkey = searchkey.replace(/\//g,' ').replace(/%/g,'_percent_').replace(/\;/g,'').replace(/ /g,'%20').replace(/\+/g,'_');
+			searchkey = searchkey.replace(/\//g,' ').replace(/%/g,'_percent_').replace(/\;/g,'').replace(/ /g,'+').replace(/\+/g,'_');
 		//	alert(searchkey);
 			var url = '';
 			if(strId == 'qsearch') {

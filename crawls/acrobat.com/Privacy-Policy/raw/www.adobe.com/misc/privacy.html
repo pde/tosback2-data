@@ -9,10 +9,9 @@
 	<meta name="robots" content="noodp" />
 	<meta name="keywords" content="" />
 	<meta name="description" content="The Adobe Privacy Policy describes the privacy practices of our websites, products, online services, and apps. Learn more." />
-<meta name="creationDate" content="2012-10-22 @ 13:57:43" />
-	<meta name="lastModifiedDate" content="2012-10-22 @ 13:57:43" />
-	<meta name="viewport" content="width=device-width" />
-<meta name="area" content="products" />
+<meta name="creationDate" content="2013-03-19 @ 21:22:59" />
+	<meta name="lastModifiedDate" content="2013-03-19 @ 21:22:59" />
+	<meta name="viewport" content="width=device-width" /><meta name="area" content="products" />
 <meta http-equiv="Cache-Control" content="public" />
 <link rel="icon" href="../../wwwimages.adobe.com/www.adobe.com/include/img/favicon.ico" type="image/x-icon"/>
 	<link rel="shortcut icon" href="../../wwwimages.adobe.com/www.adobe.com/include/img/favicon.ico" type="image/x-icon"/>
@@ -77,7 +76,6 @@
     <![endif]-->
 	<script type="text/javascript">
 	//<![CDATA[
-	var info = getCategoriesInfo();
 	$(window).bind("hashchange load", adobe.fn.focusHashElement);
 	cart = new adobe.ui.CartFacade("cart-dialog", "cart-dialog-flash");
 	cart.setRequiredFlashVersion("9.0.115");
@@ -144,11 +142,54 @@
     <link rel="stylesheet" type="text/css" media="only screen" href="../etc/pagetables/reflowtypes/adobe_designcenterarticle.css"/>
     <script type="text/javascript" src="../etc/pagetables/reflowtypes/adobe_designcenterarticle.js"></script>
     <!--<![endif]-->
+<script type="text/javascript">
+    //<![CDATA[
+    (function($) {
+        var dispatcher = (adobe.vrbl("reflowDispatcher") || adobe.vrbl("reflowDispatcher", adobe.reflow.createDispatcher("width", window.document))),
+                viewport = $(window),
+                viewportWidth = NaN,
+                meta = window.document.getElementsByName("viewport")[0],
+                metaContent;
+
+        $(window).bind("resize orientationchange", setRenderMode);
+
+        if(meta) {
+            $(window.document).bind("adobe.reflow.LayoutChange", snapViewportToMaxWidth);
+        }
+
+        setRenderMode();
+
+        function snapViewportToMaxWidth(event, layout_event) {
+            if (layout_event.snapView && layout_event.active) {
+                var widthSetter = "width=",
+                        width = widthSetter+layout_event.maxRange,
+                        content = meta.getAttribute("content");
+
+                if(content.indexOf(widthSetter) > -1) {
+                    content = content.replace(/width=[^,$]+/, width);
+                } else {
+                    content = width;
+                }
+                meta.setAttribute("content", content);
+            }
+        }
+
+        function setRenderMode() {
+            var currentViewportWidth = viewport.width();
+            if (viewportWidth == currentViewportWidth) {
+                return;
+            } //trottle noisy event
+            viewportWidth = currentViewportWidth;
+            dispatcher.updateLayout(viewportWidth);
+        }
+    })(jQuery);
+    //]]>
+</script>
 <script type="text/javascript" src="../../wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/typekit/yoe7ink.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     </head>
 <body class="Text TextMedium Link">
-<div class="ThemeText ThemePanelFill LayoutGrid PanelDiffuseShadow PanelFillExtraLight LayoutCenter LayoutSlimGrid LayoutWideGrid LayoutP">
+<div class="LayoutGrid LayoutSlimGrid LayoutWideGrid LayoutCenter ThemeText ThemePanelFill PanelDiffuseShadow PanelFillExtraLight LayoutP">
     <div class="parsys templatembox topofbodymbox"><div class="mboxDefault">
                     </div>
                 <script type="text/javascript">
@@ -158,11 +199,15 @@
 <div class="PrintLayoutHide">
         <!--googleoff: all--><div class="sitenav"><script type="text/javascript">
     //<![CDATA[
+	if (navigator.userAgent.match(/iPad/i) != null){
+		adobe.dom.createStyleSheet($('head').get(0), "/include/style/default/SiteHeader-iPad.css");
+	}
+
     $(document).ready(adobe.fn.initGlobalNav);
     //]]>
 </script>
 <!--googleoff: index-->
-<!-- $Id: //depot/projects/dylan/releases/rc_13_1/ubi/globalnav/en_us/globalnav_ssi.html#6 $ -->
+<!-- $Id: //depot/projects/dylan/releases/rc_13_3/ubi/globalnav/en_us/globalnav_ssi.html#1 $ -->
 <form id="globalnav-search" class="searchbuddy LayoutSlimHidden" name="globalnav-search" method="get" action="http://www.adobe.com/go/gnav_search" accept-charset="utf-8">
     <div id="SiteHeader" class="SiteHeader Text TextSmall">
         <span id="globalnav"></span>
@@ -455,7 +500,7 @@
         <div class="SiteHeaderUser">
             <div id="shSignInBlock">
                 <a id="shInfo" class="SiteHeaderUserItem SiteHeaderInfo">Info</a>
-                <a href="http://www.adobe.com/account/sign-in.adobedotcom.html" target="_blank" id="shSignIn" class="SiteHeaderUserItem LinkStrong">Sign in</a>
+                <a href="http://www.adobe.com/account/sign-in.adobedotcom.html" id="shSignIn" class="SiteHeaderUserItem LinkStrong">Sign in</a>
                 <div class="SiteHeaderPopPanelShadow width-250" id="InfoPanelShadow" style="display: none;"></div>
                 <div class="SiteHeaderPopPanel width-250" id="InfoPanel" style="display: none;">
                     <div class="SiteHeaderPanelRow">
@@ -573,7 +618,7 @@
 							</span>
 								<span id="HoverCartSubscriptionxyz" class="CheckoutSubscription"> 
 								</span>						
-                            <div id="HoverCartVatPercentageLabelxyz" class="TextEm TextSmall" style="display:none; max-width: 100px;"><span id="HoverCartVatPercentagePreTextxyz"></span>
+                            <div id="HoverCartVatPercentageLabelxyz" class="TextEm TextSmall cartTaxTextHolder" style="display:none; max-width: 100px;"><span id="HoverCartVatPercentagePreTextxyz"></span>
                                     <span id="HoverCartVatPercentagexyz"></span></div>                  
                         </div>
 					</div>
@@ -688,7 +733,7 @@
 
     Adobe.Cart.TaxLabels = {
             TaxInclusiveText    : "",
-            TaxNotApplicable    : ""
+            TaxNotApplicable    : "Tax not applicable"
 	};
 
 	Adobe.Cart.ShoppingCart.GlobalVars = {
@@ -879,9 +924,12 @@
 <p><a href="http://www.adobe.com/privacy/policy.html#market">Will Adobe market to me?</a></p>
 </div>
         </div>
+
+
+	</div>
 </div>
 </div>
-</div></div>
+</div>
 </div></div>
 </div>
 		</div>
@@ -988,9 +1036,8 @@
 </div>
 </div>
 </div>
-        </div>
-<div class="pocketcontentAdobe1 parsys display"><div class="LayoutRow">
-                <div class="purchasingoptions"><div class="CPodContent CPodOptions LayoutRow">
+        <div class="LayoutRow">
+                <div class="reference"><div class="parsys housead"><div class="purchasingoptions section"><div class="CPodContent CPodOptions LayoutRow">
 			    	<div class="CPodOptionsCell">
 							Privacy information</div>
 					<div class="CPodRuleH">
@@ -1002,7 +1049,7 @@
 								</div>
 					    <div class="CPodOptionsCell CPodShadowTop">
 								<p>
-									<a href="http://www.adobe.com/privacy/advertising-services.html" target="_self" class="LinkSpecial LinkStrong"> Advertising services</a>
+									<a href="http://www.adobe.com/privacy/advertising-services.html" target="_self" class="LinkSpecial LinkStrong"> Advertising services *UPDATED*</a>
 								</p>
 								</div>
 					    <div class="CPodOptionsCell CPodShadowTop">
@@ -1012,7 +1059,7 @@
 								</div>
 					    <div class="CPodOptionsCell CPodShadowTop">
 								<p>
-									<a href="http://www.adobe.com/privacy/applications.html" target="_self" class="LinkSpecial LinkStrong"> Applications</a>
+									<a href="http://www.adobe.com/privacy/applications.html" target="_self" class="LinkSpecial LinkStrong"> Applications *UPDATED*</a>
 								</p>
 								</div>
 					    <div class="CPodOptionsCell CPodShadowTop">
@@ -1047,33 +1094,25 @@
 								</div>
 					    </div>
 			</div>
+<div class="purchasingoptions section"><div class="CPodContent CPodOptions LayoutRow">
+			    	<div class="CPodOptionsCell">
+							Need additional help?</div>
+					<div class="CPodRuleH">
+						</div>
+					    <div class="CPodOptionsCell CPodShadowTop">
+								<p>
+									<a href="http://www.adobe.com/misc/privacy_inquiry.html" target="_self" class="LinkSpecial LinkStrong"> Ask a question</a>
+								</p>
+								</div>
+					    </div>
+			</div>
+</div>
+</div>
 </div>
         </div>
+<div class="pocketcontentAdobe1 parsys display"></div>
 <div class="rrrelatedproducts relatedproducts"></div>
 <div class="rightcontent1 parsys"><div id="rightcontent1">
-<div class="purchasingoptions section"></div>
-<div class="ttt section"><div class="LayoutCellSides" style="">
-	<div id="content-dotcom-en-privacy-jcr-content-rightcontent1-ttt" class="LayoutBreakAfter">
-	<div style="" class="TextSmall">
-    <div class="LayoutRow">
-        <h3 class="TextH5 LayoutSmallRowBottom">
-               	<a href="http://privacy.truste.com/privacy-seal/Adobe-Systems-Incorporated/validation?rid=7b9e7205-c55f-469e-a296-c50460520785" target="_blank"></a></h3>
-        </div>
-</div>
-</div>
-</div></div>
-<div class="rrrelatedproducts section"><div class="LayoutRow CPodContent CPodOptions TextSmall">
-			<div class="CPodOptionsCell">
-				Need additional help?</div>
-			<div class="CPodRuleH"></div>
-			<div class="CPodOptionsCell CPodShadowTop">
-				<div class="LayoutSmallRow">
-						<a class="LinkSpecial LinkStrong" href="http://www.adobe.com/misc/privacy_inquiry.html">
-							Ask a question</a>
-					</div>
-				</div>
-		</div>
-    </div>
 </div></div>
 </div>
 </div>
@@ -1098,7 +1137,7 @@
 </script>
 
 <!--googleoff: index-->
-<!-- $Id: //depot/projects/dylan/releases/rc_13_1/ubi/footer/en_us/globalfooter_ssi.html#1 $ -->
+<!-- $Id: //depot/projects/dylan/releases/rc_13_3/ubi/footer/en_us/globalfooter_ssi.html#1 $ -->
 <div id="SiteFooter" class="SiteFooter Text TextSmall TextInvert Link LayoutBreak">
 	<span id="Georouting"></span>
     <div class="LayoutBreakAfter">
@@ -1311,7 +1350,7 @@
         <div class="LayoutGrid-1-4 LayoutSlimGrid-1-2 LinkInvert LinkStrong">
         	<div class="LayoutCellSides LayoutCellBottom LinkInvert">
                 <p class="SiteFooterRow TextSmall">Copyright &copy; 2013 Adobe Systems Incorporated.  All rights reserved.</p>
-                <p class="SiteFooterRow TextSmall"><a href="http://www.adobe.com/go/gffooter_terms_of_use">Terms of Use</a> | <a href="privacy.html">Privacy</a> | <a href="http://www.adobe.com/privacy/cookies.html">Cookies</a></p>
+                <p class="SiteFooterRow TextSmall"><a href="http://www.adobe.com/go/gffooter_terms_of_use">Terms of Use</a> | <a href="privacy.html">Privacy</a> <span class="TextWarning">(Updated)</span> | <a href="http://www.adobe.com/privacy/cookies.html">Cookies</a></p>
                 <p class="SiteFooterRow SiteFooterRowTop"><a href="privacy.html#" id="_bapw-link" class="TextSmall icon Icon SiteFooterMenuItemIconEvidon" style="display:none;">Ad Choices</a></p>
             </div>
         </div>
@@ -1361,29 +1400,32 @@
 <![endif]-->
 
 <script type="text/javascript">
-            //<![CDATA[
-            if (isDesktop()) {
-                var hostName = URLParser.protocol + '//' + URLParser.host;
-                
-                if(URLParser.host == "www.adobe.com" || URLParser.host == "www.stage.adobe.com"){
-                    var scJsHost = (("https:" == document.location.protocol) ? hostName : Adobe.PageInfo.akamaiURLPrefix);
-                    document.write(unescape("%3Cscript src='" + scJsHost + "/include/script/foresee/foresee-trigger.js' type='text/javascript'%3E%3C/script%3E"));
-                }else{
-                    document.write(unescape("%3Cscript src='" + hostName + "/include/script/foresee/foresee-trigger.js' type='text/javascript'%3E%3C/script%3E"));                    
-                }
-                
-            }
-            //]]>
+	    //<![CDATA[
+	    if(isDesktop())
+	    {
+			
+		    var hostName = URLParser.protocol + '//' + URLParser.host;
 
-        </script>
-    <!-- Site Catalyst Report Tracking -->
+	        if(URLParser.host == "www.adobe.com" || URLParser.host == "www.stage.adobe.com"){
+	            var scJsHost = (("https:" == document.location.protocol) ? hostName : Adobe.PageInfo.akamaiURLPrefix);
+	            document.write(unescape("%3Cscript src='" + scJsHost + "/include/script/foresee/foresee-trigger.js' type='text/javascript'%3E%3C/script%3E"));
+	        }
+	        else
+	        {
+	            document.write(unescape("%3Cscript src='" + hostName + "/include/script/foresee/foresee-trigger.js' type='text/javascript'%3E%3C/script%3E"));
+	        }
+	    }
+	    //]]>
+	</script>
+<!-- Site Catalyst Report Tracking -->
 
 <!-- product family pages-->
         <!-- read product family from english locale -->
+        <!-- checking for family child pages -->
         <!-- Setting SiteCatalyst Product key -->
         <!-- Track Product key for old tracking -->
         <script type="text/javascript">
-                    Adobe.PageInfo.sitecatalystMarketSegment = "EDU";
+                    Adobe.PageInfo.pageName = '';
                 </script>
             <script type="text/javascript">
             Adobe.PageInfo.sitecatalystProductKey   = '';
@@ -1393,7 +1435,6 @@
             Adobe.PageInfo.productKey               = '';
             Adobe.PageInfo.sitecatalystLocaleString = 'en_us';
     </script>
-
 
     <!-- Invoking faas form engine tracking Script !! --->
     </div>

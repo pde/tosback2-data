@@ -163,12 +163,12 @@
             wpAd.cache.author = [];
             if (typeof wp_meta_data !== 'undefined' && wp_meta_data.author) {
                 for (var i=0; i < wp_meta_data.author.length; i++) {
-                    wpAd.cache.author[i]=wp_meta_data.author[i].replace(" ","_").toLowerCase();
+                    wpAd.cache.author[i]=wp_meta_data.author[i].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase();
                 }
             }
             if (typeof wp_meta_data !== 'undefined' && wp_meta_data.blogger) {
                 for (var j=0; j < wp_meta_data.blogger.length; j++) {
-                    wpAd.cache.author.push(wp_meta_data.blogger[j].replace(" ","_").toLowerCase());
+                    wpAd.cache.author.push(wp_meta_data.blogger[j].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase());
                 }
             }
             return wpAd.cache.author;

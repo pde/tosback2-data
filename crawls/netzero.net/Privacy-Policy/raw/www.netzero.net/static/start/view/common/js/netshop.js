@@ -10,7 +10,7 @@ function getLoginIframe(){
 		welcomeIframe.height = '300';
 			}
 		else{welcomeIframe.height = '75';}
-		welcomeIframe.width = '260';
+		welcomeIframe.width = '270';
 		welcomeIframe.style.position = 'relative';
 		welcomeIframe.style.border = '0';
 		welcomeIframe.frameBorder = 0;

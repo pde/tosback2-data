@@ -1,0 +1,168 @@
+
+<html>
+<head>
+<title>MedicineNet Newsletter Signup Module</title>
+<script src="../../../images.medicinenet.com/javascript/jquery/1.7.1/jquery.min.js"></script>
+<script src="../../../images.medicinenet.com/javascript/main.js"></script>
+<script type="text/javascript">
+    var bsubmit = true;
+    function validate() {
+        bsubmit = true;
+        if (!/^[-a-zA-Z0-9_\.]+@([a-zA-Z0-9]+(-+[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/.test($('form input[name="Email Address"]').val())) {
+            alert("Email address is not valid!");
+            bsubmit = false;
+        }
+        if (bsubmit) {
+            $('#subscriber').val($('#email').val());
+            // register pageview
+            wmdPageLink(parent.nl_tracking);
+            // set nl hover cookies
+            if (parent.nl_topicID != null)
+                lockReg(parent.nl_topicID);
+            return true;
+        }
+        else
+            return false;
+    }
+    function closeParent() {
+        if (parent.parent.tb_remove != null)
+            parent.parent.tb_remove();
+    }
+    $(function () {
+        $('#email').live('focus', function () {
+            if ($(this).val() == "Enter Email Address")
+                $(this).val("");
+        });
+        $('#email').live('blur', function () {
+            if ($(this).val() == "")
+                $(this).val("Enter Email Address");
+        });
+		$('input[name="thx"]').val(document.domain + "/script/main/nl-et-module-multiple-rr.asp?status=thx");
+		$('input[name="err"]').val(document.domain + "/script/main/nl-et-module-multiple-rr.asp?status=err");
+		$('input[name="usub"]').val(document.domain + "/script/main/nl-et-module-multiple-rr.asp?status=usub");
+    });
+</script>
+<style type="text/css">
+    html, body { margin: 0; padding: 0; background:transparent; }
+    body { font-family: Arial; font-size: 12px; }
+    #message { color: #FF6600; margin-top: 15px; margin-top: 20px\9; }
+    input { vertical-align: middle; font-size: 12px; }
+    label { font-weight: bold; margin-right: 5px; }
+    .column label, .columnright label { line-height: 14px; vertical-align: middle; font-weight: normal; }
+    .column input, .columnright input { margin-left: 0; }
+    #email { color: #666; }
+    .column { float: left; width: 102px; width: 105px\9; margin: 0; margin: 5px 0 0 0\9; }
+    .columnright { float: left; width: 120px; margin: 0; margin: 5px 0 0 0\9; }
+    .bonus { display: block; margin: 40px 0 0 0; line-height: 16px; width: 175px; float: right; }
+    .bonus b { color: #88bc4e; font-size: 14px; font-style: italic; }
+    a.privacy_policy { float: right; color: #3020cf; font-weight: bold; text-decoration: none; margin-top: 5px; }
+    p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
+    /* full clearfix */
+    /* add to floating elements which shall clear floating after themselves */ 
+	* html .clearfix {
+	    height: 1%; /* IE5-6 */
+	}
+	*+html .clearfix {
+		display: inline-block; /* IE7not8 */
+	}
+	.clearfix:after { /* FF, IE8, O, S, etc. */
+	    content: ".";
+	    display: block;
+	    height: 0;
+	    clear: both;
+	    visibility: hidden;
+	}
+</style>
+</head>
+<body>
+
+<form id="subscribeForm" action="https://cl.exct.net/subscribe.aspx" method="post" onsubmit="return validate();">
+    <input type="hidden" name="thx" value="" />  
+    <input type="hidden" name="err" value="" />  
+    <input type="hidden" name="usub" value="" /> 
+    <input type="hidden" id="subAction" name="subAction" value="sub" />
+    <input type="hidden" id="mid" name="MID" value="7000681" />  
+    <input type="hidden" id="env" name="env" value="mnet" /> 
+    <input type="hidden" id="subscriber" name="ETSubscriberKey" value="" />
+    <div>
+    <div class="column">
+    <input type="checkbox" name="lid" value="44115" id="chk_daily" /><label for="chk_daily">Daily</label><br />
+    <input type="checkbox" name="lid" value="45494" id="chk_allergy"/><label for="chk_allergy">Allergy/Asthma</label><br />
+    <input type="checkbox" name="lid" value="45495" id="chk_depression" /><label for="chk_depression">Depression</label><br />
+    </div>
+    <div class="columnright">
+    <input type="checkbox" name="lid" value="45496" id="chk_diabetes" /><label for="chk_diabetes">Diabetes</label><br />
+    <input type="checkbox" name="lid" value="45723" id="chk_popular" /><label for="chk_mens">Men's Health</label><br />
+    <input type="checkbox" name="lid" value="45497" id="chk_womenshealth" /><label for="chk_womenshealth">Women's Health</label><br />
+    </div>
+    <div style="clear:both;"></div>
+    </div>
+    <p class="moretopics"><a href="http://www.medicinenet.com/newsletter/newsletter-signup.asp" target="_blank">Sign up for more topics!</a></p>
+    <p class="bonus"><img src="../../../images.medicinenet.com/images/newsletter/pdf-small.gif" width="16" height="16" style="vertical-align: middle;">&nbsp;&nbsp;<b>BONUS!</b> Get a Free PDF Health Report instantly when you sign up!</p>
+    <br style="clear: both;" />
+    <a href="art.asp%3Farticlekey=12507.html" target="_blank" class="privacy_policy">Privacy Policy</a>
+    <div class="clearfix"></div>
+    <div id="message">
+    
+    <input type="text" id="email" name="Email Address" size="25" value="Enter Email Address" />
+    <input type="image" src="../../images/newsletter/btn-submit.gif" alt="Submit" class="submit" /><br />		 
+</form>
+<script language="javascript1.2" type="text/javascript">
+    var s_site = "medicinenet";
+    var s_not_pageview = "y";
+    function getDisplayNumber(iNumber) {
+        var sNumber = (iNumber <= 9) ? "0" + iNumber : "" + iNumber;
+        return sNumber;
+    }
+
+    function doBIScript() {
+        var s = '';
+        var date = new Date();
+        s += getDisplayNumber(date.getFullYear());
+        s += getDisplayNumber(date.getMonth() + 1);
+        s += getDisplayNumber(date.getDate());
+        document.write('<scr' + 'ipt language="javascript1.2" type="text/javascript" src="http://img.webmd.com/bi_common/bi_oocommon.js?d=' + s + '"><\/scr' + 'ipt>');
+    }
+
+    doBIScript();
+
+    function lockReg(topicID) {
+        if (parent.parent.closeReg != null)
+            parent.parent.closeReg();
+        /*
+        var theCookie = 'hovReg_L';
+        var theValue = nlGetCookie(theCookie);
+        if (theValue != '') { nlWritePersistentCookie2(theCookie,theValue + ',' + topicID); } 
+        else { nlWritePersistentCookie2(theCookie,topicID); }
+        */
+    }
+    function nlGetCookie(name) {
+        var strResults = new String();
+        var offset = 0;
+        var end = 0;
+        var strSearch = new String(name) + '=';
+        if (document.cookie.length > 0) {
+            offset = document.cookie.indexOf(strSearch);
+            if (offset != -1) {
+                offset += strSearch.length;
+                end = document.cookie.indexOf(';', offset);
+                if (end == -1) { end = document.cookie.length; }
+                strResults = unescape(document.cookie.substring(offset, end));
+            }
+        } return strResults;
+    }
+    function nlWritePersistentCookie2(name, value) {
+        var expiration = new Date();
+        var thisYear = expiration.getUTCFullYear();
+        expiration.setUTCFullYear(thisYear + 1);
+        document.cookie = escape(name) + "=" + escape(value) + "; expires=" + expiration.toUTCString() + '; domain=medicinenet.com path=/';
+    }
+
+</script>
+
+</div>
+</body>
+</html>
+
+ 
+    

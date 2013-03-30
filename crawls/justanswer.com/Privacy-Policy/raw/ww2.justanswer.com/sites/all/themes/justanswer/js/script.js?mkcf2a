@@ -1,0 +1,37 @@
+if (Drupal.jsEnabled) {
+        $(document).ready(function(){
+                $("a.popup-link").click(function() {
+                        window.open(this.href, "popup", 
+"width=400,height=600,menubar=0,toolbar=0,resizable=1,scrollbars=0");
+                        return false;
+                });
+                $("a.wide-popup-link").click(function() {
+                        window.open(this.href, "popup",
+"width=650,height=600,menubar=0,toolbar=0,resizable=1,scrollbars=0");
+                        return false;
+                });
+	// toggle question display		
+   $("div.view-display-id-page_1 div.views-field-field-body-value").hide();	
+   $('div.view-display-id-page_1 .views-field-title').click(
+				function(){
+			$(this).toggleClass('active');
+				$(this).next("div.views-field-field-body-value").toggle(200);
+				return false;}
+   
+   )
+   	// TODO: do this properly	
+		if($('body').hasClass('lang-en')) {
+		  $('body.portal #block-finder-finder_2 h2.title, body.portal .search-results h2.title.search-results').wrap("<a href='/help'>"); 
+		}
+		else if($('body').hasClass('lang-es')){
+		  $('body.portal #block-finder-finder_2 h2.title, body.portal .search-results h2.title.search-results').wrap("<a href='/es/help'>"); 
+		}
+		else if($('body').hasClass('lang-de')){
+		 $('body.portal #block-finder-finder_2 h2.title, body.portal .search-results h2.title.search-results').wrap("<a href='/de/help'>"); 
+		}
+      	else if($('body').hasClass('lang-en-gb')){
+		 $('body.portal #block-finder-finder_2 h2.title, body.portal .search-results h2.title.search-results').wrap("<a href='/en-gb/help'>"); 
+		}
+   
+        });
+};

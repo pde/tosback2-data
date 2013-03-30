@@ -68,6 +68,51 @@
 .legacy { display:none !important;} /* legacy functionality, not sure if should be deleted so hiding */
 
 body { color: #434242; font-family:  Arial, Helvetica, Myriad, Verdana, sans-serif; font-size: 12px; background-color:#fff; }
+
+    body .ui-autocomplete {
+        width: 351px !important;
+        padding: 0;
+        z-index: 1000 !important;
+    }
+
+    body .ui-autocomplete .searchHints {
+        border: 1px solid #333333;
+        background-color: #fff;
+        position: relative;
+        margin: 0 3px;
+        padding: 5px;
+    }
+
+	body .ui-autocomplete .searchHints hr {
+		border-style: dotted;
+		border-top: 0;
+		border-left: 0;
+		border-right: 0;
+		margin: 10px;
+	}
+
+	body .ui-autocomplete .searchHints em
+	{
+		font-weight: bold;
+	}
+
+	body .ui-autocomplete .searchHints ul li a:link 
+	{
+		color: #222222;
+		display: block;
+		font-weight: normal;
+		padding: 0.2em 0.4em;
+		text-decoration: none;
+	}
+
+    body .ui-autocomplete .searchHints .ui-menu {
+        display: block !important;
+    }
+	body .ui-autocomplete .searchHints .ui-menu .ui-menu-item {
+		position: static;
+	}
+
+
 a, a:active, a:link, a:visited { color: #005daa; text-decoration: none; cursor: pointer; }
 a:hover { text-decoration: underline;}
 h1, h2, h3, h4  { color:#e95302; font-weight:normal; }
@@ -101,7 +146,7 @@ input, textarea{color:#434242; padding:0 3px;}
 .two_right_wide        { width: 200px; }
 /* Two Column Members */
 .two_left_member         { width: 540px; margin-right:10px; }
-.two_right_member      { width: 390px; background: #f8f8f7; margin-left:10px; padding:10px; }
+.two_right_member      { width: 390px; margin-left:10px; padding:10px; }
 .two_left_member,  .two_right_member .module { border: none; margin-bottom: 10px;}
 
 /* Three Column */
@@ -603,11 +648,15 @@ html[xmlns] .clearfix {display: block;}
 .rule {width: 100%; border-bottom: 1px solid #fff; margin: 10px 0;}
 .notsosecretRegistration{ width: 100%; /*height:550px;*/ background-color: #438fdb; font-size:12px;}
 .notsosecretImagePanel{ float: left; width: 45%; }
+.notsosecretImagePanel img{ width: 100%; }
 .notsosecretFieldsPanel{  background: none repeat scroll 0 0 #78BFF7;
+                            -webkit-box-sizing: border-box;
+	 -moz-box-sizing: border-box;
+		  box-sizing: border-box;
     float: right;
-    margin: 20px 25px 0 5px;
+    margin: 20px 25px 25px 5px;
     padding: 20px;
-    width: 345px;}
+    width: 50%}
 .sorryHeadingTwo {font-size: 22px; color: #252a6b; }
 .NeedHelpPanel{margin-top: 10px;}
 .CustomRegistration {
@@ -1434,7 +1483,7 @@ div.hero_content div.zero_opacity { z-index:5; }
 .hero_container_single .hero_details { padding:10px 15px 20px; }
 .hero_header { margin-bottom:7px; line-height:26px;}
 .hero_header h3 { } 
-.hero_header h3 a { color:#F08F11; } 
+.hero_header h3 a { color:#E95302; } 
 .hero_header h3 a:hover { text-decoration:none; }
 
 .pager_background { position:absolute; z-index:199; height:23px; border:solid 1px #c1b3aa; }
@@ -2148,7 +2197,13 @@ ul.share_items_sub li:first-child, ul.sub_links li:first-child { margin-left:0px
 
 /* 5c. Browser Recipes */
 .browseRecipeItems li{position:relative; border-bottom:1px solid #d3d3d3; margin-top:10px; padding-bottom:10px;  display: inline-block;}
-.browseRecipeItems li .left{float:left; width:400px; /*margin-right:10px; text-align:center;*/}
+.browseRecipeItems li .left{float:left; width:300px; /*margin-right:10px; text-align:center;*/}
+.smallImgPanel {
+    border: 0 none;
+    width: 240px;
+    float: left;
+    margin-right: 10px;
+}
 .browseRecipeItems li .image_thumb{height:76px; overflow:hidden; width:135px; margin-bottom:5px;}
 .browseRecipeItems li .image_thumb img{width:135px;}
 .browseRecipeItems li .imageThumb_video{height:80px; width:110px;}
@@ -2199,12 +2254,12 @@ ul.share_items_sub li:first-child, ul.sub_links li:first-child { margin-left:0px
 
 /* 5g.Recipe Featured Reviews */
 #RecipeFeaturedReviews .navigation {background: #eee; margin: 15px 0; padding: 10px; }
-#RecipeFeaturedReviews #UserProfileImage {width: 75px; margin-right: 10px; float:left;}
+#RecipeFeaturedReviews .UserProfileImage {width: 75px; margin-right: 10px; float:left;}
 #RecipeFeaturedReviews .reviewContainer {float:left;}
 #RecipeFeaturedReviews .bluePointer {width: 25px; height:75px; background: url(../images/recipedetail/commentbluearrow.png) no-repeat; float:left;}
 
 #RecipeFeaturedReviews .blueBackground {background: #eff8ff; padding: 10px; margin: 5px 0; width: 500px;  min-height: 40px; margin-bottom: 10px;}
-#RecipeFeaturedReviews  .module {border-bottom: 2px solid #D3D3D3  margin-bottom: 10px;padding:0px;}
+#RecipeFeaturedReviews  .module {border-bottom: 2px solid #D3D3D3;  margin-bottom: 10px; padding:0px;}
 
 /* 5h. Recipe Rate & Review */
 
@@ -2344,7 +2399,7 @@ ul#AvatarScrollerContainer li{float:left; margin-left:10px;}
 #ReviewsTipsActivity .filter{margin-bottom:20px;}
 
 /* 8f. Newsletter Subscriptions */
-#NewsletterSubscriptions p.opt{margin:10px 0 0 20px;}
+#NewsletterSubscriptions p.opt{margin:10px 0 0 0px;}
 #NewsletterSubscriptions p.opt input, textarea {color: #434242; /*margin-left: -20px;*/ padding: 0 3px 0 0;}
 
 #PrivateProfile select{margin-right:5px;}
@@ -2635,8 +2690,10 @@ ul#AvatarScrollerContainer li{float:left; margin-left:10px;}
 
 /* 13a. Login */
 #LoginOrRegister .copy{float:left; width:500px; margin-right:40px;}
+#LoginOrRegister input { width: 95%;}
 #LoginOrRegister h1, #LoginOrRegister .copy p{margin-bottom:10px;}
-#LoginOrRegister .control{float:left; margin-right:25px; padding:10px; width:340px;}
+#LoginOrRegister .control{float:left; margin-right:1%; padding:8px; width:45%; margin-bottom: 10px;}
+.pageIntro img { width: 100%; height: auto; max-width: 761px;}
 #amFormArea{width:350px;}
 #amFormArea .registrationControlBox{margin-bottom:5px;}
 #amFormArea .optin{float:left; width:310px;}
@@ -2899,23 +2956,6 @@ a[disabled=disabled]{color:#A6A6A6; text-decoration:none;}
 #noSoSecretNotLoggedIn .coupon3{width: 323px; height: 323px; background: url(../images/notsosecretclub/coupon3.png) no-repeat; float:left; position: relative;}
 #noSoSecretNotLoggedIn .coupon3 .button{width: 178px; height: 34px; background: url(../images/notsosecretclub/button_coupon.png) no-repeat; position: absolute; top: 278px; left: 75px; text-align: center;}
 
-
-/* Highlighted Search */
-#HighlightedSearch a.title { font-size: 18px;}
-#HighlightedSearch .carousel_container {margin-left: 35px;}
-.searchHighlight:before, .searchHighlight:after { content: ""; display: table; }
-.searchHighlight:after { clear: both; }
-.searchHighlight h2 {font-size: 24px; color: #e95302; font-weight: normal; margin-bottom: 5px;}
-.searchHighlight .activeHighlight {margin: 10px 0 0;}
-.activeHighlight .activeHighlightImage { float: left; }
-.searchHighlight .activeHighlightDetails { float: left; margin: auto 10px; width: 60%; }
-.searchHighlight .activeHighlightDetails a {font-size:18px;}
-.searchHighlight .searchHighlightProperties .propertyValue {font-weight: bold; margin-left:10px;}
-.searchHighlight .searchHighlightProperties li { display: inline; list-style-type: none; padding-right: 20px; float: left;}
-.searchHighlight .activeHighlightDetails p {margin-bottom:10px;}
-
-.scrollerContainer { float:left; margin-top: 20px; }
-
 /*Facebook Like  */
 #FaceBookView {margin-bottom: 10px;}
 
@@ -2941,10 +2981,10 @@ li:hover ul, li.over ul {display: block;}/* Index & TOC
    5. Modules (Medium)
    6. Modules (Small)
    --------------------------------------------------*/
-@-ms-viewport  {
+@-ms-viewport {
   width: device-width;
 }
-@-o-viewport  {
+@-o-viewport {
   width: device-width;
 }
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -3010,10 +3050,13 @@ body:after {
 .white {
   color: #ffffff;
 }
+.registrationDialogClass {
+  position: fixed!important;
+}
 .ui-dialog {
   color: #000000;
   text-align: left;
-  position: fixed;
+  position: static;
 }
 .ui-dialog .ui-dialog-titlebar-close {
   height: 27px;
@@ -3055,6 +3098,33 @@ body:after {
   text-indent: -99999px;
   width: 34px;
   font-size: 0px;
+}
+.VariableWidth .ui-dialog-content {
+  padding: 10px;
+}
+.VariableWidth .ui-dialog-title {
+  margin: 0;
+}
+.VariableWidth .ui-dialog-titlebar {
+  color: #000000;
+}
+.VariableWidth .ui-dialog-titlebar-close {
+  height: 32px;
+  right: 15px;
+  top: -15px;
+  width: 32px;
+}
+.VariableWidth .ui-widget-header {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: #ffffff;
+  background-image: none;
+  background-origin: padding-box;
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: auto auto;
+  font-size: 1px;
+  height: 0;
 }
 .ui-widget {
   font-family: Arial, sans-serif;
@@ -3187,14 +3257,14 @@ body:after {
 }
 .RegistrationFlowContainer .registrationStepCTA {
   float: left;
-  width: 25%;
+  width: 45%;
 }
 .RegistrationFlowContainer .registrationViewForm {
   float: right;
   width: 43%;
 }
 .RegistrationFlowContainer .loginViewForm {
-  width: 35%;
+  width: 30%;
   float: right;
 }
 .RegistrationFlowContainer .legalAgeView {
@@ -3219,6 +3289,7 @@ body:after {
 }
 .RegistrationFlowContainer input {
   width: 100%;
+  max-width: 310px;
   display: block;
   margin: 1px 0 10px;
   border: none;
@@ -3246,8 +3317,8 @@ body:after {
 .RegistrationFlowContainer .legal-text-beside-buttons {
   display: none;
 }
-.RegistrationFlowContainer .PostalCode-TextBox {
-  width: 120px;
+.RegistrationFlowContainer .PostalCode-TextBox input {
+  width: 97px;
 }
 .RegistrationFlowContainer .PillsburyListNewQA-CheckBox input,
 .RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox input,
@@ -3256,6 +3327,24 @@ body:after {
   width: 20px;
   display: inline-block;
   margin-bottom: 30px;
+  height: auto;
+  margin: 0px;
+  *zoom: 1;
+}
+.RegistrationFlowContainer .PillsburyListNewQA-CheckBox input:before,
+.RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox input:before,
+.RegistrationFlowContainer .PillsburyCookingforTwoNewQA-CheckBox input:before,
+.RegistrationFlowContainer .PillsburyListNewQA-CheckBox input:after,
+.RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox input:after,
+.RegistrationFlowContainer .PillsburyCookingforTwoNewQA-CheckBox input:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.RegistrationFlowContainer .PillsburyListNewQA-CheckBox input:after,
+.RegistrationFlowContainer .PillsburyDailyListNewQA-CheckBox input:after,
+.RegistrationFlowContainer .PillsburyCookingforTwoNewQA-CheckBox input:after {
+  clear: both;
 }
 .RegistrationFlowContainer .PillsburyListNewQA-CheckBox {
   border-top: 1px solid #FFFFFF;
@@ -3293,6 +3382,12 @@ body:after {
   float: left!important;
   font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   padding: 0px!important;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.CustomRegistration #notsosecretImagePanel img {
   width: 100%;
 }
 .CustomRegistration fieldset {
@@ -3349,30 +3444,199 @@ body:after {
   border-bottom: 1px solid #fff;
   padding-bottom: 10px;
 }
-.CustomRegistration .Submit {
-  margin-top: 20px;
-}
 .CustomRegistration input {
   margin-top: 0px;
 }
 .CustomRegistration .previewLink {
   position: inline-block;
 }
-.CustomRegistration .loginViewForm {
+.CustomRegistration .loginView {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.CustomRegistration .loginView .loginViewForm {
   background: none repeat scroll 0 0 #78BFF7;
   float: right;
-  margin: 20px 15px 0 5px;
-  padding: 15px;
-  width: 28%;
+  margin: 20px 25px 0 5px;
+  padding: 20px;
+  width: 45%;
+}
+.CustomRegistration .loginView .loginViewForm .forgotPasswordLink {
+  margin-top: 10px;
+  display: block;
+}
+.CustomRegistration .loginViewCTA {
+  width: 45%;
+  float: left;
+  margin-bottom: 10px;
+}
+.CustomRegistration .loginViewCTA .largeCTA button {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+.CustomRegistration .loginViewCTA .largeCTA button:after {
+  margin-top: 20px;
+  *zoom: 1;
+}
+.CustomRegistration .loginViewCTA .largeCTA button:after:before,
+.CustomRegistration .loginViewCTA .largeCTA button:after:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.CustomRegistration .loginViewCTA .largeCTA button:after:after {
+  clear: both;
+}
+.CouponFlow .registrationStep {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.CouponFlow .loginViewForm,
+.CouponFlow .couponRegFieldsPanel {
+  float: right;
+  width: 55%;
+  background-color: #78BEFC;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  margin-right: 3%;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.CouponFlow .loginViewForm h2,
+.CouponFlow .couponRegFieldsPanel h2 {
+  display: none;
+}
+.CouponFlow .loginViewForm .textFourteen a,
+.CouponFlow .couponRegFieldsPanel .textFourteen a,
+.CouponFlow .loginViewForm .textFourteen a:active,
+.CouponFlow .couponRegFieldsPanel .textFourteen a:active,
+.CouponFlow .loginViewForm .textFourteen a:link,
+.CouponFlow .couponRegFieldsPanel .textFourteen a:link,
+.CouponFlow .loginViewForm .textFourteen a:visited,
+.CouponFlow .couponRegFieldsPanel .textFourteen a:visited {
+  color: #005daa;
+  text-decoration: none;
+  cursor: pointer;
+}
+.CouponFlow .registrationStepCTA {
+  width: 35%;
+  margin-left: 3%;
+  margin-bottom: 3%;
+}
+.CouponFlow .alreadyAMemberLink {
+  display: none;
+}
+.CouponFlow .PostalCode-TextBox {
+  width: 100%;
+  margin-bottom: 0;
+}
+.CouponFlow fieldset div {
+  *zoom: 1;
+}
+.CouponFlow fieldset div:before,
+.CouponFlow fieldset div:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.CouponFlow fieldset div:after {
+  clear: both;
+}
+.CouponFlow fieldset div label {
+  float: left;
+  width: 100%;
+}
+.CouponFlow fieldset div input {
+  width: 45%;
+  float: left;
+}
+.CouponFlow fieldset div input[type="checkbox"] {
+  margin-bottom: 0;
+}
+.CouponFlow fieldset div span.alert-error {
+  width: 45%!important;
+  float: left!important;
+  padding-left: 2%!important;
+  padding-top: 6px;
+}
+.CouponFlow fieldset .BirthDate-DateOfBirth select {
+  float: left;
+  width: 20%!important;
+}
+.CouponFlow fieldset .BirthDate-DateOfBirth select.monthPart {
+  width: 25%!important;
+}
+.CouponFlow fieldset .BirthDate-DateOfBirth span.alert-error {
+  width: 25%!important;
+}
+.CouponFlow fieldset .PostalCode-TextBox input {
+  width: 30%;
+}
+.CouponFlow fieldset div[class*="-CheckBox"] label {
+  width: auto;
+  padding-right: 1%;
+}
+.CouponFlow fieldset div[class*="-CheckBox"] label span {
+  font-weight: bold;
+}
+.CouponFlow fieldset .PillsburyListNewQA-CheckBox {
+  margin-top: 10px;
 }
 @media (max-width: 1200px) {
-  
+  .CustomRegistration .loginView .loginViewForm {
+    width: 45%;
+  }
 }
 @media (max-width: 800px) {
-  
+  #notsosecretImagePanel {
+    display: none;
+  }
+  .CustomRegistration .loginView .loginViewForm {
+    float: left;
+    margin-bottom: 20px;
+    width: 98%;
+  }
+  .CustomRegistration .loginViewCTA {
+    margin-top: 10px;
+    width: 100%;
+  }
+  .CouponFlow .loginView .loginViewForm {
+    float: right;
+    width: 55%;
+    background-color: #78BEFC;
+    margin-top: 10px;
+    margin-right: 25px;
+    padding-left: 10px;
+    padding-bottom: 28px;
+  }
+  .CouponFlow .loginView .loginViewForm button.Sign {
+    display: block;
+    background: none;
+    color: #005daa;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .CouponFlow .loginViewCTA {
+    width: 35%;
+  }
+  .CouponFlow .loginViewCTA #notsosecretImage {
+    padding: 0 0 10px 10px;
+  }
+  .CouponFlow #notsosecretImagePanel {
+    display: block;
+  }
 }
 @media (max-width: 500px) {
-  
+  .CustomRegistration .loginView .loginViewForm {
+    width: 85%;
+  }
 }
  @charset "utf-8";
 
@@ -3543,7 +3807,7 @@ div.frm_input input:-webkit-autofill {background-color:none !important; backgrou
 #customRegistration .rule {width: 100%; border-bottom: 1px solid #fff; margin: 10px 0;}
 #customRegistration #notsosecretRegistration{ width: 100%; /*height:550px;*/ background-color: #438fdb; font-size:12px;}
 #customRegistration #notsosecretImagePanel{ float: left; width: 45%; }
-#customRegistration #notsosecretFieldsPanel{ float: right; width: 385px; background: #78bff7; margin: 20px 25px 0px 5px;}
+#customRegistration #notsosecretFieldsPanel{ float: right; width: 385px; background: #78bff7; margin: 20px 25px 25px 5px;}
 #customRegistration .sorryHeadingTwo {font-size: 22px; color: #252a6b; }
 .NeedHelpPanel{margin-top: 10px;}
 
@@ -3626,7 +3890,7 @@ ol.unorderedListWithLowerCase, ul.unorderedListWithLowerCase {list-style-type:lo
     border: 0 none;
     float: left;
     height: 40px;
-    width: 40px;
+    width: 40px!important;
 }
 
 .fb-wall-data
@@ -3723,6 +3987,11 @@ ol.unorderedListWithLowerCase, ul.unorderedListWithLowerCase {list-style-type:lo
     margin-bottom: 5px;
 }
 
+.fb-wall-date img
+{
+      width: 50px!important;
+}
+
 .fb-wall-message
 {
     display: block;
@@ -3814,7 +4083,7 @@ ol.unorderedListWithLowerCase, ul.unorderedListWithLowerCase {list-style-type:lo
 .fb-wall-comment-avatar img
 {
     width: 32px;
-    height: 32px;
+    height: 32px!important;
 }
 
 .fb-wall:after, .fb-wall-media:after, .fb-wall-clean
@@ -3831,3 +4100,4 @@ ol.unorderedListWithLowerCase, ul.unorderedListWithLowerCase {list-style-type:lo
 
 
 
+@-ms-viewport{width:device-width}@-o-viewport{width:device-width}.clearfix{*zoom:1}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0}.clearfix:after{clear:both}.full_clear{clear:both;display:block;height:0;font-size:0;line-height:0;overflow:hidden}.left{float:left}.hide-text{color:transparent;text-shadow:none;background-color:transparent;border:0}.input-block-level{display:block;width:100%;min-height:30px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}body{width:100%;*zoom:1}body:before,body:after{display:table;content:"";line-height:0}body:after{clear:both}.cycle-slideshow,.cycle-slideshow *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.cycle-slideshow{min-width:200px;max-width:970px;margin:10px auto;padding:0;position:relative;background:url('../~/media/PB/Images/Hero/spinner.gif') 50% 50% no-repeat}.cycle-slideshow img{width:100%;max-height:600px}.cycle-slideshow .rating_stars img{height:16px;width:16px}.cycle-slideshow .hero_left{width:60%}.cycle-slideshow .hero_right{width:35%}.cycle-slideshow img:first-child{position:static;z-index:100}.cycle-slideshow .table{display:inline-table;table-layout:fixed;width:100%;padding-right:70px;background:#c1b3aa}.cycle-slideshow #custom-pager{font-size:16px;font-weight:bold;height:25px;width:100%;display:table-row}.cycle-slideshow #custom-pager strong{border-right:1px solid #FFF;display:table-cell;height:25px;text-align:center}.cycle-slideshow #custom-pager strong a{text-decoration:none;font-family:Arial;color:#fff;font-weight:normal;width:100%;display:block;height:25px;padding-top:2px}.cycle-slideshow #custom-pager strong a:hover{background:#005196}.cycle-slideshow .cycle-pager>*{cursor:pointer}.cycle-slideshow .cycle-caption{position:absolute;color:white;bottom:15px;right:15px;z-index:700}.cycle-slideshow .cycle-overlay{background:none repeat scroll 0 0 white;opacity:.8;filter:alpha(opacity=80);bottom:0;color:#000;font-weight:normal;font-family:tahoma,arial;padding:15px;position:absolute;width:100%;z-index:600}.cycle-slideshow .pager_item a{color:#FFF}.cycle-slideshow .cycle-pager-active{background:#005196}.cycle-slideshow .cycle-overlay{background:none repeat scroll 0 0 white;opacity:.8;bottom:0;color:#000;font-weight:normal;font-family:tahoma,arial;padding:15px;position:absolute;width:100%;z-index:600}.cycle-slideshow .cycle-overlay .cycle-overlay-background{padding:0 20px}.cycle-slideshow .hero_header h3{margin:0}.cycle-slideshow .cycle-prev{background:url('../~/media/PB/Images/Hero/scroll_left.gif') no-repeat;left:5px;opacity:1;width:55px;margin-top:35px;height:30px}.cycle-slideshow .cycle-next{background:url('../~/media/PB/Images/Hero/scroll_right.gif') no-repeat;right:5px;opacity:1;width:15px;margin-top:35px;height:30px}.cycle-slideshow .pager_playtoggle{bottom:0;display:block;position:absolute;right:10px;z-index:9999}.cycle-slideshow #pauseToggle{background:url('../~/media/PB/Images/Hero/pause.png') no-repeat scroll right center transparent;bottom:5px;color:#005DAA;cursor:pointer;display:block;padding-right:10px;position:absolute;right:10px;text-transform:uppercase;font-size:10px;font-weight:bold}.cycle-slideshow .playToggle{background:url('http://www.pillsbury.com/~/media/PB/Images/Hero/play.png') no-repeat scroll right center transparent!important}.cycle-prev,.cycle-next{position:absolute;top:0;width:30%;opacity:0;filter:alpha(opacity=0);z-index:800;height:100%;cursor:pointer}.cycle-prev{left:0;background:url('../~/media/PB/Images/Hero/scroll_left.gif') 50% 50% no-repeat}.cycle-next{right:0;background:url('../~/media/PB/Images/Hero/scroll_right.gif') 50% 50% no-repeat}.cycle-prev:hover,.cycle-next:hover{opacity:.7;filter:alpha(opacity=70)}.disabled{opacity:.5;filter:alpha(opacity=50)}.cycle-paused:after{content:'Paused';color:white;background:black;padding:10px;z-index:500;position:absolute;top:10px;right:10px;border-radius:10px;opacity:.5;filter:alpha(opacity=50)}#cycle-1 div{width:100%}@media(max-width:500px){.cycle-overlay{display:none}.cycle-slide{display:none}.cycle-slideshow .table{display:none}}

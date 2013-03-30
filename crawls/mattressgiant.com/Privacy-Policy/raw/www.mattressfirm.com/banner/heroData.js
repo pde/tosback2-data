@@ -9,6 +9,17 @@ var dateTimeList = new Array(startDate, endDate);
 var heroImgList = new Array("Banner/home/01_WK4_Special_399.gif;Banner/home/02_WK8_Tempur_3Years.gif");
 var heroLinkList = new Array("Hampton-and-Rhodes-11-Luxury-Pillow-Top-P265.aspx?ref=Home&tag=01_WK4_Special_399;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK8_Tempur_3Years");
 
+// Easter Schedule
+var startEaster = new Date(2013, 2, 30, 22, 0, 0, 0);
+var stopEaster = new Date(2013, 3, 1, 7, 0, 0, 0);
+var now = new Date();
+var isEaster = ((startEaster.valueOf() <= now.valueOf()) && (now.valueOf() < stopEaster.valueOf()));
+if (isEaster)
+{
+    heroImgList = new Array("Banner/home/01_Danbury_199.gif;Banner/home/02_SertaAVally_499.gif");
+    heroLinkList = new Array("H-R-8-5-Firm-Pillow-Top-P293.aspx?ref=Home&tag=01_Danbury_199;Serta-Apple-Valley-8-Memory-Foam-Mid-Firm-P253.aspx?ref=Home&tag=02_SertaAVally_499");
+}
+
 //specify images
 //current data if no chnage needed
 var slideimages;

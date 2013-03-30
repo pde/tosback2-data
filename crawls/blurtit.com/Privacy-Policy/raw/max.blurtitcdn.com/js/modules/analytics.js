@@ -11,3 +11,14 @@ if(blurtit.loggedin) {
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
+(function (tos) {
+	window.setInterval(function () {
+    	tos = (function (t) {
+		return t[0] == 50 ? (parseInt(t[1]) + 1) + ':00' : (t[1] || '0') + ':' + (parseInt(t[0]) + 10);
+	})(tos.split(':').reverse());
+		try {
+			_gaq.push(['_trackEvent', 'Time', 'Log',tos,1,true]);
+		} catch(err){}
+  	}, 10000);
+})('00');
