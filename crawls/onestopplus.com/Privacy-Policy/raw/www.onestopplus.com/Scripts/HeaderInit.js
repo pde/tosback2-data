@@ -33,7 +33,7 @@ function InitHeader() {
 
      /* search suggestions and history */
     var searchInput = $('#search-terms'); // header search box; nothing else to config
-    if (!searchInput.hasClass('affiliate')) { SearchDeluxe.Init($('div.search-suggestions'), searchInput); }
+    if (!location.href.match(/AffiliateBrowsing|bags.onestopplus|art.onestopplus|pbj.onestopplus|stg.bags/)) { SearchDeluxe.Init($('div.search-suggestions'), searchInput); }
 }
 
 var SearchDeluxe = { // InteractiveSearch? SearchWithSuggestionsAndHistory?
@@ -185,19 +185,20 @@ function ShowShoppersClubLogo(ClubLogo, LogoLink, vendorName) {
              NotEligible: 4,
              MemberJoined: 5,
              ExpiredJoined: 6,
-             Guestmember: 7
+             Guestmember: 7,
+             NewMemberJoined: 11,
          };
         var cookieValue;
         var cookieName = GetUserCookieName(vendorName);
         var subCookiePrefix = GetSubCookiePrefix(vendorName);
 
         cookieValue = GetDecodedSubCookieValue(cookieName, subCookiePrefix + '.ShoppersClubMember');
-        
-        if((cookieValue != null) && cookieValue == MembershipStatus.Member.toString())
+
+        if ((cookieValue != null) && (cookieValue == MembershipStatus.Member.toString() || cookieValue == MembershipStatus.NewMemberJoined.toString()))
         {
            {
               
-              $('#header-logo').attr('src', '//secureimages.redcatsecom.com/images/site_images/mastersite/osp_header_2011_logo_shoppers_club.png');
+              $('#header-logo').attr('src', '//secureimages.plussizetech.com/images/site_images/mastersite/osp_header_2011_logo_shoppers_club.png');
            }
         }
     }
@@ -879,34 +880,34 @@ $(document).ready(function () {
     function checkBrand(card) {
         //show image for brand card based on the flag in cookie
         if (card == 'W') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/womanwithin/1024_WW_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/womanwithin/1024_WW_cc_control.jpg');
         }
         else if (card == 'O') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/mastersite/1024_OSP_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/mastersite/1024_OSP_cc_control.jpg');
         }
         else if (card == 'A') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/avenue/1024_AV_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/avenue/1024_AV_cc_control.jpg');
         }
         else if (card == 'J') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/jessicalondon/1024_JL_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/jessicalondon/1024_JL_cc_control.jpg');
         }
         else if (card == 'K') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/KSD/1024_KSD_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/KSD/1024_KSD_cc_control.jpg');
         }
         else if (card == 'R') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/roamans/1024_RM_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/roamans/1024_RM_cc_control.jpg');
         }
         else if (card == 'G') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/brylanehome/1024_BH_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/brylanehome/1024_BH_cc_control.jpg');
         }
         else if (card == 'N') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/KSD/1024_KSD_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/KSD/1024_KSD_cc_control.jpg');
         }
         else if (card == 'P') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/mastersite/1024_OSP_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/mastersite/1024_OSP_cc_control.jpg');
         }
         else if (card == 'H') {
-            $('.prea-card-offer > img').attr('src', '//secureimages.redcatsecom.com/images/site_images/brylanehome/1024_BH_cc_control.jpg');
+            $('.prea-card-offer > img').attr('src', '//secureimages.plussizetech.com/images/site_images/brylanehome/1024_BH_cc_control.jpg');
         }
     }
 
@@ -917,7 +918,7 @@ $(document).ready(function () {
             var availcrdt = GetSubCookieValue('User', 'Indy.AvailableCredit');
             if (preapprvd == 'D' || preapprvd == null) {
                 //if you are not logged in replace with the default image
-                $('.prea-card-offer').replaceWith('<a id="offer-left" href="https://www.womanwithin.com/Account/Apply_CreditCard.aspx?MEC=WW10_006_Hbanner"><img src="//secureimages.redcatsecom.com/images/site_images/womanwithin/100710_email_hp1.jpg" width="461" height="55" border="0" alt="" title="" /></a>');
+                $('.prea-card-offer').replaceWith('<a id="offer-left" href="https://www.womanwithin.com/Account/Apply_CreditCard.aspx?MEC=WW10_006_Hbanner"><img src="//secureimages.plussizetech.com/images/site_images/womanwithin/100710_email_hp1.jpg" width="461" height="55" border="0" alt="" title="" /></a>');
             } else if (preapprvd == 'A') {
                 //if you have accepted the offer show the image and the amount
                 $('.header-site-options > div#saving_text').replaceWith('<div class="prea-card-offer"><img src="#" /><span class="greeting"></span><span class="availcred"></span></div>');
@@ -939,7 +940,7 @@ $(document).ready(function () {
         }
         else {
             //alert('no cookie');
-            $('.prea-card-offer').replaceWith('<a id="offer-left" href="https://www.womanwithin.com/Account/Apply_CreditCard.aspx?MEC=WW10_006_Hbanner"><img src="//secureimages.redcatsecom.com/images/site_images/womanwithin/100710_email_hp1.jpg" width="461" height="55" border="0" alt="" title="" /></a>');
+            $('.prea-card-offer').replaceWith('<a id="offer-left" href="https://www.womanwithin.com/Account/Apply_CreditCard.aspx?MEC=WW10_006_Hbanner"><img src="//secureimages.plussizetech.com/images/site_images/womanwithin/100710_email_hp1.jpg" width="461" height="55" border="0" alt="" title="" /></a>');
         }
     }
     checkForOffers();

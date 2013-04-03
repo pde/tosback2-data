@@ -32,7 +32,7 @@ if (mypage=="")
     {
     mypage="Unavailable";
     }
-var linkreefer = "http://t8.trackalyzer.com/trackalyze.asp?r=" + myref + "&p=" + mypage + "&i=" + myid + "&llnocookies=" + llnocookies;
+var linkreefer = "http://t4.trackalyzer.com/trackalyze.asp?r=" + myref + "&p=" + mypage + "&i=" + myid + "&llnocookies=" + llnocookies;
 document.write ("<img src='" + linkreefer + "'>");
 
 
@@ -49,7 +49,7 @@ function Trackalyzer (myid, page, forward, open)
 	forward=mypage;
 	};
 
-	var linkreefer = "http://t8.trackalyzer.com/trackalyze.asp?i=" + myid + "&r=" + myref + "&p=" + mypage + "&f=" + forward;
+	var linkreefer = "http://t4.trackalyzer.com/trackalyze.asp?i=" + myid + "&r=" + myref + "&p=" + mypage + "&f=" + forward;
 
 	var el = document.createElement("iframe");
 	el.setAttribute('width', '0%');

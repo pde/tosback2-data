@@ -1099,12 +1099,7 @@ if(!$.isValue(priceObject))
 {expectedPriceFound=false;priceObject=defaultPriceObject;}}
 if(window.location.href.indexOf("small-business-pricing")>-1)
 {priceObject.price.priceWithTax=null;}
-$(priceContainer).find('.priceContainer').offer_price_label({currencyObject:this.Class.currency,priceObject:priceObject.price});$(priceContainer).find('.priceContainer').addClass("CartCostWeak");$(priceContainer).trigger(this.Class.PRICE_DETERMINED_EVENT,[priceObject.priceTypeKey,expectedPriceFound]);var isCPod=($(priceContainer).find('.priceContainer').parent().attr('id').indexOf('CPodPrice')>-1),offerPodDivName="";if(isCPod)
-{if(Adobe.Cart.Models.Cart.getMarketSegment()==="COM")
-{offerPodDivName="CPodOffer-";}
-else
-{offerPodDivName="CPodEDUOffer-";}
-window.setTimeout(function(){$("[class*="+offerPodDivName+"]").show();},7000);}},_getProductType:function(priceProductKey,useEduType)
+$(priceContainer).find('.priceContainer').offer_price_label({currencyObject:this.Class.currency,priceObject:priceObject.price});$(priceContainer).find('.priceContainer').addClass("CartCostWeak");$(priceContainer).trigger(this.Class.PRICE_DETERMINED_EVENT,[priceObject.priceTypeKey,expectedPriceFound]);},_getProductType:function(priceProductKey,useEduType)
 {var product;var prodType=null;var compareType;for(var i=0;i<this.products.length;i++)
 {product=this.products[i];compareType=this._isEdu()?"typeEDU":"type";if(product.product_key==priceProductKey&&product[compareType])
 {prodType=product[compareType];break;}}

@@ -176,6 +176,8 @@ function s_doPlugins(s) {
 
     var dt = new Date();
     s.eVar45 = dt.getDay() + ' ' + dt.getHours();
+	
+	s.tnt=s.trackTNT();
 }
 function safeGetQueryParam(param, sep, loc){
         var value = "";
@@ -713,6 +715,13 @@ s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
 +"]);a[g]=[arry[x][0],arry[x][1]];g++;}}var data=s.join(a,{delim:',',"
 +"front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{deli"
 +"m:dl});if(ce)s.c_w(cn,'');return r;");
+/*
+* TNT Integration Plugin v1.0
+*/
+s.trackTNT=new Function("v","p","b",""
++"var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(s."
++"getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
++"]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
 
 s.loadModule("Integrate")
 /****************************** MODULES *****************************/

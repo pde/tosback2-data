@@ -96,7 +96,13 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 					request.open("GET",ajaxUrl,true); 
 					request.send(); 
 				// Device is not a tablet,ridirect to m.att.com 
-					window.location =  mRedirectURL; 
+					var referrer = encodeURIComponent(document.referrer); 
+					referrer = referrer.replace("%3A","%253A"); 
+					if (window.location.search != '') { 
+						window.location = mRedirectURL + window.location.search +  '&referrer=' + referrer; 
+					} else { 
+						window.location = mRedirectURL + '?referrer=' + referrer; 
+					} 
 				} 
 		} 
 	} 
@@ -137,30 +143,29 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 	<meta name="robots" content="INDEX,FOLLOW" /> 
 	<link rel="canonical" href="tablets.html"/> 
 	<!-- Global JS/CSS files --> 
-		<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/tealeaf/TeaLeaf.min.js"></script> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://www.att.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://www.att.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
 <!--[if IE 7]> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<link rel="stylesheet" href="http://www.att.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
-			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
-			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
-	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="http://www.att.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
-<link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/listPage.css"/> 
-<link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/wireless-list-styles.css"/> 
-<link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/wireless-global.css"/> 
-<link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/devicelist.min.css"/> 
+<link type="text/css" rel="stylesheet" href="../../../media/cms/shop/styles/listPage.css"/> 
+<link type="text/css" rel="stylesheet" href="../../../media/cms/shop/styles/wireless-list-styles.css"/> 
+<link type="text/css" rel="stylesheet" href="../../../media/cms/shop/styles/wireless-global.css"/> 
+<link type="text/css" rel="stylesheet" href="../../../media/cms/shop/styles/devicelist.min.css"/> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/devicelist.js"></script> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/listPage.js"></script> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/modalConflict.js"></script> 
 <script type="text/javascript"> 
 	function processCompareDevices(inStr) {	 
-		var paramStr = ""; 
+		var params = []; 
 		var compareDevicesUrl = "/shop/wireless/devices/comparephone.html"; 
-		var commitmentTerm = jQuery("input.listFilterGroup[name=commitmentTerm]:checked").val(); 
+		var commitmentTerm = jQuery("input.listFilterGroup[name=commitmentTerm]:checked").val() || 0; 
 		var allCheckboxesToProcess = jQuery("input[name=skuId]:checked"); 
 		var allCheckboxesToProcessSize = allCheckboxesToProcess.size(); 
 		if (allCheckboxesToProcessSize == 0) { 
@@ -172,20 +177,9 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 				//currentMessage = jQuery("div#yellowMessage").html(); 
 				//var compareErrorMsg = "You selected " + allCheckboxesToProcessSize + " devices to compare. The maximum is 5. You will not be redirected."; 
 			} else { 
-				if (allCheckboxesToProcessSize > 0) { 
-					paramStr = "?sku=" + allCheckboxesToProcess.map(function() { 
-						return jQuery(this).val(); 
-					}).get().join("&sku=");	 
-				} 
-				if(!(commitmentTerm)) { commitmentTerm = 0; } 
-				if (paramStr == "") { 
-					paramStr = "?term=" + commitmentTerm; 
-				} else { 
-					paramStr = paramStr + "&term=" + commitmentTerm; 
-				} 
-				jQuery("a#compareUrl").attr("href", function() { 
-					return compareDevicesUrl + paramStr; 
-				});		 
+				params = allCheckboxesToProcess.map(function() {return "sku=" + jQuery(this).val()}).get() || []; 
+				if(commitmentTerm == commitmentTerm / 1) {params.push("term=" + commitmentTerm)} 
+				jQuery("a#compareUrl").attr("href", function() {return compareDevicesUrl + "?" + params.join("&")}); 
 			} 
 		} 
 	} 
@@ -193,7 +187,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 	jQuery(document).ready(function(){ 
 		ATT.cqWebtrend.wtRTISku(); 
 		ATT.cqWebtrend.wtRTIOther(); 
-    }); 
+	}); 
 </script> 
             <!-- OPTIMOST ATTRIBUTE CODE --> 
             <script language="javascript1.1" type="text/javascript"> 
@@ -624,7 +618,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 <div id="undernav-right"> 
     <div id="mini-cart-link-container"> 
         <a id="minicart-link" href="tablets.html#" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">My Wireless Cart  
-            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt=""/> 
+            <img src="http://www.att.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt=""/> 
             <span id="minicart-count"></span> 
         </a><br/> 
         <div id="cart-preview-container" style="display:none;float:right;"></div> 
@@ -800,8 +794,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-commitmentTerm" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-commitmentTerm" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-commitmentTerm" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-commitmentTerm" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
 			<span onclick="filterCollapseExpand('commitmentTerm'); return false">Filter by Contract Length</span> 
 		</h3> 
 		<ul id="commitmentTerm" class="styled_forms"> 
@@ -842,29 +836,29 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-rangePricing" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-rangePricing" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-rangePricing" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-rangePricing" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
 			<span onclick="filterCollapseExpand('rangePricing'); return false">Filter by Pricing</span> 
 		</h3> 
 		<ul id="rangePricing" class="styled_forms"> 
 				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/0" id="rangePricing1" type="checkbox" class="listFilterGroup" value="" name="rangePricing" begin="0" end="10000" checked="checked" default="true"/> 
+							<input data-tokencategory="Filter by Pricing" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/0" id="rangePricing1" type="checkbox" class="listFilterGroup" value="All" name="rangePricing" begin="0" end="10000" checked="checked" default="true"/> 
 					<label for="rangePricing1" >All</label> 
 				</li> 
 				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$0-$199.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/1" id="rangePricing2" type="checkbox" class="listFilterGroup" value="" name="rangePricing" begin="0" end="199.99"/> 
+							<input data-tokencategory="Filter by Pricing" data-tokencontent="$0-$199.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/1" id="rangePricing2" type="checkbox" class="listFilterGroup" value="0-199.99" name="rangePricing" begin="0" end="199.99"  /> 
 					<label for="rangePricing2" >$0-$199.99</label> 
 				</li> 
 				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$200.00-$299.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/2" id="rangePricing3" type="checkbox" class="listFilterGroup" value="" name="rangePricing" begin="200" end="299.99"/> 
+							<input data-tokencategory="Filter by Pricing" data-tokencontent="$200.00-$299.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/2" id="rangePricing3" type="checkbox" class="listFilterGroup" value="200-299.99" name="rangePricing" begin="200" end="299.99"  /> 
 					<label for="rangePricing3" >$200.00-$299.99</label> 
 				</li> 
 				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$300.00-$499.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/3" id="rangePricing4" type="checkbox" class="listFilterGroup" value="" name="rangePricing" begin="300" end="499.99"/> 
+							<input data-tokencategory="Filter by Pricing" data-tokencontent="$300.00-$499.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/3" id="rangePricing4" type="checkbox" class="listFilterGroup" value="300-499.99" name="rangePricing" begin="300" end="499.99"  /> 
 					<label for="rangePricing4" >$300.00-$499.99</label> 
 				</li> 
 				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$500.00 +" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/4" id="rangePricing5" type="checkbox" class="listFilterGroup" value="" name="rangePricing" begin="500" end="10000"/> 
+							<input data-tokencategory="Filter by Pricing" data-tokencontent="$500.00 +" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/4" id="rangePricing5" type="checkbox" class="listFilterGroup" value="500-10000" name="rangePricing" begin="500" end="10000"  /> 
 					<label for="rangePricing5" >$500.00 +</label> 
 				</li> 
 			<li class="filterItemToggle" style="display:none;"> 
@@ -892,8 +886,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-skuCondition" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-skuCondition" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-skuCondition" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-skuCondition" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
 			<span onclick="filterCollapseExpand('skuCondition'); return false">Filter by Condition</span> 
 		</h3> 
 		<ul id="skuCondition" class="styled_forms"> 
@@ -934,8 +928,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoOperatingSystem" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoOperatingSystem" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoOperatingSystem" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-taxoOperatingSystem" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
 			<span onclick="filterCollapseExpand('taxoOperatingSystem'); return false">Filter by Operating System</span> 
 		</h3> 
 		<ul id="taxoOperatingSystem" class="styled_forms"> 
@@ -980,8 +974,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoFeatures" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoFeatures" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoFeatures" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-taxoFeatures" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
 			<span onclick="filterCollapseExpand('taxoFeatures'); return false">Filter by Feature</span> 
 		</h3> 
 		<ul id="taxoFeatures" class="styled_forms"> 
@@ -1062,8 +1056,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoManu" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoManu" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoManu" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-taxoManu" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
 			<span onclick="filterCollapseExpand('taxoManu'); return false">Filter by Manufacturer</span> 
 		</h3> 
 		<ul id="taxoManu" class="styled_forms"> 
@@ -1124,8 +1118,8 @@ Tablet Group</div>
 <div class="individualComponent"> 
 	<form class="filterBy">  
 		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-availability" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('availability'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-availability" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('availability'); return false" /> 
+			<input type="image" class="filterCollapseControl" id="filter-collapse-availability" alt="collapse" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('availability'); return false" /> 
+			<input type="image" class="filterExpandControl"   id="filter-expand-availability" style="display:none" alt="expand" src="../../../shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('availability'); return false" /> 
 			<span onclick="filterCollapseExpand('availability'); return false">Filter by Availability</span> 
 		</h3> 
 		<ul id="availability" class="styled_forms"> 
@@ -1161,11 +1155,17 @@ Tablet Group</div>
 				</div> 
 			</div> 
 			<div id="right-body" > 
-				<div id="gridListControl"> 
+				<div id="gridListControl" class="listModule" > 
 					<div class="noThanksCtrlSection row-seam hide"> 
 						<a href="tablets.html#" onclick="return false;" class="noThanksCart arrowRt" data-extra-params="continueWithoutMarking=true" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 							Continue with device currently in cart 
 						</a> 
+					</div> 
+					<div class="listModuleLabel"> 
+						Showing 
+						<div id="deviceShowAll" class="listModuleClear" style="display:none;"> 
+							<a title="Show all" id="deviceShowAllLink" href="javascript:void(0);" onclick="ATT.listPage.setShowMorePref(wirelessDeviceFilterSize);jQuery('input#showMore').attr('value',wirelessDeviceFilterSize);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Show all</a> 
+						</div> 
 					</div> 
 					<div id="count"> 
 						<div class="countInfo"> 
@@ -1174,11 +1174,8 @@ Tablet Group</div>
 							<span class="deviceSize"></span> 
 							<span class="deviceTextDevices">devices</span> 
 						</div> 
-						<div id="deviceShowAll" style="display:none;"> 
-							<a title="Show all" id="deviceShowAllLink" href="javascript:void(0);" onclick="ATT.listPage.setShowMorePref(wirelessDeviceFilterSize);jQuery('input#showMore').attr('value',wirelessDeviceFilterSize);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Show all</a> 
-						</div> 
 					</div> 
-					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
+					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 					<div id="sortByLabel">Sort by</div> 
 					<div id="sortByName" class="styled_forms"> 
 						<select data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content" title="sort results" id="priceDropDown" name="priceDropDown" class="listSort styled_forms" onchange="jQuery('input#sortBy').attr('value',this.value);ATT.listPage.getItemInfo();"> 
@@ -1191,26 +1188,15 @@ Tablet Group</div>
 							<option value="mostReviews" >Reviews: Most Reviewed </option> 
 						</select> 
 					</div> 
-					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
+					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 					<div id="viewByLabel">View as:</div> 
-					<div id="viewGridIconSelected" style="display:none;"><img title="Grid View - Current" height="18" alt="GRID" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-grid-selected.png"></img></div> 
-					<div id="viewLineIconDeselected" style="display:none;"><a href="javascript:void(0);" title="List View" onclick="toggleToDeviceLine();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img title="LIST" height="18" alt="LIST" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-list-deselected.gif"></img></a></div> 
-					<div id="viewGridIconDeselected" style="display:none;"><a href="javascript:void(0);" title="Grid View" onclick="toggleToDeviceGrid();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img title="GRID" height="18" alt="GRID" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-grid-deselected.gif"></img></a></div> 
-					<div id="viewLineIconSelected" style="display:none;"><img title="List View - Current" height="18" alt="LIST" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-list-selected.png"></img></div> 
+					<div id="viewGridIconSelected" style="display:none;"><img title="Grid View - Current" height="18" alt="GRID" width="18" src="../../../shopcms/media/att/2011/shop/wireless/devices/list/view-grid-selected.png"></img></div> 
+					<div id="viewLineIconDeselected" style="display:none;"><a href="javascript:void(0);" title="List View" onclick="toggleToDeviceLine();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img title="LIST" height="18" alt="LIST" width="18" src="../../../shopcms/media/att/2011/shop/wireless/devices/list/view-list-deselected.gif"></img></a></div> 
+					<div id="viewGridIconDeselected" style="display:none;"><a href="javascript:void(0);" title="Grid View" onclick="toggleToDeviceGrid();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img title="GRID" height="18" alt="GRID" width="18" src="../../../shopcms/media/att/2011/shop/wireless/devices/list/view-grid-deselected.gif"></img></a></div> 
+					<div id="viewLineIconSelected" style="display:none;"><img title="List View - Current" height="18" alt="LIST" width="18" src="../../../shopcms/media/att/2011/shop/wireless/devices/list/view-list-selected.png"></img></div> 
 					<div class="hidden" style="visibility:hidden;display:none;" > 
 						<input id="sortBy" title="Sort by" checked="true" type="checkbox" class="listFilterGroup" name="sortByProperties" value="" /> 
 						<input id="compareSku" title="Compare Skus" checked="true" type="checkbox" class="listFilterGroup" name="sku" value="" /> 
-					</div> 
-					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
-					<div id="gridControlCompare"> 
-						<div class="pageCompareDevicesButton"> 
-							<a title="Click to Compare Selected Devices" id="compareUrl" href="javascript:void(0);" class="clickStreamGroupDone" onclick="processCompareDevices('/shop/en/wireless/devices/comparephone.html');" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">	 
-								<img id="btnCompareDevices" title="Button to Compare Selected Devices" height="29" alt="Click to compare the selected devices" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/btn/btn-en-compare-blu29.gif" border="0"></img> 
-							</a> 
-						</div> 
-						<div class="viewCompareCopy"> 
-							Compare up to 5 devices 
-						</div>	 
 					</div> 
 					<div class="clear"></div> 
 				</div> 
@@ -1233,14 +1219,28 @@ Tablet Group</div>
 						} 
 						jQuery.when(ATT.globalVars.cartPromise).done(updateCompatibilityMessage); 
 					</script> 
-					<div id="yellowMessage" style="display:none;"> 
+					<div id="yellowMessage" class="listModule" style="display:none;"> 
 						<div id="compatibilityMessage"></div> 
 						<div id="filterAttributeDisplay"> 
-							<div id="filterAttributeLabel"> 
-								Filter Selections: 
-								<a id="clearFilterTokens" href="tablets.html#" class="clearFilter" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Clear all filters</a> 
+							<div id="filterAttributeLabel" class="listModuleLabel"> 
+								<span>Filter Selections</span> 
+								<a id="clearFilterTokens" href="tablets.html#" class="clearFilter listModuleClear" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Clear filters</a> 
 							</div> 
 							<div id="filterTokens"></div> 
+						</div> 
+					</div> 
+					<div id="compareBar" class="listModule" style="display:none;"> 
+						<div id="compareBarLabel" class="listModuleLabel"> 
+							Compare Devices 
+							<a id="clearCompareThumbs" href="tablets.html#" class="clearThumbs listModuleClear" onclick="clearCompareThumbs();return false;" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Clear all</a> 
+						</div> 
+						<div id="compareThumbs"></div> 
+						<div id="gridControlCompare"> 
+							<div class="pageCompareDevicesButton"> 
+								<a title="Click to Compare Selected Devices" id="compareUrl" href="http://www.att.com/shop/en/wireless/devices/comparephone.html" class="clickStreamGroupDone" onclick="processCompareDevices('/shop/en/wireless/devices/comparephone.html');" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">	 
+									<img id="btnCompareDevices" title="Button to Compare Selected Devices" height="29" alt="Click to compare the selected devices" src="../../../shopcms/media/att/2013/global/btn/btn-en-compare-now-wht29.gif" border="0"></img> 
+								</a> 
+							</div> 
 						</div> 
 					</div> 
 					<div id="deviceLayout"> 
@@ -1258,1159 +1258,1138 @@ Tablet Group</div>
 	</script> 
 							<script type="text/javascript"> 
 								wirelessDeviceFilterSize  = 15; 
-								jQuery('div#count .countInfo span.deviceCount').html('?'); 
-								jQuery('div#count .countInfo span.deviceSize').html('15'); 
-								jQuery('div#count .countInfo span.deviceTextOf').html('of'); 
+								jQuery('div#gridListControl .countInfo span.deviceCount').html('?'); 
+								jQuery('div#gridListControl .countInfo span.deviceSize').html('15'); 
+								jQuery('div#gridListControl .countInfo span.deviceTextOf').html('of'); 
 								jQuery.when(ATT.globalVars.cartPromise).done(updateCompatibilityMessage); 
 							</script> 
 							<div id="device_prod6310267" class="list-devicePanel" > 
 								<div id="item_sku6400289" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="" data-pid="prod6310267" data-sku="sku6400289" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Lenovo IdeaTab A2107 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s2_5"> 
-                            <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html#tab2" class="clickStreamSingleItem" data-pid="prod6310267" title="Reviews for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(2)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="quickViewLink" data-skuid="sku6400289" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="clickStreamSingleItem" data-pid="prod6310267" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6400289" class="inStockOpacity" alt="Details for Lenovo IdeaTab A2107" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lenovo-ideatab&#32;a2107-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6400289" name="skuId" id="sku6400289" class="clickStreamGroupItem" data-pid="prod6310267" title="Compare Lenovo IdeaTab A2107" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6400289','check');toggleCompareSelectionLabel('sku6400289');" /> 
-                        </div> 
-                        <div id="sku6400289-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6400289">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6400289-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6400289"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6400289','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                Magnesium internal structure for durability without added weight. Compact size and bright 7" high-resolution screen. Dual stereo speakers. Up to 32GB expandable memory. Android 4.0 and Mondrian customizable user interface. Connect with AT&T 3G coverage. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$99.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="clickStreamSingleItem" data-pid="prod6310267" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Lenovo IdeaTab A2107" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="" data-pid="prod6310267" data-sku="sku6400289" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Lenovo IdeaTab A2107 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s2_5"> 
+							<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html#tab2" class="clickStreamSingleItem" data-pid="prod6310267" title="Reviews for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(2)</span> 
+							</a> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="quickViewLink" data-skuid="sku6400289" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="clickStreamSingleItem" data-pid="prod6310267" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6400289" class="inStockOpacity" alt="Details for Lenovo IdeaTab A2107" src="../../../catalog/en/skus/images/lenovo-ideatab&#32;a2107-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6400289" name="skuId" id="sku6400289" class="clickStreamGroupItem" data-pid="prod6310267" title="Compare Lenovo IdeaTab A2107" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6400289','check');toggleCompareSelectionLabel('sku6400289');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6400289-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6400289">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6400289-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6400289"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6400289','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				Magnesium internal structure for durability without added weight. Compact size and bright 7" high-resolution screen. Dual stereo speakers. Up to 32GB expandable memory. Android 4.0 and Mondrian customizable user interface. Connect with AT&T 3G coverage. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$99.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="clickStreamSingleItem" data-pid="prod6310267" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Lenovo IdeaTab A2107" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5510227R" class="list-devicePanel" > 
 								<div id="item_sku6240285" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" data-sku="sku6240285" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Pantech Element&trade; (Refurbished) 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s3_3"> 
-                            <a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5510227" title="Reviews for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(3)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="quickViewLink" data-skuid="sku6240285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6240285" class="inStockOpacity" alt="Details for Pantech Element&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/pantech-element-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6240285" name="skuId" id="sku6240285" class="clickStreamGroupItem" data-pid="prod5510227" title="Compare Pantech Element&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6240285','check');toggleCompareSelectionLabel('sku6240285');" /> 
-                        </div> 
-                        <div id="sku6240285-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6240285">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6240285-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6240285"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6240285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                The Pantech Element (TM) is a fast, highly portable Android (TM) tablet featuring 16 GB internal memory and a powerful 1.5 GHz dual-core processor. With its compact 8" HD screen, waterproof design, and AT&T 4G LTE speeds, it's ready to go where you go. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$179.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Pantech Element&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                <div class="holidayFlag" > 
-                                    <img alt="Limited Time Offer" title="Limited Time Offer" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-limited-time-offer-en.jpg" height="50"/> 
-                                </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" data-sku="sku6240285" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Pantech Element&trade; (Refurbished) 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s3_3"> 
+							<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5510227" title="Reviews for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(3)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="quickViewLink" data-skuid="sku6240285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6240285" class="inStockOpacity" alt="Details for Pantech Element&trade; (Refurbished)" src="../../../catalog/en/skus/images/pantech-element-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6240285" name="skuId" id="sku6240285" class="clickStreamGroupItem" data-pid="prod5510227" title="Compare Pantech Element&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6240285','check');toggleCompareSelectionLabel('sku6240285');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6240285-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6240285">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6240285-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6240285"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6240285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				The Pantech Element (TM) is a fast, highly portable Android (TM) tablet featuring 16 GB internal memory and a powerful 1.5 GHz dual-core processor. With its compact 8" HD screen, waterproof design, and AT&T 4G LTE speeds, it's ready to go where you go. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$179.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5510227" title="Details for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Pantech Element&trade; (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5240344R" class="list-devicePanel" > 
 								<div id="item_sku6010285" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb-subsidized.html" class="clickStreamSingleItem" data-pid="prod5240344" data-sku="sku6010285" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        HTC Jetstream&trade; (Refurbished) 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s2_8"> 
-                            <a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb-subsidized.html#tab2" class="clickStreamSingleItem" data-pid="prod5240344" title="Reviews for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(7)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb-subsidized.html" class="quickViewLink" data-skuid="sku6010285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb-subsidized.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6010285" class="inStockOpacity" alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-jetstream-shimmering&#32;silver-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6010285" name="skuId" id="sku6010285" class="clickStreamGroupItem" data-pid="prod5240344" title="Compare HTC Jetstream&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6010285','check');toggleCompareSelectionLabel('sku6010285');" /> 
-                        </div> 
-                        <div id="sku6010285-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6010285">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6010285-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6010285"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6010285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                HTC Jetstream (TM) is the first 4G LTE tablet from AT&T*. It runs on Android (TM) 3.1 Honeycomb and has a 10.1" HD display and powerful 1.5 GHz dual core processor. Also add in the ability to write on your tablet w/ the HTC Scribe pen (sold separately). 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$249.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb-subsidized.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="tablets.html" class="clickStreamSingleItem" data-pid="prod5240344" data-sku="sku6010285" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						HTC Jetstream&trade; (Refurbished) 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s2_8"> 
+							<a href="tablets.html#tab2" class="clickStreamSingleItem" data-pid="prod5240344" title="Reviews for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(7)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html" class="quickViewLink" data-skuid="sku6010285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="tablets.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6010285" class="inStockOpacity" alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../catalog/en/skus/images/htc-jetstream-shimmering&#32;silver-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6010285" name="skuId" id="sku6010285" class="clickStreamGroupItem" data-pid="prod5240344" title="Compare HTC Jetstream&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6010285','check');toggleCompareSelectionLabel('sku6010285');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6010285-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6010285">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6010285-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6010285"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6010285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				HTC Jetstream (TM) is the first 4G LTE tablet from AT&T*. It runs on Android (TM) 3.1 Honeycomb and has a 10.1" HD display and powerful 1.5 GHz dual core processor. Also add in the ability to write on your tablet w/ the HTC Scribe pen (sold separately). 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$249.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="tablets.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5320301R" class="list-devicePanel" > 
 								<div id="item_sku5920225" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" data-sku="sku5920225" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Samsung Galaxy Tab&trade; 8.9 (Refurbished) 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s4_5"> 
-                            <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5320301" title="Reviews for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(35)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="quickViewLink" data-skuid="sku5920225" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku5920225" class="inStockOpacity" alt="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;tab&#32;8.9-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku5920225" name="skuId" id="sku5920225" class="clickStreamGroupItem" data-pid="prod5320301" title="Compare Samsung Galaxy Tab&trade; 8.9 (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5920225','check');toggleCompareSelectionLabel('sku5920225');" /> 
-                        </div> 
-                        <div id="sku5920225-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5920225">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku5920225-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5920225"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5920225','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                The Samsung Galaxy Tab 8.9 is a slim, lightweight 4G LTE/HSPA+ tablet running on Android (TM) 3.2 OS. Vivid 8.9" HD display, 1.5 GHz dual-core processor, tabbed browsing with HTML 5 and Adobe® Flash® support, front- and rear-facing cameras, and more. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$329.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                <div class="holidayFlag" > 
-                                    <img alt="Limited Time Offer" title="Limited Time Offer" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-limited-time-offer-en.jpg" height="50"/> 
-                                </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" data-sku="sku5920225" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Samsung Galaxy Tab&trade; 8.9 (Refurbished) 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s4_5"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5320301" title="Reviews for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(35)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="quickViewLink" data-skuid="sku5920225" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku5920225" class="inStockOpacity" alt="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" src="../../../catalog/en/skus/images/samsung-galaxy&#32;tab&#32;8.9-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku5920225" name="skuId" id="sku5920225" class="clickStreamGroupItem" data-pid="prod5320301" title="Compare Samsung Galaxy Tab&trade; 8.9 (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5920225','check');toggleCompareSelectionLabel('sku5920225');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku5920225-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5920225">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku5920225-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5920225"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5920225','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				The Samsung Galaxy Tab 8.9 is a slim, lightweight 4G LTE/HSPA+ tablet running on Android (TM) 3.2 OS. Vivid 8.9" HD display, 1.5 GHz dual-core processor, tabbed browsing with HTML 5 and Adobe® Flash® support, front- and rear-facing cameras, and more. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$329.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Samsung Galaxy Tab&trade; 8.9 (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6230388R" class="list-devicePanel" > 
 								<div id="item_sku6520239" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" data-sku="sku6520239" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® mini with Wi-Fi + Cellular (Refurbished) 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6520239" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6520239" class="inStockOpacity" alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;mini&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6520239" name="skuId" id="sku6520239" class="clickStreamGroupItem" data-pid="prod6230388" title="Compare Apple® iPad® mini with Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6520239','check');toggleCompareSelectionLabel('sku6520239');" /> 
-                        </div> 
-                        <div id="sku6520239-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6520239">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6520239-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6520239"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6520239','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                iPad® mini The whole package. In a smaller package. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$309.99 <span class='multiDevicePrice-to'>to</span> $509.99</div> 
-                                <div class="multiDevicePrice">16 to 64 GB</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" data-sku="sku6520239" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® mini with Wi-Fi + Cellular (Refurbished) 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6520239" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6520239" class="inStockOpacity" alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../catalog/en/skus/images/apple-ipad&#32;mini&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6520239" name="skuId" id="sku6520239" class="clickStreamGroupItem" data-pid="prod6230388" title="Compare Apple® iPad® mini with Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6520239','check');toggleCompareSelectionLabel('sku6520239');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6520239-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6520239">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6520239-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6520239"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6520239','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				iPad® mini The whole package. In a smaller package. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$309.99 <span class='multiDevicePrice-to'>to</span> $509.99</div> 
+								<div class="multiDevicePrice">16 to 64 GB</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6230388" class="list-devicePanel" > 
 								<div id="item_sku6320486" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" data-sku="sku6320486" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® mini with Wi-Fi + Cellular 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="quickViewLink" data-skuid="sku6320486" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6320486" class="inStockOpacity" alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;mini&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6320486" name="skuId" id="sku6320486" class="clickStreamGroupItem" data-pid="prod6230388" title="Compare Apple® iPad® mini with Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320486','check');toggleCompareSelectionLabel('sku6320486');" /> 
-                        </div> 
-                        <div id="sku6320486-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6320486">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6320486-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6320486"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320486','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                iPad® mini The whole package. In a smaller package. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$359.99 <span class='multiDevicePrice-to'>to</span> $559.99</div> 
-                                <div class="multiDevicePrice">16 to 64 GB</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" data-sku="sku6320486" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® mini with Wi-Fi + Cellular 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="quickViewLink" data-skuid="sku6320486" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6320486" class="inStockOpacity" alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" src="../../../catalog/en/skus/images/apple-ipad&#32;mini&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6320486" name="skuId" id="sku6320486" class="clickStreamGroupItem" data-pid="prod6230388" title="Compare Apple® iPad® mini with Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320486','check');toggleCompareSelectionLabel('sku6320486');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6320486-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320486">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6320486-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320486"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320486','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				iPad® mini The whole package. In a smaller package. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$359.99 <span class='multiDevicePrice-to'>to</span> $559.99</div> 
+								<div class="multiDevicePrice">16 to 64 GB</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-mini-with-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6230388" title="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® mini with Wi-Fi + Cellular 16GB" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6210739" class="list-devicePanel" > 
 								<div id="item_sku6300331" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" data-sku="sku6300331" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Samsung Galaxy Tab® 2 10.1 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s4_3"> 
-                            <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html#tab2" class="clickStreamSingleItem" data-pid="prod6210739" title="Reviews for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(13)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="quickViewLink" data-skuid="sku6300331" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6300331" class="inStockOpacity" alt="Details for Samsung Galaxy Tab® 2 10.1" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;tab&#32;2&#32;10.1-titanium-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6300331" name="skuId" id="sku6300331" class="clickStreamGroupItem" data-pid="prod6210739" title="Compare Samsung Galaxy Tab® 2 10.1" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6300331','check');toggleCompareSelectionLabel('sku6300331');" /> 
-                        </div> 
-                        <div id="sku6300331-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6300331">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6300331-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6300331"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6300331','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                Enjoy premium entertainment on the nation's largest 4G network with this 10.1" touchscreen tablet running on Android (TM) 4.0. Media Hub lets you watch TV and movies. Smart Remote lets you control entertainment devices. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$399.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Samsung Galaxy Tab® 2 10.1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" data-sku="sku6300331" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Samsung Galaxy Tab® 2 10.1 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s4_3"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html#tab2" class="clickStreamSingleItem" data-pid="prod6210739" title="Reviews for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(13)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="quickViewLink" data-skuid="sku6300331" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6300331" class="inStockOpacity" alt="Details for Samsung Galaxy Tab® 2 10.1" src="../../../catalog/en/skus/images/samsung-galaxy&#32;tab&#32;2&#32;10.1-titanium-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6300331" name="skuId" id="sku6300331" class="clickStreamGroupItem" data-pid="prod6210739" title="Compare Samsung Galaxy Tab® 2 10.1" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6300331','check');toggleCompareSelectionLabel('sku6300331');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6300331-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6300331">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6300331-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6300331"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6300331','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				Enjoy premium entertainment on the nation's largest 4G network with this 10.1" touchscreen tablet running on Android (TM) 4.0. Media Hub lets you watch TV and movies. Smart Remote lets you control entertainment devices. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$399.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium.html" class="clickStreamSingleItem" data-pid="prod6210739" title="Details for Samsung Galaxy Tab® 2 10.1" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Samsung Galaxy Tab® 2 10.1" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5690235R" class="list-devicePanel" > 
 								<div id="item_sku6190317" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" data-sku="sku6190317" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished) 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="quickViewLink" data-skuid="sku6190317" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6190317" class="inStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6190317" name="skuId" id="sku6190317" class="clickStreamGroupItem" data-pid="prod5690235" title="Compare Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6190317','check');toggleCompareSelectionLabel('sku6190317');" /> 
-                        </div> 
-                        <div id="sku6190317-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6190317">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6190317-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6190317"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6190317','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                With over 3.1 million pixels, the breakthrough Retina (TM) display changes your view on everything and makes the new iPad more immersive than ever before. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$429.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" data-sku="sku6190317" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished) 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="quickViewLink" data-skuid="sku6190317" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6190317" class="outOfStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6190317" name="skuId" id="sku6190317" class="clickStreamGroupItem" data-pid="prod5690235" title="Compare Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6190317','check');toggleCompareSelectionLabel('sku6190317');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6190317-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6190317">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6190317-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6190317"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6190317','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				With over 3.1 million pixels, the breakthrough Retina (TM) display changes your view on everything and makes the new iPad more immersive than ever before. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price-outOfStock"> 
+								<div class="listPrice">$429.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5320301" class="list-devicePanel" > 
 								<div id="item_sku5410310" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" data-sku="sku5410310" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Samsung Galaxy Tab&trade; 8.9 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s4_5"> 
-                            <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html#tab2" class="clickStreamSingleItem" data-pid="prod5320301" title="Reviews for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(147)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="quickViewLink" data-skuid="sku5410310" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku5410310" class="inStockOpacity" alt="Details for Samsung Galaxy Tab&trade; 8.9" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;tab&#32;8.9-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku5410310" name="skuId" id="sku5410310" class="clickStreamGroupItem" data-pid="prod5320301" title="Compare Samsung Galaxy Tab&trade; 8.9" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5410310','check');toggleCompareSelectionLabel('sku5410310');" /> 
-                        </div> 
-                        <div id="sku5410310-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5410310">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku5410310-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5410310"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5410310','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                The Samsung Galaxy Tab 8.9 is a slim, lightweight 4G LTE/HSPA+ tablet running on Android (TM) 3.2 OS. Vivid 8.9" HD display, 1.5 GHz dual-core processor, tabbed browsing with HTML 5 and Adobe® Flash® support, front- and rear-facing cameras, and more. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$459.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Samsung Galaxy Tab&trade; 8.9" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" data-sku="sku5410310" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Samsung Galaxy Tab&trade; 8.9 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s4_5"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html#tab2" class="clickStreamSingleItem" data-pid="prod5320301" title="Reviews for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(147)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="quickViewLink" data-skuid="sku5410310" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku5410310" class="inStockOpacity" alt="Details for Samsung Galaxy Tab&trade; 8.9" src="../../../catalog/en/skus/images/samsung-galaxy&#32;tab&#32;8.9-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku5410310" name="skuId" id="sku5410310" class="clickStreamGroupItem" data-pid="prod5320301" title="Compare Samsung Galaxy Tab&trade; 8.9" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5410310','check');toggleCompareSelectionLabel('sku5410310');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku5410310-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5410310">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku5410310-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5410310"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5410310','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				The Samsung Galaxy Tab 8.9 is a slim, lightweight 4G LTE/HSPA+ tablet running on Android (TM) 3.2 OS. Vivid 8.9" HD display, 1.5 GHz dual-core processor, tabbed browsing with HTML 5 and Adobe® Flash® support, front- and rear-facing cameras, and more. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$459.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html" class="clickStreamSingleItem" data-pid="prod5320301" title="Details for Samsung Galaxy Tab&trade; 8.9" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Samsung Galaxy Tab&trade; 8.9" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5030226" class="list-devicePanel" > 
 								<div id="item_sku5120232" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" data-sku="sku5120232" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® 2 with Wi-Fi + 3G 16GB 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s4_8"> 
-                            <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html#tab2" class="clickStreamSingleItem" data-pid="prod5030226" title="Reviews for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(85)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="quickViewLink" data-skuid="sku5120232" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku5120232" class="inStockOpacity" alt="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;2&#32;with&#32;wi-fi&#32;3g&#32;16gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku5120232" name="skuId" id="sku5120232" class="clickStreamGroupItem" data-pid="prod5030226" title="Compare Apple® iPad® 2 with Wi-Fi + 3G 16GB" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5120232','check');toggleCompareSelectionLabel('sku5120232');" /> 
-                        </div> 
-                        <div id="sku5120232-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5120232">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku5120232-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku5120232"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5120232','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                Thinner. Lighter. Faster. FaceTime. Smart Covers. 10-hour battery. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$429.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" data-sku="sku5120232" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® 2 with Wi-Fi + 3G 16GB 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s4_8"> 
+							<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html#tab2" class="clickStreamSingleItem" data-pid="prod5030226" title="Reviews for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(85)</span> 
+							</a> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="quickViewLink" data-skuid="sku5120232" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku5120232" class="inStockOpacity" alt="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" src="../../../catalog/en/skus/images/apple-ipad&#32;2&#32;with&#32;wi-fi&#32;3g&#32;16gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku5120232" name="skuId" id="sku5120232" class="clickStreamGroupItem" data-pid="prod5030226" title="Compare Apple® iPad® 2 with Wi-Fi + 3G 16GB" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5120232','check');toggleCompareSelectionLabel('sku5120232');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku5120232-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5120232">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku5120232-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku5120232"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku5120232','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				Thinner. Lighter. Faster. FaceTime. Smart Covers. 10-hour battery. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$429.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad2-16gb-white.html" class="clickStreamSingleItem" data-pid="prod5030226" title="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® 2 with Wi-Fi + 3G 16GB" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6240242R" class="list-devicePanel" > 
 								<div id="item_sku6520248" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6520248" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished) 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6520248" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                <div class="list-newArrival"> 
-                    <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
-                </div> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6520248" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6520248" name="skuId" id="sku6520248" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6520248','check');toggleCompareSelectionLabel('sku6520248');" /> 
-                        </div> 
-                        <div id="sku6520248-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6520248">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6520248-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6520248"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6520248','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                iPad® with Retina (TM) display Just as stunning. Twice as fast. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$479.99 <span class='multiDevicePrice-to'>to</span> $679.99</div> 
-                                <div class="multiDevicePrice">16 to 64 GB</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6520248" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished) 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6520248" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+				<div class="list-newArrival"> 
+					<img src="../../../shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
+				</div> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6520248" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" src="../../../catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6520248" name="skuId" id="sku6520248" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6520248','check');toggleCompareSelectionLabel('sku6520248');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6520248-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6520248">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6520248-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6520248"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6520248','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				iPad® with Retina (TM) display Just as stunning. Twice as fast. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$479.99 <span class='multiDevicePrice-to'>to</span> $679.99</div> 
+								<div class="multiDevicePrice">16 to 64 GB</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6240242" class="list-devicePanel" > 
 								<div id="item_sku6320480" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6320480" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® with Retina™ display Wi-Fi + Cellular 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="quickViewLink" data-skuid="sku6320480" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6320480" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6320480" name="skuId" id="sku6320480" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320480','check');toggleCompareSelectionLabel('sku6320480');" /> 
-                        </div> 
-                        <div id="sku6320480-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6320480">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6320480-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6320480"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320480','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                iPad® with Retina (TM) display Just as stunning. Twice as fast. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$529.99 <span class='multiDevicePrice-to'>to</span> $829.99</div> 
-                                <div class="multiDevicePrice">16 to 128 GB</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6320480" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® with Retina™ display Wi-Fi + Cellular 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="quickViewLink" data-skuid="sku6320480" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6320480" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6320480" name="skuId" id="sku6320480" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320480','check');toggleCompareSelectionLabel('sku6320480');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6320480-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320480">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6320480-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320480"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320480','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				iPad® with Retina (TM) display Just as stunning. Twice as fast. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$529.99 <span class='multiDevicePrice-to'>to</span> $829.99</div> 
+								<div class="multiDevicePrice">16 to 128 GB</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod5710280R" class="list-devicePanel" > 
 								<div id="item_sku6200245" class="list-item"> 
-        <div class="list-noHeight"></div> 
-        <div class="list-webOnly"> 
-            <img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-        </div> 
-        <div class="list-noHeight"></div> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" data-sku="sku6200245" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished) 
-                    </a> 
-        </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="quickViewLink" data-skuid="sku6200245" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6200245" class="inStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;32gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6200245" name="skuId" id="sku6200245" class="clickStreamGroupItem" data-pid="prod5710280" title="Compare Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6200245','check');toggleCompareSelectionLabel('sku6200245');" /> 
-                        </div> 
-                        <div id="sku6200245-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6200245">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6200245-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6200245"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6200245','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                With over 3.1 million pixels, the breakthrough Retina (TM) display changes your view on everything and makes the new iPad more immersive than ever before. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$529.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-                                 <div class="list-activationShippingBar hidden"> 
-                                        <div class="clear list-barGap hidden"></div> 
-                                 </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" data-sku="sku6200245" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished) 
+					</a> 
+		</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="quickViewLink" data-skuid="sku6200245" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6200245" class="outOfStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;32gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6200245" name="skuId" id="sku6200245" class="clickStreamGroupItem" data-pid="prod5710280" title="Compare Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6200245','check');toggleCompareSelectionLabel('sku6200245');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6200245-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6200245">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6200245-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6200245"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6200245','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				With over 3.1 million pixels, the breakthrough Retina (TM) display changes your view on everything and makes the new iPad more immersive than ever before. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price-outOfStock"> 
+								<div class="listPrice">$529.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6220224" class="list-devicePanel" > 
 								<div id="item_sku6310226" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" data-sku="sku6310226" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        ASUS VivoTab&trade; RT 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s3_8"> 
-                            <a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html#tab2" class="clickStreamSingleItem" data-pid="prod6220224" title="Reviews for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(7)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="quickViewLink" data-skuid="sku6310226" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6310226" class="inStockOpacity" alt="Details for ASUS VivoTab&trade; RT" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/asus-vivotab&#32;rt-amethyst&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6310226" name="skuId" id="sku6310226" class="clickStreamGroupItem" data-pid="prod6220224" title="Compare ASUS VivoTab&trade; RT" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6310226','check');toggleCompareSelectionLabel('sku6310226');" /> 
-                        </div> 
-                        <div id="sku6310226-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6310226">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6310226-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6310226"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6310226','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                ASUS VivoTab (TM) RT is an ultrathin and light Windows® RT tablet with PC capabilities for both work and play. The VivoTab is 8.3mm thick and only 535g, can be used with a keyboard (sold separately), and has a quad-core processor and 10.1" display 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$599.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for ASUS VivoTab&trade; RT" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" data-sku="sku6310226" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						ASUS VivoTab&trade; RT 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s3_8"> 
+							<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html#tab2" class="clickStreamSingleItem" data-pid="prod6220224" title="Reviews for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(7)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="quickViewLink" data-skuid="sku6310226" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6310226" class="inStockOpacity" alt="Details for ASUS VivoTab&trade; RT" src="../../../catalog/en/skus/images/asus-vivotab&#32;rt-amethyst&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6310226" name="skuId" id="sku6310226" class="clickStreamGroupItem" data-pid="prod6220224" title="Compare ASUS VivoTab&trade; RT" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6310226','check');toggleCompareSelectionLabel('sku6310226');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6310226-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6310226">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6310226-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6310226"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6310226','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				ASUS VivoTab (TM) RT is an ultrathin and light Windows® RT tablet with PC capabilities for both work and play. The VivoTab is 8.3mm thick and only 535g, can be used with a keyboard (sold separately), and has a quad-core processor and 10.1" display 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$599.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for ASUS VivoTab&trade; RT" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<div id="device_prod6200238" class="list-devicePanel" > 
 								<div id="item_sku6280789" class="list-item"> 
-    <div class="list-itemHeader"> 
-        <div class="list-title"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" data-sku="sku6280789" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        Samsung ATIV smart PC 
-                    </a> 
-        </div> 
-            <div class="list-rating"> 
-                        <div class="reviewStars s3_5"> 
-                            <a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html#tab2" class="clickStreamSingleItem" data-pid="prod6200238" title="Reviews for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                <div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-                                <span class="numOfReviews">(12)</span> 
-                            </a> 
-                        </div> 
-            </div> 
-                <div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-    </div> 
-    <div class="list-image"> 
-        <a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="quickViewLink" data-skuid="sku6280789" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-        <div class="image"> 
-                    <a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                        <img id="image-sku6280789" class="inStockOpacity" alt="Details for Samsung ATIV smart PC" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-ativ&#32;smart&#32;pc-misty&#32;blue-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-                    </a> 
-        </div> 
-            <div class="list-compare"> 
-                        <div class="floatl"> 
-                            <input type="checkbox" value="sku6280789" name="skuId" id="sku6280789" class="clickStreamGroupItem" data-pid="prod6200238" title="Compare Samsung ATIV smart PC" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280789','check');toggleCompareSelectionLabel('sku6280789');" /> 
-                        </div> 
-                        <div id="sku6280789-addtocompare" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6280789">                     
-                                Add to Compare 
-                            </label> 
-                        </div> 
-                        <div id="sku6280789-comparenow" style="display:none;" class="deviceCompareLink"> 
-                            <label class="deviceCompare" for="sku6280789"> 
-                                <a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6280789','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                                    Compare Now 
-                                </a> 
-                            </label> 
-                        </div> 
-            </div> 
-    </div> 
-    <div class="list-deviceInfo"> 
-        <div class="list-barSection"> 
-            <div class="list-description"> 
-                Running the Microsoft® Windows® 8 operating system, this tablet gives you with the PC capability and productivity you need while on the go. 
-            </div> 
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-priceInfo"> 
-            <div class="list-price"> 
-                                <div class="listPrice">$699.99</div> 
-            </div> 
-        <div class="list-qtyView"> 
-            <div class="list-view"> 
-                        <a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-                            <img alt="Details for Samsung ATIV smart PC" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-                        </a> 
-            </div>  
-        </div> 
-    </div> 
-    <div class="list-noHeight"></div> 
-    <div class="list-noHeight-clear"></div> 
-    <div class="list-button"> 
-        <div class="list-actionDiv" > 
-        </div> 
-        <div class="list-noHeight-clear" ></div> 
-    </div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" data-sku="sku6280789" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						Samsung ATIV smart PC 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s3_5"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html#tab2" class="clickStreamSingleItem" data-pid="prod6200238" title="Reviews for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(12)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="quickViewLink" data-skuid="sku6280789" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6280789" class="inStockOpacity" alt="Details for Samsung ATIV smart PC" src="../../../catalog/en/skus/images/samsung-ativ&#32;smart&#32;pc-misty&#32;blue-100x160.jpg" width="100" border="0" onerror="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://www.att.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6280789" name="skuId" id="sku6280789" class="clickStreamGroupItem" data-pid="prod6200238" title="Compare Samsung ATIV smart PC" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280789','check');toggleCompareSelectionLabel('sku6280789');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6280789-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6280789">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6280789-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6280789"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6280789','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				Running the Microsoft® Windows® 8 operating system, this tablet gives you with the PC capability and productivity you need while on the go. 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price"> 
+								<div class="listPrice">$699.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/ativ-smart-pc-misty-blue.html" class="clickStreamSingleItem" data-pid="prod6200238" title="Details for Samsung ATIV smart PC" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Samsung ATIV smart PC" src="../../../shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
 								</div> 
 							</div> 
 							<script type="text/javascript"> 
 								wirelessDeviceFilterCount = 15; 
-								jQuery('div#count .countInfo span.deviceCount').html('1 - 15'); 
+								jQuery('div#gridListControl .countInfo span.deviceCount').html('1 - 15'); 
 								if (wirelessDeviceFilterCount == wirelessDeviceFilterSize) { 
-									jQuery('div#count div.countInfo').css('margin-top','5px'); 
-									jQuery('div#count #deviceShowAll').css('display','none'); 
+									jQuery('div#gridListControl div.countInfo').css('margin-top','5px'); 
+									jQuery('div#gridListControl #deviceShowAll').css('display','none'); 
 								} else { 
-									jQuery('div#count div.countInfo').css('margin-top','0px'); 
-									jQuery('div#count #deviceShowAll').css('display','block'); 
+									jQuery('div#gridListControl div.countInfo').css('margin-top','0px'); 
+									jQuery('div#gridListControl #deviceShowAll').css('display','block'); 
 								} 
 								//jQuery('#uniformStyle input:checkbox').uniform(); 
 							</script> 
@@ -2546,14 +2525,14 @@ jQuery(document).ready(function(){
 	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
 </div>  
 <div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
-	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
 </div> 
 <div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="../../wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="../../wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="clear"></div> 
 	</div> 
@@ -2618,9 +2597,9 @@ jQuery(document).ready(function(){
 				</div> 
 		<!-- WebTrends Base Tag : include only at end of page --> 
 		<!-- Webtrend global params --> 
-		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+		<script type="text/javascript" src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 301404339981242333546597778188930622012 --> 
+		 <!--X-Renderer: 48847222121769193039496623962462451106 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -2767,7 +2746,7 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            ATT.log('dcs injection block'); 
 	            var s = document.createElement("script"); 
 	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
+	            s.src = "http://www.att.com/webtrends/scripts/dcs_tag.js"; 
 	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
@@ -2796,7 +2775,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","yVrMRWwGDKDkyhprzTLFqvh2!-1189798785!1364603108420"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","sZVGRbJHpWWlpqZ8FHHQxBQY!-1152902871!1364969959884"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -2840,6 +2819,15 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 <noscript><iframe src="../../../../view.atdmt.com/iaction/cntcin_Tablet100Off_1.html" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript> 
 </div> 
 	<!--  To create CLT cookies in existing customer flow --> 
+        <script type="text/javascript"> 
+            jQuery(document).ready(function() { 
+            jQuery.ajax({type: "GET",url:'/shop/wireless/devices/tablets.existcustlocalization.xhr.html', 
+            success: function (data){ 
+                jQuery('body').append(data); 
+            } 
+            }); 
+         }); 
+        </script>              
 <script language="javascript" type="text/javascript"><!-- 
 if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
        for(var i=0;i<opModulesArray.length;i++){ 

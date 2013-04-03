@@ -389,6 +389,15 @@ function hideSiteSliderButtons() {
 }
 /* INIT */
 function initSlider() {
+
+    var duration = 7500;
+    var durationThumbnails = 3000;
+
+    if (SITE.id != 69) {
+        duration = 4000;
+        durationThumbnails = 2000;
+    }
+
     var wrap = NBC('.slider-container');
     var slider = wrap.find('.slider');
     if (slider.length > 0){
@@ -421,7 +430,7 @@ function initSlider() {
         slider.iosSlider({
             snapToChildren: true,
             autoSlide: autoSlide,
-            autoSlideTimer: 7500,
+            autoSlideTimer: duration,
             autoSlideToggleSelector: slider.find('.video-item a'),
             infiniteSlider: autoSlide,
             //desktopClickDrag: true,
@@ -444,7 +453,7 @@ function initSlider() {
             buttons.hover(showSiteSliderButtons, timeSiteSliderButtons);
             NBC('header.site .slider-buttons .button').eq(0).addClass('selected');
             NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').hide(); // should do w/css
-            sliderTimeout = setTimeout(hideSiteSliderButtons, 3000);
+            sliderTimeout = setTimeout(hideSiteSliderButtons, durationThumbnails);
             slider_isShowingButtons = true;
         }
         slideNumber = 0;
@@ -466,7 +475,6 @@ function loadGlobalFooter() {
         }).done(function(data) {
             footer_global = data;
             NBC('footer.global').html(footer_global);
-            loadGlobalFooterTrending();
             loadGlobalFooterShop();
         });
     }
@@ -559,74 +567,6 @@ function returnDefaultShopItems(){
                 shopFooter.append(output);
             } else {
                 shopFooter.hide(0);
-		console.log('no items available and data.products.length is ' + data.products.length);
-            }
-        }
-    });
-}
-function loadGlobalFooterTrending() {
-    var trendingFooter = NBC('footer.global #trending-footer'),
-        isSite = false,
-        showId = SITE.id,
-        url = "/useractivity/rest/listTopVideos?timePeriod=HOURLY&fromRow=0&toRow=";
-
-	// Don't filter for global sites
-    if (showId == "69") {
-        showId = null;
-    }
-
-    if(showId) {
-        isSite = true;
-        url += '6&campaignName=site-' + showId;
-    } else {
-        url += '20';
-    }
-
-    NBC.ajax({
-        url: url,
-        contentType : "application/json",
-        dataType : "json",
-        error: function (xhr, ajaxOptions, thrownError) {
-                NBC('#trending-footer').hide();
-                NBC('#trending-footer').parent().css('padding-top', '2px');
-        },
-        success : function (data) {
-            var ids = [],
-                len = 0,
-                maxDescLength = 20;
-            if (data && data.topViewedVideo.length > 0) {
-                for (var i in data.topViewedVideo) {
-                    var node = data.topViewedVideo[i],
-                        copy = node.videoDescription,
-                        output = '';
-		    var videoId = node.contentSourceSystemUniqueKey.replace("VIDEO-","");
-                    if (typeof(copy) != "undefined" && copy.length>maxDescLength) {
-                        copy = unescape(copy.slice(0,maxDescLength) + "&#8230;");
-                    }
-                    if (isSite) {
-                        output += '<li>';
-                        output += '<a href="http://www.nbc.com/vid/' + videoId + '" class="trending-footer-link">' + node.videoTitle + '</a>';
-                        output += '</li>';
-                        trendingFooter.append(output);
-                    } else {
-                        var id = node.campaignName.split('-')[1];
-                        if(NBC.inArray(id, ids) == -1 && node.campaignTitle !== undefined) {
-                            output += '<li>';
-                            output += '<a href="http://www.nbc.com/vid/' + videoId + '" class="trending-footer-link">' + node.campaignTitle + ': ' + node.videoTitle + '</a>';
-                            output += '</li>';
-                            trendingFooter.append(output);
-
-                            ids.push(id);
-                            len++;
-                        }
-                        if(len >= 6) {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                NBC('#trending-footer').hide();
-                NBC('#trending-footer').parent().css('padding-top', '2px');
             }
         }
     });
@@ -919,9 +859,6 @@ function initVideosSlider () {
                     normalized.link = node.link;
                     normalized.src = resizeURL(node.group.editorialthumbnail[0].url, imgWidth, imgHeight);
                 } catch (e) {
-                    if (console && console.log) {
-                        console.log('The scheme of teh Video Services Feed has changed!')
-                    }
                 }
                 return normalized;
             });

@@ -120,14 +120,24 @@ if (!window.bam) {
 	}
 
 	var versionRegex = /\d\.\d/;
+	var versionWithSlashRegex = /\/\d\.\d\//;
 	var justASlash = /\//g;
 	function getNameAndVersionFromPath( path ) {
 		var version = +path.match(versionRegex);
 		var name;
 		if (version) {
 			if (path.substr(0, moduleHome.length) === moduleHome) {
-				name = path.split(versionRegex)[0];
-				name = name.substring(moduleHome.length, name.length-1).replace(justASlash, '.');
+				// shared/scripts/bam/data/1.0/data -> data
+				// shared/scripts/bam/data/tixdata/0.1/tixdata -> data.tixdata
+				// shared/scripts/bam/data/1.0/util -> data.util
+				// shared/scripts/bam/data/tixdata/0.1/util -> data.tixdata.util
+				var pathArray = path.substr(moduleHome.length).replace(versionWithSlashRegex, '/').split('/');
+
+				if (pathArray[pathArray.length-1] === pathArray[pathArray.length-2]) {
+					pathArray.pop();
+				}
+				name = pathArray.join('.');
+				
 			} else {
 				name = path.split(versionRegex)[1].substr(1);
 			}
@@ -537,7 +547,7 @@ if (!window.bam) {
 					var moduleRequire = function moduleRequire(lib){ return ctx(lib); };
 					moduleExports = {}
 					var moduleModule = {
-						id: path + identifier,
+						id: path + '/' + identifier,
 						exports: moduleExports
 					};
 					moduleExports = constructor(moduleRequire, moduleExports, moduleModule) || moduleModule.exports;
@@ -551,6 +561,8 @@ if (!window.bam) {
 
 		});
 	}
+
+	bam.require.getNameAndVersionFromPath = getNameAndVersionFromPath;
 
 	window.define = bam.define;
 

@@ -2,8 +2,14 @@
 //  This file is included on all pages (legacy & new) and will provide a
 //  collection of functions to be used throughout as well as auto run certain 
 //  functions.
-//  $Last Updated: 01/15/2013 $
+//  $Last Updated: 3-7-2013 1:45pm $
 // Ensure the document.domain
+
+//build thd namespace
+var thd = (window.thd) ? window.thd : {};
+
+
+var ignoreStripeTablePage;
 
 var docDomainParts = document.domain.split('.'),
 	docDomainPartsLen = docDomainParts.length;
@@ -88,7 +94,6 @@ overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
 	'showCloseButton':true,
 	"onComplete": function() {
 		currentStore = readCookie('THD-LOC-STORE');
-		
 	},
 	"onClosed": function() {
 		newStore = readCookie('THD-LOC-STORE');
@@ -141,16 +146,16 @@ overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 //USED IN FIXPODHEIGHTS
 function _EqualColHeights(parentElement, childElement) {
 	$(parentElement).each(function(index) {
-		thisParentsChild = $(this).children(childElement);
-		var numOfChildern = thisParentsChild.length;
+		$thisParentsChild = $(this).children(childElement);
+		var numOfChildern = $thisParentsChild.length;
 		if (numOfChildern > 1) {
 			childHeights = new Array();
-			thisParentsChild.each(function(i) {
+			$thisParentsChild.each(function(i) {
 				ThisHeight = $(this).height();
 				childHeights[i] = ThisHeight;
 			});
 			tallestChild = Math.max.apply(Math, childHeights); // find tallest height out of this row's array
-			thisParentsChild.height(tallestChild); //give all this row's child pods the height of tallest pod
+			$thisParentsChild.css('min-height',tallestChild); //give all this row's child pods the height of tallest pod
 		}
 	});
 }
@@ -190,10 +195,9 @@ function attachOverlays(context) {
 		var $this = $(this),
 			useConfig = '',
 			theRel = ($this.attr('rel')) ? $this.attr('rel').toLowerCase() : '';
-
 		switch (theRel) {
 		case 'bopis':
-			bopisHrefReplace(); //defect #15052
+			bopisHrefReplace($this); //defect #15052
 			useConfig = overlayConfigs.bopis;
 			break;
 		case 'quickview':
@@ -234,9 +238,8 @@ function attachOverlays(context) {
 //an href value so that bopis modal won't degrade if clicked prior to doc ready.
 
 
-function bopisHrefReplace() {
-	var hrefValue = $("a.bopis_button").attr("data-bopis");
-	$("a.bopis_button").attr('href', hrefValue);
+function bopisHrefReplace(obj) {
+	obj.attr('href', obj.attr("data-bopis"));
 }
 
 
@@ -309,7 +312,9 @@ function expandSAD() {
 };
 
 function stripedTables() {
-	$('table.tablePod tr:even').addClass('even');
+	
+		$('table.tablePod tr:even').addClass('even');
+	
 };
 
 //dynamic product ratings display
@@ -327,11 +332,117 @@ function dynamicRatings(){
 	});
 }
 
+/*
+------------------------------------------------------------------------------
+| Modulular function to call in necessary files on demand.
+|
+|
+| THDModuleLoader.$inludeModule(ThisIsModulesName, dependency1, dependency2, dependency3,.....)
+|	$ModuleName = Boolean($(".moduleTest").length);
+|		if($ModuleName) {
+|		$includeModule("testname", "cart", "certona");
+|	}
+|
+|	$ModuleName2 = Boolean($(".moduleTest2").length);
+|		if($ModuleName2) {
+|		$includeModule("testname2", "cart", "gridx");
+|	}
+|
+|	The Above would return
+|
+|	<script type="text/javascript" src="/library/scripts/cart.js"></script>
+|	<script type="text/javascript" src="/library/scripts/certona.js"></script>
+|	<link rel="stylesheet" href="/modules/styles/testname.css">
+|	<script type="text/javascript" src="modules/scripts/testname.js"></script>
+|	<script type="text/javascript" src="/library/scripts/gridx.js"></script>
+|	<link rel="stylesheet" href="/modules/styles/testname2.css">
+|	<script type="text/javascript" src="modules/scripts/testname2.js"></script>
+|
+------------------------------------------------------------------------------
+*/
+
+var THDModuleLoader = (function() {
+
+	var THDModuleDependencies = [];
+
+	return {
+
+		$includeModule: function(moduleName) {
+			var _body = document.getElementsByTagName('body')[0];
+
+			//create new element
+			var newScript = document.createElement('script');
+			var newCSS = document.createElement('link');
+
+			// paths to correct folders
+			var jsDependencyPath = '/static/scripts/library/';
+			var cssModulePath = '/static/styles/modules/';
+			var jsModulePath = '/static/scripts/modules/';
+
+			//set the source for each variable
+			newScript.type = 'text/javascript';
+			newScript.src = jsModulePath + moduleName + '.js';
+
+			//set type for each new element
+			newCSS.rel = 'stylesheet';
+			newCSS.href = cssModulePath + moduleName + '.css';
+
+			//check for dependencies and append accordingly
+			for(var i = 1; i < arguments.length; i++) {
+				// check if dependency exist in the global array THDModuleDependencies
+				// If it doesn not exist then add it to the page and update the array
+				if(jQuery.inArray(arguments[i], THDModuleDependencies) === -1) {
+					//console.log(arguments[i] + '.js has been added to the page');
+
+					var newDependency = document.createElement('script');
+					newDependency.src = jsDependencyPath + arguments[i] + '.js';
+
+					THDModuleDependencies.push(arguments[i]);
+
+					_body.appendChild(newDependency);
+				}
+			}
+
+			//append script and css for module
+			_body.appendChild(newScript);
+			_body.appendChild(newCSS);
+		},
+
+		$includeJS: function(url) {
+			var _body = document.getElementsByTagName('body')[0];
+			var newScript = document.createElement('script');
+			newScript.type = 'text/javascript';
+			newScript.src = url;
+			_body.appendChild(newScript);
+		},
+
+		$includeCSS: function(url) {
+			var _body = document.getElementsByTagName('body')[0];
+			var newCSS = document.createElement('link');
+			newCSS.rel = 'stylesheet';
+			newCSS.href = url;
+			_body.appendChild(newCSS);
+		}
+
+	};
+})();
+
+
+/*
+----------------------------------------------------
+|
+| Window.Load Function
+|
+----------------------------------------------------
+*/
 $(window).load(function() {
-	fixPodHeights();
+	//fixPodHeights(); moved to below
 	attachOverlays();
 	attachQuickViewButtons();
-	stripedTables();
+	//If its not PCP only then apply stripedTables
+	if (ignoreStripeTablePage != "productCompare"){
+		stripedTables();
+	}
 	dynamicRatings();
 	//cartConfModal();
 	// Add the fancybox close catcher
@@ -347,10 +458,83 @@ $(window).load(function() {
     	cartModelURL.href = setCartUrl;
 	$.fancybox(cartModelURL);
 	});
+});
+// QC-26552 this js fires later than the above jQuery method, also the 
+// timeout is set after quickview overlay since this is lower on page
+window.onload=function(){
+	setTimeout(function(){
+		// moved so 3rd party items have time to load first
+		fixPodHeights();
+	}, 1600);
+};
 
+
+/*
+----------------------------------------------------
+|
+| document.ready function
+|
+----------------------------------------------------
+*/
+$(document).ready(function () {
+	// Rotating Hero
+	$hasRotatingHero = Boolean($('.hero_slide').length);
+		if ($hasRotatingHero) {
+			THDModuleLoader.$includeJS('/static/scripts/modules/heroSlideShow.js');
+		}
+
+	// thdTheme
+	var themeID = $('body').attr('thdtheme');
+	if (themeID){
+		THDModuleLoader.$includeJS('/static/scripts/modules/thdTheme.js');
+	}
+	else {
+		// thdSlider
+		$hasSlider = Boolean($('.slider').length);
+		if ($hasSlider) {
+			THDModuleLoader.$includeModule('thdSlider');
+		}
+	}
+
+	// thdSilos
+	$hasNegMargin = Boolean($('.negMargin').length);
+	if($hasNegMargin) {
+		THDModuleLoader.$includeModule('thdSilo');
+	}
+
+	//Related Resources
+	$hasRelatedResourcesWidget = Boolean($("*[data-widget=related-resource-widget]").length);
+	if($hasRelatedResourcesWidget) {
+		THDModuleLoader.$includeModule('relatedResourceWidget', 'mustache');
+	}
+
+	//Simple Accordion
+	$hasTHDSimpleAccordion = Boolean($("*[data-action=accordion-trigger]").length);
+	if($hasTHDSimpleAccordion) {
+		THDModuleLoader.$includeModule('simpleAccordion');
+	}
+
+
+	// Pull in the brightcove player, but only if it was not already called in.
+	if(window.brightcove === undefined) {
+
+		// Determine, if we need secure or not.
+		var bcAPI = (window.location.protocol == "http:") ?
+			'http://admin.brightcove.com/js/BrightcoveExperiences_all.js':
+			'https://sadmin.brightcove.com/js/BrightcoveExperiences_all.js';
+		THDModuleLoader.$includeJS(bcAPI);
+	}
+	THDModuleLoader.$includeJS('/static/scripts/videoPlayer.js');
 });
 
-/* FED Cookie Generic Cookie handling code */
+
+/*
+----------------------------------------------------
+|
+| FED Cookie Generic Cookie handling code
+|
+----------------------------------------------------
+*/
 
 function fed_CreateCookie(name, value, days) {
 	if (days) {
@@ -377,9 +561,13 @@ function fed_EraseCookie(name) {
 }
 
 
+
 /*
-	Replicate the HD_lightbox functionality
-	QC# 13990 & 11801
+----------------------------------------------------
+|
+| CReplicate the HD_lightbox functionality QC# 13990 & 11801
+|
+----------------------------------------------------
 */
 function HD_lightbox() {
 	var galleryOutput = '<div id="gallery_wrapper" class="clearfix"><a class="close_btn" href="#">CLOSE X</a><div id="galleryPlaceHolder">{{GALERY_HERE}}</div></div>',
@@ -667,7 +855,6 @@ THD.log = (function () {
 }());
 
 //---------CART CONFORMATION MODAL-------------------//
-
 CartModelConfig = {
 	//'href':setCartUrl,
 	'autoDimensions': true,
@@ -712,7 +899,7 @@ function waitForATCCertona(){
 }
 
 /* functions for form validations start */
-var thdValidate = {};
+var thdValidate = thdValidate || {};
 
 //has at least one number returns true 1, otherwise false 0
 thdValidate.hasNumber = function(a) {

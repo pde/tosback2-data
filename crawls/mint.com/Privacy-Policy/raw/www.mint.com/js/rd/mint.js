@@ -80,6 +80,43 @@ $(document).ready(function(){
 	    }
 	}) // end
 	
+
+
+    $('.login_overlay').click(function(){
+
+        if (navigator.mimeTypes ["application/x-shockwave-flash"]==undefined){
+            window.open('http://stage-www.mint.com/t/007e1/');
+            return false;
+        }
+
+        $('<div id="video_overlay"><iframe title="YouTube video player" class="youtube-player" type="text/html" width="620" height="538" src="http://localhost:8888/mint_public_3.1.3/?page_id=9697" frameborder="0" style="display:block; margin-bottom:15px;overflow:hidden;"></iframe></div>').appendTo('body').append('<div class="close"></div>').fadeIn('fast');
+
+        //Append the page transparent overlay
+        $('body').append('<div id="page_overlay"></div>');
+
+        /* Grab viewport height middle position */
+        var vph = $(window).height() / 2;
+
+        /* Grab viewport width middle position */
+        var vpw = $(window).width() / 2;
+
+        /* Grab overlay height middle position */
+		var vbh = $('#video_overlay').height() /2;
+
+        /* Grab overlay width middle position */
+		var vbw = $('#video_overlay').width() /2;
+
+        /* Find overlay height middle on screen */
+        var hoffsetval = vph - vbh - 15 + 'px';
+
+        /* Find overlay width middle on screen */
+        var woffsetval = vpw - vbw - 15 + 'px';
+
+        /* Assign top offset to overlay and make visible */
+		$('#video_overlay').css({'top' : hoffsetval, 'left' : woffsetval,  'visibility': 'visible'});
+        return false
+    });
+
 	//Launch Video
 	
 	$('.launch_video').click(function(){	
@@ -89,7 +126,7 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		$('<div id="video_overlay"><iframe title="YouTube video player" class="youtube-player" type="text/html" width="844" height="505" src="https://www.youtube.com/embed/rK6WLHNYjwM?rel=0&amp;hd=1;autoplay=1" frameborder="0" style="display:block; margin-bottom:15px"></iframe></div>').appendTo('body').append('<div class="close"></div>').append('<a class="medium orange button" href="https://wwws.mint.com/login.event?task=S"><span class="get_started">Free! Get started here</span></a>').fadeIn('fast');
+		$('<div id="video_overlay"><iframe title="YouTube video player" class="youtube-player" type="text/html" width="620" height="538" src="https://www.youtube.com/embed/rK6WLHNYjwM?rel=0&amp;hd=1;autoplay=1" frameborder="0" style="display:block; margin-bottom:15px"></iframe></div>').appendTo('body').append('<div class="close"></div>').append('<a class="medium orange button" href="https://wwws.mint.com/login.event?task=S"><span class="get_started">Free! Get started here</span></a>').fadeIn('fast');
 
 		//Append the page transparent overlay
 		$('body').append('<div id="page_overlay"></div>');

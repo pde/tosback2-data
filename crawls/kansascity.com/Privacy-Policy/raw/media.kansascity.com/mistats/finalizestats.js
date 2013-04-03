@@ -191,7 +191,7 @@ if(window.location.pathname.length > 1 && mistats.pagelevel.match(/^\*Home/i)) {
 
 // Convert MI variables to Omniture variables
 s_account  = mistats.account;
-s.pageName = mistats.pagename && !mistats.pagename.match(/^pubsys:/i) ? mistats.pagename : ('pubsys:' + location.href);
+s.pageName = mistats.pagename && !mistats.pagename.match(/^pubsys:/i) ? mistats.pagename : ('noname:' + location.href);
 s.channel  = mistats.sitename + ": " + mistats.channel;
 s.server   = mistats.server;
 
@@ -200,14 +200,15 @@ s.prop2  = mistats.version;
 s.prop3  = mistats.pagelevel;
 s.prop4  = mistats.contentsource;
 s.prop5  = mistats.insiteid;
-s.prop6  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
+s.prop6  = 'D=h1';
+//s.prop6  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
 s.prop7  = mistats.custom1;
 s.prop8  = mistats.custom2;
 s.prop9  = mistats.custom3;
 s.prop13 = mistats.segments;
 s.prop20 = mistats.cmsid;
 s.prop18 = mistats.altcategories;
-s.prop29 = mistats.keywords;
+s.prop29 = (mistats.keywords || '').replace(/,+/g, ',').replace(/^,/, '').replace(/,$/, '');
 s.prop30 = mistats.geography;
 s.prop31 = mistats.pubdate;
 s.prop32 = mistats.moddate;
@@ -258,8 +259,8 @@ s.prop2 = function ()
 }();
 
 // Pagename as a conversion variable - Added 3/31/10 - JJ - Ticket# 727-8314208
-s.events = "event7";
-s.eVar4 = s.pageName;
+s.events = 'event7';
+s.eVar4 = 'D=pageName';
 
 s.prop15 = s.c_r('mi_adlst');
 s.c_w('mi_adlst', '');
@@ -284,21 +285,6 @@ else {
 // Prepend CMSID if this is an Iframe
 if (window != top)
    s.prop20 = 'IFRM|' + s.prop20;
-
-if ((mistats.bizunit || '').match(/MAC/))
-{
-	s.channel  = 'D=c16+": "+c17';
-   s.pageURL = 'D=c1+c40+c41';
-	s.hier1  = 'D="' + mistats.bizunit + '|"+c16+"|' + mistats.taxonomy + '|"+c17';
-	s.prop6  = 'D="' + mistats.bizunit + '|"+c16+"|' + mistats.taxonomy + '|"+c17';
-	s.prop16 = mistats.sitename;
-	s.prop17 = mistats.channel;
-	s.prop20 = 'D="' + (window != top ? 'IFRM|' : '') + (mistats.cmsid || '') + '|' + (typeof pubsys !== 'undefined' && pubsys ? 'P' : 'U') + ': "+c16+": "+c17+" : "+server';
-	s.prop39 = 'D=c40+" "+c41';
-	s.prop40 = location.search;
-   s.prop41 = location.hash;
-	s.eVar4 = 'D=pageName';
-}
 
 // Capture referring domain -- 2012-02-03 JG
 s.prop49 = function ()
@@ -499,86 +485,8 @@ if (mistats.iframes.nestCount)
    s.prop48 = s.prop48.join('|');
 }
 
-mistats.botTracker = function ()
-{
-   var tagSent;
-
-   function bind(pObj, pType, pCallout)
-   {
-      if (pObj.addEventListener)
-         pObj.addEventListener(pType, pCallout, false);
-      else if (pObj.attachEvent)
-         pObj.attachEvent('on' + pType, pCallout);
-   };
-
-   function unbind(pObj, pType, pCallout)
-   {
-      if (pObj.removeEventListener)
-         pObj.removeEventListener(pType, pCallout, false);
-      else if (pObj.detachEvent)
-         pObj.detachEvent('on' + pType, pCallout);
-   };
-
-   function bindEvents(pState)
-   {
-      var toggle;
-
-      toggle = (pState) ? bind : unbind;
-
-      toggle(window, 'focus', valid);
-      toggle(document.documentElement, 'mousemove', valid);
-      toggle(window, 'beforeunload', invalid);
-   };
-
-   function valid(pEvent)
-   {
-      bindEvents(false);
-
-      if (tagSent)
-         return;
-
-      s.prop11 = 'botFilter: real: Event: ' + pEvent.type;
-      s.t();
-
-      tagSent = true;
-   };
-
-   function invalid(pEvent)
-   {
-      bindEvents(false);
-
-      if (tagSent)
-         return;
-
-      s.prop11 = 'botFilter: suspect: Event: ' + pEvent.type;
-//         s.t();
-
-      tagSent = true;
-   };
-
-   function init()
-   {
-      if (!(s.prop49.match(/no referrer|external opener/) && document.hasFocus && !document.hasFocus()))
-         return;
-
-      bindEvents(true);
-      window.mitagsent = true;
-   };
-
-   init();
-};
-
 if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things|bradenton\.com\/2011\/11\/10\/3641446\/4-burglary-suspects-arrested-in\.html/i))
-   mistats.botTracker();
-
-s.prop11 = mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '') + ': hasFocus: ';
-
-if (document.hasFocus)
-   s.prop11 += ((document.hasFocus()) ? 'yes' : 'no');
-else
-   s.prop11 += 'not supported';
-
-s.prop11 += ': hasReferrer: ' + ((s.prop49.match(/no referrer|external opener/)) ? 'no' : 'yes');
+   mitagsent = true;
 
 s.prop12 = function ()
 {
@@ -596,22 +504,11 @@ s.prop12 = function ()
    return null;
 }();
 
-/*
-if (navigator.userAgent.match(/gomez/i))
-   s.prop12 = 'GomezAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
-
-if (navigator.userAgent.match(/facebookexternal/i))
-   s.prop12 = 'FacebookAgent: ' + mistats.bizunit + ': ' + location.hostname.replace(/^www\./i, '');
-*/
-
 // Do not execute Omniture tag if this is a footer Iframe for an Aurora site
 if (location.pathname.match(/\/footer/i)
  && mistats.bizunit
  && mistats.bizunit.match(/KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL/))
    mitagsent = true;
-
-//   if (mistats.bizunit && mistats.bizunit === 'OLY' && location.pathname.match(/\/v-vendor/i))
-//      mitagsent = true;
 
 // Capture Tacoda tag
 s.prop47 = function ()
@@ -653,7 +550,7 @@ s.prop14 = function ()
       mistats.bizunit,
       location.hostname.toLowerCase(),
       'limit=' + ((mistats.mitntrules && mistats.mitntrules.limit) ? mistats.mitntrules.limit : 'unknown')
-   ].join(': ') : '';
+   ].join(':') : '';
 }();
 
 s.prop46 = function ()
@@ -723,18 +620,6 @@ if (s.c_r('mi_httest') == '1')
          location.hash = '';
    }
 
-/*
-// Temporary "survey" for No Referrer traffic
-if (location.href.match(/mcclatchydc\.com\/2011\/11\/13\/130169\/occupy-wall-street-is-many-things/i)
- && s.prop49.match(/no referrer|external opener/)
- && s.c_r('mi_rs') !== '1'
- && document.hasFocus
- && !document.hasFocus())
-{
-   (new scriptLoader()).injectStyle('http://media.mcclatchydc.com/mistats/referrer_survey.css');
-   (new scriptLoader()).injectScript('http://media.mcclatchydc.com/mistats/referrer_survey.js');
-}
-*/
 // Call quantserve .js file - Added 7/22/2008 - JJ Ticket # 727-5945439
 if (!location.hostname.match(/dealsaver/i))
 {

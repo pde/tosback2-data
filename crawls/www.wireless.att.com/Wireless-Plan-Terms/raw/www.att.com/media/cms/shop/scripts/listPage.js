@@ -285,12 +285,15 @@
 			return result;
 		}
 
-		
+		//this function will itirate thru all the checked inputs and retrieve corresponding attributes for pricing
 		function getCheckedValue (pArray) {
 			var vKeyName='', vKeyValue='', queryStr='', range='', queryHash;
 			queryHash = getQueryString();
 			if(!!queryHash["prod"]){queryStr += ((queryStr=='') ? '' : '&') + "prod" + '=' + queryHash["prod"]}
+            var keyStr = '&priceRange=', priceRange = '';
+            
 			for (var i=0; i<pArray.length; i++) {
+                var pr = ''; 
 				if (pArray[i].value.toLowerCase() != 'all') {
 					if (vKeyName != pArray[i].name) {
 						//if (vKeyName != '') {								
@@ -305,18 +308,28 @@
 							if (vKeyValue != '') {
 								queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
 								vKeyValue = '';
-							}
+							} 
 						//}
 					}
 					
 					vKeyName = pArray[i].name; 
 					vKeyValue += ((vKeyValue=='') ? '' : ',') + pArray[i].value;
+                    
+                    if (vKeyName == 'rangePricing') {
+                        //range = 'min=' + min + '&max=' + max;
+                        var min = pArray[i].getAttribute('begin');
+                        var max = pArray[i].getAttribute('end');
+                        priceRange += min + '-' + max + ',';
+                        finalPriceRange = priceRange.slice(0,-1);
+                        pr = keyStr + finalPriceRange;  
+                    }
 				}
 				if (i == (pArray.length - 1)) {
 					if ((vKeyName != '') && (vKeyValue != '')) {
 						queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
 					}
 				}
+                queryStr = pr + queryStr;
 			}
 			
 			return queryStr;

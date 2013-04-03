@@ -1,8 +1,8 @@
 // s_code_setup.js
 // Copyright 2011-2013 Adobe, Inc. All Rights Reserved
 // More info available at http://www.omniture.com
-// UPDATED: 28-Feb-2013
-var s_fileVer='130228';
+// UPDATED: 01-Apr-2013
+var s_fileVer='130327b';
 
 /************************** CONFIG SECTION **************************/
 
@@ -61,8 +61,11 @@ function setAcc(){
 
 		/* RSID selection map */
 		var
-			pathJS='//shop.lenovo.com/ISS_Static/WW/omniture/',
-			dotcHN='lenovo\\.com',
+			errRSID='lenovoglobalerrors', //Error page RSID
+			devRSID='lenovoglobaldev', //Default DEV RSID
+			ldtRSID='lenovouspubgomez', //load test RSID
+			pathJS='//shop.lenovo.com/ISS_Static/WW/omniture/', //JS directory
+			dotcHN='lenovo\\.com', //Main domain
 			outlRE='^outlet([a-zA-Z]{2})?\\.([a-zA-Z]{2}\\.)?'+dotcHN,
 			dotcRE='^([^/]*)'+dotcHN,
 			suppRE='^([^/]*)support\\.lenovo\\.com/',
@@ -72,10 +75,12 @@ function setAcc(){
 			lpneRE='^([^/]*)partnerinfo\\.lenovo\\.com/',
 			shopRE='^shop(ap)?\\.lenovo\\.com',
 			opslRE='^([^/]*)len[a-zA-Z0-9]+\\.com/[^?]*.*[?&]cid=ops_load',
+			devsRE='^([^/]*\\.leni2\\.|10\\.96\\.13|131\\.253\\.14|localhost)',
+			offsRE='^([^/]*\\.googleusercontent\\.|translate|viewster\.)',
 
 			map=[
 
-				/* start of URLs on lenovo.com subdomains */
+				/* Default entry */
 
 				{ defaults:true,
 					desc:'Defaults|',
@@ -86,10 +91,24 @@ function setAcc(){
 					aFO:true,
 					sec:'corporate'},
 
+				/* start of non-production domains */
+
 				{	desc:'OpsLoad|*len*.com*?cid=ops_load',
 					urls:opslRE+'',
 					acc:ldtRSID,
+					sec:'dev'},
+
+				{	desc:'Dev|',
+					urls:devsRE+'',
+					acc:devRSID,
 					sec:'loadtest'},
+
+				{	desc:'Offsite|',
+					urls:offsRE+'',
+					acc:devRSID,
+					sec:'loadtest'},
+
+				/* start of URLs on lenovo.com subdomains */
 
 				{	desc:'Beta-1|*beta.lenovo.com*',
 					urls:bet1RE+'',
@@ -229,12 +248,9 @@ function setAcc(){
 
 		var
 			RSIDs='lenovo2008,lenovoaepub,lenovoagle,lenovoaglpn,lenovoagmidmkt,lenovoagoutlet,lenovoagpubsec,lenovoagsalesintranet,lenovoamericas,lenovoamericasdev,lenovoamericasmi,lenovoapaffinity,lenovoapepp,lenovoapesite,lenovoaple,lenovoaplpn,lenovoapmidmkt,lenovoappubsec,lenovoaraffinity,lenovoarepp,lenovoarpub,lenovoartele,lenovoatcepp,lenovoatctobp,lenovoatepp,lenovoatlpn,lenovoatpub,lenovoauaffinity,lenovoauepp,lenovoaulpn,lenovoaupub,lenovoautele,lenovobchannels,lenovobdpub,lenovobelpn,lenovobepub,lenovobeta,lenovobgpub,lenovoblogs,lenovobopub,lenovobraffinity,lenovobrepp,lenovobrlpn,lenovobrpub,lenovobrtele,lenovocaaffinity,lenovocaepp,lenovocaffinity,lenovocalpn,lenovocapub,lenovocatele,lenovochlpn,lenovochpub,lenovocislpn,lenovoclpub,lenovocnesupport,lenovocnpub,lenovocoaffinity,lenovocoepp,lenovoconsumeresupport,lenovocopub,lenovocotele,lenovocspub,lenovoculturecompass,lenovoczlpn,lenovoczpub,lenovodeaffinity,lenovodecepp,lenovodeepp,lenovodelpn,lenovodeoutlet,lenovodepub,lenovodklpn,lenovodkpub,lenovoecpub,lenovoedm,lenovoeelpn,lenovoemea,lenovoemeaaffinity,lenovoemeaepp,lenovoemeale,lenovoemealpn,lenovoemeamidmkt,lenovoemeapubsec,lenovoemergingmicro,lenovoemployeedirectory,lenovoeprizelpn,lenovoeslpn,lenovoespub,lenovoestacoeslenovobr,lenovoesupporten,lenovoesupportjp,lenovoesupportkr,lenovofilpn,lenovofipub,lenovoforums,lenovofraffinity,lenovofrcepp,lenovofrepp,lenovofrlpn,lenovofroutlet,lenovofrpub,lenovofunfactordev,lenovogbpub,lenovogbpubdev,lenovogbtele,lenovoglobal,lenovoglobaldev,lenovoglobalerrors,lenovogrpub,lenovohitecholympics,lenovohkepp,lenovohkpub,lenovohrpub,lenovohrsite,lenovohupub,lenovoidpub,lenovoieaffinity,lenovoiecepp,lenovoieepp,lenovoielpn,lenovoieoutlet,lenovoiepub,lenovoiepubdev,lenovoillpn,lenovoilpub,lenovoinepp,lenovoinpub,lenovointernalblogs,lenovoitlpn,lenovoitpub,lenovojpclub,lenovojpepp,lenovojplpn,lenovojpoutlet,lenovojppub,lenovojptele,lenovokrepp,lenovokrpub,lenovolapub,lenovole,lenovoledev,lenovolenovoegpub,lenovolenovomxepp,lenovolenovonecpub,lenovolenovonecpubdev,lenovolenovonecpubtele,lenovolenovospider,lenovolkpub,lenovolts,lenovoltsdev,lenovomalpn,lenovomelpn,lenovometrocompaniondev,lenovometroexperiencedev,lenovometrosupportdev,lenovomppub,lenovomxaffinity,lenovomxepp,lenovomxpub,lenovomxtele,lenovomypub,lenovonextjump,lenovonity,lenovonllpn,lenovonlpub,lenovonolpn,lenovonopub,lenovonzaffinity,lenovonzepp,lenovonzlpn,lenovonzpub,lenovoolympicportal,lenovoomnitureteststore,lenovopedia,lenovopepub,lenovophpub,lenovopllpn,lenovoplpub,lenovoptlpn,lenovoptpub,lenovopypub,lenovorel,lenovoropub,lenovorspub,lenovorulpn,lenovorupub,lenovosandbox,lenovosapub,lenovosbb,lenovosbpstore,lenovosbpstoredev,lenovoselpn,lenovosepub,lenovosgepp,lenovosgpub,lenovosimpletapdev,lenovosimpletapprod,lenovosipub,lenovoskpub,lenovosocialmonitoring,lenovospider,lenovotest2010,lenovotestalp20110929,lenovothpub,lenovotrlpn,lenovotrpub,lenovotvtlenovosolutionscenterprod,lenovotvtlenovowelcomeprod,lenovotwepp,lenovotwitter,lenovotwpub,lenovoualpn,lenovouapub,lenovoukaffinity,lenovoukbp,lenovoukcepp,lenovoukepp,lenovoukepp2,lenovouklpn,lenovoukoutlet,lenovoukpub,lenovous108375433,lenovousbp,lenovousbpstore,lenovousepp,lenovouslpn,lenovousmobile,lenovousorderstatus,lenovousoutbound,lenovouspersonalpages,lenovouspub,lenovouspubdev,lenovouspubgomez,lenovoustele,lenovouypub,lenovovepub,lenovovision,lenovovnpub,lenovow3,lenovow3emea,lenovowwintranet,lenovowwlpn,lenovowwlpndev,lenovowwmidmkt,lenovowwpub,lenovowwpubsec,lenovoxcpub,lenovoxepub,lenovoxmpub,lenovozapub', //Valid report suites
-			mapFrCC='af,bh,cy,ps,ir,iq,kw,lb,ly,om,pk,qa,sy,ae,ye,jo', //Map from
+			mapFrCC='ae,af,bh,cy,iq,ir,jo,kw,lb,ly,om,pk,ps,qa,sy,ye', //Map from
 			mapToCC='mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp', //Map to
 			devRSIDsfx='dev', //dev suite suffix
-			errRSID='lenovoglobalerrors',
-			devRSID='lenovoglobaldev', //Default DEV RSID
-			ldtRSID='lenovouspubgomez', //load test RSID
 			excepFrRSID='lenovousoutlet,lenovogboutlet,lenovoegpub,lenovonecpub,lenovonecpubdev,lenovonecpubtele', //Map from
 			excepToRSID='lenovoagoutlet,lenovoukoutlet,lenovolenovoegpub,lenovolenovonecpub,lenovolenovonecpubdev,lenovolenovonecpubtele', //Map to
 			onLoadTest=function(){
@@ -282,7 +298,7 @@ function setAcc(){
 		}else if(onErrorPage()){ //on error page?
 
 			s_restoreAcc();
-			s_account+=(s_account?',':'')+errRSID;
+			s_account=errRSID;
 			sah+=' >err> '+s_account;
 
 		}else if(lmd.xDomainAcc){ //cross-domain s_account?
@@ -483,7 +499,7 @@ function scrubPath(path){
 /***************************** UTILITIES ****************************/
 
 /*
- * Utilities: preSlib v1.30
+ * Utilities: preSlib v1.31
  */
 function s_isNull(x){return x===null}
 function s_isUdef(x){return typeof x=='undefined'}
@@ -507,6 +523,7 @@ function s_toInt(t){var l=arguments.length>1&&!!arguments[1];return s_toNum(t,0,
 function s_toFloat(t){var l=arguments.length>1&&!!arguments[1];return s_toNum(t,1,l)}
 function s_round(v,p,d,b){var N='number';if(typeof d!=N)d=NaN;if(typeof v!=N)v=s_toFloat(v);if(isNaN(v))return d;if(typeof p!=N||p<0)p=0;if(!b||typeof b!=N||b<2)b=10;p=Math.pow(b,isNaN(p)?0:p);return Math.floor(v*p+0.5)/p}
 function s_getCharSet(){var v=s_getHTMLtag('meta','http-equiv','content-type','content'),i;if(!v)return'';i=v.indexOf('charset=');if(i==-1)return'';return s_UC(v.substring(i+8,99).replace(/[\'\";, ].*/,''))}
+function s_callType(){var U='undefined',O='object',s=arguments[0]||window.s||'';if(typeof s!=O)return'';var a=typeof s.linkType,b=typeof s.lnk,c=typeof s.eo;if(a!=U&&a!=O)a=s.linkType;if(b!=U&&b!=O)b=s.lnk;if(c!=U&&c!=O)c=s.eo;return(a==U||(!a&&!c))?'t':(a?a:'+')}
 function s_getQueryStr(n,u){var g,h,i,a='&',q=u||window.location.search,p=q.toLowerCase().replace(/\?/g,a)+a;n=a+n.toLowerCase();g=n+'=';h=p.indexOf(g);if(h>-1){i=h+g.length;return decodeURIComponent(q.substring(i,p.indexOf(a,i)).replace(/\+/g,' '))}g=n+a;return p.indexOf(g)>-1?' ':''}
 function s_apl(l,v,d,u){var m=0;if(!l)l='';if(u){var i,n,a=s_split(l,d);for(i=0;i<a.length;i++){n=a[i];m=m||(u==1?(n==v):(s_LC(n)==s_LC(v)))}}if(!m)l=l?l+d+v:v;return l}
 function s_getShortHn(){return s_LC(s_parseUri((arguments.length>0)?arguments[0]:window.location.href).hostname.replace(/^www-?[0-9]*\./i,''))}
@@ -520,18 +537,18 @@ function s_c_d(n){if(!n)return'';var d=new Date,t=d.getTime(),p=new Date(t-3e10)
 function s_findCode(a,c){var i=0,j;if(typeof a!='string')return'';for(a=s_LC(a);i<c.length;i+=2){j=c.substring(i,i+2);if(a==j)return j}return''}
 function s_findCC(a){var c='adaeafagaialamanaoaqarasatauawaxazbabbbdbebfbgbhbibjblbmbnbobrbsbtbvbwbybzcacccdcfcgchcickclcmcncocrcucvcxcyczdedjdkdmdodzeceeegeheresetfifjfkfmfofrgagbgdgegfggghgiglgmgngpgqgrgsgtgugwgyhkhmhnhrhthuidieiliminioiqirisitjejmjojpkekgkhkikmknkpkrkwkykzlalblclilklrlsltlulvlymamcmdmemfmgmhmkmlmmmnmompmqmrmsmtmumvmwmxmymznancnenfngninlnonpnrnunzompapepfpgphpkplpmpnprpsptpwpyqarerorsrurwsasbscsdsesgshsisjskslsmsnsosrstsvsysztctdtftgthtjtktltmtntotrtttvtwtzuaugumusuyuzvavcvevgvivnvuwfwsyeytzazmzw';if(typeof s_findCCadd=='string')c+=s_findCCadd.replace(/,/g,'');return s_findCode(a,c)}
 function s_findLC(a){var l='abaaaeafakamanarasavayazbabebgbhbibmbnbobrbscacechcocrcscucvcydadedvdzeeeleneoeseteufafffifjfofrfygagdglgngugvhahehihohrhthuhyhziaidieigiiikioisitiujajvkakgkikjkkklkmknkokrkskukvkwkylalblglilnloltlulvmgmhmimkmlmnmrmsmtmynanbndnengnlnnnonrnvnyocojomorospapiplpsptqurmrnrorurwsascsdsesgsiskslsmsnsosqsrssstsusvswtatetgthtitktltntotrtstttwtyugukuruzvevivowawoxhyiyozazhzu';return s_findCode(a,l)}
-function s_matchList(v,l,m){var S='string',i=0;if(typeof l==S)l=s_split(l);if(typeof m==S)m=s_split(m);if(typeof m!='object')m='';if(typeof v==S){v=s_LC(v);for(;i<l.length;i++)if(v==l[i])return m?(m.length>i?m[i]:(m.length>0?m[m.length-1]:v)):true}return m?v:false}
+function s_matchList(v,l,m,p){var S='string',i=0;if(typeof l==S)l=s_split(l);if(typeof m==S)m=s_split(m);if(typeof m!='object')m='';if(typeof v==S){if(!p)v=s_LC(v);for(;i<l.length;i++)if(v==l[i])return m?(m.length>i?m[i]:(m.length>0?m[m.length-1]:v)):true}return m?v:false}
 function s_mapURLs(l){var O='object',U='undefined',S='string',g=function(p,t,v){var i,e,r,x,m,j=0,a,d=typeof v!=O,m,z,q;if(d)var v={Match:0};for(i in t){q=null;r=typeof t[i]==O?t[i]:{};if(typeof r.defaults==U)r.defaults=0;x=typeof r.urls==S?r.urls:'~';m=d?r.defaults:!r.defaults&&x=='';if(!m&&!d){try{q=new RegExp(x,'');m=q.test(p)}catch(z){}}if(m){if(!d)v.Match=j;for(e in r){if(e!='urls'&&e!='defaults'){z=r[e];if(!d&&x&&typeof z==S&&z.indexOf('$')>-1&&q){m=q.exec(p);if(m.length>1)z=m[0].replace(q,z);z=z.replace(/\$[0-9]/g,'')}v[e]=z}}return v}j++}return v},v=null,u=s_parseUri(arguments.length>1?arguments[1]:window.location.href),p=u.hostname+u.pathname+u.search;try{if(typeof l==O){v=g(p,l,0);v=g(p,l,v)}}catch(e){}if(typeof v!=O)v={Match:0};if(typeof v.Match!='number')v.Match=0;return v}
 function s_intercept(f,n,c){var F='function',T='typeof ',O='object',o=c||'window',g='',r='';f=o+'.'+f;var r=f+'_orig';try{if(eval(T+o)==O&&eval(T+r)!=F&&eval(T+f)==F&&eval(T+n)==F){eval(r+'='+f+';'+f+'='+n);g=r}}catch(e){}return g}
 function s_deintercept(f,c){var F='function',T='typeof ',O='object',o=c||'window',g='',r='';f=o+'.'+f;r=f+'_orig';try{if(eval(T+o)==O&&eval(T+r)==F&&eval(T+f)==F){eval(f+'='+r+';'+r+'=null');g=f}}catch(e){}return g}
 function s_loadJS(p,a){try{if(p)if(a){var e=document.createElement('script');e.type='text/javascript';e.language='JavaScript';e.async=true;e.src=p;var j=document.getElementsByTagName('script')[0];j.parentNode.insertBefore(e,j)}else{document.write('<scr'+'ipt type="text/javascript" language="JavaScript" src="'+p+'"></sc'+'ript>')}}catch(e){}}
-function s_clt(n){try{var p=typeof window.s=='object',o={linkTrackVars:p?s.linkTrackVars:'',linkTrackEvents:p?s.linkTrackEvents:'',events:p?(s.events||''):''};s=window.s_account?s_gi(s_account):0;s.events=o.events||'';if(s.events.toLowerCase=='none')s.events='';var r=true,a=arguments,l=a.length,t='o',i=1,v;if(typeof s!='object')return r;if(l&&a[1].length==1){t=a[1];i=2}while(i<l){v=a[i++].replace(/^v([0-9])$/,'eVar$1').replace(/^c([0-9])$/,'prop$1').replace(/^e([0-9])/,'event$1');if(v.indexOf('event')==0){s.linkTrackEvents=s.apl(s.linkTrackEvents,v,',',1);s.events=s.apl(s.events,v,',',1);v='events'}else if(i<l){o[v]=s[v]||'';s[v]=a[i++]}s.linkTrackVars=s.apl(s.linkTrackVars,v,',',1)}r=s.tl(1,t,n);for(i in o)s[i]=o[i]}catch(e){}return r}
+function s_clt(n){try{var p=typeof window.s=='object',o={linkTrackVars:p?s.linkTrackVars:'',linkTrackEvents:p?s.linkTrackEvents:'',events:p?(s.events||''):''};s=window.s_account?s_gi(s_account):0;s.events=o.events||'';if(s.events.toLowerCase=='none')s.events='';var r=true,a=arguments,l=a.length,t='o',i=1,v;if(typeof s!='object')return r;if(l>1&&a[1].length==1){t=a[1];i=2}while(i<l){v=a[i++].replace(/^v([0-9])$/,'eVar$1').replace(/^c([0-9])$/,'prop$1').replace(/^e([0-9])/,'event$1');if(v.indexOf('event')==0){s.linkTrackEvents=s.apl(s.linkTrackEvents,v,',',1);s.events=s.apl(s.events,v,',',1);v='events'}else if(i<l){o[v]=s[v]||'';s[v]=a[i++]}s.linkTrackVars=s.apl(s.linkTrackVars,v,',',1)}r=s.tl(1,t,n);for(i in o)s[i]=o[i]}catch(e){}return r}
 function s_ta(){try{var i,b=('visitorID,pageURL,referrer,pageName,pageType,server,channel,hier1,hier2,hier3,hier4,hier5,list1,list2,list3,campaign,events,products,purchaseID,transactionID,zip,state').split(',');for(i=1;i<=75;i++)eval("s.prop"+i+"=s.eVar"+i+"=''");for(i in b)eval("s."+b[i]+"=''");s=s_gi(s_account);if(s&&typeof s=='object'){if(window.s_linkInternalFilters)s.linkInternalFilters=s_linkInternalFilters;if(window.s_linkTrackVars)s.linkTrackVars=s_linkTrackVars;if(window.s_linkTrackEvents)s.linkTrackEvents=s_linkTrackEvents;return s.t()}}catch(e){}return''}
 function s_saveAcc(){if(window.s_account&&!window.s_errorPage){s_c_w('s_gpv_acc',s_account);s_c_w('s_gpv_url',window.location.href)}}
 function s_restoreAcc(){if(typeof s=='undefined'){s_account='';var a=s_c_r('s_gpv_acc');if(a)s_account=a}if(!s_errorRef)s_errorRef=s_c_r('s_gpv_url')}
 function s_jsFileInfo(m){if(!m)m='';var u,f,c,v,d,l,t,i,j,e,o;try{throw new RangeError('')}catch(z){e=z}u=f=c=v=d=l='';if(!m&&e&&e.fileName)u=e.fileName;else{t=document.getElementsByTagName('script');if(t){for(i=t.length;--i>=0;){u=t[i].src;if(u&&(m&&u.indexOf(m)>-1)||u.match(/\.js$/))break}if(!m&&i<0)i=t.length-1;u=i>=0?t[i].src:''}}f=typeof window.s_fileVer=='string'?s_fileVer:'';c=typeof window.s=='object'&&s.version?s.version:'';v=f+(c&&f?' ':'')+c;l=u+(u&&v?' ':'')+v;d=l.replace(/.*\//,'').replace(/\.js/,'');o={url:u,fver:f,cver:c,ver:v,desc:d,ldesc:l};return o}
 function s_getLoadTime(){if(window.s_loadT)return s_loadT;var b=new Date().getTime(),a='';if(window.inHeadTS){a=inHeadTS;inHeadTS=0}else{var o=window.performance?performance.timing:null;if(o&&o.requestStart)a=o.requestStart}s_loadT=a?b-a:'';return s_loadT}
-function s_clog(){try{var A='array',O='object',U='undefined',F='function',a=arguments,al=a.length,i,j,v,l='',o='',e='',c='',x=0,d=0,z=0,p,q,m=1<<16,g=function(v){v=v+'';var j,b,r,w,c,f=1;for(j=0;j<v.length;j++){b=v.substr(j,1);r=b=='\n';w=b<=' ';c=b<'A';if(r||(f&&c&&l.length>140)||(f&&l.length+v.substring(j).replace(/\n.*/,'').length>140)){o+=l;z+=o.length;if(o.length>2048){wl(o.replace(/^[ \t]*\n/,'').replace(/[ \t\n]*$/,''));o=''}else o+='\n';l=r?'':'  ';x=!r;f=0}if(!r&&(!x||!w)){l+=b;x=f=0}}},h=function(v,c,d,q){var t=typeof v,n,i=0,f,k=function(){if(z>=0&&!f)g(',');f=0;if(z>=0&&t==O)g(' '+n+':');if(z<m&&z>=0)h(v[n],c,d,0);if(z>=m){z=-1;g('...')}};d++;switch(t){case F:g(c&&z>=0?v:F+'(){...}');break;case U:if(z>=0)g(t);break;case'string':if(z>=0)g("'"+v+"'");break;case A:case O:if(v!=null){if(typeof v.length!=U)t=A;if(z>=0)g(t==A?(q?'(':'['):'{');f=1;if(t==A)for(n=0;n<v.length;n++)k();else for(n in v)k();g(t==A?(q?')':']'):'}')}else g('null');break;default:if(z>=0)g(v);break}d--},fn=function(c){var n='',v,j;try{if(c){c=c+'';if(!c.indexOf('function '))c=c.substring(9);j=c.indexOf('(');if(j>-1)c=c.substring(0,j);if(!c)c='anonymous';n=c}}catch(e){}return n},wl=function(o){try{c+=o+'\n';if(typeof console.log==F)console.log(o);if(window.s_debug||s_getQueryStr('s_debug')){if(typeof s_debugW!=O)s_debugW=window.open('','_debugWin','height=600,width=900,toolbar=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');if(typeof s_debugW==O){if(typeof s_debugD!=O)s_debugD=s_debugW.document;if(typeof s_debugD==O){if(typeof s_debugD.write==F)s_debugD.write('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><title>debugWin</title><style>* {font-family:Andale Mono,OCR A Extended,Consolas,monospace, serif;font-size:9pt;word-wrap:break-word;padding:0px} p {display:block;clear:both;margin:1px;width:100%;border:none;border-bottom:1px solid #dddddd;}</style></head><body>');if(typeof s_debugD.write==F)s_debugD.write('<p>'+o.replace(/\</gi,'&lt;').replace(/\>/gi,'&gt;').replace(/\n$/,'').replace(/\n/gi,'<br/>')+'</p>');if(typeof s_debugW.scrollBy==F)s_debugW.scrollBy(0,100)}}}}catch(e){}};for(i=0;i<al;i++){v=a[i];q='';if(typeof v==O){for(p in v){if(z<m&&z>=0){if(isNaN(p))g(p+'=');h(v[p],v.code||0,0,q)}}}else if(v=='arguments'){v=arguments.callee.caller;for(j=v;j;j=j.caller)q=fn(j)+(q?' > '+q:'');g(q);h(v.arguments,0,0,q)}else if(v=='f'){g(fn(arguments.callee.caller))}else g(v);g(' ')}o+=l;o=o.replace(/^[ \t]*\n/,'').replace(/[ \t\n]*$/,'');if(o)wl(o)}catch(e){}return c}
+function s_clog(){try{var A='array',O='object',U='undefined',F='function',a=arguments,al=a.length,i,j,v,l='',o='',e='',c='',x=0,d=0,z=0,p,q,m=1<<16,g=function(v){v=v+'';var j,b,r,w,c,f=1;for(j=0;j<v.length;j++){b=v.substr(j,1);r=b=='\n';w=b<=' ';c=b<'A';if(r||(f&&c&&l.length>140)||(f&&l.length+v.substring(j).replace(/\n.*/,'').length>140)){o+=l;z+=o.length;if(o.length>2048){wl(o.replace(/^[ \t]*\n/,'').replace(/[ \t\n]*$/,''));o=''}else o+='\n';l=r?'':'  ';x=!r;f=0}if(!r&&(!x||!w)){l+=b;x=f=0}}},h=function(v,c,d,q){var t=typeof v,n,i=0,f,k=function(){if(z>=0&&!f)g(',');f=0;if(z>=0&&t==O)g(' '+n+':');if(z<m&&z>=0)h(v[n],c,d,0);if(z>=m){z=-1;g('...')}};d++;switch(t){case F:g(c&&z>=0?v:F+'(){...}');break;case U:if(z>=0)g(t);break;case'string':if(z>=0)g("'"+v+"'");break;case A:case O:if(v!=null){if(typeof v.length!=U)t=A;if(z>=0)g(t==A?(q?'(':'['):'{');f=1;if(t==A)for(n=0;n<v.length;n++)k();else for(n in v)k();g(t==A?(q?')':']'):'}')}else g('null');break;default:if(z>=0)g(v);break}d--},fn=function(c){var n='',v,j;try{if(c){c=c+'';if(!c.indexOf('function '))c=c.substring(9);j=c.indexOf('(');if(j>-1)c=c.substring(0,j);if(!c)c='anonymous';n=c}}catch(e){}return n},wl=function(o){try{c+=o+'\n';if(typeof console.log==F)console.log(o);if(window.s_debug||s_getQueryStr('s_debug')){if(typeof s_debugW!=O)s_debugW=window.open('','_debugWin','height=600,width=900,toolbar=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');if(typeof s_debugW==O){if(typeof s_debugD!=O)s_debugD=s_debugW.document;if(typeof s_debugD==O){if(typeof s_debugD.write==F)s_debugD.write('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><title>debugWin</title><style>* {font-family:Andale Mono,OCR A Extended,Consolas,monospace, serif;font-size:9pt;word-wrap:break-word;padding:0px} p {display:block;clear:both;margin:1px;width:100%;border:none;border-bottom:1px solid #dddddd;}</style></head><body>');if(typeof s_debugD.write==F)s_debugD.write('<p>'+o.replace(/\</gi,'&lt;').replace(/\>/gi,'&gt;').replace(/\n$/,'').replace(/\n/gi,'<br/>')+'</p>');if(typeof s_debugW.scrollBy==F)s_debugW.scrollBy(0,100)}}}}catch(e){}};for(i=0;i<al;i++){v=a[i];q='';if(typeof v==O){for(p in v){if(z<m&&z>=0){if(isNaN(p))g(p+'=');h(v[p],v.code||0,0,q)}}}else if(v=='arguments'){v=arguments.callee.caller;for(j=v;j;j=j.caller)q=fn(j)+(q?' > '+q:'');g(q);h(v.arguments,0,0,q)}else if(v=='function'){g(fn(arguments.callee.caller))}else if(v=='stack'){g(st())}else g(v);g(' ')}o+=l;o=o.replace(/^[ \t]*\n/,'').replace(/[ \t\n]*$/,'');if(o)wl(o)}catch(e){}return c}
 function s_getVisitStart(c){var v=1,t=new Date;t.setTime(t.getTime()+1800000);if(!c)c='s_visit';if(s_c_r(c))v=0;if(!s_c_w(c,'1',t))s_c_w(c,'1');if(!s_c_r(c))v=0;return v}
 function s_getVisitDuration(c){if(!c)c='s_dur';var M=60000,V=1800000,a=new Date(),t=a.getTime(),v=s_toInt(s_c_r(c)),d=0;if(isNaN(v)||(t-v)>V)v=t;d=t-v;a.setTime(t+1800000);s_c_w(c,v+'',a);c=s_c_r(c);return c?d/M:.77777}
 function s_getVisitNum(p,a,b){var D=new Date,P,V,T=D.getTime(),d,i,t=0,k,o,y,H=1800000;if(!p)p='m';if(p=='m'||p=='w'||p=='d'){o=s_endof(p);y=o.getTime();D.setTime(y)}else{d=p*86400000;D.setTime(T+d)}if(!a)a='s_vnum';if(!b)b='s_invisit';P=s_c_r(a);if(P){i=P.indexOf('&vn=');t=s_toInt(P.substring(i+4,P.length));if(isNaN(t)||t<0)t=0}V=s_c_r(b);if(V){if(t){D.setTime(T+H);s_c_w(b,'Y',D)}return t}else{if(t){t++;k=P.substring(0,i);D.setTime(k);s_c_w(a,k+'&vn='+t,D);D.setTime(T+H);s_c_w(b,'true',D);return t}else{s_c_w(a,D.getTime()+'&vn=1',D);D.setTime(T+H);s_c_w(b,'Y',D);return 1}}}

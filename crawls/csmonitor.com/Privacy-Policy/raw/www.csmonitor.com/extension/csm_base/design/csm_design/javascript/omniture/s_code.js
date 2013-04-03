@@ -20,11 +20,16 @@ if( queryParamValue )
 	s.prop35 = queryParamValue[1];
 }
 
+/* linkCode for omniture click tracking */
 function linkCode(obj,title) {
 	s.linkTrackVars='prop3,prop4,prop5,prop21';
 	s.linkTrackEvents='None';
 	s.tl(obj,'o',title);
 }
+
+/************* Do not track & Ad blocker ****************/
+s.prop37 = ( (typeof navigator.doNotTrack != 'undefined' || typeof navigator.msDoNotTrack != 'undefined') && (navigator.doNotTrack || navigator.msDoNotTrack)) ? '1' : '0';
+s.prop38 = typeof googletag.pubads == 'undefined' ? '1' : '0';
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -131,7 +136,7 @@ function s_doPlugins(s) {
   if(s.prop21&&!s.eVar32) s.eVar32=s.prop21;
   if(s.prop22&&!s.eVar33) s.eVar33=s.prop22;
   if(s.prop28&&!s.eVar34) s.eVar34=s.prop28;
-
+  if(s.prop40&&!s.eVar40) s.eVar40=s.prop40;
 
   s.prop19=s.eVar19 = s.getNewRepeat(45);
 

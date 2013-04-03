@@ -153,7 +153,6 @@
 					+	"<crumb type=\"R\" alias=\"THD_LIVEPERSON_ERRORCOUNT\"   name=\"C35\"  exp=\"86400\"></crumb>"
 					+   "<crumb type=\"R\" alias=\"THD_GEOLOCATION_INFO\" name=\"C36\" exp=\"-1\"></crumb>"
 					+	"<crumb type=\"R\" alias=\"THD_AUTOLOCALIZED_SESSION\" name=\"C37\" exp=\"-1\"></crumb>"
-					+	"<crumb type=\"R\" alias=\"THD_LAYOUT\" name=\"C38\" exp=\"51840000\"></crumb>"
 					+"</crumbs>"
 				   +"</cookieJar>";
 		
@@ -1962,7 +1961,9 @@
 				if ($('#searchFocus').attr('data-typeAheadMode') === 'SAYT') {
 					formActionURL += '&sayt=sayt';
 				}
-				document.location= formActionURL;
+				// QC-23900 12-3-2012 remove 'document.location= formActionURL;' replace with submit
+				$('#searchBoxForm').attr('action',formActionURL).submit();
+				return true;
 			}else{
 				searchTerm.value = searchFieldText;
 				return false;

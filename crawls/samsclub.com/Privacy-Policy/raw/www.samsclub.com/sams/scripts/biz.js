@@ -31,6 +31,48 @@ function upSlides(a){
 }
 /* End Global Slideshow */
 
+/* Marketing Tracking Pixels */
+function nthChildAdd(a,k){
+  var val=0;
+  for(var i=0;i<a.length;i++){
+    val += parseFloat(a[i].split(';')[k]);
+  }
+  return val;
+}
+
+function trackingPixels(){
+  var px = '';
+  var rand = Math.random()*10000000000000000000;
+
+  /* Datalogix Tracking Pixels */
+  var loc = (location.pathname.indexOf('.cp') > -1 && $('#breadcrumb').length)? $.trim($('#breadcrumb').text().replace(/\*[^\*]+\*/g,'').replace(/[^0-9a-zA-Z:]/g,'')).split('::')[1].toLowerCase() : location.pathname;
+  if(loc.indexOf('order_receipt.jsp') > -1) loc = 'g-660';
+  else if(loc == 'baby') loc = 'g-661';
+  else if(loc == 'electronics') loc = 'g-662';//else if(loc == 'electronicscomputers') loc = 'g-662';
+  else if(loc == 'outdoor') loc = 'g-663';//else if(loc == 'outdoorpatio') loc = 'g-663';
+  else loc = 'g-659';
+  px += "<img src='"+location.protocol+"//h.nexac.com/e/a-975/s-1743/c-183/"+loc+".xgi?pkey=eqbw69pemzv15&chpcm=&chpsg=&chpcr=&chpck=&rand="+rand+"&chpth=' width='1' height='1' />";
+
+  /* Mindshare Tracking Pixels */
+  loc = location.href;
+  if(loc.indexOf('purchaseThankYou.jsp') > -1 || loc.indexOf('order_receipt.jsp') > -1){
+    var qty = nthChildAdd(s.products.split(','),2);
+    var cost = nthChildAdd(s.products.split(','),3);
+    var ord = s.purchaseID;
+    loc = (loc.indexOf('purchaseThankYou.jsp') > -1)? 'membe351' : 'e-com303';
+    px += '<iframe src="'+location.protocol+'//4060429.fls.doubleclick.net/activityi;src=4060429;type=sales227;cat='+loc+';qty='+qty+';cost='+cost+';ord='+ord+'?" width="1" height="1" frameborder="0" style="display:none"></iframe>';
+  }else{
+    if(loc.indexOf('homepage.jsp') > -1) loc = 'samsc682';
+    else if(loc.indexOf('purchaseMembership.jsp') > -1 && loc.indexOf('?') == -1) loc = 'membe242';
+    else if(loc.indexOf('pageName=aboutSams') > -1) loc = 'about104';
+    else if(loc.indexOf('orderConfirmation.jsp') > -1) loc = 'revie017';
+    if(loc != location.href) px += '<iframe src="'+location.protocol+'//4060429.fls.doubleclick.net/activityi;src=4060429;type=samsc681;cat='+loc+';ord='+rand+'?" width="1" height="1" frameborder="0" style="display:none"></iframe>';
+  }
+
+  $('body').append(px);
+}
+/* End Marketing Tracking Pixels */
+
 (function($){
 /* Global Nav Holiday Text */
 $('#sub-nav > .holder > .nav > li').last().prev().children('a').css('color','#c9000d');
@@ -162,16 +204,6 @@ $('.estarlogo').bind('click', function() {
   window.location = 'http://www.samsclub.com/sams/pagedetails/content.jsp?pageName=energyStar';
 });
 
-/* Datalogix Tracking Pixels */
-var rand = Math.random()*10000000000000000000;
-var loc = (location.pathname.indexOf('.cp')>-1 && $('#breadcrumb').length)? $.trim($('#breadcrumb').text().replace(/\*[^\*]+\*/g,'').replace(/[^0-9a-zA-Z:]/g,'')).split('::')[1].toLowerCase() : location.pathname;
-if(loc.indexOf('order_receipt.jsp')>1) loc = 'g-660';
-else if(loc == 'baby') loc = 'g-661';
-else if(loc == 'electronics') loc = 'g-662';
-else if(loc == 'outdoor') loc = 'g-663';
-else loc = 'g-659';
-document.write("<img src='"+location.protocol+"//h.nexac.com/e/a-975/s-1743/c-183/"+loc+".xgi?pkey=eqbw69pemzv15&chpcm=&chpsg=&chpcr=&chpck=&rand="+rand+"&chpth=' width='1' height='1' />");
-
 /* Homepage Slideshow */
 if(location.pathname.indexOf('homepage.jsp')>-1){
   initSlides();
@@ -181,3 +213,7 @@ if(location.pathname.indexOf('homepage.jsp')>-1){
 }
 
 })(jQuery);
+
+$(document).ready(function() {
+  trackingPixels();
+});

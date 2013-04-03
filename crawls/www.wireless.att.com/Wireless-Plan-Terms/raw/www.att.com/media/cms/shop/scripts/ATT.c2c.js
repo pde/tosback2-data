@@ -1,4 +1,4 @@
-//$Revision: 510832 $, $Date: 2013-02-15 14:25:21 -0800 (Fri, 15 Feb 2013) $ and $Author: grunning $
+//$Revision: 513005 $, $Date: 2013-02-28 14:29:51 -0800 (Thu, 28 Feb 2013) $ and $Author: grunning $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -27,10 +27,11 @@ ATT.c2c = function () {
     		orderTotalAccessoriesValue:[],
     		orderTotalAccessoriesQuantity:[],
     		orderTotalAccessoriesType:[],
-    		orderAccessoriesSku:[]
+    		orderAccessoriesSku:[],
+    		orderAccessoryOnlySku:[]
     	}, $ =jQuery, doc = document, 
         href = doc.location.href, buyflowCode,
-        checkoutStage, category, j, k, l, m,
+        checkoutStage, category, j, k, l, m, q,
         lines,  conversionStage, configureStage, setObject, getObject,
         data = ATT.globalVars.cartContents,
         reportingData,
@@ -53,8 +54,9 @@ ATT.c2c = function () {
     	results.orderType = ATT.globalVars.cartContents.orderType ? ATT.globalVars.cartContents.orderType :'';
     	window.lpMTagConfig.vars.push(["page","orderType",results.orderType]);
     }
-
-    	
+    
+  
+	
     if(data && data.lob && data.lob.items){
         lines = data.lob.items;
         
@@ -81,9 +83,22 @@ ATT.c2c = function () {
         	
         }
         
+    	//-----------ACCESSORYONLY------------------------
+    	if(data.orderType == 'ACCESSORYONLY'){
+    		q = lines.length
+        	while(q--){
+        	results.orderAccessoryOnlySku[q] = lines[q].parts.accessoryonly[0].sku;
+        	}
+    	}
+
+        
         for(i in lines){
+        	
+  
+
 
             if(lines.hasOwnProperty(i)){
+            	
                 //-----------  Device ----------------------------
                 if (lines[i] && lines[i].parts && lines[i].parts.device) {
                     m = lines[i].parts.device.length;

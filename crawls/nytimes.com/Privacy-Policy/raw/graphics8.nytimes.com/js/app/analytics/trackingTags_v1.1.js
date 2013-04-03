@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 122499 2013-03-11 13:55:08Z richard.pinales $
+* $Id: trackingTags_v1.1.js 123459 2013-03-27 21:06:37Z surya.sanagavarapu $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -56,13 +56,47 @@ wtInc.setAttribute('src', js_host+'controller_v1.1.js');
 document.getElementsByTagName('head').item(0).appendChild(wtInc);
 // END WEBTRENDS JS TAG
 
-// START REVENUE SCIENCE PIXELLING CODE
-var customRevSci = document.createElement('script');
-customRevSci.setAttribute('language', 'javascript');
-customRevSci.setAttribute('type', 'text/javascript');
-customRevSci.setAttribute('src', js_host+'revenuescience_all.js');
-document.getElementsByTagName('head').item(0).appendChild(customRevSci);
-// END REVENUE SCIENCE PIXELLING CODE
+// AudienceScience block
+// Set data for AudienceScience
+(function () {
+    var getMetaTag = function(tagName) {
+        var metaTags = document.getElementsByTagName("meta");
+        for (var i in metaTags) { 
+            if (metaTags[i].name == tagName) {
+                return metaTags[i].content;
+            }
+        }
+      return "";
+    }
+
+    var addCategory = function(category, valueToAppend) {
+        if (valueToAppend != "") {
+            return category + " > " + valueToAppend;
+        } else {
+            return category;
+        }
+    }
+
+    window.DM_prepClient = function(csid, client) {
+        if ("H07707" == csid) {
+            var contentGroup = getMetaTag("WT.cg_n");
+            if (contentGroup != "Homepage") {
+                var catValue = "NYTimesglobal";
+                catValue = addCategory(catValue, contentGroup);
+                catValue = addCategory(catValue, getMetaTag("WT.cg_s"));
+                client.DM_cat(catValue);    
+            }
+        } // if H07707     
+    }
+
+    // AudienceScience script tag 
+    var audienceSciTag = document.createElement('script');
+    audienceSciTag.setAttribute('language', 'javascript');
+    audienceSciTag.setAttribute('type', 'text/javascript');
+    audienceSciTag.setAttribute('src', 'http://js.revsci.net/gateway/gw.js?csid=H07707&auto=t');
+    document.getElementsByTagName('head').item(0).appendChild(audienceSciTag);
+}());
+// End AudienceScience block
 
 // Duped in common.js
 (function(){

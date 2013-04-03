@@ -3,8 +3,71 @@ function toggleShowMoreSpinner() {
 	jQuery('div#deviceList-showMoreFooter div#showMoreDevicesSpinner').css('display','block');
 }
 
+function clearCompareThumbs(){
+	var checkedCompareInputs = jQuery("#deviceLayout .list-compare input:checked");
+	
+	checkedCompareInputs.each(function(index, input){
+		jQuery(input).attr("checked", false);
+		jQuery.uniform.update(input);
+		toggleCompareSelectionLabel(jQuery(input).val());
+	});
+	generateCompareThumbs();
+}
 
-function checkCompareSelectionCount(selectBoxId,selectProcess) {    
+function generateCompareThumbs(){
+	jQuery("#compareThumbs").html("");
+	var checkedCompareInputs = jQuery("#deviceLayout .list-compare input:checked");
+	
+	if(checkedCompareInputs.length){
+		jQuery("#compareBar").show();
+		
+		checkedCompareInputs.each(function(index, input){
+			var skuId = jQuery(input).val();
+			var imgSrc = jQuery("#image-" + skuId).attr("src");
+			var deviceName = jQuery.trim(jQuery("#item_" + skuId + " .list-title a").text());
+			
+			var imgCell = jQuery("<div>");
+			var img = jQuery("<img>");
+			var rmDevice = jQuery("<img>");
+			
+			imgCell.attr("title", deviceName);
+			imgCell.data("skuInput", jQuery("#" + skuId));
+			imgCell.data("skuId", skuId);
+			imgCell.click(function(){
+				var jThis = jQuery(this);
+				
+				jThis.data("skuInput").attr("checked", false);
+				jQuery.uniform.update(jThis.data("skuInput"));
+				toggleCompareSelectionLabel(jThis.data("skuId"));
+				generateCompareThumbs();
+				
+			})
+			
+			imgCell.addClass("compareThumb");
+			img.addClass("compareThumbImage");
+			rmDevice.addClass("removeCompareThumb");
+			
+			img.attr("src", imgSrc);
+			rmDevice.attr("src", "//0.ecom.attccc.com/shopcms/media/att/2012/global/ico/ico-close-blu.png");
+			
+			imgCell.append(img);
+			imgCell.append(rmDevice);
+			
+			jQuery("#compareThumbs").append(imgCell);
+		});
+		
+		for(var i = 0; i < 5 - checkedCompareInputs.length; i++){
+			jQuery("#compareThumbs").append( jQuery("<div class='compareThumb'>"));
+		}
+		
+	}else{
+		jQuery("#compareBar").hide();
+	}
+	
+	return false;
+}
+
+function checkCompareSelectionCount(selectBoxId,selectProcess) {
 	var allCheckboxes = jQuery("input[name=skuId]:checked");
 	var allCheckboxesSize = allCheckboxes.size();
 	var checkedCompareSkus = "";
@@ -17,11 +80,6 @@ function checkCompareSelectionCount(selectBoxId,selectProcess) {
 		if (allCheckboxesSize > 5) {
 			currentMessage = jQuery("div#yellowMessage").html();
 			var compareErrorMsg = "You selected " + allCheckboxesSize + " devices to compare. The maximum is 5.";
-			//jQuery('#yellowMessage').html(function() {
-				//alert('head-extra: compare sections');
-				//return currentMessage+compareErrorMsg;
-			//});
-			//jQuery('#yellowMessage').show();
 			jQuery('input#'+selectBoxId).attr('checked',false);
 			jQuery.uniform.update('input#'+selectBoxId);
 			alert(compareErrorMsg);

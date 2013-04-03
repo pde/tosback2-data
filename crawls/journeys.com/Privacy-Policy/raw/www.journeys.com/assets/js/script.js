@@ -761,23 +761,13 @@ JY = {
             });
             $('map#store-map area').click(function(e) {
                 e.preventDefault();
-                var stores = '';
-                $('div#locate-brand input[type="checkbox"]').each(function() {
-                    if ($(this).is(':checked')) {
-                        stores += $(this).val();
-                    }
-                });
-                UTILS.locator.state = $(this).data('state');
-                UTILS.locator.stores = stores;
-                if ($('input#txtZipCode').val() != 'zip code') {
-                    UTILS.locator.zip = $('input#txtZipCode').val();
-                }
-                UTILS.locator.radius = $('select#sel-radius option:selected').val();
-                //console.log(UTILS.locator.state, UTILS.locator.stores, UTILS.locator.zip, UTILS.locator.radius);
-                UTILS.locator.searchStores();
+                var state = $(this).data('state');
+                $('select#state option').prop('selected',false);
+                $('select#state').val(state);
+                $('form#formLocator').submit();
             });
             $('a#lnk-map-details,a#lnk-map-results').click(function(e) {
-                e.preventDefault();
+                /*e.preventDefault();
                 $('section#results-wrap,section#details-wrap').hide();
                 $('section#map-wrap').slideDown();
                 if (JY.screenWidth > 767) {
@@ -788,20 +778,20 @@ JY = {
                     $('html,body').animate({
                         scrollTop: ($('h3#results-crumbs').offset().top)
                     }, 500);
-                }
+                }*/
             });
             $('address.addr-store strong.store-loc a').live('click', function(e) {
-                e.preventDefault();
+                /*e.preventDefault();
                 UTILS.locator.storeID = $(this).parents('address.addr-store').data('storeid');
-                UTILS.locator.getDetails();
+                UTILS.locator.getDetails();*/
             });
             $('a#lnk-result-stores').click(function(e) {
-                e.preventDefault();
+                /*e.preventDefault();
                 $('section#map-wrap,section#details-wrap').hide();
-                $('section#results-wrap').slideDown();
+                $('section#results-wrap').slideDown();*/
             });
             $('a#btn-search').click(function(e) {
-                e.preventDefault();
+                /*e.preventDefault();
                 var stores = '';
                 if ($('input#txtZipCode').val() != 'zip code') {
                     UTILS.locator.zip = $('input#txtZipCode').val();
@@ -815,7 +805,7 @@ JY = {
                 });
                 UTILS.locator.stores = stores;
                 //console.log(UTILS.locator.state, UTILS.locator.stores, UTILS.locator.zip, UTILS.locator.radius);
-                UTILS.locator.searchStores();
+                UTILS.locator.searchStores();*/
             });
             if (JY.screenWidth < 768) {
                 $('section#map-wrap').remove();
@@ -1195,6 +1185,27 @@ JY = {
                         window.log('wishlist remove error', a, b, c);
                     }
                 });
+            });
+            $('table#table-wishlist a.addCart,table#table-closet a.addCart').click(function(e){
+                e.preventDefault();
+                var sku = $(this).data('id');
+                var name = $(this).parent('td').siblings('td.prod-name').text();
+                $.ajax({
+                    data: 'oid=' + sku,
+                    url: '/ajx/getminicart.aspx',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.message == 'added') {
+                            $('div#addCartMsg').addClass('success').removeClass('error').html('added <strong>' + name + '</strong> to your cart').show();
+                        } else {
+                            $('div#addCartMsg').addClass('error').removeClass('success').html('there was an error adding <strong>' + name + '</strong> to your cart').show();
+                        }
+                        //UTILS.drawMiniCart(data.cart, true);
+                    },
+                    error: function(a, b, c) {
+                        window.log('error adding to cart', a, b, c);
+                    }
+                })
             });
         },
         finalize: function() {

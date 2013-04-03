@@ -605,8 +605,8 @@ if(document.cookie.indexOf("LLBCPN")>-1){
 }
 
 // gan campaign 2012
-
-var llg_ab={};
+var
+ llg_ab={};
 llg_ab.pgmCk=gcookie("llbg2012"); //may return null or current val
 llg_ab.timestamp=gcookie("LLBEAN").split(/:/)[2];
 //google labels mapping
@@ -693,8 +693,6 @@ if (llJSP != "homepage" && llJSP!="orderthanks" && document.cookie.toString().to
 
 }
 
-
-s_o_sc.eVar30="D=User-Agent";
 
 function sendMetricsTagLoginLayer () {
 

@@ -419,6 +419,13 @@ function onloadBadgevilleInit() {
 	Badgeville.ready( function() {
 		
 		var badgev_isGalaxyS = false;
+		
+		if (typeof(badgev_is2013smarttv) != 'undefined' && badgev_is2013smarttv){
+			badgev_params.category = 'smarttv';
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',5000);  
+		}
+
+
 		if (typeof(badgev_isLifemovesyou) != 'undefined' && badgev_isLifemovesyou){
 			badgev_params.category = 'lifemovesyou';
 			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);  

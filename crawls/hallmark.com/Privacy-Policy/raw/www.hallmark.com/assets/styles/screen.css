@@ -912,47 +912,57 @@ Section Nav
 }
 
 .nav-section {
-    padding: 22px 0 0 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+	padding: 22px 0 0 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
 }
 
 .nav-section-ext {
-    margin: 0 auto;
-    border-bottom: 1px solid #c1c1c1;
+	margin: 0 auto;
+	border-bottom: 1px solid #c1c1c1;
 }
 
 .nav-section li {
-    margin-right: 16px;
-    letter-spacing: 0.3px;
-    font-size: 11px;
-    line-height: 1.2;
+	margin-right: 16px;
+	letter-spacing: 0.3px;
+	font-size: 11px;
+	line-height: 1.2;
 }
 
 .nav-section li:first-child {
-    margin-left: 0;
+	margin-left: 0;
 }
 
 .nav-section li.last {
-    margin-right: 0;
+	margin-right: 0;
 }
 
 .nav-section a {
-    color: #000;
-    display: block;
-    padding: 0 13px 4px;
-    border-bottom: 4px solid transparent;
-    -webkit-transition: border-bottom-color 0.3s linear;
-    -moz-transition: border-bottom-color 0.3s linear;
-    -ms-transition: border-bottom-color 0.3s linear;
-    -o-transition: border-bottom-color 0.3s linear;
-    transition: border-bottom-color 0.3s linear;
+	color: #000;
+	display: block;
+	padding: 0 13px 4px;
+	border-bottom: 4px solid transparent;
+	font-weight: bold;
+	-webkit-transition: border-bottom-color 0.3s linear;
+	-moz-transition: border-bottom-color 0.3s linear;
+	-ms-transition: border-bottom-color 0.3s linear;
+	-o-transition: border-bottom-color 0.3s linear;
+	transition: border-bottom-color 0.3s linear;
+}
+
+.nav-section a:hover {
+
+	-webkit-transition: color 0.15s linear;
+	-moz-transition: color 0.15s linear;
+	-ms-transition: color 0.15s linear;
+	-o-transition: color 0.15s linear;
+	transition: color 0.15s linear;
 }
 
 .nav-section li.active a {
-    color: #292f35;
-    border-bottom: 4px solid #037bdf;
-    font-weight: bold;
+	color: #037bdf;
+	border-bottom: 4px solid #037bdf;
+	font-weight: bold;
 }
 
 
@@ -1722,6 +1732,10 @@ Theme Rules
     padding-top: 64px;
 }
 
+.block-push-title-md {
+	padding-top: 12px;
+}
+
 /* ---------------------------------------------------------------------
 Filters/Components
 ------------------------------------------------------------------------ */
@@ -2326,8 +2340,46 @@ Links / Icon Links
     padding: 0 36px 0 0;
 }
 
-.brand-link:hover{
+.brand-link:hover {
     color: #037BDF;
+}
+
+.brand-link-offset {
+    background: url("../images/action-link-arrow-offset.png") no-repeat scroll right center transparent;
+    color: #FFFFFF;
+    opacity: 0.8;
+}
+
+.brand-link-offset:hover {
+    -moz-transition: opacity 0.15s ease 0s;
+    color: #FFFFFF;
+    opacity: 1;
+}
+
+.brand-link-reverse {
+    background: url("../images/action-link-arrow-reverse.png") no-repeat scroll left center transparent;
+    color: #292F35;
+    font-family: "hmk-handstand-sans-sbw",sans-serif;
+    padding: 0 0 0 32px;
+}
+
+.brand-link-offset-reverse {
+    background: url("../images/action-link-arrow-offset-reverse.png") no-repeat scroll left center transparent;
+    color: #FFFFFF;
+    opacity: 0.8;
+    padding: 0 0 0 28px;
+}
+
+.brand-link-disabled, 
+.brand-link-disabled:hover {
+    background: url("../images/action-link-arrow-disabled.png") no-repeat scroll right center transparent;
+    color: #7F8286;
+    cursor: default;
+}
+
+.brand-link-disabled.brand-link-reverse, 
+.brand-link-disabled.brand-link-reverse:hover {
+    background: url("../images/action-link-arrow-reverse-disabled.png") no-repeat scroll left center transparent;
 }
 
 .brand-link-a {
@@ -2343,6 +2395,31 @@ Links / Icon Links
 }
 
 .brand-link-d {
+    font-size: 18px;
+}
+
+.brand-copy {
+    color: #292F35;
+    font-family: "hmk-handstand-sans-sbw",sans-serif;
+}
+
+.brand-copy-offset {
+    color: #FFFFFF;
+}
+
+.brand-copy-a {
+    font-size: 42px;
+}
+
+.brand-copy-b {
+    font-size: 30px;
+}
+
+.brand-copy-c {
+    font-size: 22px;
+}
+
+.brand-copy-d {
     font-size: 18px;
 }
 
@@ -2575,10 +2652,6 @@ Modules
     height: 240px;
 }
 
-.mod-offer {
-    min-height: 193px;
-}
-
 .mod-actions {
     position: absolute;
     bottom: 0;
@@ -2596,6 +2669,28 @@ Modules/Module Components
 
 .mod-wrap {
     border-top: 1px solid #dfe0e1;
+}
+
+.mod-offer {
+	min-height: 193px;
+}
+
+.mod-offer > *:first-child {
+	width: 152px;
+}
+
+.mod-offer:last-child {
+	margin-bottom: 0;
+}
+
+.mod-offer-hub {
+	min-height: 193px;
+}
+
+.mod-availability {
+	position: absolute;
+	right: 9px;
+	top: 9px;
 }
 
 .mod-body {
@@ -2669,6 +2764,14 @@ Layout Styles > Vertical Rhythm (vr) spacing between sections & components
     margin-bottom: 48px;
 }
 
+.layout-vc-row {
+	display: table-row;
+}
+	
+.layout-vc-gutter {
+	padding-right: 16px;
+}
+
 /* ---------------------------------------------------------------------
 Layout Styles > Inside padding on elements
 ------------------------------------------------------------------------ */
@@ -2689,6 +2792,11 @@ Layout Styles > Inside padding on elements
 
 .layout-inside-md {
     padding: 16px;
+}
+
+.layout-inside-md  .mod-actions-sm {
+	bottom: 9px;
+	right: 9px;
 }
 
 .layout-inside-lg {
@@ -3292,6 +3400,15 @@ Ads/Marketing
     text-align: right;
 }
 
+.offer-legal-modal { 
+    display: none;
+    margin-top:32px;
+}
+
+.modal .offer-legal-modal {
+    display:block;
+}
+
 .sidebar-ad {
     display: block;
 }
@@ -3334,6 +3451,10 @@ Hero Images
 .hero-wrap-c {
     height: 150px;
 }
+
+.hero-wrap-d {
+        height: 225px
+    }
 
 .hero {
     position: absolute;
@@ -4531,6 +4652,16 @@ Forms > Custom Search (404 & No Search Results)
 .label-store-finder {
     display: block;
     margin: 0 115px 8px 0;
+}
+
+.store-finder-inpage {
+	display: block;
+	margin: 0 auto;
+}
+
+.store-finder-inpage label[for="find-store-landing"] {
+	float: left;
+	margin-right: 27px;
 }
 
 /* ---------------------------------------------------------------------

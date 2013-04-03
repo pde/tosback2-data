@@ -471,17 +471,64 @@
 		},
 		broadspring : {
 			isBS : function(qu_id){
-				return (qu_id == "qu_story_1" && $('meta[name="prism.section"]').attr("content") == "us" ) ? true : false;
+				var section = $('meta[name="prism.section"]').attr("content"), sectionStr = "us|entertainment|opinion|tech|science|health|travel|sports|leisure";
+				return (qu_id == "qu_story_1" && sectionStr.indexOf(section) > -1) ? true : false;
 			},
 			init : function(){
-				if( $('#qu_story_1').size() > 0 && $('meta[name="prism.section"]').attr("content") == "us" ){
-					(function() {
-				        var params =
-				        {
+				var section = $('meta[name="prism.section"]').attr("content"), self = this;
+
+				if( $('#qu_story_1').size() > 0 && self.isBS("qu_story_1") ){
+
+					var sectionParams = {
+						us : {
 				        	id: "339cb4ef-4bc5-45e8-b63c-03c8339d265e",
 				        	d:  "Zm94bmV3cy5jb20=",
-				        	wid: "3446"
-				        };
+				        	wid: "3446"	
+						},
+						entertainment : {
+							id: "7363e87a-e27a-4833-aafe-7d30eb8fedc3", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5165" 
+						},
+						opinion : {
+            				id: "dedd3524-0a41-4372-bead-e08ad8ce44a2", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5166"
+						},
+						tech : {
+							id: "98a763a5-19b4-4afd-8366-8e5fc01ed4d3", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5167" 
+						},
+						science : {
+							id: "6e65c5ee-6538-4c0f-ac6c-5c63abfc3028", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5168" 
+						},
+						health : {    
+							id: "9224fadf-0e3d-4e70-951b-f2e35d6c612f", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5169" 
+            			},
+            			travel : {
+            				id: "db294096-1ee3-4803-bc2a-135d7c7c65d5", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5170" 
+            			},
+            			sports : {
+           					id: "75636aad-1736-4dcb-814b-2155706b958e", 
+            				d: "Zm94bmV3cy5jb20=", 
+            				wid: "5171"             				
+            			},
+            			leisure : {
+            				id: "a4cd0403-19ec-4f2d-b321-cd2fe2011f5a", 
+							d: "Zm94bmV3cy5jb20=", 
+            				wid: "5172"             				
+            			}
+					};
+
+					(function() {
+						var params = sectionParams[section];
 
 				        var qs="";for(var key in params){qs+=key+"="+params[key]+"&"}qs=qs.substring(0,qs.length-1);
 						var s = document.createElement("script");
@@ -490,7 +537,7 @@
 				    	s.async = true;
 						document.getElementById("qu_story_1").appendChild(s);
 				    })();
-				}	
+				}
 			}
 		},	
 		optimizely: {

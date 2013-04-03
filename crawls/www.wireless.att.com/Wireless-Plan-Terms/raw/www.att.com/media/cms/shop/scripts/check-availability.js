@@ -90,7 +90,9 @@ var formState = {
        enableForm = true;
        form.find('.required-field').each(
            function(idx, elm) {
-               if(elm.value == '' && enableForm) enableForm = false;
+                if ((elm.id == 'residentialAddressZip' || 'businessAddressZip') && elm.value.length < 5) {
+                    enableForm = false;
+                } else if(elm.value == '' && enableForm) enableForm = false;
            }
        );
        return enableForm;

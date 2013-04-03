@@ -6,6 +6,12 @@
 	<!-- Meta info -->
 	<meta charset="utf-8">
 	<title>Skype Legal</title>
+	<script type="text/javascript">
+		window.ClickTaleSettings = { XHRWrapper: { Enable: true, MaxResponseSize: 1000000} };
+		document.write(unescape("%3Cscript%20src='" +
+		(document.location.protocol == 'https:' ? 'https://clicktalecdn.sslcs.cdngc.net/www/' : 'http://s.clicktale.net/') +
+		"XHRWrapper.js'%20type='text/javascript'%3E%3C/script%3E"));
+	</script>	
 	<meta name="description" content="A list of current terms and policies relating to using Skype including privacy policy, terms of use, end user license agreement and trademarks." />
 	<meta name="keywords" content="" />
 	<meta name="viewport" content="width=device-width" />
@@ -35,6 +41,13 @@
 	
 </head>
 <body>
+
+	<!-- ClickTale Top part -->
+	<script type="text/javascript">
+		var WRInitTime=(new Date()).getTime();
+	</script>
+	<!-- ClickTale end of Top part -->
+
 	
 	
 	<nav id="scom" class="isNotAuthenticated" data-content-key="authenticationStatus">
@@ -568,7 +581,8 @@ Skype is not a replacement for your telephone and can't be used for emergency ca
         };
     }
 
-    var _t      = {};
+    var _t      = {},
+        _obj    = null;
     _t.pageName = "static/legal";
     _t.channel  = "";
     _t.prop5    = _t.eVar5 = "en";
@@ -576,7 +590,20 @@ Skype is not a replacement for your telephone and can't be used for emergency ca
     _t.eVar54   =  SKYPE.CurrentResponsiveState;
     _t.eVar71 = "";
     _t.prop36   = "";
-    s.trackPage(_t);
+    
+    if (typeof s_el.trackPageProperties != 'undefined') {
+    	_obj = $.extend(_obj, _t, s_el.trackPageProperties);
+    }
+    
+    if (_obj != null) {
+    	
+    	s.trackPage(_obj);
+    	
+    } else {
+    	
+    	s.trackPage(_t);
+    	
+    }
     
     $(function() {
         $(document).on('click.sc', 'a[data-sc]:not(select)', function(e) {
@@ -595,12 +622,22 @@ Skype is not a replacement for your telephone and can't be used for emergency ca
             } else {
                 s.trackAction(tracking_obj);
             }
-            
-        })
+        });
     });
 </script>
 
 	
-    
+	
+
+	<!-- ClickTale Bottom part -->
+	<script type='text/javascript'>
+		document.write(unescape("%3Cscript%20src='" +
+			(document.location.protocol == 'https:' ?
+			 'https://clicktalecdn.sslcs.cdngc.net/' :
+			 'http://cdn.clicktale.net/') +
+			"www11/ptc/7128d29f-cc1f-4e43-8c9b-2ece44ccb497.js'%20type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<!-- ClickTale end of Bottom part -->
+	
 </body>
 </html>

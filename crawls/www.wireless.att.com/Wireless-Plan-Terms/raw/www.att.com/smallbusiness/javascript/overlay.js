@@ -94,10 +94,8 @@
 					$(window).scroll(function(){
 						 oWin = $(window);
 						 if(obj.$lightBoxContent.css('display')=="block"){
-							 obj.$lightBoxContent.css({'position':'absolute',
-								   'top':Math.abs(((oWin.height() - obj.$lightBoxContent.outerHeight())/ 2) + oWin.scrollTop()),
-								   'left':Math.abs(((oWin.width() - obj.$lightBoxContent.outerWidth())/2) + oWin.scrollLeft())
-							 });
+							 var tc = Math.abs(((oWin.height() - obj.$lightBoxContent.outerHeight())/ 2) + oWin.scrollTop()) + "px";
+							 obj.$lightBoxContent.stop().animate({top:tc},400, function() {});
 						 }
 					});
 					for(var handler in callBacks){

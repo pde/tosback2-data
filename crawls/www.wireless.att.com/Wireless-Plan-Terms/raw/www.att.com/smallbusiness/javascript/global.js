@@ -1229,7 +1229,15 @@ $(document).ready(function() {
 		if($('#isAFLBundle')!= undefined){
 	    if($('#isAFLBundle').val() == 'true')
 	  	  {
-	    	$('#tollFreeNumber').html('1-888-533-8234');
+	    	if(AFLCampaginPage == "AFL_Campaign_1"){
+	    		$('#tollFreeNumber').html('1-888-793-5492');
+	    	}else if(AFLCampaginPage == "AFL_Campaign_2"){
+	    		$('#tollFreeNumber').html('1-888-814-6982');
+	    	}else if(AFLCampaginPage == "AFL_Campaign"){
+	    		$('#tollFreeNumber').html('1-877-511-8813');
+	    	}else{
+	    		$('#tollFreeNumber').html('1-888-533-8234');
+	    	}
 	  	  	$('#chatHours').html('M-F, 8am-6pm<br/>Sat, 9am-5pm');
 	  	  }
 	    

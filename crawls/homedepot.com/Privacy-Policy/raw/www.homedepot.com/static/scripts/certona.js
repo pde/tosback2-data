@@ -1,7 +1,7 @@
 	/** Return wc user id based on cookies WC_SESSION_ESTABLISHED, WC_USERSESSION_{userid}, and WC_PERSISTENT */
 	function getWCUserIdFromCookies() {
 		var hasSessionEstablished = hasBrowserCookie('WC_SESSION_ESTABLISHED');
-		var userIdUSC = getUserIdFromUserSessionCookie();
+		var userIdUSC = getUserIdFromUserActivityCookie();
 		var userIdPC = getUserIdFromPersistentCookie();
 		var wcUserId = '';
 		

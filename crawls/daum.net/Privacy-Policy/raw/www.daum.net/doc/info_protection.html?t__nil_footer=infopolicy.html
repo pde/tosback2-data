@@ -225,6 +225,8 @@ legend {visibility:hidden;width:0;height:0;overflow:hidden;position:absolute;top
 .inner_privacy_layer1 .list_check .opt_month {width:51px}
 .inner_privacy_layer1 .list_check .btn_confirm {width:45px;height:22px;margin:-1px 0 0 3px;border:0 none;background-position:-215px -40px;font-size:0;line-height:0;cursor:pointer}
 .inner_privacy_layer1 .layer_foot .btn_close {overflow:hidden;position:absolute;top:6px;right:7px;width:54px;height:25px;background-position:-215px -65px;text-indent:-9999px}
+.iphone .section_using .cont_privacy1 {background:none}
+.iphone .section_etc .cont_privacy2 {background:none} 
 body, ul, ol, li{padding:0;margin:0;}
 #wrapMinidaum{position:relative;width:978px;margin:0 auto 0} 
 #wrapperID #wrapMinidaum{z-index:999999;}
@@ -237,7 +239,7 @@ body, ul, ol, li{padding:0;margin:0;}
 <a href="info_protection.html%3Ft__nil_footer=infopolicy.html#daumBody">본문 바로가기</a>
 <a href="info_protection.html%3Ft__nil_footer=infopolicy.html#daumGnb">메뉴 바로가기</a>
 </div>
-<div id="daumWrap">
+<div id="daumWrap" class="">
 <div id="daumHead">
 <h1>
 <a id="daumLogo" href="http://www.daum.net" target="_top" title="Daum 메인페이지로 가기"><img src="../../i1.media.daumcdn.net/img-media/2010ci/daumlogo.gif" width="62" height="26" alt="Daum"></a>
@@ -814,15 +816,20 @@ Daum 은 이용자가 더욱 안심하고 신뢰할 수 있는 서비스를 제�
 document.domain = "daum.net";
 jQuery.noConflict();
 jQuery(document).ready(function($) {
-var toggleBlackBg = function() {
+var ua = navigator.userAgent.toLowerCase(),
+hideBg = (ua.indexOf('iphone') !== -1 || ua.indexOf('ipad') !== -1 || ua.indexOf('ipod') !== -1 || ua.indexOf('android') !== -1 || ua.indexOf('polaris') !== -1) ? true : false,
+toggleBlackBg = function() {
 $('#blackBg').height($(document).height())
 .width($(document).width())
 .toggleClass('hide');
-};
-var openPopup = function(id) {
+},
+openPopup = function(id) {
 $('#' + id.replace('btn', 'layer')).toggleClass('hide').css({'top' : 100 + $(document).scrollTop() + 'px'});
 toggleBlackBg();
 };
+if(hideBg) {
+$('#daumWrap').addClass('iphone');
+}
 $('.btn_privacy.btn_more.btn_outerpage').bind('click', function(e) {
 openPopup(e.currentTarget.id);
 });

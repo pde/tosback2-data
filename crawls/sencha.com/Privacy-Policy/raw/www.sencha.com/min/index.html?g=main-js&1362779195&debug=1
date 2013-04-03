@@ -1,0 +1,1484 @@
+
+/* lightbox.js */
+
+/* 1   */ /*!
+/* 2   *|  * Ext Core Library 3.0
+/* 3   *|  * http://www.sencha.com/
+/* 4   *|  * Copyright(c) 2006-2011, Sencha Inc.
+/* 5   *|  * 
+/* 6   *|  * MIT Licensed - http://www.sencha.com/products/extcore/
+/* 7   *|  */
+/* 8   */ Ext.ns('Ext.ux');
+/* 9   */ 
+/* 10  */ Ext.ux.Lightbox = (function(){
+/* 11  */     var els = {},
+/* 12  */         images = [],
+/* 13  */         activeImage,
+/* 14  */         initialized = false,
+/* 15  */         selectors = [];
+/* 16  */ 
+/* 17  */     return {
+/* 18  */         overlayOpacity: 0.85,
+/* 19  */         animate: false,
+/* 20  */         resizeSpeed: 0,
+/* 21  */         borderSize: 10,
+/* 22  */         labelImage: "Image",
+/* 23  */         labelOf: "of",
+/* 24  */ 
+/* 25  */         init: function() {
+/* 26  */             this.resizeDuration = this.animate ? ((11 - this.resizeSpeed) * 0.15) : 0;
+/* 27  */             this.overlayDuration = this.animate ? 0.2 : 0;
+/* 28  */ 
+/* 29  */             if(!initialized) {
+/* 30  */                 Ext.apply(this, Ext.util.Observable.prototype);
+/* 31  */                 Ext.util.Observable.constructor.call(this);
+/* 32  */                 this.addEvents('open', 'close');
+/* 33  */                 this.initMarkup();
+/* 34  */                 this.initEvents();
+/* 35  */                 initialized = true;
+/* 36  */             }
+/* 37  */         },
+/* 38  */ 
+/* 39  */         initMarkup: function() {
+/* 40  */             els.shim = Ext.DomHelper.append(document.body, {
+/* 41  */                 tag: 'iframe',
+/* 42  */                 id: 'ux-lightbox-shim'
+/* 43  */             }, true);
+/* 44  */             els.overlay = Ext.DomHelper.append(document.body, {
+/* 45  */                 id: 'ux-lightbox-overlay'
+/* 46  */             }, true);
+/* 47  */             
+/* 48  */             var lightboxTpl = new Ext.Template(this.getTemplate());
+/* 49  */             els.lightbox = lightboxTpl.append(document.body, {}, true);
+/* 50  */ 
+
+/* lightbox.js */
+
+/* 51  */             var ids =
+/* 52  */                 ['outerImageContainer', 'imageContainer', 'image', 'hoverNav', 'navPrev', 'navNext', 'loading', 'loadingLink',
+/* 53  */                 'outerDataContainer', 'dataContainer', 'data', 'details', 'caption', 'imageNumber', 'bottomNav', 'navClose'];
+/* 54  */ 
+/* 55  */             Ext.each(ids, function(id){
+/* 56  */                 els[id] = Ext.get('ux-lightbox-' + id);
+/* 57  */             });
+/* 58  */ 
+/* 59  */             Ext.each([els.overlay, els.lightbox, els.shim], function(el){
+/* 60  */                 el.setVisibilityMode(Ext.Element.DISPLAY)
+/* 61  */                 el.hide();
+/* 62  */             });
+/* 63  */ 
+/* 64  */             var size = (this.animate ? 250 : 1) + 'px';
+/* 65  */             els.outerImageContainer.setStyle({
+/* 66  */                 width: size,
+/* 67  */                 height: size
+/* 68  */             });
+/* 69  */         },
+/* 70  */ 
+/* 71  */         getTemplate : function() {
+/* 72  */             return [
+/* 73  */                 '<div id="ux-lightbox">',
+/* 74  */                     '<div id="ux-lightbox-outerImageContainer">',
+/* 75  */                         '<div id="ux-lightbox-imageContainer">',
+/* 76  */                             '<img id="ux-lightbox-image">',
+/* 77  */                             '<div id="ux-lightbox-hoverNav">',
+/* 78  */                                 '<a href="#" id="ux-lightbox-navPrev"></a>',
+/* 79  */                                 '<a href="#" id="ux-lightbox-navNext"></a>',
+/* 80  */                             '</div>',
+/* 81  */                             '<div id="ux-lightbox-loading">',
+/* 82  */                                 '<a id="ux-lightbox-loadingLink"></a>',
+/* 83  */                             '</div>',
+/* 84  */                         '</div>',
+/* 85  */                     '</div>',
+/* 86  */                     '<div id="ux-lightbox-outerDataContainer">',
+/* 87  */                         '<div id="ux-lightbox-dataContainer">',
+/* 88  */                             '<div id="ux-lightbox-data">',
+/* 89  */                                 '<div id="ux-lightbox-details">',
+/* 90  */                                     '<span id="ux-lightbox-caption"></span>',
+/* 91  */                                     '<span id="ux-lightbox-imageNumber"></span>',
+/* 92  */                                 '</div>',
+/* 93  */                                 '<div id="ux-lightbox-bottomNav">',
+/* 94  */                                     '<a href="#" id="ux-lightbox-navClose"></a>',
+/* 95  */                                 '</div>',
+/* 96  */                             '</div>',
+/* 97  */                         '</div>',
+/* 98  */                     '</div>',
+/* 99  */                 '</div>'
+/* 100 */             ];
+
+/* lightbox.js */
+
+/* 101 */         },
+/* 102 */ 
+/* 103 */         initEvents: function() {
+/* 104 */             var close = function(ev) {
+/* 105 */                 ev.preventDefault();
+/* 106 */                 this.close();
+/* 107 */             };
+/* 108 */ 
+/* 109 */             els.overlay.on('click', close, this);
+/* 110 */             els.loadingLink.on('click', close, this);
+/* 111 */             els.navClose.on('click', close, this);
+/* 112 */ 
+/* 113 */             els.lightbox.on('click', function(ev) {
+/* 114 */                 if(ev.getTarget().id == 'ux-lightbox') {
+/* 115 */                     this.close();
+/* 116 */                 }
+/* 117 */             }, this);
+/* 118 */ 
+/* 119 */             els.navPrev.on('click', function(ev) {
+/* 120 */                 ev.preventDefault();
+/* 121 */                 this.setImage(activeImage - 1);
+/* 122 */             }, this);
+/* 123 */ 
+/* 124 */             els.navNext.on('click', function(ev) {
+/* 125 */                 ev.preventDefault();
+/* 126 */                 this.setImage(activeImage + 1);
+/* 127 */             }, this);
+/* 128 */         },
+/* 129 */ 
+/* 130 */         register: function(sel, group) {
+/* 131 */             if(selectors.indexOf(sel) === -1) {
+/* 132 */                 selectors.push(sel);
+/* 133 */ 
+/* 134 */                 Ext.fly(document).on('click', function(ev){
+/* 135 */                     var target = ev.getTarget(sel);
+/* 136 */ 
+/* 137 */                     if (target) {
+/* 138 */                         ev.preventDefault();
+/* 139 */                         this.open(target, sel, group);
+/* 140 */                     }
+/* 141 */                 }, this);
+/* 142 */             }
+/* 143 */         },
+/* 144 */         
+/* 145 */         registerDiv: function(sel, itemCls) {
+/* 146 */             if(selectors.indexOf(sel) === -1) {
+/* 147 */                 selectors.push(sel);
+/* 148 */                 
+/* 149 */                 var items = Ext.getBody().select(itemCls);
+/* 150 */                 items.each(function(item) {
+
+/* lightbox.js */
+
+/* 151 */                     item.setDisplayed(false);
+/* 152 */                 });
+/* 153 */                 
+/* 154 */                 Ext.fly(document).on('click', function(ev){
+/* 155 */                     var target = ev.getTarget(sel);
+/* 156 */ 
+/* 157 */                     if (target) {
+/* 158 */                         ev.preventDefault();
+/* 159 */                         this.openDiv(target, sel);
+/* 160 */                     }
+/* 161 */                 }, this);
+/* 162 */             }
+/* 163 */         },
+/* 164 */ 
+/* 165 */         open: function(image, sel, group) {
+/* 166 */             group = group || false;
+/* 167 */             this.setViewSize();
+/* 168 */             els.overlay.fadeIn({
+/* 169 */                 duration: this.overlayDuration,
+/* 170 */                 endOpacity: this.overlayOpacity,
+/* 171 */                 callback: function() {
+/* 172 */                     images = [];
+/* 173 */ 
+/* 174 */                     var index = 0;
+/* 175 */                     if(!group) {
+/* 176 */                         images.push([image.href, image.title]);
+/* 177 */                     }
+/* 178 */                     else {
+/* 179 */                         var setItems = Ext.query(sel);
+/* 180 */                         Ext.each(setItems, function(item) {
+/* 181 */                             if(item.href) {
+/* 182 */                                 images.push([item.href, item.title]);
+/* 183 */                             }
+/* 184 */                         });
+/* 185 */ 
+/* 186 */                         while (images[index][0] != image.href) {
+/* 187 */                             index++;
+/* 188 */                         }
+/* 189 */                     }
+/* 190 */ 
+/* 191 */                     // calculate top and left offset for the lightbox
+/* 192 */                     var pageScroll = Ext.fly(document).getScroll();
+/* 193 */ 
+/* 194 */                     var lightboxTop = pageScroll.top + (Ext.lib.Dom.getViewportHeight() / 10);
+/* 195 */                     var lightboxLeft = pageScroll.left;
+/* 196 */                     els.lightbox.setStyle({
+/* 197 */                         top: lightboxTop + 'px',
+/* 198 */                         left: lightboxLeft + 'px'
+/* 199 */                     }).show();
+/* 200 */ 
+
+/* lightbox.js */
+
+/* 201 */                     this.setImage(index);
+/* 202 */                     
+/* 203 */                     this.fireEvent('open', images[index]);                                        
+/* 204 */                 },
+/* 205 */                 scope: this
+/* 206 */             });
+/* 207 */         },
+/* 208 */         
+/* 209 */         openDiv: function(div, sel) {
+/* 210 */             div = Ext.get(div);
+/* 211 */             ref = div.getAttribute('ref');
+/* 212 */             if (!ref) {
+/* 213 */                 return;
+/* 214 */             }
+/* 215 */             
+/* 216 */             target = Ext.get(ref);
+/* 217 */             
+/* 218 */             if (!target) {
+/* 219 */                 return;
+/* 220 */             }
+/* 221 */             
+/* 222 */             els.image.dom.src = "";
+/* 223 */ 
+/* 224 */             this.setViewSize();
+/* 225 */             els.overlay.fadeIn({
+/* 226 */                 duration: this.overlayDuration,
+/* 227 */                 endOpacity: this.overlayOpacity,
+/* 228 */                 callback: function() {
+/* 229 */                     // calculate top and left offset for the lightbox
+/* 230 */                     var pageScroll = Ext.fly(document).getScroll();
+/* 231 */ 
+/* 232 */                     var lightboxTop = pageScroll.top + (Ext.lib.Dom.getViewportHeight() / 10);
+/* 233 */                     var lightboxLeft = pageScroll.left;
+/* 234 */                     els.lightbox.setStyle({
+/* 235 */                         top: lightboxTop + 'px',
+/* 236 */                         left: lightboxLeft + 'px'
+/* 237 */                     }).show();
+/* 238 */                     
+/* 239 */                     this.disableKeyNav();
+/* 240 */ 
+/* 241 */                     els.image.dom.src = "";
+/* 242 */                     els.hoverNav.hide();
+/* 243 */                     els.navPrev.hide();
+/* 244 */                     els.navNext.hide();
+/* 245 */                     els.dataContainer.setOpacity(0.0001);
+/* 246 */                     els.imageNumber.hide();
+/* 247 */                     
+/* 248 */                     target.setDisplayed(true);
+/* 249 */                     
+/* 250 */                     this.resizeImage(target.getWidth(), target.getHeight(), true);
+
+/* lightbox.js */
+
+/* 251 */                     
+/* 252 */                     var ct = Ext.get('ux-lightbox-imageContainer');
+/* 253 */                     ct.appendChild(target);
+/* 254 */                     
+/* 255 */                     this.currentDiv = target;
+/* 256 */                 },
+/* 257 */                 scope: this
+/* 258 */             });
+/* 259 */         },
+/* 260 */         
+/* 261 */         showDiv: function(){
+/* 262 */             els.loading.hide();
+/* 263 */             els.image.setStyle("display", "block");
+/* 264 */             if(els.image.dom.src != document.location) {
+/* 265 */                 els.image.fadeIn({
+/* 266 */                     duration: this.resizeDuration,
+/* 267 */                     scope: this,
+/* 268 */                     callback: function() {
+/* 269 */                         var detailsWidth = els.data.getWidth(true) - els.navClose.getWidth() - 10;
+/* 270 */                         els.details.setWidth((detailsWidth > 0 ? detailsWidth : 0) + 'px');
+/* 271 */                         
+/* 272 */                         els.caption.update('');
+/* 273 */                         // els.caption.show();
+/* 274 */                         els.imageNumber.update('');
+/* 275 */ 
+/* 276 */                         els.dataContainer.fadeIn({
+/* 277 */                             duration: this.resizeDuration/2,
+/* 278 */                             scope: this,
+/* 279 */                             callback: function() {
+/* 280 */                                 var viewSize = this.getViewSize();
+/* 281 */                                 els.overlay.setHeight(viewSize[1] + 'px');
+/* 282 */                                 // this.updateNav();
+/* 283 */                             }
+/* 284 */                         });
+/* 285 */                     }
+/* 286 */                 });
+/* 287 */             } else {
+/* 288 */                 els.image.setStyle("display", "none");
+/* 289 */             }
+/* 290 */         },
+/* 291 */         
+/* 292 */         setViewSize: function(){
+/* 293 */             var viewSize = this.getViewSize();
+/* 294 */             els.overlay.setStyle({
+/* 295 */                 width: viewSize[0] + 'px',
+/* 296 */                 height: viewSize[1] + 'px'
+/* 297 */             });
+/* 298 */             els.shim.setStyle({
+/* 299 */                 width: viewSize[0] + 'px',
+/* 300 */                 height: viewSize[1] + 'px'
+
+/* lightbox.js */
+
+/* 301 */             }).show();
+/* 302 */         },
+/* 303 */ 
+/* 304 */         setImage: function(index){
+/* 305 */             activeImage = index;
+/* 306 */                       
+/* 307 */             this.disableKeyNav();            
+/* 308 */             if (this.animate) {
+/* 309 */                 els.loading.show();
+/* 310 */             }
+/* 311 */ 
+/* 312 */             els.image.hide();
+/* 313 */             els.hoverNav.hide();
+/* 314 */             els.navPrev.hide();
+/* 315 */             els.navNext.hide();
+/* 316 */             els.dataContainer.setOpacity(0.0001);
+/* 317 */             els.imageNumber.hide();
+/* 318 */ 
+/* 319 */             var preload = new Image();
+/* 320 */             preload.onload = (function(){
+/* 321 */                 els.image.dom.src = images[activeImage][0];
+/* 322 */                 this.resizeImage(preload.width, preload.height);
+/* 323 */             }).createDelegate(this);
+/* 324 */             preload.src = images[activeImage][0];
+/* 325 */         },
+/* 326 */ 
+/* 327 */         resizeImage: function(w, h, div){
+/* 328 */             var wCur = els.outerImageContainer.getWidth();
+/* 329 */             var hCur = els.outerImageContainer.getHeight();
+/* 330 */ 
+/* 331 */             var wNew = (w + this.borderSize * 2);
+/* 332 */             var hNew = (h + this.borderSize * 2);
+/* 333 */ 
+/* 334 */             var wDiff = wCur - wNew;
+/* 335 */             var hDiff = hCur - hNew;
+/* 336 */ 
+/* 337 */             var afterResize = function(){
+/* 338 */                 els.hoverNav.setWidth(els.imageContainer.getWidth() + 'px');
+/* 339 */ 
+/* 340 */                 els.navPrev.setHeight(h + 'px');
+/* 341 */                 els.navNext.setHeight(h + 'px');
+/* 342 */ 
+/* 343 */                 els.outerDataContainer.setWidth(wNew + 'px');
+/* 344 */                 
+/* 345 */                 if (div) {
+/* 346 */                     this.showDiv();
+/* 347 */                 } else{
+/* 348 */                     this.showImage();
+/* 349 */                 }
+/* 350 */             };
+
+/* lightbox.js */
+
+/* 351 */             
+/* 352 */             if (hDiff != 0 || wDiff != 0) {
+/* 353 */                 els.outerImageContainer.shift({
+/* 354 */                     height: hNew,
+/* 355 */                     width: wNew,
+/* 356 */                     duration: this.resizeDuration,
+/* 357 */                     scope: this,
+/* 358 */                     callback: afterResize,
+/* 359 */                     delay: 50
+/* 360 */                 });
+/* 361 */             }
+/* 362 */             else {
+/* 363 */                 afterResize.call(this);
+/* 364 */             }
+/* 365 */         },
+/* 366 */ 
+/* 367 */         showImage: function(){
+/* 368 */             els.loading.hide();
+/* 369 */             els.image.fadeIn({
+/* 370 */                 duration: this.resizeDuration,
+/* 371 */                 scope: this,
+/* 372 */                 callback: function(){
+/* 373 */                     this.updateDetails();
+/* 374 */                 }
+/* 375 */             });
+/* 376 */             this.preloadImages();
+/* 377 */         },
+/* 378 */ 
+/* 379 */         updateDetails: function(){
+/* 380 */             var detailsWidth = els.data.getWidth(true) - els.navClose.getWidth() - 10;
+/* 381 */             els.details.setWidth((detailsWidth > 0 ? detailsWidth : 0) + 'px');
+/* 382 */             
+/* 383 */             if (images.length > 0) {
+/* 384 */                 els.caption.update(images[activeImage][1]);
+/* 385 */             }
+/* 386 */ 
+/* 387 */             els.caption.show();
+/* 388 */             if (images.length > 1) {
+/* 389 */                 els.imageNumber.update(this.labelImage + ' ' + (activeImage + 1) + ' ' + this.labelOf + '  ' + images.length);
+/* 390 */                 els.imageNumber.show();
+/* 391 */             }
+/* 392 */ 
+/* 393 */             els.dataContainer.fadeIn({
+/* 394 */                 duration: this.resizeDuration/2,
+/* 395 */                 scope: this,
+/* 396 */                 callback: function() {
+/* 397 */                     var viewSize = this.getViewSize();
+/* 398 */                     els.overlay.setHeight(viewSize[1] + 'px');
+/* 399 */                     this.updateNav();
+/* 400 */                 }
+
+/* lightbox.js */
+
+/* 401 */             });
+/* 402 */         },
+/* 403 */ 
+/* 404 */         updateNav: function(){
+/* 405 */             this.enableKeyNav();
+/* 406 */ 
+/* 407 */             els.hoverNav.show();
+/* 408 */ 
+/* 409 */             // if not first image in set, display prev image button
+/* 410 */             if (activeImage > 0)
+/* 411 */                 els.navPrev.show();
+/* 412 */ 
+/* 413 */             // if not last image in set, display next image button
+/* 414 */             if (activeImage < (images.length - 1))
+/* 415 */                 els.navNext.show();
+/* 416 */         },
+/* 417 */ 
+/* 418 */         enableKeyNav: function() {
+/* 419 */             Ext.fly(document).on('keydown', this.keyNavAction, this);
+/* 420 */         },
+/* 421 */ 
+/* 422 */         disableKeyNav: function() {
+/* 423 */             Ext.fly(document).un('keydown', this.keyNavAction, this);
+/* 424 */         },
+/* 425 */ 
+/* 426 */         keyNavAction: function(ev) {
+/* 427 */             var keyCode = ev.getKey();
+/* 428 */ 
+/* 429 */             if (
+/* 430 */                 keyCode == 88 || // x
+/* 431 */                 keyCode == 67 || // c
+/* 432 */                 keyCode == 27
+/* 433 */             ) {
+/* 434 */                 this.close();
+/* 435 */             }
+/* 436 */             else if (keyCode == 80 || keyCode == 37){ // display previous image
+/* 437 */                 if (activeImage != 0){
+/* 438 */                     this.setImage(activeImage - 1);
+/* 439 */                 }
+/* 440 */             }
+/* 441 */             else if (keyCode == 78 || keyCode == 39){ // display next image
+/* 442 */                 if (activeImage != (images.length - 1)){
+/* 443 */                     this.setImage(activeImage + 1);
+/* 444 */                 }
+/* 445 */             }
+/* 446 */         },
+/* 447 */ 
+/* 448 */         preloadImages: function(){
+/* 449 */             var next, prev;
+/* 450 */             if (images.length > activeImage + 1) {
+
+/* lightbox.js */
+
+/* 451 */                 next = new Image();
+/* 452 */                 next.src = images[activeImage + 1][0];
+/* 453 */             }
+/* 454 */             if (activeImage > 0) {
+/* 455 */                 prev = new Image();
+/* 456 */                 prev.src = images[activeImage - 1][0];
+/* 457 */             }
+/* 458 */         },
+/* 459 */ 
+/* 460 */         close: function(){
+/* 461 */             this.disableKeyNav();
+/* 462 */             els.lightbox.hide();
+/* 463 */             els.overlay.fadeOut({
+/* 464 */                 duration: this.overlayDuration
+/* 465 */             });
+/* 466 */             els.shim.hide();
+/* 467 */             Ext.get('ux-lightbox-image').setDisplayed(true);
+/* 468 */             this.fireEvent('close', activeImage);
+/* 469 */             
+/* 470 */             if (this.currentDiv) {
+/* 471 */                 Ext.getBody().appendChild(target);
+/* 472 */                 target.setDisplayed(false);
+/* 473 */             }
+/* 474 */         },
+/* 475 */ 
+/* 476 */         getViewSize: function() {
+/* 477 */             return [Ext.lib.Dom.getViewWidth(), Ext.lib.Dom.getViewHeight()];
+/* 478 */         }
+/* 479 */     }
+/* 480 */ })();
+/* 481 */ 
+/* 482 */ Ext.onReady(Ext.ux.Lightbox.init, Ext.ux.Lightbox);
+
+;
+/* carousel.js */
+
+/* 1   */ /*!
+/* 2   *|  * Ext Core Library 3.0
+/* 3   *|  * http://www.sencha.com
+/* 4   *|  * Copyright (c) 2006-2011 Sencha Inc.
+/* 5   *|  *
+/* 6   *|  * MIT Licensed - http://www.opensource.org/licenses/mit-license.php
+/* 7   *|  */
+/* 8   */ 
+/* 9   */ Ext.ns('Ext.ux');
+/* 10  */ 
+/* 11  */ Ext.ux.Carousel = Ext.extend(Ext.util.Observable, {
+/* 12  */     interval: 3,
+/* 13  */     transitionDuration: 1,
+/* 14  */     transitionType: 'carousel',
+/* 15  */     transitionEasing: 'easeOut',
+/* 16  */     itemSelector: 'img',
+/* 17  */     activeSlide: 0,
+/* 18  */     autoPlay: false,
+/* 19  */     showPlayButton: false,
+/* 20  */     pauseOnNavigate: false,
+/* 21  */     wrap: false,
+/* 22  */     freezeOnHover: false,
+/* 23  */     navigationOnHover: false,
+/* 24  */     hideNavigation: false,
+/* 25  */     width: null,
+/* 26  */     height: null,
+/* 27  */ 
+/* 28  */     constructor: function(elId, config) {
+/* 29  */         config = config || {};
+/* 30  */         Ext.apply(this, config);
+/* 31  */ 
+/* 32  */         Ext.ux.Carousel.superclass.constructor.call(this, config);
+/* 33  */ 
+/* 34  */         this.addEvents(
+/* 35  */             'beforeprev',
+/* 36  */             'prev',
+/* 37  */             'beforenext',
+/* 38  */             'next',
+/* 39  */             'beforechange',
+/* 40  */             'change',
+/* 41  */             'play',
+/* 42  */             'pause',
+/* 43  */             'freeze',
+/* 44  */             'unfreeze'
+/* 45  */         );
+/* 46  */ 
+/* 47  */         this.el = Ext.get(elId);
+/* 48  */         this.slides = this.els = [];
+/* 49  */         
+/* 50  */         if (this.autoPlay || this.showPlayButton) {
+
+/* carousel.js */
+
+/* 51  */             this.wrap = true;
+/* 52  */         }
+/* 53  */ 
+/* 54  */         if(this.autoPlay && typeof config.showPlayButton === 'undefined') {
+/* 55  */             this.showPlayButton = true;
+/* 56  */         }
+/* 57  */ 
+/* 58  */         this.initMarkup();
+/* 59  */         this.initEvents();
+/* 60  */ 
+/* 61  */         if(this.carouselSize > 0) {
+/* 62  */             this.refresh();
+/* 63  */         }
+/* 64  */     },
+/* 65  */ 
+/* 66  */     initMarkup: function() {
+/* 67  */         var dh = Ext.DomHelper;
+/* 68  */         
+/* 69  */         this.carouselSize = 0;
+/* 70  */         var items = this.el.select(this.itemSelector);
+/* 71  */         this.els.container = dh.append(this.el, {cls: 'ux-carousel-container'}, true);
+/* 72  */         this.els.slidesWrap = dh.append(this.els.container, {cls: 'ux-carousel-slides-wrap'}, true);
+/* 73  */ 
+/* 74  */         this.els.navigation = dh.append(this.els.container, {cls: 'ux-carousel-nav'}, true).hide();
+/* 75  */         this.els.caption = dh.append(this.els.navigation, {tag: 'h2', cls: 'ux-carousel-caption'}, true);
+/* 76  */         this.els.navNext = dh.append(this.els.navigation, {tag: 'a', href: '#', cls: 'ux-carousel-nav-next'}, true);
+/* 77  */         if(this.showPlayButton) {
+/* 78  */             this.els.navPlay = dh.append(this.els.navigation, {tag: 'a', href: '#', cls: 'ux-carousel-nav-play'}, true)
+/* 79  */         }
+/* 80  */         this.els.navPrev = dh.append(this.els.navigation, {tag: 'a', href: '#', cls: 'ux-carousel-nav-prev'}, true);
+/* 81  */ 
+/* 82  */         // set the dimensions of the container
+/* 83  */         this.slideWidth = this.width || this.el.getWidth(true);
+/* 84  */         this.slideHeight = this.height || this.el.getHeight(true);
+/* 85  */         this.els.container.setStyle({
+/* 86  */             width: this.slideWidth + 'px',
+/* 87  */             height: this.slideHeight + 'px'
+/* 88  */         });
+/* 89  */ 
+/* 90  */         this.els.caption.setWidth((this.slideWidth - (this.els.navNext.getWidth()*2) - (this.showPlayButton ? this.els.navPlay.getWidth() : 0) - 20) + 'px')
+/* 91  */         
+/* 92  */         items.appendTo(this.els.slidesWrap).each(function(item) {
+/* 93  */             item = item.wrap({cls: 'ux-carousel-slide'});
+/* 94  */ 
+/* 95  */             // Chrome flicker fix
+/* 96  */             var tmp = item.dom.innerHTML
+/* 97  */             item.dom.innerHTML = tmp;
+/* 98  */ 
+/* 99  */             this.slides.push(item);
+/* 100 */             item.setWidth(this.slideWidth + 'px').setHeight(this.slideHeight + 'px');
+
+/* carousel.js */
+
+/* 101 */         }, this);
+/* 102 */         this.carouselSize = this.slides.length;
+/* 103 */         if(this.navigationOnHover) {
+/* 104 */             this.els.navigation.setStyle('top', (-1*this.els.navigation.getHeight()) + 'px');
+/* 105 */         }
+/* 106 */         this.el.clip();
+/* 107 */     },
+/* 108 */ 
+/* 109 */     initEvents: function() {
+/* 110 */         this.els.navPrev.on('click', function(ev) {
+/* 111 */             ev.preventDefault();
+/* 112 */             var target = ev.getTarget();
+/* 113 */             target.blur();            
+/* 114 */             if(Ext.fly(target).hasClass('ux-carousel-nav-disabled')) return;
+/* 115 */             this.prev();
+/* 116 */         }, this);
+/* 117 */ 
+/* 118 */         this.els.navNext.on('click', function(ev) {
+/* 119 */             ev.preventDefault();
+/* 120 */             var target = ev.getTarget();
+/* 121 */             target.blur();
+/* 122 */             if(Ext.fly(target).hasClass('ux-carousel-nav-disabled')) return;
+/* 123 */             this.next();
+/* 124 */         }, this);
+/* 125 */ 
+/* 126 */         if(this.showPlayButton) {
+/* 127 */             this.els.navPlay.on('click', function(ev){
+/* 128 */                 ev.preventDefault();
+/* 129 */                 ev.getTarget().blur();
+/* 130 */                 if(this.playing) {
+/* 131 */                     this.pause();
+/* 132 */                 }
+/* 133 */                 else {
+/* 134 */                     this.play();
+/* 135 */                 }
+/* 136 */             }, this);
+/* 137 */         };
+/* 138 */ 
+/* 139 */         if(this.freezeOnHover) {
+/* 140 */             this.els.container.on('mouseenter', function(){
+/* 141 */                 if(this.playing) {
+/* 142 */                     this.fireEvent('freeze', this.slides[this.activeSlide]);
+/* 143 */                     Ext.TaskMgr.stop(this.playTask);
+/* 144 */                 }
+/* 145 */             }, this);
+/* 146 */             this.els.container.on('mouseleave', function(){
+/* 147 */                 if(this.playing) {
+/* 148 */                     this.fireEvent('unfreeze', this.slides[this.activeSlide]);
+/* 149 */                     Ext.TaskMgr.start(this.playTask);
+/* 150 */                 }
+
+/* carousel.js */
+
+/* 151 */             }, this, {buffer: (this.interval/2)*1000});
+/* 152 */         };
+/* 153 */ 
+/* 154 */         if(this.navigationOnHover) {
+/* 155 */             this.els.container.on('mouseenter', function(){
+/* 156 */                 if(!this.navigationShown) {
+/* 157 */                     this.navigationShown = true;
+/* 158 */                     this.els.navigation.stopFx(false).shift({
+/* 159 */                         y: this.els.container.getY(),
+/* 160 */                         duration: this.transitionDuration
+/* 161 */                     })
+/* 162 */                 }
+/* 163 */             }, this);
+/* 164 */ 
+/* 165 */             this.els.container.on('mouseleave', function(){
+/* 166 */                 if(this.navigationShown) {
+/* 167 */                     this.navigationShown = false;
+/* 168 */                     this.els.navigation.stopFx(false).shift({
+/* 169 */                         y: this.els.navigation.getHeight() - this.els.container.getY(),
+/* 170 */                         duration: this.transitionDuration
+/* 171 */                     })
+/* 172 */                 }
+/* 173 */             }, this);
+/* 174 */         }
+/* 175 */ 
+/* 176 */         if(this.interval && this.autoPlay) {
+/* 177 */             this.play();
+/* 178 */         };
+/* 179 */     },
+/* 180 */ 
+/* 181 */     prev: function() {
+/* 182 */         if (this.fireEvent('beforeprev') === false) {
+/* 183 */             return;
+/* 184 */         }
+/* 185 */         if(this.pauseOnNavigate) {
+/* 186 */             this.pause();
+/* 187 */         }
+/* 188 */         this.setSlide(this.activeSlide - 1);
+/* 189 */ 
+/* 190 */         this.fireEvent('prev', this.activeSlide);        
+/* 191 */         return this; 
+/* 192 */     },
+/* 193 */     
+/* 194 */     next: function() {
+/* 195 */         if(this.fireEvent('beforenext') === false) {
+/* 196 */             return;
+/* 197 */         }
+/* 198 */         if(this.pauseOnNavigate) {
+/* 199 */             this.pause();
+/* 200 */         }
+
+/* carousel.js */
+
+/* 201 */         this.setSlide(this.activeSlide + 1);
+/* 202 */ 
+/* 203 */         this.fireEvent('next', this.activeSlide);        
+/* 204 */         return this;         
+/* 205 */     },
+/* 206 */ 
+/* 207 */     play: function() {
+/* 208 */         if(!this.playing) {
+/* 209 */             this.playTask = this.playTask || {
+/* 210 */                 run: function() {
+/* 211 */                     this.playing = true;
+/* 212 */                     this.setSlide(this.activeSlide+1);
+/* 213 */                 },
+/* 214 */                 interval: this.interval*1000,
+/* 215 */                 scope: this
+/* 216 */             };
+/* 217 */             
+/* 218 */             this.playTaskBuffer = this.playTaskBuffer || new Ext.util.DelayedTask(function() {
+/* 219 */                 Ext.TaskMgr.start(this.playTask);
+/* 220 */             }, this);
+/* 221 */ 
+/* 222 */             this.playTaskBuffer.delay(this.interval*1000);
+/* 223 */             this.playing = true;
+/* 224 */             if(this.showPlayButton) {
+/* 225 */                 this.els.navPlay.addClass('ux-carousel-playing');
+/* 226 */             }
+/* 227 */             this.fireEvent('play');
+/* 228 */         }        
+/* 229 */         return this;
+/* 230 */     },
+/* 231 */ 
+/* 232 */     pause: function() {
+/* 233 */         if(this.playing) {
+/* 234 */             Ext.TaskMgr.stop(this.playTask);
+/* 235 */             this.playTaskBuffer.cancel();
+/* 236 */             this.playing = false;
+/* 237 */             if(this.showPlayButton) {
+/* 238 */                 this.els.navPlay.removeClass('ux-carousel-playing');
+/* 239 */             }
+/* 240 */             this.fireEvent('pause');
+/* 241 */         }        
+/* 242 */         return this;
+/* 243 */     },
+/* 244 */         
+/* 245 */     clear: function() {
+/* 246 */         this.els.slidesWrap.update('');
+/* 247 */         this.slides = [];
+/* 248 */         this.carouselSize = 0;
+/* 249 */         this.pause();
+/* 250 */         return this;
+
+/* carousel.js */
+
+/* 251 */     },
+/* 252 */     
+/* 253 */     add: function(el, refresh) {
+/* 254 */         var item = Ext.fly(el).appendTo(this.els.slidesWrap).wrap({cls: 'ux-carousel-slide'});
+/* 255 */         item.setWidth(this.slideWidth + 'px').setHeight(this.slideHeight + 'px');
+/* 256 */         this.slides.push(item);                        
+/* 257 */         if(refresh) {
+/* 258 */             this.refresh();
+/* 259 */         }        
+/* 260 */         return this;
+/* 261 */     },
+/* 262 */     
+/* 263 */     refresh: function() {
+/* 264 */         this.carouselSize = this.slides.length;
+/* 265 */         this.els.slidesWrap.setWidth((this.slideWidth * this.carouselSize) + 'px');
+/* 266 */         if(this.carouselSize > 0) {
+/* 267 */             if(!this.hideNavigation) this.els.navigation.show();
+/* 268 */             this.activeSlide = 0;
+/* 269 */             this.setSlide(0, true);
+/* 270 */         }                
+/* 271 */         return this;        
+/* 272 */     },
+/* 273 */     
+/* 274 */     setSlide: function(index, initial) {
+/* 275 */         if(!this.wrap && !this.slides[index]) {
+/* 276 */             return;
+/* 277 */         }
+/* 278 */         else if(this.wrap) {
+/* 279 */             if(index < 0) {
+/* 280 */                 index = this.carouselSize-1;
+/* 281 */             }
+/* 282 */             else if(index > this.carouselSize-1) {
+/* 283 */                 index = 0;
+/* 284 */             }
+/* 285 */         }
+/* 286 */         if(!this.slides[index]) {
+/* 287 */             return;
+/* 288 */         }
+/* 289 */ 
+/* 290 */         var previous = (index == 0) ? (this.carouselSize-1) : (index-1);
+/* 291 */         this.fireEvent('beforechange',this.slides[previous], previous);
+/* 292 */ 
+/* 293 */         this.els.caption.update(this.slides[index].child(':first-child', true).title || '');
+/* 294 */         var offset = index * this.slideWidth;
+/* 295 */         if (!initial) {
+/* 296 */             switch (this.transitionType) {
+/* 297 */                 case 'fade':
+/* 298 */                     this.slides[index].setOpacity(0);
+/* 299 */                     this.slides[this.activeSlide].stopFx(false).fadeOut({
+/* 300 */                         duration: this.transitionDuration / 2,
+
+/* carousel.js */
+
+/* 301 */                         callback: function(){
+/* 302 */                             this.els.slidesWrap.setStyle('left', (-1 * offset) + 'px');
+/* 303 */                             this.slides[this.activeSlide].setOpacity(1);
+/* 304 */                             this.slides[index].fadeIn({
+/* 305 */                                 duration: this.transitionDuration / 2
+/* 306 */                             });
+/* 307 */                         },
+/* 308 */                         scope: this
+/* 309 */                     })
+/* 310 */                     break;
+/* 311 */ 
+/* 312 */                 default:
+/* 313 */                     var xNew = (-1 * offset) + this.els.container.getX();
+/* 314 */                     this.els.slidesWrap.stopFx(false);
+/* 315 */                     this.els.slidesWrap.shift({
+/* 316 */                         duration: this.transitionDuration,
+/* 317 */                         x: xNew,
+/* 318 */                         easing: this.transitionEasing
+/* 319 */                     });
+/* 320 */                     break;
+/* 321 */             }
+/* 322 */         }
+/* 323 */         else {
+/* 324 */             this.els.slidesWrap.setStyle('left', '0');
+/* 325 */         }
+/* 326 */ 
+/* 327 */         this.activeSlide = index;
+/* 328 */         this.updateNav();
+/* 329 */         this.fireEvent('change', this.slides[index], index);
+/* 330 */     },
+/* 331 */ 
+/* 332 */     updateNav: function() {
+/* 333 */         this.els.navPrev.removeClass('ux-carousel-nav-disabled');
+/* 334 */         this.els.navNext.removeClass('ux-carousel-nav-disabled');
+/* 335 */         if(!this.wrap) {
+/* 336 */             if(this.activeSlide === 0) {
+/* 337 */                 this.els.navPrev.addClass('ux-carousel-nav-disabled');
+/* 338 */             }
+/* 339 */             if(this.activeSlide === this.carouselSize-1) {
+/* 340 */                 this.els.navNext.addClass('ux-carousel-nav-disabled');
+/* 341 */             }
+/* 342 */         }
+/* 343 */     }
+/* 344 */ });
+
+;
+/* tabbed-carousel.js */
+
+/* 1  */ Ext.ns('Ext.ux');
+/* 2  */ Ext.ux.TabbedCarousel = Ext.extend(Ext.ux.Carousel, {
+/* 3  */ 	titleSelector: 'h2 a',
+/* 4  */ 	clsBase: 'ux-carousel-tab',
+/* 5  */ 	clsExtra: 'button-link grey',
+/* 6  */ 	constructor: function(elId, config) {
+/* 7  */ 		config = config || {};
+/* 8  */ 		Ext.apply(this, config);
+/* 9  */ 
+/* 10 */ 		Ext.ux.TabbedCarousel.superclass.constructor.call(this, elId, config);
+/* 11 */ 	},
+/* 12 */ 	initMarkup: function() {
+/* 13 */ 		Ext.ux.TabbedCarousel.superclass.initMarkup.apply(this, arguments);
+/* 14 */ 
+/* 15 */ 		var dh = Ext.DomHelper;
+/* 16 */ 		this.tabContainer = dh.append(this.el.parent(), {cls: this.clsBase + "s"}, true);
+/* 17 */ 		this.tabs = [];
+/* 18 */ 
+/* 19 */ 		Ext.each(this.slides, function(el, index, all) {
+/* 20 */ 			var title = el.query(this.titleSelector)[0];
+/* 21 */ 			var width = Math.floor(el.getWidth()/this.carouselSize);
+/* 22 */ 			var tab = dh.append(this.tabContainer, {tag: 'a', cls: this.clsBase + " " + this.clsExtra, html: title.innerHTML}, true);
+/* 23 */ 			tab.set({href: 'Javascript:void(0);'});
+/* 24 */ 			dh.append(tab, {tag: 'span'}); // chevron container
+/* 25 */ 
+/* 26 */ 			if (index === 0) tab.addClass(this.clsBase + '-first');
+/* 27 */ 			else if(index == (this.carouselSize-1)) { 
+/* 28 */ 				tab.addClass(this.clsBase + '-last'); 
+/* 29 */ 			}
+/* 30 */ 			this.tabs.push(tab);		
+/* 31 */ 		}, this);
+/* 32 */ 	},
+/* 33 */ 	initEvents: function() {
+/* 34 */ 		Ext.ux.TabbedCarousel.superclass.initEvents.apply(this, arguments);
+/* 35 */ 		Ext.each(this.tabs,function(el, index, all) {
+/* 36 */ 			el.on('click', function(evt) {
+/* 37 */ 				this.setSlide(index);
+/* 38 */ 			}, this);
+/* 39 */ 		}, this);
+/* 40 */ 	},
+/* 41 */ 	setSlide: function(index, initial) {
+/* 42 */ 		Ext.ux.TabbedCarousel.superclass.setSlide.apply(this, arguments);
+/* 43 */ 		this.deactivateTabs();
+/* 44 */ 		this.activateTab();	
+/* 45 */ 	},
+/* 46 */ 	deactivateTabs: function() {
+/* 47 */ 		Ext.each(this.tabs,function(el, index, all) {
+/* 48 */ 			el.removeClass(this.clsBase + '-active');
+/* 49 */ 		}, this);
+/* 50 */ 	},
+
+/* tabbed-carousel.js */
+
+/* 51 */ 	activateTab: function() {
+/* 52 */ 		this.tabs[this.activeSlide].addClass(this.clsBase + '-active');	
+/* 53 */ 	},
+/* 54 */ 	getActiveSlide: function() {
+/* 55 */ 		return this.activeSlide;
+/* 56 */ 	}
+/* 57 */ });
+
+;
+/* event-tracker.js */
+
+/* 1  */ function trackEvent(el, category, action, label, value) {
+/* 2  */     //_gaq.push(['_trackEvent', category, action, label]);
+/* 3  */     value = value || "";
+/* 4  */     _gaq.push(['_trackEvent', category, action, label]);
+/* 5  */     //_gat._getTrackerByName()._trackEvent(category, action, label, value);
+/* 6  */     if(!Ext.isEmpty(el.href)) {
+/* 7  */         setTimeout('document.location = "' + el.href + '"', 300);
+/* 8  */     }
+/* 9  */ }
+/* 10 */ function trackDownload(el, label, value) {
+/* 11 */     trackEvent(el, "Products", "Download", label, value);
+/* 12 */ }
+
+;
+/* twitter.js */
+
+/* 1   */ Ext.ns('Ext.widget');
+/* 2   */ Ext.widget.Twitter = Ext.extend(Ext.util.Observable, {
+/* 3   */     url: "/_widgets/twitter_json",
+/* 4   */     limit: 25,
+/* 5   */     initial: 6,
+/* 6   */     interval: 5000,
+/* 7   */     duration: 0.5,
+/* 8   */     easing: "easeOut",
+/* 9   */     animate: true,
+/* 10  */     /**
+/* 11  *|      * Constructor
+/* 12  *|      * @param string id
+/* 13  *|      * @param object config
+/* 14  *|      */
+/* 15  */     constructor: function(id, config) {
+/* 16  */ 
+/* 17  */         config = config || {};
+/* 18  */         Ext.apply(this, config);
+/* 19  */ 
+/* 20  */         Ext.widget.Twitter.superclass.constructor.call(this, config);
+/* 21  */ 
+/* 22  */         this.addEvents("fetch", "success", "failure", "next");
+/* 23  */ 
+/* 24  */         this.el  = Ext.get(id);
+/* 25  */         this.nextTweet = new Ext.util.DelayedTask(function() { this.nextItem(); }, this);
+/* 26  */         this.thisTweet = (this.initial-1);
+/* 27  */     },
+/* 28  */     /**
+/* 29  *|      * Fetch the data
+/* 30  *|      * @return object
+/* 31  *|      */
+/* 32  */     fetch: function() {
+/* 33  */         if(!Ext.isEmpty(this.screen_name) && Ext.get(this.template)) {
+/* 34  */             this.fireEvent('fetch', this);
+/* 35  */             Ext.Ajax.request({
+/* 36  */                 url: this.url + "/" + this.screen_name + "/" + this.limit,
+/* 37  */                 success: this.onFetchSuccess,
+/* 38  */                 failure: this.onFetchFailure,
+/* 39  */                 scope: this
+/* 40  */             });
+/* 41  */         }
+/* 42  */         return this;
+/* 43  */     },
+/* 44  */     /**
+/* 45  *|      * Create initial output for the widget
+/* 46  *|      * @return object
+/* 47  *|      */
+/* 48  */     compile: function() {
+/* 49  */         this.tpl = Ext.Template.from(this.template);
+/* 50  */         this.output = "";
+
+/* twitter.js */
+
+/* 51  */         Ext.each(this.data, function(e, i) {
+/* 52  */             e = Ext.apply(e, e.user);
+/* 53  */             e.text = this.parse(e.text);
+/* 54  */             this.data[i-1] = e;
+/* 55  */             if(i < this.initial || !this.animate) {
+/* 56  */                 this.output += this.tpl.apply(e);
+/* 57  */             }
+/* 58  */         }, this);
+/* 59  */         return this;
+/* 60  */     },
+/* 61  */     /**
+/* 62  *|      * Create links for urls, hashtags and members
+/* 63  *|      * @param string text
+/* 64  *|      * @return string
+/* 65  *|      */
+/* 66  */     parse: function(text) {
+/* 67  */         text = text.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i, "<a href=\"$1\" target=\"_blank\">$1</a>");
+/* 68  */         text = text.replace(/(^|\s)@(\w+)/g, "$1<a href=\"http://www.twitter.com/$2\">@$2</a>");
+/* 69  */         text = text.replace(/(^|\s)#(\w+)/g, "$1<a href=\"http://search.twitter.com/search?q=%23$2\">#$2</a>");
+/* 70  */         return text;
+/* 71  */     },
+/* 72  */     /**
+/* 73  *|      * Push the content into the container
+/* 74  *|      * @return object
+/* 75  *|      */
+/* 76  */     display: function() {
+/* 77  */         if(this.el) {
+/* 78  */             this.el.insertHtml("afterBegin", this.output, false);
+/* 79  */         }
+/* 80  */         if(this.animate) {
+/* 81  */             this.nextTweet.delay(this.interval); 
+/* 82  */             this.el.setStyle("overflow-y", "hidden");
+/* 83  */         } else {
+/* 84  */             this.el.setStyle("overflow-y", "auto");
+/* 85  */         }
+/* 86  */         this.el.setHeight(this.el.first().getHeight() * this.initial);
+/* 87  */         return this;
+/* 88  */     },
+/* 89  */     /**
+/* 90  *|      * The data was retrieved successfully
+/* 91  *|      * @param object t
+/* 92  *|      */
+/* 93  */     onFetchSuccess: function(t) {
+/* 94  */         this.fireEvent('success', t);
+/* 95  */         this.data = Ext.decode(t.responseText);
+/* 96  */         if(this.el && !Ext.isEmpty(this.template)) {
+/* 97  */             this.compile().display();
+/* 98  */         }
+/* 99  */     },
+/* 100 */     /**
+
+/* twitter.js */
+
+/* 101 *|      * The data was retrieved successfully
+/* 102 *|      * @param event e
+/* 103 *|      */
+/* 104 */     onFetchFailure: function(e) {
+/* 105 */         this.fireEvent('failure', e);
+/* 106 */     },
+/* 107 */     /**
+/* 108 *|      * Show the next tweet in the list
+/* 109 *|      * @return object
+/* 110 *|      */
+/* 111 */     nextItem: function() {
+/* 112 */         if(this.thisTweet < this.limit) {
+/* 113 */             this.fireEvent('nextItem', this.data[this.thisTweet]);
+/* 114 */             this.el.insertHtml("afterBegin", this.tpl.apply(this.data[this.thisTweet]), true);
+/* 115 */             this.el.first().slideIn("t", {
+/* 116 */                 easing: this.easing,
+/* 117 */                 duration: this.duration
+/* 118 */             });
+/* 119 */             this.nextTweet.delay(this.interval);
+/* 120 */             this.thisTweet++;
+/* 121 */         }
+/* 122 */         return this;
+/* 123 */     }
+/* 124 */ });
+
+;
+/* scripts.js */
+
+/* 1   */ //
+/* 2   */ // Sencha Javascript
+/* 3   */ //
+/* 4   */ // Author: nGen Works (http://ngenworks.com)
+/* 5   */ 
+/* 6   */ // Attach events to the nav to allow pop-navs
+/* 7   */ function sencha_nav() {
+/* 8   */     // select #nav
+/* 9   */     var nav_items = Ext.select('#util-nav li.with-sub, #nav li.with-sub'),
+/* 10  */         previousMenu, navTimeout;
+/* 11  */ 
+/* 12  */     // handles when the mouse enters the element
+/* 13  */     function enter(e, t) {
+/* 14  */         var obj = Ext.get(this);
+/* 15  */ 
+/* 16  */         clearTimeout(navTimeout);
+/* 17  */ 
+/* 18  */         if (previousMenu && previousMenu !== obj) {
+/* 19  */             previousMenu.removeClass('hover');
+/* 20  */             previousMenu.select(".pop-nav").hide();
+/* 21  */         }
+/* 22  */ 
+/* 23  */         obj.addClass('hover');
+/* 24  */         obj.select(".pop-nav").show();
+/* 25  */         previousMenu = obj;
+/* 26  */     }
+/* 27  */ 
+/* 28  */     // handles when the mouse leaves the element
+/* 29  */     function leave(e, t) {
+/* 30  */         var obj = Ext.get(this);
+/* 31  */ 
+/* 32  */         navTimeout = setTimeout(function(){
+/* 33  */             if (obj !== null) {
+/* 34  */                 obj.removeClass('hover');
+/* 35  */                 obj.select(".pop-nav").hide();
+/* 36  */             }
+/* 37  */         }, 300);
+/* 38  */     }
+/* 39  */ 
+/* 40  */     // subscribe to the hover
+/* 41  */     nav_items.on('mouseenter', enter);
+/* 42  */     nav_items.on('mouseleave', leave);
+/* 43  */ }
+/* 44  */ //
+/* 45  */ 
+/* 46  */ // Stripe the tables!
+/* 47  */ function sencha_table_stripe() {
+/* 48  */     Ext.select('table.striped tbody tr:odd').addClass('alt');
+/* 49  */ }
+/* 50  */ //
+
+/* scripts.js */
+
+/* 51  */ 
+/* 52  */ function sencha_disable_on_submit() {
+/* 53  */     Ext.select('.mainsite form').on('submit', function(e, t) {
+/* 54  */         var form = Ext.get(this);
+/* 55  */         Ext.select('*[type=submit]', this).each(function(){
+/* 56  */             this.addClass('disabled');
+/* 57  */             this.dom.disabled = true;
+/* 58  */             this.on('click', function(e){
+/* 59  */                 e.preventDefault();
+/* 60  */             });
+/* 61  */         });
+/* 62  */     });
+/* 63  */ }
+/* 64  */ 
+/* 65  */ // Show/hide separate pricing options
+/* 66  */ function sencha_separate_pricing() {
+/* 67  */     var checkbox = Ext.select('#view-separate');
+/* 68  */ 
+/* 69  */     if (checkbox) {
+/* 70  */         checkbox.on('click', function(e, t) {
+/* 71  */ 
+/* 72  */             obj = Ext.getDom(this);
+/* 73  */             extras = Ext.select('.separate');
+/* 74  */ 
+/* 75  */             if( obj.checked === true ) {
+/* 76  */                 extras.setStyle('display', 'block');
+/* 77  */             } else {
+/* 78  */                 extras.setStyle('display', 'none');
+/* 79  */             }
+/* 80  */         });
+/* 81  */     }
+/* 82  */ }
+/* 83  */ //
+/* 84  */ 
+/* 85  */ // Desktop Packager checkbox
+/* 86  */ function sencha_desktop_packager_checkbox() {
+/* 87  */     var checkbox = Ext.select('#export-control');
+/* 88  */     var element = document.getElementById('export-control');
+/* 89  */ 
+/* 90  */     if (!element){
+/* 91  */         set_opacity(1.0, 100);
+/* 92  */         return true;
+/* 93  */     }
+/* 94  */ 
+/* 95  */     // save the product download url before deleting it
+/* 96  */     
+/* 97  */         mac = document.getElementById("mac").getAttribute("href");
+/* 98  */         linux_32 = document.getElementById("linux_32").getAttribute("href");
+/* 99  */         linux_64 = document.getElementById("linux_64").getAttribute("href");
+/* 100 */         windows = document.getElementById("windows").getAttribute("href");
+
+/* scripts.js */
+
+/* 101 */     
+/* 102 */     function delete_urls() {
+/* 103 */         document.getElementById("mac").removeAttribute("href");
+/* 104 */         document.getElementById("linux_32").removeAttribute("href");
+/* 105 */         document.getElementById("linux_64").removeAttribute("href");
+/* 106 */         document.getElementById("windows").removeAttribute("href");
+/* 107 */     }
+/* 108 */     function add_urls() {
+/* 109 */         document.getElementById("mac").setAttribute("href", mac);
+/* 110 */         document.getElementById("linux_32").setAttribute("href", linux_32);
+/* 111 */         document.getElementById("linux_64").setAttribute("href", linux_64);
+/* 112 */         document.getElementById("windows").setAttribute("href", windows);
+/* 113 */     }
+/* 114 */     function set_opacity(value1, value2) {
+/* 115 */         Ext.select('#mac').setStyle('opacity', value1);
+/* 116 */         Ext.select('#linux_32').setStyle('opacity', value1);
+/* 117 */         Ext.select('#linux_64').setStyle('opacity', value1);
+/* 118 */         Ext.select('#windows').setStyle('opacity', value1);
+/* 119 */         Ext.select('#mac').setStyle('filter', 'alpha(opacity='+value2+')');
+/* 120 */         Ext.select('#linux_32').setStyle('filter', 'alpha(opacity='+value2+')');
+/* 121 */         Ext.select('#linux_64').setStyle('filter', 'alpha(opacity='+value2+')');
+/* 122 */         Ext.select('#windows').setStyle('filter', 'alpha(opacity='+value2+')');        
+/* 123 */     }
+/* 124 */     if(typeof(element) != 'undefined' && element != null){
+/* 125 */         delete_urls();
+/* 126 */     };
+/* 127 */ 
+/* 128 */     if (checkbox) {
+/* 129 */         checkbox.on('click', function(e, t) {
+/* 130 */ 
+/* 131 */             obj = Ext.getDom(this);
+/* 132 */             
+/* 133 */             if( obj.checked === true ) {
+/* 134 */                 add_urls();
+/* 135 */                 set_opacity(1.0, 100);                
+/* 136 */             } else {
+/* 137 */                 delete_urls();
+/* 138 */                 set_opacity(0.5, 50);
+/* 139 */             }
+/* 140 */         });
+/* 141 */     }
+/* 142 */ }
+/* 143 */ //
+/* 144 */ 
+/* 145 */ // Fix IE's broken stacking order
+/* 146 */ function sencha_ie_stack_fix(elem_list) {
+/* 147 */ 
+/* 148 */     var elements = Ext.select(elem_list);
+/* 149 */     var z_index = 100;
+/* 150 */ 
+
+/* scripts.js */
+
+/* 151 */     elements.each(function(obj) {
+/* 152 */         obj.setStyle('z-index', z_index);
+/* 153 */         z_index -= 1;
+/* 154 */ 
+/* 155 */         //alert(z_index);
+/* 156 */     });
+/* 157 */ }
+/* 158 */ //
+/* 159 */ 
+/* 160 */ // Show/hide additional info for .with-info table cells
+/* 161 */ function sencha_show_info_cell() {
+/* 162 */ 
+/* 163 */     var links = Ext.select('.with-info .view-more');
+/* 164 */ 
+/* 165 */     if (links) {
+/* 166 */         links.on('click', function(e, t) {
+/* 167 */             e.preventDefault();
+/* 168 */ 
+/* 169 */             info_elem = Ext.get(this).next('.info');
+/* 170 */ 
+/* 171 */             if( info_elem.getStyle('display') == 'none' ) {
+/* 172 */                 Ext.fly(this).dom.innerHTML = "less info";
+/* 173 */                 info_elem.setStyle('display', 'block');
+/* 174 */             } else {
+/* 175 */                 Ext.fly(this).dom.innerHTML = "more info";
+/* 176 */                 info_elem.setStyle('display', 'none');
+/* 177 */             }
+/* 178 */         });
+/* 179 */     }
+/* 180 */ }
+/* 181 */ //
+/* 182 */ 
+/* 183 */ function sencha_product_carousel(){
+/* 184 */     if (Ext.get('product-carousel')) {
+/* 185 */         var carousel = new Ext.ux.TabbedCarousel('product-carousel', {
+/* 186 */             itemSelector: 'li',
+/* 187 */             hideNavigation: true,
+/* 188 */             pauseOnNavigate: true,
+/* 189 */             autoPlay: true,
+/* 190 */             interval: 15
+/* 191 */         });
+/* 192 */ 
+/* 193 */         Ext.get('product-carousel').hover(function(){
+/* 194 */             carousel.pause();
+/* 195 */         }, function(){
+/* 196 */             carousel.play();
+/* 197 */         });
+/* 198 */ 
+/* 199 */     }
+/* 200 */ }
+
+/* scripts.js */
+
+/* 201 */ 
+/* 202 */ function sencha_apps_carousel() {
+/* 203 */     if (Ext.get('apps') && Ext.get('home-carousel')) {
+/* 204 */ 
+/* 205 */         var navlinks = Ext.select('#feature-nav li a'),
+/* 206 */             container = Ext.get('feature-nav');
+/* 207 */                 
+/* 208 */         var carousel = new Ext.ux.Carousel('home-carousel', {
+/* 209 */             itemSelector: 'li',
+/* 210 */             hideNavigation: true,
+/* 211 */             pauseOnNavigate: true,
+/* 212 */             autoPlay: true,
+/* 213 */             interval: 6
+/* 214 */         });
+/* 215 */ 
+/* 216 */         Ext.get(navlinks.elements[0]).addClass('active');
+/* 217 */ 
+/* 218 */         Ext.get('home-carousel').hover(function(){
+/* 219 */             carousel.pause();
+/* 220 */         }, function(){
+/* 221 */             carousel.play();
+/* 222 */         });
+/* 223 */ 
+/* 224 */         navlinks.on('click', function(e, el){
+/* 225 */             carousel.setSlide(navlinks.indexOf(el));
+/* 226 */             e.preventDefault();
+/* 227 */         });
+/* 228 */ 
+/* 229 */ 
+/* 230 */         carousel.on('change', function(c, i){
+/* 231 */             Ext.select('#feature-nav .active').removeClass('active');
+/* 232 */             Ext.get(navlinks.elements[i]).addClass('active');
+/* 233 */         });
+/* 234 */     }
+/* 235 */ }
+/* 236 */ 
+/* 237 */ function sencha_home_carousel(){
+/* 238 */ 
+/* 239 */     if (Ext.get('home-hero') && Ext.get('home-carousel')) {
+/* 240 */ 
+/* 241 */         var navlinks = Ext.select('.feature-nav li a'),
+/* 242 */             container = Ext.get('feature-nav');
+/* 243 */ 
+/* 244 */         var carousel = new Ext.ux.Carousel('home-carousel', {
+/* 245 */             itemSelector: 'section',
+/* 246 */             hideNavigation: true,
+/* 247 */             pauseOnNavigate: true,
+/* 248 */             autoPlay: true,
+/* 249 */             interval: 15,
+/* 250 */             freezeOnHover: true,
+
+/* scripts.js */
+
+/* 251 */             width: Ext.get('home-hero').getWidth()
+/* 252 */         });
+/* 253 */ 
+/* 254 */         Ext.get(navlinks.elements[0]).addClass('active');
+/* 255 */ 
+/* 256 */         Ext.get('home-carousel').hover(function(){
+/* 257 */             carousel.pause();
+/* 258 */         }, function(){
+/* 259 */             carousel.play();
+/* 260 */         });
+/* 261 */ 
+/* 262 */         navlinks.on('click', function(e, el){
+/* 263 */             carousel.setSlide(navlinks.indexOf(el));
+/* 264 */             e.preventDefault();
+/* 265 */         });
+/* 266 */ 
+/* 267 */         carousel.on('change', function(c, i){
+/* 268 */             Ext.select('.feature-nav .active').removeClass('active');
+/* 269 */             Ext.get(navlinks.elements[i]).addClass('active');
+/* 270 */             c.setOpacity(1, {
+/* 271 */                 duration: carousel.transitionDuration
+/* 272 */             });
+/* 273 */         });
+/* 274 */ 
+/* 275 */         carousel.on('beforechange', function(c, i) {
+/* 276 */             c.setOpacity(0, {
+/* 277 */                 duration: carousel.transitionDuration
+/* 278 */             });
+/* 279 */         });
+/* 280 */ 
+/* 281 */         carousel.els.container.setWidth(100 + '%');
+/* 282 */ 
+/* 283 */         Ext.EventManager.on(window, 'resize', function(evt, el, o) {
+/* 284 */             var width  = Ext.get('home-hero').getWidth();
+/* 285 */ 
+/* 286 */             carousel.slideWidth = width;
+/* 287 */ 
+/* 288 */             var offset = carousel.activeSlide * carousel.slideWidth
+/* 289 */             var slides = Ext.get('home-carousel').select('.ux-carousel-slide');
+/* 290 */ 
+/* 291 */             slides.each(function(item) {item.setWidth(width); });
+/* 292 */             carousel.els.slidesWrap.setStyle({
+/* 293 */                 left: (-1 * offset) + carousel.els.container.getX() + 'px',
+/* 294 */                 width: width * slides.elements.length + 'px'
+/* 295 */             });
+/* 296 */         });
+/* 297 */     }
+/* 298 */ 
+/* 299 */     if (Ext.get('home-news')) {
+/* 300 */         var newsCarousel = new Ext.ux.Carousel('home-news', {
+
+/* scripts.js */
+
+/* 301 */             itemSelector: 'li',
+/* 302 */             freezeOnHover: true,
+/* 303 */             hideNavigation: true,
+/* 304 */             interval: 6,
+/* 305 */             autoPlay: true,
+/* 306 */             transitionType: 'fade'
+/* 307 */         });
+/* 308 */     }
+/* 309 */ }
+/* 310 */ 
+/* 311 */ function sencha_lightboxes(){
+/* 312 */     // If needed, as pages with Ext JS will overwrite .ux
+/* 313 */     if (Ext.ux.Lightbox) {
+/* 314 */         Ext.ux.Lightbox.register('a.lightbox');
+/* 315 */         Ext.ux.Lightbox.register('a.lightbox-set', true);
+/* 316 */         Ext.ux.Lightbox.registerDiv('a.lightbox-open', '.lightbox-div');
+/* 317 */     }
+/* 318 */ }
+/* 319 */ 
+/* 320 */ Ext.onReady(function() {
+/* 321 */ 
+/* 322 */     sencha_nav();
+/* 323 */ 
+/* 324 */     sencha_table_stripe();
+/* 325 */ 
+/* 326 */     sencha_separate_pricing();
+/* 327 */ 
+/* 328 */     sencha_show_info_cell();
+/* 329 */ 
+/* 330 */     sencha_product_carousel();
+/* 331 */ 
+/* 332 */     sencha_home_carousel();
+/* 333 */ 
+/* 334 */     sencha_apps_carousel();
+/* 335 */ 
+/* 336 */     sencha_lightboxes();
+/* 337 */ 
+/* 338 */     sencha_disable_on_submit();
+/* 339 */ 
+/* 340 */     sencha_desktop_packager_checkbox();
+/* 341 */ 
+/* 342 */     // only if browser is IE7 + IE6
+/* 343 */     if(Ext.isIE7 || Ext.isIE6) {
+/* 344 */         sencha_ie_stack_fix('.detail-list > li');
+/* 345 */     }
+/* 346 */ });
+/* 347 */ 
+/* 348 */ // var _gaq = _gaq || [];
+/* 349 */ // _gaq.push(['_setAccount', 'UA-1396058-1']);
+/* 350 */ // _gaq.push(['_setDomainName', 'sencha.com']);
+
+/* scripts.js */
+
+/* 351 */ // _gaq.push(['_trackPageview']);
+/* 352 */ 
+/* 353 */ function sencha_toggle_pricing() {
+/* 354 */   var checkbox = Ext.select('#view-separate').elements[0];
+/* 355 */ 
+/* 356 */   if (checkbox) {
+/* 357 */     extras = Ext.select('.separate');
+/* 358 */     if( checkbox.checked === true ) {
+/* 359 */         extras.setStyle('display', 'block');
+/* 360 */     } else {
+/* 361 */         extras.setStyle('display', 'none');
+/* 362 */     }
+/* 363 */   }
+/* 364 */ }
+/* 365 */ 
+/* 366 */ sencha_toggle_pricing();
+/* 367 */ 

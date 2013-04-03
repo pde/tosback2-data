@@ -45,13 +45,16 @@ function getHeaderLocalStore(type) {
 
         storeInfo = getTHDLocalStoreInfo();
         localStoreMenu = '<a class="thdOrange small" href="'+storeFinderHref+'" title="Change or update your local store"><i class="icon-localization-on"></i></a>Your Store: '+storeString+' <a class="thdOrange small" href="'+storeFinderHref+'" title="Change or update your local store"> (Change)</a>';
+        localStoreMobile = storeString;
         localStoreCompare = 'Based on My Store Location: <a style="color:white;" href="' + storeFinderHref + '" title="Store Finder">' + storeString + '</a> (<a class="thdOrange b" href="' + storeFinderHref + '" title="Change or update your local store">Change</a>)';
     } else {
         storeFinderUrl = '<a href="http://'+getHostNameNonSecure()+'/StoreFinder/index.jsp" name="&lpos=d-header-store finder">Store Finder</a></li>';
         localStoreMenu = '<a class="thdOrange b" href="http://'+getHostNameNonSecure()+'/webapp/wcs/stores/servlet/THDStoreFinder?langId=-1&storeId=10051&catalogId=10053" title="Store Finder"><i class="icon-localization-off"></i>Select </a> Your Local Store <a class="smallGreyLink tooltip" title="In order to provide up to the minute updates on product pricing and availability at your local store, please select the store nearest to you." href="javascript:void(0);" title="Why?" id="why">(Why?)</a>';
+        localStoreMobile = 'Store Not Set';
         localStoreCompare = '<a class="thdOrange b" href="' + storeFinderHref + '" title="Store Finder">Choose Your Local Store</a> <a class="tooltip" style="color:white;" title="In order to provide up to the minute updates on product pricing and availability at your local store, please select the store nearest to you." href="javascript:void(0);" title="Why?" id="why">(Why?)</a>';
     };
     $('#myStore').html(localStoreMenu);
+    $('#footerstore').html(localStoreMobile);
     $('#navStoreFinder').html(storeFinderUrl);
 
     if (type === 'menu') {return localStoreMenu;}
@@ -75,15 +78,17 @@ function getAccountMenu(loc) {
         localUserMenu = '<a href="javascript:goToTHDMyAccountFromJS();" ><span id="navUserName">Hello '+getTHDUserName()+', </span></a>';
         accountMenu = '<a href="javascript:goToTHDMyAccountFromJS();" rel="nofollow">Your Account<i class="icon-carrot-grey-down"></i></a>';
         signInOut = '<li><p><a href="http://'+getHostNameNonSecure()+'/webapp/wcs/stores/servlet/THDLogoff?langId=-1&amp;storeId=10051&amp;catalogId=10053&amp;personalizedCatalog=true&amp;changeUser=true&amp;URL=HomePageView" class="thdMyAccountRegister" title="Sign Out">Sign Out</a></p></li>';
+        signInOutMobile = '<a href="http://'+getHostNameNonSecure()+'/webapp/wcs/stores/servlet/THDLogoff?langId=-1&amp;storeId=10051&amp;catalogId=10053&amp;personalizedCatalog=true&amp;changeUser=true&amp;URL=HomePageView" class="thdMyAccountRegister noBg" title="Sign Out">(Sign Out)</a>';
     }else{
         localUserMenu = '<a class="thdOrange b" href="https://'+getHostNameSecure()+'/webapp/wcs/stores/servlet/LogonForm?langId=-1&storeId=10051&catalogId=10053&" title="">Sign In</a><span> or </span><a class="thdOrange b" href="https://'+getHostNameSecure()+'/webapp/wcs/stores/servlet/UserRegistrationForm?langId=-1&storeId=10051&catalogId=10053&new=Y" title="">Register</a>';
         accountMenu = '<a href="javascript:goToTHDMyAccountFromJS();" class="myAccount"  rel="nofollow">Your Account<i class="icon-carrot-grey-down"></i></a>';
         signInOut = '<li><a href="https://'+getHostNameSecure()+'/webapp/wcs/stores/servlet/LogonForm?langId=-1&storeId=10051&catalogId=10053&" class="btn-orange" title="Log in to your account">Sign In</a></li><li><p><a href="https://'+getHostNameSecure()+'/webapp/wcs/stores/servlet/UserRegistrationForm?langId=-1&storeId=10051&catalogId=10053&new=Y" class="thdMyAccountRegister" title="Get faster online checkouts, project and shopping lists and more">Register</a> for an account.</p></li>';   
-        
+        signInOutMobile = '<a href="https://'+getHostNameSecure()+'/webapp/wcs/stores/servlet/LogonForm?langId=-1&storeId=10051&catalogId=10053&" class="thdMyAccountRegister noBg" title="Sign In">(Sign in)</a>';
     }
 
     accountInfo.html(localUserMenu+'<br>'+accountMenu);
     thdMyAccount.find('.linkList').append(signInOut);
+    $('#authStatus').html(signInOutMobile);
     if (loc === 'user') { return localUserMenu;}
     if (loc === 'account') {return accountMenu;}
 }
@@ -97,8 +102,10 @@ function showCartBlock() {
         if (itemsInCart !== '0' && itemsInCart !== '') {
             if(itemsInCart > 999){
                 $("#miniCartNum").text("999+");
+                $("#mcartnum").html("<span>999+</span>")
             }else{
                 $("#miniCartNum").text(itemsInCart);
+                $("#mcartnum").html("<span>"+itemsInCart+"</span>")
             }
             $("#cart").addClass('btn-orange');
         }
@@ -279,6 +286,15 @@ function goToMyLists(){
     goToLinkFromJS(nonRegisteredTHDMyAcctURL,registeredURL);
 }
 
+//function for toggling the display of accordians in the mobile footer
+function accordionLists() {
+    $('#mobileFooter .btns .head').click(function() {
+        $(this).toggleClass("open").next().toggle("fast");
+        return false;
+    });
+}
+
+
 // Gets called after DOM is ready
 $(function () {
     //localize popUP
@@ -286,7 +302,19 @@ $(function () {
     getAccountMenu('account');
     showCartBlock();
 
-    
+
+
+     // function for vertical nav veiw on mobile
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        var $vertNavMV = $('.vertical-navigation .title');
+        $vertNavMV.click(function(e) {
+            e.preventDefault();
+            $(this).next().slideToggle();
+        });
+
+        // Accordian in the footer section of the mobile
+        accordionLists();
+    }
 
 	/*Ipad flyout hiding fix*/
 		// $("ul#hd-deptNav li .item").removeClass("active"); 

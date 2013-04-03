@@ -39,3 +39,16 @@ outer.append(content=$('<div id="fancybox-content"></div>'),close=$('<a id="fanc
 nav_right.click(function(e){e.preventDefault();$.fancybox.next()});if($.fn.mousewheel)wrap.bind("mousewheel.fb",function(e,delta){if(busy)e.preventDefault();else if($(e.target).get(0).clientHeight==0||$(e.target).get(0).scrollHeight===$(e.target).get(0).clientHeight){e.preventDefault();$.fancybox[delta>0?"prev":"next"]()}});if(!$.support.opacity)wrap.addClass("fancybox-ie");if(isIE6){loading.addClass("fancybox-ie6");wrap.addClass("fancybox-ie6");$('<iframe id="fancybox-hide-sel-frame" src="'+(/^https/i.test(window.location.href||
 "")?"javascript:void(false)":"about:blank")+'" scrolling="no" border="0" frameborder="0" tabindex="-1"></iframe>').prependTo(outer)}};$.fn.fancybox.defaults={padding:10,margin:40,opacity:false,modal:false,cyclic:false,scrolling:"auto",width:560,height:340,autoScale:true,autoDimensions:true,centerOnScroll:false,ajax:{},swf:{wmode:"transparent"},hideOnOverlayClick:true,hideOnContentClick:false,overlayShow:true,overlayOpacity:0.7,overlayColor:"#777",titleShow:true,titlePosition:"float",titleFormat:null,
 titleFromAlt:false,transitionIn:"fade",transitionOut:"fade",speedIn:300,speedOut:300,changeSpeed:300,changeFade:"fast",easingIn:"swing",easingOut:"swing",showCloseButton:true,showNavArrows:true,enableEscapeButton:true,enableKeyboardNav:true,onStart:function(){},onCancel:function(){},onComplete:function(){},onCleanup:function(){},onClosed:function(){},onError:function(){}};$(document).ready(function(){$.fancybox.init()})})(jQuery);
+var thd = (window.thd) ? window.thd : {};
+thd.overlay = {
+	resizeFrame : function(height) {
+		if(typeof height === 'undefined'){
+			height = $("#fancybox-frame").contents().find('body').height();
+		}
+		$('#fancybox-content').height(height);
+	}
+};
+
+(function($) {
+	$.fancybox.resizeFrame = thd.overlay.resizeFrame;
+})(jQuery);

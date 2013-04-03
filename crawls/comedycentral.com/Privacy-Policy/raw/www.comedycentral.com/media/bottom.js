@@ -3230,10 +3230,15 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 	 * Get comments on all GT comunity content
 	 * 
 	**/
-	$Crabapple.FluxWidget.requestCommentsRiver = function (maxResults, func) {
+	$Crabapple.FluxWidget.requestCommentsRiver = function (maxResults, contentId, func) {
+		var includeChildren = false;
 		if(maxResults == null && isNaN(maxResults = parseInt(maxResults))){	maxResults="2";	}
+		if(contentId){
+			includeChildren = true;
+		}
 		$.ajax({
-			url: config.getFluxActivityBaseHref()+'/api/ActivityService/FindActivities?communityId=' + config.getFluxCommunityId() + '&contentId=&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults='+maxResults+'&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren=false&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent',
+			url: config.getFluxActivityBaseHref()+'/api/ActivityService/FindActivities?communityId=' + config.getFluxCommunityId() + '&contentId='+contentId+'&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults='+maxResults+'&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren='+includeChildren+'&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent',
+			// test url for -d testing m033 custom ENTREQ-4373//url: "http://activity.flux.com/api/ActivityService/FindActivities?communityId=B8F6FFFF0099CA9B0002FFFFF6B8&contentId=" + contentId + "&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults=5&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren=true&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent",
 			dataType: 'jsonp',
 			cache: true,
 			success: func

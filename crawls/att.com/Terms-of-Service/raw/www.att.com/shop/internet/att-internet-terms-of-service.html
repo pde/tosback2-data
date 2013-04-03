@@ -96,7 +96,13 @@ var mRedirectURL = '';
 					request.open("GET",ajaxUrl,true); 
 					request.send(); 
 				// Device is not a tablet,ridirect to m.att.com 
-					window.location =  mRedirectURL; 
+					var referrer = encodeURIComponent(document.referrer); 
+					referrer = referrer.replace("%3A","%253A"); 
+					if (window.location.search != '') { 
+						window.location = mRedirectURL + window.location.search +  '&referrer=' + referrer; 
+					} else { 
+						window.location = mRedirectURL + '?referrer=' + referrer; 
+					} 
 				} 
 		} 
 	} 
@@ -136,14 +142,14 @@ var mRedirectURL = '';
 	<link rel="canonical" href="att-internet-terms-of-service.html"/>  
 	<meta NAME="DCSext.wtPN" CONTENT="HRock att-internet-terms-of-service"/> 
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
-<link rel="stylesheet" href="../../../1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
-<link rel="stylesheet" href="../../../1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<link rel="stylesheet" href="../../styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="../../media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
 <!--[if IE 7]> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<link rel="stylesheet" href="http://www.att.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
-	    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/styles/shop-styles.css"/>  
-    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/media/cms/shop/styles/cr1329.css"/> 
-    <link rel="stylesheet" type="text/css" href="../../../1.ecom.attccc.com/media/cms/homepage/styles/featuredItemTile.css"/> 
+	    <link rel="stylesheet" type="text/css" href="../../styles/shop-styles.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../media/cms/shop/styles/cr1329.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../media/cms/homepage/styles/featuredItemTile.css"/> 
 	<!-- Global JS files --> 
 	<script type="text/javascript"> 
 CQURLInfo = { 
@@ -155,11 +161,11 @@ CQURLInfo = {
     "suffix": null 
 };</script> 
 <script type="text/javascript" src="../../shopcms/shopetc/clientlibs/foundation/jquery.js"></script> 
-			<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="../../scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="../../media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
 			<script type="text/javascript" src="../../media/cms/shop/scripts/ATT.ui.js"></script> 
-			<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
-	<script type="text/javascript" src="../../../1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+			<script type="text/javascript" src="../../scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="../../media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 </head> 
 <!-- Add author only code below --> 
@@ -683,14 +689,14 @@ CQURLInfo = {
 		<area target="_blank" tabindex="0" shape="rect" coords="10,132,42,161" title="del.icio.us" alt="del.icio.us" href="http://del.icio.us" onclick="this.href=meteor.sharing.href('del.icio.us');"> 
 		<area target="_blank" tabindex="0" shape="rect" coords="10,164,42,200" title="email" alt="email" href="mailto:" onclick="this.href=meteor.sharing.href('Email' );"> 
 	</map> 
-	<img id="socialMedia" src="../../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
+	<img id="socialMedia" src="../../shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
 </div> 
 <div  id="underNav"> 
 	<div id="undernav-right"> 
 	    <div id="lpButtonDiv" style="display:inline;"></div> 
 	    <div id="mini-cart-link-container" style="display:inline;"> 
 	        <a id="minicart-link" href="att-internet-terms-of-service.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content;2013053">My Wireless Cart  
-	            <img src="../../../1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+	            <img src="../../media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
 	            <span id="minicart-count"></span> 
 	        </a><br/> 
 	        <div id="cart-preview-container" style="display:none;float:right;"></div> 
@@ -749,7 +755,7 @@ CQURLInfo = {
                 <div class="fullwidthwarrantyinfo">  
                 	<!-- warranty info --> 
 		        	<div class="parbase warranty reference"><div style="display:inline;" class="cq-dd-paragraph"><div class="warrantyinfo"> 
- <link rel="stylesheet" href="../../../1.ecom.attccc.com/media/cms/shop/styles/warranty.css" type="text/css"/> 
+ <link rel="stylesheet" href="../../media/cms/shop/styles/warranty.css" type="text/css"/> 
          <div class="box note warranty-info"> 
                  <p>This Terms of Service &amp; Terms of Use (“Agreement”) along with the AT&amp;T Acceptable Use Policy, &nbsp;the AT&amp;T and Yahoo privacy policies, and the other documents incorporated by reference herein, set forth your obligations, AT&amp;T’s obligations, and the rules you must follow when using the att.net portal and/or e-mail (“Site”) and/or AT&amp;T U-verse High Speed Internet, AT&amp;T High Speed Internet, AT&amp;T High Speed Internet Business Edition, AT&amp;T High Speed Internet Direct, AT&amp;T High Speed Internet Business Edition Direct, AT&amp;T Dial, FastAccess DSL, FastAccess Business DSL, Wireless Broadband provided by BellSouth Entertainment, LLC, BellSouth® Dial Internet Service (“Service(s)”).</p> 
 <p><b>PLEASE READ THIS AGREEMENT CAREFULLY.</b>&nbsp; This is a binding agreement between you (the Member Account holder), Yahoo! Inc. (“Yahoo!”), and the AT&amp;T entity that provides the Service and/or Site<a href="http://info.yahoo.com/legal/us/att/terms/all/#_ftn1" data-cqpath="/content/sharedcontent/en/legal/marketing_pages/att-internet-terms-of-service/jcr:content/warrantypar/warrantyinfo;2013053">[1]</a>. <b>Your registration, payment for</b><b>,</b><b> or use of the Site and/or Service constitutes your agreement to be bound by the charges, terms</b><b>,</b><b> and conditions set forth in this Agreement, including those incorporated by reference as well as those located at: </b><a href="http://info.yahoo.com/legal/us/yahoo/" data-cqpath="/content/sharedcontent/en/legal/marketing_pages/att-internet-terms-of-service/jcr:content/warrantypar/warrantyinfo;2013053">http://info.yahoo.com/legal/us/yahoo/</a><b>.</b><b>&nbsp;&nbsp;</b></p> 
@@ -957,14 +963,14 @@ CQURLInfo = {
 	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
 </div>  
 <div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
-	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../../1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
 </div> 
 <div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../../1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="http://www.att.com/shop/internet.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../../1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="http://www.att.com/shop/internet.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/globalfooter/sessionexpire"><img src="../../media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="clear"></div> 
 	</div> 
@@ -1029,9 +1035,9 @@ CQURLInfo = {
 				</div> 
 		<!-- WebTrends Base Tag : include only at end of page --> 
 		<!-- Webtrend global params --> 
-		<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+		<script type="text/javascript" src="../../scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="../../media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 250422362810079826899885105605683928292 --> 
+		 <!--X-Renderer: 207472370222582033738641996364173287494 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1194,7 +1200,7 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            ATT.log('dcs injection block'); 
 	            var s = document.createElement("script"); 
 	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
+	            s.src = "http://www.att.com/webtrends/scripts/dcs_tag.js"; 
 	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
@@ -1238,7 +1244,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","kVQpRWwfXyv6D4wTnwLtZrHZ!427646111!1364603103812"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","LnpfRcbQpJXxLyBp0yJ7RNy3!-1526989284!1364990832918"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
