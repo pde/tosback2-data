@@ -1,4 +1,4 @@
-/*global commercialNode:true,wp_meta_data:true,escape,unescape,TWP,estNowWithYear,dfpcomp,spec_ord,console,$*/
+/*global commercialNode:true,wp_meta_data:true,escape,unescape,TWP,estNowWithYear,dfpcomp,spec_ord,console,$,postscribe*/
 var wpAd, placeAd2;
 
 (function (win, doc, undefined) {
@@ -64,8 +64,12 @@ var wpAd, placeAd2;
         }
       },
       adj: function () {
-        //this is lame, but we have no choice:
-        doc.write(wpAd.tools.tagBuilder());
+        var slug = doc.getElementById('wpni_adi' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
+        if(wpAd.flags.postscribe && slug){
+          postscribe('#' + slug.id, wpAd.tools.tagBuilder());
+        } else{
+          doc.write(wpAd.tools.tagBuilder());
+        }
       },
       pfadx: function () {
         //this is lame, but we have no choice at the moment:
@@ -114,16 +118,20 @@ var wpAd, placeAd2;
         var hc = typeof wpAd.briefcase.hardcode === 'function' ? wpAd.briefcase.hardcode() : wpAd.briefcase.hardcode,
           slug;
         if(hc) {
+          slug = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
           //else if hc is an html element, append it,
           if(typeof hc === 'object' && hc.tagName) {
-            slug = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
             if(slug) {
               slug.appendChild(hc);
             }
           }
           //else we need to just document.write it.
           else if(typeof hc === 'string') {
-            doc.write(wpAd.tools.escapeScriptTags(hc));
+            if(wpAd.flags.postscribe && slug){
+              postscribe('#' + slug.id, wpAd.tools.escapeScriptTags(hc));
+            } else{
+              doc.write(wpAd.tools.escapeScriptTags(hc));
+            }
           }
         }
       },
@@ -599,9 +607,9 @@ var wpAd, placeAd2;
       },
       interstitial: function(){
         if(doc.cookie && !wpAd.flags.hpRefresh && !wpAd.flags.no_interstitials){
-          var name = 'wp_pageview', 
+          var name = 'wp_pageview',
           cookieVal = wpAd.tools.getCookie(name),
-          rv = true, 
+          rv = true,
           time = new Date(parseInt(new Date().getTime(), 10) + 432E5).toString();
           if(cookieVal){
             rv = Number(cookieVal)%3 ? false : true;
@@ -765,13 +773,13 @@ var wpAd, placeAd2;
           if(wpAd.templates[wpAd.briefcase.pos].hardcode) {
             wpAd.briefcase.hardcode = wpAd.templates[wpAd.briefcase.pos].hardcode;
           }
-          
-          wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id || 
+
+          wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id ||
             (wpAd.templates[wpAd.briefcase.what] &&
             wpAd.templates[wpAd.briefcase.what].openAll &&
             wpAd.templates[wpAd.briefcase.what].id ||
             false);
-          
+
           // hack to fix double ad calls - add current ad type to array:
           if(wpAd.flags.IE) {
             wpAd.tools.adsToBeCleaned.push(wpAd.briefcase.what);
@@ -959,12 +967,12 @@ var wpAd, placeAd2;
             keys.push(wca.keyvalues.ad[a]);
           }
         }
-        
+
         //this needs to be before the dcopt check in keyvalues:
         if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
           keys.push('interstitial');
         }
-        
+
         return keys;
       },
       //this needs a rewrite to match up with current script:
@@ -975,7 +983,7 @@ var wpAd, placeAd2;
               re: ['builder', 'condo', 'home', 'homeowner', 'housing', 'mortgage', 'property', 'real estate', 'realtor', 'refinance', 'neighborhood']
             },
             key;
-            
+
           wpAd.cache.kw = [];
           if(wpAd.flags.test_ads) {
             wpAd.cache.kw.push('test_' + wpAd.flags.test_ads);
@@ -1200,7 +1208,7 @@ var wpAd, placeAd2;
     wpAd.briefcase.what = what;
     wpAd.briefcase.onTheFly = onTheFly;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
-    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx, fif 
+    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx, fif
 
     if(wpAd.tools.templatecheck()) {
       if(!wpAd.briefcase.hardcode) {
@@ -1214,7 +1222,7 @@ var wpAd, placeAd2;
 
       wpAd.tools.slugDisplay();
       wpAd.tools.debug();
-      
+
       //store briefcase object for reference:
       wpAd.templates[wpAd.briefcase.pos].briefcase = wpAd.briefcase;
     }
@@ -1236,6 +1244,7 @@ var wpAd, placeAd2;
 
   //generic flags
   wpAd.flags = {
+    postscribe: !!/postscribe/i.test(location.search),
     debug: !!/debugAdCode/i.test(location.search),
     demoAds: wpAd.tools.urlCheck('demoAds', {type: 'variable'}),
     dcnode: wpAd.tools.urlCheck('dcnode', {type: 'variable'}),
@@ -1265,5 +1274,9 @@ var wpAd, placeAd2;
 
   //redefine commercialNode:
   commercialNode = !wpAd.flags.dcnode ? wpAd.tools.zoneBuilder.exec() : wpAd.tools.dcnode();
+
+  if(wpAd.flags.postscribe){
+    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js');
+  }
 
 })(window, document);

@@ -385,6 +385,16 @@ $(document).ready(function () {
 
     }); //end click
 
+    (function () {
+        var $supportMapImg = $('.support-stores .col-left').find('img'),
+        mapSrc = $supportMapImg.attr('src');
+
+        if (!mapSrc) {
+            return $supportMapImg.hide();
+        } else {
+            return $supportMapImg.show();
+        }
+    } ());
 
     $(function () {
         if (!$('.referee-page')) { return false; }
@@ -465,17 +475,6 @@ $(document).ready(function () {
                     return $this.parent(colSetup.colClasses[0].priceBlock).width(colSetup.newColWidth[0].four);
                 }
             });
-        }
-    } ());
-
-    (function () {
-        var $supportMapImg = $('.support-stores .col-left').find('img'),
-        mapSrc = $supportMapImg.attr('src');
-
-        if (!mapSrc) {
-            return $supportMapImg.hide();
-        } else {
-            return $supportMapImg.show();
         }
     } ());
 

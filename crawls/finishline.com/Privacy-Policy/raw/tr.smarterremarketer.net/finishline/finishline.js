@@ -659,6 +659,13 @@
                     SmtrRmkr.processPage({ found: true, cn: 'End of Season Sale: ' + id, cid: 'eoss_' + id, scn: null, brand: null });
                 } catch (err) { SmtrRmkr.logError("onEOSSCategoryView", err); }
             },
+            springWired: false,
+            onSpringCategoryView: function (id) {
+                try {
+                    SmtrRmkr.pageProcessed = false;
+                    SmtrRmkr.processPage({ found: true, cn: 'Spring Lookbook: ' + id, cid: id, scn: null, brand: null });
+                } catch (err) { SmtrRmkr.logError("onSpringCategoryView", err); }
+            },
             lastCatName: null,
             lastSubCatName: null,
             lastCatBrand: null,
@@ -724,6 +731,36 @@
 	                    	default : SmtrRmkr.onEOSSCategoryView("other");
 	                    		break;
                     	}
+                    } else if ((SmtrRmkr.isPage("spring-lookbook") && SmtrRmkr.pn.length < 17) && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLook");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Main", derr); }
+                    } else if (SmtrRmkr.isPage("spring-lookbook-womens-active") && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLookWomensActive");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Womens Active", derr); }
+                    } else if (SmtrRmkr.isPage("spring-lookbook-mens-basketball") && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLookMensBball");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Mens BBall", derr); }
+                    } else if (SmtrRmkr.isPage("spring-lookbook-mens-active") && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLookMensActive");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Mens Active", derr); }
+                    } else if (SmtrRmkr.isPage("spring-lookbook-womens-casual") && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLookWomensCasual");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Womens Casual", derr); }
+                    } else if (SmtrRmkr.isPage("spring-lookbook-kids-gear") && SmtrRmkr.springWired == false) {
+                    	SmtrRmkr.springWired = true;
+                    	try {
+                            SmtrRmkr.onSpringCategoryView("catSprLookKids");
+                        } catch (derr) { SmtrRmkr.logError("Spring Look Kids", derr); }
                     } else if (SmtrRmkr.isPage('/back-to-school')) {
                         var h = SmtrRmkr.wl.hash.replace('#', '');
                         if (h.length == 0 || h.length > 32) {

@@ -524,54 +524,33 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "Burn Notice",
-							"url" : usa_baseUrlDomain + "/videos/Burn%20Notice/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_fl.png",*/
+							"title" : "The Moment",
+							"url" : usa_baseUrlDomain + "/videos/The%20Moment/Full%20Episodes "
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_suits.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
 						/* Featured Slot 2 */
-						{
-							"title" : "Covert Affairs",
-							"url" : usa_baseUrlDomain + "/videos/Covert%20Affairs/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ca.png",*/
-							/*"tuneIn" : "Tune In Time"*/
-						},
-						/* Featured Slot 3 */
-						{
-							"title" : "In Plain Sight",
-							"url" : usa_baseUrlDomain + "/videos/In%20Plain%20Sight/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ips.png",*/
-							/*"tuneIn" : "Tune In Time"*/
-						},
-						/* Featured Slot 4 */
 						{
 							"title" : "Necessary Roughness",
 							"url" : usa_baseUrlDomain + "/videos/Necessary%20Roughness/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_nr.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 5 */
+						/* Featured Slot 3 */
 						{
 							"title" : "Psych",
 							"url" : usa_baseUrlDomain + "/videos/Psych/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_psych.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 6 */
-						{
-							"title" : "Royal Pains",
-							"url" : usa_baseUrlDomain + "/videos/Royal%20Pains/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_rp.png",*/
-							/*"tuneIn" : "Tune In Time"*/
-						},
-						/* Featured Slot 7 */
+						/* Featured Slot 4 */
 						{
 							"title" : "Suits",
 							"url" : usa_baseUrlDomain + "/videos/Suits/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_suits.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 8 */
+						/* Featured Slot 5 */
 						{
 							"title" : "White Collar",
 							"url" : usa_baseUrlDomain + "/videos/White%20Collar/Full%20Episodes"

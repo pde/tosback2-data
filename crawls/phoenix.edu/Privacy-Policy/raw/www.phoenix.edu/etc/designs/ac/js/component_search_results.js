@@ -141,10 +141,7 @@ if($("#apts_search_page_paginator_bot ul li").length>0){$("#bottomRow").show()
 $(".footerTab_1").css("display","block");
 document.location.hash=c;
 c=document.location.hash;
-if(typeof cmCreatePageviewTag=="function"){if(typeof coremetricsStartPath==="undefined"){window.coremetricsStartPath="/acloud"
-}if(ar>0){cmCreatePageviewTag("Search Successful: Page "+(I+1),coremetricsStartPath+M,P,ar)
-}else{cmCreatePageviewTag("Search Unsuccessful",coremetricsStartPath+M,P,ar)
-}}var ak=window.setInterval(function(){try{if(s){window.clearInterval(ak);
+var ak=window.setInterval(function(){try{if(s){window.clearInterval(ak);
 sc.searchQuery=k.exec(unescape(strQuery));
 if(sc.searchQuery!==null&&sc.searchQuery.length>1){sc.searchQuery=sc.searchQuery[1]
 }else{sc.searchQuery=J

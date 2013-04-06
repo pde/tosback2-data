@@ -57,7 +57,7 @@
     }
   /*]]>*/
 </style>
-<link href="../static.btrd.net/assets/application-a93b0f3483305909f7e3ece7c8319995.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="../static.btrd.net/assets/application-d9d883aaffd4e01dc8c5caf22958cf2c.css" media="screen" rel="stylesheet" type="text/css" />
 
 
 
@@ -119,10 +119,11 @@
               "$1" + u_sub_params.join('|') + "|" );
         }
     
-        // 2. Also add segments as their own parameters before the rsi parameter.
+        // 2. Also add segments
+        // Note: After url= and before sz=
     
-        if(Krux.segments.length) {
-          url = url.replace(/(;rsi=)/i, ';ksgmnt=' + Krux.segments.join(';ksgmnt=') + "$1");
+        if(Krux.segments.length > 0) {
+          url = url.replace(/(;sz=)/i, ';ksgmnt=' + Krux.segments.join(';ksgmnt=') + "$1");
         }
         return url;
       };
@@ -134,13 +135,12 @@
 
 <script>
   //<![CDATA[
-    var AVAILABLE_BUCKETS = [{"active":true,"created_at":"2013-02-27T17:42:47-05:00","end_date":"2013-04-30T17:42:00-04:00","id":12,"name":"toaster_ad","percentage_of_users":4,"updated_at":"2013-04-01T11:22:00-04:00","bucket_groups":[{"bucket_id":12,"created_at":"2013-02-27T17:42:47-05:00","custom_css":"","custom_js":"(function(){\r\n  TOASTER_AD_CONTROL = true;\r\n})();\r\n","id":22,"is_control":null,"name":"Control","percentage_of_users":null,"tracking":null,"updated_at":"2013-02-27T17:42:47-05:00"},{"bucket_id":12,"created_at":"2013-02-27T17:42:47-05:00","custom_css":"","custom_js":"(function(){\r\n  TOASTER_AD_EXPERIMENT = true;\r\n})();\r\n","id":24,"is_control":null,"name":"Experiment","percentage_of_users":null,"tracking":null,"updated_at":"2013-02-27T17:42:47-05:00"}]}]
+    var AVAILABLE_BUCKETS = []
   //]]>
 </script>
 
 <script src="../static.btrd.net/assets/buckets-d84e1f4dcb5b5442542ec0a4b3fb1865.js" type="text/javascript"></script>
 <meta content='width=1000px' name='viewport'>
-<script src="../static.btrd.net/assets/audience_science-6b92a9ec19bfc22a174b877a4573216a.js" type="text/javascript"></script>
 <script>
   //<![CDATA[
     var ROOT_URL          = "http://www.businessweek.com/";
@@ -165,7 +165,7 @@
     var YIELDEX           = true;
     var AD_INTERVAL_TO    = 450;
     var AD_DEPT_TRACKING  = false; //Temporary flag to be removed when the time is right
-    var VIDEO_AD_YIELD_EX = (YIELDEX) ? '"u=sz=1x7|'+segQS.replace(/rsi=/g, "").split(';').join(',') +';' : '';
+    var VIDEO_AD_YIELD_EX = (YIELDEX) ? '"u=sz=1x7|' + ';' : '';
     var RANDOM_NUMBER     = ("1"+(""+Math.random()).substring(2,11));
     var VIDEO_AD_SUFFIX   = ";sz=1x7;tile=15;tp_video=null;dcmt=text/html;"+encodeURIComponent(VIDEO_AD_YIELD_EX)+"ord="+RANDOM_NUMBER+";";
     var TILE_NUMBER       = 1;
@@ -227,20 +227,12 @@
     var keyword = (AD_KEYWORD != "") ? "keyword="+AD_KEYWORD+";" : ""; //keyword or issue should only be set on article pages
     var tz = "t0=interstitial;";
     var pt = "page=t0;";
-    var segQS = (segQS == null)? "" : segQS;
     TILE_NUMBER++; // iterate through tile numbers on the parent window
     
-    var rsi_y_string = "";
-    if (parent.rsi_segs.length > 0){
-       rsi_y_string = segQS.replace(/rsi=/g, "").split(';');
-       rsi_y_string.pop();
-       rsi_y_string = rsi_y_string.join(',')+"|";
-       rsi_y_string = "rsi="+rsi_y_string;
-    }
     var issue_key = '';
-    var yield_ex_string = (parent.YIELDEX) ? ("u="+size+"|"+rsi_y_string+pt+"|"+tz+"|"+keyword).replace(/;/g, "")+";" : "";
+    var yield_ex_string = (parent.YIELDEX) ? ("u="+size+"|"+pt+"|"+tz+"|"+keyword).replace(/;/g, "")+";" : "";
     
-    src = "http://ad.doubleclick.net/adj/"+site+url+segQS+size+pt+tz+tile+keyword+ist+yield_ex_string+ran;
+    src = "http://ad.doubleclick.net/adj/"+site+url+size+pt+tz+tile+keyword+ist+yield_ex_string+ran;
     document.write('<scr'+'ipt type="text/javascript" src="'+src+'"></scr'+'ipt>');
   //]]>
 </script>
@@ -270,7 +262,7 @@ Sign in with Facebook
 </span>
 <span class='login'>Or use your Businessweek account</span>
 <div class='login_form'>
-<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="n5NkCN4NE0OrfFviCVq7RSnxoZFipWRwsTX/SJktZ8E=" /></div>
+<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="nnoVLiD2etDO0ugBUJQfxahaKZVyGQ0sg3ApoLSNDmY=" /></div>
 <label class="for_email" for="user_form_email">Email</label>
 <input class="" id="user_form_email" maxlength="100" name="user_form[email]" size="100" type="text" />
 <label class="password" for="user_form_password">Password</label>
@@ -305,7 +297,7 @@ Don't have an account?
 </div>
 <div id='promo'>
 <span class='house_ad'>
-<iframe allowTransparency='true' class='ad_frame' data-position='circ_header' data-pt='t0' data-size='200x92,1x1' data-tile='2' data-tz='circ_header' data-uri='/dynamic_frames/ads.html' frameBorder='0' scrolling='no'></iframe>
+<iframe allowTransparency='true' class='ad_frame' data-position='circ_header' data-pt='t0' data-size='200x92,1x1' data-tile='2' data-tz='circ_header' data-uri='/dynamic_frames/ads-v1.html' frameBorder='0' scrolling='no'></iframe>
 
 </span>
 </div>
@@ -371,7 +363,7 @@ Don't have an account?
 </div>
 </div>
 <div class='banner_ad top_banner_ad companion_replace'>
-<iframe allowTransparency='true' class='ad_frame' data-position='hometop' data-pt='t0' data-size='728x90,970x66,1x1' data-tile='3' data-tz='hometop' data-uri='/dynamic_frames/ads.html' frameBorder='0' scrolling='no'></iframe>
+<iframe allowTransparency='true' class='ad_frame' data-position='hometop' data-pt='t0' data-size='728x90,970x66,1x1' data-tile='3' data-tz='hometop' data-uri='/dynamic_frames/ads-v1.html' frameBorder='0' scrolling='no'></iframe>
 
 </div>
 <div id='flash'>
@@ -501,10 +493,10 @@ Don't have an account?
 <div class='current_issue module clearfix'>
 <h3>Get Businessweek Delivered</h3>
 <a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08" id='cover_image_thumbnail'>
-<img alt="The Samsung Era" height="155" src="../images.bwbx.io/cms/2013-03-28/1314cov_110x155.jpg" width="110" />
+<img alt="The Big Three Are Back, Right?" height="155" src="../images.bwbx.io/cms/2013-04-04/1315cov_110x155.jpg" width="110" />
 </a>
 <h6>
-<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">The Samsung Era</a>
+<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">The Big Three Are Back, Right?</a>
 </h6>
 <a class='subscribe_button' href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Subscribe</a>
 </div>
@@ -519,7 +511,6 @@ Don't have an account?
 </div>
 </div>
 <link href="../static.btrd.net/onlineopinionV5/oo_style.css" media="screen" rel="stylesheet" type="text/css" />
-<script async="async" defer="defer" src="../static.btrd.net/onlineopinionV5/oo_engine.min.js" type="text/javascript"></script>
 
 
 
@@ -527,11 +518,7 @@ Don't have an account?
 
 </div>
 
-<script src="../static.btrd.net/assets/application-44db45d550d4d1769db7eabf6d402c7c.js" type="text/javascript"></script>
-<script src="../static.btrd.net/assets/jquery.bloomberg_hat-40820ecd724303b0cc5cdc9f27815360.js" type="text/javascript"></script>
-
-
-
+<script src="../static.btrd.net/assets/application-c1978fe93f2b19fc0177727f07aa1b63.js" type="text/javascript"></script>
 <script>
   //<![CDATA[
     var _gaq=[["_setAccount","UA-11413116-6"],["_trackPageview"],["_trackPageLoadTime"]];
@@ -542,14 +529,25 @@ Don't have an account?
 </script>
 
 
+<script src="../static.btrd.net/assets/jquery.bloomberg_hat-40820ecd724303b0cc5cdc9f27815360.js" type="text/javascript"></script>
+
+
 <script>
   //<![CDATA[
+    $('.branding_hat').bloomberg_hat({ 'active_link':'businessweek'}, function(){
+      BLOOMBERG.bw_user.init_sign_in_box();
+    }); //create the hat, all markup is in the jquery plugin file
+    
+    if(false)
+      BLOOMBERG.bw_core.deferred_load_js("http://static.btrd.net/assets/jquery.truste-consent-1f59258579d7f178906f4d9042377f96.js");
+    
     try {
       var tracking_code = window.location.hash.match(/#r=[a-zA-Z_-]*/);
       if (tracking_code != null && tracking_code != "" && tracking_code.length > 0)
         _gaq.push(['_trackEvent', tracking_code[0], document.referrer, location.href]);
     } catch(err){}
     
+    // Lazy load navigation submenus, see also layouts/_navigation
     $('#global_nav').ready(function() {
       var params = window.location.href.split('?');
       if (params.length == 2) {
@@ -569,22 +567,22 @@ Don't have an account?
       });
     });
     
-    lazyload = function() {
+    lazyload_images = function() {
       $('.lazy').removeClass('spinner').each(function() {
         $(this).attr('src', $(this).data().original);
       });
     }
     
     $(window).bind("load", function() { 
-      var timeout = setTimeout(function() { lazyload(); }, 5000);
+      var timeout = setTimeout(function() { lazyload_images(); }, 5000);
     });
   //]]>
 </script>
-<script async="async" defer="defer" src="easyxdm/easyXDM.min.js" type="text/javascript"></script>
+
+<script src="easyxdm/easyXDM.min.js" type="text/javascript"></script>
 <script>
   //<![CDATA[
     $(window).load(function() {
-    
       var REMOTE = "https://secure.businessweek.com";
     
       var xhr = new easyXDM.Rpc({
@@ -597,7 +595,6 @@ Don't have an account?
               request: {}
           }
       });
-    
     
       BLOOMBERG.bw_user.ajax_sign_on = function(form) {
     
@@ -626,8 +623,8 @@ Don't have an account?
             if(json.message == "migrate"){
                window.location = json.url;
             } else {
-              $("<span class='report_error'>"+json.message+"</span>").insertBefore(form.find("#user_form_email"));
-              form.find('input').addClass("error");
+              $("<span class='report_error'>"+json.message+"</span>").insertBefore($("#user_form_email"));
+              $('#new_user_form input').addClass("error");
             }
         };
         xhr.request(request, responseHandler, errorHandler);
@@ -729,6 +726,12 @@ Don't have an account?
   //]]>
 </script>
 
+<script>
+  //<![CDATA[
+    BLOOMBERG.bw_core.deferred_load_js("http://static.btrd.net/onlineopinionV5/oo_engine.min.js");
+  //]]>
+</script>
+
 <script src="../content.dl-rms.com/rms/mother/516/nodetag.js" type="text/javascript"></script>
 <script>
   //<![CDATA[
@@ -810,7 +813,7 @@ Don't have an account?
 
 
 
-<!-- Last Update: 2013-04-03 08:18:40 -0400 -->
+<!-- Last Update: 2013-04-06 08:18:56 -0400 -->
 
 <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
 NREUMQ.push(["load",new Date().getTime()]);
@@ -823,5 +826,5 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848","138689","c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,46,new Date().getTime(),"","","","",""]);</script></body>
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","b220098848","138689","c1hbFURcXFsGRRYRQFFDXAIZQFhYFA==",0,40,new Date().getTime(),"","","","",""]);</script></body>
 </html>

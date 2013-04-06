@@ -129,13 +129,10 @@ b.children("th:last").addClass(COMMON_globalConstants.lastChild)
 },stripeRows:function(){$("div.text table").find("tr:even").addClass(a.rowStyle)
 }}
 }();
-var COMMON_tracking=function(){return{init:function(){},trackingRedirect:function(b,a,c){cmCreatePageElementTag(a,c);
-var d=b;
+var COMMON_tracking=function(){return{init:function(){},trackingRedirect:function(b,a,c){var d=b;
 if(d.match("^http://")=="http://"){d=d.substring(d.indexOf("/",7))
-}cmCreateManualLinkClickTag(d,"Features");
-window.location=b
-},triggerTracking:function(a,b){cmCreatePageElementTag(a,b)
-}}
+}window.location=b
+},triggerTracking:function(a,b){}}
 }();
 function getFlashVersion(){try{try{var a=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");
 try{a.AllowScriptAccess="always"

@@ -258,7 +258,7 @@ function initGlobalDropdown() {
         NBC('header.global .navbar').bind('mouseenter', loadGlobalDropdown);
     }
     NBC('header.global .navbar .dropdown-global-link').live('click', function(event) {
-        if (NBC('#dropdowns-global').css('display') == 'block') {
+        if (NBC('#dropdowns-global').css('display') == 'block' && NBC(this).data('target')) {
             event.preventDefault();
             setActiveNav(this);
             loadGlobalDropdown();
@@ -499,13 +499,15 @@ function loadGlobalFooterShop() {
         success : function (data) {
             if (data.products.length > 0) {
                 var output = '', refCode;
-		if (s.prop10 === "Front Door") {
-                refCode = "&ecid=PRF-NBC-102873&pa=PRF-NBC-102873";
+
+                if (s.prop10 === "Front Door") {
+                    refCode = "&ecid=PRF-NBC-102873&pa=PRF-NBC-102873";
                 } else if (s.prop10 === "Global") {
-                refCode = "&ecid=PRF-NBC-102770&pa=PRF-NBC-102770";
+                    refCode = "&ecid=PRF-NBC-102770&pa=PRF-NBC-102770";
                 } else {
-		refCode = '';
-		}
+                    refCode = '';
+                }
+
                 for (var i in data.products) {
                     var node = data.products[i];
                     output += '<li class="shop">';
@@ -890,7 +892,8 @@ function initVideosSlider () {
         }
         function resizeURL (videoImg, width, height) {
             videoImg = videoImg.replace(/.*NBCdotCOM/, '/NBCdotCOM'); // kill prefix 
-            return 'http://videoservices.nbcuni.com/imageresize/getImage?w=' + width + '&h=' + height + '&path=' + videoImg;
+            // return 'http://videoservices.nbcuni.com/imageresize/getImage?w=' + width + '&h=' + height + '&path=' + videoImg;
+            return 'http://www.nbc.com/app2/img/' + width + 'x' + height + 'xR/video' + videoImg;
         }
     });
 }

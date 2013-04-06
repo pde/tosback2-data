@@ -84,11 +84,6 @@ function s_doPlugins(s) {
     s.prop27 = s.getDaysSinceLastVisit('s_dayslastvisit');
     s.eVar27 = "D=c27";
 
-    // Email Campaign Tracking
-    if(!s.eVar40){
-        s.eVar40=s.getQueryParam('fid');
-    }
-
     // Copy props to eVars andor eVars to props     
     if (s.prop1 && !s.eVar1) s.eVar1 = "D=c1";
     if (s.prop2 && !s.eVar2) s.eVar2 = "D=c2";
@@ -200,8 +195,6 @@ s.split = new Function("l", "d", "var i,x=0,a=new Array;while(l){i=l.indexOf(d);
 s.join = new Function("v", "p", "var s = this;var f,b,d,w;if(p){f=p.front?p.front:'';b=p.back?p.back:'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0;x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);else str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
 //Plug-in: crossVisitParticipation v1.7 - stacks values from specified variable in cookie and returns value
 s.crossVisitParticipation = new Function("v", "cn", "ex", "ct", "dl", "ev", "dv", "var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var ay=s.split(ev,',');var ea=s.split(s.events,',');for(var u=0;u<ay.length;u++){for(var x=0;x<ea.length;x++){if(ay[u]==ea[x]){ce=1;}}}}if(!v||v==''){if(ce){s.c_w(cn,'');return'';}else return'';}v=escape(v);var arry=new Array(),a=new Array(),c=s.c_r(cn),g=0,h=new Array();if(c&&c!=''){arry=s.split(c,'],[');for(q=0;q<arry.length;q++){z=arry[q];z=s.repl(z,'[','');z=s.repl(z,']','');z=s.repl(z,\"'\",'');arry[q]=s.split(z,',')}}var e=new Date();e.setFullYear(e.getFullYear()+5);if(dv==0&&arry.length>0&&arry[arry.length-1][0]==v)arry[arry.length-1]=[v,new Date().getTime()];else arry[arry.length]=[v,new Date().getTime()];var start=arry.length-ct<0?0:arry.length-ct;var td=new Date();for(var x=start;x<arry.length;x++){var diff=Math.round((td.getTime()-arry[x][1])/86400000);if(diff<ex){h[g]=unescape(arry[x][0]);a[g]=[arry[x][0],arry[x][1]];g++;}}var data=s.join(a,{delim:',',front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{delim:dl});if(ce)s.c_w(cn,'');return r;");
-//Plugin: TNT Integration Plugin v1.0 
-s.trackTNT=new Function("v","p","b","var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(sgetQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
 //Plugin: facebookSocialPlugins v1.1
 s.facebookSocialPlugins = new Function("a", "b", "c", "d", "e", "f", "g", "h", "var s=this;s.fbICount++;if(s.fbICount>=5){clearInterval(socialInterval);}if(typeof(FB)!='undefined'){clearInterval(socialInterval);function re(a,b){a=s.split(a,'>'),FB.Event.subscribe(b,function(){track(a[0],a[1]);});}if(b){re(b,'edge.create');}if(c){re(c,'edge.remove');}if(d){re(d,'comment.create');}if(e){re(e,'comment.remove');}if(f){re(f,'auth.login');}if(g){re(g,'auth.logout');}if(h){re(h,'message.send');}}function track(m,n){s.ltVT=s.linkTrackVars;s.ltET=s.linkTrackEvents;s.etE=s.events;s.linkTrackVars=a?(a+',events'):'events';s.linkTrackEvents=n;s.events=n;if(a){s[a]=m;}s.tl(this,'o',m);console.log(m);s.linkTrackVars=s.ltVT;s.linkTrackEvents=s.ltET;s.events=s.etE;}");
 s.fbICount = 0;

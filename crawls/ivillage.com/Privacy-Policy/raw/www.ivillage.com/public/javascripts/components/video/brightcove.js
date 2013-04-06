@@ -78,10 +78,6 @@ function showSponsor(){
 // callback function for adComplete event
 function onAdComplete(event) {
   adModule.showSponsorMessage(false);
-  // Let's reward user for watching this video
-  if(typeof iVillage.loyalty != 'undefined' && typeof iVillage.loyalty.videoViewCredit != 'undefined'){
-      iVillage.loyalty.videoViewCredit(videoCompletedId);
-  }
 }
 
 function onPlayerError(event) {

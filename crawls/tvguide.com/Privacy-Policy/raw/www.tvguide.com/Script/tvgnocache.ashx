@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,3,3,12,19,45,0);
+var tvgServerTimeUTC = new Date(2013,3,6,12,17,17,0);
 
-var dServerET = new Date(2013,3,3,8,19,45,0);
+var dServerET = new Date(2013,3,6,8,17,17,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,3,3);
-dSrvrTime.setUTCHours(12,19,45,0);
+dSrvrTime.setUTCFullYear(2013,3,6);
+dSrvrTime.setUTCHours(12,17,17,0);
 
-var dLocalTime = new Date(2013,3,3,8,19,45,0);
-var dGridStart = new Date(2013,3,3,8,0,0,0);
+var dLocalTime = new Date(2013,3,6,8,17,17,0);
+var dGridStart = new Date(2013,3,6,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 172170f5f1ca8718df78903f989c98211a896c83 1364991585';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 30b69927b41beecc7744a2b7e546e7d815282c33 1365250637';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,11 +50,11 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 4/3/2013 12:15:00 PM GMT */
+/* TVGSVC02 4/6/2013 12:15:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-04-03)*/
+/* Listings: In-Grid and Close-Up Ads (2013-04-06)*/
 var GridAds = true;
-var MaxGridAds = 5;
+var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 

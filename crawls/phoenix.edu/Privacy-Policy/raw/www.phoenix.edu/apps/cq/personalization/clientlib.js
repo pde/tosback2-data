@@ -51,9 +51,7 @@ var e=l.length>1?l[l.length-2]:"";
 var k=l.length>0?l[l.length-1]:"";
 $(b).find("a").each(function(){var o=encodeURI($(this).html());
 var n=encodeURI(e)+"-_-"+encodeURI(k)+"-_-"+o;
-var m=this.href+"?cm_sp="+n;
-$(this).click(function(){cmCreateManualLinkClickTag(m,o,pi)
-})
+var m=this.href+"?cm_sp="+n
 });
 COMMON_moduleInitializer.initializeMiscModules()
 }else{$(b+"_loadingimg").remove();

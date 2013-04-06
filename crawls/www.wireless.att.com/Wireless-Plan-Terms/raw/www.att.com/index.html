@@ -96,7 +96,13 @@ var mRedirectURL = 'http://m.att.com';
 					request.open("GET",ajaxUrl,true); 
 					request.send(); 
 				// Device is not a tablet,ridirect to m.att.com 
-					window.location =  mRedirectURL; 
+					var referrer = encodeURIComponent(document.referrer); 
+					referrer = referrer.replace("%3A","%253A"); 
+					if (window.location.search != '') { 
+						window.location = mRedirectURL + window.location.search +  '&referrer=' + referrer; 
+					} else { 
+						window.location = mRedirectURL + '?referrer=' + referrer; 
+					} 
 				} 
 		} 
 	} 
@@ -133,14 +139,14 @@ var mRedirectURL = 'http://m.att.com';
 	<meta name="description" content="AT&amp;T is a leader in telecommunication services, including cell phones, wireless, U-verse, digital TV, high speed internet, DSL, home phone, and bundled services." >	 
 	<meta name="keywords" content="AT&amp;T, Cell Phones, U-verse, DSL Internet, High Speed Internet, Digital TV, Home Phone Service, Phone Bundles, Wireless, 4G, AT&amp;T Wireless, Cingular" > 
 	<meta name="robots" content="INDEX,FOLLOW" /> 
-	<link rel="canonical" href="index.html"/> 
+	<link rel="canonical" href="http://www.att.com/homepage/es/index.html"/> 
 	<meta NAME="DCSext.wtPN" CONTENT="ATT Homepage"/> 
 	<meta name="verify-v1" content="byKACSdFnpnvPyDbbtC1Ca4gjO9crDrmfX9T0LrkRaI=" /> 
     <meta name="y_key" content="1543af448e9750db" /> 
     <meta name="msvalidate.01" content="1A67BDDDDB844ABA85FD37D994D537C8" /> 
-	<link rel="stylesheet" type="text/css" href="media/cms/homepage/styles/combined.min.css"/> 
+	<link rel="stylesheet" type="text/css" href="../1.ecom.attccc.com/media/cms/homepage/styles/combined.min.css"/> 
 <!--[if IE 7]> 
-<link rel="stylesheet" href="http://www.att.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
 <style> 
 .LoginModalButtonDiv { 
@@ -773,7 +779,7 @@ jQuery(document).ready(function(){
                Access Your Account 
            </div> 
            <div class="PadLeft10 rel top-1px float-left"> 
-               <img class="lockIcon" src="shopcms/media/att/2012/homepage/Lock.png" alt=""/> 
+               <img class="lockIcon" src="../3.ecom.attccc.com/shopcms/media/att/2012/homepage/Lock.png" alt=""/> 
            </div> 
            <div class="clear"></div> 
        </div> 
@@ -907,13 +913,13 @@ jQuery(document).ready(function(){
                 </div> 
             </div> 
             <input name="actionEvent" value="dotComLogin" type="hidden"> 
-        </form>  
+        </form>   
         <div class="LoginLinks PadTop20">  
             <div class="PadBot10">                 
                 <p>Forgot <a class="" href="https://www.att.com/olam/enterEmailForgotId.myworld" data-cqpath="/content/att/homepage/en/index/jcr:content/loginpane;2012326">User ID</a> or <a class="" href="https://www.att.com/olam/enterUserIdSlidFpwd.myworld" data-cqpath="/content/att/homepage/en/index/jcr:content/loginpane;2012326">Password?</a></p> 
             </div>             
             <div style="padding-bottom:1px;"> 
-                <p>Need a User ID? <a class="" href="https://www.att.com/olam/slidRegistrationAction.olamexecute" data-cqpath="/content/att/homepage/en/index/jcr:content/loginpane;2012326">Register today</a></p> 
+                <p>Need a User ID? <a class="" href="https://www.att.com/olam/slidRegistrationAction.olamexecute" title='Register now' data-cqpath="/content/att/homepage/en/index/jcr:content/loginpane;2012326">Register today</a></p> 
             </div> 
         </div> 
     </div> 
@@ -1023,7 +1029,7 @@ jQuery(document).ready(function(){
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_EOY_UG_tiles","name":"Atrix_2_EOY_UG_tiles","campainName":"campaign","id":"campaign_Atrix_2_EOY_UG_tiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR","name":"Atrix_2_OOR","campainName":"campaign","id":"campaign_Atrix_2_OOR","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content;2013066" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content;2013093" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="homepagethreeup parbase section"> 
  <!-- BEGIN: Home Page Three up  --> 
@@ -1087,7 +1093,7 @@ deals starting at 99¢.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2013032"> 
+		<a class="cta" href="shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2013093"> 
 <img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-AAL.gif" alt="Shop Now"/> 
 </a> 
 <div class="clear"></div> 
@@ -1138,12 +1144,12 @@ free shipping.<br>
 	<div id="mainSlot1" style="float:left;width:auto;"> 
         <div class="thirdwidth1 parbase onethird"> 
 <div class="featuredItemTile" style="height:auto;"> 
-    <img src="shopcms/media/att/2013/tiles/w324h170/btn-hpTile-EN-LearnMore-HTC1.png" alt="Coming Soon – The HTC One®"/> 
+    <img src="shopcms/media/att/2013/tiles/w324h170/155945-HTCOne-White-324x170.png" alt="Pre-Order The HTC One<sup>&#174;</sup>"/> 
    <div class="textSection"> 
         <div class="text parbase titleplustext"> 
-    <h4 >Coming Soon – The HTC One®</h4>  
-    <p><p>Your life. This instant. Reshape <br> 
-your smartphone experience.<br> 
+    <h4 >Pre-Order The HTC One<sup>&#174;</sup></h4>  
+    <p><p>Your life. This instant.<br> 
+<br> 
 </p> 
 </p> 
 <div class="clear"></div>                  
@@ -1151,11 +1157,17 @@ your smartphone experience.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/htc/one.html?source=ICHPATHPT0000000O" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup_0/thirdwidth1/onethird/homepagecta;2013066"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/htc/one-32gb-glacial-silver.html?source=ICHPATHPT0000000O&wtExtndSource=hppreordertile" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup_0/thirdwidth1/onethird/homepagecta;2013093"> 
 <img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Learn-HTC1.gif" alt="Learn More"/> 
 </a> 
 <div class="clear"></div> 
 </div> 
+<div class="legal text parbase section"> 
+	<div class="legal"> 
+	   Requires new 2-yr contract with qualifying voice <br> 
+and data plan&nbsp;or Mobile Share plan.&nbsp; 
+	</div> 
+<div class="clear"></div></div> 
 </div> 
    </div> 
 </div> 
@@ -1212,7 +1224,8 @@ accessories together.<br>
 </div> 
 <div class="legal text parbase section"> 
 	<div class="legal"> 
-	   Device selection may vary. 2-year voice agreement with qualifying monthly data plan required. 
+	   Device selection may vary. 2-year voice agreement <br> 
+with qualifying monthly data plan required. 
 	</div> 
 <div class="clear"></div></div> 
 </div> 
@@ -1280,7 +1293,7 @@ accessories together.<br>
 		<area target="_blank" tabindex="0" shape="rect" coords="149,15,165,31" title="digg" alt="digg" href="http://www.digg.com" onclick="this.href=meteor.sharing.href('Digg');"> 
 		<area target="_blank" tabindex="0" shape="rect" coords="170,15,188,31" title="email" alt="email" href="mailto:" onclick="this.href=meteor.sharing.href('Email' );"> 
 	</map> 
-	<img id="horiz_socialMedia" src="shopcms/media/att/2011/shop/common/ico_share.jpg" alt="Share" usemap="#horiz_sharemap"/> 
+	<img id="horiz_socialMedia" src="../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/ico_share.jpg" alt="Share" usemap="#horiz_sharemap"/> 
 </div> 
 	</div> 
 	<div class="clear"></div> 
@@ -1428,14 +1441,14 @@ accessories together.<br>
 	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
 </div>  
 <div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
-	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
 </div> 
 <div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="http://www.att.com/homepage/index.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="http://www.att.com/homepage/index.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="clear"></div> 
 	</div> 
@@ -1475,7 +1488,7 @@ accessories together.<br>
 												 | 
 												<a href="internal/broadbandinfo.html" style="" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">&copy;2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter"> 
@@ -1500,9 +1513,9 @@ accessories together.<br>
 				</div> 
 		<!-- WebTrends Base Tag : include only at end of page --> 
 		<!-- Webtrend global params --> 
-		<script type="text/javascript" src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 21586807987169505227661545410750035672 --> 
+		 <!--X-Renderer: 250422362810079826899885105605683928292 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1514,7 +1527,7 @@ ATT.globalVars.custType = "";
 ATT.globalVars.ban = ""; 
 ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "94086"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -1525,7 +1538,7 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="94086"; 
 	} 
 	return wtzip; 
 }; 
@@ -1607,7 +1620,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "SUNNYVALE"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -1616,7 +1629,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "CA"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1650,7 +1663,7 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            ATT.log('dcs injection block'); 
 	            var s = document.createElement("script"); 
 	            s.type = "text/javascript"; 
-	            s.src = "http://www.att.com/webtrends/scripts/dcs_tag.js"; 
+	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
 	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
@@ -1694,7 +1707,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","401jRbLb726v9Yf1th2cRxQD!405123922!1364969627631"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","2GZpRf7LbnPzGPhW5D22jRd4!-1471844410!1365212040445"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1724,7 +1737,7 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
 		var element = document.createElement('script');   
 		element.type='text/javascript';   
 		element.async = true;   
-		element.src="http://view.atdmt.com/jaction/cntcin_ATTcomVisitorUAT_1";   
+		element.src="https://view.atdmt.com/jaction/cntcin_ATTcomVisitorUAT_1";   
 		document.body.appendChild(element);  
 	});  
 </script>  

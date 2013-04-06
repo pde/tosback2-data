@@ -209,7 +209,7 @@ metric.sendRocketFuel = function() {
 		    var cachebust = (Math.random() + "").substr(2);
 		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
 			var prodIDs = itemid;
-		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"scs=product:"+prodIDs;
+		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"&pid="+prodIDs;
 		})();
 		// End Rocket Fuel Universal Pixel
 	} else if (window.location.pathname.indexOf("/ix/") != -1 && resx.links != null) {
@@ -225,8 +225,8 @@ metric.sendRocketFuel = function() {
 		  (function () {
 		    var cachebust = (Math.random() + "").substr(2);
 		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs;
-		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"scs=product:"+prodIDs;
+			var prodIDs = productIDs.join();
+		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"&pid="+prodIDs;
 		})();
 		// End Rocket Fuel Universal Pixel
 		
@@ -250,8 +250,8 @@ metric.sendRocketFuel = function() {
 		  (function () {
 		    var cachebust = (Math.random() + "").substr(2);
 		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs.join(";");
-		    new Image().src = protocol+"//20505545p.rfihub.com/ca.gif?rb=2239&ca=20505545&ra="+cachebust+"scs=product:"+prodIDs;
+			var prodIDs = productIDs.join();
+		    new Image().src = protocol+"//20505545p.rfihub.com/ca.gif?rb=2239&ca=20505545&ra="+cachebust+"&pid="+prodIDs;
 		})();
 		// End Rocket Fuel Shopping Cart Pixel
 	} else if (window.location.pathname.indexOf("OrderConfirm") != -1 && resx.itemid != null) {
@@ -277,12 +277,12 @@ metric.sendRocketFuel = function() {
 		  (function () {
 		    var cachebust = (Math.random() + "").substr(2);
 		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs.join(";"); 	//PRODUCT IDs
-			var prodQuan = quantities.join(";"); 	//PRODUCT QUANTITY
+			var prodIDs = productIDs.join(); 	//PRODUCT IDs
+			var prodQuan = quantities.join(); 	//PRODUCT QUANTITY
 			var ordrev = resx.total;	//ORDER REVENUES
 			var trid = resx.transactionid; 	//TRANSACTION IDs 
 			var ctype = customerType; 	//1 FOR NEW, 2 FOR EXISTING
-		    new Image().src = protocol+"//20505543p.rfihub.com/ca.gif?rb=2239&ca=20505543&ra="+cachebust+"&scs=product:"+prodIDs+",ProdQuantity:"+prodQuan+",Revenue:"+ordrev+",TransID:"+trid+",custype:"+ctype;
+		    new Image().src = protocol+"//20505543p.rfihub.com/ca.gif?rb=2239&ca=20505543&ra="+cachebust+"&pid="+prodIDs+"&pquant="+prodQuan+"&revenue="+ordrev+"&transid="+trid+"&custtype="+ctype;
 		})();
 		// End Rocket Fuel Conversion Pixel
 	} 

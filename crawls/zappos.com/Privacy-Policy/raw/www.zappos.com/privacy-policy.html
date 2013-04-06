@@ -28,10 +28,16 @@ if (/^secure-(?:www|vip)\./.test(window.location.hostname)) {
   var zfcUPU = '/c/privacy-policy';
   var zfcAHW = [{h: 'a1.zassets.com', r:   2}, {h: 'a2.zassets.com', r:   2}, {h: 'a3.zassets.com', r:   2}, {h: 'l3.zassets.com', r:   3}, {h: 'l4.zassets.com', r:   3}];
   var hydraTests = [
-    {name:'arp',phase:7,url:/./,variants:[{chance:0.8,setup:function(){window.hideAmazonRetargetingPixel=1;}},{chance:0.2,setup:function(){window.hideCriteoPixel=1;}}]}
+    {name:'arp',phase:7,url:/./,variants:[{chance:0.8,setup:function(){window.hideAmazonRetargetingPixel=1;}},{chance:0.2,setup:function(){window.hideCriteoPixel=1;}}]},
+    {name:'wclvs',phase:1,url:/^\/d\/womens-clothing\b/,variants:[{chance:0.5,setup:function(){window.bmv.wclvs=0}},{chance:0.5,setup:function(){window.bmv.wclvs=1}}]},
+    {name:'mclvs',phase:1,url:/^\/d\/mens-clothing\b/,variants:[{chance:0.5,setup:function(){window.bmv.mclvs=0}},{chance:0.5,setup:function(){window.bmv.mclvs=1}}]},
+    {name:"xnh",phase:1,url:/^\/(?:search|[a-z\-]+\/[\w\-]*\.zso)\b/,variants:[{chance:0.7},{chance:0.3,setup:function(){document.write("<style>.navCont .nosh{display:none !important;}</style>")}}]},
+    {name:"srd",phase:1,url:/^\/(?:search|[a-z\-]+\/[\w\-]*\.zso)\b/,variants:[{chance:0.8},{chance:0.1,setup:function(){window.searchResponsive1=1}},{chance:0.1,setup:function(){window.searchResponsive2=1}}]},
+    {name:"sb",phase:1,url:/^\/(?:search|[a-z\-]+\/[\w\-]*\.zso)\b/,defer:function(a){a.on("submit","field","globalSearch")},variants:[{chance:0.7,redirect:"param"},{chance:0.1,redirect:"param"},{chance:0.1,redirect:"param"},{chance:0.1,redirect:"param"}]},
+    {name:"ipp2",phase:1,url:/^\/(?:search|[a-z\-]+\/[\w\-]*\.zso)\b/,defer:function(a){a.on("submit","field","globalSearch")},variants:[{chance:0.9,redirect:"param"},{chance:0.1,redirect:"param"}]}
   ];
   var zfc = [];
-  zfc.push(['initialize', '1364988839559', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, '608c3d80-9c52-11e2-9278-001018b3e408', zfcUUID]);
+  zfc.push(['initialize', '1365250854692', (new Date).getTime(), 'dcache', 'zetadrupal.zappos.net', zfcUPU, '6dbcd41a-9eb4-11e2-b4c6-0010184bda34', zfcUUID]);
   zfc.push(['setEventUrl', '/event.cgi']);
 </script><script type="text/javascript">
 (function(e,t){function i(){e.todo=e.todo||[],e.K2={cookieDomain:e.zfcCookieDomain,clickCookie:"click",clickAckCookie:"clickAck",hydra:{testParam:"zfcTest"},tryst:{read:"holmes",write:"watson"}}}function s(i){if(!r){var s,o,u=e.zfcUPU||e.location.toString();i.url&&(s=new RegExp(i.url),o=s.test(u));if(o||!i.url||i.pre||i.post)return r=!0,t.write('<script src="http://www.zappos.com/'+n+'" type="text/javascript"></scr'+"ipt>"),!0}}function o(){var t,n,r=e.hydraTests||[];for(t=0,n=r.length;t<n;t++)if(s(r[t]))return!0}function u(){var e;if(!r){r=!0;var e=t.createElement("script");e.type="text/javascript",e.src=n,e.async=!0,(t.getElementsByTagName("head")[0]||t.getElementsByTagName("body")[0]).appendChild(e)}}function a(){e.zfc&&zfc.push(["createWindowId",zfcUUID]),i(),e.Gasherbrum.load("sync")}var n="/karakoram/js/main.dc1fdbe.js",r=!1;e.hq={addTest:function(t){e.hydraTests.push(t),s(t)}},e.Gasherbrum={load:function(e){e==="sync"?o():e==="async"&&u()}},a()})(window,document);</script>
@@ -74,7 +80,7 @@ for (var i = 0; i < names.length; ++i) w.console[names[i]] = function() {};
 // From /js/z/z.js
 var z = {init:[],choiceStreamQueue:[],runChoiceStreamQueue:function(){var q=z.choiceStreamQueue;for(var i=0;i<q.length;i++)q[i]();}};
 // global perpetual cart object
-z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecbf7730b60d45ea8a81fbcdce21bf55cebe6f93f5d771b2d06693444b0584bad074dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
+z.globalPerp = {apiToken:'4fd01eb2727b220c84809bc3f98f3ecbef03e699c0e9c9bab72c019fb272e1524ab21638a1ad1f99085d4c26ff9dd8774dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06',motto:'Free Shipping Both Ways - 24/7 Customer Service',cartName:'My Cart'};
 z.hideChoicestream = false;
 // From /js/z/cookies.js
 //the reference to ticket in this readCookie function is for sandbox, which may not be receive the Tryst treatment
@@ -108,7 +114,7 @@ z.site.shortname = 'Zappos';
 z.atgChatId = '42995';
 z.imagesSecureUrl = 'https://secure-www.zappos.com';
 z.token = z.token || {};
-z.token.cart = '4fd01eb2727b220c84809bc3f98f3ecbf7730b60d45ea8a81fbcdce21bf55cebe6f93f5d771b2d06693444b0584bad074dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06';
+z.token.cart = '4fd01eb2727b220c84809bc3f98f3ecbef03e699c0e9c9bab72c019fb272e1524ab21638a1ad1f99085d4c26ff9dd8774dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06';
 </script>
 <script type="text/javascript">
 var _denali = [];
@@ -243,7 +249,7 @@ Search by:
 <a href="http://www.zappos.com/popular-searches" class="gae-click*Global*Search-by*Popular-Searches">Popular Searches</a>
 </div>
 <div id="callouts">
-<a href="http://www.zappos.com/easter" title="Easter Outfits"><img src="../a1.zassets.com/assets/hotspot/timeslot_images/12271_1362788877.gif" width="139" height="56" alt="Easter Outfits" border="0" id="zappos-header-callout-1" class="hotspot"></a><a href="http://www.zappos.com/shipping-and-returns" title="Free Shipping and Free Returns"><img src="../a1.zassets.com/assets/hotspot/timeslot_images/12159_1355338718.png" width="139" height="56" alt="Free Shipping and Free Returns" border="0" id="zappos-header-callout-2" class="hotspot"></a> </div>
+<a href="http://www.zappos.com/sale" title="Clearance"><img src="../a1.zassets.com/assets/hotspot/timeslot_images/12228_1359500194.gif" width="139" height="56" alt="Clearance" border="0" id="zappos-header-callout-1" class="hotspot"></a><a href="http://www.zappos.com/shipping-and-returns" title="Free Shipping and Free Returns"><img src="../a1.zassets.com/assets/hotspot/timeslot_images/12159_1355338718.png" width="139" height="56" alt="Free Shipping and Free Returns" border="0" id="zappos-header-callout-2" class="hotspot"></a> </div>
 <a id="viewCart" href="http://www.zappos.com/cart" class="gae-click*Global*Header*Cart">My Cart</a>
 <ul id="nav">
 <li class="shoes"> <a href="http://www.zappos.com/shoes" data_menu_id="0" class="gae-click*Global*Main-Nav*Shoes to-drupal">Shoes</a></li>
@@ -638,6 +644,6 @@ afterEverything();
 (function(e){/^\/product\/\d/.test(e.zfcUPU)&&(e.styleId?zfc.push(["addVar","styleId",e.styleId]):e.Product&&e.Product.shownStyle&&zfc.push(["addVar","styleId",e.Product.shownStyle]))})(window),zfc.push(["leaveBody",(new Date).getTime()]),function(){function t(t,n){var r=window[t];window[t]=function(){typeof r=="function"&&r(),e||(e=!0,zfc.push(["onload","/onload.cgi",(new Date).getTime(),n]))}}var e=!1;t("onload",!1),t("onunload",!0)}(),zfc.push(["tracker","/track.cgi"]),window.todo&&(window.todo.push(function(){var e=this,t=e.K2;e.LazyEye?new LazyEye(Protobuf.Messages.zfcLazyEye,"zfc.LazyEye",{maxDataLength:700,listenDuration:1e3,textNodeMaxLength:64,cookieDomain:t.cookieDomain,clickCookie:t.clickCookie,clickAckCookie:t.clickAckCookie}):e.Annapurna&&Annapurna.error("Lazy Eye was not found on "+zfcUPU+" at "+ +(new Date))}),window.todo.push(function(){Hydra.Storage&&Hydra.Storage.scheduler(),Annapurna.Scheduler&&Annapurna.Scheduler.cleanse()}));</script></body>
 <!-- -->
 <!-- -->
-<!-- zfc06 www dcache 2013/04/03 04:33:59 1 ms uplat 0.543 ms rwlat 15 execs 6209 trans 58094 bytes 156 lrw 170 lex 232 texts 2892 words 4 links 608c3d80-9c52-11e2-9278-001018b3e408 --></html>
+<!-- zfc05 www dcache 2013/04/06 05:20:54 33 ms uplat 1.195 ms rwlat 15 execs 6205 trans 58082 bytes 156 lrw 170 lex 232 texts 2892 words 4 links 6dbcd41a-9eb4-11e2-b4c6-0010184bda34 --></html>
 
 

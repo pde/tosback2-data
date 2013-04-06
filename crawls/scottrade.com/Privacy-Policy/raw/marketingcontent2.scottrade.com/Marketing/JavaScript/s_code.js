@@ -1,12 +1,10 @@
 /* SiteCatalyst code H.22 */
-
 if (!s_account) {
     if (location.hostname.indexOf('culture.scottrade.com') > -1) {
         var s_account = "scottradeculture,scottradeglobal"
     }
     else s_account = ((typeof s_account != 'undefined') ? s_account : 'scottradecom,scottradeglobal');
 }
-
 var s = s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 s.currencyCode = "USD"
@@ -22,7 +20,6 @@ s.dc = 112
 s.visitorNamespace = "scottrade"
 s.trackingServer = "metrics.scottrade.com"
 s.trackingServerSecure = "smetrics.scottrade.com"
-
 /* PageName Config */
 s.siteID = ((typeof sc_siteID != 'undefined') ? sc_siteID : 'ST');
 s.defaultPage = "Home"
@@ -30,70 +27,74 @@ s.queryVarsList = ""
 s.pathExcludeDelim = ";"
 s.pathConcatDelim = ":"
 s.pathExcludeList = ";"
-
 /* Channel Manager Configuration */
 s._extraSearchEngines = "verizon.net|q|Google - Verizon>search.juno.com|query|Yahoo - Juno"
 s._channelDomain = "Social Networks|facebook.com,myspace.com,twitter.com,digg.com,del.icio.us,youtube.com,friendfeed.com,flikr.com"
 s._channelParameter = "Dream eMail|ep_mid>"
 s._channelPattern = "Ad Manager|AM|>Press Release|PR_>Banner|BN|>Videos|VD|>Emails|EM|>Tools|TL|>Affiliate Networks|AN|>Social Media|SM|"
-
 /* Link Tracking Plugin config */
 s.hbx_lt = "automatic"
-
 /* DynamicObjectIDs config */
 function s_getObjectID(o) {
     var ID = o.href;
     return ID;
 }
 s.getObjectID = s_getObjectID
-
 s.usePlugins = true
-
 function s_doPlugins(s) {
-
     /* s_code version, hostname, URL, clickmap */
-    s.prop11 = "12-3-2010a"
+    s.prop11 = "12-19-2012";
     s.prop9 = location.hostname;
     s.prop10 = document.URL;
     s.setupDynamicObjectIDs();
     s.server = s_account;
-
     /* Set landing page event at visit start */
     if (location.hostname.indexOf('scottrade.com') > -1) {
         if (s.getVisitStart('s_viss'))
             s.events = s.apl(s.events, 'event30', ',', 1);
     }
-
+    
+    /*Site Section and Sub Section Naming*/
+    if(s.pageName){
+    var s_site_section=s.split(s.pageName,":")
+    s.channel=s_site_section[1]
+    s.prop5=s_site_section[2]
+        
+    }
     /* Set the campaign variable from cid - external campaigns, sctr - paid search,(s_kwcid - old paid search) - , epmid - email campaigns */
     if (!s.campaign) {
-        s.campaign = s.getQueryParam('cid,sctr,ep_mid', '_')
+        s.campaign = s.getQueryParam('cid,sctr,ep_mid', '_');
         s.campaign = s.getValOnce(s.campaign, "s_campaign", 0)
     }
     if (s.campaign) s.events = s.apl(s.events, 'event7', ',', 1);
-
     /* Capture internal campaigns, ticker symbol, internal search, samvisid */
-    s.eVar16 = s.getQueryParam('pid')
-    s.eVar17 = s.getQueryParam('symbol')
+	/* Internal Campaigns */
+	if(!s.eVar16){s.eVar16 = s.getQueryParam('icid')};
+    s.eVar17 = s.getQueryParam('symbol');
     if (!s.prop18) { s.prop18 = s.eVar18 = s.getQueryParam('searchtxt,q') };
     s.eVar45 = s.prop45 = s.getQueryParam('amvid');
-
+	/*Campaign Stacking*/
+	s.eVar16=s.crossVisitParticipation(s.eVar16,'s_ev16','15','5','>','event4',0);
+	
     /* Time Parting */
     s.eVar23 = s.prop6 = s.getTimeParting('h', '-6'); // Set hour 
     s.eVar24 = s.prop7 = s.getTimeParting('d', '-6'); // Set day
     s.eVar25 = s.prop8 = s.getTimeParting('m', '-6') // Set minute
-
     /* pageURL for Search Center*/
     if (s.getQueryParam('s_kwcid,sctr')) {
         s.pageURL = s.manageQueryParam('s_kwcid', 1, 1);
         s.pageURL = s.manageQueryParam('sctr', 1, 1);
     }
-
     /* Define pageName and Channel */
     if (location.hostname.indexOf('about.scottrade.com') > -1) {
         s.siteID = "ST:About";
     }
     if (location.hostname.indexOf('careers.scottrade.com') > -1) {
         s.siteID = "ST:Careers";
+    }
+    
+    if (location.hostname.indexOf('trading.scottrade.com') > -1) {
+        s.siteID = "TR:Trading";
     }
     if (!s.pageType && !s.pageName) {
         s.pageName = s.getPageName()
@@ -103,10 +104,8 @@ function s_doPlugins(s) {
     if (!s.channel) {
         s.channel = s.siteID
     }
-
     /* get Previous pageName */
     s.eVar11 = s.getPreviousValue(s.pageName, 'gpv_pn', '');
-
     /* Channel Manager */
     s.channelManager('cid,sctr,ep_mid', ':', 'c_m', '', 'cm_dl', '1');
     if (s.getQueryParam('sctr').indexOf('|C|') > -1) {
@@ -123,62 +122,88 @@ function s_doPlugins(s) {
     /* make channel variables that don't count typed/bookmarked */
     if (s._channel == 'Direct Load')
         s.prop39 = s.eVar39 = "";
-
     /* Natural Search */
     if (s._channel == 'Natural Search') {
         s.eVar37 = s.prop35 = ((typeof s._keywords != 'undefined') ? s._keywords : '');
         s.prop36 = s.getAndPersistValue(s.prop35, 'omtrKW');
     }
-
     /* Paid Search */
     if (s._channel == 'Paid Search') {
         s.eVar38 = s.prop37 = ((typeof s._keyword != 'undefined') ? s._keywords : '');
         s.prop38 = s.getAndPersistValue(s.prop37, 'omtrPKW');
     }
-
     /* Keyword + pageName pathing */
     if (s.getAndPersistValue(s.prop35, 'omtrKW'))
         s.prop36 = s.getAndPersistValue(s.prop35, 'omtrKW') + ">>" + s.pageName;
     if (s.getAndPersistValue(s.prop37, 'omtrPKW'))
         s.prop38 = s.getAndPersistValue(s.prop37, 'omtrPKW') + ">>" + s.pageName;
-
     /* Capture Google Natural Search rank when available */
     s.getGoogleRank('event31', 'event32', '', 'eVar27');
-
     /* clickpast analysis to determine searchCenter bounce rates */
     s.tempSCCT = s.getQueryParam('sctr');
     s.tempSCCT = s.getValOnce(s.tempSCCT, 's_tempSCCT', 0);
     s.clickPast(s.tempSCCT, 'event21', 'event22');
-
     /* Capture T&T PCID for remarketing from Insight segments */
     if (window.mboxFactoryDefault && typeof mboxFactoryDefault.getPCId == "function")
     { s.prop44 = mboxFactoryDefault.getPCId().getId(); }
-
     /* Link tracking pageName + | + link name/href */
     s.setupLinkTrack(",,prop16,", "SC_LINKS");
     if (s.prop16) {
         s.prop16 = s.repl(s.prop16, '<br>', ' ');
         s.prop16 = s.repl(s.prop16, '<BR>', ' ');
     }
-
     /* Capture T&T recipe id */
     s.tnt = s.trackTNT();
-
     /* Decreases image URL length */
     s.plugins = "";
-
     /* Dynamic Copy to eVars */
     s.eVar48 = "D=pageName"
-
     /* Replace any s variables with the scOverride version of the variable */
     if (typeof window.scOverride != "undefined") {
         s.scCopy(scOverride, s);
     }
-
+	
+	/* Read cookie value and place in variable sCookieVal */
+	grabCookie();
 }
 s.doPlugins = s_doPlugins
-
 /************************** PLUGINS SECTION *************************/
+/*
+* Function - grab dvi cookie value
+*/
+var sCookieVal = "";
+function grabCookie() {
+    dviInterval = setInterval(function() {
+        var dviCookie = s.c_r('s_vi');
+        if (dviCookie.length > 0) {
+            clearInterval(dviInterval);
+            var visRegExp = /[0-9A-F]+-[0-9A-F]+/g;
+            var dvi = dviCookie.match(visRegExp);
+            sCookieVal = dvi;
+        }
+    }, 100)
+}
+/*
+ *	Plug-in: crossVisitParticipation v1.7 - stacks values from
+ *	specified variable in cookie and returns value
+ */
+s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
++"var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
++" ay=s.split(ev,',');var ea=s.split(s.events,',');for(var u=0;u<ay.l"
++"ength;u++){for(var x=0;x<ea.length;x++){if(ay[u]==ea[x]){ce=1;}}}}i"
++"f(!v||v==''){if(ce){s.c_w(cn,'');return'';}else return'';}v=escape("
++"v);var arry=new Array(),a=new Array(),c=s.c_r(cn),g=0,h=new Array()"
++";if(c&&c!=''){arry=s.split(c,'],[');for(q=0;q<arry.length;q++){z=ar"
++"ry[q];z=s.repl(z,'[','');z=s.repl(z,']','');z=s.repl(z,\"'\",'');arry"
++"[q]=s.split(z,',')}}var e=new Date();e.setFullYear(e.getFullYear()+"
++"5);if(dv==0&&arry.length>0&&arry[arry.length-1][0]==v)arry[arry.len"
++"gth-1]=[v,new Date().getTime()];else arry[arry.length]=[v,new Date("
++").getTime()];var start=arry.length-ct<0?0:arry.length-ct;var td=new"
++" Date();for(var x=start;x<arry.length;x++){var diff=Math.round((td."
++"getTime()-arry[x][1])/86400000);if(diff<ex){h[g]=unescape(arry[x][0"
++"]);a[g]=[arry[x][0],arry[x][1]];g++;}}var data=s.join(a,{delim:',',"
++"front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{deli"
++"m:dl});if(ce)s.c_w(cn,'');return r;");
 /*
 * Function - read combined cookies v 0.3
 */
@@ -212,7 +237,22 @@ if (!s.__ccucw) {
 + "ndexOf(';')));t=t.substring(t.indexOf(';')+1);ht=ht<t1?t1:ht;}d.set"
 + "Time(ht);s.c_wr(pn,pv,d);}return v==s.c_r(s.epa(k));");
 }
-
+/*
+ * YouTube Player plugin v0.4
+ */ 
+function onYouTubePlayerReady(a){if(!a)return;U();var b=document.getElementById(a);if(!b)return;YTO.E[a]=new Y('flash',a,b)}
+function onYouTubeHtml5PlayerReady(c){if(!c)return;var a=(typeof c.target.a.videoUrl=='string')?X(c.target.a.videoUrl):'';if(!a)return;U();if(!YTO.E[a])YTO.E[a]=new Y('html5',a,'')}
+function registerYThtml5Player(a,b){if(!a||!b)return;U();if(YTO.E[a]){YTO.E[a].B=b}else{YTO.E[a]=new Y('html5',a,b)}}
+function onYouTubeHtml5PlayerChange(c){if(!c)return;var a=(typeof c.target.a.videoUrl=='string')?X(c.target.a.videoUrl):'';if(!a)return;U();if(!YTO.E[a]||!YTO.E[a].B)return;YTO.E[a].S(c.data)}
+function U(){var t=this;if(typeof YTO!='object'){YTO=new Object();YTO.E=new Array();YTO.c=0;YTO.C=-1;YTO.T=0;V()}}
+function V(){if(typeof YTO!='object')return;if(YTO.C==-1)YTO.C=s.Media?(s.Media.trackWhilePlaying?1:0):-1;var d=YTO.C,E,e;if(YTO.E){for(E in YTO.E){e++;if(!YTO.E[E].R&&!YTO.E[E].D())d=0}}YTO.c=e;if(YTO.C>0&&d)s.Media.trackWhilePlaying=true;YTO.T=setTimeout('V()',2000)}
+function W(a){if(!a)return;var e=(typeof YTO.E[a]=='object')?YTO.E[a]:0;if(e){e.R=1;if(e.K){if(typeof s.Media=='object')s.Media.close(e.J);e.K=0}}e.regulatePolling();if(e.videoType=='flash'&&e.B)e.B.removeEventListener('onStateChange','YTO.E["'+a+'"].F');e.Z();YTO.c--}
+function X(u){var a,b,c,d,e='',t=this;if(u){a=u.indexOf('?');if(a>-1){b='&'+u.substring(a+1);c=b.indexOf('&v=');if(c>-1){e=b.substring(c+3);d=e.indexOf('&');if(d>-1)e=e.substring(0,d)}}}return e}
+function Y(q,a,b){var t=this;if(!a)return null;
+t.Z=function(){var t=this;t.A=t.B=t.G=t.H=t.I=t.J='';t.K=t.L=t.M=t.N=t.O=t.P=t.Q=t.R=0};
+t.D=function(){var k,t=this,d=1,x;if(typeof t.B.getVideoUrl!='function')return 1;t.H=t.B.getVideoUrl();if(t.H){k=X(t.H);t.J='YouTube|'+(k?k:t.H)}else{t.J='YouTube|unnamed'}if(t.B){x=t.B.getVideoBytesLoaded();if(typeof x!='undefined')t.N=x;x=t.B.getVideoBytesTotal();if(typeof x!='undefined')t.M=x;x=t.B.getCurrentTime();if(typeof x!='undefined')t.Q=x;x=t.B.getDuration();if(typeof x!='undefined')t.O=x;t.P=(t.M>0)?(t.O*t.N/t.M):0;x=2*YTO.c;if(x<2)x=2;if(t.L>-1&&typeof s.Media!='undefined'&&!(((t.P-t.Q)>=x)||((t.O-t.Q)<x)||(t.N==t.M))){d=0;s.Media.trackWhilePlaying=false}}return d};
+t.F=function(){var t=this,d,f;if(!t.B||!s.Media)return;t.R=1;t.D();if(YTO.C>0){d=s.Media.trackWhilePlaying;s.Media.trackWhilePlaying=true}switch(t.L){case-1:if(typeof s.Media=='object'){if(t.K)s.Media.close(t.J);if(typeof s.Media=='object')s.Media.open(t.J,t.O,t.I)}t.K=1;break;case 0:if(t.K&&(typeof s.Media=='object'))s.Media.close(t.J);t.K=0;break;case 1:f=(t.Q<t.O)?2:3;if(f!=t.K&&(typeof s.Media=='object')){if(!t.K)s.Media.open(t.J,t.O,t.I);if(f==2)s.Media.play(t.J,t.Q);else s.Media.stop(t.J,t.Q)}t.K=f;break;case 2:if(t.K!=3){if(typeof s.Media=='object'){if(!t.K)s.Media.open(t.J,t.O,t.I);s.Media.stop(t.J,t.Q)}t.K=3}break;case 3:if(!t.K&&typeof s.Media=='object')s.Media.open(t.J,t.O,t.I);break;case 5:break;default:break}if(YTO.C>0){s.Media.trackWhilePlaying=d}t.R=0};
+t.S=function(state){this.L=state;setTimeout('YTO.E["'+this.A+'"].F()',1)};if(YTO.E[a])W(a);t.Z();YTO.c++;t.G=q;t.A=a;t.B=b;t.I='YouTube '+q+' Player';t.D();if(q=='flash')t.B.addEventListener('onStateChange','YTO.E["'+a+'"].S',false)}
 /* Custom s.tl function */
 s.customTracklink = new Function("p", "ln", "up", ""
 + "var s=this;up=='true'?up=true:up=false;s.usePlugins=up;var lname=ln?ln:'customTrack';sTMP=p.split('|'),s_LTV=new Arr"
@@ -270,7 +310,6 @@ s.p_gh = new Function(""
 + "o),n=s.oid(o),x=o.s_oidt;if(s.eo&&o==s.eo){while(o&&!n&&y!='BODY'){"
 + "o=o.parentElement?o.parentElement:o.parentNode;if(!o)return '';y=s."
 + "ot(o);n=s.oid(o);x=o.s_oidt}}return o.href?o.href:'';");
-
 /*
 * Plugin (H code): manageQueryParam 1.3 - swap parameters in query string 
 */
@@ -315,7 +354,6 @@ s.p_gvf = new Function("t", "k", ""
 + "if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
 + "rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
 + "epa(v)}return''");
-
 /* Plugin: getPreviousValue_v1.0 - return previous value of designated */
 s.getPreviousValue = new Function("v", "c", "el", ""
 + "var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
@@ -513,7 +551,6 @@ s.seList = "search.aol.com,search.aol.ca|query,q|AOL.com Search>ask.com"
 + "ch.earthlink.net|q|Earthlink Search>search.comcast.net|q|Comcast Se"
 + "arch>search.rr.com|qs|RoadRunner Search>optimum.net|q|Optimum Searc"
 + "h";
-
 /*
 * Plugin: setupLinkTrack 2.0 - return links for HBX-based link 
 *         tracking in SiteCatalyst (requires s.split and s.apl)
@@ -551,7 +588,6 @@ s._LN = new Function("a", "b", "c", "d", ""
 + "var s=this;b=a.href;b+=a.name?a.name:'';c=a.name?a.name:a.innerHTML?a.innerHTML:a.href?a.href:'';d=s._LVP("
 + "b,'lpos');r"
 + "eturn[c,d]");
-
 s._LVP = new Function("a", "b", "c", "d", "e", ""
 + "var s=this;c=s._II(a,'&'+b+'=');c=c<0?s._II(a,'?'+b+'='):c;if(c>-1)"
 + "{d=s._II(a,'&',c+s._IL(b)+2);e=s._IS(a,c+s._IL(b)+2,d>-1?d:s._IL(a)"
@@ -573,11 +609,8 @@ s._NA = new Function("a", "var s=this;return new Array(a?a:0)");
 s._hbxm = new Function("m", "var s=this;return (''+m).indexOf('{')<0");
 s._hbxln = new Function("h", "var s=this,n=s.linkNames;if(n)return s.pt("
 + "n,',','lnf',h);return ''");
-
-
 /* Configure Modules and Plugins */
 s.loadModule("Integrate")
-
 /****************************** MODULES *****************************/
 /* Module: Integrate */
 s.m_Integrate_c = "var m=s.m_i('Integrate');m.add=function(n,o){var m=this,p;if(!o)o='s_Integrate_'+n;if(!s.wd[o])s.wd[o]=new Object;m[n]=new Object;p=m[n];p._n=n;p._m=m;p._c=0;p._d=0;p.disable=0;p.get"
@@ -591,7 +624,6 @@ s.m_Integrate_c = "var m=s.m_i('Integrate');m.add=function(n,o){var m=this,p;if(
 + "x];p._d--}};m.beacon=function(u){var p=this,m=p._m,s=m.s,imn='s_i_'+m._in+'_Integrate_'+p._n+'_'+p._c,im;if(!p.disable&&s.d.images&&s.apv>=3&&(!s.isopera||s.apv>=7)&&(s.ns6<0||s.apv>=6.1)){p._c++;i"
 + "m=s.wd[imn]=new Image;im.src=m._fu(p,u)}};m.script=function(u){var p=this,m=p._m;if(!p.disable)m.s.loadModule(0,m._fu(p,u),0,1)};m.l=new Array;if(m.onLoad)m.onLoad(s,m)";
 s.m_i("Integrate");
-
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code = '', s_objectID; function s_gi(un, pg, ss) {
     var c = "s._c='s_c';s.wd=window;if(!s.wd.s_c_in){s.wd.s_c_il=new Array;s.wd.s_c_in=0;}s._il=s.wd.s_c_il;s._in=s.wd.s_c_in;s._il[s._in]=s;s.wd.s_c_in++;s"

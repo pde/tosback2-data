@@ -1,4 +1,4 @@
-// TII Ads - Version 1.4.1 - 2013.03.28
+// TII Ads - Version 1.4.2 - 2013.04.04
 
 function TiiAdConfig(sitename) {
 	this.sitename	= sitename;
@@ -618,7 +618,7 @@ function tiiHtmlAdWH(mn, width, height) {
  
     var TIICONSTANTS = {
         'bk_allow_deny_mode': 'allow',
-        'bk_enabled_root_domains': 'people.com,ew.com,peoplestylewatch.com,celebritybabies.com,peopleenespanol.com,essence.com,ew.com,popwatch.ew.com,instyle.com,thisoldhouse.com,cookinglight.com,coastalliving.com,myhomeideas.com,realsimple.com,southernliving.com,sunset.com,time.com,timeforkids.com,sportsillustrated.cnn.com,sikids.com,fannation.com,golf.com,life.com',
+        'bk_enabled_root_domains': 'content.timeinc.net',
         'bk_disabled_root_domains': 'foodandwine.com,travelandleisure.com,departures.com,executivetravelmagazine.com,allyou.com,health.com,myrecipes.com',
         'bk_id': '13731',
         'bk_pixel_limit': '6',

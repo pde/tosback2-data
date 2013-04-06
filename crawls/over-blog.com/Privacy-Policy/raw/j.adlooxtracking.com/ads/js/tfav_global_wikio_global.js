@@ -1,4 +1,4 @@
-var adloox_tab_firewall=['firewall04.adlooxtracking.com','firewall05.adlooxtracking.com','firewall06.adlooxtracking.com','firewall07.adlooxtracking.com','firewall03.adlooxtracking.com'];
+var adloox_tab_firewall=['firewall04.adlooxtracking.com','firewall05.adlooxtracking.com','firewall06.adlooxtracking.com','firewall07.adlooxtracking.com','firewall03.adlooxtracking.com','firewall01.adlooxtracking.com','firewall02.adlooxtracking.com'];
 
 			var adloox_tab_firewall_l=adloox_tab_firewall.length;
 		var adloox_fw_ip=adloox_tab_firewall[Math.floor(Math.random()*adloox_tab_firewall_l)];
@@ -6,7 +6,7 @@ var adloox_tab_firewall=['firewall04.adlooxtracking.com','firewall05.adlooxtrack
 		
 			var adloox_visite_id=Math.floor(Math.floor((Math.random()*100000000000)+1));
 		var anticache=Math.floor(Math.random()*100000000); 
-		var adloox_methode="2013-04-03-10-08-02";
+		var adloox_methode="2013-04-03-16-30-01";
 
 		try
 		{

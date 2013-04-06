@@ -217,8 +217,19 @@ $(document).ready(function () {
     else if ($('#careercenter-default').length > 0) {
         $(".accordion").accordion({ autoHeight: false, active: 2 });
     }
+
+
+    else if ($('#active-employee-portal').length > 0) {
+        $(".accordion").accordion({ autoHeight: false, active: 4 });
+    }
+    
+    
+    
+    
     else
         $(".accordion").accordion({ autoHeight: false, active: 0 });
+        
+        
 
     //SearchJobs
     $('#ctl00_ctl07_btnSearchJobGo').click(function (e) {

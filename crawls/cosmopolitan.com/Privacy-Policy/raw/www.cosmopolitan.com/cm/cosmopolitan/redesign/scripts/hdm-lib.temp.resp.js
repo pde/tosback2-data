@@ -798,15 +798,14 @@ COSHDM.registration = {
 					if (this.fbConnected){
 						if (this.fbLinked){
 							if ( COSHDM.registration._vars.fbUser != null ){
-								$fbLink = $('<li><img src="https://graph.facebook.com/' + COSHDM.registration._vars.fbUser.id + '/picture" width="15" height="15" /> Hi <a class="trackSender" href="#">' + COSHDM.registration._vars.fbUser.first_name + '</a></li>');
+								$fbLink = $('<li><img src="https://graph.facebook.com/' + COSHDM.registration._vars.fbUser.id + '/picture" width="15" height="15" /> Hi <a class="trackSender" href="/registration/editProfile.html">' + COSHDM.registration._vars.fbUser.first_name + '</a></li>');
 								$fbLink.click(COSHDM.registration.action.openProfile);
 							} else {
-								$fbLink = $('<li>Hi <a href="#">' + mag_user.first_name + '</a></li>'); //new fb link with profile link
+								$fbLink = $('<li>Hi <a href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //new fb link with profile link
 							}
 
 						} else {
-							$editProfileLink = $('<li>Hi <a>' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
-							$editProfileLink.click(COSHDM.registration.action.openProfile);
+							$editProfileLink = $('<li>Hi <a href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
 							$linkContainer.append($editProfileLink); //append the edit profile link
 							$fbLink = $('<li class="facebookSignIn"><a id="iconFB" href="#">' + fbLinkText + '</a></li>');
 							$fbLink.click(function(){
@@ -816,8 +815,7 @@ COSHDM.registration = {
 						}
 					} else {
 						//if no fb, leave the fb link as-is
-						$editProfileLink = $('<li>Hi <a href="#">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
-						$editProfileLink.click(COSHDM.registration.action.openProfile);
+						$editProfileLink = $('<li>Hi <a href="/registration/editProfile.html">' + mag_user.first_name + '</a></li>'); //append the hdm edit profile link
 						$linkContainer.append($editProfileLink); //append the edit profile link
 					}
 					$linkContainer.append($fbLink); //append the facebook link

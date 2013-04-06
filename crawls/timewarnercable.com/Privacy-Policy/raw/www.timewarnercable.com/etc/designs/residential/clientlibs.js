@@ -22,8 +22,7 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 typeof ClientContext.get('/profile/city') === "undefined" &&
                 typeof ClientContext.get('/profile/state') === "undefined" &&
                 typeof ClientContext.get('/profile/soaId') === "undefined" &&
-                typeof ClientContext.get('/profile/region') === "undefined" &&
-                typeof ClientContext.get('/profile/bcRegion') === "undefined"){
+                typeof ClientContext.get('/profile/region') === "undefined"){
                 var geoLocation = getGeoLocationFromCookie();
                 updateGeoLocationProfile(geoLocation);
             }
@@ -42,8 +41,7 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 state:      'NY',
                 postalCode: '10019',
                 soaID:      'NYC.8150',
-                region:     'NYC',
-                bcRegion:   'NYC'
+                region:     'NYC'
             }
         }, opts);
 
@@ -139,7 +137,6 @@ CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
                 CQ_Analytics.ProfileDataMgr.setProperty('zip', geoLocation['postalCode']);
                 CQ_Analytics.ProfileDataMgr.setProperty('soaId', geoLocation['soaID']);
                 CQ_Analytics.ProfileDataMgr.setProperty('region', geoLocation['region']);
-                CQ_Analytics.ProfileDataMgr.setProperty('bcRegion', geoLocation['bcRegion']);
             }
         }
 
@@ -223,16 +220,49 @@ function getGeoLocationFromCookie() {
     }
     return(geoData);
 }
-function updateZip(zipCode, divID) {
+function determineFootprint() {
+    var divID = '';
+    var geoLocation = getGeoLocationFromCookie();
+    if(geoLocation) {
+        if(geoLocation && geoLocation.region && geoLocation.region.length > 0){
+            divID = '#inServiceAddressForm';
+        }else{
+            divID = '#outServiceAddressForm';
+        }
+    }else{
+        divID = '#outServiceAddressForm';
+    }
+    return divID;
+}
+function setZipPromptCookie(zipCode, divID) {
+    var options;
+    if (divID == '#inServiceAddressForm') {
+        var options = {
+            path: '/',
+            expires: 365
+            };
+    }
+    else if (divID == '#outServiceAddressForm') {
+        options = {
+            path: '/'
+        };        
+    }
+    $.cookie("zipPromptCookie",zipCode,options);
+}
+function getZipFromPromptCookie() {
+    var zipData;
+    if($.cookie('zipPromptCookie')) {
+        zipData = jQuery.parseJSON($.cookie('zipPromptCookie'));
+    }
+    return(zipData);   
+}
+function updateZip(zipCode) {
     if (isValidZipCode(zipCode)) {
-    	var options = {
-    	        path: '/'
-    	        };
-    	$.cookie("zipPromptCookie","zipPrompt",options);
-    	var locationEl = $(document).find('#twc-location-popup input');
-    	var locationElButton = $(document).find('#twc-location-popup button');
-    	locationEl.val(zipCode);
-    	locationElButton.trigger('click');   	
+        setZipPromptCookie(zipCode, determineFootprint());
+        var locationEl = $(document).find('#twc-location-popup input');
+        var locationElButton = $(document).find('#twc-location-popup button');
+        locationEl.val(zipCode);
+        locationElButton.trigger('click');      
     } else {
         // Missing required elements, display error
         $('.form_error').show();
@@ -243,33 +273,24 @@ function updateZip(zipCode, divID) {
 // Handle click submitting address data
 $('#inServiceAddressForm input[type=button]').click(function() {
     var zipCode = $('#inServiceZIP').val();
-    var divID = '#inServiceAddressForm';
-    updateZip(zipCode,divID);
+    updateZip(zipCode);
 });
 
 $('#outServiceAddressForm input[type=button]').click(function() {
     var zipCode = $('#outServiceZIP').val();
-    var divID = '#outServiceAddressForm';
-    updateZip(zipCode,divID);
+    updateZip(zipCode);
 });
 jQuery(document).ready(function () {            
-    if(! $.cookie('zipPromptCookie')) {
-        var configText = $('.serviceText').html();
-        if(!configText){//Author need to configure the component.
-            return;
-        }
-        var divID = '';
-        var geoLocation = getGeoLocationFromCookie();
-        if(geoLocation) {
-            if(geoLocation && geoLocation.region && geoLocation.region.length > 0){
-                divID = '#inServiceAddressForm';
-            }else{
-                divID = '#outServiceAddressForm';
-            }
-        }else{
-            divID = '#inServiceAddressForm';
-        }
-        
+    var configText = $('.serviceText').html();
+    if(!configText){//Author need to configure the component.
+        return;
+    }
+
+    var geoLocation = getGeoLocationFromCookie();
+    var zipPromptData = getZipFromPromptCookie();
+    var divID = determineFootprint();
+    
+    if(! $.cookie('zipPromptCookie') || zipPromptData != geoLocation.postalCode) {        
        // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
          $.fancybox({
                 'href'   : divID,
@@ -282,28 +303,28 @@ jQuery(document).ready(function () {
                 autoSize:false,
                 scrolling: 'no'
             })
-    } 
+    } else {
+        setZipPromptCookie(zipPromptData, divID);
+    }
   //onfocus of zip field if someone hits return trigger ZIP code validation
     $('#outServiceZIP').keypress(function(e) {
-    	var zipCode = $('#outServiceZIP').val();
-        var divID = '#outServiceAddressForm';
+        var zipCode = $('#outServiceZIP').val();
         var code =null;
         code= (e.keyCode ? e.keyCode : e.which);
 
         if (code==13) {//keycode - Enter.
-            updateZip(zipCode,divID);
-        	return false;
+            updateZip(zipCode);
+            return false;
         }
     })
     $('#inServiceZIP').keypress(function(e) {
         var zipCode = $('#inServiceZIP').val();
-        var divID = '#inServiceAddressForm';
         var code =null;
         code= (e.keyCode ? e.keyCode : e.which);
 
         if (code==13) {//keycode - Enter.
-            updateZip(zipCode,divID);
-        	return false;
+            updateZip(zipCode);
+            return false;
         }
     })
 })
@@ -1829,101 +1850,6 @@ function timerIncrement() {
     }
 
 }(jQuery, this));
-function isValidZipCode(elementValue) {
-    var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
-    return zipCodePattern.test(elementValue);
-}
-function getGeoLocationFromCookie() {
-    var geoData;
-    if($.cookie('twc-user-profile')) {
-        geoData = jQuery.parseJSON($.cookie('twc-user-profile'));
-    }
-    return(geoData);
-}
-function updateZip(zipCode, divID) {
-    if (isValidZipCode(zipCode)) {
-	var options = {
-	        path: '/'
-	        };
-	$.cookie("zipPromptCookie","zipPrompt",options);
-	var locationEl = $(document).find('#twc-location-popup input');
-	var locationElButton = $(document).find('#twc-location-popup button');
-	locationEl.val(zipCode);
-	locationElButton.trigger('click');
-    } else {
-        // Missing required elements, display error
-        $('.form_error').show();
-        return false;
-    }
-    $.fancybox.close(true);
-}
-// Handle click submitting address data
-$('#inServiceAddressForm input[type=button]').click(function() {
-    var zipCode = $('#inServiceZIP').val();
-    var divID = '#inServiceAddressForm';
-    updateZip(zipCode,divID);
-});
-
-$('#outServiceAddressForm input[type=button]').click(function() {
-    var zipCode = $('#outServiceZIP').val();
-    var divID = '#outServiceAddressForm';
-    updateZip(zipCode,divID);
-});
-jQuery(document).ready(function () {
-    if(! $.cookie('zipPromptCookie')) {
-        var configText = $('.serviceText').html();
-        if(!configText){//Author need to configure the component.
-            return;
-        }
-        var divID = '';
-        var geoLocation = getGeoLocationFromCookie();
-        if(geoLocation) {
-            if(geoLocation && geoLocation.region && geoLocation.region.length > 0){
-                divID = '#inServiceAddressForm';
-            }else{
-                divID = '#outServiceAddressForm';
-            }
-        }else{
-            divID = '#inServiceAddressForm';
-        }
-
-       // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
-         $.fancybox({
-                'href'   : divID,
-                padding: 0,
-                margin: 0,
-                maxHeight:700,
-                makWidth:600,
-                width:'auto',
-                height:'auto',
-                autoSize:false,
-                scrolling: 'no'
-            })
-    }
-  //onfocus of zip field if someone hits return trigger ZIP code validation
-    $('#outServiceZIP').keypress(function(e) {
-	var zipCode = $('#outServiceZIP').val();
-        var divID = '#outServiceAddressForm';
-        var code =null;
-        code= (e.keyCode ? e.keyCode : e.which);
-
-        if (code==13) {//keycode - Enter.
-            updateZip(zipCode,divID);
-		return false;
-        }
-    })
-    $('#inServiceZIP').keypress(function(e) {
-        var zipCode = $('#inServiceZIP').val();
-        var divID = '#inServiceAddressForm';
-        var code =null;
-        code= (e.keyCode ? e.keyCode : e.which);
-
-        if (code==13) {//keycode - Enter.
-            updateZip(zipCode,divID);
-		return false;
-        }
-    })
-})
 var chatPrompt = chatPrompt || {};
 chatPromptIdleTime = 0;
 chatPrompt.presetTime = 1000; // setting time to go by milliseconds

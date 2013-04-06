@@ -248,14 +248,39 @@ base64 = new Nibbler({
    */
   this.init = function() {
     
-    $('*[data-ejsl]').not('.lsje').each($.proxy(function(index, el) {
-     
-      $(el).addClass('lsje').click($.proxy(function(event) {
-        window.location.href = this.decode($(event.target).data('ejsl'));
-      }, this));
-      
-    }, this));
+    var $temporaryLink,
+        $realLink,
+        targetUrl;
     
+    // add classes to elements to make it styleable
+    $('[data-ejsl]').not('.lsje').addClass('lsje');
+    
+    // add mouseenter handler to replace fake link with real link
+    $(window).delegate('[data-ejsl]','mouseenter', function() {
+      $temporaryLink = $(this);
+      $realLink = $('<a />');
+      targetUrl = gf.util.misc.ejsl.decode($temporaryLink.data('ejsl'));
+      
+      $realLink.attr('href', targetUrl);
+      
+      if( $temporaryLink.attr('title') !== 'undefined') {
+        $realLink.attr('title', $temporaryLink.attr('title'));
+      }
+      
+      if( $temporaryLink.attr('id') !== 'undefined') {
+        $realLink.attr('id', $temporaryLink.attr('id'));
+      }
+      
+     if( $temporaryLink.attr('class') !== 'undefined') {
+        $realLink.attr('class', $temporaryLink.attr('class'));
+      }
+    
+      $realLink.html($temporaryLink.html());
+
+      $temporaryLink.replaceWith($realLink);
+          
+    });
+        
   };
   
   // run init function one time 
@@ -266,7 +291,6 @@ base64 = new Nibbler({
    * return public functions
    */
   return {
-    init: this.init,
     encode: this.encode,
     decode: this.decode
   };

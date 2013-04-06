@@ -24,8 +24,24 @@ NIT.scriptSource = '';
 	try // Must be in a try-catch, or intellisense breaks (since this errors during that processing)
 	{
 		var scriptTags = document.getElementsByTagName('script');
-		var script = scriptTags[scriptTags.length - 1];
-		NIT.scriptSource = script.getAttribute('src', -1);
+        var agentScript = scriptTags[scriptTags.length - 1];
+
+        if(agentScript.src && agentScript.src.toLowerCase().indexOf('nit.launch.popup.js') > -1)
+        {
+            NIT.scriptSource = agentScript.getAttribute('src', -1);
+        }
+        else
+        {
+            for (var i = 0; i < scriptTags.length; i++)
+            {
+                if(scriptTags[i].src && scriptTags[i].src.toLowerCase().indexOf('nit.launch.popup.js') > -1)
+                {
+                    NIT.scriptSource = scriptTags[i].getAttribute('src', -1);
+                    break;
+                }
+            }
+		}
+		
 	}
 	catch (e) { }
 } ());

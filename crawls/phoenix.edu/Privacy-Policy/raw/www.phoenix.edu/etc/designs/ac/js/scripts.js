@@ -1194,11 +1194,7 @@ return ac
 }());
 l.dataMgr=e
 }(window,UPX));
-if(getCookie("iri")){var strCookieValue=getCookie("iri");
-var strAptiNetURL="https://partner.aptimus.com/AptiNet/OrderAction?poid=15748_79620_7_76&page=orderconfirm&output=text/xml&"+strCookieValue.substring(1,strCookieValue.length-1);
-$.get(strAptiNetURL);
-deleteCookie("iri")
-};
+
 var UPXProfileLightbox=(function(){var l;
 var k;
 var a;
@@ -1305,8 +1301,7 @@ $("#flyoutWrapper").live("mouseenter",function(){if(undefined!=f){clearTimeout(f
 $("#flyoutWrapper").live("mouseleave",function(){if(undefined!=f){clearTimeout(f)
 }if(d){f=setTimeout(h,200)
 }});
-$(".header a#chatLive").live("click",function(){cmCreateManualLinkClickTag("?cm_sp=CTA-_-Chat Live-_-Header","Chat Live",document.title);
-if(typeof pageTracker==="function"){pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header")
+$(".header a#chatLive").live("click",function(){if(typeof pageTracker==="function"){pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header")
 }var j="uopx",k="student",l=window.location.pathname;
 if($("body.homepageContEd").length||$("body.secondary").length||$("body.superHub").length||$("body.hub").length||$("body.certificates").length){k="Single_Course"
 }window.location="https://"+window.location.host+"/chat/chatNow?uri="+l+"&tenant="+j+"&queue="+k

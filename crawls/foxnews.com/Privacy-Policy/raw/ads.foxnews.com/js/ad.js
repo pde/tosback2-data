@@ -428,7 +428,7 @@
 
 					if( id === "qu_channel_7"){return;}		
 					
-					if( $.ad._meta.channel.indexOf("fnc/politics") > -1){return;}
+					//if( $.ad._meta.channel.indexOf("fnc/politics") > -1){return;}
 					
 					var sz = $.ad.qu.getSize(data, id);
 					var ifr = $.ad.util.iframe.create(sz.width, sz.height, id);
@@ -781,11 +781,10 @@
 				embed: function(obj) {
 					var root = this;
 
-					if($("meta[name='prism.section']").attr("content") != "politics" && obj.qid == "channel_7" ){
+					if(obj.qid == "channel_7" ){
 						root.addGoogleObjFunc();
 						root.config(obj);				
 						document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');
-						
 					}			
 				}				
 			},

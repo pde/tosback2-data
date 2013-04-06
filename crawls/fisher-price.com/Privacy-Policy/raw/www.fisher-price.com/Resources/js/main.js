@@ -472,7 +472,11 @@ com.mattel.main = function () {
 
 				//Write the content in POPup				
 				$("#dvd-flash").html(embedObj);
-			}
+			}else if (popup_content_type == 'demo_mobile' || popup_content_type == 'tvcom_mobile') {
+                //for ios video can not load is swf player. this sets the video to open in a new tab.
+                newVideoTab = window.open(url, '_newtab');
+                newVideoTab.focus();
+            }
 			else {
 				//Change the image in the carousel top big image
 
@@ -2515,8 +2519,11 @@ com.mattel.main = function () {
 					$('.displayComponentOverlay').html(data);
 					$('.displayComponentOverlay').show();
 
-					var flashHeight = $('.displayComponentOverlay object').height();
-					var flashWidth = $('.displayComponentOverlay object').width();
+                    //var flashHeight = $('.displayComponentOverlay object').height();
+                    //var flashWidth = $('.displayComponentOverlay object').width();
+					
+                    var flashHeight = $('.displayComponentOverlay object').attr('height');
+                    var flashWidth = $('.displayComponentOverlay object').attr('width');
 
 					if ($('.displayComponentOverlay object object')) {
 						if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {

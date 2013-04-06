@@ -1,6 +1,5 @@
-//tealium universal tag - utag.loader ut4.0.201205291516, Copyright 2012 Tealium.com Inc. All Rights Reserved. 
-var utag_condload=false;
-
+//tealium universal tag - utag.loader ut4.002.201304052039, Copyright 2013 Tealium.com Inc. All Rights Reserved. 
+var utag_condload=false;try{(function(){function ul(src,a,b){a=document;b=a.createElement('script');b.language='javascript';b.type='text/javascript';b.src=src;a.getElementsByTagName('head')[0].appendChild(b)};if((""+document.cookie).match("utag_env_sportsman_main=([^\S;]*)")){if(RegExp.$1.indexOf("/prod/") === -1) {ul(RegExp.$1);utag_condload=true;}}})();}catch(e){};
 if (typeof utag == "undefined" && !utag_condload) {
   var utag = {
     id:"sportsman.main",
@@ -162,23 +161,25 @@ if (typeof utag == "undefined" && !utag_condload) {
             ck = RegExp.$1;
             cv = RegExp.$2;
           }
-          e = decodeURIComponent(cv);
-          if (ck.indexOf("ulog") == 0 || ck.indexOf("utag_") == 0) {
+	  try{e = decodeURIComponent(cv); }catch(er){e=""};
+          if (typeof ck!="undefined" && (ck.indexOf("ulog") == 0 || ck.indexOf("utag_") == 0)) {
             e = e.split("$");
             g = [];
             j = {};
             for (f = 0; f < e.length; f++) {
-              g = e[f].split(":");
-              if (g.length > 2) {
-                g[1] = g.slice(1).join(":");
-              }
-              v = "";
-              if (("" + g[1]).indexOf("~") == 0) {
-                h = g[1].substring(1).split("|");
-                for (i = 0; i < h.length; i++) h[i] = decodeURIComponent(h[i]);
-                v = h
-              } else v = decodeURIComponent(g[1]);
-              j[g[0]] = v
+              try{
+                g = e[f].split(":");
+                if (g.length > 2) {
+                  g[1] = g.slice(1).join(":");
+                }
+                v = "";
+                if (("" + g[1]).indexOf("~") == 0) {
+                  h = g[1].substring(1).split("|");
+                  for (i = 0; i < h.length; i++) h[i] = decodeURIComponent(h[i]);
+                  v = h
+                } else v = decodeURIComponent(g[1]);
+                j[g[0]] = v;
+              }catch(er){};
             }
             o[ck] = {};
             e = (new Date()).getTime();
@@ -339,18 +340,16 @@ if (typeof utag == "undefined" && !utag_condload) {
       }
     },
     view: function(a,c) {
-      this.handler.trigger('view', a)
-      if(c)try{c()}catch(e){}
-      return true;
+      return this.track('view',a,c);
     },
     link: function(a,c) {
-      this.handler.trigger('link', a)
-      if(c)try{c()}catch(e){}
-      return true;
+      return this.track('link',a,c);
     },
     track: function(a,b,c) {
-      this.handler.trigger(a,b)
-      if(c)try{c()}catch(e){}
+      for(var i in utag.loader.GV(utag.o)){
+        try{utag.o[i].handler.trigger(a,b)}catch(e){};
+      }
+      if(c)try{c()}catch(e){};
       return true;
     },
     handler: {
@@ -425,20 +424,20 @@ if (typeof utag == "undefined" && !utag_condload) {
   };
   utag.o['sportsman.main']=utag;
   utag.cfg = {
-    v: "ut4.0.201205291516",
+    v: "ut4.002.201304052039",
     session_timeout: 1800000,
     readywait: 0,
     noload: 0,
     forcetimeout: 3000,
     domain: utag.loader.lh(),
-    path: "//tealium.hs.llnwd.net/o43/utag/sportsman/main/prod/",
+    path: "//tags.tiqcdn.com/utag/sportsman/main/prod/",
     utid: "sportsman/main/201205291516"
   };utag.cond={};
-utag.pre=function(){utag.data=(typeof utag_data!='undefined')?utag_data:{};try{utag.loader.RD(utag.data);}catch(e){}};
+utag.pre=function(){try{utag.data=(typeof utag_data!='undefined')?utag_data:{};}catch(e){utag.data={};}try{utag.loader.RD(utag.data);}catch(e){}};
 utag.loader.GET=function(){utag.cl={'_all_':1};utag.pre();
   utag.handler.extend=[];
-  utag.loader.cfg={};
-}
+  utag.loader.cfg={"3":{load:1,send:1,wait:1,tid:19004}};
+try {    if (typeof utag.data['cp.OPTOUTMULTI'] != 'undefined') {        var i, j, p, c = utag.loader.cfg,            o = decodeURI(utag.data['cp.OPTOUTMULTI']).split('|');        for (i = 0; i < o.length; i++) {            p = o[i].split(':');            if (p[1] * 1 !== 0) {                if (p[0].indexOf('c') == 0) {                    for (j in utag.loader.GV(c)) {                        if (c[j].tcat == p[0].substring(1)) c[j].load = 0                    }                } else if (p[0] * 1 == 0) {                    utag.cfg.nocookie = true;                } else {                    for (j in utag.loader.GV(c)) {                        if (c[j].tid == p[0]) c[j].load = 0                    }                }            }        }    }} catch (e) {}}
 
   if(typeof utag_cfg_ovrd!='undefined'){for(var i in utag.loader.GV(utag_cfg_ovrd))utag.cfg[i]=utag_cfg_ovrd[i];};
   utag.loader.SETFORCE = function(a) {

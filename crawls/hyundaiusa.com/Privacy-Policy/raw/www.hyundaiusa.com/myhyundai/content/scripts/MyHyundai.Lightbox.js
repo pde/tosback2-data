@@ -259,14 +259,23 @@ myHyundaiUtils.lightbox = function () {
             } else if (hash[0] == 'changeURL') {
                 window.top.myHyundaiUtils.lightbox.changeURL(hash[1]);
             } else if (hash[0] == 'closeRefresh') {
-                window.top.location.reload();
+                if (window.top._callback_closeRefresh) {
+                    window.top._callback_closeRefresh();
+                    window.top.myHyundaiUtils.lightbox.close();
+                } else
+                    window.top.location.reload();
                 // TODO: add page specific updates, like refresh login state
             } else if (hash[0] == 'closeRefreshLoggedIn') {
-                var href = window.top.location.href.toLowerCase();
-                if (href.indexOf("localhost") >= 0 || href.indexOf("/myhyundai") > 0) {
-                    window.top.location.reload();
+                if (window.top._callback_closeRefresh) {
+                    window.top._callback_closeRefresh();
+                    window.top.myHyundaiUtils.lightbox.close();
                 } else {
-                    window.top.location.assign("/myhyundai");
+                    var href = window.top.location.href.toLowerCase();
+                    if (href.indexOf("localhost") >= 0 || href.indexOf("/myhyundai") > 0) {
+                        window.top.location.reload();
+                    } else {
+                        window.top.location.assign("/myhyundai");
+                    }
                 }
                 // TODO: add page specific updates, like refresh login state
             } else if (hash[0] == 'exec') {

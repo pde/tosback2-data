@@ -37,16 +37,17 @@
 
 		<link href="../bzJApp/views/site/modnique2012/images/cssImages/modnique2012/icon/favicon.ico" rel="shortcut icon" type="image/ico">
 <!--[if IE 7]>
-	<link href="//www.modnique.com/bzJApp/views/filever257/site/modnique2012/css/ie7.css" type="text/css" rel="stylesheet" >
+	<link href="//www.modnique.com/bzJApp/views/filever258/site/modnique2012/css/ie7.css" type="text/css" rel="stylesheet" >
+        <script type="text/javascript" src="//www.modnique.com/bzJApp/views/filever258/site/modnique2012/js/vendors/json2.min.js"></script>
 <![endif]-->
 <!--[if lt IE 9 ]>
-	<link href="//www.modnique.com/bzJApp/views/filever257/site/modnique2012/css/ie8.css" type="text/css" rel="stylesheet" >
+	<link href="//www.modnique.com/bzJApp/views/filever258/site/modnique2012/css/ie8.css" type="text/css" rel="stylesheet" >
 <![endif]-->
-<link href="../bzJApp/views/filever257/site/modnique2012/css/all.css" rel="stylesheet" type="text/css">
+<link href="../bzJApp/views/filever258/site/modnique2012/css/all.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 	if (typeof jQuery == 'undefined') {
-document.write(unescape("%3Cscript src='//www.modnique.com/bzJApp/views/filever257/site/modnique2012/js/jquery/jquery-1.7.1.min.js' type='text/javascript'%3E%3C/script%3E"));
+document.write(unescape("%3Cscript src='//www.modnique.com/bzJApp/views/filever258/site/modnique2012/js/jquery/jquery-1.7.1.min.js' type='text/javascript'%3E%3C/script%3E"));
 }
 var
 	// global.inc variables converted into js
@@ -54,7 +55,8 @@ var
 		SiteID = "300",
 		TenantID = "100",
 		VersionID = "2012",
-		fileVersion = "filever257/",
+		sidTag = "sid=300&tid=100&versionID=2012",
+		fileVersion = "filever258/",
 		cookieDomain = ".modnique.com",
 		securePrefix = "https://checkout.modnique.com",
 		nonsecurePrefix = "http://checkout.modnique.com",
@@ -89,7 +91,7 @@ var
 		defaultExternalColorId = '',
 		modAddToCartLink = "https://checkout.modnique.com/bzJApp/AddSalesEventItemToCart.action",
 		parentURLPrefix = '$parentURLPrefix',
-		RandomNumber = '3591',
+		RandomNumber = '6665',
 		enableOneClickCheckout = "Y",
 		enableOneClickCheckoutUI = "N", 
 		numberOfItemsInCartCheckInterval="6000000",
@@ -106,7 +108,7 @@ var
 	//homepage
 		loadPerpetualEvents = "Y",
 		force = "",
-		paymentLink = "https://checkout.modnique.com/bzJApp/ShoppingCartAction.action?cb=9171&sid=300&tid=100&versionID=2012",
+		paymentLink = "https://checkout.modnique.com/bzJApp/ShoppingCartAction.action?cb=9577&sid=300&tid=100&versionID=2012",
 		cat = "",
 	
 	//shopping cart
@@ -133,15 +135,16 @@ var
 	waitlistEnabled = "Y"
 	enableBestOffer = "Y",
 
-    emptyImg = '/bzJApp/views/filever257/site/modnique2012/images/cssImages/modnique2012/placeholder/transparent.gif',
+    emptyImg = '/bzJApp/views/filever258/site/modnique2012/images/cssImages/modnique2012/placeholder/transparent.gif',
 
     // exposing errorCode
     errorCode = '0',
     AgilOne = {
         enabled : 'Y' == 'Y',
         code : '72493'
-    }
-
+    },
+    enableExpressCheckout = 'N' == 'Y',
+    enableOptimizelyTracking = 'N' == 'Y'
 ;window.q = {};
 window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();});}else{if(!q[e])q[e]=[];q[e].push(f);}};
 /* Modernizr 2.6.2 (Custom Build) | MIT & BSD
@@ -152,7 +155,7 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
     </head>
 
     <body>
-        <script src="../combinefiles/mod_global_start/site/300/filever/filever257/index.html" type="text/javascript"></script>
+        <script src="../combinefiles/mod_global_start/site/300/filever/filever258/index.html" type="text/javascript"></script>
 <div class="none">
 	<div id="oneClickCheckout_dialog" class="ajax_oneClickCheckout"></div></div>
 <div class="none">
@@ -258,7 +261,7 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 											<p class="sharp pvs">Manage Purchases</p>
 										</li>
 										<li>
-											<a href="https://checkout.modnique.com/bzJApp/ShoppingCartAction.action?sid=300&tid=100&versionID=2012">Shopping Bag</a>
+											<a href="https://checkout.modnique.com/bzJApp/ShoppingCartAction.action?sid=300&tid=100&versionID=2012" id="shoppingBagAcount">Shopping Bag</a>
 										</li>
 										<li>
 											<a href="https://checkout.modnique.com/bzJApp/ViewPaymentHistory.action?sid=300&tid=100&versionID=2012" class="openPersistentLoginDialog">Orders</a>
@@ -330,64 +333,69 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																		<a class="phm pvn " href="http://www.modnique.com/apparel" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(1)" >
 										<h6 class="sharp pan mbs ">apparel</h6>
 									</a>
-									    									    										    											<div title="Sandra Darren Dresses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Sandra-Darren-Dresses/10741/seeac/gseeac">
-														Sandra Darren Dresses
+									    									    										    											<div title="Week in Rewind">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Week-in-Rewind/10808/seeac/gseeac">
+														Week in Rewind
 													</a>
     											</div>
-    										    									    										    											<div title="Adidas, Puma and more Men's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Adidas-Puma-and-more-Men-s-Apparel/10742/seeac/gseeac">
-														Adidas, Puma and more Men's Apparel
+    										    									    										    											<div title="White Mark Dresses">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/White-Mark-Dresses/10799/seeac/gseeac">
+														White Mark Dresses
 													</a>
     											</div>
-    										    									    										    											<div title="Glamour Dresses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Glamour-Dresses/10759/seeac/gseeac">
-														Glamour Dresses
+    										    									    										    											<div title="Shae Spring Apparel">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Shae-Spring-Apparel/10791/seeac/gseeac">
+														Shae Spring Apparel
 													</a>
     											</div>
-    										    									    										    											<div title="Maria Villoresi Women's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Maria-Villoresi-Women-s-Apparel/10761/seeac/gseeac">
-														Maria Villoresi Women's Apparel
+    										    									    										    											<div title="Italian Made Apparel & Accessories by Cocogio">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Italian-Made-Apparel-Accessories-by-Cocogio/10800/seeac/gseeac">
+														Italian Made Apparel &amp; Accessories ...
 													</a>
     											</div>
-    										    									    										    											<div title="Missa Women's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Missa-Women-s-Apparel/10756/seeac/gseeac">
-														Missa Women's Apparel
+    										    									    										    											<div title="Hackett London Men's Apparel & Accessories">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Hackett-London-Men-s-Apparel-Accessories/10801/seeac/gseeac">
+														Hackett London Men's Apparel &amp; Acce...
 													</a>
     											</div>
-    										    									    										    											<div title="Fresh Picked Denim">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Fresh-Picked-Denim/10744/seeac/gseeac">
-														Fresh Picked Denim
+    										    									    										    											<div title="Men's Street Fashion Clothing">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Men-s-Street-Fashion-Clothing/10803/seeac/gseeac">
+														Men's Street Fashion Clothing
 													</a>
     											</div>
-    										    									    										    											<div title="Everything under $49 for Her">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Everything-under-49-for-Her/10750/seeac/gseeac">
-														Everything under $49 for Her
+    										    									    										    											<div title="Ralph Lauren Men's And Women's Polos and T-shirts">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ralph-Lauren-Men-s-And-Women-s-Polos-and-T-shirts/10783/seeac/gseeac">
+														Ralph Lauren Men's And Women's Polo...
 													</a>
     											</div>
-    										    									    										    											<div title="Everything under $49 for Him">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Everything-under-49-for-Him/10748/seeac/gseeac">
-														Everything under $49 for Him
+    										    									    										    											<div title="Joins Apparel and Handbags, Made in Italy">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Joins-Apparel-and-Handbags-Made-in-Italy/10786/seeac/gseeac">
+														Joins Apparel and Handbags, Made in...
 													</a>
     											</div>
-    										    									    										    											<div title="Ed Hardy and Christian Audigier Men's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ed-Hardy-and-Christian-Audigier-Men-s-Apparel/10727/seeac/gseeac">
-														Ed Hardy and Christian Audigier Men...
+    										    									    										    											<div title="IB Diffusion & More Dresses">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/IB-Diffusion-More-Dresses/10782/seeac/gseeac">
+														IB Diffusion &amp; More Dresses
 													</a>
     											</div>
-    										    									    										    											<div title="Ed Hardy, Christian Audigier, Crystal Rock Women's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ed-Hardy-Christian-Audigier-Crystal-Rock-Women-s-Apparel/10728/seeac/gseeac">
-														Ed Hardy, Christian Audigier, Cryst...
+    										    									    										    											<div title="Gene Apparel for Her">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Gene-Apparel-for-Her/10784/seeac/gseeac">
+														Gene Apparel for Her
 													</a>
     											</div>
-    										    									    										    											<div title="Ed Hardy Kids Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ed-Hardy-Kids-Apparel/10726/seeac/gseeac">
-														Ed Hardy Kids Apparel
+    										    									    										    											<div title="Mischa Barton Collection">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Mischa-Barton-Collection/10785/seeac/gseeac">
+														Mischa Barton Collection
 													</a>
     											</div>
-    										    									    										    											<div title="Spring Dresses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Spring-Dresses/10745/seeac/gseeac">
-														Spring Dresses
+    										    									    										    											<div title="Transformer By Von Vonni">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Transformer-By-Von-Vonni/10768/seeac/gseeac">
+														Transformer By Von Vonni
+													</a>
+    											</div>
+    										    									    										    											<div title="Trinity Women's Apparel">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Trinity-Women-s-Apparel/10769/seeac/gseeac">
+														Trinity Women's Apparel
 													</a>
     											</div>
     										    									    									<a class="perpetual_1 ptxs pbn phm" data-value="1" href="http://www.modnique.com/apparel" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(1)">
@@ -400,9 +408,64 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																		<a class="phm pvn " href="http://www.modnique.com/jewelry-watches" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(8)" >
 										<h6 class="sharp pan mbs ">Jewelry & Watches</h6>
 									</a>
-									    									    										    											<div title="Christian Dior, Balenciaga, Giorgio Armani and more designer sunglasses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Christian-Dior-Balenciaga-Giorgio-Armani-and-more-designer-sunglasses/10753/seeac/gseeac">
-														Christian Dior, Balenciaga, Giorgio...
+									    									    										    											<div title="Venetiaurum Jewelry">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Venetiaurum-Jewelry/10793/seeac/gseeac">
+														Venetiaurum Jewelry
+													</a>
+    											</div>
+    										    									    										    											<div title="Pearls. Pearls. Pearls">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Pearls-Pearls-Pearls/10804/seeac/gseeac">
+														Pearls. Pearls. Pearls
+													</a>
+    											</div>
+    										    									    										    											<div title="Shine on: Gold Jewelry Deals">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Shine-on-Gold-Jewelry-Deals/10794/seeac/gseeac">
+														Shine on: Gold Jewelry Deals
+													</a>
+    											</div>
+    										    									    										    											<div title="Montres de Luxe Milano Watches Sale">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Montres-de-Luxe-Milano-Watches-Sale/10790/seeac/gseeac">
+														Montres de Luxe Milano Watches Sale
+													</a>
+    											</div>
+    										    									    										    											<div title="Affordable Jewelry by Morellato, Lauren G. Adams and more">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Affordable-Jewelry-by-Morellato-Lauren-G-Adams-and-more/2818/seeac/gseeac">
+														Affordable Jewelry by Morellato, La...
+													</a>
+    											</div>
+    										    									    										    											<div title="Spring Trend: Floral Jewelry">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Spring-Trend-Floral-Jewelry/10777/seeac/gseeac">
+														Spring Trend: Floral Jewelry
+													</a>
+    											</div>
+    										    									    										    											<div title="Steinhausen Wallets and Watches">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Steinhausen-Wallets-and-Watches/10778/seeac/gseeac">
+														Steinhausen Wallets and Watches
+													</a>
+    											</div>
+    										    									    										    											<div title="Rolex">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Rolex/10776/seeac/gseeac">
+														Rolex
+													</a>
+    											</div>
+    										    									    										    											<div title="Maiden-Art Handmade Jewelry">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Maiden-Art-Handmade-Jewelry/10779/seeac/gseeac">
+														Maiden-Art Handmade Jewelry
+													</a>
+    											</div>
+    										    									    										    											<div title="Designer Jewelry by Zydo, Salavetti, Oro Trend and more">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Designer-Jewelry-by-Zydo-Salavetti-Oro-Trend-and-more/2755/seeac/gseeac">
+														Designer Jewelry by Zydo, Salavetti...
+													</a>
+    											</div>
+    										    									    										    											<div title="Virginie Carpentier Silver Jewelry. Made in France">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Virginie-Carpentier-Silver-Jewelry-Made-in-France/10766/seeac/gseeac">
+														Virginie Carpentier Silver Jewelry....
+													</a>
+    											</div>
+    										    									    										    											<div title="Sport Watches by Corvette, Pirelli and more">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Sport-Watches-by-Corvette-Pirelli-and-more/10765/seeac/gseeac">
+														Sport Watches by Corvette, Pirelli ...
 													</a>
     											</div>
     										    									    										    											<div title="Mother's Day gift Ideas: jewelry sets">
@@ -410,69 +473,14 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 														Mother's Day gift Ideas: jewelry se...
 													</a>
     											</div>
-    										    									    										    											<div title="April Birthstone: Diamond">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/April-Birthstone-Diamond/10739/seeac/gseeac">
-														April Birthstone: Diamond
-													</a>
-    											</div>
-    										    									    										    											<div title="Japanese Movement Watches by ROCCO BAROCCO">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Japanese-Movement-Watches-by-ROCCO-BAROCCO/10754/seeac/gseeac">
-														Japanese Movement Watches by ROCCO ...
-													</a>
-    											</div>
     										    									    										    											<div title="Dv Italy jewelry">
     												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Dv-Italy-jewelry/10751/seeac/gseeac">
 														Dv Italy jewelry
 													</a>
     											</div>
-    										    									    										    											<div title="Aquaswiss Watches">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Aquaswiss-Watches/10738/seeac/gseeac">
-														Aquaswiss Watches
-													</a>
-    											</div>
-    										    									    										    											<div title="Chateau Dargent Jewelry">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Chateau-Dargent-Jewelry/10737/seeac/gseeac">
-														Chateau Dargent Jewelry
-													</a>
-    											</div>
-    										    									    										    											<div title="Affordable Jewelry by Dv Italy, Lauren G. Adams and more">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Affordable-Jewelry-by-Dv-Italy-Lauren-G-Adams-and-more/2818/seeac/gseeac">
-														Affordable Jewelry by Dv Italy, Lau...
-													</a>
-    											</div>
-    										    									    										    											<div title="Designer jewelry blowout: earrings & bracelets">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Designer-jewelry-blowout-earrings-bracelets/10725/seeac/gseeac">
-														Designer jewelry blowout: earrings ...
-													</a>
-    											</div>
-    										    									    										    											<div title="$25 & under jewelry sale">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/25-under-jewelry-sale/10724/seeac/gseeac">
-														$25 &amp; under jewelry sale
-													</a>
-    											</div>
-    										    									    										    											<div title="Dedia watches">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Dedia-watches/10723/seeac/gseeac">
-														Dedia watches
-													</a>
-    											</div>
-    										    									    										    											<div title="Designer Jewelry Blowout: Necklaces & Rings">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Designer-Jewelry-Blowout-Necklaces-Rings/10709/seeac/gseeac">
-														Designer Jewelry Blowout: Necklaces...
-													</a>
-    											</div>
-    										    									    										    											<div title="Italian Watches Blowout">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Italian-Watches-Blowout/10708/seeac/gseeac">
-														Italian Watches Blowout
-													</a>
-    											</div>
-    										    									    										    											<div title="Designer Jewelry by Salavetti, Enzo Liverino and more">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Designer-Jewelry-by-Salavetti-Enzo-Liverino-and-more/2755/seeac/gseeac">
-														Designer Jewelry by Salavetti, Enzo...
-													</a>
-    											</div>
-    										    									    										    											<div title="97.00ctw Genuine Rubies Bracelet">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/97-00ctw-Genuine-Rubies-Bracelet/2000/seeac/gseeac">
-														97.00ctw Genuine Rubies Bracelet
+    										    									    										    											<div title="Crystal Necklace">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Crystal-Necklace/2000/seeac/gseeac">
+														Crystal Necklace
 													</a>
     											</div>
     										    									    									<a class="perpetual_8 ptxs pbn phm" data-value="8" href="http://www.modnique.com/jewelry-watches" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(8)">
@@ -485,44 +493,49 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																		<a class="phm pvn " href="http://www.modnique.com/handbags-accessories" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(2)" >
 										<h6 class="sharp pan mbs ">Handbags & Accessories</h6>
 									</a>
-									    									    										    											<div title="Louis Vuitton Handbags">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Louis-Vuitton-Handbags/10763/seeac/gseeac">
-														Louis Vuitton Handbags
+									    									    										    											<div title="Furla Handbags Made in Italy">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Furla-Handbags-Made-in-Italy/10795/seeac/gseeac">
+														Furla Handbags Made in Italy
 													</a>
     											</div>
-    										    									    										    											<div title="Spring Designer Scarves Too Hot To Mention">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Spring-Designer-Scarves-Too-Hot-To-Mention/10757/seeac/gseeac">
-														Spring Designer Scarves Too Hot To ...
+    										    									    										    											<div title="Sunglasses: Jimmy Choo, Ferragamo, Tod's">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Sunglasses-Jimmy-Choo-Ferragamo-Tod-s/10797/seeac/gseeac">
+														Sunglasses: Jimmy Choo, Ferragamo, ...
 													</a>
     											</div>
-    										    									    										    											<div title="Lamberto Conti Ties & Accessories, Made in Italy">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Lamberto-Conti-Ties-Accessories-Made-in-Italy/10760/seeac/gseeac">
-														Lamberto Conti Ties &amp; Accessories, ...
+    										    									    										    											<div title="Funky Handbags and Shoes">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Funky-Handbags-and-Shoes/10798/seeac/gseeac">
+														Funky Handbags and Shoes
 													</a>
     											</div>
-    										    									    										    											<div title="Hermes">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Hermes/10747/seeac/gseeac">
-														Hermes
+    										    									    										    											<div title="Luxury Italian handbags: Gucci, Prada, Versace and more">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Luxury-Italian-handbags-Gucci-Prada-Versace-and-more/10789/seeac/gseeac">
+														Luxury Italian handbags: Gucci, Pra...
 													</a>
     											</div>
-    										    									    										    											<div title="Ed Hardy and Christian Audigier Accessories">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ed-Hardy-and-Christian-Audigier-Accessories/10729/seeac/gseeac">
-														Ed Hardy and Christian Audigier Acc...
+    										    									    										    											<div title="Christian Dior, Balenciaga, Giorgio Armani and more designer sunglasses">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Christian-Dior-Balenciaga-Giorgio-Armani-and-more-designer-sunglasses/10753/seeac/gseeac">
+														Christian Dior, Balenciaga, Giorgio...
 													</a>
     											</div>
-    										    									    										    											<div title="Phone Accessories">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Phone-Accessories/10746/seeac/gseeac">
-														Phone Accessories
+    										    									    										    											<div title="Jacky & Celine Handbags">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Jacky-Celine-Handbags/10781/seeac/gseeac">
+														Jacky &amp; Celine Handbags
 													</a>
     											</div>
-    										    									    										    											<div title="White Hot Summer">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/White-Hot-Summer/10743/seeac/gseeac">
-														White Hot Summer
+    										    									    										    											<div title="Juicy Couture, Bright, Bebe and more Handbags">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Juicy-Couture-Bright-Bebe-and-more-Handbags/10774/seeac/gseeac">
+														Juicy Couture, Bright, Bebe and mor...
 													</a>
     											</div>
-    										    									    										    											<div title="Missoni, Gianfranco Ferre, Fendi Sunglasses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Missoni-Gianfranco-Ferre-Fendi-Sunglasses/10731/seeac/gseeac">
-														Missoni, Gianfranco Ferre, Fendi Su...
+    										    									    										    											<div title="GF Ferre Handbags & Accessories">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/GF-Ferre-Handbags-Accessories/10770/seeac/gseeac">
+														GF Ferre Handbags &amp; Accessories
+													</a>
+    											</div>
+    										    									    										    											<div title="Vera Wang Opticals">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Vera-Wang-Opticals/10772/seeac/gseeac">
+														Vera Wang Opticals
 													</a>
     											</div>
     										    									    									<a class="perpetual_2 ptxs pbn phm" data-value="2" href="http://www.modnique.com/handbags-accessories" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(2)">
@@ -535,24 +548,24 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																		<a class="phm pvn " href="http://www.modnique.com/shoes" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(3)" >
 										<h6 class="sharp pan mbs ">shoes</h6>
 									</a>
-									    									    										    											<div title="Michael Antonio Women's Shoes">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Michael-Antonio-Women-s-Shoes/10755/seeac/gseeac">
-														Michael Antonio Women's Shoes
+									    									    										    											<div title="Italian Made Sandals by La Bellatrix">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Italian-Made-Sandals-by-La-Bellatrix/10802/seeac/gseeac">
+														Italian Made Sandals by La Bellatri...
 													</a>
     											</div>
-    										    									    										    											<div title="Calvin Klein Jeans Shoes Blowout">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Calvin-Klein-Jeans-Shoes-Blowout/10740/seeac/gseeac">
-														Calvin Klein Jeans Shoes Blowout
+    										    									    										    											<div title="Ladies Shoes & Handbags by Elite Goby">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Ladies-Shoes-Handbags-by-Elite-Goby/10792/seeac/gseeac">
+														Ladies Shoes &amp; Handbags by Elite Go...
 													</a>
     											</div>
-    										    									    										    											<div title="Flats by Ivanka Trump, Qupid, Bertalini and more">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Flats-by-Ivanka-Trump-Qupid-Bertalini-and-more/10749/seeac/gseeac">
-														Flats by Ivanka Trump, Qupid, Berta...
+    										    									    										    											<div title="Women's Shoes Collection. Made in Spain">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Women-s-Shoes-Collection-Made-in-Spain/10788/seeac/gseeac">
+														Women's Shoes Collection. Made in S...
 													</a>
     											</div>
-    										    									    										    											<div title="Heels! Heels! Heels!">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Heels-Heels-Heels/10713/seeac/gseeac">
-														Heels! Heels! Heels!
+    										    									    										    											<div title="Spring Favorites featuring Chinese Laundry, Pour La Victoire and More">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Spring-Favorites-featuring-Chinese-Laundry-Pour-La-Victoire-and-More/10767/seeac/gseeac">
+														Spring Favorites featuring Chinese ...
 													</a>
     											</div>
     										    									    									<a class="perpetual_3 ptxs pbn phm" data-value="3" href="http://www.modnique.com/shoes" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(3)">
@@ -563,7 +576,22 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																											<a class="phm pvn mtm" href="http://www.modnique.com/beauty" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(7)" >
 										<h6 class="sharp pan mbs mts">beauty</h6>
 									</a>
-									    									    										    											<div title="Elizabeth Arden Make-Up">
+									    									    										    											<div title="Men's Fragrances: Burberry, Versace, YSL">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Men-s-Fragrances-Burberry-Versace-YSL/10796/seeac/gseeac" data-country="US,CA,AU">
+														Men's Fragrances: Burberry, Versace...
+													</a>
+    											</div>
+    										    									    										    											<div title="Seductively French">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Seductively-French/10780/seeac/gseeac">
+														Seductively French
+													</a>
+    											</div>
+    										    									    										    											<div title="NuMe Style Hair Tools">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/NuMe-Style-Hair-Tools/10771/seeac/gseeac">
+														NuMe Style Hair Tools
+													</a>
+    											</div>
+    										    									    										    											<div title="Elizabeth Arden Make-Up">
     												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Elizabeth-Arden-Make-Up/10758/seeac/gseeac">
 														Elizabeth Arden Make-Up
 													</a>
@@ -576,34 +604,34 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																											<a class="phm pvn mtm" href="http://www.modnique.com/men" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(6)" >
 										<h6 class="sharp pan mbs mts">men</h6>
 									</a>
-									    									    										    											<div title="Christian Dior, Balenciaga, Giorgio Armani and more designer sunglasses">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Christian-Dior-Balenciaga-Giorgio-Armani-and-more-designer-sunglasses/10753/seeac/gseeac">
-														Christian Dior, Balenciaga, Giorgio...
+									    									    										    											<div title="Week in Rewind">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Week-in-Rewind/10808/seeac/gseeac">
+														Week in Rewind
 													</a>
     											</div>
-    										    									    										    											<div title="Adidas, Puma and more Men's Apparel">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Adidas-Puma-and-more-Men-s-Apparel/10742/seeac/gseeac">
-														Adidas, Puma and more Men's Apparel
+    										    									    										    											<div title="Men's Fragrances: Burberry, Versace, YSL">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Men-s-Fragrances-Burberry-Versace-YSL/10796/seeac/gseeac" data-country="US,CA,AU">
+														Men's Fragrances: Burberry, Versace...
 													</a>
     											</div>
-    										    									    										    											<div title="Calvin Klein Jeans Shoes Blowout">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Calvin-Klein-Jeans-Shoes-Blowout/10740/seeac/gseeac">
-														Calvin Klein Jeans Shoes Blowout
+    										    									    										    											<div title="Sunglasses: Jimmy Choo, Ferragamo, Tod's">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Sunglasses-Jimmy-Choo-Ferragamo-Tod-s/10797/seeac/gseeac">
+														Sunglasses: Jimmy Choo, Ferragamo, ...
 													</a>
     											</div>
-    										    									    										    											<div title="Lamberto Conti Ties & Accessories, Made in Italy">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Lamberto-Conti-Ties-Accessories-Made-in-Italy/10760/seeac/gseeac">
-														Lamberto Conti Ties &amp; Accessories, ...
+    										    									    										    											<div title="Hackett London Men's Apparel & Accessories">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Hackett-London-Men-s-Apparel-Accessories/10801/seeac/gseeac">
+														Hackett London Men's Apparel &amp; Acce...
 													</a>
     											</div>
-    										    									    										    											<div title="Everything under $49 for Him">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Everything-under-49-for-Him/10748/seeac/gseeac">
-														Everything under $49 for Him
+    										    									    										    											<div title="Montres de Luxe Milano Watches Sale">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Montres-de-Luxe-Milano-Watches-Sale/10790/seeac/gseeac">
+														Montres de Luxe Milano Watches Sale
 													</a>
     											</div>
-    										    									    										    											<div title="Aquaswiss Watches">
-    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Aquaswiss-Watches/10738/seeac/gseeac">
-														Aquaswiss Watches
+    										    									    										    											<div title="Men's Street Fashion Clothing">
+    												<a class="phm ptxs pbn" href="http://www.modnique.com/saleevent/Men-s-Street-Fashion-Clothing/10803/seeac/gseeac">
+														Men's Street Fashion Clothing
 													</a>
     											</div>
     										    									    									<a class="perpetual_6 ptxs pbn phm" data-value="6" href="http://www.modnique.com/men" onClick="javascript:return window.sendToSalesEventsHome == null || sendToSalesEventsHome(6)">
@@ -629,147 +657,187 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 																												                                
 																	
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Outlet-From-1/9947/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Mother-s-Day-Gift-Shop/10411/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Outlet From $1</i>
+																																																																																								<i class="warning ttC">The Mother's Day Gift Shop</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Outlet From $1" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9947S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Mother's Day Gift Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10411S.jpg')"></div>
 											
-											Deals and steals! The key to great style is fashionable mix of high and low.
+											Give mom more than flowers. Give her a gift that she'll love forever. Browse our special selections for mom.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Spring-Dresses/9951/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Summer-Essentials-for-Him/10682/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Spring Dresses</i>
+																																																																																								<i class="warning ttC">Summer Essentials for Him</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Spring Dresses" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9951S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Summer Essentials for Him" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10682S.jpg')"></div>
 											
-											Options are a girl's best friend. Shop flirty dresses and trendy closet hits here.
+											These summer looks are no sweat. Stock up on summer pieces for every fun-in-the-sun outing.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Pre-loved-Designer-Jewelry-and-Watches/9984/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Apparel-Outlet-Starting-at-1/10690/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Pre-loved Designer Jewelry and Watches</i>
+																																																																																								<i class="warning ttC">The Apparel Outlet Starting at $1</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Pre-loved Designer Jewelry and Watches" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9984S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Apparel Outlet Starting at $1" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10690S.jpg')"></div>
 											
-											Buy now. Love forever.
+											Wardrobe necessities and splurges at crazy prices. It's basically a steal.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Gemstone-Jewelry-Shop/9989/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Pre-loved-Designer-Handbags-by-Goyard-Prada-Chanel/10691/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">The Gemstone Jewelry Shop</i>
+																																																																																								<i class="warning ttC">Pre-loved Designer Handbags by Goyard, Prada, Chanel</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Gemstone Jewelry Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9989S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Pre-loved Designer Handbags by Goyard, Prada, Chanel" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10691S.jpg')"></div>
 											
-											Spring jewelry takes shape in our favorite hues.
+											Add some high-end style to your summer look with a bag from the hottest designer names.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Pre-loved-Designer-Handbags-shop/9985/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Dress-Shop/10676/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Pre-loved Designer Handbags shop</i>
+																																																																																								<i class="warning ttC">The Dress Shop</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Pre-loved Designer Handbags shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9985S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Dress Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10676S.jpg')"></div>
 											
-											For spring, don't just choose a handbag. Choose a statement piece.
+											It's more than an all-in-one look. It's a lovely summer necessity.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Diamond-Shop/9988/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Pre-loved-Designer-Jewelry-and-Watches-by-Cartier-Rolex-Tiffany-Co/10692/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">Pre-loved Designer Jewelry and Watches by Cartier, Rolex,Tiffany &amp; Co</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Pre-loved Designer Jewelry and Watches by Cartier, Rolex,Tiffany & Co" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10692S.jpg')"></div>
+											
+											Update your jewelry box. Find summer shine with glowing pieces from designer names.
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/In-Style-Summer-Staples/10677/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">In Style Summer Staples</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="In Style Summer Staples" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10677S.jpg')"></div>
+											
+											The looks you'll fancy this season come down to the basics. Find summer styles you need for looks you love.
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Pre-Loved-Louis-Vuitton-Shop/10687/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">Pre-Loved Louis Vuitton Shop</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Pre-Loved Louis Vuitton Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10687S.jpg')"></div>
+											
+											Own a fashion icon. These bags speak for themselves, and they're saying, "We've got class."
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Shoe-Outlet-Starting-at-1/10689/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">The Shoe Outlet Starting at $1</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Shoe Outlet Starting at $1" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10689S.jpg')"></div>
+											
+											Shoe-lovers know a great deal when they see one--and it doesn't get much better than this.
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Beauty-Bar-Fresh-Make-Up/10678/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">The Beauty Bar: Fresh Make-Up</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Beauty Bar: Fresh Make-Up" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10678S.jpg')"></div>
+											
+											Looking bright and beautiful starts with a summer glow. Take a look at our beauty obsessions.
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Beauty-Bar-Signature-Fragrance-and-skincare/10679/seeac/gseeac">
+											<h6 class="mbs">
+																																																																																								<i class="warning ttC">The Beauty Bar: Signature Fragrance and skincare</i>
+											</h6>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Beauty Bar: Signature Fragrance and skincare" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10679S.jpg')"></div>
+											
+											Summer skin looks effortless. These are secret weapons for a flawless complexion.
+										</a>
+																																													
+									
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Diamond-Shop/10685/seeac/gseeac">
 											<h6 class="mbs">
 																																																																																								<i class="warning ttC">The Diamond Shop</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Diamond Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9988S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Diamond Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10685S.jpg')"></div>
 											
-											Frost yourself in a stone that's always elegant.
+											Bring some ice to the summer heat--the sun will make it shine even brighter.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Watch-Shop/9987/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Watch-Shop-for-her/10683/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">The Watch Shop</i>
+																																																																																								<i class="warning ttC">The Watch Shop for her</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Watch Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9987S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Watch Shop for her" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10683S.jpg')"></div>
 											
-											From classic to trendy, we've got the best watches of the hour. Take a look through our shop of cool watches to keep you on time and on trend.
+											This summer, the clock isn't a burden. It's a beautiful accessory. Adorn your wrist with the finest timepieces.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Beauty-and-Skincare-Shop/9982/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Gemstone-Jewelry/10686/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Beauty and Skincare Shop</i>
+																																																																																								<i class="warning ttC">Gemstone Jewelry</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Beauty and Skincare Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9982S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Gemstone Jewelry" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10686S.jpg')"></div>
 											
-											Your Makeup Matchup: Get Your Makeup Matchup: Get summer-ready skin
+											Classic glitz knows no season. Here are the gemstones you love in those lovely summer hues.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Handbags-and-Accessories/9981/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Watch-Shop-for-him/10684/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Handbags and Accessories</i>
+																																																																																								<i class="warning ttC">The Watch Shop for him</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Handbags and Accessories" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9981S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Watch Shop for him" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10684S.jpg')"></div>
 											
-											Shop a spectrum of cool, chic, and simply irresistible baubles and bags.
+											Don't get caught behind the times. We've collected cool, new summer watch styles.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Shoe-Department-for-Her/9949/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Beat-the-Heat-Summer-Accessories/10681/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">The Shoe Department for Her</i>
+																																																																																								<i class="warning ttC">Beat the Heat: Summer Accessories</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Shoe Department for Her" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9949S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="Beat the Heat: Summer Accessories" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10681S.jpg')"></div>
 											
-											The season for open toes and sexy straps is finally here.
+											Accessorize! These pieces offer that perfect little something to amp up your look.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Biggest-Pre-Loved-Louis-Vuitton-Shop-Ever/9983/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Jewelry-Vault-Starting-at-1/10688/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Biggest Pre-Loved Louis Vuitton Shop Ever</i>
+																																																																																								<i class="warning ttC">The Jewelry Vault Starting at $1</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Biggest Pre-Loved Louis Vuitton Shop Ever" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/9983S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Jewelry Vault Starting at $1" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10688S.jpg')"></div>
 											
-											It doesn't get bigger than this.
+											All you need for a jewelry box revamp, at oh-so-great prices.
 										</a>
 																																													
 									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Jewelry-Outlet-From-1/10171/seeac/gseeac">
+										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/The-Summer-Shoe-Shop/10680/seeac/gseeac">
 											<h6 class="mbs">
-																																																																																								<i class="warning ttC">The Jewelry Outlet From $1</i>
+																																																																																								<i class="warning ttC">The Summer Shoe Shop</i>
 											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Jewelry Outlet From $1" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10171S.jpg')"></div>
+                                            											<div class="shops-bnr mrm mtxs lfloat" title="The Summer Shoe Shop" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10680S.jpg')"></div>
 											
-											Great prices on spring jewelry staples.
-										</a>
-																																													
-									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Top-Trends-for-Her-The-Summer-Staples/10170/seeac/gseeac">
-											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Top Trends for Her: The Summer Staples</i>
-											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Top Trends for Her: The Summer Staples" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10170S.jpg')"></div>
-											
-											It's time to unveil your spring skin with cropped bottoms and flowy tops.
-										</a>
-																																													
-									
-										<a class="menuShopItem phm pvs" href="http://www.modnique.com/saleevent/Spring-Style-for-Him-Apparel-and-Shoes/10172/seeac/gseeac">
-											<h6 class="mbs">
-																																																																																								<i class="warning ttC">Spring Style for Him: Apparel and Shoes</i>
-											</h6>
-                                            											<div class="shops-bnr mrm mtxs lfloat" title="Spring Style for Him: Apparel and Shoes" data-style="background-image:url('//llfull.bids.com/mod/sales/banners/shops/10172S.jpg')"></div>
-											
-											From the tip of your tie to your sneakers, we've got stylish picks for a spring gentleman.
+											We've got Wedges, Sandals and flats! Unveil your pedi in this season's lightest and brightest.
 										</a>
 																																																		</div>
 						</li>
-					</ul
+					</ul>
 				</li>
 				<li class="fCalc item" >
 					<a class="phl" id="nav_dailydeal" href="http://www.modnique.com/saleevent/Daily-Deal/2000/seeac/gseeac">daily deal</a>
@@ -1165,15 +1233,12 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
                             </li>
                             
                             <li class="mvm">
-                                <a id="stellaLogoFooter" target='_blank' href='http://www.stellaservice.com/profile/1933'></a>
-                            </li>
-                            <li class="mbm">
                                 <a class="lazy-footer" data-css="pci_logo" href="http://www.hostedpci.com" target="_blank">PCI Compliant - 100% Credit Card Security</a>
                             </li>
-                            <li class="mrs">
-                                <a href="http://www.consumerguildofamerica.com/" target="_blank">Consumer Guild of America</a>
-                            </li>
-                        </ul>
+							<li class="mbm">
+								<a id="stellaLogoFooter" target='_blank' href='http://www.stellaservice.com/profile/1933'></a>
+							</li>
+                                                    </ul>
                     </div>
                     <div class="unit lastUnit">
                         <div class="line">
@@ -1582,7 +1647,7 @@ window._ = function(e,f){if(!f && $ && q[e]){jQuery.each(q[e],function(){this();
 			</noscript>
 		<!-- /Bold Software Visitor Monitor HTML v3.00 -->
 	<!-- End Bold Chat tracking code --><div id="dialogWrapper"></div>
-<div id="dialogWrapperNonFloating"></div>		<script src="../combinefiles/mod_global_end/site/300/filever/filever257/index.html" type="text/javascript"></script>
+<div id="dialogWrapperNonFloating"></div>		<script src="../combinefiles/mod_global_end/site/300/filever/filever258/index.html" type="text/javascript"></script>
 
 	<script type="text/javascript">
 
@@ -1630,6 +1695,6 @@ var hostProtocol = (("https:" == document.location.protocol) ? "https://" : "htt
 document.write("<scr" + "ipt type='text/javascript' src='" + hostProtocol + "cdn.optimizely.com/js/30539499.js'></scr" + "ipt>");
 </script>
 
-                    <script src="../bzJApp/views/filever257/site/modnique2012/js/templates/closeBlock.js" type="text/javascript"></script>
-                    <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","f87edba0b0","228127","ZlxaMkBSD0pQUxJRXV8WaxJARhVKcFMSUV1fFm4PV0QiVl9EA1ZG",0,216,new Date().getTime(),"","","","",""]);</script></body>
+                    <script src="../bzJApp/views/filever258/site/modnique2012/js/templates/closeBlock.js" type="text/javascript"></script>
+                    <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","f87edba0b0","228127","ZlxaMkBSD0pQUxJRXV8WaxJARhVKcFMSUV1fFm4PV0QiVl9EA1ZG",0,77,new Date().getTime(),"","","","",""]);</script></body>
 </html>

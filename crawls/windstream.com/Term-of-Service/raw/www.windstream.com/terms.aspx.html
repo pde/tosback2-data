@@ -514,7 +514,7 @@ document.write(new Date().getFullYear());
                         </div>
                     </div>
                     <div class="cta-btn-container clearfix">
-                        <a class="btn-cta-sm" id="myLocationNew" href="javascript:__doPostBack('ctl00$ctl00$MyLocation$CloseSuccess', '');"
+                        <a class="btn-cta-sm" id="myLocationNew" onclick="var s=s_gi(s_account); s.linkTrackEvents='eventX'; s.events='eventX';" href="javascript:__doPostBack('ctl00$ctl00$MyLocation$CloseSuccess', '');"
                             tabindex="109" title="Confirm Location"><span>
                                 Confirm Location</span></a>
                     </div>
@@ -538,7 +538,7 @@ that  is your account phone number.</p>
                         Phone Number<span class="required">*</span>
                     </label>
                     <input name="ctl00$ctl00$MyLocation$PhoneNumber" type="text" id="ctl00_ctl00_MyLocation_PhoneNumber" tabindex="110" />
-                    <a class="btn-cta-sm" id="myLocationExisting" href="javascript:__doPostBack('ctl00$ctl00$MyLocation$CloseSuccess', '');"
+                    <a class="btn-cta-sm" id="myLocationExisting" onclick="var s=s_gi(s_account); s.linkTrackEvents='eventX'; s.events='eventX';" href="javascript:__doPostBack('ctl00$ctl00$MyLocation$CloseSuccess', '');"
                         tabindex="111" title="Sign In">
                         <span>
                             Sign In</span></a>
@@ -618,6 +618,10 @@ help.</p>
             return path[path.length - 3] + ":" + path[path.length - 2];
         }
 
+        function getChannel() {
+            return $(".main-nav a.current").attr("title");
+        }
+
         function parseSiteCatalystProperties() {
             if (typeof siteCatalystProperties != "undefined") {
                 for (var prop in siteCatalystProperties) {
@@ -634,29 +638,51 @@ help.</p>
         /* You may give each page an identifying name, server, and channel on
         the next lines. */
         s.pageName = getPagename();
-        s.channel = getPagename();
+        s.channel = getChannel();
         s.campaign = s.getQueryParam('cid');
+        s.server = "Residential";
 
+        s.eVar1 = s.getQueryParam('cid');
+      
         s.prop4 = "New";
         s.eVar4 = "New";
         s.prop5 = "";
         s.eVar5 = "";
         s.prop6 = "BASE";
         s.eVar6 = "BASE";
-        s.prop7 = "9,18,21";
-        s.eVar7 = "9,18,21";
+        s.prop7 = "9,18,21,122,123,124";
+        s.eVar7 = "9,18,21,122,123,124";
         s.prop8 = "24";
         s.eVar8 = "24";
         s.prop9 = "False";
         s.eVar9 = "False";
 
+        /* Internal Searches Terms*/
+        s.prop30 = s.getQueryParam('Search');
+        if (typeof s.prop30 != 'undefined' && s.prop30 != '') {
+            s.prop30 = s.prop30.toLowerCase();
+            s.eVar30 = "D=c4";
+            s.events = s.apl(s.events, 'event2', ',', 1);
+        }
         
-        var prodAddLinks = $("a[asocs]");
+        /* Previous page value and getPercentPageViewed*/
+        s.evar31 = s.prop31 = s.getPreviousValue(s.pageName, 's_pv', '');
+
+        s.eVar32 = s.prop32 = s.getNewRepeat();
+        s.eVar33 = s.prop33 = s.getVisitNum();
+        s.eVar34 = s.prop34 = s.getDaysSinceLastVisit();
+        if (s.prop31)
+            s.evar35 = s.prop35 = s.getPercentPageViewed();
+        s.prop38 = s.eVar38 = "CA";
+        s.prop39 = s.eVar39 = "SAN FRANCISCO";
+
+        
+        var prodAddLinks = $("a[productNames]");
         if (prodAddLinks.length)
         {
             var asocs = [];
             prodAddLinks.each(function() {
-                asocs.push($(this).attr("asocs"));
+                asocs.push($(this).attr("productNames"));
             });
 
             s.events = "prodView,event3";

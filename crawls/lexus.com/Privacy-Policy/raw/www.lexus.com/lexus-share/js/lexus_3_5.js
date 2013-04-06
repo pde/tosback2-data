@@ -1067,7 +1067,9 @@ Object.extend(Ajax.QueueAction.prototype, {
 	},
 	
 	handleEvent: function(event_key, params){
-		var debug = this.action.url + '\n' + event_key + "\n" + params;
+		var debug = this.action.url + '\n' + event_key + "\n";
+		if(typeof(params)!="object")
+			debug += params;
 		if(this.is_active){
 			debug = debug + '\nApplying';
 			this.applyEvent(event_key, params);
@@ -2919,6 +2921,126 @@ function filterLink(link) {
  * Such as xxxxxx.gif and xxxxxxOver.gif 
  * @type void
  */
+
+/*
+Start: Code required to implement iframed cross domain messaging
+Reg A - 2012.4.10
+*/
+
+var g_connect={source:null,origin:null,notified_visualizer:false};
+
+
+function visualizer_height_notification(height)
+{
+if(g_connect.source!=null)
+	g_connect.source.postMessage("Visualizer_Height:"+height,g_connect.origin);	
+}
+
+function listener(event)
+{
+//this list is the list of domains that we can receive messages from
+var allowed=".lexus.com,.yourlexusdealer.com".replace(/\ /g,'');
+var from=event.origin;
+var ipos;
+
+var bAllowed=false,i,a=allowed.split(",");
+for(i=0;i<a.length && bAllowed==false;i++)	
+	bAllowed=(from.indexOf(a[i])>=0);
+
+/*
+
+if(bAllowed==false)
+	return;
+*/
+
+
+if(event.data=="PING!main.js")
+	{
+	g_connect.source=event.source;
+	g_connect.origin=event.origin;
+	g_connect.source.postMessage("PONG!main.js",g_connect.origin);
+	// needed for 
+	}
+else
+if(event.data=="PONG!Visualizer")
+	{
+	g_connect.notified_visualizer=true;	
+	reset_on_visualizer_iframe_close();
+	// visualizer frame received our callback address
+	}
+else
+if(event.data.indexOf("Visualizer_Height:")>=0)
+	{
+	if(g_connect.source!=null)
+		g_connect.source.postMessage(event.data,g_connect.origin);
+
+	}
+
+
+// event.data
+
+}
+
+
+function find_visualizer_iframe()
+{
+var page_frames=document.getElementsByTagName('iframe');
+if(page_frames.length<1)
+	{
+	setTimeout("find_visualizer_iframe()",250);
+	return;
+	}
+var theFrame=(page_frames[0].contentWindow || page_frames[0].contentDocument);
+
+
+if(g_connect.notified_visualizer==false)
+	{ 
+	theFrame.postMessage("PING!Visualizer","*");
+	setTimeout("find_visualizer_iframe()",250);
+	}  
+	
+	
+// attach to iframe's onload event
+if(theFrame.attachEvent)
+	{
+	theFrame.attachEvent("onload",function()
+			{
+			theFrame.postMessage("PING!Visualizer","*");
+			});
+	}
+else
+	theFrame.onload=function()
+			{
+			theFrame.postMessage("PING!Visualizer","*");			
+			};
+}
+
+function reset_on_visualizer_iframe_close()
+{
+var page_frames=document.getElementsByTagName('iframe');
+if(page_frames.length>0)
+	{
+	setTimeout("reset_on_visualizer_iframe_close()",250);
+	return;
+	}
+g_connect.notified_visualizer=false;
+find_visualizer_iframe();
+}
+
+if(document.location.href.indexOf("popup.html")>0)
+	{
+        // attach listener
+	if (window.addEventListener)		
+  		addEventListener("message", listener, false)		
+	else
+ 		attachEvent("onmessage", listener);
+	find_visualizer_iframe();
+	}
+
+/*
+End: Code required to implement iframed cross domain messaging
+Reg A - 2012.4.10
+*/
  
 DebugOnloadEventTiming = Class.create();
 Object.extend(DebugOnloadEventTiming.prototype, {
@@ -3147,7 +3269,6 @@ Object.extend(CursorPosition.prototype, {
 });
 var cursorPosition = new CursorPosition();
 onPageLoadEvents.addAction(cursorPosition.initXY);
-
 /*////////////
 File: Tween.js
 Creation Date: January 20 2006

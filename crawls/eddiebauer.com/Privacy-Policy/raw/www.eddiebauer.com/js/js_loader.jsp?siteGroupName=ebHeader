@@ -4499,7 +4499,12 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							function() {
 								var videoModalData = jQuery(this);
 								var billboard = jQuery('.contentWrap');
-								var bgImage = '/assets/ocp/product_page/video/eb_video_bkgd_product_page_new.gif';
+								var vidID = videoModalData.attr('data-link-videoid');
+								if (vidID == 'M7CMnONJxsI') {
+									var bgImage = '/assets/ocp/product_page/video/video_bkgd_product_page.gif';
+								} else {
+									var bgImage = '/assets/ocp/product_page/video/eb_video_bkgd_product_page_new.gif';
+								}
 								var outerContainer = videoModalData
 										.attr('data-link-outercontainer');
 								var href = videoModalData
@@ -4552,7 +4557,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			fetchYouTubeVideo = function(videoId, fName, playerObjId,
 					objectPlaceholder, objectWrapper, timestamp) {
 				
-				console.log('videoId = ' +videoId + ' fName = ' + fName + ' playerObjId = ' + playerObjId + ' objectPlaceholder = ' + objectPlaceholder + ' objectWrapper = ' + objectWrapper);
+				//console.log('videoId = ' +videoId + ' fName = ' + fName + ' playerObjId = ' + playerObjId + ' objectPlaceholder = ' + objectPlaceholder + ' objectWrapper = ' + objectWrapper);
 			    
 				var params = {
 					allowScriptAccess: "always",
@@ -4580,7 +4585,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				
 				swfobject.embedSWF("http://www.youtube.com/v/" + videoId + "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0&showinfo=0&ts="+ timestamp, objectPlaceholder, "640", "385", "8", null, null, params, atts); 
 			}
-
 		}
 	}
 
@@ -4614,8 +4618,18 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 										if (data_link_name.length > 34) {$height = 30;}else {$height = 20;}
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
-											+ '" style="text-decoration:none !important; display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
+											+ '" style="position:absolute;left:0;top:0;width:305px;" height="' 
+											+ $height 
+											+ '" id="' 
+											+ index 
+											+ '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="text-decoration:none !important; display:inline;float:left;width:19px !important;text-align:left !important;" id="' 
+											+ index 
+											+ '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' 
+											+ index 
+											+ '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' 
+											+ index 
+											+ '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
 											+ '</a></div>';
@@ -4624,8 +4638,18 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 										if (data_link_name.length > 34) {$height = 30;}else {$height = 20;}
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
-											+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
+											+ '" style="position:absolute;left:0;top:0;width:305px;" height="' 
+											+ $height 
+											+ '" id="' 
+											+ index 
+											+ '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' 
+											+ index 
+											+ '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' 
+											+ index 
+											+ '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' 
+											+ index 
+											+ '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
 											+ '</a></div>';
@@ -4634,9 +4658,19 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							
 							var videoLinkHTML = '<div class="product_page_link_'
 									+ youtubeValue
-									+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="position:absolute;left:0;top:0;width:305px;" height="' 
+									+ $height 
+									+ '" id="' 
+									+ index 
+									+ '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
-									+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' 
+									+ index 
+									+ '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' 
+									+ index 
+									+ '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' 
+									+ index 
+									+ '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
 									+ '">'
 									+ data_link_name
@@ -4682,12 +4716,12 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						var playerObjId = 'myytplayer_'+youtubeValue;
 						var objectWrapper = 'youtube_'+youtubeValue;
 						var objectPlaceholder = 'ytapiplayer_'+youtubeValue;
-						getYouTubeVideo(youtubeValue, playerObjId,
+						fetchYouTubeVideo(youtubeValue, playerObjId,
 								objectWrapper, objectPlaceholder);
 					});
 				
 
-			getYouTubeVideo = function(youtubeValue, playerObjId,
+			fetchYouTubeVideo = function(youtubeValue, playerObjId,
 					objectWrapper, objectPlaceholder) {
 				
 				jQuery('.'+objectWrapper).addClass('selected').css(
@@ -4697,6 +4731,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					allowScriptAccess: "always",
 					wmode: "transparent"
 				};
+				
 				var atts = {
 				    id: playerObjId
 				};
@@ -4725,7 +4760,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						.embedSWF(
 								"http://www.youtube.com/v/"
 										+ youtubeValue
-										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0",
+										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&showinfo=0&autoplay=0",
 								objectPlaceholder, "640", "385", "8", null,
 								null, params, atts);
 				jQuery('head')

@@ -820,7 +820,6 @@ var Class = (function() {
   };
 })(jQuery);
 (function($) {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   var InlineVideoExpander = Class.create({
     videoInterface: null,
@@ -831,15 +830,12 @@ var Class = (function() {
       ratio: what the video ratio should be. for 16:9 this should be 0.5625
     */
 
+      var that = this;
       // if not set, default to 16:9
       ratio                 = ratio || 0.5625;
       this.embedCode        = $actionElm.attr("data-embed-code");
 
       if (typeof this.embedCode === 'undefined' || this.embedCode === '') return;
-
-      // Bind callback functions
-      this._play  = __bind(this._play, this);
-      this._close = __bind(this._close, this);
 
       this.$targetCont      = $targetCont;
       this.heroCont         = $(".hero", this.$targetCont);
@@ -850,28 +846,33 @@ var Class = (function() {
       this.playerContainer  = $('.player-container', this.$targetCont);
       this.playHeadTime     = 0;
 
-      $actionElm.bind('click', this._play);
-      $(this.$targetCont).bind("close-event", this._close);
+      $actionElm.bind('click', function(e) {
+        e.preventDefault();
+        // requery when the user has clicked
+        that.targetContHeight = that.heroCont.outerHeight();
+        that.$targetCont.height(that.targetContHeight);
+        that.adjustVideoSpace(true);
+      });
+
+      $(this.$targetCont).bind("close-event", function(){
+        if (that.videoInterface){
+          that.videoInterface.pause();
+          window.tnfOoyala.apiReady[that.videoInterface.playerId] = false;
+          that.playheadTime = that.videoInterface.getPlayheadTime();
+        }
+        that.adjustVideoSpace();
+      });
     },
 
-    _play: function(event) {
-      this.playerContainer.empty();
-      this.playerContainer.show();
+    adjustVideoSpace:function(insert) {
+      var that = this;
 
-      event.preventDefault();
-      // requery when the user has clicked
-      this.targetContHeight = this.heroCont.outerHeight();
-      this.$targetCont.height(this.targetContHeight);
-      this.insertVideo();
-    },
-
-    _close: function() {
-      if (this.videoInterface){
-        this.videoInterface.pause();
-        window.tnfOoyala.apiReady[this.videoInterface.playerId] = false;
-        this.playheadTime = this.videoInterface.getPlayheadTime();
+      if(insert) {
+        that.insertVideo();
+      } else {
+        that.removeVideo();
       }
-      this.removeVideo();
+
     },
 
     insertVideo: function() {
@@ -881,15 +882,15 @@ var Class = (function() {
       that.heroCont.fadeOut('slow');
 
       that.$targetCont.animate({ height: height}, 1000, function() {
-        that.handleVideo();
-        that.adjustForIpadInsert();
+        that.handleVideo(true);
+        that.adjustForIpadInsert(that);
       });
     },
 
-    adjustForIpadInsert: function() {
+    adjustForIpadInsert: function(that) {
       if (TNF.ipad){
-        this.playerContainer.animate({'padding-top': '35px' });
-        $('a.video-interface-close', this.playerContainer).css({"border-radius": '10px 10px 0 0'});
+        that.playerContainer.animate({'padding-top': '35px' });
+        $('a.video-interface-close', that.playerContainer).css({"border-radius": '10px 10px 0 0'});
       }
     },
 
@@ -899,7 +900,7 @@ var Class = (function() {
       that.playerContainer.fadeOut('slow');
 
       $(that.$targetCont).animate({ height: that.targetContHeight }, 1000, function() {
-        that._fadeOutPlayerContainer();
+        that.handleVideo();
         that.heroCont.fadeIn('slow');
         that.adjustForIpadRemove(that);
       });
@@ -912,7 +913,7 @@ var Class = (function() {
       }
     },
 
-    handleVideo: function () {
+    handleVideo: function (insert) {
       var player = null,
           that   = this;
 
@@ -920,39 +921,41 @@ var Class = (function() {
         player = $("#"+this.videoInterface.playerId);
       }
 
-      if ($(player).length === 0){
+      if (insert) {
 
-        this.videoInterface = $.TNF.BRAND.videoInterface.factory({
-          container: this.playerContainer,
-          width: that.targetContWidth,
-          height: that.ratioHeight,
-          embedCode: that.embedCode,
-          onLoad: function() {
-            that.videoInterface.play();
-          }
+        if ($(player).length === 0){
 
-        });
+          this.videoInterface = $.TNF.BRAND.videoInterface.factory({
+            container: this.playerContainer,
+            width: that.targetContWidth,
+            height: that.ratioHeight,
+            embedCode: that.embedCode,
+            onLoad: function() {
+              that.videoInterface.play();
+            }
 
-        that.playerContainer.append('<a class="video-interface-close"></a>');
+          });
 
-        $('a.video-interface-close', that.playerContainer).click(function(e) {
-          e.preventDefault();
-          that.$targetCont.trigger("close-event");
-        }).bind(this);
+          that.playerContainer.append('<a class="video-interface-close"></a>');
+
+          $('a.video-interface-close', that.playerContainer).click(function(e) {
+            e.preventDefault();
+            that.$targetCont.trigger("close-event");
+          }).bind(this);
+
+        } else {
+
+          that.playerContainer.fadeIn("fast", function(){
+            that.videoInterface.setPlayheadTime(that.playheadTime);
+          }); 
+
+        }
 
       } else {
 
-        that.playerContainer.fadeIn("fast", function(){
-          that.videoInterface.setPlayheadTime(that.playheadTime);
-        }); 
-
+        that.playerContainer.fadeOut("fast");
       }
-    },
-
-    _fadeOutPlayerContainer: function() {
-      this.playerContainer.fadeOut("fast");
     }
-
   });
 
   $.TNF.BRAND.InlineVideoExpander = InlineVideoExpander;

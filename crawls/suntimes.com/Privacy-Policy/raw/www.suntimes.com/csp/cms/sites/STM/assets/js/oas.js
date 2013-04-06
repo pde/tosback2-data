@@ -51,15 +51,16 @@ for(var i=0;i<metaTags.length;i++) {
 		oasDocType = metaTags[i].getAttribute('content');  //possible method?
 	}
 }
+
 if (!window.location.pathname.match(/index\.html$/i) && window.location.pathname.match(/\.html$/i) ) {
-	console.log("This is an Article.");
+	//console.log("This is an Article.");
 	var storyID = /\/(\d{6,})-\d\d\d/;
 	var newPath = window.location.pathname.replace( storyID, "" ); // remove the DTI id number
 	if (RegExp.$1 != '') oasKeywords = 'storyid=' + RegExp.$1 + '&' + oasKeywords; // add DTI number to terms
 	//console.log(RegExp.$1);
 	OAS_sitepage = window.location.hostname + newPath.replace( /(.*)\/.*\.html$/, "$1/article" );
 } else {
-	console.log("This is an Index or Section Front.");
+	//console.log("This is an Index or Section Front.");
 	if  (window.location.pathname.match(/index\.html$/i)) {
 		OAS_sitepage = window.location.hostname + window.location.pathname;
 	} else {
@@ -70,7 +71,7 @@ if (!window.location.pathname.match(/index\.html$/i) && window.location.pathname
 
 OAS_sitepage = OAS_sitepage.replace( /\/\//, "/" );
 //OAS_sitepage = OAS_sitepage.replace( /dev\.suntimes/, "www\.suntimes" );
-console.log('\r\nOAS_sitepage: '+OAS_sitepage);
+//console.log('\r\nOAS_sitepage: '+OAS_sitepage);
 
 OAS_url = 'http://oascentral.suntimes.com/RealMedia/ads/';
 //OAS_sitepage = window.location.hostname + window.location.pathname;
@@ -79,7 +80,7 @@ var OAS_taxonomy='';
 OAS_query =  oasKeywords; 
 window.location.search.substr(1) != '' ? OAS_query += window.location.search.substr(1)+'&' : OAS_query +='' ;
 OAS_query += 'XE' + '&' + OAS_taxonomy + OAS_rdl + "&if_nt_CookieAccept=" + OAS_CA + '&XE';
-console.log("OAS_query: "+OAS_query);
+//console.log("OAS_query: "+OAS_query);
 OAS_target = '_top';
 OAS_rns = (Math.random() + "").substring(2, 11);
 

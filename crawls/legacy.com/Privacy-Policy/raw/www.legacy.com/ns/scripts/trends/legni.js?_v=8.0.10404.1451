@@ -1,0 +1,29 @@
+//liveManager v2.0, Copyright 2008 Tealium.com Inc. All Rights Reserved.
+var _hbEC = 0, _hbE = new Array; function _legniEvent(a, b) { b = _hbE[_hbEC++] = new Object(); b._N = a; b._C = 0; return b; }
+var legni = _legniEvent("pv"); legni.mlc = ''; legni.pn = '';
+var Lm = { q: {}, l: [], f: {}, p: 0, o: 0, A: function(a, b, c, d)
+{
+    if (a.c) this.l.push(a); b = document; if (b.createElement)
+    {
+        c = "Lm_" + a.a; if (!b.getElementById(c))
+        {
+            try { eval(a.e) } catch (e) { };
+            d = b.createElement('script'); d.language = 'javascript'; d.type = 'text/javascript'; d.src = a.b; d.id = c; b.getElementsByTagName("head")[0].appendChild(d)
+        } 
+    } 
+}, LOAD: function(a, b, c, d)
+{
+    this.f[a] = 0; c = this.l.length; for (b = this.p; b < c; b++) { d = this.l[b]; if (this.f[d.a] == 0) { this.f[d.a] = ++this.p; try { eval(d.d) } catch (e) { } } else return; } if (this.p == c && this.o == 0) this.o = 1
+},
+    EV: function(a, b, c, d) { if (a.addEventListener) { a.addEventListener(b, c, false) } else if (a.attachEvent) { a.attachEvent(((d == 1) ? "" : "on") + b, c) } } 
+}
+
+Lm.src = "/ns/scripts/trends/"; //path to JS files, need trailing /
+Lm.lc = "1.3";
+Lm.load = 1;
+
+if (Lm.load)
+{
+    Lm.A({ a: "ntpagetag", b: Lm.src + "ntpagetag.js?v=" + Lm.lc, c: 1, e: "NTPT_NOINITIALTAG='true';" });
+    Lm.A({ a: "migration", b: Lm.src + "migration.js?v=" + Lm.lc, c: 1, d: "_HM.INIT()" });
+}

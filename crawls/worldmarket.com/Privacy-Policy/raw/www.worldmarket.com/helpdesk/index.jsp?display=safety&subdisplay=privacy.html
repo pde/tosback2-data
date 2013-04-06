@@ -86,7 +86,7 @@
 
 
 	
-		var ml_user = {"WME":"","email":"","customercode":"","lastVisit":"2013-04-03","basketValue":"","basketCount":"0","historicalPurchases":"","referredFrom":[],"customergroupsactive":[], "sourcecodes":[], "sourceIP":"64.147.188.8"};
+		var ml_user = {"WME":"","email":"","customercode":"","lastVisit":"2013-04-06","basketValue":"","basketCount":"0","historicalPurchases":"","referredFrom":[],"customergroupsactive":[], "sourcecodes":[], "sourceIP":"64.147.188.8"};
 
 
 </script><meta name="google-site-verification" content="DJiE4GlUhodrHekKYvsxdTQsh3VHXyZxV6L0k3flB8k" />
@@ -95,8 +95,13 @@
 
 <!-- sitewide includes -->
 <script type="text/javascript" src="../20130312-1/text/inc/wm_v1.js"></script>
-<link href="../20130402-6/text/inc/wm_v1.css" type="text/css" rel="stylesheet">
-<link href="../20130401-6/text/navigation/navigation.css" rel="stylesheet" type="text/css">
+<link href="../20130404-2/text/inc/wm_v1.css" type="text/css" rel="stylesheet">
+<link href="../20130404-2/text/navigation/navigation.css" rel="stylesheet" type="text/css">
+
+<script>
+var cpwm_search_default_text = "Discover Something...";
+</script>
+
 <!-- Optimizely -->
 <script src="../../cdn.optimizely.com/js/66336030.js"></script>
 
@@ -140,76 +145,90 @@ window.addABcode = function (o, s) {
 
 window.useAlternateDropNav = function () {
 	var letjQueryCacheAjax = 1;
-	var fetchOncePerPage = 1;
-	var pathToMenus = '/20130401-3/text/navigation/';
+	var pathToMenus = '/20130404-4/text/navigation/';
 	console.log("alternateMenu: init");
-	
+
 	try {
-	jQuery('.flatCatsUL li div div').remove();
-/*
-	jQuery('li#t_21').attr("style",'');
-	jQuery('li#t_21 ul.flatCatsUL').attr("style");
-	jQuery('li#t_21 ul.flatCatsUL').removeClass("cpwm_hide");
-*/
-	jQuery('.sf-menu').addClass("testMenu");
+		/*
+		jQuery('li#t_21').attr("style",'');
+		jQuery('li#t_21 ul.flatCatsUL').attr("style");
+		jQuery('li#t_21 ul.flatCatsUL').removeClass("cpwm_hide");
+		*/
+		jQuery('.sf-menu').addClass("testMenu");
 
-/////// no dropdown on New, Sale, Inspiration
-jQuery('li#t_101417').unbind('mouseenter mouseleave mouseover mouseout ');
-jQuery('li#t_22').unbind('mouseenter mouseleave mouseover mouseout ');
-jQuery('li#t_21').unbind('mouseenter mouseleave mouseover mouseout ');
+		/////// no dropdown on New, Sale, Inspiration
+		jQuery('li#t_101417').unbind('mouseenter mouseleave mouseover mouseout ');
+		jQuery('li#t_22').unbind('mouseenter mouseleave mouseover mouseout ');
+		jQuery('li#t_21').unbind('mouseenter mouseleave mouseover mouseout ');
 
 
-	window.loadCategoryCustomData = function (o) {
-	    var catcode = jQuery(o).attr('catpk').replace(/[^0-9]/g,'');
-/////// no dropdown on New, Sale, Inspiration
-	    if (catcode.toString().match(/^(101417|21|22)$/)!==null) return;
-	    if (fetchOncePerPage && jQuery('.flatCats#flatCatMenu_'+catcode).html().trim()!=='') return;
-	    console.log("alternateMenu: fetch for catcode "+catcode);
-	    
-	    jQuery('.flatCats#flatCatMenu_'+catcode).load(
-			pathToMenus+catcode+".txt"+((letjQueryCacheAjax)?"":"?"+new Date().getTime()), function () {
-				jQuery('.flatCats#flatCatMenu_'+catcode+' dt a').each(function() {
-					addABcode(this,"second");
-				});
+		var countCats = jQuery(".flatCats").size();
+		jQuery(".flatCats").each(function(i,o){
 
-				jQuery('.flatCats#flatCatMenu_'+catcode+' dd a').each(function() {
-					addABcode(this,"third");
-				});
+			var catcode = jQuery(this).attr('id').replace(/[^0-9]/g,'');
+			jQuery('.flatCats#flatCatMenu_'+catcode).load(
+					pathToMenus+catcode+".txt"+((letjQueryCacheAjax)?"":"?"+new Date().getTime()), function () {
+					if (i==countCats-1) {
+					console.log(i+" _ "+(countCats-1))
+					// add AB codes
+						jQuery('.flatCats dt a').each(function() {
+							addABcode(this,"second");
+						});
 
-				jQuery('.flatCats#flatCatMenu_'+catcode+' .navContainerArticle a').each(function() {
-					addABcode(this,"content");
-				});
-			}
-	    );
-	}
-	console.log("alternateMenu: init complete");
+						jQuery('.flatCats dd a').each(function() {
+							addABcode(this,"third");
+						});
+
+						jQuery('.flatCats .navContainerArticle a').each(function() {
+							addABcode(this,"content");
+						});
+					}
+					}// end after-load function
+			);
+
+
+		})
+
+		// clobber this function (assigned to onmouseovers) because not needed
+		window.loadCategoryCustomData = function (o) {
+			return true;
+		}
+
+		console.log("alternateMenu: init complete");
 	} catch (e) {
-		console.log(e);
+		console.log("Error: "+e.toString());
 	}
 }
 
 jQuery(function () {
 
+// ######### end overwtrite ML fctn for search field
+try {
+	// set default text in a search to our new default.
+	jQuery('#navsearchbox').attr('value', cpwm_search_default_text).attr('placeholder', cpwm_search_default_text).val('');
+} catch (e) {
+	//
+}
+
+	/////// no dropdown on New, Sale per Melissa 2013 04 03
+	jQuery('li#t_101417').unbind('mouseenter mouseleave mouseover mouseout ');
+	jQuery('li#t_101417 .flatCatsUL').remove();
+	jQuery('li#t_22').unbind('mouseenter mouseleave mouseover mouseout ');
+	jQuery('li#t_22 .flatCatsUL').remove();
+
 	/* these are pres for teh alternate DropNav test - right now Inspiration has no submenu. 
-	   So we create it, let it get initialized and then forcefully hide it.
-	   when we run useAlterNateDropNav() we undo these changes so we can use the dropdown. 
-	   disabled for now
+	So we create it, let it get initialized and then forcefully hide it.
+	when we run useAlterNateDropNav() we undo these changes so we can use the dropdown. 
+	disabled for now
 	*/
-//	jQuery('li#t_21').attr("style", "background:none !important");
-//	jQuery('div#tnc_21').after("<ul class='flatCatsUL cpwm_hide'><li><div class='flatCats' id='flatCatMenu_21'></div></li></ul>");
+	//	jQuery('li#t_21').attr("style", "background:none !important");
+	//	jQuery('div#tnc_21').after("<ul class='flatCatsUL cpwm_hide'><li><div class='flatCats' id='flatCatMenu_21'></div></li></ul>");
 	// end hack for useAlterNateDropNav
 
-
-	//*** set the placeholder value for search ***//
-jQuery('#navsearchbox').attr('value', 'Discover Something...').attr('placeholder', 'Discover Something...');
-jQuery('#navsearchbox').attr("onfocus", null);
-jQuery('#navsearchbox').focus(function() {if (this.value==jQuery('#navsearchbox').attr('placeholder')) this.value='';});
-jQuery('#navsearchbox').blur(function() {if (this.value=="") this.value=jQuery('#navsearchbox').attr('placeholder');});
-
 	// force it with QS
-		if (getQueryArgs('forcepinfluencer') && getQueryArgs('forcepinfluencer').length>0 && location.pathname.indexOf("/product/")==0 && location.pathname.indexOf("/QuickViewEnhancement/")==-1 && (typeof(lteIE8)==="undefined" || !(lteIE8===true))){
-			window.showPinfluencerPDP();
-		}
+	if (getQueryArgs('forcepinfluencer') && getQueryArgs('forcepinfluencer').length>0 && location.pathname.indexOf("/product/")==0 && location.pathname.indexOf("/QuickViewEnhancement/")==-1 && (typeof(lteIE8)==="undefined" || !(lteIE8===true))){
+		window.showPinfluencerPDP();
+	}
 });
 
 /// replace content if from special referer Pinterest.com
@@ -245,6 +264,7 @@ window.showPinfluencerPDP = function () {
 //		jQuery(window).scroll(function () {hasscrolled = true});
 	}
 </script>
+
 <!-- Google Analytics Reporting Support -->
 <!-- Google Analytics More info available at http://www.google.com/analytics/index.html -->
 <script language="JavaScript" type="text/javascript" src="../googleanalytics/parseGoogleAnalyticsJSON.js"></script>
@@ -502,8 +522,7 @@ function adjustGlobalCartLayout() {
 	</div>
 	<!--div class="promoSection">15% off furniture through April 18th!</div -->
 	<div class="promoSection">
-		<!--<a href="http://www.worldmarketexplorer.com" style="color: #1B9990; text-decoration: none;font-family: SofiaProLight">Become a World Market Explorer&reg; today and <span style="font-family:SofiaProBlack">get 10% off</span> your first purchase!</a>-->&nbsp;
-
+		 <div id="cpwm_promo1"></div>
 	</div>
 	<div class="searchSection clearfix">
 		
@@ -1242,7 +1261,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "825890"
+  return "1049268"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>
@@ -1304,9 +1323,54 @@ jQuery(function() {
 }
 
 
+//########## overwrite ML functions because search defauilt text is hardcoded...
+
+  function checkKeyword(keyword, defaultText) {
+    var minKeywordLength = 0;
+    var maxKeywordLength = 0;
+    minKeywordLength += 3;
+    maxKeywordLength += 30;
+    var errMsg = '';
+    var searchTerms = '';
+    keyword.value = jQuery.trim(keyword.value);
+    searchTerms = keyword.value;
+    var noSearchTerm = "Please enter a keyword or item number";
+    var shortSearchTerm = "Your keyword or item number must be at least 3 characters long";
+    if (searchTerms == cpwm_search_default_text) {
+      alert(noSearchTerm);
+      return false;
+    }
+    if (searchTerms == '') {
+      alert(noSearchTerm);
+      return false;
+    } else if ( searchTerms.length < minKeywordLength ) {
+        alert(shortSearchTerm);
+        return false;
+    } else {
+        return true;
+    }
+  }
+
+  function checkIfDefault(keyword) {
+    if(keyword==cpwm_search_default_text) {
+      return '';
+    }
+    else {
+      return keyword;
+    }
+  }
+
+
 jQuery(function() {
 
-if (location.search.indexOf('alternateNav')>-1) useAlternateDropNav();
+// unhide the Shopatron box unless in production
+if (location.hostname.indexOf("marketlive.com")>-1) {
+	jQuery('div#shopatronZipCodeContainer').attr("style",null).css({visibility: "visible" }).show();
+}
+
+
+
+// if (location.search.indexOf('alternateNav')>-1) useAlternateDropNav();
 
 
 jQuery('a.sf-top-level-link').each(function() {
@@ -1405,6 +1469,7 @@ try {
 
 
 /* _optimizely_evaluate=safe */
+
 
 </script>
 

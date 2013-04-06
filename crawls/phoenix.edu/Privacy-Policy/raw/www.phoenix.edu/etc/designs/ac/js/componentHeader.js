@@ -28,9 +28,7 @@ m=parseInt(g.get("profile","experienceLoginCounter"),10);
 if(!isNaN(m)&&isFinite(m)){m=m+1
 }else{m=1;
 if($("#lbContentFirstWelcome").length){ctaLightbox.launchLightbox()
-}if(typeof cmCreateConversionEventTag==="function"){cmCreateConversionEventTag("First Login",2,"EXP: Phoenix Prep",10,g.get("profile","id"))
-}}if(typeof cmCreateConversionEventTag==="function"){cmCreateConversionEventTag("Login",2,"EXP: Phoenix Prep",m-1<4?n[m-1]:n[3],g.get("profile","id"))
-}g.set("profile","experienceLoginCounter",m)
+}}g.set("profile","experienceLoginCounter",m)
 }}(function i(){var m,p,l,n,o="visiting student";
 g.ready(function(){var r,s,q;
 if(g.authenticated){r=g.get("profile",["firstName","lastName"]);

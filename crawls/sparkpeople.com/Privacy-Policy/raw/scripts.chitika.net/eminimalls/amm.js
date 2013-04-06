@@ -3,9 +3,8 @@ String.prototype.ltrim = function() {
 }
 
 ch_ad_url = '';
-ch_oeh = window.onerror;
 ch_chitika_loaded = true;
-ch_amm_version = "1.14.0";
+ch_amm_version = "1.15.0";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
@@ -350,7 +349,30 @@ function ch_mm() {
     w.ch_ad_url = 'http://' + w.ch_host + '/minimall?';
     w.ch_impsrc = ch_def(w.ch_impsrc, 'amm');
 
-    w.ch_referrer = document.referrer;
+    // Detect iframes and pass appropriate frm & url values
+    try {
+        // Are win in an iframe?
+        if (w.top.document.location.href == document.location.href) {
+            // Nope. Nothing special here to do.
+            if (w.ch_pu) {
+                ch_aue('dcc2', '1');
+            } else {
+                w.ch_pu     = document.location.href;
+            }
+            w.ch_referrer   = document.referrer;
+        } else {
+            // Yes, we are
+            ch_aue('frm', 1);
+            ch_aue('serveUrl', document.location.href);
+            w.ch_pu         = w.top.document.location.href;
+            w.ch_referrer   = w.top.document.referrer;
+        }
+    } catch (x) { // Security exception
+        // Security problem. Try something else. Hope this works...
+        ch_aue('frm', 2);
+        ch_aue('serveUrl', document.location.href);
+        w.ch_pu = document.referrer;
+    }
 
     var m = String(w.location.href).match(/#chitikatest(?:=(.+))?/);
     if (m) {
@@ -360,8 +382,6 @@ function ch_mm() {
         ch_au('ip', 'us');
         ch_au('test', '1');
     }
-
-    w.onerror = w.ch_oeh;
 
     if (w.ch_client == 'epodunk') {
         ch_aue('dcc1', '2');
@@ -435,7 +455,6 @@ function ch_mm() {
     ch_aue('canvas', w.ch_canvas);
     ch_aue('mobile', w.ch_mobile);
     ch_aue('where', w.ch_where);
-    ch_aue('frm', w.top.location != document.location ? 1 : 0);
     ch_aue('history', history.length);
     ch_aue('metro_id', w.ch_metro_id);
     ch_aue('city', w.ch_city);
@@ -553,11 +572,6 @@ function ex_normal_op(){
     ch_add_script(window.ch_real_ad_url);
 }
 
-function ch_eh(m,u,l) {
-    ch_mm();
-    return true;
-}
-
 function ch_clear() {
     var w = window;
     //w.ch_ad_url = undefined;
@@ -577,7 +591,6 @@ function ch_clear() {
     w.ch_must_fill = undefined;
     w.ch_noborders = undefined;
     w.ch_nump = undefined;
-    w.ch_pu = undefined;
     w.ch_query = undefined;
     w.ch_select = undefined;
     w.ch_sid = undefined;
@@ -586,12 +599,6 @@ function ch_clear() {
     w.ch_where = undefined;
     w.ch_width = undefined;
     w.ch_zip = undefined;
-}
-
-window.onerror = ch_eh;
-
-if (window.ch_pu == null) {
-    ch_pu = "" + document.location;
 }
 
 ch_mm();

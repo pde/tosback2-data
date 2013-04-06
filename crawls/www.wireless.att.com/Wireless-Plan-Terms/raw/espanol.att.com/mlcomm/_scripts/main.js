@@ -579,6 +579,11 @@ function renderNewsroomBox() {
 function renderLatestReleases() {
     document.write('<div class="section nbb">');
     document.write('<h6>Titulares</h6>');
+	
+	document.write('<div class="rc-release-box">');
+    document.write('<p>4 de abril de 2012<br />');
+    document.write('<a href="/newsroom/news_releases/facebook_celular_HTC_phone_4-4-13.html?id=' + state + '" title="AT&amp;T se une a HTC y Facebook para presentar el HTC First, el &#250;nico smartphone con un dise&#241;o totalmente basado en Facebook home">AT&amp;T se une a HTC y Facebook para presentar el HTC First, el &#250;nico smartphone con un dise&#241;o totalmente basado en Facebook home</a></p>');
+    document.write('</div>');
 
     document.write('<div class="rc-release-box">');
     document.write('<p>26 de febrero de 2013<br />');
@@ -615,10 +620,7 @@ function renderLatestReleases() {
     document.write('<a href="/newsroom/news_releases/global_messaging_11_15_12.html" title="Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios">Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios</a></p>');
     document.write('</div>');
 
-    document.write('<div class="rc-release-box">');
-    document.write('<p>20 de septiembre de 2012<br />');
-    document.write('<a href="/newsroom/news_releases/att_company_of_year_9-20-12.html?id=' + state + '" title="AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.">AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.</a></p>');
-    document.write('</div>');
+    
 
 
 

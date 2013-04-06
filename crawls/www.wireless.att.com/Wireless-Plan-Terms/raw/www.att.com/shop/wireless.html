@@ -96,7 +96,13 @@ var mRedirectURL = '//m.att.com/shopmobile/index.html';
 					request.open("GET",ajaxUrl,true); 
 					request.send(); 
 				// Device is not a tablet,ridirect to m.att.com 
-					window.location =  mRedirectURL; 
+					var referrer = encodeURIComponent(document.referrer); 
+					referrer = referrer.replace("%3A","%253A"); 
+					if (window.location.search != '') { 
+						window.location = mRedirectURL + window.location.search +  '&referrer=' + referrer; 
+					} else { 
+						window.location = mRedirectURL + '?referrer=' + referrer; 
+					} 
 				} 
 		} 
 	} 
@@ -136,14 +142,14 @@ var mRedirectURL = '//m.att.com/shopmobile/index.html';
 	<link rel="canonical" href="wireless.html"/>  
 	<meta NAME="DCSext.wtPN" CONTENT="HRock Wireless"/> 
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
-<link rel="stylesheet" href="http://www.att.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
-<link rel="stylesheet" href="http://www.att.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
 <!--[if IE 7]> 
-<link rel="stylesheet" href="http://www.att.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
-	    <link rel="stylesheet" type="text/css" href="../styles/tabs.css"/>  
-    <link rel="stylesheet" type="text/css" href="../styles/shop-styles.css"/>  
-    <link rel="stylesheet" type="text/css" href="../media/cms/shop/styles/shop-styles-extra.css"/> 
+	    <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/styles/tabs.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/styles/shop-styles.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/media/cms/shop/styles/shop-styles-extra.css"/> 
 	<!-- Global JS files --> 
 	<script type="text/javascript"> 
 CQURLInfo = { 
@@ -155,11 +161,11 @@ CQURLInfo = {
     "suffix": null 
 };</script> 
 <script type="text/javascript" src="../shopcms/shopetc/clientlibs/foundation/jquery.js"></script> 
-			<script type="text/javascript" src="http://www.att.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
-			<script type="text/javascript" src="http://www.att.com/scripts/jquery.noconflict.js"></script> 
-	<script type="text/javascript" src="http://www.att.com/media/gvp/gvpUtils_HR.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
             <!-- OPTIMOST ATTRIBUTE CODE --> 
             <script language="javascript1.1" type="text/javascript"> 
@@ -681,18 +687,20 @@ CQURLInfo = {
 		<div class="w295" style="float:right;"> 
 		    <div class="marqueeTile border-bottom-dotted top"> 
 		       <div class="parbase teaser tile1"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-existingWireless","name":"wireless-shop-tile1-existingWireless","campainName":"campaign","id":"campaign_wireless-shop-tile1-existingWireless","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-mobility"],"tags":[]},{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default","name":"wireless-shop-tile1-default","campainName":"campaign","id":"campaign_wireless-shop-tile1-default","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-notWirelessAuthenticated","name":"wireless-shop-tile1-notWirelessAuthenticated","campainName":"campaign","id":"campaign_wireless-shop-tile1-notWirelessAuthenticated","segments":["/shopcms/shopetc/segmentation/UF/segmnts/notwlessauthenticated"],"tags":[]},{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-wirelessauthenticated","name":"wireless-shop-tile1-wirelessauthenticated","campainName":"campaign","id":"campaign_wireless-shop-tile1-wirelessauthenticated","segments":["/shopcms/shopetc/segmentation/UF/segmnts/wirelessauthenticated"],"tags":[]}], "first", "_content_att_shop_en_wireless_jcr_content_admgr_tile1", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-existingWireless","name":"wireless-shop-tile1-existingWireless","campainName":"campaign","id":"campaign_wireless-shop-tile1-existingWireless","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-mobility"],"tags":[]},{"path":"/shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default","name":"wireless-shop-tile1-default","campainName":"campaign","id":"campaign_wireless-shop-tile1-default","segments":[],"tags":[]}], "first", "_content_att_shop_en_wireless_jcr_content_admgr_tile1", "false", null);  }</script> 
          <div id="_content_att_shop_en_wireless_jcr_content_admgr_tile1" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-wirelessauthenticated/jcr:content;2012118" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default/jcr:content;2013043" style="visibility:hidden;"> 
 	<div class="parbase marqueeonethird"> 
-        <div style="background: url(wireless.html) no-repeat scroll right top transparent;" class="tile h138">  
-            <h3>MyAT&T</h3> 
-            <h4>Upgrade Today</h4> 
-                <p>Your next phone can be a touch away.<br> 
+        <div style="background: url(../shopcms/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default/_jcr_content/marqueeonethird/image.img.png) no-repeat scroll right top transparent;" class="tile h138">  
+            <h3>myAT&T</h3> 
+            <h4>Existing Customers</h4> 
+                <p>Log in and shop for exclusive<br> 
+AT&amp;T customer discounts.<br> 
 </p> 
-                    <a href="http://www.att.com/shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-wirelessauthenticated/jcr:content/marqueeonethird;2012118">Add a Line<img src="../media/att/2011/global/btn/img_blue_arrow_9x13.gif" alt="go"/></a><a href="http://www.att.com/shop/wireless/upgradephone.html" target="_self" data-cqpath="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-wirelessauthenticated/jcr:content/marqueeonethird;2012118">Upgrade<img src="../media/att/2011/global/btn/img_blue_arrow_9x13.gif" alt="go"/></a> 
+                    <a href="http://www.att.com/shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default/jcr:content/marqueeonethird;2013043">Add a Line<img src="../media/att/2011/global/btn/img_blue_arrow_9x13.gif" alt="go"/></a><a href="http://www.att.com/shop/wireless/upgradephone.html" target="_self" data-cqpath="/content/campaigns/att/en/Wireless/Marqueepromotop/campaign/wireless-shop-tile1-default/jcr:content/marqueeonethird;2013043">Upgrade<img src="../media/att/2011/global/btn/img_blue_arrow_9x13.gif" alt="go"/></a> 
                         <div class="legal">  
+                             <br> 
                        </div>  
                 </div>    
 <div class="clear"></div> 
@@ -756,7 +764,7 @@ shop packages &amp; deals.<br>
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/Wireless/overview/Campaign/Current_Customers","name":"Current_Customers","campainName":"Campaign","id":"Campaign_Current_Customers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-mobility","/shopcms/shopetc/segmentation/UF/segmnts/wirelessauthenticated"],"tags":[]},{"path":"/shopcms/campaigns/att/en/Wireless/overview/Campaign/default","name":"default","campainName":"Campaign","id":"Campaign_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_wireless_jcr_content_LoBT_teasertab1", "false", null);  }</script> 
          <div id="_content_att_shop_en_wireless_jcr_content_LoBT_teasertab1" class="campaign campaign-Campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content;2013070" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content;2013095" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="parbase threeup section"> 
 <div class="parbase wirelessthreeup t-up"> 
@@ -829,24 +837,24 @@ shop packages &amp; deals.<br>
 		<a href="wireless.html#" class="cat2480045" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/catalogtabcarousel;2012256"> 
 			Top Rated 
 		</a><br/> 
-		<img src="../media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="Top Rated selected"/> 
+		<img src="../../1.ecom.attccc.com/media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="Top Rated selected"/> 
 	</li> 
 		<li> 
 		<a href="wireless.html#" class="cat2480047" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/catalogtabcarousel;2012256"> 
 			What's New 
 		</a><br/> 
-		<img src="../media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="What's New selected"/> 
+		<img src="../../1.ecom.attccc.com/media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="What's New selected"/> 
 	</li> 
 		<li> 
 		<a href="wireless.html#" class="cat2480052" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/catalogtabcarousel;2012256"> 
 			Mobile Broadband 
 		</a><br/> 
-		<img src="../media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="Mobile Broadband selected"/> 
+		<img src="../../1.ecom.attccc.com/media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="Mobile Broadband selected"/> 
 	</li> 
 		<li> 
 		<a href="wireless.html#" class="catId" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/catalogtabcarousel;2012256"> 
 		</a><br/> 
-		<img src="../media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="  selected"/> 
+		<img src="../../1.ecom.attccc.com/media/att/2011/shop/wireless/landing/carousel_img_pointer_AA000RVY.png" alt="  selected"/> 
 	</li> 
 	</ul> 
 	<div class="carouselWrapper wirelessCarouselStyle1 box" style="position:absolute;bottom:0;left:10px;" data-ajaxurl="/shopcms/campaigns/att/en/Wireless/overview/Campaign/default/_jcr_content/LoBTabs/LobTab1/catalogtabcarousel.ajax.html?categoryId=" > 
@@ -916,11 +924,11 @@ shop packages &amp; deals.<br>
     <div class="bgDiv" style="background-image: none !important"> 
          <div class="basicvalueTile3 basicvalueTile parbase"> 
 <div class="valueTile ">  
-        <img src="../shopcms/media/att/2013/shop/wireless/landing/tile-onlineshoppingeasy.jpg" alt="" class="mainImg"/> 
-        <h4>Online Shopping               Made Easy</h4> 
-	    <p>Free shipping, free returns for online orders. Exclusive online offers. &nbsp;We're here to help 24/7. &nbsp;</p> 
+        <img src="../shopcms/media/att/2013/shop/wireless/landing/tile-ItCanWait-150x175.jpg" alt="" class="mainImg"/> 
+        <h4>It Can Wait</h4> 
+	    <p>No text is worth dying for. Find out how you can take the pledge to never text and drive.</p> 
        <div class="valueTile-padding"></div> 
-        	<a class="arrowRt" href="https://www.att.com/shop/wireless.html?tab=3#" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/threeup_1/t-up/basicvalueTile3;2013067">Learn more</a> 
+        	<a class="arrowRt" href="http://itcanwait.com" data-cqpath="/content/campaigns/att/en/Wireless/overview/Campaign/default/jcr:content/LoBTabs/LobTab1/threeup_1/t-up/basicvalueTile3;2013095">Learn more</a> 
 </div> 
 <div class="clear"></div></div> 
     </div> 
@@ -1327,7 +1335,7 @@ Best retail team in the industry</b></p>
 		<area target="_blank" tabindex="0" shape="rect" coords="149,15,165,31" title="digg" alt="digg" href="http://www.digg.com" onclick="this.href=meteor.sharing.href('Digg');"> 
 		<area target="_blank" tabindex="0" shape="rect" coords="170,15,188,31" title="email" alt="email" href="mailto:" onclick="this.href=meteor.sharing.href('Email' );"> 
 	</map> 
-	<img id="horiz_socialMedia" src="../shopcms/media/att/2011/shop/common/ico_share.jpg" alt="Share" usemap="#horiz_sharemap"/> 
+	<img id="horiz_socialMedia" src="../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/ico_share.jpg" alt="Share" usemap="#horiz_sharemap"/> 
 </div> 
     </div> 
 </div> 
@@ -1460,7 +1468,7 @@ Best retail team in the industry</b></p>
 	<a href="../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Wireless Legal Site</a> | 
 	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Wireless Customer Agreement</a> | 
 	<a class="last" href="../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Cell Phone Records Security</a> 
-		   |<a class="openModal modal505" href="http://www.att.com/shop/en/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Other Monthly Charges</a>| 
+		   |<a class="openModal modal705" href="http://www.att.com/shop/legalterms.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Other Monthly Charges</a>| 
 			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Plan Terms</a>| 
 			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/jcr:content;2013080">Online Pricing</a>| 
 			<div class='secondRow'> 
@@ -1502,14 +1510,14 @@ Messaging &amp; Data Charges</a>|
 	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
 </div>  
 <div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
-	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
 </div> 
 <div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://www.att.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="clear"></div> 
 	</div> 
@@ -1549,7 +1557,7 @@ Messaging &amp; Data Charges</a>|
 												 | 
 												<a href="../internal/broadbandinfo.html" style="" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter">&copy;2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/shop/en/wireless/jcr:content/globalfooter"> 
@@ -1574,9 +1582,9 @@ Messaging &amp; Data Charges</a>|
 				</div> 
 		<!-- WebTrends Base Tag : include only at end of page --> 
 		<!-- Webtrend global params --> 
-		<script type="text/javascript" src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 15459334492365857737203844062260982525 --> 
+		 <!--X-Renderer: 50803162341029174829800864807157313221 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1585,24 +1593,25 @@ Messaging &amp; Data Charges</a>|
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="246" /> 
+	<meta name="DCSext.wt_aka_georegion" content="286" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="CA" /> 
-<meta name="DCSext.wt_aka_city" content="SANJOSE" /> 
-<meta name="DCSext.wt_aka_dma" content="807" /> 
-<meta name="DCSext.wt_aka_pmsa" content="7400" /> 
-<meta name="DCSext.wt_aka_msa" content="7362" /> 
-<meta name="DCSext.wt_aka_areacode" content="408" /> 
-<meta name="DCSext.wt_aka_county" content="SANTACLARA" /> 
-<meta name="DCSext.wt_aka_fips" content="06085" /> 
-<meta name="DCSext.wt_aka_lat" content="37.3353" /> 
-<meta name="DCSext.wt_aka_long" content="-121.8938" /> 
-<meta name="DCSext.wt_aka_timezone" content="PST" /> 
-<meta name="DCSext.wt_aka_zip" content="95101+95103+95106+95108-95113+95115-95136+95138-95139+95141+95148+95150-95161+95164+95170+95172-95173+95190-95194+95196" /> 
+<meta name="DCSext.wt_aka_region_code" content="UT" /> 
+<meta name="DCSext.wt_aka_city" content="SALTLAKECITY" /> 
+<meta name="DCSext.wt_aka_dma" content="770" /> 
+<meta name="DCSext.wt_aka_msa" content="7160" /> 
+<meta name="DCSext.wt_aka_areacode" content="801" /> 
+<meta name="DCSext.wt_aka_county" content="SALTLAKE" /> 
+<meta name="DCSext.wt_aka_fips" content="49035" /> 
+<meta name="DCSext.wt_aka_lat" content="40.7606" /> 
+<meta name="DCSext.wt_aka_long" content="-111.8903" /> 
+<meta name="DCSext.wt_aka_timezone" content="MST" /> 
+<meta name="DCSext.wt_aka_zip" content="84101-84128+84130-84134+84136+84138-84139+84141+84143+84145+84147-84148+84150-84152+84157-84158+84165+84170-84171+84180+84184+84189-84190+84199" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
-<meta name="DCSext.wt_aka_throughput" content="low" /> 
-<meta name="DCSext.wt_aka_bw" content="1" /> 
-<meta name="DCSext.wt_aka_asnum" content="4263" /> 
+<meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
+<meta name="DCSext.wt_aka_bw" content="5000" /> 
+<meta name="DCSext.wt_aka_network" content="comcast" /> 
+<meta name="DCSext.wt_aka_asnum" content="33660" /> 
+<meta name="DCSext.wt_aka_network_type" content="cable" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1763,7 +1772,7 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            ATT.log('dcs injection block'); 
 	            var s = document.createElement("script"); 
 	            s.type = "text/javascript"; 
-	            s.src = "http://www.att.com/webtrends/scripts/dcs_tag.js"; 
+	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
 	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
@@ -1807,7 +1816,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","f17tRbLGM8Jhkhb6rlMXp0TX!-1422640787!1364969636322"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","rlTJRf7KlNpQFdWW19M7Q23F!1993338525!1365212042957"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

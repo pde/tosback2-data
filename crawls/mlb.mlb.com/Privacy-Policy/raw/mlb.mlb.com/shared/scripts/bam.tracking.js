@@ -326,8 +326,9 @@ bam.extend({
 					s.prop58 = s.prop59 = s.prop60 = s.prop61 = s.prop62 = s.prop63 = "";
 					s.prop2 = s.prop56 = s.prop57 = "";
 					
-					//s.eVar13 = omJson.videoComplete.playerContext ? omJson.videoComplete.playerContext : "";
-					s.events = "event2,event28";
+					s.eVar13 = omJson.videoComplete.playerContext ? omJson.videoComplete.playerContext : "";
+					s.eVar28 = omJson.videoComplete.mediaID ? omJson.videoComplete.mediaID : ""; 
+					s.events = "event2,event28,event4";
 					
 					if (omJson.callback) {
 							omJson.callback();

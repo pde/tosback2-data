@@ -148,6 +148,13 @@
 
   //site specific keyvalues, in addition to generic keyvalues:
   wpAd.config.keyvalues = {
+    de: function(){
+      return wpAd.cache.hasOwnProperty('de') ? wpAd.cache.de : (function () {
+        var cookie = unescape(wpAd.tools.getCookie('de'));
+        wpAd.cache.de = cookie ? cookie.split(':') : [];
+        return wpAd.cache.de;
+      })();
+    },
     articleId: function () {
       return wpAd.cache.hasOwnProperty('articleId') ? wpAd.cache.articleId : (function () {
         wpAd.cache.articleId = [];

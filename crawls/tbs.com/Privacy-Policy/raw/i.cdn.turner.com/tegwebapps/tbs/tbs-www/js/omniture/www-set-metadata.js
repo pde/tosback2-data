@@ -300,7 +300,8 @@ else if (window.location.hostname.indexOf("coco") != -1) {
 		}
 	};
 	var tbs_metadata = {
-		section: [tbs_section, tbs_section + ":" + tbs_subsection],
+		section: tbs_section,
+		subsection: tbs_subsection,
 		template_type: tbs_templateType||"misc",
 		content_type: tbs_contentType||"none",
 		friendly_name: tbs_friendlyName||"",

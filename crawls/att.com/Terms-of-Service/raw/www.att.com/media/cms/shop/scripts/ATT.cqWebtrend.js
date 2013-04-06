@@ -394,13 +394,6 @@ ATT.cqWebtrend = new function ($, doc) {
 
         var viewmodifier = $(this).find('option:selected').text(), evt = eventCheck.evt;
 
-        if (viewmodifier === "Sort by" && $("#viewGridIconSelected").css('display') === "block") {
-            viewmodifier = "Grid";
-        } else if (viewmodifier === "Sort by" && $("#viewLineIconSelected").css('display') === "block") {
-            viewmodifier = "List";
-        } else {
-            viewmodifier = viewmodifier;
-        }
         actualpath = $(this).data('cqpath');
 		
 		ATT.cqWebtrend.delay(4000).then(function() {
@@ -692,14 +685,7 @@ ATT.cqWebtrend = new function ($, doc) {
     /******************* Grid/list views *************************************/
 
     $('img[src*=view-list-deselected]').bind('click', function () {
-        var viewmodifier, evt = eventCheck.evt, r = $("#priceDropDown").find('option');
-
-        viewmodifier = $("#priceDropDown").find('option:selected').text();
-        if (viewmodifier === r[0].innerHTML) {
-            viewmodifier = "List";
-        } else {
-            viewmodifier = viewmodifier;
-        }
+        var viewmodifier = "List", evt = eventCheck.evt;
 
 		ATT.cqWebtrend.delay(4000).then(function() {
     		var wtrti = ATT.cqWebtrend.wtSKUDetails();
@@ -715,15 +701,8 @@ ATT.cqWebtrend = new function ($, doc) {
 
 
     $('img[src*=view-grid-deselected]').bind('click', function () {
-        var viewmodifier = $("#priceDropDown").find('option:selected').text(), 
-        	r = $("#priceDropDown").find('option'), evt = eventCheck.evt;
+        var viewmodifier = "Grid", evt = eventCheck.evt;
         
-        if (viewmodifier === r[0].innerHTML) {
-            viewmodifier = "Grid";
-        } else {
-            viewmodifier = viewmodifier;
-        }
-
         ATT.cqWebtrend.delay(4000).then(function() {
     		var wtrti = ATT.cqWebtrend.wtSKUDetails();
 			wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,

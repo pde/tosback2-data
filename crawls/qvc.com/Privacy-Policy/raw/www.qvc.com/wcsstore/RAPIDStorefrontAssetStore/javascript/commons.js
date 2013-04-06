@@ -424,7 +424,7 @@ function validateQVCGiftCardNoInput(QVCGiftCardNo){
 	return (reQVCGiftCardNo.test(QVCGiftCardNo));
 
 }
-
+ 
 /**
 	This function is used to validate QVC Gift card security code
 	Contains at least 1 digits
@@ -1234,7 +1234,7 @@ function validateEmailAFriend(){
 	}
 
 	var txtSenderFirstName = document.getElementById("txtSenderFirstName");
-
+	
 	if (txtSenderFirstName != null && trimAll(txtSenderFirstName.value) == "" ){
 		if (!isFocusSetFlag){
 			txtSenderFirstName.focus();
@@ -1249,7 +1249,7 @@ function validateEmailAFriend(){
 	}
 
 	var txtSenderLastName = document.getElementById("txtSenderLastName");
-
+	
 	if (txtSenderLastName != null && trimAll(txtSenderLastName.value) == "" ){
 		if (!isFocusSetFlag){
 			txtSenderLastName.focus();
@@ -1260,7 +1260,7 @@ function validateEmailAFriend(){
 	}
 
 	var taShortMessage = document.getElementById("taShortMessage");
-
+	
 	if (taShortMessage != null && trimAll(taShortMessage.value) == "" ){
 		if (!isFocusSetFlag){
 			taShortMessage.focus();

@@ -2186,6 +2186,7 @@ _mmdbHeaderRequire.define("header/init", function(){});
             jstz: 'header/lib/timezone.amd',
             'jQuery-cookie': 'header/lib/jquery.cookie.min.amd',
             'jquery-ui': 'header/lib/jquery-ui-1.8.23.custom.min.amd',
+            //'jquery-ui': 'header/lib/jquery-ui-1.10.1.custom.amd',
             Jcrop: 'header/lib/jquery.Jcrop.amd',
             'jquery-color': 'header/lib/jquery.color.amd',
             'session-augment': 'header/lib/session-augment',
@@ -16678,6 +16679,8 @@ function(module,
             
             self.checkRedirect();
 
+            Util.setHash('');
+
             if (this.getConfig('refreshOnLogin', false)) {
                 Util.reloadLocation();
             } else {
@@ -16790,13 +16793,13 @@ function(module,
                 uri.setAnchor('');
                 Util.setLocation(uri.toString());
             }
-            else {
-                var curHash = Util.getHash();
-                // blindly resetting the location.hash to "" sends IE9 into an infinite loop
-                if(curHash !== '#' && curHash !== ''){
-                    Util.setHash("");
-                }
-            }
+            //else {
+                //var curHash = Util.getHash();
+                //// blindly resetting the location.hash to "" sends IE9 into an infinite loop
+                //if(curHash !== '#' && curHash !== ''){
+                    //Util.setHash("");
+                //}
+            //}
         },
 
         _doServerSideLogin: function(signature, timestamp) {
@@ -16812,6 +16815,7 @@ function(module,
                  self.checkRedirect();
 
                  if (self.getConfig('refreshOnLogin')) {
+                     Util.setHash('');
                      Util.reloadLocation();
                  }
                  else {
@@ -17906,14 +17910,10 @@ function program9(depth0,data) {
   return buffer;}
 
   buffer += "<div class=\"mem_menu logged_in\">\n    <a href=\"";
-  foundHelper = helpers.memcenHost;
+  foundHelper = helpers.profileUrl;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/";
-  foundHelper = helpers.uid;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.uid; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/\" class=\"mem_menu_img_link\">\n        <img\n            id=\"header_avatar\"\n            src=\"";
+  else { stack1 = depth0.profileUrl; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" class=\"mem_menu_img_link\">\n        <img\n            id=\"header_avatar\"\n            src=\"";
   stack1 = depth0.avatarUrl;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -17922,14 +17922,10 @@ function program9(depth0,data) {
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.displayName; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "'s avatar\"\n        />\n    </a>\n    <a href=\"";
-  foundHelper = helpers.memcenHost;
+  foundHelper = helpers.profileUrl;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/";
-  foundHelper = helpers.uid;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.uid; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/\" id=\"header_display_name\">";
+  else { stack1 = depth0.profileUrl; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" id=\"header_display_name\">";
   foundHelper = helpers.displayName;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.displayName; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -17946,14 +17942,10 @@ function program9(depth0,data) {
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "/\">Member Center</a></li>\n        <li><a href=\"";
-  foundHelper = helpers.memcenHost;
+  foundHelper = helpers.profileUrl;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/";
-  foundHelper = helpers.uid;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.uid; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "/\">Public Profile</a></li>\n        <!--<li><a class=\"inbox_menu_item\" href=\"";
+  else { stack1 = depth0.profileUrl; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\">Public Profile</a></li>\n        <!--<li><a class=\"inbox_menu_item\" href=\"";
   foundHelper = helpers.memcenHost;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.memcenHost; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -18367,7 +18359,7 @@ function program5(depth0,data) {
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.email;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </form>\n    <a id=\"forgot-password-button\" class=\"submit retrieve\">Retrieve Password</a>\n</div>\n<span class=\"text_555 forgot_text\">Please provide your email address and<br />we will send you a link so that you can<br />\nreset your password.</span>\n<div class=\"bottom\"><span class=\"text_555\">Not a member?&nbsp;</span><a id=\"reglink\" class=\"text_blue\" href=\"#";
+  buffer += "\n    <a id=\"forgot-password-button\" class=\"submit retrieve\" href=\"#\">Retrieve Password</a>\n    </form>\n</div>\n<span class=\"text_555 forgot_text\">Please provide your email address and<br />we will send you a link so that you can<br />\nreset your password.</span>\n<div class=\"bottom\"><span class=\"text_555\">Not a member?&nbsp;</span><a id=\"reglink\" class=\"text_blue\" href=\"#";
   foundHelper = helpers.registerRoute;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
@@ -19320,6 +19312,7 @@ function(require, Backbone, _, $, Templates) {
         // that are bound to it as well as removing the dom node it is
         // associated with.
         deinit: function() {
+            this.hide();
             this.remove();
             // Remove all events so we cut memory references.
             this.off();
@@ -19537,6 +19530,9 @@ function($,
                         self.render();
                     });
 
+                    var profileUrl = new Uri(Urls['memcen-host']);
+                    profileUrl.setPath('/' + user.get('vanityUrl') + '/');
+
                     return $.when(self.getNotificationCount()).pipe(function(notificationsTotal) {
                         var avatar = user.getActiveAvatar();
                         return $.when(self.renderTemplate({
@@ -19545,6 +19541,7 @@ function($,
                             avatarUrl: avatar ? avatar.get('url') : null,
                             notificationsTotal: notificationsTotal,
                             memcenHost: Urls['memcen-host'],
+                            profileUrl: profileUrl.toString(),
                             staticUrl: self.context.getStaticUrl()
                         })).done(function() {
                             self._renderPromise.resolve();
@@ -20161,6 +20158,7 @@ function($,
 _mmdbHeaderRequire.define('header/views/login-start',['jquery',
         './base-view',
         'util',
+        'underscore',
         'errors',
         '../models/user',
         'recaptcha',
@@ -20174,6 +20172,7 @@ _mmdbHeaderRequire.define('header/views/login-start',['jquery',
 function($,
          BaseView,
          Util,
+         _,
          Errors,
          User,
          Recaptcha,
@@ -20193,7 +20192,7 @@ function($,
         events: {
             'click #login-native-button': "doNativeLogin",
             'click #login-facebook-button': "doFacebookLogin",
-            'keyup .password': "enterKey"
+            'keypress': "handleEnterPressed",
         },
 
         initialize: function(options) {
@@ -20210,6 +20209,14 @@ function($,
 
             this.redirectToLandingPage = false;
 
+            _.bindAll(this);
+        },
+
+        handleEnterPressed: function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                this.doNativeLogin(e);
+            }
         },
 
         placeholderIsSupported: function () {
@@ -20235,13 +20242,6 @@ function($,
                     $(inputs[i]).attr('onfocus', "if(this.value == '" + text + "'){this.value = '';}");
                     $(inputs[i]).attr('value', text);
                 }
-            }
-        },
-
-        enterKey: function(e) {
-            var keycode = (e.keyCode ? e.keyCode : e.which);
-            if (keycode == '13') {
-                this.doNativeLogin();
             }
         },
 
@@ -21074,6 +21074,7 @@ _mmdbHeaderRequire.define('header/views/native-reg-p1',[
         './base-view',
         'urls',
         'util',
+        'underscore',
         'errors',
         'jstz',
         'zxcvbn',
@@ -21083,6 +21084,7 @@ function($,
          BaseView,
          Urls,
          Util,
+         _,
          Errors,
          jstz,
          zxcvbn,
@@ -21098,7 +21100,18 @@ function($,
         events: {
             "click #continue-button": "forward",
             "keyup input.password": "updatePasswordStrength",
-            "change input.trimspace": "removespace"
+            "change input.trimspace": "removespace",
+            "keypress": "forwardOnEnter",
+        },
+
+        initialize: function(options) {
+            options = options || {};
+
+            _.bindAll(this, 'forwardOnEnter');
+            if (!this.model) {
+                throw new Error("You must attach the proper model to this view!");
+            }
+
         },
 
         removespace : function() {
@@ -21122,13 +21135,10 @@ function($,
             console.log($(e.currentTarget).attr('class'));
         },
 
-        initialize: function(options) {
-            options = options || {};
-
-            if (!this.model) {
-                throw new Error("You must attach the proper model to this view!");
-            }
-
+        forwardOnEnter: function(e) {
+            if (e.keyCode != 13) return;
+            e.preventDefault();
+            this.forward(e);
         },
 
         updatePasswordStrength: function( e ) {
@@ -21479,9 +21489,10 @@ function($,
         render: function() {
             var self = this;
 
-            this.$el.keypress(function() {
-                 self._locationId = null;
-                 self._locationReference = null;
+            this.$el.keypress(function(e) {
+                if (e.keyCode == 13) return;
+                self._locationId = null;
+                self._locationReference = null;
             });
 
             this.$el.autocomplete({
@@ -23791,6 +23802,7 @@ function($,
 _mmdbHeaderRequire.define('header/views/native-reg-p2',['jquery',
         './base-view',
         'util',
+        'underscore',
         'errors',
         './location-input',
         './edit-custom-avatar',
@@ -23799,6 +23811,7 @@ _mmdbHeaderRequire.define('header/views/native-reg-p2',['jquery',
 function($,
          BaseView,
          Util,
+         _,
          Errors,
          LocationInputView,
          EditCustomAvatarView,
@@ -23812,7 +23825,8 @@ function($,
 
         events: {
             "click #continue-button": "forward",
-            "click #cancel-button": "cancel"
+            "click #cancel-button": "cancel",
+            "keypress": "handleEnterPressed",
         },
 
         initialize: function(options) {
@@ -23824,6 +23838,12 @@ function($,
             this.locationInputView = new LocationInputView({
                 context: self.context,
             });
+        },
+
+        handleEnterPressed: function(e) {
+            if (e.keyCode != 13) return;
+            e.preventDefault();
+            this.forward(e);
         },
 
         forward: function(e) {
@@ -23962,6 +23982,7 @@ _mmdbHeaderRequire.define('header/views/social-reg',['jquery',
         'sprintf',
         './base-view',
         'util',
+        'underscore',
         'errors',
         './location-input',
         './edit-custom-avatar',
@@ -23972,6 +23993,7 @@ function($,
          sprintf,
          BaseView,
          Util,
+         _,
          Errors,
          LocationInputView,
          EditCustomAvatarView,
@@ -23988,7 +24010,8 @@ function($,
 
         events: {
             "click #continue-button": "finishReg",
-            "keyup input.password": "validate"
+            "keyup input.password": "validate",
+            "keypress": "handleEnterPressed",
         },
 
         fieldErrors: null,
@@ -24002,6 +24025,8 @@ function($,
                 context: this.context,
                 initialValue: this.getLocationGuess()//initialValue,
             });
+
+            _.bindAll(this);
         },
 
         validate: function( e ) {
@@ -24079,6 +24104,11 @@ function($,
                     $(inputs[i]).attr('value', text);
                 }
             }
+        },
+
+        handleEnterPressed: function(e) {
+            if (e.keyCode != 13) return;
+            this.finishReg(e);
         },
 
         finishReg: function(e) {
@@ -24174,6 +24204,7 @@ function($,
 _mmdbHeaderRequire.define('header/views/forgot-password',['jquery',
         './base-view',
         'util',
+        'underscore',
         'urls',
         'request',
         'errors'
@@ -24181,6 +24212,7 @@ _mmdbHeaderRequire.define('header/views/forgot-password',['jquery',
 function($,
          BaseView,
          Util,
+         _,
          Urls,
          Request,
          Errors
@@ -24192,11 +24224,12 @@ function($,
         className: 'regwrap',
         
         events: {
-            "click #forgot-password-button": "forgotPassword"
+            "click #forgot-password-button": "forgotPassword",
+            "keypress": "handleEnterPressed",
         },
 
         initialize: function(options) {
-            this.emailSent=false;
+            this.emailSent = false;
         },
 
         forgotPassword: function(e) {
@@ -24237,6 +24270,14 @@ function($,
             return false;
         },
 
+        handleEnterPressed: function(ev) {
+            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keycode == 13) {
+                ev.preventDefault();
+                this.forgotPassword(ev); 
+            }
+        },
+
         render: function() {
             return this.renderTemplate({
                 registerRoute: 'register',
@@ -24273,7 +24314,8 @@ function($,
         className: 'regwrap',
         
         events: {
-            "click #reset-password-button": "resetPassword"
+            "click #reset-password-button": "resetPassword",
+            "keypress": "handleEnterPressed"
         },
 
         initialize: function(options) {
@@ -24365,6 +24407,14 @@ function($,
                 }
             );
             return false;
+        },
+
+        handleEnterPressed: function(ev) {
+            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keycode == 13) {
+                ev.preventDefault();
+                this.resetPassword(ev); 
+            }
         },
 
         // TODO this should probably be in a library as it may be needed elsewhere
@@ -25158,20 +25208,27 @@ function(
                 $(document).on('click', '#reglink', function(e){trackHashChange('#register'); });
 
                 //LANDING PAGE
-                // Won't this track on more than just the landing page?
                 $('a', '.news_list').on('click', function(e){ trackEvent( 'Membership', 'MEM Landing Page', 'News_' +  ($(this).parent().parent().children().index($(this).parent()) + 1) ); });
                 $('a', '.shop_subscribe_donate').on('click', function(e){ trackEvent( 'Membership', 'MEM Landing Page', $(this).children('h4').text() ); });
                 $(document).on('click', '.track_event', function(e) {
                     if (a = this.className.match(/track_event_[a-z\d\-_]+/gi)) {
                         for (var i = 0; i < a.length; i++) {
-                            trackEvent( 'Membership', 'Landing Page', a[i].replace('track_event_', ''));
+                            trackEvent( 'Membership', 'MEM Landing Page', a[i].replace('track_event_', ''));
                         }
                     }
                     else {
-                        trackEvent( 'Membership', 'Landing Page', $(this).text());
+                        trackEvent( 'Membership', 'MEM Landing Page', $(this).text());
                     }
                 });
 
+                //PROFILE PAGE
+                $('#flag_profile').on('click', function (e) {
+                        trackEvent( 'Membership', 'MEM Profile Page', 'Flag');
+                });
+
+                $('.edit', '#member_center > nav').on('click', function (e) {
+                        trackEvent( 'Membership', 'MEM Profile Page', 'Edit');
+                });
 
             });
         });

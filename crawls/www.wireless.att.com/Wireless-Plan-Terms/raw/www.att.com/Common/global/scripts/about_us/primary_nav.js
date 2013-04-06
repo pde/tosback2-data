@@ -178,11 +178,16 @@ function renderPrimaryNav() {
 				 + '<li');
 				if (pid == '14209') { document.write(' class="selected"'); }
  	document.write('><a href="' + site + '/gen/press-room?pid=14209" title="INNOVATION" id="pn-innovation">INNOVATION</a>'
-				 + '<ul class="secondaryNav" id="innovation_nav">'
-				 + '<li><a href="' + site + '/gen/press-room?pid=14188" title="Labs">Labs</a></li>'
-				 + '<li><a href="' + site + '/gen/press-room?pid=2949" title="Foundry">Foundry</a></li>'
-				 + '<li><a href="http://www.attinnovationspace.com/" title="Innovation Space Blog">Innovation Space Blog</a></li>'
-				 + '</ul>'
+ 				+ '<ul id="innovation_nav" class="secondaryNav">'
+ 					+ '<li><a id="inov_foundry" href="' + site + '/gen/press-room?pid=2949"> Foundry </a> &nbsp; </li>' 				
+ 					+ '<li><a id="inov_labs" href="' + site + '/gen/press-room?pid=14188"> Labs </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_connecting" href="' + site + '/gen/press-room?pid=23887"> Connecting Your World </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_netinnov" href="' + site + '/gen/press-room?pid=23349"> Network Innovation </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_space_blog" href="http://www.attinnovationspace.com/"> Innovation Space blog </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_networked_life" href="' + site + '/gen/press-room?pid=2911"> Networked Life </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_intellectual_property" href="' + site + '/gen/corporate-citizenship?pid=5882"> Intellectual Property </a> &nbsp; </li>'
+ 					+ '<li><a id="inov_daybreak" href="' + site + '/gen/landing-pages?pid=22871"> Daybreak </a> &nbsp; </li>'
+ 				+ '</ul>'
 				 + '</li>'
 				 + '<li');
 				if (pid == '5838') { document.write(' class="selected"'); }

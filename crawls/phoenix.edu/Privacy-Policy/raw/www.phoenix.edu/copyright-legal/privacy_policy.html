@@ -65,7 +65,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.35.12";
+        var acVersion = "4.36.14";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -99,10 +99,30 @@ UPX.editmode = false;
     
     
 </head>
-
 <body id="contentpage" class="contentpage privacy_policy alternate 
 beta"><div class="mboxDefault"></div>
-<script type="text/javascript">mboxCreate("phoenix_global")</script>
+<script type="text/javascript">
+
+ /* var visitorSegment = 'first-visit';
+  if (document.cookie.indexOf('euopx') != -1) {
+    visitorSegment = 'student';
+  }
+  else if (document.cookie.indexOf('betaHomepage') != -1) {
+    visitorSegment = 'repeat-visit';
+  }
+  else {
+    var expires = new Date();
+    var time = expires.getTime();
+    time += 3600 * 1000;
+    expires.setTime(time);
+
+    setCookie('betaHomepage',true,expires);
+  }*/
+//console.log(CQ_Analytics.SegmentMgr.getResolved());
+
+mboxCreate("phoenix_global");
+
+</script>
 
 <div class="clickstreamcloud"><script type="text/javascript">
     
@@ -246,69 +266,6 @@ var UPXFeatureFlags = {'feature.common.test.2': false
 var coremetricsStartPath = "/aCloud";
 COMMONTestUtilities.init();
 </script>
-<div class="coremetrics">
-
-	<!-- BEGIN COREMETRICS SUPPORT -->
-
-	
-	<script type="text/javascript" src="../../libs.coremetrics.com/eluminate.js"></script>
-	<script type="text/javascript">
-	(function() {
-		var coremetricsPath = "/aCloud/copyright-legal/privacy_policy/",
-	        coremetricsPageVersion = "1.12",
-			// var containing the session service ID
-			// reading it directly from cookie to speed up
-			// the process.
-			sessionServiceID = utils.getCookie('session-id') || null,
-			strCmTitle,
-			coremetricsSessionID;
-				
-        cmSetupNormalization("-_-adurl");
-		cmSetClientID("90223951",true,"data.coremetrics.com","phoenix.edu");
-
-		           
-	
-	    if (typeof coremetricsStartPath != 'undefined') {
-	        coremetricsPath = coremetricsStartPath + coremetricsPath.substr(coremetricsPath.indexOf('/', 1));
-	    }
-       
-	    strCmTitle = "Privacy Policy";
-
- 	    //Pull the Session ID value into the PageView Tags
-		coremetricsSessionID = cmJSFGetSessionValue(cm_ClientID);
-       
-		// To speed up firing of coremetrics if on a non secure page.
-		if ( document.location.protocol === 'https:' ) {
-		    utils.isAuthenticated( function( status ) {
-		         if ( status ) {
-                     var strCmPid = decodeURIComponent( utils.getCookie( 'profile' ) || '' );
-                     var objCmPid = utils.parseStringToObj( strCmPid, '||' );
-     
-                     if ( objCmPid && objCmPid.hasOwnProperty("id") ) {
-                         var strCmPid = ( objCmPid !== null && objCmPid["id"] !== undefined ) ? objCmPid["id"] : null;
-					     cmCreatePageviewTag(strCmTitle, coremetricsPath, null, null, coremetricsPageVersion+'-_-'+sessionServiceID, strCmPid+'-_-'+coremetricsSessionID);
-                     } else {
-                         utils.checkProfileService( function() {
-                             var profile = ProfileService.profile;
-                             var strCmPid = ( profile && profile.hasOwnProperty("id") && profile["id"] !== undefined ) ? profile["id"] : null;
-					         cmCreatePageviewTag(strCmTitle, coremetricsPath, null, null, coremetricsPageVersion+'-_-'+sessionServiceID, strCmPid+'-_-'+coremetricsSessionID);
-                         });
-                     }
-                 } else {
-				     cmCreatePageviewTag(strCmTitle, coremetricsPath, null, null, coremetricsPageVersion+'-_-'+sessionServiceID,'-_-'+coremetricsSessionID);	
-                 }
-            });
-		}
-		else {
-			cmCreatePageviewTag(strCmTitle, coremetricsPath, null, null, coremetricsPageVersion+'-_-'+sessionServiceID,'-_-'+coremetricsSessionID);	
-	    }
-        
-	})();
-    </script>
-    <!-- END COREMETRICS SUPPORT -->
-
-</div>
-
     
 <div class="global_properties"></div>
 
@@ -383,9 +340,6 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
     function headerOnclick(parentPath, targetUrl, cmTitle, gaPath){
         
         try{
-            cmCreateManualPageviewTag(cmTitle, parentPath, targetUrl, document.URL);
-        } catch(ex){}
-        try{
             _gaq.push(['_trackPageview',gaPath]);
         } catch(ex){}
         try{
@@ -437,8 +391,8 @@ cookieArgSpooler("ac_prepop","clphone,pvp_campaign,pvp_campaign_int,detail_code,
       <div class="pageHeaderInner">
         <div class="headerConsole">
           <div class="buttons">
-            <a href="http://www.phoenix.edu/request-information.html" class="btn btn-cta orange" title="Request Info" name="header_request-information" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Request%20Information');">
-            Request Info</a> <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Live Chat" class="btn btn-cta orange" onclick="javascript:cmCreateManualLinkClickTag('/LiveChat?cm_sp=Header%20Test-_-Beta-_- Live%20Chat');">
+            <a href="http://www.phoenix.edu/request-information.html" class="btn btn-cta orange" title="Request Info" name="header_request-information">
+            Request Info</a> <a href="privacy_policy.html#" id="chatLive" name="header_chat-live" title="Live Chat" class="btn btn-cta orange">
             Live Chat</a>
 
             <p class="phoneNumber">(866) 766-0766</p>
@@ -1361,14 +1315,14 @@ $(document).ready(function () {
 <ul class="socialLinks socialLinks_icons">
     
     	<li class="print">
-    		<a href="privacy_policy.html#" name="socialLinks_print" title="Print" onclick="cmCreatePageElementTag('Print Page', 'UOPX: Social Links')">
+    		<a href="privacy_policy.html#" name="socialLinks_print" title="Print">
     			<span>Print</span>
     		</a>
     	</li>
     
     
     	<li class="email">
-    		<a class="socialLinks_email" href="privacy_policy.html#" name="socialLinks_email" title="Email" onclick="cmCreatePageElementTag('Email Page', 'UOPX: Social Links')">
+    		<a class="socialLinks_email" href="privacy_policy.html#" name="socialLinks_email" title="Email">
     			<span>Email</span>
     		</a>
     	</li>
@@ -1376,17 +1330,17 @@ $(document).ready(function () {
 	
 	    <li class="share"><a class="socialLinks_share" href="privacy_policy.html#" name="socialLinks_share" title="Share this Page"><span>Share</span></a>
 	        <ul class="hide">
-	            <li class="twitter"><a name="socialLinks_twitter" href="http://twitter.com/home?status=Privacy+Policy%3a+http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html" onclick="cmCreatePageElementTag('Twitter', 'UOPX: Social Links')">Twitter</a></li>
-	            <li class="facebook"><a name="socialLinks_facebook" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy" onclick="cmCreatePageElementTag('Facebook Share', 'UOPX: Social Links')">Facebook</a></li>
-	            <li class="digg"><a name="socialLinks_digg" href="http://digg.com/register/" onclick="cmCreatePageElementTag('Digg', 'UOPX: Social Links')">Digg</a></li>
-	            <li class="delicious"><a name="socialLinks_delicious" href="http://del.icio.us/post?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy" onclick="cmCreatePageElementTag('Delicious', 'UOPX: Social Links')">Del.icio.us</a></li>
-	            <li class="googleReader"><a name="socialLinks_googleReader" href="http://www.google.com/reader/link?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy" onclick="cmCreatePageElementTag('Google Reader', 'UOPX: Social Links')">Google Reader</a></li>
-	            <li class="myspace"><a name="socialLinks_myspace" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy&amp;c=+" onclick="cmCreatePageElementTag('MySpace', 'UOPX: Social Links')">MySpace</a></li>
-	            <li class="plaxo"><a name="socialLinks_plaxo" href="http://www.plaxo.com/events?share_link=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;desc=Privacy+Policy" onclick="cmCreatePageElementTag('Plaxo', 'UOPX: Social Links')">Plaxo</a></li>
-	            <li class="posterous"><a name="socialLinks_posterous" href="http://www.posterous.com/share?linkto=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy" onclick="cmCreatePageElementTag('Posterous', 'UOPX: Social Links')">Posterous</a></li>
-	            <li class="reddit"><a name="socialLinks_reddit" href="http://www.reddit.com/submit?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy" onclick="cmCreatePageElementTag('Reddit', 'UOPX: Social Links')">Reddit</a></li>
-	            <li class="stumbleUpon"><a name="socialLinks_stumbleupon" href="http://www.stumbleupon.com/submit?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy" onclick="cmCreatePageElementTag('StumbleUpon', 'UOPX: Social Links')">StumbleUpon</a></li>
-	            <li class="tumblr"><a name="socialLinks_tumblr" href="http://www.tumblr.com/login?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy&amp;v=3" onclick="cmCreatePageElementTag('Tumblr', 'UOPX: Social Links')">Tumblr</a></li>
+	            <li class="twitter"><a name="socialLinks_twitter" href="http://twitter.com/home?status=Privacy+Policy%3a+http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html">Twitter</a></li>
+	            <li class="facebook"><a name="socialLinks_facebook" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy">Facebook</a></li>
+	            <li class="digg"><a name="socialLinks_digg" href="http://digg.com/register/">Digg</a></li>
+	            <li class="delicious"><a name="socialLinks_delicious" href="http://del.icio.us/post?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy">Del.icio.us</a></li>
+	            <li class="googleReader"><a name="socialLinks_googleReader" href="http://www.google.com/reader/link?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy">Google Reader</a></li>
+	            <li class="myspace"><a name="socialLinks_myspace" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy&amp;c=+">MySpace</a></li>
+	            <li class="plaxo"><a name="socialLinks_plaxo" href="http://www.plaxo.com/events?share_link=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;desc=Privacy+Policy">Plaxo</a></li>
+	            <li class="posterous"><a name="socialLinks_posterous" href="http://www.posterous.com/share?linkto=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy">Posterous</a></li>
+	            <li class="reddit"><a name="socialLinks_reddit" href="http://www.reddit.com/submit?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy">Reddit</a></li>
+	            <li class="stumbleUpon"><a name="socialLinks_stumbleupon" href="http://www.stumbleupon.com/submit?url=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;title=Privacy+Policy">StumbleUpon</a></li>
+	            <li class="tumblr"><a name="socialLinks_tumblr" href="http://www.tumblr.com/login?u=http%3a%2f%2fwww.phoenix.edu%2fcopyright-legal%2fprivacy_policy.html&amp;t=Privacy+Policy&amp;v=3">Tumblr</a></li>
 	        </ul>
 	    </li>
     
@@ -2342,7 +2296,7 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
 
 
     if(typeof(sc) !== 'object') var sc = {};
-    sc.hostName = 'cq02.dc3.aptimus.net';
+    sc.hostName = 'cq03.dc1.aptimus.net';
     sc.pageName = 'privacy_policy';
     sc.pageTitle = 'privacy policy'
     sc.pagePath = '/copyright-legal/privacy_policy';
@@ -2393,7 +2347,7 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
       s.prop10 = 'uop';
       s.prop11 = s_account.indexOf(',') !== -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
       s.prop12 = sc.pageName == "en" ? 'home-page' : sc.pageName;
-      s.prop13 = typeof(name) === "string" ? name : '';//cms identifier
+      if(typeof(name) === "string" && name.length > 1 ) s.prop13 = name;//cms identifier
       s.prop14 =  unescape(document.location.pathname + window.location.hash);
       s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( sc.pathArray[sc.pathArray.length-1] ), document.location.pathname.length) + window.location.hash;
       s.prop16 = (typeof(sc.prop16) === 'string') ? sc.prop16 : '';
@@ -2535,7 +2489,29 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
       sc.trackCustomLink(s.pageName+' |button|'+$(this).attr('name').toLowerCase()+'|'+$(this).attr('title').toLowerCase());
     });
   }catch(e){}
-
+  /*Dummy Coremetrics Data*/
+  var cm_ClientID = "90223951";
+  function cmCreateConversionEventTag(d,c,f,e,b,a){};
+  function cmCreateCustomTag(a,b){};
+  function cmCreateDefaultPageviewTag(a){};
+  function cmCreateElementTag(b,a,c){};
+  function cmCreateErrorTag(a,b){};
+  function cmCreateManualImpressionTag(a,e,b,d,c){};
+  function cmCreateManualLinkClickTag(b,c,a){};
+  function cmCreateManualPageviewTag(b,h,g,f,c,d,e,a){};
+  function cmCreateOrderTag(f,a,e,b,d,h,i,c,g){};
+  function cmCreatePageElementTag(c,b,a,f,e,d){};
+  function cmCreatePageviewTag(b,f,d,e,c,a){};
+  function cmCreatePageElementTag(c,b,a,f,e,d){};
+  function cmCreateProductviewTag(c,e,d,b,a){};
+  function cmCreateRegistrationTag(e,f,g,a,d,c,b){};
+  function cmCreateShopAction5Tag(d,f,c,g,e,b,a){};
+  function cmCreateShopAction9Tag(h,k,a,i,c,f,b,g,d,l){};
+  function cmCreateTechPropsTag(b,d,c,a){};
+  function cmSetupNormalization(b,c,a){};
+  function cmSetClientID(f,g,h,b,e){};
+  function cmJSFGetSessionValue(a){};
+  function cmDisplayShops(){};
 </script>
 
 
@@ -2605,7 +2581,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
   
   </body>
 <!--
-[Instance=cq02.dc3.aptimus.net; Elapsed=1 ms; Last Generated=Wed Apr 03 06:52:08 GMT 2013; ]
+[Instance=cq03.dc1.aptimus.net; Elapsed=1 ms; Last Generated=Sat Apr 06 00:29:56 GMT 2013; ]
 -->
 
 

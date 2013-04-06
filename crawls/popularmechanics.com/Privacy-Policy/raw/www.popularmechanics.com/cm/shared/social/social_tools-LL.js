@@ -141,7 +141,8 @@ var hsocial_tool = {
 				hsocial_tool.pointer.tumblr_modal.hide();
 				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
-				hsocial_tool.pointer.newsltr_modal.hide();	
+				hsocial_tool.pointer.newsltr_modal.hide();
+				hsocial_tool.pointer.instagram_modal.hide();
 				
 				//Lazy Load FB
 					var FBData = '';
@@ -154,6 +155,7 @@ var hsocial_tool = {
 							$("#overlayFB").find("#tumblrContent").hide();
 							$("#overlayFB").find("#gpContent").hide();
 							$("#overlayFB").find("#linkedinContent").hide();
+							$("#overlayFB").find("#instagramContent").hide();
 							hsocial_tool._vars.FBCounter++;
 
 					}
@@ -192,8 +194,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
-				
-				
+				hsocial_tool.pointer.instagram_modal.hide();
 			
 						
 				//Lazyload Twitter
@@ -209,6 +210,7 @@ var hsocial_tool = {
 							$("#overlayTW").find("#tumblrContent").hide();
 							$("#overlayTW").find("#gpContent").hide();
 							$("#overlayTW").find("#linkedinContent").hide();
+							$("#overlayTW").find("#instagramContent").hide();
 							hsocial_tool._vars.TWCounter++;
 					}
 					
@@ -240,7 +242,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
-				
+				hsocial_tool.pointer.instagram_modal.hide();
 				
 				//Lazy Load PINTEREST
 					var PINData = '';
@@ -254,6 +256,7 @@ var hsocial_tool = {
 							$("#overlayPIN").find("#tumblrContent").hide();
 							$("#overlayPIN").find("#gpContent").hide();
 							$("#overlayPIN").find("#linkedinContent").hide();
+							$("#overlayPIN").find("#instagramContent").hide();
 							hsocial_tool._vars.PINCounter++;
 					}
 					
@@ -292,6 +295,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.tumblr_modal.show();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
+				hsocial_tool.pointer.instagram_modal.hide();
 				
 				//Lazy Load TUMBLR -- will need to be addressed when a site uses tumblr
 				var TUMBLRData = '';
@@ -305,6 +309,7 @@ var hsocial_tool = {
 						$("#overlayTUMBLR").find("#gpContent").hide();
 						$("#overlayTUMBLR").find("#linkedinContent").hide();
 						$("#overlayTUMBLR").find("#tumblrContent").show();
+						$("#overlayTUMBLR").find("#instagramContent").hide();
 						hsocial_tool._vars.TUMBLRCounter++;
 						
 				}
@@ -334,7 +339,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.linkedin_modal.show();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
-				
+				hsocial_tool.pointer.instagram_modal.hide();
 				
 				//Lazy Load LINEDIN -- will need to be addressed when a site uses linkedin
 				var LINKEDINData = '';
@@ -348,6 +353,7 @@ var hsocial_tool = {
 						$("#overlayLINKEDIN").find("#tumblrContent").hide();
 						$("#overlayLINKEDIN").find("#gpContent").hide();
 						$("#overlayLINKEDIN").find("#linkedinContent").show();
+						$("#overlayLINKEDIN").find("#instagramContent").hide();
 						hsocial_tool._vars.LINKEDINCounter++;
 						
 				}
@@ -378,7 +384,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.show();
 				hsocial_tool.pointer.newsltr_modal.hide();
-				
+				hsocial_tool.pointer.instagram_modal.hide();
 				
 				//Lazy Load GOOGLE PLUS
 					var GOOGLEData = '';
@@ -392,6 +398,7 @@ var hsocial_tool = {
 							$("#overlayGOOGLE").find("#tumblrContent").hide();
 							$("#overlayGOOGLE").find("#linkedinContent").hide();
 							$("#overlayGOOGLE").find("#gpContent").show();
+							$("#overlayGOOGLE").find("#instagramContent").hide();
 							hsocial_tool._vars.GOOGLEPCounter++;
 							
 
@@ -437,6 +444,21 @@ var hsocial_tool = {
 				
 							
 				
+			} else if (jqo.attr('hsocial') == 'instagram') {
+				hsocial_tool.pointer.facebook_modal.hide();
+				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
+				hsocial_tool.pointer.googlep_modal.hide();
+				hsocial_tool.pointer.newsltr_modal.hide();
+				hsocial_tool.pointer.instagram_modal.show();
+				
+				
+				
+				
+				
+				
+			
 			} else {// all else, just use email
 				// activate email popup
 				hsocial_tool.pointer.facebook_modal.hide();
@@ -445,6 +467,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.show();	
+				hsocial_tool.pointer.instagram_modal.hide();
 			}
 			hsocial_tool.pointer.facebook_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipShow")).show();
@@ -453,6 +476,7 @@ var hsocial_tool = {
 			hsocial_tool.pointer.linkedin_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipShow")).show();
+			hsocial_tool.pointer.instagram_modal.find("."+jqo.attr("tooltipShow")).show();
 	
 			hsocial_tool.pointer.facebook_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipHide")).hide();
@@ -461,9 +485,10 @@ var hsocial_tool = {
 			hsocial_tool.pointer.linkedin_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipHide")).hide();
+			hsocial_tool.pointer.instagram_modal.find("."+jqo.attr("tooltipHide")).hide();
 			
-			hsocial_tool.pointer.modal.addClass(jqo.attr("tooltipAddClass"));
-			hsocial_tool.pointer.modal.removeClass(jqo.attr("tooltipRemoveClass"));
+			if(jqo.attr("tooltipRemoveClass") == 'top' || jqo.attr("tooltipRemoveClass") == 'bottom'){hsocial_tool.pointer.modal.removeClass(jqo.attr("tooltipRemoveClass"));}
+			if(jqo.attr("tooltipAddClass") == 'top' || jqo.attr("tooltipAddClass") == 'bottom'){hsocial_tool.pointer.modal.addClass(jqo.attr("tooltipAddClass"));}
 			
 			// we want to move the modal window
 			var offset = jqo.offset();
@@ -494,7 +519,8 @@ var hsocial_tool = {
 		tumblr_modal: null,
 		linkedin_modal: null,
 		googlep_modal: null,
-		newsltr_modal: null
+		newsltr_modal: null,
+		instagram_modal: null
 	},
 	popup_show : function(){},
 	popup_hide : function(){},
@@ -558,7 +584,7 @@ var vtemail = {
 $(document).ready(function(){
 	$("body").append($("[hsocial='modal']"));
 	//$("#rr_soc_fb_cont,#rr_soc_tw_cont,#rr_soc_em_cont,#rr_social_tooltip").hover(function(){hoverin($(this));},function(){hoverout($(this));});
-	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal'],[hsocial=pinterest],[hsocial=tumblr], [hsocial=linkedin],[hsocial=googlep]").live({
+	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal'],[hsocial=pinterest],[hsocial=tumblr], [hsocial=linkedin],[hsocial=googlep],[hsocial=instagram]").live({
 		  mouseenter: 
 		  	function(){
 				hsocial_tool.hoverin($(this));
@@ -576,6 +602,7 @@ $(document).ready(function(){
 	hsocial_tool.pointer.tumblr = $('[hsocial=tumblr]');
 	hsocial_tool.pointer.linkedin = $('[hsocial=linkedin]');
 	hsocial_tool.pointer.googlep = $('[hsocial=googlep]');
+	hsocial_tool.pointer.instagram = $('[hsocial=instagram]');
 	hsocial_tool.pointer.modal = $("[hsocial='modal']");
 	hsocial_tool.pointer.facebook_modal = $("[hsocial='facebook_modal']");
 	hsocial_tool.pointer.twitter_modal = $("[hsocial='twitter_modal']");
@@ -584,6 +611,7 @@ $(document).ready(function(){
 	hsocial_tool.pointer.linkedin_modal = $('[hsocial=linkedin_modal]');
 	hsocial_tool.pointer.googlep_modal = $('[hsocial=googlep_modal]');
 	hsocial_tool.pointer.newsltr_modal = $("[hsocial='newsltr_modal']");
+	hsocial_tool.pointer.instagram_modal = $("[hsocial='instagram_modal']");
 	vtemail.origEmailValue = $("#vt_nl_emailfield").attr("value");
 	$("#vt_nl_emailfield").mouseenter(function(){hsocial_tool.hoverin($("#rr_soc_em_cont, #lr_soc_em_cont"));}); // hack for chrome hover issue
 	hsocial_tool.tracking.init();

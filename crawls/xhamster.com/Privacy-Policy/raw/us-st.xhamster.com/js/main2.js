@@ -397,6 +397,7 @@ searchAdv.Search = function (e) {
             $('#searchAdvBtn').attr('overicon','iconSettingsOver');
             $('#searchAdvBtn .icon').removeClass('iconSettingsAdv').addClass('iconSettings');
         }
+        if ($('#searchText').val()) $('#search').submit();
     });
     $('#searchAdv').hide();
 }
