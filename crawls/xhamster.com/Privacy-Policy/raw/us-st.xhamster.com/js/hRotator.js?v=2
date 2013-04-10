@@ -3,10 +3,19 @@ var stat=new Array();
 var thumb=new Array();
 
 $(document).ready(function() {
-  $('.hSprite').bind('mouseover',hRotator.start).bind('mouseout',hRotator.stop);
+  $('.hSprite').bind('mouseover',hRotator.start).bind('mouseout',hRotator.stop).bind('click',hRotator.click);
 });
 
-var hRotator = {'timer':0,'cache':{},'id':0,'curr':false, 'stopped':true};
+var hRotator = {'timer':0,'cache':{},'id':0,'curr':false, 'stopped':true, 'clicked':false,'time':0};
+
+hRotator.click = function(e) {
+    if (typeof(Modernizr) != 'undefined' && Modernizr.touch && !hRotator.clicked && ($.now() - hRotator.time)<300 ) {
+        hRotator.clicked = true;
+        e.stopPropagation();    
+        e.preventDefault();
+        if (hRotator.stopped) hRotator.start.call(this);
+    }
+}
 
 hRotator.start2 = function(el) {
     var t = $(el);
@@ -19,6 +28,7 @@ hRotator.start = function(e) {
     hRotator.stop();
     hRotator.curr = t;
     hRotator.id = t.attr('id');
+    hRotator.time = $.now();
     hRotator.curr.css('background-position','0 0');
     if (!hRotator.cache[hRotator.id]) {
         img = new Image();
@@ -39,6 +49,7 @@ hRotator.start = function(e) {
 
 hRotator.stop = function() {
     hRotator.stopped = true;
+    hRotator.clicked = false;
     clearTimeout(hRotator.timer);
     if (hRotator.curr) {
         hRotator.curr.css({'background-image':''});

@@ -293,6 +293,10 @@
         this.FlightCreativeId = flightCreativeId;
         return this;
       },
+      enableDynamicSiteSelection: function() {
+        this.DynamicSiteOverride = document.domain;
+        return this;
+      },
       setRefresh: function(seconds) {
         var placement;
 

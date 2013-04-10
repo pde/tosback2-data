@@ -1,0 +1,40 @@
+/*
+ * fc js [rewrite of collapse.js due to different fieldset schema]
+ */
+
+Drupal.behaviors.fc = function (context) {
+  $('#console .messages', context).click(function(){
+    $(this).fadeOut('fast');
+  });
+
+  // $('fieldset.collapsible:not(.fc-processed) > legend > .fieldset-title').each(function() {
+  //   var fieldset = $(this).parents('fieldset').eq(0);
+  //   fieldset.addClass('fc-processed');
+
+  //   if ($('input.error, textarea.error, select.error', fieldset).size() > 0) {
+  //     $(fieldset).removeClass('collapsed');
+  //   }
+
+  //   $(this).click(function() {
+  //     if (fieldset.is('.collapsed')) {
+  //       $(fieldset).removeClass('collapsed').children('.fieldset-content').show();
+  //     }
+  //     else {
+  //       $(fieldset).addClass('collapsed').children('.fieldset-content').hide();
+  //     }
+  //     return false;
+  //   });
+  // });
+
+  $('.expand a span', '#header').on('click',function() {
+      var dropdown = $(this).parents('.expand');
+
+      if(dropdown.hasClass('visible')) {
+          dropdown.removeClass('visible').children('.expanded').slideUp(100);
+      } else {
+          $('.expand').removeClass('visible').children('.expanded').hide();
+          dropdown.addClass('visible').children('.expanded').slideDown(100);
+      }
+  });
+
+};

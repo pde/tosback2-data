@@ -6,14 +6,14 @@
      this.sso = {
          name:    "ADN",
          button:  "http://media.adn.com/static/images/dsq-login-button-mi.png",
-         url:     "http://registration.adn.com/static/insite/disqus_login.html",
+         url:     "http://registration.adn.com/mistatic/disqus_login.html",
          logout:  "http://registration.adn.com/reg-bin/tint.cgi?mode=logout",
          width:   "600",
          height:  "375"
      };
  };
 
-/** $Id: MI_AdDrivers.js 2966 2012-07-10 20:45:10Z scowles $ */
+/** $Id: MI_AdDrivers.js 3552 2013-02-12 21:56:45Z hjones $ */
 /******************************************************************
  * @fileoverview Class for implementing the side scroll ad, used to provide the
  * scroll event bindings that cause the ad to slide in and out of view, and
@@ -145,21 +145,126 @@ mi.SideScrollAd.prototype.getScrollPosition = function()
  * event bindings for clicking on the ad to open and close.
  *
  * @param container {string} the css selector of the ad's outermost element
+ * @param adObject {string} the name of the variable being instantiated
+ * @param adWrapper {string} selector for the wrapper div around the ad
  * @param repeat {string} repeat time in hours before given floorboard is served expanded
+ * @param count {string} used internally to count retries, should not be set when instantiating the object
  */
 
-mi.floorAd = function( container, repeat ) {
+mi.floorAd = function( container, repeat, adWrapper, adObject, count ) {
+    count = typeof count !== 'undefined' ? count : 0;
+    adWrapper = typeof adWrapper !== 'undefined' ? adWrapper : "#floorWrapper";
+    adObject = typeof adObject !== 'undefined' ? adObject : "floorAd";
+
     mi.App.apply(this, arguments);
     /* get needed information */
-    this.container = $(container).length ? $(container) : '';
-    this.wrapper = $(container + ' #floorboard-wrapper');
-    this.mainImg = $(container + ' img:eq(0)');  //main image
+    var floorAd_mainImg;
+    var floorAd_leaveImg;
+    var adDoc;
+
+    this.wrapper;
+    this.mainImg;//main image
+    floorAd_mainImg;
+    this.mainWidth;//main image width
+    this.mainHeight;//main image height
+    this.leaveImg;//leave behind image
+    this.leaveHeight;//leave behind height
+    this.closeLink;//get area link(s?) for close button
+    this.openLink = "";
+    this.repeat = typeof repeat !== 'undefined' ? repeat : 240;//default to 4 hours (240 minutes) before a given floorboard is expanded
+    
+    this.setConf('repeat',this.repeat);//repeat time in minutes before given floorboard is expanded
+    this.setConf('container',container);
+    this.timeStamp = Math.round(new Date().getTime()/60000);//epoch minutes
+    this.cookieName = 'mi_floorboard';
+    this.expand = true;
+
+    this.checkForAd(container, repeat, adWrapper, adObject, count );
+
+}
+
+/**
+ * FloorAd @checkForAd. Checks to see what kind of ad we've got and makes sure that ad DOM is sufficiently loaded for processing
+ * @param container {string} the css selector of the ad's outermost element
+ * @param adObject {string} the name of the variable being instantiated
+ * @param adWrapper {string} selector for the wrapper div around the ad
+ * @param repeat {string} repeat time in hours before given floorboard is served expanded
+ * @param count {string} used internally to count retries, should not be set when instantiating the object
+ */
+
+mi.floorAd.prototype.checkForAd = function(container, repeat, adWrapper, adObject, count )
+{
+    //figure out where the ad is:
+    if($('#floorboard-ad').length > 0){//dart3 ad
+        adDoc = $(container);
+        this.container = $(container).length ? $(container) : '';
+    }
+    else{//no dart3 floorboard, so we assume gpt
+        //this is where the iframe should be, but due to a chrome bug we're going to double check later
+        adDoc = $(adWrapper + " iframe").contents();
+        this.initIframeSize(adWrapper); 
+        this.setIframeHeight(adWrapper, 110); 
+        this.container = adDoc.find(container);
+        
+        //workaround for chrome bug - reports iframe object are in DOM but accessing accessing does not work correctly
+        var numdiv =  adDoc.find("#floorboard-wrapper");
+        if(numdiv.length < 1 ){
+           if(count++ < 60){
+                setTimeout(adObject+".checkForAd( '"+container+"', "+repeat+",'"+adWrapper+"','"+adObject+"',"+count+" )", 500);
+           }
+           return;
+        }
+    }
+    this.floorAdExec( container, repeat, adWrapper, adObject, count );
+}
+
+/**
+ * FloorAd @floorAdExec. Does the actual work of creating the floorboard
+ * @param container {string} the css selector of the ad's outermost element
+ * @param adObject {string} the name of the variable being instantiated
+ * @param adWrapper {string} selector for the wrapper div around the ad
+ * @param repeat {string} repeat time in hours before given floorboard is served expanded
+ * @param count {string} used internally to count retries, should not be set when instantiating the object
+ */
+mi.floorAd.prototype.floorAdExec = function( container, repeat, adWrapper, adObject, count ) {
+    count = typeof count !== 'undefined' ? count : 0;
+    adWrapper = typeof adWrapper !== 'undefined' ? adWrapper : "#floorWrapper";
+    adObject = typeof adObject !== 'undefined' ? adObject : "floorAd";
+        
+    mi.App.apply(this, arguments);
+    /* get needed information */
+    var floorAd_mainImg;
+    var floorAd_leaveImg;
+    
+    $(adWrapper).css("display","inline");
+ 
+    this.wrapper = adDoc.find("#floorboard-wrapper");
+    
+    if (adDoc.find('#floor-panel').length > 0)  //main image
+    {
+        this.mainImg = adDoc.find('#floor-panel');
+    }
+    else
+    {
+        this.mainImg = adDoc.find('img:eq(0)');
+    }
+    
+    floorAd_mainImg = this.mainImg;
     this.mainWidth = this.mainImg.width();  //main image width
     this.mainHeight = this.mainImg.height();  //main image height
-    this.leaveImg = $(container + ' img:eq(1)');  //leave behind image
+    if (adDoc.find('#floor-leavebehind').length > 0)  //leave behind image
+    {
+        this.leaveImg = adDoc.find('#floor-leavebehind');
+    }
+    else
+    {
+        this.leaveImg = adDoc.find('img:eq(1)');
+    }
+    
+    floorAd_leaveImg = this.leaveImg;
     this.leaveHeight = this.leaveImg.height();  //leave behind height
-    this.closeLink = $(container + ' map[name="floorclosemap"]  area');  //get area link(s?) for close button
-    this.openLink = $(container + ' map[name="flooropenmap"] area');  //get area link(s?) for open button
+    this.closeLink = adDoc.find('map[name="floorclosemap"]  area');  //get area link(s?) for close button - TEST
+    this.openLink = adDoc.find('map[name="flooropenmap"] area');  //get area link(s?) for open button - TEST
     this.repeat = typeof repeat !== 'undefined' ? repeat : 240;//default to 4 hours (240 minutes) before a given floorboard is expanded
     
     this.setConf('repeat',this.repeat);//repeat time in minutes before given floorboard is expanded
@@ -172,7 +277,7 @@ mi.floorAd = function( container, repeat ) {
     this.cookie.load();
     
     if (this.container !== '')
-    {
+    { 
         this.container.css({'position' : 'fixed',
                             'text-align' : 'left',
                             'bottom' : '0',
@@ -193,7 +298,7 @@ mi.floorAd = function( container, repeat ) {
                           'margin' : '0 auto'});
 
         if (this.mainImg !== '')
-        {
+        { 
             this.flightID = this.mainImg[0].getAttribute('data-flightid');
             if(this.flightID == null){
                 this.leaveImg[0].getAttribute('data-flightid');
@@ -210,33 +315,35 @@ mi.floorAd = function( container, repeat ) {
             this.mainImg.css({'position' : 'absolute', 
                               'border' : '0', 
                               'bottom' : (-1 * this.mainHeight), 
-                              'z-index' : '2147483647'});            
+                              'z-index' : '2147483644'});            
             
             
             if (this.leaveImg !== '' && this.closeLink !== '')
-            {
+            { 
                 this.leaveImg.css({'visibility' : 'hidden', 
                                    'border' : '0', 
                                    'position' : 'absolute', 
                                    'bottom' : (-1 * this.leaveHeight), 
-                                   'z-index' : '2147483647'});
+                                   'z-index' : '2147483644'});
                 
                 this.closeAd = function(){
-                    $(container + ' img:eq(1)').css({'visibility' : 'visible',
-                                                     'bottom' : (-1 * $(container + ' img:eq(0)').height())});
-                    $(container + ' img:eq(0)').animate({'bottom' : (-1 * $(container + ' img:eq(0)').height())});
-                    $('body').animate({'margin-bottom' : $(container + ' img:eq(1)').height()});
-                    $(container + ' img:eq(1)').animate({'bottom' : '0'});
+                    $(adWrapper + " div").animate({'height' : "30px"});
+                    floorAd_leaveImg.css({'visibility' : 'visible',
+                                                     'bottom' : (-1 * floorAd_mainImg.height())});
+                    floorAd_mainImg.animate({'bottom' : (-1 * floorAd_mainImg.height())});
+                    $('body').animate({'margin-bottom' : floorAd_leaveImg.height()});
+                    floorAd_leaveImg.animate({'bottom' : '0'});
                 };               
                 this.closeLink.click(this.closeAd);
 
                 // set up open button if it exists
                 if (this.openLink != '') 
-                {
+                {   
                     this.openLink.click(function() {
-                        $(container + ' img:eq(1)').animate({'bottom' : (-1 * $(container + ' img:eq(1)').height())});
-                        $(container + ' img:eq(0)').animate({'bottom' : '0'});
-                        $('body').animate({'margin-bottom' : $(container + ' img:eq(0)').height()});
+                        $(adWrapper + " div").animate({'height' : "110px"});
+                        floorAd_leaveImg.animate({'bottom' : (-1 * floorAd_leaveImg.height())});
+                        floorAd_mainImg.animate({'bottom' : '0'});
+                        $('body').animate({'margin-bottom' : floorAd_mainImg.height()});
                     });
                 }
             }
@@ -245,9 +352,9 @@ mi.floorAd = function( container, repeat ) {
             var passAd2ready = this;
             $(document).ready(function() {
                 if(passAd2ready.expand){
-                    $(container + ' img:eq(1)').css({'bottom' : (-1 * $(container + ' img:eq(1)').height())});
-                    $(container + ' img:eq(0)').animate({'bottom' : '0'});
-                    $('body').css({'margin-bottom' : $(container + ' img:eq(0)').height()});
+                    floorAd_leaveImg.css({'bottom' : (-1 * floorAd_leaveImg.height())});
+                    floorAd_mainImg.animate({'bottom' : '0'});
+                    $('body').css({'margin-bottom' : floorAd_mainImg.height()});
                 }
                 else{
                     passAd2ready.closeAd();
@@ -309,6 +416,31 @@ mi.floorAd.prototype.lastShown = function(flightID)
     return -1;//no cookie
 }
 
+/**
+ * FloorAd @setIframeHeight. Dynamically sets the height of the enclosing iframe on a GPT floorboard ad.
+ * @param adWrapper {string} CSS selector for ad wrapper div
+ * @param height {int} height in pixels
+ */
+mi.floorAd.prototype.setIframeHeight = function(adWrapper, height)
+{
+    $(adWrapper + " div").height(height + "px");
+}
+
+/**
+ * FloorAd @initIframeSize. Dynamically sets height and width of the enclosing iframe to that of wrapper div.
+ * @param adWrapper {string} CSS selector for ad wrapper div
+ */
+mi.floorAd.prototype.initIframeSize = function(adWrapper)
+{
+   $(adWrapper + " iframe").each(function(index) {
+        if(this.id.indexOf('google_ads_iframe_') != -1){
+            this.width = "100%";
+            this.height = "100%";
+        }
+   });
+}
+
+
 // IMPORTANT: executes when complete page is fully loaded, including all frames, objects and images
 // meaning, we can't bind click for the ad until after the window.load
 $(window).load(function() {
@@ -327,7 +459,6 @@ $(window).load(function() {
          }
     });
 });
-
 // $Id: MI.js 1603 2011-03-24 20:29:00Z bjones $
 /** MI.js **********************************************************************
  * @fileoverview Inclusion of this library creates an MI object within a

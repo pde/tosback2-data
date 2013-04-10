@@ -1,6 +1,6 @@
 /*
  * 
- * 		PLEASE CONTACT GREG TAFF [gt7886]
+ * 		PLEASE CONTACT FE Team
  * 		BEFORE MAKING ANY CHANGES TO THIS FILE
  * 
  */
@@ -23,6 +23,18 @@ jQuery.getScript = function(url, callback, cache){
 	
 
 (function(jQuery){
+	jQuery(document).bind("click", function(e) {				
+       	if(jQuery(e.target).parent().hasClass("over") || jQuery(e.target).parents().hasClass("segSubMenu")) {
+       	} else {
+
+            if(jQuery("#segSubMenuLanguage").is(":visible"))
+	            {
+	                var menuItemData = jQuery.data(document.body, "LangData");
+	                GlobalNav.animate.slideUpSubMenu(menuItemData);  
+	            }
+		}
+	});
+	
 	jQuery.fn.stopOn = function(handler) {
 		return this.each(function() {
 			
@@ -110,6 +122,23 @@ GlobalNav = {
 			}
 			return typeof globalNavCookie == "object" ? globalNavCookie : {"UG":[]};
 		},
+		getCookie: function(name, length) {
+			var secCookieName = (name) ? name : "";
+			var maxLength = (length) ? length : 0;
+			secCookieName = secCookieName.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+			var regex = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
+			match = document.cookie.match(regex);
+			if (match && match[1].length > 0) {
+				cVal = unescape(match[1]);
+				if (maxLength) {
+					return cVal.substring(0,maxLength);
+				} else {
+					return cVal;
+				}
+			} else {
+				return "";
+			}
+		},
 		jMerge: function(El){
 			/*
 				copy members from jQuery object
@@ -165,10 +194,18 @@ GlobalNav = {
 				for(var i = 0; i < flags.length; i++){attrs[flags[i].split("=")[0]] = flags[i].split("=")[1]}
 				thisAnchor.attr(attrs);
 			}
-			if(anchor.windowLocation == "Y"){thisAnchor.attr("target", "_blank")}
+			if(anchor.windowLocation == "Y"){
+				thisAnchor.attr("target", "_blank")
+				thisAnchor.addClass("newwindow");
+			}
 			return thisAnchor.get()[0];
 		},
 		checkInitConditions: function(){if(GlobalNav.SegMenu.isLoaded && GlobalNav.UserInfo.isLoaded){GlobalNav.initialize()}},
+		is_remote_url:function(url) {
+			var regexp = /^(\w+:)?\/\/([^\/?#]+)/;
+			var parts = regexp.exec( url );
+			return (parts && (parts[1] && parts[1] !== location.protocol || parts[2] !== location.host));
+		},
 		tieredMenuAjaxOptions:{},
 		tieredMenuAjaxMethods:{
 			error:function(jXHR, status, err){if(typeof GlobalNav.resources.failSafeJSON != "undefined" && GlobalNav.util.tieredMenuAjaxOptions.url != GlobalNav.resources.failSafeJSON ){GlobalNav.util.getTieredMenuJSON(GlobalNav.resources.failSafeJSON)}},
@@ -318,13 +355,23 @@ GlobalNav = {
 						
 						jQuery.each(col.rows, function(index,menuItem){
 							if(index == 0)return;
-							var menuListItem, menuAnchor;
+							var menuListItem, menuAnchor, newwindowspan, newwindowspanid;
 							
 							menuListItem = jQuery(document.createElement("li"));
 							menuAnchor = jQuery(GlobalNav.util.createAdvancedAnchor(menuItem));
 							menuAnchor.attr("name",primaryMenuList.id.split("_")[1] + "_" + item.displayName + "_" + menuItem.displayName);
 							menuListItem.append(menuAnchor);
 							trayMenu.append(menuListItem);
+							
+							if(this.windowLocation == "Y")
+							{
+								newwindowspan = jQuery(document.createElement("span"));
+								newwindowspanid = "newwindow_" + this.id;
+								jQuery(newwindowspan.attr('id', newwindowspanid));
+								jQuery(newwindowspan.html('&nbsp;'));
+								menuAnchor.append(newwindowspan);
+							}
+							
 						});
 						
 						trayHeader.append(trayHeaderAnchor);
@@ -437,6 +484,9 @@ GlobalNav = {
 				this.style.height = "";
 				this.data("ul").style.height = "";
 				this.data("shadow").show();
+				
+				GlobalNav.SegMenu.openState="open";				
+				
 			},
 			secondaryOnFrame: function(){GlobalNav.Tray.shadow.show()},
 			subMenuOnHideComplete: function(){
@@ -488,6 +538,48 @@ GlobalNav = {
 			msie: {zIndex: 1, top:-6,left:-10,height:-2,width:1}, 
 			modern: {zIndex: 1, top:2,left:-3,height:-4,width:0}
 		},
+		clickShowSubMenu: function(){
+			if(!!jQuery.browser.SafariMobile){this.mouseInside = true}
+			GlobalNav.SegMenu.visibleItem = this;
+
+			if(jQuery("#segSubMenuLanguage").is(":visible"))
+			{
+				GlobalNav.animate.slideUpSubMenu(this);
+			} else {
+				
+	
+
+				if(!!this.animation && this.animation.active){this.animation.cancel()}else{if(this.data("subMenu").style.display == "block"){return}}
+				
+				var jOffset, jThisWidth, thisSide, rightValue, leftValue;
+				
+				this.data("subMenu").css({"width":"", "height":"", "display":""});
+				this.data("subMenu").data("ul").css({"width":"", "height":"", "display":""});
+				
+				jOffset = GlobalNav.util.offset(this); 
+				jThisWidth = this.outerWidth();
+				thisSide = (jOffset.left + (jThisWidth / 2)) > (jQuery(document).width() / 2) ? "right" : "left";
+				rightValue = jOffset.left - Math.abs((jThisWidth - this.data("subMenu").outerWidth() - 1) * (this.data("subMenu").outerWidth() > 1));
+				leftValue = jOffset.left + 5;
+				
+				if(jQuery(this.parentNode).hasClass("rightMost")){rightValue += 2}
+				
+
+				this.addClass("over");
+				this.removeClass("selectedChevron");
+				this.data("subMenu").css({"top": jOffset.top + 34, "left": (thisSide == "right") ? rightValue : leftValue});
+				
+				if(this.id == "segMenuItemInternational") {
+
+					jQuery.data(document.body, "LangData", this);
+
+				}
+
+			GlobalNav.animate.slideDownSubMenu(this);
+				
+			}
+
+		},
 		hideSubMenu: function(){
 			this.mouseInside = false;
 			window.setTimeout(GlobalNav.util.forceThis(function(){
@@ -529,13 +621,13 @@ GlobalNav = {
 		initialize: function(){
 			jQuery.each(this.initFunctions, function(){arguments[1]()});
 			
-			this.menuListItems.bind("click", function(){
+			/*this.menuListItems.bind("click", function(){
 				if(!this.hasClass("hasURL")){return}
 				GlobalNav.SegMenu.activeItem = this;
 				GlobalNav.SegMenu.menuListItems.removeClass("selected");
 				GlobalNav.SegMenu.menuListItems.removeClass("selectedChevron");
 				if(this != GlobalNav.SegMenu.visibleItem){this.addClass(this.hasClass("hasSubMenu") ? "selectedChevron" : "selected")};
-			});
+			});*/
 			
 			jQuery.each(this.menuListItems, function(index, menuItem){
 				menuItem = GlobalNav.util.jMerge(menuItem);
@@ -547,19 +639,24 @@ GlobalNav = {
 					menuItem.data("subMenu", GlobalNav.util.jMerge(menuItem.parentNode.getElementsByTagName("div")[0]));
 					menuItem.data("subMenu").menuItem = menuItem;
 					
-					if(!!jQuery.browser.SafariMobile){
-						menuItem.bind("mouseenter focus", GlobalNav.SegMenu.showSubMenu);
-						menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
-						menuItem.data("subMenu").bind("mouseenter", GlobalNav.util.forceThis(GlobalNav.SegMenu.showSubMenu, menuItem));
-						menuItem.data("subMenu").bind("mouseleave", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+					if(this.id == "segMenuItemInternational") {
+						menuItem.bind("click", GlobalNav.SegMenu.clickShowSubMenu);
+						
 					}else{
-						jQuery(menuItem).stopOn(GlobalNav.SegMenu.showSubMenu);
-						menuItem.bind("mouseenter focus", GlobalNav.SegMenu.mouseIn);
-						menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
-						menuItem.data("subMenu").bind("mouseenter focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
-						menuItem.data("subMenu").bind("mouseleave blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
-						jQuery(menuItem.data("subMenu")).find("a").bind("focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
-						jQuery(menuItem.data("subMenu")).find("a").bind("blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+						if(!!jQuery.browser.SafariMobile){
+							menuItem.bind("mouseenter focus", GlobalNav.SegMenu.showSubMenu);
+							menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
+							menuItem.data("subMenu").bind("mouseenter", GlobalNav.util.forceThis(GlobalNav.SegMenu.showSubMenu, menuItem));
+							menuItem.data("subMenu").bind("mouseleave", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+						}else{
+							jQuery(menuItem).stopOn(GlobalNav.SegMenu.showSubMenu);
+							menuItem.bind("mouseenter focus", GlobalNav.SegMenu.mouseIn);
+							menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
+							menuItem.data("subMenu").bind("mouseenter focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
+							menuItem.data("subMenu").bind("mouseleave blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+							jQuery(menuItem.data("subMenu")).find("a").bind("focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
+							jQuery(menuItem.data("subMenu")).find("a").bind("blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+						}
 					}
 					
 					menuItem.data("subMenu").data("shadow", new GlobalNav.shadow(menuItem.data("subMenu"), "segHasShadow", GlobalNav.SegMenu.shadowOffsets));

@@ -1,0 +1,149 @@
+Drupal.behaviors.gCSE = function(context) {
+    gcse.init({ parentElms: "#gcse-search-form" });
+}
+
+/** @class
+ * Shows an infobox containing search results
+ */
+var gcse = (function() {
+  var $searchBox,
+
+  // The query.
+  query = '',
+
+  // Search events.
+  SEARCH = 'search.gcse',
+
+  close = function() {
+    var currentTop = $searchBox.css("top");
+    $searchBox.animate({
+      top: (parseInt(currentTop) -10) + "px",
+      opacity: "0"
+    }, function() {
+      $searchBox.css({
+        display: "none"
+      });
+      cover.hide();
+    });
+  },
+
+  results = function(keys) {
+    var customSearchOptions = {};
+    var customSearchControl = new google.search.CustomSearchControl(
+      Drupal.settings.gCSE.cx, customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    var options = new google.search.DrawOptions();
+    options.enableSearchResultsOnly();
+    customSearchControl.draw('search-box-content', options);
+    query = keys;
+    if (query) {
+      customSearchControl.execute(query);
+      trigger(SEARCH, [query]);
+    }
+  },
+
+  trigger = function(event, args) {
+      $.event.trigger(event, args);
+  },
+
+  init = function(args) {
+    $searchBox = $("<div class=\"gcse-box-container\"><div class=\"gcse-box\"><a href=\"#\" class=\"close\">Close</a><div id=\"search-box-content\"></div></div></div>");
+    $("body").append($searchBox);
+    $searchBox.find('.close').bind("click", function(e) {
+      e.preventDefault();
+      close();
+    });
+
+    $(args.parentElms).bind("submit", function(e) {
+      e.preventDefault();
+      var html = [];
+      var scrollTop = window.pageYOffset ? window.pageYOffset : document.documentElement.scrollTop;
+
+      $form = $(e.currentTarget);
+      var values = {};
+      $.each($form.serializeArray(), function(i, field) {
+          values[field.name] = field.value;
+      });
+
+      if( values.keys === ""){  //if nothing searched for, stop submit event propogation and bale out.
+        return false;
+      }
+
+      results(values.keys);
+
+      $searchBox.css({
+        top: (scrollTop + 40) + "px",
+        opacity: "0",
+        display: "block"
+      });
+      $searchBox.attr("tabindex",0).focus();
+
+      cover.show(function() {
+        $searchBox.animate({
+          top: (scrollTop + 50) + "px",
+          opacity: "1"
+        });
+      });
+
+    });
+  },
+
+  getQuery = function() {
+      return query;
+  },
+
+  /** @class
+   * Creates a semi transparent cover over the screen.
+   */
+  cover = function() {
+      var setSize = function() {
+      var el = $("#ui-cover");
+      var height = Math.max($("html").outerHeight(), $(window).height());
+      el.css({
+          "height": height + "px",
+          "display": "block"
+      });
+    };
+    return {
+          /**
+           * Shows the cover.
+           */
+      show: function(callback) {
+        var el = $("#ui-cover");
+        if (!el[0]) {
+          el = $("<div id=\"ui-cover\"></div>");
+          $("body").append(el);
+          el.css({
+            "position": "absolute",
+            "left": "0px",
+            "top": "0px",
+            "width": "100%",
+            "zIndex": "9990",
+            "background": "white",
+            "opacity": "0"
+          });
+        }
+        if (callback) { el.animate({"opacity": 0.7}, "normal", "swing", callback); }
+        else { el.animate({"opacity": 0.7}, "normal"); }
+        $(window).bind("resize.cover", setSize);
+        $(window).trigger("resize.cover");
+      },
+          /**
+           * Hides the cover.
+           */
+      hide: function() {
+        var el = $("#ui-cover");
+        if (el.length > 0) {
+          el.animate({"opacity": 0}, 600, "swing", function() { el.css("display", "none"); });
+            $(window).unbind("resize.cover");
+        }
+      }
+    };
+  }();
+
+  return {
+    init: init,
+    getQuery: getQuery
+  };
+
+})();

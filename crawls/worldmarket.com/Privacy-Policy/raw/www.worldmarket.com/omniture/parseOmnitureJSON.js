@@ -460,3 +460,30 @@
 		s.linkTrackVars="products" +sTrackEvents;
         s.tl(true,'o',sLinkName);
     }
+	/**
+     * Sets the events,evar and products data when change in store is called through store page
+     * to parseOmnitureJSON to instantiate the appropriate Omniture vars.(WOMA-1823)
+     */
+	function reportInStoreChange(omniJSON){		 
+		var s=s_gi(getId());
+		var aEventKeys = new Array(); 
+		var oEvents = omniJSON["events"];
+		var eventStr="";
+		var oProducts =  omniJSON["products"];
+		 // loop through the event object
+		if(typeof(oEvents)){
+			for(subKey in oEvents) {    			
+				aEventKeys[aEventKeys.length] = subKey;				   
+			}
+		  parseOmnitureJSON({"events":oEvents});
+	    }
+         eventStr += aEventKeys.join(",");
+
+		if(typeof(oProducts)){			
+			parseOmnitureJSON({"products":oProducts});
+		}
+		s.linkTrackEvents=eventStr;
+		sTrackEvents=",events";	
+		s.linkTrackVars="eVar34,products" +sTrackEvents;		
+		s.tl(true,'o','Store Tracking');
+	}

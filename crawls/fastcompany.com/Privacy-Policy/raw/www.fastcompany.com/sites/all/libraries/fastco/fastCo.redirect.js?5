@@ -1,0 +1,105 @@
+var fastCo = fastCo || {};
+fastCo.redirect = fastCo.redirect || {};
+
+fastCo.redirect = (function() {
+
+    var 
+
+    isMobile = function() {
+        /**
+         * Copyright 2009 Crisp Wireless Inc.
+         */
+        // adding back iphone and ipod for sold mobile advertising
+        var mobiles = [];
+        mobiles[0] = "iphone";
+        mobiles[1] = "ipod";
+        mobiles[2] = "blackberry";
+        mobiles[3] = "android";
+        mobiles[4] = "motorola";
+      
+        var uagent = navigator.userAgent.toLowerCase();
+        for(i=0; i<mobiles.length; i++) {
+           if(uagent.search(mobiles[i]) > -1) {
+                return true;
+           }
+        }
+
+        return false;
+    },
+
+    createCookie = function(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    },
+
+    readCookie = function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    },
+
+    eraseCookie = function(name) {
+        createCookie(name,"",-1);
+    };
+
+    return {
+        isMobile: isMobile,
+        createCookie: createCookie,
+        readCookie: readCookie,
+        eraseCookie: eraseCookie
+    };
+
+}());
+
+
+if ( fastCo.redirect.isMobile() ) {
+    var uri = window.location.href;
+    var tokens = uri.match(/http:\/\/(.[^/?]+)/);
+
+    if(tokens!==null) {
+        // tokens ==> ["http://www.fastcompany.com", "www.fastcompany.com"]
+        var domain = tokens[1].split('.')[1]; // fastcompany
+        var moburl = tokens[0].replace('www','m').replace('local','com'); // http://m.fastcompany.com
+
+        // if the request is directly to fastcompany (http://www.fastcompany or http://www.fastcompany/) let's 
+        // redirect to the mobile version. Similar for the other fastcompany sites. If the url includes '?' it 
+        // won't redirect to the mobile version (coming from mobile 'full site' menu link)
+        if ( uri.match(/http:\/\/.*com[\/]{0,1}$/) ) {
+            // Go to "http://m.fastcompany.com" or others;
+            window.location = moburl;
+        }
+        // redirect just in case we are not passing the fullsite key or when _nored cookie is not present
+        else if ( uri.toLowerCase().indexOf('fullsite')===-1 && fastCo.redirect.readCookie('_nored')==null ) {
+            var patterns = [
+                /\/\d{5,}$/gi,     // match /3002074 at the end of the url (minimum 5 digits)
+                /\/\d{5,}\//gi,    // match /3002074/ at any place (minimum 5 digits)
+                /node\/\d{5,}$/gi  // match node/3002074 at the end of the url (minimum 5 digits)
+            ];
+            for(var i=0; i<patterns.length; i++){
+                var node = uri.match( patterns[i] );
+                if( node && node.length === 1 ){
+                    var url = moburl + '?m=' + domain + '/node/' + node[0].match(/\d+/)[0] + '&url=' + window.location.href + '&' + window.location.search.substring(1);
+                    window.location = url;
+                }
+            }
+        }
+        // don't redirect to the mobile site for 1 day
+        else if ( uri.toLowerCase().indexOf('fullsite')>-1 ) {
+            if ( fastCo.redirect.readCookie('_nored')==null ) {
+                fastCo.redirect.createCookie('_nored', '1', 1 );
+            }
+        }
+        // Other cases do nothing. We can't redirect to the mobile site 
+    }
+}
+

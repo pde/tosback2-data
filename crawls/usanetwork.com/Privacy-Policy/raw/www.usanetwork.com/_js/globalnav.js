@@ -672,12 +672,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "NATIONAL TREASURE: BOOK OF SECRETS",
-							"subtitle" : "SUNDAY APRIL 7 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nationaltreasure.png"
-						},
-						{
 							"title" : "LITTLE FOCKERS",
 							"subtitle" : "FRIDAY APRIL 12 9/8C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -694,7 +688,14 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY APRIL 14 10/9C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
+						},
+						{
+							"title" : "AMERICAN PIE",
+							"subtitle" : "SUNDAY APRIL 21 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_americanpie.png"
 						}
+
 					]
 				}
 			],

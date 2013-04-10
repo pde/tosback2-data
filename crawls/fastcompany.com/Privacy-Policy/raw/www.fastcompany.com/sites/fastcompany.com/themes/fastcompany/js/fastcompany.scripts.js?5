@@ -1,0 +1,291 @@
+Drupal.behaviors.fastCompany = function(context) {
+  // Initialize the lightbox
+  if (typeof(fastCo) != 'undefined') {
+      if (typeof(fastCo.lightbox) != 'undefined') {
+          fastCo.lightbox.init({
+            selectors: ['inline-large', 'bucket']
+          });
+      }
+  }
+
+  // Tracking search events
+  if ( typeof(gcse) != 'undefined' ) {
+      // Bind to search event.
+      $(document).on( 'search.gcse', function(e, query) {
+          tracking.omniture.search(query);
+      });
+  }
+};
+
+Drupal.behaviors.DART = function() {
+  if (typeof(Drupal.DART.settings.loadLastTags) == 'object') {
+
+    $('.dart-tag:visible').each( function() {
+      if (!$(this).hasClass('dart-processed')) {
+        var regex = /dart-name-(\w+)$/;
+        var result = regex.exec($(this).attr('class'));
+        var scriptTag = Drupal.DART.tag(Drupal.DART.settings.loadLastTags[result[1]]);
+
+        //This fix was specific for a dyson ad, but they're not running now, putting this back fixes dell ad
+        //If user is IE
+        //If the script doesn't contain the word imu_ then do standard writecapture, else use ProxyGetElementByID option hack. This was put in place for certain ads that refuse to show up in IE, and to limit applying this hack on IMU only so other units wouldn't be affected.
+       // if ((navigator.userAgent.toLowerCase().indexOf("msie") != -1 ) && (result[1].indexOf("imu_") != -1)){
+       //   $(this).writeCapture().append(scriptTag,{proxyGetElementById:true}).addClass('dart-processed');
+       // }
+       // else {
+          $(this).writeCapture().append(scriptTag).addClass('dart-processed');
+       // }
+      }
+    });
+  }
+};
+
+Drupal.behaviors.sidebarVideo = function(context) {
+  // attach iframe for video playback
+  var $block = $('#block-blockqueue-featured_video');
+
+  if ( $block.length === 0 ) {
+    return;
+  }
+
+  // get first item in playlist
+  var embed = $('figure', $block)[0];
+
+  // embed url
+  var url = $(embed).children('a').attr('href');
+  $('#sidebar-video-player').attr('src', url + '?p=fc_playlist_homepage');
+
+  // video info
+  var info = $(embed).children('figcaption').html();
+  $('#sidebar-video-info').html(info);
+
+  $(embed).parents('li').addClass('active');
+
+  $('a.video-embed', $block).hover(
+    function(e) {
+      var info = $(this).next('figcaption').html();
+      $('#sidebar-video-info').html(info);
+    }
+  );
+
+  $block.on('click', 'a.video-embed', function(e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $('#sidebar-video-player').attr('src', url + '?p=fc_playlist_homepage');
+
+    $('li', $block).removeClass('active');
+    $(this).parents('li').addClass('active');
+  });
+};
+
+Drupal.behaviors.galleria = function(context) {
+
+  Drupal.galleria.init({
+      'container': '.inline-galleria'
+  });
+
+  // on paging event - send current slide index to omniture
+
+  if (typeof Galleria !== 'undefined') {
+
+    Galleria.on('image', function(e) {
+
+      // if first slide - disregard
+      if ($(this).data('galleria_triggered') === 'triggered') {
+
+        // test next line?
+        if (typeof(tracking.omniture) != 'undefined') {
+          update_tracking();
+          tracking.omniture.pageView(null, e.index);
+        }
+
+        // refresh ads
+        if (typeof fastCo.ads !== 'undefined') {
+          fastCo.ads.refreshTheseAds([
+            {
+              "selector": "#block-dart-dart-tag-leaderboard .dart-name-leaderboard",
+              "ad_unit":  "leaderboard"
+            }, {
+              "selector": "#block-dart-dart-tag-imu_1 .dart-name-imu_1",
+              "ad_unit":  "imu_1"
+            }
+          ]);
+        }
+
+      } else {
+
+        $(this).data({'galleria_triggered': 'triggered'});
+
+      }
+
+    });
+  }
+};
+
+Drupal.galleria = (function() {
+    var config = {
+        container: '.slideshow-items'
+    },
+
+    $container = {},
+
+    init = function(options) {
+
+        config = $.extend(config, options);
+
+        $container = $(config.container);
+
+        // If we have no container, return.
+        if ($container.length === 0) {
+            return;
+        }
+
+        $container.each(function() {
+
+            $(this).galleria({
+                // _toggleInfo: false,
+                showCounter: false,
+
+                dataConfig: function(img) {
+                    return {
+                        title:			$(img).parent().siblings('.galleria-title').html(),
+                        description:	$(img).parent().siblings('.galleria-desc').html(),
+                        credit:			$(img).parent().siblings('.galleria-credit').html(),
+                    };
+                }
+            });
+
+        });
+    };
+
+    return {
+        init: init
+    };
+
+}());
+
+
+
+$(document).ready(function(){
+
+	// this could probably be done better
+	// Tie into galleria?
+	if (typeof Galleria !== "undefined") {
+		Galleria.ready(function(){
+			$('.galleria-info-link').trigger("click");
+		});
+	}
+
+    // DRUPAL MESSAGES HANDLER
+    $(window).bind('scroll.drupalMessages', function(){
+
+        var $message = $('#drupal-messages'),
+            $scrollDistance = $(this).scrollTop();
+
+        // Check to see if we even have Drupal messages
+        // If not then remove container and unbind scroll
+        if ($message.find('div').length < 1) {
+            $message.addClass('header-msg-hidden').animate({
+                'left': "-" + ($message.width() - 10) + "px"
+            }, 300);
+            $(this).unbind('scroll.drupalMessages');
+        }
+
+        // Chrome fires scroll event on window.load with a scroll distance of 0
+        // Make sure the scroll is greater than a small value before performing
+        // regular message container hiding.
+        if ($scrollDistance < 100) { return; }
+
+        if(!$message.hasClass("header-msg-hidden")) {
+            $message.addClass("header-msg-hidden").animate({
+                'left': "-" + ($message.width() - 10) + "px"
+            }, 300);
+            // unbind this
+            $(this).unbind('scroll.drupalMessages');
+        }
+    });
+
+    $('#drupal-messages').hoverIntent(function() {
+        $(this).animate({
+            'left': 0
+        }, 300);
+    }, function() {
+        $(this).animate({
+            'left': "-" + ($(this).width() - 10) + "px"
+        }, 300);
+    }).find('.messages').click(function(e){
+      e.preventDefault();
+      $(this).animate({'opacity': 0}, 300, function(){
+        $(this).hide(300);
+      })
+    });
+
+
+    $("#sharebar_icons_button").hoverIntent(
+    function(){
+      $("#sharebar_fixed_social .sharebar_buttons").stop().animate(
+        {width: "150px"},
+        300,
+        function(){$(this).addClass("open")}
+        );
+    }, 
+    function(){
+        $("#sharebar_fixed_social .sharebar_buttons").stop().animate(
+        {width: "0"},
+        300,
+        function(){$(this).removeClass("open")}
+        );
+    });
+
+    $("#sharebar_fixed_button").click(function(){
+      if( $(this).is(".off") ){ // show it
+        $("#sharebar_icons_button").stop().removeClass("hidden").animate({backgroundPosition: "-1px 0px"}, 500);
+        $(this).removeClass("off");
+      }
+      else {
+        $("#sharebar_icons_button").stop().animate({backgroundPosition: '-1px 123px'}, 500, function(){
+          $(this).addClass("hidden")
+        });
+        $(this).addClass("off");
+      }
+      
+      return false;
+    });
+
+});
+
+// for firefox 
+// http://nelsonwells.net/2012/08/using-bgpos-js-with-jquery-18/
+// http://stackoverflow.com/questions/5518834/jquery-animate-background-position-firefox
+/**
+ * @author Alexander Farkas
+ * v. 1.02
+ *
+ * Edited by Nelson Wells for jQuery 1.8 compatibility
+ */
+(function($) {
+    $.extend($.fx.step,{
+        backgroundPosition: function(fx) {
+            if (fx.pos === 0 && typeof fx.end == 'string') {
+                var start = $.css(fx.elem,'backgroundPosition');
+                start = toArray(start);
+                fx.start = [start[0],start[2]];
+                var end = toArray(fx.end);
+                fx.end = [end[0],end[2]];
+                fx.unit = [end[1],end[3]];
+            }
+            var nowPosX = [];
+            nowPosX[0] = ((fx.end[0] - fx.start[0]) * fx.pos) + fx.start[0] + fx.unit[0];
+            nowPosX[1] = ((fx.end[1] - fx.start[1]) * fx.pos) + fx.start[1] + fx.unit[1];
+            fx.elem.style.backgroundPosition = nowPosX[0]+' '+nowPosX[1];
+ 
+           function toArray(strg){
+               strg = strg.replace(/left|top/g,'0px');
+               strg = strg.replace(/right|bottom/g,'100%');
+               strg = strg.replace(/([0-9\.]+)(\s|\)|$)/g,"$1px$2");
+               var res = strg.match(/(-?[0-9\.]+)(px|\%|em|pt)\s(-?[0-9\.]+)(px|\%|em|pt)/);
+               return [parseFloat(res[1],10),res[2],parseFloat(res[3],10),res[4]];
+           }
+        }
+    });
+})(jQuery);

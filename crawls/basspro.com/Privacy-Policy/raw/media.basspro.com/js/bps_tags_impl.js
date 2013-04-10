@@ -458,16 +458,6 @@ OmnitureTag.prototype.setVariables = function()
         {
           s.events = "event1";
           s.prop1 = this.Tag.search;
-          s.products = "";
-
-          for(var i = 0; i < this.Tag.parentTextIds.length; i++)
-          {
-            if(!isEmpty(this.Tag.parentTextIds[i]))
-            {
-              s.products += (";" + this.Tag.parentTextIds[i]);
-              productResults++;
-            }
-          }
         }
 
         if(!isEmpty(this.Tag.search) || productResults == 0)

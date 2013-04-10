@@ -3030,7 +3030,7 @@ com.mattel.main = function () {
 			return false;
 		}
 		var subnav_timeout = null;
-		var subArr = ["products", "brands", "baby", "playtime", "games", "shops"];
+		var subArr = ["products", "brands", "playtime", "games", "shops"];
 		$('body').prepend('<div id="sub-nav-curtain"></div><div id="sub-nav-wrap" class="gradient"><div id="sub-nav-brand" class="clearfix"></div></div>');
 		$('.nav_brand li ul').each(function (i) {
 			$(this).addClass(subArr[i] + '-sub').appendTo('#sub-nav-brand');

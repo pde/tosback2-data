@@ -475,8 +475,8 @@ function validateSelectOptionValues(){
 	}
 	document.getElementById("ORCcheck1").className = "radioGroup1 ORCBooleanRadio ";
 	jQuery( "#ORCcheck1" ).removeClass("error");
-	document.getElementById("showNext").style.display="block";
-	document.getElementById("blockNext").style.display="none";
+	document.getElementById("enbNextBtn").style.display="block";
+	document.getElementById("dsbNextBtn").style.display="none";
 	return 1;
 }
 
@@ -758,6 +758,7 @@ function showAllOptions()
 	var emailId=document.getElementById("emailId").value;
 	document.getElementById("OtherOptionDiv").style.display="block";
 	document.getElementById("moreOptionShowhide").style.display="none";
+	document.getElementById("morethanTwoOpt").className="MoreThanTwoOptions PadTop5";
 
 }
 
@@ -799,8 +800,14 @@ function replaceAll(txt, replace, with_this) {
 	return txt.replace(new RegExp(replace, 'g'),with_this);
 }
 
-function alreadyHaveAccessIdClicked(){
+function alreadyHaveAccessIdClicked( reportClick ){
+	
 	var modalURL="/olam/unauth/displayValidateAccessIdRegistration.myworld";
+	
+	if ( reportClick ) {
+		modalURL += "?reportActionEvent=A_REGS_LINK_ACCNT_EXISTING_SLID_LINK_CLICKED";
+	}
+	
 	if(jQuery.browser.msie){
 		jQuery.colorbox({iframe:true, height:555, width:800, scrolling:false, overlayClose:false, href: modalURL,close:""});
 		return false;

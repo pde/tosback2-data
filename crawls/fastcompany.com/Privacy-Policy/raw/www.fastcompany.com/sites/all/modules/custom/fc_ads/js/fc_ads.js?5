@@ -1,0 +1,72 @@
+var fastCo = fastCo || {};
+fastCo.welcome = fastCo.welcome || {};
+
+fastCo.welcome = (function() {
+
+    var defaults = {
+        isDay: true,	//helps setting the cookie
+        expireTime: 1,	//1d
+        ipadOnly: false
+    },
+
+    settings = {},
+
+    init = function(options) {
+        var self = this;
+
+        // define the settings
+        settings = $.extend({}, defaults, options);
+	},
+
+	// not intended for public consumption - just check if the client is using an ipad
+	_isiPad = function() {
+	    // adding list of excluded mobile devices
+	    var mobile = "ipad";
+	  
+	    var uagent = navigator.userAgent.toLowerCase();
+	    if(uagent.search(mobile) > -1) {
+	    	return true;
+    	}
+
+    	return false;
+	},
+
+	show = function() {
+		var cookieFreq;
+
+		if ( typeof($.cookie('fc_splash')) == 'undefined' || $.cookie('fc_splash') != 1 ) {
+		    //Set the cookie expire time
+		    cookieFreq =new Date();
+
+		    if( settings.isDay ){
+		    	cookieFreq = settings.expireTime;
+		    }
+		    else{
+				cookieFreq.setTime(cookieFreq.getTime() + settings.expireTime);
+		    }
+		    $.cookie('fc_splash', 1, {
+		    	path : '/',
+		    	expires : cookieFreq
+		    });
+		    
+		    //If the isMobile function is defined and the client is not a mobile(excluding ipads) then take them 
+		    //to the welcome page. If isMobile function is not defined(sequence of js loads) then FC_Helper will 
+		    //do the proper redirection
+		    if ( (typeof fastCo.redirect.isMobile === 'function') && !fastCo.redirect.isMobile() && ( !settings.ipadOnly  || (settings.ipadOnly && _isiPad()) ) ){
+		        window.location.assign("/welcome.html?destination=" + encodeURI(window.location.href));
+		    }
+		}
+	};
+
+    return {
+    	init: init,
+    	show: show
+    };
+
+}());
+
+
+
+
+
+

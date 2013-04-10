@@ -10,49 +10,31 @@ $.ajax({
     type: "POST",
     url: ajaxAffiliateRequestURL,
     data: ajaxAffiliateParams,
-    dataType: "json",
     timeout: 15000,
     success: function(data) {
-        $(document).ready(function() {
-            var afObject = data.affiliateCookie;
+        $(document).ready(function() {            
+            $("#ideas").html($(data).find("#promoHeader").html());
+            $("#welcome").html($(data).find("#header").html());
+            var jsonData = $.parseJSON($(data).find("#JSON").html());
+            var afObject = jsonData.affiliateCookie;
             if (afObject != undefined){
                 SetCookie(afObject.affiliateCookieName, afObject.affiliateCookieValue, afObject.affiliateCookieExpiration, afObject.path);
             }
-            $("#headerItemCount").html(data.itemsCount);
-            $("#ideas").html(data.promoHeader);
+            $("#headerItemCount").html(jsonData.itemsCount);
         });
         return true;
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-        alert("An error has occurred setting cookies: " + errorThrown);
+        //alert("An error has occurred setting cookies: " + errorThrown);
         return false;
     }
 });
 
-//updating welcome message for logged in user.
-var ajaxHeaderURL = site_base_url + "/js/header.jsp";
-var headerparams = "";
-$.ajax({
-    type: "POST",
-    url: ajaxHeaderURL,
-    data: headerparams,
-    dataType: "html",
-    timeout: 15000,
-    success: function(data) {
-        $(document).ready(function() {
-            $("#welcome").html(data);
-        });
-        return true;
-    },
-    error: function() {
-        return false;
-    }
-});
 //utag for Tealium
 // only call for Akamai pages
 
 var path = window.location.pathname;
-if (!pathContains(path)) {
+if (false || !pathContains(path)) {
 	path = encodeURIComponent(path);
 	var ajaxUtagURL = site_base_url + "/js/utag_call.jsp";
 	var utagParams = "path="+path+"&referrer="+encodeURIComponent(document.referrer);
@@ -76,7 +58,7 @@ function pathContains(path) {
 	nonAjaxPages.push('.ens');
 	nonAjaxPages.push('basket.jsp');
 	nonAjaxPages.push('billing.jsp');
-	nonAjaxPages.push('checkout/review.jsp');
+	nonAjaxPages.push('review.jsp');
 	nonAjaxPages.push('receipt.jsp');
 	nonAjaxPages.push('down_payment_default.jsp');
 	nonAjaxPages.push('payment_method_default.jsp');
@@ -87,7 +69,7 @@ function pathContains(path) {
 	nonAjaxPages.push('ensemble.jsp');
 	nonAjaxPages.push('custserv.jsp');
 	nonAjaxPages.push('process_item.cmd');
-	nonAjaxPages.push('search.cmd');
+	nonAjaxPages.push('/search.cmd');
    for (i in nonAjaxPages) {
        if (path.contains(nonAjaxPages[i])) return true;
    }

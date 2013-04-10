@@ -1,0 +1,37 @@
+var tracking = tracking || {};
+
+tracking.omniture = function() {
+  sanitize = function(str) {
+    return str.replace(/[^A-Za-z0-9\-\s]*/g, '');
+  };
+
+  return {
+    search: function(terms) {
+      // update a search event
+      var s=s_gi(s_account);
+      s.linkTrackVars='prop14,eVar12,events';
+      s.linkTrackEvents='event1';
+      s.eVar12=s.prop14=terms;
+      s.events='event1';
+      s.tl(this,'o','Internal Search');
+    },
+    pageView: function(pageName, pageNum, path) {
+      // Page view event
+      if ( pageName ) {
+         // replicate the transformations to the pageName in PHP.
+         s.pageName = s.server + ':';
+         s.pageName += s.channel + ':';
+         pageName = pageName.replace(/\s+?/g, '-').toLowerCase();
+         s.pageName += sanitize(pageName);
+      }
+
+      if ( pageNum || pageNum === 0) {
+        s.prop13 = String(pageNum);
+      }
+
+      s.events='event9';
+
+      s.t();
+    }
+  };
+}();

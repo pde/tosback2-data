@@ -1,0 +1,300 @@
+/*
+ADOBE SYSTEMS INCORPORATED
+ Copyright 2011 Adobe Systems Incorporated
+ All Rights Reserved.
+
+NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
+terms of the Adobe license agreement accompanying it.  If you have received this file from a
+source other than Adobe, then your use, modification, or distribution of it requires the prior
+written permission of Adobe.
+*/
+/*
+The size of the static image
+*/
+.tapAndHoldZoom {
+	width : 158px;
+	height : 14px;
+	font-family:verdana, arial, helvetica, sans-serif;
+	color: #ffffff;
+	background-color : #000000;
+	text-align:center;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 8pt;
+}
+.leftInnerPanel {
+	width : 284px;
+	height : 284px;
+	/*top:50px;
+	left:50px;
+	border:2px solid #000000;*/
+	z-index: 0;
+	position: relative;
+}
+.s7flyoutStaticImageContainer {
+	width : 284px;
+	height : 284px;
+	border:2px solid #000000;
+	top:500px;
+	left:500px;
+	z-index: 0;
+	position: relative;
+}
+.s7flyoutStaticImage {
+	width : 284px;
+	height : 284px;
+	visibility: hidden;
+}
+
+/*
+The size of the flyout view. Must not be higher than static image
+*/
+.s7flyoutFlyoutView {
+	width : 400px;
+	height : 400px;
+	z-index: 0;
+	top:600px;
+	left:600px;
+	background-image:url(../images/loadingAnimation.gif);
+	background-color:#ffffff;
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+
+/*
+Flyout view border.
+*/
+.s7flyoutFlyoutViewBorder {
+	border : 1px solid #000000;
+}
+
+/*
+Horizontal offest of the top left flyout view corner from the top right static image corner. Negative values for "top" are permitted.
+*/
+.s7flyoutFlyoutViewOffset {
+	left : 15px;
+	top : 20px;
+}
+
+/*
+The size of swatches container. Normallty the width should match the width of the static image.
+*/
+.s7flyoutSwatches {
+	width : 360px;
+	height : 100px;
+}
+
+/*
+Swatches background is designed to be dynamic inwidth and fixed height. It is cut into three pieces: left (fixed-size), middle (fixed-height, variable-width) and right (fixed-size).
+Viewer always spans the background across the width defined in s7flyoutSwatches, and resizes the middle portion as needed.
+*/
+/*
+Left part of the swatches background.
+*/
+.s7flyoutSwatchesBackgroundLeft {
+	width : 7px;
+	height : 100px;
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/swatches-background-left-1x.png);
+}
+
+/*
+Right part of the swatches background.
+*/
+.s7flyoutSwatchesBackgroundRight {
+	width : 7px;
+	height : 100px;
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/swatches-background-right-1x.png);
+}
+
+/*
+Middle part of the swatches background.
+*/
+.s7flyoutSwatchesBackgroundMiddle {
+	background-repeat : repeat-x;
+	height : 100px;
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/swatches-background-middle-1x.png);
+	-webkit-background-size : 100% 100%;
+}
+
+/*
+The size of a single swatch. Does not include borders.
+*/
+.s7flyoutSwatch {
+	width : 54px;
+	height : 72px;
+}
+
+/*
+Swatch background and border, visible in all states (up, over, down). "filter" is for IE7 and IE8, "box-shadow" is for other browsers. background-color is must-have for IE7 and IE8.
+When using 'filter' make sure that the filter applied adds identical marging on top/bottom and on left/right.
+*/
+.s7flyoutSwatchBackground {
+	-webkit-box-shadow : 0px 1px 1px #a9a9a9; 
+	box-shadow : 0px 1px 1px 0px #a9a9a9; 
+	filter : progid:DXImageTransform.Microsoft.Shadow(color=#ffffff,direction=0,strength=2) progid:DXImageTransform.Microsoft.Shadow(color=#a9a9a9,direction=90,strength=1) progid:DXImageTransform.Microsoft.Shadow(color=#a9a9a9,direction=180,strength=2) progid:DXImageTransform.Microsoft.Shadow(color=#a9a9a9,direction=270,strength=1);
+	background-color : #0f0f0f;
+}
+
+/*
+Swatch active border. "filter" is for IE7 and IE8, "opacity" is for other browsers.
+*/
+.s7flyoutSwatchActiveBorder {
+	border-width : 2px;
+	border-color : rgb(0, 151, 193);
+	border-style : solid;
+	opacity : 0.9;
+	filter : alpha(opacity=90);
+}
+
+/*
+Swatch roll over border. "filter" is for IE7 and IE8, "opacity" is for other browsers.
+*/
+.s7flyoutSwatchOverBorder {
+	border-width : 2px;
+	border-color : rgb(0, 151, 193);
+	border-style : solid;
+	opacity : 0.9;
+	filter : alpha(opacity=90);
+}
+
+/*
+Configures inner-swatch spacing.
+*/
+.s7flyoutSwatchInnerSpacer {
+	width : 15px;
+}
+
+/*
+Configures the spacing between side swatches and the edges of swatch container. It is recommended to set this value at least as large as the size of swatch highlight or shadow.
+*/
+.s7flyoutSwatchOuterSpacer {
+	width : 4px;
+}
+
+/*
+The size of the swatch scroll button.
+*/
+.s7flyoutSwatchScrollButton {
+	width : 32px;
+	height : 72px;
+}
+
+/*
+Spacing between the edge of the swatches cntainer and scroll button.
+*/
+.s7flyoutSwatchScrollButtonOuterSpacer {
+	width : 8px;
+}
+
+/*
+Spacing between the scroll button and actual swatches.
+*/
+.s7flyoutSwatchScrollButtonInnerSpacer {
+	width : 4px;
+}
+
+/*
+Different artwork is used for default, "over", "down" and "disabled" button states.
+*/
+.s7flyoutSwatchScrollButtonLeft {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-left-up.png);
+}
+.s7flyoutSwatchScrollButtonLeft[state = 'over'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-left-over.png);
+}
+.s7flyoutSwatchScrollButtonLeft[state = 'down'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-left-down.png);
+}
+.s7flyoutSwatchScrollButtonLeft[state = 'disabled'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-left-disabled.png);
+}
+
+.s7flyoutSwatchScrollButtonRight {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-right-up.png);
+}
+.s7flyoutSwatchScrollButtonRight[state = 'over'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-right-over.png);
+}
+.s7flyoutSwatchScrollButtonRight[state = 'down'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-right-down.png);
+}
+.s7flyoutSwatchScrollButtonRight[state = 'disabled'] {
+	background-image : url(../../../../s7d1.scene7.com/s7viewers/dhtml/images/flyout/scroll-button-right-disabled.png);
+}
+
+.s7flyoutFrame {
+	border : 1px #000000 solid;
+	width:132px;
+	height:132px;
+}
+
+/*
+Zoom cursor for desktop mode.
+*/
+.s7flyoutCursorDesktop {
+	width : 132px;
+	height : 132px;
+	border : 1px #a9a9a9 solid;
+}
+
+/*
+Shading applied to the static image around the zoom cursor in desktop mode. "filter" is for IE7 and IE8, "opacity" is for other browsers.
+*/
+.s7flyoutShading {
+	background-color : #ffffff;
+	opacity : 0.7;
+	filter : alpha(opacity=70);
+}
+
+/*
+Zoom cursor for tablet mode.
+*/
+.s7flyoutCursorTouch {
+	width : 132px;
+	height : 132px;
+	border : 1px #a9a9a9 solid;
+}
+
+@media screen and (-webkit-device-pixel-ratio:1.5) {
+	.s7flyoutCursorTouch {
+		width : 132px;
+		height : 132px;
+		border : 1px #a9a9a9 solid;
+	}
+}
+
+@media screen and (-webkit-device-pixel-ratio:2) {
+	.s7flyoutCursorTouch {
+		width : 132px;
+		height : 132px;
+		border : 1px #a9a9a9 solid;
+	}
+}
+
+/*
+Info message font settings, padding and location. Only vertical offset may be configured, viewer will automatically center the message horizontally.
+*/
+.s7flyoutInfoMessage {
+	bottom : 50px;
+	color : #ffffff;
+	font-family : Arial;
+	font-size : 12px;
+	padding-bottom : 10px;
+	padding-top : 10px;
+	padding-left : 12px;
+	padding-right : 12px;
+}
+
+/*
+Info message background. Viewer will automatically position it to be behind actual message. "filter" is for IE7 and IE8, "opacity" is for other browsers. Rounded corners are not
+supported on IE7 and IE8.
+*/
+.s7flyoutInfoMessageBackground {
+	border-radius : 4px;
+	background-color : #000000;
+	opacity : 0.5;
+	filter : alpha(opacity=50);
+}

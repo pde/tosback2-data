@@ -1046,7 +1046,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "04/06/2013 08:11 AM",
+            DATE_IN_USE: "04/10/2013 08:13 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -2981,7 +2981,11 @@ Event.observe(window,"load",jbox.checkDataAttributes);
 #productSearchServiceLink {display: none; visibility: hidden;}
 /* end contentOverride150 */
 
-
+/*  Begin Hide debug string by default: CNOV-23  */
+div#productSearchServiceLink {
+	display: none;
+}
+/*  End Hide debug string by default: CNOV-23  */
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -3882,7 +3886,7 @@ if (location.pathname == "/browse/product.do") {
 <!-- END - WCD Sitewide Container 5 -->
 
 <!-- BEGIN - WCD Sitewide Container 6 -->
-<!-- BEGIN Content Item File: /content/0006/211/786/cn6211786.html -->
+<!-- BEGIN Content Item File: /content/0006/349/962/cn6349962.html -->
 
 
 <style type="text/css">
@@ -3902,16 +3906,19 @@ if (location.pathname == "/browse/product.do") {
 
 var globalIntercept = {
 	model: {
-		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/211/786/assets/',
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/349/962/assets/',
+		showTranslatedExperienceToEU: true,
 		businessUnit:'GP_US',
 		brandName:'Gap',
 		brandURL:'www.gap.com',
 		countryCode:'',
 		trackingId:'',
+		autoPoppedFlag:false,
+		wcdRootDomain:'',
 		
 		// Which countries launch which intercept - array of coutnry codes
 		wcdInterceptCoutnries:['CN','HK','TW'],
-		globalGatewayCountries:['AE','AR','AT','AU','BB','BD','BE','BG','BH','BN','BO','BR','CA','CH','CL','CO','CR','CY','CZ','DE','DK','DO','EC','EE','EG','ES','FI','FR','GB','GR','GT','HN','HT','HU','ID','IE','IL','IN','IT','JM','JO','KH','KR','KW','LI','LK','LT','LU','LV','MA','MO','MT','MX','NI','NL','NO','NZ','OM','PA','PE','PH','PK','PL','PT','PY','QA','RO','SA','SE','SG','SI','SK','SV','TH','TR','TT','UK','ZA'],
+		globalGatewayCountries:['AE','AR','AT','AU','BB','BD','BE','BG','BH','BN','BO','BR','CA','CH','CL','CO','CR','CY','CZ','DE','DK','DO','EC','EE','EG','ES','FI','FR','GB','GR','GT','HN','HT','HU','ID','IE','IL','IN','IT','JM','JO','KH','KR','KW','LI','LK','LT','LU','LV','MA','MO','MT','MX','NI','NL','NO','NZ','OM','PA','PE','PH','PK','PL','PT','PY','QA','RO','SA','SE','SG','SI','SK','SV','TH','TR','TT','UK','ZA','JP'],
 		
 		// Life of intercept cookie by region
 		interceptCookieLife: {
@@ -3926,6 +3933,10 @@ var globalIntercept = {
 		init: function() {
 			var model = globalIntercept.model;
 			var controller = globalIntercept.controller;
+			// Set root domain for cookieing
+			if( location.hostname.indexOf('.wip.gidapps.com') > -1 ) { model.wcdRootDomain = '.wip.gidapps.com'; }
+			else if( location.hostname.indexOf('.app.gidapps.com') > -1 ) { model.wcdRootDomain = '.app.gidapps.com'; }
+			else if( location.hostname.indexOf('.gap.com') > -1 ) { model.wcdRootDomain = '.gap.com'; }
 			var isSetDontDisplayCookie = gidLib.getCookieVar('mktUniversalPersist','globalInterceptDontShow');
 			var isSetSeenAlreadyCookie = gidLib.getCookieVar('mktInterceptPersist','globalInterceptSeenAlready');
 			model.countryCode = marketMessageService.requestOriginCountryCode;
@@ -3938,11 +3949,24 @@ var globalIntercept = {
 				model.countryCode = forceVariable;
 			}
 			
+			// If gatewayPassed parameter in URL then user just came from a gateway popup so mimic cookie settings and set flag
+			var gatewayPassed = gidLib.getQuerystringParam('gatewayPassed',true);
+			if( gatewayPassed != '' ) {
+				gidLib.setCookieVar( 'mktUniversalPersist', 'globalInterceptSeenAlready', 'true' );
+				gidLib.setCookie( 'mktInterceptPersist', 'globalInterceptEUUKSiteCheck=true', gidLib.getFutureDate({'days':'1'}), '/', model.wcdRootDomain );
+				isSetDontDisplayEUUKCookie = 'true';
+				isSetWrongSiteCookie = 'true';
+			}			
+			
 			// Check that 'don't show' cookie has not been set, 'already seen' cookie has not been set and that country code is valid, else launch!
 			if( ( isSetDontDisplayCookie == '' && isSetSeenAlreadyCookie == '' && isKwidPage != '1' && ( model.wcdInterceptCoutnries.include( model.countryCode ) || model.globalGatewayCountries.include( model.countryCode ) ) || forceVariable != '' ) ) {
 				
 				// Construct TID
 				model.trackingId = model.businessUnit + '_INT_' + model.countryCode;
+				
+				if( model.showTranslatedExperienceToEU && globalInterceptTranslator ) {
+					globalInterceptTranslator.model.countryCode = model.countryCode;
+				}
 				
 				// Launch WCD Intercept
 				if( model.wcdInterceptCoutnries.include( model.countryCode ) ) {
@@ -3951,7 +3975,7 @@ var globalIntercept = {
 			
 				// Launch Global Gateway intercepr
 				else if( model.globalGatewayCountries.include( model.countryCode ) ) {
-					siteNavigation.showShippingOptionsOverlay( true, model.countryCode, model.trackingId );
+					siteNavigation.showShippingOptionsOverlay( true, model.countryCode, model.trackingId, 'notHeavy', true );
 				}
 				
 				// Set 'already seen' cookie lifespan - 1 or 30 days (Global Gateway countries are 30 days)
@@ -4075,23 +4099,8 @@ var globalIntercept = {
 	}
 };
 
-// Wrap global gateway launcher in function to add checkbox
-if( location.pathname != '/checkout/order.do' && siteNavigation && siteNavigation.showShippingOptionsOverlay ) {
-	siteNavigation.showShippingOptionsOverlay = siteNavigation.showShippingOptionsOverlay.wrap( function( om, shouldSelectCurrentSettings, interceptCountryCode, interceptTID ) { 
-		om( shouldSelectCurrentSettings, interceptCountryCode, interceptTID );
-		var interceptChecker = null;
-		if( ! $('shippingOptionsCancelButtons') ) {
-			interceptChecker = setTimeout( 'globalIntercept.controller.addSavePrefsCheck()', 2000 );
-		}
-		else {
-			globalIntercept.controller.addSavePrefsCheck();
-			clearInterval( interceptChecker );
-		}
-	});
-}
-
 // Wrap shipping option processor in cookie setting mechanism
-if( location.pathname != '/checkout/order.do' && siteNavigation && siteNavigation.controller && siteNavigation.controller.continuePressed ) {
+/*if( location.pathname != '/checkout/order.do' && shippingOptionsService && shippingOptionsService.controller && shippingOptionsService.controller.continuePressed ) {
 	shippingOptionsService.controller.continuePressed = shippingOptionsService.controller.continuePressed.wrap( function( om ) {
 		if( $('savePrefsCheck') ) {
 			if( $('savePrefsCheck').checked ) {
@@ -4100,7 +4109,7 @@ if( location.pathname != '/checkout/order.do' && siteNavigation && siteNavigatio
 		}
 		om();
 	});
-}
+}*/
 
 // Initialize popup
 if( window['siteNavigation'] ) {
@@ -4162,9 +4171,13 @@ if( window["shippingOptionsService"] ) {
 				om( container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs );
 				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
 				var currentCountry = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
-				if( euCountryCodeArray.include( currentCountry ) ) {
+				if( euCountryCodeArray.include( currentCountry ) && currentCountry != 'GB' ) {
 					if( $('gap_eu_ol_a') && $('gap_eu_ol_a').innerHTML.indexOf('.co.uk') > -1 ) $('gap_eu_ol_a').update('gap.eu');
 					if( $('br_eu_ol_a') && $('br_eu_ol_a').innerHTML.indexOf('.co.uk') > -1 ) $('br_eu_ol_a').update('bananarepublic.gap.eu');
+				}
+				else if( currentCountry == 'GB' ) {
+					if( $('gap_eu_ol_a') && $('gap_eu_ol_a').innerHTML.indexOf('.eu') > -1 ) $('gap_eu_ol_a').update('gap.co.uk');
+					if( $('br_eu_ol_a') && $('br_eu_ol_a').innerHTML.indexOf('.eu') > -1 ) $('br_eu_ol_a').update('bananarepublic.gap.co.uk');
 				}
 			});
 		}
@@ -4179,6 +4192,40 @@ if( window["shippingOptionsService"] ) {
 					else if( shippingOptionsService.model.brandURL.indexOf('gap.eu')  > -1 || shippingOptionsService.model.brandURL.indexOf('gol.app.gidapps.eu') > -1 || shippingOptionsService.model.brandURL.indexOf('gol.wip.gidapps.eu') > -1 ) {
 						shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL + '/?tid=GOINTLSHIP';
 					}
+				}
+				
+				// Adjust domain if needed
+				var countrySelected = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+				if( countrySelected == 'GB' && shippingOptionsService.model.brandURL.indexOf('.eu') > -1 ) {
+					shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL.replace('.eu','.co.uk');
+				}
+				else if( countrySelected != 'GB' && shippingOptionsService.model.brandURL.indexOf('.co.uk') > -1 ) {
+					shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL.replace('.co.uk','.eu');					
+				}
+				
+				// Turkey domain adjustment
+				if( countrySelected == 'TR' ) {
+					shippingOptionsService.model.brandURL = shippingOptionsService.model.brandURL.replace('www.gol.wip.gidapps.eu','www.gap.com.tr').replace('www.gol.app.gidapps.eu','www.gap.com.tr').replace('www.gap.eu','www.gap.com.tr').replace('www.brol.wip.gidapps.eu','bananarepublic.gap.com.tr').replace('www.brol.app.gidapps.eu','bananarepublic.gap.com.tr').replace('bananarepublic.gap.eu','bananarepublic.gap.com.tr');
+				}
+				
+				// Add 'came through gateway from' and locale URL parameters
+				if( globalIntercept.model.businessUnit != '' ) {
+					//var gatewayTracker = gidBrandSiteConstruct.currentBrandSiteId + gidBrandSiteConstruct.cookieDomain.replace('.gap','').replace('.gapcanada','').replace('.wip.gidapps','').replace('.app.gidapps','');
+					var gatewayTracker = globalIntercept.model.businessUnit;
+					var gatewayLinkURL = shippingOptionsService.model.brandURL;
+					if( gatewayLinkURL.indexOf('?') > -1 ) { gatewayLinkURL = gatewayLinkURL + '&'; }
+					else { gatewayLinkURL = gatewayLinkURL + '?'; }
+					gatewayLinkURL = gatewayLinkURL + 'gatewayPassed=' + gatewayTracker;
+					
+					// Pass locale variable if not English
+					//if( globalInterceptTranslator && globalInterceptTranslator.model && globalInterceptTranslator.model.currentLanguage != 'en_GB' ) {
+						gatewayLinkURL = gatewayLinkURL + '&preferredLocale=' + globalInterceptTranslator.model.currentLanguage;
+					//}
+					
+					// Pass country through to other site
+					gatewayLinkURL = gatewayLinkURL + '&gatewayCountry=' + countrySelected;
+										
+					shippingOptionsService.model.brandURL = gatewayLinkURL;
 				}
 			});
 		}
@@ -4198,8 +4245,479 @@ if( window["shippingOptionsService"] ) {
 
 </script>
 
+<script type="text/javascript">
 
-<!-- END Content Item File: /content/0006/211/786/cn6211786.html -->
+if( window["shippingOptionsService"] ) {
+	if( shippingOptionsService && shippingOptionsService.view ) {
+
+var globalInterceptTranslator = {
+	
+	model: {
+		initialLaunch: false,
+		currentLanguage: 'en_GB',
+		currentTranslatedCopy: {},
+		euCountryCodeArray: ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'],
+		euTranslateCountryCodeArray: ['AT','BE','DE','LU','NL','ES'],
+		translatedCopyByElt: {
+			'en_GB' : [
+				'International Shipping',
+				'Where are you shipping to?',
+				'Region',
+				'Country',
+				'Language',
+				'Please choose a shipping destination above to see store options',
+				'Shop these <span id="nativeCountryName" class="nativeCountryName" style="color:#000000">EU sites</span> directly',
+				'<div class="currencyBritish">Currency:</div> <div id="britishPoundText" class="britishPoundText">Euros</div>',
+				'While prices display in Euros, your order will be processed in British Pounds.',
+				'Currency:',
+				'Continue',
+				'Cancel',
+				'Save preferences',
+				'Shop these <span style="color:#000000">US sites</span> with international shipping from FiftyOne, our global e-commerce provider:',
+				'Please note: all prices on gap.eu are displayed in Euros but orders will be charged in British Pounds. Final pricing is determined by the current conversion rate at the time of your order and may vary slightly from the price displayed. Your credit card company may also apply a conversion fee to your transaction.',
+				'<div class="currencyBritish">Currency:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>'
+			],
+			'de_DE' : [
+				'International Versand',
+				'In welche Länder wird geliefert?',
+				'Region',
+				'Land',
+				'Sprache',
+				'Wählen Sie oben einen Bestimmungsort aus, um die Filialoptionen anzuzeigen.',
+				'Kaufen Sie auf diesen <span id="nativeCountryName" class="nativeCountryName" style="color:#000000">EU-Sites</span> direkt ein in',
+				'<div class="currencyBritish">Währung:</div> <div id="britishPoundText" class="britishPoundText">Euro</div>',
+				'Die Preise der Artikel werden zwar in Euro angezeigt, doch Ihre Bestellung wird in britischen Pfund bearbeitet.',
+				'Währung:',
+				'Fortfahren',
+				'Löschen',
+				'Einstellungen speichern',
+				'Kaufen Sie auf diesen <span style="color:#000">US-Sites</span>, die internationalen Versand durch unseren globalen E-Commerce-Anbieter FiftyOne anbieten.',
+				'Bitte beachten Sie: Alle Preise auf gap.eu werden in Euro angezeigt, doch Bestellungen werden in britischen Pfund berechnet. Der Endpreis hängt jeweils von dem Wechselkurs zum Zeitpunkt der Bestellung ab und kann sich leicht von dem angezeigten Preis unterscheiden. Es besteht die Möglichkeit, dass Ihr Kreditkartenunternehmen zusätzlich eine Umrechnungsgebühr für die Transaktion in Rechnung stellt.',
+				'<div class="currencyBritish">Währung:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>'
+			],
+			'nl_NL' : [
+				'Internationale verzending',
+				'Waar moet uw pakket bezorgd worden?',
+				'Regio',
+				'Land',
+				'Taal',
+				'Kies hierboven een bestemming om de winkelopties te bekijken.',
+				'Winkel direct op deze <span id="nativeCountryName" class="nativeCountryName" style="color:#000000">EU-sites</span>',
+				'<div class="currencyBritish">Valuta:</div> <div id="britishPoundText" class="britishPoundText">Euro</div>',
+				'Hoewel productprijzen worden weergegeven in euro\'s, zal uw bestelling worden verwerkt in Britse ponden.',
+				'Valuta:',
+				'Verder gaan',
+				'Annuleren',
+				'Voorkeuren opslaan',
+				'Winkel op deze <span style="color:#000000">US-sites</span> en maak gebruik van internationale verzending via FiftyOne, onze wereldwijde elektronische handelspartner.',
+				'Opmerking: alle prijzen op gap.eu worden weergegeven in euro\'s, maar bestellingen worden verwerkt in Britse ponden. De uiteindelijke prijs wordt bepaald door de actuele wisselkoers ten tijde van uw bestelling en kan enigszins afwijken van het getoonde bedrag. Daarnaast kan het zijn dat uw creditcardmaatschappij een omzettingstaks berekent.',
+				'<div class="currencyBritish">Valuta:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>'
+			],
+			'es_ES' : [
+				'Envíos internacionales',
+				'¿Dónde desea enviarlo?',
+				'Provincia',
+				'País',
+				'Idioma',
+				'Seleccione un destino de envío para consultar las opciones de las tiendas.',
+				'Compre en este <span id="nativeCountryName" class="nativeCountryName" style="color:#000000">sitio web de la UE</span> directamente.',
+				'<div class="currencyBritish">Moneda:</div> <div id="britishPoundText" class="britishPoundText">Euros</div>',
+				'Aunque los precios se muestren en euros, su pedido se procesará en libras esterlinas.',
+				'Moneda:',
+				'Continuar',
+				'Cancelar',
+				'Guardar preferencias',
+				'Compra en este <span style="color:#000000">sitio web de U.S.</span> con posibilidad de envío internacional con FiftyOne, nuestro proveedor global de comercio electrónico.',
+				'Tenga en cuenta lo siguiente: Todos los precios de gap.eu se muestran en euros, aunque los pedidos se cobrarán en libras esterlinas. El precio final viene determinado por el tipo de cambio en el momento en que realice el pedido y puede variar ligeramente del precio que se muestra. La compañía emisora de su tarjeta de crédito podría aplicar una tasa de conversión a su transacción.',
+				'<div class="currencyBritish">Moneda:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>'
+			]
+		}
+	},
+	
+	// Translates main elements of Gateway popup (before country selection made)
+	translateGatewayInitialElts: function() {
+		var translatedCopyArray = globalInterceptTranslator.model.currentTranslatedCopy;
+		var currentLanguage = globalInterceptTranslator.model.currentLanguage;
+		
+		// Update each text element
+		if( $('internationalRegion') ) {
+			var headerText = $('internationalRegion').select('h1');
+			if( headerText && headerText.length > 0 ) { headerText = headerText[0]; headerText.update( translatedCopyArray[0] ); }
+			
+			var whereToText = $('internationalRegion').select('div.whereToShipText');
+			if( whereToText && whereToText.length > 0 ) { whereToText = whereToText[0]; whereToText.update( translatedCopyArray[1] ); }
+		}
+		
+		if( $('regionSpecific') ) {
+			var header2Text = $('regionSpecific').select('h1');
+			if( header2Text && header2Text.length > 0 ) { header2Text = header2Text[0]; header2Text.update( translatedCopyArray[0] ); }
+			
+			// Did you know text hidden in English
+			if( $('favouriteText') && globalInterceptTranslator.model.currentLanguage != 'en_GB' ) {
+				$('favouriteText').setStyle({ visibility:'hidden' });
+			}
+			else {
+				$('favouriteText').setStyle({ visibility:'visible' });
+			}
+			
+			var whereTo2Text = $('regionSpecific').select('div.whereToShipText');
+			if( whereTo2Text && whereTo2Text.length > 0 ) { whereTo2Text = whereTo2Text[0]; whereTo2Text.update( translatedCopyArray[1] ); }
+		}
+				
+		if( $('whereToShipRegion') ) {
+			var regionText = $('whereToShipRegion').select('div.regionToShip');
+			if( regionText && regionText.length > 0 ) { regionText = regionText[0]; regionText.update( translatedCopyArray[2] ); }
+
+			var countryText = $('whereToShipRegion').select('div.countryToShip');
+			if( countryText && countryText.length > 0 ) { countryText = countryText[0]; countryText.update( translatedCopyArray[3] ); }
+		}
+		
+		if( $('languageSelectText') ) $('languageSelectText').update( translatedCopyArray[4] );
+		
+		if( $('shippingOptionsChooseDestinationContainer') ) $('shippingOptionsChooseDestinationContainer').update( translatedCopyArray[5] );
+		
+		// Update buttons : -165px X nether; -258px x 77 wide espan
+		if( $('shippingContinueButtonDisable') ) {
+			$('shippingContinueButtonDisable').update();
+			if( currentLanguage == 'de_DE' ) {
+				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px 0px no-repeat' });
+			}
+			else if( currentLanguage == 'nl_NL' ) {
+				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px 0px no-repeat' });
+			}
+			else if( currentLanguage == 'es_ES' ) {
+				$('shippingContinueButtonDisable').setStyle({ width:'77px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px 0px no-repeat' });
+			}
+			else {
+				$('shippingContinueButtonDisable').setStyle({ width:'67px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 0px no-repeat' });
+			}
+		}
+		if( $('shippingOptionsContinueButton') ) {
+			$('shippingOptionsContinueButton').update();
+			if( currentLanguage == 'de_DE' ) {
+				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px -20px no-repeat' });
+			}
+			else if( currentLanguage == 'nl_NL' ) {
+				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px -20px no-repeat' });
+			}
+			else if( currentLanguage == 'es_ES' ) {
+				$('shippingContinueButtonEnable').setStyle({ width:'77px' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'77px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px -20px no-repeat' });
+			}
+			else {
+				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'67px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 -20px no-repeat' });
+			}
+		}
+		if( $('shippingOptionsCancelButton') ) {
+			$('shippingOptionsCancelButton').update();
+			if( currentLanguage == 'de_DE' ) {
+				$('shippingOptionsCancelButtons').setStyle({ width:'70px', left:'125px' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px -40px no-repeat' });
+			}
+			else if( currentLanguage == 'nl_NL' ) {
+				$('shippingOptionsCancelButtons').setStyle({ width:'79px', left:'125px' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'79px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px -40px no-repeat' });
+			}
+			else if( currentLanguage == 'es_ES' ) {
+				$('shippingOptionsCancelButtons').setStyle({ width:'70px', left:'114px' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px -40px no-repeat' });
+			}
+			else {
+				$('shippingOptionsCancelButtons').setStyle({ width:'55px', left:'104px' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'55px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 -40px no-repeat' });
+			}
+		}
+	},
+	
+	// Translate elements created when country is selected
+	translateGatewayBrandLinkElts: function() {
+		var translatedCopyArray = globalInterceptTranslator.model.currentTranslatedCopy;
+		var currentLanguage = globalInterceptTranslator.model.currentLanguage;
+				
+		if( $('regionSpecificNative') ) {
+			var shopInstructEUText = $('regionSpecificNative').select('div.nativeInstructionText');
+			if( shopInstructEUText && shopInstructEUText.length > 0 ) { 
+				shopInstructEUText = shopInstructEUText[0];
+				shopInstructEUText.update( translatedCopyArray[6] + ': <a id="rollOverPopupNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style="display: none" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE CANADA SITES <br>Selecting this option redirects you to the Canada site. However, items in your shopping bag will not automatically transfer to your Canada shopping bag.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a><a id="rollOverNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a>');
+			}
+			
+			if( $('currencyForEurope') ) {
+				var countrySelected = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+				if( countrySelected == 'GB' ) { $('currencyForEurope').update( translatedCopyArray[15] ); }
+				else { $('currencyForEurope').update( translatedCopyArray[7] ); }
+			}
+		}
+		
+		if( $('regionSpecificGlobal') ) {
+			var shopInstructGlobalText = $('regionSpecificGlobal').select('div.globalInstructionText');
+			if( shopInstructGlobalText && shopInstructGlobalText.length > 0 ) { 
+				shopInstructGlobalText = shopInstructGlobalText[0];
+				shopInstructGlobalText.update( translatedCopyArray[13] + ': <a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverPopupGlobal" style="display: none" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES<br>By placing an international order, you acknowledge that your transaction will be with FiftyOne. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a><a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverGlobal" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a>');
+			}
+			
+			if( $('regionCurrency') ) { $('regionCurrency').update( translatedCopyArray[9] ); }
+		}
+		
+		if( $('bottomGlobalInstruction') ) {
+			var shopInstructAllGlobalText = $('bottomGlobalInstruction').select('p');
+			if( shopInstructAllGlobalText && shopInstructAllGlobalText.length > 0 ) { 
+				shopInstructAllGlobalText = shopInstructAllGlobalText[0];
+				shopInstructAllGlobalText.update( translatedCopyArray[13] + ': <a onclick="return false;" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES&lt;br&gt;By placing an international order, you acknowledge that your transaction will be with FiftyOne. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#"><img width="12" height="10" id="InformationIcon" src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif"></a>');
+			}
+			
+			if( $('globalGatewayCurrency') ) { $('globalGatewayCurrency').update( translatedCopyArray[9] ); }
+		}
+	},
+	
+	// Insert language dropdown into Global Gateway popup
+	insertLanguageDropdown: function() {
+		if( ! $('languageRegion') ) {
+			var currentLanguage = globalInterceptTranslator.model.currentLanguage;
+			var translatedCopyArray = globalInterceptTranslator.model.currentTranslatedCopy;
+			var languageRegion = new Element('div', { id:'languageRegion', style:'position:absolute; float:left; width:220px; height:22px; bottom:3px; left:230px; color:#828282; font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:13px; line-height:15px; text-align:left; z-index:99' });
+			var languageRegionStr = 
+				'<div id="languageSelectText" class="languageToDisplay" style="position: absolute; bottom:0; left:0; width:63px; height:22px; color: #828282; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 13px; line-height: 15px; padding-left: 0; text-align: left;">' + translatedCopyArray[4] + '</div>' + 
+				'<div id="languageOptionsSelect" style="position: absolute; bottom:1px; left:63px; float: left; width: 132px; height: 22px; font-size: 11px;">' + 
+					'<select style="width:148px;font-size:13px;" onchange="globalInterceptTranslator.setLanguageOnSelectAndTranslate( this )">' + 
+						'<option>Select</option>';
+			
+			languageRegionStr = languageRegionStr + '<option value="en_GB"';
+			if( currentLanguage == 'en_GB' ) languageRegionStr = languageRegionStr + ' selected';
+			languageRegionStr = languageRegionStr + '>English</option>';
+			
+			languageRegionStr = languageRegionStr + '<option value="de_DE"';
+			if( currentLanguage == 'de_DE' ) languageRegionStr = languageRegionStr + ' selected';
+			languageRegionStr = languageRegionStr + '>Deutsch</option>';
+			
+			languageRegionStr = languageRegionStr + '<option value="es_ES"';
+			if( currentLanguage == 'es_ES' ) languageRegionStr = languageRegionStr + ' selected';
+			languageRegionStr = languageRegionStr + '>Español</option>';
+			
+			languageRegionStr = languageRegionStr + '<option value="nl_NL"';
+			if( currentLanguage == 'nl_NL' ) languageRegionStr = languageRegionStr + ' selected';
+			languageRegionStr = languageRegionStr + '>Nederlands</option>';
+			
+			languageRegionStr = languageRegionStr + '</select></div>';
+			
+			languageRegion.update( languageRegionStr );
+			
+			$('shippingOptionsTopRegion').insert( languageRegion );
+		}
+	},
+	
+	// Set language and translate on language dropdown toggle
+	setLanguageOnSelectAndTranslate: function( languageVal ) {
+		var languageValue = languageVal.options[languageVal.selectedIndex].value;
+		
+		// If not a change in language OR not a supported language, do nothing
+		if( languageValue != globalInterceptTranslator.model.currentLanguage && ( languageValue == 'de_DE' || languageValue == 'es_ES' || languageValue == 'nl_NL' || languageValue == 'en_GB' ) ) {
+			globalInterceptTranslator.setLangauge( languageValue );
+			
+			globalInterceptTranslator.translateGatewayInitialElts();
+			
+			if( shippingOptionsService.model.shippingOptionsInfo && shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode ) { 
+				globalInterceptTranslator.translateGatewayBrandLinkElts();
+			}
+			
+			// Pass locale variable if not English
+			var gatewayLinkURL = shippingOptionsService.model.brandURL;
+			if( gatewayLinkURL.indexOf('preferredLocale') == -1 ) {
+				gatewayLinkURL = gatewayLinkURL + '&preferredLocale=' + globalInterceptTranslator.model.currentLanguage;
+			}
+			else {
+				gatewayLinkURL = gatewayLinkURL.substr( 0, gatewayLinkURL.indexOf('preferredLocale=') + 16 ) + globalInterceptTranslator.model.currentLanguage;
+			}
+			
+			var countrySelected = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
+			gatewayLinkURL = gatewayLinkURL + '&gatewayCountry=' + countrySelected;
+
+			shippingOptionsService.model.brandURL = gatewayLinkURL;
+		}
+	},
+	
+	// Language setter function, language value passed in and this sets the current language and translated copy array variables
+	setLangauge: function( languageValue ) {
+		if( languageValue == 'de_DE' || languageValue == 'es_ES' || languageValue == 'nl_NL' || languageValue == 'en_GB' ) {
+			globalInterceptTranslator.model.currentLanguage = languageValue;
+			if( languageValue == 'de_DE' ) { globalInterceptTranslator.model.currentTranslatedCopy = globalInterceptTranslator.model.translatedCopyByElt.de_DE; }
+			else if( languageValue == 'nl_NL' ) { globalInterceptTranslator.model.currentTranslatedCopy = globalInterceptTranslator.model.translatedCopyByElt.nl_NL; }
+			else if( languageValue == 'es_ES' ) { globalInterceptTranslator.model.currentTranslatedCopy = globalInterceptTranslator.model.translatedCopyByElt.es_ES; }
+			else { globalInterceptTranslator.model.currentTranslatedCopy = globalInterceptTranslator.model.translatedCopyByElt.en_GB; }
+		}
+		else {
+			globalInterceptTranslator.model.currentLanguage = 'en_GB';
+			globalInterceptTranslator.model.currentTranslatedCopy = globalInterceptTranslator.model.translatedCopyByElt.en_GB;
+		}
+	},
+	
+	// Called upon auto-launch of Gateway, sets language based on country of origin, translates popup
+	setLangueageAndTranslateLaunch: function() {
+		if( window["globalIntercept"] ) {
+			// Find current country code, either selected OR as intercepted by globalIntercept
+			var currentCountry = globalIntercept.model.countryCode;
+			if( currentCountry == 'DE' || currentCountry == 'AT' || currentCountry == 'LU' ) { globalInterceptTranslator.setLangauge('de_DE'); }
+			else if( currentCountry == 'NL' || currentCountry == 'BE' ) { globalInterceptTranslator.setLangauge('nl_NL'); }
+			else if( currentCountry == 'ES' ) { globalInterceptTranslator.setLangauge('es_ES'); }
+			else { globalInterceptTranslator.setLangauge('en_GB'); }
+		}
+	}
+}
+
+// Translate elements created subsequent to a country selection
+if( globalIntercept && globalIntercept.model && globalIntercept.model.showTranslatedExperienceToEU && shippingOptionsService.view.displayingBusinessUnits ) {
+	shippingOptionsService.view.displayingBusinessUnits = shippingOptionsService.view.displayingBusinessUnits.wrap( function( om, container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs ) {
+		om( container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs );
+		globalInterceptTranslator.translateGatewayBrandLinkElts();
+	});
+}
+
+// Add language dropdown when Europe region selected, remove/translate to English when non-Europe region selected
+if( globalIntercept && globalIntercept.model && globalIntercept.model.showTranslatedExperienceToEU && shippingOptionsService.view.showCountriesForRegionAndEnableSelection ) {
+	shippingOptionsService.view.showCountriesForRegionAndEnableSelection = shippingOptionsService.view.showCountriesForRegionAndEnableSelection.wrap( function( om, region ) {
+		om( region );
+		
+		var translatedCountriesArr = [''];
+		if( globalIntercept.model.autoPoppedFlag && region != 'Europe' && globalInterceptTranslator.model.currentLanguage != 'en_GB' ) {
+			
+		}
+		else {
+			if( region == 'Europe' ) {
+				globalInterceptTranslator.insertLanguageDropdown();
+				globalInterceptTranslator.translateGatewayInitialElts();
+				globalInterceptTranslator.translateGatewayBrandLinkElts();
+			}
+			else {
+				// Remove language dropdown
+				if( $('languageRegion') ) $('languageRegion').remove();
+					
+				// Set translator to English
+				globalInterceptTranslator.setLangauge('en_GB');
+				globalInterceptTranslator.translateGatewayInitialElts();
+				globalInterceptTranslator.translateGatewayBrandLinkElts();
+			}
+		}
+			// If auto-launched and not wrong site user, first-time visitor is assumed, set language by country code
+			if( globalIntercept.model.autoPoppedFlag && gidLib.getCookieVar('mktInterceptPersist','globalInterceptEUUKSiteCheck') == '' ) {
+				var currentCountry = globalIntercept.model.countryCode;
+				if( currentCountry == 'DE' || currentCountry == 'AT' || currentCountry == 'LU' ) { globalInterceptTranslator.setLangauge('de_DE'); }
+				else if( currentCountry == 'NL' || currentCountry == 'BE' ) { globalInterceptTranslator.setLangauge('nl_NL'); }
+				else if( currentCountry == 'ES' ) { globalInterceptTranslator.setLangauge('es_ES'); }
+				else { globalInterceptTranslator.setLangauge('en_GB'); }
+			}
+			// Else check preferredLocale
+			else if( preferredLocale != '' && ( preferredLocale == 'de_DE' || preferredLocale == 'nl_NL' || preferredLocale == 'es_ES' ) ) {
+				globalInterceptTranslator.setLangauge( preferredLocale );
+			}
+			// Else set to English
+			else {
+				globalInterceptTranslator.setLangauge('en_GB');
+			}
+	});
+}
+
+// Override showShippingOptionsOverlay function to call translate-at-launch function and add checkbox
+if( globalIntercept && globalIntercept.model && globalIntercept.model.showTranslatedExperienceToEU && siteNavigation.showShippingOptionsOverlay ) {
+	siteNavigation.showShippingOptionsOverlay = function( shouldSelectCurrentSettings, interceptCountryCode, interceptTID, heavyOrNo, autoPopped ) {
+		shippingOptionsService.model.shouldSelectCurrentSettings = shouldSelectCurrentSettings;
+		function getLeftMargin() {
+			return ((document.body.clientWidth ? document.body.clientWidth : window.innerWidth) / 2) - (width / 2);
+		}
+		var url = "";
+		if (typeof interceptCountryCode == 'undefined' && typeof interceptTID == 'undefined')
+			url = '/profile/shippingOptions.do';
+		else
+			url = '/profile/shippingOptions.do'+'?interceptCountyCode='+interceptCountryCode+'&interceptTID='+interceptTID;
+		var width = 665;
+		var top = 55;
+	    var height = 459;
+
+		new Ajax.Request(url, {
+			onComplete: function(response) {
+				var currentPopUp = $('shippingOptionsPopUp');
+				if (currentPopUp) currentPopUp.remove();
+
+				// we were facing some serious ie 6 css loading issues. this is the only place
+				// to load the css in a way that works every time without adding the css
+				// itself to all pages
+				$$('head')[0].appendChild(new Element('link', {
+					type : 'text/css',
+					rel  : 'stylesheet',
+					href : '/gid/css/profile/shippingOptions/en/shippingOptions.css',
+					media: 'screen'
+				}));
+
+				var style = 'top:' + top + 'px;left:' + getLeftMargin() + 'px;width:' + width + 'px;height: ' + height + 'px';
+				var div = new Element('div', {'id': 'shippingOptionsPopUp', 'style': style})
+							.update(response.responseText);
+
+				document.body.appendChild(div);
+
+				window.onresize = function () {
+					div.style.left = getLeftMargin() + 'px';
+				};
+				
+				if( autoPopped == true ) {
+					globalIntercept.model.autoPoppedFlag = true;
+				}
+				
+				// WCD translation call
+				globalInterceptTranslator.setLangueageAndTranslateLaunch();
+
+			}
+		});
+
+		// WCD add checkbox code
+		/*var interceptChecker = null;
+		if( ! $('shippingOptionsCancelButtons') ) {
+			interceptChecker = setTimeout( 'globalIntercept.controller.addSavePrefsCheck()', 2000 );
+		}
+		else {
+			globalIntercept.controller.addSavePrefsCheck();
+			clearInterval( interceptChecker );
+		}*/
+
+		return false;
+	};
+}
+
+// Add visual cue to use flag to re-engage gateway
+if( shippingOptionsService.controller && shippingOptionsService.controller.closePressed ) {
+	shippingOptionsService.controller.closePressed = shippingOptionsService.controller.closePressed.wrap( function( om ) {
+
+		var closingDivInitialWidth = $('shippingOptionsPopUp').getStyle('width');
+		var closingDivInitialHeight = $('shippingOptionsPopUp').getStyle('height');
+		var closingDivInitialTop = $('shippingOptionsPopUp').getStyle('top');
+		var closingDivInitialLeft = $('shippingOptionsPopUp').getStyle('left');
+		var closingDiv = new Element('div', { id:'gatewayClosingDiv', style:'position:absolute; float:left; width:' + closingDivInitialWidth + '; height:' + closingDivInitialHeight + '; top:' + closingDivInitialTop + '; left:' + closingDivInitialLeft + '; border:2px #b4b0af solid; z-index:97' });
+		document.body.insert( closingDiv );
+
+		om();
+		globalIntercept.model.autoPoppedFlag = false;
+		
+		var closingDivFinalWidth = $('shippingToCountryFlag').getStyle('width');
+		var closingDivFinalHeight = $('shippingToCountryFlag').getStyle('height');
+		var closingDivFinalPos = $('shippingToCountryFlag').cumulativeOffset();
+		var closingDivFinalTop = closingDivFinalPos[1];
+		var closingDivFinalLeft = closingDivFinalPos[0];
+		
+		new Effect.Morph('gatewayClosingDiv', { style: 'width:' + closingDivFinalWidth + '; height:' + closingDivFinalHeight + '; top:' + closingDivFinalTop + 'px; left:' + closingDivFinalLeft + 'px; border:1px #b4b0af solid',  duration: 1.0,
+			afterFinish: function() {
+				$('gatewayClosingDiv').remove();
+			}
+		});
+		
+	});
+}
+
+	}
+}
+
+</script>
+
+<!-- END Content Item File: /content/0006/349/962/cn6349962.html -->
 
 <!-- END - WCD Sitewide Container 6 -->
 
@@ -4478,7 +4996,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/408/050/cn6408050.html -->
+<!-- BEGIN Content Item File: /content/0006/431/656/cn6431656.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
@@ -4490,7 +5008,7 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/050/assets/040313_ADU_ComeOnGetKhaki_MOBMAIN_US.jpg",
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/431/656/assets/040313_ADU_ComeOnGetKhaki_MOBMAIN_US.jpg",
 				"url" : "http://m.gap.com/browse/category.do?cid=78990"
 			}
 		]
@@ -4500,21 +5018,21 @@ contentInfo.mobileContent = {
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/050/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/431/656/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/050/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/431/656/assets/edfs_popup.html" }
 		},
 		"skinnyBanner":
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/050/assets/040413_ALL_30OffPurchases_mobile_US_XC.gif",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/431/656/assets/25off_MOBAN_US_gapstyle.gif",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/050/assets/skinny_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/431/656/assets/skinny_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/408/050/cn6408050.html -->
+<!-- END Content Item File: /content/0006/431/656/cn6431656.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
@@ -6066,17 +6584,18 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/408/048/cn6408048.html -->
-<div id="contentItemContainer10000395" class="6408048" >
+    	<!-- BEGIN Content Item File: /content/0006/430/059/cn6430059.html -->
+<div id="contentItemContainer10000395" class="6430059" >
 
 <style type="text/css">
 #globalBanner {
-	width: 473px;
-	height: 63px;
+	width: 581px;
+	height: 62px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
+	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6084,7 +6603,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000000;
+	color: #000745;
 	text-decoration: none;
 }
 
@@ -6100,22 +6619,14 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: black;
+	background-color: #000745;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
+#globalBannerText {
+	padding-top: 6px;
 }
 </style>
 
@@ -6123,149 +6634,18 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/048/assets/040413_ALL_30OffPurchases_GB_US_XC.png" alt="30% OFF YOUR PURCHASE. ENDS 4/7. ONLINE &amp; IN STORES. ENTER GAPHAPPY.30% OFF YOUR PURCHASE. ENDS 4/7. ONLINE &amp; IN STORES. ENTER GAPHAPPY." title="30% OFF YOUR PURCHASE. ENDS 4/7. ONLINE &amp; IN STORES. ENTER GAPHAPPY." usemap="#gbMap">
-		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,473,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/408/048/assets/legal.html" data-jbox-width="350" data-jbox-height="400">
-		</map>
+		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/430/059/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			SPRING FLING! <span class="promoPercent">25% OFF</span> YOUR PURCHASE!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPSTYLE">GAPSTYLE</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
 	</div><!-- /Global Banner Text -->
 
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/408/048/assets/040413_ALL_30OffPurchases_DISR_US_XC.gif" alt="30% OFF YOUR PURCHASE. ENDS 4/7. ONLINE &amp; IN STORES. ENTER GAPHAPPY." title="30% OFF YOUR PURCHASE. ENDS 4/7. ONLINE &amp; IN STORES. ENTER GAPHAPPY." usemap="#disruptorMap">
-		<map name="disruptorMap">
-			<area shape="rect" class="noHideDisruptor" coords="125,352,157,370" href="http://view.email.gap.com/?j=fecb15787d64077d&amp;m=fe9b13707564037c70&amp;ls=fef51c7775670c&amp;l=ff66107575&amp;s=fef8107377620c&amp;jb=ffce15&amp;ju=fe8d1378756d007d73&amp;r=0" target="_blank" alt="print" />
-
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/408/048/assets/legal.html" data-jbox-width="350" data-jbox-height="400" alt="click for details">
-        </map>
-	</div><!-- /Global Banner Disruptor -->
-
 </div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('040413_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-		wcdBrandDisrupterDidFire = true;
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0006/408/048/cn6408048.html -->
+<!-- END Content Item File: /content/0006/430/059/cn6430059.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7528,7 +7908,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6408048,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6430059,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

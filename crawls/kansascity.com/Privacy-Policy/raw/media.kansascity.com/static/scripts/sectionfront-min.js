@@ -10,16 +10,30 @@ else
 else
 {switch(value)
 {case'true':case 1:this.show=true;break;case'false':case 0:this.show=false;break;default:break;}}};mi.SideScrollAd.prototype.getScrollPosition=function()
-{var bottom=$(window).height()+$(window).scrollTop();var height=$(document).height();return Math.round(100*bottom/height);};mi.floorAd=function(container,repeat){mi.App.apply(this,arguments);this.container=$(container).length?$(container):'';this.wrapper=$(container+' #floorboard-wrapper');this.mainImg=$(container+' img:eq(0)');this.mainWidth=this.mainImg.width();this.mainHeight=this.mainImg.height();this.leaveImg=$(container+' img:eq(1)');this.leaveHeight=this.leaveImg.height();this.closeLink=$(container+' map[name="floorclosemap"]  area');this.openLink=$(container+' map[name="flooropenmap"] area');this.repeat=typeof repeat!=='undefined'?repeat:240;this.setConf('repeat',this.repeat);this.setConf('container',container);this.timeStamp=Math.round(new Date().getTime()/60000);this.cookieName='mi_floorboard';this.expand=true;this.cookie=new mi.Cookie(document,this.cookieName);this.cookie.load();if(this.container!=='')
+{var bottom=$(window).height()+$(window).scrollTop();var height=$(document).height();return Math.round(100*bottom/height);};mi.floorAd=function(container,repeat,adWrapper,adObject,count){count=typeof count!=='undefined'?count:0;adWrapper=typeof adWrapper!=='undefined'?adWrapper:"#floorWrapper";adObject=typeof adObject!=='undefined'?adObject:"floorAd";mi.App.apply(this,arguments);var floorAd_mainImg;var floorAd_leaveImg;var adDoc;this.wrapper;this.mainImg;floorAd_mainImg;this.mainWidth;this.mainHeight;this.leaveImg;this.leaveHeight;this.closeLink;this.openLink="";this.repeat=typeof repeat!=='undefined'?repeat:240;this.setConf('repeat',this.repeat);this.setConf('container',container);this.timeStamp=Math.round(new Date().getTime()/60000);this.cookieName='mi_floorboard';this.expand=true;this.checkForAd(container,repeat,adWrapper,adObject,count);}
+mi.floorAd.prototype.checkForAd=function(container,repeat,adWrapper,adObject,count)
+{if($('#floorboard-ad').length>0){adDoc=$(container);this.container=$(container).length?$(container):'';}
+else{adDoc=$(adWrapper+" iframe").contents();this.initIframeSize(adWrapper);this.setIframeHeight(adWrapper,110);this.container=adDoc.find(container);var numdiv=adDoc.find("#floorboard-wrapper");if(numdiv.length<1){if(count++<60){setTimeout(adObject+".checkForAd( '"+container+"', "+repeat+",'"+adWrapper+"','"+adObject+"',"+count+" )",500);}
+return;}}
+this.floorAdExec(container,repeat,adWrapper,adObject,count);}
+mi.floorAd.prototype.floorAdExec=function(container,repeat,adWrapper,adObject,count){count=typeof count!=='undefined'?count:0;adWrapper=typeof adWrapper!=='undefined'?adWrapper:"#floorWrapper";adObject=typeof adObject!=='undefined'?adObject:"floorAd";mi.App.apply(this,arguments);var floorAd_mainImg;var floorAd_leaveImg;$(adWrapper).css("display","inline");this.wrapper=adDoc.find("#floorboard-wrapper");if(adDoc.find('#floor-panel').length>0)
+{this.mainImg=adDoc.find('#floor-panel');}
+else
+{this.mainImg=adDoc.find('img:eq(0)');}
+floorAd_mainImg=this.mainImg;this.mainWidth=this.mainImg.width();this.mainHeight=this.mainImg.height();if(adDoc.find('#floor-leavebehind').length>0)
+{this.leaveImg=adDoc.find('#floor-leavebehind');}
+else
+{this.leaveImg=adDoc.find('img:eq(1)');}
+floorAd_leaveImg=this.leaveImg;this.leaveHeight=this.leaveImg.height();this.closeLink=adDoc.find('map[name="floorclosemap"]  area');this.openLink=adDoc.find('map[name="flooropenmap"] area');this.repeat=typeof repeat!=='undefined'?repeat:240;this.setConf('repeat',this.repeat);this.setConf('container',container);this.timeStamp=Math.round(new Date().getTime()/60000);this.cookieName='mi_floorboard';this.expand=true;this.cookie=new mi.Cookie(document,this.cookieName);this.cookie.load();if(this.container!=='')
 {this.container.css({'position':'fixed','text-align':'left','bottom':'0','right':'0','left':'0'});if(navigator.platform=='iPad'||navigator.platform=='iPhone'||navigator.platform=='iPod'||navigator.platform=='Linux armv7l')
 {this.container.css("position","static");}
 this.wrapper.css({'width':this.mainWidth+'px','text-align':'left','margin':'0 auto'});if(this.mainImg!=='')
 {this.flightID=this.mainImg[0].getAttribute('data-flightid');if(this.flightID==null){this.leaveImg[0].getAttribute('data-flightid');}
 this.flightID=this.flightID!=null?this.flightID:'';var minutesAgo=this.lastShown();if(minutesAgo>=0&&minutesAgo<=this.repeat){this.expand=false;}
-this.setCookie();this.mainImg.css({'position':'absolute','border':'0','bottom':(-1*this.mainHeight),'z-index':'2147483647'});if(this.leaveImg!==''&&this.closeLink!=='')
-{this.leaveImg.css({'visibility':'hidden','border':'0','position':'absolute','bottom':(-1*this.leaveHeight),'z-index':'2147483647'});this.closeAd=function(){$(container+' img:eq(1)').css({'visibility':'visible','bottom':(-1*$(container+' img:eq(0)').height())});$(container+' img:eq(0)').animate({'bottom':(-1*$(container+' img:eq(0)').height())});$('body').animate({'margin-bottom':$(container+' img:eq(1)').height()});$(container+' img:eq(1)').animate({'bottom':'0'});};this.closeLink.click(this.closeAd);if(this.openLink!='')
-{this.openLink.click(function(){$(container+' img:eq(1)').animate({'bottom':(-1*$(container+' img:eq(1)').height())});$(container+' img:eq(0)').animate({'bottom':'0'});$('body').animate({'margin-bottom':$(container+' img:eq(0)').height()});});}}
-var passAd2ready=this;$(document).ready(function(){if(passAd2ready.expand){$(container+' img:eq(1)').css({'bottom':(-1*$(container+' img:eq(1)').height())});$(container+' img:eq(0)').animate({'bottom':'0'});$('body').css({'margin-bottom':$(container+' img:eq(0)').height()});}
+this.setCookie();this.mainImg.css({'position':'absolute','border':'0','bottom':(-1*this.mainHeight),'z-index':'2147483644'});if(this.leaveImg!==''&&this.closeLink!=='')
+{this.leaveImg.css({'visibility':'hidden','border':'0','position':'absolute','bottom':(-1*this.leaveHeight),'z-index':'2147483644'});this.closeAd=function(){$(adWrapper+" div").animate({'height':"30px"});floorAd_leaveImg.css({'visibility':'visible','bottom':(-1*floorAd_mainImg.height())});floorAd_mainImg.animate({'bottom':(-1*floorAd_mainImg.height())});$('body').animate({'margin-bottom':floorAd_leaveImg.height()});floorAd_leaveImg.animate({'bottom':'0'});};this.closeLink.click(this.closeAd);if(this.openLink!='')
+{this.openLink.click(function(){$(adWrapper+" div").animate({'height':"110px"});floorAd_leaveImg.animate({'bottom':(-1*floorAd_leaveImg.height())});floorAd_mainImg.animate({'bottom':'0'});$('body').animate({'margin-bottom':floorAd_mainImg.height()});});}}
+var passAd2ready=this;$(document).ready(function(){if(passAd2ready.expand){floorAd_leaveImg.css({'bottom':(-1*floorAd_leaveImg.height())});floorAd_mainImg.animate({'bottom':'0'});$('body').css({'margin-bottom':floorAd_mainImg.height()});}
 else{passAd2ready.closeAd();}});}
 else
 {console.warn("No floor ad images to display");}}
@@ -31,6 +45,10 @@ this.cookie.store();};mi.floorAd.prototype.lastShown=function(flightID)
 {flightKey='fbid'+this.flightID;if(this.cookie){if(this.cookie[flightKey]){var id_time=parseInt(this.cookie[flightKey]);return(this.timeStamp-id_time);}
 else{return-1;}}
 return-1;}
+mi.floorAd.prototype.setIframeHeight=function(adWrapper,height)
+{$(adWrapper+" div").height(height+"px");}
+mi.floorAd.prototype.initIframeSize=function(adWrapper)
+{$(adWrapper+" iframe").each(function(index){if(this.id.indexOf('google_ads_iframe_')!=-1){this.width="100%";this.height="100%";}});}
 $(window).load(function(){$('div[name=adx_al]').bind('click',function(){var $curMarg=$('body').css('margin-bottom').replace("px","");$curMarg=($curMarg==30)?110:30;$('body').css('margin-bottom',$curMarg+'px');});$('.advertisement img').each(function(index){if(this.height==1&&this.width==1){$(this).css("display","none");}});});var mi=(typeof mi=='undefined')?{'media_domain':''}:mi;if(window.miAppControler){mi.control=new miAppControler();}
 mi.getArgs=function(){if(typeof mi.args=='undefined'){mi.args={};var query=location.search.substring(1);var pairs=query.split('&');for(var i=pairs.length-1;i>=0;i--){var pos=pairs[i].indexOf('=');if(pos==-1){continue;}
 mi.args[pairs[i].substring(0,pos)]=unescape(pairs[i].substring(pos+1));}}
@@ -317,7 +335,7 @@ mi.commenting = new mi.Commenting();
      this.sso = {
          name:    "Kansas City",
          button:  "http://media.kansascity.com/static/images/dsq-login-button-mi.png",
-         url:     "http://www.kansascity.com/static/insite/disqus_login.html",
+         url:     "http://www.kansascity.com/mistatic/disqus_login.html",
          logout:  "http://www.kansascity.com/reg-bin/tint.cgi?mode=logout",
          width:   "600",
          height:  "375"

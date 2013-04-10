@@ -177,7 +177,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/HANDBAGS/_/N-ykwv?cm_sp=handbags-_-ddpromo-_-coach+032913" >New from COACH ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Vera-Bradley/Handbags/_/N-173quZlfyu?cm_sp=handbags-_-ddimage-_-vera+bradley+032213"><img src="/images/dropDownImages/032813dd_hb_vera_new_patterns.jpg"></a>');
+	document.write('<a href="/shop/MICHAEL-Michael-Kors/Handbags/_/N-1738nZlfyu?cm_sp=handbags-_-ddimage-_-michael+kors+041013"><img src="/images/dropDownImages/041013dd_hb_mkors.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -341,7 +341,7 @@ function buildDropdown() {
 	document.write('<li><a href="/shop/Men-Pants/_/N-lgbg/Ns-p_best_sellers_rank%7C1?cm_sp=mens-_-ddtc-_-pants+3+111712">Pants</a></li>');
 	document.write('<li><a href="/shop/Men-Dress-Shirts/_/N-m0i8/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=mens-_-ddtc-_-dress+shirts+4+111712">Dress Shirts</a></li>');
 	document.write('<li><a href="/shop/Men-Casual-Shirts/_/N-nlmk/Rpp-1?cm_sp=mens-_-ddtc-_-casual+shirts+5+011013">Casual Shirts</a></li>');
-	document.write('<li class="all"><a href="/shop/Men/_/N-lfy5?splashlink=dd_m_vac_072111&cm_sp=mens-_-ddtc-_-vac+072111">VIEW ALL MEN\'S CATEGORIES</a></li>');
+	document.write('<li class="all"><a href="/shop/Men/_/N-lfy5?splashlink=dd_m_vac_072111&cm_sp=mens-_-ddtc-_-vac+072111" target="_blank" >VIEW ALL MEN\'S CATEGORIES</a></li>');
 	document.write('</ul>');
 	document.write('<ul>');
 	document.write('<li><a href="/shop/Polo-Ralph-Lauren/Men/_/N-173m7Zlfy5?cm_sp=mens-_-ddtb-_-polo+1+060111">Polo Ralph Lauren</a></li>');
@@ -358,10 +358,10 @@ function buildDropdown() {
 	document.write('<li><a href="/shop/Men-Underwear-Socks-Sleepwear-Underwear-Underwear-Socks-Sleepwear/_/N-yyme/Rpp-1?cm_sp=mens-_-ddf-_-underwear+socks+sleepwear+t+in+shorts+4+022313">Underwear, Socks, and Sleepwear</a></li>');
 	document.write('<li><a href="/content/mens-shorts-swimwear?cm_sp=mens-_-ddf-_-just+in+shorts+swimwear+5+030913">JUST IN: Shorts & Swimwear</a></li>');
 	document.write('</ul>');
-	document.write('<div class="promo"></div>');
+	document.write('<div class="promo"><a href="/shop/Roundtree-Yorke/Roundtree-Yorke-Gold-Label/Roundtree-Yorke-Trademark/Roundtree-Yorke-Casuals/Roundtree-Yorke-Sport/Men/_/N-1730xZ173emZ1740xZ174nqZ173icZlfy5?cm_sp=mens-_-ddpromo-_-roundtree+yorke+bogo+event+040913" >Select Roundtree & Yorke Styles: Buy 1, Get 1 50% off</a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Men-Golf-Wear/_/N-y1pf/Rpp-1?cm_sp=mens-_-ddimage-_-shop+callaway+golf+040413"><img src="/images/dropDownImages/040413dropdown_mens_golf.jpg"></a>');
+	document.write('<a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-3+packs/Nty-1?cm_sp=mens-_-ddimage-_-shop+3+packs+041013"><img src="/images/dropDownImages/040913dropdown_mens_underwear_1.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -407,7 +407,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddpromo-_-shop+girls+spring+dresses+031913" >Shop Spring Dresses for Girls ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Children/_/N-lfy0Z1jl/Ntk-all/Ntt-party+pants/Nty-1?cm_sp=children-_-ddimage-_-shop+party+pants+033013"><img src="/images/dropDownImages/030913dropdown_dpt_c.jpg"></a>');
+	document.write('<a href="/shop/Children-Girls-7-16-Dresses-Casual/_/N-zqx4/Rpp-1?cm_sp=children-_-ddimage-_-shop+easy+fun+7+16+dresses+040913"><img src="/images/dropDownImages/040413dropdown_c.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');

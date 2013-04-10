@@ -27,6 +27,8 @@ s.pageURL="";
 s.usePlugins=true
 function s_doPlugins(s) 
 {
+   var i;
+
    // Get/Set Previous Page URL
    mistats.ppu = s.getPreviousValue(s.prop1, "mi_ppu");
 
@@ -41,8 +43,7 @@ function s_doPlugins(s)
 
 	// Get Previous Page Values
 	s.prop43 = s.getPreviousValue(s.pageName, 'mi_ppn');
-   s.getPreviousValue(((mistats.bizunit || '').match(/MAC/) ? (s.prop16 + ': ' + s.prop17) : s.channel), 'mi_pch');
-//   s.getPreviousValue(s.channel, 'mi_pch');
+   s.getPreviousValue(s.channel, 'mi_pch');
 	mistats.prevPageLevel = s.getPreviousValue(s.prop3, 'mi_ppl');
 
    // Prepend site name if homepage
@@ -66,6 +67,16 @@ function s_doPlugins(s)
 
    // TNT-SC Plugin
    s.tnt=s.trackTNT();
+
+   // Trim variable string length
+   if ((mistats.bizunit || '') === 'MAC')
+   {
+      for (i in s)
+         if (i.match(/^((eVar|hier)\d+|pageURL|referrer)$/))
+            s[i] = (s[i] || '').substr(0, 255);
+         else if (i.match(/^(pageName|channel|prop\d+)$/))
+            s[i] = (s[i] || '').substr(0, 100);
+   }
 
    setTimeout(function ()
    {

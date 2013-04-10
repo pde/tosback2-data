@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<title>Login Frame</title>
+		<script language="javascript">var jsVer = "";</script>
+		<script language="javascript1.1" type="text/javascript">jsVer = "1.1";</script>
+		<script language="javascript1.2" type="text/javascript">jsVer = "1.2";</script>
+		<script language="javascript1.3" type="text/javascript">jsVer = "1.3";</script>
+		<script language="javascript1.4" type="text/javascript">jsVer = "1.4";</script>
+		<script language="javascript1.5" type="text/javascript">jsVer = "1.5";</script>
+		<script language="javascript1.6" type="text/javascript">jsVer = "1.6";</script>
+		<script language="javascript2.0" type="text/javascript">jsVer = "2.0";</script>
+		<script language="javascript" type="text/javascript" src="js/json.js"></script>
+		<script language="javascript" type="text/javascript" src="js/plugin.min.js"></script>
+		<script language="javascript" type="text/javascript" src="js/mfp.js"></script>
+		<script language="javascript" type="text/javascript" src="js/swfobject.js"></script>
+		<script language="javascript" type="text/javascript" src="js/device.js"></script>
+		<script language="javascript" type="text/javascript">
+			document.domain = getDocumentDomain();
+			//Set for communications with parent window via cross-window messaging cases
+			var parentWindowLocation; 
+			function connect() {
+				document.internal.siteId.value = document.login.siteId.value;
+				document.internal.userId.value = document.login.userId.value;
+				document.internal.passwd.value = document.login.passwd.value;
+				document.internal.tokencode.value = document.login.tokencode.value;	
+				document.internal.passwd_org.value = document.login.passwd_org.value;
+				document.internal.otpreason.value = document.login.otpreason.value;
+				document.internal.otpprefix.value = document.login.otpprefix.value;
+				document.internal.otp.value = document.login.otp.value;
+				document.internal.LOB.value = document.login.LOB.value;
+				document.internal.externalData.value = document.login.externalData.value;		
+				document.internal.deviceSignature.value = deviceSignature();
+				document.internal.deviceCookie.value = deviceCookie();
+				//Use parent window location from cross-window messages if available
+				document.internal.Referer.value = (parentWindowLocation) ? parentWindowLocation : window.parent.document.location; 
+				document.internal.action = "https://" + document.location.hostname + "/auth/fcc/login";
+				document.internal.target = "_parent";
+				setDeviceId(document.internal.deviceId, submitInternal);
+			}
+			function submitInternal() {
+				document.internal.submit();
+			}
+			
+			//Callback fuction to handle cross-window messages from parent window 
+			//Needed for submitting login form in IE9
+			function handleValidateAndSubmitMessage(e){
+				        var iframeForm = document.getElementById("login");
+					var json = JSON.parse(e.data);
+					parentWindowLocation = json[0].parentWindowLocation;
+					iframeForm.auth_siteId.value = json[0].siteId;
+					iframeForm.auth_userId.value = json[0].userId;
+					iframeForm.auth_passwd.value = json[0].password;
+					iframeForm.auth_passwd_org.value = json[0].password_org;
+					iframeForm.LOB.value = json[0].lob;
+					iframeForm.auth_externalData.value = json[0].auth_externalData;
+					iframeForm.tokencode.value = json[0].tokencode;
+					iframeForm.submit();
+			}
+			
+			//Register for cross-window messages
+			//Needed for submitting login form in IE9
+			if (typeof window.addEventListener != 'undefined') {
+				window.addEventListener("message", handleValidateAndSubmitMessage, false);
+			} else if (typeof window.attachEvent != 'undefined') {
+				window.attachEvent('onmessage', handleValidateAndSubmitMessage);
+			} 
+		</script>
+	</head>
+	<body>
+		<div id="flashcontent"></div>
+		<script language="javascript" type="text/javascript">
+			var so = new SWFObject("device.swf", "cookiemanager", "0", "0", "6", "#ffffff");
+			so.addParam("allowScriptAccess", "sameDomain");
+			so.write("flashcontent");
+		</script>
+		<form id="login" name="login" action="javascript:connect();" method="post">
+			<input type="hidden" id="siteId" name="auth_siteId" value="" />
+			<input type="hidden" id="contextId" name="auth_contextId" value="login">
+			<input type="hidden" id="userId" name="auth_userId" value="" />
+			<input type="hidden" id="passwd" name="auth_passwd" value="" />
+			<input type="hidden" id="passwd_org" name="auth_passwd_org" value="" />
+			<input type="hidden" id="otpreason" name="auth_otpreason" value="" />
+			<input type="hidden" id="otpprefix" name="auth_otpprefix" value="" />
+			<input type="hidden" id="otp" name="auth_otp" value="" />
+			<input type="hidden" id="LOB" name="LOB" value="" />
+			<input type="hidden" id="externalData" name="auth_externalData" value="" />
+			<input type="hidden" id="tokencode" name="auth_tokencode" value=""/> 
+		</form>
+		<form name="internal" action="login.html#" method="post">
+			<input type="hidden" id="siteId" name="auth_siteId" value="" />
+			<input type="hidden" id="contextId" name="auth_contextId" value="login" />
+			<input type="hidden" id="userId" name="auth_userId" value="" />
+			<input type="hidden" id="passwd" name="auth_passwd" value="" />
+			<input type="hidden" id="passwd_org" name="auth_passwd_org" value="" />
+			<input type="hidden" id="otpreason" name="auth_otpreason" value="" />
+			<input type="hidden" id="otpprefix" name="auth_otpprefix" value="" />
+			<input type="hidden" id="otp" name="auth_otp" value="" />
+			<input type="hidden" id="LOB" name="LOB" value="" />
+			<input type="hidden" id="externalData" name="auth_externalData" value="" />
+			<input type="hidden" id="deviceId" name="auth_deviceId" value="" />
+			<input type="hidden" id="deviceSignature" name="auth_deviceSignature" value="" />
+			<input type="hidden" id="deviceCookie" name="auth_deviceCookie" value="" />
+			<input type="hidden" id="Referer" name="Referer" value="" />
+			<input type="hidden" id="tokencode" name="auth_tokencode" value=""/> 
+		</form>
+	</body>
+</html>

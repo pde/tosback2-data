@@ -4,20 +4,6 @@ http://www.omniture.com */
 
 /* Specify the Report Suite ID(s) to track here */
 var s_account="coachprod"
-
-if(document.URL.indexOf('dev-na')>-1 || document.URL.indexOf('dev-na.coach.com')>-1 || document.URL.indexOf('azodlecomweb01')>-1) 
-	s_account="coachnewsitedev"
-else if(document.URL.indexOf('qa-na')>-1 || document.URL.indexOf('azoqlecomweb01')>-1 || document.URL.indexOf('qa-na.coach.com')>-1) 
-	s_account="coachusqa"
-else if(document.URL.indexOf('stage-na.coach.com')>-1||document.URL.indexOf('preprod.coach.com')>-1||document.URL.indexOf('stage-na')>-1||document.URL.indexOf('azoglecomweb01')>-1||document.URL.indexOf('stage-na.coach.com')>-1||document.URL.indexOf('www-new.coach.com')>-1||document.URL.indexOf('tstage.coach.com')>-1) 
-	s_account="coachcoachstage"
-else if(document.URL.indexOf('spq08http04a')>-1) 
-	s_account="coachnewsiteqa2"   
-else if(document.URL.indexOf('sps08http03a')>-1||document.URL.indexOf('stage2.coach.com')>-1) 
-	s_account="coachcoachstage2"
-else if(document.URL.indexOf('coach.com')>-1||document.URL.indexOf('t.coach.com')>-1)
-	s_account="coachprod"
-	
 var s=s_gi(s_account)
 
 /************************** CONFIG SECTION **************************/

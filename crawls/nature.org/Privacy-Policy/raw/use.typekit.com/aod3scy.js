@@ -64,7 +64,7 @@ $.addBrowser(V.getBrowserById("chrome6plus-linux-osx-win2003-win7plus-winvista-w
 $.addBrowser(V.getBrowserById("opera-osx"));$.addBrowser(V.getBrowserById("safari-android-ipad-iphone-win2003-win7plus-winvista-winxp"));$.addBrowser(V.getBrowserById("safari-osx"));$.setFontFilterSet(W);if(Z&&Z.ba.__webfonttypekitmodule__){Z.I($);Z.load()}else window.Typekit.addKit($);
 })(this,document);
 window.Typekit.config={"p":"//p.typekit.net/p.gif?s=1&k=aod3scy&ht=tk&h={host}&f=6770.6769.6771.6768.4876.4490.4875.4517.5173.5036&a=532243&_={_}"};
-/*{"k":"1.5.0","created":"2013-03-28T14:42:06Z"}*/
+/*{"k":"1.5.1","created":"2013-04-08T12:47:44Z"}*/
 ;(function(window,document,undefined){
 this.g=!0;function e(a,b){this.d=a;this.b=b||a;this.a=document;this.e=void 0}e.prototype=function(a,b){this.d=a;this.b=b||a;this.a=this.b.document;this.e=void 0}.prototype;function f(a){var b=new Image(1,1);b.src=a;b.onload=function(){b.onload=null}}function h(){this.f=window.Typekit.config.p}
 function j(a,b,c){var d=c||{};a=a.f.replace(/\{\/?([^*}]*)(\*?)\}/g,function(a,b,c){return c&&d[b]?"/"+d[b].join("/"):d[b]||""});a.match(/^\/\//)&&(a=(b?"https:":"http:")+a);return a.replace(/\/*\?*($|\?)/,"$1")}window.Typekit||(window.Typekit={});var k=new e(window),l=new function(){var a=new h;this.h=null;this.c=a},m=!1;

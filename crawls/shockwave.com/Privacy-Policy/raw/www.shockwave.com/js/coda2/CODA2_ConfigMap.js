@@ -165,9 +165,9 @@ function sendLinkEvent(lnkname){
 }
 function sendAnalyticsEvent(str,lnkname){
 	try {
-		if(btg.util.String.isDefined(lnkname)){
+		if(btg.String.isDefined(lnkname)){
 			obj = {};
-			if(btg.util.String.isDefined(str)){
+			if(btg.String.isDefined(str)){
 				obj.name=str;
 				omniSetOverrides(obj, "append");
 			}else{
@@ -178,7 +178,7 @@ function sendAnalyticsEvent(str,lnkname){
 			btg.Controller.init();
 			btg.Controller.sendLinkEvent({linkType:"o",lnk:true,linkName:lnkname});
 		}else{
-			if(btg.util.String.isDefined(str))
+			if(btg.String.isDefined(str))
 				omniSetOverrides({name:str}, "append");
 			else
 				omniSetOverrides({name:btg.config.Omniture["account"]}, null);
@@ -198,13 +198,13 @@ function sendAnalyticsEvent(str,lnkname){
 function sendCustomLinkEvent( lnkname, omniVarsObj ){
 	try{
 		// check for lnkname
-		if( !btg.util.String.isDefined( lnkname ) ){
+		if( !btg.String.isDefined( lnkname ) ){
 			return false;
 		}
 
 		// check that omniVarsObj really is an object
-		if( !btg.util.Object.isDefined( omniVarsObj ) ) {
-			var omniVarsObj = {};
+		if( !btg.Object.isDefined( omniVarsObj ) ) {
+			omniVarsObj = {};
 		}
 
 		omniVarsObj.linkType = "o";
@@ -212,7 +212,6 @@ function sendCustomLinkEvent( lnkname, omniVarsObj ){
 		omniVarsObj.linkName = lnkname;
 
 		clearDispatcher(); // does clearDispatcher need to be modified to clear other stuff like events and evars?
-
 		btg.Controller.init();
 		btg.Controller.sendLinkEvent( omniVarsObj );
 	} catch(e) {}
@@ -244,12 +243,12 @@ function omniSetOverrides(or,acctNameAction){
 		ro.linkInternalFilters = 'javascript:,shockwave.com,facebook.com,digg.com';
 		ro.trackExternalLinks = true;
 		ro.trackDownloadLinks = false;
-		if(btg.util.String.isDefined(btg.config.Omniture)) btg.config.Omniture.setAccountVars(ro);
+		if(btg.String.isDefined(btg.config.Omniture)) btg.config.Omniture.setAccountVars(ro);
 	}catch(e){}
 }
 function clearDispatcher(){
 	try {
-		if(btg.util.String.isDefined(btg.config.Omniture)){
+		if(btg.String.isDefined(btg.config.Omniture)){
 			btg.config.Omniture={
 				name:'viashockwave',
 				dynamicAccountSelection:true,

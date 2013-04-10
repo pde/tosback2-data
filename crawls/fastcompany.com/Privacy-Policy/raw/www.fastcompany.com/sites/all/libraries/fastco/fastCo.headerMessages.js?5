@@ -1,0 +1,93 @@
+/**
+ *
+ *  Message handler for headers of Co.Create, Co.Exist, Co.Design
+ *
+ */
+
+var fastCo = fastCo || {};
+fastCo.headerMessages = fastCo.headerMessages || {};
+
+fastCo.headerMessages = (function() {
+
+	var defaults = {
+		site_name: 'Fast Company'
+	},
+
+	settings = {},
+
+	container = $('#drupal-messages'),
+	cookie_key = 'drupal_messages',
+	cookie_plugin = false,
+
+	init = function(options) {
+	settings = $.extend({}, defaults, options);
+	place();
+	},
+
+	// Get the messages from cookie
+	get = function() {
+		return (_testCookie() ? $.cookie(cookie_key) : false);
+	},
+
+
+	// Set the messages in a cookie
+	set = function(message) {
+		var origin_msg = get();
+		if(!origin_msg) {
+			// if cookie val is empty (first set on cookie)
+			$.cookie(cookie_key, message, {
+			path: '/',
+			expires: 365 * 10
+			});
+		} else {
+			// if cookie val already has string
+			$.cookie(cookie_key, origin_msg + "|" + message, {
+				path: '/',
+				expires: 365 * 10
+			});
+		}
+
+		return _testCookie();
+	},
+
+
+	// Unset cookie holding messages
+	unset = function() {
+		// kill cookie with expiration date
+		$.cookie(cookie_key, "", {
+			path: '/',
+			expires: -(365 * 10)
+		});
+		return(!_testCookie());
+	},
+
+
+	// Append to DOM (container)
+	place = function() {
+		if(_testCookie()) {
+			// get our messages from cookie and split into array
+			var messages = (get()).split("|");
+			for(i = 0; i < messages.length; i++) {
+				// output each element into the drupal messages container
+				container.append('<div>' + messages[i] + '</div>');
+			}
+			// unset the cookie after placing
+			// it in the DOM
+			unset();
+		}
+	},
+
+
+	// Test the cookie is set
+	_testCookie = function() {
+		return Boolean($.cookie(cookie_key));
+	};
+
+
+	return {
+		init: init,
+		set: set
+	};
+
+
+}());

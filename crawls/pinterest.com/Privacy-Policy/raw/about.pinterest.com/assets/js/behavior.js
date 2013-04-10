@@ -292,6 +292,36 @@
               $.f.addClass(el, 'hidden');
             }
           },
+          cancelJobvite: function (el) {
+            var code = $.f.get(el, 'val');
+            if (code) {
+              var iframe = $.d.getElementById('frame_' + code);
+              if (iframe) {
+                $.f.addClass(iframe, 'hidden');
+              }
+              var applyButton = $.d.getElementById('apply_' + code);
+              if (applyButton) {
+                $.f.removeClass(applyButton, 'hidden');
+              }
+              $.f.addClass(el, 'hidden');
+            }
+          },
+          applyJobvite: function (el) {
+            alert('ding');
+            var code = $.f.get(el, 'val');
+            if (code) {
+              var iframe = $.d.getElementById('frame_' + code);
+              if (iframe) {
+                iframe.src = $.a.jobviteUrl + code;
+                $.f.removeClass(iframe, 'hidden');
+                var cancelButton = $.d.getElementById('cancel_' + code);
+                if (cancelButton) {
+                  $.f.removeClass(cancelButton, 'hidden');
+                }
+              }
+              $.f.addClass(el, 'hidden');
+            }
+          },
           caroAbsoluteNav: function (el) {
             $.f.removeClass($.s.caroNav[$.v.caroNavSelected], 'selected');
             $.f.removeClass($.s.caroText[$.v.caroNavSelected], 'selected');
@@ -491,6 +521,7 @@
     'bd', 'carousel', 'collage_content'
   ],
   'applicationUrl': 'http://pinterest.theresumator.com/apply/embed/form/',
+  'jobviteUrl': 'http://hire.jobvite.com/CompanyJobs/Careers.aspx?c=qEl9VfwN&page=Apply&j=',
   'selectableNav': {
     'home': {'link': '/', 'text': 'About'}, 
     'basics': {'link': '/basics', 'text': 'Basics'}, 

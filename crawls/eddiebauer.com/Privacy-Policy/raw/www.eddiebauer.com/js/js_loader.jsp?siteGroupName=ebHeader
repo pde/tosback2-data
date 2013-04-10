@@ -4835,8 +4835,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 												var newContent = str
 														.substring(pos);
 												feedList += '<span class="rssEntry_description">'
-														+ _truncateString(newContent)
-														+ '</span>';
+														 + _truncateString(newContent);
+														 + '</span>';
 												break;
 											case 1:
 												var imagestr = entries.content;
@@ -4871,8 +4871,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 												var newContent = str
 														.substring(pos);
 												feedList += '<span class="rssEntry_description">'
-														+ _truncateString(newContent)
-														+ '</span>';
+														 + _shortTruncateString(newContent);
+														 + '</span>';
 												break;
 											case 2:
 												var imagestr = entries.content;
@@ -4907,8 +4907,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 												var newContent = str
 														.substring(pos);
 												feedList += '<span class="rssEntry_description">'
-														+ _truncateString(newContent)
-														+ '</span>';
+														 + _truncateString(newContent);
+														 + '</span>';
 												break;
 											}
 											feedList += '<dd><input type="button" value="" id="rssReadMore'
@@ -4933,9 +4933,17 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		};
 
 		var _truncateString = function(strng, $truncateDesc) {
+			var regEx = /[<p>|<\/p>]+/g;
 			var $length = 140;
-			var $description = strng;
-			var $truncateDesc = $description.substring(0, $length) + '&#8230;';
+			var descriptionEntry = strng.replace(regEx, '');
+			var $truncateDesc = descriptionEntry.substring(0, $length) + '...';
+			return $truncateDesc;
+		};
+		var _shortTruncateString = function(strng, $truncateDesc) {
+			var regEx = /[<p>|<\/p>]+/g;
+			var $shortLength = 117;
+			var descriptionEntry = strng.replace(regEx, '');
+			var $truncateDesc = descriptionEntry.substring(0, $shortLength) + '...';
 			return $truncateDesc;
 		};
 	}

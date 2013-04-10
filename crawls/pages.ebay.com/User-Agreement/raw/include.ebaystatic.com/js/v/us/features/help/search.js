@@ -23,7 +23,7 @@ function ebHelpSearchEnableButton(pEnable)
 form.onsubmit=ebHelpSearchSubmit;else
 form.onsubmit=new Function("return false;");}
 
-//2@@m12
+//2@@e1
 
 var ebHelpFeatureRef="1",ebHelpFeatureName=null;var ebHelpCookDelim="||",ebHelpCookName="ebh",ebHelpContainerName="ds2";var eInd=document.domain.indexOf(".ebay."),tDomain;if(eInd!=-1)
 tDomain=document.domain.substr(eInd+1);function ebHelpGBTFInit()
@@ -44,8 +44,6 @@ function ebHelpSendBackToFeature(pIndex)
 {pIndex=pIndex+history.iAnchClickCounts;}
 history.go(pIndex);}
 window.sendBackToFeature=ebHelpSendBackToFeature;function ebHelpGetBackToFeature()
-{var str='&nbsp;';if(ebHelpFeatureRef>0&&ebHelpFeatureName&&window.history.length>((ebay.oGlobals.oClient.bFirefox)?1:0))
-{str='<font face="arial" size="2">';str+='<a href="javascript:sendBackToFeature(';str+=(parseInt(ebHelpFeatureRef)-window.history.length)+');">';str+=decodeURIComponent(ebHelpFeatureName);str+='</a></font>&nbsp;&nbsp;';}
-return str;}
+{var str='&nbsp;';return str;}
 window.getBackToFeature=ebHelpGetBackToFeature;window.ebHelpSearchClear=new Function("return true;");ebHelpGBTFInit();
-// b=15919675 -->
+// b=15987515 -->

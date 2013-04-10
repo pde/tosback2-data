@@ -71,7 +71,7 @@ if(elemXY[1]<0){elemXY[1]=1;}
 YAHOO.util.Dom.setXY(this.panel.element,elemXY);if(header){header.tabIndex="0";}
 this.panel.firstElement=elem;if(elem){elem.focus();}
 var error=YAHOO.util.Dom.getElementsByClassName("messageBox","div",this.panel.element);if(error.length>0){error=error[0];error.tabIndex="0";}
-if(this.panel.browser=="ie"){if(this.selects==null){this.selects=[];}
+var isIE9=/msie|MSIE 9/.test(navigator.userAgent);if(this.panel.browser=="ie"&&!isIE9){if(this.selects==null){this.selects=[];}
 var sel=document.getElementsByTagName("select");for(var i=0;i<sel.length;i++){if(!YAHOO.util.Dom.isAncestor(this.elem,sel[i])&&!YAHOO.util.Dom.hasClass(sel[i],"accessAid")){YAHOO.util.Dom.addClass(sel[i],"accessAid");this.selects[this.selects.length]=sel[i];}}}},close:function(){if(this.showing){this.panel.hide();}
 if(this.selects!=null){for(var i=0;i<this.selects.length;i++){YAHOO.util.Dom.removeClass(this.selects[i],"accessAid");}
 this.selects=[];}}}

@@ -111,7 +111,11 @@ $.ajax({
       $("#login-cms").hide();
       $(".login").hide();
       $("#loggedIn-cms .name").html(data['username']);
+   } else if (data.token) {
+      $('#login-form').prepend('<input type="hidden" name="struts.token" value="'+ data.token +'">');
+      $('#login-form').prepend('<input type="hidden" name="struts.token.name" value="struts.token">');
    }
+
 }
 });
 

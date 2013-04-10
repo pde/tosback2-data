@@ -18,7 +18,7 @@
 //Nina Gould - 01/23/2011
 //Nina Gould - 01/28/2011
 //Nina Gould - 2/24/2012 - REMOVED SECTIONS FROM NAV
-//Madhavi Sawant - 02/19/2013
+//Madhavi Sawant - 04/9/2013
 
 var forbes_dart = (function() {
   var ord = Math.floor(Math.random() * 1E10),
@@ -1645,10 +1645,13 @@ function firstHTML() {
 				var welcomeCookie = "welcomeAd=sessionCookie";			
 				var dailyWelcomeCookie = 'dailyWelcomeCookie=dailyCookie';
 				var expire  = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()+1, 0, 0, 0);
-
+				var browser_user_agent = window.navigator.userAgent.toLowerCase();
+				console.log("** user agent "+browser_user_agent); 
 					if((document.cookie.indexOf(welcomeCookie)==-1 || document.cookie.indexOf(dailyWelcomeCookie) == -1)
 						&& (window.navigator.userAgent.indexOf("Mozilla")>-1)
 						&& (window.location.host.indexOf("forbes.com")!=-1)
+						&& (browser_user_agent.indexOf("googlebot")==-1)
+						&& (browser_user_agent.indexOf("google web preview")==-1)
 						&& (window.navigator.userAgent.indexOf("iPad;")==-1)
 						&& (window.document.referrer.indexOf("digg.com")==-1)
 						&& (window.location.search.indexOf("partner=compuserve")==-1)

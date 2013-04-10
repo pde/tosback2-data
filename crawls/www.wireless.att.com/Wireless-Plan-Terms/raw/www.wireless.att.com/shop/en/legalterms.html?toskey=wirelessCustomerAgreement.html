@@ -684,10 +684,10 @@ groups or email use by others; use of the service as a substitute or backup for 
 	ATT.globalVars.wtCartState =  'E';  
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
-ATT.globalVars.ban = "512058813587"; 
-ATT.globalVars.flowIndicator = "UP"; 
-ATT.globalVars.buyflow = "UP"; 
-ATT.globalVars.ckavailUserZip = "16803"; 
+ATT.globalVars.ban = ""; 
+ATT.globalVars.flowIndicator = ""; 
+ATT.globalVars.buyflow = "NEW"; 
+ATT.globalVars.ckavailUserZip = "99223"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -698,21 +698,21 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip ="16803"; 
+		wtzip ="99223"; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "UP"){ 
-		flowType ="UP"; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.buyFlowType; 
 	} else { 
-		flowType ="UP"; 
+		flowType ="NEW"; 
 	} 
 	return flowType; 
  }; 
@@ -780,7 +780,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = "STATE COLLEGE"; 
+	    		wtCity = "SPOKANE"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -789,7 +789,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = "PA"; 
+	    		wtState = "WA"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -844,25 +844,25 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 //minimal set of configuration setting to set up connection to liveperson server  
 var lpMTagConfig = lpMTagConfig || {}; 
     lpMTagConfig.vars = lpMTagConfig.vars || []; 
-    ATT.globalVars.custName = ["MATTHEW","DAGOSTINO 3RD"].join(' '); 
+    ATT.globalVars.custName = ["",""].join(' '); 
     ATT.globalVars.orderNumber = ""; 
-    ATT.globalVars.customerItemsOwned = ATT.util.filter(['','352013051603840','SAMSUNG','SGH-i717'], function(n){return n;}).join('|'); 
+    ATT.globalVars.customerItemsOwned = ATT.util.filter(['','','',''], function(n){return n;}).join('|'); 
 lpMTagConfig.lpServer = "sales.liveperson.net"; 
 lpMTagConfig.lpTagSrv = lpMTagConfig.lpServer; 
 lpMTagConfig.lpNumber = "76226072";	 
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","RcScRfpp7WPGp89pqnZMyhDv!1789824587!1365220926000"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","D9zgRk6Z82vvhJf1SDDG6fJp!1360652832!1365572185789"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
-lpMTagConfig.vars.push(["visitor","customerZip","16803"]); 
-lpMTagConfig.vars.push(["visitor","customerCity","STATE COLLEGE"]); 
-lpMTagConfig.vars.push(["visitor","customerState","PA"]); 
-lpMTagConfig.vars.push(["visitor","customerAccountInfo", '1386 N ATHERTON ST']); 
+lpMTagConfig.vars.push(["visitor","customerZip",""]); 
+lpMTagConfig.vars.push(["visitor","customerCity",""]); 
+lpMTagConfig.vars.push(["visitor","customerState",""]); 
+lpMTagConfig.vars.push(["visitor","customerAccountInfo", '']); 
 lpMTagConfig.vars.push(["visitor","customerItemsOwned", ATT.globalVars.customerItemsOwned]); 
-lpMTagConfig.vars.push(["visitor","customerQualification","false"]); 
+lpMTagConfig.vars.push(["visitor","customerQualification",""]); 
 lpMTagConfig.vars.push(["page","applicationName","shop"]); 
 lpMTagConfig.vars.push(["page","departmentName","wireless"]); 
 lpMTagConfig.vars.push(["visitor","customerLocalization",ATT.globalVars.zip()]); 

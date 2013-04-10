@@ -1040,7 +1040,7 @@ var wpAd, placeAd2;
           var rv = [],
             obj = {
                 natural_disaster : ['shell', 'exxon', 'citgo', 'bp', 'chevron', 'hess', 'sunoco', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
-                human_disaster : ['shoot', 'vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11'],
+                human_disaster : ['shoot', 'vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11', 'behead', 'decapitate'],
                 financial_crisis : ['corrupt', 'goldman', 'aig', 'foreclosure', 'enron', 'sec', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest', 'labor strike', 'union strike', 'labor issue', 'union issue', 'teacher strike', 'teachers strike', 'election'],
                 inappropriate : ['gambling','sex','alcohol','pornography']
             },

@@ -201,6 +201,11 @@ login.pop = function(data) {
 
 login.popLogin = function(e) {
     if (e) e.preventDefault();
+    if (Modernizr.touch) {
+        document.location.href="/login.php";
+        return false;
+    }
+    
     login.ready(true);
     $('#signupPop').hide();
     modal.show('#loginPop',false);
@@ -208,6 +213,10 @@ login.popLogin = function(e) {
 
 login.popSignup = function(e) {
     if (e) e.preventDefault();
+    if (Modernizr.touch) {
+        document.location.href="/signup.php";
+        return false;
+    }
     if (!$('#signupPop').size()) login.pop({'act':'popSignup'})
     else {
         $('#loginPop').hide();
