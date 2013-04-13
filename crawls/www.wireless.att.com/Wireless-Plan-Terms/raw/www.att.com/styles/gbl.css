@@ -75,6 +75,8 @@ html body{margin:0px;width:100%;padding-top:0px;}
 #segMenuBar .segMenu li a.segMenuItem.over span {background-position: right 0px;color:#515151;}
 #segMenuBar .segMenu li a.segMenuItem.over {background-position:left 0px;}
 #segMenuBar .segMenu a.segMenuItem span {display:block;padding: 13px 14px 11px 0px; margin-left:14px;background:url("../../0.ecom.attccc.com/images/global/bg-segmentation-sprite.png") right -170px;}
+#segMenuBar .segMenu a.segMenuItem .segMenuNewWin {display:inline !important;padding:0px 9px 0 1px; margin:0 0 0 3px; background:url("../images/global/bg-primary-sprite.png") no-repeat scroll -441px -233px transparent;width:12px;height:9px !important;}
+
 #segMenuBar .segMenu a.segMenuItem {
 	cursor:default;
 	font-size:12px;
@@ -96,7 +98,7 @@ html body{margin:0px;width:100%;padding-top:0px;}
 #segMenuBar #segMenuItemShopATT {width:95px;}
 #segMenuBar #segMenuItemmyATT {width:77px;}
 #segMenuBar #segMenuItemATTSupport {width:108px;}
-#segMenuBar #segMenuItemPersonal {width:79px;}
+#segMenuBar #segMenuItemPersonal {width:100px;}
 #segMenuBar #segMenuItemBusiness {width:100px;}
 #segMenuBar #segMenuItemAboutATT {width:95px;}
 #segMenuBar #segMenuItemLinkedAccounts {width:155px;}
@@ -125,6 +127,7 @@ html body{margin:0px;width:100%;padding-top:0px;}
 	margin:0;
 	clear:left;
 	float:left;
+	width: 140px;
 }
 
 #segMenuBar div.segSubMenuDivider {border-bottom:1px dotted #ccc;margin:-14px 0 5px;}
@@ -222,13 +225,14 @@ html body{margin:0px;width:100%;padding-top:0px;}
 #tieredNav ul.secondaryMenu li a:hover {color:#DF7300;}
 */
 #tieredNav ul.secondaryMenu li {margin:0 6px 0 0; float:left;}
+#tieredNav #secondaryMenu_MyATT li {margin: 0 3px 0 0px !important;}
 #tieredNav ul.secondaryMenu li:first-child {padding-left:11px;}
 #tieredNav ul.secondaryMenu li.selected a {color:#DF7300;}
 #tieredNav ul.secondaryMenu li a {color:#333; font-size:14px; padding:0 9px 0 9px; display:block; line-height:44px; height:44px; float:left;} /* font-size:13px to 14px per B2C-102927 */
 #tieredNav ul.secondaryMenu li a.selected {background:url("../images/global/bg-secondary-highlight.gif") no-repeat center bottom;color:#DF7300}
 #tieredNav ul.secondaryMenu li a:hover {color:#DF7300;}
 
-#trayContent {background:url("../../0.ecom.attccc.com/images/global/bg-tray.png") no-repeat bottom;overflow:hidden;}
+#trayContent {background:url("../images/global/bg-tray.png") repeat-x top;overflow:hidden;}
 #trayContent .trayContentItem {overflow:auto;display:none;margin-left:4px;min-height:172px;}
 
 #trayContent .columnContent img {display:block;margin:auto;width:189px;height:200px;}
@@ -241,7 +245,7 @@ html body{margin:0px;width:100%;padding-top:0px;}
 
 #trayContent .trayContentItem .firstColumn .columnContent {padding:19px 13px 12px;}
 #trayContent .trayContentItem .firstColumn {float:left;width:240px;}
-#trayContent .trayContentItem .secondColumn {float:left;width:240px; background:url("../../0.ecom.attccc.com/images/global/bg-tray-column.png") no-repeat bottom left;}
+#trayContent .trayContentItem .secondColumn {float:left;width:240px; background:url("https://www.att.com/images/global/bg-tray-column.jpg") no-repeat bottom left;}
 #trayContent .trayContentItem .secondColumn.myAttCol {width:230px; margin-right:1px;float:left;}
 #trayContent .trayContentItem .secondColumn.myAttCol .columnContent {}
 #trayContent .trayContentItem .columnContent {padding:19px;}
@@ -251,6 +255,7 @@ html body{margin:0px;width:100%;padding-top:0px;}
 #trayContent .secondColumn {float:left;width:240px;}
 #trayContent .columnContent {padding:35px 20px 34px}
 #trayContent .trayNoBullet a{font-size:13px; display:block; line-height:15px; padding-bottom:8px;} /* added per B2C-102927 */
+#trayContent .newwindow span {padding:0px 13px 0 1px; margin:0 0 0 3px; background:url("../images/global/bg-primary-sprite.png") no-repeat scroll -424px -233px transparent;width:12px;height:9px !important;}
 
 #segClearFloat {clear:both;}
 
@@ -294,10 +299,14 @@ html body{margin:0px;width:100%;padding-top:0px;}
 .gn_prefooter .secondRow, .gn_prefooter .thirdRow{ padding-top:6px;}
 .consumer #wrapper .gn_prefooter a {color:#999}
 /*styles for autosuggest*/
+/*
+	Autosuggest width increased to 180px to fix overlap of border and
+	center the dropdown box to the search box
+*/
 #tieredNav #primaryMenu #primary_Search .autoSuggest ul li {color:#656565}
 	
 	#tieredNav #primaryMenu #primary_Search .autoSuggest {
-		width: 165px;
+		width: 180px;
 		z-index: 9999;
 		background:white;
 		padding: 5px 0 2px; 
@@ -305,12 +314,12 @@ html body{margin:0px;width:100%;padding-top:0px;}
 		background:#fff; 
 		border:1px solid #ccc;
 		position: absolute;
-		top:39px;
+		top:34px;
 		left:17px;
 	}
 
 	#tieredNav #primaryMenu #primary_Search .autoSuggest ul {
-		width: 165px;
+		width: 162px !important; /* was 165px - 3/14/2013 reduced by GlobalNav Pod because search box width was reduced and results overlaping border */
 		background:white;
 		display:block;
 		float: none;
@@ -319,8 +328,8 @@ html body{margin:0px;width:100%;padding-top:0px;}
 		z-index: 100;
 
 		list-style:none;
-		padding: 0; 
-		margin:0; 
+		padding:0 0 0 1px; 
+		margin:0 0 0 1px; 
 	}
 
 	#tieredNav #primaryMenu #primary_Search .autoSuggest ul li {
@@ -376,3 +385,146 @@ iframe.grelated-iframe {
     margin: 0 auto;
     width: 970px;
 }
+/* Breadcrumb style added because of US9544 */
+#underNav.breadcrumbGutter {
+	line-height: inherit !important;
+	z-index: inherit !important;
+	text-align: left !important;
+	/* height: inherit !important; 4/3/2013 ECOM1304H-476 - GlobalNav Pod removed height attr because it was affecting the location of the main page marquee */
+}/****Adjusted style of breadcrumb per Rally Story US9544 ****/
+.breadcrumb.breadcrumb-undernav.billing-payments .breadcrumb {
+	position:relative; 
+	margin:17px 0 16px 14px;
+	padding:0px;
+	top: 0;
+	font-size: 11px;
+	color: #666666;
+}
+.breadcrumb.breadcrumb-undernav.billing-payments .breadcrumb a {
+	font-size: 11px;
+} /****Adjusted style of breadcrumb per Rally Story US9544 ****/
+
+/*
+	Due to the new breadcrumbs being introduced into
+	the gutter, needed to adjust the bg-top-shadow image to
+	the correct position
+*/
+#main-container .bg-top-shadow {
+	/*	This declaration is causing problems accross the main pages
+		so needed to remove
+	*/
+	/* top: 11px !important; */
+}
+#main-container .bg-top-shadow.bg-top-shadow-reset {
+	top: -8px !important;
+}
+#wrapper.main-container-wrapper #main-container .bg-top-shadow {
+	top: -8px !important;
+}
+/*
+	Due to the new breadcrumbs being introduced into
+	the gutter, needed to adjust the bg-top-shadow image to
+	the correct position - this is for a fix on the
+	Shop Landing Home Page. Reset the top value to
+	original
+*/
+#main-container .bg-top-shadow.shoplanding {
+	top: 22px !important;
+}
+/*
+	Due to the new breadcrumbs being introduced into
+	the undernav_content.jsp gutter, needed to hide
+	duplicate breadcrumbs inside pages
+	Shop-Wireless-Plans-Individual Plans
+*/
+#main-container .plans-list-bread-crumb {
+	visibility: hidden;
+}
+/*
+	US9344 Upgrade Browser Message CSS
+	Used on the globalNav.jsp page
+*/
+.ge5p_z0-centerText {
+    text-align: center;
+}
+
+/* Upgrade Browser Message Container */
+.ge5p_z0-message-container {
+    display: none;
+    zoom: 1;
+}
+.ge5p_z0-browser-alert-message {
+    background-color: #FEFFD5;
+}
+.ge5p_z0-browser-alert-inner {
+    padding: 20px 0 20px 0;
+    width: 980px;
+    margin: 0 auto;
+    position: relative;
+    color: #333333;
+}
+ .ge5p_z0-browser-alert-inner h2 {
+        margin: 0;
+        margin-bottom: 10px;
+        font-size: 20px;
+        text-align: left;
+    }
+.ge5p_z0-browser-alert-text {
+    margin-bottom: 10px;
+    font-size: 12px;
+    text-align: left;
+}
+.ge5p_z0-browser-alert-browser-list li {
+    float: left;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.ge5p_z0-browser-alert-browser-list li a {
+    outline: 0;
+}
+.ge5p_z0-browser-alert-browser-list li:first-child {
+    margin-left: 0px;
+}
+.ge5p_z0-close-box-container {
+    position: absolute;
+    top: 10px;
+    left: 850px;
+    width: 80px;
+    line-height: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+    .ge5p_z0-close-box-container div {
+        float: left;
+        line-height: 25px;    
+}
+.ge5p_z0-close-box-text {
+    line-height: 32px;
+    font-size: 12px;
+    margin-right: 5px;
+    font-weight: normal;
+    color: #006699;
+}
+.ge5p_z0-close-circle{
+    background-color: #999999;
+    border: 10px solid #999999;
+    border-radius: 11px;
+    -moz-border-radius:11px;  /*for moz based browser*/
+    -webkit-border-radius:11px;  /*for webkit based browser*/
+    /*behavior: url("ie-css3.htc"); for IE 8 where /ie-css3.htc is the location of the file*/
+    position: relative;
+    width: 0px;
+    cursor: pointer;
+    margin: 2px 0 0 0;
+}
+    .ge5p_z0-close-circle p {
+         color: #FFFFFF;
+	    font-family: Arial;
+	    font-size: 19px;
+	    font-weight: bold;
+	    left: -5px;
+	    margin: 0;
+	    padding: 0;
+	    position: absolute;
+	    top: -13px;
+    }

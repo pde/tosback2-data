@@ -148,16 +148,34 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 <!--[if IE 7]> 
 <link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
+<!--[if IE]> 
+<style type="text/css"> 
+	#wrapper {margin-top:20px;} 
+</style> 
+<![endif]--> 
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+    <script type="text/javascript"> 
+jQuery(function(){ 
+if(jQuery.browser.msie && jQuery.browser.version < 9){ 
+if(jQuery('input[type=tel]').parents().is('span') && jQuery('input[type=tel]').parents().hasClass('textInput-wrapper') ){ 
+}else{ 
+jQuery('input[type=tel]').wrap('<span class="textInput-wrapper"/>'); 
+jQuery('input[type=tel]').wrap('<span>'); 
+ } 
+  } 
+});  
+</script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 <link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/listPage.css"/> 
 <link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/wireless-list-styles.css"/> 
 <link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/wireless-global.css"/> 
 <link type="text/css" rel="stylesheet" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/devicelist.min.css"/> 
+<!--FIXED FOR PROD12-6369 --> 
+<style>.gridView .viewPackages a, .lineView .viewPackages a{line-height: 1.2em;}</style> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/devicelist.js"></script> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/listPage.js"></script> 
 <script type="text/javascript" src="../../../media/cms/shop/scripts/modalConflict.js"></script> 
@@ -224,6 +242,237 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 	}; 
 	var globalNavResourceParams = {'globalItem': 'Personal','render': '010000','primaryItem': '010000','secondaryItem': '011000','platform': 'shop','p_LOB': 'wireless'}; 
 </script> 
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script> 
+<script> 
+	/* 
+		US9344 Upgrade Browser Message 
+		Get/Set Cookie Function for Upgrade Browser Message Checking 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	function getCookie(name) { 
+		var dc = document.cookie; 
+		var prefix = name + "="; 
+		var begin = dc.indexOf("; " + prefix); 
+		if (begin == -1) { 
+			begin = dc.indexOf(prefix); 
+			if (begin != 0) return null; 
+		} 
+		else 
+		{ 
+			begin += 2; 
+			var end = document.cookie.indexOf(";", begin); 
+			if (end == -1) { 
+			end = dc.length; 
+			} 
+		} 
+		return unescape(dc.substring(begin + prefix.length, end)); 
+	}  
+	function acknowledgeBrowserSupportSeen() { 
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/"; 
+	} 
+	/* 
+		US9344 Upgrade Browser Message 
+		Browser Detect JS Function 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	var BrowserDetect = { 
+		init: function () { 
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser"; 
+			this.version = this.searchVersion(navigator.userAgent) 
+				|| this.searchVersion(navigator.appVersion) 
+				|| "an unknown version"; 
+			this.OS = this.searchString(this.dataOS) || "an unknown OS"; 
+		}, 
+		searchString: function (data) { 
+			for (var i=0;i<data.length;i++)	{ 
+				var dataString = data[i].string; 
+				var dataProp = data[i].prop; 
+				this.versionSearchString = data[i].versionSearch || data[i].identity; 
+				if (dataString) { 
+					if (dataString.indexOf(data[i].subString) != -1) 
+						return data[i].identity; 
+				} 
+				else if (dataProp) 
+					return data[i].identity; 
+			} 
+		}, 
+		searchVersion: function (dataString) { 
+			var index = dataString.indexOf(this.versionSearchString); 
+			if (index == -1) return; 
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1)); 
+		}, 
+		dataBrowser: [ 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Chrome", 
+				identity: "Chrome" 
+			}, 
+			{ 	string: navigator.userAgent, 
+				subString: "OmniWeb", 
+				versionSearch: "OmniWeb/", 
+				identity: "OmniWeb" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Apple", 
+				identity: "Safari", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				prop: window.opera, 
+				identity: "Opera", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "iCab", 
+				identity: "iCab" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "KDE", 
+				identity: "Konqueror" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Firefox", 
+				identity: "Firefox" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Camino", 
+				identity: "Camino" 
+			}, 
+			{		// for newer Netscapes (6+) 
+				string: navigator.userAgent, 
+				subString: "Netscape", 
+				identity: "Netscape" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "MSIE", 
+				identity: "Explorer", 
+				versionSearch: "MSIE" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Gecko", 
+				identity: "Mozilla", 
+				versionSearch: "rv" 
+			}, 
+			{ 		// for older Netscapes (4-) 
+				string: navigator.userAgent, 
+				subString: "Mozilla", 
+				identity: "Netscape", 
+				versionSearch: "Mozilla" 
+			} 
+		], 
+		dataOS : [ 
+			{ 
+				string: navigator.platform, 
+				subString: "Win", 
+				identity: "Windows" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Mac", 
+				identity: "Mac" 
+			}, 
+			{ 
+				   string: navigator.userAgent, 
+				   subString: "iPhone", 
+				   identity: "iPhone/iPod" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Linux", 
+				identity: "Linux" 
+			} 
+		] 
+	}; 
+</script> 
+<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+		/*  
+			US9344 Initialize Browser Detect Script  
+			Used to detect the browser name, version and OS 
+		*/ 
+		BrowserDetect.init(); 
+		/*  
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked 
+		*/ 
+		jQuery('#ge5p_z0-close-box-container').click(function(){ 
+			/* Check if upgrade message browser container is visible */ 
+		    if(jQuery('.ge5p_z0-message-container').is(':visible')) 
+		    { 
+		        /* yes - close it */ 
+		        jQuery(".ge5p_z0-message-container").slideToggle(); 
+		    } 
+		    /* Set GNSESS Cookie */ 
+		    acknowledgeBrowserSupportSeen(); 
+		}); 
+		/*  
+		    US9344 Use Modernizr to detect IE browser by hash change feature  
+		*/ 
+		if (!Modernizr.hashchange) { 
+			/*  
+		        IE Browsers found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Explorer') { 
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
+				if(BrowserDetect.version < 7) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist 
+						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+					} 
+		        } 
+		    }  
+		} else { 
+		    /*  
+		        Modern Browsers are found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
+	}); 
+</script> 
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container"> 
+    <div class="ge5p_z0-browser-alert-message"> 
+        <div class="ge5p_z0-browser-alert-inner"> 
+            <h2>Pages Don't Look Right?</h2> 
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p> 
+            <ul class="ge5p_z0-browser-alert-browser-list"> 
+                <li> 
+                    <a href="../../../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a> 
+                </li> 
+            </ul> 
+            <div class="clear"></div> 
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container"> 
+                <div class="ge5p_z0-close-box-text">Close</div> 
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
 <div id="globalNav" class="en_US hardRock"> 
 	<div id="globalNavInterface" class="ecom"> 
 				<div id="segMenuBar"> 
@@ -231,10 +480,19 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 					<a href="tablets.html#wrapper" id="pageID" rel="res">Skip navigation</a> 
 					<div id="segcenterSpan"></div> 
 					<ul class="segMenu" id="leftSegMenu"> 
-						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../../../index.html"><span>Personal</span></a></li> 
+						<li> 
+							<a id="segMenuItemPersonal" class="segMenuItem " href="../../../index.html"><span>Personal</span></a> 
+							<div class="segSubMenu" id="segSubMenuPersonal"> 
+								<ul> 
+											<li><a href="../../../index.html">att.com</a></li> 
+											<li><a href="../../../../www.att.net/index.html">att.net</a></li> 
+											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+								</ul> 
+							</div> 
+						</li> 
 						<li> 
 							<a id="segMenuItemBusiness" class="segMenuItem " href="../../../gen/general%3Fpid=11627.html"><span>Business</span></a> 
-							<div class="segSubMenu" > 
+							<div class="segSubMenu" id="segSubMenuBusiness"> 
 								<ul> 
 											<li><a href="../../../gen/landing-pages%3Fpid=9213.html">Small Business</a></li> 
 											<li><a href="../../../gen/landing-pages%3Fpid=9214.html">Enterprise Business</a></li> 
@@ -246,12 +504,12 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="../../../gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
 					</ul> 
 					<ul class="segMenu" id="rightSegMenu"> 
-						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../../www.wireless.att.com/coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Wireless Coverage Maps<span class="segMenuNewWin">&nbsp;</span></span></a></li> 
 						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../../../storelocator/index.html"><span>Find a Store</span></a></li> 
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="tablets.html#"><span> 
 									Language 
 								</span></a> 
-							<div class="segSubMenu"> 
+							<div class="segSubMenu" id="segSubMenuLanguage"> 
 								<ul> 
 															<li><a href="http://www.att.com/shop/es/wireless/devices/tablets.html?locale=es_US"><span lang="es_US">P&aacute;gina en Espa&ntilde;ol</span></a></li> 
 													<li><a href="../../../../espanol.att.com/index.html" target="_blank"><span>Sitio en Espa&ntilde;ol</span></a></li> 
@@ -277,12 +535,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../wireless.html" name="Shop_Wireless" >Wireless</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Phones &amp; Devices</h3> 
 																		<ul class="trayNoBullet"> 
@@ -294,7 +547,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Services</h3> 
 																		<ul class="trayNoBullet"> 
@@ -306,7 +559,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>More...</h3> 
 																		<ul class="trayNoBullet"> 
@@ -318,7 +571,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -334,12 +587,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../bundles.html" name="Shop_Bundles" >Bundles</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles with U-verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -350,7 +598,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles without U&#8209;verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -360,7 +608,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -374,12 +622,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Channels</h3> 
 																		<ul class="trayNoBullet"> 
@@ -390,7 +633,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -398,7 +641,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -415,12 +658,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../internet/index.html" name="Shop_Internet" >Internet</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -431,7 +669,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -440,7 +678,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Extras</h3> 
 																		<ul class="trayNoBullet"> 
@@ -450,7 +688,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -464,12 +702,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -480,7 +713,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -489,7 +722,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -504,12 +737,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 												<li> 
 													<a class="secondaryMenuItem" href="../../u-verse.html" name="Shop_U-verse" >U-verse</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2012/global/nav/uverse_189x200.png' alt='U-verse' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Digital TV</h3> 
 																		<ul class="trayNoBullet"> 
@@ -521,7 +749,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Internet</h3> 
 																		<ul class="trayNoBullet"> 
@@ -531,7 +759,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Home Phone</h3> 
 																		<ul class="trayNoBullet"> 
@@ -541,7 +769,7 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -613,22 +841,29 @@ var mRedirectURL = '//m.att.com/shopmobile/wireless/devices/tablets.html';
 </div> 
 	<!-- social media  --> 
 	<!-- undenav content --> 
-	<div id="underNav"> 
-<div id="undernav-right"> 
-    <div id="mini-cart-link-container"> 
-        <a id="minicart-link" href="tablets.html#" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">My Wireless Cart  
-            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt=""/> 
-            <span id="minicart-count"></span> 
-        </a><br/> 
-        <div id="cart-preview-container" style="display:none;float:right;"></div> 
-        <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+	<div id="underNav" class="breadcrumbGutter"> 
+<div class="undernav-ribbon-wrapper"> 
+    <div id="undernav-right"> 
+        <div id="mini-cart-link-container"> 
+            <a id="minicart-link" href="tablets.html#" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">My Wireless Cart  
+                <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt=""/> 
+                <span id="minicart-count"></span> 
+            </a><br/> 
+            <div id="cart-preview-container" style="display:none;float:right;"></div> 
+            <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+        </div> 
+    	<div id="lpButtonDiv"></div> 
+    	<div class="clear"></div> 
     </div> 
-	<div id="lpButtonDiv"></div> 
-	<div class="clear"></div> 
+    <div class="breadcrumb breadcrumb-undernav"> 
+        <div class="breadcrumb"> 
+    <a href="../../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../../wireless.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/breadcrumb">Wireless</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../devices.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/breadcrumb">Devices</a>&nbsp;&nbsp;/&nbsp;&nbsp;Tablets 
+    </div> 
+    </div> 
 </div> 
 </div> 
 	<!-- main content of page --> 
-	<div id="wrapper"> 
+	<div id="wrapper" class="main-container-wrapper wireless-devices-compare"> 
 		<div id="main-container"> 
 	<script type="text/javascript"> 
 		var listViewType = ''; 
@@ -1421,86 +1656,6 @@ Tablet Group</div>
 	</div> 
 								</div> 
 							</div> 
-							<div id="device_prod5240344R" class="list-devicePanel" > 
-								<div id="item_sku6010285" class="list-item"> 
-		<div class="list-noHeight"></div> 
-		<div class="list-webOnly"> 
-			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
-		</div> 
-		<div class="list-noHeight"></div> 
-	<div class="list-itemHeader"> 
-		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" data-sku="sku6010285" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						HTC Jetstream&trade; (Refurbished) 
-					</a> 
-		</div> 
-			<div class="list-rating"> 
-						<div class="reviewStars s2_8"> 
-							<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5240344" title="Reviews for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(7)</span> 
-							</a> 
-						</div> 
-			</div> 
-				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-	</div> 
-	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="quickViewLink" data-skuid="sku6010285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6010285" class="inStockOpacity" alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-jetstream-shimmering&#32;silver-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-					</a> 
-		</div> 
-			<div class="list-compare "> 
-						<div class="floatl"> 
-							<input type="checkbox" value="sku6010285" name="skuId" id="sku6010285" class="clickStreamGroupItem" data-pid="prod5240344" title="Compare HTC Jetstream&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6010285','check');toggleCompareSelectionLabel('sku6010285');generateCompareThumbs();" /> 
-						</div> 
-						<div id="sku6010285-addtocompare" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6010285">                     
-								Add to Compare 
-							</label> 
-						</div> 
-						<div id="sku6010285-comparenow" style="display:none;" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6010285"> 
-								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6010285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-									Compare Now 
-								</a> 
-							</label> 
-						</div> 
-			</div> 
-	</div> 
-	<div class="list-deviceInfo"> 
-		<div class="list-barSection"> 
-			<div class="list-description"> 
-				HTC Jetstream (TM) is the first 4G LTE tablet from AT&T*. It runs on Android (TM) 3.1 Honeycomb and has a 10.1" HD display and powerful 1.5 GHz dual core processor. Also add in the ability to write on your tablet w/ the HTC Scribe pen (sold separately). 
-			</div> 
-		</div> 
-	</div> 
-	<div class="list-noHeight"></div> 
-	<div class="list-priceInfo"> 
-			<div class="list-price"> 
-								<div class="listPrice">$249.99</div> 
-			</div> 
-		<div class="list-qtyView"> 
-			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-							<img alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-						</a> 
-			</div>  
-		</div> 
-				<div class="holidayFlag">            
-					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
-				</div> 
-	</div> 
-	<div class="list-noHeight"></div> 
-	<div class="list-noHeight-clear"></div> 
-	<div class="list-button"> 
-		<div class="list-actionDiv" > 
-		</div> 
-		<div class="list-noHeight-clear" ></div> 
-	</div> 
-								</div> 
-							</div> 
 							<div id="device_prod5320301R" class="list-devicePanel" > 
 								<div id="item_sku5920225" class="list-item"> 
 	<div class="list-itemHeader"> 
@@ -1796,17 +1951,17 @@ Tablet Group</div>
 		<div class="list-noHeight"></div> 
 	<div class="list-itemHeader"> 
 		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-4g-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" data-sku="sku6190316" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" data-sku="sku6190316" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						Apple® iPad® with Wi-Fi + Cellular (Refurbished) 
 					</a> 
 		</div> 
 				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
 	</div> 
 	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-4g-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6190316" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6190316" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-4g-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6190316" class="inStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6190316" class="outOfStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 			<div class="list-compare "> 
@@ -1836,13 +1991,13 @@ Tablet Group</div>
 	</div> 
 	<div class="list-noHeight"></div> 
 	<div class="list-priceInfo"> 
-			<div class="list-price"> 
+			<div class="list-price-outOfStock"> 
 								<div class="listPrice">$429.99 <span class='multiDevicePrice-to'>to</span> $529.99</div> 
 								<div class="multiDevicePrice">16 to 32 GB</div> 
 			</div> 
 		<div class="list-qtyView"> 
 			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-4g-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 							<img alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div>  
@@ -1855,6 +2010,9 @@ Tablet Group</div>
 	<div class="list-noHeight-clear"></div> 
 	<div class="list-button"> 
 		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
 		</div> 
 		<div class="list-noHeight-clear" ></div> 
 	</div> 
@@ -2027,9 +2185,6 @@ Tablet Group</div>
 	<div class="list-image"> 
 		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6520248" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-				<div class="list-newArrival"> 
-					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
-				</div> 
 					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						<img id="image-sku6520248" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
@@ -2086,34 +2241,34 @@ Tablet Group</div>
 								</div> 
 							</div> 
 							<div id="device_prod6240242" class="list-devicePanel" > 
-								<div id="item_sku6320480" class="list-item"> 
+								<div id="item_sku6320481" class="list-item"> 
 	<div class="list-itemHeader"> 
 		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6320480" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-white.html" class="clickStreamSingleItem" data-pid="prod6240242" data-sku="sku6320481" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						Apple® iPad® with Retina™ display Wi-Fi + Cellular 
 					</a> 
 		</div> 
 				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
 	</div> 
 	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="quickViewLink" data-skuid="sku6320480" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-white.html" class="quickViewLink" data-skuid="sku6320481" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6320480" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-white.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6320481" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;16gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 			<div class="list-compare "> 
 						<div class="floatl"> 
-							<input type="checkbox" value="sku6320480" name="skuId" id="sku6320480" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320480','check');toggleCompareSelectionLabel('sku6320480');generateCompareThumbs();" /> 
+							<input type="checkbox" value="sku6320481" name="skuId" id="sku6320481" class="clickStreamGroupItem" data-pid="prod6240242" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6320481','check');toggleCompareSelectionLabel('sku6320481');generateCompareThumbs();" /> 
 						</div> 
-						<div id="sku6320480-addtocompare" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6320480">                     
+						<div id="sku6320481-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320481">                     
 								Add to Compare 
 							</label> 
 						</div> 
-						<div id="sku6320480-comparenow" style="display:none;" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6320480"> 
-								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320480','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<div id="sku6320481-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6320481"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6320481','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 									Compare Now 
 								</a> 
 							</label> 
@@ -2135,7 +2290,7 @@ Tablet Group</div>
 			</div> 
 		<div class="list-qtyView"> 
 			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-16gb-white.html" class="clickStreamSingleItem" data-pid="prod6240242" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 							<img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 16GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div>  
@@ -2157,13 +2312,13 @@ Tablet Group</div>
 								<div id="item_sku6310226" class="list-item"> 
 	<div class="list-itemHeader"> 
 		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" data-sku="sku6310226" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/ASUS/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" data-sku="sku6310226" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						ASUS VivoTab&trade; RT 
 					</a> 
 		</div> 
 			<div class="list-rating"> 
 						<div class="reviewStars s3_8"> 
-							<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html#tab2" class="clickStreamSingleItem" data-pid="prod6220224" title="Reviews for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<a href="http://www.att.com/shop/wireless/devices/ASUS/vivotab-rt-amethyst-gray.html#tab2" class="clickStreamSingleItem" data-pid="prod6220224" title="Reviews for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(7)</span> 
 							</a> 
@@ -2172,9 +2327,9 @@ Tablet Group</div>
 				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
 	</div> 
 	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="quickViewLink" data-skuid="sku6310226" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<a href="http://www.att.com/shop/wireless/devices/ASUS/vivotab-rt-amethyst-gray.html" class="quickViewLink" data-skuid="sku6310226" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/ASUS/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						<img id="image-sku6310226" class="inStockOpacity" alt="Details for ASUS VivoTab&trade; RT" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/asus-vivotab&#32;rt-amethyst&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -2210,7 +2365,7 @@ Tablet Group</div>
 			</div> 
 		<div class="list-qtyView"> 
 			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/asus/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<a href="http://www.att.com/shop/wireless/devices/ASUS/vivotab-rt-amethyst-gray.html" class="clickStreamSingleItem" data-pid="prod6220224" title="Details for ASUS VivoTab&trade; RT" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 							<img alt="Details for ASUS VivoTab&trade; RT" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div>  
@@ -2298,6 +2453,89 @@ Tablet Group</div>
 	<div class="list-noHeight-clear"></div> 
 	<div class="list-button"> 
 		<div class="list-actionDiv" > 
+		</div> 
+		<div class="list-noHeight-clear" ></div> 
+	</div> 
+								</div> 
+							</div> 
+							<div id="device_prod5240344R" class="list-devicePanel" > 
+								<div id="item_sku6010285" class="list-item"> 
+		<div class="list-noHeight"></div> 
+		<div class="list-webOnly"> 
+			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
+		</div> 
+		<div class="list-noHeight"></div> 
+	<div class="list-itemHeader"> 
+		<div class="list-title"> 
+					<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" data-sku="sku6010285" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						HTC Jetstream&trade; (Refurbished) 
+					</a> 
+		</div> 
+			<div class="list-rating"> 
+						<div class="reviewStars s2_8"> 
+							<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5240344" title="Reviews for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(7)</span> 
+							</a> 
+						</div> 
+			</div> 
+				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="list-image"> 
+		<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="quickViewLink" data-skuid="sku6010285" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<div class="image"> 
+					<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6010285" class="outOfStockOpacity" alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-jetstream-shimmering&#32;silver-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+			<div class="list-compare "> 
+						<div class="floatl"> 
+							<input type="checkbox" value="sku6010285" name="skuId" id="sku6010285" class="clickStreamGroupItem" data-pid="prod5240344" title="Compare HTC Jetstream&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6010285','check');toggleCompareSelectionLabel('sku6010285');generateCompareThumbs();" /> 
+						</div> 
+						<div id="sku6010285-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6010285">                     
+								Add to Compare 
+							</label> 
+						</div> 
+						<div id="sku6010285-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6010285"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6010285','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+									Compare Now 
+								</a> 
+							</label> 
+						</div> 
+			</div> 
+	</div> 
+	<div class="list-deviceInfo"> 
+		<div class="list-barSection"> 
+			<div class="list-description"> 
+				HTC Jetstream (TM) is the first 4G LTE tablet from AT&T*. It runs on Android (TM) 3.1 Honeycomb and has a 10.1" HD display and powerful 1.5 GHz dual core processor. Also add in the ability to write on your tablet w/ the HTC Scribe pen (sold separately). 
+			</div> 
+		</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-priceInfo"> 
+			<div class="list-price-outOfStock"> 
+								<div class="listPrice">$249.99</div> 
+			</div> 
+		<div class="list-qtyView"> 
+			<div class="list-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/htc/jetstream-refurb.html" class="clickStreamSingleItem" data-pid="prod5240344" title="Details for HTC Jetstream&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for HTC Jetstream&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div>  
+		</div> 
+				<div class="holidayFlag">            
+					<img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-free-overnight-shipping-en.jpg" height="50"/> 
+				</div> 
+	</div> 
+	<div class="list-noHeight"></div> 
+	<div class="list-noHeight-clear"></div> 
+	<div class="list-button"> 
+		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
 		</div> 
 		<div class="list-noHeight-clear" ></div> 
 	</div> 
@@ -2392,7 +2630,7 @@ Pricing effective 2/15/2013. Req. new 2-yr wireless agreement w/ data (min $14.9
 	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Wireless Customer Agreement</a> | 
 	<a class="last" href="../../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Cell Phone Records Security</a> 
 		   |<a class="openModal modal705" href="http://www.att.com/shop/en/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Plan Terms</a>| 
+			<a class="postPaidLegalLink" href="../../../wirelessterms.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Plan Terms</a>| 
 			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Online Pricing</a>| 
 			<div class='secondRow'> 
 				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Returns Policy &amp; Early Termination Fee</a>| 
@@ -2494,7 +2732,7 @@ jQuery(document).ready(function(){
 												 | 
 												<a href="../../../internal/broadbandinfo.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="../../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="../../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../../../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content/globalfooter"> 
@@ -2521,7 +2759,7 @@ jQuery(document).ready(function(){
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 122776526919335096400756408465035239578 --> 
+		 <!--X-Renderer: 32066253898656756303140785283139067610 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -2663,19 +2901,22 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
     jQuery(document).ready(function(){ 
         jQuery.when(reporting_ready).then(function() { 
         	setTimeout(function () { 
-	        	ATT.globalVars.wtFull(); 
-	        	ATT.checkPromo(); 
-	            ATT.log('dcs injection block'); 
-	            var s = document.createElement("script"); 
-	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
-	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
-	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
-	            // Use any selector 
-	            jQuery("head")[0].appendChild(s); 
-				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
-				if (window.JSAM) 
-				JSAM.Stat.reportReady(); 
+	        	if (typeof pb_ready == "undefined"){ pb_ready = new jQuery.Deferred(); pb_ready.resolve();} 
+				jQuery.when(pb_ready).then(function() { 
+					ATT.globalVars.wtFull(); 
+					ATT.checkPromo(); 
+					ATT.log('dcs injection block'); 
+					var s = document.createElement("script"); 
+					s.type = "text/javascript"; 
+					s.src = "//www.att.com/webtrends/scripts/dcs_tag.js"; 
+					s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+					s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+					// Use any selector 
+					jQuery("head")[0].appendChild(s); 
+					//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+					if (window.JSAM) 
+					JSAM.Stat.reportReady(); 
+				}); 
         	}, 3000);     
         }); 
     }); 
@@ -2697,7 +2938,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","HLNBRk5KhL2JVcPqdvmw8Qnw!-566908122!1365571914462"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","GH9nRyZFQhkL95Vgz7nNcHJL!-787389138!1365825861419"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -2757,5 +2998,13 @@ if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opM
        } 
 } 
 //--></script> 
+	<!-- OPTIMOST --> 
+	<!-- B2C-120711 Place Optimost Code on att.com pages -->   
+	<!--- 
+	Cell Phones Page, http://www.att.com/shop/wireless/devices/cellphones.html  
+	Individual Plans Page, http://www.att.com/shop/wireless/plans/individualplans.html  
+	Data Plans Page, http://www.att.com/shop/wireless/data-plans.html  
+	Device page, http://www.att.com/shop/wireless/devices.html  
+	--> 
 </body> 
 </html> 

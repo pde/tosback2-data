@@ -219,7 +219,7 @@ $(document).ready(function(){
 	p.tscroll = function(){
 		try{
 		$('.section_tables,.datatable_wide').each(function(){
-			$(this).find('tr td:first-child').attr('width','200');
+			//$(this).find('tr td:first-child').attr('width','200');
 			$(this).wrap('<div class="t-screen"></div>');
 			var t= $(this);
 			setTimeout(function(){

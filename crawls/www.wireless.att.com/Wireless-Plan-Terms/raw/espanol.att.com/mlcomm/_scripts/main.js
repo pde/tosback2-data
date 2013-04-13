@@ -581,6 +581,11 @@ function renderLatestReleases() {
     document.write('<h6>Titulares</h6>');
 	
 	document.write('<div class="rc-release-box">');
+    document.write('<p>11 de abril de 2012<br />');
+    document.write('<a href="/newsroom/news_releases/GoPhone_Llamadas_MexicoPlus_4-9-13.html?id=' + state + '" title="Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.">Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.</a></p>');
+    document.write('</div>');
+	
+	document.write('<div class="rc-release-box">');
     document.write('<p>4 de abril de 2012<br />');
     document.write('<a href="/newsroom/news_releases/facebook_celular_HTC_phone_4-4-13.html?id=' + state + '" title="AT&amp;T se une a HTC y Facebook para presentar el HTC First, el &#250;nico smartphone con un dise&#241;o totalmente basado en Facebook home">AT&amp;T se une a HTC y Facebook para presentar el HTC First, el &#250;nico smartphone con un dise&#241;o totalmente basado en Facebook home</a></p>');
     document.write('</div>');
@@ -615,10 +620,10 @@ function renderLatestReleases() {
     document.write('<a href="/newsroom/news_releases/puede_esperar_1_7_13.html?id=' + state + '" title="AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013">AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013</a></p>');
     document.write('</div>');
 
-    document.write('<div class="rc-release-box">');
+/*    document.write('<div class="rc-release-box">');
     document.write('<p>19 de diciembre del 2012<br />');
     document.write('<a href="/newsroom/news_releases/business_traveler_12_19_12.html?id=' + state + '" title="Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial">Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial</a></p>');
-    document.write('</div>');
+    document.write('</div>');*/
 
     
 
@@ -640,11 +645,20 @@ function shareThis() {
 
 
 function renderAyudaRightCol() {
+//	if ( section == 'help' || directory == 'att_home_phone' || directory == 'faq' || directory == 'att_advanced_tv' || directory == 'privacy_policy'  ) {
+//document.write('<div class="section nbb"><a href="/residential_customers/att_internet/index.html?id=' + state + '"  title="Internet"><img src="/mlcomm/_images/content/bg_right_premios_internet.png" alt="Internet" /></a></div>');}
+
+//else if ( directory == 'att_internet' || section == 'about_att' || section == 'legal_terms' ) {
+//document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');}
+//else {
+//document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
+//}
+	
     document.write('<div id="premios-box" class="section">');
-    document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
-    document.write('</div>');
+  document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
+   document.write('</div>');
 
-
+	 
 
     document.write('<div class="section nbb">');
     document.write('<h6>Facturaci&oacute;n y Pago</h6>');

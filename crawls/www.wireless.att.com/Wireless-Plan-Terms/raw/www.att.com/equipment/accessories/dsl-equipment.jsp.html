@@ -222,7 +222,7 @@
 
 
 
-<meta NAME="DCSext.sessionid" CONTENT="1bJcRlZpz8y1HKn8g5G7dnM3!-170732859!1365596510057" >
+<meta NAME="DCSext.sessionid" CONTENT="LzCsRpNNxMsGjgQ8Qm6Vf4Vp!910201548!1365855661740" >
 <meta name="DCSext.buyflowtype" content="NEW">
 
 	
@@ -516,7 +516,7 @@
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = '1bJcRlZpz8y1HKn8g5G7dnM3!-170732859!1365596510057';
+			var pSessionId = 'LzCsRpNNxMsGjgQ8Qm6Vf4Vp!910201548!1365855661740';
 			return pSessionId;
 		};
 
@@ -554,7 +554,7 @@
 		var forceFlashDebugMode = false;
 		var getTimeOffset = function() {
 			var offset = new Number();
-			var servertime = 1365596530723;
+			var servertime = 1365855677265;
 			var clientdateObj = new Date();
 			var clienttime = clientdateObj.getTime();
 			offset = clienttime - servertime;
@@ -752,6 +752,247 @@
 	
 </script>
 
+
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script>
+<script>
+	/*
+		US9344 Upgrade Browser Message
+		Get/Set Cookie Function for Upgrade Browser Message Checking
+		Function called in globalnav.war/includes/globalNav.jsp page
+	*/
+	function getCookie(name) {
+		var dc = document.cookie;
+		var prefix = name + "=";
+		var begin = dc.indexOf("; " + prefix);
+		if (begin == -1) {
+			begin = dc.indexOf(prefix);
+			if (begin != 0) return null;
+		}
+		else
+		{
+			begin += 2;
+			var end = document.cookie.indexOf(";", begin);
+			if (end == -1) {
+			end = dc.length;
+			}
+		}
+		return unescape(dc.substring(begin + prefix.length, end));
+	} 
+	function acknowledgeBrowserSupportSeen() {
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/";
+	}
+
+	/*
+		US9344 Upgrade Browser Message
+		Browser Detect JS Function
+		Function called in globalnav.war/includes/globalNav.jsp page
+	*/
+	
+	var BrowserDetect = {
+		init: function () {
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+			this.version = this.searchVersion(navigator.userAgent)
+				|| this.searchVersion(navigator.appVersion)
+				|| "an unknown version";
+			this.OS = this.searchString(this.dataOS) || "an unknown OS";
+		},
+		searchString: function (data) {
+			for (var i=0;i<data.length;i++)	{
+				var dataString = data[i].string;
+				var dataProp = data[i].prop;
+				this.versionSearchString = data[i].versionSearch || data[i].identity;
+				if (dataString) {
+					if (dataString.indexOf(data[i].subString) != -1)
+						return data[i].identity;
+				}
+				else if (dataProp)
+					return data[i].identity;
+			}
+		},
+		searchVersion: function (dataString) {
+			var index = dataString.indexOf(this.versionSearchString);
+			if (index == -1) return;
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+		},
+		dataBrowser: [
+			{
+				string: navigator.userAgent,
+				subString: "Chrome",
+				identity: "Chrome"
+			},
+			{ 	string: navigator.userAgent,
+				subString: "OmniWeb",
+				versionSearch: "OmniWeb/",
+				identity: "OmniWeb"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Apple",
+				identity: "Safari",
+				versionSearch: "Version"
+			},
+			{
+				prop: window.opera,
+				identity: "Opera",
+				versionSearch: "Version"
+			},
+			{
+				string: navigator.vendor,
+				subString: "iCab",
+				identity: "iCab"
+			},
+			{
+				string: navigator.vendor,
+				subString: "KDE",
+				identity: "Konqueror"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Firefox",
+				identity: "Firefox"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Camino",
+				identity: "Camino"
+			},
+			{		// for newer Netscapes (6+)
+				string: navigator.userAgent,
+				subString: "Netscape",
+				identity: "Netscape"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "MSIE",
+				identity: "Explorer",
+				versionSearch: "MSIE"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Gecko",
+				identity: "Mozilla",
+				versionSearch: "rv"
+			},
+			{ 		// for older Netscapes (4-)
+				string: navigator.userAgent,
+				subString: "Mozilla",
+				identity: "Netscape",
+				versionSearch: "Mozilla"
+			}
+		],
+		dataOS : [
+			{
+				string: navigator.platform,
+				subString: "Win",
+				identity: "Windows"
+			},
+			{
+				string: navigator.platform,
+				subString: "Mac",
+				identity: "Mac"
+			},
+			{
+				   string: navigator.userAgent,
+				   subString: "iPhone",
+				   identity: "iPhone/iPod"
+			},
+			{
+				string: navigator.platform,
+				subString: "Linux",
+				identity: "Linux"
+			}
+		]
+
+	};
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		/* 
+			US9344 Initialize Browser Detect Script 
+			Used to detect the browser name, version and OS
+		*/
+		BrowserDetect.init();
+		/* 
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked
+		*/
+		jQuery('#ge5p_z0-close-box-container').click(function(){
+			/* Check if upgrade message browser container is visible */
+		    if(jQuery('.ge5p_z0-message-container').is(':visible'))
+		    {
+		        /* yes - close it */
+		        jQuery(".ge5p_z0-message-container").slideToggle();
+		    }
+		    /* Set GNSESS Cookie */
+		    acknowledgeBrowserSupportSeen();
+		});
+
+		/* 
+		    US9344 Use Modernizr to detect IE browser by hash change feature 
+		*/
+		if (!Modernizr.hashchange) {
+			/* 
+		        IE Browsers found so check if
+		        version is less than we support
+		        Updated as of: 3/1/2013 
+		    */
+		    if(BrowserDetect.browser == 'Explorer') {
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist())
+				if(BrowserDetect.version < 7)
+		        {
+					
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist
+						jQuery(".ge5p_z0-message-container").slideToggle('slow');
+					}
+		        }
+		    } 
+		} else {
+		    /* 
+		        Modern Browsers are found so check if
+		        version is less than we support
+		        Updated as of: 3/1/2013 
+		    */
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) {
+		    
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    } 
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) {
+		    
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    }   
+		}
+	});
+</script>
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container">
+    <div class="ge5p_z0-browser-alert-message">
+        <div class="ge5p_z0-browser-alert-inner">
+            <h2>Pages Don't Look Right?</h2>
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p>
+            <ul class="ge5p_z0-browser-alert-browser-list">
+                <li>
+                    <a href="../../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container">
+                <div class="ge5p_z0-close-box-text">Close</div>
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="globalNav" class="en_US xRock">
 	<div id="globalNavInterface" class="ecom">
 		
@@ -7936,7 +8177,7 @@ function selectedAccessory(skuId, productId) {
 						
 					
 				</div>
-				<a href="../../gen/privacy-policy%3Fpid=2587.html">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506
+				<a href="../../gen/privacy-policy%3Fpid=2587.html">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506
 			</div>
 			<div class="logoBlock">
 				

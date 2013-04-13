@@ -45,6 +45,7 @@ More info available at http://www.omniture.com */
  *21/01/13 added p_bld test for free in business - eVar27(Milan) 
  *14/03/13 update s_code to version vH.25.4.(Ales), eVar27 definition logic changed (Ales), added create cookie helper (Ales)
  *25/03/13 added www.avast.ru (Ales)
+ *10/04/13 set tracking servers for .avast.co.jp and .avast.ru. Enable cookies for .avast.co.jp (Ales)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -87,7 +88,7 @@ s.linkLeaveQueryString=false;
 s.linkTrackVars="None";
 s.linkTrackEvents="None";
 
-if (window.location.hostname == "www.avast.co.jp" ) {
+if (window.location.hostname.search(".avast.co.jp") != -1) {
     s.cookieDomainPeriods="3";
     s.fpCookieDomainPeriods="3";
 }
@@ -98,10 +99,10 @@ made when instructed to do so by your account manager.*/
 s.visitorNamespace="avast"
 
 
-if (window.location.hostname == "www.avast.co.jp" ) {
+if (window.location.hostname.search(".avast.co.jp") != -1) {
     s.trackingServer="an.avast.co.jp";
     s.trackingServerSecure="ans.avast.co.jp";
-} else if (window.location.hostname == "www.avast.ru" ) {
+} else if (window.location.hostname.search(".avast.ru") != -1) {
     s.trackingServer="an.avast.ru";
     s.trackingServerSecure="ans.avast.ru";
 } else {
@@ -119,7 +120,7 @@ function s_doPlugins(s) {
                 s.events=s_events;
             else
                 s.events=s.events.concat(",",s_events);
-        } 
+        }
         else
             s.events=s_events;
     }
@@ -132,7 +133,7 @@ function s_doPlugins(s) {
     if(typeof s.campaign == "undefined") {
         if(s.getQueryParam('omcid'))
             s.campaign=s.getQueryParam('omcid');
-        
+
     }
     /* if server doesn't have a value, get window.location.hostname */
     if(typeof s.server == "undefined") {
@@ -172,7 +173,7 @@ function s_doPlugins(s) {
     }
     if (typeof s.eVar6 != "undefined"){
     	// 3. !rc(osc_v6) => document.cookie="osc_v6="+s.eVar6+";domain=.avast.com;path=/;";		
-        if(window.location.hostname.search("www.avast.co.jp") != -1) {
+        if(window.location.hostname.search(".avast.co.jp") != -1) {
             document.cookie="osc_v6="+s.eVar6+";domain=.avast.co.jp;path=/;";
         } else if (window.location.hostname.search(".avast.ru") != -1){
             document.cookie="osc_v6="+s.eVar6+";domain=.avast.ru;path=/;";
@@ -202,7 +203,7 @@ function s_doPlugins(s) {
         else if(parseInt(s.getQueryParam('p_pro')) > 0)
             s.eVar12="Paid Program";
         else s.eVar12="Website";
-        if(window.location.hostname.search("www.avast.co.jp") != -1)
+        if(window.location.hostname.search(".avast.co.jp") != -1)
             document.cookie="osc_v12="+s.eVar12+";domain=.avast.co.jp;path=/;";
         else if (window.location.hostname.search(".avast.ru") != -1)
             document.cookie="osc_v12="+s.eVar12+";domain=.avast.ru;path=/;";
@@ -234,7 +235,7 @@ function s_doPlugins(s) {
         else if(!document.referrer || /avast.com/g.test(document.referrer) || /avast.co.jp/g.test(document.referrer))
             s.eVar13="Website | Direct";
         else s.eVar13="Website | Referral";
-        if(window.location.hostname.search("www.avast.co.jp") != -1)
+        if(window.location.hostname.search(".avast.co.jp") != -1)
             document.cookie="osc_v13="+s.eVar13+";domain=.avast.co.jp;path=/;";
         else if (window.location.hostname.search(".avast.ru") != -1)
             document.cookie="osc_v13="+s.eVar13+";domain=.avast.ru;path=/;";
@@ -250,7 +251,7 @@ function s_doPlugins(s) {
         else if(s.getQueryParam('elm'))
             s.eVar14=s.eVar13.concat(" | ", s.getQueryParam('elm'));
         else s.eVar14=s.eVar13.concat(" | ");
-        if(window.location.hostname.search("www.avast.co.jp") != -1)
+        if(window.location.hostname.search(".avast.co.jp") != -1)
             document.cookie="osc_v14="+s.eVar14+";domain=.avast.co.jp;path=/;";
         else if (window.location.hostname.search(".avast.ru") != -1)
             document.cookie="osc_v14="+s.eVar14+";domain=.avast.ru;path=/;";
@@ -266,7 +267,7 @@ function s_doPlugins(s) {
         else if(s.getQueryParam('var'))
             s.eVar15=s.eVar13.concat(" | ", unescape(s.getQueryParam('var')));
         else s.eVar15=s.eVar13.concat(" | ");
-        if(window.location.hostname.search("www.avast.co.jp") != -1)
+        if(window.location.hostname.search(".avast.co.jp") != -1)
             document.cookie="osc_v15="+s.eVar15+";domain=.avast.co.jp;path=/;";
         else if (window.location.hostname.search(".avast.ru") != -1)
             document.cookie="osc_v15="+s.eVar15+";domain=.avast.ru;path=/;";
@@ -339,7 +340,7 @@ function s_doPlugins(s) {
 
       else s.eVar27="Website | Referral";
 
-      if(window.location.hostname.search("www.avast.co.jp") != -1)
+      if(window.location.hostname.search(".avast.co.jp") != -1)
           document.cookie="osc_v27="+s.eVar27+";domain=.avast.co.jp;path=/;";
       else if (window.location.hostname.search(".avast.ru") != -1)
           document.cookie="osc_v27="+s.eVar27+";domain=.avast.ru;path=/;";
@@ -348,7 +349,7 @@ function s_doPlugins(s) {
 
       /************** PAID SEARCH LOB ATTRIBUTION SECTION ***************/
       if(s.getQueryParam('cha') === "ppc"){
-        if(window.location.hostname.search("www.avast.co.jp") != -1)
+        if(window.location.hostname.search(".avast.co.jp") != -1)
             cc("osc_ps","Website | Paid Search",".avast.co.jp","/",3600*24*7);
         else if (window.location.hostname.search(".avast.ru") != -1)
             cc("osc_ps","Website | Paid Search",".avast.ru","/",3600*24*7);
@@ -369,7 +370,7 @@ function s_doPlugins(s) {
        }  
    } 
    if (typeof s.eVar30 != "undefined"){
-       if(window.location.hostname.search("www.avast.co.jp") != -1) {
+       if(window.location.hostname.search(".avast.co.jp") != -1) {
            document.cookie="osc_v30="+s.eVar30+";domain=.avast.co.jp;path=/;";
        } else if (window.location.hostname.search(".avast.ru") != -1){
            document.cookie="osc_v30="+s.eVar30+";domain=.avast.ru;path=/;";
@@ -448,7 +449,7 @@ function s_doPlugins(s) {
     }
 
 	
-	if(window.location.hostname.search("www.avast.co.jp") != -1)
+	if(window.location.hostname.search(".avast.co.jp") != -1)
             document.cookie="osc_v42="+s.eVar42+";domain=.avast.co.jp;path=/;";
         else if (window.location.hostname.search(".avast.ru") != -1)
             document.cookie="osc_v42="+s.eVar42+";domain=.avast.ru;path=/;";
@@ -562,14 +563,14 @@ function s_doPlugins(s) {
         c_ot=escape(c_ot);
         
 		/* Write cookie value */
-		if(window.location.hostname.search("www.avast.co.jp") != -1)
+		if(window.location.hostname.search(".avast.co.jp") != -1)
 			document.cookie="osc_ot="+c_ot+";domain=.avast.co.jp;path=/;";
 		else if (window.location.hostname.search(".avast.ru") != -1)
 			document.cookie="osc_ot="+c_ot+";domain=.avast.ru;path=/;";
 		else
 			document.cookie="osc_ot="+c_ot+";domain=.avast.com;path=/;";
 
-		if(window.location.hostname.search("www.avast.co.jp") != -1) {
+		if(window.location.hostname.search(".avast.co.jp") != -1) {
 			document.cookie="osc_ot="+c_ot+";domain=.avast.co.jp;path=/;";
 			document.cookie="x-otid="+c_ot+";domain=.avast.co.jp;path=/;";
 		} else if (window.location.hostname.search(".avast.ru") != -1){

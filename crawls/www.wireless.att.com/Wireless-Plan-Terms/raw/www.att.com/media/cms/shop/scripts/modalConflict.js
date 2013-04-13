@@ -252,11 +252,10 @@
 				
 				resultKey = "resultkeys=" + resultKey;
 				resStatus = "status=" + eventData.status;
-				
+				if (eventData.data.storePickUpCompatibilityError) resStatus += "-BOPIS";
 				
 				modalURL = eventData.data.shopModalURL + "/jcr:content/mainpar/conflictmodal.xhr.html?" + resStatus + "&" + resultKey;
-	
-				
+
 				ATT.conflictModal.conflictData.labelincart = eventData.data.incartlabel;
 				ATT.conflictModal.conflictData.labelonaccount = eventData.data.onaccountlabel;
 				ATT.conflictModal.conflictData.result = result;

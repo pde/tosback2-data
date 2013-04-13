@@ -173,7 +173,47 @@ function writeAds(options) {
 
 }
 
+/* function to take over the background of a page template with a sponsored ad */
 
+function setTakeover(skin) {
+        var bgColor      = skin.bgColor || '#000000';
+        var bgImage      = (skin.bgImage) ? 'url('+skin.bgImage+')' : 'none';
+        var bgPosition   = skin.bgPosition || 'center top';
+        var bgRepeat     = skin.bgRepeat || 'no-repeat';
+        var bgAttachment = skin.bgAttachment || 'scroll';
+        var $SKIN = (skin.skinElement) ? $(skin.skinElement) : $('body');
+        var $HTML = $('html');
+
+        $HTML.addClass('sponsored-takeover');
+
+        $SKIN.css({
+            'background-color': bgColor,
+            'background-image': bgImage,
+            'background-position': bgPosition,
+            'background-repeat': bgRepeat,
+            'background-attachment': bgAttachment
+        });
+
+        if (skin.clickHref) {
+            var clickHref   = skin.clickHref;
+            var clickTarget = skin.clickTarget || '_blank';
+            var clickHeight = skin.clickHeight || '900px';
+            var clickTop    = skin.clickTop || '0';
+
+            $('<a></a>').attr({
+                'id': 'sponsored-takeover-link',
+                'target': clickTarget,
+                'href': clickHref
+            }).css({
+                'display': 'block',
+                'position': 'absolute',
+                'z-index': '1',
+                'width': '100%',
+                'height': clickHeight,
+                'top': clickTop
+            }).prependTo($SKIN);
+        }
+    }
 
 /**
  * Writes interstitial ad

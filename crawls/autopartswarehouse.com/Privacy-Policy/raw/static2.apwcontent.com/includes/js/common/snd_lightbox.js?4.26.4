@@ -1,0 +1,397 @@
+    var SND_CUTOFF_TIME_TEXT = '';
+    var SND_VERBIAGE = '';
+    var SKU_BADGE_VERBIAGE = '';
+
+    var pageName = '';
+    var channel = 'Same Night Delivery Lightbox';
+    var prop3 = 'Same Night Delivery Lightbox';
+    var sndProduct = '';
+    var events = '';
+    var clicktrigger = false;
+        
+    // INITIALIZATION
+    $(window).resize(function() {
+        action();
+    });
+
+    popupType = $('.popup-upon-load').length;
+    toHandle = null;
+
+    /* Check if IE 7 */
+    if ( $.browser.msie ) {
+        var version = $.browser.version;
+        var container = ("body");        
+        if (version = "7.0") {
+            $(container).css({
+                position: "static"
+            });
+        }
+    }
+
+    
+    //ON CLICK LOAD LIGHTBOX
+    $('.nlb').live('click', function() {
+        boxName = $(this).attr('rel');
+        
+        /* clear the content of the lb container */
+        $(boxName).find('.plp-container').html('');
+        
+        if ( $(this).parents('.sndBadgesContainer').length > 0 ){
+            sndProduct = $(this).parents('.sndBadgesContainer').attr('prod');
+        } else if ( $(this).parents('.sndDetails').length > 0 ){
+            sndProduct = $(this).parents('.sndDetails').attr('prod');
+        }
+        
+        clicktrigger = true;
+        
+        getAjaxZipCode(boxName, 'event38');
+        $(boxName).fadeIn();
+        
+        loadlb();
+    
+    });
+    
+    /* catch Click try another zip code */
+    $('.tryotherzip').live('click', function(){     
+        getAjaxZipCode('#sndlbWidget', '');
+    });
+
+    /* catch enter keypress */
+    $('.form-zip input[class=zip-code]').live('keypress', function(e){
+        if( e.keyCode == 13 ){
+            $('.form-zip input[class=check]').trigger('click');
+            return false;
+        }
+    });
+    
+    $('.extSndHeroshot').live('click', function(){
+       getAjaxZipCode('#sndlbWidget', 'event44');
+       $('#sndlbWidget').fadeIn();
+       loadlb();
+    })
+    
+                    
+    
+    /* ON CLICK CHECK BUTTON */
+    $('.form-zip input[class=check]').live('click', function(){
+    
+        var htmlContent = '';
+        
+        if ( $('.form-zip input[class=zip-code]').val().length > 0 && $('.form-zip input[class=zip-code]').val() != 'Enter your zip code' ){
+            
+            $.ajax({
+                url: "/ajax/validateSndZipCode",
+                type: "POST",
+                timeout: 60000,
+                data: {zipcode: $('.form-zip input[class=zip-code]').val()},
+                success: function(data){
+
+                    if ( parseInt(data['success']) ) {
+                        htmlContent2 = '<p class="eligible-icon"></p><p class="eligible">'+SND_VERBIAGE+' is available for zip code <strong>'+
+                            $('.form-zip input[class=zip-code]').val()+
+                            '</strong>. Look for the '+SND_VERBIAGE+' option on qualified products.</p><input type="button" class="cont-shop" name="btnContShopping">';
+                        
+                        htmlContent = '<div class="sndGrpContainer">'+
+                                    '<a href="javascript:void(0);" class="lb-close"></a>'+
+                                    '<div class="header">'+
+                                    '<h2>'+SKU_BADGE_VERBIAGE+'</h2>'+
+                                    '<span>'+SND_VERBIAGE+' available!*</span>'+
+                                    '</div>'+
+                                    '<div class="content">'+ htmlContent2 +'</div></div>';
+                        $('#ic_eligible_sku, #ic_eligible_detail, .ic_eligible_search, #ic_eligible_partsearch, .ic_eligible_seo, .ic_eligible_shopparts').val(1);
+                    
+                    $('#sndlbWidget').find('.plp-container').html(htmlContent);
+                    
+                    $(".prodavailability .description, .ships-out").hide();
+                        
+                        /* set Omniture tags */
+                        pageName = 'Same Night Delivery - Success';
+                        channel = 'Same Night Delivery Lightbox';
+                        events = 'event39';
+                        
+                        if( clicktrigger == false ){
+                            sndProduct = '';
+                        }
+                        
+                        var arrTags = new Array(pageName, channel, prop3, events, sndProduct);
+                        
+                        setSndOmnitureTags(arrTags);
+                        /* set Omniture tags */
+                        
+                        /* on success call function to change the badges contents to eligible */
+                        setBadgePlpEligibleContent();
+                        
+                        if(data['remaining_hours']){
+                            hours_seconds = data['remaining_hours']['hours'];
+                            minutes_seconds = data['remaining_hours']['minutes'];
+                            
+                            
+                            hours_seconds =  hours_seconds * 60 * 60; //14 ,400
+                            minutes_seconds = minutes_seconds  * 60;    //180 //14580
+                            total_seconds = hours_seconds + minutes_seconds;
+                            
+                            sndBadgesSkuEligible(data['remaining_hours']['hours'],data['remaining_hours']['minutes']);
+
+                            time_init();
+                            
+                        }
+                        
+                    } else {
+                        
+                        if( (typeof data['error_code'] == "undefined") && (data['success'] == false) ){
+                            htmlContent = '<div class="sndGrpContainer">'+ 
+                                            '<a href="javascript:void(0);" class="lb-close"></a>'+
+                                            '<div class="content">'+
+                                            '<p class="cont-error">Sorry, <strong>'+$('.form-zip input[class=zip-code]').val()+'</strong> is not eligible for '+SND_VERBIAGE+' right now.</p>'+
+                                            '<p class="cont-error">Other shipping options (Ground, 2-day, and overnight) are available on checkout.</p>'+
+                                            '<div class="try-zip">'+
+                                                '<input name="btnContShopping" type="button" class="cont-shop-b">'+
+                                                '<span>or <a href="javascript:void(0);" class="tryotherzip">Try another Zip Code</a></span>'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '</div>';
+                                        
+                                    /* set Omniture tags */
+                                    pageName = 'Same Night Delivery - Negative';
+                                    channel = 'Same Night Delivery Lightbox';
+                                    events = 'event40';
+                                    
+                                    if( clicktrigger == false ){
+                                        sndProduct = '';
+                                    }
+
+                                    var arrTags = new Array(pageName, channel, prop3, events, sndProduct);
+                                    
+                                    setSndOmnitureTags(arrTags);
+                                    /* set Omniture tags */
+                                        
+                                    $(".sndDetails, .sndBadgesContainer").html('');
+                                    $('#ic_eligible_sku, #ic_eligible_details, .ic_eligible_search, #ic_eligible_partsearch, .ic_eligible_seo, .ic_eligible_shopparts').val(0);
+                        }
+                            
+                        if(typeof data['error_code'] != "undefined" ){  
+                            htmlContent = '<div class="sndGrpContainer">'+ 
+                                '<a href="javascript:void(0);" class="lb-close"></a>'+
+                                '<div class="content">'+
+                                '<p class="cont-error">Sorry, '+SND_VERBIAGE+' is unavailable right now. Please try again later.</p>'+
+                                '<p class="cont-error">Other shipping options (Ground, 2-day, and overnight) are available on checkout.</p>'+
+                                '<div class="try-zip">'+
+                                    '<input name="btnContShopping" type="button" class="cont-shop-b">'+
+                                    '<span>or <a href="javascript:void(0);" class="tryotherzip">Try another Zip Code</a></span>'+
+                                '</div>'+
+                            '</div>'+
+                            '</div>';
+            
+                            
+                            setBadgePlpNotEligibleContent();
+                            
+                        }
+                        $('#sndlbWidget').find('.plp-container').html(htmlContent);
+                    }
+                },
+                dataType: "json"
+            });
+            
+            
+        } else {
+            $('.form-zip input[class=zip-code]').focus();
+            $('.plp-container').find('.err-msg').css('display', 'block');
+            return false;
+        }
+    });
+    
+    // REMOVE OVERLAY WHEN BODY IS CLICKED
+    $('.modal-overlay').live('click', function() {
+        removeOverlay();
+    });
+
+    // REMOVE OVERLAY BUTTON X / CLOSE IS CLICKED
+    $('.lb-close').live('click', function() {
+        removeOverlay();
+    });
+    
+    // REMOVE OVERLAY WHEN CONTINUE SHOPPING BUTTON IS CLICK
+    // FROM LIGHTBOX ZIP CODE ENTERED ERROR
+    $('input[name$=btnContShopping]').live('click', function(){
+        removeOverlay();
+    }); 
+    
+    // REMOVE OVERLAY WHEN ESC IS PRESSED
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) { removeOverlay(); }   
+    });
+
+    // DISABLE ENTER KEY WHEN .nlb CLASS IS CLICKED
+    $('.nlb').live('keypress', function(e){
+        if ((e.keyCode == 13) || (e.charCode)) { e.preventDefault(); }      
+    }); 
+
+    // DISPLAY POP UP UPON PAGE LOAD
+    // NOTE : USE CLASS .popup-upon-load FOR THE POP UP DIV 
+    if(popupType){
+        $(window).load(function () {
+            $('.popup-upon-load').fadeIn();
+            loadlb();
+        });
+    }
+
+// LOAD OVERLAY FIRST THEN PERFORM LIGHTBOX FUNCTION VIA action()
+function loadlb() {
+    $('body').append('<div class="modal-overlay"></div>');
+    $('.modal-overlay').css('filter', 'alpha(opacity=70)');
+    $('.modal-overlay').fadeIn();
+    window.clearTimeout(toHandle);
+    action();
+}
+
+function action() {
+    gWidth = $(window).width();
+    gHeight = $(window).height();
+    mWidth = $('.modal-lb').outerWidth();
+    mHeight = $('.modal-lb').outerHeight();
+    modalPositionL = gWidth/2 - mWidth/2;
+    modalPositionT = gHeight/3 - mHeight/2;
+
+    $('.modal-overlay').css({
+        width: gWidth,
+        height: gHeight
+    });
+    $('.modal-lb').css({
+        left: modalPositionL,
+        top: modalPositionT
+    });
+}       // action()
+
+function removeOverlay(){
+    $('.modal-overlay').fadeOut();
+    $('.modal-lb').fadeOut();
+    toHandle = window.setTimeout(function() {
+        $('.modal-overlay').remove();
+    }, 500);
+}       // removeOverlay()
+//
+function getAjaxZipCode(boxName, eventTag){
+    
+    if (typeof eventTag == 'undefined'){
+        eventTag = '';
+    }
+    
+    var htmlContent = '';
+    
+    $.ajax({
+        url: "/ajax/get-snd-zip-code",
+        type: "POST",
+        timeout: 60000,
+                    data: {},
+        success: function(data){
+
+            if(data['success']){
+           
+                htmlContent2 = '<p>Enter your delivery zip code below and we\'ll tell you which parts can be delivered tonight:</p>'+
+                        '<form class="form-zip">'+
+                        '<input type="text" value="Enter your zip code" class="zip-code" onblur="if (this.value==\'\') this.value = \'Enter your zip code\'" onfocus="if (this.value==\'Enter your zip code\') this.value = \'\'">'+
+                        '<input type="button" class="check">'+
+                        '<span class="err-msg">Please enter your Zip Code</span>'+
+                        '</form>'+
+                        '<span class="fine-print">*Only available in the Los Angeles metropolitan area.</span>';
+                htmlContent = '<a href="javascript:void(0);" class="lb-close"></a>'+
+                                '<div class="header">'+
+                        '<h2>'+SKU_BADGE_VERBIAGE+'</h2>'+
+                        '<span>'+SND_VERBIAGE+' available!*</span>'+
+                        '</div>'+
+                        '<div class="content">'+ htmlContent2 +'</div>';
+                scriptContent = '<script type="text/javascript">' + 
+                    '$(function(){' +
+                        '$(".form-zip input[class=zip-code]").focus(' +
+                            'function(){' +
+                                '$(this).css({"color":"#222"});' +
+                        '});' +
+                        '$(".form-zip input[class=zip-code]").blur(' +
+                            'function(){' +
+                                'if($(this).val().length == 0 || $(this).val() == "Enter your zip code"){' +
+                                    '$(this).css({"color":"#999"});' +
+                                '}' +
+                        '});' +
+                    '});' +
+                    '</script>';
+           
+                htmlContent = '<div class="sndGrpContainer">' + htmlContent +'\n\n'+ scriptContent + '</div>';
+                
+                /* Omniture on click SND Banner */
+                    pageName = 'Same Night Delivery';
+                    channel = 'Same Night Delivery Lightbox';
+                /* Omniture on click SND Banner */
+            } else {
+                htmlContent = '<div class="sndGrpContainer">'+ 
+                                '<a href="javascript:void(0);" class="lb-close"></a>'+
+                                '<div class="content">'+
+                                    '<p class="cont-error">Sorry, <strong>'+$('.form-zip input[class=zip-code]').val()+'</strong> is not eligible for '+SND_VERBIAGE+' right now.</p>'+
+                                    '<p class="cont-error">Other shipping options (Ground, 2-day, and overnight) are available on checkout.</p>'+
+                                    '<div class="try-zip">'+
+                                        '<input name="btnContShopping" type="button" class="cont-shop-b">'+
+                                        '<span>or <a href="javascript:void(0);" class="tryotherzip">Try another Zip Code</a></span>'+
+                                    '</div>'+
+                                '</div>'+
+                                '</div>';
+                /* Omniture Tags */
+                    pageName = 'Same Night Delivery - Negative';
+                    channel = 'Same Night Delivery Lightbox';
+                    eventTag = 'event40';
+                    
+                    if( clicktrigger == false ){
+                        sndProduct = '';
+                    }
+                /* Omniture Tags */
+            }
+            
+            /* set Omniture tags */
+            var arrTags = new Array(pageName, channel, prop3, eventTag, sndProduct);
+            
+            setSndOmnitureTags(arrTags);
+            /* set Omniture tags */
+           
+            $(boxName).find('.plp-container').html(htmlContent);
+           
+        },
+        dataType: "json"
+    });
+}
+
+    function time_init(){
+        clockWidgets(); 
+    }   
+    
+    function clockWidgets(){
+        var hours1 = Math.floor(total_seconds / 3600);
+        var minutes1 = Math.floor((total_seconds  - ( hours1 * 3600))/ 60 );
+        var seconds1 = total_seconds - (hours1 * 3600 +  minutes1 * 60);
+        var countDownMessageForMinutes = '';
+        var countDownMessage = '';
+        
+        if(total_seconds <= 0){
+            $('#ic_eligible_sku, #ic_eligible_detail, .ic_eligible_search, #ic_eligible_partsearch, .ic_eligible_seo, .ic_eligible_shopparts').val(0);
+            $('.pdp-cont, .plp-check-cont').text(SND_VERBIAGE+' is only available from ' + SND_CUTOFF_TIME_TEXT + '.');
+            $(".prodavailability .description, .ships-out").show();
+            return;         
+        }   
+        
+        countDownMessageForHours = (hours1 > 0 ) ? hours1 + " hour(s)"  : "";
+            if(hours1 > 0 && minutes1 > 0){
+                countDownMessageForMinutes = " and " + minutes1 + " minute(s)";
+        }else if(hours1 <= 0 && minutes1 > 0 ){
+            countDownMessageForMinutes = minutes1 + " minute(s)";   
+        }else if( hours1 <= 0 && minutes1 <= 0  &&  total_seconds  > 0){
+            countDownMessageForMinutes  = "1 minute(s)";
+        }
+        
+        countDownMessage    = countDownMessageForHours + countDownMessageForMinutes;
+        
+        $('.countDownHours').text(countDownMessage);
+        setTimeout(clockWidgets, 1000); 
+        total_seconds -=  1;
+    }
+function setSndOmnitureTags(arrTags){
+    var tagKey = new Array('pageName','channel','prop3', 'events', 'products');
+    
+    setOnclickAnalytics(tagKey,arrTags);
+}

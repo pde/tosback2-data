@@ -6553,7 +6553,9 @@ var formCommentsVal=$("#command #comments").val();
 if(formCommentsVal!==null){formCommentsVal=formCommentsVal.replace(mbraceCustomComment,"");
 formComments.val(formCommentsVal)
 }}if(currModalSubsection.indexOf("thankyou")>=0){var testDrive=$("#preferredTestDrive:checked",$currForm);
-if($('[name="vehicleModel"]',$currForm).length){var modelString=$('[name="vehicleModel"]',$currForm).val();
+if(testDrive.length>0){var actionString="Contact_Form:Request_Quote_Testdrive:Thankyou",labelString="Contact_Form:Request_Quote_Testdrive"
+}else{var actionString="Contact_Form:"+labelFormType[subsection]+":Thankyou",labelString="Contact_Form:"+labelFormType[subsection]
+}if($('[name="vehicleModel"]',$currForm).length){var modelString=$('[name="vehicleModel"]',$currForm).val();
 if(modelString!=""){labelString+=":"+modelString
 }}}else{var actionString="Contact_Form:Start",labelString="Contact_Form:"+labelFormType[subsection];
 var metricsParamFrom={type:"GA",trackType:"_trackEvent",category:"Contact_Form",action:"Contact_Form:From:"+window.location.pathname,label:"Contact_Form:"+labelFormType[subsection]};

@@ -69,14 +69,11 @@ function s_doPlugins(s)
    s.tnt=s.trackTNT();
 
    // Trim variable string length
-   if ((mistats.bizunit || '') === 'MAC')
-   {
-      for (i in s)
-         if (i.match(/^((eVar|hier)\d+|pageURL|referrer)$/))
-            s[i] = (s[i] || '').substr(0, 255);
-         else if (i.match(/^(pageName|channel|prop\d+)$/))
-            s[i] = (s[i] || '').substr(0, 100);
-   }
+   for (i in s)
+      if (i.match(/^((eVar|hier)\d+|pageURL|referrer)$/))
+         s[i] = (s[i] || '').substr(0, 255);
+      else if (i.match(/^(pageName|channel|prop\d+)$/))
+         s[i] = (s[i] || '').substr(0, 100);
 
    setTimeout(function ()
    {

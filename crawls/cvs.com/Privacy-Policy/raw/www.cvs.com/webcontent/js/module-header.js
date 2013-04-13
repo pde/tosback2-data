@@ -39,16 +39,45 @@
 	$("body").delegate("#noResultsSearchForm","submit",function(e){compareSearchText(e,'noTextSuggestions');});
 	$("body").delegate("#pharmacySearchForm","submit",function(e){compareSearchText(e,'pharmacyNoTextSuggestions');});
 	$("body").delegate("#drugInfoForm","submit",function(e){compareSearchText(e,'drugNoTextSuggestions');});
+
+	/*	13 FEB 2013 -Added for CR02522 Onsite Search Field and Search Term Tracking---STARTS*/
+
+	$("body").delegate("#drugInfoQuery","submit",function(e){compareSearchText(e,'drug');});
 	
 	function compareSearchText(e,searchBoxId)
-	{ 
-		    var searchText=$("#"+searchBoxId).val();
-		   if(searchBoxId=='searchbox' || searchBoxId=='noTextSuggestions')
+	{  
+		var searchText=$("#"+searchBoxId).val();
+		   if(searchBoxId=='noTextSuggestions')
 		   {
 			 if(searchText=="" || searchText=='Search')
 			 {
 	    		 e.preventDefault();
 			 }
+			 else
+			 {
+				 ElementInterval = setInterval(function () {
+					 dcsMultiTrack('DCSext.SBOX',searchText,'DCSext.SearchBoxLocation','nosearchresults','WT.dl','1');
+					  clearInterval(ElementInterval);
+					 },1);
+
+			 }
+			 
+		   }
+		   else if(searchBoxId=='searchbox')
+		   {
+			 if(searchText=="" || searchText=='Search')
+			 {
+		    	 e.preventDefault();
+			 }  
+			 else
+			 {
+				 ElementInterval = setInterval(function () {
+					  dcsMultiTrack('DCSext.SBOX',searchText,'DCSext.SearchBoxLocation','global','WT.dl','1');
+					  clearInterval(ElementInterval);
+					 },1);
+
+			 }
+				
 		   }
 		   else if(searchBoxId=='pharmacyNoTextSuggestions')
 		   {
@@ -56,8 +85,41 @@
 			 {
 	    		 e.preventDefault();
 			 }
+		     else
+			 {
+				 ElementInterval = setInterval(function () {
+					  dcsMultiTrack('DCSext.DrugInfoSearch',document.location.href,'DCSext.SBOX',searchText,'DCSext.SearchBoxLocation','pharmacy','WT.dl','1');
+					  clearInterval(ElementInterval);
+					 },1);
+
+			 }
+		     
+		   }
+		   else if(searchBoxId=='drugNoTextSuggestions')
+		   {
+		     if(searchText=="")
+			 {
+	    		 e.preventDefault();
+			 }
+		     else
+			 {
+				 ElementInterval = setInterval(function () {
+   					  dcsMultiTrack('DCSext.DrugInfoSearch',document.location.href,'DCSext.SBOX',searchText,'DCSext.SearchBoxLocation','drug','WT.dl','1');
+					  clearInterval(ElementInterval);
+					 },1);
+
+			 }
+		    
+		   }
+		   else if(searchBoxId=='drug')
+		   {
+		     if(searchText=="" || searchText=='Enter Drug Name')
+			 {
+	    		 e.preventDefault();
+			 }
 		   }
 	}
+	/*	13 FEB 2013 -Added for CR02522 Onsite Search Field and Search Term Tracking---ENDS*/
 	//end watermark text handle logic
 
 	
@@ -668,4 +730,5 @@
 			
 	}
 
-
+	
+	

@@ -150,6 +150,11 @@ if (document.images)
 	specialtyshops_off.src = "/img/lnav3_1specialtyshops_off.gif";
 	var specialtyshops_on = new Image();
 	specialtyshops_on.src = "/img/lnav3_1specialtyshops_on.gif";
+	
+	var giftsformom_off = new Image();
+	giftsformom_off.src = "/img/lnav3_1giftsformom_off.gif";
+	var giftsformom_on = new Image();
+	giftsformom_on.src = "/img/lnav3_1giftsformom_on.gif";
 
 	var jewelry_off = new Image();
 	jewelry_off.src = "/img/lnav3_1jewelry_off.gif";

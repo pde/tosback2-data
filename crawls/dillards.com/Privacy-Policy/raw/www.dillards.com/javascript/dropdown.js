@@ -82,10 +82,10 @@ function buildDropdown() {
 	document.write('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-0330/Nty-1?cm_sp=juniors-_-ddf-_-denim+shorts+capris+4+032213">Denim Shorts & Capris</a></li>');
 	document.write('<li><a href="/content/juniors-shorts-trends-printed-colored-lace-crochet?cm_sp=juniors-_-ddf-_-shorts+shop+5+030713">Statement Making Shorts</a></li>');
 	document.write('</ul>');
-	document.write('<div class="promo"><a href="/content/juniors-spring-trends-guide?cm_sp=juniors-_-ddpromo-_-spring+trends+032513" >SPRING FEVER: The Season\'s Hottest Trends  ></a></div>');
+	document.write('<div class="promo"><a href="/shop/Jessica-Simpson/Juniors/_/N-173dcZlfxq/Rpp-1?cm_sp=juniors-_-ddpromo-_-jessica+simpson+gwp+041313" >Free Gift with Jessica Simpson Clothing Purchase  ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Juniors-Dresses-Prom-Dresses/_/N-zqm2/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=juniors-_-ddimage-_-prom+dresses+032312"><img src="/images/dropDownImages/040213dropdown_prom.jpg"></a>');
+	document.write('<a href="/shop/Juniors-Dresses-Prom-Dresses/_/N-zqm2/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=juniors-_-ddimage-_-prom+dresses+041213"><img src="/images/dropDownImages/041113dropdown_juniors.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -131,7 +131,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/content/women-vince-camuto-lookbook?cm_sp=shoes-_-ddpromo-_-all+vc+lookbook+032913" >SHOP THE VINCE CAMUTO LOOKBOOK ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Lauren-Ralph-Lauren/Shoes-Women/_/N-17477Zlgak/Rpp-1?cm_sp=shoes-_-ddimg-_-LRL+040413"><img src="/images/endeca/dropdown/040413_s_DropDown.png"></a>');
+	document.write('<a href="/shop/Lucky-Brand/Shoes/_/N-173ulZlfxl/Rpp-1?cm_sp=shoes-_-ddimg-_-lucky+brand+041213"><img src="/images/endeca/dropdown/041213-Drop-Down-Banner.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -269,7 +269,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/Lingerie-Sleepwear/_/N-ydly?cm_sp=lingerie-_-ddpromo-_-sleepwear+040413" >Dream in Spring Colors with the Perfect Sleepwear ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Betsey-Johnson/Lingerie/_/N-173f7Zlfz4?cm_sp=lingerie-_-ddimage-_-betsey+johnson+040413"><img src="/images/dropDownImages/040413dd_l_betsey.jpg"></a>');
+	document.write('<a href="/shop/Modern-Movement/_/N-173mxZlfu5?cm_sp=lingerie-_-ddimage-_-modern+movement+03871774+041213"><img src="/images/dropDownImages/041213dd_l_mvp.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -307,8 +307,8 @@ function buildDropdown() {
 	document.write('</ul>');
 	document.write('<ul>');
 	document.write('<li><a href="/content/spring-beauty-book-foundations?cm_sp=beauty-_-ddf-_-foundation+beauty+book+1+032913">Find Your Perfect Foundation</a></li>');
-	document.write('<li><a href="/shop/Clarins/_/N-lg3y?cm_sp=beauty-_-ddf-_-clarins+pick+a+pair+bonus+2+032913">Clarins Deluxe Sample Bonus</a></li>');
-	document.write('<li><a href="/product/Bobbi-Brown-Corrector_301_-1_301_503082059?cm_sp=beauty-_-ddf-_-bobbi+brown+corrector+eyes+3+032613">Bobbi Brown\'s Wakeup Call for Tired Eyes</a></li>');
+	document.write('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg?cm_sp=beauty-_-ddf-_-clarisonic+transform+2+041313">Transform Your Skin with CLARISONIC</a></li>');
+	document.write('<li><a href="/shop/Bobbi-Brown/Beauty/_/N-174q4Zlfxg/Ns-p_coach_active_date|1?cm_sp=beauty-_-ddf-_-bobbi+brown+new+arrivals+3+041313">NEW Arrivals from Bobbi Brown</a></li>');
 	document.write('<li><a href="/content/spring-beauty-book-bb-cream?cm_sp=beauty-_-ddf-_-bb+creams+beauty+book+4+032913">All-In-One BB Creams</a></li>');
 	document.write('<li><a href="/shop/Origins/_/N-lg42?cm_sp=beauty-_-ddf-_-origins+skincare+5+040413">See Your Best Skin with Origins</a></li>');
 	document.write('</ul>');
@@ -358,7 +358,7 @@ function buildDropdown() {
 	document.write('<li><a href="/shop/Men-Underwear-Socks-Sleepwear-Underwear-Underwear-Socks-Sleepwear/_/N-yyme/Rpp-1?cm_sp=mens-_-ddf-_-underwear+socks+sleepwear+t+in+shorts+4+022313">Underwear, Socks, and Sleepwear</a></li>');
 	document.write('<li><a href="/content/mens-shorts-swimwear?cm_sp=mens-_-ddf-_-just+in+shorts+swimwear+5+030913">JUST IN: Shorts & Swimwear</a></li>');
 	document.write('</ul>');
-	document.write('<div class="promo"><a href="/shop/Roundtree-Yorke/Roundtree-Yorke-Gold-Label/Roundtree-Yorke-Trademark/Roundtree-Yorke-Casuals/Roundtree-Yorke-Sport/Men/_/N-1730xZ173emZ1740xZ174nqZ173icZlfy5?cm_sp=mens-_-ddpromo-_-roundtree+yorke+bogo+event+040913" >Select Roundtree & Yorke Styles: Buy 1, Get 1 50% off</a></div>');
+	document.write('<div class="promo"><a href="/shop/JKL-just-keep-livin/Men/_/N-174xbZlfy5/Rpp-1?cm_sp=mens-_-ddpromo-_-introducing+jkl+just+keep+livin++041313" >Introducing JKL Just Keep Livin Performance Wear</a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
 	document.write('<a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-3+packs/Nty-1?cm_sp=mens-_-ddimage-_-shop+3+packs+041013"><img src="/images/dropDownImages/040913dropdown_mens_underwear_1.jpg"></a>');
@@ -407,7 +407,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddpromo-_-shop+girls+spring+dresses+031913" >Shop Spring Dresses for Girls ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Children-Girls-7-16-Dresses-Casual/_/N-zqx4/Rpp-1?cm_sp=children-_-ddimage-_-shop+easy+fun+7+16+dresses+040913"><img src="/images/dropDownImages/040413dropdown_c.jpg"></a>');
+	document.write('<a href="/shop/Children-Girls-7-16/_/N-ngdk/Rpp-1/Ntk-all/Ntt-casual+or+maxi+or+romper/Nty-1?Ntx=mode+matchboolean&cm_sp=children-_-ddimage-_-shop+easy+fun+7+16+dresses+rompers+041313"><img src="/images/dropDownImages/041113dropdown_rompers.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -453,7 +453,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/Sensorpedic/Home-Bedding/_/N-174iwZlgb5?cm_sp=home-_-ddpromo-_-sensorpedic+032913" >Sleep Better with Sensorpedic Memory Foam ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Home-Small-Appliances-Coffeemakers-Grinders-Coffee/_/N-y321?cm_sp=home-_-ddimage-_-coffee+ka+040413"><img src="/images/dropDownImages/040413dd_hm_coffee.jpg"></a>');
+	document.write('<a href="/shop/Home-Dining-Entertaining-Serving-Pieces/_/N-yzm2?cm_sp=home-_-ddimage-_-serveware+03998041+041213"><img src="/images/dropDownImages/041213dd_hm_entertaininghalloware.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');

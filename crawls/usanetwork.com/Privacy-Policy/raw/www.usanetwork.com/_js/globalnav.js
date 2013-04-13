@@ -458,7 +458,7 @@ var usa_globalMenu = {
 							"title" : "The Moment",
 							"url" : usa_baseUrlDomain + "/series/themoment/index.html",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_themoment.png",
-							"tuneIn" : "PREMIERES APRIL 11 10/9C"
+							"tuneIn" : "THURSDAYS 10/9C"
 						},
 						/* Featured Slot  - LAST */
 						{
@@ -573,9 +573,9 @@ var usa_globalMenu = {
 							"img" : usa_baseUrlDomain + "/_img/globalheader/socialsector_nav.png"
 						},
 						{
-							"title" : "SUITS MOVIE TRIVIA",
-							"url" : "http://www.usanetwork.com/series/suits/games/videotrivia/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_suitsmovietrivia.png"
+							"title" : "MY MOMENT",
+							"url" : "http://mymoment.usanetwork.com/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_mymoment.png"
 						},
 						{
 							"title" : "REAL LIFE CRIMES",
@@ -672,28 +672,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "LITTLE FOCKERS",
-							"subtitle" : "FRIDAY APRIL 12 9/8C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
-						},
-						{
-							"title" : "KNOCKED UP",
-							"subtitle" : "SATURDAY APRIL 13 1/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_knockedup.png"
-						},
-						{
-							"title" : "THE BACK-UP PLAN",
-							"subtitle" : "SUNDAY APRIL 14 10/9C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
-						},
-						{
 							"title" : "AMERICAN PIE",
 							"subtitle" : "SUNDAY APRIL 21 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_americanpie.png"
+						},
+						{
+							"title" : "LITTLE FOCKERS",
+							"subtitle" : "WEDNESDAY APRIL 24 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
+						},
+						{
+							"title" : "G.I. JOE: THE RISE OF COBRA",
+							"subtitle" : "SATURDAY APRIL 27 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+						},
+						{
+							"title" : "BAD BOYS",
+							"subtitle" : "SUNDAY APRIL 28 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_badboys2.png"
 						}
 
 					]

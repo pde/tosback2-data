@@ -22,7 +22,25 @@
  
 (function($) {
     $(document).ready(function() {
+    
+    	/* tealium finagle to add to gateways*/
+    	var pageName = getURLParameter("id", location.href);
+    	if(pageName == "WOMENS" || pageName == "MENS" || pageName == "APARTMENT"
+    	   || pageName == "GENERAL_CATEGORY" || pageName == "SALE" || pageName == "BRANDS"
+    	   || pageName == "APT_PRINTSHOP" || pageName == "APT_BIKESHOP") {
+    	   
+    	   // check environment
+    	   
+    	   var env = "dev";
+    	   if(location.href.indexOf("staging.urbanoutfitters.com") != -1) {
+    	   	env = "qa";
+    	   } else if (location.href.indexOf("urbanoutfitters.com") != -1) {
+    	   	env = "prod";
+    	   }
+    	    $("div.footer").append("<script type=\"text/javascript\">(function(a,b,c,d){ a='//tags.tiqcdn.com/utag/urbanoutfitters/uo-us/" + env + "/utag.js'; b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true; a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);})();</script>");
 
+    	}
+    	
     	/* brands page temp fix */
     	$('#category-content-brands-directory a').attr('href', '/urban/catalog/category.jsp?id=BRANDS');
     	/* end brands temp fix */
@@ -123,10 +141,6 @@
     // utility nav dropdown 
    
      $(function(){
-
-        // hide class and visibility for crappy IE bug
-        // $("#dd").removeClass("active");
-        // $('#dd li').css('visibility', 'hidden');
 
          $("#dd").hover(function(){
 

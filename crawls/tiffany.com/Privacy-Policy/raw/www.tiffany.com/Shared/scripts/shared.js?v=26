@@ -1638,9 +1638,10 @@ function openCentralModalWindow(url, height, width) {
 }
 function openOverlayPopup(href, pwidth, pheight, pbgcolor, pbrdrcolor, pbrdrwidth, blnPopupMask) {
 
-    ptop = (getPageHeight() - pheight) / 2;
+    var scrollPosition = $(window).height();
+    ptop = (scrollPosition - pheight) / 2;
     pleft = (getPageWidth() - pwidth) / 2;
-
+    if (ptop < 0) ptop = 0;
 
     var destURL = href
     txtPopUpContent = '<iframe id="iframeMiniContent" name="iframeMiniContent" src="' + destURL + '" style="border:0; height:' + pheight + 'px; width:' + pwidth + 'px;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>'
@@ -1649,7 +1650,7 @@ function openOverlayPopup(href, pwidth, pheight, pbgcolor, pbrdrcolor, pbrdrwidt
     document.body.insertBefore(divOverlayPopupHolder, document.body.firstChild);
     divOverlayPopupHolder.id = "divMiniPopUp"
     divOverlayPopupHolder.className = "divMiniPopUp"
-    divOverlayPopupHolder.style.position = "absolute";
+    divOverlayPopupHolder.style.position = "fixed";
     //divOverlayPopupHolder.style.height = pheight + "px";
     divOverlayPopupHolder.style.width = pwidth + "px";
     divOverlayPopupHolder.style.marginLeft = "0px"

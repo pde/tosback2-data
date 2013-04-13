@@ -201,7 +201,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .index_upload .htmlupload_queue .uploadifive-queue-item .filename, .index_upload  .htmlupload_queue .uploadifive-queue-item .filesize, .index_upload  .htmlupload_queue .uploadifive-queue-item .fileinfo {float: left; margin-right: 10px; overflow: hidden; white-space: nowrap;}
 .index_upload .htmlupload_queue .uploadifive-queue-item .filename {margin-left: 15px; width: 240px; text-align: left;}
 .index_upload .htmlupload_queue .uploadifive-queue-item .filesize {width: 75px;}
-.index_upload .htmlupload_queue .uploadifive-queue-item .fileinfo {width: 45px;}
+.index_upload .htmlupload_queue .uploadifive-queue-item .fileinfo {width: 60px;}
 .index_upload .htmlupload_queue .uploadifive-queue-item .progress {float: left; width: 65px; height: 8px; margin-top: 3px; border: 1px solid #ccc; background: #fff;}
 .index_upload .htmlupload_queue .uploadifive-queue-item .progress-bar {width: 0; height: 8px; background: url(../images/progress_bar_green_bg.gif) repeat-x;}
 
@@ -466,12 +466,12 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .hamster_notebook {width: 226px; height: 242px; background: url(../images/hamsters/hamster_notebook.jpg) no-repeat;}
 
 
-
 .spritefm {display: inline-block; background: url(../images/spritefm.png) no-repeat 0 200px; overflow: hidden;}
-.df_icon, .ds_icon, .sharedlinks_icon, .trash_icon, .upload_link_icon, .info_icon, .logs_icon, .servers_icon {width: 25px; height: 25px;}
+.df_icon, .ds_icon, .sharedlinks_icon, .sharedfolders_icon, .trash_icon, .upload_link_icon, .info_icon, .logs_icon, .servers_icon {width: 25px; height: 25px;}
 .df_icon {background-position: 0 0;}
 .ds_icon {background-position: 0 -25px;}
 .sharedlinks_icon {background-position: 0 -50px;}
+.sharedfolders_icon {background-position: 0 -50px;}
 .trash_icon {background-position: 0 -75px;}
 .upload_link_icon {background-position: 0 -100px;}
 .info_icon {background-position: 0 -125px;}
@@ -479,10 +479,19 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .servers_icon {background-position: 0 -175px;}
 
 
-.df_icon_16, .ds_icon_16, .sharedlinks_icon_16, .trash_icon_16 {width: 16px; height: 16px;}
+.disabled {cursor: default !important;}
+.user_icon_16 {background: url(http://static303.depositfiles.com/images/new/user.png) no-repeat; width: 16px; height: 16px;}
+.add_icon {background: url(http://static303.depositfiles.com/images/new/add.png) no-repeat; width: 16px; height: 16px;}
+.add_icon.disabled {background: url(http://static303.depositfiles.com/images/new/add_disabled.png) no-repeat;}
+.remove_icon {background: url(http://static303.depositfiles.com/images/new/menu_icon_remove.png) no-repeat; width: 16px; height: 16px;}
+.remove_icon.disabled {background: url(http://static303.depositfiles.com/images/new/menu_icon_remove_disabled.png) no-repeat;}
+
+
+.df_icon_16, .ds_icon_16, .sharedlinks_icon_16, .sharedfolders_icon_16, .trash_icon_16 {width: 16px; height: 16px;}
 .df_icon_16 {background-position: 0 -250px;}
 .ds_icon_16 {background-position: 0 -266px;}
 .sharedlinks_icon_16 {background-position: 0 -282px;}
+.sharedfolders_icon_16 {background-position: 0 -282px;}
 .trash_icon_16 {background-position: 0 -298px;}
 
 #filemanager .spritefm.audio {background-position: 0 -410px;}
@@ -536,7 +545,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 #filemanager .filelist_s .menu .create {background-position: 0 -890px;}
 #filemanager .filelist_s .menu .create.disabled {background-position: 0 -922px;}
 
-#filemanager .filelist_s .menu .share_folder, #filemanager .filelist_s .menu .new_share_folder {background: url(http://static303.depositfiles.com/images/new/btn_share_folder.png) no-repeat 50% 50%;}
+#filemanager .filelist_s .menu .share_folder {background: url(http://static303.depositfiles.com/images/new/btn_share_folder.png) no-repeat 50% 50%;}
 #filemanager .filelist_s .menu .share_folder.disabled {background: url(http://static303.depositfiles.com/images/new/btn_share_folder_disabled.png) no-repeat 50% 50%;}
 
 #filemanager .filelist_s .menu .rename {background-position: 0 -954px;}
@@ -545,8 +554,8 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 #filemanager .filelist_s .menu .move.disabled {background-position: 0 -1050px;}
 #filemanager .filelist_s .menu .copy {background-position: 0 -1082px;}
 #filemanager .filelist_s .menu .copy.disabled {background-position: 0 -1114px;}
-#filemanager .filelist_s .menu .remove {background-position: 0 -1146px;}
-#filemanager .filelist_s .menu .remove.disabled {background-position: 0 -1178px;}
+#filemanager .filelist_s .menu .remove, #filemanager .filelist_s .menu .remove_shared_folder {background-position: 0 -1146px;}
+#filemanager .filelist_s .menu .remove.disabled, #filemanager .filelist_s .menu .remove_shared_folder.disabled {background-position: 0 -1178px;}
 #filemanager .filelist .menu .movess {background: url(../images/white/btn_file_move2.gif) no-repeat 50% 0%;}
 #filemanager .filelist .menu .movess.disabled {background: url(../images/off/btn_file_move2.gif) no-repeat 50% 0%;}
 
@@ -602,7 +611,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .filelist_tab .name a, .filelist_tab .lc_name a {display: inline-block; border-bottom: 1px dotted transparent; text-decoration: none;}
 .filelist_tab .name a:hover, .filelist_tab .lc_name a:hover {border-color: #444;}
 .filelist_tab .name a.no_link {cursor: text; border-color: transparent;}
-.filelist_tab.location_tab .name, .filelist_tab.location_tab .lc_name{width: 202px;}
+.filelist_tab.location_tab .name, .filelist_tab.location_tab .lc_name {width: 202px;}
 .filelist_tab .search_info, .filelist_tab.location_tab .breadcrumbs {width: 226px;}
 .filelist_tab .location_icon {margin-right: 5px;}
 
@@ -618,7 +627,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .breadcrumbs a {color: #666; cursor: pointer;}
 .breadcrumbs li {float: left; position: relative; border: 1px solid transparent;}
 .breadcrumbs li a, .breadcrumbs li .arrow {display: inline-block; vertical-align: middle; line-height: 20px;}
-.breadcrumbs .sharedlinks_icon {margin-right: 3px;}
+.breadcrumbs .sharedlinks_icon, .breadcrumbs .sharedfolders_icon_16 {margin-right: 3px;}
 .breadcrumbs .ds_icon {height: 15px; background-position: 0 -30px;}
 
 .breadcrumbs li a {padding: 0 5px; max-width: 150px; overflow: hidden; text-overflow: ellipsis;}
@@ -719,11 +728,13 @@ strong.preloader_small {display: inline-block !important; visibility: hidden;}
 
 
 .add_user_icon {width: 32px; height: 32px; background: url(http://static303.depositfiles.com/images/new/add_user.png) no-repeat 50% 50%;}
+.add_user_icon.disabled {background: url(http://static303.depositfiles.com/images/new/add_user_disabled.png) no-repeat 50% 50%;}
 
-#share_folder_diag {background: #fff;}
-#share_folder_diag input[type=text] {width: 230px;}
-#share_folder_diag .add_user_btn {margin: 0 0 10px 0; cursor: pointer;}
+.diag_inner .add_user_btn {margin: 0 0 10px 0; cursor: pointer;}
+#share_folder_diag, #users_diag {background: #fff;}
 #share_folder_diag .userlist_tab td:first-child {white-space: nowrap;}
+
+
 
 
 
@@ -742,17 +753,20 @@ strong.preloader_small {display: inline-block !important; visibility: hidden;}
 .userlist_tab .name {display: inline-block; width: 250px; overflow: hidden; white-space: nowrap;}
 .userlist_tab .name a {display: inline-block; text-decoration: none; border-bottom: 1px dotted transparent;}
 .userlist_tab .name a:hover {border-color: #444;}
-.userlist_tab .spritefm {height: 16px; width: 16px; vertical-align: bottom;}
-.userlist_tab .user_icon_16 {margin: 0 8px 0 0; background: url(http://static303.depositfiles.com/images/new/user.png) no-repeat;}
-.userlist_tab .remove_icon {float: right; background: url(http://static303.depositfiles.com/images/new/menu_icon_remove.png) no-repeat;}
+.userlist_tab .spritefm {vertical-align: bottom;}
+.userlist_tab .user_icon_16 {margin: 0 8px 0 0;}
+.userlist_tab .remove_icon, .userlist_tab .add_icon {float: right;}
 .userlist_tab .preloader_small {margin: 0;}
 
 .userlist_tab .invite_buttons {text-align: right;}
-.userlist_tab .invite_buttons .button {margin: 0;}
+.userlist_tab .invite_buttons .button {margin: 2px 0 0 0;}
+.diag_inner .userlist_tab input[type="text"] {width: 230px;}
 
-.invitation_tab .cell {position: relative; padding: 0 0 0 24px;}
-.invitation_tab .cell .info {width: 250px; overflow: hidden;}
-.invitation_tab .cell .folder_icon {position: absolute; top: 50%; left: 0; margin-top: -8px;}
+
+.invitation_tab td, .invitation_tab th {padding: 5px;}
+.invitation_tab .cell {position: relative; padding: 0 0 0 22px; width: 300px; overflow: hidden;}
+.invitation_tab .cell .folder, .invitation_tab .cell .user {display: inline-block; max-width: 160px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom;}
+.invitation_tab .cell .shared_folder_icon {position: absolute; top: 50%; left: 0; margin-top: -8px;}
 
 #new_invitations {display: none; margin: 0 0 16px 0; padding: 10px; border-top: 1px solid #f2ebcf; border-bottom: 1px solid #f2ebcf; background: #fff1ba; text-align: center; font-weight: bold;}
 
@@ -959,6 +973,7 @@ strong.preloader_small {display: inline-block !important; visibility: hidden;}
 .lang_flags .flag_pl {background-position: 0 -312px;}
 .lang_flags .flag_el {background-position: 0 -336px;}
 .lang_flags .flag_cs {background-position: 0 -360px;}
+.lang_flags .flag_pt2 {background-position: 0 -384px;}
 /* --- */
 
 #main .title1 {margin-top: 35px; border-top: 1px solid #ccc;}

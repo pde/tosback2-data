@@ -200,6 +200,14 @@ window.onload = function() {
 			}
 		}
 	}
+	$('.btn_print_page').click(function(){
+		var pup = window.frames["print_frame"];
+		pup.document.body.innerHTML = $('.printable_region').html();
+		var btnEl = $(pup.document).find('.btn_print_page');
+		btnEl.hide();
+		pup.window.focus();
+		pup.window.print();
+	});
 }
 
 /*
@@ -409,7 +417,7 @@ function getR2netRedirectUrl(url) {
 		appendChar = "&";
 	}
 	var R2netUrl = url + appendChar + 'Nic=' + GetCookie('Nic');
-        document.location.href = R2netUrl;
+    document.location.href = R2netUrl;
 }
 
 //Cookie functions

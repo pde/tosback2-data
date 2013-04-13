@@ -180,7 +180,7 @@ window.opener.document.cookie = name + "=" + escape(value) +
                         document.getElementById('lnkSignIn').style.display = 'none';
                     }
 
-                    if (UserName != "") {
+                    if (UserName != "null" && UserName != null && UserName != "") {
                         $('#lblUserDetail').html("Welcome " + UserName + ", ");
                         document.getElementById('hypMyAccount').style.display = 'inline';
                         document.getElementById('hypMyAccount').setAttribute('href', '/default.aspx?tabid=' + tabId);
@@ -264,7 +264,7 @@ window.opener.document.cookie = name + "=" + escape(value) +
                     }
                     if (document.cookie.length > 0) {
                         userFirstName = GetCookie('REMUSERNAME');
-                        if (userFirstName != "null") {
+                        if (userFirstName != "null" && userFirstName != null && userFirstName != "") {
                             $('#lblUserDetail').html("Welcome " + userFirstName + ", ");
                             document.getElementById('hypMyAccount').style.display = 'inline';
                             document.getElementById('hypMyAccount').setAttribute('href', '/default.aspx?tabid=' + tabId);

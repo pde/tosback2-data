@@ -658,7 +658,7 @@ var setupSayt = function(cx,
   var emitSaytEvent = function(action, label, nonInteraction) {
     if (window['_gaq']) {
       window['_gaq'].push(
-          ['_trackEvent', 'GCS', action, label, null, null, nonInteraction]);
+          ['_trackEvent', 'GCS', action, label, null, nonInteraction]);
     }
   }
 
@@ -669,7 +669,7 @@ var setupSayt = function(cx,
       return;
     }
     hasSearchBoxInput = true;
-    emitSaytEvent('SearchBox', 'hasInput', false);
+    emitSaytEvent('SearchBox', 'hasInput', true);
   }
 
   var input = document.getElementById(searchText);

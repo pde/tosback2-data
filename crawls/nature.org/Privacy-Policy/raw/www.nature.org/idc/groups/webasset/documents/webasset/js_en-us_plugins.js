@@ -1920,7 +1920,12 @@ window.log = function(){
 // place any jQuery/helper plugins in here, instead of separate, slower script files.
 
 jQuery(document).ready(function(){
-
+	$('#hp-donation-footer').submit( function() {   
+         var goUrl = 'https://support.nature.org/site/Donation2?11320.donation=form1&df_id=11320' + '&Level=' + $('input[name=level_standardexpanded]:checked', '#hp-donation-footer').val() + '&PREFILL_AMOUNT=' + $('#level_standardexpanded26643amount').val();
+          window.parent.location = goUrl;
+          return false;  
+		   });
+		   
 	jQuery('#rotator').cycle({ 
         prev: '#prev',  
         next: '#next', 

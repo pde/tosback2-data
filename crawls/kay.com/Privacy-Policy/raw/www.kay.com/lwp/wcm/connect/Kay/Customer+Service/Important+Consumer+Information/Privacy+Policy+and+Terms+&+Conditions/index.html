@@ -3,10 +3,23 @@
 		<html>
 	 
 <head>
-	
+<!-- Begin Monetate tag v6. Place at start of document head. DO NOT ALTER. -->
+<script type="text/javascript">
+var monetateT = new Date().getTime();
+(function() {
+    var p = document.location.protocol;
+    if (p == "http:" || p == "https:") {
+        var m = document.createElement('script'); m.type = 'text/javascript'; m.async = true; m.src = (p == "https:" ? "https://s" : "http://") + "b.monetate.net/js/1/a-4d70b29d/p/kay.com/" + Math.floor((monetateT + 3231389) / 3600000) + "/g";
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
+    }
+})();
+</script>
+<!-- End Monetate tag. -->
 <flow:fileRef id="vfileColor" fileId="vfile.color"></flow:fileRef>
 <flow:fileRef id="StyleDir" fileId="StyleDir"></flow:fileRef>
 <flow:fileRef id="vfileStylesheet" fileId="vfile.stylesheet"></flow:fileRef>
+
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 
 			<title>Engagement Rings, Wedding Rings, Diamonds, Charms. Jewelry from Kay Jewelers, your trusted Jewelry Store</title>
 			<meta name="description" content="Shop our selection of engagement rings, wedding rings, diamonds, gemstones, metals, watches and more.  Kay Jewelers carries a wide selection of looks, from classic to modern"/>    
@@ -66,7 +79,82 @@
 	<script type="text/javascript" src="../../../../../../../js/CommonFunctions.js" language="JavaScript"></script>	
 </head>
 <body>
-	<!-- BEGIN CommonJSToInclude.jspf --> 
+<!--  Top Tracking --><!-- pageName: TopCategoriesDisplay -->
+<script language='JavaScript'>
+// setting the intial sdl variables to blank -->
+var	sdl_OrderId = '';
+var	sdl_StoreId = '';
+var sdl_totalAmout = '';
+var sdl_totalAmountTax = '';
+var sdl_city = '';
+var sdl_state = '';
+var sdl_zip = '';
+var sdl_country = 'USA';
+var sdl_quantity = '1';
+var sdl_currency = 'USD';
+var sdl_orderItems = new Array();
+var sdl_orderItem = new Object();
+sdl_orderItem.sku = '';
+sdl_orderItem.adjustedPrice = '';
+sdl_orderItem.retailPrice = ''; //TODO
+sdl_orderItem.description = '';
+sdl_orderItem.category = '';
+
+
+
+
+// setting Google data layer to blank 
+var gtm_pagetype = '';
+var gtm_pcat = '';
+var gtm_prodid = '';
+var gtm_pname = '';
+var gtm_pvalue = '';
+
+
+
+
+		
+		gtm_pagetype='home';
+		gtm_pcat= '';
+		gtm_prodid= '';
+		gtm_pname = '';
+		gtm_pvalue = '';
+	
+
+
+// Google Data Layer 
+dataLayer = [];
+if( sdl_orderItems != null && sdl_orderItems.length > 0 ) {
+	console.log ('sdl_orderItems loop - '+sdl_orderItem.sku);
+	for (var i = 0; i < sdl_orderItems.length; i++) {
+		dataLayer.push({ 
+			prodid: sdl_orderItems[i].sku,
+			pagetype: gtm_pagetype,
+			pname: sdl_orderItems[i].name,
+			pcat: sdl_orderItems[i].category,
+			value: sdl_orderItems[i].adjustedPrice});
+	}
+} else {
+	dataLayer.push({ 
+		prodid: gtm_prodid,
+		pagetype: gtm_pagetype,  
+		pname: gtm_pname,
+		pcat: gtm_pcat,
+		value: gtm_pvalue});
+}
+
+</script>
+
+
+<noscript><iframe src="../../../../../../../../www.googletagmanager.com/ns.html%3Fid=GTM-K8PH.html"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K8PH');</script>
+
+<!-- BEGIN CommonJSToInclude.jspf --> 
 
 <script type="text/javascript">
 var absoluteURL = "";
@@ -684,26 +772,26 @@ function search(){
 				//document.write('<div class="accent"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+ "<span class=\"link\">" + apply + "</span>" +'</a></div>');
 			}else{
 				document.write('<span class="accent">Hi ' + displayName+ ',&nbsp;</span>');
-				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="1">Not&nbsp;'+displayName+'?</a>');
+				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="10">Not&nbsp;'+displayName+'?</a>');
 				document.write('<span class="spacer">&nbsp;</span>');
-				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="2">Sign Out</a>');
+				document.write('<a class="link" href="http://www.kay.com/en/Logoff?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;URL=LogonForm" tabindex="20">Sign Out</a>');
 				if (parseInt(creditAmt) > 0){  // case when the customer is registered and has non-zero Sterling Account OTB
-					document.write('<span id = "hideCredit" style="display:"><span class="accent credit">Available Credit: $' + creditAmt+'</span><span class="spacer">&nbsp;</span><a class="link" href="index.html#" onclick="toggle_visibility(\'hideCredit\',\'viewCredit\'); return false;" tabindex="3">Hide</a></span>');
-					document.write('<span id = "viewCredit" style="display:none"><a onmouseover=\'this.style.cursor="pointer" \' onfocus=\'this.blur();\' onclick="toggle_visibility(\'viewCredit\',\'hideCredit\');" href="index.html#" class="accent credit" tabindex="4">View Your Available Credit</a></span>');
+					document.write('<span id = "hideCredit" style="display:"><span class="accent credit">Available Credit: $' + creditAmt+'</span><span class="spacer">&nbsp;</span><a class="link" href="index.html#" onclick="toggle_visibility(\'hideCredit\',\'viewCredit\'); return false;" tabindex="30">Hide</a></span>');
+					document.write('<span id = "viewCredit" style="display:none"><a onmouseover=\'this.style.cursor="pointer" \' onfocus=\'this.blur();\' onclick="toggle_visibility(\'viewCredit\',\'hideCredit\');" href="index.html#" class="accent credit" tabindex="40">View Your Available Credit</a></span>');
 					//document.write('<a href="index.html#" onclick="toggle_visibility(\'otbamount\'); return false;">View your Available Credit</a>');
 				}else if(creditDen == true){ //case when customer is registered and his account is under review or Denied, Apply for credit should not be displayed.
 				}else if(parseInt(creditAmt) == 0){  // case when customer is registred and has no credit account associated
 			   	     var apply="Apply for Kay Credit";
-					 document.write('<div class="accent credit"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+ "<span class=\"link\">&nbsp;" + apply + "</span>" +'</a></div>'); 
+					 document.write('<div class="accent credit"><a href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="50">'+ "<span class=\"link\">&nbsp;" + apply + "</span>" +'</a></div>'); 
 				}else{  // case when the customer has sterling account registered but the OTB ==0 or less than threshhold. 
 				
 				}
 			}				
 		}else{ // guest user
-			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="2">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
+			document.write('<a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="20">Sign In</a> <span class="spacer">&nbsp;&nbsp;</span>'); 
 			var apply="Apply for Kay Credit";
 			//document.write('<a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')">'+  apply + '</a>');
-			document.write('<div class="accent credit_guest"><a class="link" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="5">'+  apply + '</a></div>'); 
+			document.write('<div class="accent credit_guest"><a class=\"link\" href="index.html#" onclick="creditAppWindow(\'CreditApplicationView?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;applyLoc=\')" tabindex="50">'+  apply + '</a></div>'); 
 		}
 
 
@@ -712,12 +800,12 @@ function search(){
 
 
 	<div class="utility_nav_fix right">
-	<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/TrackOrderStatus?storeId=10101&amp;catalogId=10001&amp;langId=-1" tabindex="5.5" >Order Status</a></h4>
+	<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/TrackOrderStatus?storeId=10101&amp;catalogId=10001&amp;langId=-1" tabindex="55" >Order Status</a></h4>
 	<span class="spacer">&nbsp;</span>
 		<script language="javascript">
 			var storenumber = getStoreNumber();
 			if (storenumber == null ){
-				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="6">My Account</a></h4><span class="spacer">&nbsp;</span>');
+				document.write('<h4 class="modal modal-ie"><a class="link" href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;errorViewName=LogonForm" tabindex="60">My Account</a></h4><span class="spacer">&nbsp;</span>');
 			}
 		</script>
 		
@@ -728,7 +816,7 @@ function search(){
 
 
 <div class="modal self-controlled">
-	<h4 id="miniRecentHeader" class="wa_normal link" tabindex="7">Recently Viewed (0)</h4>
+	<h4 id="miniRecentHeader" class="wa_normal link" tabindex="70">Recently Viewed (0)</h4>
 	<div class="modal-diag iefix">
 		
 				<div class="modal-content">
@@ -757,7 +845,7 @@ function search(){
 					<div dojoType="wc.widget.RefreshArea" id="CompareCollector" widgetId="CompareCollector" controllerId="CompareCollectorController" onmouseover="showMiniCompareDropDown('compareBar','quick_compare_container','compareItemsList');" role="wairole:region" waistate:live="polite" waistate:atomic="true" waistate:relevant="all">
 						
 
-<a class="link" tabindex="8" id="compareBar" waistate:controls="CompareDisplay"  href='index.html#' >
+<a class="link" tabindex="80" id="compareBar" waistate:controls="CompareDisplay"  href='index.html#' >
 		<h4 id="miniCompareBody" class="wa_normal">
 			Compare(0)
 		</h4>
@@ -794,7 +882,7 @@ function search(){
 		<!-- Wish List start-->
 			<div class="modal modal-ie" id="wishlist-modal">
 				
-						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay&amp;errorViewName=LogonForm" class="link" id="wishListBar" tabindex="9">
+						<a href="http://www.kay.com/en/LogonForm?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=InterestItemDisplay&amp;errorViewName=LogonForm" class="link" id="wishListBar" tabindex="90">
 							<span id="miniWishListBody" class="body">
 								<span class="text strong">
 									Wish List 
@@ -812,7 +900,7 @@ function search(){
 			<div dojoType="wc.widget.RefreshArea" id="MiniShoppingCart" widgetId="MiniShoppingCart" controllerId="MiniShoppingCartController" onmouseover="showMiniShopCartDropDown('shoppingCartBar','quick_cart_container','orderItemsList');" role="wairole:region" waistate:live="polite" waistate:atomic="true" waistate:relevant="all">
 				<!-- BEGIN MiniShopCartDisplay.jsp --><!-- If we get here from a generic error this service will fail so we need to catch the exception -->
 
-<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=LogonForm&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="10" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
+<a href="http://www.kay.com/en/OrderCalculate?langId=-1&amp;storeId=10101&amp;catalogId=10001&amp;URL=OrderItemDisplay&amp;errorViewName=LogonForm&amp;updatePrices=1&amp;calculationUsageId=-1&amp;calculationUsageId=-2&amp;calculationUsageId=-3&amp;calculationUsageId=-4&amp;calculationUsageId=-5&amp;calculationUsageId=-6&amp;calculationUsageId=-7&amp;orderId=." class="link" tabindex="100" id="shoppingCartBar" waistate:controls="ShopCartDisplay"   onKeyPress="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');" onclick="showMiniShopCartDropDown1(event,'placeHolder','quick_cart_container','orderItemsList');">
 		<h4 id="miniShopCartBody" class="wa_normal">
 			Shopping Bag(0)
 		</h4>
@@ -905,7 +993,7 @@ function search(){
 
  
 <div class="logo">
-	  	<a href="index.html"/>
+	  	<a href="index.html" tabindex="310"/>
 		
 	 			<h1><img src="../../../../../../../img/shared/header/logo_kay.jpg" width="158" height="95" border="0" alt="Kay Jewelers, the Jewelry Store for Rings, Diamonds, Gemstones, Watches and More" /></h1>
 			
@@ -931,7 +1019,7 @@ function search(){
 	
 		<div class="tool">
 		  	<div class="storelocator" id="storebuttonarea">
-				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=-1&landing=1" tabindex="25">FIND A STORE</a>
+				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=-1&landing=1" tabindex="250">FIND A STORE</a>
 			</div>
 			
 			
@@ -970,7 +1058,7 @@ function search(){
 		</div>
 		
 	<div class="tool iefix-chat">
-		<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" tabIndex=24> 
+		<a id="live_chat" style="display:none" class="chat usertype_storeUser" href="javascript:void(0)" tabIndex=240> 
 			<img id="chatHeaderImage" border="0" style="margin: -6px 0 -2px;"/> 
 		</a>
 		<div style="position:absolute;top:-9999px;left:-9999px;">
@@ -1047,7 +1135,7 @@ function search(){
 			    		var storeNumber = getStoreNumber();
 						if (storeNumber == null ){
 							document.write('800-527-8029');
-							document.write('<a id="contact_us" class="usertype_storeUser" href="index.html#dialogCS" name="ContactUsModal" tabindex="23">Contact Us</a>');
+							document.write('<a id="contact_us" class="usertype_storeUser" href="index.html#dialogCS" name="ContactUsModal" tabindex="230">Contact Us</a>');
 						}
 			    	</script>
 					</div>
@@ -1068,8 +1156,8 @@ function search(){
 					<span id="searchTextHolder" class="nodisplay"></span>
 					<span class="spanacce"></span>
 					
-					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="Search by Stock # or Keyword" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="search" tabindex="21"/>
-					<input type="submit" onclick="return validateSearchSubmit();" aria-label="search" value=" " tabindex="22">
+					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="Search by Stock # or Keyword" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="search" tabindex="210"/>
+					<input type="submit" onclick="return validateSearchSubmit();" aria-label="search" value=" " tabindex="220">
 					<div id="autoSuggest_Container">
 						<div id="autoSuggest_Result_div" class="autoSuggestBox1" onmouseover="autoSuggestHover = true;" onmouseout="autoSuggestHover = false; document.getElementById('SimpleSearchForm_SearchTerm').focus();" style="display:none;">
 							<div class="autoSuggestBox autoSuggest_wrapper">
@@ -1186,10 +1274,18 @@ function search(){
 </div>	
  	
 
-<div class="espot-header">
+<div class="espot-header" id="espotheader">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<p style="font-family: Myriad Pro,VegurMedium,Arial,sans-serif;"><strong>Hundreds of NEW Styles Now Online!</strong> (<a href="http://www.kay.com/SearchResultsView?Ntt=Y&amp;storeId=10101&amp;searchText=new+online&amp;Ntk=New&amp;langId=-1&amp;catalogId=10001&amp;ddkey=http:SterlingSearch&amp;CM_SP=glo_banner-_-new_online-_-shop_now" style="display:inline;font-size: 75%;text-decoration: underline;">Shop Now</a>)</p><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<p style="font-family: Myriad Pro,VegurMedium,Arial,sans-serif;"><strong>Shop & Ship Your Way! FREE SHIPPING to your home or nearby Kay store.</strong> (<a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=4_12_13_5_5_13_kay_free_shipping_promotion&amp;cm_sp=glo_banner-_-free_shipping-_-learn_more" style="display:inline;font-size: 75%;text-decoration: underline;">Learn More</a>)</p>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
+
+<script type="text/javascript">
+	$(function() {
+		$('#espotheader a').attr("tabindex","410");
+		$('#espotheader p a').attr("tabindex","410");
+	});
+</script>
 
 <div class="homecontent clearfix "> 
 	
@@ -1204,35 +1300,36 @@ function search(){
 </script> 
 <div role="main" aria-label="main content">
 <div class="clear"></div>
-<div class="sbanner">
+<div class="sbanner" id="banner_tab">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<img src="../../../../../../../espots/hero/KHERO1_2014-3157_04082013.jpg" alt="Stackable Rings" width="1000" height="433" border="0" usemap="#Stacksmap" style="position: absolute; top: 0; left:0;" />
-    <map name="Stacksmap" id="Stacksmap">
-      <area shape="rect" coords="297,144,442,193" href="http://www.kay.com/en/kaystore/stackable-rings-100363/1003630000/100112/1/0/0/0/100112.100114.100363?CM_SP=hp_hero-_-stackable_rings-_-shop_now" alt="Shop Now" title="Shop Now" />
+	<img src="../../../../../../../espots/hero/KHERO1_V2_2014-3197_04112013.jpg" alt="Charmed Memories&reg;" width="1000" height="433" border="0" usemap="#CMmap" style="position: absolute; top: 0; left:0;" />
+    <map name="CMmap" id="CMmap">
+      <area shape="rect" coords="493,352,638,401" href="http://www.kay.com/en/kaystore/charmed-memories%C2%AE/1000820000/100063/1/0/0/0/100063.100066.100082?CM_SP=hp_hero-_-charmed_memories-_-shop_now" alt="Shop Now" title="Shop Now" />
     </map><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
-	<div class="sbanner1">
+	<div class="sbanner1" id="banner_tab">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/categoryProductsAll%7C10101%7C10001%7C-1%7C100113%7C1001130000%7C1%7C0%7C%7C%7C100112%7C100112.100113?CM_SP=hp_espot-_-personalized_jewelry-_-side_1"><img src="../../../../../../../espots/carousel/KESPOT1_2014-3157_04082013.jpg" width="253" height="129" alt="Personalized Jewelry" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/categoryProductsAll%7C10101%7C10001%7C-1%7C100113%7C1001130000%7C1%7C0%7C%7C%7C100112%7C100112.100113?CM_SP=hp_espot-_-personalized_jewelry-_-side_1"><img src="../../../../../../../espots/carousel/KESPOT1_2014-3197_04112013.jpg" width="253" height="129" alt="Personalized Jewelry" border="0"></a>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
-	<div class="sbanner2">
+	<div class="sbanner2" id="banner_tab">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/gifts-for-mom/1003710000/100101/1/0/0/0/100101.100102.100371?CM_SP=hp_espot-_-gifts_for_mom-_-side_2"><img src="../../../../../../../espots/carousel/KESPOT2_2014-3156_04012013.jpg" width="253" height="129" alt="mother's day gifts" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
-	<div class="sbanner3">
+	<div class="sbanner3" id="banner_tab">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/neil-lane-designs-100061--1/1000610000/100020/1/0/0/0/100020.100023.100061?CM_SP=hp_espot-_-nl_designs-_-side_3"><img src="../../../../../../../espots/carousel/KESPOT3_2014-3157_04082013.jpg" width="253" height="129" alt="Neil Lane Designs" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/neil-lane-designs-100061--1/1000610000/100020/1/0/0/0/100020.100023.100061?CM_SP=hp_espot-_-nl_designs-_-side_3"><img src="../../../../../../../espots/carousel/KESPOT3_2014-3197_04112013.jpg" width="253" height="129" alt="Neil Lane Designs" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 </div>
 <div id="mw_hidden_content" style="display:none;">
 <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/charmed-memories%C2%AE/1000820000/100063/1/0/0/0/100063.100066.100082?CM_SP=hp_hero-_-charmed_memories-_-shop_now"><img data-src="http://www.kay.com/img/mobile/hero/Kmobile_2014-3157_04082013.jpg" border="0" alt="charmed memories" ></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/charmed-memories%C2%AE/1000820000/100063/1/0/0/0/100063.100066.100082?CM_SP=hp_hero-_-charmed_memories-_-shop_now"><img data-src="http://www.kay.com/img/mobile/hero/Kmobile_2014-3197_04112013.jpg" border="0" alt="charmed memories" ></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
 <div class="container_39 clearfix" >
 	<!-- CMS-START : CMS driven Content --><!--  Home Page Browse our Jewelry --><!-- Start- JSP File Name: CMSContentSpotDisplay.jsp -->    	<div class="browsebg">
 		    <h3 class="home-title-bold">Shop Our Jewelry </h3>
 		</div>
 	    	<hr class="dottedline" />
-		<div class="grid_39 bottom_space_5 container_39 browseitems">		
+		<div class="grid_39 bottom_space_5 container_39 browseitems" id="browse_jewelery_tab">		
 <div class="grid_7 alpha">
 <a href="http://www.kay.com/SearchResultsView?searchRefinement=true&amp;itemsPerPage=20&amp;catalogId=10001&amp;globalSearchText=rings+nav&amp;Ne=1&amp;N=4294967209&amp;langId=-1&amp;Ns=New%257C1%257C%257CNumberSoldOnline%257C1%257C%257CProduct+Offer+Price%257C1&amp;searchText=rings+nav&amp;storeId=10101&amp;ddkey=http:SterlingSearch" target="_top" >
 <img alt="Rings" src="../../../../../../../static_assets/media/kay/kay_homepage_images/kay_homepage_visualnav_rings.jpg"/>
@@ -1287,23 +1384,23 @@ function search(){
         <h3 class="title-bold wa_center">Browse Our Designers and Collections</h3>
         <hr class="dottedline">
         <div class="grid_39 bottom_space_3">
-	        <div class="grid_7 alpha">
+	        <div class="grid_7 alpha" id="feature_espot_tab">
 	            <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/tolkowsky%C2%AE/1000170000/100006/1/0/0/0/100006.100008.100017?CM_SP=d_c-_-tolkowsky-_-spot_1"><img src="../../../../../../../espots/collections/KDC1_2014-3157_04082013.jpg" width="180" height="150" alt="Tolkowsky" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
             </div>
-		<div class="grid_7 prefix_1">
+		<div class="grid_7 prefix_1" id="feature_espot_tab">
 	       	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/be-by-charmed-memories%C2%99/1003660000/100063/1/0/0/0/100063.100066.100366?CM_SP=d_c-_-be_by_cm-_-spot_2"><img src="../../../../../../../espots/collections/KDC2_2014-3157_04082013.jpg" width="180" height="150" alt="BE" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
-        <div class="grid_7 prefix_1">
+        <div class="grid_7 prefix_1" id="feature_espot_tab">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/shades-of-wonder%C2%99-100348/1003480000/100020/1/0/0/0/100020.100023.100348?CM_SP=d_c-_-shades_of_wonder-_-spot_3"><img src="../../../../../../../espots/collections/KDC3_2014-3157_04082013.jpg" width="180" height="150" alt="Shades of Wonder" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
-		<div class="grid_7 prefix_1">
+		<div class="grid_7 prefix_1" id="feature_espot_tab">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/open-hearts-by-jane-seymour%C2%AE/1000530000/100020/1/0/0/0/100020.100023.100053?CM_SP=d_c-_-open_hearts_diamonds-_-spot_4"><img src="../../../../../../../espots/collections/KDC4_2014-3157_04082013.jpg" width="180" height="150" alt="Open Hearts by Jane Seymour" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
-		<div class="grid_7 prefix_1 omega">
+		<div class="grid_7 prefix_1 omega" id="feature_espot_tab">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
 	<a href="http://www.kay.com/en/kaystore/le-vian%C2%AE-bridal/1003310000/100006/1/0/0/0/100006.100008.100331?CM_SP=d_c-_-levian_bridal-_-spot_5"><img src="../../../../../../../espots/collections/KDC5_2014-3157_04082013.jpg" width="180" height="150" alt="Levian Bridal" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
@@ -1311,6 +1408,16 @@ function search(){
 	<div>&nbsp;</div>
 </div>
 </div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#banner_tab a').attr("tabindex","510");	
+		$('#banner_tab area').attr("tabindex","510");	
+		$('#browse_jewelery_tab a').attr("tabindex","610");
+		$('#feature_espot_tab a').attr("tabindex","810");
+	});
+</script>
+
 
 <link href="../../../../../../../css/emailForm.css" rel="stylesheet" type="text/css" />	
 
@@ -1662,7 +1769,7 @@ function search(){
 	}
 </script>
 <!-- CMS-START : Footer --><!-- Start- JSP File Name: CMSContentSpotDisplay.jsp --><div class="footer-tools">
-<a href="http://www.kay.com/CatalogRequest?langId=-1&amp;storeId=10101&amp;catalogId=10001" class="shop-our-catalog" target="_top"> <span>Shop Our Catalog</span> </a>
+<a href="http://www.kay.com/CatalogRequest?langId=-1&amp;storeId=10101&amp;catalogId=10001" class="shop-our-catalog" target="_top" tabindex="910"> <span>Shop Our Catalog</span> </a>
 <h3 id="formErrors-label" style="font-weight: normal;">
 <div role="complementary" aria-labelledby="formErrors-label" class="errordiv" style="color:red;" id="errorMessagesJavaScript"></div>
 </h3>
@@ -1671,8 +1778,8 @@ function search(){
 <form method="POST" name="EmailSignup" id="EmailSignup">
 <label for="signup-offers" class="access">Search site:</label>
 <input type="text" onfocus="if(this.value=='Enter your email address')this.value='';" name="email" id="email"
-value='Enter your email address'>
-<input type="submit" value="" class="submit" id="btn-submit" aria-label="click to sign up for special offers">
+value='Enter your email address' tabindex="970">
+<input type="submit" value="" class="submit" id="btn-submit" aria-label="click to sign up for special offers" tabindex="980">
 </form>
 </div>
 <label class="footer-label" for="email">Sign up for special offers and gift ideas</label>
@@ -1680,9 +1787,9 @@ value='Enter your email address'>
 </div>
 <ul class="footer-links active clearfix" role="contentinfo" aria-label="footer navigation menu">
 <li class="footer-link footer-link-cust-service">
-<a class="expand" href="index.html">&nbsp;</a>
-<h2><a href="index.html" class="link expandSectionHeader">CUSTOMER SERVICE</a></h2>
-<div class="footer-link-modal clearfix">
+<a class="expand" href="index.html" tabindex="1010">&nbsp;</a>
+<h2><a href="index.html" class="link expandSectionHeader" tabindex="1010">CUSTOMER SERVICE</a></h2>
+<div class="footer-link-modal clearfix" id="footer_tab">
 <div class="left">
 <p class="phone">
 800-527-8029
@@ -1714,8 +1821,8 @@ value='Enter your email address'>
 </div>
 </li>
 <li class="footer-link footer-link-our-company">
-<h2><a class="link expandSectionHeader" href="index.html">OUR COMPANY</a></h2>
-<div class="footer-link-modal clearfix">
+<h2><a class="link expandSectionHeader" href="index.html" tabindex="1010">OUR COMPANY</a></h2>
+<div class="footer-link-modal clearfix" id="footer_tab">
 <div class="left footer-small-section">
 <ul>
 <li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=about_kay_1">About Kay</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=careers">Careers</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=kay_experts">Kay Experts</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=consumer-information">Consumer Information</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=philanthropy">Kay Philanthropy</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=kay_trusted_partners">Trusted Partners</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=st__jude_children_s_research_hospital">Kay & St Jude</a></li>
@@ -1725,8 +1832,8 @@ value='Enter your email address'>
 </div>
 </li>
 <li class="footer-link footer-link-legal">
-<h2><a class="link expandSectionHeader" href="index.html">LEGAL</a></h2>
-<div class="footer-link-modal clearfix">
+<h2><a class="link expandSectionHeader" href="index.html" tabindex="1010">LEGAL</a></h2>
+<div class="footer-link-modal clearfix" id="footer_tab">
 <div class="left footer-small-section">
 <ul>
 <li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=privacy-policy">Privacy Policy</a></li><li><a href="http://www.kay.com/CreditTermsView?langId=-1&amp;storeId=10101&amp;catalogId=10001">Kay Credit Terms & Conditions</a></li><li><a href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=legal-disclaimer">Legal Disclaimers</a></li>
@@ -1736,20 +1843,20 @@ value='Enter your email address'>
 </div>
 </li>
 <li class="footer-link footer-link-social">
-<h2><a class="link expandSectionHeader"><span class="usertype_storeUser">GET CONNECTED & SHARE</span></a></h2>
+<h2><a class="link expandSectionHeader" tabindex="1010"><span class="usertype_storeUser">GET CONNECTED & SHARE</span></a></h2>
 <div class="footer-link-modal">
 <div class="social-list clearfix">
 <div class="social usertype_storeUser" style="block">
 <a href="https://www.facebook.com/KayJewelers" target="_blank"
 onclick="javascript:cmCreateElementTag('Facebook Likes','Facebook Likes','');cmCreateManualLinkClickTag('Facebook Likes','Facebook Likes','');"
->
+tabindex="1010">
 <img src="../../../../../../../static_assets/media/kay/kay_social_media/footer_1/icon_facebook.png" alt="FaceBook"/>
 </a>
 </div>
 <div class="social usertype_storeUser" style="block">
 <a href="https://www.twitter.com/KayJewelers" target="_blank"
 onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmCreateManualLinkClickTag('Twitter Follow','Twitter Follow','');"
->
+tabindex="1010">
 <img src="../../../../../../../static_assets/media/kay/kay_social_media/footer_1/icon_twitter.png" alt="Twitter"/>
 </a>
 </div>
@@ -1792,6 +1899,7 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 				});
 			}
 		}		
+		$('#footer_tab div ul li a').attr("tabindex","1010");
 	});
 </script>
 <!-- this code needs to go in CMS 
@@ -1896,6 +2004,7 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 
 
 			
+
 </div>
 
 
@@ -1964,7 +2073,7 @@ $(document).ready(function() {
 			
 			<td align="right">
 				<div align="center">
-				<a id="bbblink" target="_blank" class="sehzbum" href="http://www.bbb.org/akron/business-reviews/jewelers-retail/sterling-in-akron-oh-1479#bbblogo" title="Sterling Inc., Jewelers - Retail, Akron, OH" style="display: block;position: relative;overflow: hidden; width: 150px; height: 57px; margin: 0px; padding: 0px;">
+				<a id="bbblink" target="_blank" class="sehzbum" href="http://www.bbb.org/akron/business-reviews/jewelers-retail/sterling-in-akron-oh-1479#bbblogo" title="Sterling Inc., Jewelers - Retail, Akron, OH" style="display: block;position: relative;overflow: hidden; width: 150px; height: 57px; margin: 0px; padding: 0px;" tabindex="1110">
 					<img style="padding: 0px; border: none;" id="bbblinkimg" src="../../../../../../../../seal-akron.bbb.org/logo/sehzbum/sterling-1479.png" width="300" height="57" alt="Sterling Inc., Jewelers - Retail, Akron, OH" />
 				</a>
 				<script type="text/javascript">var bbbprotocol = ( ("https:" == document.location.protocol) ? "https://" : "http://" ); document.write(unescape("%3Cscript src='" + bbbprotocol + 'seal-akron.bbb.org' + unescape('%2Flogo%2Fsterling-1479.js') + "' type='text/javascript'%3E%3C/script%3E"));</script>
@@ -1981,8 +2090,8 @@ $(document).ready(function() {
 			<td align="right">
         		<div align="center">
 					
-							<script src="../../../../../../../../seal.verisign.com/getseal%3Fhost_name=www.kay.com&amp;size=S&amp;use_flash=NO&amp;use_transparent=NO&amp;lang=en"></script>
-							<br /><a href="http://www.verisign.com/ssl-certificate/" target="_blank" >ABOUT SSL CERTIFICATES</a>
+							<script src="../../../../../../../../seal.verisign.com/getseal%3Fhost_name=www.kay.com&amp;size=S&amp;use_flash=NO&amp;use_transparent=NO&amp;lang=en" tabindex="1170"></script>
+							<br /><a href="http://www.verisign.com/ssl-certificate/" target="_blank" tabindex="1180">ABOUT SSL CERTIFICATES</a>
 											
 				</div>
           	</td>
@@ -2003,5 +2112,33 @@ $(document).ready(function() {
 <!-- HTML5 enabling script for older IE browsers --><!--[if lt IE 9]>
 	<script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<!-- Steelhouse start -->
+   	<script type="text/javascript">
+	function shencode(s){if(s!=undefined){s=s.replace(/%/g,'%25%32%35');s=s.replace(/\\/g,'%5C');s=s.replace(/\'/g,'%27');s=s.replace(/\"/g,'%22');s=s.replace(/\?/g,'%25%33%46');s=s.replace(/&/g,'%25%32%36');s=s.replace(/\+/g,'%25%32%42');}return s;}(function(){var steelhouse=null,shver="3.3.1",
+	shaid="10046",
+	shpn=shencode(""),
+	shpc=shencode(""),
+	shpp="",
+	shpb=shencode(""),
+	shpi="",
+	shps="",
+	shpil="",
+	shcv="",
+	shcq="",
+	shcp="",
+	shadditional="",
+	tdr,urlNew,plh;try{tdr=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,256)):"";}catch(tdr_e){tdr=document.referrer!==null?document.referrer.toString().substring(0,256):"";}try{urlNew=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location;}catch(urlNew_e){urlNew=document.location;}try{plh=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,256)):"";}catch(plh_e){try{plh=urlNew!==null?encodeURIComponent(urlNew.toString().substring(0,256)):"";}catch(urlNew_e1){plh="";}}shpi=encodeURIComponent(shpi);steelhouse={add:function(a,b,c,d){d=d||false;if(a.addEventListener){a.addEventListener(b,c,d);}else{if(a.attachEvent){a.attachEvent("on"+b,c);}}},load:function(){var a,b=document.createElement("script"),c=null,d=document.getElementsByTagName("script"),e=Number(d.length)-1,f=document.getElementsByTagName("script")[e];if(typeof a==="undefined"){a=Math.floor(Math.random()*100000000000000000);}c="px.steelhousemedia.com/st?shver="+shver+"&shaid="+shaid+"&shcv="+shcv+"&shcq="+shcq+"&shcp="+shcp+"&shpn="+shpn+"&shpc="+shpc+"&shpp="+shpp+"&shpb="+shpb+"&shpi="+shpi+"&shps="+shps+"&shpil="+shpil+"&tdr="+tdr+"&plh="+plh+"&cb="+a+shadditional;b.type="text/javascript";b.src=("https:"===document.location.protocol?"https://":"http://")+c;f.parentNode.insertBefore(b,f);}};steelhouse.load();}());
+	</script>
+	<!-- Steelhouse ends --><!-- Pointroll start -->
+    <script language='JavaScript'>
+	var prd=new Date(),pru=Date.UTC(prd.getUTCFullYear(),prd.getUTCMonth(),prd.getUTCDay(),prd.getUTCHours(),prd.getUTCMinutes(),prd.getUTCSeconds(),prd.getUTCMilliseconds());
+	var pr_eid=pru+Math.random();
+	var pr_event='';
+	var pr_item='';
+	var pr_quantity='';
+	var pr_value='';
+	document.write("<iframe width='0' height='0' frameborder='0' src='../../../../../../../../container.pointroll.com/event/index.html%3Fctid=4BCEFAA8-4DF5-40E8-B9AB-7A2C7B3FFE0B&amp;av=6341&amp;eid=%2522+pr_eid+%2522&amp;ev=%2522+pr_event+%2522&amp;item=%2522+pr_item+%2522&amp;q=%2522+.html'></iframe>");
+	</script>
+    <!-- Pointroll end -->
 </body>
 </html>

@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,3,10,12,19,27,0);
+var tvgServerTimeUTC = new Date(2013,3,13,12,18,29,0);
 
-var dServerET = new Date(2013,3,10,8,19,27,0);
+var dServerET = new Date(2013,3,13,8,18,29,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,3,10);
-dSrvrTime.setUTCHours(12,19,27,0);
+dSrvrTime.setUTCFullYear(2013,3,13);
+dSrvrTime.setUTCHours(12,18,29,0);
 
-var dLocalTime = new Date(2013,3,10,8,19,27,0);
-var dGridStart = new Date(2013,3,10,8,0,0,0);
+var dLocalTime = new Date(2013,3,13,8,18,29,0);
+var dGridStart = new Date(2013,3,13,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 8ac5b8c4d67f419fde43ec7dd4464a03e9421090 1365596367';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= ec5619a33065e25149cad9b48f35eccb3ca96390 1365855509';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,27 +50,27 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 4/10/2013 12:00:00 PM GMT */
+/* TVGSVC02 4/13/2013 12:15:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-04-10)*/
+/* Listings: In-Grid and Close-Up Ads (2013-04-13)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/CSS_Top_ON_TVGuide_2.jpg";
-var magicBotImage = "/listings/images/topchan/CSS_Bottom_SUN_NIGHTS_2.jpg";
-var magicLogo = "/listings/images/topchan/CSS_Middle_2.jpg";
-var magicLink = "https://www.facebook.com/TVGuideNetwork/app_267214680054828";
-var magicBkgnd = "#FFFFFF";
-var magicTextClr = "#FFFFFF";
-var magicLeftOffset = 640;
-var magicSources = [4678,12013];
+var magicTopImage = "";
+var magicBotImage = "";
+var magicLogo = "";
+var magicLink = "";
+var magicBkgnd = "";
+var magicTextClr = "";
+var magicLeftOffset = 0;
+var magicSources = [0];
 var magicIDtype = 0;
 var magicRepeat = true;
-var magicHpImage = "/listings/images/topchan/TVGuide-Network-100x40.jpg";
-var magicHpBkgnd = "#CD2833";
+var magicHpImage = "";
+var magicHpBkgnd = "";
 var magicTrackingPixel = "";
 var magicChannelLocation = "top";
 
@@ -86,9 +86,9 @@ franchiseCheckin.ProgramTitle = "";
 franchiseCheckin.EpisodeTitle = "";
 franchiseCheckin.ObjectUrl = "";
 franchiseCheckin.CallLetters = "";
-franchiseCheckin.StartTime = "198001010000";
+franchiseCheckin.StartTime = "";
 franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 500;
+franchiseCheckin.LeftOffset = 0;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");

@@ -27,7 +27,7 @@ function renderEarningsList() {
 
 function renderQuarterlyTabs() {
 	document.write('<ul id="navContainer" class="tabs">'
-					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2011">4Q 2012</a></li>'
+					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2012">4Q 2012</a></li>'
 					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2012">3Q 2012</a></li>'
 					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
 					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'

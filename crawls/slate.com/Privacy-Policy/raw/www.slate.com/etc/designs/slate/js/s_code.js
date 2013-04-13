@@ -35,6 +35,24 @@ when instructed to do so by your account manager.*/
 s.visitorNamespace="wpni"
 //s.vmk="46899301"
 
+
+function trackSocialShare(evr,evt) {
+	s.events += (evt) ? ","+evt: ",event6";
+	s.eVar67 = (evr) ? evr: "NA";
+	s.linkTrackVars = "eVar67,events";
+	s.linkTrackEvents = "event6";
+	s.tl(true,'o','Social Share');
+}
+
+function trackCopyShare(evr,evt) {
+	s.events += (evt) ? ","+evt: ",event61";
+	s.eVar34 = (evr) ? evr: "NA";
+	s.linkTrackVars = "eVar34,events";
+	s.linkTrackEvents = "event61";
+	s.tl(true,'o','Copy Share');
+}
+
+
 /* Plugin Config */
 s.usePlugins=true
 
@@ -43,6 +61,19 @@ function s_doPlugins(s)
 {
 /* Add calls to plugins here */
     var URL=window.location.host+window.location.pathname;	
+
+	/* Right Rail Split Test */
+    var treatment;
+    treatment = $.cookie("rr-split");
+    if (treatment) {
+    	if (treatment === ".") {
+    		treatment = "Null Hypothesis";
+    	} else {
+    		treatment = "Treatment " + treatment.replace(/\./g,"");
+    	}
+    	s.prop27 = treatment;
+    }
+
 	/* External Campaigns: getQueryParam */
 		if(window.location.href.indexOf('wpsrc')>=0){
         	s.campaign=s.getQueryParam('wpsrc')

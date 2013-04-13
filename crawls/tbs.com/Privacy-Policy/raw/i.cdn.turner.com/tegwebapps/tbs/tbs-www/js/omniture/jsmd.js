@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.236.2661.20130325",
+	version: "tbs.240.2661.20130408",
 	release: "0",
 	dictionary: {
 		init: {
@@ -618,7 +618,7 @@ var _jsmd_default={
 				eventmap: {
 					"video.start":				["event32"],
 					"video.complete":			["event33"],
-					"video.autostart":			["event34"],
+					"video.autostart":			["event34", "event32"],
 					"video.preroll":			["event35"],
 					"video.duration_watched":	["event36"]
 				},
@@ -1665,7 +1665,9 @@ var _jsmd_default={
 								this.set("business.tbs.full_ep",v.franchise + "|clip - " + v.headline + prepID);
 							}else if(TeamCocoOmniture.vidType == "full"){
 								this.set("business.tbs.full_ep",v.franchise + "|full episode - " + v.headline + prepID);
-							}
+							} else if(TeamCocoOmniture.vidType == "Live Video Stream") {
+                            		this.set("business.tbs.full_ep",v.franchise + "|live stream - " + v.headline + prepID);
+                            }
 						}
 					}
 				}else if(window.location.hostname.indexOf("tbs") > -1){
@@ -4239,7 +4241,7 @@ function trackNielsenVideoCensusBeacon(config,state,videoId,videoTitle,duration)
 	nVC.videoTitle=videoTitle;
 	_jsmd.doImageBeacon(url,nVC);
 }
-/*  Nielsen Online SiteCensus V6.0 */
+/*  Nielsen Online SiteCensus V6.0 */ 
 
 var NielsenHybridTag=function(){
 	function doNielsen(a) {

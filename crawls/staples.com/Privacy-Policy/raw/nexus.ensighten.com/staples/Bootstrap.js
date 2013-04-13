@@ -20,6 +20,8 @@ Bootstrapper.getServerComponent=function(){var uberGroup=Bootstrapper.Cookies.ge
 var u=window.location.href,data={et1Value:et1};for(i in data){var c=~u.indexOf("#")?u.slice(u.indexOf("#"),u.length):"",u=u.slice(0,c.length?u.length-c.length:u.length),u=u+(~u.indexOf("?")?"&":"?");for(k in data)u+=k+"="+data[k]+"&";u=u.slice(0,-1)+c;break;}
 o=window.ensightenOptions;Bootstrapper.insertScript(Bootstrapper.options.scLoc+"?clientID="+o.clientId+"&PageID="+encodeURIComponent(u));};Bootstrapper.getQueryParam=function anonymous(q){var loc=window.location.search;loc=loc.slice((~loc.indexOf('?')?1:0),~loc.indexOf('#')?loc.indexOf('#'):loc.length);loc=loc.split('&')
 for(var i=0;i<loc.length;i++){var t=loc[i].split('=');if(t.length&&t[0]==q){return t[1];}}
-return'';};}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='7553;49771;50778';
+return'';};}catch(e){Bootstrapper.reportException(e);}try{Bootstrapper.setCurrentRuleId(69888);if(typeof console!='undefined'&&typeof console.log=='function'){console.log('Ensighten rule 69888: Gomez RUM');}
+var gomez={gs:new Date().getTime(),acctId:'AA37A7',pgId:'skuskuset',grpId:'prod'};(function(){if(location.host=='www.staples.com'){var exp="/product_";var lpath=location.pathname;var pattern1=new RegExp(exp,"i");var result1=(lpath.match(pattern1))?true:false;$.log('['+result1+']Tested skupage');if(result1===true||lpath.indexOf('StaplesProductDisplay')>-1){if(typeof console!='undefined'&&typeof console.log=='function'){console.log('Found target page - building request for gomez script');}
+var script=document.createElement('script');script.setAttribute("type","text/javascript");script.setAttribute("src","/sbdpas/js/gomez_bootstrap.js");document.head.appendChild(script);}}})();;}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='7553;49771;50778;69888';
 	Bootstrapper.getServerComponent();
 }

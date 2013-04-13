@@ -3811,8 +3811,7 @@ TNF.assisted_search = {
 		
 		// Add the handler for focus and blur default value
 		if( ! TNF.assisted_search._emptyValue ) {
-		    /*ZCG: Added changes to remove spaces if a user enters to the start or end of a searchTerm 
-		     and not allow space being passed as a searchTerm to EasyAsk*/
+		    /* ZCG: Trim whitespace from search term, and do not allow whitespace as a search term */
 			TNF.assisted_search._emptyValue = $.trim($('#nav .search-input').val());
 		}
 		$('#nav .search-input').bind('focus', function(event){
@@ -3857,8 +3856,7 @@ TNF.assisted_search = {
 		});
 	},
 	gotoSearchPage: function() {
-		/*ZCG: Added changes to remove spaces if a user enters to the start or end of a searchTerm 
-		     and not allow space being passed as a searchTerm to EasyAsk*/
+		/* ZCG: Trim whitespace from search term, and do not allow whitespace as a search term */
 		if ( $.trim(TNF.assisted_search._widget.val()).length > 0 && TNF.assisted_search._widget.val() != TNF.assisted_search._emptyValue ) {
 			/** ZCG: encode search term to prevent truncation when special characters like & are included */
 			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+encodeURIComponent($.trim(TNF.assisted_search._widget.val()));

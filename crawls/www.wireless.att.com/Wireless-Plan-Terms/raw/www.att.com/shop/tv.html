@@ -147,6 +147,11 @@ var mRedirectURL = '';
 <!--[if IE 7]> 
 <link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
+<!--[if IE]> 
+<style type="text/css"> 
+	#wrapper {margin-top:20px;} 
+</style> 
+<![endif]--> 
 	    <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/styles/tabs.css"/>  
     <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/styles/shop-styles.css"/>  
     <link rel="stylesheet" type="text/css" href="../../1.ecom.attccc.com/media/cms/shop/styles/shop-styles-extra.css"/> 
@@ -166,6 +171,17 @@ CQURLInfo = {
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+    <script type="text/javascript"> 
+jQuery(function(){ 
+if(jQuery.browser.msie && jQuery.browser.version < 9){ 
+if(jQuery('input[type=tel]').parents().is('span') && jQuery('input[type=tel]').parents().hasClass('textInput-wrapper') ){ 
+}else{ 
+jQuery('input[type=tel]').wrap('<span class="textInput-wrapper"/>'); 
+jQuery('input[type=tel]').wrap('<span>'); 
+ } 
+  } 
+});  
+</script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 </head> 
 <!-- Add author only code below --> 
@@ -263,6 +279,237 @@ CQURLInfo = {
 	}; 
 	var globalNavResourceParams = {'globalItem': 'Personal','render': '010000','primaryItem': '010000','secondaryItem': '013000','platform': 'shop','p_linkChangeClass': 'openModal localModal'}; 
 </script> 
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script> 
+<script> 
+	/* 
+		US9344 Upgrade Browser Message 
+		Get/Set Cookie Function for Upgrade Browser Message Checking 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	function getCookie(name) { 
+		var dc = document.cookie; 
+		var prefix = name + "="; 
+		var begin = dc.indexOf("; " + prefix); 
+		if (begin == -1) { 
+			begin = dc.indexOf(prefix); 
+			if (begin != 0) return null; 
+		} 
+		else 
+		{ 
+			begin += 2; 
+			var end = document.cookie.indexOf(";", begin); 
+			if (end == -1) { 
+			end = dc.length; 
+			} 
+		} 
+		return unescape(dc.substring(begin + prefix.length, end)); 
+	}  
+	function acknowledgeBrowserSupportSeen() { 
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/"; 
+	} 
+	/* 
+		US9344 Upgrade Browser Message 
+		Browser Detect JS Function 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	var BrowserDetect = { 
+		init: function () { 
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser"; 
+			this.version = this.searchVersion(navigator.userAgent) 
+				|| this.searchVersion(navigator.appVersion) 
+				|| "an unknown version"; 
+			this.OS = this.searchString(this.dataOS) || "an unknown OS"; 
+		}, 
+		searchString: function (data) { 
+			for (var i=0;i<data.length;i++)	{ 
+				var dataString = data[i].string; 
+				var dataProp = data[i].prop; 
+				this.versionSearchString = data[i].versionSearch || data[i].identity; 
+				if (dataString) { 
+					if (dataString.indexOf(data[i].subString) != -1) 
+						return data[i].identity; 
+				} 
+				else if (dataProp) 
+					return data[i].identity; 
+			} 
+		}, 
+		searchVersion: function (dataString) { 
+			var index = dataString.indexOf(this.versionSearchString); 
+			if (index == -1) return; 
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1)); 
+		}, 
+		dataBrowser: [ 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Chrome", 
+				identity: "Chrome" 
+			}, 
+			{ 	string: navigator.userAgent, 
+				subString: "OmniWeb", 
+				versionSearch: "OmniWeb/", 
+				identity: "OmniWeb" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Apple", 
+				identity: "Safari", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				prop: window.opera, 
+				identity: "Opera", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "iCab", 
+				identity: "iCab" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "KDE", 
+				identity: "Konqueror" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Firefox", 
+				identity: "Firefox" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Camino", 
+				identity: "Camino" 
+			}, 
+			{		// for newer Netscapes (6+) 
+				string: navigator.userAgent, 
+				subString: "Netscape", 
+				identity: "Netscape" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "MSIE", 
+				identity: "Explorer", 
+				versionSearch: "MSIE" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Gecko", 
+				identity: "Mozilla", 
+				versionSearch: "rv" 
+			}, 
+			{ 		// for older Netscapes (4-) 
+				string: navigator.userAgent, 
+				subString: "Mozilla", 
+				identity: "Netscape", 
+				versionSearch: "Mozilla" 
+			} 
+		], 
+		dataOS : [ 
+			{ 
+				string: navigator.platform, 
+				subString: "Win", 
+				identity: "Windows" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Mac", 
+				identity: "Mac" 
+			}, 
+			{ 
+				   string: navigator.userAgent, 
+				   subString: "iPhone", 
+				   identity: "iPhone/iPod" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Linux", 
+				identity: "Linux" 
+			} 
+		] 
+	}; 
+</script> 
+<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+		/*  
+			US9344 Initialize Browser Detect Script  
+			Used to detect the browser name, version and OS 
+		*/ 
+		BrowserDetect.init(); 
+		/*  
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked 
+		*/ 
+		jQuery('#ge5p_z0-close-box-container').click(function(){ 
+			/* Check if upgrade message browser container is visible */ 
+		    if(jQuery('.ge5p_z0-message-container').is(':visible')) 
+		    { 
+		        /* yes - close it */ 
+		        jQuery(".ge5p_z0-message-container").slideToggle(); 
+		    } 
+		    /* Set GNSESS Cookie */ 
+		    acknowledgeBrowserSupportSeen(); 
+		}); 
+		/*  
+		    US9344 Use Modernizr to detect IE browser by hash change feature  
+		*/ 
+		if (!Modernizr.hashchange) { 
+			/*  
+		        IE Browsers found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Explorer') { 
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
+				if(BrowserDetect.version < 7) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist 
+						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+					} 
+		        } 
+		    }  
+		} else { 
+		    /*  
+		        Modern Browsers are found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
+	}); 
+</script> 
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container"> 
+    <div class="ge5p_z0-browser-alert-message"> 
+        <div class="ge5p_z0-browser-alert-inner"> 
+            <h2>Pages Don't Look Right?</h2> 
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p> 
+            <ul class="ge5p_z0-browser-alert-browser-list"> 
+                <li> 
+                    <a href="../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a> 
+                </li> 
+            </ul> 
+            <div class="clear"></div> 
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container"> 
+                <div class="ge5p_z0-close-box-text">Close</div> 
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
 <div id="globalNav" class="en_US hardRock"> 
 	<div id="globalNavInterface" class="ecom"> 
 				<div id="segMenuBar"> 
@@ -270,10 +517,19 @@ CQURLInfo = {
 					<a href="tv/index.html#wrapper" id="pageID" rel="res">Skip navigation</a> 
 					<div id="segcenterSpan"></div> 
 					<ul class="segMenu" id="leftSegMenu"> 
-						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../index.html"><span>Personal</span></a></li> 
+						<li> 
+							<a id="segMenuItemPersonal" class="segMenuItem " href="../index.html"><span>Personal</span></a> 
+							<div class="segSubMenu" id="segSubMenuPersonal"> 
+								<ul> 
+											<li><a href="../index.html">att.com</a></li> 
+											<li><a href="../../www.att.net/index.html">att.net</a></li> 
+											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+								</ul> 
+							</div> 
+						</li> 
 						<li> 
 							<a id="segMenuItemBusiness" class="segMenuItem " href="../gen/general%3Fpid=11627.html"><span>Business</span></a> 
-							<div class="segSubMenu" > 
+							<div class="segSubMenu" id="segSubMenuBusiness"> 
 								<ul> 
 											<li><a href="../gen/landing-pages%3Fpid=9213.html">Small Business</a></li> 
 											<li><a href="../gen/landing-pages%3Fpid=9214.html">Enterprise Business</a></li> 
@@ -285,12 +541,12 @@ CQURLInfo = {
 						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="../gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
 					</ul> 
 					<ul class="segMenu" id="rightSegMenu"> 
-						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../www.wireless.att.com/coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Wireless Coverage Maps<span class="segMenuNewWin">&nbsp;</span></span></a></li> 
 						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../storelocator/index.html"><span>Find a Store</span></a></li> 
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="tv/index.html#"><span> 
 									Language 
 								</span></a> 
-							<div class="segSubMenu"> 
+							<div class="segSubMenu" id="segSubMenuLanguage"> 
 								<ul> 
 															<li><a href="http://www.att.com/shop/es/tv.html?locale=es_US"><span lang="es_US">P&aacute;gina en Espa&ntilde;ol</span></a></li> 
 													<li><a href="../../espanol.att.com/index.html" target="_blank"><span>Sitio en Espa&ntilde;ol</span></a></li> 
@@ -316,12 +572,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="wireless.html" name="Shop_Wireless" >Wireless</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Phones &amp; Devices</h3> 
 																		<ul class="trayNoBullet"> 
@@ -333,7 +584,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Services</h3> 
 																		<ul class="trayNoBullet"> 
@@ -345,7 +596,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>More...</h3> 
 																		<ul class="trayNoBullet"> 
@@ -357,7 +608,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -373,12 +624,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="bundles.html" name="Shop_Bundles" >Bundles</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles with U-verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -389,7 +635,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles without U&#8209;verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -399,7 +645,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -413,12 +659,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Channels</h3> 
 																		<ul class="trayNoBullet"> 
@@ -429,7 +670,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -437,7 +678,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -454,12 +695,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="internet/index.html" name="Shop_Internet" >Internet</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -470,7 +706,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -479,7 +715,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Extras</h3> 
 																		<ul class="trayNoBullet"> 
@@ -489,7 +725,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -503,12 +739,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -519,7 +750,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -528,7 +759,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -543,12 +774,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="u-verse.html" name="Shop_U-verse" >U-verse</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2012/global/nav/uverse_189x200.png' alt='U-verse' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Digital TV</h3> 
 																		<ul class="trayNoBullet"> 
@@ -560,7 +786,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Internet</h3> 
 																		<ul class="trayNoBullet"> 
@@ -570,7 +796,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Home Phone</h3> 
 																		<ul class="trayNoBullet"> 
@@ -580,7 +806,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -653,6 +879,11 @@ CQURLInfo = {
 	<!-- main content of page --> 
 	<div id="wrapper"> 
 		<div id="main-container"> 
+<div class="breadcrumb gutter uverse"> 
+    <div class="breadcrumb"> 
+    <a href="../index.html" data-cqpath="/content/att/shop/en/tv/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="index.html" data-cqpath="/content/att/shop/en/tv/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;Digital TV 
+    </div> 
+</div> 
 <div class="base admgr marqueePromo"> 
 <script src="../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script><div class="page-title-container"> 
 	    <div class="page-title"> 
@@ -660,7 +891,7 @@ CQURLInfo = {
 	    </div> 
 		<div id="marquee" class="w650"> 
 		    <div class="marquee parbase teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red","name":"red","campainName":"admanager-marquee","id":"admanager-marquee_red","segments":["/shopcms/shopetc/segmentation/UF/segmnts/l9-uverse-red","/shopcms/shopetc/segmentation/UF/segmnts/l13-uverse-red","/shopcms/shopetc/segmentation/UF/segmnts/red-nodsl-22"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red1","name":"red1","campainName":"admanager-marquee","id":"admanager-marquee_red1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/ipdsl22","/shopcms/shopetc/segmentation/UF/segmnts/uversegreen-iptv-notavailable"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red11","name":"red11","campainName":"admanager-marquee","id":"admanager-marquee_red11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uversegreen-iptv-notavailable"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green11","name":"green11","campainName":"admanager-marquee","id":"admanager-marquee_green11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/green-dma807-sfran-oaklnd-sjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-south-central","name":"green-south-central","campainName":"admanager-marquee","id":"admanager-marquee_green-south-central","segments":["/shopcms/shopetc/segmentation/UF/segmnts/South_Central_Region_UV_Green"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-california-offers","name":"green-california-offers","campainName":"admanager-marquee","id":"admanager-marquee_green-california-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_UVG"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-16-state-offers1","name":"green-16-state-offers1","campainName":"admanager-marquee","id":"admanager-marquee_green-16-state-offers1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/UV_Promo4979_UVG"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green","name":"green","campainName":"admanager-marquee","id":"admanager-marquee_green","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/currentuverse","name":"currentuverse","campainName":"admanager-marquee","id":"admanager-marquee_currentuverse","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-uverse"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default11","name":"default11","campainName":"admanager-marquee","id":"admanager-marquee_default11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/dma807-sanfran-oakland-sanjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-south-central","name":"default-south-central","campainName":"admanager-marquee","id":"admanager-marquee_default-south-central","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SC_Region_All"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-california-offers","name":"default-california-offers","campainName":"admanager-marquee","id":"admanager-marquee_default-california-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_Prospect"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-16-state-offers","name":"default-16-state-offers","campainName":"admanager-marquee","id":"admanager-marquee_default-16-state-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/UV_Promo4979_Prospect"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default","name":"default","campainName":"admanager-marquee","id":"admanager-marquee_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_tv_jcr_content_admgr_marquee", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red","name":"red","campainName":"admanager-marquee","id":"admanager-marquee_red","segments":["/shopcms/shopetc/segmentation/UF/segmnts/l9-uverse-red","/shopcms/shopetc/segmentation/UF/segmnts/l13-uverse-red","/shopcms/shopetc/segmentation/UF/segmnts/red-nodsl-22"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red1","name":"red1","campainName":"admanager-marquee","id":"admanager-marquee_red1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/ipdsl22","/shopcms/shopetc/segmentation/UF/segmnts/uversegreen-iptv-notavailable"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/red11","name":"red11","campainName":"admanager-marquee","id":"admanager-marquee_red11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uversegreen-iptv-notavailable"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-south-central","name":"green-south-central","campainName":"admanager-marquee","id":"admanager-marquee_green-south-central","segments":["/shopcms/shopetc/segmentation/UF/segmnts/South_Central_Region_UV_Green"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-16-state-offers1","name":"green-16-state-offers1","campainName":"admanager-marquee","id":"admanager-marquee_green-16-state-offers1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/UV_Promo4979_UVG","/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_UVG","/shopcms/shopetc/segmentation/UF/segmnts/green-dma807-sfran-oaklnd-sjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green","name":"green","campainName":"admanager-marquee","id":"admanager-marquee_green","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/currentuverse","name":"currentuverse","campainName":"admanager-marquee","id":"admanager-marquee_currentuverse","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-uverse"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-south-central","name":"default-south-central","campainName":"admanager-marquee","id":"admanager-marquee_default-south-central","segments":["/shopcms/shopetc/segmentation/UF/segmnts/Mobility_SC_Region_All"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-16-state-offers","name":"default-16-state-offers","campainName":"admanager-marquee","id":"admanager-marquee_default-16-state-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/UV_Promo4979_Prospect","/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_Prospect","/shopcms/shopetc/segmentation/UF/segmnts/dma807-sanfran-oakland-sanjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default","name":"default","campainName":"admanager-marquee","id":"admanager-marquee_default","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green11","name":"green11","campainName":"admanager-marquee","id":"admanager-marquee_green11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/green-dma807-sfran-oaklnd-sjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/green-california-offers","name":"green-california-offers","campainName":"admanager-marquee","id":"admanager-marquee_green-california-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_UVG"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default-california-offers","name":"default-california-offers","campainName":"admanager-marquee","id":"admanager-marquee_default-california-offers","segments":["/shopcms/shopetc/segmentation/UF/segmnts/California_Excluding_SanFran_Prospect"],"tags":[]},{"path":"/shopcms/campaigns/att/en/DigitalTV/admanager-marquee/default11","name":"default11","campainName":"admanager-marquee","id":"admanager-marquee_default11","segments":["/shopcms/shopetc/segmentation/UF/segmnts/dma807-sanfran-oakland-sanjose"],"tags":[]}], "first", "_content_att_shop_en_tv_jcr_content_admgr_marquee", "false", null);  }</script> 
          <div id="_content_att_shop_en_tv_jcr_content_admgr_marquee" class="campaign campaign-admanager-marquee"> 
          </div><div class="clear"></div> 
 </div> 
@@ -722,8 +953,8 @@ for life.<br>
     <div class="bg-mid-shadow">  
         <div id="content"> 
             <div style="display:inline;margin-top:5px;"> 
-				<div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
-                <div class="clear" style="display:inline"></div> 
+                <div id="lpButtonDiv-2" class="lpDiv-lob"></div> 
+                <div class="clear"></div> 
             </div>             
             <div class="primary-content-full"> 
                 <div class="LoBT"> 
@@ -1990,17 +2221,15 @@ from AT&amp;T U-verse.</p>
 <script type="text/javascript"> 
     jQuery(document).ready(function() { 
     // clear the form on click, restore on blur 
-        jQuery('.clear-input').click(function() {            
-            default_value=" Enter your email"; 
-            jQuery(this).focus(function(){ 
+           default_value=" Enter your email"; 
+            jQuery('.clear-input').focus(function(){ 
                 if (jQuery(this).val() == default_value){jQuery(this).val("")}; 
             }); 
-            jQuery(this).blur(function(){ 
+            jQuery('.clear-input').blur(function(){ 
                 if (jQuery(this).val() == ""){jQuery(this).val(default_value)}; 
-            }) 
         }); 
     }); 
-</script>     
+</script>   
 <div id="stayConnectedID" class="box tile optIn">  
     <div class="w418 padding20"> 
         <p><b>Stay in the know!</b> Sign up for updates on hot deals & new products</p>  
@@ -2222,7 +2451,7 @@ from AT&amp;T U-verse.</p>
 												 | 
 												<a href="../internal/broadbandinfo.html" style="" data-cqpath="/content/att/shop/en/tv/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/tv/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/tv/jcr:content/globalfooter">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/shop/en/tv/jcr:content/globalfooter"> 
@@ -2249,7 +2478,7 @@ from AT&amp;T U-verse.</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 328468434609222883814914639655905522038 --> 
+		 <!--X-Renderer: 290089745737189739715489033913346810439 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -2258,24 +2487,26 @@ from AT&amp;T U-verse.</p>
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="289" /> 
+	<meta name="DCSext.wt_aka_georegion" content="246" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="WA" /> 
-<meta name="DCSext.wt_aka_city" content="SEATTLE" /> 
-<meta name="DCSext.wt_aka_dma" content="819" /> 
-<meta name="DCSext.wt_aka_pmsa" content="7600" /> 
-<meta name="DCSext.wt_aka_msa" content="7602" /> 
-<meta name="DCSext.wt_aka_areacode" content="206" /> 
-<meta name="DCSext.wt_aka_county" content="KING" /> 
-<meta name="DCSext.wt_aka_fips" content="53033" /> 
-<meta name="DCSext.wt_aka_lat" content="47.5010" /> 
-<meta name="DCSext.wt_aka_long" content="-122.358" /> 
+<meta name="DCSext.wt_aka_region_code" content="CA" /> 
+<meta name="DCSext.wt_aka_city" content="SANFRANCISCO" /> 
+<meta name="DCSext.wt_aka_dma" content="807" /> 
+<meta name="DCSext.wt_aka_pmsa" content="7360" /> 
+<meta name="DCSext.wt_aka_msa" content="7362" /> 
+<meta name="DCSext.wt_aka_areacode" content="415+650" /> 
+<meta name="DCSext.wt_aka_county" content="SANFRANCISCO+SANMATEO" /> 
+<meta name="DCSext.wt_aka_fips" content="06075+06081" /> 
+<meta name="DCSext.wt_aka_lat" content="37.7753" /> 
+<meta name="DCSext.wt_aka_long" content="-122.4186" /> 
 <meta name="DCSext.wt_aka_timezone" content="PST" /> 
-<meta name="DCSext.wt_aka_zip" content="98101-98109+98111-98112+98114-98119+98121-98122+98124-98126+98129+98131-98134+98136+98138+98144-98146+98148+98154-98155+98158+98160-98161+98164+98166+98168+98170+98174+98177-98178+98181+98185+98188+98190-98191+98195+98198-98199" /> 
+<meta name="DCSext.wt_aka_zip" content="94102-94105+94107-94112+94114-94134+94137+94139-94147+94151+94153-94154+94156+94159-94164+94171-94172+94177+94188" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
-<meta name="DCSext.wt_aka_throughput" content="low" /> 
-<meta name="DCSext.wt_aka_bw" content="1" /> 
-<meta name="DCSext.wt_aka_asnum" content="14618" /> 
+<meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
+<meta name="DCSext.wt_aka_bw" content="5000" /> 
+<meta name="DCSext.wt_aka_network" content="att" /> 
+<meta name="DCSext.wt_aka_asnum" content="20057" /> 
+<meta name="DCSext.wt_aka_network_type" content="mobile" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -2298,9 +2529,9 @@ jQuery(document).ready(function () {
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
 ATT.globalVars.ban = ""; 
-ATT.globalVars.flowIndicator = "AL"; 
+ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "93286"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -2311,15 +2542,15 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="93286"; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "AL"){ 
-		flowType ="AL"; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
@@ -2393,7 +2624,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "WOODLAKE"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -2402,7 +2633,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "CA"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -2431,19 +2662,22 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
     jQuery(document).ready(function(){ 
         jQuery.when(reporting_ready).then(function() { 
         	setTimeout(function () { 
-	        	ATT.globalVars.wtFull(); 
-	        	ATT.checkPromo(); 
-	            ATT.log('dcs injection block'); 
-	            var s = document.createElement("script"); 
-	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
-	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
-	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
-	            // Use any selector 
-	            jQuery("head")[0].appendChild(s); 
-				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
-				if (window.JSAM) 
-				JSAM.Stat.reportReady(); 
+	        	if (typeof pb_ready == "undefined"){ pb_ready = new jQuery.Deferred(); pb_ready.resolve();} 
+				jQuery.when(pb_ready).then(function() { 
+					ATT.globalVars.wtFull(); 
+					ATT.checkPromo(); 
+					ATT.log('dcs injection block'); 
+					var s = document.createElement("script"); 
+					s.type = "text/javascript"; 
+					s.src = "//www.att.com/webtrends/scripts/dcs_tag.js"; 
+					s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+					s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+					// Use any selector 
+					jQuery("head")[0].appendChild(s); 
+					//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+					if (window.JSAM) 
+					JSAM.Stat.reportReady(); 
+				}); 
         	}, 3000);     
         }); 
     }); 
@@ -2480,7 +2714,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","pPjBRk5TW33hTMGMfHQKbmqs!-1074654926!1365571923989"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","5hBkRyXJj9wVrhRGq0zLG63b!1958123338!1365825513527"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

@@ -42,7 +42,7 @@ var mktSlider = {
                             "pl-pl" : "Udostępnij",
                             "tr-tr" : "Paylaş",
                             "zh-cn" : "分享",
-                            "ar-ww" : "حصة",
+                            "ar-ww" : "شارك",
                             "ja-jp" : "シェア",
 														"ru-ru" : "Поделиться"
                         }

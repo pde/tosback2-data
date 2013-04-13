@@ -24,7 +24,7 @@ callback3517=Bootstrapper.new_fArray();callback11987=Bootstrapper.new_fArray();c
 _n=_n.previousSibling;}
 p=t+(c!=1?'['+c+']':'')+p;}
 n=n.parentNode;}
-return'/HTML'+p;};;}catch(e){Bootstrapper.reportException(e);}try{Bootstrapper.setCurrentRuleId(23582);var mboxtarget=document.location.search;if((mboxtarget.indexOf('pn=HT_WS_KidsWorkshops')>-1)||(mboxtarget.indexOf('pn=HT_WS_DIHWorkshops')>-1)||(mboxtarget.indexOf('pn=HT_WS_WeeklyWorkshops'))>-1)
+return'/HTML'+p;};if(window.console&&console.log){console.log('c-irg');if(typeof($)==='undefined'){console.log('-jquery not defined');if(window.top.location!==window.location){console.log('-in iframe');if(window.top.jQuery){jQuery=window.top.jQuery;console.log('-referencing jQuery in iframe from top');}}}};}catch(e){Bootstrapper.reportException(e);}try{Bootstrapper.setCurrentRuleId(23582);var mboxtarget=document.location.search;if((mboxtarget.indexOf('pn=HT_WS_KidsWorkshops')>-1)||(mboxtarget.indexOf('pn=HT_WS_DIHWorkshops')>-1)||(mboxtarget.indexOf('pn=HT_WS_WeeklyWorkshops'))>-1)
 {try{console.log('mbox create calling');mboxCreate('homedepot_content_mbox');console.log('mbox create calling');}catch(e){console.log('mbox create error:',e);}};}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='5223;23582';
 	Bootstrapper.getServerComponent();
 }

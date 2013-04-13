@@ -855,10 +855,33 @@ if(!window.YAHOO){
 </script>
 
 <!-- Adding jQuery and PCO3 and NEW DFPP ad controller-->
-<script src="../../../d.imwx.com/managedfe/js/jquery/jquery-1.7.1-IE7-twccore.min.js"></script>
+<script src="../../../d.imwx.com/managedfe/js/jquery/jquery-1.7.2-IE7-twccore.min.js"></script>
 <script src="../../../j.imwx.com/v.20120508.0/common/header/javascript/yui_modules_header_startup.js"></script>
 <script src="../../../d.imwx.com/services/pco"></script>
 <script src="../../weather/mpdwcr/hugmedata"></script>
+
+<!-- Optimizely call  -->
+<script type="text/javascript">
+var domain = document.location.hostname;
+var optimizely  = "";
+if(domain=="www.weather.com"){ // PROD Environmet
+	optimizely  = "177031030";
+} else if(domain.indexOf("qc.weather.com") != -1){ // QC Environmet
+	optimizely  = "177031032";
+} else if(domain.indexOf("dev.weather.com") != -1){ // Dev Environmet
+	optimizely  = "181481676";
+} else if(domain.indexOf("b.weather.com")!= -1){ // BETA Environmet
+	optimizely  = "176871976";
+} else if(domain.indexOf("r.weather.com")!= -1){ // Regression Environmet
+	optimizely  = "176983430";
+} else if(domain.indexOf("s.weather.com")!= -1){ //  Staging Environmet
+	optimizely  = "176945749";
+} else {  // Default value - PROD Environmet
+	optimizely  = "177031030";
+}
+document.write('<scr'+'ipt type="text/javascript" src="//cdn.optimizely.com/js/' + optimizely + '.js" ></scr'+'ipt>');
+</script>
+<!-- End Optimizely call  -->
 
 <script>
 'TWC' in window || (window.TWC = {});

@@ -147,11 +147,27 @@ var mRedirectURL = '';
 <!--[if IE 7]> 
 <link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
+<!--[if IE]> 
+<style type="text/css"> 
+	#wrapper {margin-top:20px;} 
+</style> 
+<![endif]--> 
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+    <script type="text/javascript"> 
+jQuery(function(){ 
+if(jQuery.browser.msie && jQuery.browser.version < 9){ 
+if(jQuery('input[type=tel]').parents().is('span') && jQuery('input[type=tel]').parents().hasClass('textInput-wrapper') ){ 
+}else{ 
+jQuery('input[type=tel]').wrap('<span class="textInput-wrapper"/>'); 
+jQuery('input[type=tel]').wrap('<span>'); 
+ } 
+  } 
+});  
+</script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 	<style type="text/css"> 
 html body div#globalNav {height: 65px;} 
@@ -653,7 +669,7 @@ html body{margin:0px;width:100%;padding-top:0px;}
 #tieredNav ul.secondaryMenu li a {color:#333; font-size:14px; padding:0 9px 0 9px; display:block; line-height:30px; height:32px; float:left;} /* font-size:13px to 14px per B2C-102927 */ 
 #tieredNav ul.secondaryMenu li a.selected {background:url("http://1.ecom.attccc.com/images/global/bg-secondary-highlight.gif") no-repeat center bottom;color:#DF7300} 
 #tieredNav ul.secondaryMenu li a:hover {color:#DF7300;} 
-#trayContent {background:url("../../../1.ecom.attccc.com/images/global/bg-tray.png") no-repeat bottom;overflow:hidden;} 
+#trayContent {background:url("http://1.ecom.attccc.com/images/global/bg-tray.png") no-repeat bottom;overflow:hidden;} 
 #trayContent .trayContentItem {overflow:auto;display:none;margin-left:4px;} 
 #trayContent .columnContent img {display:block;margin:auto;width:189px;height:200px;} 
 #trayContent .columnContent h3 {margin-bottom:16px;font-size:16px;color:#666} 
@@ -3085,6 +3101,237 @@ div.blueGradient h4, div.blueGradient2 h4{padding-top:14px; padding-bottom:4px}
 	}; 
 	var globalNavResourceParams = {'globalItem': 'Personal','platform': 'shop'}; 
 </script> 
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script> 
+<script> 
+	/* 
+		US9344 Upgrade Browser Message 
+		Get/Set Cookie Function for Upgrade Browser Message Checking 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	function getCookie(name) { 
+		var dc = document.cookie; 
+		var prefix = name + "="; 
+		var begin = dc.indexOf("; " + prefix); 
+		if (begin == -1) { 
+			begin = dc.indexOf(prefix); 
+			if (begin != 0) return null; 
+		} 
+		else 
+		{ 
+			begin += 2; 
+			var end = document.cookie.indexOf(";", begin); 
+			if (end == -1) { 
+			end = dc.length; 
+			} 
+		} 
+		return unescape(dc.substring(begin + prefix.length, end)); 
+	}  
+	function acknowledgeBrowserSupportSeen() { 
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/"; 
+	} 
+	/* 
+		US9344 Upgrade Browser Message 
+		Browser Detect JS Function 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	var BrowserDetect = { 
+		init: function () { 
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser"; 
+			this.version = this.searchVersion(navigator.userAgent) 
+				|| this.searchVersion(navigator.appVersion) 
+				|| "an unknown version"; 
+			this.OS = this.searchString(this.dataOS) || "an unknown OS"; 
+		}, 
+		searchString: function (data) { 
+			for (var i=0;i<data.length;i++)	{ 
+				var dataString = data[i].string; 
+				var dataProp = data[i].prop; 
+				this.versionSearchString = data[i].versionSearch || data[i].identity; 
+				if (dataString) { 
+					if (dataString.indexOf(data[i].subString) != -1) 
+						return data[i].identity; 
+				} 
+				else if (dataProp) 
+					return data[i].identity; 
+			} 
+		}, 
+		searchVersion: function (dataString) { 
+			var index = dataString.indexOf(this.versionSearchString); 
+			if (index == -1) return; 
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1)); 
+		}, 
+		dataBrowser: [ 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Chrome", 
+				identity: "Chrome" 
+			}, 
+			{ 	string: navigator.userAgent, 
+				subString: "OmniWeb", 
+				versionSearch: "OmniWeb/", 
+				identity: "OmniWeb" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Apple", 
+				identity: "Safari", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				prop: window.opera, 
+				identity: "Opera", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "iCab", 
+				identity: "iCab" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "KDE", 
+				identity: "Konqueror" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Firefox", 
+				identity: "Firefox" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Camino", 
+				identity: "Camino" 
+			}, 
+			{		// for newer Netscapes (6+) 
+				string: navigator.userAgent, 
+				subString: "Netscape", 
+				identity: "Netscape" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "MSIE", 
+				identity: "Explorer", 
+				versionSearch: "MSIE" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Gecko", 
+				identity: "Mozilla", 
+				versionSearch: "rv" 
+			}, 
+			{ 		// for older Netscapes (4-) 
+				string: navigator.userAgent, 
+				subString: "Mozilla", 
+				identity: "Netscape", 
+				versionSearch: "Mozilla" 
+			} 
+		], 
+		dataOS : [ 
+			{ 
+				string: navigator.platform, 
+				subString: "Win", 
+				identity: "Windows" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Mac", 
+				identity: "Mac" 
+			}, 
+			{ 
+				   string: navigator.userAgent, 
+				   subString: "iPhone", 
+				   identity: "iPhone/iPod" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Linux", 
+				identity: "Linux" 
+			} 
+		] 
+	}; 
+</script> 
+<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+		/*  
+			US9344 Initialize Browser Detect Script  
+			Used to detect the browser name, version and OS 
+		*/ 
+		BrowserDetect.init(); 
+		/*  
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked 
+		*/ 
+		jQuery('#ge5p_z0-close-box-container').click(function(){ 
+			/* Check if upgrade message browser container is visible */ 
+		    if(jQuery('.ge5p_z0-message-container').is(':visible')) 
+		    { 
+		        /* yes - close it */ 
+		        jQuery(".ge5p_z0-message-container").slideToggle(); 
+		    } 
+		    /* Set GNSESS Cookie */ 
+		    acknowledgeBrowserSupportSeen(); 
+		}); 
+		/*  
+		    US9344 Use Modernizr to detect IE browser by hash change feature  
+		*/ 
+		if (!Modernizr.hashchange) { 
+			/*  
+		        IE Browsers found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Explorer') { 
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
+				if(BrowserDetect.version < 7) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist 
+						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+					} 
+		        } 
+		    }  
+		} else { 
+		    /*  
+		        Modern Browsers are found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
+	}); 
+</script> 
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container"> 
+    <div class="ge5p_z0-browser-alert-message"> 
+        <div class="ge5p_z0-browser-alert-inner"> 
+            <h2>Pages Don't Look Right?</h2> 
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p> 
+            <ul class="ge5p_z0-browser-alert-browser-list"> 
+                <li> 
+                    <a href="../../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a> 
+                </li> 
+            </ul> 
+            <div class="clear"></div> 
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container"> 
+                <div class="ge5p_z0-close-box-text">Close</div> 
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
 <div id="globalNav" class="en_US hardRock"> 
 	<div id="globalNavInterface" class="ecom"> 
 				<div id="segMenuBar"> 
@@ -3485,7 +3732,7 @@ div.blueGradient h4, div.blueGradient2 h4{padding-top:14px; padding-bottom:4px}
 												 | 
 												<a href="../../internal/broadbandinfo.html" style="" data-cqpath="/content/att/homepage/en/sitemap/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/sitemap/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/sitemap/jcr:content/globalfooter">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/homepage/en/sitemap/jcr:content/globalfooter"> 
@@ -3512,7 +3759,7 @@ div.blueGradient h4, div.blueGradient2 h4{padding-top:14px; padding-bottom:4px}
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 12382282352796795121480657546713343644 --> 
+		 <!--X-Renderer: 204468249531025132137689674532630340781 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -3654,19 +3901,22 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
     jQuery(document).ready(function(){ 
         jQuery.when(reporting_ready).then(function() { 
         	setTimeout(function () { 
-	        	ATT.globalVars.wtFull(); 
-	        	ATT.checkPromo(); 
-	            ATT.log('dcs injection block'); 
-	            var s = document.createElement("script"); 
-	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
-	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
-	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
-	            // Use any selector 
-	            jQuery("head")[0].appendChild(s); 
-				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
-				if (window.JSAM) 
-				JSAM.Stat.reportReady(); 
+	        	if (typeof pb_ready == "undefined"){ pb_ready = new jQuery.Deferred(); pb_ready.resolve();} 
+				jQuery.when(pb_ready).then(function() { 
+					ATT.globalVars.wtFull(); 
+					ATT.checkPromo(); 
+					ATT.log('dcs injection block'); 
+					var s = document.createElement("script"); 
+					s.type = "text/javascript"; 
+					s.src = "//www.att.com/webtrends/scripts/dcs_tag.js"; 
+					s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+					s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+					// Use any selector 
+					jQuery("head")[0].appendChild(s); 
+					//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+					if (window.JSAM) 
+					JSAM.Stat.reportReady(); 
+				}); 
         	}, 3000);     
         }); 
     }); 

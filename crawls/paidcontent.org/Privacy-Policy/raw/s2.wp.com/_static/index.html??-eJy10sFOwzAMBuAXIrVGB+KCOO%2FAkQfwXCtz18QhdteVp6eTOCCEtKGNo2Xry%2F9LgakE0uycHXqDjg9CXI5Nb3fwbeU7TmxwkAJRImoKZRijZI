@@ -1,0 +1,634 @@
+// detect-zoom is dual-licensed under the WTFPL and MIT license,
+// at the recipient's choice.
+// https://github.com/yonran/detect-zoom/
+var DetectZoom = {
+  mediaQueryBinarySearch: function(
+      property, unit, a, b, maxIter, epsilon) {
+    var matchMedia, head, style, div, binarySearch;
+    binarySearch = function(a, b, maxIter) {
+      var mid = (a + b)/2;
+      if (maxIter == 0 || b - a < epsilon) return mid;
+      var query = "(" + property + ":" + mid + unit + ")";
+      if (matchMedia(query).matches) {
+        return binarySearch(mid, b, maxIter-1);
+      } else {
+        return binarySearch(a, mid, maxIter-1);
+      }
+    };
+    if (window.matchMedia) {
+      matchMedia = window.matchMedia;
+    } else {
+      head = document.getElementsByTagName('head')[0];
+      style = document.createElement('style');
+      div = document.createElement('div');
+      div.className = 'mediaQueryBinarySearch';
+      head.appendChild(style);
+      div.style.display = 'none';
+      document.body.appendChild(div);
+      matchMedia = function(query) {
+        style.sheet.insertRule('@media ' + query +
+                               '{.mediaQueryBinarySearch ' +
+                               '{text-decoration: underline} }', 0);
+        var matched = getComputedStyle(div, null).textDecoration
+            == 'underline';
+        style.sheet.deleteRule(0);
+        return {matches:matched};
+      };
+    }
+    var r = binarySearch(a, b, maxIter);
+    if (div) {
+      head.removeChild(style);
+      document.body.removeChild(div);
+    }
+    return r;
+  },
+  _zoomIe7: function() {
+    // the trick: body's offsetWidth was in CSS pixels, while
+    // getBoundingClientRect() was in system pixels in IE7.
+    // Thanks to http://help.dottoro.com/ljgshbne.php
+    var rect = document.body.getBoundingClientRect();
+    var z = (rect.right-rect.left)/document.body.offsetWidth;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomIe8: function() {
+    // IE 8+: no trick needed!
+    // TODO: MSDN says that logicalXDPI and deviceXDPI existed since IE6
+    // (which didn't even have whole-page zoom). Check to see whether
+    // this method would also work in IE7.
+    var zoom = screen.deviceXDPI / screen.logicalXDPI;
+    return {
+      zoom: zoom,
+      devicePxPerCssPx: zoom
+    };
+  },
+  _zoomWebkitMobile: function() {
+    // the trick: window.innerWIdth is in CSS pixels, while
+    // screen.width and screen.height are in system pixels.
+    // And there are no scrollbars to mess up the measurement.
+    var devicePixelRatio = window.devicePixelRatio != null ? window.devicePixelRatio : 1
+      , deviceWidth;
+    if ( Math.abs(window.orientation) == 90 ) {
+      deviceWidth = screen.height;
+    } else {
+      deviceWidth = screen.width;
+    }
+    var z = deviceWidth / window.innerWidth;
+    // return immediately; don't round at the end.
+    return {zoom: z, devicePxPerCssPx: z*devicePixelRatio};
+  },
+  _zoomWebkit: function() {
+    // the trick: an element's clientHeight is in CSS pixels, while you can
+    // set its line-height in system pixels using font-size and
+    // -webkit-text-size-adjust:none.
+    // device-pixel-ratio: http://www.webkit.org/blog/55/high-dpi-web-sites/
+
+    // Previous trick (used before http://trac.webkit.org/changeset/100847):
+    // documentElement.scrollWidth is in CSS pixels, while
+    // document.width was in system pixels. Note that this is the
+    // layout width of the document, which is slightly different from viewport
+    // because document width does not include scrollbars and might be wider
+    // due to big elements.
+
+    var devicePixelRatio = window.devicePixelRatio != null ? window.devicePixelRatio : 1;
+
+    // The container exists so that the div will be laid out in its own flow
+    // while not impacting the layout, viewport size, or display of the
+    // webpage as a whole.
+    var container = document.createElement('div')
+      , div = document.createElement('div');
+    
+    // Add !important and relevant CSS rule resets
+    // so that other rules cannot affect the results.
+    var important = function(str){ return str.replace(/;/g, " !important;"); };
+    
+    container.setAttribute('style', important('width:0; height:0; overflow:hidden; visibility:hidden; position: absolute;'));
+    div.innerHTML = "1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>0";
+    div.setAttribute('style', important('font: 100px/1em sans-serif; -webkit-text-size-adjust: none; height: auto; width: 1em; padding: 0; overflow: visible;'));
+    
+    container.appendChild(div);
+    document.body.appendChild(container);
+    var z = 1000 / div.clientHeight;
+    z = Math.round(z * 100) / 100;
+    var r = {
+      zoom: z,
+      devicePxPerCssPx: devicePixelRatio * z
+    };
+    document.body.removeChild(container);
+    return r;
+  },
+  _zoomFF35: function() {
+    // the trick for FF3.5 ONLY: device-width gives CSS pixels, while
+    // screen.width gave system pixels. Thanks to QuirksMode's widths table,
+    // which called it a bug. http://www.quirksmode.org/m/widths.html
+    var z = screen.width /
+      this.mediaQueryBinarySearch('min-device-width', 'px', 0, 6000, 20, .0001);
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomFF36: function() {
+    // the hack for FF3.6: you can measure scrollbar's width in CSS pixels,
+    // while in system pixels it's 15px (verified in Ubuntu).
+
+    // TODO: verify for every platform that a scrollbar is exactly 15px wide.
+    var container = document.createElement('div')
+      , outerDiv = document.createElement('div');
+    // The container exists so that the div will be laid out in its own flow
+    // while not impacting the layout, viewport size, or display of the
+    // webpage as a whole.
+    container.setAttribute('style', 'width:0; height:0; overflow:hidden;' +
+        'visibility:hidden; position: absolute');
+    outerDiv.style.width = outerDiv.style.height = '500px';  // enough for all the scrollbars
+    var div = outerDiv;
+    for (var i = 0; i < 10; ++i) {
+      var child = document.createElement('div');
+      child.style.overflowY = 'scroll';
+      div.appendChild(child);
+      div = child;
+    }
+    container.appendChild(outerDiv);
+    document.body.appendChild(container);
+    var outerDivWidth = outerDiv.clientWidth;
+    var innerDivWidth = div.clientWidth;
+    var scrollbarWidthCss = (outerDivWidth - innerDivWidth)/10;
+    document.body.removeChild(container);
+    var scrollbarWidthDevice = 15;  // Mac and Linux: scrollbars are 15px wide
+    if (-1 != navigator.platform.indexOf('Win')){
+      scrollbarWidthDevice = 17;
+    }
+    var z = scrollbarWidthDevice / scrollbarWidthCss;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomFF4: function() {
+    // no real trick; device-pixel-ratio is the ratio of device dpi / css dpi.
+    // (Note that this is a different interpretation than Webkit's device
+    // pixel ratio, which is the ratio device dpi / system dpi).
+    // TODO: is mozmm vs. mm promising?
+    var z = this.mediaQueryBinarySearch(
+            'min--moz-device-pixel-ratio',
+            '', 0, 10, 20, .0001);
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomOperaOlder: function() {
+    // 10.00 (or before) to 11.01:
+    // the trick: a div with position:fixed;width:100%'s offsetWidth is the
+    // viewport width in CSS pixels, while window.innerWidth was in system
+    // pixels. Thanks to:
+    // http://virtuelvis.com/2005/05/how-to-detect-zoom-level-in-opera/
+    // TODO: fix bug: when there is a scrollbar, fixed div does NOT
+    // include the scrollbar, while window.outerWidth DOES. This causes the
+    // calculation to be off by a few percent.
+    var fixedDiv = document.createElement('div');
+    fixedDiv.style.position = 'fixed';
+    fixedDiv.style.width = '100%';
+    fixedDiv.style.height = '100%';
+    fixedDiv.style.top = fixedDiv.style.left = '0';
+    fixedDiv.style.visibility = 'hidden';
+    document.body.appendChild(fixedDiv);
+    var z = window.innerWidth / fixedDiv.offsetWidth;
+    document.body.removeChild(fixedDiv);
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  _zoomOpera11: function() {
+    // works starting Opera 11.11
+    // the trick: outerWidth is the viewport width including scrollbars in
+    // system px, while innerWidth is the viewport width including scrollbars
+    // in CSS px; 
+    var z = window.outerWidth / window.innerWidth;
+    z = Math.round(z * 100) / 100;
+    return {zoom: z, devicePxPerCssPx: z};
+  },
+  ratios: function() {
+    var r;
+    if (! isNaN(screen.logicalXDPI) && ! isNaN(screen.systemXDPI) ) {
+      return this._zoomIe8();
+    } else if ('ontouchstart' in window && document.body.style.webkitTextSizeAdjust != null) {
+      return this._zoomWebkitMobile();
+    } else if (document.body.style.webkitTextSizeAdjust != null) {  // webkit
+      return this._zoomWebkit();
+    } else if (-1 != navigator.userAgent.indexOf('Firefox/3.5')) {
+      return this._zoomFF35();
+    } else if (-1 != navigator.userAgent.indexOf('Firefox/3.6')) {
+      return this._zoomFF36();
+    } else if (-1 != navigator.appVersion.indexOf("MSIE 7.")) {
+      return this._zoomIe7();
+    } else if (-1 != navigator.userAgent.indexOf('Opera')) {
+      var versionIdx = navigator.userAgent.indexOf('Version/');
+      if (11.01 < parseFloat(navigator.userAgent.substr(versionIdx + 8)))
+        return this._zoomOpera11();
+      else
+        return this._zoomOperaOlder();
+    } else if (0.001 < (r = this._zoomFF4()).zoom) {
+      return r;
+    } else {
+      return {zoom: 1, devicePxPerCssPx: 1}
+    }
+  },
+  zoom: function() {
+    return this.ratios().zoom;
+  },
+  device: function() {
+    return this.ratios().devicePxPerCssPx;
+  }
+};
+
+var wpcom_img_zoomer = {
+	zoomed: false,
+	timer: null,
+	interval: 1000, // zoom polling interval in millisecond
+
+	// Should we apply width/height attributes to control the image size?
+	imgNeedsSizeAtts: function( img ) {
+		// Do not overwrite existing width/height attributes.
+		if ( img.getAttribute('width') !== null || img.getAttribute('height') !== null )
+			return false;
+		// Do not apply the attributes if the image is already constrained by a parent element.
+		if ( img.width < img.naturalWidth || img.height < img.naturalHeight )
+			return false;
+		return true;
+	},
+
+	init: function() {
+		var t = this;
+		try{
+			t.zoomImages();
+			t.timer = setInterval( function() { t.zoomImages(); }, t.interval );
+		}
+		catch(e){
+		}
+	},
+
+	stop: function() {
+		if ( this.timer )
+			clearInterval( this.timer );
+	},
+
+	getScale: function() {
+		var scale = DetectZoom.device();
+		// Round up to 1.5 or the next integer below the cap.
+		if      ( scale <= 1.0 ) scale = 1.0;
+		else if ( scale <= 1.5 ) scale = 1.5;
+		else if ( scale <= 2.0 ) scale = 2.0;
+		else if ( scale <= 3.0 ) scale = 3.0;
+		else if ( scale <= 4.0 ) scale = 4.0;
+		else                     scale = 5.0;
+		return scale;
+	},
+
+	shouldZoom: function( scale ) {
+		var t = this;
+		// Do not operate on hidden frames.
+		if ( "innerWidth" in window && !window.innerWidth )
+			return false;
+		// Don't do anything until scale > 1
+		if ( scale == 1.0 && t.zoomed == false )
+			return false;
+		return true;
+	},
+
+	zoomImages: function() {
+		var t = this;
+		var scale = t.getScale();
+		if ( ! t.shouldZoom( scale ) ){
+			return;
+		}
+		t.zoomed = true;
+		// Loop through all the <img> elements on the page.
+		var imgs = document.getElementsByTagName("img");
+
+		for ( var i = 0; i < imgs.length; i++ ) {
+			// Skip images that don't need processing.
+			var imgScale = imgs[i].getAttribute("scale");
+			if ( imgScale == scale || imgScale == "0" )
+				continue;
+
+			// Skip images that have already failed at this scale
+			var scaleFail = imgs[i].getAttribute("scale-fail");
+			if ( scaleFail && scaleFail <= scale )
+				continue;
+
+			// Skip images that have no dimensions yet.
+			if ( ! ( imgs[i].width && imgs[i].height ) )
+				continue;
+
+			if ( t.scaleImage( imgs[i], scale ) ) {
+				// Mark the img as having been processed at this scale.
+				imgs[i].setAttribute("scale", scale);
+			}
+			else {
+				// Set the flag to skip this image.
+				imgs[i].setAttribute("scale", "0");
+			}
+		}
+	},
+
+	scaleImage: function( img, scale ) {
+		var t = this;
+		var newSrc = img.src;
+
+		// Skip slideshow images
+		if ( img.parentNode.className.match(/slideshow-slide/) )
+			return false;
+
+		// Scale gravatars that have ?s= or ?size=
+		if ( img.src.match( /^https?:\/\/([^\/]*\.)?gravatar\.com\/.+[?&](s|size)=/ ) ) {
+			newSrc = img.src.replace( /([?&](s|size)=)(\d+)/, function( $0, $1, $2, $3 ) {
+				// Stash the original size
+				var originalAtt = "originals",
+				originalSize = img.getAttribute(originalAtt);
+				if ( originalSize === null ) {
+					originalSize = $3;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width/height of the image in CSS pixels
+				var size = img.clientWidth;
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(img.clientWidth * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go larger than the service supports
+				targetSize = Math.min( targetSize, 512 );
+				return $1 + targetSize;
+			});
+		}
+
+		// Scale resize queries (*.files.wordpress.com) that have ?w= or ?h=
+		else if ( img.src.match( /^https?:\/\/([^\/]+)\.files\.wordpress\.com\/.+[?&][wh]=/ ) ) {
+			if ( img.src.match( /[?&]crop/ ) )
+				return false;
+			var changedAttrs = {};
+			var matches = img.src.match( /([?&]([wh])=)(\d+)/g );
+			for ( var i = 0; i < matches.length; i++ ) {
+				var lr = matches[i].split( '=' );
+				var thisAttr = lr[0].replace(/[?&]/g, '' );
+				var thisVal = lr[1];
+
+				// Stash the original size
+				var originalAtt = 'original' + thisAttr, originalSize = img.getAttribute( originalAtt );
+				if ( originalSize === null ) {
+					originalSize = thisVal;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width/height of the image in CSS pixels
+				var size = thisAttr == 'w' ? img.clientWidth : img.clientHeight;
+				var naturalSize = ( thisAttr == 'w' ? img.naturalWidth : img.naturalHeight );
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(size * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go bigger unless the current one is actually lacking
+				if ( scale > img.getAttribute("scale") && targetSize <= naturalSize )
+					targetSize = thisVal;
+				// Don't try to go bigger if the image is already smaller than was requested
+				if ( naturalSize < thisVal )
+					targetSize = thisVal;
+				if ( targetSize != thisVal )
+					changedAttrs[ thisAttr ] = targetSize;
+			}
+			var w = changedAttrs.w || false;
+			var h = changedAttrs.h || false;
+
+			if ( w ) {
+				newSrc = img.src.replace(/([?&])w=\d+/g, function( $0, $1 ) {
+					return $1 + 'w=' + w;
+				});
+			}			
+			if ( h ) {
+				newSrc = newSrc.replace(/([?&])h=\d+/g, function( $0, $1 ) {
+					return $1 + 'h=' + h;
+				});
+			}
+		}
+
+		// Scale mshots that have width
+		else if ( img.src.match(/^https?:\/\/([^\/]+\.)*(wordpress|wp)\.com\/mshots\/.+[?&]w=\d+/) ) {
+			newSrc = img.src.replace( /([?&]w=)(\d+)/, function($0, $1, $2) {
+				// Stash the original size
+				var originalAtt = 'originalw', originalSize = img.getAttribute(originalAtt);
+				if ( originalSize === null ) {
+					originalSize = $2;
+					img.setAttribute(originalAtt, originalSize);
+					if ( t.imgNeedsSizeAtts( img ) ) {
+						// Fix width and height attributes to rendered dimensions.
+						img.width = img.width;
+						img.height = img.height;
+					}
+				}
+				// Get the width of the image in CSS pixels
+				var size = img.clientWidth;
+				// Convert CSS pixels to device pixels
+				var targetSize = Math.ceil(size * scale);
+				// Don't go smaller than the original size
+				targetSize = Math.max( targetSize, originalSize );
+				// Don't go bigger unless the current one is actually lacking
+				if ( scale > img.getAttribute("scale") && targetSize <= img.naturalWidth )
+					targetSize = $2;
+				if ( $2 != targetSize )
+					return $1 + targetSize;
+			});
+		}
+
+		// Scale simple imgpress queries (s0.wp.com) that only specify w/h/fit
+		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/imgpress\?(.+)/) ) {
+			var imgpressSafeFunctions = ["zoom", "url", "h", "w", "fit", "filter", "brightness", "contrast", "colorize", "smooth", "unsharpmask"];
+			// Search the query string for unsupported functions.
+			var qs = RegExp.$3.split('&');
+			for ( var q in qs ) {
+				q = qs[q].split('=')[0];
+				if ( imgpressSafeFunctions.indexOf(q) == -1 ) {
+					return false;
+				}
+			}
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			// Compute new src
+			if ( scale == 1 )
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?');
+			else
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?zoom=' + scale + '&');
+		}
+
+		// Scale LaTeX images
+		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/latex\.php\?(latex|zoom)=(.+)/) ) {
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			// Compute new src
+			if ( scale == 1 )
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?');
+			else
+				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?zoom=' + scale + '&');
+		}
+
+		// Scale static assets that have a name matching *-1x.png or *@1x.png
+		else if ( img.src.match(/^https?:\/\/[^\/]+\/.*[-@]([12])x\.(gif|jpeg|jpg|png)(\?|$)/) ) {
+			// Fix width and height attributes to rendered dimensions.
+			img.width = img.width;
+			img.height = img.height;
+			var currentSize = RegExp.$1, newSize = currentSize;
+			if ( scale <= 1 )
+				newSize = 1;
+			else
+				newSize = 2;
+			if ( currentSize != newSize )
+				newSrc = img.src.replace(/([-@])[12]x\.(gif|jpeg|jpg|png)(\?|$)/, '$1'+newSize+'x.$2$3');
+		}
+
+		else {
+			return false;
+		}
+
+		// Don't set img.src unless it has changed. This avoids unnecessary reloads.
+		if ( newSrc != img.src ) {
+			// Store the original img.src
+			var prevSrc, origSrc = img.getAttribute("src-orig");
+			if ( !origSrc ) {
+				origSrc = img.src;
+				img.setAttribute("src-orig", origSrc);
+			}
+			// In case of error, revert img.src
+			if ( img.complete )
+				prevSrc = img.src;
+			else
+				prevSrc = origSrc;
+			img.onerror = function(){
+				img.src = prevSrc;
+				if ( img.getAttribute("scale-fail") < scale )
+					img.setAttribute("scale-fail", scale);
+				img.onerror = null;
+			};
+			// Finally load the new image
+			img.src = newSrc;
+		}
+
+		return true;
+	}
+};
+
+wpcom_img_zoomer.init();
+;
+/*
+jQuery Waypoints - v1.1.1
+Copyright (c) 2011 Caleb Troughton
+Dual licensed under the MIT license and GPL license.
+https://github.com/imakewebthings/jquery-waypoints/blob/master/MIT-license.txt
+https://github.com/imakewebthings/jquery-waypoints/blob/master/GPL-license.txt
+*/
+(function($,k,m,i,d){var e=$(i),g="waypoint.reached",b=function(o,n){o.element.trigger(g,n);if(o.options.triggerOnce){o.element[k]("destroy")}},h=function(p,o){var n=o.waypoints.length-1;while(n>=0&&o.waypoints[n].element[0]!==p[0]){n-=1}return n},f=[],l=function(n){$.extend(this,{element:$(n),oldScroll:-99999,waypoints:[],didScroll:false,didResize:false,doScroll:$.proxy(function(){var q=this.element.scrollTop(),p=q>this.oldScroll,s=this,r=$.grep(this.waypoints,function(u,t){return p?(u.offset>s.oldScroll&&u.offset<=q):(u.offset<=s.oldScroll&&u.offset>q)}),o=r.length;if(!this.oldScroll||!q){$[m]("refresh")}this.oldScroll=q;if(!o){return}if(!p){r.reverse()}$.each(r,function(u,t){if(t.options.continuous||u===o-1){b(t,[p?"down":"up"])}})},this)});$(n).scroll($.proxy(function(){if(!this.didScroll){this.didScroll=true;i.setTimeout($.proxy(function(){this.doScroll();this.didScroll=false},this),$[m].settings.scrollThrottle)}},this)).resize($.proxy(function(){if(!this.didResize){this.didResize=true;i.setTimeout($.proxy(function(){$[m]("refresh");this.didResize=false},this),$[m].settings.resizeThrottle)}},this));e.load($.proxy(function(){this.doScroll()},this))},j=function(n){var o=null;$.each(f,function(p,q){if(q.element[0]===n){o=q;return false}});return o},c={init:function(o,n){this.each(function(){var u=$.fn[k].defaults.context,q,t=$(this);if(n&&n.context){u=n.context}if(!$.isWindow(u)){u=t.closest(u)[0]}q=j(u);if(!q){q=new l(u);f.push(q)}var p=h(t,q),s=p<0?$.fn[k].defaults:q.waypoints[p].options,r=$.extend({},s,n);r.offset=r.offset==="bottom-in-view"?function(){var v=$.isWindow(u)?$[m]("viewportHeight"):$(u).height();return v-$(this).outerHeight()}:r.offset;if(p<0){q.waypoints.push({element:t,offset:null,options:r})}else{q.waypoints[p].options=r}if(o){t.bind(g,o)}});$[m]("refresh");return this},remove:function(){return this.each(function(o,p){var n=$(p);$.each(f,function(r,s){var q=h(n,s);if(q>=0){s.waypoints.splice(q,1)}})})},destroy:function(){return this.unbind(g)[k]("remove")}},a={refresh:function(){$.each(f,function(r,s){var q=$.isWindow(s.element[0]),n=q?0:s.element.offset().top,p=q?$[m]("viewportHeight"):s.element.height(),o=q?0:s.element.scrollTop();$.each(s.waypoints,function(u,x){var t=x.options.offset,w=x.offset;if(typeof x.options.offset==="function"){t=x.options.offset.apply(x.element)}else{if(typeof x.options.offset==="string"){var v=parseFloat(x.options.offset);t=x.options.offset.indexOf("%")?Math.ceil(p*(v/100)):v}}x.offset=x.element.offset().top-n+o-t;if(x.options.onlyOnScroll){return}if(w!==null&&s.oldScroll>w&&s.oldScroll<=x.offset){b(x,["up"])}else{if(w!==null&&s.oldScroll<w&&s.oldScroll>=x.offset){b(x,["down"])}}});s.waypoints.sort(function(u,t){return u.offset-t.offset})})},viewportHeight:function(){return(i.innerHeight?i.innerHeight:e.height())},aggregate:function(){var n=$();$.each(f,function(o,p){$.each(p.waypoints,function(q,r){n=n.add(r.element)})});return n}};$.fn[k]=function(n){if(c[n]){return c[n].apply(this,Array.prototype.slice.call(arguments,1))}else{if(typeof n==="function"||!n){return c.init.apply(this,arguments)}else{if(typeof n==="object"){return c.init.apply(this,[null,n])}else{$.error("Method "+n+" does not exist on jQuery "+k)}}}};$.fn[k].defaults={continuous:true,offset:0,triggerOnce:false,context:i};$[m]=function(n){if(a[n]){return a[n].apply(this)}else{return a.aggregate()}};$[m].settings={resizeThrottle:200,scrollThrottle:100};e.load(function(){$[m]("refresh")})})(jQuery,"waypoint","waypoints",this);;
+;(function($){
+	$.fn.trackClick = function(e)
+	{
+		// track the click
+		try {
+			_gaq.push(['_trackEvent', 'clicked-link', this.parents('[id]:first').get(0).id, (this.text() || this.children('img:first').attr('alt'))]);
+		}
+		catch (err) {}
+
+		if(this.closest('.widget').length != 0)
+		{
+			// track the widget click too
+			try {
+				_gaq.push(['_trackEvent', 'clicked-widget', $(this).closest('.widget').attr('id')]);
+			}
+			catch (err) {}
+		}
+	};
+
+	$(document).on( 'click', 'a', function (e) {
+		$(this).trackClick(e);
+	});
+
+	function extractUri(url)
+	{
+		if(!url)
+			return;
+		return url.split('url=')[1];
+	}
+})(jQuery);
+;
+(function(e){function i(i){function o(){i?s.removeData(i):d&&delete t[d]}function n(){g.id=setTimeout(function(){g.fn()},u)}var s,r=this,g={},l=i?e.fn:e,c=arguments,m=4,d=c[1],u=c[2],h=c[3];if("string"!=typeof d&&(m--,d=i=0,u=c[1],h=c[2]),i?(s=r.eq(0),s.data(i,g=s.data(i)||{})):d&&(g=t[d]||(t[d]={})),g.id&&clearTimeout(g.id),delete g.id,h)g.fn=function(e){"string"==typeof h&&(h=l[h]),h.apply(r,a.call(c,m))!==!0||e?o():n()},n();else{if(g.fn)return void 0===u?o():g.fn(u===!1),!0;o()}}var t={},o="doTimeout",a=Array.prototype.slice;e[o]=function(){return i.apply(window,[0].concat(a.call(arguments)))},e.fn[o]=function(){var e=a.call(arguments),t=i.apply(this,[o+e[0]].concat(e));return"number"==typeof e[0]||"number"==typeof e[1]?this:t}})(jQuery);;
+(function(){"use strict";function e(e){function t(t,o){var n,h,p=t==window,v=o&&void 0!==o.message?o.message:void 0;if(o=e.extend({},e.blockUI.defaults,o||{}),!o.ignoreIfBlocked||!e(t).data("blockUI.isBlocked")){if(o.overlayCSS=e.extend({},e.blockUI.defaults.overlayCSS,o.overlayCSS||{}),n=e.extend({},e.blockUI.defaults.css,o.css||{}),o.onOverlayClick&&(o.overlayCSS.cursor="pointer"),h=e.extend({},e.blockUI.defaults.themedCSS,o.themedCSS||{}),v=void 0===v?o.message:v,p&&u&&i(window,{fadeOut:0}),v&&"string"!=typeof v&&(v.parentNode||v.jquery)){var y=v.jquery?v[0]:v,b={};e(t).data("blockUI.history",b),b.el=y,b.parent=y.parentNode,b.display=y.style.display,b.position=y.style.position,b.parent&&b.parent.removeChild(y)}e(t).data("blockUI.onUnblock",o.onUnblock);var w,_,x,$,k=o.baseZ;w=c||o.forceIframe?e('<iframe class="blockUI" style="z-index:'+k++ +';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="'+o.iframeSrc+'"></iframe>'):e('<div class="blockUI" style="display:none"></div>'),_=o.theme?e('<div class="blockUI blockOverlay ui-widget-overlay" style="z-index:'+k++ +';display:none"></div>'):e('<div class="blockUI blockOverlay" style="z-index:'+k++ +';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>'),o.theme&&p?($='<div class="blockUI '+o.blockMsgClass+' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:'+(k+10)+';display:none;position:fixed">',o.title&&($+='<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">'+(o.title||"&nbsp;")+"</div>"),$+='<div class="ui-widget-content ui-dialog-content"></div>',$+="</div>"):o.theme?($='<div class="blockUI '+o.blockMsgClass+' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:'+(k+10)+';display:none;position:absolute">',o.title&&($+='<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">'+(o.title||"&nbsp;")+"</div>"),$+='<div class="ui-widget-content ui-dialog-content"></div>',$+="</div>"):$=p?'<div class="blockUI '+o.blockMsgClass+' blockPage" style="z-index:'+(k+10)+';display:none;position:fixed"></div>':'<div class="blockUI '+o.blockMsgClass+' blockElement" style="z-index:'+(k+10)+';display:none;position:absolute"></div>',x=e($),v&&(o.theme?(x.css(h),x.addClass("ui-widget-content")):x.css(n)),o.theme||_.css(o.overlayCSS),_.css("position",p?"fixed":"absolute"),(c||o.forceIframe)&&w.css("opacity",0);var z=[w,_,x],C=p?e("body"):e(t);e.each(z,function(){this.appendTo(C)}),o.theme&&o.draggable&&e.fn.draggable&&x.draggable({handle:".ui-dialog-titlebar",cancel:"li"});var I=m&&(!e.support.boxModel||e("object,embed",p?null:t).length>0);if(d||I){if(p&&o.allowBodyStretch&&e.support.boxModel&&e("html,body").css("height","100%"),(d||!e.support.boxModel)&&!p)var T=l(t,"borderTopWidth"),j=l(t,"borderLeftWidth"),S=T?"(0 - "+T+")":0,q=j?"(0 - "+j+")":0;e.each(z,function(e,t){var i=t[0].style;if(i.position="absolute",2>e)p?i.setExpression("height","Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:"+o.quirksmodeOffsetHack+') + "px"'):i.setExpression("height",'this.parentNode.offsetHeight + "px"'),p?i.setExpression("width",'jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"'):i.setExpression("width",'this.parentNode.offsetWidth + "px"'),q&&i.setExpression("left",q),S&&i.setExpression("top",S);else if(o.centerY)p&&i.setExpression("top",'(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"'),i.marginTop=0;else if(!o.centerY&&p){var a=o.css&&o.css.top?parseInt(o.css.top,10):0,n="((document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "+a+') + "px"';i.setExpression("top",n)}})}if(v&&(o.theme?x.find(".ui-widget-content").append(v):x.append(v),(v.jquery||v.nodeType)&&e(v).show()),(c||o.forceIframe)&&o.showOverlay&&w.show(),o.fadeIn){var U=o.onBlock?o.onBlock:g,E=o.showOverlay&&!v?U:g,O=v?U:g;o.showOverlay&&_._fadeIn(o.fadeIn,E),v&&x._fadeIn(o.fadeIn,O)}else o.showOverlay&&_.show(),v&&x.show(),o.onBlock&&o.onBlock();if(a(1,t,o),p?(u=x[0],f=e(":input:enabled:visible",u),o.focusInput&&setTimeout(s,20)):r(x[0],o.centerX,o.centerY),o.timeout){var A=setTimeout(function(){p?e.unblockUI(o):e(t).unblock(o)},o.timeout);e(t).data("blockUI.timeout",A)}}}function i(t,i){var n=t==window,s=e(t),r=s.data("blockUI.history"),l=s.data("blockUI.timeout");l&&(clearTimeout(l),s.removeData("blockUI.timeout")),i=e.extend({},e.blockUI.defaults,i||{}),a(0,t,i),null===i.onUnblock&&(i.onUnblock=s.data("blockUI.onUnblock"),s.removeData("blockUI.onUnblock"));var g;g=n?e("body").children().filter(".blockUI").add("body > .blockUI"):s.find(">.blockUI"),i.cursorReset&&(g.length>1&&(g[1].style.cursor=i.cursorReset),g.length>2&&(g[2].style.cursor=i.cursorReset)),n&&(u=f=null),i.fadeOut?(g.fadeOut(i.fadeOut),setTimeout(function(){o(g,r,i,t)},i.fadeOut)):o(g,r,i,t)}function o(t,i,o,a){t.each(function(){this.parentNode&&this.parentNode.removeChild(this)}),i&&i.el&&(i.el.style.display=i.display,i.el.style.position=i.position,i.parent&&i.parent.appendChild(i.el),e(a).removeData("blockUI.history")),"function"==typeof o.onUnblock&&o.onUnblock(a,o);var n=e(document.body),s=n.width(),r=n[0].style.width;n.width(s-1).width(s),n[0].style.width=r}function a(t,i,o){var a=i==window,s=e(i);if((t||(!a||u)&&(a||s.data("blockUI.isBlocked")))&&(s.data("blockUI.isBlocked",t),o.bindEvents&&(!t||o.showOverlay))){var r="mousedown mouseup keydown keypress touchstart touchend touchmove";t?e(document).bind(r,o,n):e(document).unbind(r,n)}}function n(t){if(t.keyCode&&9==t.keyCode&&u&&t.data.constrainTabKey){var i=f,o=!t.shiftKey&&t.target===i[i.length-1],a=t.shiftKey&&t.target===i[0];if(o||a)return setTimeout(function(){s(a)},10),!1}var n=t.data,r=e(t.target);return r.hasClass("blockOverlay")&&n.onOverlayClick&&n.onOverlayClick(),r.parents("div."+n.blockMsgClass).length>0?!0:0===r.parents().children().filter("div.blockUI").length}function s(e){if(f){var t=f[e===!0?f.length-1:0];t&&t.focus()}}function r(e,t,i){var o=e.parentNode,a=e.style,n=(o.offsetWidth-e.offsetWidth)/2-l(o,"borderLeftWidth"),s=(o.offsetHeight-e.offsetHeight)/2-l(o,"borderTopWidth");t&&(a.left=n>0?n+"px":"0"),i&&(a.top=s>0?s+"px":"0")}function l(t,i){return parseInt(e.css(t,i),10)||0}if(/^1\.(0|1|2)/.test(e.fn.jquery))return alert("blockUI requires jQuery v1.3 or later!  You are using v"+e.fn.jquery),void 0;e.fn._fadeIn=e.fn.fadeIn;var g=e.noop||function(){},c=/MSIE/.test(navigator.userAgent),d=/MSIE 6.0/.test(navigator.userAgent);document.documentMode||0;var m=e.isFunction(document.createElement("div").style.setExpression);e.blockUI=function(e){t(window,e)},e.unblockUI=function(e){i(window,e)},e.growlUI=function(t,i,o,a){var n=e('<div class="growlUI"></div>');t&&n.append("<h1>"+t+"</h1>"),i&&n.append("<h2>"+i+"</h2>"),void 0===o&&(o=3e3),e.blockUI({message:n,fadeIn:700,fadeOut:1e3,centerY:!1,timeout:o,showOverlay:!1,onUnblock:a,css:e.blockUI.defaults.growlCSS})},e.fn.block=function(i){var o=e.extend({},e.blockUI.defaults,i||{});return this.each(function(){var t=e(this);o.ignoreIfBlocked&&t.data("blockUI.isBlocked")||t.unblock({fadeOut:0})}),this.each(function(){"static"==e.css(this,"position")&&(this.style.position="relative"),this.style.zoom=1,t(this,i)})},e.fn.unblock=function(e){return this.each(function(){i(this,e)})},e.blockUI.version=2.53,e.blockUI.defaults={message:"<h1>Please wait...</h1>",title:null,draggable:!0,theme:!1,css:{padding:0,margin:0,width:"30%",top:"40%",left:"35%",textAlign:"center",color:"#000",border:"3px solid #aaa",backgroundColor:"#fff",cursor:"wait"},themedCSS:{width:"30%",top:"40%",left:"35%"},overlayCSS:{backgroundColor:"#000",opacity:.6,cursor:"wait"},cursorReset:"default",growlCSS:{width:"350px",top:"10px",left:"",right:"10px",border:"none",padding:"5px",opacity:.6,cursor:"default",color:"#fff",backgroundColor:"#000","-webkit-border-radius":"10px","-moz-border-radius":"10px","border-radius":"10px"},iframeSrc:/^https/i.test(window.location.href||"")?"javascript:false":"about:blank",forceIframe:!1,baseZ:1e3,centerX:!0,centerY:!0,allowBodyStretch:!0,bindEvents:!0,constrainTabKey:!0,fadeIn:200,fadeOut:400,timeout:0,showOverlay:!0,focusInput:!0,onBlock:null,onUnblock:null,onOverlayClick:null,quirksmodeOffsetHack:4,blockMsgClass:"blockMsg",ignoreIfBlocked:!1};var u=null,f=[]}"function"==typeof define&&define.amd&&define.amd.jQuery?define(["jquery"],e):e(jQuery)})();;
+jQuery.extend(jQuery.easing,{easeInExpo:function(e,t,i,o,n){return 0==t?i:o*Math.pow(2,10*(t/n-1))+i},easeOutExpo:function(e,t,i,o,n){return t==n?i+o:o*(-Math.pow(2,-10*t/n)+1)+i},easeInOutExpo:function(e,t,i,o,n){return 0==t?i:t==n?i+o:1>(t/=n/2)?o/2*Math.pow(2,10*(t-1))+i:o/2*(-Math.pow(2,-10*--t)+2)+i}});;
+(function(e){function t(t){e.fn.cycle.debug&&i(t)}function i(){window.console&&window.console.log&&window.console.log("[cycle] "+Array.prototype.join.call(arguments," "))}function o(t,o,n){function s(t,o,n){if(!t&&o===!0){var a=e(n).data("cycle.opts");if(!a)return i("options not found, can not resume"),!1;n.cycleTimeout&&(clearTimeout(n.cycleTimeout),n.cycleTimeout=0),g(a.elements,a,1,1)}}if(void 0==t.cycleStop&&(t.cycleStop=0),(void 0===o||null===o)&&(o={}),o.constructor==String){switch(o){case"destroy":case"stop":var r=e(t).data("cycle.opts");return r?(t.cycleStop++,t.cycleTimeout&&clearTimeout(t.cycleTimeout),t.cycleTimeout=0,e(t).removeData("cycle.opts"),"destroy"==o&&a(r),!1):!1;case"toggle":return t.cyclePause=1===t.cyclePause?0:1,s(t.cyclePause,n,t),!1;case"pause":return t.cyclePause=1,!1;case"resume":return t.cyclePause=0,s(!1,n,t),!1;case"prev":case"next":var r=e(t).data("cycle.opts");return r?(e.fn.cycle[o](r),!1):(i('options not found, "prev/next" ignored'),!1);default:o={fx:o}}return o}if(o.constructor==Number){var l=o;return(o=e(t).data("cycle.opts"))?0>l||l>=o.elements.length?(i("invalid slide index: "+l),!1):(o.nextSlide=l,t.cycleTimeout&&(clearTimeout(t.cycleTimeout),t.cycleTimeout=0),"string"==typeof n&&(o.oneTimeFx=n),g(o.elements,o,1,l>=o.currSlide),!1):(i("options not found, can not advance slide"),!1)}return o}function n(t,i){if(!e.support.opacity&&i.cleartype&&t.style.filter)try{t.style.removeAttribute("filter")}catch(o){}}function a(t){t.next&&e(t.next).unbind(t.prevNextEvent),t.prev&&e(t.prev).unbind(t.prevNextEvent),(t.pager||t.pagerAnchorBuilder)&&e.each(t.pagerAnchors||[],function(){this.unbind().remove()}),t.pagerAnchors=null,t.destroy&&t.destroy(t)}function s(t,o,a,s,d){var h=e.extend({},e.fn.cycle.defaults,s||{},e.metadata?t.metadata():e.meta?t.data():{});h.autostop&&(h.countdown=h.autostopCount||a.length);var p=t[0];if(t.data("cycle.opts",h),h.$cont=t,h.stopCount=p.cycleStop,h.elements=a,h.before=h.before?[h.before]:[],h.after=h.after?[h.after]:[],h.after.unshift(function(){h.busy=0}),!e.support.opacity&&h.cleartype&&h.after.push(function(){n(this,h)}),h.continuous&&h.after.push(function(){g(a,h,0,!h.rev)}),r(h),e.support.opacity||!h.cleartype||h.cleartypeNoBg||f(o),"static"==t.css("position")&&t.css("position","relative"),h.width&&t.width(h.width),h.height&&"auto"!=h.height&&t.height(h.height),h.startingSlide&&(h.startingSlide=parseInt(h.startingSlide)),h.random){h.randomMap=[];for(var v=0;a.length>v;v++)h.randomMap.push(v);h.randomMap.sort(function(){return Math.random()-.5}),h.randomIndex=1,h.startingSlide=h.randomMap[1]}else h.startingSlide>=a.length&&(h.startingSlide=0);h.currSlide=h.startingSlide||0;var y=h.startingSlide;o.css({position:"absolute",top:0,left:0}).hide().each(function(t){var i=y?t>=y?a.length-(t-y):y-t:a.length-t;e(this).css("z-index",i)}),e(a[y]).css("opacity",1).show(),n(a[y],h),h.fit&&h.width&&o.width(h.width),h.fit&&h.height&&"auto"!=h.height&&o.height(h.height);var b=h.containerResize&&!t.innerHeight();if(b){for(var w=0,x=0,_=0;a.length>_;_++){var k=e(a[_]),$=k[0],z=k.outerWidth(),S=k.outerHeight();z||(z=$.offsetWidth||$.width||k.attr("width")),S||(S=$.offsetHeight||$.height||k.attr("height")),w=z>w?z:w,x=S>x?S:x}w>0&&x>0&&t.css({width:w+"px",height:x+"px"})}if(h.pause&&t.hover(function(){this.cyclePause++},function(){this.cyclePause--}),l(h)===!1)return!1;var C=!1;if(s.requeueAttempts=s.requeueAttempts||0,o.each(function(){var t=e(this);if(this.cycleH=h.fit&&h.height?h.height:t.height()||this.offsetHeight||this.height||t.attr("height")||0,this.cycleW=h.fit&&h.width?h.width:t.width()||this.offsetWidth||this.width||t.attr("width")||0,t.is("img")){var o=e.browser.msie&&28==this.cycleW&&30==this.cycleH&&!this.complete,n=e.browser.mozilla&&34==this.cycleW&&19==this.cycleH&&!this.complete,a=e.browser.opera&&(42==this.cycleW&&19==this.cycleH||37==this.cycleW&&17==this.cycleH)&&!this.complete,r=0==this.cycleH&&0==this.cycleW&&!this.complete;if(o||n||a||r){if(d.s&&h.requeueOnImageNotLoaded&&100>++s.requeueAttempts)return i(s.requeueAttempts," - img slide not loaded, requeuing slideshow: ",this.src,this.cycleW,this.cycleH),setTimeout(function(){e(d.s,d.c).cycle(s)},h.requeueTimeout),C=!0,!1;i("could not determine size of image: "+this.src,this.cycleW,this.cycleH)}}return!0}),C)return!1;if(h.cssBefore=h.cssBefore||{},h.animIn=h.animIn||{},h.animOut=h.animOut||{},o.not(":eq("+y+")").css(h.cssBefore),h.cssFirst&&e(o[y]).css(h.cssFirst),h.timeout){h.timeout=parseInt(h.timeout),h.speed.constructor==String&&(h.speed=e.fx.speeds[h.speed]||parseInt(h.speed)),h.sync||(h.speed=h.speed/2);for(var I="shuffle"==h.fx?500:250;I>h.timeout-h.speed;)h.timeout+=h.speed}if(h.easing&&(h.easeIn=h.easeOut=h.easing),h.speedIn||(h.speedIn=h.speed),h.speedOut||(h.speedOut=h.speed),h.slideCount=a.length,h.currSlide=h.lastSlide=y,h.random?(++h.randomIndex==a.length&&(h.randomIndex=0),h.nextSlide=h.randomMap[h.randomIndex]):h.nextSlide=h.startingSlide>=a.length-1?0:h.startingSlide+1,!h.multiFx){var T=e.fn.cycle.transitions[h.fx];if(e.isFunction(T))T(t,o,h);else if("custom"!=h.fx&&!h.multiFx)return i("unknown transition: "+h.fx,"; slideshow terminating"),!1}var A=o[y];return h.before.length&&h.before[0].apply(A,[A,A,h,!0]),h.after.length>1&&h.after[1].apply(A,[A,A,h,!0]),h.next&&e(h.next).bind(h.prevNextEvent,function(){return u(h,h.rev?-1:1)}),h.prev&&e(h.prev).bind(h.prevNextEvent,function(){return u(h,h.rev?1:-1)}),(h.pager||h.pagerAnchorBuilder)&&m(a,h),c(h,a),h}function r(t){t.original={before:[],after:[]},t.original.cssBefore=e.extend({},t.cssBefore),t.original.cssAfter=e.extend({},t.cssAfter),t.original.animIn=e.extend({},t.animIn),t.original.animOut=e.extend({},t.animOut),e.each(t.before,function(){t.original.before.push(this)}),e.each(t.after,function(){t.original.after.push(this)})}function l(o){var n,a,s=e.fn.cycle.transitions;if(o.fx.indexOf(",")>0){for(o.multiFx=!0,o.fxs=o.fx.replace(/\s*/g,"").split(","),n=0;o.fxs.length>n;n++){var r=o.fxs[n];a=s[r],a&&s.hasOwnProperty(r)&&e.isFunction(a)||(i("discarding unknown transition: ",r),o.fxs.splice(n,1),n--)}if(!o.fxs.length)return i("No valid transitions named; slideshow terminating."),!1}else if("all"==o.fx){o.multiFx=!0,o.fxs=[];for(p in s)a=s[p],s.hasOwnProperty(p)&&e.isFunction(a)&&o.fxs.push(p)}if(o.multiFx&&o.randomizeEffects){var l=Math.floor(20*Math.random())+30;for(n=0;l>n;n++){var c=Math.floor(Math.random()*o.fxs.length);o.fxs.push(o.fxs.splice(c,1)[0])}t("randomized fx sequence: ",o.fxs)}return!0}function c(t,i){t.addSlide=function(o,n){var a=e(o),s=a[0];t.autostopCount||t.countdown++,i[n?"unshift":"push"](s),t.els&&t.els[n?"unshift":"push"](s),t.slideCount=i.length,a.css("position","absolute"),a[n?"prependTo":"appendTo"](t.$cont),n&&(t.currSlide++,t.nextSlide++),e.support.opacity||!t.cleartype||t.cleartypeNoBg||f(a),t.fit&&t.width&&a.width(t.width),t.fit&&t.height&&"auto"!=t.height&&$slides.height(t.height),s.cycleH=t.fit&&t.height?t.height:a.height(),s.cycleW=t.fit&&t.width?t.width:a.width(),a.css(t.cssBefore),(t.pager||t.pagerAnchorBuilder)&&e.fn.cycle.createPagerAnchor(i.length-1,s,e(t.pager),i,t),e.isFunction(t.onAddSlide)?t.onAddSlide(a):a.hide()}}function g(i,o,n,a){if(n&&o.busy&&o.manualTrump&&(t("manualTrump in go(), stopping active transition"),e(i).stop(!0,!0),o.busy=!1),o.busy)return t("transition active, ignoring new tx request"),void 0;var s=o.$cont[0],r=i[o.currSlide],l=i[o.nextSlide];if(s.cycleStop==o.stopCount&&(0!==s.cycleTimeout||n)){if(!n&&!s.cyclePause&&(o.autostop&&0>=--o.countdown||o.nowrap&&!o.random&&o.nextSlide<o.currSlide))return o.end&&o.end(o),void 0;var c=!1;if((n||!s.cyclePause)&&o.nextSlide!=o.currSlide){c=!0;var u=o.fx;r.cycleH=r.cycleH||e(r).height(),r.cycleW=r.cycleW||e(r).width(),l.cycleH=l.cycleH||e(l).height(),l.cycleW=l.cycleW||e(l).width(),o.multiFx&&((void 0==o.lastFx||++o.lastFx>=o.fxs.length)&&(o.lastFx=0),u=o.fxs[o.lastFx],o.currFx=u),o.oneTimeFx&&(u=o.oneTimeFx,o.oneTimeFx=null),e.fn.cycle.resetState(o,u),o.before.length&&e.each(o.before,function(e,t){s.cycleStop==o.stopCount&&t.apply(l,[r,l,o,a])});var m=function(){e.each(o.after,function(e,t){s.cycleStop==o.stopCount&&t.apply(l,[r,l,o,a])})};t("tx firing; currSlide: "+o.currSlide+"; nextSlide: "+o.nextSlide),o.busy=1,o.fxFn?o.fxFn(r,l,o,m,a,n&&o.fastOnEvent):e.isFunction(e.fn.cycle[o.fx])?e.fn.cycle[o.fx](r,l,o,m,a,n&&o.fastOnEvent):e.fn.cycle.custom(r,l,o,m,a,n&&o.fastOnEvent)}if(c||o.nextSlide==o.currSlide)if(o.lastSlide=o.currSlide,o.random)o.currSlide=o.nextSlide,++o.randomIndex==i.length&&(o.randomIndex=0),o.nextSlide=o.randomMap[o.randomIndex],o.nextSlide==o.currSlide&&(o.nextSlide=o.currSlide==o.slideCount-1?0:o.currSlide+1);else{var f=o.nextSlide+1==i.length;o.nextSlide=f?0:o.nextSlide+1,o.currSlide=f?i.length-1:o.nextSlide-1}c&&o.pager&&o.updateActivePagerLink(o.pager,o.currSlide,o.activePagerClass);var h=0;o.timeout&&!o.continuous?h=d(r,l,o,a):o.continuous&&s.cyclePause&&(h=10),h>0&&(s.cycleTimeout=setTimeout(function(){g(i,o,0,!o.rev)},h))}}function d(e,i,o,n){if(o.timeoutFn){for(var a=o.timeoutFn(e,i,o,n);250>a-o.speed;)a+=o.speed;if(t("calculated timeout: "+a+"; speed: "+o.speed),a!==!1)return a}return o.timeout}function u(t,i){var o=t.elements,n=t.$cont[0],a=n.cycleTimeout;if(a&&(clearTimeout(a),n.cycleTimeout=0),t.random&&0>i)t.randomIndex--,-2==--t.randomIndex?t.randomIndex=o.length-2:-1==t.randomIndex&&(t.randomIndex=o.length-1),t.nextSlide=t.randomMap[t.randomIndex];else if(t.random)t.nextSlide=t.randomMap[t.randomIndex];else if(t.nextSlide=t.currSlide+i,0>t.nextSlide){if(t.nowrap)return!1;t.nextSlide=o.length-1}else if(t.nextSlide>=o.length){if(t.nowrap)return!1;t.nextSlide=0}var s=t.onPrevNextEvent||t.prevNextClick;return e.isFunction(s)&&s(i>0,t.nextSlide,o[t.nextSlide]),g(o,t,1,i>=0),!1}function m(t,i){var o=e(i.pager);e.each(t,function(n,a){e.fn.cycle.createPagerAnchor(n,a,o,t,i)}),i.updateActivePagerLink(i.pager,i.startingSlide,i.activePagerClass)}function f(i){function o(e){return e=parseInt(e).toString(16),2>e.length?"0"+e:e}function n(t){for(;t&&"html"!=t.nodeName.toLowerCase();t=t.parentNode){var i=e.css(t,"background-color");if(i.indexOf("rgb")>=0){var n=i.match(/\d+/g);return"#"+o(n[0])+o(n[1])+o(n[2])}if(i&&"transparent"!=i)return i}return"#ffffff"}t("applying clearType background-color hack"),i.each(function(){e(this).css("background-color",n(this))})}var h="2.86";void 0==e.support&&(e.support={opacity:!e.browser.msie}),e.fn.cycle=function(n,a){var r={s:this.selector,c:this.context};return 0===this.length&&"stop"!=n?!e.isReady&&r.s?(i("DOM not ready, queuing slideshow"),e(function(){e(r.s,r.c).cycle(n,a)}),this):(i("terminating; zero elements found by selector"+(e.isReady?"":" (DOM not ready)")),this):this.each(function(){var l=o(this,n,a);if(l!==!1){l.updateActivePagerLink=l.updateActivePagerLink||e.fn.cycle.updateActivePagerLink,this.cycleTimeout&&clearTimeout(this.cycleTimeout),this.cycleTimeout=this.cyclePause=0;var c=e(this),u=l.slideExpr?e(l.slideExpr,this):c.children(),m=u.get();if(2>m.length)return i("terminating; too few slides: "+m.length),void 0;var f=s(c,u,m,l,r);if(f!==!1){var h=f.continuous?10:d(f.currSlide,f.nextSlide,f,!f.rev);h&&(h+=f.delay||0,10>h&&(h=10),t("first timeout: "+h),this.cycleTimeout=setTimeout(function(){g(m,f,0,!f.rev)},h))}}})},e.fn.cycle.resetState=function(t,i){i=i||t.fx,t.before=[],t.after=[],t.cssBefore=e.extend({},t.original.cssBefore),t.cssAfter=e.extend({},t.original.cssAfter),t.animIn=e.extend({},t.original.animIn),t.animOut=e.extend({},t.original.animOut),t.fxFn=null,e.each(t.original.before,function(){t.before.push(this)}),e.each(t.original.after,function(){t.after.push(this)});var o=e.fn.cycle.transitions[i];e.isFunction(o)&&o(t.$cont,e(t.elements),t)},e.fn.cycle.updateActivePagerLink=function(t,i,o){e(t).each(function(){e(this).children().removeClass(o).eq(i).addClass(o)})},e.fn.cycle.next=function(e){u(e,e.rev?-1:1)},e.fn.cycle.prev=function(e){u(e,e.rev?1:-1)},e.fn.cycle.createPagerAnchor=function(i,o,n,a,s){var r;if(e.isFunction(s.pagerAnchorBuilder)?(r=s.pagerAnchorBuilder(i,o),t("pagerAnchorBuilder("+i+", el) returned: "+r)):r='<a href="#">'+(i+1)+"</a>",r){var l=e(r);if(0===l.parents("body").length){var c=[];n.length>1?(n.each(function(){var t=l.clone(!0);e(this).append(t),c.push(t[0])}),l=e(c)):l.appendTo(n)}s.pagerAnchors=s.pagerAnchors||[],s.pagerAnchors.push(l),l.bind(s.pagerEvent,function(t){t.preventDefault(),s.nextSlide=i;var o=s.$cont[0],n=o.cycleTimeout;n&&(clearTimeout(n),o.cycleTimeout=0);var r=s.onPagerEvent||s.pagerClick;e.isFunction(r)&&r(s.nextSlide,a[s.nextSlide]),g(a,s,1,i>s.currSlide)}),/^click/.test(s.pagerEvent)||s.allowPagerClickBubble||l.bind("click.cycle",function(){return!1}),s.pauseOnPagerHover&&l.hover(function(){s.$cont[0].cyclePause++},function(){s.$cont[0].cyclePause--})}},e.fn.cycle.hopsFromLast=function(e,t){var i,o=e.lastSlide,n=e.currSlide;return i=t?n>o?n-o:e.slideCount-o:o>n?o-n:o+e.slideCount-n},e.fn.cycle.commonReset=function(t,i,o,n,a,s){e(o.elements).not(t).hide(),o.cssBefore.opacity=1,o.cssBefore.display="block",n!==!1&&i.cycleW>0&&(o.cssBefore.width=i.cycleW),a!==!1&&i.cycleH>0&&(o.cssBefore.height=i.cycleH),o.cssAfter=o.cssAfter||{},o.cssAfter.display="none",e(t).css("zIndex",o.slideCount+(s===!0?1:0)),e(i).css("zIndex",o.slideCount+(s===!0?0:1))},e.fn.cycle.custom=function(t,i,o,n,a,s){var r=e(t),l=e(i),c=o.speedIn,g=o.speedOut,d=o.easeIn,u=o.easeOut;l.css(o.cssBefore),s&&(c=g="number"==typeof s?s:1,d=u=null);var m=function(){l.animate(o.animIn,c,d,n)};r.animate(o.animOut,g,u,function(){o.cssAfter&&r.css(o.cssAfter),o.sync||m()}),o.sync&&m()},e.fn.cycle.transitions={fade:function(t,i,o){i.not(":eq("+o.currSlide+")").css("opacity",0),o.before.push(function(t,i,o){e.fn.cycle.commonReset(t,i,o),o.cssBefore.opacity=0}),o.animIn={opacity:1},o.animOut={opacity:0},o.cssBefore={top:0,left:0}}},e.fn.cycle.ver=function(){return h},e.fn.cycle.defaults={fx:"fade",timeout:4e3,timeoutFn:null,continuous:0,speed:1e3,speedIn:null,speedOut:null,next:null,prev:null,onPrevNextEvent:null,prevNextEvent:"click.cycle",pager:null,onPagerEvent:null,pagerEvent:"click.cycle",allowPagerClickBubble:!1,pagerAnchorBuilder:null,before:null,after:null,end:null,easing:null,easeIn:null,easeOut:null,shuffle:null,animIn:null,animOut:null,cssBefore:null,cssAfter:null,fxFn:null,height:"auto",startingSlide:0,sync:1,random:0,fit:0,containerResize:1,pause:0,pauseOnPagerHover:0,autostop:0,autostopCount:0,delay:0,slideExpr:null,cleartype:!e.support.opacity,cleartypeNoBg:!1,nowrap:0,fastOnEvent:0,randomizeEffects:1,rev:0,manualTrump:!0,requeueOnImageNotLoaded:!0,requeueTimeout:250,activePagerClass:"activeSlide",updateActivePagerLink:null}})(jQuery);;
+(function(e){e.fn.rwdImageMaps=function(){var t=this,i=parseFloat(e.fn.jquery),n=function(){t.each(function(){if(void 0!==e(this).attr("usemap")){var t=this,n=e(t);n.height()&&n.width()&&e("<img />").load(function(){var o,a,r="width",s="height";if(1.6>i?(o=t.getAttribute(r),a=t.getAttribute(s)):(o=n.attr(r),a=n.attr(s)),!o||!a){var l=new Image;l.src=n.attr("src"),o||(o=l.width),a||(a=l.height)}var c=n.width()/100,g=n.height()/100,u=n.attr("usemap").replace("#",""),d="coords";e('map[name="'+u+'"]').find("area").each(function(){var t=e(this);t.data(d)||t.data(d,t.attr(d));for(var i=t.data(d).split(","),n=Array(i.length),r=0;n.length>r;++r)n[r]=0===r%2?parseInt(100*(i[r]/o)*c):parseInt(100*(i[r]/a)*g);t.attr(d,""+n)})}).attr("src",n.attr("src"))}})};return e(window).resize(n).trigger("resize"),this}})(jQuery);;
+(function(e){(function(e,t){"object"==typeof exports&&exports?module.exports=t:"function"==typeof define&&define.amd?define(t):e.Mustache=t})(this,function(){function e(e,t){return RegExp.prototype.test.call(e,t)}function t(t){return!e(f,t)}function i(e){return e.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g,"\\$&")}function n(e){return(e+"").replace(/[&<>"'\/]/g,function(e){return w[e]})}function o(e){this.string=e,this.tail=e,this.pos=0}function a(e,t){this.view=e,this.parent=t,this._cache={}}function r(){this.clearCache()}function s(e,t,i,n){for(var o,a,r,l="",c=0,g=e.length;g>c;++c)switch(o=e[c],a=o[1],o[0]){case"#":if(r=i.lookup(a),"object"==typeof r)if(y(r))for(var d=0,m=r.length;m>d;++d)l+=s(o[4],t,i.push(r[d]),n);else r&&(l+=s(o[4],t,i.push(r),n));else if("function"==typeof r){var f=null==n?null:n.slice(o[3],o[5]);r=r.call(i.view,f,function(e){return t.render(e,i)}),null!=r&&(l+=r)}else r&&(l+=s(o[4],t,i,n));break;case"^":r=i.lookup(a),(!r||y(r)&&0===r.length)&&(l+=s(o[4],t,i,n));break;case">":r=t.getPartial(a),"function"==typeof r&&(l+=r(i));break;case"&":r=i.lookup(a),null!=r&&(l+=r);break;case"name":r=i.lookup(a),null!=r&&(l+=u.escape(r));break;case"text":l+=a}return l}function l(e){for(var t,i=[],n=i,o=[],a=0,r=e.length;r>a;++a)switch(t=e[a],t[0]){case"#":case"^":o.push(t),n.push(t),n=t[4]=[];break;case"/":var s=o.pop();s[5]=t[2],n=o.length>0?o[o.length-1][4]:i;break;default:n.push(t)}return i}function c(e){for(var t,i,n=[],o=0,a=e.length;a>o;++o)t=e[o],t&&("text"===t[0]&&i&&"text"===i[0]?(i[1]+=t[1],i[3]=t[3]):(i=t,n.push(t)));return n}function g(e){return[RegExp(i(e[0])+"\\s*"),RegExp("\\s*"+i(e[1]))]}var u={};u.name="mustache.js",u.version="0.7.2",u.tags=["{{","}}"],u.Scanner=o,u.Context=a,u.Writer=r;var d=/\s*/,m=/\s+/,f=/\S/,h=/\s*=/,p=/\s*\}/,v=/#|\^|\/|>|\{|&|=|!/,y=Array.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},w={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","/":"&#x2F;"};u.escape=n,o.prototype.eos=function(){return""===this.tail},o.prototype.scan=function(e){var t=this.tail.match(e);return t&&0===t.index?(this.tail=this.tail.substring(t[0].length),this.pos+=t[0].length,t[0]):""},o.prototype.scanUntil=function(e){var t,i=this.tail.search(e);switch(i){case-1:t=this.tail,this.pos+=this.tail.length,this.tail="";break;case 0:t="";break;default:t=this.tail.substring(0,i),this.tail=this.tail.substring(i),this.pos+=i}return t},a.make=function(e){return e instanceof a?e:new a(e)},a.prototype.push=function(e){return new a(e,this)},a.prototype.lookup=function(e){var t=this._cache[e];if(!t){if("."==e)t=this.view;else for(var i=this;i;){if(e.indexOf(".")>0){t=i.view;for(var n=e.split("."),o=0;t&&n.length>o;)t=t[n[o++]]}else t=i.view[e];if(null!=t)break;i=i.parent}this._cache[e]=t}return"function"==typeof t&&(t=t.call(this.view)),t},r.prototype.clearCache=function(){this._cache={},this._partialCache={}},r.prototype.compile=function(e,t){var i=this._cache[e];if(!i){var n=u.parse(e,t);i=this._cache[e]=this.compileTokens(n,e)}return i},r.prototype.compilePartial=function(e,t,i){var n=this.compile(t,i);return this._partialCache[e]=n,n},r.prototype.getPartial=function(e){return e in this._partialCache||!this._loadPartial||this.compilePartial(e,this._loadPartial(e)),this._partialCache[e]},r.prototype.compileTokens=function(e,t){var i=this;return function(n,o){if(o)if("function"==typeof o)i._loadPartial=o;else for(var r in o)i.compilePartial(r,o[r]);return s(e,i,a.make(n),t)}},r.prototype.render=function(e,t,i){return this.compile(e)(t,i)},u.parse=function(e,n){function a(){if(S&&!C)for(;$.length;)delete k[$.pop()];else $=[];S=!1,C=!1}if(e=e||"",n=n||u.tags,"string"==typeof n&&(n=n.split(m)),2!==n.length)throw Error("Invalid tags: "+n.join(", "));for(var r,s,f,y,w,b=g(n),x=new o(e),_=[],k=[],$=[],S=!1,C=!1;!x.eos();){if(r=x.pos,f=x.scanUntil(b[0]))for(var z=0,I=f.length;I>z;++z)y=f.charAt(z),t(y)?$.push(k.length):C=!0,k.push(["text",y,r,r+1]),r+=1,"\n"==y&&a();if(!x.scan(b[0]))break;if(S=!0,s=x.scan(v)||"name",x.scan(d),"="===s?(f=x.scanUntil(h),x.scan(h),x.scanUntil(b[1])):"{"===s?(f=x.scanUntil(RegExp("\\s*"+i("}"+n[1]))),x.scan(p),x.scanUntil(b[1]),s="&"):f=x.scanUntil(b[1]),!x.scan(b[1]))throw Error("Unclosed tag at "+x.pos);if(w=[s,f,r,x.pos],k.push(w),"#"===s||"^"===s)_.push(w);else if("/"===s){if(0===_.length)throw Error('Unopened section "'+f+'" at '+r);var T=_.pop();if(T[1]!==f)throw Error('Unclosed section "'+T[1]+'" at '+r)}else if("name"===s||"{"===s||"&"===s)C=!0;else if("="===s){if(n=f.split(m),2!==n.length)throw Error("Invalid tags at "+r+": "+n.join(", "));b=g(n)}}var T=_.pop();if(T)throw Error('Unclosed section "'+T[1]+'" at '+x.pos);return k=c(k),l(k)};var b=new r;return u.clearCache=function(){return b.clearCache()},u.compile=function(e,t){return b.compile(e,t)},u.compilePartial=function(e,t,i){return b.compilePartial(e,t,i)},u.compileTokens=function(e,t){return b.compileTokens(e,t)},u.render=function(e,t,i){return b.render(e,t,i)},u.to_html=function(e,t,i,n){var o=u.render(e,t,i);return"function"!=typeof n?o:(n(o),void 0)},u}()),e.mustache=function(e,t,i){return Mustache.render(e,t,i)},e.fn.mustache=function(t,i){return e(this).map(function(n,o){var a=e(o).html().trim(),r=e.mustache(a,t,i);return e(r).get()})}})(jQuery);;
+var gigaom={};(function(i){"use strict";gigaom.init=function(){gigaom.$html_body=i("body"),gigaom.$body=i("#body"),gigaom.$wrapper=i("#wrap-allthethings"),gigaom.$inner_wrapper=i("#allthethings"),gigaom.$main=i("#main"),gigaom.$nav=i("#nav"),gigaom.$sidebar=i("#sidebar"),gigaom.$body_widgets=i("#body-widgets"),gigaom.$post_body=i(".post .body"),gigaom.$viewport=i('meta[name="viewport"]'),gigaom.original_viewport=gigaom.$viewport.attr("content"),amplify.publish("go-pre-init"),gigaom.is_old_ie=gigaom.$html_body.is(".lt-ie9");for(var a in go_theme_injection_areas)gigaom["$"+go_theme_injection_areas[a].id]=i("."+go_theme_injection_areas[a].id);navigator.userAgent.match(/MSIE/i)&&gigaom.$html_body.addClass("ie");var e=navigator.userAgent.match(/MSIE 10/i);if(!e){var g=/(Windows Phone)|(XBLWP)|(ZuneWP)/;(!Modernizr.fontface||g.test(navigator.userAgent)||navigator.userAgent.match(/webOS/i)||navigator.userAgent.match(/wOSBrowser/i))&&(i("head").append('<link rel="stylesheet" href="'+go_theme.template_url+'/css/no-font-face.css"/>'),gigaom.$html_body.addClass("no-font-face"),setTimeout(function(){i(window).resize()},500))}gigaom.nav.init(),gigaom.waterfall.init(),gigaom.single.init(),gigaom.text_scale.init(),i(".gallery").length&&gigaom.gallery.init(),amplify.publish("go-init-pre-resize"),gigaom.resize.init(),amplify.publish("go-init"),(!navigator.userAgent.match(/(Android)/)||navigator.userAgent.match(/(Chrome)|(Firefox)/))&&(i(document).on("focus","input,select,textarea",function(a){void 0!==a.originalEvent&&(gigaom.disable_zoom(a),i(this).focus())}),i(document).on("blur","input,select,textarea",function(i){gigaom.enable_zoom(i)}))},gigaom.is_on_screen=function(a){var e=i(window).scrollTop(),g=e+i(window).height(),t=a.offset().top,o=t+a.height();return g>=o&&t>=e},gigaom.disable_zoom=function(){var i=/,*maximum\-scale\=\d*\.*\d*/;gigaom.$viewport.attr("content",gigaom.original_viewport.replace(i,",maximum-scale=1"))},gigaom.enable_zoom=function(){gigaom.$viewport.attr("content",gigaom.original_viewport)}})(jQuery);;
+gigaom.analytics = {};
+
+( function( $ ) {
+	"use strict";
+
+	gigaom.analytics.init = function() {
+		amplify.subscribe( 'go-event-navigation-balloon-inflate', gigaom.analytics.track_event_navigation_balloon_inflate );
+		amplify.subscribe( 'go-resize', gigaom.analytics.track_resize );
+		amplify.subscribe( 'go-ads-refresh', gigaom.analytics.track_ad_refresh );
+	};
+
+	/**
+	 * track resize data
+	 */
+	gigaom.analytics.track_resize_data = function( category, states ) {
+		_gaq.push([
+			'_trackEvent',
+			category,                       // the category
+			states.to,                          // the action / the breakpoint
+			screen.width + 'x' + screen.height // the label / the screen pixels
+		]);
+	};
+
+	/**
+	 * track balloon inflate event
+	 */
+	gigaom.analytics.track_event_navigation_balloon_inflate = function( panel ) {
+		gigaom.analytics.track_nav_open( 'event-balloon' );
+	};
+
+	/**
+	 * track navigation open events
+	 */
+	gigaom.analytics.track_nav_open = function( panel ) {
+		_gaq.push([
+			'_trackEvent',
+			'menu-open',
+			panel,                             // the action / the panel
+			screen.width + 'x' + screen.height // the label / the screen pixels
+		]);
+	};
+
+	/**
+	 * Track resize events
+	 */
+	gigaom.analytics.track_resize = function( states ) {
+		// set the appropriate category
+		if ( true === gigaom.resize.initial ) {
+			gigaom.analytics.track_resize_data( 'viewport-init', states );
+		} else {
+			gigaom.analytics.track_resize_data( 'viewport-resize', states );
+		}//end else
+	};
+
+	/**
+	 * Track ad refresh events
+	 */
+	gigaom.analytics.track_ad_refresh = function( states ) {
+		gigaom.analytics.track_resize_data( 'ad-refresh', states );
+	};
+})( jQuery );
+
+// hook into the appropriate init action
+amplify.subscribe( 'go-init-pre-resize', gigaom.analytics.init );
+amplify.subscribe( 'go-nav-control-open', gigaom.analytics.track_nav_open );
+;

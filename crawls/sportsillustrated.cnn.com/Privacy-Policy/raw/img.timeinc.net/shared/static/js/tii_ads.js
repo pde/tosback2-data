@@ -1,4 +1,4 @@
-// TII Ads - Version 1.4.2 - 2013.04.04
+// TII Ads - Version 1.4.3 - 2013.04.11
 
 function TiiAdConfig(sitename) {
 	this.sitename	= sitename;
@@ -177,9 +177,11 @@ function TiiAdQuantBlueKaiMindsetImpl() {
 function TiiAdFactorySetParam(key, value) {
 	if (typeof(value) == "object") {
 		this.params[key] = value;
+                tgxDao.params[key] = this.params[key];
 	} else {
 		if (value.toString() != "") {
 			this.params[key] = value;
+                        tgxDao.params[key] = this.params[key];
 		}
 	}
 }
@@ -618,7 +620,7 @@ function tiiHtmlAdWH(mn, width, height) {
  
     var TIICONSTANTS = {
         'bk_allow_deny_mode': 'allow',
-        'bk_enabled_root_domains': 'content.timeinc.net',
+        'bk_enabled_root_domains': 'content.timeinc.net,thisoldhouse.com,coastalliving.com,southernliving.com,sunset.com',
         'bk_disabled_root_domains': 'foodandwine.com,travelandleisure.com,departures.com,executivetravelmagazine.com,allyou.com,health.com,myrecipes.com',
         'bk_id': '13731',
         'bk_pixel_limit': '6',
@@ -689,13 +691,13 @@ function tiiHtmlAdWH(mn, width, height) {
         if (TIICONSTANTS.bk_allow_deny_mode == "allow") {
             if (TIICONSTANTS.bk_enabled_root_domains.indexOf(domain) >= 0) {
                 document.writeln('<iframe name="__bkframe" height="0" width="0" frameborder="0" style="display:none" src="javascript:void(0)"></iframe>');
-                document.writeln('<scr'+'ipt type="text/javascript" src="'+window.location.protocol+'//tags.bkrtx.com/js/bk-coretag.js"></scr'+'ipt>');     
+                document.writeln('<scr'+'ipt type="text/javascript" src="'+window.location.protocol+'//img.timeinc.net/shared/static/js/tii_bk-coretag.js"></scr'+'ipt>');     
                 bk.enabled = 1;
             }   
-        } else if (TIICONSTANTS.bk_allow_deny == "deny") {
+        } else if (TIICONSTANTS.bk_allow_deny_mode == "deny") {
             if (TIICONSTANTS.bk_disabled_root_domains.indexOf(domain) == -1) {
                 document.writeln('<iframe name="__bkframe" height="0" width="0" frameborder="0" style="display:none" src="javascript:void(0)"></iframe>');
-                document.writeln('<scr'+'ipt type="text/javascript" src="'+window.location.protocol+'//tags.bkrtx.com/js/bk-coretag.js"></scr'+'ipt>');     
+                document.writeln('<scr'+'ipt type="text/javascript" src="'+window.location.protocol+'//img.timeinc.net/shared/static/js/tii_bk-coretag.js"></scr'+'ipt>');     
                 bk.enabled = 1;
             }  
         }
@@ -704,7 +706,7 @@ function tiiHtmlAdWH(mn, width, height) {
                 document.write('<scri'+'pt type="text/javascript" language="JavaScript1.3" src="'+window.location.protocol+'//b' + TIICONSTANTS.cs_test_mode + '.scorecardresearch.com/c2/' + TIICONSTANTS.cs_c2_id  + '/cs.js"></scr'+'ipt>');
                 cs.enabled = 1;
             }   
-        } else if (TIICONSTANTS.cs_allow_deny == "deny") {
+        } else if (TIICONSTANTS.cs_allow_deny_mode == "deny") {
             if (TIICONSTANTS.cs_disabled_root_domains.indexOf(domain) == -1) {
                 document.write('<scri'+'pt type="text/javascript" language="JavaScript1.3" src="'+window.location.protocol+'//b' + TIICONSTANTS.cs_test_mode + '.scorecardresearch.com/c2/' + TIICONSTANTS.cs_c2_id  + '/cs.js"></scr'+'ipt>');
                 cs.enabled = 1;

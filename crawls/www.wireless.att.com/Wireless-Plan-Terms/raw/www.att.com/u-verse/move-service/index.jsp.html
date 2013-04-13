@@ -371,7 +371,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="1bJcRlZpz8y1HKn8g5G7dnM3!-170732859!1365596510057" />
+<meta NAME="DCSext.sessionid" 				CONTENT="LzCsRpNNxMsGjgQ8Qm6Vf4Vp!910201548!1365855661740" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer" />
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
@@ -860,7 +860,7 @@ function handleLastFieldInteracted(e) {
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = '1bJcRlZpz8y1HKn8g5G7dnM3!-170732859!1365596510057';
+			var pSessionId = 'LzCsRpNNxMsGjgQ8Qm6Vf4Vp!910201548!1365855661740';
 			return pSessionId;
 		};
 
@@ -900,7 +900,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1365596539256;
+		var servertime = 1365855687810;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -1111,6 +1111,247 @@ function handleLastFieldInteracted(e) {
 	
 </script>
 
+
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script>
+<script>
+	/*
+		US9344 Upgrade Browser Message
+		Get/Set Cookie Function for Upgrade Browser Message Checking
+		Function called in globalnav.war/includes/globalNav.jsp page
+	*/
+	function getCookie(name) {
+		var dc = document.cookie;
+		var prefix = name + "=";
+		var begin = dc.indexOf("; " + prefix);
+		if (begin == -1) {
+			begin = dc.indexOf(prefix);
+			if (begin != 0) return null;
+		}
+		else
+		{
+			begin += 2;
+			var end = document.cookie.indexOf(";", begin);
+			if (end == -1) {
+			end = dc.length;
+			}
+		}
+		return unescape(dc.substring(begin + prefix.length, end));
+	} 
+	function acknowledgeBrowserSupportSeen() {
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/";
+	}
+
+	/*
+		US9344 Upgrade Browser Message
+		Browser Detect JS Function
+		Function called in globalnav.war/includes/globalNav.jsp page
+	*/
+	
+	var BrowserDetect = {
+		init: function () {
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+			this.version = this.searchVersion(navigator.userAgent)
+				|| this.searchVersion(navigator.appVersion)
+				|| "an unknown version";
+			this.OS = this.searchString(this.dataOS) || "an unknown OS";
+		},
+		searchString: function (data) {
+			for (var i=0;i<data.length;i++)	{
+				var dataString = data[i].string;
+				var dataProp = data[i].prop;
+				this.versionSearchString = data[i].versionSearch || data[i].identity;
+				if (dataString) {
+					if (dataString.indexOf(data[i].subString) != -1)
+						return data[i].identity;
+				}
+				else if (dataProp)
+					return data[i].identity;
+			}
+		},
+		searchVersion: function (dataString) {
+			var index = dataString.indexOf(this.versionSearchString);
+			if (index == -1) return;
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+		},
+		dataBrowser: [
+			{
+				string: navigator.userAgent,
+				subString: "Chrome",
+				identity: "Chrome"
+			},
+			{ 	string: navigator.userAgent,
+				subString: "OmniWeb",
+				versionSearch: "OmniWeb/",
+				identity: "OmniWeb"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Apple",
+				identity: "Safari",
+				versionSearch: "Version"
+			},
+			{
+				prop: window.opera,
+				identity: "Opera",
+				versionSearch: "Version"
+			},
+			{
+				string: navigator.vendor,
+				subString: "iCab",
+				identity: "iCab"
+			},
+			{
+				string: navigator.vendor,
+				subString: "KDE",
+				identity: "Konqueror"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Firefox",
+				identity: "Firefox"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Camino",
+				identity: "Camino"
+			},
+			{		// for newer Netscapes (6+)
+				string: navigator.userAgent,
+				subString: "Netscape",
+				identity: "Netscape"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "MSIE",
+				identity: "Explorer",
+				versionSearch: "MSIE"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Gecko",
+				identity: "Mozilla",
+				versionSearch: "rv"
+			},
+			{ 		// for older Netscapes (4-)
+				string: navigator.userAgent,
+				subString: "Mozilla",
+				identity: "Netscape",
+				versionSearch: "Mozilla"
+			}
+		],
+		dataOS : [
+			{
+				string: navigator.platform,
+				subString: "Win",
+				identity: "Windows"
+			},
+			{
+				string: navigator.platform,
+				subString: "Mac",
+				identity: "Mac"
+			},
+			{
+				   string: navigator.userAgent,
+				   subString: "iPhone",
+				   identity: "iPhone/iPod"
+			},
+			{
+				string: navigator.platform,
+				subString: "Linux",
+				identity: "Linux"
+			}
+		]
+
+	};
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		/* 
+			US9344 Initialize Browser Detect Script 
+			Used to detect the browser name, version and OS
+		*/
+		BrowserDetect.init();
+		/* 
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked
+		*/
+		jQuery('#ge5p_z0-close-box-container').click(function(){
+			/* Check if upgrade message browser container is visible */
+		    if(jQuery('.ge5p_z0-message-container').is(':visible'))
+		    {
+		        /* yes - close it */
+		        jQuery(".ge5p_z0-message-container").slideToggle();
+		    }
+		    /* Set GNSESS Cookie */
+		    acknowledgeBrowserSupportSeen();
+		});
+
+		/* 
+		    US9344 Use Modernizr to detect IE browser by hash change feature 
+		*/
+		if (!Modernizr.hashchange) {
+			/* 
+		        IE Browsers found so check if
+		        version is less than we support
+		        Updated as of: 3/1/2013 
+		    */
+		    if(BrowserDetect.browser == 'Explorer') {
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist())
+				if(BrowserDetect.version < 7)
+		        {
+					
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist
+						jQuery(".ge5p_z0-message-container").slideToggle('slow');
+					}
+		        }
+		    } 
+		} else {
+		    /* 
+		        Modern Browsers are found so check if
+		        version is less than we support
+		        Updated as of: 3/1/2013 
+		    */
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) {
+		    
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    } 
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) {
+		    
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    }   
+		}
+	});
+</script>
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container">
+    <div class="ge5p_z0-browser-alert-message">
+        <div class="ge5p_z0-browser-alert-inner">
+            <h2>Pages Don't Look Right?</h2>
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p>
+            <ul class="ge5p_z0-browser-alert-browser-list">
+                <li>
+                    <a href="../../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a>
+                </li>
+                <li>
+                    <a href="../../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container">
+                <div class="ge5p_z0-close-box-text">Close</div>
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="globalNav" class="en_US xRock">
 	<div id="globalNavInterface" class="ecom">
 		
@@ -1160,10 +1401,31 @@ function handleLastFieldInteracted(e) {
 							
 							
 						
-						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../../index.html"><span>Personal</span></a></li>
+						<li>
+							<a id="segMenuItemPersonal" class="segMenuItem " href="../../index.html"><span>Personal</span></a>
+							<div class="segSubMenu" id="segSubMenuPersonal">
+								<ul>
+									
+										
+									
+										
+											<li><a href="../../index.html">att.com</a></li>
+										
+									
+										
+											<li><a href="../../../www.att.net/index.html">att.net</a></li>
+										
+									
+										
+											<li><a href="http://uverseonline.att.net">uverse.com</a></li>
+										
+									
+								</ul>
+							</div>
+						</li>
 						<li>
 							<a id="segMenuItemBusiness" class="segMenuItem " href="../../gen/general%3Fpid=11627.html"><span>Business</span></a>
-							<div class="segSubMenu" >
+							<div class="segSubMenu" id="segSubMenuBusiness">
 								<ul>
 									
 										
@@ -1196,12 +1458,12 @@ function handleLastFieldInteracted(e) {
 						
 
 					
-						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li>
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../www.wireless.att.com/coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Wireless Coverage Maps<span class="segMenuNewWin">&nbsp;</span></span></a></li>
 						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../../storelocator/index.html"><span>Find a Store</span></a></li>
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="index.jsp.html#"><span>
 									Language
 								</span></a>
-							<div class="segSubMenu">
+							<div class="segSubMenu" id="segSubMenuLanguage">
 								<ul>
 									
 										
@@ -1574,15 +1836,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFiveCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Phones &amp; Devices</h3>
@@ -1616,7 +1876,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Plans &amp; Services</h3>
@@ -1650,7 +1913,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>More...</h3>
@@ -1684,7 +1950,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -1728,15 +1997,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFourCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Bundles with U-verse</h3>
@@ -1766,7 +2033,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Bundles without U&#8209;verse</h3>
@@ -1792,7 +2062,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -1828,15 +2101,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFourCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Plans &amp; Channels</h3>
@@ -1866,7 +2137,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Equipment</h3>
@@ -1884,7 +2158,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -1932,15 +2209,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFiveCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Plans</h3>
@@ -1970,7 +2245,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Equipment</h3>
@@ -1992,7 +2270,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Extras</h3>
@@ -2018,7 +2299,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -2054,15 +2338,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFourCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Plans</h3>
@@ -2092,7 +2374,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Equipment</h3>
@@ -2114,7 +2399,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -2154,15 +2442,13 @@ function handleLastFieldInteracted(e) {
 															
 														
 														<div class="trayContentItem trayFiveCol">
-															<div class="firstColumn">
-																<div class="columnContent">
-																	<img src='http://0.ecom.attccc.com/media/att/2012/global/nav/uverse_189x200.png' alt='U-verse' />
-																</div>
-															</div>
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	
+																	<div class="firstColumn">
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Digital TV</h3>
@@ -2196,7 +2482,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Internet</h3>
@@ -2222,7 +2511,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Home Phone</h3>
@@ -2248,7 +2540,10 @@ function handleLastFieldInteracted(e) {
 															
 																
 																
-																<div class="secondColumn ">
+																
+																	<div class="secondColumn">
+																	
+																	
 																	<div class="columnContent">
 																		
 																			<h3>Existing Customers</h3>
@@ -2927,7 +3222,7 @@ meteor.sharing.configure('d6ca2d4c-b527-4866-a122-1958487d7814');
 			</div>
 			<div class="modal header-voip" style="padding-left: 0px !important; display: none;">
 				<span class="modal-header-title">AT&T U-verse Voice</span>
-				<span class="modal-header-subtitle">Customize your digital home phone service in 3 steps</span>
+				<span class="modal-header-subtitle">Customize your digital home phone service in 2 steps</span>
 			</div>	
     	</div>
     	

@@ -1,7 +1,10 @@
 /* SiteCatalyst code version: H.24.4
 Copyright 1996-2012 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
-/* Last Updated 2013-18-03 - Atlas partner plugin removed, Utility Function VPR is introduced & DFA variables added, Uppercase vid value for mobile app to mobile checkout
+/* Last Updated 2013-09-04 UserStatus included
+2013-08-04 cookieDomainPeriods
+2013-18-03 - Atlas partner plugin removed, Utility Function VPR is introduced & DFA variables added, Uppercase vid value for mobile app to mobile checkout
+2013-07-03 - Uppercase vid value for mobile app to mobile checkout
 2013-20-02 - TnT PC and Session ID to SC 
 2012-10-03 - Facebook tracking
 2012-07-26 - Go together codes
@@ -25,6 +28,11 @@ s.linkInternalFilters='javascript:,.stubhub.co,stubhubstatic.com,paypal.com,srwd
 s.linkLeaveQueryString=false;
 s.linkTrackVars='None';
 s.linkTrackEvents='None';
+
+s.cookieDomainPeriods = "2";
+var d=window.location.hostname;
+if(d.indexOf(".co.uk") > 0)
+    {s.cookieDomainPeriods = "3";}
 
 s._channelDomain='Social Networks|facebook.com,flickr.com,twitter.com,//t.co/,youtube.com,myspace.com,linkedin.com,digg.com,delicious.com,reddit.com,blog,forum,plus.google.com>';
 
@@ -342,7 +350,7 @@ function s_doPlugins(s)
 	if(!s.eVar33)
 		s.eVar33=s.getQueryParam('creative')
 	
-	s.prop28="H.24.4_20131803"	
+	s.prop28="H.24.4_20130904"	
 	s.prop31=s.c_r('currentCTC');
 	s.prop32=s.c_r('currentCVP');
 	
@@ -400,6 +408,15 @@ function s_doPlugins(s)
         s.eVar34 = mboxFactoryDefault.getPCId().getId()
         s.eVar35 = mboxFactoryDefault.getSessionId().getId();
     }
+	if(s.c_r('STUB_SECR')&&s.c_r('STUB_SECR').indexOf('guid')>-1){
+ 	s.eVar69='authenticated';
+	}
+	else if(s.c_r('STUB_PERSISTENT')&&s.c_r('STUB_PERSISTENT').indexOf('stub_uid')>-1){
+ 	s.eVar69='identified';
+	}
+	else {
+	s.eVar69='anonymous';
+	}
 }
 
 s.doPlugins=s_doPlugins

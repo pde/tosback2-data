@@ -1,5 +1,5 @@
 (function(){
-	var
+		var
 		td,tf,i,is,rarity=Math.random()
 		,write,write_script = function(src){
 			write("<script type='text/javascript' src='"+htmlescape(src)+"'><\/script>");

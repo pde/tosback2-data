@@ -307,7 +307,6 @@
             }
           },
           applyJobvite: function (el) {
-            alert('ding');
             var code = $.f.get(el, 'val');
             if (code) {
               var iframe = $.d.getElementById('frame_' + code);

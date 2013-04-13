@@ -1,0 +1,39 @@
+(function($) {
+  $(function(){
+    function hide_sidebar_block() {
+      $('.pane-install-httpse').hide();
+    }
+
+    // detect browser
+    var browser = 'other';
+    if(navigator && navigator.userAgent) {
+      if(navigator.userAgent.match(/firefox/i))
+        browser = 'firefox';
+      else if(navigator.userAgent.match(/chrome/i))
+        browser = 'chrome';
+    }
+
+    // detect https everywhere
+    $('#httpse-more-info').before(
+      $('<img id="httpse-detect" src="https://www.eff.org/sites/all/themes/frontier/images/get-https-e.png" style="float:right;" alt="" />').load(function(){
+        // get-https-e.png is 1px width, got-https-e.png is 2px wide
+        // have to use image size instead of src because of chrome bug https://code.google.com/p/chromium/issues/detail?id=122548
+        var httpse_installed = this.width == 2;
+
+        if(browser == 'other') {
+          hide_sidebar_block();
+        } else {
+          if(httpse_installed) {
+            hide_sidebar_block();
+          } else {
+            if(browser == 'firefox') {
+              $('#httpse-sidebar-chrome').hide();
+            } else if(browser == 'chrome') {
+              $('#httpse-sidebar-firefox').hide();
+            }
+          }
+        }
+      })
+    );
+  });
+})(jQuery);

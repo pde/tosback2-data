@@ -338,6 +338,237 @@ CQURLInfo = {
 	}; 
 	var globalNavResourceParams = {'globalItem': 'Personal','render': '010000','platform': 'shop','p_linkChangeClass': 'openModal localModal'}; 
 </script> 
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script> 
+<script> 
+	/* 
+		US9344 Upgrade Browser Message 
+		Get/Set Cookie Function for Upgrade Browser Message Checking 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	function getCookie(name) { 
+		var dc = document.cookie; 
+		var prefix = name + "="; 
+		var begin = dc.indexOf("; " + prefix); 
+		if (begin == -1) { 
+			begin = dc.indexOf(prefix); 
+			if (begin != 0) return null; 
+		} 
+		else 
+		{ 
+			begin += 2; 
+			var end = document.cookie.indexOf(";", begin); 
+			if (end == -1) { 
+			end = dc.length; 
+			} 
+		} 
+		return unescape(dc.substring(begin + prefix.length, end)); 
+	}  
+	function acknowledgeBrowserSupportSeen() { 
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/"; 
+	} 
+	/* 
+		US9344 Upgrade Browser Message 
+		Browser Detect JS Function 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	var BrowserDetect = { 
+		init: function () { 
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser"; 
+			this.version = this.searchVersion(navigator.userAgent) 
+				|| this.searchVersion(navigator.appVersion) 
+				|| "an unknown version"; 
+			this.OS = this.searchString(this.dataOS) || "an unknown OS"; 
+		}, 
+		searchString: function (data) { 
+			for (var i=0;i<data.length;i++)	{ 
+				var dataString = data[i].string; 
+				var dataProp = data[i].prop; 
+				this.versionSearchString = data[i].versionSearch || data[i].identity; 
+				if (dataString) { 
+					if (dataString.indexOf(data[i].subString) != -1) 
+						return data[i].identity; 
+				} 
+				else if (dataProp) 
+					return data[i].identity; 
+			} 
+		}, 
+		searchVersion: function (dataString) { 
+			var index = dataString.indexOf(this.versionSearchString); 
+			if (index == -1) return; 
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1)); 
+		}, 
+		dataBrowser: [ 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Chrome", 
+				identity: "Chrome" 
+			}, 
+			{ 	string: navigator.userAgent, 
+				subString: "OmniWeb", 
+				versionSearch: "OmniWeb/", 
+				identity: "OmniWeb" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Apple", 
+				identity: "Safari", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				prop: window.opera, 
+				identity: "Opera", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "iCab", 
+				identity: "iCab" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "KDE", 
+				identity: "Konqueror" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Firefox", 
+				identity: "Firefox" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Camino", 
+				identity: "Camino" 
+			}, 
+			{		// for newer Netscapes (6+) 
+				string: navigator.userAgent, 
+				subString: "Netscape", 
+				identity: "Netscape" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "MSIE", 
+				identity: "Explorer", 
+				versionSearch: "MSIE" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Gecko", 
+				identity: "Mozilla", 
+				versionSearch: "rv" 
+			}, 
+			{ 		// for older Netscapes (4-) 
+				string: navigator.userAgent, 
+				subString: "Mozilla", 
+				identity: "Netscape", 
+				versionSearch: "Mozilla" 
+			} 
+		], 
+		dataOS : [ 
+			{ 
+				string: navigator.platform, 
+				subString: "Win", 
+				identity: "Windows" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Mac", 
+				identity: "Mac" 
+			}, 
+			{ 
+				   string: navigator.userAgent, 
+				   subString: "iPhone", 
+				   identity: "iPhone/iPod" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Linux", 
+				identity: "Linux" 
+			} 
+		] 
+	}; 
+</script> 
+<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+		/*  
+			US9344 Initialize Browser Detect Script  
+			Used to detect the browser name, version and OS 
+		*/ 
+		BrowserDetect.init(); 
+		/*  
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked 
+		*/ 
+		jQuery('#ge5p_z0-close-box-container').click(function(){ 
+			/* Check if upgrade message browser container is visible */ 
+		    if(jQuery('.ge5p_z0-message-container').is(':visible')) 
+		    { 
+		        /* yes - close it */ 
+		        jQuery(".ge5p_z0-message-container").slideToggle(); 
+		    } 
+		    /* Set GNSESS Cookie */ 
+		    acknowledgeBrowserSupportSeen(); 
+		}); 
+		/*  
+		    US9344 Use Modernizr to detect IE browser by hash change feature  
+		*/ 
+		if (!Modernizr.hashchange) { 
+			/*  
+		        IE Browsers found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Explorer') { 
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
+				if(BrowserDetect.version < 7) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist 
+						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+					} 
+		        } 
+		    }  
+		} else { 
+		    /*  
+		        Modern Browsers are found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
+	}); 
+</script> 
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container"> 
+    <div class="ge5p_z0-browser-alert-message"> 
+        <div class="ge5p_z0-browser-alert-inner"> 
+            <h2>Pages Don't Look Right?</h2> 
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p> 
+            <ul class="ge5p_z0-browser-alert-browser-list"> 
+                <li> 
+                    <a href="../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a> 
+                </li> 
+            </ul> 
+            <div class="clear"></div> 
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container"> 
+                <div class="ge5p_z0-close-box-text">Close</div> 
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
 <div id="globalNav" class="en_US hardRock"> 
 	<div id="globalNavInterface" class="ecom"> 
 				<div id="segMenuBar"> 
@@ -345,10 +576,19 @@ CQURLInfo = {
 					<a href="index.html#wrapper" id="pageID" rel="res">Skip navigation</a> 
 					<div id="segcenterSpan"></div> 
 					<ul class="segMenu" id="leftSegMenu"> 
-						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="index.html"><span>Personal</span></a></li> 
+						<li> 
+							<a id="segMenuItemPersonal" class="segMenuItem " href="index.html"><span>Personal</span></a> 
+							<div class="segSubMenu" id="segSubMenuPersonal"> 
+								<ul> 
+											<li><a href="index.html">att.com</a></li> 
+											<li><a href="../www.att.net/index.html">att.net</a></li> 
+											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+								</ul> 
+							</div> 
+						</li> 
 						<li> 
 							<a id="segMenuItemBusiness" class="segMenuItem " href="gen/general%3Fpid=11627.html"><span>Business</span></a> 
-							<div class="segSubMenu" > 
+							<div class="segSubMenu" id="segSubMenuBusiness"> 
 								<ul> 
 											<li><a href="gen/landing-pages%3Fpid=9213.html">Small Business</a></li> 
 											<li><a href="gen/landing-pages%3Fpid=9214.html">Enterprise Business</a></li> 
@@ -360,12 +600,12 @@ CQURLInfo = {
 						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
 					</ul> 
 					<ul class="segMenu" id="rightSegMenu"> 
-						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../www.wireless.att.com/coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Wireless Coverage Maps<span class="segMenuNewWin">&nbsp;</span></span></a></li> 
 						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="storelocator/index.html"><span>Find a Store</span></a></li> 
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="index.html#"><span> 
 									Language 
 								</span></a> 
-							<div class="segSubMenu"> 
+							<div class="segSubMenu" id="segSubMenuLanguage"> 
 								<ul> 
 															<li><a href="http://www.att.com/homepage/es/index.html?locale=es_US"><span lang="es_US">P&aacute;gina en Espa&ntilde;ol</span></a></li> 
 													<li><a href="../espanol.att.com/index.html" target="_blank"><span>Sitio en Espa&ntilde;ol</span></a></li> 
@@ -391,12 +631,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/wireless.html" name="Shop_Wireless" >Wireless</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-wireless_AA000R48.png' alt='Wireless' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Phones &amp; Devices</h3> 
 																		<ul class="trayNoBullet"> 
@@ -408,7 +643,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Services</h3> 
 																		<ul class="trayNoBullet"> 
@@ -420,7 +655,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>More...</h3> 
 																		<ul class="trayNoBullet"> 
@@ -432,7 +667,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -448,12 +683,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/bundles.html" name="Shop_Bundles" >Bundles</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-bundles_AA000R46.png' alt='Bundles' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles with U-verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -464,7 +694,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Bundles without U&#8209;verse</h3> 
 																		<ul class="trayNoBullet"> 
@@ -474,7 +704,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -488,12 +718,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-television_AA000R49.png' alt='Digital TV' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans &amp; Channels</h3> 
 																		<ul class="trayNoBullet"> 
@@ -504,7 +729,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -512,7 +737,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -529,12 +754,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/internet/index.html" name="Shop_Internet" >Internet</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-internet_AA000R4V.png' alt='Internet' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -545,7 +765,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -554,7 +774,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Extras</h3> 
 																		<ul class="trayNoBullet"> 
@@ -564,7 +784,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -578,12 +798,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
 														<div class="trayContentItem trayFourCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2011/global/nav/img-homephone_AA000R4B.png' alt='Home Phone' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Plans</h3> 
 																		<ul class="trayNoBullet"> 
@@ -594,7 +809,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Equipment</h3> 
 																		<ul class="trayNoBullet"> 
@@ -603,7 +818,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -618,12 +833,7 @@ CQURLInfo = {
 												<li> 
 													<a class="secondaryMenuItem" href="shop/u-verse.html" name="Shop_U-verse" >U-verse</a> 
 														<div class="trayContentItem trayFiveCol"> 
-															<div class="firstColumn"> 
-																<div class="columnContent"> 
-																	<img src='http://0.ecom.attccc.com/media/att/2012/global/nav/uverse_189x200.png' alt='U-verse' /> 
-																</div> 
-															</div> 
-																<div class="secondColumn "> 
+																	<div class="firstColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Digital TV</h3> 
 																		<ul class="trayNoBullet"> 
@@ -635,7 +845,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Internet</h3> 
 																		<ul class="trayNoBullet"> 
@@ -645,7 +855,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Home Phone</h3> 
 																		<ul class="trayNoBullet"> 
@@ -655,7 +865,7 @@ CQURLInfo = {
 																		</ul> 
 																	</div> 
 																</div> 
-																<div class="secondColumn "> 
+																	<div class="secondColumn"> 
 																	<div class="columnContent"> 
 																			<h3>Existing Customers</h3> 
 																		<ul class="trayNoBullet"> 
@@ -700,7 +910,7 @@ CQURLInfo = {
 	<div id="globalNavShadows" style="height:15px;*height:40px;" ></div> 
 </div> 
 	<!-- undenav content --> 
-	<div id="underNav"> 
+	<div id="underNav" class="breadcrumbGutter"> 
 <div class="parbase teaser homepagealertteaser alertTeaser"> 
 </div> 
 </div> 
@@ -711,7 +921,7 @@ CQURLInfo = {
 		<iframe name="holidayWidgetIframe" id="holidayWidgetIframe" src="media/standalone/giftcenter/index.html" allowtransparency="true" frameborder="0" scrolling="no" seamless="seamless" style="z-index:5;background:none transparent;" ></iframe> 
 	</div> 
 	<!-- main content of page --> 
-	<div id="wrapper"> 
+	<div id="wrapper" class="main-container-wrapper"> 
 		<div id="main-container"> 
 <div id="marqueeContainer"> 
 	<div id="marquee"> 
@@ -826,7 +1036,37 @@ jQuery(document).ready(function(){
     	var pageLanguage = jQuery("html").attr("lang"); 
 		  var modalHref = jQuery(this).attr('href'); 
 		  var modalURL = "/homepage/" + pageLanguage + "/" + modalHref;		    
-		  jQuery.colorbox({iframe:true, height:550, width:720, scrolling:false, href: modalURL, close:""}); 
+		  //jQuery.colorbox({iframe:true, height:550, width:720, scrolling:false, href: modalURL, close:""}); 
+		  var l_height = 545; // default height     
+            if (jQuery.browser.msie) {                
+                if(pageLanguage=="en"){ 
+                    if(parseInt(jQuery.browser.version)<9){ 
+                    l_height = 509; 
+                     } 
+                 else { 
+                    l_height = 504;  
+                  }                                    
+                    jQuery.colorbox({iframe:true, height:l_height, width:720, scrolling:false, href: modalURL, close:""}); 
+                } 
+            else { 
+                if(parseInt(jQuery.browser.version)<9){ 
+                 l_height = 545; 
+              } 
+              else { 
+                 l_height = 532;  
+              }           
+             jQuery.colorbox({iframe:true, height:l_height, width:720, scrolling:false, href: modalURL, close:""}); 
+            } 
+        } 
+        else {        
+         if(pageLanguage=="en"){                 
+            l_height = 515; 
+            jQuery.colorbox({iframe:true, height:l_height, width:720, scrolling:false, href: modalURL, close:""}); 
+         } 
+         else{ 
+             jQuery.colorbox({iframe:true, height:l_height, width:720, scrolling:false, href: modalURL, close:""}); 
+         } 
+       } 
 		  return false; 
     }); 
     jQuery(".closeModal").click(function(){ 
@@ -842,6 +1082,19 @@ jQuery(document).ready(function(){
     height: 30px; 
 } 
 </style> 
+<!--[if lte IE 8]> 
+<style> 
+#cboxBottomLeft, #cboxBottomRight{ 
+background-position-y: -28px !important; 
+} 
+#cboxBottomLeft,#cboxBottomCenter,#cboxBottomRight { 
+margin-top: -3px; 
+} 
+#cboxBottomLeft,#cboxBottomRight { 
+margin-top: 0px; 
+} 
+</style> 
+<![endif]--> 
 <div class="myLoginpaneBoxMiddleBGNew">  
     <div class="PadTop10 myLoginpaneBoxContent PadTop17IE"> 
         <form id="ssoLoginForm" class="w180 myStyled_forms" autocomplete="off" method="post" action="accounts/index.html%3Fsource=IC4425j4900s2000.html"> 
@@ -875,7 +1128,7 @@ jQuery(document).ready(function(){
                 <div id="pwdDiv" class="rel Left-2px LoginInput"> 
                     <span class="textInput-wrapper"> 
                         <span> 
-                            <input id="password" type="password" class="text" name="pass" onFocus="BoxFocusImgChange(this);" onBlur="BoxFocusOutImgChange(this);" size="28" maxlength="60" title='Enter Password' onkeypress="validateCapsLock(event);"/>  
+                            <input type="password" class="text" name="pass" onFocus="BoxFocusImgChange(this);" onBlur="BoxFocusOutImgChange(this);" size="28" maxlength="60" title='Enter Password' onkeypress="validateCapsLock(event);"/>  
                         </span> 
                     </span>  
                 </div> 
@@ -1028,20 +1281,20 @@ jQuery(document).ready(function(){
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_EOY_UG_tiles","name":"Atrix_2_EOY_UG_tiles","campainName":"campaign","id":"campaign_Atrix_2_EOY_UG_tiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR","name":"Atrix_2_OOR","campainName":"campaign","id":"campaign_Atrix_2_OOR","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content;2013099" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content;2013101" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="homepagethreeup parbase section"> 
  <!-- BEGIN: Home Page Three up  --> 
 	<div id="mainSlot1" style="float:left;width:auto;"> 
         <div class="thirdwidth1 parbase onethird"> 
 <div class="featuredItemTile" style="height:auto;"> 
-    <img src="shopcms/media/att/2013/tiles/w324h170/150091-SmartphoneSale-324x170.png" alt="SmartPhone Sale"/> 
+    <img src="shopcms/media/att/2013/tiles/w324h170/clo-Free-Refurbs.png" alt="Refurb Phones"/> 
    <div class="textSection"> 
         <div class="text parbase titleplustext"> 
-    <h4 >Shop Smart</h4>  
+    <h4 >REFURB PHONES</h4>  
     <p><p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;"></p> 
-<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">Find our best online smartphone <br> 
-deals starting at 99¢.<br> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">Shop refurb phones starting <br> 
+at FREE. Online-Only Offer.<br> 
 <br> 
 </p> 
 <p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
@@ -1055,14 +1308,15 @@ deals starting at 99¢.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="shop/wireless/devices/smartphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth1/onethird/homepagecta;2013045"> 
-<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-smart_sale.gif" alt="Shop Now"/> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/refurbishedphones.html?sortDeviceBy=lowToHigh&source=IC08RR001aFzz000O&wtExtendsource=freerefurbs" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth1/onethird/homepagecta;2013101"> 
+<img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-Refurb.gif" alt="Shop Now"/> 
 </a> 
 <div class="clear"></div> 
 </div> 
 <div class="legal text parbase section"> 
 	<div class="legal"> 
-	   Select phones only. Device selection may vary. 2-yr. voice agreement with qualifying monthly data plan required. Some offers are available online only. 
+	   Select phones. New 2-yr agreement with qualifying <br> 
+voice &amp; data plans or Mobile Share plan req'd.<br> 
 	</div> 
 <div class="clear"></div></div> 
 </div> 
@@ -1093,7 +1347,7 @@ deals starting at 99¢.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="shop/wireless/addaline.html" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2013093"> 
+		<a class="cta" href="https://www.att.com/shop/wireless/addaline.html?source=IC1K10001RFRR000O&wtExtendsource=addaline" target="_self" data-cqpath="/content/campaigns/att/en/home/Tiles/campaign/Atrix_2_OOR/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2013101"> 
 <img src="shopcms/media/att/2012/homepage/homepage-btn/btn-hpTile-EN-Shop-AAL.gif" alt="Shop Now"/> 
 </a> 
 <div class="clear"></div> 
@@ -1303,7 +1557,7 @@ with qualifying monthly data plan required.
 </div> 
 		<div id="linkFarm" class="homepage"> 
 			<div class="parbase lnkfrm teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/RASPilot","name":"RASPilot","campainName":"New_Link_Farm","id":"New_Link_Farm_RASPilot","segments":["/shopcms/shopetc/segmentation/UF/segmnts/RAS_Pilot_DMAs"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/default","name":"default","campainName":"New_Link_Farm","id":"New_Link_Farm_default","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_lnkfrm", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/AuthCM_RAS_Pilot_Test_Segment","name":"AuthCM_RAS_Pilot_Test_Segment","campainName":"New_Link_Farm","id":"New_Link_Farm_AuthCM_RAS_Pilot_Test_Segment","segments":["/shopcms/shopetc/segmentation/UF/segmnts/AuthenticatedWireless_In_RAS_Pilot_Markets"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/RASPilot","name":"RASPilot","campainName":"New_Link_Farm","id":"New_Link_Farm_RASPilot","segments":["/shopcms/shopetc/segmentation/UF/segmnts/RAS_Pilot_DMAs"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/AuthCM_Test_Segment_Everyone_Else","name":"AuthCM_Test_Segment_Everyone_Else","campainName":"New_Link_Farm","id":"New_Link_Farm_AuthCM_Test_Segment_Everyone_Else","segments":["/shopcms/shopetc/segmentation/UF/segmnts/wirelessauthenticated"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/link-farm/New_Link_Farm/default","name":"default","campainName":"New_Link_Farm","id":"New_Link_Farm_default","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_lnkfrm", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_lnkfrm" class="campaign campaign-New_Link_Farm"> 
                 <div class="page teaserpage"> 
 <div data-teaserId="/content/campaigns/att/en/home/link-farm/New_Link_Farm/default/jcr:content;2013085" style="visibility:hidden;"> 
@@ -1489,7 +1743,7 @@ with qualifying monthly data plan required.
 												 | 
 												<a href="internal/broadbandinfo.html" style="" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">Broadband Information</a> 
 								</div> 
-								<a href="gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">&copy;2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+								<a href="gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
 						</div> 
 					<div class="logoBlock"> 
 								<a target="_blank" href="../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/homepage/en/index/jcr:content/globalfooter"> 
@@ -1516,7 +1770,7 @@ with qualifying monthly data plan required.
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 41870088551271207587553015424129721858 --> 
+		 <!--X-Renderer: 335223233955903617878710816997425182570 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1659,19 +1913,22 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
     jQuery(document).ready(function(){ 
         jQuery.when(reporting_ready).then(function() { 
         	setTimeout(function () { 
-	        	ATT.globalVars.wtFull(); 
-	        	ATT.checkPromo(); 
-	            ATT.log('dcs injection block'); 
-	            var s = document.createElement("script"); 
-	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
-	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
-	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
-	            // Use any selector 
-	            jQuery("head")[0].appendChild(s); 
-				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
-				if (window.JSAM) 
-				JSAM.Stat.reportReady(); 
+	        	if (typeof pb_ready == "undefined"){ pb_ready = new jQuery.Deferred(); pb_ready.resolve();} 
+				jQuery.when(pb_ready).then(function() { 
+					ATT.globalVars.wtFull(); 
+					ATT.checkPromo(); 
+					ATT.log('dcs injection block'); 
+					var s = document.createElement("script"); 
+					s.type = "text/javascript"; 
+					s.src = "//www.att.com/webtrends/scripts/dcs_tag.js"; 
+					s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+					s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+					// Use any selector 
+					jQuery("head")[0].appendChild(s); 
+					//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+					if (window.JSAM) 
+					JSAM.Stat.reportReady(); 
+				}); 
         	}, 3000);     
         }); 
     }); 
@@ -1708,7 +1965,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","1LhyRk5HQvHNv4JTV8QnkM7n!-1255060890!1365571911182"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","0ynlRyXHV1HKp3gbLjxd2HTn!1282851501!1365825383700"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

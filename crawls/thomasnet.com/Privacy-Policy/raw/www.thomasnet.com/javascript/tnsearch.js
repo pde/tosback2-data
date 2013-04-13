@@ -4,6 +4,7 @@ var curpage	= frag[1];
 
 var whatDefault	= new Array();
 whatDefault['supp'] = whatDefault['prod']	= 'Enter a product/service category (example: Gears)';
+whatDefault['cert']	= 'Enter a product/service category (example: Gears)';
 whatDefault['products']	= whatDefault['spec'] = 'Enter a product specification or keyword (example: 12 v dc motor)';
 whatDefault['cad']	= 'Enter a product to find catalogs with downloadable CAD Drawings (example: Gears)';
 whatDefault['news']	= 'Enter keywords to search product news';
@@ -22,6 +23,7 @@ searchTypes['products']	= 'products';
 searchTypes['cad']	= 'cad';
 searchTypes['news']	= 'news';
 searchTypes['whitepapers']	= 'whitepapers';
+searchTypes['cert']	= 'cert';
 
 var searchTypeUrl	= new Array();
 searchTypeUrl['supp']	= '/suppliers/';
@@ -29,6 +31,7 @@ searchTypeUrl['products']	= '/productsearch/';
 searchTypeUrl['cad']	= '/cadmodels.html';
 searchTypeUrl['news']	= 'http://news.thomasnet.com/';
 searchTypeUrl['whitepapers']	= '/white-papers/';
+searchTypeUrl['cert']	= '/certifications/';
 
 
 var searchForm	= document.getElementById('unspscsearchform');
@@ -140,7 +143,10 @@ function tnetSearch(submitType, searchType){
 		return false;
 	} else if(searchType=='products'){
 		searchForm.action	= '/productsearch/results.html';
+	} else if(searchType=='cert'){
+		searchForm.action = '/certifications/search.html';
 	}
+
 	searchForm.submit();
 	return;
 }

@@ -23,6 +23,29 @@ jQuery.getScript = function(url, callback, cache){
 	
 
 (function(jQuery){
+
+	jQuery(document).bind("click", function(e) {				
+       	if(jQuery(e.target).parent().hasClass("over") || jQuery(e.target).parents().hasClass("segSubMenu")) {
+       	} else {
+
+            if(jQuery("#segSubMenuLanguage").is(":visible"))
+	            {
+	                var menuItemData = jQuery.data(document.body, "LangData");
+	                GlobalNav.animate.slideUpSubMenu(menuItemData);  
+	            }
+		}
+	});
+
+	// RE: jira MYATT13-54
+	// Closes Language Dropdown menu when browser is resized
+	window.onresize = function(event) {
+		if(jQuery("#segSubMenuLanguage").is(":visible"))
+			{
+				var menuItemData = jQuery.data(document.body, "LangData");
+				GlobalNav.animate.slideUpSubMenu(menuItemData);  
+			}
+	}
+
 	jQuery.fn.stopOn = function(handler) {
 		return this.each(function() {
 			
@@ -32,6 +55,7 @@ jQuery.getScript = function(url, callback, cache){
 				return;
 			}
 			
+
 			var stagnantBeatThreshold, stagnantBeats, beatInterval, element, coords, lastCoords, velocity, moving, monitorVelocity, monitorMouse;
 			
 			stagnantBeatThreshold = 5; //change this number to increase delay - 25 = 250ms
@@ -67,6 +91,13 @@ jQuery.getScript = function(url, callback, cache){
 			jQuery(element).bind("mouseenter.stopOn", function(e){this.intervalRef = setInterval(monitorVelocity, beatInterval);jQuery(element).bind("mousemove.stopOn", monitorMouse)});
 			jQuery(element).bind("mouseleave.stopOn", function(e){clearInterval(this.intervalRef);jQuery(element).unbind("mousemove.stopOn")});
 		});
+
+	// jQuery("#segMenuBar .segSubMenu")[1].click(function(e){
+	//   e.stopPropagation(); 
+	// });
+
+
+
 	};
 })(jQuery);
 
@@ -165,7 +196,10 @@ GlobalNav = {
 				for(var i = 0; i < flags.length; i++){attrs[flags[i].split("=")[0]] = flags[i].split("=")[1]}
 				thisAnchor.attr(attrs);
 			}
-			if(anchor.windowLocation == "Y"){thisAnchor.attr("target", "_blank")}
+			if(anchor.windowLocation == "Y"){
+				thisAnchor.attr("target", "_blank")
+				thisAnchor.addClass("newwindow");
+			}
 			return thisAnchor.get()[0];
 		},
 		checkInitConditions: function(){if(GlobalNav.SegMenu.isLoaded && GlobalNav.UserInfo.isLoaded){GlobalNav.initialize()}},
@@ -318,13 +352,23 @@ GlobalNav = {
 						
 						jQuery.each(col.rows, function(index,menuItem){
 							if(index == 0)return;
-							var menuListItem, menuAnchor;
+							var menuListItem, menuAnchor, newwindowspan, newwindowspanid;
 							
 							menuListItem = jQuery(document.createElement("li"));
 							menuAnchor = jQuery(GlobalNav.util.createAdvancedAnchor(menuItem));
 							menuAnchor.attr("name",primaryMenuList.id.split("_")[1] + "_" + item.displayName + "_" + menuItem.displayName);
 							menuListItem.append(menuAnchor);
 							trayMenu.append(menuListItem);
+
+							if(this.windowLocation == "Y")
+							{
+								newwindowspan = jQuery(document.createElement("span"));
+								newwindowspanid = "newwindow_" + this.id;
+								jQuery(newwindowspan.attr('id', newwindowspanid));
+								jQuery(newwindowspan.html('&nbsp;'));
+								menuAnchor.append(newwindowspan);
+							}
+
 						});
 						
 						trayHeader.append(trayHeaderAnchor);
@@ -383,6 +427,7 @@ GlobalNav = {
 			menu.data("subMenu").css({"height": currentMenuHeight, "display": "block"});
 			menu.data("subMenu").data("ul").css({"height": currentULHeight, "display": "block"});
 			menu.animation = new GlobalNav.animate.animationObject(menu.data("subMenu"), "height", finalHeight, onComplete, onFrame);
+
 		},
 		animationObject: function (El, prop, end, onComplete, onFrame){
 			if(!!El.jquery){El = GlobalNav.util.jMerge(El)}
@@ -437,6 +482,11 @@ GlobalNav = {
 				this.style.height = "";
 				this.data("ul").style.height = "";
 				this.data("shadow").show();
+
+
+				GlobalNav.SegMenu.openState="open";
+
+
 			},
 			secondaryOnFrame: function(){GlobalNav.Tray.shadow.show()},
 			subMenuOnHideComplete: function(){
@@ -488,6 +538,61 @@ GlobalNav = {
 			msie: {zIndex: 1, top:-6,left:-10,height:-2,width:1}, 
 			modern: {zIndex: 1, top:2,left:-3,height:-4,width:0}
 		},
+		
+		clickShowSubMenu: function(){
+			if(!!jQuery.browser.SafariMobile){this.mouseInside = true}
+			GlobalNav.SegMenu.visibleItem = this;
+
+			if(jQuery("#segSubMenuLanguage").is(":visible"))
+			{
+				GlobalNav.animate.slideUpSubMenu(this);
+			} else {
+				
+	
+
+				if(!!this.animation && this.animation.active){this.animation.cancel()}else{if(this.data("subMenu").style.display == "block"){return}}
+				
+				var jOffset, jThisWidth, thisSide, rightValue, leftValue;
+				
+				this.data("subMenu").css({"width":"", "height":"", "display":""});
+				this.data("subMenu").data("ul").css({"width":"", "height":"", "display":""});
+				
+				jOffset = GlobalNav.util.offset(this); 
+				jThisWidth = this.outerWidth();
+				thisSide = (jOffset.left + (jThisWidth / 2)) > (jQuery(document).width() / 2) ? "right" : "left";
+				rightValue = jOffset.left - Math.abs((jThisWidth - this.data("subMenu").outerWidth() - 1) * (this.data("subMenu").outerWidth() > 1));
+				leftValue = jOffset.left + 5;
+				
+				if(jQuery(this.parentNode).hasClass("rightMost")){rightValue += 2}
+				
+
+				this.addClass("over");
+				this.removeClass("selectedChevron");
+				
+				/*
+					US9344 Need to adjust top position of sub menu when
+					Upgrade Browser Message is visible
+					Worked for Language Links
+				*/
+				if(jQuery('#ge5p_z0-message-container').is(':visible'))
+			    {
+					this.data("subMenu").css({"top": jOffset.top + 34 - 171, "left": (thisSide == "right") ? rightValue : leftValue});
+				} else {
+					this.data("subMenu").css({"top": jOffset.top + 34, "left": (thisSide == "right") ? rightValue : leftValue});
+				}
+
+				if(this.id == "segMenuItemInternational") {
+
+					jQuery.data(document.body, "LangData", this);
+
+				}
+
+			GlobalNav.animate.slideDownSubMenu(this);
+				
+			}
+
+		},
+
 		hideSubMenu: function(){
 			this.mouseInside = false;
 			window.setTimeout(GlobalNav.util.forceThis(function(){
@@ -520,7 +625,19 @@ GlobalNav = {
 			
 			this.addClass("over");
 			this.removeClass("selectedChevron")
-			this.data("subMenu").css({"top": jOffset.top + 34, "left": (thisSide == "right") ? rightValue : leftValue});
+
+			/*
+				US9344 Need to adjust top position of sub menu when
+				Upgrade Browser Message is visible
+				Worked for Personal & Business Links
+			*/
+			if(jQuery('#ge5p_z0-message-container').is(':visible'))
+			    {
+					this.data("subMenu").css({"top": jOffset.top + 34 - 171, "left": (thisSide == "right") ? rightValue : leftValue});
+				} else {
+					this.data("subMenu").css({"top": jOffset.top + 34, "left": (thisSide == "right") ? rightValue : leftValue});
+				}
+
 			GlobalNav.animate.slideDownSubMenu(this);
 		},
 		mouseIn: function(){
@@ -529,7 +646,10 @@ GlobalNav = {
 		initialize: function(){
 			jQuery.each(this.initFunctions, function(){arguments[1]()});
 			
+
 			jQuery.each(this.menuListItems, function(index, menuItem){
+
+
 				menuItem = GlobalNav.util.jMerge(menuItem);
 				menuItem.attr("name", jQuery(menuItem).text());
 				
@@ -539,21 +659,29 @@ GlobalNav = {
 					menuItem.data("subMenu", GlobalNav.util.jMerge(menuItem.parentNode.getElementsByTagName("div")[0]));
 					menuItem.data("subMenu").menuItem = menuItem;
 					
-					if(!!jQuery.browser.SafariMobile){
-						menuItem.bind("mouseenter focus", GlobalNav.SegMenu.showSubMenu);
-						menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
-						menuItem.data("subMenu").bind("mouseenter", GlobalNav.util.forceThis(GlobalNav.SegMenu.showSubMenu, menuItem));
-						menuItem.data("subMenu").bind("mouseleave", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+					if(this.id == "segMenuItemInternational") {
+						menuItem.bind("click", GlobalNav.SegMenu.clickShowSubMenu);
+			
 					}else{
-						jQuery(menuItem).stopOn(GlobalNav.SegMenu.showSubMenu);
-						menuItem.bind("mouseenter focus", GlobalNav.SegMenu.mouseIn);
-						menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
-						menuItem.data("subMenu").bind("mouseenter focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
-						menuItem.data("subMenu").bind("mouseleave blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
-						jQuery(menuItem.data("subMenu")).find("a").bind("focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
-						jQuery(menuItem.data("subMenu")).find("a").bind("blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+
+						if(!!jQuery.browser.SafariMobile){
+							menuItem.bind("mouseenter focus", GlobalNav.SegMenu.showSubMenu);
+							menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
+							menuItem.data("subMenu").bind("mouseenter", GlobalNav.util.forceThis(GlobalNav.SegMenu.showSubMenu, menuItem));
+							menuItem.data("subMenu").bind("mouseleave", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+						}else{
+							jQuery(menuItem).stopOn(GlobalNav.SegMenu.showSubMenu);
+							menuItem.bind("mouseenter focus", GlobalNav.SegMenu.mouseIn);
+							menuItem.bind("mouseleave blur", GlobalNav.SegMenu.hideSubMenu);
+							menuItem.data("subMenu").bind("mouseenter focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
+							menuItem.data("subMenu").bind("mouseleave blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+							jQuery(menuItem.data("subMenu")).find("a").bind("focus", GlobalNav.util.forceThis(GlobalNav.SegMenu.mouseIn, menuItem));
+							jQuery(menuItem.data("subMenu")).find("a").bind("blur", GlobalNav.util.forceThis(GlobalNav.SegMenu.hideSubMenu, menuItem));
+						}
 					}
+
 					
+
 					menuItem.data("subMenu").data("shadow", new GlobalNav.shadow(menuItem.data("subMenu"), "segHasShadow", GlobalNav.SegMenu.shadowOffsets));
 					menuItem.data("subMenu").data("ul", GlobalNav.util.jMerge(menuItem.data("subMenu").getElementsByTagName("ul")[0]));
 					document.getElementById("segMenuBar").appendChild(menuItem.data("subMenu"));
@@ -889,13 +1017,26 @@ GlobalNav = {
 		});
 		this.hide = function(){this.shadowEl.style.display = "none";}
 		this.show = function(){
-			this.shadowEl.css({
-				"width": Math.max(this.castingEl.outerWidth() + this.offsets.width,0),
-				"height": Math.max(this.castingEl.outerHeight() + this.offsets.height,0),
-				"top": Math.max(GlobalNav.util.offset(this.castingEl).top + this.offsets.top,0),
-				"left": Math.max(GlobalNav.util.offset(this.castingEl).left + this.offsets.left,0),
-				"display": "block"
-			});
+			
+			if(jQuery('#ge5p_z0-message-container').is(':visible'))
+			{
+		        /* yes - it's open so recalculate the top position */
+				this.shadowEl.css({
+					"width": Math.max(this.castingEl.outerWidth() + this.offsets.width,0),
+					"height": Math.max(this.castingEl.outerHeight() + this.offsets.height,0),
+					"top": Math.max(GlobalNav.util.offset(this.castingEl).top + this.offsets.top - 171,0),
+					"left": Math.max(GlobalNav.util.offset(this.castingEl).left + this.offsets.left,0),
+					"display": "block"
+				});
+			} else {
+				this.shadowEl.css({
+					"width": Math.max(this.castingEl.outerWidth() + this.offsets.width,0),
+					"height": Math.max(this.castingEl.outerHeight() + this.offsets.height,0),
+					"top": Math.max(GlobalNav.util.offset(this.castingEl).top + this.offsets.top,0),
+					"left": Math.max(GlobalNav.util.offset(this.castingEl).left + this.offsets.left,0),
+					"display": "block"
+				});
+			}
 		}
 		
 		if(typeof parentDiv == "undefined"){
@@ -1010,6 +1151,7 @@ jQuery(document).ready(function(){
 			self.val(initVal); //new to handle spanish
 		}
 	});
+
 });
 
 function scriptLoader(url, callback){
@@ -1106,3 +1248,4 @@ function validateSearchForm(){
 		});
 	};
 }(jQuery));
+

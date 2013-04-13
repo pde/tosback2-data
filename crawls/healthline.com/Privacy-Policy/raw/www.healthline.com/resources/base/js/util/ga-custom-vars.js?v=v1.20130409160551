@@ -179,7 +179,14 @@ function HL_ga_setCustomVars(cfg) {
 
 function HL_ga_sendPageView() {
 
+  // do not include original page URL query parameters
   var pageURI = window.location.pathname + window.location.hash;
+
+  // HL.com global variable: HL_ga_customVars
+  if(HL_ga_customVars && HL_ga_customVars.micrositeId) {
+    pageURI = pageURI + '?gaPage=[' + HL_ga_customVars.micrositeId + ']';
+  }
+
   _gaq.push(['hl._trackPageview', pageURI]);
 
 }

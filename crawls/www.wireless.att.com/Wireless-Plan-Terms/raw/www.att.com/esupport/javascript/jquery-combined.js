@@ -1,4 +1,3 @@
-var capchaResp=false;
 /*  
 ********************************************** SART INCLUDE jquery.uniform.js ***************************** *****************************
 */
@@ -3373,36 +3372,7 @@ $.extend($.fn, {
 						validator.settings.submitHandler.call( validator, validator.currentForm );
 						return false;
 					}
-					/*captcha validation starts here*/					
-					try{
-						var capchaValue=jQuery("#capchaV").val();								
-						if(capchaValue!='' && capchaValue!='undefined' && capchaValue!=undefined ){ 					
-									validateCaptchaTxt(capchaValue);	
-									capchaResp=eval(capchaResp);					
-								if(capchaResp!=true && capchaResp!='true'){
-									try{
-										loadCaptcha();
-									}catch(e){}
-									jQuery("#capchaVError").text("The character you have entered didn't match.Please try again.");
-									jQuery("#capchaVError").attr('style','display:inline');
-									jQuery("#capchaV").val("");
-									}
-									return capchaResp;
-						}else{
-							try{
-								loadCaptcha();
-							}catch(e){}
-							jQuery("#capchaVError").text("The character you have entered didn't match.Please try again.");
-							jQuery("#capchaV").val("");
-							return false;
-							}
-						}catch(e){
-							loadCaptcha();
-							jQuery("#capchaVError").text("The character you have entered didn't match.Please try again.");
-							jQuery("#capchaV").val("");
-							return false;
-						};	
-					/*captcha validation ends here*/					
+					return true;				
 					}
 				
 					
@@ -3498,20 +3468,6 @@ $.extend($.fn, {
 	}
 });
 
-function validateCaptchaTxt(capVal){
-	jQuery.ajaxSetup({   
-		async:false
-	});
-	jQuery.get('/esupport/article/validateCaptcha.jsp?code='+capVal,  function (data) {
-		var myValue=eval(data);
-		if(myValue=='true' || myValue==true){
-			capchaResp=true;
-		}else{				
-			capchaResp=false;
-			}
-		});
-		return;
-}
 
 // Custom selectors
 $.extend($.expr[":"], {
@@ -4371,7 +4327,7 @@ $.extend($.validator, {
 		},
 		alfaChars:function(value,element){			
 			//return this.optional(element) || /^[a-zA-Z]+$/.test(value);	
-			return this.optional(element) || /^[a-zA-Z][a-zA-Z\ \-\']+$/.test(value);		 
+			return this.optional(element) || /^[a-zA-Z\ \-\']+$/.test(value);	 
 		},
 		// http://docs.jquery.com/Plugins/Validation/Methods/creditcard
 		// based on http://en.wikipedia.org/wiki/Luhn

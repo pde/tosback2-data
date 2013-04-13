@@ -56,7 +56,7 @@ function verifyForm(f){
     return passable;
 }
 
-var loginVerify = function(huser, muser){
+var loginVerify = function(muser){ //Harveynash was remove a variable (huser) is not use in function
     this.status = 0; // the base status check, it's just a secondary measure I've put in
     /*	0	-	user is not logged in
      *	1	-	user is logged in
@@ -107,7 +107,8 @@ var loginVerify = function(huser, muser){
     }
     
 }
-var lv = new loginVerify(hearst_user, mag_user);
+//Harveynash was remove a variable (hearst_user) is not use in below function
+var lv = new loginVerify(mag_user);
 /* end login code from Seventeen */
 
 function loginTout() {

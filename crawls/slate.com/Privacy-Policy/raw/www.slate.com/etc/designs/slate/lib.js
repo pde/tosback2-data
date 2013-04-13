@@ -1637,10 +1637,12 @@ $(document).ready(function() {
 $(document).bind('wapoFbAsyncInit', function() {
     FB.Event.subscribe('edge.create', function(response) {
     	wapoEvent.logEvent('Like','SGLOG', { "url": response });
+   		trackSocialShare("facebook-like","event6");
     });
     if (typeof(twttr) !== "undefined") {
     	twttr.events.bind('tweet', function(event) {
     		wapoEvent.logEvent('Tweet','SGLOG', { "url": $("link[rel=\"canonical\"]").attr('href') });
+    		trackSocialShare("twitter-tweet","event6");
 		});
     }
 });
@@ -1656,6 +1658,17 @@ $(document).ready(function() {
     	osmuv = 1;
     }
     wapoEvent.logEvent('View','SGLOG', { "url": url, "osmuv": osmuv, "ref" : referrer });
+
+    $(".sl-fb-sharer-button").click(function() {
+    	trackSocialShare("facebook-share","event6");
+    });
+    $(".sl-email-share").click(function() {
+    	trackSocialShare("email-share","event6");
+    });
+
+    $(document).bind('cut copy', function() {
+    	trackCopyShare(s.prop2,"event61");
+	  }); 
 });
 (function(a){a.fn.example=function(e,c){var d=a.isFunction(e);var b=a.extend({},c,{example:e});return this.each(function(){var f=a(this);if(a.metadata){var g=a.extend({},a.fn.example.defaults,f.metadata(),b)}else{var g=a.extend({},a.fn.example.defaults,b)}if(!a.fn.example.boundClassNames[g.className]){a(window).unload(function(){a("."+g.className).val("")});a("form").submit(function(){a(this).find("."+g.className).val("")});a.fn.example.boundClassNames[g.className]=true}if(!f.attr("defaultValue")&&(d||f.val()==g.example)){f.val("")}if(f.val()==""&&this!=document.activeElement){f.addClass(g.className);f.val(d?g.example.call(this):g.example)}f.focus(function(){if(a(this).is("."+g.className)){a(this).val("");a(this).removeClass(g.className)}});f.change(function(){if(a(this).is("."+g.className)){a(this).removeClass(g.className)}});f.blur(function(){if(a(this).val()==""){a(this).addClass(g.className);a(this).val(d?g.example.call(this):g.example)}})})};a.fn.example.defaults={className:"example"};a.fn.example.boundClassNames=[]})(jQuery);/*
 * jQuery Form Plugin

@@ -663,19 +663,19 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 						+ "' class='img-product-border'></img>"
 						+ "</a></div>");
 				
-				lines.push("<a href='" + selected_href + "'>" + imageAlt + "</a>");
+				lines.push("<a href='" + selected_href + "' tabindex='710'>" + imageAlt + "</a>");
 				
 				lines.push("<p class='price'>" + startingAt + " $" + parseFloat(price).toFixed(2) + "</p>");
 				
 				//alert("productName = " + productName);
-				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews'>" + 
+				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews' tabindex='710'>" + 
 						"<img src='" + ratingImg + "' alt='" + alt_product_name + alt_text_rating + " out of 5 stars'>"+ "</a></span></div>");
 				
 				if (!isModelThree) {
 					lines.push("<p><label class='ada-hide' for='check_" + compareCatentryId + "'>Compare</label>" +
 							"<input type='checkbox' id='check_" + compareCatentryId + "' name='checkboxid' " +
 							"onclick='JavaScript:categoryDisplayJS.Add2CompareAjax(\""+compareCatentryId+"\" , \""+thumbnailImg
-							+"\",\""+catEntryDisplayUrl+"\", \""+compareImageDescription+"\")'>" +
+							+"\",\""+catEntryDisplayUrl+"\", \""+compareImageDescription+"\")' tabindex='710'>" +
 							"&nbsp;Compare</p>");
 				}
 				if (labels != null && labels.indexOf("PREVIOUSLY OWNED") > -1) {
@@ -762,7 +762,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				
 				lines.push('<a href=' + selected_href + ' aria-hidden="true" role="presentation" tabindex="-1"><img style="border:1px solid #999;" alt="' + 
 						imageAlt + '" role="presentation" src="' + image + '" /></a>');
-				lines.push('<p class="featuredprod"><a href=' + selected_href + '>' + productName + '</a></p>');
+				lines.push('<p class="featuredprod"><a href=' + selected_href + ' tabindex="710">' + productName + '</a></p>');
 				lines.push("</div>");
 			}			
 		}

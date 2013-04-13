@@ -313,7 +313,7 @@
         
         
         
-        /***** HELPER FUNCTIONS4 ****/
+        /***** HELPER FUNCTIONS6 ****/
 url = document.location.href;
 url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
 url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
@@ -628,6 +628,10 @@ s.usePlugins=true; //do not modify
 /**Note: add your custom JS plugins inside the s_doPlugins function below**/
 
 function s_doPlugins(s) {
+ }
+
+s.doPlugins=s_doPlugins; //do not modify
+
 /*****START OF PLUGINS SECTION*****/
 
 function get_cookie ( cookie_name ){var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );if ( results )return ( unescape ( results[2] ) ); else return null;}     
@@ -872,9 +876,8 @@ s.returnFlash=new Function("cn","vr","to",""
 +"n')\",to);");
 
 /*****END OF PLUGINS SECTION******/
-}
 
-s.doPlugins=s_doPlugins; //do not modify
+
         
 
         
