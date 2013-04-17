@@ -1,6 +1,7 @@
 var dr_store_domain = 'http://shop.us.samsung.com';
 $(document).ready (function () {
-
+	
+	
 	$(function() {
 		var jversion = jQuery.fn.jquery;
 		if (jversion < '1.5.2' || window.location.pathname.indexOf('support') > 0) {
@@ -41,6 +42,16 @@ $(document).ready (function () {
 		else {
 			$('.product-marketplace .twocol .eCommerceDefault').css('visibility', 'visible');
 		}
+	}
+	var verB = getCookie('verB');
+	
+	if(typeof(verB) != 'undefined' && verB.length > 0 && verB == 'true'){
+		$(".promo-UN50EH5000FXZA").html("$749.99");
+		$(".sav-UN50EH5000FXZA").html("$400");
+		$(".buy-UN50EH5000FXZA").attr("href","http://shop.us.samsung.com/store/samsung/en_US/buy/ThemeID.29552800/productID.278212200/quantity.1");
+		$("#ship-UN50EH5000FXZA").hide();
+	}else{
+		$(".promo-UN50EH5000FXZA").html("$789.99");
 	}
 });
 
@@ -151,6 +162,9 @@ function callbackDRProductInfo(productInfo) {
         var backOrder = productInfo.productInventory.backOrder;
         if (stockStatus == 'Yes' || preOrder || backOrder ) {
             var link = productInfo.buyLink.href + '/quantity.1';
+            if(productInfo.sku == 'UN50EH5000FXZA'){
+            	link = "http://shop.us.samsung.com/store/samsung/en_US/buy/ThemeID.29552800/productID.278212200/quantity.1";
+            }
             $('.product-marketplace .twocol .two-col-top .col-two a.lg-btn').attr('href', link).find('span').text('ADD TO CART');
             $('div.product-marketplace div.twocol:first-child > h2').text('Buy Direct From Samsung');
             $('div.product-marketplace div.twocol:first-child > p').text('Buy Direct From Samsung');

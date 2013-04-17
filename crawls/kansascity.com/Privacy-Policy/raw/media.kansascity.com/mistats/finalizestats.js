@@ -12,9 +12,9 @@ else {
 }
 
 // Server and URL variables
-mistats.server        = document.domain.toString().replace (/\/.*/, '').replace (/^www\./, '');
-mistats.url           = document.location.protocol + "//" + document.location.hostname + document.location.pathname;
-mistats.querystring   = document.location.search + " " + document.location.hash;
+mistats.server      = (location.hostname || '').toLowerCase().replace(/^www\./, '');
+mistats.url         = location.protocol + '//' + location.hostname + location.pathname;
+mistats.querystring = ((location.search || '').length > 1 ? location.search : '') + ((location.hash || '').length > 1 ? location.hash : '');
 
 // New Insite Tracking
 // Added 8/19/09 - JJ
@@ -194,6 +194,9 @@ s_account  = mistats.account;
 s.pageName = mistats.pagename && !mistats.pagename.match(/^pubsys:/i) ? mistats.pagename : ('noname:' + location.href);
 s.channel  = mistats.sitename + ": " + mistats.channel;
 s.server   = mistats.server;
+s.referrer = document.referrer;
+
+s.hier1 = mistats.bizunit + '|' + mistats.sitename + '|' + mistats.taxonomy + '|' + mistats.channel;
 
 s.prop1  = mistats.url;
 s.prop2  = mistats.version;
@@ -201,7 +204,6 @@ s.prop3  = mistats.pagelevel;
 s.prop4  = mistats.contentsource;
 s.prop5  = mistats.insiteid;
 s.prop6  = 'D=h1';
-//s.prop6  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
 s.prop7  = mistats.custom1;
 s.prop8  = mistats.custom2;
 s.prop9  = mistats.custom3;
@@ -215,7 +217,8 @@ s.prop32 = mistats.moddate;
 s.prop37 = mistats.popular;
 s.prop39 = mistats.querystring;
 s.prop47 = mistats.widgets;
-s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
+
+s.pageURL = 'D=c1' + (s.prop39 ? '+c39' : '');
 
 if (mistats.visitorId)
    s.visitorID = mistats.visitorId;

@@ -207,7 +207,6 @@ function setTakeover(skin) {
             }).css({
                 'display': 'block',
                 'position': 'absolute',
-                'z-index': '1',
                 'width': '100%',
                 'height': clickHeight,
                 'top': clickTop

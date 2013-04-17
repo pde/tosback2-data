@@ -1064,7 +1064,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "04/13/2013 08:12 AM",
+            DATE_IN_USE: "04/17/2013 08:14 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -5118,7 +5118,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/432/057/cn6432057.html -->
+<!-- BEGIN Content Item File: /content/0006/487/636/cn6487636.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
@@ -5130,9 +5130,9 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/432/057/assets/041313_ADU_COUNTD_MOBMAIN_US.jpg",
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/636/assets/041713_25offPurch_MOBMAIN_US1.gif",
 				"command" : "displayOverlay",
-				"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/432/057/assets/skinny_popup.html" }
+				"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/636/assets/skinny_popup.html" }
 			}
 		]
   	},
@@ -5141,195 +5141,19 @@ contentInfo.mobileContent = {
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/432/057/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/636/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/432/057/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/636/assets/edfs_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/432/057/cn6432057.html -->
+<!-- END Content Item File: /content/0006/487/636/cn6487636.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
 <!-- BEGIN - WCD Sitewide Container 11 -->
-<!-- BEGIN Content Item File: /content/0006/024/869/cn6024869.html -->
-
-<!-- CNOV-25: A/B test for search engagement-->
-<script type="text/javascript">
-// <![CDATA[
-
-var NAV2TestCookieCutter = Class.create();
-NAV2TestCookieCutter.prototype = {
-	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-		this.EvarToUse = theEvar != "" ? theEvar : false;
-		this.CookieVariableName = CookieVarName;
-		this.CookieUsed = CookieUsedName;
-		this.CookieValueBase = CookieValueBase;
-		this.SegBreakdown = SegmentBreakdown.split("-");
-		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-		this.QuickSegment = '';
-		this.piperlimeException = plExcept;
-		this.userNeedsSync = false;
-		this.ForcedModeBase = ForcedModeBaseName;
-		this.ModeArrayIndex = this.SegBreakdown.length;
-		this.modeArray = new Array();
-		this.modeArray[0] = "a";
-		this.modeArray[1] = "b";
-		this.modeArray[2] = "c";
-		this.modeArray[3] = "d";
-		this.modeArray[4] = "e";
-		this.modeArray[5] = "f";
-		
-		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-			this.forcedMode();
-		}else{
-			this.cookieScanner();
-		}
-	},
-
-	forcedMode:function() {
-		var href= location.href;
-		for (i = 0; i < this.ModeArrayIndex; i++) {
-			if (RegExp(this.ForcedModeBase + "=" + this.modeArray[i],'i').test(href)) {
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-
-		userNeedsSync = true;
-	},
-
-	cookieScanner:function() {
-		if (this.DoesTheCookieExist) {
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.RetrievedCookieValue);
-			}
-
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				}
-			}
-		} else {
-			this.tagManager();
-		}
-	},
-
-	tagManager:function() {
-		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-		this.FloorThreshold = 0;
-		this.TopThreshold = 0;
-		
-		for (i = 0; i < this.ModeArrayIndex; i++){
-			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-				this.QuickSegment = this.modeArray[i].toUpperCase();
-				break;
-			} else {
-				this.FloorThreshold = this.TopThreshold;
-			}
-		}
-		
-		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-
-		if (this.EvarToUse) {
-			this.setABTestVariable(this.UserSegment);
-		}
-	},
-	
-	setABTestVariable: function(setValue) {
-		thisEvar = 'eVar' + this.EvarToUse;
-		ABTestVariables[thisEvar] = setValue;
-	}
-};
-
-
-var navCookieCutter = new NAV2TestCookieCutter('SNAV_FACETS_13012_v4_SEARCH_TEST', 'mktUniversalPersist', 'searchSEG', 'searchForceMode', '0-100', '8', '');
-
-
-var searchSegment = gidLib.getCookieVar("mktUniversalPersist", "SNAV_FACETS_13012_v4_SEARCH_TEST");
-
-var searchABTest = Class.create();
-searchABTest.prototype = {
-    	emptyString : '',
-	emptyStringFunc : function() { return this.emptyString; },
-
-	initialize : function() {},
-
-
-	segmentASpecificCode : function() {
-		if ($('topSearch_SegA')){
-			$('topSearch_SegA').style.display = "block";
-			$('topSearch_SegB').style.display = "none";
-		}
-	},
-
-	segmentBSpecificCode : function() {
-		if ($('topSearch_SegB')){
-			$('topSearch_SegA').style.display = "none";
-			$('topSearch_SegB').style.display = "block";
-			$('topNavQuickLinkButtonWrapper').style.marginRight = "10px";
-		}
-	},
-
-	// A = baseline no change
-	// B = baseline with only style & size facets
-	executeSegmentSpecificCode : function() {
-		
-		if ( searchSegment == "searchSEGA") {
-			navAB.segmentASpecificCode();
-		} else if ( searchSegment == "searchSEGB") {
-			navAB.segmentBSpecificCode();
-		}  else {
-            navAB.segmentASpecificCode();
-        }
-	}	
-};
-
-var navAB = new searchABTest();
-
-var gidSearchCookieName = 'searchMode';
-
-var domainUrl = '.' + (location.host.split(':')[0]);
-var path = '/';
-
-// Do this on all pages so the search box will be correctly displayed
-Event.observe(document, "dom:loaded", function () {
-	navAB.executeSegmentSpecificCode(); 
-
-	gidLib.setCookie(gidSearchCookieName, escape(searchSegment), null, path, domainUrl, false);
-
-});
-
-// Needed only on the search page
-if (location.pathname == "/browse/search.do") {	
-
-	UrlBuilder.getQueryParametersUrlFormatted = UrlBuilder.getQueryParametersUrlFormatted.wrap(
-		function(originalMethod, pageId) {
-			var queryString = originalMethod(pageId);
-
-			queryString += "&searchMode=" + searchSegment;
-
-			return queryString;
-		}
-	); 
-
-}
-// ]]>
-</script>
-<!-- End CNOV-25 -->
-
-<!-- END Content Item File: /content/0006/024/869/cn6024869.html -->
 
 <!-- END - WCD Sitewide Container 11 -->
 
@@ -5841,6 +5665,221 @@ Event.observe(window, "load", function() {
 <!-- END - WCD Sitewide Container 14 -->
 
 <!-- BEGIN - WCD Sitewide Container 15 -->
+<!-- BEGIN Content Item File: /content/0006/467/391/cn6467391.html -->
+
+<script type="text/javascript">
+//////////////////////////////////////////////////
+///////  Pinterest A/B Test 100%- 04.17.13 ///////////////
+/////// Ginger Neece  /////////////
+//////////////////////////////////////////////////
+var UniversalCookieCutter6452951 = Class.create();
+UniversalCookieCutter6452951.prototype = {
+	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+		this.EvarToUse = theEvar != "" ? theEvar : false;
+		this.CookieVariableName = CookieVarName;
+		this.CookieUsed = CookieUsedName;
+		this.CookieValueBase = CookieValueBase;
+		this.SegBreakdown = SegmentBreakdown.split("-");
+		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.QuickSegment = '';
+		this.piperlimeException = plExcept;
+		this.userNeedsSync = false;
+		this.ForcedModeBase = ForcedModeBaseName;
+		this.ModeArrayIndex = this.SegBreakdown.length;
+		this.modeArray = new Array();
+		this.modeArray[0] = "a";
+		this.modeArray[1] = "b";
+		this.modeArray[2] = "c";
+		this.modeArray[3] = "d";
+		this.modeArray[4] = "e";
+		this.modeArray[5] = "f";
+		this.modeArray[6] = "g";
+		
+		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+			this.forcedMode();
+		}else{
+			this.cookieScanner();
+		}
+	},
+
+	forcedMode:function() {
+		for (i = 0; i < this.ModeArrayIndex; i++) {
+			if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+
+		userNeedsSync = true;
+	},
+
+	cookieScanner:function() {
+		if (this.DoesTheCookieExist) {
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.RetrievedCookieValue);
+			}
+
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				}
+			}
+		} else {
+			this.tagManager();
+		}
+	},
+
+	tagManager:function() {
+		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+		this.FloorThreshold = 0;
+		this.TopThreshold = 0;
+		
+		for (i = 0; i < this.ModeArrayIndex; i++){
+			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+				break;
+			} else {
+				this.FloorThreshold = this.TopThreshold;
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+	},
+	
+	setABTestVariable: function(setValue) {
+		thisEvar = 'eVar' + this.EvarToUse;
+		ABTestVariables[thisEvar] = setValue;
+	}
+};
+
+var pinterestCookieCutter = new UniversalCookieCutter6452951("41713PinterestAB","mktUniversalPersist","41713PinterestAB_SEG","forcedModePinterest","100-0","0","none");
+
+	function PinterestABTestMain() {
+
+		var PinterestSegment = gidLib.getCookieVar("mktUniversalPersist", "41713PinterestAB");
+		
+		//SEGA &forcedModePinterest=a
+		if( PinterestSegment == "41713PinterestAB_SEGA" ) {
+			insert_pinIt_Btn();
+		}
+				
+		
+		//SEGB &forcedModePinterest=b
+		if( PinterestSegment == "41713PinterestAB_SEGB" ) {
+			//do nothing
+		}
+	}//end
+
+if (location.pathname == "/browse/product.do") {	
+	Event.observe(document, 'productPage:ready', function(){
+		PinterestABTestMain();
+	});
+}	
+</script>
+
+
+<script type="text/javascript">
+var pinItStr;
+var pinItDiv;
+var pinDesc;
+var pinMedia;
+var pinURL;
+var pinItDivStr;
+
+var insert_pinIt_Btn = function() {
+	if ($('fb_like') && !$('pinItDiv'))
+	{
+		jQuery("#fb_like").css({ "margin-left" : "45px", "overflow" : " hidden", "width" : "200px", "margin-top" : "-22px"});
+		pinURL = encodeURIComponent(window.location.href);
+
+		if ($('product_image')){
+			pinMedia = encodeURIComponent($('product_image').src);
+		}
+		if ($('productNameText')){
+			pinDesc = jQuery('.productName').html();
+			//pinDesc = $('productNameText').textContent;
+		}
+		if (jQuery('.description').length > 0){
+			if (jQuery('.description').html() != ''){
+				pinDesc = pinDesc + ' - ' + jQuery('.description').html();
+				//pinDesc = pinDesc + ' - ' + $('quickLookProductDescription').textContent;
+			}		
+		}
+		pinDesc = encodeURIComponent(pinDesc);
+		
+		pinItStr = 'http://pinterest.com/pin/create/button/?url=' + pinURL + '&media=' + pinMedia + '&description=' + pinDesc;
+	
+		pinItDiv = new Element('div', {id:'pinItDiv'});
+		pinItDivStr = '<a href="javascript:void(0);"><img src="http://www.gap.com/Asset_Archive/ATWeb/content/0006/452/951/assets/builder_pinit.png" onclick="window.open(pinItStr,\'pinIt\',\'toolbar=0,status=0,width=620,height=500\');"></a>';
+		pinItDiv.update( pinItDivStr );
+		$('fb_like').insert({ before:pinItDiv });
+
+		Event.observe(colorSwatchContent, "click", updatePinIt);
+		Event.observe(pinItDiv, "click", pinItTracking);
+	}	
+}
+
+var updatePinIt = function() {
+	pinURL = window.location.href;
+	if (pinURL.indexOf("pid=") > 0){
+		pinURL = pinURL.substring(0,pinURL.indexOf("pid=") + 4);
+		pinURL = pinURL + productPage.objV.arrayVariantStyleColors[productPage.selectedColor].strColorCodeId;
+	}
+	pinURL = encodeURIComponent(pinURL);
+	if ($('product_image')){
+		pinMedia = encodeURIComponent($('product_image').src);
+	}
+	if ($('productNameText')){
+		pinDesc = jQuery('.productName').html();
+	}
+	if (jQuery('.description').length > 0){
+		if (jQuery('.description').html() != ''){
+			pinDesc = pinDesc + ' - ' + jQuery('.description').html();
+		}		
+	}
+	pinDesc = encodeURIComponent(pinDesc);
+	pinItStr = 'http://pinterest.com/pin/create/button/?url=' + pinURL + '&media=' + pinMedia + '&description=' + pinDesc;
+	pinItDivStr = '<a href="javascript:void(0);"><img src="http://www.gap.com/Asset_Archive/ATWeb/content/0006/452/951/assets/builder_pinit.png" onclick="window.open(pinItStr,\'pinIt\',\'toolbar=0,status=0,width=620,height=500\');"></a>';
+	pinItDiv.update( pinItDivStr );
+}
+
+var pinItTracking = function() {
+	s.linkTrackVars='eVar6';
+	if (pinURL.indexOf("atol") > 0){
+		s.eVar6='ATOLPin';	
+	}
+	else if (pinURL.indexOf("gol") > 0){
+		s.eVar6='GOLPin';	
+	}
+	else if (pinURL.indexOf("plol") > 0){
+		s.eVar6='PLOLPin';	
+	}
+	else if (pinURL.indexOf("brol") > 0){
+		s.eVar6='BROLPin';	
+	}
+	else {
+		s.eVar6='unknownPin';
+	}
+	s.tl(this,'o',s.eVar6);
+
+	return true; 
+}
+</script>
+
+<!-- END Content Item File: /content/0006/467/391/cn6467391.html -->
 
 <!-- END - WCD Sitewide Container 15 -->
 
@@ -6436,7 +6475,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 <style type="text/css">
 #topNav #universalTopNav .division {float:left;}
 
-#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
+#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0006/436/966/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
 
 /*Womens*/
 #divisionContainer .division .topnavSprite_division5643_off, #divisionContainer .division .topnavSprite_division5643_notSelected { background-position: -235px -234px; width: 45px; height: 38px; margin: 0 39px 0 8px;} 
@@ -6490,7 +6529,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 #topNavLogoBannerWrapper, #topNavLogoContainer {width: 62px; height: 62px; margin-right:30px;}
 #topNavRightSideWrapper {width: 177px; height: 52px; margin-top:10px;}
 #topNavSearchWrapper, #searchInputWrapper {width: 149px; height: 17px;}
-#topNavQuickLinkButtonWrapper {width: 173px; height: 13px;margin-top: 9px;margin-left: 0px;*margin-left: -29px;}
+#topNavQuickLinkButtonWrapper {width: 173px; height: 13px;margin-top: 9px;margin-left: 0px;*margin-left: -29px;margin-right: 10px;}
 
 
 
@@ -6533,26 +6572,13 @@ input, select, button {
 #topNavQuickLinkButton.findStore {background-position: -223px 0;}
 #topNavQuickLinkButton.creditCard {background-position: 0 -1901px;}
 #topNavQuickLinkButton.giftCard {background-position: -223px -63px;}
-/* GapMag Button styles */
-#topNavGapMagButton {
-	width: 78px;
-	height: 12px;
-	background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0004/522/345/assets/topnav_sprite_012012c.png);  
-	background-position: -84px -1766px;
-}
-#topNavGapMagButtonWrapper {
-	width: 78px;
-	height: 12px;
-	margin-top: 15px;
-	margin-right: 1px;
-}
-#topNavGapMagButton.hoverMag {background-position: 0 -1766px;}
 
-/* Begin Search A/B Test */
+
+/* Begin New Search */
 #divwrapper_topSearchText{
 background-color:#ffffff !important;
 border: 1px solid #bbbbbb;
-background: url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_bitmap.png) no-repeat;
+background: url(http://www.gap.com/Asset_Archive/GPWeb/content/0006/436/966/assets/magnifier_bitmap.png) no-repeat;
 background-repeat:no-repeat;
 background-size: 11px 11px;
 background-position: 7px 5px;
@@ -6581,7 +6607,7 @@ margin-top:5px;
 margin-top:1px\8;
 display:none;
 }
-/* End Search A/B Test */
+/* End New Search */
 </style> 
 
 
@@ -6698,12 +6724,12 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/430/574/cn6430574.html -->
-<div id="contentItemContainer10000395" class="6430574" >
+    	<!-- BEGIN Content Item File: /content/0006/487/635/cn6487635.html -->
+<div id="contentItemContainer10000395" class="6487635" >
 
 <style type="text/css">
 #globalBanner {
-	width: 473;
+	width: 475;
 	height: 63px;
 	position: relative;
 	display: block;
@@ -6755,19 +6781,19 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/430/574/assets/041313_ALL_COUNTD_GB_US.png" alt="TODAY ONLY! 25% OFF WOMENS &amp; MEN'S STYLES. ENDS 4/13. ONLINE ONLY. ENTER GAPSHOP." title="TODAY ONLY! 25% OFF WOMENS &amp; MEN'S STYLES. ENDS 4/13. ONLINE ONLY. ENTER GAPSHOP." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/635/assets/041813_25offPurch_GB_US.png" alt="SHOP MORE, SAVE MORE. 25% OFF ALL ORDERS - 35% OFF $75+. ENDS 4/20. ONLINE ONLY. ENTER GAPMORE." title="SHOP MORE, SAVE MORE. 25% OFF ALL ORDERS - 35% OFF $75+. ENDS 4/20. ONLINE ONLY. ENTER GAPMORE." usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,473,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/430/574/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,475,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/487/635/assets/legal.html" data-jbox-width="350" data-jbox-height="430">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/430/574/assets/041313_ALL_COUNTD_DISR_US.gif" alt="TODAY ONLY! 25% OFF WOMENS &amp; MEN'S STYLES. ENDS 4/13. ONLINE ONLY. ENTER GAPSHOP." title="TODAY ONLY! 25% OFF WOMENS &amp; MEN'S STYLES. ENDS 4/13. ONLINE ONLY. ENTER GAPSHOP." usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/487/635/assets/041813_25offPurch_DISR_US.gif" alt="SHOP MORE, SAVE MORE. 25% OFF ALL ORDERS - 35% OFF $75+. ENDS 4/20. ONLINE ONLY. ENTER GAPMORE." title="SHOP MORE, SAVE MORE. 25% OFF ALL ORDERS - 35% OFF $75+. ENDS 4/20. ONLINE ONLY. ENTER GAPMORE." usemap="#disruptorMap">
 		<map name="disruptorMap">
 			<area shape="rect" class="noHideDisruptor" coords="125,352,157,370" href="http://view.email.gap.com/?j=fecb15787d64077d&amp;m=fe9b13707564037c70&amp;ls=fef51c7775670c&amp;l=ff66107575&amp;s=fef8107377620c&amp;jb=ffce15&amp;ju=fe8d1378756d007d73&amp;r=0" target="_blank" alt="print" />
 
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/430/574/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/487/635/assets/legal.html" data-jbox-width="350" data-jbox-height="430" alt="click for details">
         </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -6775,7 +6801,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('041313_GB');
+	globalBannerDisruptor.init('041713_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -6897,19 +6923,21 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/430/574/cn6430574.html -->
+<!-- END Content Item File: /content/0006/487/635/cn6487635.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
       <div id="topNavSearchWrapper" class="floatRight">
-		<!-- begin Search A/B Test -->
+		<!-- begin New Search -->
 		<script type="text/javascript">
+			var searchPage = false;
+			
 			function closeSearchButtonShow_topSearchText(){
 				$('closeSearchButton_topSearchText').style.display = "block";
 			}
 			
 			function closeSearchButtonHideReset_topSearchText(){
-				$('topSearchForm_B').reset();
+				$('topSearchForm').reset();
 				$('closeSearchButton_topSearchText').style.display = "none";
 				$('newInputBox_topSearchText').value = 'Search';
 				
@@ -6923,54 +6951,54 @@ var globalBannerDisruptor = {
 			}
 			
 			function detectSearch(){
-				if( $('newInputBox_topSearchText').value == 'Search'){
-			    		$('topSearchForm_B').reset();
+				if( $('newInputBox_topSearchText').value == 'Search' || searchPage == true){
+			    		$('topSearchForm').reset();
 						
 				}
 			}
 			
 			var svgSwitch = function(){
 				if(window.SVGAngle || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")){
-					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_vector.svg) no-repeat";
+					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0006/436/966/assets/magnifier_vector.svg) no-repeat";
 					$('divwrapper_topSearchText').style.backgroundSize = "11px 11px";
 					$('divwrapper_topSearchText').style.backgroundPosition = "7px 5px";
 					
-					$('closeSearchButton').src = '/Asset_Archive/GPWeb/content/0005/935/691/assets/close_vector1.svg';
+					$('closeSearchButton').src = '/Asset_Archive/GPWeb/content/0006/436/966/assets/close_vector1.svg';
 					
 				}if(clientBrowser.isFirefox3 == true){
-					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0005/935/691/assets/magnifier_bitmap.png) no-repeat";
+					$('divwrapper_topSearchText').style.background = "url(/Asset_Archive/GPWeb/content/0006/436/966/assets/magnifier_bitmap.png) no-repeat";
 					$('divwrapper_topSearchText').style.backgroundSize = "11px 11px";
 					$('divwrapper_topSearchText').style.backgroundPosition = "7px 5px";
-					$('closeSearchButton').src = '/Asset_Archive/GPWeb/content/0005/935/691/assets/close_bitmap.png';
+					$('closeSearchButton').src = '/Asset_Archive/GPWeb/content/0006/436/966/assets/close_bitmap.png';
 				}else{
 				
 				}
-				$('newInputBox_topSearchText').value = 'Search';
+			
+				var searchText = document.URL.toQueryParams().searchText;
+				
+		
+				if (searchText !== undefined) {
+					searchPage = true;
+					var searchTextResult = document.URL.toQueryParams().searchText.split('+').join(' ');
+					$('newInputBox_topSearchText').value=searchTextResult;
+				}else{
+					$('newInputBox_topSearchText').value = 'Search';
+				}
 			}
 			
 			document.observe("dom:loaded",svgSwitch);
 
 		</script>	
-		<div id="topSearch_SegA" style="display:none;">
-			 <form id="topSearchForm" name="topSearchForm" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">					
-	          <div id="searchInputWrapper" class="posRel">						
-	            <input type="text" id="topSearchText" class="searchTextStandard" name="searchText" value="Keyword / Style #" onfocus="objSearchBox.checkSearchText(this);" maxlength="100" />
-	            <div id="searchInputButtonDiv" class="posAbs">							
-	              <input type="image" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/fall_2012_hp_FINAL_US_searcharrow.png" name="submit" id="topSearchGoButton"/>																
-	            </div>
-	          </div>																														
-	        </form>		
-		</div>
-		
-		<div id="topSearch_SegB" style="display:block;">
+
+		<div id="topSearch">
 			<div id="divwrapper_topSearchText" class="posRel">
-				<form id="topSearchForm_B" name="topSearchForm_B" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">	
+				<form id="topSearchForm" name="topSearchForm" action="http://www.gap.com/browse/search.do" method="get" onsubmit="javascript:return objSearchBox.checkInput(this);">	
 				<input id="newInputBox_topSearchText" type="text" maxlength="" onclick="detectSearch();" onkeyup="objSearchBox.checkSearchText(this);closeSearchButtonShow_topSearchText();detectNoText();" value="" name="searchText">
 				</form>
-				<div id="closeSearchButton_topSearchText"><a href="javascript:void(0);" onclick="closeSearchButtonHideReset_topSearchText();"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/935/691/assets/close_bitmap.png" id="closeSearchButton"></a></div>
+				<div id="closeSearchButton_topSearchText"><a href="javascript:void(0);" onclick="closeSearchButtonHideReset_topSearchText();"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/436/966/assets/close_bitmap.png" id="closeSearchButton"></a></div>
 			</div>
 		</div>
-		<!-- end Search A/B Test -->					
+		<!-- end New Search -->					
 
 	 </div>
       <!-- Quick Links Container -->
@@ -7012,7 +7040,32 @@ var globalBannerDisruptor = {
 	</div>		
 </div>
 <div id="topNavBottomBannerContainer" class="clearfix floatLeft">
-  	<!--Container 2 -->
+  	<!--Container 2 --><!-- BEGIN Content Item File: /content/0006/314/803/cn6314803.html -->
+<div id="contentItemContainer10000394" class="6314803" >
+
+<div id="storeLocatorBannerWrapper" style="display:none;width:988px;height:100px;">
+	<a href="http://www.gap.com/browse/info.do?cid=93210&amp;desktopSiteActive=true" onClick="return contentItemLink(this,'','SP_StrLoc_1_DVFTopBan');">
+	<img id="storeLocatorBannerWrapperImage" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/314/803/assets/041513_ALL_DVF_RegStoreLocator_US.jpg" alt="dvf &hearts; gapkids. coming soon! click here to find a collection near you." />
+	</a>
+ </div>
+<script type="text/javascript">
+
+function findDVFStoreLocator() {
+	if (location.pathname == '/customerService/storeLocator.do') {
+		if ($('storeLocatorBannerWrapper')){
+		$('storeLocatorBannerWrapper').setStyle({display: 'block'});	
+		}
+		
+	} 
+}
+
+findDVFStoreLocator();
+</script>
+
+
+</div>
+<!-- END Content Item File: /content/0006/314/803/cn6314803.html -->
+
 	<!--Container 3 -->
 </div>
 
@@ -7021,13 +7074,9 @@ var globalBannerDisruptor = {
 
   <!-- Quick Links -added 11/17/2011 -->
 <map name="topNavQuickLinkMap" id="topNavQuickLinkMap">
-	<area shape="rect" coords="0,0,55,13" onmouseover="$('topNavQuickLinkButton').addClassName('findStore');" onmouseout="$('topNavQuickLinkButton').removeClassName('findStore');" href="http://www.gap.com/customerService/storeLocator.do?mlink=5058,5935691,StoreLocator&amp;clink=5935691" alt="Find a Store" />
+	<area shape="rect" coords="0,0,55,13" onmouseover="$('topNavQuickLinkButton').addClassName('findStore');" onmouseout="$('topNavQuickLinkButton').removeClassName('findStore');" href="http://www.gap.com/customerService/storeLocator.do?mlink=5058,4180932,StoreLocator&amp;clink=4180932" alt="Find a Store" />
   	<area shape="rect" coords="59,0,114,13" onmouseover="$('topNavQuickLinkButton').addClassName('creditCard');" onmouseout="$('topNavQuickLinkButton').removeClassName('creditCard');" href="http://www.gap.com/browse/info.do?cid=46079&amp;mlink=5058,4180932,CreditCard&amp;clink=4180932" alt="Credit Card" />
   	<area shape="rect" coords="118,0,173,13" onmouseover="$('topNavQuickLinkButton').addClassName('giftCard');" onmouseout="$('topNavQuickLinkButton').removeClassName('giftCard');" href="http://www.gap.com/browse/info.do?cid=2116&amp;mlink=5058,4180932,GiftCard&amp;clink=4180932" alt="Gift Card" />
-</map>
-
-<map name="topNavGapMagMap" id="topNavGapMagMap">
-	<area shape="rect" coords="0,0,78,12" onmouseover="$('topNavGapMagButton').addClassName('hoverMag');" onmouseout="$('topNavGapMagButton').removeClassName('hoverMag');" target="_new" href="http://gapmag.tumblr.com/" alt="GapMag" />
 </map>
 </div>
 
@@ -8214,7 +8263,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6430574,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6487635,6314803,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

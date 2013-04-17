@@ -594,26 +594,29 @@ function scrollerDome() {
 function checkNowPlaying () {
     if (radioType != 'none')
     {
-    var randomMeAway = Math.floor(Math.random()*101);
-    var jsonURL = 'http://www.boston.com/ae/radio/nowplaying.json?check=' + randomMeAway;
-    $.getJSON(jsonURL,
-              function(data) {  if  ($("#now-playing-" + radioType + " .np-song-artist").text() != data.nowplaying.artist)
-				{
-				    $("#now-playing-" + radioType + " .np-song-artist").replaceWith('<span class="np-song-artist">' + data.nowplaying.artist + '</span>');
-				    $("#now-playing-" + radioType + " .np-song-title").replaceWith('<span class="np-song-title">' + data.nowplaying.track + '</span>');
-				 scrollerDome();
-				}
-                                else
-                                {
-				 scrollerDome();
-				}
-                             });
+      var randomMeAway = Math.floor(Math.random()*101);
+      var $elSongArtist = $("#now-playing-" + radioType + " .np-song-artist");
+      var $elSongTitle = $("#now-playing-" + radioType + " .np-song-title");
+      var jsonURL = 'http://cache.boston.com/ae/radio/nowplaying.json?check=' + randomMeAway;
+      $.getJSON(jsonURL,
+          function(data) {  
+            if  ($elSongArtist.text() != data.nowplaying.artist)
+            {
+                $elSongArtist.replaceWith('<span class="np-song-artist">' + data.nowplaying.artist + '</span>');
+                $elSongTitle.replaceWith('<span class="np-song-title">' + data.nowplaying.track + '</span>');
+             scrollerDome();
+            }
+            else
+            {
+             scrollerDome();
+            }
+      });
 
-    constantContact();
+      constantContact();
     }
 }
 
-$(function() {checkNowPlaying();})
+//$(function() {checkNowPlaying();})
 
 
 // adds the 'wmode=transparent' param to any object on the page
@@ -704,7 +707,8 @@ var bcom_regi = {
 		// Check pathCnt cookie
 		var path_count = bcom_cookie.get('pathCnt');
 		path_count = path_count == false ? 1 : parseInt(path_count);
-		if( path_count <= bcom_regi.max_count ){
+		if( 1 ){ // disable regi wall
+    //if( path_count <= bcom_regi.max_count ){
 		    // Increment pathCnt cookie by 1, then do nothing
 		    path_count++;
 		    bcom_cookie.set('pathCnt', path_count);
@@ -727,103 +731,102 @@ $(document).ready(function(){
 
 // For ad-timing script
 
-(function (win, undefined) {
-
-    var timers = {},
-    console = (win.console || {
-        log: function () {}
-    });
-
-    function AdTimer() {
-        if (this === win) {
-            return new AdTimer();
-        }
-        this.running = false;
-        return this;
-    }
-
-    AdTimer.prototype.start = function () {
-        if (this.running) {
-            return this;
-        }
-
-        this.running = true;
-        this.start_time = new Date().getTime();
-        return this;
-    };
-
-    AdTimer.prototype.stop = function () {
-        if (!this.running) {
-            return this;
-        }
-        this.running = false;
-        this.stop_time = new Date().getTime();
-        this._report();
-        return this;
-    };
-
-    AdTimer.prototype._report = function () {
-        var spent = (this.stop_time - this.start_time) / 1000;
-
-        this.report = {
-            total: spent,
-            minutes: Math.floor(spent / 60),
-            seconds: Math.floor(spent % 60)
-        };
-
-        return this;
-    };
-
-
-    /**
-    *  External functions that give access to new AdTimers 
-    *  as well as the structure that holds them all
-    */
-    function startTimer(namespace, event) {
-
-        if (!timers.hasOwnProperty(namespace)) {
-            timers[namespace] = {};
-        }
-
-        if (timers[namespace][event]) {
-            timers[namespace][event].stop();
-            delete timers[namespace][event];
-        }
-
-        timers[namespace][event] = new AdTimer();
-        timers[namespace][event].start();
-        return;
-    }
-
-    function stopTimer(namespace, event) {
-        var s, dateString, nameString, date = new Date();
-
-
-        if (!timers[namespace] || !timers[namespace][event]) {
-            return {};
-        }
-        timers[namespace][event].stop();
-
-        dateString = (date.getMonth() + 1) + '-' + date.getDate();
-        nameString = (namespace + ' | ' + dateString + ' | ' + event + ' | ' + timers[namespace][event].report.seconds);
-
-        console.log(nameString);
-
-        s = s_gi('nytbglobe');
-        s.tl(this, 'o', nameString);
-        s.tl(window, 'o', 'window | ' + nameString);
-        
-        return timers[namespace][event].report;
-    }
-
-    function showAll() {
-        return timers;
-    }
-
-    if (!win.startTimer && !win.stopTimer && !win.getTimers) {
-        win.startTimer = startTimer;
-        win.stopTimer = stopTimer;
-        win.getTimers = showAll;
-    }
-
-}(window));
+// (function (win, undefined) {
+    // var timers = {},
+    // console = (win.console || {
+        // log: function () {}
+    // });
+// 
+    // function AdTimer() {
+        // if (this === win) {
+            // return new AdTimer();
+        // }
+        // this.running = false;
+        // return this;
+    // }
+// 
+    // AdTimer.prototype.start = function () {
+        // if (this.running) {
+            // return this;
+        // }
+// 
+        // this.running = true;
+        // this.start_time = new Date().getTime();
+        // return this;
+    // };
+// 
+    // AdTimer.prototype.stop = function () {
+        // if (!this.running) {
+            // return this;
+        // }
+        // this.running = false;
+        // this.stop_time = new Date().getTime();
+        // this._report();
+        // return this;
+    // };
+// 
+    // AdTimer.prototype._report = function () {
+        // var spent = (this.stop_time - this.start_time) / 1000;
+// 
+        // this.report = {
+            // total: spent,
+            // minutes: Math.floor(spent / 60),
+            // seconds: Math.floor(spent % 60)
+        // };
+// 
+        // return this;
+    // };
+// 
+// 
+    // /**
+    // *  External functions that give access to new AdTimers 
+    // *  as well as the structure that holds them all
+    // */
+    // function startTimer(namespace, event) {
+// 
+        // if (!timers.hasOwnProperty(namespace)) {
+            // timers[namespace] = {};
+        // }
+// 
+        // if (timers[namespace][event]) {
+            // timers[namespace][event].stop();
+            // delete timers[namespace][event];
+        // }
+// 
+        // timers[namespace][event] = new AdTimer();
+        // timers[namespace][event].start();
+        // return;
+    // }
+// 
+    // function stopTimer(namespace, event) {
+        // var s, dateString, nameString, date = new Date();
+// 
+// 
+        // if (!timers[namespace] || !timers[namespace][event]) {
+            // return {};
+        // }
+        // timers[namespace][event].stop();
+// 
+        // dateString = (date.getMonth() + 1) + '-' + date.getDate();
+        // nameString = (namespace + ' | ' + dateString + ' | ' + event + ' | ' + timers[namespace][event].report.seconds);
+// 
+        // console.log(nameString);
+// 
+        // s = s_gi('nytbglobe');
+        // s.tl(this, 'o', nameString);
+        // s.tl(window, 'o', 'window | ' + nameString);
+        // 
+        // return timers[namespace][event].report;
+    // }
+// 
+    // function showAll() {
+        // return timers;
+    // }
+// 
+    // if (!win.startTimer && !win.stopTimer && !win.getTimers) {
+        // win.startTimer = startTimer;
+        // win.stopTimer = stopTimer;
+        // win.getTimers = showAll;
+    // }
+// 
+// }(window));

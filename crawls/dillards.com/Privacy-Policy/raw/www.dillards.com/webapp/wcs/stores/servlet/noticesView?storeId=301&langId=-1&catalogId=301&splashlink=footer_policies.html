@@ -1,9 +1,11 @@
 
 <!DOCTYPE HTML>
 
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class=""> <!--<![endif]-->
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <!-- Start - JSP File Name:  HeaderMetaCheck.jspf -->
 
@@ -53,17 +55,7 @@
 
 
 <body >
-	
-	<script type="text/javascript">
-		var axel = Math.random() + "";
-		var a = axel * 10000000000000;
-		document.write('<iframe src="https://fls.doubleclick.net/activityi;src=2916446;type=count884;cat=templ517;ord=' + a + '?" width="1" height="1" frameborder="0"></iframe>');
-	</script>
-	<noscript>
-		<iframe src="../../../../../fls.doubleclick.net/activityi%3Bsrc=2916446%3Btype=count884%3Bcat=templ517%3Bord=1.html" width="1" height="1" frameborder="0"></iframe>
-	</noscript>
-
-	<header>
+ 	<header>
 		<!-- BEGIN HeaderDisplay.jsp  --> 
 
 <script type="text/javascript">
@@ -442,6 +434,25 @@ function getCookie(c_name)
 		{
 			return false;
 		}
+	}
+	
+	function filterTypeAheadSearchTerm(input) 
+	{
+		s = input;
+		
+		filteredValues = "}#\`~$\&^+=<>\"|\\";     // Characters stripped out
+		var i;
+		var returnString = "";
+		
+		for (i = 0; i < s.length; i++) 
+		{  // Search through string and append to unfiltered values to returnString.
+			var c = s.charAt(i);
+			if (filteredValues.indexOf(c) == -1) returnString += c;
+		}
+			
+		document.CatalogSearchForm.Ntt.value = returnString;
+		
+		return returnString;
 	}
 
 		
@@ -1054,8 +1065,8 @@ checkCookie();
 				
 				// D=vitamin%20d&Dx=mode+matchall&Dn=0&N=0&Ntt=vitamin%20d&Ntk=product.name";
 				ajaxUrl += "storeId=301&catalogId=301&langId=-1";
-				ajaxUrl += "&D=" + $.trim(document.getElementById('search-input').value) + "*";
-				ajaxUrl += "&Ntt=" + $.trim(document.getElementById('search-input').value) + "*";
+				ajaxUrl += "&D=" + $.trim(filterTypeAheadSearchTerm(document.getElementById('search-input').value)) + "*";
+				ajaxUrl += "&Ntt=" + $.trim(filterTypeAheadSearchTerm(document.getElementById('search-input').value)) + "*";
 				ajaxUrl += "&N=" + document.getElementById('N').value;
 				ajaxUrl += "&Dn=" + document.getElementById('N').value;
 				ajaxUrl += "&Dk=1";
@@ -1347,31 +1358,31 @@ checkCookie();
  
 	
 				     	<script type="text/javascript">
-					   		//ES_EXPERIMENT_5_CNT 
- var output = "";
-  $(function() {
-     document.write = function(input) {
-     output += input;
-   }
-  
-   buildDropdown();
-   $('#main-nav').html(output); 
-   $("#main-nav").children('li').hoverIntent(config);
- 
-  });
- 
- $(function () {
-    var $dropDowns = $("#main-nav").find(".sub"),
-    space = $("#main-nav-container").width() - $dropDowns.eq(0).outerWidth(),
-    steps = $dropDowns.size() - 1,
-    stepSize = space / steps,
-    currentOffset = 0; 
- 
-     $dropDowns.each(function () {
- 	    $(this).css("left", Math.round(currentOffset) + "px");
- 	    currentOffset += stepSize;
-  	});
- });
+					   		   //ES_EXPERIMENT_5_CNT
+  var output = "";
+    $(function() {
+       document.write = function(input) {
+       output += input;
+     }
+    
+     buildDropdown();
+     $('#main-nav').html(output); 
+     $("#main-nav").children('li').hoverIntent(config);
+    
+    });
+   
+   $(function () {
+      var $dropDowns = $("#main-nav").find(".sub"),
+      space = $("#main-nav-container").width() - $dropDowns.eq(0).outerWidth(),
+      steps = $dropDowns.size() - 1,
+      stepSize = space / steps,
+      currentOffset = 0; 
+   
+       $dropDowns.each(function () {
+   	    $(this).css("left", Math.round(currentOffset) + "px");
+   	    currentOffset += stepSize;
+    	});
+   });	 
   
 					   	</script>
 					 <!--
@@ -1386,31 +1397,31 @@ checkCookie();
 			  	<tr><td>ActivityPriority:</td> <td> 1 </td></tr>
 		        <tr><td>Url Link:</td> <td>  </td></tr>	
 		        			
-	        		<tr><td>Marketing Text:</td> <td> //ES_EXPERIMENT_5_CNT 
- var output = &#034;&#034;;
-  $(function() {
-     document.write = function(input) {
-     output += input;
-   }
-  
-   buildDropdown();
-   $(&#039;#main-nav&#039;).html(output); 
-   $(&#034;#main-nav&#034;).children(&#039;li&#039;).hoverIntent(config);
- 
-  });
- 
- $(function () {
-    var $dropDowns = $(&#034;#main-nav&#034;).find(&#034;.sub&#034;),
-    space = $(&#034;#main-nav-container&#034;).width() - $dropDowns.eq(0).outerWidth(),
-    steps = $dropDowns.size() - 1,
-    stepSize = space / steps,
-    currentOffset = 0; 
- 
-     $dropDowns.each(function () {
- 	    $(this).css(&#034;left&#034;, Math.round(currentOffset) + &#034;px&#034;);
- 	    currentOffset += stepSize;
-  	});
- });
+	        		<tr><td>Marketing Text:</td> <td>    //ES_EXPERIMENT_5_CNT
+  var output = &#034;&#034;;
+    $(function() {
+       document.write = function(input) {
+       output += input;
+     }
+    
+     buildDropdown();
+     $(&#039;#main-nav&#039;).html(output); 
+     $(&#034;#main-nav&#034;).children(&#039;li&#039;).hoverIntent(config);
+    
+    });
+   
+   $(function () {
+      var $dropDowns = $(&#034;#main-nav&#034;).find(&#034;.sub&#034;),
+      space = $(&#034;#main-nav-container&#034;).width() - $dropDowns.eq(0).outerWidth(),
+      steps = $dropDowns.size() - 1,
+      stepSize = space / steps,
+      currentOffset = 0; 
+   
+       $dropDowns.each(function () {
+   	    $(this).css(&#034;left&#034;, Math.round(currentOffset) + &#034;px&#034;);
+   	    currentOffset += stepSize;
+    	});
+   });	 
    </td></tr>
 	        		<tr><td>Location:</td> <td>  </td></tr>
 		         
@@ -1562,7 +1573,7 @@ checkCookie();
 			<span class="grayColor">|</span><span id="myDillardsCountry">
 				<a href="http://www.dillards.com/webapp/wcs/stores/servlet/ContextChooserView?storeId=301&catalogId=301&langId=-1"><img alt="" src="../../../../images/flags/US.gif"/></a>
 			</span>
-			<span class="grayColor">|</span><a id="headerCartInfo" href="https://www.dillards.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=301&catalogId=301&langId=-1&URL=OrderItemDisplay&updatePrices=1&calculationUsageId=-1&calculationUsageId=-2&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag&nbsp;<span class="fiftyOne-cartTotalItems">(0)</span>&nbsp;<span class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
+			<span class="grayColor">|</span><a id="headerCartInfo2" href="https://www.dillards.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=301&catalogId=301&langId=-1&URL=OrderItemDisplay&updatePrices=1&calculationUsageId=-1&calculationUsageId=-2&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag&nbsp;<span class="fiftyOne-cartTotalItems">(0)</span>&nbsp;<span class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
 		</div>
 	</div>
 	<div id="myDillardsContent">
@@ -1678,7 +1689,8 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 
 </script><!-- End Coremetrics Impl --><!-- END HeaderDisplay.jsp -->
     </header>
-	
+   
+
 	<!-- Coremetrics Tag Library -->
 <script type="text/javascript" src="../../../../../libs.coremetrics.com/eluminate.js"></script> 
 <script type="text/javascript" language="javascript" src="../../../../javascript/compressed/cmcustom_websphere_commerce.js"></script>
@@ -2026,7 +2038,7 @@ var fC,fID;
 		</form>	
 
 		<h2>Product Recalls</h2> 
-		<p>You can visit the Consumer Product Safety Commission (CPSC) at <a href="http://www.cpsc.gov">www.cpsc.gov</a> for more information on recalls.</p>
+		<p>You can visit the Consumer Product Safety Commission (CPSC) at <a target="_blank" href="http://www.cpsc.gov">www.cpsc.gov</a> for more information on recalls.</p>
 		<ul>
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 
@@ -2589,7 +2601,7 @@ cmSetClientID(clientId, boolVal,siteVal,siteVal2);
 cmCreatePageviewTag("CONTENT: faq", "-10010", null, null, "301", "Content-_-");
 //-->
 </script>
-	
+
 	<footer>
 	    <!-- BEGIN FooterDisplay.jsp -->
 <div id="bottom-nav-container" class= "clear">

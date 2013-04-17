@@ -44,7 +44,7 @@ var mktSlider = {
                             "zh-cn" : "分享",
                             "ar-ww" : "شارك",
                             "ja-jp" : "シェア",
-														"ru-ru" : "Поделиться"
+							"ru-ru" : "Поделиться"
                         }
     },
 
@@ -213,7 +213,10 @@ var mktSlider = {
                         )
                  );
                 
-                var addthis_config = {"data_track_addressbar":true};
+                var addthis_config = {
+                    "data_track_clickback": true,
+                    "data_track_addressbar":true
+                };
                 (function(d, t, callback) {
                      var g = d.createElement(t),
                          s = d.getElementsByTagName(t)[0];

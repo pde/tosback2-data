@@ -581,6 +581,11 @@ function renderLatestReleases() {
     document.write('<h6>Titulares</h6>');
 	
 	document.write('<div class="rc-release-box">');
+    document.write('<p>7 de enero de 2013<br />');
+    document.write('<a href="/newsroom/news_releases/Corazon_de_Campeon_cancion_de_Jesse_Joy_song.html?id=' + state + '" title="Nuevo tema musical del galardonado duo Jesse &amp; Joy expresa el &#8216;Corazon de Campeon&#8217; que vive en cada fanatico del futbol mexicano en los EE. UU.">Nuevo tema musical del galardonado duo Jesse &amp; Joy expresa el &#8216;Corazon de Campeon&#8217; que vive en cada fanatico del futbol mexicano en los EE. UU.</a></p>');
+    document.write('</div>');
+	
+	document.write('<div class="rc-release-box">');
     document.write('<p>11 de abril de 2012<br />');
     document.write('<a href="/newsroom/news_releases/GoPhone_Llamadas_MexicoPlus_4-9-13.html?id=' + state + '" title="Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.">Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.</a></p>');
     document.write('</div>');
@@ -603,28 +608,7 @@ function renderLatestReleases() {
     document.write('<div class="rc-release-box">');
     document.write('<p>21 de febrero de 2013<br />');
     document.write('<a href="/newsroom/news_releases/florida_2-21-13.html?id=' + state + '" title="AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes">AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes</a></p>');
-    document.write('</div>');
-
-    document.write('<div class="rc-release-box">');
-    document.write('<p>31 de enero de 2013<br />');
-    document.write('<a href="/newsroom/news_releases/seguridad_en_linea_1-31-13.html?id=' + state + '" title="Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet">Seguridad en l&#237;nea&#58; herramientas y consejos para protegerse al usar el Internet</a></p>');
-    document.write('</div>');
-
-    document.write('<div class="rc-release-box">');
-    document.write('<p>30 de enero de 2013<br />');
-    document.write('<a href="/newsroom/news_releases/blackberry_10_1_30_13.html?id=' + state + '" title="AT&#38;T planea lanzar al mercado los equipos smartphone Blackberry Z10 y Blackberry Q10 con Blackberry 10 para clientes particulares y comerciales">AT&#38;T planea lanzar al mercado los equipos smartphone Blackberry Z10 y Blackberry Q10 con Blackberry 10 para clientes particulares y comerciales</a></p>');
-    document.write('</div>');
-
-    document.write('<div class="rc-release-box">');
-    document.write('<p>7 de enero de 2013<br />');
-    document.write('<a href="/newsroom/news_releases/puede_esperar_1_7_13.html?id=' + state + '" title="AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013">AT&#38;T ampliar&#225;  el alcance de la campa&#241;a &#8220;Puede esperar&#8221; en 2013</a></p>');
-    document.write('</div>');
-
-/*    document.write('<div class="rc-release-box">');
-    document.write('<p>19 de diciembre del 2012<br />');
-    document.write('<a href="/newsroom/news_releases/business_traveler_12_19_12.html?id=' + state + '" title="Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial">Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial</a></p>');
-    document.write('</div>');*/
-
+    document.write('</div>'); 
     
 
     
@@ -645,18 +629,20 @@ function shareThis() {
 
 
 function renderAyudaRightCol() {
-//	if ( section == 'help' || directory == 'att_home_phone' || directory == 'faq' || directory == 'att_advanced_tv' || directory == 'privacy_policy'  ) {
-//document.write('<div class="section nbb"><a href="/residential_customers/att_internet/index.html?id=' + state + '"  title="Internet"><img src="/mlcomm/_images/content/bg_right_premios_internet.png" alt="Internet" /></a></div>');}
+	if ( section == 'help' || directory == 'att_home_phone' || directory == 'faq' || directory == 'att_advanced_tv' || directory == 'privacy_policy'  ) {
+document.write('<div class="section nbb"><a href="/residential_customers/att_internet/index.html?id=' + state + '"  title="Internet"><img src="/mlcomm/_images/content/bg_right_premios_internet.png" alt="Internet" /></a></div>');
+}
 
-//else if ( directory == 'att_internet' || section == 'about_att' || section == 'legal_terms' ) {
-//document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');}
-//else {
-//document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
-//}
+else if ( directory == 'att_internet' || section == 'about_att' || section == 'legal_terms' ) {
+document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
+}
+else {
+document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
+}
 	
-    document.write('<div id="premios-box" class="section">');
-  document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
-   document.write('</div>');
+//    document.write('<div id="premios-box" class="section">');
+//    document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
+//    document.write('</div>');
 
 	 
 
@@ -791,7 +777,7 @@ function renderFooterOrderForm() {
     document.write('</div>');
     document.write('<div id="pop"> </div>');
     //added 10/11/2012 [KD]
-    //document.write('<s' + 'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
+    //document.write('<s' + 'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"><!--</script>-->');
 }
 
 

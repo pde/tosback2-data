@@ -158,6 +158,26 @@ else if (window.location.hostname.indexOf("coco") != -1) {
 			};
 		}
 	}
+} else if(document.domain == "justforlaughschicago.com") {
+	if(section[0] == "") {
+		section[0] = "home";
+		tbs_templateType = "index";
+	} else if(section[0] == "index.html") {
+		section[0] = "home";
+		tbs_templateType = "index";
+	} else {
+		section[0] = section[0];
+	}
+	var tbs_metadata = {
+		section: section[0],
+		//subsection: section[0] + ":",
+		template_type: tbs_templateType,
+		content_type: tbs_contentType || "none",
+		friendly_name: tbs_friendlyName,
+		research_category: tbs_researchCategory,
+		lateral_nav: tbs_lateralNav,
+		franchise: tbs_franchise
+	}
 } else if(window.location.hostname.indexOf("tbs") > -1){
 	/**
 	* This file sets the "tbs_metadata" to be used by jsmd.js

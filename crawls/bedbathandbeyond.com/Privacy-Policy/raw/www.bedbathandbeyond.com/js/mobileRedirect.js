@@ -34,6 +34,8 @@ if ( isMobile() && !bStopMobileRedirect )
 		window.location = "https://m.bedbathandbeyond.com:443/bedbathbeyond/foot/contractus.do";	
 	else if ( sPage == "product.asp" || sPage == "stylepage.asp" || sPage == "nodepage.asp" )
 		window.location = "http://m.bedbathandbeyond.com/redirect/bedbathbeyond?op=" + encodeURI( window.location.href );
+	else if ( window.location == "http://www.bedbathandbeyond.com/Search/Search.aspx/irobot/_/N-1z13yz3?AggBy=0&grid=20" )
+		window.location = "http://m.bedbathandbeyond.com/bedbathbeyond/catalog/searchList.do?keyword=irobot";
 	else
 		window.location = "http://m.bedbathandbeyond.com/bedbathbeyond/";
 }

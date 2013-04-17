@@ -144,13 +144,13 @@
 	
 		Saks.config['AB_TEST_FOR_BRAND_ARRAY'] = true;
 	
-		Saks.config['LOGIN_REMEDIATION'] = false;
-	
-		Saks.config['PROMO_ON_BAG'] = true;
-	
 		Saks.config['BUG1523FIX'] = true;
 	
 		Saks.config['SPECIAL_BRAND'] = true;
+	
+		Saks.config['LOGIN_REMEDIATION'] = false;
+	
+		Saks.config['PROMO_ON_BAG'] = true;
 	
 		Saks.config['DOUBLE_CLICK_TAG'] = false;
 	
@@ -180,7 +180,7 @@
 	
 		Saks.config['MOBILE_FILTERING'] = true;
 	
-		Saks.config['FIND IN STORE'] = true;
+		Saks.config['FIND IN STORE'] = false;
 	
 		Saks.config['BUG1639FIX'] = true;
 	
@@ -218,19 +218,19 @@
 	
 		Saks.config['ENDECA_CAAPI_OVERRIDE_FIRST_QUERY'] = false;
 	
-		Saks.config['BIZRATE_MINGLE_1228'] = true;
-	
-		Saks.config['PAYPAL'] = true;
-	
 		Saks.config['CHECKOUT_SESSION_EXPIRED_FIX'] = true;
 	
 		Saks.config['TRACK_SELLOUTS'] = true;
 	
 		Saks.config['DESIGNER_SALE'] = false;
 	
+		Saks.config['BUG1596FIX'] = false;
+	
 		Saks.config['PASSWORD_NEW_RULE'] = true;
 	
-		Saks.config['BUG1596FIX'] = false;
+		Saks.config['BIZRATE_MINGLE_1228'] = true;
+	
+		Saks.config['PAYPAL'] = true;
 	
 		Saks.config['INT_PROMO_ENABLED'] = true;
 	
@@ -266,21 +266,17 @@
 	
 		Saks.config['MOBILE_DEEPLINKING'] = true;
 	
+		Saks.config['NAV_REDESIGN'] = true;
+	
 		Saks.config['INTERNATIONAL_HTML_CHECKOUT'] = true;
 	
 		Saks.config['EMAIL_ON_ORDER'] = true;
 	
 		Saks.config['BUG1665FIX'] = true;
 	
-		Saks.config['NAV_REDESIGN'] = true;
-	
 		Saks.config['QAS_BYPASS'] = false;
 	
 		Saks.config['ADD TO WAITLIST'] = true;
-	
-		Saks.config['ENABLE_STYLE_CONSULTANT'] = true;
-	
-		Saks.config['BUG1654FIX'] = true;
 	
 		Saks.config['PROMO_ON_BAG_INTERNATIONAL'] = false;
 	
@@ -288,23 +284,27 @@
 	
 		Saks.config['FS_HTML'] = false;
 	
+		Saks.config['ENABLE_STYLE_CONSULTANT'] = true;
+	
+		Saks.config['BUG1654FIX'] = true;
+	
 		Saks.config['TAX_FROM_FUSION'] = true;
 	
 		Saks.config['XSS_SECURE_FIELD'] = true;
-	
-		Saks.config['SCENE7_PERSONALIZATION'] = false;
-	
-		Saks.config['PUBLIC_SALE'] = false;
-	
-		Saks.config['PROMO_APPLIED_DISPLAY_IN_CHECKOUT'] = true;
 	
 		Saks.config['EMAIL_RESET_PASSWORD'] = true;
 	
 		Saks.config['CHECKOUT_MAIN_METRICS'] = true;
 	
+		Saks.config['SCENE7_PERSONALIZATION'] = false;
+	
 		Saks.config['PRE_ORDER_AUTH_FIX'] = true;
 	
+		Saks.config['PUBLIC_SALE'] = false;
+	
 		Saks.config['ONE_PERSONALIZED_ITEM_IN_CQO'] = true;
+	
+		Saks.config['PROMO_APPLIED_DISPLAY_IN_CHECKOUT'] = true;
 	
 		Saks.config['BUG1567FIX'] = true;
 	
@@ -401,7 +401,7 @@
         <noscript>
     <div class="browser-warning">
     	<div class="inner">
-	        <p>In order to use all of the site functionality on the Saks Fifth Avenue website, you must have JavaScript enabled on your browser. <a href="http://www.saksfifthavenue.com/NoJavaScript.jsp?bmUID=jU0Ry7W">See instructions</a> to enable JavaScript.</p>
+	        <p>In order to use all of the site functionality on the Saks Fifth Avenue website, you must have JavaScript enabled on your browser. <a href="http://www.saksfifthavenue.com/NoJavaScript.jsp?bmUID=jUnWhVi">See instructions</a> to enable JavaScript.</p>
 		</div>
     </div>
 </noscript>
@@ -414,44 +414,48 @@
 	
 
 	
-	<script type="text/template" id="toolbar-template">
-		<div class="inner">
-			<ul>
-				{{#isInternationalEnabled}}
-					{{#isInternationalSession}}
-						<li><a href="https://services.fiftyone.com/tracking.srv" class="order-tracking" data-target="tab">Order Tracking</a></li>
-					{{/isInternationalSession}}
-					{{^isInternationalSession}}
-						<li><a href="https://www.saksfifthavenue.com/account/login.jsp?catID=0&prp8=t10&bmUID=jU0Ry7H" class="account">Account</a></li>
-					{{/isInternationalSession}}
-					<li class="shipping"><a href="http://www.saksfifthavenue.com/main/context_chooser.jsp?previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjU0Ry7Q&bmForm=set_prev_page&bmFormID=jU0Ry7R&bmUID=jU0Ry7S">Ship To: <img src="http://www.saksfifthavenue.com/{{flagImageSrc}}" width="16" height="11" /></a></li>
-				{{/isInternationalEnabled}}
-				{{^isInternationalEnabled}}
-					<li><a href="https://www.saksfifthavenue.com/account/login.jsp?catID=0&prp8=t10&bmUID=jU0Ry7H" class="account">Account</a></li>
-				{{/isInternationalEnabled}}
-				<li><a href="http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jU0Ry7X&prp13=b9" class="live-chat" data-target="popup|533|574|chat">Chat</a></li>
-				<li><b>1.877.551.7257</b></li>
-				<li class="last-child"><a href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?catID=0&prp8=t11&bmUID=jU0Ry7J" class="shopping-bag">Saks Bag (<span id="item-count">{{bagItemCount}}</span>)</a></li>
-			</ul>
-		</div>
-	</script>
-
-	
 	<script type="text/javascript">
 		(function($, window, undefined){
 
-			var data = {
-				isInternationalEnabled: window.onOffSwitch,
-				isInternationalSession: window.onOffSwitch && window.intlNav,
-				flagImageSrc: window.flagImage,
-				bagItemCount: window.getCookie('saksBagNumberOfItems')
+			var Saks = window.Saks;
+
+			Saks.renderToolbar = function () {
+				var data = {
+					// pages
+					accountPage: Saks.config['LOGIN_REMEDIATION'] ? 'https://www.saksfifthavenue.com/account/account.jsp?goto=your_account&bmUID=jUnWhUr' : 'https://www.saksfifthavenue.com/account/login.jsp?catID=0&prp8=t10&bmUID=jUnWhUT',
+					accountSettingPage: 'https://www.saksfifthavenue.com/account/settings.jsp?goto=account_email_settings&bmUID=jUnWhUw',
+					internationalShippingPage: 'http://www.saksfifthavenue.com/main/context_chooser.jsp?previous_page=http%3A%2F%2Fwww.saksfifthavenue.com%2Fhtml%2Fpopups%2Flegal.jsp%3FbmUID%3DjUnWhV2&bmForm=set_prev_page&bmFormID=jUnWhV3&bmUID=jUnWhV4',
+					liveChatPage: 'http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jUnWhVj&prp13=b9',
+					loginPage: 'https://www.saksfifthavenue.com/account/login.jsp?bmUID=jUnWhUE',
+					manageShippingAddressPage: 'https://www.saksfifthavenue.com/account/mng_shipAddress.jsp?goto=shipping_address&bmUID=jUnWhUy',
+					manageBillingAddressPage: 'https://www.saksfifthavenue.com/account/mng_billAddress.jsp?goto=billing_address&bmUID=jUnWhUA',
+					managePaymentMethodPage: 'https://www.saksfifthavenue.com/account/mng_CreditCard.jsp?goto=payment_method&bmUID=jUnWhUC',
+					manageSaksFirstPage: 'https://www.saksfifthavenue.com/SaksFirst/saksfirst.jsp?bmUID=jUnWhUD',
+					orderHistoryPage: 'https://www.saksfifthavenue.com/account/order_history.jsp?goto=order_history&bmUID=jUnWhUu',
+					orderTrackingPage: 'https://services.fiftyone.com/tracking.srv',
+					saksBagPage: 'https://www.saksfifthavenue.com/checkout/SaksBag.jsp?catID=0&prp8=t11&bmUID=jUnWhUV',
+					// flags
+					isInternationalEnabled: window.onOffSwitch,
+					isInternationalSession: window.onOffSwitch && window.intlNav,
+					isLoginRemediation: Saks.config['LOGIN_REMEDIATION'],
+					// values
+					flagImageSrc: window.flagImage,
+					customerName: Saks.Cookie.read('s_c'),
+					bagItemCount: Saks.Cookie.read('saksBagNumberOfItems')
+				};
+
+				var template = Saks.templates['global/toolbar'];
+
+				var partials = {
+					accountMenu: Saks.templates['global/account-menu']
+				};
+
+				var html = Mustache.render(template, data, partials);
+
+				$('#toolbar').html(html);
 			};
 
-			var template = $('#toolbar-template').html();
-
-			var html = Mustache.render(template, data);
-
-			$('#toolbar').html(html);
+			Saks.renderToolbar();
 
 		}(jQuery, window));
 	</script>
@@ -464,7 +468,7 @@
 
 <div id="header">
 	<div class="inner">
-		<h1 class="logo"><a href="http://www.saksfifthavenue.com/Entry.jsp?catID=0&bmUID=jU0Ry7G">Saks Fifth Avenue</a></h1>		
+		<h1 class="logo"><a href="http://www.saksfifthavenue.com/Entry.jsp?catID=0&bmUID=jUnWhUS">Saks Fifth Avenue</a></h1>		
 		
 		<div class="nav">
 			
@@ -472,7 +476,7 @@
 
 
 
-<ul class="menu">
+<ul class="menu gift-gold">
 	
 	
 	
@@ -634,149 +638,149 @@
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572235&bmUID=jTXSD._">3.1 Phillip Lim</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572235&bmUID=jUcQcbC">3.1 Phillip Lim</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306411563&bmUID=jTXSE00">Akris/Akris Punto</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306411563&bmUID=jUcQcbD">Akris/Akris Punto</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433339&bmUID=jTXSE01">Alexander McQueen</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433339&bmUID=jUcQcbE">Alexander McQueen</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306437690&bmUID=jTXSE02">Alexander Wang/T by Alexander Wang</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306437690&bmUID=jUcQcbF">Alexander Wang/T by Alexander Wang</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433428&bmUID=jTXSE03">Alice + Olivia</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306433428&bmUID=jUcQcbG">Alice + Olivia</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080265&bmUID=jTXSE05">Bottega Veneta</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080265&bmUID=jUcQcbH">Bottega Veneta</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080275&bmUID=jTXSE06">Burberry</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080275&bmUID=jUcQcbI">Burberry</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306425835&bmUID=jTXSE08">Chloe</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306425835&bmUID=jUcQcbJ">Chloe</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306412009&bmUID=jTXSE09">Christian Louboutin</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306412009&bmUID=jUcQcbK">Christian Louboutin</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092113&bmUID=jTXSE0a">Diane von Furstenberg</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092113&bmUID=jUcQcbL">Diane von Furstenberg</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080327&bmUID=jTXSE0b">Dolce & Gabbana</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080327&bmUID=jUcQcbM">Dolce & Gabbana</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306208727&bmUID=jTXSE0d">Emilio Pucci</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306208727&bmUID=jUcQcbN">Emilio Pucci</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306403111&bmUID=jTXSE0e">Fendi</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306403111&bmUID=jUcQcbO">Fendi</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306390851&bmUID=jTXSE0g">Giorgio Armani</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306390851&bmUID=jUcQcbP">Giorgio Armani</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080469&bmUID=jTXSE0h">Gucci</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080469&bmUID=jUcQcbQ">Gucci</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572295&bmUID=jTXSE0i">J Brand</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306572295&bmUID=jUcQcbR">J Brand</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080503&bmUID=jTXSE0j">Jimmy Choo</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080503&bmUID=jUcQcbS">Jimmy Choo</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306571595&bmUID=jTXSE0l">Manolo Blahnik</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306571595&bmUID=jUcQcbT">Manolo Blahnik</a></li>
 								
 									 
 									
 										</ul><ul>
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080603&bmUID=jTXSE0n">Marc by Marc Jacobs/Marc Jacobs</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080603&bmUID=jUcQcbU">Marc by Marc Jacobs/Marc Jacobs</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306591895&bmUID=jTXSE0o">Marni</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306591895&bmUID=jUcQcbV">Marni</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306149529&bmUID=jTXSE0p">Michael Kors</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306149529&bmUID=jUcQcbW">Michael Kors</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306420787&bmUID=jTXSE0q">Milly</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306420787&bmUID=jUcQcbX">Milly</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306422507&bmUID=jTXSE0s">Nanette Lepore</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306422507&bmUID=jUcQcbY">Nanette Lepore</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306431687&bmUID=jTXSE0t">Oscar de la Renta</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306431687&bmUID=jUcQcbZ">Oscar de la Renta</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080599&bmUID=jTXSE0u">Prada</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080599&bmUID=jUcQcb_">Prada</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306439105&bmUID=jTXSE0w">Rag & Bone</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306439105&bmUID=jUcQcb.">Rag & Bone</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306404139&bmUID=jTXSE0x">Ralph Lauren</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306404139&bmUID=jUcQcc0">Ralph Lauren</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306606635&bmUID=jTXSE0y">Saint Laurent</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306606635&bmUID=jUcQcc1">Saint Laurent</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080593&bmUID=jTXSE0z">Salvatore Ferragamo</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080593&bmUID=jUcQcc2">Salvatore Ferragamo</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306559805&bmUID=jTXSE0B">Stella McCartney</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306559805&bmUID=jUcQcc3">Stella McCartney</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080525&bmUID=jTXSE0C">St. John</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305080525&bmUID=jUcQcc4">St. John</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092177&bmUID=jTXSE0D">Theory</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374305092177&bmUID=jUcQcc5">Theory</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306602835&bmUID=jTXSE0E">The Row</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306602835&bmUID=jUcQcc6">The Row</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306428215&bmUID=jTXSE0G">Tory Burch</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306428215&bmUID=jUcQcc7">Tory Burch</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306406570&bmUID=jTXSE0H">Valentino</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306406570&bmUID=jUcQcc8">Valentino</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306400609&bmUID=jTXSE0I">Vince</a></li>
+									<li><a href="http://www.saksfifthavenue.com/main/WorldOfDesigner.jsp?FOLDER%3C%3Efolder_id=2534374306400609&bmUID=jUcQcc9">Vince</a></li>
 								
 							</ul>
 						
@@ -1118,6 +1122,22 @@
 								
 									 
 									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March&">The Trendcaster: Vol. 3 March</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp">The Trendcaster: Vol. 4 April</a></li>
+								
+									 
+									
 									<li><a href="http://www.saksfifthavenue.com/editorial/DressEvent040813.jsp">The Dress Event</a></li>
 								
 									 
@@ -1147,18 +1167,6 @@
 									 
 									
 									<li><a href="http://www.saksfifthavenue.com/editorial/DVF03112013.jsp">DVF Spring Event</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March">The Trendcaster: Vol. 3 March</a></li>
 								
 									 
 									
@@ -1638,6 +1646,26 @@
 								
 									 
 									
+									<li><a href="http://www.saksfifthavenue.com/editorial/prada041513.jsp">Prada Spring Event</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March&">The Trendcaster: Vol. 3 March</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp">The Trendcaster: Vol. 4 April</a></li>
+								
+									 
+									
 									<li><a href="http://www.saksfifthavenue.com/editorial/thebuzz0313.jsp">The Buzz: Our Must-Haves</a></li>
 								
 									 
@@ -1663,18 +1691,6 @@
 									 
 									
 									<li><a href="http://www.saksfifthavenue.com/editorial/SH03112013.jsp">Shoe & Handbag Event</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March">The Trendcaster: Vol. 3 March</a></li>
 								
 									 
 									
@@ -1784,6 +1800,16 @@
 				
 					
 					
+				
+			
+		
+			
+			
+			
+			
+				
+					
+				
 				
 			
 		
@@ -2084,6 +2110,34 @@
 								
 							
 
+							<b>SPECIAL OFFERS</b>
+							<ul>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Jewelry-and-Accessories/Special-Offers/shop/_/N-52jir0/Ne-6lvnb5">Shop All</a></li>
+								
+							</ul>
+																	
+							
+							
+							
+							
+							
+							
+							
+							
+
+							
+							
+							
+							
+								
+									
+								
+								
+							
+
 							<b>SALE: Jewelry & Accessories</b>
 							<ul>
 								
@@ -2158,6 +2212,22 @@
 								
 									 
 									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March&">The Trendcaster: Vol. 3 March</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp">The Trendcaster: Vol. 4 April</a></li>
+								
+									 
+									
 									<li><a href="http://www.saksfifthavenue.com/editorial/thebuzz0313.jsp">The Buzz: Our Must-Haves</a></li>
 								
 									 
@@ -2175,18 +2245,6 @@
 									 
 									
 									<li><a href="http://www.saksfifthavenue.com/editorial/TheMuse031813.jsp">The Muse Event</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=January&">The Trendcaster: Vol. 1 January</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=February&">The Trendcaster: Vol. 2 February</a></li>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/editorial/WorldOfLookBook2013.jsp?group=March">The Trendcaster: Vol. 3 March</a></li>
 								
 									 
 									
@@ -4469,16 +4527,6 @@
 			
 			
 				
-					
-				
-				
-			
-		
-			
-			
-			
-			
-				
 				
 					
 					
@@ -4502,6 +4550,27 @@
 				
 					
 				
+				
+			
+		
+			
+			
+			
+			
+				
+					
+				
+				
+			
+		
+			
+			
+			
+			
+				
+				
+					
+					
 				
 			
 		
@@ -4524,7 +4593,7 @@
 		
 			
 		
-		<li class="menu-column span-2 GiftsHomeKids">
+		<li class="menu-column span-3 GiftsHomeKids">
 			
 			
 											
@@ -4556,24 +4625,28 @@
 								
 							
 
-							<b>SHOP BY PRICE</b>
+							<b>BEST SELLERS</b>
 							<ul>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Price/Under-$50/shop/_/N-52ig1e/Ne-6lvnb5">Under $50</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Best-Sellers/Jewelry-and-Watches/shop/_/N-52jkh7/Ne-6lvnb5">Jewelry & Watches</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Price/$50-$150/shop/_/N-52j5es/Ne-6lvnb5">$50-$150</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Best-Sellers/Bags-and-Accessories/shop/_/N-52jkh8/Ne-6lvnb5">Bags & Accessories</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Price/$150-$300/shop/_/N-52j5et/Ne-6lvnb5">$150-$300</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Best-Sellers/Beauty-and-Fragrance/shop/_/N-52jkh9/Ne-6lvnb5">Beauty & Fragrance</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Price/Designer-Luxuries/shop/_/N-52j5ev/Ne-6lvnb5">Designer Luxuries</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Best-Sellers/Apparel-and-Sleepwear/shop/_/N-52jqzn/Ne-6lvnb5">Apparel & Sleepwear</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Best-Sellers/Home-and-Tech/shop/_/N-52jqzo/Ne-6lvnb5">Home & Tech</a></li>
 								
 							</ul>
 																	
@@ -4601,27 +4674,128 @@
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/For-Her/shop/_/N-52j5ch/Ne-6lvnb5">For Her</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Jewelry-and-Watches/shop/_/N-52j5ci/Ne-6lvnb5">Jewelry & Watches</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/For-Him/shop/_/N-52j5ci/Ne-6lvnb">For Him</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Bags-and-Accessories/shop/_/N-52j5cj/Ne-6lvnb5">Bags & Accessories</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/For-Kids/shop/_/N-52j5cj/Ne-6lvnb5">For Kids</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Beauty-and-Fragrance/shop/_/N-52j827/Ne-6lvnb5">Beauty & Fragrance</a></li>
 								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Gourmet-Gifts/shop/_/N-52j827/Ne-6lvnb5">Gourmet Gifts</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Apparel-and-Sleepwear/shop/_/N-52jqyp/Ne-6lvnb5">Apparel & Sleepwear</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Home-and-Tech/shop/_/N-52j5ck/Ne-6lvnb5">Home & Tech</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Mommy-and-Me/shop/_/N-52jqyq/Ne-6lvnb5">Mommy & Me</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/shop/_/N-52j5cg/Ne-6lvnb5">Sweet Treats</a></li>
 								
 									 
 									
 									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Personalized-Gifts/shop/_/N-52j5cl/Ne-6lvnb5">Personalized Gifts</a></li>
 								
+							</ul>
+																	
+							
+							
+							
+							
+							
+							
+							
+							
+
+							
+							
+							
+							
+								
+								
+									
+									
+									
+										
+										
+										
+											</li><li class="sub-menu-column">
+										
+									
+									
+								
+							
+
+							<b>GIFTS UNDER $150</b>
+							<ul>
+								
 									 
 									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Shop-by-Category/Home-and-Tech/shop/_/N-52j5ck/Ne-6lvnb5">Home & Tech</a></li>
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Jewelry-and-Watches/shop/_/N-52jqzr/Ne-6lvnb5">Jewelry & Watches</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Bags-and-Accessories/shop/_/N-52jqzs/Ne-6lvnb5">Bags & Accessories</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Beauty-and-Fragrance/shop/_/N-52jqzt/Ne-6lvnb5">Beauty & Fragrance</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Apparel-and-Sleepwear/shop/_/N-52jqzu/Ne-6lvnb5">Apparel & Sleepwear</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Home-and-Tech/shop/_/N-52jqzv/Ne-6lvnb5">Home & Tech</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Sweet-Treats/shop/_/N-52jqzx/Ne-6lvnb5">Sweet Treats</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Gifts-Under-$150/Personalized-Gifts/shop/_/N-52jqzy/Ne-6lvnb5">Personalized Gifts</a></li>
+								
+							</ul>
+																	
+							
+							
+							
+							
+							
+							
+							
+							
+
+							
+							
+							
+							
+								
+									
+								
+								
+							
+
+							<b>EDITOR'S GIFT PICKS</b>
+							<ul>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Editor-s-Gift-Picks/Bold-Metals/shop/_/N-52jqyy/Ne-6lvnb5">Bold Metals</a></li>
+								
+									 
+									
+									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Editor-s-Gift-Picks/Top-Shelf-Gifts/shop/_/N-52jqyz/Ne-6lvnb5">Top-Shelf Gifts</a></li>
 								
 							</ul>
 																	
@@ -4667,21 +4841,12 @@
 							
 							
 								
+									
 								
-									
-									
-									
-										
-										
-										
-											</li><li class="sub-menu-column">
-										
-									
-									
 								
 							
 
-							<b>SHOP BY OCCASION</b>
+							<b>GIFTS BY OCCASION</b>
 							<ul>
 								
 									 
@@ -4724,36 +4889,17 @@
 							
 							
 								
-									
-								
-								
-							
-
-							<b>SPECIAL OFFERS</b>
-							<ul>
-								
-									 
-									
-									<li><a href="http://www.saksfifthavenue.com/Gift-Shop/Special-Offers/shop/_/N-52g2qo/Ne-6lvnb5">Shop All</a></li>
-								
-							</ul>
-																	
-							
-							
-							
-							
-							
-							
-							
-							
-
-							
-							
-							
-							
 								
 									
-								
+									
+									
+										
+										
+										
+											</li><li class="sub-menu-column">
+										
+									
+									
 								
 							
 
@@ -5526,15 +5672,14 @@
 			</div>
 			<div class="banner">Enjoy a special treat from Saks.com:</div>
 			<div class="content">
-				<h3>$9.99 USD Standard Shipping and $19.99 USD Express Shipping 
-				to the UK and Canada on orders of $99 USD and more*</h3>
+				<h3>$9.99 USD Standard Shipping and $19.99 USD Express Shipping to the UK and Canada on orders of $99 USD and more*</h3>
 
 				
 
 				<p style="font-size:12px; font-weight:normal;">Just enter promo code: <b style="font-size:12px">UKCAN13</b> at checkout</p>
 
 				<div class="disclaimer">
-					<p><small>*$9.99 USD Standard Shipping and $19.99 USD Express Shipping offer valid with orders of $99 USD and more through Sunday, April 14th, 2013, at 11:59pm(ET). Offer valid at Saks.com only. To redeem, select Standard or Express shipping and enter promotional code: UKCAN13. Valid on shipments to United Kingdom and Canada addresses only. Not valid on US or other international shipments. Offer may not be used when shipping to multiple addresses. Not valid in Saks Fifth Avenue stores or Saks Fifth Avenue OFF 5TH stores. Not valid on purchases of Gift cards. No adjustments to prior purchases. This offer is non-transferable.</small></p>
+					<p>*$9.99 USD Standard Shipping and $19.99 USD Express Shipping offer valid  with orders of $99 USD and more through Sunday, April 21st, 2013, at  11:59pm(ET). Offer valid at Saks.com only. To redeem, select Standard or Express  shipping and enter promotional code: UKCAN13. Valid on shipments to United  Kingdom and Canada addresses only. Not valid on US or other international  shipments. Offer may not be used when shipping to multiple addresses. Not valid  in Saks Fifth Avenue stores or Saks Fifth Avenue OFF 5TH stores. Not valid on  purchases of Gift cards. No adjustments to prior purchases. This offer is  non-transferable.</p>
 
 					<p><small><a href="http://www.saksfifthavenue.com/html/cust_service/international_order_information.jsp" style="color:#990000">Click here</a> 
 					for additional shipping and tax information.</small></p>
@@ -5558,15 +5703,14 @@
 			<div class="banner">Enjoy a special treat from Saks.com:</div>
 			
 			<div class="content">
-				<h3>$19.99 USD Express Shipping to select countries on orders of 
-				$99 USD and more*</h3>
+				<h3>$19.99 USD Express Shipping to select countries on orders of $99 USD and more*</h3>
 				
 				
 				
 				<p style="font-size:12px; font-weight:normal;">Just enter promo code: <b style="font-size:12px">ROW13</b> at checkout.</p>
 				
 				<div class="disclaimer">
-					<p><small>*$19.99 USD Express Shipping offer valid with orders of $99 USD and more through Sunday, April 14th, 2013, at 11:59pm(ET). Offer valid at Saks.com only. To redeem, select Express shipping and enter promotional code: ROW13. Offer valid on shipments to Australia, Antigua and Barbuda, Argentina, Aruba, Austria, Bahrain, Bangladesh, Barbados, Belgium, Belize, Bermuda, Bolivia, Brazil, Brunei, Bulgaria, Cambodia, Cayman Islands, Chile, China, Colombia, Costa Rica, Cyprus, Czech Republic, Denmark, Dominica, Dominican Republic, Ecuador, Egypt, El Salvador,  Estonia, Finland, France, French Guiana, Germany, Gibraltar, Greece, Grenada, Guadeloupe, Guatemala, Guernsey, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Ireland, Israel, Italy, Jamaica, Japan, Jersey, Jordan, Kuwait, Latvia, Liechtenstein, Lithuania, Luxembourg, Macau, Maldives, Malta, Martinique, Mexico, Monaco, Montserrat, Netherlands, New Zealand, Nicaragua, Norway, Oman, Panama, Paraguay, Peru, Philippines, Poland, Portugal, Reunion, Romania, Russian Federation, Saint Kitts and Nevis, Saint Lucia, Saudi Arabia, Singapore, Slovakia, Slovenia, South Africa, South Korea, Spain, Sri Lanka, Sweden, Switzerland, Taiwan, Trinidad and Tobago, Turkey, Turks and Caicos Islands, United Arab Emirates, and Qatar addresses only. Not valid on shipments to Canada or the UK. Not valid on US shipments. Offer may not be used when shipping to multiple addresses. Not valid in Saks Fifth Avenue stores or Saks Fifth Avenue OFF 5TH stores. Not valid on purchases of Gift cards. No adjustments to prior purchases. This offer is non-transferable.</small></p>
+					<p>*$19.99 USD Express Shipping offer valid with orders of $99 USD and more through Sunday, April 21st, 2013, at 11:59pm(ET). Offer valid at Saks.com only. To redeem, select Express shipping and enter promotional code: ROW13. Offer valid on shipments to Australia, Antigua and Barbuda, Argentina, Aruba, Austria, Bahrain, Bangladesh, Barbados, Belgium, Belize, Bermuda, Bolivia, Brazil, Brunei, Bulgaria, Cambodia, Cayman Islands, Chile, China, Colombia, Costa Rica, Cyprus, Czech Republic, Denmark, Dominica, Dominican Republic, Ecuador, Egypt, El Salvador, Estonia, Finland, France, French Guiana, Germany, Gibraltar, Greece, Grenada, Guadeloupe, Guatemala, Guernsey, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Ireland, Israel, Italy, Jamaica, Japan, Jersey, Jordan, Kuwait, Latvia, Liechtenstein, Lithuania, Luxembourg, Macau, Maldives, Malta, Martinique, Mexico, Monaco, Montserrat, Netherlands, New Zealand, Nicaragua, Norway, Oman, Panama, Paraguay, Peru, Philippines, Poland, Portugal, Reunion, Romania, Russian Federation, Saint Kitts and Nevis, Saint Lucia, Saudi Arabia, Singapore, Slovakia, Slovenia, South Africa, South Korea, Spain, Sri Lanka, Sweden, Switzerland, Taiwan, Trinidad and Tobago, Turkey, Turks and Caicos Islands, United Arab Emirates, and Qatar addresses only. Not valid on shipments to Canada or the UK. Not valid on US shipments. Offer may not be used when shipping to multiple addresses. Not valid in Saks Fifth Avenue stores or Saks Fifth Avenue OFF 5TH stores. Not valid on purchases of Gift cards. No adjustments to prior purchases. This offer is non-transferable.</p>
 					
 					<p><small><a href="http://www.saksfifthavenue.com/html/cust_service/international_order_information.jsp" style="color:#990000">Click here</a> 
 					for additional shipping and tax information.</small></p>
@@ -5676,10 +5820,10 @@
 
 			<div id="site-search">
 
-				<form action="http://www.saksfifthavenue.com/search/EndecaSearch.jsp?bmUID=jU0Ry8f" method="get" name="endeca_search_form_one">
+				<form action="http://www.saksfifthavenue.com/search/EndecaSearch.jsp?bmUID=jUnWhYK" method="get" name="endeca_search_form_one">
 <input type="hidden" name="bmForm" value="endeca_search_form_one">
-<input type="hidden" name="bmFormID" value="jU0Ry8w">
-<input type="hidden" name="bmUID" value="jU0Ry8x">
+<input type="hidden" name="bmFormID" value="jUnWhZe">
+<input type="hidden" name="bmUID" value="jUnWhZf">
 <input type="hidden" name="bmIsForm" value="true">
 <input type="hidden" name="bmPrevTemplate" value="/html/popups/legal.jsp">
 					<div class="search-box">
@@ -5718,7 +5862,7 @@
 					<input type="hidden" name="bmHidden" value="Ntx"><input type="hidden" name="Ntx" value="mode+matchpartialmax"/>
 					<input type="hidden" name="bmHidden" value="prp8"><input type="hidden" name="prp8" value="t15"/>
 					<input type="hidden" name="bmHidden" value="prp13"><input type="hidden" name="prp13" value=""/>
-					<input type="hidden" name="bmHidden" value="sid"><input type="hidden" name="sid" value="13E035B24459"/>
+					<input type="hidden" name="bmHidden" value="sid"><input type="hidden" name="sid" value="13E17F6394CE"/>
 
 					
 
@@ -5764,7 +5908,7 @@ function EML1145A() {
 			var PopHeight = 382;
 			var theLeftLoc = (screen.availWidth-PopWidth)*0.5;
 			var theTopLoc = (screen.availHeight-PopHeight)*0.5;
-			zPop = window.open('http://www.saksfifthavenue.com/email_popup/EML1145Acollect.jsp?bmUID=jU0Ry8g', 'email_pop_under', "top=" + theTopLoc + ",screeny=" + theTopLoc + ",left=" + theLeftLoc + ",screenx" + theLeftLoc + ",width=" + PopWidth + ",height=" + PopHeight + ",buttons=no,scrollbars=no,location=no,menubar=no,resizable=no,status=no,directories=no,toolbar=no");
+			zPop = window.open('http://www.saksfifthavenue.com/email_popup/EML1145Acollect.jsp?bmUID=jUnWhYL', 'email_pop_under', "top=" + theTopLoc + ",screeny=" + theTopLoc + ",left=" + theLeftLoc + ",screenx" + theLeftLoc + ",width=" + PopWidth + ",height=" + PopHeight + ",buttons=no,scrollbars=no,location=no,menubar=no,resizable=no,status=no,directories=no,toolbar=no");
 		}
 	}
 	if (pageName == "checkout.__thankyou" || pageName == "checkout.__saksbag2" || pageName == "account.__account" || pageName == "account.__registration" || pageName == "html._email_popup.__email_collect_data" || pageName == "html._email_popup.__email_collect_popup_main" || pageName == "html._email_popup.__SaksFirst_Email_ThankYou") {
@@ -5804,13 +5948,13 @@ var s_account="sakscomlive"
 <table width="960" border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td WIDTH="10" height="" rowspan="4"></td>
-          <td height="20" align="right" valign="bottom" style="font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#000"> <img src='../../media/images/utility_pages/question_mark_v1_m56577569831639973.gif' alt="" width="15" height="15" hspace="3" border='0' align="absbottom" usemap="#NavMap" /><strong>24/7 Customer Service:</strong> <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jU0Ry8i&prp13=b9',540,575,'LiveChat'); return false;" class="linkText"  style="color:#000">Live Chat</a> &nbsp;&#8226;&nbsp; <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jU0Ry8j&prp13=b11',537,537); return false;" class="linkText" style="color:#000">Email</a> &nbsp;&#8226;&nbsp;1.877.551.7257</td>
+          <td height="20" align="right" valign="bottom" style="font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#000"> <img src='../../media/images/utility_pages/question_mark_v1_m56577569831639973.gif' alt="" width="15" height="15" hspace="3" border='0' align="absbottom" usemap="#NavMap" /><strong>24/7 Customer Service:</strong> <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jUnWhYN&prp13=b9',540,575,'LiveChat'); return false;" class="linkText"  style="color:#000">Live Chat</a> &nbsp;&#8226;&nbsp; <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jUnWhYO&prp13=b11',537,537); return false;" class="linkText" style="color:#000">Email</a> &nbsp;&#8226;&nbsp;1.877.551.7257</td>
         </tr>
         <tr>
           <td height="41" align="center" valign="bottom" class="titleText"><a name="totop"></a>Our Privacy Policy & Our Website Terms Of Use </td>
         </tr>
         <tr>
-          <td align="center" class="sublinkTexton">Our Privacy Policy &nbsp;&#8226; &nbsp;<a href="http://www.saksfifthavenue.com/html/popups/terms_of_use.jsp?bmUID=jU0Ry8k" class="sublinkTextoff">Our Website Terms Of Use</a></td>
+          <td align="center" class="sublinkTexton">Our Privacy Policy &nbsp;&#8226; &nbsp;<a href="http://www.saksfifthavenue.com/html/popups/terms_of_use.jsp?bmUID=jUnWhYP" class="sublinkTextoff">Our Website Terms Of Use</a></td>
         </tr>
         <tr>
           <td class="utilityText"><a name="ourprivacypolicy"></a><span class="headerText">Our Privacy Policy</span><br>
@@ -6173,7 +6317,7 @@ Thank you for visiting our website, which is part of the Saks family of company 
               </tr>
               <tr>
                 <td align="left" valign="top"  class="questionText">A:</td>
-                <td valign="top" class="utilityText">If you have any questions or concerns about this policy or our privacy practices, please contact Customer Service by <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jU0Ry8l&prp13=b11',537,537); return false;" style="color:#000">Email</a>, or telephone. 
+                <td valign="top" class="utilityText">If you have any questions or concerns about this policy or our privacy practices, please contact Customer Service by <a href="legal.jsp%3FbmUID=jk28dnZ.html#" onClick="popupWinFixed2('https://www.saksfifthavenue.com/email_popup/email_popup_main.jsp?bmUID=jUnWhYQ&prp13=b11',537,537); return false;" style="color:#000">Email</a>, or telephone. 
                 </td>
               </tr>
             </table>
@@ -6437,10 +6581,10 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 		</div>
 		<div class="email-signup">			
 			<h3>Sign Up For Daily Emails</h3>
-			<form action="https://www.saksfifthavenue.com/html/email_popup/email_collect_popup_main.jsp?bmUID=jU0Ry8n" method="get" name="email_updates_form_one1">
+			<form action="https://www.saksfifthavenue.com/html/email_popup/email_collect_popup_main.jsp?bmUID=jUnWhYU" method="get" name="email_updates_form_one1">
 <input type="hidden" name="bmForm" value="email_updates_form_one1">
-<input type="hidden" name="bmFormID" value="jU0Ry8y">
-<input type="hidden" name="bmUID" value="jU0Ry8z">
+<input type="hidden" name="bmFormID" value="jUnWhZg">
+<input type="hidden" name="bmUID" value="jUnWhZh">
 <input type="hidden" name="bmIsForm" value="true">
 <input type="hidden" name="bmPrevTemplate" value="/html/popups/legal.jsp">
 				<input type="hidden" name="bmText" value="EmailUpdateString"><font face="courier new" size="3"><tt>&nbsp;</tt></font><input name="EmailUpdateString" type="text" placeholder="enter email address"/>
@@ -6461,7 +6605,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 				<li><a href="http://www.saksfifthavenue.com/Customer-Service">Customer Service</a></li>
 				<li><b>1.877.551.7257</b></li>
 				<li><a href="http://www.saksfifthavenue.com/Email" data-target="popup|536|538|emailus">Email</a></li>
-				<li><a href="http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jU0Ry8o" data-target="popup|533|574|chat">Chat</a></li>
+				<li><a href="http://www.saksfifthavenue.com/html/live_help/live_help.jsp?bmUID=jUnWhYV" data-target="popup|533|574|chat">Chat</a></li>
                  <li><a href="http://www.saksfifthavenue.com/Saks-Stylist">Personal Stylist</a></li>
 			</ul>
 		</div>
@@ -6470,14 +6614,14 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 			<li class="menu-item first-child">
 				<h3>Shop Saks</h3>
 				<ul>
-					<li><a href="http://www.saksfifthavenue.com/cqc/select_catalog.jsp?bmUID=jU0Ry8p">Catalogs</a></li>
+					<li><a href="http://www.saksfifthavenue.com/cqc/select_catalog.jsp?bmUID=jUnWhYW">Catalogs</a></li>
 					<li><a href="http://www.saksfifthavenue.com/Gift-Cards">Gift Cards</a></li>
 				</ul>
 			</li>
 			<li class="menu-item">
 				<h3>Stores &amp; Corporate</h3>
 				<ul>
-					<li><a href="http://www.saksfifthavenue.com/stores/stores.jsp?bmUID=jU0Ry8q">Store Locations &amp; Events</a></li>
+					<li><a href="http://www.saksfifthavenue.com/stores/stores.jsp?bmUID=jUnWhYX">Store Locations &amp; Events</a></li>
 					<li><a href="http://www.saksfifthavenue.com/About-Us">About Us</a></li>
 					<li><a href="http://www.careersatsaks.com" data-target="tab">Careers</a></li>
 					<li><a href="http://www.saksfifthavenue.com/Policies">Policies</a></li>
@@ -6521,9 +6665,6 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 		</div>
 	</div>
 </div>
-
-
-
 <div id="bottomnav-csr-links">
 
 
@@ -6553,7 +6694,7 @@ function getXmlHttpRequestObject() {
 function loadBagNow(num_items_added){
 	document.getElementById('saksbagoverlay_insert').innerHTML = "<table width='417' height='120'  class='BackDropColor' cellpadding='0' cellspacing='5' border='0'><tr><td align='center' valign='center' bgcolor='#ffffff'><img src='../../media/images/saks_bag/loadingsaksbag_v1_m56577569831411277.gif' border='0'></td></tr></table>";
 	var paramsOverlay = "";
-	var urlOverlay = 'http://www.saksfifthavenue.com/include/saksbaginsert.jsp?bmUID=jU0Ry8r';
+	var urlOverlay = 'http://www.saksfifthavenue.com/include/saksbaginsert.jsp?bmUID=jUnWhYY';
 	var currentUrlnow = window.location.toString();
 	var rehttp= new RegExp ("https://");
 	if(currentUrlnow.match(rehttp)){
@@ -6587,7 +6728,7 @@ function handleAddToBagOverlay() {
 			}
 		}else{
 			document.getElementById('saksbagoverlay_insert').innerHTML = "<table width='417' height='120'  class='BackDropColor' cellpadding='0' cellspacing='5' border='0'><tr><td align='center' valign='center' bgcolor='#ffffff'>Error: " + receiveReqOverlay.status +"<br>Could not load Saks Bag Overlay.<br>Page will Redirected to the Saks Bag Page</td></tr></table>";
-			window.location.href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?bmUID=jU0Ry8s"
+			window.location.href="https://www.saksfifthavenue.com/checkout/SaksBag.jsp?bmUID=jUnWhYZ"
 		}
 	}
 } 

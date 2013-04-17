@@ -3,7 +3,8 @@ Copyright 1997-2010 Adobe, Inc. More info available at http://www.omniture.com *
 
 /* Specify the Report Suite ID(s) to track here */
 //var tm_omn_account=""
-var tm_omn=s_gi(tm_omn_account)
+var tm_omn=s_gi(tm_omn_account);
+
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -80,6 +81,7 @@ function s_doPlugins(s)
 		tm_omn.clickPast(tm_omn.firstPage,'event24','event25','cpcbrate');
 		tm_omn.manageVars("clearVars","firstPage",1)
 		
+	
 		/* Automate Campaign Tracking Code Extraction based on wt.mc_id parameter*/
 		if(!tm_omn.campaign)
 		{
@@ -379,6 +381,7 @@ function s_doPlugins(s)
 		}
 
 	}
+	tm_omni_temp.set('is_s_doPlugins_fired', true);
 }
 tm_omn.doPlugins=s_doPlugins
 

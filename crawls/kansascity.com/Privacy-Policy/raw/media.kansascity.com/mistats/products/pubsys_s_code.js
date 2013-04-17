@@ -69,6 +69,7 @@ function s_doPlugins(s)
    s.tnt=s.trackTNT();
 
    // Trim variable string length
+   s.plugins = '';
    for (i in s)
       if (i.match(/^((eVar|hier)\d+|pageURL|referrer)$/))
          s[i] = (s[i] || '').substr(0, 255);

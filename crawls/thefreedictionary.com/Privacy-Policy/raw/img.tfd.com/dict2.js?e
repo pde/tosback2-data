@@ -5,7 +5,7 @@ var Domain='thefreedictionary.com';
 var Sources,sources=[];
 var AdResults=0;var OvResults=0;var OResults='';var GResults='';var IsG=false;var IsMSN=false;IsY=false;
 var AdsNum = 1, MoreAds=1, Ads = [], RAd,  kw = '', kw2 = '', g_kw = 1, CurrentAd = 0, CurrentRad = 0, AdBlocks = [];
-var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";
+var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";google_color_url = google_color_link = "#1D4994";google_color_text = "#000000";google_color_bg = "#FFFFFF";
 var google_afs_client = "pub-2694630391511205", afs_pageOptions = null, ch_c="8922314704";
 google_num_radlinks = '10';google_max_radlink_len = '17';
 var ImgAd='';
@@ -74,6 +74,7 @@ var Langs ={
 'ml':['Malay','Bahasa Melayu',''],
 'no':['Norwegian','Norsk','Velg et språk'],
 'pl':['Polish','Polski','Wybierz język'],
+'ps':['Pashto', 'پښتو,پشتو',''],
 'pt':['Portuguese','Português','Selecione um idioma'],
 'ro':['Romanian','Română','Selectaţi o limbă'],
 'ru':['Russian','Русский','Выберите язык'],
@@ -89,7 +90,7 @@ var Langs ={
 'ur':['Urdu','اردو',''],
 'vi':['Vietnamese','Tiếng Việt','']
 }
-function srp(s) {sources.push(s);if(MoreAds) write_ads(AdsNum, 0, 1)}
+function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 1)}
 function wiki(){srp('wiki')}
 function foldoc(){dw('<br><div class=brand_copy>This article is provided by FOLDOC - Free Online Dictionary of Computing (<a target=_blank href="http:/'+'/foldoc.org">foldoc.org</a>)</div><br>');srp('foldoc')};
 function cde(){dw('<br><div class=brand_copy>Computer Desktop Encyclopedia copyright ©1981-2013 by <a target=_blank href=http:/'+'/www.computerlanguage.com/tfd.html>The Computer Language Company Inc</a>. All Right reserved. THIS DEFINITION IS FOR PERSONAL USE ONLY. All other reproduction is strictly prohibited without permission from the publisher.</div><br>');srp('cde')}
@@ -278,6 +279,9 @@ function google_ad_request_done(google_ads) {
 	else if (google_ads[0].type == "flash") {
 		ImgAd='<o'+'bject classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http:/'+'/download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="'+google_ad.image_width+'" HEIGHT="'+google_ad.image_height+'"><PARAM NAME="movie" VALUE="'+google_ad.image_url+'"><PARAM NAME="quality" VALUE="high"><PARAM NAME="AllowScriptAccess" VALUE="never"><EMBED src="'+google_ad.image_url+'" WIDTH="'+google_ad.image_width+'" HEIGHT="'+google_ad.image_height+'" TYPE="application/x-shockwave-flash" AllowScriptAccess="never" PLUGINSPAGE="http:/'+'/www.macromedia.com/go/getflashplayer"></EMBED></OBJECT>';
 	}
+	else if(google_ads[0].type=="html") {
+		ImgAd=google_ads[0].snippet;
+	}
 }
 function ad(url,visible_url,line1,line2,line3){this.url=url;this.visible_url=visible_url;this.line1=line1;this.line2=line2;this.line3=line3;}
 function write_ad(ad,pos) {
@@ -285,9 +289,9 @@ function write_ad(ad,pos) {
 	var t1=ad.line1, t2=ad.line2+' '+ad.line3;
 	var link='<a href="http:/'+'/www.thefreedictionary.com/_/gr.aspx?pos='+pos+'&source='+loc+'&url='+encodeURIComponent(ad.url)+'" onMouseOver="return m_over(\''+(IsG?'go to ':'http://')+encodeURIComponent(ad.visible_url)+'\')" onMouseOut="m_out()">';
 	if(IsG) 
-		res+=link+'<span class=OvTitle>'+t1+'</span></a><br><span class=OvDescr>'+t2+'</span><br>'+link+'<span class=OvURL>'+ad.visible_url+'</span></a>';
+		res+=link+'<span class=OvTitle>'+highlight(t1)+'</span></a><br><span class=OvDescr>'+highlight(t2)+'</span><br>'+link+'<span class=OvURL>'+highlight(ad.visible_url)+'</span></a>';
 	 else
-		res+=link+'<span class=OvTitle>'+t1+'</span><br><span class=OvDescr>'+t2+'</span><br><span class=OvURL>'+ad.visible_url+'</span></a>';
+		res+=link+'<span class=OvTitle>'+highlight(t1)+'</span><br><span class=OvDescr>'+highlight(t2)+'</span><br><span class=OvURL>'+highlight(ad.visible_url)+'</span></a>';
  	return res +'</div>';
  }
  function write_ads(AdsNum,Br,pos) {
@@ -376,10 +380,11 @@ window.status = '';
 }
 var sound_timeout=null;
 function play(File) {
+if(File.indexOf('/')<0) File='http:/'+'/img.tfd.com/hm/mp3/'+File;
 var andr = navigator.userAgent.indexOf('Android') > 0;
-var s = (andr ? File + '.mp3' : File.replace('/mp3/', '/prons/') + '.wav');
+var s=(andr?File+'.mp3':File.replace('/mp3/','/prons/')+'.wav');
 if (sound_timeout) clearTimeout(sound_timeout);
-var sndfr = ById("sound_frame");
+var sndfr=ById("sound_frame");
 if (IE && navigator.platform == 'Win32') {
 document.all.bgsound.src=s;
 sound_timeout=setTimeout('document.all.bgsound.src="about:blank"', 8000);
@@ -387,7 +392,7 @@ sound_timeout=setTimeout('document.all.bgsound.src="about:blank"', 8000);
 sndfr.src = 'about:blank';
 sndfr.src = s;
 sound_timeout=setTimeout('ById("sound_frame").src="about:blank"', 8000);
-} else 
+} else
 location=s;
 window.status='';
 }
@@ -617,7 +622,7 @@ var social = {
                 function rss(t, n) { return '<a target=_blank href="http:/' + '/www.thefreedictionary.com/_/WoD/rss.aspx' + t + '" onclick="social.rsslinks_show()">' + n + '</a><br>' };
                 dw('Follow: ' +
             pr + '/www.facebook.com/pages/TheFreeDictionary/340660446629" title="Join The Free Dictionary fan page on Facebook"><span class="img A" style="background-position:-129px -15px;width:13px"></span></a>' +
-            pr + '/twitter.com/farlex" title="Follow TheFreeDictionary.com on Twitter"><span class="img A" style="background-position:-100px -15px;width:10px"></span></a>' +
+            pr + '/twitter.com/farlex" title="Follow TheFreeDictionary.com on Twitter"><span class="img A" style="background-position:-97px -15px;width:16px"></span></a>' +
             '<a target=_blank href="https:/' + '/plus.google.com/107600506271394195190" title="Add The Free Dictionary to Google+ circles"><span class="img A" style="background-position:-24px 0;width:13px"></span></a>' +
             '<a href="http://www.' + Domain + '/Word-of-the-Day.htm" title="Join the Word of the Day Mailing List"><span class="img A" style="background-position:-86px 0;width:13px;">Join the Word of the Day Mailing List</span></a>' +
             '<a target=_blank onclick="social.rsslinks_show(1)" title="RSS feed source"><span class="img A" style="background-position:-146px -15px;width:14px"></span></a>' +
@@ -627,7 +632,7 @@ var social = {
             }
             dw(Share + ' ' +
         pr + '/www.facebook.com/share.php?u=' + this.HPlocU + '" title="Share on Facebook"><span class="img A" style="background-position:-129px -15px;width:13px"></span></a>' +
-        '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.HPlocU + '" title="Share on Twitter"><span class="img A" style="background-position:-100px -15px;width:10px"></span></a>' +
+        '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.HPlocU + '" title="Share on Twitter"><span class="img A" style="background-position:-97px -15px;width:16px"></span></a>' +
         (PageLang == 'en' ? pr + '/www.linkedin.com/shareArticle?mini=true&url=' + this.HPlocU + '&title=The+Free+Dictionary&summary=The+most+comprehensive+free+online+dictionary+and+encyclopedia&source=TheFreeDictionary.com" title="Share on LinkedIn"><span class="img A" style="background-position:-100px -30px;width:14px"></span></a>' : '') +
         '<a href="mailto' + ':?subject=TheFreeDictionary.com&body=%0d%0a%0d%0aURL%3a ' + this.HPlocU + '" title="E-mail"><span class="img A" style="background-position:-161px -15px;width:19px"></span></a>' +
         '</fieldset>');
@@ -637,7 +642,7 @@ var social = {
             this.like(1); this.gplus('');
             dw(Share + ' ' +
             pr + '/www.facebook.com/share.php?u=' + this.locU + '" title="Share on Facebook"><span class="img A" style="background-position:-129px -15px;width:13px"></span></a>' +
-            '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.locU + '" title="Share on Twitter"><span class="img A" style="background-position:-100px -15px;width:10px"></span></a>' +
+            '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.locU + '" title="Share on Twitter"><span class="img A" style="background-position:-97px -15px;width:16px"></span></a>' +
             (PageLang == 'en' ? pr + '/www.linkedin.com/shareArticle?mini=true&url=' + this.locU + '&title=' + this.titleU + '&summary=' + this.descriptionU + '&source=TheFreeDictionary.com" title="Share on LinkedIn"><span class="img A" style="background-position:-100px -30px;width:14px"></span></a>' : '') +
             '<a href="mailto' + ':?subject=' + this.titleU + '&body=' + this.descriptionU + '%0d%0a%0d%0aURL%3a ' + this.locU + '" title="E-mail"><span class="img A" style="background-position:-161px -15px;width:19px"></span></a>' +
             '</fieldset>');
@@ -661,7 +666,7 @@ var social = {
         pr + '/del.icio.us/post?v=4;url=' + this.locU + ';title=' + this.titleU + '" title="Bookmark on del.icio.us">' + img(32, 70, 277) +
         pr + '/www.google.com/bookmarks/mark?op=add&bkmk=' + this.locU + '&title=' + this.titleU + '" title="Bookmark on Google History Bookmarks">' + img(30, 106, 277) +
         pr + '/myweb2.search.yahoo.com/myresults/bookmarklet?u=' + this.locU + '&t=' + this.titleU + '" title="Bookmark on Yahoo!">' + img(36, 138, 277) +
-        '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.locU + '" title="Share on Twitter">' + img(25, 0, 312) +
+        '<a target=_blank href="https:/' + '/twitter.com/share?original_referer=' + this.locU + '" title="Share on Twitter">' + img(35, 0, 312) +
         pr + '/reddit.com/submit?url=' + this.locU + '&title=' + this.titleU + '" title="Reddit">' + img(35, 177, 277) +
         '</td><td valign=top><iframe src="http:/' + '/www.facebook.com/plugins/like.php?locale=' + Locale + '&href=' + this.locU + '&layout=standard&show_faces=true&width=190&amp;action=like&colorscheme=light&amp;height=100" scrolling="no" frameborder="0" style="border:none;overflow:auto;width:190px;height:100px;margin-top:10px" allowTransparency="true"></iframe></td></tr></table>');
         else dw('<br><br>');
@@ -672,7 +677,7 @@ var social = {
         dw('<a target=_blank href="http:/' + '/www.facebook.com/pages/TheFreeDictionary/340660446629" title="Join The Free Dictionary fan page on Facebook"><span class="img A" style="background-position:-129px -15px;width:13px"></span></a>' +
         '<a target=_blank href="' + A2Gu() + '" title="' + A2G + '"><span class="img A" style="background-position:-55px 0;width:13px"></span></a>' +
         '<a target=_blank href="http:/' + '/myweb2.search.yahoo.com/myresults/bookmarklet?u=' + this.HPlocU + '&t=Online+Dictionary+and+Encyclopedia" title="' + BoY + '"><span class="img A" style="background-position:-71px 0;width:13px"></span></a>');
-        if (PageLang == 'en') dw('<a target=_blank href="http:/' + '/twitter.com/farlex" title="Follow Farlex on Twitter"><span class="img A" style="background-position:-100px -16px;width:10px"></span></a>');
+        if (PageLang == 'en') dw('<a target=_blank href="http:/' + '/twitter.com/farlex" title="Follow Farlex on Twitter"><span class="img A" style="background-position:-97px -15px;width:16px"></span></a>');
     }
 };
 

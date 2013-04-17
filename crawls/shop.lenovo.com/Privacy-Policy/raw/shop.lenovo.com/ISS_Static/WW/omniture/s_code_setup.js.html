@@ -1,8 +1,8 @@
 // s_code_setup.js
 // Copyright 2011-2013 Adobe, Inc. All Rights Reserved
 // More info available at http://www.omniture.com
-// UPDATED: 01-Apr-2013
-var s_fileVer='130327b';
+// UPDATED: 12-Apr-2013
+var s_fileVer='130327c';
 
 /************************** CONFIG SECTION **************************/
 
@@ -75,7 +75,7 @@ function setAcc(){
 			lpneRE='^([^/]*)partnerinfo\\.lenovo\\.com/',
 			shopRE='^shop(ap)?\\.lenovo\\.com',
 			opslRE='^([^/]*)len[a-zA-Z0-9]+\\.com/[^?]*.*[?&]cid=ops_load',
-			devsRE='^([^/]*\\.leni2\\.|10\\.96\\.13|131\\.253\\.14|localhost)',
+			devsRE='^([^/]*\\.leni2\\.|10\\.96\\.13|131\\.253\\.14|localhost|pdwec)',
 			offsRE='^([^/]*\\.googleusercontent\\.|translate|viewster\.)',
 
 			map=[
@@ -96,26 +96,26 @@ function setAcc(){
 				{	desc:'OpsLoad|*len*.com*?cid=ops_load',
 					urls:opslRE+'',
 					acc:ldtRSID,
-					sec:'dev'},
+					sec:'loadtest'},
 
-				{	desc:'Dev|',
+				{	desc:'Dev|leni2|10.96.13|131.253.14|local|pdwec',
 					urls:devsRE+'',
 					acc:devRSID,
-					sec:'loadtest'},
+					sec:'dev'},
 
-				{	desc:'Offsite|',
+				{	desc:'Offsite|googleusercontent|translate|viewster',
 					urls:offsRE+'',
 					acc:devRSID,
-					sec:'loadtest'},
+					sec:'offsite'},
 
 				/* start of URLs on lenovo.com subdomains */
 
-				{	desc:'Beta-1|*beta.lenovo.com*',
+				{	desc:'OneWeb|*beta.lenovo.com*',
 					urls:bet1RE+'',
 					sjs:pathJS+'s_code_section_beta.js',
 					sec:'beta'},
 
-				{	desc:'Beta-2|*lenovo.com/betaweb/',
+				{	desc:'BetaWeb|*lenovo.com/betaweb/',
 					urls:bet2RE+'',
 					sjs:pathJS+'s_code_section_beta.js',
 					sec:'oneweb'},
@@ -138,7 +138,7 @@ function setAcc(){
 				{	desc:'OVP-1|*ovp.lenovo.com/',
 					urls:'^([^/]*)ovp\\.lenovo\\.com/',
 					sjs:pathJS+'s_code_section_ovp.js',
-					acc:'lenovoglobal',
+					acc:'lenovo~pub',
 					sec:'ovp'},
 
 				{	desc:'Shop-1|shop[ap].lenovo.com/?????/cc/lc/*',
@@ -247,7 +247,7 @@ function setAcc(){
 	try{
 
 		var
-			RSIDs='lenovo2008,lenovoaepub,lenovoagle,lenovoaglpn,lenovoagmidmkt,lenovoagoutlet,lenovoagpubsec,lenovoagsalesintranet,lenovoamericas,lenovoamericasdev,lenovoamericasmi,lenovoapaffinity,lenovoapepp,lenovoapesite,lenovoaple,lenovoaplpn,lenovoapmidmkt,lenovoappubsec,lenovoaraffinity,lenovoarepp,lenovoarpub,lenovoartele,lenovoatcepp,lenovoatctobp,lenovoatepp,lenovoatlpn,lenovoatpub,lenovoauaffinity,lenovoauepp,lenovoaulpn,lenovoaupub,lenovoautele,lenovobchannels,lenovobdpub,lenovobelpn,lenovobepub,lenovobeta,lenovobgpub,lenovoblogs,lenovobopub,lenovobraffinity,lenovobrepp,lenovobrlpn,lenovobrpub,lenovobrtele,lenovocaaffinity,lenovocaepp,lenovocaffinity,lenovocalpn,lenovocapub,lenovocatele,lenovochlpn,lenovochpub,lenovocislpn,lenovoclpub,lenovocnesupport,lenovocnpub,lenovocoaffinity,lenovocoepp,lenovoconsumeresupport,lenovocopub,lenovocotele,lenovocspub,lenovoculturecompass,lenovoczlpn,lenovoczpub,lenovodeaffinity,lenovodecepp,lenovodeepp,lenovodelpn,lenovodeoutlet,lenovodepub,lenovodklpn,lenovodkpub,lenovoecpub,lenovoedm,lenovoeelpn,lenovoemea,lenovoemeaaffinity,lenovoemeaepp,lenovoemeale,lenovoemealpn,lenovoemeamidmkt,lenovoemeapubsec,lenovoemergingmicro,lenovoemployeedirectory,lenovoeprizelpn,lenovoeslpn,lenovoespub,lenovoestacoeslenovobr,lenovoesupporten,lenovoesupportjp,lenovoesupportkr,lenovofilpn,lenovofipub,lenovoforums,lenovofraffinity,lenovofrcepp,lenovofrepp,lenovofrlpn,lenovofroutlet,lenovofrpub,lenovofunfactordev,lenovogbpub,lenovogbpubdev,lenovogbtele,lenovoglobal,lenovoglobaldev,lenovoglobalerrors,lenovogrpub,lenovohitecholympics,lenovohkepp,lenovohkpub,lenovohrpub,lenovohrsite,lenovohupub,lenovoidpub,lenovoieaffinity,lenovoiecepp,lenovoieepp,lenovoielpn,lenovoieoutlet,lenovoiepub,lenovoiepubdev,lenovoillpn,lenovoilpub,lenovoinepp,lenovoinpub,lenovointernalblogs,lenovoitlpn,lenovoitpub,lenovojpclub,lenovojpepp,lenovojplpn,lenovojpoutlet,lenovojppub,lenovojptele,lenovokrepp,lenovokrpub,lenovolapub,lenovole,lenovoledev,lenovolenovoegpub,lenovolenovomxepp,lenovolenovonecpub,lenovolenovonecpubdev,lenovolenovonecpubtele,lenovolenovospider,lenovolkpub,lenovolts,lenovoltsdev,lenovomalpn,lenovomelpn,lenovometrocompaniondev,lenovometroexperiencedev,lenovometrosupportdev,lenovomppub,lenovomxaffinity,lenovomxepp,lenovomxpub,lenovomxtele,lenovomypub,lenovonextjump,lenovonity,lenovonllpn,lenovonlpub,lenovonolpn,lenovonopub,lenovonzaffinity,lenovonzepp,lenovonzlpn,lenovonzpub,lenovoolympicportal,lenovoomnitureteststore,lenovopedia,lenovopepub,lenovophpub,lenovopllpn,lenovoplpub,lenovoptlpn,lenovoptpub,lenovopypub,lenovorel,lenovoropub,lenovorspub,lenovorulpn,lenovorupub,lenovosandbox,lenovosapub,lenovosbb,lenovosbpstore,lenovosbpstoredev,lenovoselpn,lenovosepub,lenovosgepp,lenovosgpub,lenovosimpletapdev,lenovosimpletapprod,lenovosipub,lenovoskpub,lenovosocialmonitoring,lenovospider,lenovotest2010,lenovotestalp20110929,lenovothpub,lenovotrlpn,lenovotrpub,lenovotvtlenovosolutionscenterprod,lenovotvtlenovowelcomeprod,lenovotwepp,lenovotwitter,lenovotwpub,lenovoualpn,lenovouapub,lenovoukaffinity,lenovoukbp,lenovoukcepp,lenovoukepp,lenovoukepp2,lenovouklpn,lenovoukoutlet,lenovoukpub,lenovous108375433,lenovousbp,lenovousbpstore,lenovousepp,lenovouslpn,lenovousmobile,lenovousorderstatus,lenovousoutbound,lenovouspersonalpages,lenovouspub,lenovouspubdev,lenovouspubgomez,lenovoustele,lenovouypub,lenovovepub,lenovovision,lenovovnpub,lenovow3,lenovow3emea,lenovowwintranet,lenovowwlpn,lenovowwlpndev,lenovowwmidmkt,lenovowwpub,lenovowwpubsec,lenovoxcpub,lenovoxepub,lenovoxmpub,lenovozapub', //Valid report suites
+			RSIDs='lenovo2008,lenovoaepub,lenovoagle,lenovoaglpn,lenovoagmidmkt,lenovoagoutlet,lenovoagpubsec,lenovoagsalesintranet,lenovoamericas,lenovoamericasdev,lenovoamericasmi,lenovoapaffinity,lenovoapepp,lenovoapesite,lenovoaple,lenovoaplpn,lenovoapmidmkt,lenovoappubsec,lenovoaraffinity,lenovoarepp,lenovoarpub,lenovoartele,lenovoatcepp,lenovoatctobp,lenovoatepp,lenovoatlpn,lenovoatpub,lenovoauaffinity,lenovoauepp,lenovoaulpn,lenovoaupub,lenovoautele,lenovobchannels,lenovobdpub,lenovobelpn,lenovobepub,lenovobeta,lenovobgpub,lenovoblogs,lenovobopub,lenovobraffinity,lenovobrepp,lenovobrlpn,lenovobrpub,lenovobrtele,lenovocaaffinity,lenovocaepp,lenovocaffinity,lenovocalpn,lenovocapub,lenovocatele,lenovochlpn,lenovochpub,lenovocislpn,lenovoclpub,lenovocnesupport,lenovocnpub,lenovocoaffinity,lenovocoepp,lenovoconsumeresupport,lenovocopub,lenovocotele,lenovocspub,lenovoculturecompass,lenovoczlpn,lenovoczpub,lenovodeaffinity,lenovodecepp,lenovodeepp,lenovodelpn,lenovodeoutlet,lenovodepub,lenovodklpn,lenovodkpub,lenovoecpub,lenovoedm,lenovoeelpn,lenovoemea,lenovoemeaaffinity,lenovoemeaepp,lenovoemeale,lenovoemealpn,lenovoemeamidmkt,lenovoemeapubsec,lenovoemergingmicro,lenovoemployeedirectory,lenovoeprizelpn,lenovoeslpn,lenovoespub,lenovoestacoeslenovobr,lenovoesupporten,lenovoesupportjp,lenovoesupportkr,lenovofilpn,lenovofipub,lenovoforums,lenovofraffinity,lenovofrcepp,lenovofrepp,lenovofrlpn,lenovofroutlet,lenovofrpub,lenovofunfactordev,lenovogbpub,lenovogbpubdev,lenovogbtele,lenovoglobal,lenovoglobaldev,lenovoglobalerrors,lenovogrpub,lenovohitecholympics,lenovohkepp,lenovohkpub,lenovohrpub,lenovohrsite,lenovohupub,lenovoidpub,lenovoieaffinity,lenovoiecepp,lenovoieepp,lenovoielpn,lenovoieoutlet,lenovoiepub,lenovoiepubdev,lenovoillpn,lenovoilpub,lenovoinepp,lenovoinpub,lenovointernalblogs,lenovoitlpn,lenovoitpub,lenovojpclub,lenovojpepp,lenovojplpn,lenovojpoutlet,lenovojppub,lenovojptele,lenovokrepp,lenovokrpub,lenovolapub,lenovole,lenovoledev,lenovolenovoegpub,lenovolenovomxepp,lenovolenovonecpub,lenovolenovonecpubdev,lenovolenovonecpubtele,lenovolenovospider,lenovolkpub,lenovolts,lenovoltsdev,lenovomalpn,lenovomelpn,lenovometrocompaniondev,lenovometroexperiencedev,lenovometrosupportdev,lenovomppub,lenovomxaffinity,lenovomxepp,lenovomxpub,lenovomxtele,lenovomypub,lenovonextjump,lenovonity,lenovonllpn,lenovonlpub,lenovonolpn,lenovonopub,lenovonzaffinity,lenovonzepp,lenovonzlpn,lenovonzpub,lenovoolympicportal,lenovoomnitureteststore,lenovopedia,lenovopepub,lenovophpub,lenovopllpn,lenovoplpub,lenovoptlpn,lenovoptpub,lenovopypub,lenovorel,lenovoropub,lenovorspub,lenovorulpn,lenovorupub,lenovosandbox,lenovosapub,lenovosbb,lenovosbpstore,lenovosbpstoredev,lenovoselpn,lenovosepub,lenovosgepp,lenovosgpub,lenovosimpletapdev,lenovosimpletapprod,lenovosipub,lenovoskpub,lenovosocialmonitoring,lenovospider,lenovotest2010,lenovotestalp20110929,lenovothpub,lenovotrlpn,lenovotrpub,lenovotvtlenovosolutionscenterprod,lenovotvtlenovowelcomeprod,lenovotwepp,lenovotwitter,lenovotwpub,lenovoualpn,lenovouapub,lenovoukaffinity,lenovoukbp,lenovoukcepp,lenovoukepp,lenovoukepp2,lenovouklpn,lenovoukoutlet,lenovous108375433,lenovousbp,lenovousbpstore,lenovousepp,lenovouslpn,lenovousmobile,lenovousorderstatus,lenovousoutbound,lenovouspersonalpages,lenovouspub,lenovouspubdev,lenovouspubgomez,lenovoustele,lenovouypub,lenovovepub,lenovovision,lenovovnpub,lenovow3,lenovow3emea,lenovowwintranet,lenovowwlpn,lenovowwlpndev,lenovowwmidmkt,lenovowwpub,lenovowwpubsec,lenovoxcpub,lenovoxepub,lenovoxmpub,lenovozapub', //Valid report suites
 			mapFrCC='ae,af,bh,cy,iq,ir,jo,kw,lb,ly,om,pk,ps,qa,sy,ye', //Map from
 			mapToCC='mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp,mp', //Map to
 			devRSIDsfx='dev', //dev suite suffix
@@ -327,7 +327,7 @@ function setAcc(){
 						ncc=s_matchList(mapv.cc,mapFrCC,mapToCC);
 						if(mapv.cc!=ncc)sah+=' ['+mapv.cc+'>map>'+ncc+']';
 						s_account=s_account.replace(/~/g,ncc);
-						sah+=' >~cc>'+s_account;
+						sah+=' >~cc> '+s_account;
 					}
 				}
 			}
@@ -363,6 +363,13 @@ function setAcc(){
 		if(!s_account||!s_matchList(s_account,RSIDs)){
 			s_account=errRSID;
 			sah+=' >INV> '+s_account;
+		}
+
+
+		/* Special secondary report suite additions */
+		if(s_account=='lenovogbpub'){
+			s_account+=',lenovowwpub';
+			sah+=' >cpy> '+s_account;
 		}
 
 	}catch(e){

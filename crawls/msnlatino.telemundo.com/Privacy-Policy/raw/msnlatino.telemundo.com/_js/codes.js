@@ -66,7 +66,7 @@ function dartAds(codes) {
 }
 // @TODO: add description
 dartAds.prototype.reconstruct = function(codes) {
-    //console.log('DARTad.reconstruct', codes);
+//    console.debug((new Date()).toISOString(), 'DARTad.reconstruct', codes);
     this.codes=codes;
     var default_dart_site = this.codes.params.dart_site;
     //sets the random value for this iteration
@@ -128,7 +128,7 @@ dartAds.prototype.reconstruct = function(codes) {
 };
 // This displays an ad, and must be called inline where you want the ad to appear
 dartAds.prototype.displayAd = function(size) {
-    //console.log('DARTad.displayAd', size);
+//    console.debug((new Date()).toISOString(), 'DARTad.displayAd', size);
     if(this.dart_urls[size]!==undefined){
         var divId;
         if(this.found[size]===undefined){
@@ -157,7 +157,7 @@ dartAds.prototype.getRandom = function() {
 };
 // @TODO: add description
 dartAds.prototype.refreshAds = function(val) {
-    //console.log('DARTad.refreshAds', val);
+//    console.debug((new Date()).toISOString(), 'DARTad.refreshAds', val);
     if (isNaN(val)) {
         this.getRandom();
     } else {
@@ -198,7 +198,7 @@ dartAds.prototype.refreshAds = function(val) {
     }
     // this block of code runs all the omniture calls 
     if (val == undefined || val != 'AUTO') {
-        //console.log('DARTad.refreshOmniture');
+//        console.debug((new Date()).toISOString(), 'DARTad.refreshOmniture');
         if (window.s && window.s !== undefined && window.s.t!==undefined && typeof(window.s.t)==='function') {
             s.t();
         }
@@ -228,7 +228,7 @@ dartAds.prototype.stopRefreshTimer = function(id) {
     var timerId = id || 'DEFAULT';
     // only stop a timer if it exists
     if (typeof this.timers[timerId] !== 'undefined') {
-        //console.log('autoRefresh:stop > id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
+//        console.debug((new Date()).toISOString(), 'DARTad.stopRefreshTimer', 'id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
         $(document).stopTime(timerId);
         delete this.timers[timerId];
     }
@@ -245,9 +245,9 @@ dartAds.prototype.resetRefreshTimer = function(id) {
         $(document).stopTime(timerId);
         var refreshInterval = this.timers[timerId].interval;
         var refreshAction = this.timers[timerId].action;
-        //console.log('autoRefresh:reset > id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
+//        console.debug((new Date()).toISOString(), 'DARTad.resetRefreshTimer', 'id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
         $(document).everyTime(refreshInterval, timerId, function(i) {
-            //console.log('autoRefresh:loop > id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
+//            console.debug((new Date()).toISOString(), 'DARTad.loopRefreshTimer', 'id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
             DARTad.refreshAds(refreshAction);
         });
     }
@@ -273,9 +273,9 @@ dartAds.prototype.startRefreshTimer = function(id, seconds, action) {
         "interval": refreshInterval,
         "action": refreshAction
     };
-    //console.log('autoRefresh:start > id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
+//    console.debug((new Date()).toISOString(), 'DARTad.startRefreshTimer', 'id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
     $(document).everyTime(refreshInterval, timerId, function(i) {
-        //console.log('autoRefresh:loop > id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
+//        console.debug((new Date()).toISOString(), 'DARTad.loopRefreshTimer', 'id:'+timerId+' action:'+refreshAction+' every:'+refreshInterval);
         DARTad.refreshAds(refreshAction);
     });
 };

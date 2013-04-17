@@ -10,7 +10,7 @@ var strAboutNavHtml = '<div id="about_subnav" class="bucketwrap"> \
 				<li><a href="/about/aboutnpr/people/">People</a></li> \
 				<li><a href="/about/aboutnpr/audience.html">Audience</a></li> \
 				<li><a href="/about/aboutnpr/ethics/">Ethics and Practices</a></li> \
-				<li><a href="/about/aboutnpr/visit.html">Visit</a></li> \
+				<li><a href="/about-npr/177066727/visit-npr">Visit</a></li> \
 			</ul> \
 		</li> \
 		<li class="group"><a href="/about/support/">Support and Sponsor</a> \

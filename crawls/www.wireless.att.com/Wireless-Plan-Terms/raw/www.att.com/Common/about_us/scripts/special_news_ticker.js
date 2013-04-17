@@ -3,11 +3,16 @@
 
 function specialNewsTicker() {
 		
-document.write('<ul><li class="first"><h6 style="color: #FF7200; font-size: 22px; font-style: italic; font-weight:bold; margin-left:10px;">Why choose AT&#38;T for your wireless service&#63; Let&#8217;s count the ways&#58;</span></h6></li></ul>');
-document.write('<div id="scrollup" style="height:45px; width:930px;">'
+//document.write('<ul><li class="first"><h6 style="color: #FF7200; font-size: 22px; font-style: italic; font-weight:bold; margin-left:10px;">Why choose AT&#38;T for your wireless service&#63; Let&#8217;s count the ways&#58;</span></h6></li></ul>');
+//document.write('<div id="scrollup" style="height:45px; width:930px;">'
+
+document.write('<ul><li class="first"><h6 style="color: #808080; font-size: 22px; font-style: italic; font-weight:bold; margin-left:10px; text-align:center;">Our thoughts are with those affected by the events at the Boston Marathon.</span></h6></li></ul>');
+document.write('<div id="scrollup" style="display:none;">'
+
++ ' <style>#aboveContent {height: 45px;} #network-news-box {display:none;}</style>'
 	
 //List of network updates begin//
-+ '<div class="headline special"><a href="/network/" title="The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;">The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;</a></div>'
+/*+ '<div class="headline special"><a href="/network/" title="The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;">The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;</a></div>'
 //
 + '<div class="headline special"><a href="/gen/press-room?pid=23877&cdvn=news&newsarticleid=36138&mapcode=mk-att-wireless-networks" title="In their LTE Performance Review released March 11&#44; 2013&#44;  RootMetrics&#174; called AT&#38;T&#8217;s network &#8220;blazing&#45;fast&#46;&#8221; According to the RootMetrics study&#44; &#8220;AT&#38;T easily offered the fastest pure LTE download speed of any carrier&#46;&#8221;">In their LTE Performance Review released March 11&#44; 2013&#44;  RootMetrics&#174; called AT&#38;T&#8217;s network &#8220;blazing&#45;fast&#46;&#8221; According to the RootMetrics study&#44; &#8220;AT&#38;T easily offered the fastest pure LTE download speed of any carrier&#46;&#8221;</a></div>'
 //
@@ -28,11 +33,11 @@ document.write('<div id="scrollup" style="height:45px; width:930px;">'
 //
 + '<div class="headline special"><a href="/gen/press-room?pid=2535 " title="AT&#38;T customers can stay connected most when traveling the globe&#44; with voice service in more than 225 countries&#44; data roaming service in more than 210 countries&#44; and coverage on more than 250 cruise ships&#46;">AT&#38;T customers can stay connected most when traveling the globe&#44; with voice service in more than 225 countries&#44; data roaming service in more than 210 countries&#44; and coverage on more than 250 cruise ships&#46;</a></div>'
 //List of speciail network updates End//							
-								
+*/								
 						 + '</div>'
-					 + '<ul style="padding:0 20px 0px 20px; position:relative; bottom:0px;">'
+					/* + '<ul style="padding:0 20px 0px 20px; position:relative; bottom:0px;">'
 					+ '<li style="border:0 !important; font-size:16px; font-weight:bold;"><a href="/networknews" title="Go to att.com/networknews for more">Go to att.com/networknews for more</a></li>'
 
-					+ '</ul>'
+					+ '</ul>'*/
 					  + '<div class="clear"></div>');
 }

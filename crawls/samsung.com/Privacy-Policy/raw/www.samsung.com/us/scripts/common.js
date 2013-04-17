@@ -2114,8 +2114,43 @@ if(urlValueSplit[6].match('PN60E550D1FXZA')){
     $('#pbanner').find('p').html('*Purchase a PN60E550 Plasma TV direct from Samsung and get a BD-E5900 Blu-Ray player at no charge.');
 }
 
-});
 
+
+	/****** G4 Product Page Updates ******/
+
+		//ATT
+		if( urlValueSplit[6].match('SGH-I337ZKAATT') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.att.com/galaxys4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-I337ZKAATT','','product header','o','pre-order');");
+		}
+		if( urlValueSplit[6].match('SGH-I337ZWAATT') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.att.com/galaxys4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-I337ZWAATT','','product header','o','pre-order');");
+		}
+
+		//usc
+		if( urlValueSplit[6].match('SCH-R970ZKAUSC') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.uscellular.com/GS4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SCH-R970ZKAUSC','','product header','o','pre-order');");
+		}
+		if( urlValueSplit[6].match('SCH-R970ZWAUSC') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.uscellular.com/GS4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SCH-R970ZWAUSC','','product header','o','pre-order');");
+		}
+
+		//hide
+		if( urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') || urlValueSplit[6].match('SPH-L720ZKASPR') || urlValueSplit[6].match('SPH-L720ZWASPR')  ){
+			$('.flagship-cta').hide();
+		}
+});
 
 
 

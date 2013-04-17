@@ -8879,7 +8879,7 @@ de.bild.community.profile = (function($, Community) {
  } 
  
 })(jQuery, de.bild.community) 
-/*de.bild.community.qotd:29369472.9*/
+/*de.bild.community.qotd:29369472.10*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -8887,21 +8887,6 @@ de.bild.community = de.bild.community||{};
 de.bild.community.qotd = (function($, Community) {
     
     var initialised = false;
-    function setupQuestionOfTheDay() {
-        if(de.bild.sso && de.bild.sso.isLoggedIn() && $.cookie(Community.settings().QODcookie) != null) {
-            Community.load({
-                'url' : urls.QODlightbox,
-                'callback' : function(response) {
-                    Community.showLightBox({
-                        'content' : response,
-                        'onClose' : function() {
-                            $.cookie(QODcookie,null);
-                        }
-                    });
-                }
-            })
-        }
-    }
      function checkQOD(){
          var info = de.bild.sso.getUserInfo();         
         
@@ -9001,8 +8986,7 @@ de.bild.community.qotd = (function($, Community) {
         
         //init once
         if (!initialised){
-            initialised = true;
-            setupQuestionOfTheDay();          
+            initialised = true;        
             
         //Question of the day trigger
         if(de.bild.sso && de.bild.sso.isLoggedIn()){

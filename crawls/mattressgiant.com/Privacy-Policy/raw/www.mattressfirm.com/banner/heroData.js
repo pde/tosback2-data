@@ -6,8 +6,8 @@ var endDate = "01/01/2020 00:00 ";
 //add one more day for public
 var dateTimeList = new Array(startDate, endDate);
 
-var heroImgList = new Array("Banner/home/01_SertaAVally_499.gif;Banner/home/02_SertaTVPromo_999.gif;Banner/home/03_Tempur_4Years.gif");
-var heroLinkList = new Array("Serta-0-C30.aspx?ref=Home&tag=01_SertaAVally_499;Serta-0-C30.aspx?ref=Home&tag=02_SertaTVPromo_999;Tempur-Pedic-0-C20.aspx?ref=Home&tag=03_Tempur_4Years");
+var heroImgList = new Array("Banner/home/01_SertaAVally_499.gif;Banner/home/02_SertaTVPromo_999.gif;Banner/home/03_Tempur_3Years.png");
+var heroLinkList = new Array("Serta-0-C30.aspx?ref=Home&tag=01_SertaAVally_499;Serta-0-C30.aspx?ref=Home&tag=02_SertaTVPromo_999;Tempur-Pedic-0-C20.aspx?ref=Home&tag=03_Tempur_3Years");
 
 //specify images
 //current data if no chnage needed

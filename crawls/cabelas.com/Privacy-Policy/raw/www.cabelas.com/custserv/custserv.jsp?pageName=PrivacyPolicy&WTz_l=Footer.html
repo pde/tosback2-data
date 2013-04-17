@@ -676,9 +676,12 @@ We reserve the right to modify this privacy statement at any time, so please rev
 <!-- END SOCIAL WIDGET -->
 
 <table width="175" cellspacing="0" cellpadding="0" border="0">      
-
+	
+	<tr><td><a href="http://www.cabelas.com/browse.cmd?categoryId=157889880"><img src="../assets/cms/img/homepage/041513_LB_RR.jpg" width="174" height="295" border="0" alt="Congratulations Luke Bryan!"></a></td></tr>
+	<tr><td><img src="../assets/cms/img/spacer.gif" width="175" height="10" border="0" alt=""></td></tr>	
+	
 	<tr><td><a href="http://www.cabelas.com/browse.cmd?categoryId=148635180"><img src="../assets/cms/img/homepage/121912_RR_Insider1.jpg" width="174" height="166" border="0" alt="Cabela's Industry Insider"></a></td></tr>
-
+	
 	<tr><td><img src="../assets/cms/img/spacer.gif" width="175" height="10" border="0" alt=""></td></tr>	
 	<tr><td><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=CLUBShipping&amp;WT.cab_ac=RRCLUBacquisition"><img src="../assets/cms/img/CLUB/010113_5ship_RR_01B.jpg" width="174" height="328" border="0" alt="CLUB Visa $5 Shipping" ></td></tr>
 	<tr><td><a href="http://www.cabelas.com/custserv/instant_credit.jsp?WT.cab_ac=RRCLUBacquisition"><img src="../assets/cms/img/CLUB/010113_5ship_RR_02a.jpg" width="174" height="197" border="0" alt="Earn Free Gear" ></td></tr>
@@ -691,7 +694,7 @@ We reserve the right to modify this privacy statement at any time, so please rev
 <!--Start Dotomi Tag -->
         <script type="text/javascript">
             <!--
-             var dtmSrc = window.location.protocol + "//"+'login.dotomi.com/ucm/UCMController' + "?dtm_com=28&dtm_fid=101&dtm_cid=2122&dtm_cmagic=abdbeb&dtm_format=5&dtmc_ver=1";
+             var dtmSrc = window.location.protocol + "//"+'login.dotomi.com/ucm/UCMController' + "?dtm_com=28&dtm_fid=101&dtm_cid=2122&dtm_cmagic=abdbeb&dtm_format=5";
             var source ='' ;
             try {
                 if (WT.mc_id) {
@@ -701,34 +704,66 @@ We reserve the right to modify this privacy statement at any time, so please rev
                 /*WT.mc_id not defined, use default value*/
                 source = 'nonPaid';
             }
-            var dtmTag = {
-                /* custom fields SUBSTITUTE DYNAMIC VALUES ONLY IN THIS BLOCK */
-                'cli_promo_id': '28',
-                'dtm_user_id': '',
-                'dtmc_cat': '',
-                'dtmc_cat_id': '',
-                'dtmc_prod': '',
-                'dtmc_prod_id': '',
-                'dtmc_brand': '',
-                'dtmc_prod_img': '',
-                'dtmc_session_id': '30A54DDD6BDAF08E7C52E408A41C697E.ap5',
-                'dtmc_customer_type': 'New',
-                'dtmc_source': source
-                /* custom fields end */
-            };
+            
+            var dtmTag = new Array();
+            /* custom fields SUBSTITUTE DYNAMIC VALUES ONLY IN THIS BLOCK */
+            
+            /* mandatory elements */
+            dtmTag.cli_promo_id = '28'; 
+
+             /* conditional elements*/
+            dtmTag.dtm_user_id = '';
+            dtmTag.dtmc_platform = '';
+            dtmTag.dtmc_department = '';
+            dtmTag.dtmc_category = '';
+            dtmTag.dtmc_categoryId = '';
+            dtmTag.dtmc_sub_category = '';
+            dtmTag.dtmc_prod =  '';
+            dtmTag.dtmc_prod_id = '';
+            dtmTag.dtmc_prod_img = '';
+            dtmTag.dtmc_source = source;
+            dtmTag.dtmc_customer_type = 'New';
+        	dtmTag.dtmc_session_id = '6C0C81E6EC20F144C1CED0BFE2625293.ap2';
+        	dtmTag.dtmc_ver = '2';
+
+        	/* optional elements */
+            dtmTag.dtmc_product_brand = '';
+            dtmTag.dtmc_product_attrib = '';
+
+             /* custom fields end */
+                    
+        	dtmTag.dtm_user_token = "";
             dtmTag.dtmc_ref = document.referrer;
             dtmTag.dtmc_loc = document.location.href;
-            for (var item in dtmTag) {
-                if (typeof dtmTag[item] != "function" && typeof dtmTag[item] != "object")
-                    dtmSrc += "&" + item + "=" + escape(dtmTag[item]);
-            }
-            
-            document.write('<div id="dtmdiv" style="display:none;"></div>');
 
+            function readCookieDotomi() {
+        	    var name = "dtm_token";
+        	    var nameEQ = name + "=";
+        	    var ca = document.cookie.split(';');
+        	    for(var i = 0; i < ca.length; i++) {
+        		    var c = ca[i];
+        		    while(c.charAt(0) == ' ')
+        		    c = c.substring(1, c.length);
+        		    if(c.indexOf(nameEQ) == 0) {
+        			    var d = c.substring(nameEQ.length, c.length);
+        			    dtmTag.dtm_user_token = d;
+        		    }
+        	    }
+            }
+        	
+        	readCookieDotomi();
+
+            for (var item in dtmTag){
+        	    if(typeof dtmTag[item] != "function" && typeof dtmTag[item] != "object")
+        		    dtmSrc += "&" + item + "=" + escape(dtmTag[item]);
+            }   
+
+            document.write('<div id="dtmdiv" style="display:none;"></div>');
+            
             (function() {
                 function async_load(){
-                    setTimeout('timeOutDotomi()', 2000);
-                    document.getElementById("dtmdiv").innerHTML = '<iframe name="response_frame" src="' + dtmSrc + '"></iframe>';
+                	setTimeout('timeOutDotomi()',2000);
+                	document.getElementById("dtmdiv").innerHTML = '<iframe name="response_frame" src="' + dtmSrc + '"></iframe>';
                 }
                 if (window.attachEvent)
                     window.attachEvent('onload', async_load);
@@ -736,11 +771,11 @@ We reserve the right to modify this privacy statement at any time, so please rev
                     window.addEventListener('DOMContentLoaded', async_load, false);
             })();
             
-            function timeOutDotomi() {
-                document.getElementById("dtmdiv").innerHTML = "";
-            }//-->
+            
+            function timeOutDotomi() { document.getElementById("dtmdiv").innerHTML = "";}
+            //-->
         </script>
-        <!--End Dotomi Tag -->
+        <!-- End Dotomi Tag -->
     <script type="text/javascript">
 	$(document).ready(function() {
 		dcsMultiTrack('DCS.dcsuri','/CustServ.html','WT.ti','CustServ', 'WT.dl','40', 'WT.z_st', 'Cust_Serv', 'WT.z_stn', 'PrivacyPolicy');

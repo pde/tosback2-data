@@ -203,7 +203,7 @@ if (typeof jQuery != 'undefined') {
 						'body'				:['background-position', '0 27px']
 					}
 				},
-				'youp'	:{	'inBar':true, 'name':"Youporn", 'code':"youp", 'utm':"youporn", 'utmSafe':"yp", 'url':"http://www.youporn.com/?", 'css':{
+				'youp'	:{	'inBar':true, 'name':"YouPorn", 'code':"youp", 'utm':"youporn", 'utmSafe':"yp", 'url':"http://www.youporn.com/?", 'css':{
 						'#ph_net_container'	:['width', '984px'],
 						'body'				:['width', 'auto']
 					}
@@ -286,7 +286,7 @@ if (typeof jQuery != 'undefined') {
 						'body'				:['background-position', '0 27px']
 					}
 				},
-				'youp'	:{	'inBar':true, 'name':"Youporn", 'code':"youp", 'utm':"youporn", 'utmSafe':"yp", 'url':"http://www.youporngay.com/?", 'css':{
+				'youp'	:{	'inBar':true, 'name':"YouPorn", 'code':"youp", 'utm':"youporn", 'utmSafe':"yp", 'url':"http://www.youporngay.com/?", 'css':{
 						'#ph_net_container'	:['width', '984px'],
 						'body'				:['width', 'auto']
 					}
@@ -345,7 +345,7 @@ if (typeof jQuery != 'undefined') {
 				if( settings.isGay ) {
 					$("#ph_net_alts").text("Straight Porn");
 					$('#ph_net_menu_in').html('<a class="ph_alt_links" id="ph_alt_phub" target="_parent" href="http://www.pornhub.com/?">Pornhub</a>'+
-						'<a class="ph_alt_links" id="ph_alt_youp" target="_parent" href="http://www.youporn.com/?">Youporn</a>'+
+						'<a class="ph_alt_links" id="ph_alt_youp" target="_parent" href="http://www.youporn.com/?">YouPorn</a>'+
 						'<a class="ph_alt_links" id="ph_alt_tub8" target="_parent" href="http://www.tube8.com/#">Tube8</a>'+
 						'<a class="ph_alt_links" id="ph_alt_wire" target="_parent" href="http://www.spankwire.com/?">SpankWire</a>'+
 						'<a class="ph_alt_links" id="ph_alt_keez" target="_parent" href="http://www.keezmovies.com/?">Keezmovies</a>'+

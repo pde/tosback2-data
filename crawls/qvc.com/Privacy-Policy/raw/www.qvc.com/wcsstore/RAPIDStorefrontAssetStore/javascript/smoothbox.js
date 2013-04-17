@@ -386,6 +386,14 @@ function TB_remove_onclick(arr){
 	}
 }
 function TB_remove(){
+	if(parent.document.getElementById('autoDelEditiframe_new') != null){//AD plan details page.
+		if(parent.document.getElementById('frmAutoDeliveryPlanDetails') != null){                       
+                parent.document.getElementById('frmAutoDeliveryPlanDetails').reset();
+                if(parent.document.getElementById('selAutoDeliveryFrequency')!=null) {
+					parent.document.getElementById('selAutoDeliveryFrequency').blur(); 
+				}
+        }      
+	}  
 	var clickarr=["TB_overlay", "TB_imageOff", "TB_closeWindowButton", "TB_prev", "TB_next"];
 	TB_remove_onclick(clickarr);
     document.onkeyup = null;

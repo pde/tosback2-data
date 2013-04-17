@@ -199,27 +199,42 @@ mistats.audienceCounts =
       var cw;
       var i;
       var o;
+      var u;
 
       cm = pCookie + '_m';
       cw = pCookie + '_w';
 
       c = s.c_r(cw).match(/\d+/g);
       i = c ? parseInt(c[1] || 0) : 0;
+      u = c ? parseInt(c[2] || 0) : 0;
       if (pValidate)
+      {
          i++;
+         u = 0;
+      }
       o = c ? parseInt(c[0] || 0) : i;
-      if (!this.session)
+      if (!this.session && !u)
+      {
+         u = 1;
          this.updateProducts('Weekly ' + pLabel, i, o);
-      s.c_w(cw, [this.session ? o : i, i].join('|'), (new Date(this.nextWeek())));
+      }
+      s.c_w(cw, [this.session ? o : i, i, u].join('|'), (new Date(this.nextWeek())));
 
       c = s.c_r(cm).match(/\d+/g);
       i = c ? parseInt(c[1] || 0) : 0;
+      u = c ? parseInt(c[2] || 0) : 0;
       if (pValidate)
+      {
          i++;
+         u = 0;
+      }
       o = c ? parseInt(c[0] || 0) : i;
-      if (!this.session)
+      if (!this.session && !u)
+      {
+         u = 1;
          this.updateProducts('Monthly ' + pLabel, i, o);
-      s.c_w(cm, [this.session ? o : i, i].join('|'), (new Date(this.nextMonth())));
+      }
+      s.c_w(cm, [this.session ? o : i, i, u].join('|'), (new Date(this.nextMonth())));
    },
 
    updateAll: function ()

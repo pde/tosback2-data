@@ -1,4 +1,4 @@
-// TII Ads - Version 1.4.3 - 2013.04.11
+// TII Ads - Version 1.4.4 - 2013.04.15
 
 function TiiAdConfig(sitename) {
 	this.sitename	= sitename;
@@ -620,7 +620,7 @@ function tiiHtmlAdWH(mn, width, height) {
  
     var TIICONSTANTS = {
         'bk_allow_deny_mode': 'allow',
-        'bk_enabled_root_domains': 'content.timeinc.net,thisoldhouse.com,coastalliving.com,southernliving.com,sunset.com',
+        'bk_enabled_root_domains': 'content.timeinc.net',
         'bk_disabled_root_domains': 'foodandwine.com,travelandleisure.com,departures.com,executivetravelmagazine.com,allyou.com,health.com,myrecipes.com',
         'bk_id': '13731',
         'bk_pixel_limit': '6',

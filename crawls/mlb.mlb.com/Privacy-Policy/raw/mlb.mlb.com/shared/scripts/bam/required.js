@@ -615,7 +615,7 @@ if (!window.bam) {
 			}
 		}
 
-		if (bamDependencies.length) {
+		if (bamDependencies && bamDependencies.length) {
 			bam.require(bamDependencies, {useArguments:true}).done(registerModule);
 		} else {
 			registerModule();
