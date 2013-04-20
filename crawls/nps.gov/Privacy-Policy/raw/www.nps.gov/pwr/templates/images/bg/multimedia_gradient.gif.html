@@ -53,12 +53,33 @@
 	
 	<link rel="stylesheet" type="text/css" href="../../../../common/commonspot/templates/css/colorbox.css"></link>
 		
-	<script type="text/javascript" src="../../../../ADF/thirdParty/jquery/jquery-1.9.js"></script>
+	
 				
-					
-					<script type="text/javascript">
-						jQuery.noConflict();
-					</script> <script src="../../../../ADF/thirdParty/jquery/migrate/jquery-migrate-1.1.js"></script> 
+				<script type="text/javascript">
+					if(typeof scriptsLoaded === 'undefined'){
+						var scriptsLoaded= new Array();
+					}
+					//Load jQuery only once.
+					if(!("jQuery" in scriptsLoaded)){
+						document.write('<script type="text\/javascript" src="http://www.nps.gov/\/ADF\/thirdParty\/jquery\/jquery-1.9.js"><\/script><script type="text\/javascript">jQuery.noConflict();<\/script>'+'<script type="text/javascript"><\/script>');
+						scriptsLoaded["jQuery"] = true;
+						
+						}
+				</script>
+			
+				
+				<script type="text/javascript">
+					if(typeof scriptsLoaded === 'undefined'){
+						var scriptsLoaded= new Array();
+					}
+					//Load jQueryMigrate only once.
+					if(!("jQueryMigrate" in scriptsLoaded)){
+						document.write('<script src="http://www.nps.gov/\/ADF\/thirdParty\/jquery\/migrate\/jquery-migrate-1.1.js"><\/script>'+'<script type="text/javascript"><\/script>');
+						scriptsLoaded["jQueryMigrate"] = true;
+						
+						}
+				</script>
+			
 	
 	<script type="text/javascript" src="../../../../common/commonspot/templates/js/libs/jquery.colorbox-min.js"></script>
     <script src="../../../../common/commonspot/templates/js/global.js" type="text/javascript"></script>   
@@ -80,165 +101,7 @@
     
     
     
-<link rel="stylesheet" href="../../../../commonspot/commonspot.css" type="text/css" id="cs_maincss" /> </head><body lang="en" bgcolor="#FFFFFF" style="margin-top:0px;margin-left:0px;margin-right:0px;margin-bottom:0px;"><a name="__topdoc__"></a><script src="../../../../commonspot/pagemode/always-include-common.js" type="text/javascript"></script><script type="text/javascript">
-<!--
-		// always-include-ie.js  Copyright 1998-2005 PaperThin, Inc. All rights reserved.
-
-bName = navigator.appName;
-bVer = parseInt(navigator.appVersion);
-
-var bCanRollover=0
-if (bName == "Netscape")
-{
-	if(bVer >= 3)
-		bCanRollover=1;
-}
-else if (bName == "Microsoft Internet Explorer")
-{
-	if(bVer >= 4)
-		bCanRollover=1;
-}
-
-function ImageSet(imgID,newTarget)
-{
-	if (bCanRollover)
-		document[imgID].src=newTarget;
-}
-function clearStatus()
-{
-	window.status = "";
-}
-function setStatbar(statbar)
-{
-	var strStatbar=unescape(statbar);
-	window.status=strStatbar;
-}
-function onLoadComplete()
-{
-	if( menus_included == 1 )
-		document.onmouseover = document_mouseover;	// defined in menu_ie.js
-}
-function HandleLink(parentID,link,displaylink) 
-{
-	// links are in one of the following formats:
-	// 		cpe_60_0,CP___PAGEID=100
-	// 		CPNEWWIN:WindowName^params@CP___
-	// 			CPNEWWIN:child^top=110:left=130:ww=140:hh=150:tb=1:loc=1:dir=0:stat=1:mb=1:sb=1:rs=1@CP___PAGEID=3811,Adv-Search-2,1
-	// displaylink is the server relative URL or fully qualified URL
-	windowname = "";
-	windowparams = "";
-
-	// "CPNEWWIN:" & NewWindowName & "^" & params & "@" & linkStruct.LinkURL; 
-	pos = link.indexOf("CPNEWWIN:");
-	if (pos != -1)
-	{
-		pos1 = link.indexOf ("^");
-		windowname = link.substring (pos+9, pos1);
-		pos2 = link.indexOf ("@");
-		windowparams = link.substring (pos1 + 1, pos2);
-		link = link.substring (pos2 + 1, link.length);
-	}
-	
-	if( displaylink && displaylink != "" )
-	{		
-		if (windowname == "")
-			window.location = displaylink;
-		else
-		{
-			windowparams = FormatWindowParams(windowparams);
-			window.open (displaylink, windowname, windowparams);
-		}
-	}
-	else
-	{
-		targetLink = link;
-
-		if (link.indexOf ("CP___") != -1)
-		{
-
-			httpPos = -1;
-			commaPos = link.indexOf(",");
-			if (commaPos != -1)
-			{
-				targetUrl = link.substr(commaPos + 1);
-				if (targetUrl.indexOf("://") != -1 || targetUrl.indexOf("/") == 0)
-				{
-						httpPos = commaPos + 1;
-				}		
-			}
-				
-			if (httpPos != -1)
-			{
-				targetLink = link.substr(httpPos);
-
-				commaPos = targetLink.indexOf(",");
-				if (commaPos != -1)
-					targetLink = targetLink.substr(0, commaPos);
-			}
-			else
-				targetLink = jsDlgLoader + "?csModule=utilities/handle-link&thelink=" + link;
-			
-			if (windowname == "")
-				window.location = targetLink;
-			else
-			{
-				windowparams = FormatWindowParams(windowparams);
-				window.open (targetLink, windowname, windowparams);
-			}
-		}
-		else
-		{
-			//commaPos = link.indexOf(",");
-			//if (commaPos != -1)
-			//	link = link.substr(0, commaPos);
-
-			if (windowname == "")
-				window.location = link;
-			else
-			{
-				windowparams = FormatWindowParams(windowparams);
-				window.open (link, windowname, windowparams);
-			}
-		}
-	}
-
-}
-function doWindowOpen(href,name,params)
-{
-	if (params != '')
-	window.open (href, name, params);
-	else
-		window.open (href, name);	
-}
-
-// 	CPNEWWIN:child^top=110:left=130:ww=140:hh=150:tb=1:loc=1:dir=0:stat=1:mb=1:sb=1:rs=1@CP___PAGEID=3811,Adv-Search-2,1
-function FormatWindowParams(windowparams)
-{
-	if( windowparams.indexOf(":loc=") != -1 || windowparams.indexOf(":ww=") != -1 || windowparams.indexOf(":hh=") != -1 || 
-	    windowparams.indexOf(":left=") != -1 || windowparams.indexOf(":top=") != -1 )
-	{
-		windowparams = substringReplace(windowparams,':left=',',left=');
-		windowparams = substringReplace(windowparams,'left=','left=');
-		windowparams = substringReplace(windowparams,':ww=',',width=');
-		windowparams = substringReplace(windowparams,'ww=','width=');		
-		windowparams = substringReplace(windowparams,':hh=',',height=');
-		windowparams = substringReplace(windowparams,'hh=','height=');
-		windowparams = substringReplace(windowparams,':loc=',',location=');
-		windowparams = substringReplace(windowparams,'loc=','location=');
-		windowparams = substringReplace(windowparams,':dir=',',directories=');
-		windowparams = substringReplace(windowparams,'dir=','directories=');
-		windowparams = substringReplace(windowparams,':tb=',',toolbar=');
-		windowparams = substringReplace(windowparams,'tb=','toolbar=');
-		windowparams = substringReplace(windowparams,':stat=',',status=');
-		windowparams = substringReplace(windowparams,':mb=',',menubar=');
-		windowparams = substringReplace(windowparams,':sb=',',scrollbars=');
-		windowparams = substringReplace(windowparams,':rs=',',resizable=');
-	}
-	return windowparams;
-}
-
-// -->
-		</script>
+<link rel="stylesheet" href="../../../../commonspot/commonspot.css" type="text/css" id="cs_maincss" /> </head><body lang="en" bgcolor="#FFFFFF" style="margin-top:0px;margin-left:0px;margin-right:0px;margin-bottom:0px;"><a name="__topdoc__"></a><script src="../../../../commonspot/pagemode/always-include-common.js" type="text/javascript"></script><script src="../../../../commonspot/pagemode/always-include-ns.js" type="text/javascript"></script>
 
 <body>
 
@@ -254,7 +117,7 @@ function FormatWindowParams(windowparams)
 					/* You may give each page an identifying name, server, and channel on
 					the next lines. */
 					s.pageName=window.location.pathname
-                    s.server=""
+                    s.server="pwr"
 					s.channel=""
 					s.pageType=""
 					s.prop1=""
@@ -322,7 +185,7 @@ function FormatWindowParams(windowparams)
 			
 			<div id="slideShowWrapper">
 				<script type="text/javascript" src="http://www.nps.gov/common/commonspot/ADF/thirdparty/jQuery/tools/1.1/jquery.tools.tabs.min.js"></script>     
-    <div id="rightShadow"> </div><div class="images"><div><a href="http://www.nps.gov/getaways"><img src="http://www.nps.gov/npsfeatures/images/SAPA_exterior-4_710x340_1.jpg" alt="Photo of Saint Paul's Church and cemetery" title="Photo of Saint Paul's Church and cemetery" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>National Park Getaways</h1><a href="http://www.nps.gov/getaways">This week: Saint Paul's Church</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/history/nhl/2013photocontest/"><img src="http://www.nps.gov/npsfeatures/images/NHL_MA_SaugusIronWorks_DonWoods_2012contest_710x340_1.jpg" alt="Photo of Saugus Iron Works, the winning 2012 entry by Don Woods" title="Photo of Saugus Iron Works, the winning 2012 entry by Don Woods" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Get snapping!</h1><a href="http://www.nps.gov/history/nhl/2013photocontest/">National Historic Landmark Photo Contest</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/indu/naturescience/great-marsh-restoration.htm"><img src="http://www.nps.gov/npsfeatures/images/INDU_20070119144056_710x340_1.jpg" alt="Photo of a blue-winged teal, courtesy of Robb Quinn" title="Photo of a blue-winged teal, courtesy of Robb Quinn" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Wetlands revival</h1><a href="http://www.nps.gov/indu/naturescience/great-marsh-restoration.htm">Indiana Dunes National Lakeshore </a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/meve/historyculture/cliff_palace_preservation.htm"><img src="http://www.nps.gov/npsfeatures/images/meve_CliffPalace_710x340_1.jpg" alt="Photo of Cliff Palace" title="Photo of Cliff Palace" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Preserving ancestral grounds</h1><a href="http://www.nps.gov/meve/historyculture/cliff_palace_preservation.htm">Mesa Verde National Park </a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/yell/naturescience/bears.htm"><img src="http://www.nps.gov/npsfeatures/images/YELL_Grizzly-at-SwanLakeFlats-2005_NPS-JimPeaco_710x340_1.jpg" alt="Photo of grizzly bear at Yellowstone National Park" title="Photo of grizzly bear at Yellowstone National Park" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Room to ramble</h1><a href="http://www.nps.gov/yell/naturescience/bears.htm">Bears in Yellowstone</a></div><!-- end class=descriptor --></div><!-- end base image div --></div><!-- end class=images --><div id="tab_wrapper"><div class="slidetabs"><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a></div><!-- end slidetabs --><div id="viewall"><a href="http://www.nps.gov/npsfeatures/index.htm">View All »</a></div><!-- end ID=viewall --></div><!-- end ID=tab_wrapper -->
+    <div id="rightShadow"> </div><div class="images"><div><a href="http://www.nps.gov/news/quarters.htm"><img src="http://www.nps.gov/npsfeatures/images/PEVI_OH-coin-2013_710x340_2.jpg" alt="Drawing of the America the Beautiful quarter that features Perry’s Victory  and International Peace Memorial" title="Drawing of the America the Beautiful quarter that features Perry’s Victory  and International Peace Memorial" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Freshly minted</h1><a href="http://www.nps.gov/news/quarters.htm">New U.S. quarter features  Perry's Victory</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/caha/planyourvisit/visitinglighthouses.htm"><img src="http://www.nps.gov/npsfeatures/images/CAHA_Lighthuse-Boardwalk_710x340_1.jpg" alt="Photo of the Bodie Island lighthouse" title="Photo of the Bodie Island lighthouse" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Guardians of the sea</h1><a href="http://www.nps.gov/caha/planyourvisit/visitinglighthouses.htm">Lighthouses  at Cape Hatteras</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/getaways"><img src="http://www.nps.gov/npsfeatures/images/WEFA4_artistpainting_710x340_2.jpg" alt="Photo of an artist's hand and painting at Weir Farm " title="Photo of an artist's hand and painting at Weir Farm " /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>National Park Getaways</h1><a href="http://www.nps.gov/getaways">This week: Weir Farm</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/heritageareas/"><img src="http://www.nps.gov/npsfeatures/images/HeritageAreas_AtchafalayaNHA_20120421_franklin-31_710x340_1.jpg" alt="Photo of youth at Atchafalaya National Heritage Area’s Bayou Teche, courtesy of the Louisiana Office of Tourism" title="Photo of youth at Atchafalaya National Heritage Area’s Bayou Teche, courtesy of the Louisiana Office of Tourism" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Locally grown</h1><a href="http://www.nps.gov/heritageareas/">America's National Heritage Areas</a></div><!-- end class=descriptor --></div><!-- end base image div --><div><a href="http://www.nps.gov/npweek"><img src="http://www.nps.gov/npsfeatures/images/FODU-binocs2-710x340_1.jpg" alt="Photo of a girl looking through binoculars at Fort Dupont Park" title="Photo of a girl looking through binoculars at Fort Dupont Park" /></a><div class="descriptor black"></div><div class="descriptor caption"><h1>Fine focus</h1><a href="http://www.nps.gov/npweek">National Park Week April 20-28</a></div><!-- end class=descriptor --></div><!-- end base image div --></div><!-- end class=images --><div id="tab_wrapper"><div class="slidetabs"><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a><a href="multimedia_gradient.gif.html#"></a></div><!-- end slidetabs --><div id="viewall"><a href="http://www.nps.gov/npsfeatures/index.htm">View All »</a></div><!-- end ID=viewall --></div><!-- end ID=tab_wrapper -->
 
 
 <script language="JavaScript" type="text/javascript">
@@ -368,7 +231,7 @@ function FormatWindowParams(windowparams)
 					<input class="usagov-search-autocomplete" type="text" name="query" autocomplete="off"/>
                     <input type="image" src="http://www.nps.gov/common/commonspot/templates/images/buttons/go.gif" name="sub1" value="Go" class="submit" alt="Go" title="Go" />  
                 </div>
-                <input type="hidden" name="as_fid" value="wnzSJdtODw1xrVhhBhHj" />
+                <input type="hidden" name="as_fid" value="oxI7j6g+MMavXUrHem+z" />
 </form>
 
 				
@@ -500,7 +363,7 @@ function FormatWindowParams(windowparams)
                     <input type="image" src="http://www.nps.gov/common/commonspot/templates/images/buttons/go.gif" name="sub1" value="Go" alt="Go" class="submit" title="Go" />  
                     <a class="advanced" href="http://www.nps.gov/findapark/index.htm">Advanced Search Tool and Map</a>
                     </div>
-                <input type="hidden" name="as_fid" value="pgPnC+10VYp7vqXFq4y+" />
+                <input type="hidden" name="as_fid" value="nfjiWq3ViOSDTeOlTDm7" />
 </form>
                 <a href="http://www.nationalparks.org/"><img alt="Support Your Parks: National Park Foundation" title="Support Your Parks: National Park Foundation" src="http://www.nps.gov/common/commonspot/templates/images/promos/syp03.gif" /></a>
                 <div id="text_sizes">
@@ -542,11 +405,11 @@ function FormatWindowParams(windowparams)
                     <h2>News<span></span> <small><a href="http://www.nps.gov/news">More News »</a></small></h2>
 					<ul>
 					<div id="cs_control_266188" class="cs_control"> 
-		<li><a href="http://www.nps.gov/klgo/parknews/archeological-survey-planned-for-the-bark-canada-gold-rush-era-shipwreck.htm"><strong>Search for Sunken History</strong> Shipwreck study at Klondike Gold Rush  »</a></li>
+		<li><a href="http://www.nps.gov/dena/parknews/lottochanges.htm"><strong>Driving the Denali Road</strong> Lottery Process Changes and Updates  »</a></li>
 		
-		<li><a href="http://www.nps.gov/yell/parknews/13024.htm"><strong>Share Ideas for Bechler Upgrades</strong> Yellowstone National Park  »</a></li>
+		<li><a href="http://www.nps.gov/yell/parknews/13028.htm"><strong>Share Your Thoughts on Winter Use </strong> Yellowstone National Park  »</a></li>
 		
-		<li><a href="http://www.nps.gov/caha/parknews/improvements-to-beach-access-areas-begins.htm"><strong>Improving Beach Access </strong> Cape Hatteras National Seashore  »</a></li>
+		<li><a href="http://www.nps.gov/depo/parknews/paw-patrol-volunteers-needed.htm"><strong>Seeking Paw Patrol Volunteers</strong> Devils Postpile National Monument   »</a></li>
 		</div> 
 					</ul>
                 </div>
@@ -560,11 +423,11 @@ function FormatWindowParams(windowparams)
                     <h2>Events<span></span> <small><a href="http://www.nps.gov/findapark/event-search.htm">More Events »</a></small></h2>
 					<ul>
 					<div id="cs_control_264680" class="cs_control"> 
-		<li><a href="http://www.nps.gov/bisc/parknews/its-sunday-family-fun-fest.htm"><strong>Family Fun SUN-day</strong> Biscayne National Park  »</a></li>
+		<li><a href="http://www.nps.gov/grsm/parknews/music-of-mts-2013.htm"><strong>Music of the Mountains</strong> Great Smoky Mountains  »</a></li>
 		
-		<li><a href="http://www.nps.gov/cuva/parknews/peninsulas-fifth-annual-plein-air-competition-seeking-artists.htm"><strong>Plein Air Competition</strong> Cuyahoga Valley National Park  »</a></li>
+		<li><a href="http://www.nps.gov/pore/parknews/newsreleases_20130408_earth_day_2013_e-waste_drive.htm"><strong>Earth Day Recycling</strong> Point Reyes National Seashore   »</a></li>
 		
-		<li><a href="http://www.nps.gov/stri/parknews/livguns.htm"><strong>Living Under the Guns</strong> Stones River National Battlefield  »</a></li>
+		<li><a href="http://www.nps.gov/samo/parknews/national-park-week-science-fest-april-27.htm"><strong>Science Fest </strong> Santa Monica Mountains   »</a></li>
 		</div> 
 					</ul>
                 </div>
@@ -673,7 +536,7 @@ function FormatWindowParams(windowparams)
                     <img class="experience" src="http://www.nps.gov/common/commonspot/templates/images/titles/experience.gif" alt="Experience Your America" />
 
                 </div>
-                <p class="update">Last Updated: 04/10/2013</p>
+                <p class="update">Last Updated: 04/20/2013</p>
             </div>                      
             
         </div>
@@ -734,7 +597,7 @@ function FormatWindowParams(windowparams)
 			commonspot.csPage.subsiteContext.subsiteurl = '/';
 			commonspot.csPage.subsiteContext.sitename = 'NPS';
 			commonspot.csPage.subsiteContext.subsitename = '/';
-			commonspot.csPage.subsiteContext.menucontexttimestamp = '1365547535346';
+			commonspot.csPage.subsiteContext.menucontexttimestamp = '1366391756247';
 			commonspot.csPage.serveradminurl = "/commonspot/admin/";
 			if (parent.commonspot)
 				parent.commonspot.csPage = commonspot.csPage;

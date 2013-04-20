@@ -1378,6 +1378,26 @@
 					x.parentNode.insertBefore(s, x);
 				})(document, 'script');					
 			}
+		},
+		gumgum: {
+			init: function(d){
+				var self = this;
+				if($('meta[name="prism.section"]').attr("content") == "leisure" && d.ptype == "slideshow"){
+					window.ggv2id='489afee2';
+					self.insertScript();
+				}
+			},
+			insertScript: function(id,automate){
+			
+				(function(d, a) {
+					var s = d.createElement(a),
+					x = d.getElementsByTagName(a)[0];
+					s.async = true;
+					s.src = 'http://g2.gumgum.com/javascripts/ggv2.js';
+					x.parentNode.insertBefore(s, x);
+				})(document, 'script');					
+			}
+
 		},					
 		tynt: {
 			init: function(d) {
@@ -1856,7 +1876,9 @@
 			$.ad.omni.init(d);
 
 			//tynt
-			$.ad.tynt.init(d);			
+			$.ad.tynt.init(d);		
+
+			$.ad.gumgum.init(d);	
 
 			//$.ad.visrev.init();
 

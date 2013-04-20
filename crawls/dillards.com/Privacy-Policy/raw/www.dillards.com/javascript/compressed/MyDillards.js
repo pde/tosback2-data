@@ -4,11 +4,12 @@ var hasBeenOpened = false;
 $(document).ready(function() {
 	
 	// My Dillard's fly-out toggle
-	var slideTime = 475;
-	var clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall");
-	var welcomeNew = $("#welcome-new");
-	var contentBox = $("#myDillardsContent");
-	var invisibleWall = $("#myDillardsInvisibleWall");
+	var slideTime = 475,
+	    clickZone = $("#myDillardsBarText .openClose, #myDillardsCloseButton, #myDillardsInvisibleWall"),
+	    welcomeNew = $("#welcome-new"),
+	    contentBox = $("#myDillardsContent"),
+	    invisibleWall = $("#myDillardsInvisibleWall"),
+	    openClose = $("#myDillardsBarText").find(".openClose");
 	
 	$(welcomeNew).live("click", function() {
 		if ($(contentBox).css("display") == "none") {
@@ -16,15 +17,18 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("#myDillardsBarText").find(".openClose").hoverIntent(function(){
+	$(openClose).add("#headerCartInfo2").hoverIntent(function(){
 		if($(contentBox).css("display") == "none"){
-			$(this).trigger("click");
+			$(openClose).trigger("click");
 		}
 	},function(){});
 	
 	$(clickZone).click(function() {
 		// Open fly-out
-		if ($(contentBox).css("display") == "none") {
+		if ($(contentBox).css("display") == "none" && ! $(contentBox).hasClass("noTrigger")) {
+			
+			$(contentBox).addClass("noTrigger");
+			
 			if(hasBeenOpened==false) {
 				$("#myDillardsRightFrame").prop("src","https://"+$("#myDillardsRightFrame").data("host")+"/webapp/wcs/stores/servlet/MyDillardsiFrameView?storeId=301&langId=-1&catalogId=301");
 				setTimeout(function(){$("#myDillardsRightFrame").fadeIn(250);},500);
@@ -35,12 +39,13 @@ $(document).ready(function() {
 				retrieveMyDillardsLinksLogin();
 	  		}
 			$("#myDillardsRightFrame").addClass("openedUp");
-			$(contentBox).css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":"325px", "opacity":"1.0"}, slideTime, function() {
+			$(contentBox).css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":"326px", "opacity":"1.0"}, slideTime, function() {
+				$(contentBox).removeClass("noTrigger");
 				$(invisibleWall).css("display", "block");
 				$("#myDillardsEmailAddress").focus();
 			});
 		// Close fly-out
-		} else {
+		} else if (! $(contentBox).hasClass("noTrigger")) {
 			$(contentBox).stop().animate({"height":"0px", "opacity":"0.0"}, slideTime * .7, function() {
 				$(contentBox).css("display", "none");
 				$(invisibleWall).css("display", "none");
@@ -224,7 +229,6 @@ function displayMyDillardsBar(){
 		$("body").css("padding-top", $("#myDillardsBar").css("height"));
 		$("#search").css("clear","right").css("position","relative").css("top","-3px");
 		$("#utility-nav").css("clear","right");
-		$("#utility-nav .genericESpot").css("margin-right","-10px");
 		$("#header-spot #barIsOff").hide();
 		$("#header-spot #barIsOn").show();
 		$("#header-spot").css("margin","0").css("width","auto").css("float","none").css("margin","0").css("position","absolute").css("bottom","12px").css("right","421px");
@@ -250,7 +254,7 @@ function openMyDillardsFlyOut(){
 	hasBeenOpened = true;
 	retrieveMyDillardsLinksLogin();
 	$("#myDillardsRightFrame").addClass("openedUp");
-	$("#myDillardsContent").css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":"325px", "opacity":"1.0"}, 250, function() {
+	$("#myDillardsContent").css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":"326px", "opacity":"1.0"}, 250, function() {
 		$("#myDillardsInvisibleWall").css("display", "block");
 		$("#myDillardsEmailAddress").focus();
 	});

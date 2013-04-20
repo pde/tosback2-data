@@ -46,20 +46,35 @@ if (esmoid !== "")
 {
     var random_number = Math.floor(Math.random() * 999999);
     esmds = "https://pix.esm1.net/iframe.php?gn1=1&c1=" + esmcid + "&esmoid=" + esmoid + "&esmocode=" + esmocode + "&r=" + random_number + "&esmamount=" + esmoamount + "&r1=" + esmref + "&t1=" + esmtt + "&esmotype=" + esmotype;
-    var scripts = document.getElementsByTagName("script");
-    var img = document.createElement("img");
-    img.src = esmds;
-    scripts[0].parentNode.insertBefore(img, scripts[0])
+ var scripts = document.getElementsByTagName('script');
+                var iframe = document.createElement('iframe');
+                iframe.setAttribute('src', esmds);
+                iframe.style.width = 0 + "px";
+                iframe.style.height = 0 + "px";
+                iframe.setAttribute("frameBorder", "0");
+                scripts[0].parentNode.insertBefore(iframe, scripts[0]);
+
+
+
+
 }
 else
 {
     if (utp !== undefined && utp !== "")
     {
         esmds = longEsmds.substring(0, 1900);
-        var scripts = document.getElementsByTagName("script");
-        var img = document.createElement("img");
-        img.src = esmds;
-        scripts[0].parentNode.insertBefore(img, scripts[0]);
+        
+                var scripts1 = document.getElementsByTagName('script');
+                var iframe1 = document.createElement('iframe');
+                iframe1.setAttribute('src', esmds);
+                iframe1.style.width = 0 + "px";
+                iframe1.style.height = 0 + "px";
+                iframe1.setAttribute("frameBorder", "0");
+                scripts1[0].parentNode.insertBefore(iframe1, scripts1[0]);
+
+
+
+
         var cArray = utp.split(";");
         var prefix = "c=";
         var i = 0;

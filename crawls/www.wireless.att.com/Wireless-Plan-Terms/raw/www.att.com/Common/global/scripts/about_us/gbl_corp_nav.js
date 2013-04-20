@@ -7,11 +7,12 @@ var currPID = '262';
 
 function renderEarningsLP() {
 document.write('<div class="top-content"><ul class="more_links" id="top_content">'
-						 + '<li style="clear:both;"><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
-						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
-						 + '4q12/master_4q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
-						 + '4q12/master_4q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
-						 + '</ul></div>');
++ '<li style="clear:right;" class="first"><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
++ '</ul>'
++ '<ul>'
++ '<li class="last" style="color:#000;">NEW</li>'
++ '<li class="last">AT&amp;T filed a FORM 8-K on 04/11/2013. </li>'
++ '<li class="last">Updated prior-quarter results: <a href="/Investor/Earnings/1q13/prior_quarter_results_8K_041113.pdf" target="_blank" title="FORM 8-K .PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/1q13/prior_quarter_results_8K_041113.xlsx" title="FORM 8-K (MS Excel)" target="_blank">MS Excel</a></li></ul></div>');
 }
 
 /* earnings */
@@ -768,18 +769,19 @@ function bn_small_business_nav() {
 function bn_doing_business_nav() {
     document.write('<ul class="tertiaryNav cols3" id="bn_doing_business_nav">'
 				 + '<li class="image" style="background-image:url(' + site + '/Common/global/images/about_us/tray/bkg_tray_doing_business.jpg) !important;">&nbsp;</li>'
-				 + '<li class="col1"><strong>Our Collaborators</strong>'
+				// + '<li class="col1"><strong>Our Collaborators</strong>'
 				 + '<ul>'
-				 + '<li><a href="' + site + '/gen/general?pid=7512" title="Supplier Partnerships">Supplier Partnerships</a></li>'
-				 + '<li><a href="' + site + '/gen/press-room?pid=12201" title="Business Customer News">Business Customer News</a></li>'
-				 + '<li><a href="' + site + '/gen/corporate-citizenship?pid=5882" title="Innovating life - Intellectual Property">Innovating life - Intellectual Property</a></li>'
+				// + '<li><a href="' + site + '/gen/general?pid=7512" title="Supplier Partnerships">Supplier Partnerships</a></li>'
+				// + '<li><a href="' + site + '/gen/press-room?pid=12201" title="Business Customer News">Business Customer News</a></li>'
+				 
 				 + '</ul>'
-				 + '</li>'
+				 //+ '</li>'
 				 + '<li class="col2"><strong>Our Business Basics</strong>'
 				 + '<ul>'
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=5711" title="Company Information">Company Information</a></li>'
 				 + '<li><a href="' + site + '/gen/privacy-policy?pid=2506" title="AT&amp;T Privacy Policy">AT&amp;T Privacy Policy</a></li>'
 				 + '<li><a href="http://www.att.com/csr" title="Citizenship and Sustainability">Citizenship and Sustainability</a></li>'
+					+ '<li><a href="' + site + '/gen/corporate-citizenship?pid=5882" title="Innovating life - Intellectual Property">Innovating life - Intellectual Property</a></li>'
 				 + '<li><a href="http://www.att.com/networknews" title="Network News">Network News</a></li>'
 				 + '<li><a href="' + site + '/gen/general?pid=18600" title="Meet the Senior Leaders">Meet the Senior Leaders</a></li>'
 				 + '</ul>'

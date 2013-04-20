@@ -819,6 +819,37 @@ JY = {
                 e.preventDefault();
                 $('div#modal-example,div#modal-cover').hide();
             });
+            $('div#modal-sms').dialog({
+                autoOpen: false,
+                modal: true,
+                width: 700,
+                position: ['center', 'center'],
+                draggable: false,
+                resizable: false
+            });
+            $('input#cbJYOptMobile').change(function(){
+                if ( $(this).is(':checked') && !$('input#cbAgreeText').is(':checked') ){
+                    $('div#modal-sms').dialog('open');
+                }
+            });
+            $('a#btn-close-sms').click(function(e){
+                e.preventDefault();
+                $('input#cbJYOptMobile').prop('checked',false);
+                $('label[for="cbJYOptMobile"]').removeClass('checked');
+                $('div#modal-sms').dialog('close');
+            });
+            $('a#sms-btn-agree').click(function(e){
+                e.preventDefault();
+                $('input#cbAgreeText').prop('checked', true);
+                $('div#modal-sms').dialog('close');
+            });
+            $('body').keydown(function(e){
+                if (e.keyCode == 27){
+                    $('input#cbJYOptMobile').prop('checked',false);
+                    $('label[for="cbJYOptMobile"]').removeClass('checked');
+                    $('div#modal-sms').dialog('close');
+                }
+            });
         },
         finalize: function() {
 

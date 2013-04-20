@@ -462,10 +462,10 @@ var usa_globalMenu = {
 						},
 						/* Featured Slot  - LAST */
 						{
-							"title" : "Suits",
-							"url" : usa_baseUrlDomain + "/series/suits/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
-							"tuneIn" : "RETURNS THIS SUMMER"
+							"title" : "Graceland",
+							"url" : usa_baseUrlDomain + "/series/graceland/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_graceland.png",
+							"tuneIn" : "PREMIERES JUNE 6 10/9C"
 						}
 
 					]

@@ -16,7 +16,7 @@ window.vpSiteVersion="26.3";
 window.languageId=1;
 window.imageHost='http://www.vphosted.com';
 window._cookieDomain='.vistaprint.com';
-window._vp_page_guid = '64c7ab92-ef7a-40f5-a98d-cae7eb71ef1f';
+window._vp_page_guid = 'f2874aa7-526f-49fb-b253-8c07b59e9a57';
 window._vp_session_id = 1;
 var VP_CLIENT_EVENT_TYPE_Unknown = 0;
 var VP_CLIENT_EVENT_TYPE_Begin = 1;
@@ -27,6 +27,100 @@ var VP_CLIENT_EVENT_TYPE_DomLoad = 5;
 var VP_CLIENT_EVENT_TYPE_LandingPageLoad = 6;
 var VP_CLIENT_EVENT_TYPE_LandingPageLoadServer = 7;
 
+/*jsl:option explicit*/
+
+var __instrumentationPingEvents = {};
+
+function __instrumentationPingImpl(iEvent)
+{
+
+    var oRequest;
+    if (typeof XMLHttpRequest != "undefined")
+    {
+        oRequest = new XMLHttpRequest();
+    }
+    else if (typeof ActiveXObject != "undefined")
+    {
+        oRequest = new ActiveXObject("MSXML2.XmlHttp");
+    }
+
+    if (!oRequest)
+    {
+        return;
+    }
+
+    var sQs = document.location.search;
+    if (sQs.length > 1)
+    {
+        sQs = sQs.substring(1);
+    }
+
+    var sUrl = "/vp/tracking/client-event-logger.aspx" +
+        "?d=" + encodeURIComponent(new Date().toUTCString().replace('UTC', 'GMT')) +
+        "&g=" + window._vp_page_guid +
+        "&s=" + window._vp_session_id +
+        "&e=" + iEvent +
+        "&p=" + encodeURIComponent(document.location.pathname) +
+        "&q=" + encodeURIComponent(sQs) +
+        "&b=" + encodeURIComponent(navigator.userAgent) +
+        "&ilp=" + (document.location.search.indexOf("GP=") != -1 ? "1" : "0");
+
+    if (window._vp_logical_page)
+    {
+        sUrl += "&lp=" + encodeURIComponent(window._vp_logical_page);
+    }
+    
+    oRequest.open("get", sUrl, true);
+    oRequest.send(null);
+}
+
+function __instrumentationPing(iEvent)
+{
+    if (__instrumentationPingEvents[iEvent])
+    {
+        return;
+    }
+
+    __instrumentationPingEvents[iEvent] = true;
+    
+    if (window.isDebug)
+    {
+        __instrumentationPingImpl(iEvent);
+    }
+    else
+    {
+        try
+        {
+            __instrumentationPingImpl(iEvent);
+        }
+        catch (ex)
+        {
+            //ignore
+        }
+    }
+}
+
+function __instrumentationPingForEvent(sEvent, iEvent)
+{
+    __addEvent(window, sEvent, function() { __instrumentationPing(iEvent); });
+}
+
+function __addEvent(oTarget, sEvent, fnHandler)
+{
+    if (oTarget.addEventListener) //DOM-compliant browsers: Opera, Firefox, Safari
+    {
+        oTarget.addEventListener(sEvent, fnHandler, false);
+    }
+    else if (oTarget.attachEvent) //IE only
+    {
+        oTarget.attachEvent("on" + sEvent, fnHandler);
+    }
+}
+
+__instrumentationPing(VP_CLIENT_EVENT_TYPE_Begin);
+__instrumentationPingForEvent('load', VP_CLIENT_EVENT_TYPE_Load);
+__instrumentationPingForEvent('beforeunload', VP_CLIENT_EVENT_TYPE_Unload);
+__instrumentationPingForEvent('unload', VP_CLIENT_EVENT_TYPE_Unload);
 window._vp_log_client_errors = true;
 } catch (ex) {}
 window._browserData = {"isMobile":false,"isSmallMobile":false,"isIeCompatMode":false,"name":"Firefox","supportsPng":true,"supportsInlineImages":true,"classVersion":{"major":20090824,"minor":0},"className":"Gecko","operatingSystem":"Windows","ieCompatModeRealVersion":0,"isTablet":false,"version":{"major":3.5,"minor":3}};
@@ -139,7 +233,7 @@ window._vp_page_spot_id=28679;
 <script type="text/javascript">
 //<![CDATA[
 try {
-vp.ui.loadImageAfterPageLoad('https://api.nanigans.com/event.php?app_id=24452&type=visit&name=calendars');
+vp.ui.loadImageAfterPageLoad('https://api.nanigans.com/event.php?app_id=24452&type=visit&name=electronic');
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 try {
@@ -147,7 +241,7 @@ vp.ui.loadImageAfterPageLoad('http://www.googleadservices.com/pagead/conversion/
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 try {
-vp.ui.loadImageAfterPageLoad('http://leadback.advertising.com/adcedge/lb?site=695501&srvc=1&betr=repeatcalendars_cs=1&betq=13678=438789');
+vp.ui.loadImageAfterPageLoad('http://leadback.advertising.com/adcedge/lb?site=695501&srvc=1&betr=repeatelectronic_cs=1&betq=13683=438809');
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 try {
@@ -155,11 +249,11 @@ vp.ui.loadImageAfterPageLoad('https://ad.doubleclick.net/activity;dc_pixel_url=b
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 try {
-vp.ui.loadImageAfterPageLoad('http://ads.bluelithium.com/pixel?id=1258165&t=2');
+vp.ui.loadImageAfterPageLoad('http://ads.bluelithium.com/pixel?id=1258169&t=2');
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 try {
-vp.ui.loadImageAfterPageLoad('http://googleads.g.doubleclick.net/pagead/viewthroughconversion/976062063/?value=0&amp;label=s9EACMGU9QIQ74y20QM&amp;guid=ON&amp;script=0');
+vp.ui.loadImageAfterPageLoad('http://googleads.g.doubleclick.net/pagead/viewthroughconversion/976062063/?value=0&amp;label=c9-tCKmX9QIQ74y20QM&amp;guid=ON&amp;script=0');
 }
  catch (jsEx) { vp.bootstrap.logException(jsEx); }
 function BodyOnLoad_OnDOMReady() {
@@ -4416,7 +4510,7 @@ window.__vp_dialog_map['LowPriceGuarantee'].options.parentNode=vp.ui.get('frmPag
             <div id="divPageId" style="display:none">16398</div>
 <div id="divInstitution" style="display:none">1</div>
 <div id="divPppSrcId" style="display:none">0870635663</div>
-<div id="divMachineId" style="display:none">4c3a9f9de09128e3630da8a2998c84c8</div>
+<div id="divMachineId" style="display:none">2a2c16c122370214fefde68bcee18175</div>
 <div id="divShopperId" style="display:none"></div>
 <div id="divVisitorId" style="display:none">0</div>
 

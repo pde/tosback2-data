@@ -6,10 +6,10 @@ function specialNewsTicker() {
 //document.write('<ul><li class="first"><h6 style="color: #FF7200; font-size: 22px; font-style: italic; font-weight:bold; margin-left:10px;">Why choose AT&#38;T for your wireless service&#63; Let&#8217;s count the ways&#58;</span></h6></li></ul>');
 //document.write('<div id="scrollup" style="height:45px; width:930px;">'
 
-document.write('<ul><li class="first"><h6 style="color: #808080; font-size: 22px; font-style: italic; font-weight:bold; margin-left:10px; text-align:center;">Our thoughts are with those affected by the events at the Boston Marathon.</span></h6></li></ul>');
+document.write('<ul><li class="first"><a href="http://onefundboston.org/" target="_blank" title="The One Fund - Boston 2013"><img style="float: left; margin:12px 10px;" src="/Common/about_us/images/about_us_lp/boston_1_logo.png" width="126" height="91" alt="The One Fund - Boston 2013" title="The One Fund - Boston 2013"/></a><h6 style="color: #0c2577; font-size: 28px; line-height: normal; margin-left:155px; text-align: left; padding: 30px 0 0 0;">The One Fund</h6></li></ul>');
 document.write('<div id="scrollup" style="display:none;">'
 
-+ ' <style>#aboveContent {height: 45px;} #network-news-box {display:none;}</style>'
++ ' <style>#aboveContent {height: 125px;} #network-news-box {display:none;}</style>'
 	
 //List of network updates begin//
 /*+ '<div class="headline special"><a href="/network/" title="The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;">The nation&#8217;s largest 4G network&#44; covering 288&#45;million people&#46;</a></div>'
@@ -35,9 +35,9 @@ document.write('<div id="scrollup" style="display:none;">'
 //List of speciail network updates End//							
 */								
 						 + '</div>'
-					/* + '<ul style="padding:0 20px 0px 20px; position:relative; bottom:0px;">'
-					+ '<li style="border:0 !important; font-size:16px; font-weight:bold;"><a href="/networknews" title="Go to att.com/networknews for more">Go to att.com/networknews for more</a></li>'
+					 + '<ul style="padding:0 20px 0px 155px; position:relative; bottom: 0px; margin-top: -7px;">'
+					+ '<li style="border:0 !important; font-size: 21px; font-weight: normal; color:#333333;">Help support those affected by the tragic events in Boston.&nbsp;&nbsp;<span style="float: right; margin:-6px 60px 0 0;"><a href="http://onefundboston.org/" style="background-image:url(/Common/about_us/images/about_us_lp/blank_blue_btn.png); background-repeat:no-repeat; padding: 8px 26px; color:#FFFFFF; font-size: 12px !important; font-weight: bold;" title="Donate Now" target="_blank">Donate Now</a></span></li>'
 
-					+ '</ul>'*/
+					+ '</ul>'
 					  + '<div class="clear"></div>');
 }

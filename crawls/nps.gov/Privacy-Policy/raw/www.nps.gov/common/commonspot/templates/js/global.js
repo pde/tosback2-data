@@ -123,12 +123,24 @@ NPS.utility = {
 		if(jQuery('#sub-nav').length && jQuery('#content').length) {
 			if(jQuery('#sub-nav').height() > jQuery('#content').height()){
 				if(jQuery('.fact').length){
-					var jQueryfact = jQuery('.fact');
-					var factHeight = jQueryfact.outerHeight();
+					/* old way of getting the content div the proper height */
+					//var jQueryfact = jQuery('.fact');
+					//var factHeight = jQueryfact.outerHeight();
+					var newMarginHeight = jQuery('#sub-nav').height() - jQuery('#content').height() - 84;
+
+					/* push the dyk to the bottom of the page. */
+					jQuery('.fact').before('<br style="clear: both; height:1px; line-height:1px;" />').css({
+						'margin-top': newMarginHeight + 'px',
+						'display': 'block'
+					});
+					
+					/* the below code just added height to the bottom of the content div and left the Did You Know in the middle of the page. */
+					/*
 					jQuery('#content').addClass('adjusted-for-fact').css({
 						'padding-bottom': factHeight + 'px',
 						'min-height': jQuery('#sub-nav').height()-(35 + factHeight)
 					});
+					*/
 				} 
 				else {
 					jQuery('#content').css('min-height', jQuery('#sub-nav').height()-35);

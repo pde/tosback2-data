@@ -273,7 +273,7 @@ jQuery(document).ready(function(){
 
     }
 
-  }());
+  } ());
 
   // init all YMR methods
   YMR.initAll();
@@ -422,9 +422,23 @@ jQuery(document).ready(function(){
     
   });
 
+
+  //Download PDFs
+  if(getURLParameter('ym') == 'mkt-cs'){
+        if(jQuery('#case-study-pdf').exists() == true) {
+            var file = jQuery('#case-study-pdf').attr("href");
+            window.location = '/wp-content/themes/roots/metaboxes/submit-marketo.php?file='+file;
+        }
+    }
+
+
 });
 
-  
+function getURLParameter(name) {
+  return decodeURI(
+      (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+  );
+}
 
 function paginationBullet(obj) {
   jQuery('.pagination-bullet').each(function(index, value){

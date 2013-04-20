@@ -50,7 +50,7 @@
 </head>
 <body>
     <div id="wrapper">
-        <div class="banner"><div onclick="location.href='http://www.pof.com'" class="mylogo"></div><div class="topbar" style="text-align:right;"><a href="http://www.pof.com/inbox.aspx" class="white">Sign In</a><a href="http://www.pof.com/HelpCenter/helpcenter_faq.aspx" class="white">Help</a><a href="http://www.pof.com/register.aspx" class="white">Register</a></div></div><div id="main-menu"><table class="main-menu"><tr><td><a href="http://www.pof.com/inbox.aspx"><div class="inbox-container" style=" *display: inline;*width:100px;">INBOX</div></a></td><td><a href="http://www.pof.com/meetme.aspx">MEET ME</a></td><td><a href="http://www.pof.com/basicsearch.aspx">SEARCH</a></td><td><a href="http://www.pof.com/everyoneonline.aspx">ONLINE<span class="normal"> (306293)</span></a></td><td><a href="http://www.pof.com/poftest.aspx">CHEMISTRY</a></td><td><a href="https://secure.pof.com/upgrade.aspx?d=0">UPGRADE</a></td></tr></table></div><div id="clear"></div>
+        <div class="banner"><div onclick="location.href='/everyoneonline.aspx'" class="mylogo"></div><div class="topbar" style="text-align:right;"><a href="http://www.pof.com/inbox.aspx" class="white">Sign In</a><a href="http://www.pof.com/HelpCenter/helpcenter_faq.aspx" class="white">Help</a><a href="http://www.pof.com/register.aspx" class="white">Register</a></div></div><div id="main-menu"><table class="main-menu"><tr><td><a href="http://www.pof.com/inbox.aspx"><div class="inbox-container" style=" *display: inline;*width:100px;">INBOX</div></a></td><td><a href="http://www.pof.com/meetme.aspx">MEET ME</a></td><td><a href="http://www.pof.com/basicsearch.aspx">SEARCH</a></td><td><a href="http://www.pof.com/everyoneonline.aspx">ONLINE<span class="normal"> (254689)</span></a></td><td><a href="http://www.pof.com/poftest.aspx">CHEMISTRY</a></td><td><a href="https://secure.pof.com/upgrade.aspx?d=0">UPGRADE</a></td></tr></table></div><div id="clear"></div>
         <div id="container">
             <div id="title-headline">
                 <span class="headline txtBlue size28">
@@ -708,7 +708,17 @@
                     Our Mobile Applications</i></span>
             </div>
             <div class="box">
-                <!--If you use any mobile device to access our site and download any of our applications, we may collect device information (such as your mobile device ID, model and manufacturer), operating system and version information, and IP address. We collect your geolocational information only upon your consent.-->
+                <!--If you use any mobile device to access our site and download any of our applications,
+                we may collect device information (such as your mobile device ID, model and manufacturer),
+                operating system and version information, and IP address.
+                <br />
+                <br />
+                    <i><strong>We collect your geolocational information only upon your consent. By sharing
+                        your geolocational information with us, you agree to be bound by Google's Terms
+                        of Use (<a href="http://www.google.com/intl/en_ALL/help/terms_maps.html">http://www.google.com/intl/en_ALL/help/terms_maps.html</a>). We are using the
+                        Maps API(s) in our mobile applications, and incorporate by reference to this Policy
+                        is the Google privacy policy (currently <a href="http://www.google.com/privacy.html">
+                            http://www.google.com/privacy.html</a>), as amended by Google from time to time.</strong></i>-->
                 If you use any mobile device to access our site and download any of our applications,
                 we may collect device information (such as your mobile device ID, model and manufacturer),
                 operating system and version information, and IP address.
@@ -984,19 +994,80 @@
             <br />
 
 <center><span class='grey-title-sm'>Copyright 2001-2013 Plentyoffish Media Inc.</span><br /><span style='font-size:10px;'>POF, PLENTYOFFISH, PLENTY OF FISH and PLENTY OF are registered trademarks of Plentyoffish Media Inc.</span></center><br />
+<script src="javascript/versioned/nodechat/strings.5489.js" type="text/javascript"></script>
+<script type="text/javascript">
+	Localizer.SetLocale('en');
 
-<!--
-	<script type="text/javascript">
-
-	    // set the domain to the parent level domain
-	    var domain = document.domain;
+	// set the domain to the parent level domain
+	try
+	{
+	  // set the domain to the parent level domain
+	  var domain = document.domain;
+	  if (domain.substr(0, 1).toLowerCase() != "p")
+	  {
 	    var dotIndex = domain.indexOf('.');
 	    if (dotIndex > 0)
-            document.domain = domain.substring(dotIndex + 1);
-    </script>
--->
+	      document.domain = domain.substring(dotIndex + 1);
+	  }
+	}
+	catch (e)
+	{
+	}
 
-<script type="text/javascript">
+	// add target='_top' to href links
+	//  <a href="http://test.com">This is an external link</a><br />
+	//  <a href="http://forums.pof.com" target="_top">this link already has a target, ignoring</a><br />
+	//  <a href="http://plentyoffish.com">This is an external link</a><br />
+	//  <a href="http://www.pof.com/accountstatus.aspx">This is a local relative, ignoring</a><br />
+	//  <a href="http://pof.com/accountstatus.aspx">This is absolute local link, should ignore</a><br />
+	function externalLinks()
+	{
+		try
+		{
+			// make sure our browser is compatible
+			if (!document.getElementsByTagName)
+				return;
+
+			var anchors = document.getElementsByTagName("a");
+			for (var i=anchors.length-1; i>=0; i--)
+			{
+				var anchor = anchors[i];
+				// make sure we have a link
+				if (anchor.href && (anchor.protocol == 'http:' || anchor.protocol == 'https:' || anchor.protocol == ''))
+				{
+					// ignore links that already have targets
+					if( !anchor.target)
+					{
+						// if the link hostname doesn't match, pop it external
+						// note: you could map this to a specific domain if you want (ie pof.com) etc
+						if( anchor.hostname.substr(0,window.location.host.length) != window.location.host || anchor.protocol == 'https:')
+							anchor.target = "_top";
+					}
+				}
+			}
+		}
+		catch (e) {}
+	}
+
+	// add to onload
+	{
+		var oldOnload = window.onload;
+		window.onload = function ()
+		{
+			if (oldOnload) oldOnload();
+			externalLinks();
+		}
+	}
+
+    function pofClickRequestChat(profileId)
+    {
+
+		if (confirm("Chat is currently undergoing maintanence. Would you like to send a message instead?"))
+		{
+			window.location = '/viewprofile.aspx?profile_id=' + escape(profileId);
+		}
+
+    }
 	
 
 
@@ -1004,8 +1075,8 @@
     if (window.location != window.top.location)
         window.top.location = window.location;
 
-    
-		
+
+
 </script>
 
         </div>

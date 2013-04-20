@@ -3975,18 +3975,20 @@ c.ajax({type:"GET",url:e,success:function(f,g){},error:function(f,h,g){}})
 b.loadFragment=function(f,g,h,e){mb.logger.info("mb.loadFragment()");
 var g=typeof g!=="undefined"?g:"";
 var e=typeof e!=="undefined"?e:"GET";
-c.ajax({type:e,url:f,data:g,success:function(i,l){mb.logger.info(" fragment loaded: "+l);
-var j={};
-j.contextPath=c(i).find(".pp-context-path").text();
-j.section=c(i).find(".pp-section").text();
-j.subsection=c(i).find(".pp-subsection").text();
-var k=new mb.Document(c(i));
-k.setProperties(j);
-a.push(k);
+c.ajax({type:e,url:f,data:g,success:function(i,m){mb.logger.info(" fragment loaded: "+m);
+var k={};
+k.contextPath=c(i).find(".pp-context-path").text();
+k.section=c(i).find(".pp-section").text();
+k.subsection=c(i).find(".pp-subsection").text();
+if(k.section=="error"&&k.subsection=="user-error"){var j=c(i).find(".pp-error-page").text();
+window.location.href=j
+}var l=new mb.Document(c(i));
+l.setProperties(k);
+a.push(l);
 mb.logger.log("dispatching event: "+mb.events.FRAGMENT_LOADED);
-if(h){h(k)
-}b.broadcaster.dispatchEvent(mb.events.FRAGMENT_LOADED,k);
-if(typeof(window.mb.pagination)!=="undefined"){mb.pagination.setup(k.getNode())
+if(h){h(l)
+}b.broadcaster.dispatchEvent(mb.events.FRAGMENT_LOADED,l);
+if(typeof(window.mb.pagination)!=="undefined"){mb.pagination.setup(l.getNode())
 }},error:function(i,k,j){b.broadcaster.dispatchEvent(mb.events.FRAGMENT_ERROR)
 }})
 }

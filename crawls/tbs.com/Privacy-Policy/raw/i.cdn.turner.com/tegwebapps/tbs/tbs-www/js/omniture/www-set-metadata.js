@@ -171,7 +171,7 @@ else if (window.location.hostname.indexOf("coco") != -1) {
 	var tbs_metadata = {
 		section: section[0],
 		//subsection: section[0] + ":",
-		template_type: tbs_templateType,
+		template_type: tbs_templateType || "other", 
 		content_type: tbs_contentType || "none",
 		friendly_name: tbs_friendlyName,
 		research_category: tbs_researchCategory,

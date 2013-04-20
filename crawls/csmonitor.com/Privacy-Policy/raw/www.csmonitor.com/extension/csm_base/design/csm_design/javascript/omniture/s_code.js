@@ -29,7 +29,7 @@ function linkCode(obj,title) {
 
 /************* Do not track & Ad blocker ****************/
 s.prop37 = ( (typeof navigator.doNotTrack != 'undefined' || typeof navigator.msDoNotTrack != 'undefined') && (navigator.doNotTrack || navigator.msDoNotTrack)) ? '1' : '0';
-s.prop38 = typeof googletag.pubads == 'undefined' ? '1' : '0';
+s.prop38 = ( typeof googletag == 'undefined' || typeof googletag.pubads == 'undefined' ) ? '1' : '0';
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */

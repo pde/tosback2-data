@@ -69,9 +69,6 @@ function rfiAdServe(p,adRequestData)
 {rfiBOrA(p,null,adRequestData,null);}
 function rfiCSTrack(str)
 {var img=new Image(1,1);var currentTime=new Date().getTime();var rStr=(currentTime%1000000000)+""+Math.random();img.src=rfiURLPrefix()+window._rfiAServer+"/tk.gif?"+str+"&ra="+rStr+"&ct="+currentTime;}
-function rfiPerformanceTrack(timeVal,eventSubType)
-{var img=new Image(1,1);var currentTime=new Date().getTime();var rStr=(currentTime%1000000000)+""+Math.random();var adRequestData=rfiAdReq;var bidData=(adRequestData.bidData===null||adRequestData.bidData===undefined)?"":adRequestData.bidData;var bidDataArray=bidData.split(";");var bidDataStr="";var j=0;var paramAndValue;for(j=0;j<bidDataArray.length;j++){paramAndValue=bidDataArray[j].split("=");if(paramAndValue.length===2){if(paramAndValue[0]==="requestId")bidDataStr+="&ri=";else if(paramAndValue[0]==="adId")bidDataStr+="&ai=";else if(paramAndValue[0]==="tacticId")bidDataStr+="&rt=";else continue;bidDataStr+=paramAndValue[1];}}
-img.src=rfiURLPrefix()+window._rfiAServer+"/pt.gif?"+"ra="+rStr+"&ct="+currentTime+"&tval="+timeVal+"&st="+eventSubType+bidDataStr;}
 function rfiBOrA(p,adData,adRequestData,isConversion)
 {var i,a;var fEsc=rfiEscape;if(!p||!p.publisher)
 {return;}

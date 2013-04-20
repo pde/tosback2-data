@@ -17115,21 +17115,27 @@ $(document).ready(function() {
 
 }(this, document, jQuery));
 //hide and show script
-$(function() {
+$(function () {
     $('.multi-form + form .form_button_submit').hide();
     if (window.location.href.match('status')) {
-    	 $('.zipCheck').css({ display: "none" });
-        $('.multi-form').find('.thankYou').css({ display: "block" });
+        $('.zipCheck').css({
+            display: "none"
+        });
+        $('.multi-form').find('.thankYou').css({
+            display: "block"
+        });
     } else {
-        $('.zipCheck').css({ display: "block" });
+        $('.zipCheck').css({
+            display: "block"
+        });
     }
-    $('.toggle').click(function(e) {
+    $('.toggle').click(function (e) {
         fetchGeoLocationData();
         e.preventDefault();
         return false;
 
     });
-    $('.call-back-form').click(function() {
+    $('.call-back-form').click(function () {
         callMymoveServlet();
     });
 });
@@ -17141,41 +17147,41 @@ function fetchGeoLocationData() {
     var x = $('input.zip_code').val();
     if (validateZipCode(x)) {
         $('input#zip_code2').val(x);
-        $.getJSON('/bin/services/geolocation.json' + '?zip=' + $('#zip_code1').val(), function(data) {
+        $.getJSON('/bin/services/geolocation.json' + '?zip=' + $('#zip_code1').val(), function (data) {
             if (data.region) {
                 geoLocateInRegion(true);
 
                 // Zip code check - serviceable
-                s.linkTrackVars="events,eVar7,prop19,eVar59";
-                s.linkTrackEvents="event48";
+                s.linkTrackVars = "events,eVar7,prop19,eVar59";
+                s.linkTrackEvents = "event48";
                 s.eVar7 = "check availability by zip code - zip code serviceable";
                 s.prop19 = "check availability by zip code - zip code serviceable";
                 s.eVar59 = s.pageName;
                 s.events = "event48";
-                s.tl (this, 'o', 'check availability by zip code - zip code serviceable');
+                s.tl(this, 'o', 'check availability by zip code - zip code serviceable');
             } else {
                 geoLocateInRegion(false);
 
                 // zip code check not serviceable
-                s.linkTrackVars="events,eVar7,prop19,eVar59";
-                s.linkTrackEvents="event48";
+                s.linkTrackVars = "events,eVar7,prop19,eVar59";
+                s.linkTrackEvents = "event48";
                 s.eVar7 = "check availability by zip code - zip code not serviceable";
                 s.prop19 = "check availability by zip code - zip code not serviceable";
                 s.eVar59 = s.pageName;
                 s.events = "event48";
-                s.tl (this, 'o', 'check availability by zip code - zip code not serviceable');
+                s.tl(this, 'o', 'check availability by zip code - zip code not serviceable');
             }
-        }).error(function() {
-            geoLocateInRegion(false);
+        }).error(function () {
+                geoLocateInRegion(false);
 
-            // Zip code database connectivity problems/etc
-            s.linkTrackVars="events,eVar54,eVar59";
-            s.linkTrackEvents="event82";
-            s.eVar54 = "my move zip code lookup error";
-            s.eVar59 = s.pageName;
-            s.events = "event82";
-            s.tl (this, 'o', 'my move zip code lookup error');
-        });
+                // Zip code database connectivity problems/etc
+                s.linkTrackVars = "events,eVar54,eVar59";
+                s.linkTrackEvents = "event82";
+                s.eVar54 = "my move zip code lookup error";
+                s.eVar59 = s.pageName;
+                s.events = "event82";
+                s.tl(this, 'o', 'my move zip code lookup error');
+            });
     } else {
         alert("Zip Code must be filled out");
         return false;
@@ -17184,11 +17190,19 @@ function fetchGeoLocationData() {
 
 function geoLocateInRegion(inRegion) {
     if (inRegion) {
-   	 	$('.multi-form').find('.fail').css({ display: "none" });
-        $('.multi-form').find('.success').css({ display: "block" });
+        $('.multi-form').find('.fail').css({
+            display: "none"
+        });
+        $('.multi-form').find('.success').css({
+            display: "block"
+        });
     } else {
-    	 $('.multi-form').find('.success').css({ display: "none" });
-        $('.multi-form').find('.fail').css({ display: "block" });
+        $('.multi-form').find('.success').css({
+            display: "none"
+        });
+        $('.multi-form').find('.fail').css({
+            display: "block"
+        });
     }
 }
 
@@ -17200,28 +17214,31 @@ function callMymoveServlet() {
     if (validation == true) {
         var mailTo = $('#email_addr').val();
         $('<input type="hidden" value="' + mailTo + '" name="mailTo"/>').appendTo('.multi-form+form');
-        $.getJSON('/bin/mymove.json' + '?FirstName=' + $('#first_name').val() + '&LastName=' + $('#last_name').val() + '&PhoneNumber=' + $('#area_code').val() + $('#prefix').val() + $('#line_number').val() + '&AlternateNumber=' + $('#alt_area_code').val() + $('#alt_prefix').val() + $('#alt_line_number').val() + '&ZipCode=' + $('#zip_code2').val() + '&Email=' + $('#email_addr').val(), function() {
+        $.getJSON('/bin/mymove.json' + '?FirstName=' + $('#first_name').val() + '&LastName=' + $('#last_name').val() +
+            '&PhoneNumber=' + $('#area_code').val() + $('#prefix').val() + $('#line_number').val() +
+            '&AlternateNumber=' + $('#alt_area_code').val() + $('#alt_prefix').val() + $('#alt_line_number').val() +
+            '&ZipCode=' + $('#zip_code2').val() + '&Email=' + $('#email_addr').val() + '&TextMessageSw=' + $('#mobile_number').is(':checked'), function () {
             $('.multi-form+form input.form_button_submit').trigger('click');
 
             // call back submit success
-            s.linkTrackVars="events,eVar7,prop19,eVar59";
-            s.linkTrackEvents="event48";
+            s.linkTrackVars = "events,eVar7,prop19,eVar59";
+            s.linkTrackEvents = "event48";
             s.eVar7 = "My Move Get a Call Back Submit success";
             s.prop19 = "My Move Get a Call Back Submit success";
             s.eVar59 = s.pageName;
             s.events = "event48";
-            s.tl (this, 'o', 'my move get a callback submit success');
-        }).error(function() {
-            alert("Callback form couldn't submit.");
+            s.tl(this, 'o', 'my move get a callback submit success');
+        }).error(function () {
+                alert("Callback form couldn't submit.");
 
-            // Get a call back back end/database/etc problems
-            s.linkTrackVars="events,eVar54,eVar59";
-            s.linkTrackEvents="event82";
-            s.eVar54 = "My Move Get a Call Back Submit error";
-            s.eVar59 = s.pageName;
-            s.events = "event82";
-            s.tl (this, 'o', 'my move get a callback submit error');
-        });
+                // Get a call back back end/database/etc problems
+                s.linkTrackVars = "events,eVar54,eVar59";
+                s.linkTrackEvents = "event82";
+                s.eVar54 = "My Move Get a Call Back Submit error";
+                s.eVar59 = s.pageName;
+                s.events = "event82";
+                s.tl(this, 'o', 'my move get a callback submit error');
+            });
     }
 }
 
@@ -17279,14 +17296,34 @@ function validateZipCode(elementValue) {
 
 $(document).ready(function () {
     //onfocus of zip field if someone hits return trigger click on the a tag
-    $('#zip_code1').keypress(function(e) {
-        var code =null;
-        code= (e.keyCode ? e.keyCode : e.which);
+    $('#zip_code1').keypress(function (e) {
+        var code = null;
+        code = (e.keyCode ? e.keyCode : e.which);
 
-        if (code==13) {
+        if (code == 13) {
             $('.toggle').click();
             e.preventDefault();
             return false;
+        }
+    })
+    $('#myMove :checkbox#contact_number').click(function () {
+        var $this = $(this);
+        // $this will contain a reference to the checkbox
+        if ($this.is(':checked')) {
+            $('#alt_area_code').val($('#area_code').val());
+            $('#alt_prefix').val($('#prefix').val());
+            $('#alt_line_number').val($('#line_number').val());
+            $('#alt_area_code').attr("disabled", "disabled");
+            $('#alt_prefix').attr("disabled", "disabled");
+            $('#alt_line_number').attr("disabled", "disabled");
+
+        } else {
+            $('#alt_area_code').removeAttr("disabled");
+            $('#alt_prefix').removeAttr("disabled");
+            $('#alt_line_number').removeAttr("disabled");
+            $('#alt_area_code').val("");
+            $('#alt_prefix').val("");
+            $('#alt_line_number').val("");
         }
     })
 })

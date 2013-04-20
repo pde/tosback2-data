@@ -31,6 +31,10 @@ phx.getUrlVars = (function() {
 		//if(vars["v"] && !vars["vtrack"]) vars["vtrack"] = vars["v"];
 		//if(vars["crgid"]) vars["vtrack"] = vars["crgid"];
 		if(vars["cgr"]) vars["vtrack"] = vars["cgr"];
+		if(vars["vcid"]) vars["cid"] = vars["vcid"];
+		if(vars["_vcid"]) vars["cid"] = vars["_vcid"];
+		if(vars["vpid"]) vars["pid"] = vars["vpid"];
+		if(vars["_vpid"]) vars["pid"] = vars["_vpid"];
 		
 		//-- special conditions for pid/cid: numbers only
 		if(vars.cid) vars["cid"] = vars["cid"].replace(/[^0-9]+/g,'');

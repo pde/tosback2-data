@@ -1064,7 +1064,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "04/17/2013 08:14 AM",
+            DATE_IN_USE: "04/20/2013 08:08 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1137,7 +1137,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 <script type="text/javascript">
 	// <![CDATA[
  	
-	var gidBrandSiteConstruct = new GIDBrandSiteConstructor(1, ".gap.com", "GAP", 0, "1", "", "secure-", true,false, "/browse/sistersitelink.do", [{brandName:"gap.com",brandCode:"1",brandDisplayName:"Gap",brandAbbr:"GAP",secureUrl:"https://secure-www.gap.com",unsecureUrl:"http://www.gap.com",imageServiceUrl:""},{brandName:"oldnavy.com",brandCode:"3",brandDisplayName:"Old Navy",brandAbbr:"ON",secureUrl:"https://secure-oldnavy.gap.com",unsecureUrl:"http://oldnavy.gap.com",imageServiceUrl:""},{brandName:"bananarepublic.com",brandCode:"2",brandDisplayName:"Banana Republic",brandAbbr:"BR",secureUrl:"https://secure-bananarepublic.gap.com",unsecureUrl:"http://bananarepublic.gap.com",imageServiceUrl:""},{brandName:"piperlime.com",brandCode:"4",brandDisplayName:"Piperlime",brandAbbr:"BG",secureUrl:"https://secure-piperlime.gap.com",unsecureUrl:"http://piperlime.gap.com",imageServiceUrl:""},{brandName:"ATOL sister link",brandCode:"10",brandDisplayName:"Athleta",brandAbbr:"AT",secureUrl:"https://secure-athleta.gap.com",unsecureUrl:"http://athleta.gap.com",imageServiceUrl:""}]);
+	var gidBrandSiteConstruct = new GIDBrandSiteConstructor(1, ".gap.com", "GAP", 0, "1", "", "secure-", true,false, "/browse/sistersitelink.do", [{brandName:"gap.com",brandCode:"1",brandDisplayName:"Gap",brandAbbr:"GAP",secureUrl:"https://secure-www.gap.com",unsecureUrl:"http://www.gap.com",imageServiceUrl:""},{brandName:"oldnavy.com",brandCode:"3",brandDisplayName:"Old Navy",brandAbbr:"ON",secureUrl:"https://secure-oldnavy.gap.com",unsecureUrl:"http://oldnavy.gap.com",imageServiceUrl:""},{brandName:"bananarepublic.com",brandCode:"2",brandDisplayName:"Banana Republic",brandAbbr:"BR",secureUrl:"https://secure-bananarepublic.gap.com",unsecureUrl:"http://bananarepublic.gap.com",imageServiceUrl:""},{brandName:"Piperlime.com",brandCode:"4",brandDisplayName:"Piperlime",brandAbbr:"BG",secureUrl:"https://secure-piperlime.gap.com",unsecureUrl:"http://piperlime.gap.com",imageServiceUrl:""},{brandName:"Athleta.com",brandCode:"10",brandDisplayName:"Athleta",brandAbbr:"AT",secureUrl:"https://secure-athleta.gap.com",unsecureUrl:"http://athleta.gap.com",imageServiceUrl:""}]);
  	// Output gidConfig property here for s_account:
 	reportingService.controller.reportingManager.reportingAccount = "gapproduction,gapgidproduction";
 	reportingService.controller.reportingManager.mobileReportingAccount = "gapgapmobile,gapgidmobile";
@@ -5158,6 +5158,904 @@ contentInfo.mobileContent = {
 <!-- END - WCD Sitewide Container 11 -->
 
 <!-- BEGIN - WCD Sitewide Container 12 -->
+<!-- BEGIN Content Item File: /content/0006/454/708/cn6454708.html -->
+
+<!-- Shopping Bag Larger Image A/B code -->
+<script type="text/javascript">
+/*
+	Universal Cookie Cutter
+	Version 2.1
+	Created to streamline cross-brand A/B testing
+	New version modularizes variables
+	
+	instantiate new object:
+	
+	MyCookieCutter = new universalCookieCutter([CookieVarName],      // name of your cookie variable
+											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
+											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
+											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
+											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
+											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
+											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
+											   );
+	A sample instantiation:
+	
+	ONBRABCookieCutter = new universalCookieCutter("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
+											   
+	*/
+	
+	var universalCookieCutter = Class.create();
+	
+	
+	universalCookieCutter.prototype = {
+	
+		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+	
+			//Keeping it neat by having two discreet variables that check for and gather cookie information
+			this.EvarToUse = theEvar != "" ? theEvar : false;
+			this.CookieVariableName = CookieVarName;
+			this.CookieUsed = CookieUsedName;
+			this.CookieValueBase = CookieValueBase;
+			this.SegBreakdown = SegmentBreakdown.split("-");
+			this.DoesTheCookieExist = clientStateManagementService.api.retrieve(this.CookieUsed, this.CookieVariableName);
+			this.RetrievedCookieValue = clientStateManagementService.api.retrieve(this.CookieUsed, this.CookieVariableName);
+			this.QuickSegment = '';
+			this.piperlimeException = plExcept;
+			this.userNeedsSync = false;
+			this.ForcedModeBase = ForcedModeBaseName;
+			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
+			this.modeArray = new Array();
+			this.modeArray[0] = "a";
+			this.modeArray[1] = "b";
+			this.modeArray[2] = "c";
+			this.modeArray[3] = "d";
+			this.modeArray[4] = "e";
+			this.modeArray[5] = "f";
+			this.modeArray[6] = "g";
+			this.modeArray[7] = "h";
+			//alert(this.piperlimeException);
+			
+			
+			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+				this.forcedMode();
+			}else{
+				this.cookieScanner();
+			}
+		},
+	
+	
+		forcedMode:function() {
+			
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+			
+				if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+					//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
+					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+				}
+				
+			}
+			
+			
+			clientStateManagementService.api.persist(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+			if (this.EvarToUse) {
+				
+				this.setABTestVariable(this.UserSegment);
+			}
+	
+			userNeedsSync = true;
+			//alert("Forced: Cookie set.");
+			
+		
+		},
+	
+		cookieScanner:function() {
+			
+			//If the cookie isn't available, bake one!
+			if (this.DoesTheCookieExist) {
+	
+				if (this.EvarToUse) {
+					this.setABTestVariable(this.RetrievedCookieValue);
+				}
+	
+				for (i = 0; i < this.ModeArrayIndex; i++) {
+					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+						this.QuickSegment = this.modeArray[i].toUpperCase();
+						break;
+					}
+				}
+	
+			} else {
+				this.tagManager();
+			}
+	
+		},
+	
+	
+		tagManager:function() {
+	
+		
+			//Breaking out the segmentation into specified percentages
+			
+			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+			//alert("Seg: " + this.Segmentation);	
+			this.FloorThreshold = 0;
+			this.TopThreshold = 0;
+			
+			for (i = 0; i < this.ModeArrayIndex; i++){
+	
+				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+	
+				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+					// put me in this segment
+					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				} else {
+					// add top to floor and try next segment
+					this.FloorThreshold = this.TopThreshold;
+				}
+					
+			}
+			
+			clientStateManagementService.api.persist(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+	
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.UserSegment);
+			}
+	
+			//userNeedsSync = true;
+			//alert("Tag Manager: Cookie set.");
+			
+		},
+		
+			setABTestVariable: function(setValue) {
+			thisEvar = 'eVar' + this.EvarToUse;
+			ABTestVariables[thisEvar] = setValue;
+		}
+	
+		
+	}; 
+	
+ShoppingBagImageAB2 = new universalCookieCutter("042013BagImage2","mktUniversalPersist","BagImageApril13SEG","bagmode","13-13-13-13-12-12-12-12","21","none");
+
+var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
+var vliContainers = new Array();
+var brandDomainArr = new Array();
+var baseImageURL;
+var isProduction;
+var myLocationDomain = document.location.hostname;
+if (myLocationDomain.indexOf("gidapps.com") < 0){
+	isProduction = true;
+} else {
+	isProduction = false;
+}
+var abSegment = clientStateManagementService.api.retrieve("mktUniversalPersist", "042013BagImage2");
+var showVLIimage = function(sku,index) {
+		// set all vli's to zindex of 10 and display:none;
+		for (k = 0; k < vliContainers.length; k++){
+			vliContainers[k].style.display = "none";
+			vliContainers[k].style.zIndex = "10";
+		}
+		vliContainers[index].style.display = "block";
+		vliContainers[index].style.zIndex = "50";
+	}
+	
+var hideVLIimage = function(index) {
+	vliContainers[index].style.display = "none";
+	vliContainers[index].style.zIndex = "10";
+}
+if (shoppingBagUrls.include(location.pathname)){
+
+	
+	Event.observe(document,"dom:loaded",function() {
+	
+		var productThumbnailsImgs = $("mainContent").select("img[class$=Thumbnail]");
+//console.info("Thumbnails: " + productThumbnailsImgs.length);
+		var longItemSkuParents = $("mainContent").select("dd[id^=productImage]");
+//console.info("longItemSkuParents: " + longItemSkuParents.length);
+		var productNames = $("mainContent").select("dd.productName");
+//console.info("productNames: " + productNames.length);
+		var longItemSkuArr = new Array();
+		if (abSegment == "BagImageApril13SEGA"){
+			// ********************** seg A -- Control 38x51 **********************
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+//console.info(longItemSkuArr[j]);
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "38px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "38px";
+				} else {
+					productThumbnailsImgs[j].style.height = "51px";
+				}	
+				//longItemSkuParents[j].style.padding = "0 38px 0 0";
+				//productNames[j].style.width = "220px";
+			}
+	
+		} else if (abSegment == "BagImageApril13SEGB"){
+			// ********************** seg B -- vi crop 160x120 **************
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+//console.info(longItemSkuArr[j]);
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "120px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "120px";
+				} else {
+					productThumbnailsImgs[j].style.height = "160px";
+				}	
+				longItemSkuParents[j].style.padding = "0 90px 0 0";
+				productNames[j].style.width = "240px";
+			}
+		} else if (abSegment == "BagImageApril13SEGC"){	
+			// ************************** seg C -- vi crop 25% smaller 90x120 ***********************
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+//console.info(longItemSkuArr[j]);
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "90px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "90px";
+				} else {
+					productThumbnailsImgs[j].style.height = "120px";
+				}	
+				longItemSkuParents[j].style.padding = "0 75px 0 0";
+				productNames[j].style.width = "240px";
+			}
+			
+		} else if (abSegment == "BagImageApril13SEGD"){
+			// **************************** seg D -- vi crop 25% larger 150x200 ********************************
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+//console.info(longItemSkuArr[j]);
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "150px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "150px";
+				} else {
+					productThumbnailsImgs[j].style.height = "200px";
+				}	
+				longItemSkuParents[j].style.padding = "0 120px 0 0";
+				productNames[j].style.width = "200px";
+			}
+				
+			
+			
+		} else if (abSegment == "BagImageApril13SEGE"){
+			// ************************************ Seg E -- default crop linked to VLI - 520x693 crop *****************************
+//alert("entering Segment e");
+			var viewport = document.viewport.getDimensions(); // Gets the viewport as an object literal
+			var width = viewport.width; // Usable window width
+			var height = viewport.height;
+			var vliImages = new Array();
+			var longItemSkuArr = new Array();
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			
+//alert("got skus");
+			//var vliCSS = new Element ("style", { "type" : "text/css" });
+			//vliCSS.insert(".vliDivContainers { position: absolute; background: #FFFFFF; width: 522px; height: 715px; border: 1px solid black; z-index: 10; } .VLIClickableImage:hover { cursor: pointer; }");
+			//$("mainContent").insert(vliCSS);
+//alert("added css");
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+				
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "38px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "38px";
+				} else {
+					productThumbnailsImgs[j].style.height = "51px";
+				}	
+				longItemSkuParents[j].style.padding = "0 58px 0 0";
+				productNames[j].style.width = "220px";
+//console.info(longItemSkuArr[j]);
+//alert(baseImageURL);
+//console.info(baseImageURL);
+				//var leftOffset = (width/2)-260 +"px";
+				var leftOffset = 0 +"px";
+				//var topOffset = (height/2)-150 +"px";
+				var topOffset = 105 +"px";
+				vliContainers[j] = new Element("div", { "id" : "vliDiv" + j, "style" : "position: absolute; background: #FFFFFF; width: 522px; height: 724px; border: 1px solid black; z-index: 10;" });
+				vliImages[j] = new Element("img", { "id" : "vliImg" + j });
+				vliImages[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/VLI";
+//alert("image " + j + " src: " + vliImages[j].src);				
+				vliImages[j].style.width = "520px";
+				if (brandDomainArr[j] == "athleta.com") {
+					vliImages[j].style.height = "520px";
+					vliContainers[j].style.height = "561px";
+				} else {
+					vliImages[j].style.height = "693px";
+				}
+				// vliImages[j].style.padding = "0 110px 0 0";
+				vliContainers[j].style.left = leftOffset;
+				vliContainers[j].style.top = topOffset;
+				vliContainers[j].style.display = "none";
+				var usersUserAgent = navigator.userAgent;
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:12px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
+				} else {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:12px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/closewindow.png'/></a></p>");
+				}
+				vliContainers[j].insert(vliImages[j]);
+//alert("big image inserted");
+				
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 22px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="data:image/gif;base64,R0lGODlhRgAYALMAAIiIiLu6upmZmSIiIjExMWdnZ1ZWVnh4eA8PD9bW1qWlpe3t7aqqqkRERAAAAP///yH5BAAAAAAALAAAAABGABgAAAT/8MlJq7046827/2AojmRpnmiqrmzrrsLgOITw3spgPwqh3K7Bb5IDthwWJCVgkAAAjcShQRUYAg8D41HYPg47iaAhpjYAZUPiaxaMqeiHkjKXLBxrBMMRaBQCAQkGBwkOBXJrD2cUBA42UA+FCQAEDAAICX6Ak2SSD0IURRWDDAhyfX8BC2NjAwEDE4sShQVNkHcJA16qmqq3eA8MoA8ADkMUMQUFd31nAAm0yYcSsl9qDguXDQNkCFgNCFDOkwjbZBI5MzPnFIV6p9WfeAWOsXEPCATgT2S4tQsJwlX7lajCjAUWCJiCpw5NAVjFEFJTp2AhJUifGCygR8AAlIYYHXVdUEDDiJEGxuyYdKFA4sqXMGPKnEmzps2bEiIAADs=" />');
+				} else {
+//alert("MSIE7");
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 22px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/viewLarger.gif" />');				
+				}				
+				longItemSkuParents[j].insert(vliContainers[j]);
+			}
+//alert("insertion finished");			
+		} else if (abSegment == "BagImageApril13SEGF"){
+					// ********************************** Seg F -- VI (120x160) crop linked to VLI - 520x693 crop *****************************
+//alert("entering Segment f");
+			var viewport = document.viewport.getDimensions(); // Gets the viewport as an object literal
+			var width = viewport.width; // Usable window width
+			var height = viewport.height;
+			var vliImages = new Array();
+			var longItemSkuArr = new Array();
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			
+//alert("got skus");
+			//var vliCSS = new Element ("style", { "type" : "text/css" });
+			//vliCSS.insert(".vliDivContainers { position: absolute; background: #FFFFFF; width: 522px; height: 715px; border: 1px solid black; z-index: 10; } .VLIClickableImage:hover { cursor: pointer; }");
+			//$("mainContent").insert(vliCSS);
+//alert("added css");
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+				
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "120px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "120px";
+				} else {
+					productThumbnailsImgs[j].style.height = "160px";
+				}	
+				longItemSkuParents[j].style.padding = "0 90px 0 0";
+				productNames[j].style.width = "240px";
+//console.info(longItemSkuArr[j]);
+//alert(baseImageURL);
+//console.info(baseImageURL);
+				//var leftOffset = (width/2)-260 +"px";
+				var leftOffset = 0 +"px";
+				//var topOffset = (height/2)-150 +"px";
+				var topOffset = 105 +"px";
+				vliContainers[j] = new Element("div", { "id" : "vliDiv" + j, "style" : "position: absolute; background: #FFFFFF; width: 522px; height: 724px; border: 1px solid black; z-index: 10;" });
+				vliImages[j] = new Element("img", { "id" : "vliImg" + j });
+				vliImages[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/VLI";
+//alert("image " + j + " src: " + vliImages[j].src);				
+				vliImages[j].style.width = "520px";
+				if (brandDomainArr[j] == "athleta.com") {
+					vliImages[j].style.height = "520px";
+					vliContainers[j].style.height = "561px";
+				} else {
+					vliImages[j].style.height = "693px";
+				}
+				// vliImages[j].style.padding = "0 110px 0 0";
+				vliContainers[j].style.left = leftOffset;
+				vliContainers[j].style.top = topOffset;
+				vliContainers[j].style.display = "none";
+				var usersUserAgent = navigator.userAgent;
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:12px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
+				} else {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:12px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/closewindow.png'/></a></p>");
+				}
+				vliContainers[j].insert(vliImages[j]);
+//alert("big image inserted");
+				
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 22px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="data:image/gif;base64,R0lGODlhRgAYALMAAIiIiLu6upmZmSIiIjExMWdnZ1ZWVnh4eA8PD9bW1qWlpe3t7aqqqkRERAAAAP///yH5BAAAAAAALAAAAABGABgAAAT/8MlJq7046827/2AojmRpnmiqrmzrrsLgOITw3spgPwqh3K7Bb5IDthwWJCVgkAAAjcShQRUYAg8D41HYPg47iaAhpjYAZUPiaxaMqeiHkjKXLBxrBMMRaBQCAQkGBwkOBXJrD2cUBA42UA+FCQAEDAAICX6Ak2SSD0IURRWDDAhyfX8BC2NjAwEDE4sShQVNkHcJA16qmqq3eA8MoA8ADkMUMQUFd31nAAm0yYcSsl9qDguXDQNkCFgNCFDOkwjbZBI5MzPnFIV6p9WfeAWOsXEPCATgT2S4tQsJwlX7lajCjAUWCJiCpw5NAVjFEFJTp2AhJUifGCygR8AAlIYYHXVdUEDDiJEGxuyYdKFA4sqXMGPKnEmzps2bEiIAADs=" />');
+				} else {
+//alert("MSIE7");
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 22px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/viewLarger.gif" />');				
+				}				
+				longItemSkuParents[j].insert(vliContainers[j]);
+			}
+//alert("insertion finished");	
+		
+		} else if (abSegment == "BagImageApril13SEGG"){
+					// *************************************** Seg G -- VI 25% smaller (90x120) crop linked to VLI - 520x693 crop **************************************************
+//alert("entering Segment e");
+			var viewport = document.viewport.getDimensions(); // Gets the viewport as an object literal
+			var width = viewport.width; // Usable window width
+			var height = viewport.height;
+			var vliImages = new Array();
+			var longItemSkuArr = new Array();
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			
+//alert("got skus");
+			//var vliCSS = new Element ("style", { "type" : "text/css" });
+			//vliCSS.insert(".vliDivContainers { position: absolute; background: #FFFFFF; width: 522px; height: 715px; border: 1px solid black; z-index: 10; } .VLIClickableImage:hover { cursor: pointer; }");
+			//$("mainContent").insert(vliCSS);
+//alert("added css");
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+				
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "90px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "90px";
+				} else {
+					productThumbnailsImgs[j].style.height = "120px";
+				}	
+				longItemSkuParents[j].style.padding = "0 90px 0 0";
+				productNames[j].style.width = "240px";
+//console.info(longItemSkuArr[j]);
+//alert(baseImageURL);
+//console.info(baseImageURL);
+				//var leftOffset = (width/2)-260 +"px";
+				var leftOffset = 0 +"px";
+				//var topOffset = (height/2)-150 +"px";
+				var topOffset = 105 +"px";
+				vliContainers[j] = new Element("div", { "id" : "vliDiv" + j, "style" : "position: absolute; background: #FFFFFF; width: 522px; height: 724px; border: 1px solid black; z-index: 10;" });
+				vliImages[j] = new Element("img", { "id" : "vliImg" + j });
+				vliImages[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/VLI";
+//alert("image " + j + " src: " + vliImages[j].src);				
+				vliImages[j].style.width = "520px";
+				if (brandDomainArr[j] == "athleta.com") {
+					vliImages[j].style.height = "520px";
+					vliContainers[j].style.height = "561px";
+				} else {
+					vliImages[j].style.height = "693px";
+				}
+				// vliImages[j].style.padding = "0 110px 0 0";
+				vliContainers[j].style.left = leftOffset;
+				vliContainers[j].style.top = topOffset;
+				vliContainers[j].style.display = "none";
+				var usersUserAgent = navigator.userAgent;
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:5px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
+				} else {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:5px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/closewindow.png'/></a></p>");
+				}
+				vliContainers[j].insert(vliImages[j]);
+//alert("big image inserted");
+				
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 10px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="data:image/gif;base64,R0lGODlhRgAYALMAAIiIiLu6upmZmSIiIjExMWdnZ1ZWVnh4eA8PD9bW1qWlpe3t7aqqqkRERAAAAP///yH5BAAAAAAALAAAAABGABgAAAT/8MlJq7046827/2AojmRpnmiqrmzrrsLgOITw3spgPwqh3K7Bb5IDthwWJCVgkAAAjcShQRUYAg8D41HYPg47iaAhpjYAZUPiaxaMqeiHkjKXLBxrBMMRaBQCAQkGBwkOBXJrD2cUBA42UA+FCQAEDAAICX6Ak2SSD0IURRWDDAhyfX8BC2NjAwEDE4sShQVNkHcJA16qmqq3eA8MoA8ADkMUMQUFd31nAAm0yYcSsl9qDguXDQNkCFgNCFDOkwjbZBI5MzPnFIV6p9WfeAWOsXEPCATgT2S4tQsJwlX7lajCjAUWCJiCpw5NAVjFEFJTp2AhJUifGCygR8AAlIYYHXVdUEDDiJEGxuyYdKFA4sqXMGPKnEmzps2bEiIAADs=" />');
+				} else {
+//alert("MSIE7");
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 10px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/viewLarger.gif" />');				
+				}				
+				longItemSkuParents[j].insert(vliContainers[j]);
+			}
+//alert("insertion finished");	
+		} else if (abSegment == "BagImageApril13SEGH"){
+					// ************************************** Seg H -- VI 25% larger (150x200) crop linked to VLI - 520x693 crop ********************************************
+//alert("entering Segment h");
+			var viewport = document.viewport.getDimensions(); // Gets the viewport as an object literal
+			var width = viewport.width; // Usable window width
+			var height = viewport.height;
+			var vliImages = new Array();
+			var longItemSkuArr = new Array();
+			var brandBadgesArr = $("mainContent").select("dd.brandBadge");
+//console.info("brand badge arr length: " + brandBadgesArr.length);
+				// determine brand paths
+			for (z = 0; z < brandBadgesArr.length; z++){
+				brandDomainArr[z] = brandBadgesArr[z].firstChild.alt;
+//console.info("brand: " + brandDomainArr[z]);
+			}
+			for(i = 0; i< longItemSkuParents.length; i++) {
+				var anchorTag = longItemSkuParents[i].select("a");
+				var queryStringData = anchorTag[0].href.toQueryParams();
+				var sku = queryStringData.pid;
+				var styleColorSku = sku.truncate(9,'');
+				longItemSkuArr[i] = styleColorSku;
+			}
+			
+			
+//alert("got skus");
+			//var vliCSS = new Element ("style", { "type" : "text/css" });
+			//vliCSS.insert(".vliDivContainers { position: absolute; background: #FFFFFF; width: 522px; height: 715px; border: 1px solid black; z-index: 10; } .VLIClickableImage:hover { cursor: pointer; }");
+			//$("mainContent").insert(vliCSS);
+//alert("added css");
+			for(j = 0; j<longItemSkuArr.length; j++) {
+				if (brandDomainArr[j] == "gap.com") {
+					if(isProduction) {
+						baseImageURL = "http://www.gap.com";
+					} else {
+						baseImageURL = "http://www.gol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "oldnavy.com") {
+					if(isProduction) {
+						baseImageURL = "http://oldnavy.gap.com";
+					} else {
+						baseImageURL = "http://www.onol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "bananarepublic.com") {
+					if(isProduction) {
+						baseImageURL = "http://bananarepublic.gap.com";
+					} else {
+						baseImageURL = "http://www.brol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "piperlime.com") {
+					if(isProduction) {
+						baseImageURL = "http://piperlime.gap.com";
+					} else {
+						baseImageURL = "http://www.plol.wip.gidapps.com";
+					}
+				} else if (brandDomainArr[j] == "athleta.com") {
+					if(isProduction) {
+						baseImageURL = "http://athleta.gap.com";
+					} else {
+						baseImageURL = "http://www.atol.wip.gidapps.com";
+					}
+				}
+				
+				productThumbnailsImgs[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/QL";
+				productThumbnailsImgs[j].style.width = "150px";
+				if (brandDomainArr[j] == "athleta.com") {
+					productThumbnailsImgs[j].style.height = "150px";
+				} else {
+					productThumbnailsImgs[j].style.height = "200px";
+				}	
+				longItemSkuParents[j].style.padding = "0 120px 0 0";
+				productNames[j].style.width = "200px";
+//console.info(longItemSkuArr[j]);
+//alert(baseImageURL);
+//console.info(baseImageURL);
+				//var leftOffset = (width/2)-260 +"px";
+				var leftOffset = 0 +"px";
+				//var topOffset = (height/2)-150 +"px";
+				var topOffset = 105 +"px";
+				vliContainers[j] = new Element("div", { "id" : "vliDiv" + j, "style" : "position: absolute; background: #FFFFFF; width: 522px; height: 724px; border: 1px solid black; z-index: 10;" });
+				vliImages[j] = new Element("img", { "id" : "vliImg" + j });
+				vliImages[j].src = baseImageURL + "/resources/productImage/v1/" + longItemSkuArr[j] + "/VLI";
+//alert("image " + j + " src: " + vliImages[j].src);				
+				vliImages[j].style.width = "520px";
+				if (brandDomainArr[j] == "athleta.com") {
+					vliImages[j].style.height = "520px";
+					vliContainers[j].style.height = "551px;"
+				} else {
+					vliImages[j].style.height = "693px";
+				}
+				// vliImages[j].style.padding = "0 110px 0 0";
+				vliContainers[j].style.left = leftOffset;
+				vliContainers[j].style.top = topOffset;
+				vliContainers[j].style.display = "none";
+				var usersUserAgent = navigator.userAgent;
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:20px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNqsVL1OwzAQvthOQ9UHqMQAAxITL9TCMzCAKhAwVBVIIMHCM0AfhQWxI2BmZEFt5Th28DmxfUkqBsRF1n334y+2z76kLEtA2R+PK/AHeZzPE9TCE93OjlyAJSwkmdIETP00hn6cj4TJeDQq72/Om4lKA0t5Bxe5BNHLGj4vhydX1cqY6FUTi9xho1bg/UxAiCGR96FN54ZtekmzPmitQfT7nXOhk9bZgYzzuGSKu6kF0V1hMbE7JsMdYkNttzcU480SkT9Ohtu/6khYhHmOTGvphg8ivv586xCjoJ/m4xm3tllVBwM0SAm97atIiZRcRTKfgJqO083dBpm323m+ssxfxtyyo/bjbGsvkMw+XgJGP81DyZffZGX100Dt8fT9OWj0tW1TSKdxEYhDSYzfs6gqxIsSjEhg+vrkYhlwULWdytzh1OYo+1XbLpoXJlbH/pFnoKW0L2LgfEu9tHRZjaXDX5LBALTL5zyLZJSIaiUX8QbmC0i4CPENgbq5kMbb1Cpf+0y0TIFn9iyNrRxjYIxZm5dgc8R+dHl88GsDrAjV2tjF3YNrkMl/dtofAQYADhAte3py9RcAAAAASUVORK5CYII='/></a></p>");	
+				} else {
+					vliContainers[j].insert("<p style='float:right;padding:2px; padding-left:20px;'><a onmouseover='this.style.cursor=\"pointer\"' onmouseout='this.style.cursor=\"default\"' onclick='hideVLIimage(" + j +");'><img src='http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/closewindow.png'/></a></p>");
+				}
+				vliContainers[j].insert(vliImages[j]);
+//alert("big image inserted");
+				
+				if(usersUserAgent.indexOf("MSIE 7") < 0) {
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 35px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="data:image/gif;base64,R0lGODlhRgAYALMAAIiIiLu6upmZmSIiIjExMWdnZ1ZWVnh4eA8PD9bW1qWlpe3t7aqqqkRERAAAAP///yH5BAAAAAAALAAAAABGABgAAAT/8MlJq7046827/2AojmRpnmiqrmzrrsLgOITw3spgPwqh3K7Bb5IDthwWJCVgkAAAjcShQRUYAg8D41HYPg47iaAhpjYAZUPiaxaMqeiHkjKXLBxrBMMRaBQCAQkGBwkOBXJrD2cUBA42UA+FCQAEDAAICX6Ak2SSD0IURRWDDAhyfX8BC2NjAwEDE4sShQVNkHcJA16qmqq3eA8MoA8ADkMUMQUFd31nAAm0yYcSsl9qDguXDQNkCFgNCFDOkwjbZBI5MzPnFIV6p9WfeAWOsXEPCATgT2S4tQsJwlX7lajCjAUWCJiCpw5NAVjFEFJTp2AhJUifGCygR8AAlIYYHXVdUEDDiJEGxuyYdKFA4sqXMGPKnEmzps2bEiIAADs=" />');
+				} else {
+//alert("MSIE7");
+					longItemSkuParents[j].insert('<img style="padding:0 0 0 35px;" onclick=\"showVLIimage(' + longItemSkuArr[j] + ',' + j + ');\" onmouseover="this.style.cursor=\'pointer\'" onmouseout="this.style.cursor=\'default\'" alt="" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/454/708/assets/viewLarger.gif" />');				
+				}				
+				longItemSkuParents[j].insert(vliContainers[j]);
+			}
+//alert("insertion finished");	
+		} else {
+			// do nothing.
+		}
+	
+	}); // end function
+} // end shopping bag "IF"
+</script>
+
+<!-- END Content Item File: /content/0006/454/708/cn6454708.html -->
 
 <!-- END - WCD Sitewide Container 12 -->
 
@@ -7336,31 +8234,6 @@ findDVFStoreLocator();
 	        
 	        
 	            <li class="category" id="categoryNav41118"><a href="http://www.gap.com/customerService/info.do?cid=41118" class="category">Copyright Infringement Claims</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        <li class="spacer" id="categoryNav41211"></li>
-	        
 	      
 	        
 	      

@@ -16,6 +16,15 @@
 //  02/21/2013  MJB Removed MG2 vars not being used
 //  02/26/2013  MJB Don't do content consumed if a wall is popped up
 //  03/01/2013  MJB MG2 pages should write to prop5 and eVar5
+//  03/05/2013  MJB Report errors as event44, eVar44
+//  03/20/2013  MJB Add code for notify.aspx
+//  04/08/2013  MJB Add timing stats and st_login changes
+//  04/09/2013  MJB Reporting meter/no meter in prop67 
+//  04/09/2013  MJB Removed sprop reporting by t_omni_sprops tag
+//  04/09/2013  MJB Set eVar46 to 0 for invalid subscription (was getting null)
+//  04/09/2013  MJB Count side door logins (evar46/evar47)
+//  04/11/2013  MJB Adding logic for calendar mode on prop25
+
 
                 
 
@@ -32,8 +41,8 @@ var modalTries = 0;
 
 var vBounceOff
 var vLoad
-var OfferTrackVars =      "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop17,prop18,prop21,prop22,prop23,prop24,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop44,prop38,prop50,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
-var ContentConsumedVars = "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop14,prop17,prop18,prop21,prop22,prop23,prop24,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop38,prop50,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
+var OfferTrackVars =      "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop17,prop18,prop21,prop22,prop23,prop24,prop25,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop44,prop38,prop50,prop67,prop68,prop69,prop70,prop71,prop72,prop73,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
+var ContentConsumedVars = "prop3,prop4,prop5,prop6,prop7,prop8,prop9,prop10,prop11,prop12,prop13,prop14,prop17,prop18,prop21,prop22,prop23,prop24,prop25,prop26,prop27,prop28,prop40,prop41,prop42,prop43,prop38,prop50,prop67,prop68,prop69,prop70,prop71,prop72,prop73,prop74,prop75,eVar4,eVar28,eVar35,eVar38,eVar39,eVar40,eVar41,eVar42,events";
 
 runPrimary();
 
@@ -53,7 +62,7 @@ function runSecondary() {
     findevents();
     findproducts();
     assignSvars();
-    findsprops();
+//  findsprops();  - removed 04/09/2013 MJB
     findevars();
     if (!t_omni_finished) {
         if (typeof window.omni_pageCode == 'function') { omni_pageCode(); }
@@ -370,8 +379,8 @@ function assignSvars() {
     s.prop42 = String(window.location).replace(/^.*:\/\//, "").substring(0, 100).toLowerCase();
     if (s.prop42) { s.prop42 = formatVariable(s.prop42) };
 
-    s.prop74 = "v01.281212";
-    s.prop75 = "v01.181212";
+    s.prop74 = "v01.281212";   // design version
+    s.prop75 = "v01.040413";   // javascript version
 
     if (typeof st_login != 'undefined') {
         if (typeof st_login.subscriberData != 'undefined') {
@@ -382,7 +391,16 @@ function assignSvars() {
                 }
                 if (typeof st_login.subscriberData.validSubscription != 'undefined') {
                     s.eVar46 = st_login.subscriberData.validSubscription;
-                }     
+                    if (s.eVar46 != '1') {s.eVar46 = '0';}
+                }
+            }
+            /* if there is a failover (can't get to MG2 replace the variables */
+            if (typeof st_login.failover != 'undefined') {
+                if (st_login.failover == '1') {
+                    s.eVar46 = "-1";
+                    s.eVar47 = "0";
+                    s.eVar75 = "00000000";
+                }
             }
         }
     }
@@ -394,6 +412,12 @@ function assignSvars() {
 }
 
 function getMeter() {
+    if (typeof MeterTrace.statusInfo.hasPageMetadata != 'undefined') {
+        s.prop67 = MeterTrace.statusInfo.hasPageMetadata.toString();
+    } else {
+        s.prop67 = "false";
+    }
+    
     if (typeof MeterTrace != 'undefined') {
         if ((typeof MeterTrace.page.timestamp == 'undefined') && (meterTries < 1)) {
             meterTries++;
@@ -413,11 +437,11 @@ function getMeter() {
 function loadMeterValues() {
       
     if ((typeof MeterTrace.conf == 'undefined')) {
-       s.prop21 = "No Meter";
-    } else {
+   } else {
        loadMeterConf();
        loadMeterPage();
        loadMeterErrors();
+       loadTimingStats();
      }
 
     meterLoaded = true;
@@ -455,7 +479,26 @@ function loadMeterPage() {
             }
         }
 
+        if (typeof m.daysToNextExpiration != 'undefined') {
+            if (m.daysToNextExpiration == '-1') {
+                s.prop25 = m.daysToNextExpiration;
+            } else {
+                if (MeterTrace.conf.isRotationMode) {
+                    if (MeterTrace.conf.getRotationPeriod) {
+                        s.prop25 = MeterTrace.conf.getRotationPeriod - m.daysToNextExpiration;
+                        s.prop25 = s.prop25.toString();
+                    } else {
+                        s.prop25 = "N/A Not Rotation Period";
+                    }
+                } else {
+                    // if calendar mode, just use the current date
+                    var myDate = new Date();
+                    s.prop25 = myDate.getDate().toString();
+                }
+            }
+        }
 
+        if (typeof m.itemLevelExclusion != 'undefined') { s.prop45 = m.itemLevelExclusion.toString(); }
         if (typeof m.contentId != 'undefined') {s.prop39 = m.contentId; }
         if (typeof m.excluded != 'undefined') { s.prop40 = m.excluded.toString(); }
         if (typeof m.type != 'undefined') { s.prop43 = m.type; }
@@ -473,7 +516,7 @@ function loadMeterPage() {
 
         // if eVar46 is set (user has logged in and has access to this page, the offer/wall won't display.  So, unset prop48
         if (s.eVar46) {
-            if (s.eVar46 = '1') {
+            if (s.eVar46 == '1') {
                 s.prop48 = "";
             }
         }
@@ -506,6 +549,47 @@ function loadMeterErrors() {
             s.eVar44 = str;
         }
     }
+}
+
+function loadTimingStats() {
+    if ((ContextTimer.getStartTimes) && (ContextTimer.getStopTimes)) {
+        var t1 = ContextTimer.getStartTimes();
+        var t2 = ContextTimer.getStopTimes();
+
+        s.prop33 = t2.MeterCompletion - t1.MeterCompletion;
+        s.prop34 = t2.MeterMessage - t1.MeterMessage;
+        s.prop68 = t2.json2 - t1.json2;
+        s.prop69 = t2.jstorage - t1.jstorage;
+        s.prop70 = t2.page - t1.page;
+        s.prop71 = t2.porthole - t1.porthole;
+        s.prop72 = t2.st_login - t1.st_login;
+        s.prop73 = t2.st_login_config - t1.st_login_config;
+
+        s.prop33 = s.prop33.toFixed(4);
+        s.prop34 = s.prop34.toFixed(4);
+        s.prop68 = s.prop68.toFixed(4);
+        s.prop69 = s.prop69.toFixed(4);
+        s.prop70 = s.prop70.toFixed(4);
+        s.prop71 = s.prop71.toFixed(4);
+        s.prop72 = s.prop72.toFixed(4);
+        s.prop73 = s.prop73.toFixed(4);
+    }
+    else {
+        s.prop33 = "N/A";
+        s.prop34 = "N/A";
+        s.prop68 = "N/A"; ;
+        s.prop69 = "N/A";
+        s.prop70 = "N/A";
+        s.prop71 = "N/A";
+        s.prop72 = "N/A";
+        s.prop73 = "N/A";
+    }
+    if (ContextTimer.getPrecision) {
+        s.prop32 = ContextTimer.getPrecision();
+    }
+    else {
+        s.prop32 = "N/A";
+    }   
 }
 
 //function Stringify (pVar) {
@@ -647,12 +731,16 @@ function loadMG2_Events(pPage) {
     }
 
 
+
+
     if (lPage == 'subscribe1.aspx') {
         s.pagename = "st|content_access|subscribe|info_collection";
+        s.prop3 = "subscriber account lookup|mytimes";
         s.prop5 = "info_collection";
         s.prop7 = "content_access";
         s.prop8 = "subscribe";
         s.prop9 = "info_collection";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
@@ -662,10 +750,12 @@ function loadMG2_Events(pPage) {
          
     if (lPage == 'subscribe.aspx')       {
         s.pagename = "st|content_access|subscribe|info_collection";
+        s.prop3 = "subscriber account lookup|mytimes";
         s.prop5 = "info_collection";
         s.prop7 = "content_access";
         s.prop8 = "subscribe";
         s.prop9 = "info_collection";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
@@ -674,22 +764,26 @@ function loadMG2_Events(pPage) {
      
     if (lPage == 'subscribemain.aspx')   {
         s.pagename = "st|content_access|subscribe|order";
+        s.prop3 = "subscriber order|mytimes";
         s.prop5 = "order";
         s.prop7 = "content_access";
         s.prop8 = "subscribe";
         s.prop9 = "order";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
         s.eVar9 = s.prop9;
     }
      
-    if (lPage == 'register.aspx')        { 
+    if (lPage == 'register.aspx')        {
         s.pagename = "st|account_services|create_account|registration";
+        s.prop3 = "subscriber registration|mytimes";
         s.prop5 = "registration";
         s.prop7 = "account_services";
         s.prop8 = "create_account";
         s.prop9 = "registration";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
@@ -698,10 +792,12 @@ function loadMG2_Events(pPage) {
      
     if (lPage == 'createaccount.aspx')   {
         s.pagename = "st|account_services|create_account|info_collection";
+        s.prop3 = "subscriber registration account lookup|mytimes";
         s.prop5 = "info_collection";
         s.prop7 = "account_services";
         s.prop8 = "create_account";
         s.prop9 = "info_collection";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
@@ -710,22 +806,26 @@ function loadMG2_Events(pPage) {
      
     if (lPage == 'subscribe_confirm.aspx')  {
         s.pagename = "st|content_access|subscribe|confirmation";
+        s.prop3 = "subscriber order confirmation|mytimes";
         s.prop5 = "confirmation";
         s.prop7 = "content_access";
         s.prop8 = "subscribe";
         s.prop9 = "confirmation";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;
         s.eVar9 = s.prop9;
     }
 
-    if (lPage == 'register_confirm.aspx') {
+    if (lPage == 'notify.aspx') {
         s.pagename = "st|account_services|create_account|confirmation";
+        s.prop3 = "subscriber registration confirmation|mytimes";       
         s.prop5 = "confirmation";
         s.prop7 = "account_services";
         s.prop8 = "create_account";
         s.prop9 = "confirmation";
+        s.eVar3 = s.prop3;
         s.eVar5 = s.prop5;
         s.eVar7 = s.prop7;
         s.eVar8 = s.prop8;

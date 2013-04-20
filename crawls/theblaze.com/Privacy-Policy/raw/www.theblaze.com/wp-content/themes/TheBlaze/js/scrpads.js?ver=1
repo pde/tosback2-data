@@ -171,6 +171,39 @@
 					setTimeout(_StartCountDown,1000);
 				}
 			}
+		},
+		new_takeover_ad_close : function(){
+			$('#interstitial').remove();
+		},
+		create_new_takeover_ad : function(takeover,cookieName){
+			takeover = takeover||false;
+			if( !isMobile() && (screen.width > 500) && !isBot() && takeover ){
+				var d = new Date();
+				var ckkie_exp = this.ckkie_exp;
+				ckkie_exp.expires = 3;
+				var entryad_cookie = $.cookie(cookieName);
+				if (entryad_cookie !== 'hide3') {
+					ad_content = '<div id="interstitial"><div id="interstitial-header"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/interstitial-logo.png" class="logo"><span class="timeout">Ad will close in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="jQuery.blzads.new_takeover_ad_close();" class="close_link">Close this ad [x]</a></div></div>';
+					ad_content += '<a target="_blank" href="http://www.theblaze.com/redirect.html?id=516e0a757345389d1d60e9e4"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/ads/041613-carbonite/interstitial.jpg"</div></a>';
+					ad_content += '<img src="http://www.theblaze.com/beacon.gif?id=2&ord=' + $.blzads.ord + '" alt="">';
+					ad_content += '</div>';
+					$('body').prepend(ad_content);
+					takeover_alive = true;
+					takeover_i = 1;
+					function _StartCountDown(){
+						takeover_interval = setInterval(function() {
+							$('#takeover_time').text(15 - takeover_i);
+							if(takeover_i === 15) {
+								clearInterval(takeover_interval);
+								$.blzads.new_takeover_ad_close();
+							}
+							takeover_i+=1;
+						}, 1000);
+						$.cookie(cookieName, 'hide3',ckkie_exp);
+					}
+					setTimeout(_StartCountDown,1000);
+				}
+			}
 		}
 	};
 	$.blzads.init(); 

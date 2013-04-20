@@ -14,7 +14,8 @@ if (!window.bam) {
 		ModuleError, RequireError,
 		everythingAfterLastSlash = /\/([^\/]*)$/,
 		requireVariableRegExp = /^function([\s]+)?\(([\s]+)?([\w]+)/,
-		commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
+		commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
+		buildRegExp = /^\/?(baseball|bridge)\//;
 
 	/* Modules path - home path for all the modules */
 	var moduleHome = "shared/scripts/bam/";
@@ -144,7 +145,10 @@ if (!window.bam) {
 	function getNameAndVersionFromPath( path ) {
 		var version = +path.match(versionRegex);
 		var name;
-		if (version) {
+		if (buildRegExp.test(path)) {
+			version = 1;
+			name = path;
+		} else if (version) {
 			if (path.substr(0, moduleHome.length) === moduleHome) {
 				// shared/scripts/bam/data/1.0/data -> data
 				// shared/scripts/bam/data/tixdata/0.1/tixdata -> data.tixdata
@@ -420,6 +424,9 @@ if (!window.bam) {
 				//Get a path to module (ex.: /shared/scripts/bam/module/1.0/module) ".js" is ommited
 				scriptUrl = module.path;
 				//Load file asynchronously
+				if (buildRegExp.test(scriptUrl)) {
+					scriptUrl = '/shared/builds'+scriptUrl;
+				}
 				unregistered.push(scriptUrl);
 				remaining.push(module);
 			}
@@ -533,7 +540,7 @@ if (!window.bam) {
 	 * Defines a commonjs module, loads its dependencies, and registers it.
 	 */
 	bam.define = function(identifier, dependencies, moduleConstructor) {
-
+		
 		if (typeof identifier !== 'string') {
 			throw new TypeError('Module identifiers must be a string');
 		}

@@ -349,7 +349,7 @@ var noneIndex;
 function s_doPlugins(s) {
 
 		/*s_code date*/
-		s.prop48="2/19/2013";
+		s.prop48="3/13/2013";
                 
 		if ((!s.prop3) && (!s.eVar6)) {
             s.eVar6 = s.prop3 = "corporate";
@@ -391,7 +391,7 @@ function s_doPlugins(s) {
 			var modId = modPath[1];			
 			s.pageName = "rent > " + modId;
 		}
-		if (typeof s.events !== "undefined" && s.inList("event66",s.events) ){		
+		if (typeof s.events !== "undefined" && s.inList("event66",s.events) ){
 			var modPath2 = s.pageName.split(" > "); 
 			var modId2 = modPath2[1];	
 			s.eVar7 = s.eVar7 + "|" + modId2;
@@ -432,6 +432,14 @@ function s_doPlugins(s) {
 	}
 	s.eVar20 = s.getDaysSinceLastVisit('s_lastvisit');
 
+	/* Call to get time to complete Plugin */
+	if(s.events){
+		if(s.events.indexOf('event23')>-1)
+			s.prop13='start';
+	if(s.events.indexOf('purchase')>-1)
+		s.prop13='stop';
+		s.prop13=s.getTimeToComplete(s.prop13,'ttc',0);
+	}
 	
 	/* Getting the Off-site campaign code */
 	if (!s.campaign)s.campaign = s.getQueryParam('cid');
@@ -474,16 +482,6 @@ function s_doPlugins(s) {
 
 	/* Call to New vs. Repeat Visitors Plugin */
 	s.eVar22 = s.getNewRepeat();
-	
-	/* Call to Time Parting Plugin*/
-	s.prop30 = s.getTimeParting('h', '-5'); // Set hour
-	s.prop31 = s.getTimeParting('d', '-5'); // Set day
-	s.prop32 = s.getTimeParting('w', '-5'); // set weekend/weekday
-	//copy to eVars
-	if (s.prop30) { s.eVar30 = s.prop30 }
-	if (s.prop31) { s.eVar31 = s.prop31 }
-	if (s.prop32) { s.eVar32 = s.prop32 }
-
 
 	/* Track the pathing by Returning Visitors */
 	if (s.eVar22 == 'Repeat')
@@ -601,6 +599,20 @@ function s_doPlugins(s) {
 	
 	/*Get and persist 75*/
 	s.eVar75=s.getAndPersistValue(s.eVar75,'s_v75',365);
+	
+	/*Live Person Measurement*/
+	if(s.inList("event40",s.events)){
+		var e = new Date();
+		e.setTime(e.getTime()+86400000);
+		s.c_w('sc_liveperson','true', e);
+	}
+	
+	if(s.inList("purchase",s.events)){
+		if(s.c_r('sc_liveperson')){
+			s.prop73=s.purchaseID;
+			s.c_w('sc_liveperson','',-1);
+		}
+	}
 
 	/*Lowercasing Variables*/
 	for(n in s) {
@@ -629,9 +641,11 @@ function s_doPlugins(s) {
 	if (s.hier1) s.hier1=s.hier1.toLowerCase();
 	if (s.state) s.state=s.state.toLowerCase();
 	if (s.products) s.products=s.products.toLowerCase();
+	if(s.purchaseID) s.transactionID = s.purchaseID;
 }
 
 s.doPlugins = s_doPlugins
+
         
 
         

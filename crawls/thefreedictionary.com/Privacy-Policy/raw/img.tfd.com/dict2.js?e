@@ -5,7 +5,7 @@ var Domain='thefreedictionary.com';
 var Sources,sources=[];
 var AdResults=0;var OvResults=0;var OResults='';var GResults='';var IsG=false;var IsMSN=false;IsY=false;
 var AdsNum = 1, MoreAds=1, Ads = [], RAd,  kw = '', kw2 = '', g_kw = 1, CurrentAd = 0, CurrentRad = 0, AdBlocks = [];
-var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";google_color_url = google_color_link = "#1D4994";google_color_text = "#000000";google_color_bg = "#FFFFFF";
+var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";google_color_url = google_color_link =color_link= "#1D4994";google_color_text = "#000000";google_color_bg = "#FFFFFF";g_cf=0;
 var google_afs_client = "pub-2694630391511205", afs_pageOptions = null, ch_c="8922314704";
 google_num_radlinks = '10';google_max_radlink_len = '17';
 var ImgAd='';
@@ -90,7 +90,7 @@ var Langs ={
 'ur':['Urdu','اردو',''],
 'vi':['Vietnamese','Tiếng Việt','']
 }
-function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 1)}
+function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 10)}
 function wiki(){srp('wiki')}
 function foldoc(){dw('<br><div class=brand_copy>This article is provided by FOLDOC - Free Online Dictionary of Computing (<a target=_blank href="http:/'+'/foldoc.org">foldoc.org</a>)</div><br>');srp('foldoc')};
 function cde(){dw('<br><div class=brand_copy>Computer Desktop Encyclopedia copyright ©1981-2013 by <a target=_blank href=http:/'+'/www.computerlanguage.com/tfd.html>The Computer Language Company Inc</a>. All Right reserved. THIS DEFINITION IS FOR PERSONAL USE ONLY. All other reproduction is strictly prohibited without permission from the publisher.</div><br>');srp('cde')}
@@ -295,8 +295,13 @@ function write_ad(ad,pos) {
  	return res +'</div>';
  }
  function write_ads(AdsNum,Br,pos) {
+ 	if(g_cf&&pos==10) {
+ 		google_ad_client=g_client;google_color_url=google_color_link=color_link;google_override_format=true;google_ad_width=300;google_ad_height=60;
+ 		dw('<div style="width:300px;height:60px;margin:6px 0 3px 0"><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></s'+'cript></div>');
+ 		g_cf-=1;return;
+ 	};
  	if(!IsMob&&ads_blocked&&google_kw)
- 		dw('<div id="alt_ad_'+pos+'"></div>');
+ 		if (!ById('alt_ad_'+pos)) dw('<div id="alt_ad_'+pos+'"></div>');
  	else if(afs_pageOptions) {
  		dw('<div id="afs_adcontainer'+AdBlocks.length+'"></div>');
  		if(Br) dw('<br clear=all>');

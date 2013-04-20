@@ -35,9 +35,11 @@ jQuery(document).ready(function() {
         jQuery("#seo-header-wrap > dd").removeAttr('style');
         jQuery(".main-nav-wraps").dequeue().hide();
         if(jQuery(this).hasClass("shopping")){
-            jQuery("#main-nav-shopping").css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left-192});
+            jQuery("#main-nav-shopping").css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left-193.5});
         }else if(jQuery(this).hasClass("health")){
-            jQuery("#main-nav-health").css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left-208});
+            jQuery("#main-nav-health").css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left-216});
+        }else if(jQuery(this).hasClass("money")){
+            jQuery("#main-nav-money").css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left-214});
         } else {
             jQuery("#main-nav-" + this.className.split(' ')[0]).css({'position' : 'absolute','top' : jQuery(this).position().top+40,'left' : jQuery(this).position().left});
         }
@@ -56,3 +58,4 @@ jQuery(document).ready(function() {
         jQuery(".main-nav-wraps").dequeue().hide();
     })
 });
+

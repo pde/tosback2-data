@@ -9,14 +9,14 @@
         <link rel="shortcut icon" href="content/images/favicon.ico" />
         
         <script type="text/javascript">
-            // Defect #1057 - Only load <meta /> for viewport for non-iPad browser.
+            // Only load <meta /> for viewport for non-iPad browser.
             // This has to be loaded immediately but at this point we don't have jQuery loaded.
             // Hence the old-school DOM manipulation.
             if (navigator.userAgent && navigator.userAgent.match(/iPad/i) == null)
             {
                 var node = document.createElement("meta");
                 node.setAttribute('name', 'viewport');
-                node.setAttribute('content', 'initial-scale=1, width=device-width, maximum-scale=1');
+                node.setAttribute('content', 'initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no');
                 document.getElementsByTagName('head')[0].appendChild(node);
             }
         </script>
@@ -28,7 +28,27 @@
 
     <meta name="description" content="Redbox pledges to be responsible when gathering your personal information and to protect your privacy. This Privacy Notice should answer your questions about the sources and kinds of information we collect, how we use it, when it may be shared with others, and how we safeguard its confidentiality and security. Visit Redbox.com to learn more." />
     <meta name="keywords" content="Redbox privacy policy, Redbox privacy, privacy policy, new movie release policies, Redbox secure payment, Redbox customer privacy policy, personal information, selling information, privacy notification" />
-    <link href="Content/1_global.css" rel="stylesheet" type="text/css" /><link href="Content/2_core.css" rel="stylesheet" type="text/css" /><script src="gen2.30/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.30/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.30/scripts/mbox.js" type="text/javascript"></script>
+    <link href="Content/1_global.css" rel="stylesheet" type="text/css" /><link href="Content/2_core.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">   
+            on_mobile = false;
+            if( /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+                var $ = document; // shortcut
+                var cssId = 'myCss';  // you could encode the css path itself to generate id..
+                if (!$.getElementById(cssId))
+                {
+                    var head  = $.getElementsByTagName('head')[0];
+                    var link  = $.createElement('link');
+                    link.id   = cssId;
+                    link.rel  = 'stylesheet';
+                    link.type = 'text/css';
+                    link.href = '/Content/3_responsive.css';
+                    link.media = 'all';
+                    head.appendChild(link);
+                }
+                on_mobile = true;
+            }
+        </script>
+        <script src="gen2.31/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.31/scripts/idangerous.swiper-1.8.min.js" type="text/javascript"></script><script src="gen2.31/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.31/scripts/mbox.js" type="text/javascript"></script>
 
         <script type="text/javascript">            // script for google analytics
             var _gaq = _gaq || [];
@@ -319,27 +339,26 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
 
 <div id="buttonset0_Widget">
     
-    <div id="buttonset0_BlurayDialog" class="rb-dialog" style="margin: 0px; padding: 0 5px 0; overflow: visible;">
-        <h2 class="red" style="text-align: center; margin-top: 10px;">
+    <div id="buttonset0_BlurayDialog" class="rb-dialog blu-pop-dialog">
+        <h2 class="red">
             You&#39;ve selected a Blu-ray Disc<sup>(R)</sup>
         </h2>
-        <div class="ui-helper-clearfix" style="margin: 10px 0 10px 0;">
-            <img src="Content/images/bluray-alert-logo.png"
-            style="float: left; margin-right: 20px;" />
+        <div class="ui-helper-clearfix blu-pop-content">
+            <img src="Content/images/bluray-alert-logo.png" />
             <h5 class="red">
                 </h5>
                 <p>Blu-ray&trade; Discs won't play on standard DVD players. If your player's compatible, it'll most likely have a Blu-ray&trade; logo on it. You can learn more about Blu-ray&trade; <a href= "https://redbox.custhelp.com/app/answers/cat/c/4" style="color:#1AA6FF;">here</a>.</p>
         </div>
-        <h5 style="margin: 20px 0 20px 0;">Are you sure you want to rent a Blu-ray movie?</h5>
+        <h5>Are you sure you want to rent a Blu-ray movie?</h5>
         <div class="modal-footer">
             <table style="width: 100%;">
                 <tr>
                     <td style="text-align: left;">
-                        <label style="float: right; clear: right; margin: 8px 25px 0px 0px;" class="form rb-input-checkbox">
+                        <label class="form rb-input-checkbox">
                         <input type="checkbox" class="rb-dialog-disabled" id="buttonset0_BlurayToggle"/>&nbsp;&nbsp;Don't show this message again</label>
                     </td>
                     <td>
-                        <div class="modal-button" style="float: right; margin-right: 10px;">
+                        <div class="modal-button">
                             <a id="buttonset0_BlurayYes" class="jqbutton rb-red rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-yes" role="button" aria-disabled="false"><span class="ui-button-text"><span style="line-height:1;">YES</span></span></a>
                             <a id="buttonset0_BlurayNo" class="jqbutton rb-dkgray rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-no" role="button" aria-disabled="false"><span class="ui-button-text"><span style="line-height:1;">NO THANKS</span></span></a>
                         </div>
@@ -434,6 +453,7 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
     </div>
 
 </div>
+
 
         <div class="content-top-pane">
             <div class="center">
@@ -703,6 +723,8 @@ Redbox Automated Retail LLC | 1 Tower Lane, Suite 900 | Oakbrook Terrace, IL 601
                 <script type="text/javascript">
                     var s_account = 'rboxmainprod';
                     var s_linkInternalFilters = 'javascript:,redbox.com';
+
+                    rb.util.on_mobile = on_mobile;
                     
                     rb.rec.Omn.Enable = true;
                     rb.rec.DART.Enable = true;
@@ -710,6 +732,7 @@ Redbox Automated Retail LLC | 1 Tower Lane, Suite 900 | Oakbrook Terrace, IL 601
                     rb.util.IsAuthenticated = false;
                     rb.util.IsDigitalAvailable = true;
                     rb.util.IsTicketsAvailable = true;
+                    rb.util.EnableHivePromotion = true;
 
                     
                     rb.util.UserExperience = 'Anonymous';
@@ -720,7 +743,7 @@ Redbox Automated Retail LLC | 1 Tower Lane, Suite 900 | Oakbrook Terrace, IL 601
                     rb.util.HasPCN = false;
                     rb.util.HasDSA = false;
                 </script>
-        <script src="gen2.30/scripts/s_code.js" type="text/javascript"></script><script src="gen2.30/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
+        <script src="gen2.31/scripts/s_code.js" type="text/javascript"></script><script src="gen2.31/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
 rb.app.store.init({ selectedStore: null });
 rb.app.cart.init({ session: {"storeRef":null,"items":[]}, maxItems: 5, cartUrl: "https://www.redbox.com/cart" });
 rb.app.user.init({ loggedIn: false, loginUrl: "https://www.redbox.com/register?ReturnUrl=http%3a%2f%2fwww.redbox.com%2fprivacy" });
@@ -737,7 +760,7 @@ rb.component.register('buttonset0_StorePicker', rb.widget.storepicker, {"getSugg
 rb.rec.Omn.RecordPage('Help', 'Privacy Policy');
 rb.component.register('footer0', rb.widget.footer, {"urlPath":"/","type":"footer","id":"footer0","clientText":{}});});</script>
 
-        <!-- 18 -->
+        <!-- 19 -->
 
         <script type="text/javascript">            // script for google analiytics
             (function ()
@@ -752,8 +775,12 @@ rb.component.register('footer0', rb.widget.footer, {"urlPath":"/","type":"footer
             // Responsive setup
             $(document).ready(function ()
             {
-                rb.navigation.init();
-                rb.enquire.init();
+                rb.miniheader.init();
+                if (rb.util.on_mobile == true) 
+                {
+                    rb.navigation.init();
+                    rb.enquire.init();
+                }
             });
         </script>
 

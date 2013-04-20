@@ -64,7 +64,7 @@ if(optSelector.url!=''){
 </script>
 
 
-<!--END OPTIMOST GLOBAL CODE--></span><link href="../../../Styles/Responsive/Components/Navigation/Navigation.min.css" type="text/css" rel="stylesheet" /><link href="../../../Styles/Responsive/Master.min.css%3Fv=20130312.css" type="text/css" rel="stylesheet" /><link href="../../../Services/HttpContentCombiner.ashx%3Fs=CommonCSS&amp;t=text%252Fcss&amp;v=20130312.css" type="text/css" rel="stylesheet" /><link rel="search" href="http://www.bettycrocker.com/BettyOpenSearch.xml" type="application/opensearchdescription+xml" title="BettyCrocker.com" /><meta name="KEYWORDS" content="cooking recipes, family recipes, food recipes, recipes, baking recipes, cooking tips, baking tips" /><meta name="DESCRIPTION" content="Recipes, cooking ideas, baking tips, and more from Betty Crocker.com" /><meta name="TITLE" content="c404 - Betty Crocker" /><meta property="og:site_name" content="bettycrocker.com" /><meta property="fb:app_id" content="124758810890523" /><link rel="canonical" href="http://www.bettycrocker.com/images/layout/featurecontrols/hpimagerotator.png" /><!--ClickTale-Head start -->
+<!--END OPTIMOST GLOBAL CODE--></span><link href="../../../Styles/Responsive/Components/Navigation/Navigation.min.css" type="text/css" rel="stylesheet" /><link href="../../../Styles/Responsive/Master.min.css%3Fv=20130409.css" type="text/css" rel="stylesheet" /><link href="../../../Services/HttpContentCombiner.ashx%3Fs=CommonCSS&amp;t=text%252Fcss&amp;v=20130409.css" type="text/css" rel="stylesheet" /><link rel="search" href="http://www.bettycrocker.com/BettyOpenSearch.xml" type="application/opensearchdescription+xml" title="BettyCrocker.com" /><meta name="KEYWORDS" content="cooking recipes, family recipes, food recipes, recipes, baking recipes, cooking tips, baking tips" /><meta name="DESCRIPTION" content="Recipes, cooking ideas, baking tips, and more from Betty Crocker.com" /><meta name="TITLE" content="c404 - Betty Crocker" /><meta property="og:site_name" content="bettycrocker.com" /><meta property="fb:app_id" content="124758810890523" /><link rel="canonical" href="http://www.bettycrocker.com/images/layout/featurecontrols/hpimagerotator.png" /><!--ClickTale-Head start -->
 <!-- ClickTaleExcludeBlock -->
 <script type="text/javascript">
 </script>
@@ -105,7 +105,7 @@ function __doPostBack(eventTarget, eventArgument) {
 </script>
 
 
-<script src="http://www.bettycrocker.com/WebResource.axd?d=JGloxNJFiKkINKZqoKmglgcA9hjUc2WofURrqVEtoVOnby9ESmiepUPHaz_hmBg_viwbClcY9wpWCoI7z4YQ51trveE1&amp;t=634968352673807765" type="text/javascript"></script>
+<script src="http://www.bettycrocker.com/WebResource.axd?d=JGloxNJFiKkINKZqoKmglgcA9hjUc2WofURrqVEtoVOnby9ESmiepUPHaz_hmBg_viwbClcY9wpWCoI7z4YQ51trveE1&amp;t=634968319577939229" type="text/javascript"></script>
 
 
 <script src="../../../../ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
@@ -114,7 +114,7 @@ function __doPostBack(eventTarget, eventArgument) {
 <script src="../../../../ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../../../Shared/Navigation/Javascript/jquery.hoverIntent.minified.js" type="text/javascript"></script>
 <script src="../../../Scripts/Navigation.js%3Fv=20130313" type="text/javascript"></script>
-<script src="../../../Services/HttpContentCombiner.ashx%3Fs=CommonJS&amp;t=text%252Fjavascript&amp;v=20130312" type="text/javascript"></script>
+<script src="../../../Services/HttpContentCombiner.ashx%3Fs=CommonJS&amp;t=text%252Fjavascript&amp;v=20130409" type="text/javascript"></script>
 <script src="../../../scripts/PointRollAnonymous.js" type="text/javascript"></script>
 <script src="../../../Shared/Javascript/UnicaTag.js" type="text/javascript"></script>
 <script src="../../../Shared/StarterKit/Javascript/marintag.js" type="text/javascript"></script>
@@ -265,6 +265,7 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
         var params = {
             esrc: registrationSource || 15846,
             returnUrl: destinationUrl || document.location.href
+            //isRegistrationFirstStep: false
         };
         if (regAction) {
             params.RegAction = regAction;
@@ -273,58 +274,42 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
         jQuery('#' + registrationParamsHiddenFieldId).val(paramsString);
     }
 
-    function openLogin(registrationSource, message, destinationUrl, modalAction, regAction) {
-        var mobileDomain = function () {
-            switch (document.domain) {
-                case 'dev.bettycrocker.com': 
-                    return 'dev.m.bettycrocker.com';
-                case 'd.bettycrocker.com': 
-                    return 'd.m.bettycrocker.com';
-                case 'q.bettycrocker.com': 
-                    return 'q.m.bettycrocker.com';
-                default:
-                    return 'm.bettycrocker.com';
-            }
+    function openLogInModal(registrationSource, destinationUrl, regAction) {
+
+
+    }
+
+
+    function openLogin(registrationSource, message, destinationUrl, modalAction, regAction) {       
+            var params = {
+            esrc: registrationSource || 15846,
+            returnUrl: destinationUrl || document.location.href,
+           // isRegistrationFirstStep: false
+            isRegistrationFirstStep: true
         };
-
-        // If the window isn't wide enough to show the login modal, redirect to the m.bettycrocker.com login page.
-        // TODO: Remove this function once the login modal is made responsive
-        if (document.documentElement.clientWidth < 1000) {
-            // Redirect to current page if no URL was specified
-            destinationUrl = destinationUrl || window.location.href;
-
-            // If the destination URL is a relative path, make it absolute to www.bettycrocker.com so they don't get stuck on m.bettycrocker.com
-            if (destinationUrl[0] === '/') {
-                destinationUrl = document.location.protocol + "//" + document.domain + destinationUrl;
-            }
-
-            // Include the destination URL in the query string of the login page so it knows where to redirect back to
-            var fullPageLoginUrl = 'https://' + mobileDomain() + '/member-login?returnUrl=' + destinationUrl;
-
-            // Include the ESRC code in the query string of the login page
-            if (registrationSource) {
-                fullPageLoginUrl += '&esrc=' + registrationSource;
-            }
-
-            // Do the redirect
-            window.location.href = fullPageLoginUrl;
-            return;
+        if (regAction) {
+            params.RegAction = regAction;
         }
+        
+        reg.userRegistration.openRegistrationDialog(params);
+    }
 
-        saveLoginMessage(message);
-        saveRegistrationParameters(registrationSource, destinationUrl, regAction);
-
-        if (typeof (destinationUrl) != "undefined" && destinationUrl !== null) {
-            jQuery("#" + destinationUrlId).val(destinationUrl);
+    function openLoginWLogInFlow(registrationSource, message, destinationUrl, modalAction, regAction) {       
+        var params = {
+            esrc: registrationSource || 15846,
+            returnUrl: destinationUrl || document.location.href,
+            isRegistrationFirstStep: false
+        };
+        if (regAction) {
+            params.RegAction = regAction;
         }
-        if (typeof (modalAction) != "undefined" && modalAction !== null) {
-            jQuery("#" + loginActionHiddenId).val(modalAction);        
-        }
-        OpenVariableDialog('Login_LoginDialog');
+        
+        reg.userRegistration.openRegistrationDialog(params);
     }
 
     function closeLogin() {
-        CloseDialog('Login_LoginDialog', false);       
+        reg.userRegistration.closeRegistartionDialog(params);
+            
     }
           
     var registrationParamsHiddenFieldId = 'Login_RegistrationParamsHiddenField';
@@ -341,15 +326,18 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
     var headLineId = 'Login_lblHeadline';
     var selectedLoginWidget = 'ModalRegistrationDefault';
 
-    jQuery(document).ready(function ($) {
-        $('#comeOnIn').click(function(e) {
-            e.preventDefault();
-            $(this).closest('.ui-dialog-content').dialog('close');
-            var paramsString = $('#' + registrationParamsHiddenFieldId).val();
-            var params = $.parseJSON(paramsString) || {};
-            reg.userRegistration.openRegistrationDialog(params);
-        });
-    });
+    //jQuery(document).ready(function ($) {
+    //    $("a.modalPageJoinLink").click(function (e) {
+    //    //$('#comeOnIn').click(function(e) {
+    //        e.preventDefault();
+    //        $(this).closest('.ui-dialog-content').dialog('close');
+    //        var paramsString = $('#' + registrationParamsHiddenFieldId).val();
+    //        var params = $.parseJSON(paramsString) || {};
+    //        reg.userRegistration.openRegistrationDialog(params);
+    //    });
+    //});
+
+
 
 </script>
 <input name="Login$RegistrationParamsHiddenField" type="text" id="Login_RegistrationParamsHiddenField" style="display:none;" />
@@ -500,20 +488,26 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
         updateRecipeBoxCountWithValue(result);
     }
 
+    
+
+
+  
+
     jQuery(document).ready(function ($) {
 
         var mobileDomain = function () {
             switch (document.domain) {
-                case 'dev.bettycrocker.com':
+                case 'dev.bettycrocker.com': 
                     return 'dev.m.bettycrocker.com';
-                case 'd.bettycrocker.com':
+                case 'd.bettycrocker.com': 
                     return 'd.m.bettycrocker.com';
-                case 'q.bettycrocker.com':
+                case 'q.bettycrocker.com': 
                     return 'q.m.bettycrocker.com';
                 default:
                     return 'm.bettycrocker.com';
             }
         };
+
 
         $("a.uwLogInLink").click(function (e) {
             e.preventDefault();
@@ -522,12 +516,16 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
             var data = $(this).data("login");
 
             if ($.isPlainObject(data)) {
-                openLogin(data.RegistrationSourceId, null, null, null, 'HeaderLogIn');
+                openLoginWLogInFlow(data.RegistrationSourceId, null, null, null, 'HeaderLogIn');
             }
             else {
-                openLogin(null, null, null, null, 'HeaderLogIn');
+                openLoginWLogInFlow(null, null, null, null, 'HeaderLogIn');
             }
         });
+
+       
+
+
 
         $('a.recipeBoxLink, a[id$="RecipeBoxMobileLink"]').click(function (e) {
 
@@ -538,22 +536,92 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
             }
         });
 
-        // TODO: Remove once registration is responsive
-        $('a[id$="UserStateWidget_SignUpLink"]').click(function (e) {
-            if (document.documentElement.clientWidth < 1000) {
-                e.preventDefault();
-                window.location.href = 'http://' + mobileDomain() + '/register/joinus?esrc=16690&returnUrl=' + window.location.href;
-            }
-        });
-        // TODO: Remove once registration is responsive
-        $('.membershipArea .subscribeLink').click(function (e) {
-            if (document.documentElement.clientWidth < 1000) {
-                e.preventDefault();
-                var destinationUrl = document.location.protocol + "//" + document.domain + "/profile/subscriptions";
-                window.location.href = 'http://' + mobileDomain() + '/register/joinus?esrc=16690&returnUrl=' + destinationUrl;
-            }
-        });
+
+
+
+       // function from the internets: http://jsfiddle.net/tF8TU/2/
+        //$(function () {
+        //    $(window).resize(function () {
+        //        // get the screen height and width  
+        //        var maskHeight = $(window).height();
+        //        var maskWidth = $(window).width();
+
+                
+        //        // calculate the values for center alignment
+        //        var dialogTop = (maskHeight - $('.registrationDialogClass').height()) /2;
+        //        var dialogLeft = (maskWidth - $('.registrationDialogClass').width()) / 2;
+
+        //        var dialogResizeHeight = (maskHeight * 0.6);
+        //        var dialogResizeWidth = (maskWidth * 0.8)
+
+        //        // assign values to the overlay and dialog box                
+        //        $('.registrationDialogClass').css({ top: dialogTop, left: dialogLeft, position: "fixed", width: dialogResizeWidth, height: dialogResizeHeight });
+        //        $('.registrationDialogContainer').css({ width: dialogResizeWidth, height: dialogResizeHeight });
+        //    }).resize();
+        //});
+
+
+        if ($.browser.msie && navigator.userAgent.indexOf('Trident') !== -1) {
+            /* IE 8  specific code goes here. */
+        }
+        else {
+            /* Begin Resize modal window */
+            (function ($, window) {
+
+                $(function () {
+                    var sizeXLarge = 970;
+                    var lastAppliedSize = 0;
+
+                    $(window).resize(function () {
+                        resizeIframe();
+                    });
+
+                    var modalIframeLoad = $(".registrationDialogContainer iframe");
+
+                    modalIframeLoad.load(function () {
+                        resizeIframe();
+                    });
+
+                    function resizeIframe() {
+
+                        var $modalWindow = $(".registrationDialogClass");
+                        if ($modalWindow.length > 0) {
+                            var $modalIframe = $modalWindow.find("iframe");
+                            var modalIframeWidth = $modalIframe.width();
+                            var windowWidth = $(window).width();
+
+                            if (lastAppliedSize !== windowWidth) {
+
+                                var newModalWidth = modalIframeWidth;
+
+                                if (windowWidth < (sizeXLarge + 40)) {
+                                    newModalWidth = windowWidth - 40;
+                                } else {
+                                    newModalWidth = sizeXLarge;
+                                }
+
+
+
+                                var marginwidth = Math.round((windowWidth - newModalWidth) / 2);
+
+
+                                $modalWindow.css("left", marginwidth + "px");
+                                $modalIframe.css("left", marginwidth + "px");
+
+                                $modalIframe.css("width", newModalWidth + "px ");
+                                $modalWindow.css("width", "auto");
+
+                                lastAppliedSize = windowWidth;
+                            }
+                        }
+                    }
+                });
+            })(jQuery, window);
+        }
+
     });
+
+    
 </script>
 
 
@@ -564,7 +632,8 @@ Sys.WebForms.PageRequestManager._initialize('smBettyCrocker', 'mainform', [], []
                 <span class="divider">&nbsp;|&nbsp;</span>
                 <a id="ctl09_UserStateWidget_MemberExclusiveLink" class="subscribeLink" href="http://www.bettycrocker.com/registration/fullpage?esrc=16689&amp;RegAction=HeaderSubscribe&amp;returnUrl=%2fprofile%2fsubscriptions">Subscribe to newsletters</a> 
                 <span class="divider subscribeLink">&nbsp;|&nbsp;</span>
-                <a id="ctl09_UserStateWidget_LogInLink" class="uwLogInLink" href="HPImageRotator.png.html#" data-login="{&quot;RegistrationSourceId&quot;:15846}">Log in</a>
+             <a id="ctl09_UserStateWidget_LogInLink" class="uwLogInLink" href="HPImageRotator.png.html#" data-login="{&quot;RegistrationSourceId&quot;:15846}">Log in</a>
+                
             </div>
             <span class="avatar">
                 <img src="../../../images/Profile/logoPublicProfileSmall.jpg"/>
@@ -832,14 +901,11 @@ jQuery(document).ready(function() {
 	setTimeout('fixVideoPlayerLocation();', 20000);
 });
 
+// JMV: Fix for duplicate SearchNx result lists. Remove in May.
+jQuery(document).ready(function() {
+  jQuery('.searchNxResults:not(:first)').remove();
+});
 </script>
-
-<!-- Remove after April release -->
-<style>
-.collection .introduction { margin-left: 15px; }
-.mhpEditorsPick .modImage a { display: block; width: 340px; }
-.mhpEditorsPick .modImage a img { width: auto; }
-</style>
     </div>
 </div>
 
@@ -847,23 +913,23 @@ jQuery(document).ready(function() {
             <ul>
     
         <li>
-            <a id="ctl11_repeaterBottomLinks_ctl01_lnkBottomFooter" class="blueLink first" href="http://www.facebook.com/bettycrocker" target="_blank"><img id="ctl11_repeaterBottomLinks_ctl01_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_facebook.png" style="border-width:0px;" /><span id="ctl11_repeaterBottomLinks_ctl01_lblBottomFooter">Follow us on Facebook</span></a>
+            <a id="ctl10_repeaterBottomLinks_ctl01_lnkBottomFooter" class="blueLink first" href="http://www.facebook.com/bettycrocker" target="_blank"><img id="ctl10_repeaterBottomLinks_ctl01_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_facebook.png" style="border-width:0px;" /><span id="ctl10_repeaterBottomLinks_ctl01_lblBottomFooter">Follow us on Facebook</span></a>
         </li>
     
         <li>
-            <a id="ctl11_repeaterBottomLinks_ctl02_lnkBottomFooter" class="blueLink" href="http://www.youtube.com/user/BettyCrockerTV" target="_blank"><img id="ctl11_repeaterBottomLinks_ctl02_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_youtube.png" style="border-width:0px;" /><span id="ctl11_repeaterBottomLinks_ctl02_lblBottomFooter">Follow us on YouTube</span></a>
+            <a id="ctl10_repeaterBottomLinks_ctl02_lnkBottomFooter" class="blueLink" href="http://www.youtube.com/user/BettyCrockerTV" target="_blank"><img id="ctl10_repeaterBottomLinks_ctl02_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_youtube.png" style="border-width:0px;" /><span id="ctl10_repeaterBottomLinks_ctl02_lblBottomFooter">Follow us on YouTube</span></a>
         </li>
     
         <li>
-            <a id="ctl11_repeaterBottomLinks_ctl03_lnkBottomFooter" class="blueLink" href="http://www.twitter.com/bettycrocker" target="_blank"><img id="ctl11_repeaterBottomLinks_ctl03_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_twitter.png" style="border-width:0px;" /><span id="ctl11_repeaterBottomLinks_ctl03_lblBottomFooter">Follow us on Twitter</span></a>
+            <a id="ctl10_repeaterBottomLinks_ctl03_lnkBottomFooter" class="blueLink" href="http://www.twitter.com/bettycrocker" target="_blank"><img id="ctl10_repeaterBottomLinks_ctl03_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_twitter.png" style="border-width:0px;" /><span id="ctl10_repeaterBottomLinks_ctl03_lblBottomFooter">Follow us on Twitter</span></a>
         </li>
     
         <li>
-            <a id="ctl11_repeaterBottomLinks_ctl04_lnkBottomFooter" class="blueLink" href="http://www.pinterest.com/bettycrocker" target="_blank"><img id="ctl11_repeaterBottomLinks_ctl04_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_pinterest.png" style="border-width:0px;" /><span id="ctl11_repeaterBottomLinks_ctl04_lblBottomFooter">Follow us on Pinterest</span></a>
+            <a id="ctl10_repeaterBottomLinks_ctl04_lnkBottomFooter" class="blueLink" href="http://www.pinterest.com/bettycrocker" target="_blank"><img id="ctl10_repeaterBottomLinks_ctl04_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_pinterest.png" style="border-width:0px;" /><span id="ctl10_repeaterBottomLinks_ctl04_lblBottomFooter">Follow us on Pinterest</span></a>
         </li>
     
         <li>
-            <a id="ctl11_repeaterBottomLinks_ctl05_lnkBottomFooter" class="blueLink" href="http://www.bettycrocker.com/tools/rssfeeds"><img id="ctl11_repeaterBottomLinks_ctl05_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_rss.png" style="border-width:0px;" /><span id="ctl11_repeaterBottomLinks_ctl05_lblBottomFooter">RSS Feeds</span></a>
+            <a id="ctl10_repeaterBottomLinks_ctl05_lnkBottomFooter" class="blueLink" href="http://www.bettycrocker.com/tools/rssfeeds"><img id="ctl10_repeaterBottomLinks_ctl05_imgBottomFooter" src="../../../~/media/Images/global/Logos/social_rss.png" style="border-width:0px;" /><span id="ctl10_repeaterBottomLinks_ctl05_lblBottomFooter">RSS Feeds</span></a>
         </li>
     
             </ul>
@@ -985,7 +1051,7 @@ jQuery(document).ready(function() {
             //]]>
 
             /*! A fix for the iOS orientationchange zoom bug. Script by @scottjehl, rebound by @wilto.MIT / GPLv2 License.*/(function (a) { function m() { d.setAttribute("content", g), h = !0 } function n() { d.setAttribute("content", f), h = !1 } function o(b) { l = b.accelerationIncludingGravity, i = Math.abs(l.x), j = Math.abs(l.y), k = Math.abs(l.z), (!a.orientation || a.orientation === 180) && (i > 7 || (k > 6 && j < 8 || k < 8 && j > 6) && i > 5) ? h && n() : h || m() } var b = navigator.userAgent; if (!(/iPhone|iPad|iPod/.test(navigator.platform) && /OS [1-5]_[0-9_]* like Mac OS X/i.test(b) && b.indexOf("AppleWebKit") > -1)) return; var c = a.document; if (!c.querySelector) return; var d = c.querySelector("meta[name=viewport]"), e = d && d.getAttribute("content"), f = e + ",maximum-scale=1", g = e + ",maximum-scale=10", h = !0, i, j, k, l; if (!d) return; a.addEventListener("orientationchange", m, !1), a.addEventListener("devicemotion", o, !1) })(this);
-            /*! Hide iOS location bar */ window.addEventListener("load", function () { setTimeout(function () { window.scrollTo(0, 1); }, 0); });
+            /*! Hide iOS location bar */ if (!!window.addEventListener) { window.addEventListener("load", function () { setTimeout(function () { window.scrollTo(0, 1); }, 0); }); }
         </script>
         <div id="statesNavigation">
             <script language="JavaScript">jQuery(document).ready(function(){
@@ -1092,4 +1158,4 @@ document.getElementById('Login_Password_ctl01').dispose = function() {
 </form>
 </body>
 </html>
-<!-- ST: 635017798543413359, PID: 0 -->
+<!-- ST: 635020387043895884, PID: 0 -->

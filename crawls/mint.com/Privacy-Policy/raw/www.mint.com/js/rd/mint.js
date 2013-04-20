@@ -82,14 +82,14 @@ $(document).ready(function(){
 	
 
 
-    $('.login_overlay').click(function(){
+    $('.login_overlay .orange').click(function(){
 
         if (navigator.mimeTypes ["application/x-shockwave-flash"]==undefined){
-            window.open('http://stage-www.mint.com/t/007e1/');
+            window.open('https://www.mint.com/t/007e1/');
             return false;
         }
 
-        $('<div id="video_overlay"><iframe title="YouTube video player" class="youtube-player" type="text/html" width="620" height="538" src="http://localhost:8888/mint_public_3.1.3/?page_id=9697" frameborder="0" style="display:block; margin-bottom:15px;overflow:hidden;"></iframe></div>').appendTo('body').append('<div class="close"></div>').fadeIn('fast');
+        $('<div id="video_overlay"><iframe title="YouTube video player" class="youtube-player" type="text/html" width="307" height="400" src="https://www.mint.com/t/007e1/" frameborder="0" style="display:block; margin-bottom:15px; overflow:hidden;"></iframe></div>').appendTo('body').append('<div class="close"></div>').fadeIn('fast');
 
         //Append the page transparent overlay
         $('body').append('<div id="page_overlay"></div>');

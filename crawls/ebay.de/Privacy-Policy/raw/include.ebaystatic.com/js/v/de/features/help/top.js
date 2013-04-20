@@ -17,7 +17,7 @@ function ebIndiaPostLink(pLink)
 {var s="",h='http://indiapost.org/',p='PostageCalculator.html';var cl=ebay.oGlobals.oClient;s+='<a href="'+h;if(cl&&(cl.bNav||cl.bFirefox))
 s+='Netscape/';s+=p;s+='">'+pLink+'</a>';document.write(s);}
 
-//2@@e1
+//2@@m13
 
 var ebHelpFeatureRef="1",ebHelpFeatureName=null;var ebHelpCookDelim="||",ebHelpCookName="ebh",ebHelpContainerName="ds2";var eInd=document.domain.indexOf(".ebay."),tDomain;if(eInd!=-1)
 tDomain=document.domain.substr(eInd+1);function ebHelpGBTFInit()
@@ -59,4 +59,4 @@ function closeChild()
 {if(!openedWin.closed)
 {openedWin.close();}}}
 onunload=closeChild;
-// b=15987528 -->
+// b=16014020 -->

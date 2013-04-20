@@ -1,0 +1,1601 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/amanda-bynes-s-strange-selfie-video-is-she-trolling.html",' +
+                '"title": "Amanda Bynes&rsquo;s Strange Selfie Video: Is She &lsquo;Trolling&rsquo;?",' +
+                '"rubric": "\'Sucking on a Sour Patch Kid\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "dbb02bd6d07aa17bf8b28ff7111953ff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/29/six-words-that-mean-something-very-different-to-porn-stars.html",' +
+                '"title": "Six Words That Mean Something VERY Different to Porn Stars",' +
+                '"rubric": "GLOSSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fd7e2fbd9a32a9e80bf62b7f669e0e21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/18/blood-sweat-and-sex-my-hard-life-in-porn.html",' +
+                '"title": "Blood, Sweat and Sex: My Hard Life in Porn",' +
+                '"rubric": "XXX",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f767e50bca8edde799c96f0a5fc82fe8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/it-wasn-t-the-aryan-brotherhood-apparently-texas-woman-confesses-to-role-in-d-a-murders.html",' +
+                '"title": "It Wasn&rsquo;t the Aryan Brotherhood, Apparently: Texas Woman Confesses to Role in D.A. Murders",' +
+                '"rubric": "Confession",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "e2e64cb39d7430478181d6ebc6c86fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/how-the-internet-accused-a-high-school-student-of-terrorism.html",' +
+                '"title": "How the Internet Accused a High School Student of Terrorism",' +
+                '"rubric": "Scooped",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b9ce0a0e2de35755f857945ed46bfa86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/al-qaeda-s-recipe-for-pressure-cooker-bombs.html",' +
+                '"title": "Al Qaeda&rsquo;s Recipe for Pressure-Cooker Bombs",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8e31ba13871011b70fe99fc092076a18"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/bin-laden-hunter-philip-mudd-talks-about-boston-at-manhunt-screening.html",' +
+                '"title": "Bin Laden Hunter Philip Mudd Talks About Boston at &lsquo;Manhunt&rsquo; Screening",' +
+                '"rubric": "&lsquo;Targeting Analysis&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fbc94e94e8f8026e842d597c661f293c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/praying-the-boston-bomber-is-not-muslim.html",' +
+                '"title": "Praying the Boston Bomber is Not Muslim",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "3249aff9ad125910ba22e7b609acf5d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/please-ignore-westboro-s-shameful-boston-protest.html",' +
+                '"title": "Please Ignore Westboro&rsquo;s Shameful Boston Protest",' +
+                '"rubric": "Please Ignore",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c09e7a5b870e35739a3e51296008b882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/we-can-do-well.html",' +
+                '"title": "We Can Do Well",' +
+                '"rubric": "Boston",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d2934d927d171ea87ee80040f123a73d"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/it-wasn-t-the-aryan-brotherhood-apparently-texas-woman-confesses-to-role-in-d-a-murders.html",' +
+                '"title": "It Wasn&rsquo;t the Aryan Brotherhood, Apparently: Texas Woman Confesses to Role in D.A. Murders",' +
+                '"rubric": "Confession",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "e2e64cb39d7430478181d6ebc6c86fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/bin-laden-hunter-philip-mudd-talks-about-boston-at-manhunt-screening.html",' +
+                '"title": "Bin Laden Hunter Philip Mudd Talks About Boston at &lsquo;Manhunt&rsquo; Screening",' +
+                '"rubric": "&lsquo;Targeting Analysis&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fbc94e94e8f8026e842d597c661f293c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mark-sanford-ditched-by-nrcc-but-counting-him-out-would-be-unwise.html",' +
+                '"title": "Mark Sanford Ditched by NRCC, but Counting Him Out Would Be Unwise",' +
+                '"rubric": "Ex-Wife Troubles",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "756647a5c5a12a98511022bf4c890652"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/how-the-internet-accused-a-high-school-student-of-terrorism.html",' +
+                '"title": "How the Internet Accused a High School Student of Terrorism",' +
+                '"rubric": "Scooped",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b9ce0a0e2de35755f857945ed46bfa86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/please-ignore-westboro-s-shameful-boston-protest.html",' +
+                '"title": "Please Ignore Westboro&rsquo;s Shameful Boston Protest",' +
+                '"rubric": "Please Ignore",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c09e7a5b870e35739a3e51296008b882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/a-war-for-no-wise-purpose-afghanistan-defeats-the-west-again.html",' +
+                '"title": "&lsquo;A War for No Wise Purpose&rsquo;: Afghanistan Defeats the West Again",' +
+                '"rubric": "Afghanistan",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "e525fd41a3a356b490eb363ab1c64244"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/president-obama-seizes-the-spotlight-after-the-boston-marathon-bombings.html",' +
+                '"title": "President Obama Seizes the Spotlight After the Boston Marathon Bombings",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "05f2add86517a1b016dacfb84f88b39c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/a-boston-child-is-cut-down-by-an-attacker-s-bomb.html",' +
+                '"title": "A Boston Child Is Cut Down by an Attacker&rsquo;s Bomb",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b7954d7809f9ddeb7edb4bc4dec7ecfd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/reporting-on-the-times-calls-out-new-york-times-holocaust-coverage.html",' +
+                '"title": "&lsquo;Reporting on the Times&rsquo; Calls Out New York Times Holocaust Coverage",' +
+                '"rubric": "Tribeca Film Festival",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4070557a362698d18854e65a2ef8e76f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mayors-against-illegal-guns-plans-new-scorecards-after-gun-bill-defeat.html",' +
+                '"title": "Mayors Against Illegal Guns Plans New Scorecards After Gun Bill Defeat",' +
+                '"rubric": "GUN FIGHT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d008e65ea063fa8d2d63e3f9679a17e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-mayor-tom-menino-sidelined-in-marathon-explosions-aftermath.html",' +
+                '"title": "Boston Mayor Tom Menino Sidelined in Marathon Explosions&rsquo; Aftermath",' +
+                '"rubric": "No Giuliani",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "19ae349c6e1310e989ed1ce2f5221e77"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/04/18/whose-40-million-diamond-is-it-an-italian-family-feud.html",' +
+                '"title": "Whose $40 Million Diamond Is It? An Italian Family Feud",' +
+                '"rubric": "Family Feud",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a108993da5b1e68c7b7e1de730cb0430"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/07/13/america-s-new-bomb-threat.html",' +
+                '"title": "America&rsquo;s New Bomb Threat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "46a268c191271d14a63cb3866a07f1a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/29/six-words-that-mean-something-very-different-to-porn-stars.html",' +
+                '"title": "Six Words That Mean Something VERY Different to Porn Stars",' +
+                '"rubric": "GLOSSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fd7e2fbd9a32a9e80bf62b7f669e0e21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/yes-there-is-a-gosnell-trial-coverup-by-the-big-news-organizations.html",' +
+                '"title": "Yes, There Is a Gosnell Trial Cover-up by Major News Organizations",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "246c39c01cb0aeaa26250fd7d38c75e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/it-wasn-t-the-aryan-brotherhood-apparently-texas-woman-confesses-to-role-in-d-a-murders.html",' +
+                '"title": "It Wasn&rsquo;t the Aryan Brotherhood, Apparently: Texas Woman Confesses to Role in D.A. Murders",' +
+                '"rubric": "Confession",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "e2e64cb39d7430478181d6ebc6c86fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/al-qaeda-s-recipe-for-pressure-cooker-bombs.html",' +
+                '"title": "Al Qaeda&rsquo;s Recipe for Pressure-Cooker Bombs",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8e31ba13871011b70fe99fc092076a18"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/bin-laden-hunter-philip-mudd-talks-about-boston-at-manhunt-screening.html",' +
+                '"title": "Bin Laden Hunter Philip Mudd Talks About Boston at &lsquo;Manhunt&rsquo; Screening",' +
+                '"rubric": "&lsquo;Targeting Analysis&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fbc94e94e8f8026e842d597c661f293c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/a-war-for-no-wise-purpose-afghanistan-defeats-the-west-again.html",' +
+                '"title": "&lsquo;A War for No Wise Purpose&rsquo;: Afghanistan Defeats the West Again",' +
+                '"rubric": "Afghanistan",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "e525fd41a3a356b490eb363ab1c64244"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/the-republican-pitch-to-latinos-too-little-too-late.html",' +
+                '"title": "The Republican Pitch to Latinos: Too Little, Too Late",' +
+                '"rubric": "REACHING OUT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59c44026d05c90d1d8a2f14c36caaaab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/20/mad-men-jon-hamm-s-penis-is-too-big-for-clothes-needs-airbrushing.html",' +
+                '"title": "&lsquo;Mad Men&rsquo;: Jon Hamm&rsquo;s Penis is Too Big for Clothes, Needs Airbrushing",' +
+                '"rubric": "Free-Range Hamm",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "3d8f6100672c816dfc3fbbcdb85231bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/reporting-on-the-times-calls-out-new-york-times-holocaust-coverage.html",' +
+                '"title": "&lsquo;Reporting on the Times&rsquo; Calls Out New York Times Holocaust Coverage",' +
+                '"rubric": "Tribeca Film Festival",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4070557a362698d18854e65a2ef8e76f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/alison-brie-star-of-mad-men-and-community-strips-down-in-esquire-spread.html",' +
+                '"title": "Alison Brie, Star of &lsquo;Mad Men&rsquo; and &lsquo;Community,&rsquo; Strips Down in Esquire Spread",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b3dd82a9a0853831470d551d24c49bc3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/17/alison-brie-is-sexy-and-everywhere.html",' +
+                '"title": "Alison Brie Is Sexy And Everywhere",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "374991c03c7fba1ab84c0c22e115c2bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/amanda-bynes-s-strange-selfie-video-is-she-trolling.html",' +
+                '"title": "Amanda Bynes&rsquo;s Strange Selfie Video: Is She &lsquo;Trolling&rsquo;?",' +
+                '"rubric": "\'Sucking on a Sour Patch Kid\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "dbb02bd6d07aa17bf8b28ff7111953ff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/justin-bieber-posts-sexy-instagram-makes-us-all-groan-again.html",' +
+                '"title": "Justin Bieber Posts Sexy Instagram, Makes Us All Groan Again",' +
+                '"rubric": "Belieber",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ad2c19ea219d8fab6ab64f01aef5ee75"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/17/stewart-and-colbert-love-boston.html",' +
+                '"title": "Stewart and Colbert Love Boston",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d94d707ed2e4acde47a59a04b885d6e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/reporting-on-the-times-calls-out-new-york-times-holocaust-coverage.html",' +
+                '"title": "&lsquo;Reporting on the Times&rsquo; Calls Out New York Times Holocaust Coverage",' +
+                '"rubric": "Tribeca Film Festival",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4070557a362698d18854e65a2ef8e76f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/16/boston-s-everyday-heroes.html",' +
+                '"title": "Boston\'s Everyday Heroes",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cddc6619dfcc0a00f9f884101e9130d2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/mpaa-adjusts-movie-ratings-system-in-wake-of-newtown-and-boston-tragedies.html",' +
+                '"title": "MPAA Adjusts Movie Ratings System in Wake of Newtown and Boston Tragedies",' +
+                '"rubric": "At the Movies",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5f5fe55778e4f5cda38901f2e38e8ca6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/18/harrison-ford-won-t-answer-star-wars-questions.html",' +
+                '"title": "Harrison Ford Won\'t Answer Star Wars Questions",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d7ff8970fb60592a2d8783e5e1deb59d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/29/six-words-that-mean-something-very-different-to-porn-stars.html",' +
+                '"title": "Six Words That Mean Something VERY Different to Porn Stars",' +
+                '"rubric": "GLOSSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fd7e2fbd9a32a9e80bf62b7f669e0e21"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/amanda-bynes-s-strange-selfie-video-is-she-trolling.html",' +
+                '"title": "Amanda Bynes&rsquo;s Strange Selfie Video: Is She &lsquo;Trolling&rsquo;?",' +
+                '"rubric": "\'Sucking on a Sour Patch Kid\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "dbb02bd6d07aa17bf8b28ff7111953ff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/how-the-internet-accused-a-high-school-student-of-terrorism.html",' +
+                '"title": "How the Internet Accused a High School Student of Terrorism",' +
+                '"rubric": "Scooped",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b9ce0a0e2de35755f857945ed46bfa86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/we-can-do-well.html",' +
+                '"title": "We Can Do Well",' +
+                '"rubric": "Boston",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d2934d927d171ea87ee80040f123a73d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/please-ignore-westboro-s-shameful-boston-protest.html",' +
+                '"title": "Please Ignore Westboro&rsquo;s Shameful Boston Protest",' +
+                '"rubric": "Please Ignore",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c09e7a5b870e35739a3e51296008b882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/14/why-are-the-israelis-so-damn-happy.html",' +
+                '"title": "Why are the Israelis so Damn Happy?",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "e4a8e4ceb93c9a4fe3df4e2bb6af35d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/yes-there-is-a-gosnell-trial-coverup-by-the-big-news-organizations.html",' +
+                '"title": "Yes, There Is a Gosnell Trial Cover-up by Major News Organizations",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "246c39c01cb0aeaa26250fd7d38c75e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/29/six-words-that-mean-something-very-different-to-porn-stars.html",' +
+                '"title": "Six Words That Mean Something VERY Different to Porn Stars",' +
+                '"rubric": "GLOSSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fd7e2fbd9a32a9e80bf62b7f669e0e21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/reporting-on-the-times-calls-out-new-york-times-holocaust-coverage.html",' +
+                '"title": "&lsquo;Reporting on the Times&rsquo; Calls Out New York Times Holocaust Coverage",' +
+                '"rubric": "Tribeca Film Festival",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4070557a362698d18854e65a2ef8e76f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/praying-the-boston-bomber-is-not-muslim.html",' +
+                '"title": "Praying the Boston Bomber is Not Muslim",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "3249aff9ad125910ba22e7b609acf5d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/18/unbelievable-waco-plant-explosion.html",' +
+                '"title": "Unbelievable Plant Explosion",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8caa0b4383e05660ee4ef774839b9d04"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/07/13/america-s-new-bomb-threat.html",' +
+                '"title": "America&rsquo;s New Bomb Threat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "46a268c191271d14a63cb3866a07f1a7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/the-republican-pitch-to-latinos-too-little-too-late.html",' +
+                '"title": "The Republican Pitch to Latinos: Too Little, Too Late",' +
+                '"rubric": "REACHING OUT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59c44026d05c90d1d8a2f14c36caaaab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/it-wasn-t-the-aryan-brotherhood-apparently-texas-woman-confesses-to-role-in-d-a-murders.html",' +
+                '"title": "It Wasn&rsquo;t the Aryan Brotherhood, Apparently: Texas Woman Confesses to Role in D.A. Murders",' +
+                '"rubric": "Confession",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "e2e64cb39d7430478181d6ebc6c86fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/bin-laden-hunter-philip-mudd-talks-about-boston-at-manhunt-screening.html",' +
+                '"title": "Bin Laden Hunter Philip Mudd Talks About Boston at &lsquo;Manhunt&rsquo; Screening",' +
+                '"rubric": "&lsquo;Targeting Analysis&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fbc94e94e8f8026e842d597c661f293c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mark-sanford-ditched-by-nrcc-but-counting-him-out-would-be-unwise.html",' +
+                '"title": "Mark Sanford Ditched by NRCC, but Counting Him Out Would Be Unwise",' +
+                '"rubric": "Ex-Wife Troubles",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "756647a5c5a12a98511022bf4c890652"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/a-war-for-no-wise-purpose-afghanistan-defeats-the-west-again.html",' +
+                '"title": "&lsquo;A War for No Wise Purpose&rsquo;: Afghanistan Defeats the West Again",' +
+                '"rubric": "Afghanistan",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "e525fd41a3a356b490eb363ab1c64244"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/ryan-lochte-tells-all-sex-swimming-dating-drinking-and-dieting.html",' +
+                '"title": "Ryan Lochte Tells All: Sex, Swimming, Dating, Drinking, and Dieting",' +
+                '"rubric": "JEAH!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "985770fed6b28a4a843a0918e55b49c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mayors-against-illegal-guns-plans-new-scorecards-after-gun-bill-defeat.html",' +
+                '"title": "Mayors Against Illegal Guns Plans New Scorecards After Gun Bill Defeat",' +
+                '"rubric": "GUN FIGHT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d008e65ea063fa8d2d63e3f9679a17e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-mayor-tom-menino-sidelined-in-marathon-explosions-aftermath.html",' +
+                '"title": "Boston Mayor Tom Menino Sidelined in Marathon Explosions&rsquo; Aftermath",' +
+                '"rubric": "No Giuliani",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "19ae349c6e1310e989ed1ce2f5221e77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/president-obama-seizes-the-spotlight-after-the-boston-marathon-bombings.html",' +
+                '"title": "President Obama Seizes the Spotlight After the Boston Marathon Bombings",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "05f2add86517a1b016dacfb84f88b39c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/how-the-internet-accused-a-high-school-student-of-terrorism.html",' +
+                '"title": "How the Internet Accused a High School Student of Terrorism",' +
+                '"rubric": "Scooped",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b9ce0a0e2de35755f857945ed46bfa86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/please-ignore-westboro-s-shameful-boston-protest.html",' +
+                '"title": "Please Ignore Westboro&rsquo;s Shameful Boston Protest",' +
+                '"rubric": "Please Ignore",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c09e7a5b870e35739a3e51296008b882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/reporting-on-the-times-calls-out-new-york-times-holocaust-coverage.html",' +
+                '"title": "&lsquo;Reporting on the Times&rsquo; Calls Out New York Times Holocaust Coverage",' +
+                '"rubric": "Tribeca Film Festival",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4070557a362698d18854e65a2ef8e76f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mark-sanford-ditched-by-nrcc-but-counting-him-out-would-be-unwise.html",' +
+                '"title": "Mark Sanford Ditched by NRCC, but Counting Him Out Would Be Unwise",' +
+                '"rubric": "Ex-Wife Troubles",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "756647a5c5a12a98511022bf4c890652"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/the-republican-pitch-to-latinos-too-little-too-late.html",' +
+                '"title": "The Republican Pitch to Latinos: Too Little, Too Late",' +
+                '"rubric": "REACHING OUT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59c44026d05c90d1d8a2f14c36caaaab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mayors-against-illegal-guns-plans-new-scorecards-after-gun-bill-defeat.html",' +
+                '"title": "Mayors Against Illegal Guns Plans New Scorecards After Gun Bill Defeat",' +
+                '"rubric": "GUN FIGHT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d008e65ea063fa8d2d63e3f9679a17e8"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/04/17/obama-angry-at-gun-control-defeat-shameful-day-for-washington.html",' +
+                '"title": "Obama Angry at Gun Control Defeat: &lsquo;Shameful Day for Washington&rsquo;",' +
+                '"rubric": "Gun Defeat",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8127c7a75afb4d43e2c13f048a5044cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/the-republican-pitch-to-latinos-too-little-too-late.html",' +
+                '"title": "The Republican Pitch to Latinos: Too Little, Too Late",' +
+                '"rubric": "REACHING OUT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "59c44026d05c90d1d8a2f14c36caaaab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/yes-there-is-a-gosnell-trial-coverup-by-the-big-news-organizations.html",' +
+                '"title": "Yes, There Is a Gosnell Trial Cover-up by Major News Organizations",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "246c39c01cb0aeaa26250fd7d38c75e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/boston-marathon-bombing-media-errors-pile-up-as-does-the-outrage.html",' +
+                '"title": "Boston Marathon Bombing Media Errors Pile Up, as Does the Outrage",' +
+                '"rubric": "Boston Outrage",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "721f2b8a568d5211d84fa3cfe84bc122"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/sundance-channel-s-rectify-is-the-best-new-show-of-2013.html",' +
+                '"title": "Sundance Channel&rsquo;s &lsquo;Rectify&rsquo; Is the Best New Show of 2013",' +
+                '"rubric": "Crime and Punishment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a30dbbe1a3f5aae77412b7f98ce01b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/al-qaeda-s-recipe-for-pressure-cooker-bombs.html",' +
+                '"title": "Al Qaeda&rsquo;s Recipe for Pressure-Cooker Bombs",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8e31ba13871011b70fe99fc092076a18"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/it-wasn-t-the-aryan-brotherhood-apparently-texas-woman-confesses-to-role-in-d-a-murders.html",' +
+                '"title": "It Wasn&rsquo;t the Aryan Brotherhood, Apparently: Texas Woman Confesses to Role in D.A. Murders",' +
+                '"rubric": "Confession",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "e2e64cb39d7430478181d6ebc6c86fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/bin-laden-hunter-philip-mudd-talks-about-boston-at-manhunt-screening.html",' +
+                '"title": "Bin Laden Hunter Philip Mudd Talks About Boston at &lsquo;Manhunt&rsquo; Screening",' +
+                '"rubric": "&lsquo;Targeting Analysis&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fbc94e94e8f8026e842d597c661f293c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/nbc-s-operation-bambi-how-today-booted-ann-curry-off.html",' +
+                '"title": "NBC&rsquo;s &lsquo;Operation Bambi&rsquo;: How &lsquo;Today&rsquo; Booted Ann Curry Off",' +
+                '"rubric": "Behind the Scenes",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "d2b31307d1643f5dbf7f16291cd7d909"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/david-lachapelle-portrait-of-angelina-jolie-with-horses-on-sale.html",' +
+                '"title": "Angelina On The Block!",' +
+                '"rubric": "Wild Horses",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a246f3efe9bd69d1a750151dac830533"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mark-sanford-ditched-by-nrcc-but-counting-him-out-would-be-unwise.html",' +
+                '"title": "Mark Sanford Ditched by NRCC, but Counting Him Out Would Be Unwise",' +
+                '"rubric": "Ex-Wife Troubles",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "756647a5c5a12a98511022bf4c890652"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/03/29/six-words-that-mean-something-very-different-to-porn-stars.html",' +
+                '"title": "Six Words That Mean Something VERY Different to Porn Stars",' +
+                '"rubric": "GLOSSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fd7e2fbd9a32a9e80bf62b7f669e0e21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/selena-gomez-ignites-backlash-with-bindi.html",' +
+                '"title": "Selena Gomez\'s Bindi Blunder",' +
+                '"rubric": "Backlash",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "cdb290483891b8f49e46c55d9a7a1722"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/president-obama-seizes-the-spotlight-after-the-boston-marathon-bombings.html",' +
+                '"title": "President Obama Seizes the Spotlight After the Boston Marathon Bombings",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "05f2add86517a1b016dacfb84f88b39c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/a-war-for-no-wise-purpose-afghanistan-defeats-the-west-again.html",' +
+                '"title": "&lsquo;A War for No Wise Purpose&rsquo;: Afghanistan Defeats the West Again",' +
+                '"rubric": "Afghanistan",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "e525fd41a3a356b490eb363ab1c64244"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/07/13/america-s-new-bomb-threat.html",' +
+                '"title": "America&rsquo;s New Bomb Threat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "46a268c191271d14a63cb3866a07f1a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/mayors-against-illegal-guns-plans-new-scorecards-after-gun-bill-defeat.html",' +
+                '"title": "Mayors Against Illegal Guns Plans New Scorecards After Gun Bill Defeat",' +
+                '"rubric": "GUN FIGHT",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d008e65ea063fa8d2d63e3f9679a17e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/exorcist-director-william-friedkin-tells-all-in-new-memoir.html",' +
+                '"title": "&lsquo;Exorcist&rsquo; Director William Friedkin Tells All in New Memoir",' +
+                '"rubric": "Hollywood Lore",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "832b256944b08115302789b44cde1f4a"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/04/16/amanda-bynes-s-strange-selfie-video-is-she-trolling.html",' +
+                '"title": "Amanda Bynes&rsquo;s Strange Selfie Video: Is She &lsquo;Trolling&rsquo;?",' +
+                '"rubric": "\'Sucking on a Sour Patch Kid\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "dbb02bd6d07aa17bf8b28ff7111953ff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/how-the-internet-accused-a-high-school-student-of-terrorism.html",' +
+                '"title": "How the Internet Accused a High School Student of Terrorism",' +
+                '"rubric": "Scooped",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b9ce0a0e2de35755f857945ed46bfa86"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/boston-bombing-suspect-identified-more-breaking-updates.html",' +
+                '"title": "Potential Suspect in Boston Bombing &amp; More Breaking Updates",' +
+                '"rubric": "The Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81926a355fb7f8a8215faf3c7483e0f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/carlos-arredondo-boston-marathon-hero-in-a-cowboy-hat-on-the-bombs.html",' +
+                '"title": "Carlos Arredondo, Boston Marathon Hero in a Cowboy Hat, on the Bombs",' +
+                '"rubric": "Bravery Amid Evil",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "324a58d6270cafd5e07a3f90a9322bd7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/04/17/stewart-and-colbert-love-boston.html",' +
+                '"title": "Stewart and Colbert Love Boston",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d94d707ed2e4acde47a59a04b885d6e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/anonymous-next-move.html",' +
+                '"title": "Anonymous&rsquo;s Next Move",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "068322d221632262e7da20a7515db737"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/15/exclusive-u-s-recovered-north-korean-rocket-head.html",' +
+                '"title": "Exclusive: How North Korea Tipped Its Hand",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "World",' +
+                '"urlHashCode": "09e9c29e7b3d069ee2b6560d46e4ee23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/a-shameful-day-in-the-senate.html",' +
+                '"title": "A Shameful Day in the Senate",' +
+                '"rubric": "Guns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3ee497e5c50f196eb33d11552002d69"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/14/how-the-cia-helped-disney-conquer-florida.html",' +
+                '"title": "How the CIA Helped Disney Conquer Florida",' +
+                '"rubric": "Small World After All",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "8ba9cba1288c636f69a2c7bd09e4d1a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/18/pictures-of-potential-boston-suspects-expected-more-breaking-updates.html",' +
+                '"title": "Boston Marathon Suspect Manhunt: Breaking Updates",' +
+                '"rubric": "Latest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1c446559b2804bea0846b3fd3fb72856"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/17/the-taliban-we-didn-t-do-it.html",' +
+                '"title": "The Taliban: We Didn&rsquo;t Do It",' +
+                '"rubric": "NO LINK",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2aa63c1d8b057064e3c3214db1412311"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/yes-there-is-a-gosnell-trial-coverup-by-the-big-news-organizations.html",' +
+                '"title": "Yes, There Is a Gosnell Trial Cover-up by Major News Organizations",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "246c39c01cb0aeaa26250fd7d38c75e8"' +
+            '}' +
+        ']' +
+    '}'
+);

@@ -151,6 +151,8 @@ function s_doPlugins(s) {
     s.eVar56=s.getQueryParam('imvu_placement');
     s.eVar57=s.getQueryParam('imvu_target');
 
+    // Set search terms from Bing 
+    s.eVar63=s.getQueryParam('search_keyword');
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

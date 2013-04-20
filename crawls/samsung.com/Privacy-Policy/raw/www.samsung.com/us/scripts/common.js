@@ -2146,8 +2146,22 @@ if(urlValueSplit[6].match('PN60E550D1FXZA')){
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SCH-R970ZWAUSC','','product header','o','pre-order');");
 		}
 
+		//sprint
+		if( urlValueSplit[6].match('SPH-L720ZKASPR') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.sprint.com/landings/samsung_galaxy_s4/index.html?ECID=vanity:galaxys4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SPH-L720ZKASPR','','product header','o','pre-order');");
+		}
+		if( urlValueSplit[6].match('SPH-L720ZWASPR') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "http://www.sprint.com/landings/samsung_galaxy_s4/index.html?ECID=vanity:galaxys4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SPH-L720ZWASPR','','product header','o','pre-order');");
+		}
+
 		//hide
-		if( urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') || urlValueSplit[6].match('SPH-L720ZKASPR') || urlValueSplit[6].match('SPH-L720ZWASPR')  ){
+		if( urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') ){
 			$('.flagship-cta').hide();
 		}
 });

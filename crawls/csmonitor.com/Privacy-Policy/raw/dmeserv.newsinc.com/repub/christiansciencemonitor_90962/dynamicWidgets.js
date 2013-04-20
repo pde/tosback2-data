@@ -71,6 +71,8 @@ NDNRender.loadScript = function(_src) {
     e.src = _src;
     e.type = "text/javascript";
     e.async = true;
+//    var NDNScript = document.getElementsByTagName('head')[0];
+//    NDNScript.appendChild(e); 
     document.body.appendChild(e); 
 };
 
@@ -82,6 +84,29 @@ NDNRender.listen = function(elem, evnt, func) {
         return r;
     }
 };
+
+NDNRender.targetsMap = function(url) {
+  var uparts = url.split('?');
+  var splits = uparts[0].split('/');
+
+  this.exactMatch = url;
+  this.dropParams = uparts[0];
+
+  var newarr = splits.slice(0, (splits.length - 2));
+  newarr[newarr.length] = '*';
+  newarr[newarr.length] = splits[splits.length - 1];
+  this.leeSlug = newarr.join('/');
+
+  newarr = splits.slice(0, (splits.length - 1));
+  newarr[newarr.length] = '*';
+  this.charlotte = newarr.join('/');
+
+  newarr = splits.slice(0, 4);
+  newarr[newarr.length] = '*';
+  newarr[newarr.length] = splits[splits.length - 1];
+  this.xxx = newarr.join('/');
+
+}
 
 NDNRender.urlVars = function() {
 
@@ -106,6 +131,21 @@ NDNRender.urlVars = function() {
     joins[joins.length] = uparts.join('?');
   } 
   
+    // COX/  http://www.palmbeachpost.com/*/nWWWx/
+    // Ignore positions in the URL path and slug name
+    newarr = splits.slice(0, 3);    //get the base url
+    newarr[newarr.length] = '*';
+    newarr[newarr.length] = splits[splits.length - 2]; //get the last part
+    newarr[newarr.length] = '';
+    joins[joins.length] = newarr.join('/');
+
+    // DENVER/  http://www.denverpost.com/*/ci_22784626/  
+    // ignore second position of the url path and everything past the article ID    
+    newarr = splits.slice(0, (splits.length - 1));
+    newarr[newarr.length] = ''; 
+    newarr[3] = "*"; 
+    joins[joins.length] = newarr.join('/');
+
   return "'" + joins.join("','") + "'";
 };
 
@@ -140,4 +180,7 @@ var NDNDynVideoWidgets = function() {
    NDNRender.loadScript(theScript);
 
 };
+      // start
+// alert("10 < 11");
+// end
       
