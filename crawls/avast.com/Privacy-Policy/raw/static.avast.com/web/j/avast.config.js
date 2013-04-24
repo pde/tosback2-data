@@ -1,4 +1,13 @@
 avast.navContent = "";
+
+if (!window.console) {
+    console = {log: function() {}};
+}
+// Set js class if javascript enabled
+if(typeof document !== "undefined" && typeof document.documentElement !== "undefined") {
+    document.documentElement.className = "js";
+}
+
 $(document).ready(function(){
 	var tabs = avast.tabs;
 	var navigation = avast.navigation;

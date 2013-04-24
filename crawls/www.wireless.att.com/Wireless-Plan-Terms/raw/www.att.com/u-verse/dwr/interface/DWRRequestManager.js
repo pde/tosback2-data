@@ -24,6 +24,9 @@ DWRRequestManager.removeProductFromOrder = function(p0, callback) {
 DWRRequestManager.updateVoipData = function(p0, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'updateVoipData', p0, callback);
 }
+DWRRequestManager.reviewUXQuery = function(p0, callback) {
+  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'reviewUXQuery', p0, callback);
+}
 DWRRequestManager.applyUXOffers = function(p0, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'applyUXOffers', p0, callback);
 }
@@ -36,14 +39,11 @@ DWRRequestManager.preCallFormHandler = function(p0, p1, p2, callback) {
 DWRRequestManager.callFormHandler = function(p0, p1, p2, p3, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'callFormHandler', p0, p1, p2, p3, callback);
 }
-DWRRequestManager.applyCoupon = function(p0, callback) {
-  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'applyCoupon', p0, callback);
-}
-DWRRequestManager.reviewUXQuery = function(p0, callback) {
-  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'reviewUXQuery', p0, callback);
-}
 DWRRequestManager.savePackageToken = function(p0, p1, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'savePackageToken', p0, p1, callback);
+}
+DWRRequestManager.applyCoupon = function(p0, callback) {
+  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'applyCoupon', p0, callback);
 }
 DWRRequestManager.removeVoip = function(p0, p1, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'removeVoip', p0, p1, callback);

@@ -310,6 +310,25 @@ $(document).ready(function(){
 		secCardCache.target.toggle();
 	});
 	
+	$('#shipToDeleteForm').submit(function(e){
+		var areChecked = $('.shipToDeleteValues:checked').length;
+		if (areChecked) {
+			return confirm('Are you sure you want to delete the checked address(es)?');
+		} else {
+			return false;
+		}
+	});
+	
+	$('#shipToDeleteTrigger').click(function(e){
+		e.preventDefault();
+		$('#shipToDeleteForm').submit();
+	});
+	
+	$('.shipToDeleteValues').click(function(){
+		updateShipToIdCounter();
+	});
+	
+	
 });  // DOC READY
 
 ajaxLoginForm = function(){
@@ -1055,5 +1074,15 @@ function saveCCValidate(theEle) {
 		if ($saveCCs[i] != theEle) {
 			$saveCCs.eq(i).removeAttr('checked');
 		}
+	}
+}
+
+function updateShipToIdCounter() {
+	var numChecked = $('.shipToDeleteValues:checked').length,
+	myCont = $('#shipToIdInfoContainer');
+	if (numChecked>0) {
+		myCont.show().find('span').text(numChecked);
+	} else {
+		myCont.hide().find('span').text('')
 	}
 }

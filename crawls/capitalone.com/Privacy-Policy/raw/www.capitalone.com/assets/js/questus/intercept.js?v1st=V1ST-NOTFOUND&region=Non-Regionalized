@@ -251,10 +251,12 @@ decipher = {
         var sortedUrls = this.getOrderedUrls(urls, isArray);
         var regEx;
         for (var x in sortedUrls) {
-            regEx = new RegExp(sortedUrls[x]);
-            if (regEx.test(link)) {
-                return sortedUrls[x];
-            }
+			if (type(sortedUrls[x]) === 'String') {
+				regEx = new RegExp(sortedUrls[x]);
+				if (regEx.test(link)) {
+					return sortedUrls[x];
+				}
+			}
         }
         return false;
     },

@@ -2113,7 +2113,9 @@ if(urlValueSplit[6].match('UN75ES9000FXZA')){
 if(urlValueSplit[6].match('PN60E550D1FXZA')){
     $('#pbanner').find('p').html('*Purchase a PN60E550 Plasma TV direct from Samsung and get a BD-E5900 Blu-Ray player at no charge.');
 }
-
+if(urlValueSplit[4].match('business')){
+    $('#pbanner').css('display','none');
+}
 
 
 	/****** G4 Product Page Updates ******/
@@ -2159,6 +2161,20 @@ if(urlValueSplit[6].match('PN60E550D1FXZA')){
 			$('.flagship-cta a').attr("target", "_blank");
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SPH-L720ZWASPR','','product header','o','pre-order');");
 		}
+
+		/*tmobile
+		if( urlValueSplit[6].match('SGH-M919ZWATMB') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "https://explore.t-mobile.com/samsung-galaxy-s4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-M919ZWATMB','','product header','o','pre-order');");
+		}
+		if( urlValueSplit[6].match('SGH-M919ZKATMB') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.flagship-cta a').attr("href", "https://explore.t-mobile.com/samsung-galaxy-s4");
+			$('.flagship-cta a').attr("target", "_blank");
+			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-M919ZKATMB','','product header','o','pre-order');");
+		}*/
 
 		//hide
 		if( urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') ){

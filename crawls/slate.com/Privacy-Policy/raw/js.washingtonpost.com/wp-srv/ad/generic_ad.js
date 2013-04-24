@@ -64,8 +64,8 @@ var wpAd, placeAd2;
         }
       },
       adj: function () {
-        var slug = doc.getElementById('wpni_adi' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
-        if(wpAd.flags.postscribe && slug){
+        var slug = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
+        if(wpAd.flags.postscribe && slug && win.postscribe){
           postscribe('#' + slug.id, wpAd.tools.tagBuilder());
         } else{
           doc.write(wpAd.tools.tagBuilder());
@@ -127,7 +127,7 @@ var wpAd, placeAd2;
           }
           //else we need to just document.write it.
           else if(typeof hc === 'string') {
-            if(wpAd.flags.postscribe && slug){
+            if(wpAd.flags.postscribe && slug && win.postscribe){
               postscribe('#' + slug.id, wpAd.tools.escapeScriptTags(hc));
             } else{
               doc.write(wpAd.tools.escapeScriptTags(hc));
@@ -1244,7 +1244,6 @@ var wpAd, placeAd2;
 
   //generic flags
   wpAd.flags = {
-    postscribe: !!/postscribe/i.test(location.search),
     debug: !!/debugAdCode/i.test(location.search),
     demoAds: wpAd.tools.urlCheck('demoAds', {type: 'variable'}),
     dcnode: wpAd.tools.urlCheck('dcnode', {type: 'variable'}),
@@ -1275,8 +1274,5 @@ var wpAd, placeAd2;
   //redefine commercialNode:
   commercialNode = !wpAd.flags.dcnode ? wpAd.tools.zoneBuilder.exec() : wpAd.tools.dcnode();
 
-  if(wpAd.flags.postscribe){
-    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js');
-  }
 
 })(window, document);

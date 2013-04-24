@@ -2,8 +2,8 @@ jQuery.noConflict();
 // JavaScript Document
 
 /* earnings */
-var currQuarter = '4Q12';
-var currPID = '262';
+var currQuarter = '1Q13';
+var currPID = '268';
 
 function renderEarningsLP() {
 document.write('<div class="top-content"><ul class="more_links" id="top_content">'
@@ -17,10 +17,11 @@ document.write('<div class="top-content"><ul class="more_links" id="top_content"
 
 /* earnings */
 function renderEarningsList() {
-	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2012">4Q 2012</a></li>'
+	document.write( '<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2013">1Q 2013</a></li>'
+	             + '<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2012">4Q 2012</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=290" title="3Q 2012">3Q 2012</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
-				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
+				 +
 				
 				 + '<li><a href="http://www.att.com/earnings" title="Quarterly Earnings">More</a></li>');
 }
@@ -28,10 +29,10 @@ function renderEarningsList() {
 
 function renderQuarterlyTabs() {
 	document.write('<ul id="navContainer" class="tabs">'
+					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2013">1Q 2013</a></li>'
 					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2012">4Q 2012</a></li>'
 					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2012">3Q 2012</a></li>'
 					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
-					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 					+  '</ul>');
 	}
 	
@@ -631,6 +632,7 @@ function cs_products_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=1841" title="Mobile Phones">Mobile Phones</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=13434" title="Emerging Devices">Emerging Devices</a></li>'
 				 + '</ul>'
+
 				 + '</li>'
 				 + '<li class="col2"><strong>Wirelessly Connected</strong>'
 				 + '<ul>'

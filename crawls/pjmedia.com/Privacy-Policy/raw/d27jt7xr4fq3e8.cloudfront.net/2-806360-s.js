@@ -1,7 +1,7 @@
 (function(){
 		var
-		td,tf,i,is,rarity=Math.random()
-		,write,write_script = function(src){
+		td,i,is,rarity=Math.random()
+		,iframe_contents,write,write_script = function(src){
 			write("<script type='text/javascript' src='"+htmlescape(src)+"'><\/script>");
 		},written={},write_script_once = function(id,sampling_rate,src){
 			if( ! (id in written)){
@@ -22,9 +22,10 @@
 				why.unshift(2);
 			}else if( ! is_contained && write){
 				write('<\/body><\/html>');
-								if (/safari|firefox/i.test(navigator.userAgent)) { i.document.close(); }
+				i.document.write( iframe_contents );
+				i.document.close();
 			}
-		 	return why;
+			return why;
 		},whence_i_came= ( ! is_contained ? location.host : (function(){
 						var href,referrer,w=window,result='',sanity=100;
 			while(top !== w && --sanity){
@@ -41,19 +42,19 @@
 		if(is_contained){
 			write = function(s){ document.write(s); };
 		}else{
-			td= top.document,tf= top.frames,i= td.createElement('iframe'),is= i.style;
+			td= top.document,i= td.createElement('iframe'),is= i.style;
 			is.width= is.height= (i.width= i.height= 1)+'px';
-			is.borderWidth= is.padding= is.margin= i.marginheight= i.marginwidth= 0;
-			i.frameborder= i.scrolling= 'no'
+			i.frameborder= is.borderWidth= is.padding= is.margin= i.marginheight= i.marginwidth= 0;
+			i.scrolling= 'no';
 			is.overflow= 'hidden';
 			is.position='fixed';
 			is.top= '-99em';			if( ! (('body' in td) && td.body)){
 				return retry([-22,'top.document.body was not found']);			}
 			td.body.appendChild(i);
-			i = tf[tf.length-1];
-			i.document.write('<!doctype html><html><head><\/head><body>');
+			i = i.contentWindow;
+			iframe_contents = "<!doctype html><html><head><\/head><body>";
 			write = function(s){
-				i.document.write(s);
+				iframe_contents += s;
 			};
 		}
 	}
@@ -297,7 +298,8 @@
 		}
 				if( ! is_contained){
 			write('<\/body><\/html>');
-						if (/safari|firefox/i.test(navigator.userAgent)) { i.document.close(); }
+			i.document.write( iframe_contents );
+			i.document.close();
 		}
 	}
 

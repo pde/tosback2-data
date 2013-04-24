@@ -86,7 +86,7 @@
 
 
 	
-		var ml_user = {"WME":"","email":"","customercode":"","lastVisit":"2013-04-20","basketValue":"","basketCount":"0","historicalPurchases":"","referredFrom":[],"customergroupsactive":[], "sourcecodes":[], "sourceIP":"64.147.188.8"};
+		var ml_user = {"WME":"","email":"","customercode":"","lastVisit":"2013-04-24","basketValue":"","basketCount":"0","historicalPurchases":"","referredFrom":[],"customergroupsactive":[], "sourcecodes":[], "sourceIP":"64.147.188.8"};
 
 
 </script><meta name="google-site-verification" content="DJiE4GlUhodrHekKYvsxdTQsh3VHXyZxV6L0k3flB8k" />
@@ -145,6 +145,9 @@ try {
 
 
 </script>
+<!--[if lte IE 8]>
+<script>lteIE8 = true;</script>
+<![endif]-->
 
 <script type="text/javascript" src="../20120927-1/text/inc/foresee/15.1.8/foresee-alive.js"></script>
 
@@ -156,10 +159,6 @@ try {
 	div#shopatronZipCodeContainer { visibility: hidden; }
 	div.ACcont {margin-left: 110px;}
 </style>
-<!--[if lte IE 8]>
-<script>lteIE8 = true;</script>
-<![endif]-->
-
 <script>
 
 // swap the current dropdown for our hardcoded test dropdown
@@ -242,6 +241,17 @@ window.showPinfluencerPDP = function () {
 		jQuery('table.mainLayoutTable tr:eq(1)').remove();
 		jQuery('td.contentbg').replaceWith('<td class="contentbg"><div id="galleryviewport" style="text-align:center; height: 24500px; overflow: hidden;"><div id="gallerywrapper"><iframe name="pin_gallery" id="pin_gallery" src="http://www.worldmarket.com/category/'+pu+'?url='+encodeURIComponent(location.href.replace(location.search,''))+'"  width="810" height="24500" scrolling="no" frameborder="0"></iframe></div></div></td>')
 		content_table.delay(1000).css("visibility","visible");
+/*
+// stick content we wnat to hide in a new div and hide it
+var pdpLowerContentDiv = jQuery('<div/>',{id:"pdpLowerContentDiv"}).append(jQuery("td.pdpLowerContent").html()).hide();
+jQuery("td.pdpLowerContent").html("").append(pdpLowerContentDiv);
+pdpLowerContentDiv = null;
+// add link to show desc (and then hide the link)
+jQuery('<div style="font-size: 1.2em; text-decoration:underline; cursor: pointer; color: #1B9990">See Full Item Details &amp; Reviews &gt;</div>').click(function(){jQuery("#pdpLowerContentDiv").slideDown(1000); this.hide()}).insertBefore(jQuery(".pdpInfoBottom table.socialTagsCont"))
+// insert iFrame
+jQuery('<div id="galleryviewport" style="text-align:center; height: 24500px; overflow: hidden;"><div id="gallerywrapper"><iframe name="pin_gallery" id="pin_gallery" src="http://www.worldmarket.com/category/'+pu+'?url='+encodeURIComponent(location.href.replace(location.search,''))+'"  width="810" height="24500" scrolling="no" frameborder="0"></iframe></div></div>').insertAfter(jQuery("table.pdpDetailsContainer"));
+*/
+
 	}
 </script>
 
@@ -527,32 +537,12 @@ function adjustGlobalCartLayout() {
 			<li>Become a WM Explorer</li>
 		</ul -->
 	<div class="promoSection2">
-		<style>
-div#cpwm_rollingpromo {position:relative; height:44px; width:290px; overflow:hidden;  border:0; margin:0; padding:0;}
-div#cpwm_rollingpromo div {position:absolute; left: 0; top: 44px; display:none; zoom: 1;}
-</style>
-
-<div id="cpwm_promo2"> 
-
-<div id="cpwm_rollingpromo" style="margin-top:-11px">
-	<div style="display:block; top:0;">
-<a href="javascript:openDialogInfo('freeshippingpopuppromo','Free Shipping on Orders over $150')" style="position:absolute; right:0; top:1px; width:105px; height:40px; background:url(../text/homepage/2013/wk1/part2/promo2-b.png) no-repeat -1000px -1000px"></a>
-<img src="../text/promo-slots/2-left-of-search/2013/wk6/promo2c.gif" height="44" width="290" border="0">
+		<div id="cpwm_promo2">
+	<div style="text-align:right; margin-top:4px; width:290px;">
+		<a href="http://www.worldmarket.com/category/seasonal/mothers-day-gifts.do?ab=home:wk8:promo2:mothersday">
+			<img src="../text/homepage/2013/wk8/part1/promo2.png" width="237" height="28" alt="">
+		</a>
 	</div>
-</div>
-
-
-
-<div id="freeshippingpopuppromo" style="display: none;">
-<p><strong>Limited Time Only!</strong></p>
-<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
-<p> Minimum purchase of $150 (before tax, shipping and handling) required to qualify for offer. </p>
-<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
-<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
-<p> To redeem, enter promotion code at checkout.</p>
-</div>
-
-
 </div>
 
 	</div>
@@ -681,18 +671,47 @@ div#cpwm_rollingpromo div {position:absolute; left: 0; top: 44px; display:none; 
 <!--CatNav End-->
 
 <div id="categoryNavFillslot">
-	<div id="promo4-gps" style="padding-top:8px; display:none">
-	<a href="http://www.worldmarket.com/category/outdoor.do">
-		<img src="../text/promo-slots/4-gps/2013/wk7/gpsPart1.png" width="619" height="45" border="0" id="gpsBubbleBurst1"/>
-		<img src="../text/promo-slots/4-gps/2013/wk7/gpsEndsSunday.png" width="619" height="45" border="0" id="gpsBubbleBurst2" style="display:none"/>
-	</a>
+	<style>
+#overlayPopup {padding:0; background:url(../images/misc/black70.png) repeat; position:fixed; width:100%; height:100%; display:block; z-index:5000; left:0; top:0; display:none}
+.megaPopup {margin:80px auto 0;}
+.hoverpopup {cursor:pointer}
+</style>
+<div id="cpwm_promo4">
+<div id="promo4-gps" style="padding-top:8px; text-align:center;display:none;" class="hoverpopup">
+	<img src="../text/homepage/2013/wk8/part1/gps-left.png" width="521" height="51" border="0"/><img src="../text/homepage/2013/wk8/part1/gps-right.png" width="324" height="51" border="0"/>
 </div>
-
+</div>
 <script>
 jQuery(function() {
-	if (jQuery('#cpwm_hero_wrapper').size()==0) jQuery('#promo4-gps').show();
+	
+	var corpuser = (ml_user.sourceIP.indexOf("65.160.246")==0);
+	if (!corpuser) {
+		jQuery("#promo4-gps").show();
+		if (!jQuery.cookie("wk8p1seen") && jQuery('.homeslider').size() > 0) {
+				jQuery('#overlayPopup').delay(300).show();
+				jQuery.cookie("wk8p1seen", "seen", { path: "/"} );
+		}
+	
+
+		jQuery('.hoverpopup').click(function(){
+			jQuery('#overlayPopup').toggle();
+			return false;
+		});			
+		jQuery('.megaPopup').click(function(){
+			jQuery('#overlayPopup').hide();
+			return false;
+		});
+		jQuery(document).keyup(function(e) {
+  			if (e.keyCode == 27) { jQuery('#overlayPopup').hide(); }
+		});
+	} // if not corpuser
 });
 </script>
+<div id="overlayPopup" style="">
+	<div class="megaPopup">
+		<img src="../text/homepage/2013/wk8/part1/wk8_15off_popup.jpg" width="564" height="427" alt="">
+	</div>
+</div>
 
 </div>
 			</div>
@@ -1257,7 +1276,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "2770396"
+  return "1965028"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>
@@ -1284,6 +1303,8 @@ height="1" width="1" border="0" alt="" /></a></noscript><!--/DO NOT REMOVE/-->
 
 <script type="text/javascript" src="../../assets.pinterest.com/js/pinit.js"></script>
 </body>
+<script type="text/javascript" src="../20130422-05/text/pixels/cpwm_page.js"></script>
+
 <script type="text/javascript">
 
 function cpwmOpti_showNextTile() {
@@ -1452,6 +1473,11 @@ try {
 
 
 </script>
+
+<!-- SteelHouse Tracking -->
+<script type="text/javascript" src="../20130422-03/text/pixels/steelhouse_track.js"></script>
+<!-- END SteelHouse tracking -->
+
 
 <script type="text/javascript" src="../20121231-12/text/pixels/pages.js"></script>
 <script type="text/javascript" src="../20130315-01/text/inc/foresee/15.1.8/foresee-trigger.js"></script>

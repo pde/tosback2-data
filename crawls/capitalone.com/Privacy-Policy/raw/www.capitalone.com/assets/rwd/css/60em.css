@@ -1,0 +1,313 @@
+/*
+Title:			60em Styles (Desktop)
+Copyright:		Copyright 2013, Capital One
+Domain:			www.capitalone.com
+Author:			Brian Dillon
+Description:	Additional styles loaded for desktop resolution (greater than ~960px)
+Date:			04/19/2013
+Version:		1.0
+
+
+Table of Contents
+==================================================
+	#Typography
+	#Grid
+	#Header
+		- Primary Navigation
+	#Breadcrumbs
+	#Footer
+	#Utility Links
+	#Tab Navigation
+	#Components
+		- Accordion
+		- Horizontal Compare (Browse) Table
+		- Product Callout
+		- Composite Banner
+	#Log In Badge
+	#Plugins
+		- Modal Overlay
+		- Ratings and Reviews Overrides
+*/
+
+/* #Typography
+================================================== */
+h1 { font-size: 1.7em; }
+h2 { font-size: 1.5em; }
+h3 {font-size: 1.4em; }
+
+/* #Grid (16px * 75% = 12px; 960px/12px = 80em)
+================================================== */
+.container 						{ width: 80em; }
+.container .column,
+.container .columns				{ margin-right: 1.666em; margin-left: 1.666em;  }
+.columns + .columns				{ margin-top: 0; }
+.column.alpha, 
+.columns.alpha, 
+.container .alpha				{ margin-right: 1.666em; margin-left: 0; }
+.column.omega, 
+.columns.omega, 
+.container .omega				{ margin-right: 0; margin-left: 1.666em; }
+.alpha.omega					{ margin-right: 0; margin-left: 0; }
+
+.container .one					{ width: 1.666em; }
+.container .two					{ width: 6.666em; }
+.container .three	 			{ width: 11.666em; }
+.container .four				{ width: 16.666em; }
+.container .five				{ width: 21.666em; }
+.container .six					{ width: 26.666em; }
+.container .seven				{ width: 31.666em; }
+.container .eight		 		{ width: 36.666em; }
+.container .nine		 		{ width: 41.666em; }
+.container .ten					{ width: 46.666em; }
+.container .eleven				{ width: 51.666em; }
+.container .twelve				{ width: 56.666em; }
+.container .thirteen			{ width: 61.666em; }
+.container .fourteen			{ width: 66.666em; }
+.container .fifteen				{ width: 71.666em; }
+.container .sixteen				{ width: 76.666em; }
+
+.container .one-third			{ width: 23.333em; }
+.container .two-thirds			{ width: 50em; }
+
+.container .offset-by-one 		{ padding-left: 3.333em; }
+.container .offset-by-two 		{ padding-left: 8.333em; }
+.container .offset-by-three 	{ padding-left: 13.333em; }
+.container .offset-by-four 		{ padding-left: 18.333em; }
+.container .offset-by-five 		{ padding-left: 23.333em; }
+.container .offset-by-six 		{ padding-left: 28.333em; }
+.container .offset-by-seven 	{ padding-left: 33.333em; }
+.container .offset-by-eight 	{ padding-left: 38.333em; }
+.container .offset-by-nine 		{ padding-left: 43.333em; }
+.container .offset-by-ten 		{ padding-left: 48.333em; }
+.container .offset-by-eleven 	{ padding-left: 53.333em; }
+.container .offset-by-twelve 	{ padding-left: 58.333em; }
+.container .offset-by-thirteen 	{ padding-left: 63.333em; }
+.container .offset-by-fourteen 	{ padding-left: 68.333em; }
+.container .offset-by-fifteen 	{ padding-left: 73.333em; }
+
+.container .divide-16-4-4-4-4 	{ background-image: url(../img/grid/16/4-4-4-4.gif); }
+.container .divide-16-4-6-6 	{ background-image: url(../img/grid/16/4-6-6.gif); }
+.container .divide-16-4-8-4 	{ background-position: 60em 0; }
+.container .divide-16-5-6-5 	{ background-image: url(../img/grid/16/5-6-5.gif); }
+.container .divide-16-8-8 		{ background-position: 40em 0; }
+.container .divide-16-10-6 		{ background-position: 50em 0; }
+
+.container .divide-12-3-3-3-3 	{ background-image: url(../img/grid/12/3-3-3-3.gif); background-position: -1em 0; }
+.container .divide-12-4-4-4 	{ background-image: url(../img/grid/12/4-4-4.gif); background-position: -1em 0; }
+.container .divide-12-4-8 		{ background-position: 18.167em 0; }
+.container .divide-12-6-6 		{ background-position: 28.167em 0; }
+.container .divide-12-8-4		{ background-position: 38.167em 0; }
+
+.container .divide-8-4-4 		{  background-position: 18.167em 0; }
+.container .divide-8-2-2-2-2	{ background-image: url(../img/grid/8/2-2-2-2.gif); background-position: -0.666em 0; }
+
+.container .twelve .three	{ width: 11.666em; }
+.container .twelve .three:nth-child(odd) { margin-left: 1.666em; }
+.container .twelve .three:nth-child(even) { margin-right: 1.666em; }
+.container .twelve .three.alpha { margin-left: 0; }
+.container .twelve .three.omega { margin-right: 0; }
+
+.container .eight .two	{ width: 6.666em; }
+.container .eight .two:nth-child(odd) { margin-left: 1.666em; }
+.container .eight .two:nth-child(even) { margin-right: 1.666em; }
+.container .eight .two.alpha { margin-left: 0; }
+.container .eight .two.omega { margin-right: 0; }
+
+.badge-carousel .twelve { width: 58.33em; }
+
+/*
+.sixteen .divide-16-10-6 > .ten { margin-left: 0; }
+.sixteen .divide-16-10-6 > .six { margin-right: 0; }
+*/
+
+/* #Header
+================================================== */
+.capitalone-logo { left: 1em; }
+
+/*--------------------[ Primary Navigation ]--------------------*/
+#nav-primary li a {
+	padding: 0 2.333em 0 1.333em;
+	background: url(../img/icon/nav-primary-down-arrow.png) no-repeat right top;
+	font-size: 1.33em;
+}
+#nav-primary li .column { width: 23.33em; }
+#nav-primary li#nav-primary-bank .acc-expand-supers { left: 16em; }
+#nav-primary li#nav-primary-loans .acc-expand-supers { left: 26em; }
+#nav-primary li#nav-primary-investing .acc-expand-supers { left: 35em; }
+#nav-primary li#nav-primary-sb .acc-expand-supers { left: 46em; }
+#nav-primary li#nav-primary-service .acc-expand-supers { left: 57em; }
+
+/* #Breadcrumbs
+================================================== */
+.breadcrumbs, #nav-breadcrumb { padding: 5px 10px 5px 20px; }
+
+/* #Footer
+================================================== */
+.footer .row { padding: 0 0.833em; }
+.footer .container .columns				{ margin-right: 0.833em; margin-left: 0.833em;  }
+.footer .container .alpha				{ margin-right: 0.833em; margin-left: 0; }
+.footer .container .omega				{ margin-right: 0; margin-left: 0.833em; }
+
+.footer .container .one					{ width: 3.229em; }
+.footer .container .two					{ width: 8.125em; }
+.footer .container .three				{ width: 13.02em; }
+.footer .container .four				{ width: 17.916em; }
+.footer .container .five				{ width: 22.8125em; }
+.footer .container .six					{ width: 27.708em; }
+.footer .container .seven				{ width: 32.604em; }
+.footer .container .eight				{ width: 37.5em; }
+.footer .container .nine				{ width: 42.395em; }
+.footer .container .ten					{ width: 47.291em; }
+.footer .container .eleven				{ width: 52.187em; }
+.footer .container .twelve				{ width: 57.083em; }
+.footer .container .thirteen			{ width: 61.979em; }
+.footer .container .fourteen			{ width: 66.875em; }
+.footer .container .fifteen				{ width: 71.77em; }
+.footer .container .sixteen				{ width: 76.666em; }
+
+.footer .socialmedia 					{ width: 8.125em; }
+
+/* #Utility Links
+================================================== */
+#utility-links li.print { display: block; }
+
+/* #Tab Navigation
+================================================== */
+#nav-product { background-image: url(../img/bg/tab-nav-16.png); }
+.twelve #nav-product { background-image: url(../img/bg/tab-nav-12.png); }
+
+/* #Components
+================================================== */
+
+/*--------------------[ Accordion ]--------------------*/
+.hasaccordion .accordion {
+	right: 1em;
+	padding: 9px;
+	width: 180px;
+	height: 310px;
+}
+.hasaccordion .accordion h2 { font-size: 1.15em; }
+.hasaccordion .accordion h2 a { background-position: -5px -4px; }
+.hasaccordion .accordion h2.open a { background-position: -5px -34px; }
+.hasaccordion .accordion-content {
+	margin-bottom: 5px;
+	padding: 0 5px; 
+	height: 222px;
+}
+.accordion-content h3 { font-size: 1em; }
+.accordion-content p { font-size: 1em; }
+
+/*--------------------[ Horizontal Compare (Browse) Table ]--------------------*/
+table.browse-table .product-image {
+	float: left;
+	margin: 0 10px 10px 0;
+	width: 80px;
+}
+#nav-lob-filter label {
+	font-size: 1em;
+	padding-bottom: 0;
+}
+table.browse-table .hype-text { 
+	width: 206px;
+	float: left;
+}
+
+/*--------------------[ Product Callout ]--------------------*/
+.callout-product img {
+	float: left;
+	margin: 0 10px 10px 0;
+}
+.callout-product .component-cta {
+	padding-top: 10px;
+	float: left;
+}
+.callout-product .component-cta img { float: none; }
+
+/*--------------------[ Composite Banner ]--------------------*/
+.composite-banner {
+    height: 210px;
+    padding: 60px 20px 20px;
+    width: 520px;
+}
+.composite-banner.right { width: 540px; }
+.composite-banner.right .content {
+	min-height: 210px;
+	width: 320px;
+	padding-right: 20px;
+}
+.composite-banner.right .component-cta { width: 190px; }
+
+/* #Log In Badge
+================================================== */
+.log-in { display: block; }
+.mail-offer-badge { display: block; }
+.mail-offer-badge {
+	margin-top: 10px;
+	padding: 0 10px;
+	min-height: 30px;
+	border: 1px solid #999;
+	background-image: url(../img/icon/mail-offer-envelope.jpg);
+	background-position: center right;
+	background-repeat: no-repeat;
+	-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow:    0 0 4px rgba(0, 0, 0, 0.3);
+	box-shadow:         0 0 4px rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+	font-size: 1.15em;
+	line-height: 30px;
+}
+
+/* #Plugins
+================================================== */
+
+/*--------------------[ Modal Overlay ]--------------------*/
+.fancybox-type-ajax, .fancybox-type-iframe { width: 738px !important; height: 550px !important; }
+
+/*--------------------[ Ratings and Reviews Overrides ]--------------------*/
+.BVRRContainer .BVDI_QTSummaryBox .BVRRBuyAgainContainer { width: 240px !important; }
+
+
+/* #Modal Info
+================================================== */
+.modal-overlay-container .column, .modal-overlay-container .columns {
+	display: inline;
+	float: left;
+	margin-right: 0.833em !important;
+	margin-left: 0.833em !important;
+}
+
+.modal-overlay-container 						{ width: 60em; }
+.modal-overlay-container .one 					{ width: 3.666em; }
+.modal-overlay-container .two 					{ width: 8.666em; }
+.modal-overlay-container .three 				{ width: 13.666em; }
+.modal-overlay-container .four 					{ width: 18.666em; }
+.modal-overlay-container .five 					{ width: 23.666em; }
+.modal-overlay-container .six 					{ width: 28.666em; }
+.modal-overlay-container .seven 				{ width: 33.666em; }
+.modal-overlay-container .eight 				{ width: 38.666em; }
+.modal-overlay-container .nine 					{ width: 43.666em; }
+.modal-overlay-container .ten 					{ width: 48.666em; }
+.modal-overlay-container .eleven 				{ width: 53.666em; }
+.modal-overlay-container .twelve 				{ width: 58.666em; }
+
+.modal-overlay-container .one-third 			{ width: 25em; }
+.modal-overlay-container .two-thirds 			{ width: 51.66em; }
+
+.modal-overlay-container .divide-12-3-3-3-3 	{ background-image: url(../img/grid/12/3-3-3-3.gif); background-position: 0 0; }
+.modal-overlay-container .divide-12-4-4-4 		{ background-image: url(../img/grid/12/4-4-4.gif); }
+.modal-overlay-container .divide-12-4-8 		{ background-position: 19.167em 0; }
+.modal-overlay-container .divide-12-6-6 		{ background-position: 29.167em 0; }
+.modal-overlay-container .divide-12-8-4			{ background-position: 39.167em 0; }
+
+/* #Credit Level Modal
+================================================== */
+.credit-desciption ul {
+	text-align: left;
+	padding: 10px 10px 5px;
+	min-height: 275px;
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+.credit-desciption.excellent ul { background-image: url(../../../media/graphic-logo/credit-cards/bg-excellent-modal.jpg); }
+.credit-desciption.average ul { background-image: url(../../../media/graphic-logo/credit-cards/bg-average-modal.jpg); }
+.credit-desciption.rebuilding ul { background-image: url(../../../media/graphic-logo/credit-cards/bg-rebuilding-modal.jpg); }

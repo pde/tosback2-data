@@ -84,8 +84,11 @@ s.Media.trackEvents="None"
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
 s.visitorNamespace="redcats"
-s.trackingServer="dc.redcatsusa.com"
-s.trackingServerSecure="dcs.redcatsusa.com"
+s.trackingServer = "dc.plussizetech.com"
+s.trackingServerSecure = "dcs.plussizetech.com"
+s.visitorMigrationKey = "5262C8BD"
+s.visitorMigrationServer = "dc.redcatsusa.com"
+s.visitorMigrationServerSecure = "dcs.redcatsusa.com"
 s.dc=122
 
 /****************************** MODULES *****************************/

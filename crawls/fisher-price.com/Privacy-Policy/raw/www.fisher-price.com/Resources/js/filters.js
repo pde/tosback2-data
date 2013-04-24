@@ -113,6 +113,19 @@ $(".filter-brands li:not('.disabled')").live("click", function (e) {
 	buildHash(e.hasOwnProperty('originalEvent'));
 });
 
+$(".filter-os li:not('.disabled')").live("click", function (e) {
+    var currentObj = $(this);
+    if (isGrandParentsPage === 'true') {
+        multiSelectCheckboxforGP("ul.filter-os > li", currentObj);
+    } else {
+        if (isEndecaSearch !== 'true') {
+            multiSelectCheckbox("ul.filter-os > li", currentObj);
+        } else {
+            uniSelectCheckbox(".filter-os li", currentObj);
+        }
+    }
+    buildHash(e.hasOwnProperty('originalEvent'));
+});
 
 $("ul.filter-themes > li:not('.disabled')").live("click", function (e) {
     var currentObj = $(this);
@@ -389,12 +402,15 @@ var ageFilter = '',
 	categoryFilter = '',
 	brandsFilter = '',
 	themesFilter = '',
+    osFilter = '',
 	ageFilter2 = '',
+    osFilter2 = '',
 	categoryFilter2 = '',
 	brandsFilter2 = '',
 	themesFilter2 = '',
 	finalDataList = '',
 	ageHTML = '',
+    osHTML = '',
 	categoryHTML = '',
 	brandsHTML = '',
 	themesHTML = '',
@@ -412,14 +428,17 @@ var ageFilter = '',
     collectionsHTML = '',
     gaAge = '',
     gaCategory = '',
+    gaOs = '',
     gaBrand = '',
     googleAnalyticsData = '';
 
 
 
+
+
 collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
 
-	ageFilter = '',
+    ageFilter = '',
 	categoryFilter = '',
 	brandsFilter = '',
 	themesFilter = '',
@@ -438,34 +457,45 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
     solutionsFilter = '',
     solutionsFilter2 = '',
     solutionsHTML = '',
+    osFilter = '',
+    osFilter2 = '',
+    osHTML = '',
     developmentStageFilter = '',
     developmentStageFilter2 = '',
     developmentStageHTML = '',
     collectionsFilter = '',
     collectionsFilter2 = '',
-    collectionsHTML = ''
-
-	$('.filter-Age li.click-active').each(function () {
+    collectionsHTML = '',
+	hideClass = '',
+	showClass = ''
+	
+    $('.filter-Age li.click-active').each(function () {
         getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		ageFilter = ageFilter + "|" + getName;
-		ageFilter2 = ageFilter2 + "|" + getName + "," + getValue;
+        ageFilter = ageFilter + "|" + getName;
+        ageFilter2 = ageFilter2 + "|" + getName + "," + getValue;
         ageHTML = ageHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	ageFilter = ageFilter.substring(1);
-	ageFilter2 = ageFilter2.substring(1);
+    ageFilter = ageFilter.substring(1);
+    ageFilter2 = ageFilter2.substring(1);
 
     $('.filter-category li.click-active').each(function (i) {
         getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		categoryFilter = categoryFilter + "|" + getName;
-		categoryFilter2 = categoryFilter2 + "|" + getName + "," + getValue;
-		categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        categoryFilter = categoryFilter + "|" + getName;
+        categoryFilter2 = categoryFilter2 + "|" + getName + "," + getValue;
+        categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	categoryFilter = categoryFilter.substring(1);
-	categoryFilter2 = categoryFilter2.substring(1);
+	if(categoryFilter != "") {
+		hideClass = ".filter-solutions";
+	}
+	else {
+		showClass = ".filter-solutions";
+	}
+    categoryFilter = categoryFilter.substring(1);
+    categoryFilter2 = categoryFilter2.substring(1);
 
     $('.filter-type li.click-active').each(function () {
         getName = $(this).attr('pName');
@@ -475,19 +505,25 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         // typeHTML = typeHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	typeFilter = typeFilter.substring(1);
-	typeFilter2 = typeFilter2.substring(1);
+    typeFilter = typeFilter.substring(1);
+    typeFilter2 = typeFilter2.substring(1);
 
-	$('.filter-solutions li.click-active').each(function () {
-		getName = $(this).attr('pName');
+    $('.filter-solutions li.click-active').each(function () {
+        getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		solutionsFilter = solutionsFilter + "|" + getName;
-		solutionsFilter2 = solutionsFilter + "|" + getName + "," + getValue;
-		// solutionsHTML = solutionsHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>"; 
-		googleAnalyticsData = $(this).attr('trackOnSuccess');
-	});
-	solutionsFilter = solutionsFilter.substring(1);
-	solutionsFilter2 = solutionsFilter2.substring(1);
+        solutionsFilter = solutionsFilter + "|" + getName;
+        solutionsFilter2 = solutionsFilter + "|" + getName + "," + getValue;
+        solutionsHTML = solutionsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='sol updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        googleAnalyticsData = $(this).attr('trackOnSuccess');
+    });
+	if(solutionsFilter != "") {
+		hideClass = hideClass + ", .filter-category";
+	}
+	else {
+		showClass = showClass + ", .filter-category";
+	}
+    solutionsFilter = solutionsFilter.substring(1);
+    solutionsFilter2 = solutionsFilter2.substring(1);
 
     $('.filter-development-stage li.click-active').each(function () {
         getName = $(this).attr('pName');
@@ -497,41 +533,52 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         // developmentStageHTML = developmentStageHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	developmentStageFilter = developmentStageFilter.substring(1);
-	developmentStageFilter2 = developmentStageFilter2.substring(1);
+    developmentStageFilter = developmentStageFilter.substring(1);
+    developmentStageFilter2 = developmentStageFilter2.substring(1);
 
-	$('.filter-collections li.click-active').each(function () {
-		getName = $(this).attr('pName');
+    $('.filter-collections li.click-active').each(function () {
+        getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		collectionsFilter = collectionsFilter + "|" + getName;
-		collectionsFilter2 = collectionsFilter2 + "|" + getName + "," + getValue;
-		//  collectionsHTML = collectionsHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
-		googleAnalyticsData = $(this).attr('trackOnSuccess');
-	});
-	collectionsFilter = collectionsFilter.substring(1);
-	collectionsFilter2 = collectionsFilter2.substring(1);
+        collectionsFilter = collectionsFilter + "|" + getName;
+        collectionsFilter2 = collectionsFilter2 + "|" + getName + "," + getValue;
+        collectionsHTML = collectionsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='col updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        googleAnalyticsData = $(this).attr('trackOnSuccess');
+    });
+    collectionsFilter = collectionsFilter.substring(1);
+    collectionsFilter2 = collectionsFilter2.substring(1);
 
     $('.filter-themes li.click-active').each(function (i) {
         getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		themesFilter = themesFilter + "|" + getName;
-		themesFilter2 = themesFilter2 + "|" + getName + "," + getValue;
-		themesHTML = themesHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='theme updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        themesFilter = themesFilter + "|" + getName;
+        themesFilter2 = themesFilter2 + "|" + getName + "," + getValue;
+        themesHTML = themesHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='theme updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	themesFilter = themesFilter.substring(1);
-	themesFilter2 = themesFilter2.substring(1);
+    themesFilter = themesFilter.substring(1);
+    themesFilter2 = themesFilter2.substring(1);
 
     $('.filter-brands li.click-active').each(function (i) {
         getName = $(this).attr('pName');
         getValue = $(this).attr('pValue');
-		brandsFilter = brandsFilter + "|" + getName;
-		brandsFilter2 = brandsFilter2 + "|" + getName + "," + getValue;
-		brandsHTML = brandsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        brandsFilter = brandsFilter + "|" + getName;
+        brandsFilter2 = brandsFilter2 + "|" + getName + "," + getValue;
+        brandsHTML = brandsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
-	brandsFilter = brandsFilter.substring(1);
-	brandsFilter2 = brandsFilter2.substring(1);
+    brandsFilter = brandsFilter.substring(1);
+    brandsFilter2 = brandsFilter2.substring(1);
+
+    $('.filter-os li.click-active').each(function () {
+        getName = $(this).attr('pName');
+        getValue = $(this).attr('pValue');
+        osFilter = osFilter + "|" + getName;
+        osFilter2 = osFilter2 + "|" + getName + "," + getValue;
+        osHTML = osHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='os updateFilterResults' pName='" + getName + "' href='#'></a></span>";
+        googleAnalyticsData = $(this).attr('trackOnSuccess');
+    });
+    osFilter = osFilter.substring(1);
+    osFilter2 = osFilter2.substring(1);
 
     /* $('.filter-brands li.click-active').each(function () {
     getName = $(this).attr('pName');
@@ -539,111 +586,126 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
     brandsFilter = brandsFilter + getName + "," + getValue;
     brandsHTML = brandsHTML + "<span pName='" + getName + "' pValue='" + getValue + "'>" + $(this).html() + "</span><a class='updateFilterResults' href='#'></a>";
     });*/
-	
-	var ageArray = ageFilter.split("|");
-	var categoryArray = categoryFilter.split("|");
-	var brandsArray = brandsFilter.split("|");
-	var themesArray = themesFilter.split("|");
-	var typeArray = typeFilter.split("|");
-	var solutionsArray = solutionsFilter.split("|");
-	var developmentStageArray = developmentStageFilter.split("|");
-	var collectionsArray = collectionsFilter.split("|");
-	
-	if(ageFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < ageArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + ageArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
-	
-	if(categoryFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < categoryArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + categoryArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
 
-	if(brandsFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < brandsArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + brandsArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    var ageArray = ageFilter.split("|");
+    var categoryArray = categoryFilter.split("|");
+    var brandsArray = brandsFilter.split("|");
+    var themesArray = themesFilter.split("|");
+    var typeArray = typeFilter.split("|");
+    var solutionsArray = solutionsFilter.split("|");
+    var developmentStageArray = developmentStageFilter.split("|");
+    var collectionsArray = collectionsFilter.split("|");
+    var osArray = osFilter.split("|");
 
-	if(themesFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < themesArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + themesArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    if (ageFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < ageArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + ageArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
 
-	if(typeFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < typeArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + typeArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    }
 
-	if(solutionsFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < solutionsArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + solutionsArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    if (categoryFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < categoryArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + categoryArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
 
-	if(developmentStageFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < developmentStageArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + developmentStageArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    if (brandsFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < brandsArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + brandsArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
 
-	if(collectionsFilter != "") {
-		finalDataArr = finalDataList.split(",");
-		finalDataList = "";
-		for (i = 0; i < collectionsArray.length; i++) {
-			for (j = 0; j < finalDataArr.length; j++) {
-				finalDataList = finalDataList + "," + finalDataArr[j] + "*" + collectionsArray[i];
-				finalDataList = finalDataList.replace(",*", ",");
-			}
-		}
-		finalDataList = finalDataList.substring(1);
-	}
+    if (themesFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < themesArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + themesArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
+
+    if (typeFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < typeArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + typeArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
+
+    if (solutionsFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < solutionsArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + solutionsArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
+
+    if (developmentStageFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < developmentStageArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + developmentStageArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
+
+    if (collectionsFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < collectionsArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + collectionsArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+    }
+
+    if (osFilter != "") {
+        finalDataArr = finalDataList.split(",");
+        finalDataList = "";
+        for (i = 0; i < osArray.length; i++) {
+            for (j = 0; j < finalDataArr.length; j++) {
+                finalDataList = finalDataList + "," + finalDataArr[j] + "*" + osArray[i];
+                finalDataList = finalDataList.replace(",*", ",");
+            }
+        }
+        finalDataList = finalDataList.substring(1);
+
+    }
 
     var finalDataListObj = new Object();
     finalDataListObj[0] = ageFilter2;
@@ -654,7 +716,8 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
     finalDataListObj[5] = solutionsFilter2;
     finalDataListObj[6] = developmentStageFilter2;
     finalDataListObj[7] = collectionsFilter2;
-
+    finalDataListObj[8] = osFilter2;
+   
     var finalSelectedCategoriesList = new Object();
     finalSelectedCategoriesList[0] = ageHTML;
     finalSelectedCategoriesList[1] = categoryHTML;
@@ -664,17 +727,18 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
     finalSelectedCategoriesList[5] = solutionsHTML;
     finalSelectedCategoriesList[6] = developmentStageHTML;
     finalSelectedCategoriesList[7] = collectionsHTML;
-
+    finalSelectedCategoriesList[8] = osHTML;
     // Nr=AND(OR(4294961765,4294961849),OR(4294961862),NOT(4294961819))
 
-    if(isBrandProductPage != true) {
-		finalDataList = "";
-		for (i = 0; i <= 7; i++) {
-			if (finalDataListObj[i] !== '') {
-				finalDataList = finalDataList + finalDataListObj[i] + "$";
-			}
-		}
-	}
+    if (isBrandProductPage != true) {
+        finalDataList = "";
+        for (i = 0; i <= 8; i++) {
+            if (finalDataListObj[i] !== '') {
+                finalDataList = finalDataList + finalDataListObj[i] + "$";
+
+            }
+        }
+    }
 
     var targetId = "#result";
 
@@ -686,20 +750,20 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
 
     // check if the preProductLoad() defined on the page
     if ($.isFunction(window.preProductLoad)) {
-    	preProductLoad(finalDataList);
+        preProductLoad(finalDataList);
     }
-	
-	var finalQueryStringToUpdateLeftPanel;
 
-    if($('.brand-site-fpbaby').length > 0) {
-		finalQueryStringToUpdateLeftPanel = "agecode=" + ageFilter.replace(/\|/g, ",") + "&catcode=" + categoryFilter.replace(/\|/g, ",");
-		if(categoryFilter != "") {
-			finalQueryStringToUpdateLeftPanel += ",";
-		}
-		finalQueryStringToUpdateLeftPanel += solutionsFilter.replace(/\|/g, ",");
-		finalQueryStringToUpdateLeftPanel += "&brands=" + collectionsFilter.replace(/\|/g, ",");
-		updateFilterCategories(finalQueryStringToUpdateLeftPanel);
-	}
+    var finalQueryStringToUpdateLeftPanel;
+
+    if ($('.brand-site-fpbaby').length > 0) {
+        finalQueryStringToUpdateLeftPanel = "agecode=" + ageFilter.replace(/\|/g, ",") + "&catcode=" + categoryFilter.replace(/\|/g, ",");
+        if (categoryFilter != "") {
+            finalQueryStringToUpdateLeftPanel += ",";
+        }
+        finalQueryStringToUpdateLeftPanel += solutionsFilter.replace(/\|/g, ",");
+        finalQueryStringToUpdateLeftPanel += "&brands=" + collectionsFilter.replace(/\|/g, ",");
+        updateFilterCategories(finalQueryStringToUpdateLeftPanel, hideClass, showClass);
+    }
 
     if (pagination === false) {
         updateProductsList(targetId, finalDataList, isBrandProductPage, pageIndex, pageSize, googleAnalyticsData); // filters not via pagination
@@ -725,17 +789,17 @@ for (i = 0; i < hashSegments.length; i++) {
 }
 
 collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, brandHeaderImage) {
-	var brandHeaderHTML = null;
-	if (brandHeaderImage != null) {
-		brandHeaderHTML = brandHeaderImage.html();
-	}
+    var brandHeaderHTML = null;
+    if (brandHeaderImage != null) {
+        brandHeaderHTML = brandHeaderImage.html();
+    }
     var N = 0, // default value which needs to be sent to the endeca server
 		recPerPage = pageSize, // this value is take from the pagination 
 		Ns = data_sort, // default sort value
 		No = parseInt(pageSize) * parseInt(pageIndex);
     Nr = 'NOT(4294961819)'; // default age/brand/category selection which is sent to the server. This will be modified on brand/catefgory selction
     Nf = '';
-	var optionsSelected = false;
+    var optionsSelected = false;
     // Following variables are used to form a query string which updtes the left side section based on the selected filters
     var ageQString = '',
         categoryQString = '',
@@ -745,15 +809,15 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
         ageHTML = ageHTML + "<span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' data-age-name='" + $(this).attr('data-age-name') + "' href='#'></a>";
         ageQString = "cminage=" + $(this).attr('data-min-age') + "&cmaxage=" + $(this).attr('data-max-age') + "&agecode=" + $(this).attr('selector-code');
         gaAge = 'Age- ' + $(this).attr('data-age-name');
-		optionsSelected = true;
+        optionsSelected = true;
     });
 
-	isVewAllSelected = $(".filter-category li.void").hasClass('click-active');
-    if(navOnly != 1) {
-		if (isVewAllSelected === true) {
-			$('.filter-category li:not(".void")').removeClass('click-active');
-		}
-	}
+    isVewAllSelected = $(".filter-category li.void").hasClass('click-active');
+    if (navOnly != 1) {
+        if (isVewAllSelected === true) {
+            $('.filter-category li:not(".void")').removeClass('click-active');
+        }
+    }
 
     var selectedFilter_categoryLength = $('.filter-category li.click-active').length;
     $('.filter-category li.click-active').each(function (i) {
@@ -769,7 +833,7 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
             categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>";
             categoryQString = categoryQString + ',' + getDataCateryCode;
         }
-		optionsSelected = true;
+        optionsSelected = true;
     });
     // final catgory string
 
@@ -785,17 +849,17 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
         brandsFilter = brandsFilter + getBrandCodeName;
         brandsHTML = brandsHTML + "<span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' data-brand-code='" + $(this).attr('data-brand-code') + "' href='#'></a>";
         brandsQString = brandsQString + getDataBrandCode;
-		optionsSelected = true;
+        optionsSelected = true;
     });
     // final Brand string
 
-	if(!optionsSelected && window.topNine && navOnly != 1) {
-		data_sort = "";
-		collectDataListForInt(pagination, pageIndex, pageSize);
-		return;
-	}
+    if (!optionsSelected && window.topNine && navOnly != 1) {
+        data_sort = "";
+        collectDataListForInt(pagination, pageIndex, pageSize);
+        return;
+    }
 
-		if (brandsFilter !== '') {
+    if (brandsFilter !== '') {
         brandsFilter = "OR(" + brandsFilter + ")";
     }
 
@@ -813,7 +877,7 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
     finalSelectedCategoriesList[0] = ageHTML;
     finalSelectedCategoriesList[1] = categoryHTML;
     finalSelectedCategoriesList[2] = brandsHTML;
-
+   
 
     if ((categoryFilter === '') && (brandsFilter === '')) {
         Nr = 'NOT(4294961819)';
@@ -842,9 +906,9 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
 
     if ((Nf === '') && (Nr === 'NOT(4294961819)') && (isVewAllSelected === false) && (Ns === '')) {
         finalQueryString = "&N=0&Nr=" + Nr + "&recPerPage=" + pageSize + "&No=" + No + "&pageIndex=" + pageIndex;
-		if (isGrandParentsPage === 'true') {
-			finalQueryString = "&recPerPage=" + pageSize + "&Ns=" + Ns + "&No=" + No + "&Nr=" + 'NOT(4294961819)' + "&N=0" + "&pageIndex=" + pageIndex;
-		}
+        if (isGrandParentsPage === 'true') {
+            finalQueryString = "&recPerPage=" + pageSize + "&Ns=" + Ns + "&No=" + No + "&Nr=" + 'NOT(4294961819)' + "&N=0" + "&pageIndex=" + pageIndex;
+        }
     }
 
     var agequerystring = ageQString ? ageQString : "_nop=1";
@@ -852,17 +916,17 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
 
     //alert(finalQueryStringToUpdateLeftPanel);
     var targetId = "#result";
-    if(navOnly != 1) {
-		$('#productsList').html("");
-		$('#productsList').addClass('loading');
-	}
+    if (navOnly != 1) {
+        $('#productsList').html("");
+        $('#productsList').addClass('loading');
+    }
     // update the left panel
     updateFilterCategories(finalQueryStringToUpdateLeftPanel);
     // update the right panel
-    if(navOnly != 1) {
-		updateProductsListEndeca(targetId, finalQueryString, googleAnalyticsData, brandHeaderHTML);
+    if (navOnly != 1) {
+        updateProductsListEndeca(targetId, finalQueryString, googleAnalyticsData, brandHeaderHTML);
     }
-	clearObjects();
+    clearObjects();
     // update the selected filters at the top of the leftside panel:
     updateSelectedfilterList(finalSelectedCategoriesList);
     disableAllCheckboxes();
@@ -1037,7 +1101,7 @@ clearObjects = function () {
     collectionsHTML = '';
 };
 
-updateFilterCategories = function (DataList) {
+updateFilterCategories = function (DataList, hideClass, showClass) {
 	if(xhr2 && xhr2.readystate != 4){
 		xhr2.abort();
 	}
@@ -1059,17 +1123,14 @@ updateFilterCategories = function (DataList) {
                 updateBrandsFilterSection(objBrands);
 				$('[endeca-attr=""]:not(.void)').hide();
 				$('[data-brand-code="babyu"]').hide();
-				var patt=/FPBabyFAP/i;
-				var patt2=/\?\?.*\?\?/i;
-				var pattTags1=/<.*FPBabyFAP.*>/i;
-				var pattTags2=/<.*\?\?.*\?\?.*>/i;
-				$('.navigation li').each(function () {
-					if((patt.exec($(this).html()) || patt2.exec($(this).html())) && !(pattTags1.exec($(this).html()) || pattTags2.exec($(this).html()))) {
-						$(this).hide();
-					}
-				});
 				initaiteScrollPane();
                 curvyCornersRedraw();
+				if(hideClass != "") {
+					$(hideClass).hide();
+				}
+				if(showClass != "") {
+					$(showClass).show();
+				}
 				
             } else {
                 enableAllFiltercategories();
@@ -1091,35 +1152,36 @@ updateProductsList = function (targetId, finalDataList, isBrandProductPage, page
         ajaxURL = localInfo + "/Product/GetProductsForBrands?filterdata=" + finalDataList + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&data_sort=" + data_sort;
     } else {
         ajaxURL = localInfo + "/Filter/GetResults?filterdata=" + finalDataList + "&PubId=" + $("#PubId").val() + "&Page_type=" + $("#Page_type").val() + "&PageCategoryUri=" + $("#PageCategoryUri").val() + "&isBrandPage=" + $("#isBrandPage").val();
+        
     }
-	if(xhr1 && xhr1.readystate != 4){
-		xhr1.abort();
-	}
-	xhr1 = $.ajax({
-		type: ajaxRequestMethod,
-		cache: 'false',
-		//data: finalDataList,
-		url: ajaxURL,
-		success: function (data) {
-			$('#productsList').removeClass('loading');
-			$('#productsList').html(data);
-			curvyCornersRedraw();
-			if (isBrandProductPage === true) {
-				createCurvyCorners(settings, ".product");
-			} else {
-				//Filter - Games & Activities Tab
-				createCurvyCorners(settingsTiles_header, ".tiles-header, .online-game-tiles-header");
-				createCurvyCorners(settingsColor_content, ".color-content");
+    if (xhr1 && xhr1.readystate != 4) {
+        xhr1.abort();
+    }
+    xhr1 = $.ajax({
+        type: ajaxRequestMethod,
+        cache: 'false',
+        //data: finalDataList,
+        url: ajaxURL,
+        success: function (data) {
+            $('#productsList').removeClass('loading');
+            $('#productsList').html(data);
+            curvyCornersRedraw();
+            if (isBrandProductPage === true) {
+                createCurvyCorners(settings, ".product");
+            } else {
+                //Filter - Games & Activities Tab
+                createCurvyCorners(settingsTiles_header, ".tiles-header, .online-game-tiles-header");
+                createCurvyCorners(settingsColor_content, ".color-content");
 
-			}
-			enableAllCheckboxes();
-			triggerGAOnAjaxSuccess(googleAnalyticsData);
-			selectFilterFromHash();
-	   },
-		error: function (data) {
-			enableAllCheckboxes();
-		}
-	});
+            }
+            enableAllCheckboxes();
+            triggerGAOnAjaxSuccess(googleAnalyticsData);
+            selectFilterFromHash();
+        },
+        error: function (data) {
+            enableAllCheckboxes();
+        }
+    });
 };
 
 updateProductsListEndeca = function (targetId, finalDataList, googleAnalyticsData, brandHeaderHTML) {
@@ -1184,7 +1246,8 @@ updateAgeFilterSection = function (objAge) {
 		if(getCode == undefined) {
 			getCode = $(this).attr('categorycode');
 		}
-        if ($.inArray(getCode, objAge) !== -1) {
+		getCode2 = getCode.toLowerCase();
+        if ($.inArray(getCode, objAge) !== -1 || $.inArray(getCode2, objAge) !== -1) {
             $(this).css("display", 'block');
         } else {
             $(this).css("display", 'none');
@@ -1200,8 +1263,8 @@ updateCategoryFilterSection = function (objCategory) {
 		if(getCode == undefined) {
 			getCode = $(this).attr('categorycode');
 		}
-		getCode = getCode.toLowerCase();
-        if ($.inArray(getCode, objCategory) !== -1) {
+		getCode2 = getCode.toLowerCase();
+        if ($.inArray(getCode, objCategory) !== -1 || $.inArray(getCode2, objCategory) !== -1) {
             $(this).css("display", 'block');
 			if($(this).hasClass('level2')) {
 				$(this).parents('li').css("display", 'block');
@@ -1223,7 +1286,7 @@ updateBrandsFilterSection = function (objBrands) {
 			getCode = $(this).attr('categorycode');
 		}
 		getCode = getCode.toLowerCase();
-        if ($.inArray(getCode, objBrands) !== -1) {
+        if ($.inArray(getCode, objBrands) !== -1 || $.inArray(getCode2, objBrands) !== -1) {
             $(this).css("display", 'block');
         } else {
             $(this).css("display", 'none');
@@ -1248,9 +1311,11 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
         var selectedAgeString = finalSelectedCategoriesList[0];
         var creatHTMLage = selectedAgeString; // As this is a singl element, we are directly assigning the HTML string
         if (creatHTMLage !== '') {
+            $('.selected-age').show();
             $('.selected-age span').html(creatHTMLage).parents('li').css("display", 'block');
             $('.selected-age').css('border-bottom', '1px solid #C86F1E');
         } else {
+            $('.selected-age').hide();
             $('.selected-age span').html('');
             $('.selected-age').css('border-bottom', '0px');
         }
@@ -1263,13 +1328,14 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
         for (i = 0; i <= selectedCategoryString.length - 1; i++) {
             creatHTMLCategories = creatHTMLCategories + selectedCategoryString[i];
         }
-
         $(creatHTMLCategories).find('span:last').remove();
         if (creatHTMLCategories !== '') {
+            $('.selected-category').show();
             $('.selected-category span.listedItems').html(creatHTMLCategories).parents('li').css("display", 'block');
             $('.selected-category').css('border-bottom', '1px solid #C86F1E');
             $('.selected-category').find('a.expand').remove();
         } else {
+            $('.selected-category').hide();
             $('.selected-category span.listedItems').html('');
             $('.selected-category').css('border-bottom', '0px');
         }
@@ -1297,9 +1363,11 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
 
         $(creatHTMLbrands).find('span:last').remove();
         if (creatHTMLbrands !== '') {
+            $('.selected-brands').show();
             $('.selected-brands span').html(creatHTMLbrands).parents('li').css("display", 'block');
             $('.selected-brands').css('border-bottom', '1px solid #C86F1E');
         } else {
+            $('.selected-brands').hide();
             $('.selected-brands span').html('');
             $('.selected-brands').css('border-bottom', '0px');
         }
@@ -1316,14 +1384,77 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
 
         $(creatHTMLThemes).find('span:last').remove();
         if (creatHTMLThemes !== '') {
+            $('.selected-theme').show();
             $('.selected-theme span.listedItems').html(creatHTMLThemes).parents('li').css("display", 'block');
             $('.selected-theme').css('border-bottom', '1px solid #C86F1E');
         } else {
+            $('.selected-theme').hide();
             $('.selected-theme span.listedItems').html('');
             $('.selected-theme').css('border-bottom', '0px');
         }
     }
 
+    if (finalSelectedCategoriesList[7] !== undefined) {
+        var selectedCollectionString = finalSelectedCategoriesList[7];
+        var creatHTMLCollections = '';
+        selectedCollectionString = selectedCollectionString.split('$');
+        for (i = 0; i <= selectedCollectionString.length - 1; i++) {
+            creatHTMLCollections = creatHTMLCollections + selectedCollectionString[i];
+        }
+
+        if (creatHTMLCollections !== '') {
+            $('.selected-collection').show();
+            $('.selected-collection span.listedItems').html(creatHTMLCollections).parents('li').css("display", 'block');
+            $('.selected-collection').css('border-bottom', '1px solid #C86F1E');
+        } else {
+            $('.selected-collection').hide();
+            $('.selected-collection span.listedItems').html('');
+            $('.selected-collection').css('border-bottom', '0px');
+        }
+    }
+
+    if (finalSelectedCategoriesList[5] !== undefined) {
+        var selectedSolutionString = finalSelectedCategoriesList[5];
+        var creatHTMLSolutions = '';
+        selectedSolutionString = selectedSolutionString.split('$');
+        for (i = 0; i <= selectedSolutionString.length - 1; i++) {
+            creatHTMLSolutions = creatHTMLSolutions + selectedSolutionString[i];
+       }
+
+
+        $(creatHTMLSolutions).find('span:last').remove();
+        if (creatHTMLSolutions !== '') {
+            $('.selected-solution').show();
+            $('.selected-solution span.listedItems').html(creatHTMLSolutions).parents('li').css("display", 'block');
+            $('.selected-solution').css('border-bottom', '1px solid #C86F1E');
+        } else {
+            $('.selected-solution').hide();
+            $('.selected-solution span.listedItems').html('');
+            $('.selected-solution').css('border-bottom', '0px');
+        }
+    }
+
+    if (finalSelectedCategoriesList[8] !== undefined) {
+        var selectedOsString = finalSelectedCategoriesList[8];
+        var creatHTMLOs = '';
+        selectedOsString = selectedOsString.split('$');
+        for (i = 0; i <= selectedOsString.length - 1; i++) {
+            creatHTMLOs = creatHTMLOs + selectedOsString[i];
+        }
+
+
+        $(creatHTMLOs).find('span:last').remove();
+        if (creatHTMLOs !== '') {
+            $('.selected-os').show();
+            $('.selected-os span.listedItems').html(creatHTMLOs).parents('li').css("display", 'block');
+            $('.selected-os').css('border-bottom', '1px solid #C86F1E');
+        } else {
+            $('.selected-os').hide();
+            $('.selected-os span.listedItems').html('');
+            $('.selected-os').css('border-bottom', '0px');
+        }
+    }
+    
     //Hide/show sort by selected area
     display_sortByArea();
 
@@ -1417,6 +1548,19 @@ $(".cat.updateFilterResults").live("click", function (e) {
     return false;
 });
 
+$(".sol.updateFilterResults").live("click", function (e) {
+    if ($(this).attr('pName') === undefined) {
+        getName = $(this).attr('data-cat-code');
+        categoryCode = 'data-cat-code';
+    } else {
+        getName = $(this).attr('pName');
+        categoryCode = 'pName';
+    }
+    removeSelectedCategory('filter-solutions', getName, categoryCode);
+	buildHash(e.hasOwnProperty('originalEvent'));
+    return false;
+});
+
 $(".brand.updateFilterResults").live("click", function (e) {
     if ($(this).attr('pName') === undefined) {
         getName = $(this).attr('data-brand-code');
@@ -1430,11 +1574,32 @@ $(".brand.updateFilterResults").live("click", function (e) {
     return false;
 });
 
+$(".col.updateFilterResults").live("click", function (e) {
+    if ($(this).attr('pName') === undefined) {
+        getName = $(this).attr('data-col-code');
+        categoryCode = 'data-col-code';
+    } else {
+        getName = $(this).attr('pName');
+        categoryCode = 'pName';
+    }
+    removeSelectedCategory('filter-collections', getName, categoryCode);
+	buildHash(e.hasOwnProperty('originalEvent'));
+    return false;
+});
+
 $(".theme.updateFilterResults").live("click", function (e) {
     getName = $(this).attr('pName');
     categoryCode = 'pName';
     removeSelectedCategory('filter-themes', getName, categoryCode);
 	buildHash(e.hasOwnProperty('originalEvent'));
+    return false;
+});
+
+$(".os.updateFilterResults").live("click", function (e) {
+    getName = $(this).attr('pName');
+    categoryCode = 'pName';
+    removeSelectedCategory('filter-os', getName, categoryCode);
+    buildHash(e.hasOwnProperty('originalEvent'));
     return false;
 });
 
@@ -1768,12 +1933,22 @@ updateSearchResultsSection = function (ajaxURL) {
         success: function (data) {
             $('#productsList').removeClass('loading');
             $('#productsList').html(data);
-            //curvyCornersRedraw();
+
+            var searchTerm = $('#productsList').find('input#thdnSearchTermValue').attr("value");
+            var refinementId = $('#productsList').find('input#thdnSearchRefinementId').attr("value");
+            var totalMatches = $('#productsList').find('input#thdnTotalMatches').attr("value");
+
+            setUTagOnSearch(searchTerm, refinementId, totalMatches);
+
             createCurvyCorners(settings, ".product");
         },
         error: function (data) {
+
         }
     });
+
+
+
 };
 
 
@@ -1899,7 +2074,6 @@ updateWindowURL = function (pageSize, pageIndex, qsParam) {
 
 //Hide/Show "Sort By Selected" area
 var display_sortByArea = function () {
-
     /*
     If any filter option is selected, then 'click-active' class gets added to the 'li' to mark it as selected. So if any option is
     selected, then the count will be greater than '0' & hence we need to show the "Sort By Selected" area.
@@ -1918,13 +2092,13 @@ var display_sortByArea = function () {
     if (selected_filter_count === 0) {
         display_value = top_border_value = 'none';
     }
-
     switch (page_id) {
 
         //Find a product page  - hide/show "Selected" area and hide/show top border of "Age" filters section           
+        case 'BrandsLandingPageView':
         case 'SearchPageView':
 
-            $('#SearchPageView .selected-area').css('display', display_value);
+            $('#' + page_id + ' .selected-area').css('display', display_value);
 
             if (selected_filter_count > 0) {
                 $('.navigation .ages').removeClass('ages-no-top-border');
@@ -1994,7 +2168,10 @@ function buildHash(oe) {
 		});
 		$('.filter-type li.click-active').each(function () {
 			hash = hash + "typ=" + $(this).attr('categorycode') + "&";
-		});
+
+       });
+
+
 		$('.filter-themes li.click-active').each(function () {
 			if($(this).attr('pname')) {
 				hash = hash + "the=" + $(this).attr('pname') + "&";
@@ -2056,3 +2233,17 @@ function updateHash(obj, oe) {
 	}
 	window.location.hash = newHash;
 }
+
+/*function setUTagOnSearch(searchText, refinementId) {
+    szEventId = refinementId
+    szEventCategoryId = "Search";
+    szEventAction = "Refine";
+    pageType = "Search Results";
+    szEventDetail = searchText;
+    szEventSubDetail = "";
+    var thdnpageTitle = "";
+    if (document.getElementById('thdnpageTitle') != null) {
+        thdnpageTitle = document.getElementById('thdnpageTitle').value;
+    }
+    utag.view({ event_id: "Search", event_category_id: szEventCategoryId, page_name_attr9: thdnpageTitle, page_type_attr10: szEventAction, brand_attr20: " ", event_trigger_action: szEventAction, specific_area_of_page: szEventId, sub_specific_area_on_page: "Search Term" });    
+}*/

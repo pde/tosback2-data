@@ -40,7 +40,7 @@ include('swfobject.js');
 include('forms.js');
 include('jquery.slideshow.js');
 
-include2('http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4de7de76756e3f75');
+include2('//s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4de7de76756e3f75');
 var addthis_disable_flash = true;
 var addthis_config = {
     data_use_flash: false,
@@ -63,5 +63,5 @@ include('jquery.tiptip.js');
 printCSS('tiptip.css');
 
 include('urchin.js');
-include2('http://www.pepsico.com/scripts/globalnav.js');
+include2('/scripts/globalnav.js');
 include('localcore.js');

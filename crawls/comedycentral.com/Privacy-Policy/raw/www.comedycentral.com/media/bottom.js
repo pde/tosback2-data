@@ -3236,6 +3236,9 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 		if(contentId){
 			includeChildren = true;
 		}
+		if(typeof(contentId) == 'undefined'){
+			contentId='';
+		}
 		$.ajax({
 			url: config.getFluxActivityBaseHref()+'/api/ActivityService/FindActivities?communityId=' + config.getFluxCommunityId() + '&contentId='+contentId+'&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults='+maxResults+'&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren='+includeChildren+'&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent',
 			// test url for -d testing m033 custom ENTREQ-4373//url: "http://activity.flux.com/api/ActivityService/FindActivities?communityId=B8F6FFFF0099CA9B0002FFFFF6B8&contentId=" + contentId + "&dashboardShowAllCommunities=false&dashboardShowCommunityFeed=false&dashboardShowOnlyFollowFeed=false&activityType=&activityFeedFilter=Comments&maxResults=5&cultureLcid=0&nextPageToken=&sortByTopCounter=false&untilPageToken=&includeChildren=true&includeTweets=true&includeGuestActivities=false&includeRating=true&showParentAddedChild=false&contentAliases=&popularActivitiesCount=0&popularActivitiesType=CommentContent",
@@ -3387,7 +3390,8 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 		initActions: function(block){
 			var self = this;
 			$(block).undelegate('click');
-			$(block).delegate('a', 'click', function(e){
+			//changed from delegate as it was uneccessary
+			$(block).find("a").click(function(e){
 				var page = $(e.target).attr("href").match(/currentPage=([0-9]+)/)[1];
 				self.options.onClick.apply(self.options.context, [page ? page : '']);
 				return false;
@@ -3493,7 +3497,7 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 			
 			$Crabapple.playerA = this;
 
-			this.player[$(elm).attr('id')] = new MTVNPlayer.Player($(elm).attr('id'),
+			var my_player = this.player[$(elm).attr('id')] = new MTVNPlayer.Player($(elm).attr('id'),
 				{
 					width:width,
 					height:height,
@@ -3513,7 +3517,50 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 				
 
 			);
-						
+			
+			//stuff for the do seek support
+			var total_duration = null;
+			var url_seek_processed = false;
+			//adding support for seeks
+			my_player.bind('onMediaStart',function(evt){
+				if(url_seek_processed){
+					return;
+				}
+				var duration = total_duration;
+				if(total_duration == null){
+					var query = window.location.search.substring(1);
+					var vars = query.split('&');
+					var duration = null;
+					for(var i = 0; i < vars.length; i++){
+						var pair = vars[i].split('=');
+						if(decodeURIComponent(pair[0]) == "start") {
+							duration = decodeURIComponent(pair[1]);
+						}
+					}
+					if(duration == null){
+						return;
+					}
+					duration = new Number(duration);
+					duration = total_duration = duration.toString();
+				}
+				
+				var data = my_player.currentMetadata;
+				if(data.isAd || data.isBumper || data.isLive){
+					return;
+				}
+				
+				if(duration.toString() == "NaN" || duration < 0){
+					return;
+				}
+				if(data.duration >= duration){
+					url_seek_processed=true;
+					my_player.seek(duration);
+				}else{
+					my_player.seek(data.duration);
+					total_duration -= data.duration;
+				}
+			});
+			
 			return this.player;
 				
 			//**********************			
@@ -3521,7 +3568,7 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 		},
 	
 		onReady:function(event){},				
-		onMetadata:function(event){},		
+		onMetadata:function(event){},	
 		onMediaEnd:function(event){},		
 		onPlayheadUpdate:function(event){},	
 		onStateChange:function(event){},

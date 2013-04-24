@@ -263,6 +263,16 @@ $(document).ready(function(){
 									return false;
 								}
 								
+								// Check upsell qty if needed
+								var $upsellCon = $('.upsellContainer','#qlOverlayContent');
+								if ($upsellCon.length>0 && $('.rugPadTypeSelector',$upsellCon).val() != '') {
+									var hasQty = parseInt($('.rugPadQty',$upsellCon).val(),10);
+									if (!hasQty || hasQty<=0) {
+										alert('You must specify a quantity for the rug pad.');
+										return false;
+									}
+								}
+								
 								$.mask.getMask().css({display:"none"});
 								$("#qlAjaxForm").val("1");
 								var popUpElem = $('#addPopUp');
@@ -361,6 +371,18 @@ $(document).ready(function(){
 			});
 		return false;
 	});
+	
+	/* Rugpad Addon/Upsell */
+	$(document).on('change','.upsellContainer .rugPadTypeSelector', function(){
+		var $context = $(this).parentsUntil('.upsellContainer');
+		rugPad_PopulateSizes($context);
+	}); // '.upsellContainer .rugPadTypeSelector' change
+	
+	$(document).on('change','.upsellContainer .rugPadSelector', function(){
+		var $context = $(this).parentsUntil('.upsellContainer');
+		rugPad_PopulatePrices($context);
+	}); // '.upsellContainer .rugPadSelector' change
+	
 }); // End doc.ready()
 
 //Need this to load after whole page is loaded to take into account image sizes in Chrome
@@ -746,4 +768,93 @@ function qlSwatchClick(item,spec1,spec2){
 	return false;
 }
 
+/* Rugpad Addon/Upsell */
 
+/**
+ * Populates the RugPad Upsell sizes options.
+ *
+ * @param $context - jQuery object of the 'upsellContainer' that houses the dropdown that sparked the event
+ */
+function rugPad_PopulateSizes($context) {
+	var $theType = $context.find('.rugPadTypeSelector'),
+	    $theSize = $context.find('.rugPadSelector'),
+			$selBaseId = $theType.val();
+	
+	if ($selBaseId==0 || undefined == rugPadUpsellOptions[$selBaseId]) {
+		rugPad_Reset($context);
+	} else {
+		
+		// Change "Select Rug Pad" option to read "Cancel"
+		$theType.find('option').eq(0).text('Cancel');
+		
+		// Clear any previous size
+		rugPad_ResetSizes($context, true);
+		
+		// Add the sizes for this Rug Pad
+		for (var i=0,l=rugPadUpsellOptions[$selBaseId].length; i<l; i++) {
+			$theSize.append('<option value="'+rugPadUpsellOptions[$selBaseId][i].sku+'">'+rugPadUpsellOptions[$selBaseId][i].size+'</option>')
+		}
+		$theSize.trigger('change');
+	}
+}
+
+/**
+ * Populates the RugPad Upsell prices for the selected rugpad / size.
+ *
+ * @param $context - jQuery object of the 'upsellContainer' that houses the dropdown that sparked the event
+ */
+function rugPad_PopulatePrices($context) {
+	var $theSize = $context.find('.rugPadSelector');
+	
+	// Show the price & qty rows
+	$context.find('.startsHidden').removeClass('hide');
+	
+	// Add the border from the row with dropdowns
+	$context.find('.rugPadSelectorRow td').removeClass('force_no_borders');
+	
+	if (undefined != rugPadUpsellOptions['prices'][$theSize.val()]) {
+		$context.find('.upsellPrice').text(rugPadUpsellOptions['prices'][$theSize.val()].price);
+		$context.find('.upsellShipping').text(rugPadUpsellOptions['prices'][$theSize.val()].shipping);
+	}
+}
+
+
+/**
+ * Resets the RugPad Upsell display to its initial values.
+ *
+ * @param $context - jQuery object of the 'upsellContainer' that houses the dropdown that sparked the event
+ */
+function rugPad_Reset($context) {
+	// Hide the price & qty rows
+	$context.find('.startsHidden').addClass('hide');
+	
+	// Remove the border from the row with dropdowns
+	$context.find('.rugPadSelectorRow td').addClass('force_no_borders');
+	
+	// Reset the Sizes
+	rugPad_ResetSizes($context);
+	
+	// Reset the first option of the type selector to "Select Rug Pad" and make it the selected option
+	$theType = $context.find('.rugPadTypeSelector option').eq(0).text('Select Rug Pad').val(0).attr('selected',true);
+	
+	// Reset the rug pad quantity to zero
+	$context.find('.rugPadQty').val('1');
+}
+
+/**
+ * Resets the RugPad Upsell Sizes to its initial values.
+ *
+ * @param $context - jQuery object of the 'upsellContainer' that houses the dropdown that sparked the event
+ */
+function rugPad_ResetSizes($context, skipDefault) {
+
+	if (undefined == skipDefault) { var skipDefault = false; }
+	
+	var $theSize = $context.find('.rugPadSelector')
+	
+	// Remove the options from the Select Size
+	$theSize.find('option').remove().end() // Remove all options
+	if (skipDefault == false) {
+		$theSize.append('<option value="">Select Size</option>') // add the default Option back.
+	}
+}

@@ -135,13 +135,9 @@ if(typeof KIDS=="undefined"||!KIDS){var KIDS={}
 KIDS.ads.pageLevelAdConfig.minSponsor=1;
 KIDS.ads.pageLevelAdConfig.maxSponsor=2;
 KIDS.ads.pageLevelAdConfig.randSponsor=Math.floor(Math.random()*(KIDS.ads.pageLevelAdConfig.maxSponsor-KIDS.ads.pageLevelAdConfig.minSponsor+1)+KIDS.ads.pageLevelAdConfig.minSponsor);
-KIDS.ads.pageLevelAdConfig.Male=[{age:"6",rugrat:"Dil"},{age:"7",rugrat:"Tommy"},{age:"8",rugrat:"Phil"},{age:"9",rugrat:"Chuckie"},{age:"10",rugrat:"Stu"},{age:"11",rugrat:"Chas"},{age:"12",rugrat:"Lou"},{age:"13",rugrat:"Boris"},{age:"14",rugrat:"Bill"},{age:"15",rugrat:"George"},{age:"16",rugrat:"Jack"},{age:"17",rugrat:"Jimmy"},{age:"18",rugrat:"Ron"},{age:"25",rugrat:"Bryan"},{age:"35",rugrat:"Ed"},{age:"45",rugrat:"Dan"},{age:"55",rugrat:"Damon"},{age:"65",rugrat:"Irving"}];
-KIDS.ads.pageLevelAdConfig.Female=[{age:"6",rugrat:"Lil"},{age:"7",rugrat:"Susie"},{age:"8",rugrat:"Kimi"},{age:"9",rugrat:"Angelica"},{age:"10",rugrat:"Didi"},{age:"11",rugrat:"Kira"},{age:"12",rugrat:"Betty"},{age:"13",rugrat:"Minka"},{age:"14",rugrat:"Hilary"},{age:"15",rugrat:"Barbara"},{age:"16",rugrat:"Jackie"},{age:"17",rugrat:"Rosalyn"},{age:"18",rugrat:"Nancy"},{age:"25",rugrat:"Aly"},{age:"35",rugrat:"Kelly"},{age:"45",rugrat:"Amy"},{age:"55",rugrat:"Susan"},{age:"65",rugrat:"Ruth"}];
-KIDS.ads.pageLevelAdConfig.rugrat;
 KIDS.ads.pageLevelAdConfig.zone;
 KIDS.ads.pageLevelAdConfig.keyValues;
-KIDS.ads.pageLevelAdConfig.init=function(){try{KIDS.ads.pageLevelAdConfig.rugrat=KIDS.ads.pageLevelAdConfig.getRugratValue();
-var k=location.pathname;
+KIDS.ads.pageLevelAdConfig.init=function(){try{var k=location.pathname;
 var m="";
 if(KIDS.get("videoType").length>0){k=k.replace("/clip/","/"+KIDS.get("videoType")+"/")
 }if(k.indexOf(".html")<0){if(k.charAt(k.length-1)!="/"){k+="/"
@@ -161,7 +157,6 @@ if(g.length==2){if(g[1]=="index.html"){k="/_hp"
 }}}}else{if(KIDS.get("isGotw")=="true"){k="/games/game-of-the-week-games/play"
 }}m=(m.lastIndexOf(";")==(m.length-1))?m:m+";";
 if(KIDS.ads.pageLevelAdConfig.maxSponsor>1){m+="cat="+KIDS.ads.pageLevelAdConfig.randSponsor+";"
-}if(KIDS.ads.pageLevelAdConfig.rugrat!=null){m+=KIDS.ads.pageLevelAdConfig.rugrat
 }if(KIDS.get("fccRelatedShow")){m+="!category="+KIDS.get("fccRelatedShow")+";show="+KIDS.get("fccRelatedShow")+";"
 }if(KIDS.get("type")=="game"&&KIDS.get("isDetailPage")=="true"){m+="ga="+KIDS.get("urlAlias")+";"
 }if(KIDS.get("isGotw")=="true"){m+="gotw=true;"
@@ -201,22 +196,6 @@ MTVN.config.btg.DoubleClick.dartSite=c;
 if(typeof MTVN.config.btg.DoubleClick.keyValues=="string"){MTVN.config.btg.DoubleClick.keyValues+=KIDS.ads.pageLevelAdConfig.keyValues
 }else{MTVN.config.btg.DoubleClick.keyValues=KIDS.ads.pageLevelAdConfig.keyValues
 }}catch(h){KIDS.utils.doLog("pageLevelAdSettings failed:"+h)
-}};
-KIDS.ads.pageLevelAdConfig.getRugratValue=function(){try{function b(d){var g=null;
-var e=new Number(NICK.utils.getCookie("age").split(" ")[0]);
-for(var f=0;
-f<d.length;
-f++){if(d[f].age>e){if(f>0){g="rugrat="+d[f-1].rugrat+";"
-}break
-}}return(g)
-}var a=null;
-switch(NICK.utils.getCookie("gender")){case"Male":a=b(KIDS.ads.pageLevelAdConfig.Male);
-break;
-case"Female":a=b(KIDS.ads.pageLevelAdConfig.Female)
-}KIDS.utils.doLog("Rugrat value:"+a);
-return(a)
-}catch(c){KIDS.utils.doLog("KIDS.ads.pageLevelAdConfig.getRugratValues failed:"+c.toString());
-return("")
 }};
 KIDS.ads.pageLevelAdConfig.init();
 (function(){var d=location.hostname;

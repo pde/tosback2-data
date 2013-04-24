@@ -68,7 +68,7 @@ _comscore.push({ c1: "2", c2: "16193073" });
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = '';
+OAS_listpos = ',x32';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -206,7 +206,7 @@ var login_params=
 	<ul class="sf-menu">
 		<li><a href="http://adage.com/current-issue">This Week's Issue</a><ul>
 	<li class="home_menu">
-		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1365975549" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
+		<a class="current_cover" href="http://adage.com/current-issue"><img src="../gaia.adage.com/images/covers/current_thumb.jpg%3F1366587523" width="80" height="104" alt="Current Cover" title="Current Cover" /></a><a  href="http://adage.com/subscribe">Subscribe</a><a  href="http://adage.com/digitaledition">Digital Edition</a><a  href="http://adage.com/archive">Print Archive</a>
 	</li>
 </ul>
 </li><li><a href="http://adage.com/article/news/ad-age-s-mobile-app-iphone-android-blackberry-wp7/228530/">Mobile App</a></li><li><a href="http://www.adage.com/ipad">iPad App</a></li>
@@ -353,6 +353,84 @@ menu item
 
 
 		
+<script type="text/javascript">
+Interstitial = {
+	parentId:'home',
+	id:'interstitial',
+	ad_id:'interstitial-ad',
+	timer:null,
+
+	setOpacity:function(id, opacity) {
+    	el=document.getElementById(id);
+		el.style.opacity=(opacity / 100);
+		el.style.MozOpacity=(opacity / 100);
+		el.style.KhtmlOpacity=(opacity / 100);
+		el.style.filter="alpha(opacity=" + opacity + ")";
+	},
+
+	fade:function(id, start, end, time) {
+		var speed=Math.round(time / 100);
+		var timer=0;
+
+		if(start > end) {
+			for(var i=start; i>=end; i--) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+
+				if(end == i) {
+					setTimeout("Interstitial.destroy()", time);
+				}
+			}
+			clearTimeout(this.timer);
+		}
+		else if(start < end) {
+			for(var i=start; i <= end; i++) {
+				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
+				timer++;
+			}
+			clearTimeout(this.timer);
+		}
+	},
+
+	hide:function() {
+		if(document.getElementById(this.id)) {
+			// this.fade(this.id, 100, 0, 300);
+			this.destroy();
+		}
+	},
+
+	destroy:function() {
+		var hpto = document.getElementById(this.id);
+		hpto.removeChild(document.getElementById(this.ad_id));
+		hpto.style.visibility='hidden';
+		hpto.style.display='none';
+	}
+}
+
+Interstitial.timer = setTimeout('Interstitial.hide()', 11*1000);
+
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
+
+<div id="interstitial">
+	<div id="interstitial-head">
+		<div id="interstitial-logo">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
+		</div>
+		<div id="interstitial-skip">
+			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
+		</div>
+	</div>
+
+	<div id="interstitial-ad">
+		<!-- OAS Interstitial AD POSITION -->
+		<script language="JavaScript">
+			OAS_AD('x32');
+		</script>
+	</div>
+</div>
+
 	</div>
 </div>
 
@@ -565,7 +643,7 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
 	</div>
 </div>
 
-<!-- Total time: 0.133496999741 -->
+<!-- Total time: 0.0980322360992 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->
@@ -596,6 +674,7 @@ qacct:"p-fbFZFDIZ_p3uo"
 
 <script type="text/javascript">
 var _sf_async_config={uid:25465,domain:"adage.com"};
+_sf_async_config.useCanonical = true;
 (function(){
   function loadChartbeat() {
     window._sf_endpt=(new Date()).getTime();
@@ -612,7 +691,8 @@ var _sf_async_config={uid:25465,domain:"adage.com"};
      loadChartbeat : function() { oldonload(); loadChartbeat(); };
 })();
 
-</script><script type="text/javascript" src="scripts/profile.js%3F1304346349" ></script>
+</script>
+<script type="text/javascript" src="scripts/profile.js%3F1304346349" ></script>
 
 </body>
 </html>

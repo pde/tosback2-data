@@ -581,6 +581,11 @@ function renderLatestReleases() {
     document.write('<h6>Titulares</h6>');
 	
 	document.write('<div class="rc-release-box">');
+    document.write('<p>18 de abril de 2013<br />');
+    document.write('<a href="/newsroom/news_releases/HACR_Diversidad_Hispana_4-18-13.html?id=' + state + '" title="AT&amp;T encabeza lista de compa&ntilde;&iacute;as que invierten en reclutamiento, desarrollo y retenci&oacute;n de talento hispano">AT&amp;T encabeza lista de compa&ntilde;&iacute;as que invierten en reclutamiento, desarrollo y retenci&oacute;n de talento hispano</a></p>');
+    document.write('</div>');
+	
+	document.write('<div class="rc-release-box">');
     document.write('<p>7 de enero de 2013<br />');
     document.write('<a href="/newsroom/news_releases/Corazon_de_Campeon_cancion_de_Jesse_Joy_song.html?id=' + state + '" title="Nuevo tema musical del galardonado duo Jesse &amp; Joy expresa el &#8216;Corazon de Campeon&#8217; que vive en cada fanatico del futbol mexicano en los EE. UU.">Nuevo tema musical del galardonado duo Jesse &amp; Joy expresa el &#8216;Corazon de Campeon&#8217; que vive en cada fanatico del futbol mexicano en los EE. UU.</a></p>');
     document.write('</div>');
@@ -604,18 +609,9 @@ function renderLatestReleases() {
     document.write('<p>26 de febrero de 2013<br />');
     document.write('<a href="/newsroom/news_releases/hacemos_2-28-13.html?id=' + state + '" title="Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a">Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a</a></p>');
     document.write('</div>');
-
-    document.write('<div class="rc-release-box">');
-    document.write('<p>21 de febrero de 2013<br />');
-    document.write('<a href="/newsroom/news_releases/florida_2-21-13.html?id=' + state + '" title="AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes">AT&T invirti&#243; m&#225;s de $2.8 mil millones en Florida entre 2010 y 2012 para mejorar la velocidad, confiabilidad y rendimiento para los clientes</a></p>');
-    document.write('</div>');
  
-    
-
-/*    document.write('<div class="rc-release-box">');
-    document.write('<p>19 de diciembre del 2012<br />');
-    document.write('<a href="/newsroom/news_releases/business_traveler_12_19_12.html?id=' + state + '" title="Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial">Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial</a></p>');
-    document.write('</div>');*/
+ 
+     
 
     
 
@@ -648,7 +644,7 @@ else {
 document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
 }*/
 	
-    document.write('<div id="premios-box" class="section">');
+   document.write('<div id="premios-box" class="section">');
     document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
     document.write('</div>');
 

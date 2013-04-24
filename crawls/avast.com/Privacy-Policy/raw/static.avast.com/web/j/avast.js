@@ -60,6 +60,12 @@ if( typeof jQuery != 'undefined' ){
                 if (navigator.appVersion.indexOf("X11") != -1) appOS = "UNIX";
                 if (navigator.appVersion.indexOf("Linux") != -1) appOS = "Linux";
             }
+
+            if(typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined"){
+               var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/(iPad|iPhone|iPod)/g)) appOS = "iOS";
+                if (ua.indexOf("android") > -1) appOS = "Android";
+            }
             return appOS;
         },
         /**
@@ -1087,9 +1093,4 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
             avast.core.showEffect(elId,params.effect,'start');
         }
     };
-}
-
-//debug only 
-if (!window.console) {
-    console = {log: function() {}};
 }

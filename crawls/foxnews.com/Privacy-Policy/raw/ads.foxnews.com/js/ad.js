@@ -1087,7 +1087,9 @@
 				"comment-load": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event39";window.omtr.events="event39";omtr.tl();},
 				"comment-read": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event25";window.omtr.events="event25";omtr.tl();},	
 				"fb-share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.tl();},
+          		"fb-like": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event41";window.omtr.events="event41";omtr.tl();},  				
 				"twttr-follow": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";window.omtr.tl('','o','follow');},
+				"twttr-tweet": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event40";window.omtr.events="event40";window.omtr.tl('','o','tweet');},				
 				"email-sign-up-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event52";window.omtr.events="event52";window.omtr.tl('','o','email-sign-up-success');},	
 				"show-more": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event53";window.omtr.events="event53";window.omtr.tl('','o','show-more');},					
 				
@@ -1264,7 +1266,9 @@
 				"comment-load": function(obj){$.ad.omni.load({"comment-load": obj});},
 				"comment-read": function(obj){$.ad.omni.load({"comment-read": obj});},
 				"fb-share": function(obj){$.ad.omni.load({"fb-share": obj});},
-				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},		
+				"fb-like": function(obj){$.ad.omni.load({"fb-like": obj});},				
+				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},	
+				"twttr-tweet": function(obj){$.ad.omni.load({"twttr-tweet": obj});},	
 				"email-sign-up-success": function(obj){$.ad.omni.load({"email-sign-up-success": obj});},	
 				"show-more": function(obj){$.ad.omni.load({"show-more": obj});},
 				
@@ -1356,14 +1360,14 @@
 						root.insertScript(67,false);
 					}
 					
-				}/*
+				}
 				if($.ad._meta.raw.channel.indexOf("fnc") > -1){
 					if($.ad._meta.raw.section == "root"){
 						root.insertScript(115,true); //currently only set for FN HP.
 					}else{
 						root.insertScript(115,false);
 					}
-				}*/
+				}
 			},
 			insertScript: function(id,automate){
 				
@@ -1880,7 +1884,7 @@
 
 			$.ad.gumgum.init(d);	
 
-			//$.ad.visrev.init();
+			$.ad.visrev.init();
 
 			//google pix
 			$.ad.goog.tracking.init(d);				

@@ -35,6 +35,11 @@ com.mattel.main = function () {
 			};
 		});
 
+		// Hide Babygear and Babytoys for US
+		if (localInfo.toLocaleLowerCase().indexOf("en_us") != -1) {
+			$('.nav_bottom li.productTab ul li[id="nav_Babygear"]').hide();
+			$('.nav_bottom li.productTab ul li[id="nav_Baby Toys"]').hide();
+		}
 
 		/* brand sub nav strats here */
 		$(".nav-links li a").hover(function () {
@@ -469,14 +474,143 @@ com.mattel.main = function () {
 
 						break;
 				}
+				//My Changes start here!!!!!!!!!Putting content into the video's lightbox!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-				//Write the content in POPup				
-				$("#dvd-flash").html(embedObj);
-			}else if (popup_content_type == 'demo_mobile' || popup_content_type == 'tvcom_mobile') {
-                //for ios video can not load is swf player. this sets the video to open in a new tab.
-                newVideoTab = window.open(url, '_newtab');
-                newVideoTab.focus();
-            }
+				var name = document.title;      //Pull the title off the page to add to header of jOverlay pane
+				//Discover if the Video to be played is a TV Ad or product Demo
+				if (popup_content_type == "tvcom") {
+					name = name + " TV Ad"
+				}
+				else {
+					name = name + " Demo"
+				}
+
+
+				//If there is no caption on the landing image, grab the first sentence of the description
+				var caption = $("a[rel=image]").first().attr("title");
+				//When landing Image has no caption to use, do the following:
+				if (caption.length < 1) {
+					var tempCaption = $("span[itemprop=description]").text();
+					var captionArray = new Array();
+					captionArray = tempCaption.split(/[!.]+/);
+					caption = captionArray[0];
+				}
+
+				//Provides the html for the four share icons
+				var shareButtons = '<div class="social-links-embed afterFix">' +
+                                            '<ul>' +
+                                                '<li>Share:</li>' +
+                                                '<li id="the-embed-btn" class="share-embed share-text-btns">Embed</li>' +
+                                                '<li id="the-email-btn" class="share-email share-text-btns">Email</li>' +
+                                                '<li class="share-facebook"><a target="_blank" rel="popup" href="#">' +
+                                                    '<img src="/resources/images/fb-icon.png" alt="Facebook Icon" title="Facebook Icon" /></a></li>' +
+                                                '<li class="share-twitter"><a target="_blank" rel="popup" href="#">' +
+                                                    '<img src="/resources/images/twitter-icon.png" alt="Twitter Icon" title="Twitter Icon" /></a></li>' +
+                                            '</ul>' +
+                                    '</div>';
+
+
+                //Organizes the different elements into how they will be presented in the popUp
+                var theHtmlObj = '<h4 class="lightbox-product-title">' + name + '</h4>' + embedObj +
+                                 '<div id="the-display"></div>' +
+                                 '<div class="caption">' + caption + '</div>' +
+                                 shareButtons;
+
+				//Write the content in POPup
+				$("#dvd-flash").html(theHtmlObj);
+
+				//Need to wrap the embedded video object in a textarea with the appropriate styles
+				//Provides the code for embedding a video on your own site when the embed button is clicked
+				var embedObjString = '<textarea readonly="yes">' + embedObj + '</textarea>';
+
+				//Get an image to use for the thumbnail in the shared link
+				var image = $(".items a[rel=image]").first().attr("href");
+
+				//update facebook, twitter,email,embed links
+				$(".share-facebook a").attr('href', 'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + encodeURIComponent(document.URL) +
+                                        '&p[title]=Watch ' + encodeURIComponent(name) + '&p[images][0]=' + encodeURIComponent(image) +
+                                        '&p[summary]=' + encodeURIComponent(caption) + '&v=1');
+				$(".share-twitter a").attr('href', 'https://twitter.com/intent/tweet?source=webclient&text=Fisher-Price Video' + url);
+				$(".share-facebook a").attr('href', 'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + encodeURIComponent(document.URL) +
+                                        '&p[title]=Watch ' + encodeURIComponent(name) + '&p[images][0]=' + encodeURIComponent(image) +
+                                        '&p[summary]=' + encodeURIComponent(caption) + '&v=1');
+				$(".share-twitter-2 a").attr('href', 'https://twitter.com/intent/tweet?source=webclient&text=Fisher-Price Video' + url);
+
+				// -- The Share button triggers --
+				$(".share-embed").click(function () { shareBtns("embed", "email"); });
+				$(".share-email").click(function () { shareBtns("email", "embed"); });
+
+				// -- The Share button function --
+				function shareBtns(box, unbox) {
+					if (box == "email" && unbox == "embed") {   //email share button clicked
+						$('<div id="email-box" class="share-box" style="display: none;">' +
+                            '<div class="share-box-inner">' +
+                                '<div class="email-content">' + url + '</div>' +
+                                '<div class="copied"></div>' +
+                                '<div class="copy-button image-replacement">Copy Link</div>' +
+                                '<div class="close-button image-replacement">Close</div>' +
+                            '</div>' +
+                        '</div>').appendTo("#the-display");
+					}
+					else {  //embed share button clicked
+						$('<div style="display: none;" class="share-box" id="embed-box">' +
+                            '<div class="share-box-inner">' +
+                                '<div class="instructions">Embed video code:</div>' +
+                                '<div class="embed-content">' + embedObjString + '</div>' +
+                                '<div class="copied"></div>' +
+                                '<div class="copy-button">Copy</div>' +
+                                '<div class="close-button image-replacement">Close</div>' +
+                            '</div>' +
+                          '</div>').appendTo("#the-display");
+					}
+
+					//clear "content copied"
+					$("#" + box + "-box .copied").html("");
+
+					$("#" + box + "-box .copy-button").zclip({
+						path: "/Resources/images/ZeroClipboard.swf",
+						copy: $("." + box + "-content").text(),
+						afterCopy: function () {
+							$("#" + box + "-box .copied").html("Content Copied");
+							$("#" + box + "-box").addClass("copied-content");
+							$("#" + unbox + "-box .copied").html("");
+							$("#" + unbox + "-box").removeClass("copied-content");
+						}
+					});
+				};
+
+				// -- The Copy button function --
+				function copyBtn(copied, uncopied) {
+					var value = $("." + copied + "-content").text();
+
+					// for IE only
+					if (window.clipboardData) {
+						window.clipboardData.setData("text", value);
+						$("#" + copied + "-box .copied").html("Content Copied");
+						$("#" + uncopied + "-box .copied").html("");
+					}
+				};
+
+				// -- The Copy button triggers --
+				$("#embed-box .copy-button").click(function (event) { copyBtn("embed", "email"); });
+				$("#email-box .copy-button").click(function (event) { copyBtn("email", "embed"); });
+
+				// -- The Close button trigger --
+				$(".share-box .close-button").live('click', function () {
+					var tranSpeed = 200;
+					$(this).parents(".share-box").stop(true, true).slideUp(tranSpeed);
+					$(this).parents(".share-box").find(".copied").html("");
+				});
+
+
+				//My Changes end Here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+
+			else if (popup_content_type == 'demo_mobile' || popup_content_type == 'tvcom_mobile') {
+				//for ios video can not load is swf player. this sets the video to open in a new tab.
+				newVideoTab = window.open(url, '_newtab');
+				newVideoTab.focus();
+			}
 			else {
 				//Change the image in the carousel top big image
 
@@ -837,7 +971,9 @@ com.mattel.main = function () {
 							',channel:' + trackChannel +
 							',contenttype:' + trackContentType +
 							',action:' + trackAction + '})';
-				eval(scriptCall);
+				if (typeof (Tracker) != "undefined") {
+					eval(scriptCall);
+				}
 
 			};
 		});
@@ -2519,11 +2655,19 @@ com.mattel.main = function () {
 					$('.displayComponentOverlay').html(data);
 					$('.displayComponentOverlay').show();
 
-                    //var flashHeight = $('.displayComponentOverlay object').height();
-                    //var flashWidth = $('.displayComponentOverlay object').width();
+                    var flashHeight = $('.displayComponentOverlay object').height();
+                    var flashWidth = $('.displayComponentOverlay object').width();
+
+					var cb = $('.displayComponentOverlay object').attr('codebase');
+					if (typeof cb !== 'undefined' && cb !== false) {
+						if(cb.toLowerCase().indexOf('director') !== -1) {
+							flashHeight = $('.displayComponentOverlay object').attr('height');
+							flashWidth = $('.displayComponentOverlay object').attr('width');
+						}
+					}
 					
-                    var flashHeight = $('.displayComponentOverlay object').attr('height');
-                    var flashWidth = $('.displayComponentOverlay object').attr('width');
+                    //var flashHeight = $('.displayComponentOverlay object').attr('height');
+                    //var flashWidth = $('.displayComponentOverlay object').attr('width');
 
 					if ($('.displayComponentOverlay object object')) {
 						if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {
@@ -2580,36 +2724,36 @@ com.mattel.main = function () {
 					//                    onlineGamesSetupGames();
 				}
 			});
-        });
+		});
 
-        $("#FavouritesVid").live('click', function (event) {
-            event.preventDefault();
-            var popupurl = $(this).attr("rel");
+		$("#FavouritesVid").live('click', function (event) {
+			event.preventDefault();
+			var popupurl = $(this).attr("rel");
 
-            //Make the AJAX call to fetch the data & then call overlay to display popup
-            $.ajax({
-                url: popupurl,
-                success: function (data) {
-                    $('.displayComponentOverlay').html(data);
-                    $('.displayComponentOverlay').show();
+			//Make the AJAX call to fetch the data & then call overlay to display popup
+			$.ajax({
+				url: popupurl,
+				success: function (data) {
+					$('.displayComponentOverlay').html(data);
+					$('.displayComponentOverlay').show();
 
-                    var flashHeight = $('.displayComponentOverlay object').height();
-                    var flashWidth = $('.displayComponentOverlay object').width();
+					var flashHeight = $('.displayComponentOverlay object').height();
+					var flashWidth = $('.displayComponentOverlay object').width();
 
-                    if ($('.displayComponentOverlay object object')) {
-                        if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {
-                            flashHeight = $('.displayComponentOverlay object object').height();
-                        }
-                        if ($('.displayComponentOverlay object object').width() > $('.displayComponentOverlay object').width()) {
-                            flashWidth = $('.displayComponentOverlay object object').width();
-                        }
-                    }
-                    $('.displayComponentOverlay').jOverlay();
-                    $(document).scrollTop(0);
-                    //                    onlineGamesSetupGames();
-                }
-            });
-        });
+					if ($('.displayComponentOverlay object object')) {
+						if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {
+							flashHeight = $('.displayComponentOverlay object object').height();
+						}
+						if ($('.displayComponentOverlay object object').width() > $('.displayComponentOverlay object').width()) {
+							flashWidth = $('.displayComponentOverlay object object').width();
+						}
+					}
+					$('.displayComponentOverlay').jOverlay();
+					$(document).scrollTop(0);
+					//                    onlineGamesSetupGames();
+				}
+			});
+		});
 
 
 		$("#LaunchWhatsNew").live('click', function (event) {
@@ -3030,7 +3174,7 @@ com.mattel.main = function () {
 			return false;
 		}
 		var subnav_timeout = null;
-		var subArr = ["products", "brands", "playtime", "games", "shops"];
+		var subArr = ["products", "brands", "baby", "playtime", "games", "shops"];
 		$('body').prepend('<div id="sub-nav-curtain"></div><div id="sub-nav-wrap" class="gradient"><div id="sub-nav-brand" class="clearfix"></div></div>');
 		$('.nav_brand li ul').each(function (i) {
 			$(this).addClass(subArr[i] + '-sub').appendTo('#sub-nav-brand');
@@ -3069,6 +3213,15 @@ com.mattel.main = function () {
 			var self = $(this);
 			subnav_timeout = setTimeout(function () { self.add('#sub-nav-curtain').removeClass('active'); }, 100);
 		});
+
+		// hide Babygear and Babytoys menu for US
+		var localInfo = "/" + $('#locale').val();
+		if (localInfo.toLocaleLowerCase().indexOf("en_us") != -1) {
+			$('#sub-nav-brand ul.products-sub li#nav_Babygear').hide();
+			$("#sub-nav-brand ul.products-sub li[id='nav_Baby Toys']").hide();
+		}
+
+
 	}; // initSubNav ends
 
 	function initIntlCode() {

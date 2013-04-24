@@ -189,7 +189,6 @@ KIDS.ads.refresh.placeAd = function(adDivId,kcaVoteMode, sponsorOveride){
 			if(adDivId.indexOf("2000x300")>-1){
 				if(KIDS.get("urlAlias")!="cartoon-creator"){
 					var kval = "demo=D;";
-					if(KIDS.ads.pageLevelAdConfig.rugrat!=null)kval+=KIDS.ads.pageLevelAdConfig.rugrat;
 					btg.Controller.placeAd(
 						{
 						       size:"2000x300",

@@ -217,12 +217,14 @@ NICK.club.favorites.setFavoriteButtonText = function (){
 	if($("#become-a-fan").length){
 		$("#become-a-fan").addClass("isFan");
 		$("#become-a-fan a").html($("#become-a-fan a").html().replace('Become a',"You are a") );
+		$("#become-a-fan a").attr('title', $("#become-a-fan a").attr('title').replace('Become a',"You are a") );
 	}
 }
 NICK.club.favorites.resetFavoriteButtonText = function (){
 	if($("#become-a-fan").length){
 		$("#become-a-fan").removeClass("isFan");
 		$("#become-a-fan a").html($("#become-a-fan a").html().replace("You are a",'Become a') );
+		$("#become-a-fan a").attr('title', $("#become-a-fan a").attr('title').replace("You are a",'Become a') );
 	}
 }
 NICK.club.setFavoriteItemButton = function(){

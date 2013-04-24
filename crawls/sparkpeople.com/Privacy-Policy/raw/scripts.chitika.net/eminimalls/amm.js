@@ -4,7 +4,7 @@ String.prototype.ltrim = function() {
 
 ch_ad_url = '';
 ch_chitika_loaded = true;
-ch_amm_version = "1.15.0";
+ch_amm_version = "1.15.1";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
@@ -350,6 +350,7 @@ function ch_mm() {
     w.ch_impsrc = ch_def(w.ch_impsrc, 'amm');
 
     // Detect iframes and pass appropriate frm & url values
+    var serveUrl = null;
     try {
         // Are win in an iframe?
         if (w.top.document.location.href == document.location.href) {
@@ -363,15 +364,19 @@ function ch_mm() {
         } else {
             // Yes, we are
             ch_aue('frm', 1);
-            ch_aue('serveUrl', document.location.href);
             w.ch_pu         = w.top.document.location.href;
             w.ch_referrer   = w.top.document.referrer;
+            serveUrl        = document.location.href;
         }
     } catch (x) { // Security exception
         // Security problem. Try something else. Hope this works...
         ch_aue('frm', 2);
-        ch_aue('serveUrl', document.location.href);
         w.ch_pu = document.referrer;
+        serveUrl = document.location.href;
+    }
+    if (serveUrl !== null &&
+        !serveUrl.match(/^javascript:/)) {
+        ch_aue('serveUrl', serveUrl);
     }
 
     var m = String(w.location.href).match(/#chitikatest(?:=(.+))?/);

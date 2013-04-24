@@ -151,6 +151,10 @@ function loadGlobalDropdown() {
             dropdown_global = data;
             NBC('#dropdowns-global').html(dropdown_global);
             NBC('#dropdowns-global .collapsible').hide(0);
+            NBC("#dropdown-global-shows a[href^='http']")
+                    .not("a[href*='.nbc.com']")
+                    .not("a[href*='.latenightwithjimmyfallon.com']")
+                        .attr({target: "_blank"});
             NBC('#dropdowns-global .btn-close').click(function (event) {
                 event.stopPropagation();
                 clickedNav = null;

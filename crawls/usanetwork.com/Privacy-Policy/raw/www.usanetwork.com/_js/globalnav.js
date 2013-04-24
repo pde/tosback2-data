@@ -672,28 +672,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "AMERICAN PIE",
-							"subtitle" : "SUNDAY APRIL 21 11/10C",
+							"title" : "FIRDAY",
+							"subtitle" : "SATURDAY MAY 4 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_americanpie.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_friday.png"
 						},
 						{
-							"title" : "LITTLE FOCKERS",
-							"subtitle" : "WEDNESDAY APRIL 24 8/7C",
+							"title" : "THE DILEMMA",
+							"subtitle" : "SUNDAY MAY 5 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dilemma.png"
 						},
 						{
-							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "SATURDAY APRIL 27 11/10C",
+							"title" : "COUPLES RETREAT",
+							"subtitle" : "SUNDAY MAY 5 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
 						},
 						{
-							"title" : "BAD BOYS",
-							"subtitle" : "SUNDAY APRIL 28 11/10C",
+							"title" : "THE BACK-UP PLAN",
+							"subtitle" : "SATURDAY MAY 11 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_badboys2.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
 						}
 
 					]

@@ -130,7 +130,15 @@ var jsPopup = {
             }
         }
     },
-    
+
+    showControlAjax: function (control) {
+        $(control).parents('.product-wrapper').find('.quickLaunchButton').css("display", "block");
+    },
+
+    hideControlAjax: function (control) {
+        $(control).parents('.product-wrapper').find('.quickLaunchButton').css("display", "none");
+    },
+
     close: function()
     {
         dhtmlwindow.close(popupWindow);
@@ -353,6 +361,27 @@ function update_timer() {
 
 setTimeout(function () { window.setInterval('update_timer()', 500); }, 1000);
 
-/* END - Liveclicker-Omniture v0.2 */  
-   
-    
+/* END - Liveclicker-Omniture v0.2 */
+
+
+
+function updateQuerystring(key, val, url) {
+    url = document.URL
+    newAdditionalURL = "";
+    tempArray = url.split("?");
+    baseURL = tempArray[0];
+    aditionalURL = tempArray[1];
+    temp = "";
+    if (aditionalURL) {
+        var tempArray = aditionalURL.split("&");
+        for (var i in tempArray) {
+            if (tempArray[i].indexOf(key) == -1) {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+    var rows_txt = temp + key + "=" + val;
+    var finalURL = baseURL + "?" + newAdditionalURL + rows_txt;
+    return finalURL;
+}

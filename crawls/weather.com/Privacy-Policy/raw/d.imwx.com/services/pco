@@ -104,7 +104,7 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 	/**
 	 * Define placeholders for service call deferred events 
 	 */
-	var wxLocDfrdEvent,adDfrdEvent;
+	var wxLocDfrdEvent,adDfrdEvent,piqDfrEvent;
 	
 	
 	/**
@@ -133,6 +133,8 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 	TWC.Events.setEvent("pcoRefresh");
 				
 	TWC.Events.setEvent("userDeviceevent");
+	
+	TWC.Events.setEvent("autodetectLocEvent");
 	 
 	/**
 	 * Add a page property to PCO if it doesn't exist
@@ -621,6 +623,25 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 				},
 				context:that
 				});
+		}		
+
+		var currloc = prvlgd.get("currloc");
+		if(null != currloc){
+			var latitude = currloc.lat; 
+			var longitude = currloc.lon;
+			var url = encodeURI("http://wxdata.weather.com/wxdata/LBSAds/get.js?lat=" + latitude + "&lng=" + longitude + "&cb=?");
+			piqDfrEvent = $.ajax({
+				url: url,
+				dataType: "jsonp",
+				data:{
+					key:"97ce49e2-cf1b-11e0-94e9-001d092f59fc"
+				},
+				type:"GET",
+					success: function(list) {
+						currloc.placeIQ = list;												
+						prvlgd.setUser("currloc",currloc);					 
+					}
+			});
 		}
 		
 		// IMPORTANT!! - Retrieve localstorage and insert it into pco before doing anything else
@@ -799,15 +820,56 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 		
 		prvlgd.setRMID();
 	
-
+		var currentUser = prvlgd.get("user");		
+		if (currentUser.currentLocation ==null || typeof (currentUser.currentLocation)=="undefined"){			
+			prvlgd.setUser('currentLocation', {});
+		}
+		var currentLocation = currentUser.currentLocation, updatedTime = currentLocation.updatedTime;
+		var callLocation = "false", diff=0,curTime = new Date();
+		if(updatedTime =='undefined' || updatedTime == null){
+			callLocation = "true";				
+		} else {
+			var remindTimedate = new Date(updatedTime);
+			diff = Math.floor((curTime.getTime() - remindTimedate.getTime()) / 90000); // ms per 15 min			
+		}		
+		if(callLocation=="true" || diff > 15) {	
+			var akamaiURL = "" || "http://gip.imwx.com/wxdata/gip/get.js?cb=?";			
+			$.ajax({
+				url: akamaiURL,					
+				type: 'GET',
+				crossDomain: true,
+				dataType: 'jsonp',
+				success: function(data) {					
+					if(data && data.lat && data.lng){
+						var latUrl = '/data/latlonlocation';
+						var lat = data.lat;
+						var lon = data.lng;						
+						var akaURL = latUrl + '?lat=' + lat + '&lon=' + lon + '& cb=?';							
+						$.ajax({								
+							url: akaURL,
+							type:"GET",
+							success: function(loc) {
+								var locData = $.trim(loc);
+								currentLocation = $.parseJSON(locData);
+								if(currentLocation != null){
+									currentLocation.updatedTime = new Date();
+									prvlgd.setUser("currentLocation",currentLocation);
+								}							
+							}
+						});
+						
+					}
+				}, error: function() {}
+			});				 			
+		}
 
 
 try{console.log()}catch(e){}
-		if(wxLocDfrdEvent && adDfrdEvent){
+		if(wxLocDfrdEvent && adDfrdEvent && piqDfrEvent){
 			// If wxloc and/or ad are retrieved by a service 
 			// call wait until the service call is complete
 			// otherwise assume the data was in pcoObject.
-			$.when(wxLocDfrdEvent,adDfrdEvent).then(function(){
+			$.when(wxLocDfrdEvent,adDfrdEvent,piqDfrEvent).then(function(){
 				prvlgd.setRsisegs();
 				prvlgd.setORD();
 				prvlgd.initAdKeywords();
@@ -822,6 +884,13 @@ try{console.log()}catch(e){}
 		}else if(adDfrdEvent){
 			// Just ad service called
 			$.when(adDfrdEvent).then(function(){
+				prvlgd.setRsisegs();
+				prvlgd.setORD();
+				prvlgd.initAdKeywords();
+			});
+		}else if(piqDfrEvent){
+			// Just ad service called
+			$.when(piqDfrEvent).then(function(){
 				prvlgd.setRsisegs();
 				prvlgd.setORD();
 				prvlgd.initAdKeywords();
@@ -1532,8 +1601,10 @@ try{console.log()}catch(e){}
 		function addLocKeywords(){
 				var cid= 'nl';
 				var currloc=prvlgd.get("currloc");
+				var piqData='' ;
+				var piq = [];
 
-				var loc, dma, stateCd, city, countryCd,zip;
+				var loc, dma, stateCd, city, countryCd,countyName,zip;
 				
 				// Test to see if currloc is an empty object,
 				// since it may have been initialized as an 
@@ -1569,18 +1640,32 @@ try{console.log()}catch(e){}
 						dma=currloc.dma || 'nl';
 						stateCd=currloc.state || 'nl';
 						countryCd=currloc.country || 'nl';
+						countyName=currloc.countyName || 'nl';
 						cid=currloc.claritas || 'nl';
 						
 						buildkw('loc',(loc ||  'nl'));
 						buildkw('dma', dma);
 						buildkw('st', stateCd.toLowerCase());
 						buildkw('cc',countryCd.toLowerCase());
+						buildkw('countyName',countyName);
+						buildkw('cnty',countyName);
 						buildkw('cid',cid);
 						buildkw("zip",zip);
 						buildkw("lat",((currloc.lat + "") || 'nl'));
 						buildkw("lon",((currloc.lon + "")  || 'nl'));
 						buildkw("ct",(city || 'nl'));
-						
+						//Adding placeIQ elements to the ad call
+						if(currloc.placeIQ && currloc.placeIQ.piq){							
+							piqData = currloc.placeIQ.piq;							
+						}
+						if(piqData && piqData.length > 0){
+						for (var count=0; count < piqData.length; count++){				
+							piq.push(piqData[count].value);							
+						}
+						buildkw("piq",piq,piq.join('&piq='));
+						}else{
+							buildkw("piq",'nl');
+						}
 						addGPR(currloc);
 				}else{
 					buildkw('loc','nl');

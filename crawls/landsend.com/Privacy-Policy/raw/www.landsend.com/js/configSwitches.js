@@ -16,6 +16,8 @@ metric.rocketFuelActive = false;    // set to true if you want RocketFuel activa
 metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated
 metric.commissionJunctionActive = true; // set to true if you want Comission Junction activated
+metric.googleAnalyticsActive = true; // set to true if you want Google Analytics activated
+metric.dartFloodlightActive = true; // set to true if you want Dart Floodlight activated
 
 ratings.leActive = true;  //set to true if you want ratings and reviews active for lestore
 ratings.canvasActive = true;   //set to true if you want ratings and reviews active for canvas
@@ -82,6 +84,14 @@ metric.writeTags = function() {
 	
 	if (metric.commissionJunctionActive) {
 		metric.sendCommissionJunction();
+	}
+	
+	if (metric.googleAnalyticsActive) {
+		metric.sendGoogleAnalytics();
+	}
+	
+	if (metric.dartFloodlightActive) {
+		metric.sendDartFloodlight();
 	}
 };
 
@@ -389,6 +399,66 @@ metric.sendCommissionJunction = function() {
 			Instrumentation.sendBeacon(Events.app_end);
 		}, 	1000);
 	}	
+};
+
+metric.sendGoogleAnalytics = function() {
+	 var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37627257-1']);
+	  _gaq.push(['_trackPageview']);
+	 
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();	
+};
+
+metric.sendDartFloodlight = function() {
+	var cm_re = $.query.get("cm_re");
+	var path = window.location.pathname;
+	var catStr = "";
+	
+	if (path == "/kids/" || cm_re == "Kids") {
+		catStr = "type=lands280;cat=kidsu588;ord=";
+	} else if (path == "/ix/girls-clothing/index.html" || cm_re == "Girls-_-D-5") {
+		catStr = "type=lands280;cat=kids-284;ord=";
+	} else if (path == "/ix/boys-clothing/index.html" || cm_re == "Boys-_-D-6") {
+		catStr = "type=lands280;cat=kids-368;ord=";
+	} else if (path == "/ix/womens-clothing/index.html" || cm_re == "Women-_-D-3") {
+		catStr = "type=lands280;cat=woman190;ord=";
+	} else if (path == "/ix/mens-clothing/index.html" || cm_re == "Men-_-D-4") {
+		catStr = "type=lands280;cat=mencv866;ord=";
+	} else if (path == "/ix/swimwear-swimsuits/index.html" || cm_re == "SWIM_-D-1") {
+		catStr = "type=lands280;cat=swimv900;ord=";
+	} else if (path == "/ix/outerwear/index.html" || cm_re == "Outerwear-_-D-2") {
+		catStr = "type=lands280;cat=outer958;ord=";
+	} else if (path == "/ix/shoes/index.html" || cm_re == "Shoes-_-D-7") {
+		catStr = "type=lands280;cat=shoes040;ord=";
+	} else if (path == "/ix/school-uniforms/index.html" || cm_re == "SchoolUniform-_-D-8") {
+		catStr = "type=lands280;cat=schoo069;ord=";
+	} else if (path == "/ix/home-travel-luggage/index.html") {
+		catStr = "type=lands280;cat=forth474;ord=";
+	} else if (path == "/ix/luggage/index.html" || cm_re == "D-11") {
+		catStr = "type=lands280;cat=lugga549;ord=";
+	} else if (path == "/ix/overstock-liquidations/index.html" || cm_re == "Overstocks_D-10") {
+		catStr = "type=lands280;cat=saler674;ord=";
+	} else if (path == "/canvas/" || path == "/canvas/index.html" || cm_re == "core-canv") {
+		catStr = "type=lands280;cat=canva346;ord=";
+	} else if (path == "/pp/GiftCards.html") {
+		catStr = "type=lands280;cat=giftc933;ord=1;num=";
+	} else if (path == "/co/Newsletter") {
+		catStr = "type=lands280;cat=signu027;ord=1;num=";
+	} else if (path == "/co/ShoppingBag.html") {
+		catStr = "type=lands280;cat=shopp384;ord=1;num=";
+	} else if (path == "/ix/canvas/Canvas/Women/Swim/index.html" || cm_re == "Canvas-Women-_-D-1-12") {
+		catStr = "type=lecan479;cat=canva194;ord=";
+	}
+	
+	if (catStr != "") {
+		var axel = Math.random() + "";
+		var a = axel * 10000000000000;
+		document.write('<iframe src="http://2267851.fls.doubleclick.net/activityi;src=2267851;' + catStr + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+	}
 };
 
 if (typeof getCookie == 'undefined') {

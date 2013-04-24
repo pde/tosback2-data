@@ -1,4 +1,4 @@
-<!-- Hide script from old browsers
+// <!-- Hide script from old browsers
 document.menu = new Object();
 document.menu.hirelist = new Object();
 document.menu.hirelist.expandos = new Array();

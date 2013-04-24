@@ -23,6 +23,7 @@
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
   wpAd.flags.vi_test = /vi_test/.test(location.search) && win.wp_meta_data && win.wp_meta_data.contentType && /CompoundStory/i.test(win.wp_meta_data.contentType.toString());
+  wpAd.flags.postscribe = !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href);
 
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -620,14 +621,6 @@
       wpAd.tools.initVITest('#slug_' + tempcase.what);
     }
 
-    //20892 - CW - WP plus pixel
-    if(!wpAd.wpPlusPixelAdded){
-      wpAd.wpPlusPixelAdded = true;
-      if(/^jobs/i.test(tempcase.where)){
-        wpAd.tools.loadScript('http://pixel.mathtag.com/event/js?mt_id=189665&mt_adid=109479&v1=&v2=&v3=&s1=&s2=&s3=');
-      }
-    }
-
     return tempcase;
   };
 
@@ -648,6 +641,26 @@
         type: 'text/javascript',
         src: 'http://ad.doubleclick.net/pfadx/wpni.'+ commercialNode +';sz=184x90,200x60;pos=promo;kw=test_promotile;dcmt=text/javascript;ord=' + Math.floor(Math.random()*1E9) + '?'
       }).appendTo('head');
+    });
+  }
+
+  if(wpAd.flags.postscribe){
+    wpAd.tools.ajax({
+      url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
+      cache: true,
+      dataType: 'script',
+      timeout: 2000,
+      crossDomain: true,
+      error: function(err){
+        if(wpAd.flags.debug){
+          try{win.console.log('postscribe ajax error:', err);}catch(e){}
+        }
+      },
+      success: function(data){
+        if(wpAd.flags.debug){
+          try{win.console.log('postscribe script loaded');}catch(e){}
+        }
+      }
     });
   }
 

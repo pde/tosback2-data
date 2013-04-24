@@ -4,7 +4,7 @@ var $$FSR = {
    'enabled': true,
    'sessionreplay': true,
    'auto' : true,
-   'encode' : false,
+   'encode' : true,
    'files': '/external/foresee/',
    //'swf_files': '__swf_files_' needs to be sef when foresee-transport.swf is not located at 'files'
    'id': 's5IJk4VUQdN0AQJlAFIgYg==',

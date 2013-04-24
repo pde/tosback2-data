@@ -123,12 +123,14 @@ return totaloffset;
 }
 
 function showhide(obj, e, visible, hidden){
-if (ie5||ns6)
-dropmenuobj.style.left=dropmenuobj.style.top=-500
-if (e.type=="click" && obj.visibility==hidden || e.type=="mouseover")
-obj.visibility=visible
-else if (e.type=="click")
-obj.visibility=hidden
+	if (ie5||ns6) dropmenuobj.style.left=dropmenuobj.style.top=-500
+	if (e.type=="click" && obj.visibility==hidden || e.type=="mouseover") {
+		obj.visibility=visible;
+		obj.zIndex=5999999;
+	} else if (e.type=="click") {
+		obj.visibility=hidden;
+		obj.zIndex=1;
+	}
 }
 
 function iecompattest(){
