@@ -177,14 +177,23 @@ $('.blog_videos_btn').live('click', function (event) {
 
 /* Google Analytics Page Load Tracking Starts */
 function pageLoadGAtracking(params) {
-    MATTEL.tracker.Tracker.enableShortCuts();
-    Tracker.pagetrack = true;
-    Tracker.name = params.name;
-    Tracker.campaign = params.campaign;
-    Tracker.channel = params.channel;
-    Tracker.contenttype = params.contenttype;
-    Tracker.action = params.action;
-//  MATTEL.tracker.Tracker.track();
+
+	// Fix the Campaign and Channel - Try to use tracker XML parameters (from tracker.mattel.com) as possible
+	trackCampain = (params.campaign.indexOf(" ") < 0) ? "CAMPAIGN." + params.campaign.replace(/-/g, "").toUpperCase() : "\'" + params.campaign + "\'";
+	trackChannel = (params.channel.indexOf(" ") < 0) ? "CHANNEL." + params.channel.replace(/-/g, "").toUpperCase() : "\'" + params.channel + "\'";
+	trackContentType = (params.contenttype.indexOf(" ") < 0) ? "CONTENTTYPE." + params.contenttype.replace(/-/g, "").toUpperCase() : "\'" + getTrackValue[3] + "\'";
+	trackAction = (params.action.indexOf(" ") < 0) ? "ACTION." + params.action.replace(/-/g, "").toUpperCase() : "\'" + params.action + "\'";
+
+	var scriptCall = 'Tracker.track(' + '{name:\'' + params.name +
+						'\',campaign:' + trackCampain +
+						',channel:' + trackChannel +
+						',contenttype:' + trackContentType +
+						',action:' + trackAction + '})';
+	if (typeof (MATTEL) != "undefined") {
+		MATTEL.tracker.Tracker.enableShortCuts();
+		eval(scriptCall);
+	}
+
 }
 /* Google Analytics Page Load Tracking Ends */
 
@@ -1555,7 +1564,7 @@ function ValidateRequestPasswordFormInput() {
     function ValidateName(input) {
         //debugger;
 
-		var reg = /^[A-Za-z ]{3,20}$/; // 3 is the min length, 20 is the max length, includes white space
+		var reg = /^[A-Za-z ]{2,20}$/; // 2 is the min length, 20 is the max length, includes white space
         if (reg.test(input) == false) {
 
             //return the error code for invalid Name

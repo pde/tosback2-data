@@ -1972,7 +1972,7 @@ ul#navBar li#navBarShop a span{width:80px;height:30px;outline-width:0;background
 .z26{z-index:26}
 .z25{z-index:25}
 .Limage{background: url(../../../../img.walgreens.com/images/utility/EarnPoints_Slug_108x21.gif%3FLo0P=382f7824c79ff4875d4ce50f0c18f0e21994)  no-repeat scroll 4px center transparent;height:21px}
-.NLoyalPrice .Limage{background: url(../../../../img.walgreens.com/images/utility/bas_earnpoints.gif%3FLo0P=017479efcd8a0c6e92f07dbce23a6c101858)  no-repeat scroll 0 center transparent!important}
+.NLoyalPrice .Limage{background: url(../../../../img.walgreens.com/images/utility/bas_earnpoints.gif%3FLo0P=382f7824c79ff4875d4ce50f0c18f0e21994)  no-repeat scroll 0 center transparent!important}
 .Lpoints{background-color:#FFF;display:none;left:-100px;padding:3px 0;position:absolute;top:26px;width:158px}
 .Lpointcontent{background-color:#E8E8E8;border-bottom:1px solid #CACACA;padding:15px}
 .Lpointcontent p{background: url(../../../../img.walgreens.com/images/utility/tooltip_triangle_top.gif%3FLo0P=afb79ad3691c3a2bca51964866a603f4184)  no-repeat scroll 85px 0 transparent;color:#666;margin-bottom:0!important;margin-top:-23px!important;padding-top:23px}
@@ -2429,7 +2429,7 @@ div.bs_small-gradient-box10{background:#FFF url(../../../../img.walgreens.com/im
 .LAprice{color:#E01935;font-size:1.3em!important;font-weight:bold;padding-left:4px!important;background-color:#FFF;margin:0!important;text-align:left}
 .FSprice{color:#E01935;font-size:1.3em!important;font-weight:bold;background-color:#FFF;margin:0!important;padding:0 0 2px 4px;text-align:left}
 .Bprice{color:#464646;font-size:11px!important;font-weight:bold;margin:0;padding-left:4px!important;text-align:left}
-.Limage{background: url(../../../../img.walgreens.com/images/utility/bas_earnpoints.gif%3FLo0P=017479efcd8a0c6e92f07dbce23a6c101858)  no-repeat 6px center;height:20px}
+.Limage{background: url(../../../../img.walgreens.com/images/utility/bas_earnpoints.gif%3FLo0P=382f7824c79ff4875d4ce50f0c18f0e21994)  no-repeat 6px center;height:20px}
 .Lpoints{background-color:#FFF;display:none;left:-47px;padding:3px 0;position:absolute;top:26px;width:289%;z-index:1}
 .Lpointcontent{background-color:#E8E8E8;border-bottom:1px solid #CACACA;padding:15px}
 .Lpointcontent p{background: url(../../../../img.walgreens.com/images/utility/tooltip_triangle_top.gif%3FLo0P=afb79ad3691c3a2bca51964866a603f4184)  no-repeat scroll 32px 0 transparent;color:#666;margin-bottom:0!important;margin-top:-23px!important;padding-top:23px}
@@ -3094,6 +3094,10 @@ var pht=0;
 var restrict_domain="walgreens.medhelp.ws";  
 var domaincheck=document.location.href;  
 var disableSessionTimeout=false;  
+var warningtimer;  
+var logouttimer;  
+var millsec=null;  
+var logoutmillsec=null;  
 function initializePrescriptionRefil(){var pn_default=$('#prescription-number').val(); $('#prescription-number').focus(function (){if($(this).val() == pn_default) {$(this).val(''); } } ); } ;  
 function getMyUri(oOb){return oOb.protocol + ((oOb.protocol.indexOf(':') + 1) ? '' : ':') + oOb.hostname + (( typeof (oOb.pathname) ==  typeof (' ') && oOb.pathname.indexOf('/') != 0) ? '/' : '') + oOb.pathname + oOb.search; } ;  
 function selfLink(oRootElement,oClass){if( ! document.getElementsByTagName ||  ! document.childNodes) {return ; }  else {oRootElement = document.getElementById(oRootElement); for(var x=0,y=oRootElement.getElementsByTagName('a');y[x];x ++ ){if(y[x].getAttribute('href') &&  ! y[x].href.match(/#$/) && getMyUri(y[x]) == getMyUri(location)) {y[x].className = (y[x].className ? (y[x].className + ' ') : '') + oClass; } } } } ;  
@@ -3127,7 +3131,7 @@ function trim(s){return rtrim(ltrim(s)); } ;
 var cartItem=0;  
 var loginStat=false;  
 function getSessionTimeoutCookieInfo(){var nameLOGIN="ACO_LOGIN" + "=true"; var cks=document.cookie.split(';'); for(var i=0;i < cks.length && ( ! loginStat);i ++ ){var c=trim(cks[i]); if(c.indexOf(nameLOGIN) == 0) {loginStat = true; } } } ;  
-function sessionTimeout(){getSessionTimeoutCookieInfo(); if(loginStat) {var millsec=840 * 1000; setTimeout("sessionWarning()",millsec); var logoutmillsec=120 * 1000; setTimeout("logoutOnSessionTimeout()",millsec + logoutmillsec); } } ;  
+function sessionTimeout(){getSessionTimeoutCookieInfo(); if(loginStat) {millsec = 840 * 1000; warningtimer = setTimeout("sessionWarning()",millsec); logoutmillsec = 120 * 1000; logouttimer = setTimeout("logoutOnSessionTimeout()",millsec + logoutmillsec); } } ;  
 function logout(){parent.location.href = "/logout_redirect.jsp"; } ;  
 function logoutOnSessionTimeout(){parent.location.href = "/logout_redirect.jsp?sessionTimeoutSuccessURLparam=true"; } ;  
 function sessionWarning(){getSessionTimeoutCookieInfo(); var warningURL=null; if(loginStat) {warningURL = "/common/sessiontimeoutlogoutwarning.htm"; } if(warningURL != null) {var win=window.open(warningURL,"sessionTimeoutWarning","width=450,height=175"); win.focus(); } } ;  
@@ -3279,7 +3283,7 @@ var s_prop14 = "DMI";
 <body id="home"  >
 <div id="page">
 <div id="frame">
-<!-- Header Current Order id:   4073928492 -->
+<!-- Header Current Order id:   4084713599 -->
 <!-- Header Current Order Type: default -->
 <!-- Header Last Order id:    -->
 <!-- Header Last Order Type:  -->
@@ -3400,11 +3404,11 @@ function fsr$setAlive(){var A=new Date().getTime(); document.cookie = "fsr.a=" +
 var jsIndicator = true; 
 </script>
 
-<form id="removeFirstNameCookieForm" name="removeFirstNameCookieForm" action="http://www.walgreens.com/preview/default.jsp;jsessionid=IQS5oOZRW+ZegO50GRaNzQ**.p_dotcom77?_DARGS=/includes/header/headerAnonymousLogin.jsp" target="_self" method="post"><div style="display:none"><input name="_dyncharset" value="ISO-8859-1" type="hidden"/> </div><div style="display:none"><input value="-4206865570500551919" type="hidden"/> </div><ul>
-<li><a title="Sign In" target="_self" rel="nofollow" href="http://www.walgreens.com/login.jsp;jsessionid=IQS5oOZRW+ZegO50GRaNzQ**.p_dotcom77?_DARGS=/includes/header/headerAnonymousLogin.jsp.1_A&amp;_DAV="><strong>Sign In</strong>
-</a><span class="rx_sec_txt"> or </span> <a title="Register" target="_self" rel="nofollow" href="http://www.walgreens.com/register/regpersonalinfo.jsp;jsessionid=IQS5oOZRW+ZegO50GRaNzQ**.p_dotcom77?act=clr&amp;_DARGS=/includes/header/headerAnonymousLogin.jsp.2_A&amp;_DAV=">Register</a></li>
+<form id="removeFirstNameCookieForm" name="removeFirstNameCookieForm" action="http://www.walgreens.com/preview/default.jsp;jsessionid=GJnBQW4JjT4sGaFeDUXgOw**.p_dotcom74?_DARGS=/includes/header/headerAnonymousLogin.jsp" target="_self" method="post"><div style="display:none"><input name="_dyncharset" value="ISO-8859-1" type="hidden"/> </div><div style="display:none"><input value="-1347209017283110596" type="hidden"/> </div><ul>
+<li><a title="Sign In" target="_self" rel="nofollow" href="http://www.walgreens.com/login.jsp;jsessionid=GJnBQW4JjT4sGaFeDUXgOw**.p_dotcom74?_DARGS=/includes/header/headerAnonymousLogin.jsp.1_A&amp;_DAV="><strong>Sign In</strong>
+</a><span class="rx_sec_txt"> or </span> <a title="Register" target="_self" rel="nofollow" href="http://www.walgreens.com/register/regpersonalinfo.jsp;jsessionid=GJnBQW4JjT4sGaFeDUXgOw**.p_dotcom74?act=clr&amp;_DARGS=/includes/header/headerAnonymousLogin.jsp.2_A&amp;_DAV=">Register</a></li>
 </ul>
-</form><form id="homeAnonymousLoginForm" name="homeAnonymousLoginForm" action="https://www.walgreens.com/login.jsp?_DARGS=/includes/header/headerAnonymousLogin.jsp.3" target="_self" method="post"><div style="display:none"><input name="_dyncharset" value="ISO-8859-1" type="hidden"/> </div><div style="display:none"><input value="-4206865570500551919" type="hidden"/> </div><input id="jsInd" name="jsInd" value="true" type="hidden"/><input name="_D:jsInd" value=" " type="hidden"/><input name="/atg/userprofiling/ProfileFormHandler.loginErrorURL" value="/login.jsp" type="hidden"/><input name="_D:/atg/userprofiling/ProfileFormHandler.loginErrorURL" value=" " type="hidden"/><input name="/atg/userprofiling/ProfileFormHandler.loginSuccessURL" value="/preview/default.jsp?foot=security" type="hidden"/><input name="_D:/atg/userprofiling/ProfileFormHandler.loginSuccessURL" value=" " type="hidden"/><fieldset>
+</form><form id="homeAnonymousLoginForm" name="homeAnonymousLoginForm" action="https://www.walgreens.com/login.jsp?_DARGS=/includes/header/headerAnonymousLogin.jsp.3" target="_self" method="post"><div style="display:none"><input name="_dyncharset" value="ISO-8859-1" type="hidden"/> </div><div style="display:none"><input value="-1347209017283110596" type="hidden"/> </div><input id="jsInd" name="jsInd" value="true" type="hidden"/><input name="_D:jsInd" value=" " type="hidden"/><input name="/atg/userprofiling/ProfileFormHandler.loginErrorURL" value="/login.jsp" type="hidden"/><input name="_D:/atg/userprofiling/ProfileFormHandler.loginErrorURL" value=" " type="hidden"/><input name="/atg/userprofiling/ProfileFormHandler.loginSuccessURL" value="/preview/default.jsp?foot=security" type="hidden"/><input name="_D:/atg/userprofiling/ProfileFormHandler.loginSuccessURL" value=" " type="hidden"/><fieldset>
 <ul>
 <li><a rel="nofollow" href="http://www.walgreens.com/youraccount/default.jsp"  alt="Your Account" title="Your Account" target="_self" >Your Account</a></li>
 <li><a href='http://www.walgreens.com/store/shoppinglist/showwishlist.jsp?r=true' title="Shopping List" alt="Shopping List" target="_self">Shopping List</a></li> 
@@ -4650,7 +4654,7 @@ Deerfield, IL 60015</span></p>
 <!-- Content will be added done -->
 </div>
 </div>
-<!-- Footer Current Order id:   4073928492 -->
+<!-- Footer Current Order id:   4084713599 -->
 <!-- Footer Current Order Type: default -->
 <!-- Footer Last Order id:    -->
 <!-- Footer Last Order Type:  -->
@@ -5231,6 +5235,6 @@ loadScript('','bEdge','');
 (function (w, d, sl, t, src) {sl.slhead = function (s) {sl.onload = new Date();var e = d.createElement("script"), tag = d.getElementsByTagName("script")[0];e.type = "text/javascript";e.async = true;e.src = s;tag.parentNode.insertBefore(e, tag);}
 var fn = function () { sl.onload = new Date();setTimeout(function () { sl.slhead(src) }, 0);};if (w.addEventListener) { w.addEventListener(t, fn, (false)); } else if (w.attachEvent) { w.attachEvent("on" + t, fn); }} (window, document, __$1D0C, "load", "/slhead.js?Lo0P=f7b04a31b7cda6c526bb7b0ccfa1b09414506"));</script><script>
 if (typeof(__$1D0C) != "undefined") {{ __$1D0C.stack.push(["deferrerload"]); }}</script><script>
-if (typeof(__$1D0C) != "undefined") {{ __$1D0C.stack.push(["preload", "/", "2dc60e877b92f9dc519a101217d0c214", "", "", "2e18fb363355e571c2ad3c74391bd6b14293", "4b68f5408d36d67c78ea09321ddf6214780", "auto"]); }}</script></body>
+if (typeof(__$1D0C) != "undefined") {{ __$1D0C.stack.push(["preload", "/", "6be17c0ba0a9b23701bbb02f84bf9edd", "", "", "2e18fb363355e571c2ad3c74391bd6b14293", "4b68f5408d36d67c78ea09321ddf6214780", "auto"]); }}</script></body>
 </html>
 

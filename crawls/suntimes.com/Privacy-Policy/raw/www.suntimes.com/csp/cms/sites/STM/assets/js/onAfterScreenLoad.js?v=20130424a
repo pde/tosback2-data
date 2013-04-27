@@ -1,0 +1,36 @@
+(function() {
+  var showScreenSet = gigya.accounts.showScreenSet;
+
+  gigya.accounts.showScreenSet = function() {
+    try {
+      var params = gigya.utils.object.merge([gigya.thisScript.globalConf, arguments]);
+      if(params.onAfterScreenLoad) {
+        var onBeforeScreenLoad = params.onBeforeScreenLoad ? params.onBeforeScreenLoad : function(){};
+        params.onBeforeScreenLoad = function(e) {
+          var interval = setInterval(function() {
+            var screenEl = document.getElementById(e.nextScreen);
+            if(screenEl !== null) {
+              clearInterval(interval);
+
+              params.onAfterScreenLoad({
+                eventName: "afterScreenLoad",
+                currentScreen: e.nextScreen,
+                source: e.source,
+                profile: e.profile,
+                data: e.data,
+                response: e.response,
+                screenEl: screenEl
+              });
+            }
+          }, 50);
+
+          return onBeforeScreenLoad.apply(this, arguments);
+        };
+      }
+      showScreenSet(params);
+    } catch(e) {
+      // In case of error, call original method with original arguments
+      showScreenSet.apply(this, arguments);
+    }
+  };
+})();

@@ -1,0 +1,193 @@
+/* Below is for Gigya */
+
+jQuery(function($) {
+  function log(o) {
+    //log to console if exists
+    if(typeof console != "undefined") {
+      //console.log(o);
+    }
+  }
+
+  if(undefined == s) {
+    log("Omniture not present");
+    return;
+  }
+
+  var link_type_map = {
+    file_download: 'd',
+    exit_link: 'e',
+    custom_link: 'o'
+  };
+
+  function trackCustomLink(action) {
+    s.action = action;
+
+    s.linkTrackVars = "action,prop50,prop51,events";
+    s.linkTrackEvents = "GigyaSocialEvents";
+    s.events = "GigyaSocialEvents";
+    // First parameter would usually be the address, but these events are typically ajax, not full page loads.
+    //   s.tl(this,linkType,linkName, variableOverrides, doneAction)
+    s.tl(true, link_type_map.custom_link, action); //custom link tracking
+    log("trackCustomLink("+action+")");
+  }
+
+  function trackEventDefault(e) {
+    var action = "gigya." + e.gigya_event.source + "." + e.gigya_event.eventName;
+    if( e.gigya_event.errorCode ) {
+      var msg = e.gigya_event.errorCode + ": " + e.gigya_event.errorMessage;
+      s.prop51 = msg;
+      log(msg);      
+    }
+
+    //"Custom Link Tracking" code:
+    trackCustomLink(action);
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////////
+  // BEGIN event based tracking
+  //
+  var $body = $('body');
+
+
+  //
+  // showScreenSet
+  //
+  $body.on('aggrego.gigya.showScreenSet.onError', trackEventDefault); // track errors
+  $body.on('aggrego.gigya.showScreenSet.onBeforeScreenLoad', function(e) {
+    var action = "gigya."+e.gigya_event.source+"."+e.gigya_event.eventName+":" + e.gigya_event.nextScreen; //e.g. gigya.showScreenSet.beforeScreenLoad:gigya-thank-you-screen
+    trackCustomLink(action);
+  });
+  $body.on('aggrego.gigya.showScreenSet.onAfterSubmit', function(e) {
+    var action = "gigya."+e.gigya_event.source+"."+e.gigya_event.eventName+":" + e.gigya_event.screen; //e.g. gigya.showScreenSet.onAfterSubmit:gigya-login-screen
+    trackCustomLink(action);
+  });
+
+  //
+  // login / registration
+  //
+  $body.on('aggrego.gigya.showLoginUI.onButtonClicked', function(e) {
+    var action = "gigya."+e.gigya_event.source+"."+e.gigya_event.eventName;
+    log(e.gigya_event);
+    trackCustomLink(action);
+  });
+  $body.on('aggrego.gigya.showEmailLogin', trackEventDefault);
+
+  var gigyaAccountLoginEvent;
+  var gigyaSocializeLoginEvent;
+
+  function trackLogin() {
+    if(gigyaAccountLoginEvent && gigyaSocializeLoginEvent) {
+      var user = gigyaSocializeLoginEvent.user;
+      var data = gigyaAccountLoginEvent.data;
+      var action = "gigya.login"; //assume login by default
+
+      //determine login vs registration
+      if( data ) {
+        if( undefined == data.registration || null == data.registration ) {
+          //this is a user registration
+          action = "gigya.registration";
+        }
+      }
+
+      //add login provider
+      //action += ":"+user.loginProvider;
+      log("loginProvider:"+user.loginProvider);
+
+      //set page view eVars
+      s.eVar55 = user.UID; //UID
+      log("UID:"+user.UID);
+      s.eVar50 = s.prop50 = user.loginProvider; //login provider
+
+      trackCustomLink(action);
+
+      gigyaAccountLoginEvent = false;
+      gigyaSocializeLoginEvent = false;
+    }
+  }
+
+  $body.on('aggrego.gigya.accounts.onLogin', function(e) {
+    gigyaAccountLoginEvent = e.gigya_event;
+
+    trackLogin();
+  });
+  $body.on('aggrego.gigya.socialize.onLogin', function(e) {
+    gigyaSocializeLoginEvent = e.gigya_event;
+
+    trackLogin();
+  });
+
+  //
+  // logout
+  //
+  $body.on('aggrego.gigya.socialize.onLogout', function(e) {
+    var action = "gigya."+e.gigya_event.eventName;
+
+    //clear page view eVars
+    s.eVar55 = ""; //UID
+    s.eVar50 = ""; //login provider
+
+    trackCustomLink(action);
+  });
+
+  //
+  // connections
+  //
+  $body.on('aggrego.gigya.showAddConnectionsUI.onButtonClicked', function(e) {
+    var action = "gigya."+e.gigya_event.source+"."+e.gigya_event.eventName;
+    trackCustomLink(action);
+  });
+  $body.on('aggrego.gigya.showAddConnectionsUI.onConnectionAdded', function(e) {
+    var action = "gigya."+e.gigya_event.source+"."+e.gigya_event.eventName;
+    s.prop50 = e.gigya_event.provider;
+    log("provider:"+e.gigya_event.provider);
+    trackCustomLink(action);
+  });
+
+  //
+  // shares
+  //
+  $body.on('aggrego.gigya.showShareBarUI.onSendDone', function(e) {
+    var action = "gigya.showShareBarUI.share";
+    s.prop50 = e.gigya_event.providers;
+    log("providers:"+e.gigya_event.providers);
+    trackCustomLink(action);
+  });
+
+  //
+  // comments
+  //
+  $body.on('aggrego.gigya.showCommentsUI.onCommentSubmitted', function(e) {
+    var action = "gigya.showCommentsUI.comment";
+    var providers = "";
+    if( e.gigya_event.providerPostIDs ) {
+      var pobj = e.gigya_event.providerPostIDs;
+      var parray = new Array();
+      $.each(pobj,function(key,value) {
+        parray.push(key);
+      });
+      providers = parray.join(',');
+      s.prop50 = providers;
+      log("providers:"+providers);
+    }
+    trackCustomLink(action);
+  });
+
+  //
+  // check user state on page load
+  //
+  $body.on('aggrego.gigya.socialize.getUserInfo', function(e) {
+    //set page view eVars
+    if( e.gigya_event.user.UID && e.gigya_event.user.UID != '' ) { //valid logged in user
+      s.eVar55 = e.gigya_event.user.UID; //UID
+      log("UID:"+e.gigya_event.user.UID);
+      s.eVar50 = e.gigya_event.user.loginProvider; //login provider
+      log("loginProvider:"+e.gigya_event.user.loginProvider);
+    } else { //user not logged in
+      //clear eVars in Omniture session
+      s.eVar55 = ""; //UID
+      s.eVar50 = ""; //login provider
+    }
+  });
+
+});

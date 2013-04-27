@@ -24,7 +24,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * Created: 2008-07-01 | Updated: 2008-07-14
  * 
- * -----
+ * ----- 
  * 
  */
 (function(a){a.tools=a.tools||{version:"v1.2.7"},a.tools.overlay={addEffect:function(a,b,d){c[a]=[b,d]},conf:{close:null,closeOnClick:!0,closeOnEsc:!0,closeSpeed:"fast",effect:"default",fixed:!a.browser.msie||a.browser.version>6,left:"center",load:!1,mask:null,oneInstance:!0,speed:"normal",target:null,top:"10%"}};var b=[],c={};a.tools.overlay.addEffect("default",function(b,c){var d=this.getConf(),e=a(window);d.fixed||(b.top+=e.scrollTop(),b.left+=e.scrollLeft()),b.position=d.fixed?"fixed":"absolute",this.getOverlay().css(b).fadeIn(d.speed,c)},function(a){this.getOverlay().fadeOut(this.getConf().closeSpeed,a)});function d(d,e){var f=this,g=d.add(f),h=a(window),i,j,k,l=a.tools.expose&&(e.mask||e.expose),m=Math.random().toString().slice(10);l&&(typeof l=="string"&&(l={color:l}),l.closeOnClick=l.closeOnEsc=!1);var n=e.target||d.attr("rel");j=n?a(n):null||d;if(!j.length)throw"Could not find Overlay: "+n;d&&d.index(j)==-1&&d.click(function(a){f.load(a);return a.preventDefault()}),a.extend(f,{load:function(d){if(f.isOpened())return f;var i=c[e.effect];if(!i)throw"Overlay: cannot find effect : \""+e.effect+"\"";e.oneInstance&&a.each(b,function(){this.close(d)}),d=d||a.Event(),d.type="onBeforeLoad",g.trigger(d);if(d.isDefaultPrevented())return f;k=!0,l&&a(j).expose(l);var n=e.top,o=e.left,p=j.outerWidth({margin:!0}),q=j.outerHeight({margin:!0});typeof n=="string"&&(n=n=="center"?Math.max((h.height()-q)/2,0):parseInt(n,10)/100*h.height()),o=="center"&&(o=Math.max((h.width()-p)/2,0)),i[0].call(f,{top:n,left:o},function(){k&&(d.type="onLoad",g.trigger(d))}),l&&e.closeOnClick&&a.mask.getMask().one("click",f.close),e.closeOnClick&&a(document).on("click."+m,function(b){a(b.target).parents(j).length||f.close(b)}),e.closeOnEsc&&a(document).on("keydown."+m,function(a){a.keyCode==27&&f.close(a)});return f},close:function(b){if(!f.isOpened())return f;b=b||a.Event(),b.type="onBeforeClose",g.trigger(b);if(!b.isDefaultPrevented()){k=!1,c[e.effect][1].call(f,function(){b.type="onClose",g.trigger(b)}),a(document).off("click."+m+" keydown."+m),l&&a.mask.close();return f}},getOverlay:function(){return j},getTrigger:function(){return d},getClosers:function(){return i},isOpened:function(){return k},getConf:function(){return e}}),a.each("onBeforeLoad,onStart,onLoad,onBeforeClose,onClose".split(","),function(b,c){a.isFunction(e[c])&&a(f).on(c,e[c]),f[c]=function(b){b&&a(f).on(c,b);return f}}),i=j.find(e.close||".close"),!i.length&&!e.close&&(i=a("<a class=\"close\"></a>"),j.prepend(i)),i.click(function(a){f.close(a)}),e.load&&f.load()}a.fn.overlay=function(c){var e=this.data("overlay");if(e)return e;a.isFunction(c)&&(c={onBeforeLoad:c}),c=a.extend(!0,{},a.tools.overlay.conf,c),this.each(function(){e=new d(a(this),c),b.push(e),a(this).data("overlay",e)});return c.api?e:this}})(jQuery);
@@ -41,10 +41,9 @@
 (function(a){var b=a.tools.tooltip;a.extend(b.conf,{direction:"up",bounce:!1,slideOffset:10,slideInSpeed:200,slideOutSpeed:200,slideFade:!a.browser.msie});var c={up:["-","top"],down:["+","top"],left:["-","left"],right:["+","left"]};b.addEffect("slide",function(a){var b=this.getConf(),d=this.getTip(),e=b.slideFade?{opacity:b.opacity}:{},f=c[b.direction]||c.up;e[f[1]]=f[0]+"="+b.slideOffset,b.slideFade&&d.css({opacity:0}),d.show().animate(e,b.slideInSpeed,a)},function(b){var d=this.getConf(),e=d.slideOffset,f=d.slideFade?{opacity:0}:{},g=c[d.direction]||c.up,h=""+g[0];d.bounce&&(h=h=="+"?"-":"+"),f[g[1]]=h+"="+e,this.getTip().animate(f,d.slideOutSpeed,function(){a(this).hide(),b.call()})})})(jQuery);
 
 
-
 // Following is PwC Media Player library
-// v11 Sept 11 2012
-// (c) 2012 PwC
+// v12 April 2013
+// (c) 2013 PwC
 
 function thisMovie(movieName) {
          if (navigator.appName.indexOf("Microsoft") != -1) {
@@ -144,8 +143,8 @@ jQuery.extend({
 	}
   
   	//PATH TO ASSETS
-	var mediaSwfPath 	= "";
-	var imagePath		= "";
+	//var mediaSwfPath 	= "";
+	//var imagePath		= "";
 	var mediaSwfPath 	= "/gx/en/assets/media/";
 	var imagePath		= "/en_GX/webadmin/assets/image/";
 	
@@ -360,8 +359,8 @@ jQuery.extend({
 	}
   
   	 //PATH TO ASSETS
-	var mediaSwfPath 	= "";
-	var imagePath		= "";
+	//var mediaSwfPath 	= "";
+	//var imagePath		= "";
 	var mediaSwfPath 	= "/gx/en/assets/media/";
 	var imagePath		= "/en_GX/webadmin/assets/image/";
 	
@@ -469,8 +468,8 @@ jQuery.extend({
 			$(this).overlay({  //START overlay
 			
 				target					: '#pwc-media-overlay',
-				effect 					: 'apple',
-				speed					: 'normal',
+				//effect 					: 'apple',
+				speed					: 0,
 				closeOnClick 			: true,
 				closeonEscape			: true,
 				fadeInSpeed				: 0,
@@ -480,7 +479,7 @@ jQuery.extend({
 				top						: '8%',						
 				mask					: {
 					color				: '#ffffff',
-					loadSpeed			: 200,
+					loadSpeed			: 0,
 					opacity				: 0.85
 				},
 				load					: mediaActivateNow,
@@ -505,6 +504,10 @@ jQuery.extend({
 							$("#media-transparent-background").fadeOut('fast');
 							
 						}
+						
+						//for new multiplayer, wait for modal to finish before building multiplayer HTML
+						//$modalAOK = true;
+						$("#pwc-media-overlay").trigger("modalready");
 						
 					
 										},
@@ -667,6 +670,563 @@ jQuery.extend({
 		
   }
  })(jQuery);
+ 
+ 
+ 
+ // yt multiplayer
+ (function ($) {
+    $.fn.ytmulti = function (options) {
+
+		//SET DEFAULT VALUES
+        var settings = $.extend({
+            showheader			: 			true,
+			openplaylist		:			false,
+			shownextup			:			true,
+			showtotal			:			true,
+			showlearnmore		:			true,
+			inmodal				:			false,
+			learnmoretext		:			'Learn more',
+			learnmorelink		:			'',
+            headertext			: 			'Related videos',
+			nextuptext			:			'Next up - ',
+			nowplayingtext		:			'Now playing',
+			viewdesctext		:			'Full description',
+			hidedesctext		:			'Hide',
+			playvideotext		:			'Play video',
+			totaloftext			:			'of',
+			totalvideostext		:			'videos',
+			playiconpath		:			'/en_GX/webadmin/assets/image/vid-icon-2.png',
+			playiconmobilepath	:			'/en_GX/webadmin/assets/image/media-play-button.gif',
+			videolist			:			[],
+			customlist			:			[],
+			autoplay			:			true,
+			initialindex		:			null
+					
+        }, options);
+
+        //mobile or not
+        var _mob = false;
+	    (jsdevice == 'mobile' ) ? _mob = true : _mob = false;
+		
+		//counter for info loading
+		var _counter = 0;
+		
+		//videoinfo array
+		var videoinfo = [];
+		
+		//make unique
+		var _d = new Date();
+		var _n = _d.getTime();
+		var $this = $(this);
+		
+		if (settings.inmodal) {
+			settings.showheader = false;  //disable collapsible header in modal
+		}
+		
+		//create multiplayer holder div
+		var holderHtml = "";
+		if (_mob) {
+			//mobile html
+			holderHtml = '<div class="multi-wrapper">\n';
+			holderHtml +='	<div class="multi-loading"></div>\n';
+			holderHtml +='<div class="multi-head" style="display:none;"><div class="multi-embed"></div><div class="clearer"></div></div><div class="multi-right-m multi-head-right-m"></div><div class="clearer"></div><divclass="multi-playlist-header multi-open" style="display:none;"><h3 class="multi-header-section-h3 multi-header-open">' + settings.headertext + '</h3></div><div class="multi-playlist-wrapper" style="display:none;"></div><div class="multi-player-bottom-border">.</div></div>';
+		} else {
+			holderHtml = '\n<div class="multi-wrapper">\n';
+			holderHtml +='	<div class="multi-loading"></div>\n';
+			holderHtml +='	<div class="multi-head" style="display:none;">\n';
+			holderHtml +='		<div class="multi-embed"></div>\n';
+			holderHtml +='		<div class="multi-right multi-head-right"></div>\n';
+			holderHtml +='	</div>\n';
+			holderHtml +='	<div class="clearer"></div>\n';
+			holderHtml +='	<div class="multi-head-custom"></div>\n';
+			holderHtml +='	<div class="multi-head-nextup"></div>\n';
+			holderHtml +='	<div class="multi-playlist-header multi-open" style="display:none;"><h3 class="multi-header-section-h3 multi-header-open">' + settings.headertext + '</h3></div>\n';
+			holderHtml +='	<div class="multi-playlist-wrapper" style="display:none;"></div>\n';
+			//holderHtml +='	<div class="multi-player-bottom-border">.</div>\n';
+			holderHtml +='</div>\n';
+		}
+		$this.html(holderHtml);
+		
+        return this.each(function () {
+			
+			//define jquery div vars
+			var $multiwrapper 				= $this.find('.multi-wrapper');
+			var $multiloading 				= $this.find('.multi-loading');
+			var $multihead		 			= $this.find('.multi-head');
+			var $multiembed 				= $this.find('.multi-embed');
+			var $multiright 				= $this.find('.multi-right');
+			var $multiheadright 			= $this.find('.multi-head-right');
+			var $multiheadcustom 			= $this.find('.multi-head-custom');
+			var $multiheadnextup 			= $this.find('.multi-head-nextup');
+			var $multiplaylistheader		= $this.find('.multi-playlist-header');
+			var $multiheadersectionh3		= $this.find('.multi-header-section-h3');
+			var $multiplaylistwrapper		= $this.find('.multi-playlist-wrapper');
+			//var $multiplayerbottomborder	= $this.find('.multi-player-bottom-border');
+			
+            	
+			function callJavascript(query, callback) {
+                
+				 var closedData;
+                $.getJSON(url, function (response) {
+                    closedData = response.data;
+                }).done(function (parsedResponse, statusText, jqXhr) {
+					
+                    callback(closedData);
+                     
+                });
+				
+				
+				
+            }
+			
+			
+			function constructPlayer() {
+				
+				
+				//DETERMINE starting index			
+				//look for a different index than 0 via initialindex and url query
+				var _startIndex = 0;
+				var _initialindex = settings.initialindex;
+				if (_initialindex != null) {
+					_startIndex = _initialindex;
+					--_startIndex;
+					
+				}
+				
+				var indexurlvar = jQuery.getUrlVar('vi');
+				if(typeof indexurlvar != 'undefined'){
+					_startIndex = indexurlvar;
+		 			//check that it's not 0 to start with, and converts friendly 1,2,3, to 0,1,2 for array access
+					(_startIndex > 0) ? (--_startIndex) : undefined;  
+					
+		 		  }
+				//can't be more than list of vids
+				(_startIndex >= settings.videolist.length) ? (_startIndex = 0) : undefined;  
+				
+								
+				//loop through items to construct playlist HTML
+				var itemHtml = "";
+				
+				if (_mob) {
+					//do mobile HTML
+					for (t=0; t<settings.videolist.length;t++) {
+											
+						//display the playlist section
+						itemHtml += '<div class="multi-item-' + t + ' multi-playlist-item-m" rel="' + t + '">';
+						itemHtml += 	'<div>';
+						
+						itemHtml += 		'<div class="multi-item-thumb-' + t + ' multi-item-thumb-container-m" rel="' + t + '"><img class="multi-item-thumb-m" src="' + videoinfo[t].thumb + '" /><img class="multi-thumb-playButton-' + t +' multi-item-thumb-playButton-m" src="' + settings.playiconmobilepath + '"></img></div>';
+						itemHtml += 		'<div class="multi-item-np-' + t + ' multi-item-np multi-item-np-m">' + settings.nowplayingtext + '</div>';
+						itemHtml += 		'<div class="multi-item-title-' + t + ' multi-item-title-m" rel="' + t + '">' + videoinfo[t].title + '</div>';
+						//itemHtml +=			'<div class="longdesc-text">' + videoinfo[t].desc + '</div>';
+						itemHtml += 	'</div>';
+						itemHtml +=	'</div>'
+						itemHtml += '<div class="clearer"></div>';							
+					}
+					
+					
+					
+					
+				} else {
+					
+					var clearit = 0;
+					
+					for (t=0; t<settings.videolist.length;t++) {
+						
+						 
+						//display the playlist section
+						itemHtml += '\n<div class="multi-item-' + t + ' multi-playlist-item">\n';
+						itemHtml += '	<div>'+'\n';
+						
+						itemHtml += '		<div class="multi-expanding-section">\n';
+						itemHtml += '			<div class="shortdesc shortdesc-'+ t +'">\n';					
+						itemHtml += '				<div  class="multi-item-thumb-' + t + ' multi-item-thumb-container" rel="' + t + '"><img alt="' + settings.playvideotext + '" title="' + settings.playvideotext + '" class="multi-item-thumb" src="' + videoinfo[t].thumb + '" /><img class="multi-thumb-playButton-' + t +' multi-item-thumb-playButton" src="' + settings.playiconpath + '" alt="' + settings.playvideotext + '" title="' + settings.playvideotext + '"></img></div>\n';
+						itemHtml += '				<div class="multi-item-np-' + t + ' multi-item-np">' + settings.nowplayingtext + '</div>\n';
+						itemHtml += '				<div class="multi-item-title-' + t + ' multi-item-title" rel="' + t + '">' + videoinfo[t].title + '</div>\n';
+						itemHtml +=	'				<div class="shortdesc-text">' + videoinfo[t].desc + '</div>\n';
+						itemHtml += '				<h3 class="multi-short-h3-' + t + ' " rel="' + t + '">' + settings.viewdesctext + '</h3>\n';
+						itemHtml +=	'			</div>';
+						
+						itemHtml += '			<div class="longdesc longdesc-'+ t +' longdesc-closed"><h3 class="multi-long-h3-' + t + ' " rel="' + t + '">' + settings.hidedesctext + '</h3>\n';
+						itemHtml +=	'				<div class="longdesc-text-'+ t +' longdesc-text" style="overflow:hidden">' + videoinfo[t].desc + '</div>\n';
+						itemHtml +=	'				<div rel="' + t + '" class="multi-desc-play-' + t + ' multi-desc-play"><span class="multi-desc-dotdotdot-' + t + '" style="display:none;">... </span>' + settings.playvideotext + '</div>\n';
+						itemHtml +=	'			</div>\n';
+						itemHtml +=	'		</div>\n'; 
+						itemHtml += '	</div>\n';
+						itemHtml +=	'</div>\n';
+						clearit++;
+						
+						//every third item we want to add a clearer
+						if (clearit == 3) {
+							itemHtml += '<div class="clearer"></div>\n';
+							clearit = 0
+							
+							}
+								
+					}
+				}
+				
+				
+				itemHtml += '<div class="clearer"></div>';
+							
+				//add playlist item to playlist wrapper
+				$multiplaylistwrapper.html(itemHtml);
+				
+				
+				//END playlist HTML				
+								
+				//START  SHOW/HIDE content
+				//show the playlist header or not
+				if (settings.showheader) {
+					//add total video count
+					$multiplaylistheader.fadeIn();
+					
+				} else {
+					//if we hide the header we show the playlist by default
+					settings.openplaylist = true;
+				}
+				if (!settings.shownextup) {
+					$multiheadnextup.hide();
+				}
+					
+				
+				$multiloading.hide();
+				$multihead.fadeIn();
+				
+				//Set some initial conditions if the playlist should be hidden on load
+				if (!settings.openplaylist) {
+					$multiplaylistheader.removeClass('multi-open');
+					$multiheadersectionh3.removeClass('multi-header-open');
+					$multiheadersectionh3.addClass('multi-header-closed');
+				}
+				//the main playlist has to be visible on DOM for a split second to calculate heights
+				var titleHeight = 0;
+				var totalHeight = 0;
+					
+				$multiplaylistwrapper.show( function (){
+					//when complete...
+					//adjust heights of titles to make the 'show description's all line up...largest wins
+					//Determine tallest title and tallest playlist item...
+					
+					for (i=0;i<settings.videolist.length;i++) {
+						var tempHeight = $this.find('.multi-item-title-' + i).height();
+						if ( tempHeight > titleHeight ) {
+							titleHeight = tempHeight;
+							totalHeight =  $this.find('.multi-item-' + i).height();
+						}
+					}
+					
+					//...now assign biggest height to ALL titles and items
+					for (h=0;h<settings.videolist.length;h++) {
+							$this.find('.multi-item-title-' + h).css('height',titleHeight);
+							$this.find('.multi-item-' + h).css('height', totalHeight);
+							
+					}
+					
+					//actually hide playlist if needed
+					if (!settings.openplaylist) {
+						$(this).hide();
+					}
+				
+				
+				});
+				
+					
+					
+				
+				 // END SHOW/HIDE content
+				
+				//START events/actions
+				//Add the expanding description activations
+				
+				$this.find('.multi-expanding-section h3').click(function() {
+					
+					var h = $(this).attr('rel');
+					$this.find('.longdesc-' + h).slideToggle('fast', function() {});
+					$this.find('.shortdesc-' + h).slideToggle('fast', function() {
+						
+						if ($this.find('.longdesc-text-' + h).height() > (totalHeight - 45)){
+							//console.log($this.find('.longdesc-text-' + h).css('height'));
+								$this.find('.longdesc-text-' + h).css({ 'height': totalHeight-47});
+								$this.find('.multi-desc-dotdotdot-' + h).show();
+							}
+					});
+					
+				});
+				
+				//Add the thumbnail click events
+				for (c=0;c<settings.videolist.length;c++) {
+					if (_mob) {
+						$this.find('.multi-item-' + c).click(function() {				
+							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));			
+						});
+					} else {
+					
+						$this.find('.multi-item-thumb-' + c).click(function() {				
+							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));			
+						});
+						$this.find('.multi-item-title-' + c).click(function() {				
+							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));					
+						});
+						$this.find('.multi-desc-play-' + c).click(function() {
+							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));	
+						});
+						
+						
+					}
+					
+				}
+				$multiheadnextup.click(function() {
+							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));	
+						});
+				 
+				//main playlist open/close - only create this if showheader = true
+				if (settings.showheader) {
+					$multiplaylistheader.click(function(){
+						
+						  if ($(this).hasClass('multi-open')) {
+							
+								$(this).removeClass('multi-open');
+								$multiplaylistwrapper.slideToggle(400);
+								$multiheadersectionh3.removeClass('multi-header-open');
+								$multiheadersectionh3.addClass('multi-header-closed');
+								$multiheadersectionh3.animate({'padding':'5px 30px 5px 10px'});
+								
+						 } else {
+						
+							$multiplaylistwrapper.slideToggle(400);
+							 $(this).toggleClass('multi-open');
+							 $multiheadersectionh3.removeClass('multi-header-closed');
+								$multiheadersectionh3.addClass('multi-header-open');
+								$multiheadersectionh3.animate({'padding':'5px 30px 5px 0px'});
+						 }
+					});
+				} $multiplaylistwrapper.css('margin-top', '4px'); //add a little white space above playlist
+				
+				//END events/actions
+				
+				//Show opening video. if in modal, autoplay it - Can't do this because of Chrome
+				//(settings.inmodal) ? ChangeVideo(_startIndex, 1) : ChangeVideo(_startIndex, 0);
+				
+				ChangeVideo(_startIndex, 0);
+				
+			}
+			///////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////
+			function ChangeVideo(index, autoplay) {
+				
+				//turn off autoplay for modal play because some browsers will start video after modal is closed
+				(settings.inmodal) ? autoplay=0 : undefined;
+				
+				var playerHeight = 205;
+				var playerWidth = 364;
+				
+				if (_mob) {
+					playerHeight = 180;
+					playerWidth = 320
+				}
+				
+				
+				$multiembed.empty().html('<iframe id="yt-' + videoinfo[index].id + '" frameborder="0" height="'+ playerHeight +'" src="http://www.youtube.com/embed/'+ videoinfo[index].id +'?enablejsapi=1&amp;rel=0&amp;version=3&amp;wmode=opaque&amp;vq=480&amp;autoplay='+ autoplay +'" width="' + playerWidth +'">&#160;</iframe>');
+				
+				//check if the standard youtube tracking is already in place and if so, add this video to the arrays
+				if (typeof _ytIDs != 'undefined') {
+					//add to tracking array
+					var arrayIndex = _ytPlayerArray.length;
+					//add to ID array for tracking
+					_ytIDs[arrayIndex] = videoinfo[index].id; 
+					//add to player array for tracking
+					_ytPlayerArray[arrayIndex] = new YT.Player(('yt-' + videoinfo[index].id), {
+						events: {
+								'onStateChange': onPlayerStateChange
+						}
+					});	
+				}
+				
+				ChangeInfo(index);
+				
+			}
+			
+			function ChangeInfo(index) {
+				var topRightHtml = 	'<h3 class="multi-head-right-title">' + videoinfo[index].title + '</h3>';
+					topRightHtml +=	'<div class="multi-head-right-desc" style="overflow:hidden;">' + videoinfo[index].desc +'</div>';
+					topRightHtml += '<span class="multi-head-right-dotdotdot" style="display:none;">...</span>';
+				
+				//show the learn more top right if desired
+				if ((settings.showlearnmore) && (videoinfo[index].relatedUrl != null)) {					
+					topRightHtml += '<a class="fg100 multi-head-right-learnmore" href="'+ videoinfo[index].relatedUrl + '" target="_new" style="font-size:.9em">' + settings.learnmoretext +'</a>';
+					} 
+				
+				if (_mob) {
+						
+					$this.find('.multi-right-m').empty().html(topRightHtml);
+				} else {
+					$multiright.empty().html(topRightHtml);
+					var descHeight = 180 - $this.find('.multi-head-right-title').height(); //205 - 25 ( for the 'learn more' link if present ) = 180
+					
+					var $multiheadrightdesc = $this.find('.multi-head-right-desc');
+					if ($multiheadrightdesc.height() > descHeight) {
+						$multiheadrightdesc.height(descHeight);
+						$this.find('.multi-head-right-dotdotdot').show();
+					}
+				}
+				
+				
+				
+				//Change the Now playing indicator				
+				for (c=0;c<settings.videolist.length;c++) {
+					 if (c != index ) {
+						 	$this.find('.multi-item-np-' + c).hide();
+							$this.find('.multi-item-' + c).removeClass('multi-background-color-25');
+							$this.find('.multi-thumb-playButton-' + c).show();
+							
+					 } 
+				}
+				
+				//show the Now playing, change bg item color, and hide playbutton for the new video
+				$this.find('.multi-item-np-' + index).show();
+				$this.find('.multi-item-' + index).addClass('multi-background-color-25');
+				$this.find('.multi-thumb-playButton-' + index).hide();
+				
+				//scroll to top of screen
+				var targetScrollHeight = $multiwrapper.offset().top;
+				if ( $(window).scrollTop() >= targetScrollHeight )  { 
+				
+				 	($('html, body').animate({ scrollTop: (targetScrollHeight - 10) }, 800))
+				}
+				
+				//change the Next up area
+				if (settings.shownextup) {
+					
+					
+					var nextIndex = index;
+					++nextIndex;
+					if ((nextIndex) ==  videoinfo.length ) {
+						nextIndex = 0;
+					}
+					
+					
+					
+					$multiheadnextup.empty().html('<span class="multi-nextup-prefix">'+ settings.nextuptext +'</span><span class="multi-nextup-text">' + videoinfo[nextIndex].title + '</span>');
+					if (settings.showtotal) {
+						$multiheadnextup.append('  <span class="multi-next-total">- ' + (nextIndex+1) + ' ' + settings.totaloftext + ' ' + videoinfo.length + ' ' + settings.totalvideostext + '</span>');
+					}
+					$multiheadnextup.attr('rel', nextIndex);
+					
+					
+				}
+				else {
+					
+				}
+				
+				//change the custom HTML area
+				if (settings.customlist.length == settings.videolist.length) {
+					//var $customhtml = ;
+					
+					$multiheadcustom.empty();
+					(settings.customlist[index] != '') ? $(settings.customlist[index]+' div').clone(true).appendTo($multiheadcustom) : undefined;	
+					//console.log($(settings.customlist[index]+' div').first().html());
+				}
+				
+								
+			}
+			
+			//do after successful response from yt
+			var callback = function (data) {
+				//console.log(data);
+				
+				//determine where to insert the info into the videoinfo array so we don't lose the order
+				var index;
+				for (y=0; y<settings.videolist.length;y++) {
+					if (data.id == settings.videolist[y]) {
+						index = y;
+						break;
+					}
+				}
+				
+				videoinfo[index].id 						= data.id;
+				videoinfo[index].title 						= data.title;
+				videoinfo[index].thumb						= 'http://img.youtube.com/vi/' + data.id + '/mqdefault.jpg';
+				
+			
+				//URL match regexs
+                var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                var exp2 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+               	var itemRelatedURL = "";
+                var itemSummary = "";
+				
+				if (data.description != null) {
+                      	videoinfo[index].relatedUrl			 = data.description.match(exp2);
+                      	videoinfo[index].desc				 = data.description.replace(exp, "");
+						videoinfo[index].desc 			 	 = videoinfo[index].desc.replace("Learn more at PwC.com - ", "");
+						
+						if (videoinfo[index].desc.length > 25) {
+							videoinfo[index].shortdesc		     = videoinfo[index].desc.slice(0,25);
+						} else videoinfo[index].shortdesc = videoinfo[index].desc + '<br/><br/>';
+						
+						
+						
+                    }
+					
+				//override each video's learnmorelink if necessary
+				if (settings.learnmorelink != '') {
+					videoinfo[index].relatedUrl = settings.learnmorelink;	
+				}
+						
+				              
+              	
+                 	
+				_counter++;
+				
+				if (!settings.inmodal) {
+					//not in modal
+					if (_counter == settings.videolist.length){
+						constructPlayer();
+					}
+				}
+				
+				
+				
+			} //END callback
+			
+			function CheckReady(index) { //polled every .5 sec for counter and if modal is ready
+				if ((_counter == settings.videolist.length)  && (modalready)){
+					clearInterval(keepchecking);
+					constructPlayer();	
+				}
+			}
+			
+			if (settings.inmodal) {
+				
+				var modalready = false;
+				$('#pwc-media-overlay').on('modalready', function() {
+					modalready = true;
+					$this.css('font-size','.75em');
+					$this.css('line-height','140%');
+					$('#media-inline-html-div').css('padding','15px 5px 0 15px');
+					$('#media-inline-html-div').css('padding','0px 5px 0 15px');
+					(_mob) ? $('#media-inline-html-div').css('overflow-y','auto') : $('#media-inline-html-div').css('overflow-y','hidden');
+					$('#media-player').css('paddiing','0 0 0 0');
+				});
+				var keepchecking = setInterval(CheckReady, 500);
+				
+			}
+			//Start multiplayer
+			for (q=0;q<settings.videolist.length;q++) {
+			
+				//populate videoinfo with blank info and request json info
+				videoinfo.push({ id : "", title : "", relatedUrl : "", desc : "", thumb : "" });
+				var url = "https://gdata.youtube.com/feeds/api/videos/"+ settings.videolist[q] +"?alt=jsonc&v=2&callback=?";
+				$multiloading.html('Loading...<img src="/en_GX/webadmin/assets/image/loading.gif" />');
+				callJavascript(url, callback);
+			}
+			
+        });
+
+
+    };
+})(jQuery);
+
 	
 
 $(document).ready(function() {  //START document ready
@@ -705,6 +1265,7 @@ $(document).ready(function() {  //START document ready
 		}
 
 	}
+
 	
 	
 	

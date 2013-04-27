@@ -14,11 +14,11 @@ if(config.charAt(2)=='1'){document.forms.privacyPageCookieForm.fpfY.checked=true
 else{document.forms.privacyPageCookieForm.fpfY.checked=false;document.forms.privacyPageCookieForm.fpfN.checked=true;}
 if(config.charAt(3)=='1'){document.forms.privacyPageCookieForm.tpcY.checked=true;document.forms.privacyPageCookieForm.tpcN.checked=false;}
 else{document.forms.privacyPageCookieForm.tpcY.checked=false;document.forms.privacyPageCookieForm.tpcN.checked=true;}}
-hpAllowedDefaults=[["uk/en","1111"],["dk/da","1111"],["fr/fr","1110"],["de/de","1111"],["it/it","1110"],["nl/nl","1110"],["es/es","1110"],["at/de","1110"],["be/fr","1111"],["be/nl","1111"],["bg/bg","1111"],["cy/el","1110"],["cz/cs","1111"],["ee/et","1111"],["fi/fi","1111"],["hu/hu","1111"],["lv/lv","1110"],["lt/lt","1110"],["ie/en","1111"],["ro/ro","1111"],["sk/sk","1111"],["se/sv","1110"]];var cccll="";var ccllDefaults="";ccll=getCLCombination(hpAllowedDefaults);if(ccll!=""&&document.forms.privacyPageCookieForm!=undefined){window.addEvent('domready',function(){document.forms.privacyPageCookieForm.reset();var privacy_answ=privacyPageReadCookie('hpeuck_answ');if(privacy_answ!=null){var privacy_pref=privacyPageReadCookie('hpeuck_prefs');if(privacy_pref!=null){setConfig(privacy_pref);}
+hpAllowedDefaults=[["gr/el","1111"],["pl/pl","1111"],["pt/pt","1101"],["si/sl","1111"],["uk/en","1111"],["dk/da","1111"],["fr/fr","1110"],["de/de","1110"],["it/it","1110"],["nl/nl","1110"],["es/es","1110"],["at/de","1110"],["be/fr","1111"],["be/nl","1111"],["bg/bg","1111"],["cy/el","1110"],["cz/cs","1111"],["ee/et","1111"],["fi/fi","1111"],["hu/hu","1111"],["lv/lv","1110"],["lt/lt","1110"],["ie/en","1111"],["ro/ro","1111"],["sk/sk","1111"],["se/sv","1110"]];var cccll="";var ccllDefaults="";ccll=getCLCombination(hpAllowedDefaults);if(ccll!=""&&document.forms.privacyPageCookieForm!=undefined){window.addEvent('domready',function(){document.forms.privacyPageCookieForm.reset();var privacy_answ=privacyPageReadCookie('hpeuck_answ');if(privacy_answ!=null){var privacy_pref=privacyPageReadCookie('hpeuck_prefs');if(privacy_pref!=null){setConfig(privacy_pref);}
 else{setConfig(ccllDefaults);}}
 else{setConfig(ccllDefaults);}});}
 
 /*
-Date: 11/26/2012 11:38:12 AM
+Date: 4/22/2013 8:39:16 AM
 All images published
 */

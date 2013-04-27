@@ -45,14 +45,34 @@
     //ADD THE TEMPLATES - generated via flight manager tool:
     wpAd.tools.writeScript(wpAd.constants.ad_config_url);
   }
-  
+	
+  if(wpAd.flags.postscribe){
+    wpAd.tools.ajax({
+      url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
+      cache: true,
+      dataType: 'script',
+      timeout: 2000,
+      crossDomain: true,
+      error: function(err){
+        if(wpAd.flags.debug){
+          try{win.console.log('postscribe ajax error:', err);}catch(e){}
+        }
+      },
+      success: function(data){
+        if(wpAd.flags.debug){
+          try{win.console.log('postscribe script loaded');}catch(e){}
+        }
+      }
+    });
+  }
+	
   //legacy quantcast code - may still be on some older pages:
   if(win.wp_quantcast) {
     try {
       wp_quantcast.exec('p-5cYn7dCzvaeyA');
     } catch(e) {}
   }
-
+	
   //slate specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/www\.dev\.slate\.com|http:\/\/pub1\.dev\.slate\.com/);
 

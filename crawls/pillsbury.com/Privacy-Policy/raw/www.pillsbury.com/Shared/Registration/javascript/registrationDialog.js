@@ -1,6 +1,6 @@
 ﻿(function ($) {
     $('[data-reg-popup]').live('click', function (e) {
-            e.preventDefault();
+        e.preventDefault();
 
         var urlParams = $(this).attr('data-url-params');
         var jsonParams = {};
@@ -48,7 +48,7 @@ var reg = reg || {};
 
             //Style, and Open registration dialog window
             this.openRegistrationDialog = function (options) {
-
+            
                 var modalUrl = self.registrationDialogDiv.attr('data-modal-url');
 
                 if (window.location.href.indexOf('https') > -1) {
@@ -61,62 +61,15 @@ var reg = reg || {};
                 if ("isRegistrationFirstStep" in options) {
                     modalUrl = modalUrl + "&isRegistrationFirstStep=" + options.isRegistrationFirstStep;
                 }
+                if ("RegAction" in options) {
+                    modalUrl = modalUrl + "&RegAction=" + options.RegAction;
+                }
                 if ("returnUrl" in options) {
                     modalUrl = modalUrl + "&returnUrl=" + options.returnUrl;
                 }
-                if("RegAction" in options)
-                {
-                    modalUrl = modalUrl + "&RegAction=" + options.RegAction;
-                }
-
-                // If the window isn't wide enough to show the login modal, redirect to the m.bettycrocker.com login page.
-                // TODO: Remove this function once the login modal is made responsive
-                if (document.documentElement.clientWidth > 800) {
-
-                    self.registrationDialogDiv.find('iframe').attr('src', modalUrl);
-                    self.registrationDialogDiv.dialog('open');
-                }
-                else
-                {
-                    var destinationUrl = options.returnUrl;
-                    var registrationSource = options.esrc;
-
-                    var mobileDomain = function () {
-                        switch (document.domain) {
-                            case 'dev.pillsbury.com':
-                                return 'dev.pillsbury.com';
-                            case 'd.pillsbury.com':
-                                return 'd.pillsbury.com';
-                            case 'q.pillsbury.com':
-                                return 'q.pillsbury.com';
-                            default:
-                                return 'www.pillsbury.com';
-                        }
-                    };
-
-                    // Redirect to current page if no URL was specified
-                    destinationUrl = destinationUrl || window.location.href;
-
-                    // If the destination URL is a relative path, make it absolute to www.pillsbury.com so they don't get stuck on m.pillsbury.com
-                    if (destinationUrl[0] === '/') {
-                        destinationUrl = document.location.protocol + "//" + document.domain + destinationUrl;
-                    }
-
-                    // Include the destination URL in the query string of the login page so it knows where to redirect back to
-                    var fullPageLoginUrl = 'https://' + mobileDomain() + '/community/memberlandingpage?returnUrl=' + destinationUrl;
-
-                    // Include the ESRC code in the query string of the login page
-                    if (registrationSource) {
-                        fullPageLoginUrl += '&esrc=' + registrationSource;
-                    }
-
-                    // Do the redirect
-                    window.location.href = fullPageLoginUrl;
-                    return;
-                }
-
-
-
+             
+                self.registrationDialogDiv.find('iframe').attr('src', modalUrl);
+                self.registrationDialogDiv.dialog('open');
             };
 
             this.closeRegistartionDialog = function () {

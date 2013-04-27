@@ -510,8 +510,8 @@ com.mattel.main = function () {
                                     '</div>';
 
 
-                //Organizes the different elements into how they will be presented in the popUp
-                var theHtmlObj = '<h4 class="lightbox-product-title">' + name + '</h4>' + embedObj +
+				//Organizes the different elements into how they will be presented in the popUp
+				var theHtmlObj = '<h4 class="lightbox-product-title">' + name + '</h4>' + embedObj +
                                  '<div id="the-display"></div>' +
                                  '<div class="caption">' + caption + '</div>' +
                                  shareButtons;
@@ -2655,19 +2655,19 @@ com.mattel.main = function () {
 					$('.displayComponentOverlay').html(data);
 					$('.displayComponentOverlay').show();
 
-                    var flashHeight = $('.displayComponentOverlay object').height();
-                    var flashWidth = $('.displayComponentOverlay object').width();
+					var flashHeight = $('.displayComponentOverlay object').height();
+					var flashWidth = $('.displayComponentOverlay object').width();
 
 					var cb = $('.displayComponentOverlay object').attr('codebase');
 					if (typeof cb !== 'undefined' && cb !== false) {
-						if(cb.toLowerCase().indexOf('director') !== -1) {
+						if (cb.toLowerCase().indexOf('director') !== -1) {
 							flashHeight = $('.displayComponentOverlay object').attr('height');
 							flashWidth = $('.displayComponentOverlay object').attr('width');
 						}
 					}
-					
-                    //var flashHeight = $('.displayComponentOverlay object').attr('height');
-                    //var flashWidth = $('.displayComponentOverlay object').attr('width');
+
+					//var flashHeight = $('.displayComponentOverlay object').attr('height');
+					//var flashWidth = $('.displayComponentOverlay object').attr('width');
 
 					if ($('.displayComponentOverlay object object')) {
 						if ($('.displayComponentOverlay object object').height() > $('.displayComponentOverlay object').height()) {
@@ -3170,11 +3170,16 @@ com.mattel.main = function () {
 	}; // initCustomFormElements ends
 
 	function initSubNav() {
+		var localInfo = "/" + $('#locale').val();
 		if ($('nav.nav_brand').length < 1) {
 			return false;
 		}
 		var subnav_timeout = null;
-		var subArr = ["products", "brands", "baby", "playtime", "games", "shops"];
+		var subArr = ["products", "brands", "playtime", "games", "shops"];
+		// Show Baby subnav menu for US
+		if (localInfo.toLocaleLowerCase().indexOf("en_us") != -1) {
+			subArr = ["products", "brands", "baby", "playtime", "games", "shops"];
+		}
 		$('body').prepend('<div id="sub-nav-curtain"></div><div id="sub-nav-wrap" class="gradient"><div id="sub-nav-brand" class="clearfix"></div></div>');
 		$('.nav_brand li ul').each(function (i) {
 			$(this).addClass(subArr[i] + '-sub').appendTo('#sub-nav-brand');
@@ -3215,12 +3220,10 @@ com.mattel.main = function () {
 		});
 
 		// hide Babygear and Babytoys menu for US
-		var localInfo = "/" + $('#locale').val();
 		if (localInfo.toLocaleLowerCase().indexOf("en_us") != -1) {
 			$('#sub-nav-brand ul.products-sub li#nav_Babygear').hide();
 			$("#sub-nav-brand ul.products-sub li[id='nav_Baby Toys']").hide();
 		}
-
 
 	}; // initSubNav ends
 
@@ -3277,6 +3280,7 @@ com.mattel.main = function () {
 		initSubNav();
 		initIntlCode();
 		initLightboxHashUrl();
+		updateLeftNav();
 		try {
 			checkFlashCookie();
 		}
@@ -3316,6 +3320,7 @@ function selectFilter(a, hashKey, selectorClass, selectorCode) {
 		if(a[1] == "undefined") {
 			a[1] = "";
 		}
+		$(selectorClass + ' li[' + selectorCode + '="' + a[1] + '"]').addClass('triggered');
 		$(selectorClass + ' li:not(".click-active")[' + selectorCode + '="' + a[1] + '"]').trigger('click');
 	}
 }
@@ -3341,6 +3346,9 @@ function selectFilterFromHash() {
 		if(a[0] == "viewAllProducts" && a[1] == "true") {
 			$('#viewAllProducts.active').trigger('click');
 		}
+	}
+	if(window.location.hash.substr(1) != "") {
+		$('.click-active:not(".triggered")').trigger('click');
 	}
 }
 

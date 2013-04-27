@@ -7,7 +7,7 @@ $(document).ready(function(){
 	//Login
 	
 	if($.cookie('wa_login') == null && $.cookie('userguid') == null){ // If the wa_login and userguid cookie is absent (if the user is not a current active user)
-	    $('#credentials').remove(); // Remove login credentials form
+	   $('#credentials').remove(); // Remove login credentials form
 	}
 	else { // So if the wa_login cookie is present (if the user is an active user)
 	    $.cookie('mintRememberMe', null, {expires: -7, path:'/', domain: '.mint.com'}); // Clear the login.event remember me cookie
@@ -79,8 +79,23 @@ $(document).ready(function(){
 			}, 1000)
 	    }
 	}) // end
-	
 
+    //Placeholder for IE
+    $(function() {
+
+        $('input, textarea').placeholder();
+
+
+    });
+
+    //recipe B
+
+
+    $('#form-signup-password').change(function() {
+       $('#form-signup-password-confirm1').val($(this).val());
+    });
+
+    //Sign Up form Overlay
 
     $('.login_overlay .orange').click(function(){
 
@@ -89,7 +104,7 @@ $(document).ready(function(){
             //return false;
         //}
 
-        $('<div id="video_overlay"><iframe title="SignupForm" class="youtube-player" type="text/html" width="307" height="400" src="https://www.mint.com/t/007e1/" frameborder="0" style="display:block; margin-bottom:15px; overflow:hidden;"></iframe></div>').appendTo('body').append('<div class="close"></div>').fadeIn('fast');
+        $('<div id="video_overlay"><iframe title="SignupForm" class="youtube-player" type="text/html" width="307" height="400" src="https://www.mint.com/t/007e1/" frameborder="0" style="display:block; margin-bottom:15px; overflow:hidden;" scrolling="no"></iframe></div>').appendTo('body').append('<div class="close"></div>').fadeIn('fast');
 
         //Append the page transparent overlay
         $('body').append('<div id="page_overlay"></div>');

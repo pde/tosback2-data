@@ -76,6 +76,14 @@ function trackingPixels(){
 /* End Marketing Tracking Pixels */
 
 (function($){
+/* Fix for Mac OS fly-out menu */
+var macOS = navigator.platform.toUpperCase().indexOf('MAC')>=0,
+macDev = navigator.userAgent.match(/(Mac|iPhone|iPod|iPad)/i)?true:false,
+safariUA = (navigator.userAgent.indexOf('Safari')!= -1 && navigator.userAgent.indexOf('Chrome') == -1);
+if ((macOS || macDev) && !safariUA) $('.menul1 .menul2').addClass('mc-mac');
+else if ((macOS || macDev) && safariUA) $('.menul1 .menul2').addClass('mc-macsaf');
+/* End Fix for Mac OS fly-out menu */
+
 /* OutdoorLiving Run-of-site banner */
 try{
 var categories=['1877.cp','930195.cp','930197.cp','930199.cp','1881.cp','1883.cp','1885.cp','1857.cp','1858.cp','1860.cp','1889.cp','1897.cp','1900.cp','1862.cp','1871.cp','1872.cp','110101.cp','1551.cp','110103.cp','1863.cp','1887.cp','1864.cp','1868.cp','1865.cp','5160101.cp','2780107.cp','1424.cp','1552.cp','1067.cp','1066.cp','1433.cp','5170101.cp','1373.cp','5170103.cp','1514.cp','430221.cp','5170105.cp','1499.cp'];

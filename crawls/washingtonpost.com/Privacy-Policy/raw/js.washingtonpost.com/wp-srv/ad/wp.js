@@ -9,6 +9,12 @@
   if(commercialNode.match("lifestyle/kidspost")){
     commercialNode = commercialNode.replace(/^lifestyle\/kidspost/i,"kidspost");
   }
+
+  //21321-CD
+  if(commercialNode === 'cityguide/search' && /Kid\ Friendly/i.test(unescape(location.href))){
+    commercialNode = 'cityguide/kidfriendly';
+  }
+
   //19879-CD
   //arkadium games section commercialNode hack:
   if(/games\.washingtonpost/i.test(doc.domain) && /entertainment\/arkadium/.test(commercialNode) && !wpAd.arkadiumNodeHack){
@@ -23,7 +29,7 @@
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
   wpAd.flags.vi_test = /vi_test/.test(location.search) && win.wp_meta_data && win.wp_meta_data.contentType && /CompoundStory/i.test(win.wp_meta_data.contentType.toString());
-  wpAd.flags.postscribe = !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href);
+  //wpAd.flags.postscribe = !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href);
 
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -666,10 +672,10 @@
 
   //20999 - JH - brand connect tracking:
   if(win.jQuery){
-    $(function(){
-      var bcdiv = $('div.brand-connect-module');
+    win.jQuery(function(){
+      var bcdiv = win.jQuery('div.brand-connect-module');
       if(bcdiv.length){
-        $.ajax({
+        win.jQuery.ajax({
           cache: true,
           dataType: 'script',
           crossDomain: true,
@@ -688,27 +694,29 @@
           }
         });
       }
-
-      //wp+ pixels
-      $.ajax({
-        cache: true,
-        dataType: 'script',
-        crossDomain: true,
-        url: 'http://js.washingtonpost.com/wp-srv/ad/wpPlusPixels.js',
-        timeout: 2000,
-        error: function(err){
-          if(wpAd.flags.debug){
-            try{win.console.log('wpPlusPixels.js timeout error:', err);}catch(e){}
-          }
-        },
-        success: function(data){
-          if(wpAd.flags.debug){
-            try{win.console.log('wpPlusPixels.js', 'loaded');}catch(e){}
-          }
-        }
-      });
-
     });
+
+    // had to remove from dom ready queue, presumably because jquery on jobs was being overwritten
+    // after this point, but before dom ready
+    // wp+ pixels
+    win.jQuery.ajax({
+      cache: true,
+      dataType: 'script',
+      crossDomain: true,
+      url: 'http://js.washingtonpost.com/wp-srv/ad/wpPlusPixels.js',
+      timeout: 2000,
+      error: function(err){
+        if(wpAd.flags.debug){
+          try{win.console.log('wpPlusPixels.js timeout error:', err);}catch(e){}
+        }
+      },
+      success: function(data){
+        if(wpAd.flags.debug){
+          try{win.console.log('wpPlusPixels.js', 'loaded');}catch(e){}
+        }
+      }
+    });
+
   }
 
 })(window, document, wpAd);

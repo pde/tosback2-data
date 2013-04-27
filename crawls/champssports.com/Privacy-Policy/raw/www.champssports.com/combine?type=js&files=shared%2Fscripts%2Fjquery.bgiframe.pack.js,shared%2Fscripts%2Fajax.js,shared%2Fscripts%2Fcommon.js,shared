@@ -217,6 +217,9 @@ function ClientSessionManager(){var callbacks=[];var session={};this.init=functi
 this.onInit=function(data){session=data;for(var i=0,j=callbacks.length;i<j;i++){try{callbacks[i](session);}
 catch(e){}}};this.initWith=function(callback){callbacks[callbacks.length]=callback;};this.getCustomerGreeting=function(){return session.profile.greeting;}
 this.getCartSummary=function(){var cart_summary={};cart_summary.item_count=session.cart.item_count;cart_summary.sub_total=session.cart.sub_total;return cart_summary;}}
+function postalCodeLookup(zipObj,cityObj,stateObj){function tranlatePostalCode(postalCode,callback){$.getJSON('/zipcoder/'+postalCode,callback);}
+function handlePostalCode(event){tranlatePostalCode(zipObj.val(),function(data){if(data['city']&&data['state']){cityObj.val(data["city"]);stateObj.val(data["state"]);}});}
+zipObj.blur(handlePostalCode);}
 function postsizesearch(frm,prod_tp){ajax=getHTTPObject();var actionURL=sizeSearchActionURL;var frmValues=getFormValues(frm);postAjaxForm(frmValues,actionURL,function(){update_size_search(document.getElementById(prod_tp+'_size_search'))});}
 function getsizesearch(actionURL,prod_tp){ajax=getHTTPObject();loadXMLDoc(actionURL,function(){update_size_search(document.getElementById(prod_tp+'_size_search'))});}
 function update_size_search(cont){var container=new Object();container=cont;switch(ajax.readyState){case 1:break;case 2:break;case 3:break;case 4:if(ajax.status!=200)return;insertFragment(container,getFieldFromContent("content",ajax.responseText));}}

@@ -17,6 +17,7 @@ function refreshQTY() {
 			$('#noOfQtyView').html('<b>'+qty+' items</b>');
 		}
 	});
+	return qty;
 }
 
 function attachedLink(){

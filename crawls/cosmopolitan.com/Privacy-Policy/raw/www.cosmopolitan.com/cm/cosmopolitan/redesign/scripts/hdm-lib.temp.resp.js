@@ -2235,8 +2235,6 @@ COSHDM.smartImages = {
 				}
 			}
 
-			console.warn("regme",imgType)
-
 			if (!found && (imgType != "carousel") && (imgType != "flipbook")){
 				COSHDM.smartImages._vars.imglist.push(smartimg);
 				return smartimg;
@@ -2367,7 +2365,71 @@ COSHDM.smartImages = {
 	}
 }
 
+// For Viral tool
+COSHDM.widgets = {
+	share : {
+		_var : {
+			jqshoverlay : null,
+			baseY : null,
+			scrollThreshold : null,
+			fixState : false
+		},
+		init : function(){
+			// first thing we want to do is get the offset position of the bodyContent..
+			if ($("[role=screen-top]").length == 0){
+				$("[role=screen-shareoverlay]").hide();
+				return false;
+			}
+			COSHDM.widgets.share._var.baseY = $("[role=screen-top]").offset();
+			COSHDM.widgets.share._var.jqshoverlay = $("[role=screen-shareoverlay]").css("top",COSHDM.widgets.share._var.baseY.top);
+			// now let's calculate the scroll threshold while also taking into account the stickymenu..
+			COSHDM.widgets.share._var.scrollThreshold = COSHDM.widgets.share._var.baseY.top-$("[role=screen-menuoverlay]").height()-COSHDM.widgets.share._var.jqshoverlay.attr("scrollOffsetY");
+			// add scroll event listener thingy
+			$(window).scroll(function(){
+ 				var wo = (window.scrollY) ? window.scrollY : document.documentElement.scrollTop;
+				if(wo >= 400 && (!COSHDM.widgets.share._var.fixState)){
+					COSHDM.widgets.share._var.fixState = true;
+					$("[role=screen-shareoverlay]").addClass("fixed");
+				} else if(wo < 400 &&(COSHDM.widgets.share._var.fixState)){
+					COSHDM.widgets.share._var.fixState = false;
+					$("[role=screen-shareoverlay]").removeClass("fixed");
+				}
+			});
 
+		}
+	},
+	learnMore: {
+		_var: {
+			button : null,
+			container : null,
+			contentContainer: null,
+			content: ''
+		},
+
+		showLearnMore: function(){
+			var button = COSHDM.widgets.learnMore._var.button;
+			$(".learnMoreContent").toggleClass("hidden");
+			button.toggleClass("show");
+		},
+
+		init: function(){
+			COSHDM.widgets.learnMore._var.button = $(".learnMore.hdmTooltip");
+			COSHDM.widgets.learnMore._var.container = $(".learnMore.hdmTooltip").parent();
+			COSHDM.widgets.learnMore._var.contentContainer = $(".learnMoreContent");
+			COSHDM.widgets.learnMore._var.content = $(".learnMore.hdmTooltip").attr("title");
+
+			COSHDM.widgets.learnMore._var.contentContainer.html(COSHDM.widgets.learnMore._var.content);
+			COSHDM.widgets.learnMore._var.button.unbind("click");
+			COSHDM.widgets.learnMore._var.button.bind("click", COSHDM.widgets.learnMore.showLearnMore);
+		}
+	},
+	init : function(){
+		COSHDM.widgets.share.init();
+		$(document).ajaxComplete(function(){
+			COSHDM.widgets.learnMore.init();
+		});
+	}
+}
 
 
 
@@ -2377,5 +2439,7 @@ $(document).ready(function() {
 	COSHDM.search.init();
 	COSHDM.smartImages.init();
 	COSHDM.registration.init();
+	COSHDM.widgets.init();
+	
 });
 	

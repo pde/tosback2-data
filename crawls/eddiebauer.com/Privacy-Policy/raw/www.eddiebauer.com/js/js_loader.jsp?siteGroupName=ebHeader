@@ -792,9 +792,10 @@ jQuery.getJSON(baseURL,function(data){var init=false;jQuery.each(data.feed.entry
 +title.toUpperCase()
 +"</span></a></li>");a.click(function(){var object=jQuery('#myytplayer_fa');var utoobVideoSrc='http://www.youtube.com/v/'
 +videoId
-+'?enablejsapi=1&playerapiid=video&version=3fs=1&hl=en_US&rel=0&autoplay=1';var theMovie='';theMovie+='<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" id="myytplayer_fa" width="440" height="277">\n';theMovie+='<param id="movie" name="movie" value="'+utoobVideoSrc+'"></param>\n';theMovie+='<param name="allowFullScreen" value="true"></param>\n';theMovie+='<param name="allowscriptaccess" value="always"></param>\n';theMovie+='<embed name="myytplayer_fa" id="embed_movie" src="'+utoobVideoSrc+'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="440" height="277"></embed>\n';theMovie+='</object>\n';object.replaceWith(theMovie);return false;});t.append(a);if(!init){var utoobVideoSrc='http://www.youtube.com/v/'
++'?enablejsapi=1&playerapiid=video&allowFullScreen=true&autohide=1&version=3&fmt=22&hl=en_US&vq=hd1080&rel=0&showinfo=0&autoplay=0';var theMovie='';theMovie+='<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" id="myytplayer_fa" width="440" height="277">\n';theMovie+='<param id="movie" name="movie" value="'+utoobVideoSrc+'" />\n';theMovie+='<param name="allowFullScreen" value="true" />\n';theMovie+='<param name="allowscriptaccess" value="always" />\n';theMovie+='<param name="quality" value="hd1080" />'
+theMovie+='<embed name="myytplayer_fa" id="embed_movie" src="'+utoobVideoSrc+'" type="application/x-shockwave-flash" style="border:solid 1px #333333;" allowscriptaccess="always" allowfullscreen="true" width="440" height="277" />\n';theMovie+='</object>\n';object.replaceWith(theMovie);return false;});t.append(a);if(!init){var utoobVideoSrc='http://www.youtube.com/v/'
 +videoId
-+'?enablejsapi=1&playerapiid=video&version=3fs=1&hl=en_US&rel=0&autoplay=0';embed.attr('src',utoobVideoSrc);paramMovie.val(utoobVideoSrc);init=true;}});t.jcarousel({wrap:'circular',scroll:3});});});}})(jQuery);jQuery.cookie=function(name,value,options){if(typeof value!='undefined'||(name&&typeof name!='string')){if(typeof name=='string'){options=options||{};if(value===null){value='';options.expires=-1;}
++'?enablejsapi=1&playerapiid=video&allowFullScreen=true&autohide=1&version=3&fmt=22&hl=en_US&vq=hd1080&rel=0&showinfo=0&autoplay=0';embed.attr('src',utoobVideoSrc);paramMovie.val(utoobVideoSrc);init=true;}});t.jcarousel({wrap:'circular',scroll:3});});});}})(jQuery);jQuery.cookie=function(name,value,options){if(typeof value!='undefined'||(name&&typeof name!='string')){if(typeof name=='string'){options=options||{};if(value===null){value='';options.expires=-1;}
 var expires='';if(options.expires&&(typeof options.expires=='number'||options.expires.toUTCString)){var date;if(typeof options.expires=='number'){date=new Date();date.setTime(date.getTime()+(options.expires*24*60*60*1000));}else{date=options.expires;}
 expires='; expires='+date.toUTCString();}
 var path=options.path?'; path='+(options.path):'';var domain=options.domain?'; domain='+(options.domain):'';var secure=options.secure?'; secure':'';document.cookie=name+'='+encodeURIComponent(value)+expires+path+domain+secure;}else{for(var n in name){jQuery.cookie(n,name[n],value||options);}}}else{var returnValue={};if(document.cookie){var cookies=document.cookie.split(';');for(var i=0;i<cookies.length;i++){var cookie=jQuery.trim(cookies[i]);if(!name){var nameLength=cookie.indexOf('=');returnValue[cookie.substr(0,nameLength)]=decodeURIComponent(cookie.substr(nameLength+1));}else if(cookie.substr(0,name.length+1)==(name+'=')){returnValue=decodeURIComponent(cookie.substr(name.length+1));break;}}}
@@ -4583,7 +4584,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							'display', 'none');
 				}
 				
-				swfobject.embedSWF("http://www.youtube.com/v/" + videoId + "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0&showinfo=0&ts="+ timestamp, objectPlaceholder, "640", "385", "8", null, null, params, atts); 
+				swfobject.embedSWF("http://www.youtube.com/v/" + videoId + "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&vq=hd1080&autoplay=0&showinfo=0&ts="+ timestamp, objectPlaceholder, "640", "385", "8", null, null, params, atts); 
 			}
 		}
 	}
@@ -4610,6 +4611,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									"data-youtube-value");
 							var objectWrapper = 'youtube_'+youtubeValue;
 							
+							/*if (jQuery('#cat27411').length > 0 && youtubeVideo) {
+								sessionStorage.setItem("$left", 303);
+							}*/
 							sessionStorage.setItem("name", data_link_name);
 							sessionStorage.setItem("background", videoSrc);
 							sessionStorage.setItem("wrapper", objectWrapper);
@@ -4760,7 +4764,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						.embedSWF(
 								"http://www.youtube.com/v/"
 										+ youtubeValue
-										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&showinfo=0&autoplay=0",
+										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&hl=en_US&vq=hd1080&rel=0&showinfo=0&autoplay=0",
 								objectPlaceholder, "640", "385", "8", null,
 								null, params, atts);
 				jQuery('head')
@@ -5101,8 +5105,8 @@ global.jquery.utils.search = new Object({
 			// so #subcatHeight <= #firstSubcatHeight so we need to insert a rowSeparator before the to clear things
 			$j('<dl class="rowSeparator"></dl>').insertBefore(elmntCntr);
 			
-			// call rowStack on elements
-			global.jquery.utils.products.rowStack(elmntCntr);
+			// call rowStack on elements			
+			global.jquery.utils.search.rowStack(elmntCntr);
 		}
 		var hash = global.jquery.utils.common.parseHash();
 		if ( hash.pid ) {

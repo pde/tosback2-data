@@ -1064,7 +1064,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "04/24/2013 08:14 AM",
+            DATE_IN_USE: "04/27/2013 08:14 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1356,7 +1356,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 <!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.businessCode.regionTop") -->
 
 <!-- BEGIN - WCD Sitewide Container 1 -->
-<!-- BEGIN Content Item File: /content/0006/122/963/cn6122963.html -->
+<!-- BEGIN Content Item File: /content/0006/507/343/cn6507343.html -->
 
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!!  WCD_WCD JS & CSS Head Legacy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <style type="text/css">
@@ -2365,7 +2365,23 @@ var wcdBrandDisrupterDidFire = false;
 
 <!-- End Variable to detect brand disrupters 3/21/13 -->
 
-<!-- END Content Item File: /content/0006/122/963/cn6122963.html -->
+<!-- begin url fix for .do breaking in the left nav -->
+<script type="text/javascript">
+var leftNavUrlPatch = {
+    init: function() {
+        var sideNavCategories = $('sideNavCategories');
+        if(sideNavCategories) {
+        	var htmlStr = sideNavCategories.innerHTML;
+        	htmlStr = htmlStr.replace(/href=".do/g, 'href="/browse/category.do');
+        	$('sideNavCategories').innerHTML = htmlStr;
+        }
+    }
+};
+Event.observe(window, "load", leftNavUrlPatch.init);
+</script>
+<!-- end url fix for .do breaking in the left nav -->
+
+<!-- END Content Item File: /content/0006/507/343/cn6507343.html -->
 
 <!-- END - WCD Sitewide Container 1 -->
 
@@ -5122,7 +5138,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/507/982/cn6507982.html -->
+<!-- BEGIN Content Item File: /content/0006/509/787/cn6509787.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
@@ -5134,8 +5150,8 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/982/assets/040313_ADU_ComeOnGetKhaki_MOBMAIN_US.jpg",
-				"url" : "http://m.gap.com/browse/category.do?cid=78990"
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/042513_ALL_DVF_MOB_US.jpg",
+				"url" : "http://www.gap.com/browse/category.do?cid=94065&desktopSiteActive=true&mlink,6509787,MOB_HP_Main_DVF&clink=6509787"
 			}
 		]
   	},
@@ -5144,21 +5160,21 @@ contentInfo.mobileContent = {
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/982/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/982/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/edfs_popup.html" }
 		},
 		"skinnyBanner":
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/982/assets/042113_ALL_25offPurchCard_Mobile_US.jpg",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/042613_ALL_NewMD_add40_mobile_US_XC.jpg",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/982/assets/skinny_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/skinny_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/507/982/cn6507982.html -->
+<!-- END Content Item File: /content/0006/509/787/cn6509787.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
@@ -6253,7 +6269,7 @@ Event.observe(window, "load", function() {
 <!-- BEGIN - WCD Sitewide Container 14 -->
 <!-- BEGIN Content Item File: /content/0006/368/804/cn6368804.html -->
 
-<!-- CNOV-39: Pre A/B test for Mobile checkout [13.022] / JMM @ 3-7-13 -->
+<!-- CNOV-39: responsive checkout IT override / JMM @ 3-7-13 -->
 <!-- GCO (Guest Checkout) override -->
 <script type="text/javascript">
 
@@ -6314,9 +6330,9 @@ Event.observe(window, "load", function() {
         if (!(window['gidLib'] && gidLib.layeredPopup)) return;
 
         function popupCloseFixed(old) { 
-        	var popup = jQuery('div #popupContent');
+            var popup = jQuery('div #popupContent');
             if (popup && popup.children()[0]
-            	&& popup.children()[0].id.indexOf('contentItemContainer') >= 0) { 
+                && popup.children()[0].id.indexOf('contentItemContainer') >= 0) { 
                 return false; 
             } else { return old(); } 
         }
@@ -6335,234 +6351,17 @@ Event.observe(window, "load", function() {
     handleGCO();
     if (!shouldApplyABCode) return;
 
-    function replaceGetCookieVar() {
-        var oldGetCookieVar = gidLib.getCookieVar;
-        gidLib.getCookieVar = function(name, varName) {
-            var shouldUseNewWay = name === 'mktUniversalPersist' && varName === options.abVarName;
-
-            if (shouldUseNewWay) {
-                return gidLib.getCookie(options.mobileProxyCookieName);
-            }
-
-            return oldGetCookieVar(name, varName);
-        }
-    }
-
     function replaceSessionId() {
         var sessionId = gidLib.getCookie('SKAVAJSESSION');
         if (sessionId && sessionId.length > 2) {
             writeCookie('JSESSIONID', sessionId);
         }
     }
-	
-    function fixPromoPopupCheckout() {
-    	Event.observe(document, 'order:ready', function() {
-        if (!window['checkout']) return;
-        checkout.controller.modules.billing.promotions.openPromoDetailsPopUp = function openPromoDetailsPopUpResponsive(promotionID){
-             window.open('/buy/promo_legal_details.do?promoId=' + promotionID, "_blank", "location=0,menubar=0,toolbar=0");
-        };});
-    }
 
-    function fixLogoLinkAndTopNavOnCheckout() {
-        var logo = jQuery('#gm_headerlogo');
-        if (!logo) return;
-        logo.click(function() { 
-            window.location = browserService.controller.managers.mobileBrowserManager.model.currentBusinessUnitMobileUrl;
-        });
-
-        if (!(window['responsiveService'] && responsiveService.constructors.OrderConfirmPageManager)) return;
-        if (responsiveService.api.isMobile()) {     
-            jQuery('#topNav').hide();
-
-            var orderConfirmViewManager = reportingService.controller.viewManagers.orderConfirmViewManager;
-
-            if (orderConfirmViewManager) {
-                orderConfirmViewManager.controller.setReportModel =
-                    orderConfirmViewManager.controller.setReportModel.wrap(function(old) {
-                        old();
-                        var omniAccount = orderConfirmViewManager.model.sAccount;
-                        var brandMobileSuite = reportingService.controller.reportingManager.brandMobileReportSuites.brandSuites[gidBrandSiteConstruct.currentBrandCode];
-                        if (responsiveService.api.isMobile() && brandMobileSuite &&
-                            omniAccount.indexOf(brandMobileSuite) <0) {
-                            orderConfirmViewManager.model.sAccount = orderConfirmViewManager.model.sAccount + ',' + brandMobileSuite; 
-                        }
-                        
-                    });  
-            }
-        }
-    }
-
-	if (!isMobileDomain) {
-		fixGidLibPopupCode();
-    	replaceSessionId();
-    	replaceGetCookieVar();
-
-    	if (isCheckoutPath) {
-        	fixPromoPopupCheckout();
-        	Event.onDOMReady(fixLogoLinkAndTopNavOnCheckout);
-    	}
-	}
-	
-
-    var MobileProxyCookieCutter = Class.create();
-    MobileProxyCookieCutter.prototype = {
-        initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-            this.EvarToUse = theEvar != "" ? theEvar : false;
-            this.CookieVariableName = CookieVarName;
-            this.CookieUsed = CookieUsedName;
-            this.CookieValueBase = CookieValueBase;
-            this.SegBreakdown = SegmentBreakdown.split("-");
-            this.DoesTheCookieExist = gidLib.getCookie(this.CookieUsed);
-            this.RetrievedCookieValue = gidLib.getCookie(this.CookieUsed);
-            this.QuickSegment = '';
-            this.piperlimeException = plExcept;
-            this.userNeedsSync = false;
-            this.ForcedModeBase = ForcedModeBaseName;
-            this.ModeArrayIndex = this.SegBreakdown.length;
-            this.modeArray = new Array();
-            this.modeArray[0] = "a";
-            this.modeArray[1] = "b";
-            this.modeArray[2] = "c";
-            this.modeArray[3] = "d";
-            this.modeArray[4] = "e";
-            this.modeArray[5] = "f";
-            this.modeArray[6] = "g";
-            
-            if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-                this.forcedMode();
-            }else{
-                this.cookieScanner();
-            }
-        },
-
-        writeSegment: function() {
-            writeCookie(this.CookieUsed, this.UserSegment, new Date(gidLib.getFutureDate({weeks: 24})).toGMTString());
-            if (this.EvarToUse) {
-                this.setABTestVariable(this.UserSegment);
-            }
-        },
-
-        forceSegment: function(seg) {
-            this.UserSegment = this.CookieValueBase + seg.toUpperCase();
-            this.QuickSegment = seg.toUpperCase();
-        },
-
-        forcedMode:function() {
-            if (isMobileDomain && isCheckoutPath) {
-                this.forceSegment('a');
-            } else if (!isMobileDomain && isCheckoutPath) {
-                this.forceSegment('b');
-            } else {
-                for (i = 0; i < this.ModeArrayIndex; i++) {
-                    if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-                        this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-                        this.QuickSegment = this.modeArray[i].toUpperCase();
-                    }
-                }  
-            }
-            
-            this.writeSegment();
-            userNeedsSync = true;
-        },
-
-        cookieScanner:function() {
-            if (this.DoesTheCookieExist) {
-                if (this.EvarToUse) {
-                    this.setABTestVariable(this.RetrievedCookieValue);
-                }
-
-                for (i = 0; i < this.ModeArrayIndex; i++) {
-                    if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-                        this.QuickSegment = this.modeArray[i].toUpperCase();
-                        break;
-                    }
-                }
-            } else {
-                this.tagManager();
-            }
-        },
-
-        setRandomSegment: function() {
-            this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-            this.FloorThreshold = 0;
-            this.TopThreshold = 0;
-            
-            for (i = 0; i < this.ModeArrayIndex; i++){
-                this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-                if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-                    this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-                    this.QuickSegment = this.modeArray[i].toUpperCase();
-                    break;
-                } else {
-                    this.FloorThreshold = this.TopThreshold;
-                }
-            }
-        },
-
-        tagManager:function() {
-            if (isMobileDomain && isCheckoutPath) {
-                this.forceSegment('a');
-            } else if (!isMobileDomain && isCheckoutPath) {
-                this.forceSegment('b');
-            } else {
-                this.setRandomSegment();
-            }
-
-            this.writeSegment();
-        },
-        
-        setABTestVariable: function(setValue) {
-            thisEvar = 'eVar' + this.EvarToUse;
-            ABTestVariables[thisEvar] = setValue;
-        }
-    };
-
-    new MobileProxyCookieCutter(
-        options.abVarName, options.mobileProxyCookieName, options.abSegPrefix, options.forceModeName,
-        options.distribution, options.evar, options.plExcept);
-
-    if (!isShoppingBag) return;
-
-    var MobileProxyTestBuilder = function(options) {
-
-        this.checkoutButtonHandlerHelper = function() {
-            if(!(reportingService||{}).isActive) {
-                omni.setIsFirstCheckoutPage();
-            }
-            else {
-                reportingService.controller.viewManagers.shoppingBagViewManager.model.setIsFirstCheckoutPage();
-            }
-
-            var checkoutPath = '/checkout/order.do';
-                    
-            if(gidLib.getCookie(options.mobileProxyCookieName) == "mobileProxy_SEGB") {
-                checkoutPath = gidBrandSiteConstruct.gidBrandSites[gidBrandSiteConstruct.currentBrandCode].unsecureUrl
-                    + '/checkout/order.do';
-            }
-            window.location = checkoutPath;
-        };
-
-        this.handleShoppingBag = function() {
-            shoppingBag.controller.checkoutManager.checkoutButtonHandlerHelper = this.checkoutButtonHandlerHelper;
-        };
-
-        this.execute = function() {
-            this.handleShoppingBag();
-        }
-    };
-
-    var mobileProxyAB = new MobileProxyTestBuilder(options);
-    mobileProxyAB.execute();
+    fixGidLibPopupCode();
+    replaceSessionId();
     
-})({
-    mobileProxyCookieName: 'mobileProxyCheckout50RAMP',
-    abVarName: 'mobileProxyAB',
-    abSegPrefix: "mobileProxy_SEG",
-    forceModeName: "proxyForceMode",
-    distribution: "50-50",
-    evar: '36',
-    plExcept: 'none'
-});
+})();
 
 </script>
 <!-- END CNOV-39 -->
@@ -7631,13 +7430,13 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/507/964/cn6507964.html -->
-<div id="contentItemContainer10000395" class="6507964" >
+    	<!-- BEGIN Content Item File: /content/0006/509/683/cn6509683.html -->
+<div id="contentItemContainer10000395" class="6509683" >
 
 <style type="text/css">
 #globalBanner {
-	width: 440;
-	height: 63px;
+	width: 510;
+	height: 59px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
@@ -7685,45 +7484,28 @@ Event.observe(window,"load",function(){
 </style>
 
 <div id="globalBanner">
+
+	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/964/assets/042113_ALL_25offPurchCard_GB_US.png" alt="30% OFF YOUR PURCHASE ONLINE. ENTER GAP30. OR GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." title="30% OFF YOUR PURCHASE ONLINE. ENTER GAP30. OR GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/683/assets/042613_ALL_NewMD_add40_GB_US_XC.png" alt="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." title="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,440,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/507/964/assets/legal.html" data-jbox-width="550" data-jbox-height="400">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,510,59" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/509/683/assets/legal.html" data-jbox-width="350" data-jbox-height="400">
 		</map>
-	</div>
+	</div><!-- /Global Banner Text -->
 
-	
+	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/507/964/assets/042113_ALL_25offPurchCard_DISR_US.jpg" alt="30% OFF YOUR PURCHASE ONLINE. ENTER GAP30. OR GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." title="30% OFF YOUR PURCHASE ONLINE. ENTER GAP30. OR GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/683/assets/042613_ALL_NewMD_add40_DISR_US_XC.jpg" alt="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." title="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." usemap="#disruptorMap">
 		<map name="disruptorMap">
-			<area shape="rect" class="noHideDisruptor" coords="91,287,120,304" href="http://view.email.gap.com/?j=fecb167176640c7b&m=fe9b13707564037c70&ls=fe5d177475600c797113&l=ff66107575&s=fe6a17747564007f7712&jb=ff3016747266&ju=fe8c1d72776c077576&r=0" target="_blank" alt="print" />
-
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/507/964/assets/legal.html" data-jbox-width="550" data-jbox-height="400" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/509/683/assets/legal.html" data-jbox-width="350" data-jbox-height="400" alt="click for details">
         </map>
-	</div>
-	<!-- Global Banner Text  -->
-	<!-- <div id="globalBannerText">
-		<img class="noHideDisruptor" src="/Asset_Archive/GPWeb/content/0006/507/964/assets/042113_ALL_25offPurchCardCONT_GB_US.png" alt="25% OFF YOUR PURCHASE. ENTER GAP25. + GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." title="25% OFF YOUR PURCHASE. ENTER GAP25. + GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." usemap="#gbMap">
-		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,440,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/507/964/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
-		</map>
-	</div>
-
-	
-	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="/Asset_Archive/GPWeb/content/0006/507/964/assets/042113_ALL_25offPurchCardCONT_DISR_US.jpg" alt="25% OFF YOUR PURCHASE. ENTER GAP25. + GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." title="25% OFF YOUR PURCHASE. ENTER GAP25. + GOT A CARD? 30% OFF. ONLINE &amp; IN STORES THRU 4/24. ENTER GCTHANKS." usemap="#disruptorMap">
-		<map name="disruptorMap">
-			<area shape="rect" class="noHideDisruptor" coords="125,352,157,370" href="http://view.email.gap.com/?j=fecb15787d64077d&amp;m=fe9b13707564037c70&amp;ls=fef51c7775670c&amp;l=ff66107575&amp;s=fef8107377620c&amp;jb=ffce15&amp;ju=fe8d1378756d007d73&amp;r=0" target="_blank" alt="print" />
-
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/507/964/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
-        </map>
-	</div> -->
+	</div><!-- /Global Banner Disruptor -->
 
 </div>
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('042313_GB');
+	globalBannerDisruptor.init('042613_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7845,7 +7627,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/507/964/cn6507964.html -->
+<!-- END Content Item File: /content/0006/509/683/cn6509683.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7962,14 +7744,18 @@ var globalBannerDisruptor = {
 	</div>		
 </div>
 <div id="topNavBottomBannerContainer" class="clearfix floatLeft">
-  	<!--Container 2 --><!-- BEGIN Content Item File: /content/0006/314/803/cn6314803.html -->
-<div id="contentItemContainer10000394" class="6314803" >
+  	<!--Container 2 --><!-- BEGIN Content Item File: /content/0006/436/342/cn6436342.html -->
+<div id="contentItemContainer10000394" class="6436342" >
 
 <div id="storeLocatorBannerWrapper" style="display:none;width:988px;height:100px;">
-	<a href="http://www.gap.com/browse/info.do?cid=93210&amp;desktopSiteActive=true" onClick="return contentItemLink(this,'','SP_StrLoc_1_DVFTopBan');">
-	<img id="storeLocatorBannerWrapperImage" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/314/803/assets/041513_ALL_DVF_RegStoreLocator_US.jpg" alt="dvf &hearts; gapkids. coming soon! click here to find a collection near you." />
-	</a>
+	<img id="storeLocatorBannerWrapperImage" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/436/342/assets/042513_ALL_DVF_RegStoreLocator_US.jpg" alt="dvf &hearts; gapkids. diane von furstenberg & gapkids. shop the collection." usemap="#dvfTopBanner_map"/>
  </div>
+ <map name="dvfTopBanner_map">
+<area alt="shop the collection: girls" coords="612,34,668,58" href="http://www.gap.com/browse/category.do?cid=94048&amp;desktopSiteActive=true" onClick="return contentItemLink(this,'','SP_StrLoc_1_DVFTopBan');">
+<area alt="shop the collection: toddler girl" coords="668,33,793,58" href="http://www.gap.com/browse/category.do?cid=94065&amp;desktopSiteActive=true" onClick="return contentItemLink(this,'','SP_StrLoc_2_DVFTopBan');">
+<area alt="shop the collection: infant girl" coords="793,33,917,58" href="http://www.gap.com/browse/category.do?cid=94049&amp;desktopSiteActive=true" onClick="return contentItemLink(this,'','SP_StrLoc_3_DVFTopBan');">
+<area alt="click to find a select store near you" coords="93,9,543,44" href="http://www.gap.com/browse/info.do?cid=93210&amp;desktopSiteActive=true" target="_blank" onClick="return contentItemLink(this,'','SP_StrLoc_4_DVFTopBan');">
+</map>
 <script type="text/javascript">
 
 function findDVFStoreLocator() {
@@ -7982,11 +7768,50 @@ function findDVFStoreLocator() {
 }
 
 findDVFStoreLocator();
+
+
+// LEFT NAV Header modifications
+/* REMOVE on 4/27 JP */
+document.observe("dom:loaded",function() {
+
+var matFeaturesHeader = $('categoryNav77320');
+var matDeptHeader = $('categoryNav6011');
+
+if (matFeaturesHeader) {					
+		matFeaturesHeader.update('Features');
+}
+if (matDeptHeader) {					
+		matDeptHeader.update('Departments');
+}
+	
+var menFeaturesHeader = $('categoryNav77322');
+var menDeptHeader = $('categoryNav5121');
+var menDealsHeader = $('categoryNav37931');
+var menSaleLink = $('categoryNav65289');
+
+if (menFeaturesHeader) {					
+		menFeaturesHeader.update('Features');
+}
+if (menDeptHeader) {					
+		menDeptHeader.update('Departments');
+}
+if (menDealsHeader) {					
+		menDealsHeader.update('Deals');
+}
+
+if (menSaleLink) {					
+		menSaleLink.firstDescendant().innerHTML = 'Sale'; 
+}
+
+
+
+});
+//END LEFT NAV Header modifications
 </script>
 
 
 </div>
-<!-- END Content Item File: /content/0006/314/803/cn6314803.html -->
+<!-- END Content Item File: /content/0006/436/342/cn6436342.html -->
 
 	<!--Container 3 -->
 </div>
@@ -9160,7 +8985,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6507964,6314803,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6509683,6436342,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

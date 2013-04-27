@@ -5947,7 +5947,7 @@ function openRegistrationDialog(options) {
 		modalRegistrationUrlValue += (modalRegistrationUrlValue.indexOf("?") < 0 ? "?" : "&");
 		modalRegistrationUrlValue += "esrc=";
 		modalRegistrationUrlValue += options.esrc;
-		modalRegistration.val(modalRegistrationUrlValue);
+		modalRegistration.val(modalRegistrationUrlValue);		
 	}
 
 	var params = {};
@@ -6023,6 +6023,111 @@ var globalSettings = {
 	}
 };
 
+/* Begin Resize modal window */
+(function ($, window) {
+    $(function () {
+        var sizeXLarge = 970;
+        var lastAppliedSize = 0;
+
+        $(window).resize(function () {
+            resizeIframe();
+        });
+
+        var modalIframeLoad = $(".registrationDialogContainer iframe");
+
+        modalIframeLoad.load(function () {
+            resizeIframe();
+        });
+
+        function resizeIframe() {
+            
+            var $modalWindow = $(".registrationDialogClass");
+            if ($modalWindow.length > 0) {
+                var $modalIframe = $modalWindow.find("iframe");
+                var modalIframeWidth = $modalIframe.width();
+                var windowWidth = $(window).width();
+
+                if (lastAppliedSize !== windowWidth) {
+
+                    var newModalWidth = modalIframeWidth;
+
+                    if (windowWidth < (sizeXLarge + 40)) {
+                        newModalWidth = windowWidth - 40;
+                    } else {
+                        newModalWidth = sizeXLarge;
+                    }
+
+                    var marginwidth = Math.round((windowWidth - newModalWidth) / 2);
+                    $modalWindow.css("left", marginwidth + "px");
+                    $modalIframe.css("width", newModalWidth + "px ");
+                    $modalWindow.css("width", "auto");
+
+                    lastAppliedSize = windowWidth;
+                }
+            }
+        }
+    });
+})(jQuery, window);
+/* End Resize modal window */
+
+/* Resize modal window */
+(function ($, window) {
+    var $window = $(window);
+    var lastAppliedHeight = 0;
+
+    $(function () {
+        $window.resize(function () {
+            if (window.processRegistrationIframe) {
+                var windowHeight = $('.RegistrationFlowContainer').height();
+                if (lastAppliedHeight !== windowHeight) {
+                    lastAppliedHeight = windowHeight;
+                    window.processRegistrationIframe();
+                }
+            }
+        });
+    });
+})(jQuery, window);
+/* Resize modal window */
+
+(function ($, window, GeneralMills) {
+
+    var pbmisc = GeneralMills.PBMisc = GeneralMills.PBMisc || {};
+
+    pbmisc.switchToLoginView = function (sourceItem, e) {
+        var viewContainer = $(sourceItem).closest(".registrationView");
+        if (viewContainer.length > 0) {
+            var modelContainer = viewContainer[0];
+            var context = ko.contextFor(modelContainer);
+            if (context) {
+                context.$parent.SwitchToLoginView();
+            }
+        }
+    }
+
+    pbmisc.switchToRegistrationView = function (sourceItem, e) {       
+        var viewContainer = $(sourceItem).closest(".loginView");
+        if (viewContainer.length > 0) {
+            var modelContainer = viewContainer[0];
+            var context = ko.contextFor(modelContainer);
+            if (context) {
+                context.$parent.SwitchToRegistrationView();
+            }
+        }
+    }
+
+    $(function () {
+        var forgotPasswordLink = $(".RegistrationFlowContainer .forgotPasswordLink");
+        forgotPasswordLink.attr("data-bind", "text: ForgotPasswordText").die().unbind("click").attr('href', '/PasswordAssistanceEmail').attr('target', '_top');
+
+
+        var htmlanchor = "<div class=\"notYetAMember\">Not a Member Yet? <a onclick=\"javascript: GeneralMills.PBMisc.switchToRegistrationView(this, event);return false;\" href=\"#\">Join Free</a></a>";
+        var buttonLocation = $(".loginViewForm").append(htmlanchor);
+    });
+
+    
+
+})(jQuery, window, window.GeneralMills = window.GeneralMills || {});
+
 /*End of Main.js */// Trigger contentview Unica tag on all page loads other than recipe detail
 
 jQuery(document).ready(function () {
@@ -6030,7 +6135,104 @@ jQuery(document).ready(function () {
     if (!document.location.href.match(recipeDetailRegex)) {
         ntptEventTag('ev=contentview&ActionType=View');
     }
+     
+
 });
+
+
+
+
+function _setupActionBoxes(options) {
+    jQuery(".ab_writeareview").text("Review");
+    jQuery(".ab_savetorecipebox").text("Save");
+
+    if (!options.loggedIn) {
+
+        //custom set up for save a recipe
+
+        var returnSaveVar = jQuery(".ab_savetorecipebox").attr("onclick")
+        jQuery(".ab_savetorecipebox").removeAttr("onclick");
+
+        jQuery(".ab_savetorecipebox").click(function () {
+
+            var str = returnSaveVar.toString();
+
+            var delimitedstr = returnSaveVar.split("(");
+            var delimitedstr = delimitedstr[1];
+            var str2 = delimitedstr.toString();
+            var delimitedstr2 = delimitedstr.split(")");
+
+            options = delimitedstr2[0];
+            options = options.replace("esrc", "\"esrc\"");
+            options = options.replace("returnUrl", "\"returnUrl\"");
+            options = options.replace(/'/g, '\"');
+
+            var obj = jQuery.parseJSON(options);
+
+            obj.RegAction = "SaveARecipe";
+            reg.userRegistration.openRegistrationDialog(obj);
+        });
+
+        var returnSaveGroceryVar = jQuery(".ab_addtogrocerylist").attr("onclick")
+        jQuery(".ab_addtogrocerylist").removeAttr("onclick");
+
+        jQuery(".ab_addtogrocerylist").click(function () {
+
+            var str = returnSaveGroceryVar.toString();
+
+            var delimitedstr = returnSaveGroceryVar.split("(");
+            var delimitedstr = delimitedstr[1];
+            var str2 = delimitedstr.toString();
+            var delimitedstr2 = delimitedstr.split(")");
+
+            options = delimitedstr2[0];
+            options = options.replace("esrc", "\"esrc\"");
+            options = options.replace("returnUrl", "\"returnUrl\"");
+            options = options.replace(/'/g, '\"');
+
+            var obj = jQuery.parseJSON(options);
+
+            obj.RegAction = "AddToGroceryList";
+            reg.userRegistration.openRegistrationDialog(obj);
+        });
+        //custom set up for review a recipe
+        var returnReviewVar = jQuery(".ab_writeareview").attr("onclick")
+        jQuery(".ab_writeareview").removeAttr("onclick");
+
+        jQuery(".ab_writeareview").click(function () {
+
+            var str = returnReviewVar.toString();
+
+            var delimitedstr = returnReviewVar.split("(");
+            var delimitedstr = delimitedstr[1];
+            var str2 = delimitedstr.toString();
+            var delimitedstr2 = delimitedstr.split(")");
+
+            options = delimitedstr2[0];
+            options = options.replace("esrc", "\"esrc\"");
+            options = options.replace("returnUrl", "\"returnUrl\"");
+            options = options.replace(/'/g, '\"');
+
+            var obj = jQuery.parseJSON(options);
+            obj.RegAction = "RecipeReview";
+            reg.userRegistration.openRegistrationDialog(obj);
+        });
+    }
+
+    jQuery(".shareToggle").click(function (e) {
+        e.preventDefault();
+        if (jQuery(this).parents(".topShareSection").hasClass("expanded")) {
+            jQuery(this).parents(".topShareSection").removeClass("expanded");
+        }
+        else {
+            jQuery(this).parents(".topShareSection").addClass("expanded");
+            var height = jQuery(".shareLeftOpen").height();
+            jQuery(".shareLeftOpen .shareToggle").height(height).css("line-height", (height - 20) + "px");
+        }
+    });
+    jQuery(".ab_print").parent().addClass("ab_print_parent");
+    jQuery(".ab_email").parent().addClass("ab_email_parent");
+}
 
 /*End of Global.js */jQuery(document).ready(function() {
     //    jQuery("#benefitSlider").click(function() {

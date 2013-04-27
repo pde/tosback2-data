@@ -252,11 +252,26 @@ if (rsi_segs.length<segLen){segLen=rsi_segs.length}
 
 <!-- FOR REDESIGN HP & FOOTER ON INTERIOR PAGES -->
 <link rel="stylesheet" type="text/css" href="cm/esquire/styles/v02/redesign.css" />
+<!--[if lte IE 8]>
+	<script type="text/javascript" language="JavaScript" src="/cm/esquire/scripts/redesign/ie8-footer.js"></script>
+<![endif]-->
 <script src="cm/esquire/scripts/redesign/global.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">
 $(document).ready(function() {
+	//redesign footer toggle function
+	$('footer > section > h3 > span.show').click(function(){
+		$('footer > section > div[title="even-more"]').slideToggle('slow', function(){
+			if ($('footer > section > h3').hasClass('expanded')) {
+				$('footer > section > h3').removeClass('expanded');
+			} else {
+				$('footer > section > h3').addClass('expanded');
+			}
+		});
+	});
+
+	//RAMP
 	$("#gen_search").click(function() {
 		setAutoComplete("gen_search", "gen_results", "/ramp/autocomplete/esquire?q=");
 		setIsTypingClass();
@@ -301,7 +316,7 @@ $(document).ready(function() {
 <!-- quiz includes -->
 <!-- This stuff should be in the head -->
 <script language="javascript" type="text/javascript" src="cm/shared/scripts/jquery.json.js"></script>
-<script language="javascript" type="text/javascript" src="cm/shared/scripts/quiz-v1.0.pack.js"></script>
+<script language="javascript" type="text/javascript" src="cm/shared/scripts/quiz-v1.1.js"></script>
 
 
 
@@ -546,7 +561,7 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 			<li id="rr_soc_tw_cont" hsocial="twitter" tooltipShow="tooltip_head" tooltipHide="tooltip_footer" tooltipOffsetX="-122" tooltipOffsetY="45"><a href="http://twitter.com/Esquiremag" title="Follow us on Twitter"></a></li>
 			<li id="rr_soc_pinterest_cont" class="socialItem" hsocial="pinterest" tooltipShow="tooltip_head" tooltipHide="tooltip_footer" tooltipOffsetX="-130" tooltipOffsetY="45"><a href="http://pinterest.com/esquiremag/"></a></li>
 			<li id="rr_soc_googlep_cont" class="socialItem" hsocial="googlep" tootltipShow="tooltip_head" tooltipHide="tooltip_footer" tooltipOffsetX="-230" tooltipOffsetY="45"><a target="_blank" href=" https://plus.google.com/108271174496564198737"></a></li>
-			<li class="last" id="rr_soc_em_cont" hsocial="newsltr" tooltipShow="tooltip_head" tooltipHide="tooltip_footer" tooltipOffsetX="-235" tooltipOffsetY="45"><a target="_self" href="privacy-policy.html#" title="Subscribe to our Newsletter"></a></li>
+			<li class="last" id="rr_soc_em_cont"><a href="privacy-policy.html#ad-newsletter" title="Subscribe to our Newsletter"></a></li>
 	</ul>
 	<div id="rr_soc_bot"><span id="ams_esquire_social_ad"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_social_ad);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_social_ad);int=window.clearInterval(int);}},50);}</script></span></div>
 </div>
@@ -610,10 +625,16 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 		
 			
 				<div class="excerpt">
-					<a class="img_link" href="http://www.esquire.com/blogs/culture/kandyse-mcclure-interview-hemlock-grove"><img src="cm/esquire/images/OW/KandyseMcClure-vdJayt-thumb2.jpg" alt="image_1_caption" /></a>
-					<div class="title"><a href="http://www.esquire.com/blogs/culture/kandyse-mcclure-interview-hemlock-grove">Talking About Werewolves with Kandyse McClure of <i>Hemlock Grove</i></a></div>
-					<p>And also werecats, werebears, werepigeons, and the damnable lack of fat vampires.</p>
+					<a class="img_link" href="http://www.esquire.com/women/sex/do-animals-cheat-0513"><img src="cm/esquire/images/U3/Esquire-May-sex-column-illustration-thumb2.jpg" alt="image_1_caption" /></a>
+					<div class="title"><a href="http://www.esquire.com/women/sex/do-animals-cheat-0513">Do Animals Cheat?</a></div>
+					<p>Sex column goes to the animal kingdom</p>
 				</div>
+			
+		
+			
+				<ul class="more">
+					<li><a href="http://www.esquire.com/blogs/culture/kandyse-mcclure-interview-hemlock-grove">Talking About Werewolves with Kandyse McClure of <i>Hemlock Grove</i></a></li>
+				</ul>
 			
 		
 			
@@ -628,12 +649,6 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 				</ul>
 			
 		
-			
-				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/culture/nikki-deloach-awkward-interview">Q&A: The Beautiful Nikki DeLoach from &quot;Awkward&quot; and &quot;CSI&quot;</a></li>
-				</ul>
-			
-		
 	</div>
 </div>
       
@@ -643,27 +658,27 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 		
 			
 				<div class="excerpt">
-					<a class="img_link" href="http://www.esquire.com/blogs/mens-fashion/prada-kiltie-shoe-042413"><img src="cm/esquire/images/TE/ESQ-prada-kiltie-shoes-042413-th2.jpg" alt="image_1_caption" /></a>
-					<div class="title"><a href="http://www.esquire.com/blogs/mens-fashion/prada-kiltie-shoe-042413">Calfskin Lace-Ups with Kiltie By Prada</a></div>
-					<p>Kilties have made their way off the golf course and into the office</p>
+					<a class="img_link" href="http://www.esquire.com/blogs/mens-fashion/style-nfl-draft-2013"><img src="cm/esquire/images/eB/ESQ-nfl-draft-style-2013-th2.jpg" alt="image_1_caption" /></a>
+					<div class="title"><a href="http://www.esquire.com/blogs/mens-fashion/style-nfl-draft-2013">The 2013 NFL Draft: A Style Appraisal</a></div>
+					<p>The good, the bad, and the hopelessly misguided from last night's football draft</p>
 				</div>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/mens-fashion/john-galliano-professor-042313">John Galliano Takes on Teaching Gig, <br/>Dresses Like a Hobo</a></li>
+					<li><a href="http://www.esquire.com/blogs/mens-fashion/suitsupply-philadelphia-store-042613">Exclusive: Inside Suitsupply's New Philly Shop</a></li>
 				</ul>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/mens-fashion/best-watches-spring-2013">14 Watches Worth Investing In</a></li>
+					<li><a href="http://www.esquire.com/blogs/mens-fashion/sarkozy-gifts-obama-042613">Sarkozy Gifted the Obamas $40K+ In Swag</a></li>
 				</ul>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/mens-fashion/worst-job-fashion-designer-0413">Dark Future for Fashion Designers</a></li>
+					<li><a href="http://www.esquire.com/blogs/mens-fashion/mens-wear-sales-042613">19 of the Best Online Sales</a></li>
 				</ul>
 			
 		
@@ -676,9 +691,9 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 		
 			
 				<div class="excerpt">
-					<a class="img_link" href="http://www.esquire.com/blogs/culture/culture-rss/secret-colours-blackhole"><img src="privacy-policy.html" alt="image_1_caption" /></a>
-					<div class="title"><a href="http://www.esquire.com/blogs/culture/culture-rss/secret-colours-blackhole">Exclusive: Listen to Secret Colours' New Track</a></div>
-					<p>The Culture Blog is happy to debut "Blackhole"</p>
+					<a class="img_link" href="http://www.esquire.com/blogs/politics/dzhokhar-tsarnaev-unarmed-042513"><img src="cm/esquire/images/1S/esq-boston-franklin-st-0413-th2.jpg" alt="image_1_caption" /></a>
+					<div class="title"><a href="http://www.esquire.com/blogs/politics/dzhokhar-tsarnaev-unarmed-042513">Pierce: Today with the Brothers Tsarnaev</a></div>
+					<p>If Dzhokhar Tsarnaev really was unarmed during the shooting along Franklin Street in Watertown last week, then we have a...</p>
 				</div>
 			
 		
@@ -709,27 +724,33 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 		
 			
 				<div class="excerpt">
-					<a class="img_link" href="http://www.esquire.com/blogs/food-for-men/grilled-cheese-cheesed-confused-geneseo-15359501"><img src="cm/esquire/images/si/esq-pork-mac-eS9B71-cheese-thumb2.jpg" alt="image_1_caption" /></a>
-					<div class="title"><a href="http://www.esquire.com/blogs/food-for-men/grilled-cheese-cheesed-confused-geneseo-15359501">The Grilled Cheese You Must Eat Outside</a></div>
-					<p>What the grilled cheese tastes like in Upstate New York</p>
+					<a class="img_link" href="http://www.esquire.com/blogs/food-for-men/rick-pitino-tattoo-15397334"><img src="cm/esquire/images/oa/esq-alison-brie-3-ntaeCe-xlg-thumb2.jpg" alt="image_1_caption" /></a>
+					<div class="title"><a href="http://www.esquire.com/blogs/food-for-men/rick-pitino-tattoo-15397334">Things to Which You Should Toast</a></div>
+					<p>(The unofficial soundtrack to your weekend...)
+
+
+
+To the Spring, finally arriving. 
+
+And to Seersucker, which must preva...</p>
 				</div>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/food-for-men/butte-wedding-longman-eagle-chicago-15350764">A Cocktail for a Montana Wedding</a></li>
+					<li><a href="http://www.esquire.com/blogs/food-for-men/best-grilled-cheese-vote">Vote for the Best Grilled Cheese</a></li>
 				</ul>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/food-for-men/food-for-men-rss/obama-revival-american-whiskey-market">Can Obama Save Whiskey?</a></li>
+					<li><a href="http://www.esquire.com/blogs/food-for-men/grilled-cheese-westville">Grilled Cheese Month: Westville</a></li>
 				</ul>
 			
 		
 			
 				<ul class="more">
-					<li><a href="http://www.esquire.com/blogs/food-for-men/westeros-game-of-thrones-cooking-15379752">Ozersky: Geoduck?!</a></li>
+					<li><a href="http://www.esquire.com/blogs/food-for-men/grilled-cheese-foundry-los-angeles">L.A.'s Ultimate Grilled Cheese</a></li>
 				</ul>
 			
 		
@@ -752,407 +773,251 @@ Meebo('setDefaultThumbnail', {thumbnail:"http://www.esquire.com/cm/shared/site_i
 			<!-- START OF HTML BOTTOM -->
 <!-- xs_magnus_toolbar - PREVIEW ONLY -->
 
-<div class="clear"></div>
-<div id="html_bottom">
 		
 	
-	<!-- START OF REDESIGN MORE FROM ESQ -->
-<div id="more_from_esq">
-	
-	<div class="banner_hed"><img src="cm/esquire/site_images/redesign/hed-more-from-esq.gif" width="1002" height="38" alt="More from Esquire" /></div>
-    <div class="content">
-        
-            
-                <div class="sec_wrapper">
-					<div class="more_hed">Women</div>
-					
-						<p><a href="http://www.esquire.com/features/what-ive-learned/meaning-of-life-2011/mary-louise-parker-0111?click=esq_more">Mary Louise Parker</a></p>
-					
-						<p><a href="http://www.esquire.com/video/kate-upton-esquire-video-6654834?click=esq_more">Kate Upton Video</a></p>
-					
-						<p><a href="http://www.esquire.com/women/naked-women-celebrities?click=esq_more">Beautiful Women</a></p>
-					
-						<p><a href="http://www.esquire.com/features/megan-fox-photos-interview-0213?click=esq_more">Megan Fox Interview</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Food</div>
-					
-						<p><a href="http://www.esquire.com/features/best-steak-recipes?click=esq_more">Best Steak Recipes</a></p>
-					
-						<p><a href="http://www.esquire.com/features/recipes-for-men/easy-recipes?click=esq_more">Easy Recipes for Men</a></p>
-					
-						<p><a href="http://www.esquire.com/features/soup-stew-recipes?click=esq_more">7 Recipes for Soup</a></p>
-					
-						<p><a href="http://www.esquire.com/the-side/food-and-drink/best-pancake-recipe-072911?click=esq_more">Easy Pancake Recipe</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Style</div>
-					
-						<p><a href="http://www.esquire.com/the-side/style-guides/mens-wear-fashion-predictions-for-2013?click=esq_more">Insider Style Tips 2013</a></p>
-					
-						<p><a href="http://www.esquire.com/the-side/style-guides/shirt-and-tie-combo-tips-2011?click=esq_more">Shirt and Tie Combinations</a></p>
-					
-						<p><a href="http://www.esquire.com/the-side/style-guides/best-mens-watches-2011?click=esq_more">Stylish Watches for Men</a></p>
-					
-						<p><a href="http://www.esquire.com/the-side/style-guides/best-dressed-men-list?click=esq_more">Best Dressed Men List</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">News & Politics </div>
-					
-						<p><a href="http://www.esquire.com/blogs/politics/barack-obama-president-whole-country-0213?click=esq_more">Obama's Second Term</a></p>
-					
-						<p><a href="http://www.esquire.com/features/ESQ0606BESLAN_140?click=esq_more">Chechen Terrorism</a></p>
-					
-						<p><a href="http://www.esquire.com/blogs/politics/obama-boston-marathon-bombing-speech-041813?click=esq_more">Obama on Marathon Bombing</a></p>
-					
-						<p><a href="http://www.esquire.com/blogs/politics/Nobody_Still_Knows_Nothing?click=esq_more">Boston Marathon Bombing</a></p>
-					
-					
-                </div>
-                <div class="clear"></div>
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Sex & Dating</div>
-					
-						<p><a href="http://www.esquire.com/women/best-sex-positions?click=esq_more">Sex Positions & Tips</a></p>
-					
-						<p><a href="http://www.esquire.com/women/sex/sex-advice-questions?click=esq_more">Smart Sex Advice </a></p>
-					
-						<p><a href="http://www.esquire.com/women/sex/oral-sex-advice-6148501?click=esq_more">Oral Sex Tips</a></p>
-					
-						<p><a href="http://www.esquire.com/women/sex/finding-new-g-spot-0509?click=esq_more">Finding the Female G-Spot</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Video</div>
-					
-						<p><a href="http://www.esquire.com/video/katrina-bowden-sexiest-woman-alive-madness-champion-video-889113963001?click=esq_more">Katrina Bowden</a></p>
-					
-						<p><a href="http://www.esquire.com/video/james-meredith-what-ive-learned-video-2029022382001?click=esq_more">James Meredith Interview</a></p>
-					
-						<p><a href="http://www.esquire.com/women/women-we-love/mila-kunis-video?click=esq_more">Mila Kunis Photos</a></p>
-					
-						<p><a href="http://www.esquire.com/women/me-in-my-place/margot-robbie-pictures-2012-0211?click=esq_more">Margot Robbie Photos</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Drinks</div>
-					
-						<p><a href="http://www.esquire.com/blogs/food-for-men/flying-monkey-cocktail-14897335?click=esq_more">Flying Monkey Drink Recipe</a></p>
-					
-						<p><a href="http://www.esquire.com/features/drinking/cocktail-recipes?click=esq_more">Best Cocktail Recipes</a></p>
-					
-						<p><a href="http://www.esquire.com/features/tequila-drinks?click=esq_more">Tequila Drinks</a></p>
-					
-						<p><a href="http://www.esquire.com/features/food-drink/champagne-cocktails?click=esq_more">10 Champagne Cocktails</a></p>
-					
-					
-                </div>
-                
-           
-                <div class="sec_wrapper">
-					<div class="more_hed">Trending</div>
-					
-						<p><a href="http://www.esquire.com/about/ww.esquire.com/blogs/culture/house-of-cards-netflix-15039955?click=esq_more">House of Cards Premiere</a></p>
-					
-						<p><a href="http://www.esquire.com/blogs/food-for-men/best-stories-of-2012-14923116?click=esq_more">Best of Culture 2012</a></p>
-					
-						<p><a href="http://www.esquire.com/features/best-bars-in-america/best-bars-2012/?click=esq_more">Best Bars 2012</a></p>
-					
-						<p><a href="http://www.esquire.com/features/new-years-resolutions-2013?click=esq_more">Resolutions for 2013</a></p>
-					
-					
-                </div>
-                <div class="clear"></div>
-           
-       
-	</div>
-	
-</div>
-<!-- //END OF REDESIGN MORE FROM ESQ -->
-
-	<!-- START OF REDESIGN ADS BOTTOM -->
-<div id="ads_bottom">
-	<div id="spon_links" class="ad">
-    	<p class="label">Sponsored Links</p>
-    	<span id="ams_esquire_sponsored_links"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_sponsored_links);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_sponsored_links);int=window.clearInterval(int);}},50);}</script></span>
-    </div>
-    
-    
-    
-    <div id="ad_circ300x250" class="ad">
-    	<p class="label">Special Offer</p>
-    	<span id="ams_circ_esq_300x250"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_circ_esq_300x250);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_circ_esq_300x250);int=window.clearInterval(int);}},50);}</script></span>
-    
-    
-    
-    
-    </div>
-    
-    
-    
-    <div id="ad_newsletter" class="ad last">
-    
-    	<span id="ams_esq_nl01"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esq_nl01);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esq_nl01);int=window.clearInterval(int);}},50);}</script></span>    
-    
-    
-    </div>
-    
-    
-
-
-
-
-</div>
-<!-- //END OF REDESIGN ADS BOTTOM -->
-
-    
-    <!-- START OF REDESIGN SEARCH BOTTOM -->
-<div id="search_bottom">
-        <form name="bottom_search" action="http://www.esquire.com/search/" method="get">
-                <input class="input" name="q" type="text" autocomplete="off">
-                <a href="javascript:document.bottom_search.submit();"><img src="cm/esquire/site_images/redesign/btn-search.gif" width="74" height="26" class="search_btn over" alt="Search" /></a>
-        </form>
-<div class="clear"></div>
-    <div class="suggestions">
-        <span>Try:</span>
-        
-            
-                <a href="http://www.esquire.com/features/robert-redford-interview-0413?click=try&link=robert-redford-interview-0413">ROBERT REDFORD</a> <em>.</em>
-            
-                <a href="http://www.esquire.com/features/75-things-0808?click=try&link=75-things-0808">BUCKET LIST</a> <em>.</em>
-            
-                <a href="http://www.esquire.com/the-side/style-guides/best-dressed-men-list?click=try&link=best-dressed-men-list">BEST DRESSED MEN</a> <em>.</em>
-            
-                <a href="http://www.esquire.com/women/women-we-love/alison-brie-interview-0513?click=try&link=alison-brie-interview-0513">ALISON BRIE</a>
-            
-        
-    </div>
-</div>
-<!-- //END OF REDESIGN SEARCH BOTTOM -->
-
-    
-    <!-- START OF REDESIGN FOOTER -->
-<div id="redesign_footer">
-	<div id="footer_link_wrapper">
-		<div id="footer_links">
-			<div id="about_esq" class="links_wrapper">
-				<div class="footerHeds">About Esquire</div>
-				<p>
-					<span id="ams_app_esq_foot_link"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_app_esq_foot_link);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_app_esq_foot_link);int=window.clearInterval(int);}},50);}</script></span>
-					<span id="ams_digital_esq_foot_link"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_digital_esq_foot_link);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_digital_esq_foot_link);int=window.clearInterval(int);}},50);}</script></span>
-					<a href="http://www.esquire.com/masthead" rel="nofollow">About Us</a>
-					<a href="http://www.hearst.com/press-room/" rel="nofollow" target="_blank">Press Room</a>
-					<a href="privacy-policy.html" rel="nofollow">Privacy Policy</a>
-					<a href="privacy-policy.html#california" rel="nofollow">Your California Privacy Rights</a>
-					<a href="http://www.esquire.com/about/about/terms-of-use" rel="nofollow">Terms of Use</a>
-					<a href="http://www.esquire.com/sitemap">Site Map</a>
-					<a href="http://www.esquire.com/talk" rel="nofollow">Contact Us</a>
-					<a href="http://www.esquire.com/about/community-guidelines" rel="nofollow">Community Guidelines</a>
-					<a href="http://www.esquire.com/about/advertise-online" rel="nofollow">Advertise Online</a>
-					<a href="http://www.esquire.com/about/about-our-ads" rel="nofollow">About Our Ads</a>
-				</p>
-			</div>
-			<div id="esqdotcom" class="links_wrapper">
-				<div class="footerHeds">Esquire.com</div>
-				<p>
-					<a href="https://w1.buysub.com/pubs/HR/ESQ/ESQ_nameAddrEntry_combo.jsp?cds_page_id=41134&cds_mag_code=ESQ&id=1270161325452&lsid=30911735254039366&vid=13" rel="nofollow" target="_blank">Customer Service</a>
-					<a href="https://subscribe.hearstmags.com/subscribe/splits/esquire/esq_sub_nav_link" rel="nofollow" target="_blank">Subscribe</a>
-					<a href="http://subscribe.hearstmags.com/circulation/shared/index.html" rel="nofollow"  target="_blank">Other Hearst Subscriptions</a>
-					<a href="https://subscribe.hearstmags.com/subscribe/splits/esquire/esq_gift_nav_link" rel="nofollow" target="_blank">Give a Gift</a>
-				</p>
-				<div class="clear"></div>
-				<div class="footerHeds second">Site Service</div>
-				<p>
-					<a href="http://www.esquire.com/promotions" rel="nofollow" target="_blank">Events &amp; Promotions</a>
-					<a href="https://subscribe.hearstmags.com/circulation/shared/email/newsletters/signup/enl-su01.html" rel="nofollow" target="_blank">Free Newsletters</a>
-					<a href="http://www.esquire.com/mobile" rel="nofollow">Mobile</a>
-			   </p>
-			</div>
-			<!-- START OF XS SEO FOOTER LINKS -->
-
-<div id="seo_links">
-	
+	<footer>
+		<section id="more-from">
+			<h3 title="more-from"><span class="a-whole-lot">A Whole Lot</span> More <span class="site-logo"><img src="cm/esquire/site_images/redesign_2011/logo.png" alt="Esquire" /></span><span class="from-esquire">From Esquire</span></h3>
 		
-		<!-- MENS NETWORK SEO LINKS -->
+			<div title="more-from">
 			
 				
+				
+				<dl>
+					<dt>Women</dt>
 					
-						<div class="links_wrapper first">
-							
-								<div class="footerHeds">STUFF MEN LIKE</div>
-							
-							
-								<div class="link"><a href="http://www.esquire.com/style/mens-shoes">Men's Shoes 2013</a></div>
-							
-								<div class="link"><a href="http://www.popularmechanics.com/home/improvement/interior/4271761?src=mens-footer" target="_blank">Home Inspection Checklist</a></div>
-							
-								<div class="link"><a href="http://www.caranddriver.com/news/2012-dodge-charger-srt8-photos-and-info-dodge-charger-news?src=mens-footer" target="_blank">Dodge Charger Review</a></div>
-							
-								<div class="link"><a href="http://www.popularmechanics.com/technology/digital/fact-vs-fiction/4256186?src=mens-footer" target="_blank">Science Fiction Movies</a></div>
-							
-								<div class="link"><a href="http://www.esquire.com/the-side/style-guides/shirt-and-tie-combo-tips-2011?src=mens-footer">Shirt & Tie Combos</a></div>
-							
-						</div><!-- //end of link group #1 name: <_TMPL_VAR group_header_1> -->
+					<dd><a href="http://www.esquire.com/features/what-ive-learned/meaning-of-life-2011/mary-louise-parker-0111?click=esq_more">Mary Louise Parker</a></dd>
+					
+					<dd><a href="http://www.esquire.com/video/kate-upton-esquire-video-6654834?click=esq_more">Kate Upton Video</a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/naked-women-celebrities?click=esq_more">Beautiful Women</a></dd>
+					
+					<dd><a href="http://www.esquire.com/features/megan-fox-photos-interview-0213?click=esq_more">Megan Fox Interview</a></dd>
 					
 					
-						
-							<div class="links_wrapper">
-								
-									<div class="footerHeds">REVIEWS</div>
-								
-								
-									<div class="link"><a href="http://www.caranddriver.com/reviews/2012-honda-cr-v-road-test-review?src=mens-footer" target="_blank">Honda CR-V Review</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/technology/gadgets/reviews/iphone-5-cases?src=mens-footer" target="_blank">iPhone 5 Cases</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/the-side/style-guides/formal-tuxedo-styles?src=mens-footer">Tuxedo Styles</a></div>
-								
-									<div class="link"><a href="http://www.thedailygreen.com/healthy-eating/eat-safe/Dirty-Dozen-Foods?src=mens-footer" target="_blank">Organic Food Tips</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/home/reviews/outdoor-tools/1273471?src=mens-footer" target="_blank">Zero Turn Mowers</a></div>
-								
-									<div class="link"><a href="http://www.caranddriver.com/reviews/2013-ford-focus-st-first-ride-feature?src=mens-footer" target="_blank">Ford Focus Review</a></div>
-								
-							</div><!-- //end of link group #2 name: <_TMPL_VAR group_header_2> -->
-						
+				</dl>
+				
+				
+				
+				<dl>
+					<dt>Food</dt>
+					
+					<dd><a href="http://www.esquire.com/features/best-steak-recipes?click=esq_more">Best Steak Recipes</a></dd>
+					
+					<dd><a href="http://www.esquire.com/features/recipes-for-men/easy-recipes?click=esq_more">Easy Recipes for Men</a></dd>
+					
+					<dd><a href="http://www.esquire.com/features/soup-stew-recipes?click=esq_more">7 Recipes for Soup</a></dd>
+					
+					<dd><a href="http://www.esquire.com/the-side/food-and-drink/best-pancake-recipe-072911?click=esq_more">Easy Pancake Recipe</a></dd>
 					
 					
-						 
-							<div class="links_wrapper">
-								
-									<div class="footerHeds">HOW TO</div>
-								
-								
-									<div class="link"><a href="http://www.esquire.com/style/tips/how-to-tie-a-necktie?src=mens-footer">How to Tie a Tie</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/style/tips/how-to-grow-a-beard?src=mens-footer">How to Grow a Beard</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/home/4286872?src=mens-footer" target="_blank">Pro Painting Tips</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/features/make-pancakes-0509?src=mens-footer">How to Make Pancakes</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/home/how-to-plans/sheds/1276536?src=mens-footer" target="_blank">How to Build a Shed</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/home/how-to-plans/4324487?src=mens-footer" target="_blank">How to Make Beer</a></div>
-								
-							</div><!-- //end of link group #3 name: <_TMPL_VAR group_header_3> -->
-						 
+				</dl>
+				
+				
+				
+				<dl>
+					<dt>Style</dt>
+					
+					<dd><a href="http://www.esquire.com/the-side/style-guides/mens-wear-fashion-predictions-for-2013?click=esq_more">Insider Style Tips 2013</a></dd>
+					
+					<dd><a href="http://www.esquire.com/the-side/style-guides/shirt-and-tie-combo-tips-2011?click=esq_more">Shirt and Tie Combinations</a></dd>
+					
+					<dd><a href="http://www.esquire.com/the-side/style-guides/best-mens-watches-2011?click=esq_more">Stylish Watches for Men</a></dd>
+					
+					<dd><a href="http://www.esquire.com/the-side/style-guides/best-dressed-men-list?click=esq_more">Best Dressed Men List</a></dd>
 					
 					
-						
-							<div class="links_wrapper last">
-								
-									<div class="footerHeds">TRENDING</div>
-								
-								
-									<div class="link"><a href="http://www.esquire.com/features/what-ive-learned/meaning-of-life-2013/james-lee-burke-interview-0113?src=mens-footer">James Lee Burke Quotes</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/features/what-ive-learned/quotes-about-life?src=mens-footer">Life Quotes</a></div>
-								
-									<div class="link"><a href="http://www.popularmechanics.com/technology/gadgets/reviews/iphone-5-everything-to-know-about-apples-launch-day-12636657?src=mens-footer" target="_blank">iPhone 5 Features</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/style/spring-fall-fashion?src=mens-footer">Spring Fashion 2013</a></div>
-								
-									<div class="link"><a href="http://www.esquire.com/blogs/culture/bitcoin_hits_two_billion">What are Bitcoins</a></div>
-								
-									<div class="link"><a href="http://www.caranddriver.com/?src=mens-footer" target="_blank">New Cars 2013 & 2014</a></div>
-								
-							</div><!-- //end of link group #4 name: <_TMPL_VAR group_header_4> -->
-						
+				</dl>
+				
+				
+				
+				<dl>
+					<dt>News & Politics </dt>
 					
+					<dd><a href="http://www.esquire.com/blogs/politics/barack-obama-president-whole-country-0213?click=esq_more">Obama's Second Term</a></dd>
+					
+					<dd><a href="http://www.esquire.com/features/ESQ0606BESLAN_140?click=esq_more">Chechen Terrorism</a></dd>
+					
+					<dd><a href="http://www.esquire.com/blogs/politics/obama-boston-marathon-bombing-speech-041813?click=esq_more">Obama on Marathon Bombing</a></dd>
+					
+					<dd><a href="http://www.esquire.com/blogs/politics/Nobody_Still_Knows_Nothing?click=esq_more">Boston Marathon Bombing</a></dd>
+					
+					
+				</dl>
+				
+				
+				
+				<dl>
+					<dt>Sex & Dating</dt>
+					
+					<dd><a href="http://www.esquire.com/women/best-sex-positions?click=esq_more">Sex Positions & Tips</a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/sex/sex-advice-questions?click=esq_more">Smart Sex Advice </a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/sex/oral-sex-advice-6148501?click=esq_more">Oral Sex Tips</a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/sex/finding-new-g-spot-0509?click=esq_more">Finding the Female G-Spot</a></dd>
+					
+					
+				</dl>
+				
+				
+				
+				<dl>
+					<dt>Video</dt>
+					
+					<dd><a href="http://www.esquire.com/video/katrina-bowden-sexiest-woman-alive-madness-champion-video-889113963001?click=esq_more">Katrina Bowden</a></dd>
+					
+					<dd><a href="http://www.esquire.com/video/james-meredith-what-ive-learned-video-2029022382001?click=esq_more">James Meredith Interview</a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/women-we-love/mila-kunis-video?click=esq_more">Mila Kunis Photos</a></dd>
+					
+					<dd><a href="http://www.esquire.com/women/me-in-my-place/margot-robbie-pictures-2012-0211?click=esq_more">Margot Robbie Photos</a></dd>
+					
+					
+				</dl>
+				
+				
+				
+				
+				
 				
 			
+			</div>
+			
+			<aside id="ads-bottom">
+				<div class="ad" id="sponsored-links"><span id="ams_esquire_sponsored_links"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_sponsored_links);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_sponsored_links);int=window.clearInterval(int);}},50);}</script></span></div>
+				<div class="ad" id="ad-circ300x250"><span id="ams_circ_esq_300x250"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_circ_esq_300x250);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_circ_esq_300x250);int=window.clearInterval(int);}},50);}</script></span></div>
+				<div class="ad" id="ad-newsletter"><span id="ams_esq_nl01"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esq_nl01);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esq_nl01);int=window.clearInterval(int);}},50);}</script></span></div>
+			</aside>		
+			
+		</section>
+		
+		<section id="even-more">
+			<h3 title="even-more"><span class="even-more">Even More From Esquire</span><span class="show"><span>Show</span></span></h3>
+			<div title="even-more">
+				<dl id="about_esq">
+					<dt>About Esquire</dt>
+					<dd><span id="ams_app_esq_foot_link"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_app_esq_foot_link);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_app_esq_foot_link);int=window.clearInterval(int);}},50);}</script></span></dd>
+					<dd><span id="ams_digital_esq_foot_link"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_digital_esq_foot_link);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_digital_esq_foot_link);int=window.clearInterval(int);}},50);}</script></span></dd>
+					<dd><a href="http://www.esquire.com/masthead" rel="nofollow">About Us</a></dd>
+					<dd><a href="http://www.hearst.com/press-room/" rel="nofollow" target="_blank">Press Room</a></dd>
+					<dd><a href="http://www.esquire.com/talk" rel="nofollow">Contact Us</a></dd>
+					<dd><a href="http://www.esquire.com/about/community-guidelines" rel="nofollow">Community Guidelines</a></dd>
+					<dd><a href="http://www.esquire.com/about/advertise-online" rel="nofollow">Advertise Online</a></dd>
+					<dd><a href="http://www.esquire.com/about/about-our-ads" rel="nofollow">About Our Ads</a></dd>
+				</dl>
+				<dl id="esqdotcom" class="links_wrapper">
+					<dt>Esquire.com</dt>
+					<dd><a href="https://w1.buysub.com/pubs/HR/ESQ/ESQ_nameAddrEntry_combo.jsp?cds_page_id=41134&cds_mag_code=ESQ&id=1270161325452&lsid=30911735254039366&vid=13" rel="nofollow" target="_blank">Customer Service</a></dd>
+					<dd><a href="https://subscribe.hearstmags.com/subscribe/splits/esquire/esq_sub_nav_link" rel="nofollow" target="_blank">Subscribe</a></dd>
+					<dd><a href="http://subscribe.hearstmags.com/circulation/shared/index.html" rel="nofollow"  target="_blank">Other Hearst Subscriptions</a></dd>
+					<dd><a href="https://subscribe.hearstmags.com/subscribe/splits/esquire/esq_gift_nav_link" rel="nofollow" target="_blank">Give a Gift</a></dd>
+				</dl>
+				
+	
+		
+			<dl>
+			
+				<dt>STUFF MEN LIKE</dt>
+			
+			
+				<dd><a href="http://www.esquire.com/style/mens-shoes" target="_blank">Men's Shoes 2013</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/home/improvement/interior/4271761?src=mens-footer" target="_blank">Home Inspection Checklist</a></dd>
+			
+				<dd><a href="http://www.caranddriver.com/news/2012-dodge-charger-srt8-photos-and-info-dodge-charger-news?src=mens-footer" target="_blank">Dodge Charger Review</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/technology/digital/fact-vs-fiction/4256186?src=mens-footer" target="_blank">Science Fiction Movies</a></dd>
+			
+				<dd><a href="http://www.esquire.com/the-side/style-guides/shirt-and-tie-combo-tips-2011?src=mens-footer" target="_blank">Shirt & Tie Combos</a></dd>
+			
+			</dl><!-- //end of link group #1 name: <_TMPL_VAR group_header_1> -->
+		
+		
+		
+			<dl>
+			
+				<dt>REVIEWS</dt>
+			
+			
+				<dd><a href="http://www.caranddriver.com/reviews/2012-honda-cr-v-road-test-review?src=mens-footer" target="_blank">Honda CR-V Review</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/technology/gadgets/reviews/iphone-5-cases?src=mens-footer" target="_blank">iPhone 5 Cases</a></dd>
+			
+				<dd><a href="http://www.esquire.com/the-side/style-guides/formal-tuxedo-styles?src=mens-footer" target="_blank">Tuxedo Styles</a></dd>
+			
+				<dd><a href="http://www.thedailygreen.com/healthy-eating/eat-safe/Dirty-Dozen-Foods?src=mens-footer" target="_blank">Organic Food Tips</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/home/reviews/outdoor-tools/1273471?src=mens-footer" target="_blank">Zero Turn Mowers</a></dd>
+			
+				<dd><a href="http://www.caranddriver.com/reviews/2013-ford-focus-st-first-ride-feature?src=mens-footer" target="_blank">Ford Focus Review</a></dd>
+			
+			</dl><!-- //end of link group #2 name: <_TMPL_VAR group_header_2> -->
+		
+		
+		
+		
+			<dl>
+			
+				<dt>HOW TO</dt>
+			
+			
+				<dd><a href="http://www.esquire.com/style/tips/how-to-tie-a-necktie?src=mens-footer" target="_blank">How to Tie a Tie</a></dd>
+			
+				<dd><a href="http://www.esquire.com/style/tips/how-to-grow-a-beard?src=mens-footer" target="_blank">How to Grow a Beard</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/home/4286872?src=mens-footer" target="_blank">Pro Painting Tips</a></dd>
+			
+				<dd><a href="http://www.esquire.com/features/make-pancakes-0509?src=mens-footer" target="_blank">How to Make Pancakes</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/home/how-to-plans/sheds/1276536?src=mens-footer" target="_blank">How to Build a Shed</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/home/how-to-plans/4324487?src=mens-footer" target="_blank">How to Make Beer</a></dd>
+			
+			</dl><!-- //end of link group #3 name: <_TMPL_VAR group_header_3> -->
+		
+		
+		
+		
+			<dl>
+			
+				<dt>TRENDING</dt>
+			
+			
+				<dd><a href="http://www.esquire.com/features/what-ive-learned/meaning-of-life-2013/james-lee-burke-interview-0113?src=mens-footer" target="_blank">James Lee Burke Quotes</a></dd>
+			
+				<dd><a href="http://www.esquire.com/features/what-ive-learned/quotes-about-life?src=mens-footer" target="_blank">Life Quotes</a></dd>
+			
+				<dd><a href="http://www.popularmechanics.com/technology/gadgets/reviews/iphone-5-everything-to-know-about-apples-launch-day-12636657?src=mens-footer" target="_blank">iPhone 5 Features</a></dd>
+			
+				<dd><a href="http://www.esquire.com/style/spring-fall-fashion?src=mens-footer" target="_blank">Spring Fashion 2013</a></dd>
+			
+				<dd><a href="http://www.esquire.com/blogs/culture/bitcoin_hits_two_billion" target="_blank">What are Bitcoins</a></dd>
+			
+				<dd><a href="http://www.caranddriver.com/?src=mens-footer" target="_blank">New Cars 2013 & 2014</a></dd>
+			
+			</dl><!-- //end of link group #4 name: <_TMPL_VAR group_header_4> -->
+		
 		
 	
-</div><!-- //END OF XS SEO FOOTER LINKS  -->
-			<div class="clear"></div>  
-		</div><!-- //end of links -->
-	</div>
-</div>
-<div id="footer_copy">
-	<div id="rr_social_tout_footer">
-	<div id="rr_soc_top"></div>
-	<ul id="rr_soc_mid" class="clearfix">
-			<li id="rr_soc_fb_cont" hsocial="facebook" tooltipShow="tooltip_footer" tooltipHide="tooltip_head" tooltipOffsetX="-122" tooltipOffsetY="-292"><a href="http://www.facebook.com/Esquire" title="Like us on Facebook"></a></li>
-			<li id="rr_soc_tw_cont" hsocial="twitter" tooltipShow="tooltip_footer" tooltipHide="tooltip_head" tooltipOffsetX="-122" tooltipOffsetY="-95"><a href="http://twitter.com/Esquiremag" title="Follow us on Twitter"></a></li>
-			<li id="rr_soc_pinterest_cont" class="socialItem" hsocial="pinterest" tooltipShow="tooltip_footer" tooltipHide="tooltip_head" tooltipOffsetX="-130" tooltipOffsetY="-115"><a  href="http://pinterest.com/esquiremag/"></a></li>
-			<li id="rr_soc_googlep_cont" class="socialItem" hsocial="googlep" tootltipShow="tooltip_footer" tooltipHide="tooltip_head" tooltipOffsetX="-230" tooltipOffsetY="-167"><a target="_blank" href=" https://plus.google.com/108271174496564198737"></a></li>
-			<li class="last" id="rr_soc_em_cont" hsocial="newsltr" tooltipShow="tooltip_footer" tooltipHide="tooltip_head" tooltipOffsetX="-215" tooltipOffsetY="-82"><a target="_self" href="privacy-policy.html#" title="Subscribe to our Newsletter"></a></li>
-	</ul>
-</div>
-	<script src="cm/shared/social/social_tools-LL.js" type="text/javascript"></script>
-<div id="rr_social_tooltip" hsocial="modal" class="article">
-	<div id="rr_social_tooltip_fb" hsocial="facebook_modal">
-		<div class="tooltip_head"></div>
-		<div class="tooltip_body">
-			<div id="overlayFB"></div>
-		</div>
-		<div class="tooltip_footer">
-		</div>
-	</div>
-	<div id="rr_social_tooltip_tw" hsocial="twitter_modal">
-		<div class="tooltip_head"></div>
-		<div class="tooltip_body">
-			<div id="overlayTW"></div>
-		</div>
-		<div class="tooltip_footer"></div>
-	</div>
-	<div id="rr_social_tooltip_nl" hsocial="newsltr_modal">
-		<div class="tooltip_head"></div> 
-		<div class="tooltip_body">
-			<div class="nl_1">Sign up for Esquire's Free newsletter!</div>
-			<form method="POST" action="http://app.hearstmags.com/enroll/dynamic/signup.cfm" onSubmit="return validateForm(this);">
-				<input type="hidden" name="form_id" value="22">
-				<input type="hidden" name="ED_OPTIN" value="3535858">
-				<input type="hidden" name="ED_OPTIN" value="3535842">
-				<input id="vt_nl_emailfield" type="text" onblur="vtemail.focus(false)" onfocus="vtemail.focus(true)" tempval="" name="EMAIL" maxlength="128" value="Enter your email address">
-				<button id="vt_bl_signupbutton" type="submit"></button>
-			</form>
-		</div>
-		<div class="tooltip_footer"></div>
-	</div>
-	<div id="rr_social_tooltip_pi" hsocial="pinterest_modal">
-		<div class="tooltip_head"></div>
-		<div class="tooltip_body">
-			<div id="overlayPIN"></div>
-		</div>
-		<div class="tooltip_footer"></div>
-	</div>
-	<div id="rr_social_tooltip_googlep" hsocial="googlep_modal">
-		<div class="tooltip_head"></div>
-		<div class="tooltip_body">
-			<div id="overlayGOOGLE"></div>
-		</div>
-		<div class="tooltip_footer"></div>
-	</div>
-</div>
-	
-	<p><span>&copy;2013 Hearst Communications, Inc. All Rights Reserved.</span> <a  class="being_green" href="http://www.hearst.com/beinggreen/" target="_blank">Being Green</a>&nbsp;&nbsp;<em>&bull;</em>&nbsp;&nbsp;<a class="oba_message" href="http://www.esquire.com/about/oba-policy">Why did I get this ad?</a></p>
-	<img src="cm/esquire/site_images/redesign/mens-network.gif" width="199" height="36" id="network_img" alt="Hearst Men's Network" />
-</div>
-<!-- //END OF REDESIGN FOOTER -->
-<!-- //Script for Flipbook 3 -->
 
-
+			</div>
+		</section>
+		
+		<aside id="copyright">
+			<img src="cm/esquire/site_images/redesign/mens-network.gif" width="199" height="36" id="network_img" alt="Hearst Men's Network" />
+			<ul id="mobile-footer">
+				<li><a href="https://subscribe.hearstmags.com/subscribe/splits/esquire/esq_sub_nav_link">Subscribe To Esquire</a></li>
+				<li><a href="privacy-policy.html">Privay Policy</a></li>
+				<li><a href="privacy-policy.html#california">California Privacy Policy</a></li>
+				<li><a href="http://www.esquire.com/about/terms-of-use">Terms of Use</a></li>
+			</ul>
+			<p><a class="oba_message" href="http://www.esquire.com/about/oba-policy"></a>&nbsp;<span>&copy;2013 Hearst Communications, Inc. All Rights Reserved.</span></p>
+		</aside>
+		
+	</footer>
+<!-- //END OF HTML BOTTOM -->
 
 <!-- ********* NEVER REMOVE ANY TRACKING CODE ********* -->
 
@@ -1287,11 +1152,11 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
 
 
 <!-- Google Analytics -->
-<script type="text/javascript">
+<script type="text/javascript" language="JavaScript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-<script type="text/javascript">
+<script type="text/javascript" language="JavaScript">
 var pageTracker = _gat._getTracker("UA-3532784-1");
 pageTracker._initData();
 pageTracker._trackPageview();
@@ -1315,12 +1180,12 @@ pageTracker._trackPageview();
 
 
 <!-- Tynt Tracer Beta -->
-<script type="text/javascript" src="../tcr.tynt.com/javascripts/Tracer.js%3Fuser=aTIf7gthSr3P6Aacn9QLBk&amp;s=70"></script>
+<script type="text/javascript" language="JavaScript" src="../tcr.tynt.com/javascripts/Tracer.js%3Fuser=aTIf7gthSr3P6Aacn9QLBk&amp;s=70"></script>
 <!-- //Tynt Tracer Beta -->
 <!--Add script for Pinterest-->
 
 	<!-- only enable in article types so this is lazyloaded normally -->
-	<script type="text/javascript" src="../assets.pinterest.com/js/pinit.js"></script>
+	<script type="text/javascript" language="JavaScript" src="../assets.pinterest.com/js/pinit.js"></script>
 
 <!--End add script for Pinterest-->
 <!-- ********* //END NEVER REMOVE ANY TRACKING CODE ********* -->
@@ -1329,10 +1194,6 @@ pageTracker._trackPageview();
 
 <span id="ams_esquire_footer"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_footer);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_footer);int=window.clearInterval(int);}},50);}</script></span>
 <span id="ams_esquire_meebo"><script>if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_meebo);}else{var int=window.setInterval(function(){if(typeof pageAds!="undefined"){document.write(pageAds.ams_esquire_meebo);int=window.clearInterval(int);}},50);}</script></span>
-
-</div><!-- //END OF HTML BOTTOM -->
-
-
 	
 
 	</div><!--end container-->

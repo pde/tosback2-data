@@ -25,8 +25,14 @@
 // 5.55 - fixed old video ad calls using adx to force pfadx method
 // 5.56 - added quantcast support, changed Wunderloop segmentIds
 // 5.57 - fixed for...in loop issue re: Jobs - (http://stackoverflow.com/questions/1529593/javascript-custom-array-prototype-interfering-with-for-in-loops), removed old Wunderloop segment values, refined code for perfomance/render timingso, Added taxonomy fix for Food/Drink
-// 5.58 - Fixed bug which was mixing up the video adcalls & adding sz values after the ord=nnn? fixed bug introduced in 5.55 which means no protocol being passed to video ads. this broke Ooyala
+// 5.58 - Fixed bug which was mixing up the video adcalls & adding sz values after the ord=nnn? fixed bug introduced in 5.55 which means no protocol being passded to video ads. this broke Ooyala
 // 5.59 - Added support for videosrc metatag
+// 5.60 - Added domain the page is currently on. rd=www.telegraph.co.uk
+// 5.61 - Added uspport for Luxury gallry iframe calls, added url only response to adStyle=0, stopped trying to ascertain size/locationof these ads as well
+//        Fixed bug in DoNotTrack
+//        Added platform parameter to track mobile/desktop
+// 5.62 - Cleaned up some poor declarations with JSHint/JSlint
+//
 // INITIALISE tmgAds object
 var tmgAds = new tmgAdsInitAdsData();
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -34,8 +40,8 @@ var tmgAds = new tmgAdsInitAdsData();
 
 function tmgAdsInitAdsData(){
   this.adops            = {};
-  this.adops.version    = 5.59;
-  this.adops.date       = "2013-01-30";
+  this.adops.version    = 5.61;
+  this.adops.date       = "2013-04-11";
   this.adops.company    = "Telegraph Media Group";
   this.adops.doNotTrack = tmgAdsGetDoNotTrack();
   this.performance      = {adTotal:0,adAvg:0,adCount:0};
@@ -44,11 +50,11 @@ function tmgAdsInitAdsData(){
   // get page metadata
   this.page             = tmgAdsGetPageData();
   // Fix page taxonomy issues
-  if(this.page.section=="ece_frontpage")  this.page.section="portal";
-  if(this.page.section=="food_and_drink") this.page.section="foodanddrink";
-  if(this.page.section=="food-and-drink") this.page.section="foodanddrink";
-  if(this.page.site=="food_and_drink")    this.page.site="foodanddrink";
-  if(this.page.site=="food-and-drink")    this.page.site="foodanddrink";
+  if(this.page.section==="ece_frontpage")  {this.page.section="portal";}
+  if(this.page.section==="food_and_drink") {this.page.section="foodanddrink";}
+  if(this.page.section==="food-and-drink") {this.page.section="foodanddrink";}
+  if(this.page.site==="food_and_drink")    {this.page.site="foodanddrink";}
+  if(this.page.site==="food-and-drink")    {this.page.site="foodanddrink";}
   // create base DFGP tag data
   this.dfp              = {};
   this.dfp.tile         = 0;
@@ -63,7 +69,7 @@ function tmgAdsInitAdsData(){
   // Add keywods - not currently importing these.dd keywords
   this.page.keywords = tmgAdsGetKeywords();
   // Create cookie object
-  this.cookies = {}
+  this.cookies = {};
   // Add Audience Science Data
   this.page.audienceScienceConnect  = tmgAdsGetAudienceScienceConnect();
   this.cookies.audienceScience      = tmgAdsGetAudienceScienceCookies('tmg');
@@ -84,7 +90,7 @@ function tmgAdsInitAdsData(){
 ///////////////////////////////////////////////////////////////////////////////////
 // Get page data
 function tmgAdsGetPageData(){
-  tmp = {};
+  var tmp = {};
   tmp.url         = location.protocol+'//'+location.host+location.pathname;
   tmp.referrer    = document.referrer;
   tmp.domain      = location.hostname;
@@ -92,7 +98,7 @@ function tmgAdsGetPageData(){
   tmp.search      = location.search;
   tmp.environment = "-";
   // capture Mobile traffic
-  if(tmgAdsGetMetaTag("DCSext.Platform")=="mobile"){
+  if(tmgAdsGetMetaTag("DCSext.Platform")==="mobile"){
     tmp.site      = tmgAdsGetMetaTag("DCSext.Channel");
     tmp.zone      = tmgAdsGetMetaTag("DCSext.MLC").substr(1).replace(/\//g, ".");
     tmp.section   = tmgAdsGetMetaTag("DCSext.MLC").substr(1).replace(/\//g, "-");
@@ -119,27 +125,34 @@ function tmgAdsGetPageData(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+// Get Webtrends data
+function tmgAdsGetWebTrends(){
+  var tmp = {};
+
+  return tmp;
+}
+///////////////////////////////////////////////////////////////////////////////////
 // Get usable Telegraph cookies
 function tmgAdsGetTMGCookies(type){
   // type is adops, tmg, pp 
-  tmp = "";
-  tmpArray = document.cookie.split("; ");
+  var tmp = "";
+  var tmpArray = document.cookie.split("; ");
   for(var i=0; i<tmpArray.length; i++){
     tmpKey=tmpArray[i].split('=')[0];
     tmpVal=tmpArray[i].split('=')[1];
     switch(type){
       case "adops":
-        if(tmpKey.substr(0,7)=="tmgads_" && tmpKey.length>0){
+        if(tmpKey.substr(0,7)==="tmgads_" && tmpKey.length>0){
           tmp += ";ck_"+tmpKey.substr(7,tmpKey.length-7)+"="+tmpVal;
         }
       break;
       case "tmg":
-        if(tmpKey=="tmg_p13n"){
+        if(tmpKey==="tmg_p13n"){
           tmp += ";ck_pp_sub=null";
         }
       break;
       case "pp":
-        if(tmpKey=="tmg_pid"){
+        if(tmpKey==="tmg_pid"){
           tmp += ";ck_pp_pid="+tmpVal;
         }
       break;
@@ -153,20 +166,21 @@ function tmgAdsGetAudienceScienceCookies(type){
   // type = 'tmg' or 'nontmg'
   // returns NNNNN for our cookies, Ennnnn_NNNNNN for nonTMG
   var tmp      = "";
+  var i        = 0;
   var tmpCount = 0;
   var tmpArray = tmgAdsGetCookie("rsi_segs").split("|");
   switch(type){
     case "tmg":
-    for(var i=0;i<=tmpArray.length-1;i++){
-      if(tmpArray[i].substr(0,7)=="E06560_" && tmpCount<=19){
+    for(i=0;i<=tmpArray.length-1;i++){
+      if(tmpArray[i].substr(0,7)==="E06560_" && tmpCount<=19){
         tmp += ";as="+tmpArray[i].substr(7,5);
         tmpCount++;
       } 
     }
     break;
     case "nontmg":
-    for(var i=0;i<=tmpArray.length-1;i++){
-      if(tmpArray[i].substr(0,7)!="E06560_" && tmpCount<=19){
+    for(i=0;i<=tmpArray.length-1;i++){
+      if(tmpArray[i].substr(0,7)!=="E06560_" && tmpCount<=19){
         tmp += ";aso="+tmpArray[i];
         tmpCount++;
       }
@@ -180,7 +194,7 @@ function tmgAdsGetAudienceScienceCookies(type){
 // Get grapeshot values
 function tmgAdsGetQuantcast(){
   tmp = "";
-  if(typeof window.qcSegs != 'undefined'){
+  if(typeof window.qcSegs !== 'undefined'){
    tmp = qcSegs.toLowerCase();
   }
   return tmp;
@@ -193,7 +207,7 @@ function tmgAdsGetAudienceScienceConnect(){
   for(i=0;i<=tmpArray.length-1;i++){
     tmpVal = eval("tmpArray"+"["+i+"]");
     // check to se if the var name is set and is not empty/null value
-    if(eval("window."+tmpVal) != undefined && eval("window."+tmpVal+".length")>0){
+    if(eval("window."+tmpVal) !== undefined && eval("window."+tmpVal+".length")>0){
       tmp += ";asc="+tmpArray[i].substring(2,7);
     }
   }
@@ -203,7 +217,7 @@ function tmgAdsGetAudienceScienceConnect(){
 // Get grapeshot values
 function tmgAdsGetGrapeshot(){
   tmp = "";
-  if(typeof window.gs_channels != 'undefined'){
+  if(typeof window.gs_channels !== 'undefined'){
     var tmpArray = window.gs_channels.split(",");
     for(var i=0;i<=tmpArray.length-1;i++){
       tmp += ";gs="+tmpArray[i].toLowerCase();
@@ -220,10 +234,10 @@ function tmgAdsGetKeywords(){
 // Get page url params
 function tmgAdsGetUrlParams(){
   tmp = {};
-  tmp['adtest']    = tmgAdsGetURLParam("adtest",window.location.href);
-  tmp['adconsole'] = tmgAdsGetURLParam("adconsole",window.location.href);
-  tmp['adkill']    = tmgAdsGetURLParam("adkill",window.location.href);
-  tmp['adtype']    = tmgAdsGetURLParam("adtype",window.location.href);
+  tmp.adtest    = tmgAdsGetURLParam("adtest",window.location.href);
+  tmp.adconsole = tmgAdsGetURLParam("adconsole",window.location.href);
+  tmp.adkill    = tmgAdsGetURLParam("adkill",window.location.href);
+  tmp.adtype    = tmgAdsGetURLParam("adtype",window.location.href);
   return tmp;
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -242,12 +256,11 @@ function tmgAdsGetBrowserSize(){
 ///////////////////////////////////////////////////////////////////////////////////
 // Fash Detect
 function tmgAdsFlashDetect(){
-  var FlashDetect=new function(){var self=this;self.installed=false;self.raw="";self.major=-1;self.minor=-1;self.revision=-1;self.revisionStr="";var activeXDetectRules=[{"name":"ShockwaveFlash.ShockwaveFlash.7","version":function(obj){return getActiveXVersion(obj);}},{"name":"ShockwaveFlash.ShockwaveFlash.6","version":function(obj){var version="6,0,21";try{obj.AllowScriptAccess="always";version=getActiveXVersion(obj);}catch(err){} return version;}},{"name":"ShockwaveFlash.ShockwaveFlash","version":function(obj){return getActiveXVersion(obj);}}];var getActiveXVersion=function(activeXObj){var version=-1;try{version=activeXObj.GetVariable("$version");}catch(err){}return version;};var getActiveXObject=function(name){var obj=-1;try{obj=new ActiveXObject(name);}catch(err){obj={activeXError:true};} return obj;};var parseActiveXVersion=function(str){var versionArray=str.split(",");return{"raw":str,"major":parseInt(versionArray[0].split(" ")[1],10),"minor":parseInt(versionArray[1],10),"revision":parseInt(versionArray[2],10),"revisionStr":versionArray[2]};};var parseStandardVersion=function(str){var descParts=str.split(/ +/);var majorMinor=descParts[2].split(/\./);var revisionStr=descParts[3];return{"raw":str,"major":parseInt(majorMinor[0],10),"minor":parseInt(majorMinor[1],10),"revisionStr":revisionStr,"revision":parseRevisionStrToInt(revisionStr)};};var parseRevisionStrToInt=function(str){return parseInt(str.replace(/[a-zA-Z]/g,""),10)||self.revision;};self.majorAtLeast=function(version){return self.major>=version;};self.minorAtLeast=function(version){return self.minor>=version;};self.revisionAtLeast=function(version){return self.revision>=version;};self.versionAtLeast=function(major){var properties=[self.major,self.minor,self.revision];var len=Math.min(properties.length,arguments.length);for(i=0;i<len;i++){if(properties[i]>=arguments[i]){if(i+1<len&&properties[i]==arguments[i]){continue;}else{return true;}}else{return false;}}};self.FlashDetect=function(){if(navigator.plugins&&navigator.plugins.length>0){var type='application/x-shockwave-flash';var mimeTypes=navigator.mimeTypes;if(mimeTypes&&mimeTypes[type]&&mimeTypes[type].enabledPlugin&&mimeTypes[type].enabledPlugin.description){var version=mimeTypes[type].enabledPlugin.description;var versionObj=parseStandardVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revisionStr=versionObj.revisionStr;self.revision=versionObj.revision;self.installed=true;}}else if(navigator.appVersion.indexOf("Mac")==-1&&window.execScript){var version=-1;for(var i=0;i<activeXDetectRules.length&&version==-1;i++){var obj=getActiveXObject(activeXDetectRules[i].name);if(!obj.activeXError){self.installed=true;version=activeXDetectRules[i].version(obj);if(version!=-1){var versionObj=parseActiveXVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revision=versionObj.revision;self.revisionStr=versionObj.revisionStr;}}}}}();};
+  var tmp; FlashDetect=new function(){var self=this;self.installed=false;self.raw="";self.major=-1;self.minor=-1;self.revision=-1;self.revisionStr="";var activeXDetectRules=[{"name":"ShockwaveFlash.ShockwaveFlash.7","version":function(obj){return getActiveXVersion(obj);}},{"name":"ShockwaveFlash.ShockwaveFlash.6","version":function(obj){var version="6,0,21";try{obj.AllowScriptAccess="always";version=getActiveXVersion(obj);}catch(err){} return version;}},{"name":"ShockwaveFlash.ShockwaveFlash","version":function(obj){return getActiveXVersion(obj);}}];var getActiveXVersion=function(activeXObj){var version=-1;try{version=activeXObj.GetVariable("$version");}catch(err){}return version;};var getActiveXObject=function(name){var obj=-1;try{obj=new ActiveXObject(name);}catch(err){obj={activeXError:true};} return obj;};var parseActiveXVersion=function(str){var versionArray=str.split(",");return{"raw":str,"major":parseInt(versionArray[0].split(" ")[1],10),"minor":parseInt(versionArray[1],10),"revision":parseInt(versionArray[2],10),"revisionStr":versionArray[2]};};var parseStandardVersion=function(str){var descParts=str.split(/ +/);var majorMinor=descParts[2].split(/\./);var revisionStr=descParts[3];return{"raw":str,"major":parseInt(majorMinor[0],10),"minor":parseInt(majorMinor[1],10),"revisionStr":revisionStr,"revision":parseRevisionStrToInt(revisionStr)};};var parseRevisionStrToInt=function(str){return parseInt(str.replace(/[a-zA-Z]/g,""),10)||self.revision;};self.majorAtLeast=function(version){return self.major>=version;};self.minorAtLeast=function(version){return self.minor>=version;};self.revisionAtLeast=function(version){return self.revision>=version;};self.versionAtLeast=function(major){var properties=[self.major,self.minor,self.revision];var len=Math.min(properties.length,arguments.length);for(i=0;i<len;i++){if(properties[i]>=arguments[i]){if(i+1<len&&properties[i]==arguments[i]){continue;}else{return true;}}else{return false;}}};self.FlashDetect=function(){if(navigator.plugins&&navigator.plugins.length>0){var type='application/x-shockwave-flash';var mimeTypes=navigator.mimeTypes;if(mimeTypes&&mimeTypes[type]&&mimeTypes[type].enabledPlugin&&mimeTypes[type].enabledPlugin.description){var version=mimeTypes[type].enabledPlugin.description;var versionObj=parseStandardVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revisionStr=versionObj.revisionStr;self.revision=versionObj.revision;self.installed=true;}}else if(navigator.appVersion.indexOf("Mac")==-1&&window.execScript){var version=-1;for(var i=0;i<activeXDetectRules.length&&version==-1;i++){var obj=getActiveXObject(activeXDetectRules[i].name);if(!obj.activeXError){self.installed=true;version=activeXDetectRules[i].version(obj);if(version!=-1){var versionObj=parseActiveXVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revision=versionObj.revision;self.revisionStr=versionObj.revisionStr;}}}}}();};
   if(FlashDetect.installed){
-    //this.flash['versionMaj']=FlashDetect.major; this.flash['versionMin']=FlashDetect.minor; this.flash['versionRev']=FlashDetect.revision; this.flash['versionRaw']=FlashDetect.raw;     	
-    var tmp = {versionMaj:FlashDetect.major,versionMin:FlashDetect.minor,versionRev:FlashDetect.revision,versionRaw:FlashDetect.raw};     	
+    tmp = {versionMaj:FlashDetect.major,versionMin:FlashDetect.minor,versionRev:FlashDetect.revision,versionRaw:FlashDetect.raw};     	
   } else {
-    var tmp = {versionMaj:0,versionMin:0,versionRev:0,versionRaw:'none'};
+    tmp = {versionMaj:0,versionMin:0,versionRev:0,versionRaw:'none'};
   }
   return tmp;
 }
@@ -326,17 +339,25 @@ function tmgAdsSetCookie(name,val,ttlhrs,dom){
 function tmgAdsTimer(){
   var tmp = new Date();
   return Number(tmp);
-  delete tmp; 
 }
 ///////////////////////////////////////////////////////////////////////////////////
 // Gets the current DoNotTrack value and normalises this 1=on 0=off - http://ie.microsoft.com/testdrive/browser/donottrack/default.html
 function tmgAdsGetDoNotTrack(){
-  if(navigator.doNotTrack)          tmp = navigator.doNotTrack;   // Standard method
-  if(navigator.msDoNotTrack)        tmp = navigator.msDoNotTrack; // MSIE method
-  if(typeof(this.dnt)=="undefined") tmp = 0; // Safari on iDevices
-  if(tmp=="unspecified")            tmp = 0; // Normalise Firefox
-  if(tmp.dnt=="yes")                tmp = 1; // Normalise Firefox
+  var tmp;
+  // Safari, Chrome, Firefox
+  if(navigator.doNotTrack=="unspecified" || navigator.doNotTrack==1 || navigator.doNotTrack=="yes"){
+    tmp = navigator.doNotTrack;   // Standard method
+  }
+  // IE9+
+  if(navigator.msDoNotTrack){
+    tmp = navigator.msDoNotTrack; // MSIE method
+  }
+  if(typeof(tmp)=='undefined') tmp = 0; // Safari/IE8/Chrome/Opera
+  if(tmp=="unspecified")       tmp = 0; // Normalise unset values in Firefox
+  if(tmp=="no")                tmp = 0; // Normalise non-standard implementations
+  if(tmp=="yes")               tmp = 1; // Normalise Firefox or non-standard implementations
   return tmp;
+//
 }
 ///////////////////////////////////////////////////////////////////////////////////
 // Get topLeft position of the ad in the page
@@ -430,7 +451,9 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[n]['kvps'] += ";bih=" + tmgAds.browser.bih;
   tmgAds.ads[n]['kvps'] += ";fv="  + tmgAds.flash.versionMaj;
   tmgAds.ads[n]['kvps'] += ";dnt=" + tmgAds.adops.doNotTrack;
-  tmgAds.ads[n]['kvps'] += ";pos=" + tmgAds.dfp.tile;  
+  tmgAds.ads[n]['kvps'] += ";rd="  + tmgAds.page.domain;
+  tmgAds.ads[n]['kvps'] += ";platform="  + tmgAds.page.platform;
+  tmgAds.ads[n]['kvps'] += ";pos=" + tmgAds.dfp.tile;
   tmgAds.ads[n]['kvps'] += tmgAds.page.grapeshot;
   tmgAds.ads[n]['kvps'] += tmgAds.page.keywords;
   tmgAds.ads[n]['kvps'] += tmgAds.page.quantcast;
@@ -505,7 +528,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[n]['tagPreScript'] = "<scr"+"ipt type=\"text/javascript\">"+tmgAds.ads[n]['tagPreScript']+"</scr"+"ipt>";
   tmgAds.ads[n]['tagPostScript']= "<scr"+"ipt type=\"text/javascript\">"+tmgAds.ads[n]['tagPostScript']+"</scr"+"ipt>";
   // build the final taga and return this, for adx calls make sure the response is ONLY a url otherwise will break apps
-  if(adScriptType==="adx" || adScriptType==="pfadx"){
+  if(adScriptType==="adx" || adScriptType==="pfadx" || adStyle===0){
     tmgAds.ads[n]['tag'] = tmgAds.ads[n]['url'];
   } else {
     // Fix Fashion galleries, only return IFRAME tag, don't wrap with timer tags sc=fashion-galleries and iframe adi call this returns the normal unaltered/unwrapped tag IF fashion galleries using iframes by not wrappign the tag
@@ -517,25 +540,25 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
 }
 ///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsGetAdSlotInfo(i){
-    // some ads don't have this, eg; video adx calls, use else rather than set vars default first as quicker/less steps.
-    if((tmgAds.ads[i]['func']['invoc']!="adx" && tmgAds.ads[i]['func']['invoc']!="pfadx") && tmgAds.page.urlParams['adkill']!="on" && tmgAds.page.pagetype!="gallery"){
-      tmgAds.ads[i]['divW']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetWidth;    
-      tmgAds.ads[i]['divH']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetHeight;   
-      tmgAds.ads[i]['pos']    = tmgAdsGetAdPos(document.getElementById(tmgAds.ads[i].id_div));
-      //tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
-      //tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
-      tmgAds.ads[i]['innerHTML']     = unescape(document.getElementById(tmgAds.ads[i].id_div).innerHTML);
-    } else {
-      tmgAds.ads[i]['divW']   = 0;
-      tmgAds.ads[i]['divH']   = 0;
-      tmgAds.ads[i]['pos']    = [0,0];
-      tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
-      tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
-      tmgAds.ads[i]['innerHTML'] = "";
-      tmgAds.performance[i]['begin']   = "n/a";
-      tmgAds.performance[i]['finish']  = "n/a";
-      tmgAds.performance[i]['time']    = "n/a";
-    }
+  // some ads don't have this, eg; video adx calls, use else rather than set vars default first as quicker/less steps, don;t index prefetched/gallary interstitiasl adStyle=0 either
+  if((tmgAds.ads[i]['func']['invoc']!="adx" && tmgAds.ads[i]['func']['invoc']!="pfadx") && tmgAds.ads[i]['func']['style']!=0  && tmgAds.page.urlParams['adkill']!="on" && tmgAds.page.pagetype!="gallery"){
+    tmgAds.ads[i]['divW']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetWidth;    
+    tmgAds.ads[i]['divH']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetHeight;   
+    tmgAds.ads[i]['pos']    = tmgAdsGetAdPos(document.getElementById(tmgAds.ads[i].id_div));
+    //tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
+    //tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
+    tmgAds.ads[i]['innerHTML']     = unescape(document.getElementById(tmgAds.ads[i].id_div).innerHTML);
+  } else {
+    tmgAds.ads[i]['divW']   = 0;
+    tmgAds.ads[i]['divH']   = 0;
+    tmgAds.ads[i]['pos']    = [0,0];
+    tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
+    tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
+    tmgAds.ads[i]['innerHTML'] = "";
+    tmgAds.performance[i]['begin']   = "n/a";
+    tmgAds.performance[i]['finish']  = "n/a";
+    tmgAds.performance[i]['time']    = "n/a";
+  }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 // RUN THESE AFTER PAGE HAS LOADED

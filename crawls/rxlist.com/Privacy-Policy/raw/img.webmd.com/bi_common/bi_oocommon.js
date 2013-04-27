@@ -39,7 +39,7 @@ webmd.omniture = {
 };
 /* END New Namespaced code */
 
-var s_ver='|oocommon|20130320',_ud="undefined",s_live=false,ntc="ntc";
+var s_ver='|oocommon|20130411',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -521,14 +521,8 @@ if(typeof s_tug!=_ud&& s_tug!="" && s_md.prop45!=ntc)
 	s_md.prop45=s_tug+"_"+s_md.prop45;
 }
 s_md.prop46=(typeof s_page_state!=_ud&& s_page_state!="")? s_page_state.toLowerCase():"";
-if(((_haiq==="")||(_haiq==="99999"))){
-	s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
-}
 
-// adding prop47 aiq logic per WR. If aiq is set to a non 99999 value, we want to suppress prop47 (setting to ntc per above suppression code)
-if(webmd.omniture.aiqGet() && webmd.omniture.aiqGet() != '99999') {
-	s_md.prop47 = ntc;
-}
+s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
 
 try{s_md.prop49=s_visitor;}catch(e){}
 s_md.eVar46=_haiq;

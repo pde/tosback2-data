@@ -1,0 +1,5055 @@
+/* Table of Contents:
+
+    Global Tags
+    Typography
+    Lists
+    Misc. Generic Classes
+    Core Layout
+    Header Layout  (MOVED TO header_andre.css)
+        Navigation (MOVED TO header_andre.css)
+    Middle Layout
+        Tags Column
+        Pages
+            View Article, Singular
+            View Articles, Plural
+            WWW Page
+    Featured Article (Editorially Selected Headline)
+            View Image, Singular
+            View Video, Singular
+            View Ranked Images/Article (vertical listings)
+            My Page
+            Namespace Page
+            Groupspace Page
+            Group Settings
+            Tagspace Page
+            Suggested Tags Page
+            Ranked Tags Page
+    Publish Pages (Article, Image, Video)
+    Brief Modules (People, Groups, Articles, Images, Comments)
+    Header Classes for Listing Pages
+    Sign In
+    User Quotes
+    Internal Ads
+    Footer Layout
+            Promo Pages
+            Registration Page
+    Peusdo Columns
+    Survey Polls
+    Feeds
+    Feed templates
+    Private Messaging
+    AddThis Share Button
+    Inbox
+    Member Support Submission Form
+*/
+
+/* Global Tags
+--------------------------------------------------------------------------------------- */
+html, body { margin:0; padding:0; }
+body {
+    color: #444;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align:center; /* centering for IE */
+    background-color: #EEE;
+    /*overflow:auto;*/
+}
+p, td, input, select, textarea, button {
+    color: #444;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+p { margin: 0 0 12px 0; }
+img { border:0; }
+a:link, a:active, a:visited, a:hover {
+    text-decoration: none;
+    color: #069;
+}
+a:hover {
+    text-decoration:underline;
+}
+
+a.nonlink:hover {
+  text-decoration:none;
+  color:#444;
+}
+
+a.bare:hover      { text-decoration:none;      }
+a.bare:hover span { text-decoration:underline; }
+
+form {
+  margin: 0;
+}
+
+/* Typography
+--------------------------------------------------------------------------------------- */
+h1, h2 { font-size: 18px; font-family: Georgia, serif; font-weight: normal; color: #690; margin: 0 0 5px 0; }
+/* Large Module Titles */
+h3 { font-size: 12px; font-style:normal; font-weight: bold; color: #ffcc3d; margin:0; padding:0; }
+h3 a:link, h3 a:active, h3 a:visited, h3 a:hover { font-size: 12px; font-style: normal; font-weight: bold; color: #ffcc3d; margin:0; padding:0; text-decoration: none; }
+h3 a:hover{ text-decoration:underline; }
+/* Small Module Titles */
+h4 { font-size: 18px;font-style:normal; font-weight: normal;color: #F3901C;margin:0;padding:0;}
+/* FAQ Titles */
+h5 { font-size: 18px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-style: normal; font-weight: normal; color: #666; margin:0 0 10px 0; padding:0;}
+
+/* Text/Link Sizes */
+.t9,  .t9 td,  .t9 p,  p.t9,  ul.t9 li { font-size: 9px; font-style:normal; font-weight: normal;}
+.t10, .t10 td, .t10 p, p.t10, ul.t10 li{ font-size: 10px;font-style:normal; font-weight: normal;}
+.t11, .t11 td, .t11 p, p.t11, ul.t11 li{ font-size: 11px;font-style:normal; font-weight: normal;}
+.t12, .t12 td, .t12 p, p.t12{ font-size: 12px;font-style:normal; font-weight: normal;}
+.t13, .t13 td, .t13 p, p.t13{ font-size: 13px;font-style:normal; font-weight: normal;}
+.t14, .t14 td, .t14 p, p.t14{ font-size: 14px;font-style:normal; font-weight: normal;}
+.t15, .t15 td, .t15 p, p.t15{ font-size: 15px;font-style:normal; font-weight: normal;}
+.t16, .t16 td, .t16 p, p.t16{ font-size: 16px;font-style:normal; font-weight: normal;}
+.t17, .t17 td, .t17 p, p.t17{ font-size: 17px;font-style:normal; font-weight: normal;}
+.t18, .t18 td, .t18 p, p.t18{ font-size: 18px;font-style:normal; font-weight: normal;}
+
+/* Font Overrides */
+.arial { font-family: Arial, Helvetica, sans-serif; }
+.verdana { font-family: Verdana, Arial, Helvetica, sans-serif; }
+
+
+/* Line Heights Used for link and text classes */
+.lh12 {line-height: 12px;}
+.lh13 {line-height: 13px;}
+.lh14 {line-height: 14px;}
+.lh15 {line-height: 15px;}
+.lh16 {line-height: 16px;}
+.lh17 {line-height: 17px;}
+.lh18 {line-height: 18px;}
+.lh19 {line-height: 19px;}
+.lh20 {line-height: 20px;}
+.lh21 {line-height: 21px;}
+.lh22 {line-height: 22px;}
+.lh23 {line-height: 23px;}
+.lh24 {line-height: 24px;}
+.lh25 {line-height: 25px;}
+
+/* Text/Link Colors */
+.orange,    a.orange:link,    a.orange:active,    a.orange:visited,    a.orange:hover{     color: #F3901C;}
+.dk_orange, a.dk_orange:link, a.dk_orange:active, a.dk_orange:visited, a.dk_orange:hover{  color: #F60;}
+.dk_orange2, a.dk_orange2:link, a.dk_orange2:active, a.dk_orange2:visited, a.dk_orange2:hover{  color: #ca630c;}
+/* NOT USED YET -- .lt_blue, a.lt_blue:link, a.lt_blue:active, a.lt_blue:visited, a.lt_blue:hover { color: #069;} */
+.dk_blue,   a.dk_blue:link,   a.dk_blue:active,   a.dk_blue:visited,   a.dk_blue:hover {   color: #069;}
+.lt_gray,   a.lt_gray:link,   a.lt_gray:active,   a.lt_gray:visited,   a.lt_gray:hover {   color: #CCC;}
+.med_gray,  a.med_gray:link,  a.med_gray:active,  a.med_gray:visited,  a.med_gray:hover {  color: #999;}
+.medk_gray, a.medk_gray:link, a.medk_gray:active, a.medk_gray:visited, a.medk_gray:hover { color: #666;}
+.dk_gray,   a.dk_gray:link,   a.dk_gray:active,   a.dk_gray:visited,   a.dk_gray:hover {   color: #444;}
+.lt_green,  a.lt_green:link,  a.lt_green:active,  a.lt_green:visited,  a.lt_green:hover {  color: #690;}
+.dk_green,  a.dk_green:link,  a.dk_green:active,  a.dk_green:visited,  a.dk_green:hover {  color: #360;}
+.white,     a.white:link,     a.white:active,     a.white:visited,     a.white:hover {     color: #FFF;}
+.red,       a.red:link,       a.red:active,       a.red:visited,       a.red:hover {       color: #C00;}
+.yellow,    a.yellow:link,    a.yellow:active,    a.yellow:visited,    a.yellow:hover {    color: #FF0;}
+
+.articleText { line-height: 18px; margin-top: 15px;}
+.commentInfo, .commentInfo p {font-size: 11px;font-style:normal; font-weight: normal;}
+.commentText, .commentText p {font-size: 12px;font-style:normal; font-weight: normal; line-height:18px;margin-bottom: 8px;}
+
+a.no_uline:link, a.no_uline:active, a.no_uline:visited, a.no_uline:hover {
+    text-decoration: none;
+}
+
+.messageBox {
+  background-color: #eee;
+  border: 1px solid #390;
+  color: #690;
+  font-weight: bold;
+  padding: 8px;
+  text-align: center;
+}
+
+.formSection {
+  border: none;
+  display: block;
+  margin-bottom: 30px;
+  padding: 0;
+}
+
+.formSectionHeader {
+  color: #444;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.formField {
+  margin-bottom: 10px;
+}
+
+.formField.inline {
+  margin-bottom: 5px;
+}
+
+.formField .fieldLabel {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.formField.inline .fieldLabel {
+  float: left;
+  width: 125px;
+  margin-right: 8px;
+  margin-bottom: 0;
+  text-align: right;
+}
+
+.formField .fieldLabel.checkbox,
+.formField .fieldLabel.radio {
+  display: inline;
+  float: none;
+  margin-right: 0;
+  text-align: left;
+  width: auto;
+}
+
+.formField .fullWidth,
+.formField textarea {
+  width: 586px;
+}
+
+.formField.inline .fullWidth,
+.formField.inline textarea {
+  width: 493px;
+}
+
+.formIndent {
+  display: block;
+  margin-left: 133px;
+  width: 493px;
+}
+
+
+.formMessage {text-align:left; padding:8px; background-color: #EEE; color: #690; border:1px solid #390; margin-bottom:10px;  }
+
+.message {margin: 3px; padding: 5px; background-color: #EEEEEE;border: 1px solid #BBBBBB; }
+
+.formErrors {
+  background-color: #ffeded;
+  border: 1px solid #f00;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.formErrors ul {
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-top: 0;
+  padding-left: 20px;
+}
+
+.error{ color: #C00;}
+
+.errorBox {
+  border: 1px solid red;
+  padding: 6px;
+}
+
+.errorBoxBackground { background-color:#FCC;}
+
+.errorMessage {
+  color: black;
+  margin-top: 10px;
+}
+
+.errorMessageList ul {
+  margin: 0;
+  padding: 0;
+}
+
+.errorMessageList ul li {
+  list-style-type: none;
+}
+
+.formField .errorField {
+  border: 1px solid #f00;
+}
+
+#grpFeatureContainer #grpFeatureHeader h1 a:link,
+#grpFeatureContainer #grpFeatureHeader h1 a:active,
+#grpFeatureContainer #grpFeatureHeader h1 a:visited,
+#grpFeatureContainer #grpFeatureHeader h1 a:hover {
+    text-decoration:none;
+    color:#444;
+}
+#grpFeatureContainer #grpFeatureHeader h1 a:hover {
+    text-decoration:underline;
+}
+
+.featureTitle {
+    font-size:18px;
+}
+
+#essentialsHeading,
+#editorialGroupsHeading {
+    font-size:18px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#signInJoin,
+#signInContainer,
+#signInContainer td {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+.pubSub {
+  font:bold 12px/18px Verdana, Arial, Helvetica, sans-serif;
+  color:#444;
+}
+
+/* Lists
+--------------------------------------------------------------------------------------- */
+
+
+
+/* Misc. Generic Classes
+--------------------------------------------------------------------------------------- */
+.button {
+  background-color: #f90;
+  border: 1px outset #f90;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 4px;
+
+  /* IE puts extra padding in buttons, this fixes that */
+  overflow: visible;
+  width: auto;
+}
+
+.button.selected {
+  background-color: #fc9;
+  border: 1px outset #fc9;
+}
+.button.disabled{
+  background-color: #ccc;
+  border: 1px outset #ccc;
+}
+
+.button[disabled]{
+  background-color: #ccc;
+  border: 1px outset #ccc;
+}
+
+.buttonBar {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.buttonBar .button {
+  margin-right: 6px;
+}
+
+.textarea-handle {
+    height: 5px;
+    display: block;
+    background: #d5d5d5 url(images/grab-handle.gif) no-repeat 50%;
+}
+
+.collapsibleSection {
+  padding-left: 20px;
+}
+
+.collapsibleSection .viewToggle {
+  float: left;
+  margin-left: -20px;
+}
+
+.collapsibleSection.collapsed {
+  height: 1.25em;
+  overflow: hidden;
+}
+
+.contentEntry {
+    margin-bottom: 5px;
+  overflow: hidden;
+}
+.imgBorder{
+    border:1px solid #CCC;
+    padding: 2px;
+    background-color:#FFF;
+    margin:0 0 2px 0;
+}
+.spacer{
+    display: block;
+    font: 1px/1px monospace;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+}
+.linkSeparator {
+    margin:0 6px;
+}
+.groupSubNavSeparator, .SubNavSeparator { margin:0 4px 0 8px; color: #ccc; }
+
+.linkSeparator.ltGray { color: #bbb; margin: 0 3px; }
+
+/* To use until old linkSeparator is phased out */
+.linkSeparator2 {
+  color: #ccc;
+}
+.imgControls .linkSeparator {
+    margin:0 2px;
+}
+.vertSpacer {
+    background-image:url(images/vert_spacer.gif);
+    background-repeat: repeat-y;
+    background-position:top center;
+    font-size:1px;
+}
+.vertSpacerNoBG {
+    font-size:1px;
+}
+.vertSpacer div,
+.vertSpacerNoBG div {
+    font-size:1px;
+}
+.topLink {
+    text-align:right;
+    font-size:10px;
+    margin-right:8px;
+}
+.adultBox{
+  border: 1px solid #f22;
+  color: #f22;
+  font-weight: bold;
+    margin-bottom: 15px;
+  padding: 5px 10px;
+}
+.commentBody {
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.blueBox {
+    border:1px solid #d5ebf8;
+    background:#edf8fc;
+}
+.blueBoxTitle {
+    border:1px solid #d5ebf8;
+    background:#edf8fc;
+
+    font-weight: bold;
+    padding:3px 8px;
+    margin:0 0 14px;
+}
+.cbh {
+    clear:both;
+    height:0;
+    font-size:0;
+}
+.cb {
+    clear:both;
+}
+
+.tooltipImage {
+  padding-top: 2px;
+}
+
+.cancelLink {
+  margin-left: 20px;
+}
+
+.textInput {
+  border: 1px solid #d5d5d5;
+}
+
+.smallInput {
+    padding:4px;
+    border:1px solid #d5d5d5
+}
+*:first-child html .smallInput { /* IE7 only */
+    height:24px;
+}
+
+.goArrow {
+    margin:0 0 -5px 6px;
+}
+* html .goArrow {
+    margin-bottom:-2px;
+}
+
+.visHide {
+  visibility:hidden;
+}
+
+/* Margins & Paddings
+--------------------------------------------------------------------------------------- */
+.mb0 { margin-bottom:0; }
+.mb4 { margin-bottom: 4px; }
+.mb8 { margin-bottom: 8px; }
+.mb15 { margin-bottom: 15px; }
+.mb30 { margin-bottom: 30px; }
+.mt4 { margin-top: 4px; }
+.mt6 { margin-top: 6px; }
+.mt7 { margin-top: 7px; }
+.mt8 { margin-top: 8px; }
+.mt10 { margin-top: 10px; }
+.mt13 { margin-top: 13px; }
+.mt20 { margin-top: 20px; }
+.mt30 { margin-top: 30px; }
+
+.mt-10 { margin-top:-10px; }
+
+.ml30 { margin-left: 30px; }
+
+.mtb20 { margin:20px 0; }
+
+.mr4 { margin-right:4px; }
+
+.plr9 { padding-left:9px; padding-right:9px; }
+.p5 { padding:5px; }
+.p4 { padding:4px; }
+.p0 { padding:0;   }
+
+/* Core Layout
+--------------------------------------------------------------------------------------- */
+#content {
+    width:994px;
+    margin:0 auto; /* centering for everything else */
+    text-align:left; /* reset centering-IE fix */
+}
+#page {
+    padding: 225px 0px 0 0px; /* 280px NEW HEADER CODE */
+    background-color: #fff;
+    width: 990px;
+}
+
+#page.nav { /* Blank Nav */
+    padding-top:243px;
+}
+#page.nav.index.out {
+    padding-top:197px;
+}
+
+.pageContainer {
+    border: 2px solid #EEE;
+}
+.pageTopBanner {
+}
+.pageBody {
+    background-color: #FFF;
+}
+
+/* Footer
+---------------------------------------------------------------------------------------
+*/
+.footerContainer {
+    width: 962px;
+    background-color: #EEE;
+    display:block;
+    padding: 10px 15px 0px;
+    border: 1px #EEE solid;
+    margin-bottom: 20px;
+}
+
+/* Middle Layout
+--------------------------------------------------------------------------------------- */
+
+/* Tags Column
+--------------------------------------------------------------------------------------- */
+#essentialIcon {
+    background:#efefef;
+    text-align:center;
+    overflow:hidden;
+}
+
+#essentialTopics {
+    background:#fff;
+    margin-top:2px;
+}
+
+#facetsContainer,
+#tagsContainer {
+    word-wrap:break-word;
+    overflow:hidden;
+}
+#tagsContainer li.selected {
+    background: #eee;
+    }
+#facetsContainer ul, #facetsContainer li,
+#tagsContainer ul, #tagsContainer li,
+#essentialTopics ul, #essentialTopics li {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+#friendSetsContainer,
+#filterContainer {
+  margin-bottom: 20px;
+}
+
+#friendSetsContainer h3,
+#filterContainer h3 {
+  font-weight: normal;
+}
+
+#friendSetsContainer ul,
+#filterContainer ul {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 108px;
+  word-wrap: break-word;
+}
+
+#friendSetsContainer li,
+#filterContainer li {
+  list-style: none;
+  padding: 4px;
+}
+#friendSetsContainer li.active,
+#filterContainer li.active {
+  background: #eee;
+}
+
+#essentialTopics li {
+    background:#efefef;
+    padding:3px 5px 3px 4px;
+    margin-bottom:2px;
+}
+#essentialTopics a {
+    font-family:Georgia, Arial, Helvetica, sans-serif;
+    color:#444;
+}
+.essentialsBlockTitle a span.esAr,
+#essentialTopics a span.esAr {
+    padding-left:5px;
+}
+.essentialsBlockTitle a:hover,
+#essentialTopics a:hover {
+    text-decoration:none;
+}
+
+#essentialTopics .esLbl {
+  text-transform:uppercase;
+}
+
+.essentialsBlockTitle a:hover span.esLbl,
+#essentialTopics a:hover span.esLbl {
+    text-decoration:underline;
+}
+
+#essentialTopicDivider {
+    background:#efefef;
+    padding:2px;
+    margin-bottom:2px;
+}
+#essentialTopicDivider div {
+    background:#0c4268;
+    height:2px;
+}
+/*
+#tagsContainer li.tagsTitle {
+    border-bottom:1px solid #fff;
+}
+*/
+#facetsContainer li,
+#tagsContainer li {
+    padding-bottom:6px;
+}
+/*#tagsMemberRecent, #tagsMyRecent, #tagsMyFav, #tagsRelated, #tagsGroup, #tagsEditorialList*/
+/*
+#tagsMain, #tagsAny {
+    padding:5px;
+}
+*/
+
+.tagsListInnerTop {
+    padding:5px;
+    padding-bottom:0;
+    border-bottom:2px solid #fff;
+}
+.tagsListInnerBottom {
+    padding:5px;
+    padding-top:3px;
+}
+
+.tagsListInner {
+    padding:9px 5px 5px 5px;
+}
+
+#tagsMemberRecent, #tagsMyRecent, #tagsMyFav, #tagsRelated, #tagsEditorialList, #tagsGroup {
+    background-color:#efefef;
+    width:110px;
+    margin-bottom:15px;
+    word-wrap:break-word;
+    overflow:hidden;
+}
+.indexSub #tagsEditorialList,
+#page.index #tagsEditorialList { /* Set tags list 10px smaller for www page */
+    width:100px;
+}
+#tagsAny {
+    padding-top:0;
+    /* Removed for Azores */
+    /*
+    height:103px;
+    background-image:url(images/tag_background.gif);
+    background-repeat: no-repeat;
+    background-position: top left;
+    */
+}
+/*
+#tagsAny ul {
+    padding-top:13px;
+}
+*/
+#tagsAny ul li.submit {
+    margin-left:57px;
+}
+#tagsEditorialList form,
+#tagsAny form {
+    padding:0;
+    margin:0;
+}
+/* Removed for Azores */
+/*
+#tagsContainer li,
+#tagsContainer a{
+    color:#666;
+}
+*/
+#tagsMain .stdLink {
+    padding:15px 0 10px 0;
+}
+#tagsContainer .stdLink a {
+    color:#069;
+    /*font-weight:normal;*/
+}
+#tagsContainer .tagsTitle {
+    margin:12px 0 6px 0;
+}
+#tagsContainer .tagsTitle,
+#tagsContainer .tagsTitle a {
+    /*border-bottom:1px solid #fff;*/
+    color:#690;
+}
+
+/* Tag Count Statistic */
+.tagStat {
+    font-size:10px;
+}
+
+/* View Article, Singular
+--------------------------------------------------------------------------------------- */
+h1.contentTitle {
+  color: #444;
+}
+
+.pageHeading { margin-bottom: 20px; } /* Used primarily with H1 tag */
+
+.contentByline {
+  float: right;
+  margin-left: 10px;
+  width: 210px;
+}
+
+.contentByline .icon {
+  float: left;
+}
+
+.contentByline .dates {
+  margin-top: 8px;
+}
+
+.contentByline .bylineInfo {
+  margin-left: 70px;
+}
+
+#findRelatedContainer,
+#findAuthorContainer,
+#mostViewedPostsContainer,
+#promotionModuleContainer {
+  margin-bottom: 15px;
+}
+
+#findRelatedContainer ul,
+#findAuthorContainer ul,
+#mostViewedPostsContainer ul,
+#promotionModuleContainer ul {
+  list-style-type: none;
+  margin: 10px 0;
+  padding: 0;
+}
+
+#grpTagsContainer ul {
+  list-style-type: none;
+  margin: 10px 0;
+  padding: 0px;
+}
+
+#grpTagsContainer li {
+  background: url(images/orange_bullet.gif) no-repeat 5px 7px;
+  margin-bottom: 8px;
+  padding-left: 15px;
+}
+
+#topTagsContainer ul {
+  list-style-type: none;
+  margin: 10px 0;
+  padding: 0px;
+}
+
+#topTagsContainer li {
+  background: url(images/orange_bullet.gif) no-repeat 5px 7px;
+  margin-bottom: 8px;
+  padding-left: 15px;
+}
+
+#mostViewedPostsContainer li,
+#promotionModuleContainer li {
+  margin-bottom: 15px;
+}
+
+#findRelatedContainer li,
+#findAuthorContainer li {
+  background: url(images/orange_bullet.gif) no-repeat 0 5px;
+  margin-bottom: 8px;
+  padding-left: 10px;
+}
+
+#findRelatedContainer .viewMore,
+#findAuthorContainer .viewMore {
+  background: #f1f1f1 url(images/feed_icons/icon_article.gif) no-repeat 8px 6px;
+  border-bottom: 1px solid #bbb;
+  margin-top: 10px;
+  padding: 6px 8px 6px 30px;
+}
+
+#findRelatedContainer .viewMore.album,
+#findAuthorContainer .viewMore.album {
+  background-image: url(images/feed_icons/icon_picture.gif);
+}
+
+#findRelatedContainer .viewMore.photo,
+#findAuthorContainer .viewMore.photo {
+  background-image: url(images/feed_icons/icon_picture.gif);
+}
+
+#findRelatedContainer .viewMore.video,
+#findAuthorContainer .viewMore.video {
+  background-image: url(images/feed_icons/icon_video.gif);
+}
+
+.findMoreContentFromSearchTerm {
+  background: url(images/icons/icon_search.png) no-repeat 0 8px;
+  border-bottom: 1px solid #ffcd0a;
+  margin-bottom: 10px;
+  padding: 8px 8px 8px 24px;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 13px;
+}
+
+#commentBox {
+  background-color: #f7f7f7;
+  border-top: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 8px;
+}
+
+.inlineCommentBox {
+  background-color: #EEE;
+  border: 1px solid #bbb;
+  padding: 8px 8px 0px;
+}
+
+.articleText img {
+    margin:3px;
+}
+
+.tagsAndGroups {
+  margin: 15px 0;
+}
+.tagsAndGroups .collapsibleSection {
+  margin: 15px 0;
+}
+
+/* View Articles, Plural
+--------------------------------------------------------------------------------------- */
+#viewArticlesListing {
+    word-wrap:break-word;
+}
+
+/* WWW Page
+--------------------------------------------------------------------------------------- */
+/*
+#page.index.out {
+    background-image:url(images/bg_hdr_index.gif);
+    background-repeat: no-repeat;
+}
+*/
+#bannerMessage {
+    /*background-color:#eee;*/
+    text-align:center;
+    font-size:18px;
+    padding:14px 0;
+    /*margin-bottom:16px;*/
+}
+/* Removed from Azores */
+/*
+#page.index div.indexSub {
+    background-image:url(images/bg_topics.gif);
+    background-repeat: no-repeat;
+    background-position: 126px 0;
+}
+*/
+
+
+/* Create / Edit Article Page
+--------------------------------------------------------------------------------------- */
+#draftListContainer {
+    background-color:#e9f6fc;
+    border:1px solid #c9e6f6;
+    padding: 15px;
+}
+#draftListContainer ul {
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+#draftListContainer .draftEntry, #draftListContainer .draftEntryActive {
+    padding:9px 7px 9px 27px;
+    margin-bottom:4px;
+    background-repeat: no-repeat;
+    background-image: url(images/icon_edit.gif);
+    background-position: 7px 11px;
+    border: 1px solid #e9f6fc;
+}
+#draftListContainer .draftEntry:hover, #draftListContainer .draftEntry.sfhover, #draftListContainer .draftEntryActive {
+    background-color:#fff;
+    border-color: #eee;
+}
+#draftListContainer ul li {
+    padding:9px 7px 9px 27px;
+}
+#draftListContainer ul li ul {
+    margin-top:3px;
+}
+#draftListContainer ul li ul li {
+    display:inline;
+    padding:0;
+    background:none;
+    font-size:11px;
+}
+#draftListContainer .draftEditLinkActive {
+    color:#f3901c;
+    font-weight:bold;
+}
+
+
+/* Featured Article (Editorially Selected Headline)
+--------------------------------------------------------------------------------------- */
+#featureContainer {
+}
+#featureHeader {
+    padding:8px 13px;
+}
+#featureExtraLink {
+    float:right;
+    padding-top:6px;
+    font-size:12px;
+}
+#featureHeader a,
+#featureCommentTitle a,
+#featureFooter a {
+    color:#ffcc3d;
+}
+#featureBody {
+}
+#featureImage {
+}
+#featureExcerptCell {
+    background : url(images/featured_purple_arrow_tip57.gif) no-repeat bottom right !important;
+    background-image : url(images/featured_purple_arrow_tip58.gif); /* IE kludge */
+}
+#featureTitle {
+    padding:23px 23px 0 23px;
+}
+#featureExcerpt {
+    padding:23px;
+}
+#featureComment {
+}
+#featureCommentTitle {
+    padding:8px 0;
+    margin-left:22px;
+    margin-right:32px;
+    background : url(images/featured_purple_arrow_mid.gif) no-repeat right;
+}
+#featureCommentImage {
+    margin:0 14px 0 18px;
+    border:0;
+}
+
+#featureCommentExcerptBorderT, #featureCommentExcerptBorderTR,
+#featureCommentExcerptBorderB, #featureCommentExcerptBorderBR {
+    font-size:1px;
+    height:14px;
+    text-align:right;
+}
+#featureCommentExcerptBorderT {
+    background : url(images/featured_purple_t.gif) repeat-x top;
+}
+#featureCommentExcerptBorderB {
+    background : url(images/featured_purple_b.gif) repeat-x bottom;
+}
+#featureCommentExcerptBorderTL {
+    float:left;
+}
+#featureCommentExcerptBorderTR {
+    background : url(images/featured_purple_tr.gif) no-repeat right;
+}
+#featureCommentExcerptBorderBL {
+    float:left;
+}
+#featureCommentExcerptBorderBR {
+    background : url(images/featured_purple_br.gif) no-repeat right;
+}
+
+
+#featureCommentExcerptOuter {
+    padding:0;
+    margin:0 18px 4px 0;
+    z-index:50;
+}
+#featureCommentExcerpt {
+    margin:0 3px;
+    padding:0 18px;
+    text-align:left;
+}
+#featureFooter {
+    text-align:right;
+    padding:4px 22px 8px 0;
+}
+
+#featureContainer #featureHeaderOuter { /* Match the gray to the "connect on thousands of topics" background image */
+    background-color:#eee;
+}
+
+#featureContainer.purple #featureHeader,
+#featureContainer.purple #featureFooter,
+#featureContainer.purple #featureComment {
+    background-color:#9966cb;
+}
+#featureContainer.purple #featureHeader,
+#featureContainer.purple #featureExtraLink a,
+#featureContainer.purple #featureComment h3 {
+    color:#fff; /* #ece0f6 */
+}
+#featureContainer.purple #featureComment h3 {
+    font-weight:normal;
+}
+#featureContainer.purple #featureBody,
+#featureContainer.purple #featureCommentExcerptOuter {
+    background-color:#ece0f6;
+}
+#featureContainer.purple #featureCommentExcerpt {
+    background-color:#fff;
+}
+
+#editorialLists {
+    margin-top:16px;
+/* Removed in Azores */
+/*
+    background-image:url(images/vert_spacer_editorial_lists.png);
+    background-repeat:repeat-y;
+*/
+}
+
+.editorialTitle {
+    padding:8px 11px 4px 11px;
+    border-bottom:1px solid #999;
+    background-color:#eee;
+}
+.editorialInner {
+
+    /*padding:17px;*/
+    padding:10px;
+
+}
+
+.editorialBorderBottom {
+    border-top:1px solid #999;
+    background-color:#eee;
+    padding:5px;
+}
+
+.editorialTitle a:link, .editorialTitle a:active, .editorialTitle a:visited, .editorialTitle a:hover {
+/* Removed for Azores */
+/*
+    color:#444;
+    font-size:12px;
+*/
+    /*font-weight:bold;*/
+}
+.editorialTitle a:hover {
+    text-decoration:underline;
+}
+.editorialText {
+    padding:5px 9px;
+}
+.editorialBorder {
+    border-left:1px solid #eee;
+    border-right:1px solid #eee;
+    /*
+    margin-top:2px;
+    width:170px;
+    */
+    overflow:hidden;
+    word-wrap:break-word;
+    background:#f7f7f7;
+
+    min-height:350px;
+    height:350px;
+}
+.briefBorderBottom {
+    height:4px;
+    background-image:url(images/crn_f2_b.gif);
+    background-repeat:repeat-x;
+}
+
+/* Essentials
+--------------------------------------------------------------------------------------- */
+.essentialsBlockTitle {
+    padding:4px;
+    border-bottom:1px solid #999;
+    background-color:#eee;
+}
+#essentialSections ul {
+    margin:0;
+    padding:0;
+}
+#essentialSections ul li {
+    font-size:11px;
+    display:inline;
+    margin:0 6px 0 0;
+}
+
+
+/* View Image, Singular
+--------------------------------------------------------------------------------------- */
+#imageDescription, #imageDescriptionSend {
+    padding-bottom:10px;
+    font-size:13px;
+    line-height:18px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+#imageDescription {
+    clear:both;
+}
+#imageDetails {
+    word-wrap:break-word;
+    overflow:hidden;
+    font-size:12px;
+    line-height:15px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+#imageDetails div {
+    padding-bottom:10px;
+}
+
+#imageAdditionalThumbs {
+    float:right;
+    width:272px;
+}
+
+#imageAdditionalThumbs ul {
+    margin:0 0 20px 0;
+    padding:0;
+    list-style:none;
+}
+#imageAdditionalThumbs ul li {
+    padding:0 0 8px 0;
+}
+#imageAdditionalThumbs ul li ul {
+    margin:0;
+}
+#imageAdditionalThumbs ul li ul li {
+    padding:0 4px 0 0;
+    display:inline;
+}
+
+/* View Images (plural)
+--------------------------------------------------------------------------------------- */
+.imgControls {
+  text-align: left;
+  margin: 3px 0;
+  font-size: 11px;
+}
+
+/* View Video (singular)
+--------------------------------------------------------------------------------------- */
+
+.relatedVideoHeader {
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 13px;
+    padding: 5px 0 3px 5px;
+}
+
+.relatedVideoContainer {
+    /*border: 1px solid red;*/
+    width: 103px;
+    height:220px;
+    background: transparent url('images/bg_relatedvideo.png') top center no-repeat;
+    font-size: 10px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.homepageFeatVideoLeftCol, .homepageFeatPeopleLeftCol, .homepageFeatImagesLeftCol {
+    margin: 0 0 14px 5px;
+    float: left;
+    width: 62px;
+    word-wrap: break-word;
+    height: 87px;
+    overflow: hidden;
+}
+
+.homepageFeatVideoRightCol, .homepageFeatPeopleRightCol, .homepageFeatImagesRightCol {
+    margin: 0 5px 14px 23px;
+    float: right;
+    width: 62px;
+    word-wrap: break-word;
+    height: 87px;
+    overflow: hidden;
+}
+
+.relatedVideoDiv {
+    width: 103px;
+    font-size: 10px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.videoIconContainer,
+.videoIconContainerSmall,
+.videoIconContainerSemiMedium,
+.videoIconContainerMedium {
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.videoIconDiv,
+.videoIconDivSmall,
+.videoIconDivSemiMedium,
+.videoIconDivMedium {
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.videoIconContainer,
+.videoIconDiv {
+    height:77px;
+  width:102px;
+}
+
+.videoIconContainerSmall,
+.videoIconDivSmall {
+    height:47px;
+  width:62px;
+}
+
+.videoIconContainerMedium,
+.videoIconDivMedium {
+    height: 92px;
+  width: 122px;
+}
+
+.videoIconContainerSemiMedium,
+.videoIconDivSemiMedium {
+    height: 75px;
+  width: 100px;
+}
+
+.videoPlayButton {
+  height: 15px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 15px;
+  z-index: 2;
+}
+
+.videoIconAuthorDiv {
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    height: 13px;
+}
+
+.videoFullContainer {
+    margin-bottom: 1px;
+    width:102px;
+    height: 93px;
+    word-wrap: break-word;
+    overflow:hidden;
+}
+
+.videoIconBorder {
+    border: 1px solid #444;
+}
+
+#fullVideoContainer {
+    width:584px;
+    height:463px;
+    background: url('images/bg_viewvideo.png') no-repeat;
+    margin:0;
+    padding:10px;
+}
+
+#flowPlayerDiv {
+    width:450px;
+    height:375px;
+    margin: 0;
+    padding: 0;
+    border:1px solid #000;
+    background-color: #000;
+    color: #fff;
+}
+
+/* View Videos (plural)
+--------------------------------------------------------------------------------------- */
+.vidControls {
+    text-align: center;
+    margin-bottom:3px;
+    font-size:11px;
+}
+
+/* View Ranked Images/Article (vertical listings)
+--------------------------------------------------------------------------------------- */
+.rankedTable {
+    /*width:584px;*/
+}
+.rankedTable td {
+    padding-left:20px;
+}
+.rankedTable td.c1 {
+    padding-left:0;
+}
+
+/* View Groups
+--------------------------------------------------------------------------------------- */
+.grpEntry {
+    padding-bottom: 30px;
+}
+
+/* My Page
+--------------------------------------------------------------------------------------- */
+#messageFromTom {
+    background-color: #eee;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+#myProfile {
+    background: url(images/dashboard_bg.gif) no-repeat top left;
+    height: 294px;
+    margin-bottom: 13px;
+  padding: 8px 20px 0 20px;
+  position: relative;
+}
+#myProfileStats, #myProfileNew{
+    margin-right:20px;
+}
+
+#myProfileStats {
+    word-wrap:break-word;
+}
+#myProfileGreeting {
+    word-wrap: break-word;
+    overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#myProfileNew {
+    height:86px;
+}
+#myProfileControls {
+  font-size: 11px;
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+}
+#myProfileEarnings a, #myProfilePeople a {
+    color:#444;
+    font-size:13px;
+}
+#myProfileInvite {
+    padding-top:15px;
+}
+
+#myContainer, #memberContainer, #grpContainer, #tagContainer {
+}
+#myPeople, #mySubscriptions, #myGroups, #myArticles, #myImages, #myVideo, #myComments,
+#memberPeople, #memberGroups, #memberArticles, #memberImages, #memberVideo,
+#memberComments, #grpFeatures, #grpArticles, #grpImages, #grpVideos,
+#grpPeople, #tagFeatures, #tagArticles, #tagImages, #tagVideo, #tagGroups, #tagMembers {
+    margin-bottom:16px;
+}
+.myTitle, .myItems,
+.memberTitle, .memberItems,
+.grpTitle, .grpItems {
+}
+
+ul.myGatherAlerts {
+  list-style-type: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+ul.myGatherAlerts li {
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+ul.myGatherAlerts li a {
+  position: relative;
+  top: -2px;
+}
+
+ul.myGatherAlerts li img {
+  width: 12px;
+  position: relative;
+  top: 2px;
+}
+
+.grpTitle {
+    /*float: left;*/
+    margin-bottom: 2px;
+    /*width: 100%;*/
+    padding:4px 8px;
+    background-color:#eee;
+    margin-bottom:2px;
+    font-size:18px;
+    font-family:Georgia,Arial,Helvetica,sans-serif;
+}
+
+.grpTitle a {
+    color:#444;
+    font-size:18px;
+    /*font-weight:bold;*/
+}
+
+.myTitle,
+.memberTitle,
+.tagTitle {
+    padding:4px 8px;
+    background-color:#eee;
+    margin-bottom:2px;
+    font-size:14px;
+    font-weight:bold;
+    /*height:27px;*/ /* Removed for Azores */
+}
+.myTitle a,
+.memberTitle a,
+.tagTitle a {
+    color:#690;
+    font-size:18px;
+    /*font-weight:bold;*/
+}
+
+#memberTitleArticles {
+    z-index:1;
+    position:relative;
+}
+
+#tagFeatureHeader a:link, #tagFeatureHeader a:active, #tagFeatureHeader a:visited, #tagFeatureHeader a:hover {
+    color:#fff;
+}
+#tagFeatureComment a:link, #tagFeatureComment a:active, #tagFeatureComment a:visited, #tagFeatureComment a:hover {
+    color:#fff;
+    /*
+    font-size:14px;
+    font-weight:bold;
+    */
+}
+.myTitle a:hover,
+.memberTitle a:hover,
+.grpTitle a:hover,
+.tagTitle a:hover,
+.profileSection .profileHeader a:hover,
+#tagFeatureHeader a:hover,
+#tagFeatureComment a:hover {
+    text-decoration:underline;
+}
+.rssButtonCss {
+  background-image: url(images/rss_beam.gif);
+  background-repeat: no-repeat;
+  background-position: 4px 5px;
+  background-color: #f90;
+  border: 1px outset #f90;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 4px 2px 16px;
+  margin-left: 5px;
+
+  /* IE puts extra padding in buttons, this fixes that */
+  overflow: visible;
+  width: auto;
+}
+.myButton,
+.memberButton,
+.grpButton,
+.tagButton,
+.rssButton {
+    float:right;
+    margin:0;
+    padding:2px 0 0 0;
+    position:relative;
+    /*
+    margin-top:-15px;
+    margin-bottom:-4px;
+    */
+}
+.myItems,
+.memberItems,
+.grpItems,
+.tagItems {
+    border:1px solid #eee;
+    border-bottom:0;
+    padding:4px 8px;
+}
+.myItemDescription,
+.memberItemDescription,
+.grpItemDescription,
+.tagItemDescription {
+    font-size:10px;
+    color:#bbb;
+    margin-bottom:8px;
+}
+#rssButtonArticles {
+    float:right;
+    /*
+    clear: right;
+    */
+    margin:0;
+    padding:6px 0 0 0;
+    position:relative;
+    /*
+    margin-top:-15px;
+    margin-bottom:-4px;
+    */
+}
+
+
+/* Namespace Page
+--------------------------------------------------------------------------------------- */
+#memberProfile {
+    overflow:hidden;
+}
+#memberProfileStats, #memberActions, #memberDates {
+    padding-left:5px;
+}
+#memberActions {
+    background-color:#eee;
+}
+#memberActions { /* allowances for wide buttons */
+    padding:5px 3px;
+}
+#memberProfile {
+    margin-bottom:20px;
+}
+#memberDates {
+    margin-top:20px;
+}
+.memberActionText {
+    padding:0 2px;
+}
+
+
+/* Groupspace Page
+--------------------------------------------------------------------------------------- */
+#grpProfile {
+    overflow:hidden;
+}
+#grpProfileStats, #grpActions {
+    padding:5px;
+}
+#grpProfileStats, #grpOwner, #grpActions {
+    margin-bottom:20px;
+}
+#grpOwner {
+    margin-top:20px;
+}
+#grpActions {
+    background-color:#eee;
+}
+#grpActions { /* allowances for wide buttons */
+    padding:5px 3px;
+}
+.grpActionText {
+    padding:0 2px;
+}
+
+.grpFeatureDate {
+    color:#ccc;
+}
+.grpFeatureStats {
+    padding:4px;
+    background-color:#fff1c7;
+}
+
+#grpFeatureContainer {
+    color:#444;
+}
+#grpFeatureHeader {
+    padding:8px 13px;
+}
+#grpFeatureBody {
+}
+#grpFeatureImage {
+}
+#grpFeatureExcerptCell {
+}
+#grpFeatureTitle {
+    padding:23px 23px 0 23px;
+}
+#grpFeatureDetails {
+    padding: 10px 23px;
+}
+#grpFeatureExcerpt {
+    padding: 0 23px 23px 23px;
+}
+#grpFeatureComment {
+    padding:15px 15px 0 15px;
+}
+#grpFeatureFooter {
+    text-align:right;
+    padding:4px 22px 8px 0;
+}
+
+#grpFeatureContainer.yellow {
+    background-color:#ffe38e;
+}
+#grpFeatureContainer.yellow #grpFeatureHeader,
+#grpFeatureContainer.yellow #grpFeatureComment h3 {
+    color:#444;
+}
+#grpFeatureContainer.yellow #grpFeatureBody,
+#grpFeatureContainer.yellow #grpFeatureCommentExcerptOuter {
+    background-color:#fff;
+}
+#grpFeatureContainer.yellow #grpFeatureCommentExcerpt {
+    background-color:#fff;
+}
+/*
+.viewAllTitle, .viewAllArrow {
+    float:left;
+}
+*/
+.viewAllTitle {
+    float:left;
+    margin-bottom: 2px;
+  line-height: 24px;
+}
+.viewAllArrow a:link,
+.viewAllArrow a:active,
+.viewAllArrow a:visited,
+.viewAllArrow a:hover {
+    text-decoration:none;
+}
+.viewAllArrowGray a:link,
+.viewAllArrowGray a:active,
+.viewAllArrowGray a:visited,
+.viewAllArrowGray a:hover {
+    text-decoration:none;
+    color:#444;
+}
+.viewAllText,
+.viewAllTextGray {
+    /*float:left;*/
+    border-left:1px solid #cadbb1;
+    padding:0px 0px 0px 8px;
+    margin-left:8px;
+}
+
+.viewAllTextGray {
+    border-left-color:#BBB;
+}
+.viewAllTextGray a span {
+    color:#444;
+}
+.viewAllText a:hover span {
+    text-decoration:underline;
+}
+.viewAllTextInner {
+    margin:5px 4px 0 0;
+ }
+
+
+/* Group Settings
+--------------------------------------------------------------------------------------- */
+/*
+#bannerStandard, #bannerCustom {
+    display:none;
+}
+#bannerStandard.active, #bannerCustom.active {
+    display:block;
+}
+*/
+
+
+/* Tagspace Page
+--------------------------------------------------------------------------------------- */
+.tagFeatureDate {
+    /*color:#ccc;*/
+}
+.tagFeatureStats {
+    padding:4px;
+    background-color:#b7dae6;
+}
+
+#tagFeatureContainer {
+    color:#444;
+}
+#tagFeatureHeader {
+    padding:8px 13px;
+}
+#tagFeatureBody {
+}
+#tagFeatureImage {
+}
+#tagFeatureExcerptCell {
+}
+#tagFeatureTitle {
+    padding:23px 23px 0 23px;
+}
+#tagFeatureDetails {
+    padding: 10px 23px;
+}
+#tagFeatureExcerpt {
+    padding: 0 23px 23px 23px;
+}
+#tagFeatureComment {
+    padding:15px 15px 0 15px;
+}
+#tagFeatureFooter {
+    text-align:right;
+    padding:4px 22px 8px 0;
+}
+
+#tagFeatureContainer.cyan {
+    background-color:#4ba3c0;
+}
+#tagFeatureContainer.cyan #tagFeatureHeader,
+#tagFeatureContainer.cyan #tagFeatureComment h3 {
+    color:#444;
+}
+#tagFeatureContainer.cyan #tagFeatureBody,
+#tagFeatureContainer.cyan #tagFeatureCommentExcerptOuter {
+    background-color:#b7dae6;
+}
+#tagFeatureContainer.cyan #tagFeatureCommentExcerpt {
+    background-color:#fff;
+}
+
+/* Suggested Tags Page
+--------------------------------------------------------------------------------------- */
+#suggestedTagsContainer ul, #suggestedTagsContainer li {
+    display:inline;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#suggestedTagsContainer li {
+    padding-right:6px;
+}
+
+/* Ranked Tags Page
+--------------------------------------------------------------------------------------- */
+.rankedTagDivider {
+    padding-right:6px;
+}
+#tagRankingDescription {
+    background-color:#4ba3c0;
+    color:#fff;
+    width:255px;
+    margin:0 0 20px 10px;
+    padding:10px;
+    float:right;
+}
+#tagRankingTop a {
+    font-size:18px;
+}
+
+
+/* FAQs (image-bulleted lists)
+--------------------------------------------------------------------------------------- */
+#listEditor, #listRss { list-style-type: none;margin-left:0;padding-left:0; }
+#listEditor li { background-repeat: no-repeat;padding: 0 0 16px 22px; }
+#listRss li { background-repeat: no-repeat;padding: 0 0 16px 98px; }
+
+.faq_blt_list {
+  margin: 5px 0px 0px 5px;
+  padding: 0;
+  list-style: none;
+}
+.faq_blt_list li {
+  list-style-type: disc;
+  margin: 0px 0px 4px 20px;
+  line-height:16px;
+  padding-left:0px;
+}
+
+.faq_num_list {
+  margin: -8px 0px 10px 5px;
+  padding: 0;
+}
+.faq_num_list li {
+  margin: 0px 0px 4px 30px;
+  line-height:16px;
+  padding-left:0px;
+}
+
+.dualListBoxLeft,
+.dualListBoxRight {
+  float: left;
+}
+
+.dualListBoxLeft {
+  margin-right: 15px;
+}
+
+.dualListBox ul {
+  background-color: #fff;
+  border: 1px solid #999;
+  list-style-type: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.dualListBox li {
+  cursor: pointer;
+  padding: 4px;
+  word-wrap: break-word;
+}
+
+.dualListBox li.even {
+  background-color: #f6f6f6;
+}
+
+.dualListBox li:hover {
+  background-color: #d4d3d3;
+}
+
+/* Brief Modules (People, Groups, Articles, Images, Comments)
+--------------------------------------------------------------------------------------- */
+.briefPerson, .briefImage, .briefVideo, .briefGroup, .briefComment, .briefArticle, .briefSubscription {
+    /*padding-right:20px;*/
+    word-wrap:break-word;
+    overflow:hidden;
+}
+.briefPerson, .briefImage, .briefGroup, .briefSubscription {
+    width:130px;
+}
+.mkt {
+    text-align:center;
+}
+.briefCommentIcon {
+    margin-top:5px;
+}
+.briefCommentDetails {
+    margin-left:31px;
+    margin-right:20px;
+    padding-bottom:20px;
+  line-height:15px;
+  overflow: hidden;
+}
+
+
+
+/* Header Classes for Listing Pages
+--------------------------------------------------------------------------------------- */
+.hdr_container {
+    margin-bottom: 5px;
+}
+.hdr_container h1 {
+  margin: 0;
+}
+
+.hdr_content_left {
+    float:left;
+}
+.hdr_content_right {
+    float:right;
+    text-align:right;
+    padding-top: 2px;
+}
+.hdr_icon {
+    padding: 5px 0 0 5px;
+}
+
+
+
+/* Sign In
+--------------------------------------------------------------------------------------- */
+#signInContainer {
+    margin-bottom:10px;
+}
+#signInContainer form,
+#signInContainer hr {
+    padding:0;
+    margin:0;
+}
+#signInContainer hr {
+    margin-bottom:6px;
+}
+#signInTop {
+    height:9px;
+    background-image:url(images/signin_210_top.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+#signInMiddle {
+    border-left:1px solid #22ade4;
+    border-right:1px solid #22ade4;
+}
+#signInMiddleInner {
+    text-align:left;
+    padding:12px 0 6px 12px !important;
+    padding:12px 0 0 12px;
+}
+#signInInner {
+    background:#fafaf9;
+    border-left:1px solid #eee;
+    border-right:1px solid #eee;
+    padding:8px;
+}
+#signInJoinInner {
+    background:#fafaf9;
+    border-left:1px solid #eee;
+    border-right:1px solid #eee;
+    padding:8px 4px 2px 4px
+}
+#page.index #signInJoinInner {
+    padding:8px 8px 2px 8px
+}
+#signInBottom {
+    /* height:126px; */
+    min-height:86px;
+    _height:92px;
+    background-image:url(images/signin_210_bottom.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+#signInBottomInner {
+    /*padding-top:30px;*/
+    padding:12px 12px 0 12px;
+}
+
+#signInUsername {
+    width:110px;
+}
+#signInPassword {
+    width:54px;
+}
+
+/* Removed for Azores */
+/*
+#page.index #signInTop {
+    background-image:url(images/signin_top.gif);
+}
+#page.index #signInBottom {
+    background-image:url(images/signin_bottom.gif);
+}
+#page.index #signInBottomInner,
+*/
+#page.login #signInBottomInner,
+#page.whatisgather #signInBottomInner {
+    /*padding-top:30px;*/
+    padding:0 12px;
+}
+#page.index #signInUsername {
+    width:128px;
+}
+#page.index #signInPassword {
+    width:72px;
+}
+
+
+/* User Quotes
+--------------------------------------------------------------------------------------- */
+#userQuotesContainer {
+    margin-bottom:15px;
+}
+#userQuotesTop {
+    height:9px;
+    background-image:url(images/signin_210_top.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+#userQuotesBottom {
+    /*height:126px;*/
+    background-image:url(images/signin_210_repeat.gif);
+    background-repeat: repeat-y;
+    background-position: top;
+}
+#userQuotesTitle {
+    color:#F3901C;
+    font-family:Georgia,Arial,Helvetica,sans-serif;
+    font-size:18px;
+    line-height:21px;
+    padding:12px 12px 0 12px;
+    text-align:center;
+}
+#userQuotesBottomInner {
+    /*padding-top:30px;*/
+    padding:12px;
+    background-image:url(images/signin_210_bottom.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+
+
+/* Internal Ads
+--------------------------------------------------------------------------------------- */
+.internalAdsContainer,
+.internalAdsContainer204,
+.internalAdsContainer300 {
+    margin-bottom:10px;
+}
+/* MOVED REMAINING TO _ads_andre.css */
+/*
+.internalAdsTop {
+    height:7px;
+    background-image:url(images/marketing_top.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+.internalAdsMiddle {
+    border-left:1px solid #4c791f;
+    border-right:1px solid #4c791f;
+}
+.internalAdsMiddleInner {
+    text-align:center;
+    font-family:Georgia, Arial, Helvetica, sans-serif;
+    font-size:18px;
+    line-height:21px;
+    color:#690;
+}
+.internalAdsBottom {
+    height:89px;
+    background-image:url(images/marketing_bottom.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.internalAdsBottomInner {
+    text-align:center;
+    padding:30px 5px 0 5px;
+}
+
+.internalAdsContainer204 .internalAdsTop {
+    height:7px;
+    background-image:url(images/marketing_top204.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+.internalAdsContainer204 .internalAdsMiddle {
+    margin-left:3px;
+    margin-right:3px;
+}
+.internalAdsContainer204 .internalAdsBottom {
+    height:89px;
+    background-image:url(images/marketing_bottom204.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.internalAdsContainer300 .internalAdsTop {
+    height:7px;
+    background-image:url(images/marketing_top300.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+.internalAdsContainer300 .internalAdsBottom {
+    height:89px;
+    background-image:url(images/marketing_bottom300.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.internalAdsContainer300 .internalAdsMiddle {
+    padding-bottom:7px;
+}
+*/
+
+.bannerAdsContainer {
+    text-align:center;
+}
+
+/* Footer Layout
+--------------------------------------------------------------------------------------- */
+#footerTop {
+    text-align:left;
+    margin: 10px 15px 0 15px;
+    font-size: 14px;
+    /* width:990px; */
+}
+
+#footer{
+    text-align:left;
+    /*margin: 23px 15px 40px 15px;*/
+    margin: 10px 15px 30px 15px;
+    /* width:990px; */
+}
+
+
+/* Promo Pages
+--------------------------------------------------------------------------------------- */
+#amazonShorts, #amazonShorts p {
+color: #444;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 13px;
+overflow:auto;
+line-height:18px;
+}
+
+#amazonBullets {
+margin-left:15px;
+float:right;
+padding-left:15px;
+}
+
+#amazonSubnav {
+color: #444;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+padding:15px 0 0 15px;
+}
+
+#amazonSubnav * {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+}
+
+#amazonBullets, #amazonBullets td {
+color: #444;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+overflow:auto;
+line-height:18px;
+}
+
+#amazonBullets td.title {
+color: #444;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 24px;
+padding:8px 0 0 12px;
+overflow:hidden;
+}
+
+#value * {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+line-height:18px;
+}
+
+/* Edit Account Pages
+--------------------------------------------------------------------------------------- */
+#editAccount {
+  width:610px;
+  float:left;
+  padding-left:0;
+}
+
+#editAccount .smallInput {
+    border: solid 1px #d5d5d5;
+}
+
+#editAccount .regSectionStyled {
+  border: 1px solid #c8eaf8;
+  background: url(images/regform_explain_bg.gif) no-repeat center right;
+}
+
+#editAccount .regExplain {
+  float:right;
+  width:130px !important;
+  /*width:164px;*/
+  padding:10px 16px;
+  clear:both;
+}
+
+#editAccount fieldset {
+  padding: 0px 0 0px 0px;
+  width: 550px;
+}
+
+#editAccount .formField.inline{
+
+    float: left;
+    clear: left;
+
+    width: 550px;
+}
+
+#editAccount .formField.inline *{
+    display: inline;
+}
+
+#editAccount .fieldLabel {
+
+  float: left;
+  width: 95px;
+  margin-right: 8px;
+  text-align: right;
+}
+
+#editAccount .formField .fieldLabel.checkbox,
+#editAccount .formField .fieldLabel.radio {
+  float: none;
+  margin-right: 0;
+  text-align: left;
+  width: auto;
+}
+
+#editAccount .formIndent{
+
+  display: block;
+  margin-left: 103px;
+  width: auto;
+}
+
+#editAccount .cbAligned {
+  vertical-align: middle;
+}
+
+#editAccount .regSpacer {
+  clear:both;
+  height:5px;
+}
+
+#editAccount .regTooltipImg {
+  margin-bottom:-3px;
+  cursor:pointer;
+}
+
+#editAccount #regFldLocation {
+  color:#999;
+}
+#editAccount #regFldLocation.active {
+  color:#444;
+}
+
+.editAccountError {
+  display: none;
+}
+
+.editAccountError.active {
+  display: inline;
+  color: #ff0000;
+  line-height: 18px;
+}
+
+/* Registration Page
+--------------------------------------------------------------------------------------- */
+#regContainer {
+  width:730px;
+  float:left;
+  padding-left:150px;
+}
+#regContainer form {
+  margin:0;
+}
+#regContainer fieldset {
+  border:none;
+  padding:12px 0 12px 12px;
+}
+#regContainer #regSectionD fieldset {
+  padding-left:6px;
+}
+#regContainer #regNotice {
+  background-color:#81b469;
+  background-image:url(images/grad_green.png);
+  background-repeat:repeat-x;
+  border:1px solid #390;
+  /*height: 21px;*/
+  padding:4px 0 3px;
+  color:#fff;
+  font-size:12px;
+  text-align:center;
+  font-weight:bold;
+}
+#regContainer .regSectionStlyed {
+  border:1px solid #c8eaf8;
+  background:url(images/regform_explain_bg.gif) no-repeat center right;
+}
+#regContainer .regExplain {
+  float:right;
+  width:142px !important;
+  /*width:164px;*/
+  padding:10px 16px;
+  clear:both;
+}
+#regContainer .spacedFields {
+  margin-bottom:8px;
+  overflow: hidden; /* makes FF 1.5 happy */
+}
+#regContainer .lblBlock {
+  display:block;
+  float:left;
+  text-align:right;
+  width:115px;
+  padding-top:4px;
+  padding-right:8px;
+}
+#regContainer .lblInline {
+  padding-left:8px;
+}
+#regContainer .cbAligned {
+  vertical-align: middle;
+}
+#regContainer .regMainTextbox {
+  width: 150px;
+}
+.regTextLong {
+  width:326px;
+}
+#regContainer .regTextShort {
+  width:91px;
+}
+#regContainer #regSectionA {
+  border-top:none;
+}
+#regContainer #regSectionB, #regContainer #regSectionC {
+  min-height: 79px;
+  _height: 79px;
+}
+#regContainer #regSectionE {
+  min-height: 120px;
+  _height: 120px;
+}
+#regContainer .regFldContainer {
+  float: left;
+}
+#regFldVerificationContainer {
+  display: inline; /* needed for IE */
+  float:left;
+  margin-left: 10px;
+}
+#regContainer .regSpacer {
+  clear:both;
+  height:5px;
+}
+#regCaptchaImg {
+  border:1px solid #d0d0d0;
+  float: left;
+}
+#regCaptchaRefresh {
+  margin:4px 0 0;
+}
+#regContainer .regTooltipImg {
+  margin-bottom:-3px;
+  cursor:pointer;
+}
+#regContainer #regAssistance {
+  margin:10px 0;
+}
+#regContainer #regFldLocation {
+  color:#999;
+}
+#regContainer #regFldLocation.active {
+  color:#444;
+}
+
+.registrationError {
+  color: #f00;
+  display: none;
+  float: right;
+  width: 450px;
+  line-height: 18px;
+}
+
+.registrationError.enabled {
+  display: block;
+}
+
+.registrationErrorCaptcha {
+  color: #f00;
+  float: right;
+  width: 80px;
+}
+
+.registrationErrorTOS {
+  color: #f00;
+}
+
+#regAdultWarning {
+    background-color:#eee;
+    padding: 10px 16px;
+    margin-bottom:16px;
+}
+
+/* Group Invite Page
+--------------------------------------------------------------------------------------- */
+/* IE6 multi-class bug precludes this from working; moved to inline style in ghead.tag */
+/*
+#page.groupInvite {
+  padding-top:220px;
+}
+*/
+#page.groupInvite .navigation {
+    display:none;
+}
+#grpInviteContainer {
+    margin-left:15px;
+}
+
+
+
+
+
+
+
+
+
+/* Peusdo Columns
+--------------------------------------------------------------------------------------- */
+#pageColumnPseudoC {
+  width:210px;
+  word-wrap:break-word;
+  overflow:hidden;
+  margin-left:20px;
+  float:right;
+}
+
+#pageColumnPseudoC ul {margin:-10px 0 0 0;padding:0;list-style:inside;}
+
+/* Survey Polls
+--------------------------------------------------------------------------------------- */
+.pollContainer {
+    margin-bottom:10px;
+    width:225px;
+    /*
+    background-image:url(images/poll/bg_rpt.gif);
+    background-repeat: repeat-y;
+    background-position: top;
+    */
+}
+.pollContainer form {
+    margin:0;
+}
+/*
+.pollTop {
+    height:10px;
+    background-image:url(images/poll/bg_top.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    font-size:1px;
+}
+*/
+.pollInner {
+    /*padding-top:30px;*/
+    /*
+    background-image:url(images/poll/bg_btm.gif);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    */
+}
+.pollTitle {
+    background-image:url(images/poll/pollgrn_top.png);
+    background-repeat: no-repeat;
+    /*
+    background-position: 50% 32px;
+    */
+    height:42px;
+    /*
+    font-family:Georgia, Arial, Helvetica, sans-serif;
+    font-size:18px;
+    */
+    color: #fff;
+    text-align:center;
+}
+.pollContent {
+    padding:12px 12px 0 12px;
+    background:#f1f5ea;
+    border-left:1px solid #dde9d5;
+    border-right:1px solid #dde9d5;
+}
+.pollQuestion {
+    font-size:12px;
+    line-height:15px;
+    /* font-weight:bold; */
+    padding-bottom:10px;
+}
+.pollChoice {
+    font-size:12px;
+    line-height:15px;
+    padding-bottom:6px;
+}
+.pollChoice .choiceRadio {
+    float:left;
+    margin-left:-2px !important;
+    margin-left:0;
+}
+.pollChoice .choiceLabel {
+    margin-left:20px;
+    padding-top:2px;
+}
+.pollControls {
+    text-align:center;
+}
+.pollChart {
+    width:201px;
+    overflow:hidden;
+    background-color:#fff;
+    background-image:url(images/poll/graygrad_201w.gif);
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.pollLegend li {
+    background-repeat: no-repeat;
+    background-position: 0 4px;
+    padding-left: 16px;
+}
+.pollLegend li.pc-B7010A {
+    background-image: url(images/poll/pc_1.png);
+}
+.pollLegend li.pc-0057AB {
+    background-image: url(images/poll/pc_2.png);
+}
+.pollLegend li.pc-C1D205 {
+    background-image: url(images/poll/pc_3.png);
+}
+.pollLegend li.pc-F6B700 {
+    background-image: url(images/poll/pc_4.png);
+}
+.pollLegend li.pc-E3007C {
+    background-image: url(images/poll/pc_5.png);
+}
+.pollLegend li.pc-00A2DC {
+    background-image: url(images/poll/pc_6.png);
+}
+.pollLegend li.pc-7CBC21 {
+    background-image: url(images/poll/pc_7.png);
+}
+.pollLegend li.pc-E95100 {
+    background-image: url(images/poll/pc_8.png);
+}
+.pollLegend li.pc-0B0F84 {
+    background-image: url(images/poll/pc_9.png);
+}
+.pollLegend li.pc-B2007E {
+    background-image: url(images/poll/pc_10.png);
+}
+.pollLegend li.pc-00AD8C {
+    background-image: url(images/poll/pc_11.png);
+}
+.pollLegend li.pc-530A83 {
+    background-image: url(images/poll/pc_12.png);
+}
+.pollLegend li.pc-F2DF00 {
+    background-image: url(images/poll/pc_13.png);
+}
+.pollLegend li.pc-E73200 {
+    background-image: url(images/poll/pc_14.png);
+}
+.pollLegend li.pc-005C1B {
+    background-image: url(images/poll/pc_15.png);
+}
+
+.pollTotalVotes {
+    /*text-align:right;*/
+    /*font-weight:bold;*/
+    padding:6px 8px;
+    font-size:11px;
+    background:#dde9d5;
+}
+
+#pollRecentLink {
+    float:right;
+    padding-top:2px;
+    font-size:10px;
+}
+
+#pollRecentLink .linkSeparator {
+    margin: 0 3px; /* IE6 likes to wrap if the margin is larger - silly IE6 */
+}
+
+/* Meta Data
+--------------------------------------------------------------------------------------- */
+label.meta {
+    color:#999;
+    padding-right:4px;
+}
+
+/* Debug Styles
+--------------------------------------------------------------------------------------- */
+/*iframe {
+    background:#fefe99;
+}*/
+
+/* Invite Pages
+--------------------------------------------------------------------------------------- */
+
+#navInvite .sideBar
+{
+    float: right;
+    width: 150px;
+    height: 254px;
+    padding: 8px;
+    background-color: #ededee;
+}
+
+#navInvite .buttonBar div{
+    width:136px;
+    float:left;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+}
+
+#navInvite .buttonBar div.buttonBarFirst
+{
+    padding-left: 0px;
+}
+
+#navInvite .buttonBar div.buttonBarLast
+{
+    width:135px;
+    padding-right: 0px;
+}
+
+#navInvite .formField
+{
+}
+
+#navInvite .errorField
+{
+    border: 1px solid #f00;
+}
+
+#navInvite .formField .fieldLabel
+{
+}
+
+#navInvite .formField.inline .fieldLabel
+{
+}
+
+#navInvite .formField .fieldLabel.checkbox,
+#navInvite .formField .fieldLabel.radio
+{
+}
+
+#navInvite .formField
+{
+
+}
+
+#navInvite .formIndent{
+
+  width: 453px;
+}
+
+#navInvite textarea.narrowTextarea
+{
+    width: 430px;
+    height: 268px;
+}
+
+#navInvite textarea.wideTextarea
+{
+    width: 604px;
+    height: 150px;
+
+}
+
+#navInvite .formField.inline .fullWidth,
+#navInvite .formField.inline textarea
+{
+}
+
+#navInvite .mediumInput
+{
+  width: 260px;
+}
+
+#navInvite .wideInput
+{
+  width: 604px;
+}
+
+#navInvite li
+{
+  margin-bottom: 6px;
+}
+
+.inviteTable
+{
+  border: 1px solid #999;
+
+}
+
+.inviteTable table
+{
+  width: 606px;
+  border-collapse: collapse;
+}
+
+.inviteTable .scroll-table-head,
+.inviteTable .scroll-table-body
+{
+  width: 606px;
+}
+
+.inviteTable .scroll-table-body
+{
+  height: 245px;
+}
+
+.inviteTable.narrow table
+{
+  width: 410px;
+}
+
+.inviteTable.narrow .scroll-table-head,
+.inviteTable.narrow .scroll-table-body
+{
+  width: 410px;
+}
+
+.inviteTable th
+{
+  border-left: 2px groove #fff;
+  background-color: #d6d7d7;
+
+  text-align: left;
+  font-size: 12px;
+}
+
+.inviteTable td,
+.inviteTable th
+{
+  padding: 2px 4px;
+}
+
+.inviteTable th.checkbox
+{
+    text-align: center;
+}
+
+.inviteTable .checkbox
+{
+  width: 21px;
+  border-left: none;
+}
+
+.inviteTable .even
+{
+  background: #ededee;
+}
+
+
+#blockInvite iframe {
+  width:584px;
+  height:500px;
+}
+#inviteFindMembers iframe {
+    width:584px;
+    height:410px;
+}
+#inviteWelcome iframe {
+    width:584px;
+    height:315px;
+}
+#personalInvite iframe {
+    width:584px;
+    height:1300px;
+}
+#gInvitePre iframe {
+    width:730px;
+    height:450px;
+}
+#gInviteFin iframe,
+#inviteStatus iframe {
+    width:730px;
+    height:1300px;
+}
+#gInvite iframe,
+#inviteLanding iframe {
+    /*width:980px;*/ /*MISTAKEN*/
+    width:970px;
+    height:1300px;
+}
+#gPromo iframe {
+  width:584px;
+  height:1300px;
+}
+
+/* Site Report
+--------------------------------------------------------------------------------------- */
+#siteReport fieldset { border:none }
+#siteReport fieldset input { float:left }
+#siteReport fieldset label.sm { float:left; width:120px; padding-top:2px; }
+/* Button */
+#siteReport #siteReportSubmitBtn {
+  width:95px;
+  height:23px;
+  border:none;
+  cursor:pointer;
+  background:url(images/buttons/btn_sendreport.png) no-repeat 0 0;
+}
+
+/* Member Settings
+--------------------------------------------------------------------------------------- */
+
+#editSettingsPeople label {
+  float:left;
+  width: 120px;
+}
+
+#editSettingsTables { margin-bottom: 16px }
+
+#editSettingsTables .headerTable { border-collapse: collapse; border-spacing: 0; width:100% }
+#editSettingsTables .dataTable { border-collapse: collapse; border-spacing: 0; width:945px }
+
+#editSettingsTables .rowodd { background:#fff }
+#editSettingsTables .roweven { background:#eee }
+
+#editSettingsTables table thead th {
+    background: #eee;
+    border-bottom:1px solid #444;
+    font-size: 12px;
+
+}
+
+#editSettingsTables table thead th.headerColumn{
+    text-align: left;
+}
+
+
+#editSettingsTables table th,
+#editSettingsTables table td { text-align: center }
+
+#editSettingsTables table .c1 { text-align: left; }
+/*
+#editSettingsTables table .c2 { width:75px }
+#editSettingsTables table .c3 { width:75px }
+#editSettingsTables table .c4 { width:90px }
+#editSettingsTables table .c5 { width:95px }
+#editSettingsTables table .c6 { width:105px }
+*/
+
+/*#editSettingsTables table thead th { padding: 8px }*/
+
+/*
+#editSettingsTables #scrollyTable1 table,
+#editSettingsTables #scrollyTable2 table { background: #fbdf7f }
+*/
+
+#editSettingsTables .scrollyTable
+{
+    border: 1px solid #ccc;
+}
+
+#editSettingsTables #scrollyTable1 .scroll-table-head { width: 936px }
+#editSettingsTables #scrollyTable1 .scroll-table-body { width: 936px; height: 370px; }
+
+#editSettingsTables #scrollyTable2 .scroll-table-head { width: 936px }
+#editSettingsTables #scrollyTable2 .scroll-table-body { width: 936px; height: 370px; }
+
+
+#editSettingsTables th,
+#editSettingsTables td {
+  padding: 4px 8px;
+}
+#editSettingsTables th {
+  padding:8px;
+}
+
+
+#editSettingsTables .scroll-table-head th,
+#editSettingsTables .scroll-table-body td {
+  padding: 4px 8px;
+  overflow: hidden;
+}
+#editSettingsTables .scroll-table-head th {
+  padding:8px;
+}
+
+/* Sorting Header Styles
+------------------------------------------------- */
+#editSettingsTables .sortcol {
+  cursor: pointer;
+  padding-right: 20px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+#editSettingsTables .hovcellOver,
+#editSettingsTables .hovcell:hover {
+  background-color:#dedede;
+}
+/*
+#editSettingsTables .nosort:hover {
+  background-color:#eee;
+}
+*/
+
+#editSettingsTables .sortasc {
+  /*background-color: #ddffac;*/
+  background-image: url(images/sort_up.gif);
+}
+#editSettingsTables .sortdesc {
+  /*background-color: #b9ddff;*/
+  background-image: url(images/sort_down.gif);
+}
+#editSettingsTables .nosort {
+  cursor: default;
+}
+
+
+/* Comment Boxes
+--------------------------------------------------------------------------------------- */
+
+.cbox-tl { background: url(images/comment/bubble_rc_top_left.gif) no-repeat right; height: 15px; }
+.cbox-t { background: url(images/comment/bubble_top.gif) repeat-x; height: 15px; }
+.cbox-tr { background: url(images/comment/bubble_rc_top_right.gif) no-repeat; height: 15px; width: 15px; }
+.cbox-l { background: none; }
+.cbox-r { background: url(images/comment/bubble_side_right.gif) repeat-y; width: 15px; }
+.cbox-bl { background: url(images/comment/bubble_rc_bot_left.gif) no-repeat right; height: 15px; width: 15px; }
+.cbox-b { background: url(images/comment/bubble_bot.gif) repeat-x; height:15px; }
+.cbox-br { background: url(images/comment/bubble_rc_bot_right.gif) no-repeat; height: 15px; width: 15px; }
+.cbox-arrow { background: url(images/comment/bubble_arrow.gif) no-repeat; height: 14px; width: 26px; }
+.cbox-bg-bl { background: url(images/comment/bubble_side_left.gif) repeat-y 11px 0; }
+.cbox-bg-br { background: url(images/comment/bubble_side_right.gif) no-repeat bottom; width: 16px; height: 30px; }
+
+/* Pending Styles */
+.commentPending .cbox-tl { background-image: url(images/comment/pend_bubble_rc_top_left.gif); }
+.commentPending .cbox-t { background-image: url(images/comment/pend_bubble_top.gif); }
+.commentPending .cbox-tr { background-image: url(images/comment/pend_bubble_rc_top_right.gif); }
+.commentPending .cbox-l { background: none; }
+.commentPending .cbox-r { background-image: url(images/comment/pend_bubble_side_right.gif); }
+.commentPending .cbox-bl { background-image: url(images/comment/pend_bubble_rc_bot_left.gif); }
+.commentPending .cbox-b { background-image: url(images/comment/pend_bubble_bot.gif); }
+.commentPending .cbox-br { background-image: url(images/comment/pend_bubble_rc_bot_right.gif); }
+.commentPending .cbox-arrow { background-image: url(images/comment/pend_bubble_arrow.gif); }
+.commentPending .cbox-bg-bl { background-image: url(images/comment/pend_bubble_side_left.gif); }
+.commentPending .cbox-bg-br { background-image: url(images/comment/pend_bubble_side_right.gif); }
+.commentPending .cbox-inner { background-color:#ffc }
+
+/* Publish Button States */
+#commentBtnPost {
+  height:23px;
+}
+#commentBtnPost.btnEnabled {
+  /*width:49px;*/
+  cursor:pointer;
+}
+#commentBtnPost.btnProcess {
+  /*width:78px;*/ /* IE6 wasn't honoring the new width, so lets remove it */
+  cursor:default;
+}
+.commentNotes {
+  width:60px;
+  text-align:center;
+  font-size:10px;
+}
+
+#pendingCommentsCount {
+  font-weight:bold;
+}
+
+/* Publish Pages
+--------------------------------------------------------------------------------------- */
+
+.pubForm {
+  padding:0;
+  margin:0;
+}
+.pubContent {
+  margin-left:30px;
+}
+.pubDesc {
+  margin:15px 0;
+}
+.pubDesc.visHide {
+    visibility: hidden;
+    margin: 0px;
+}
+#pubUploadContainer h3 {
+  color: #444;
+  margin-bottom: 8px;
+}
+#pubUploadContainer #mediaUploadBtn1 {
+  position: relative;
+  top: -3px;
+  z-index: 1;
+  left: -100px;
+  width: 80px;
+}
+#pubUploadContainer input.mediaFile {
+  position: relative;
+  -moz-opacity: 0;
+  filter: alpha(opacity: 0);
+  opacity: 0;
+  z-index: 2;
+  top: -3px;
+  left: -17px;
+  height: 23px;
+  width: 92px;
+}
+#pubUploadContainer iframe {
+  /*display:none;*/
+  height:0;
+  width:0;
+}
+
+#pubUploadContainer #mediaUploadStatus .mediaUploadBar {
+  height:13px;
+  margin-bottom:8px;
+  background:#ccc url(images/publish/bg_stripe_rpt.png);
+  float:left;
+  width:480px;
+  overflow:hidden;
+}
+#pubUploadContainer #mediaUploadStatus .mediaUploadBarInner {
+  height:13px;
+  width:0; /* init at 0 and increment with Ajax-received progress */
+  background:orange url(images/publish/orange_rpt.png);
+  overflow:hidden;
+}
+#pubUploadContainer #mediaUploadStatus .mediaUploadBarInner .mediaUploadCapLeft {
+  height:13px;
+  width:1px;
+  float:left;
+  background:url(images/publish/orange_left.png);
+}
+#pubUploadContainer #mediaUploadStatus .mediaUploadBarInner .mediaUploadCapRight {
+  height:13px;
+  width:1px;
+  float:right;
+  background:url(images/publish/orange_rt.png);
+}
+
+
+
+#pubUploadContainer #mediaUploadStatus .mediaUploadCancel {
+  float:right;
+  width: 55px;
+  position: relative;
+  top: -2px;
+  padding-right:25px;
+}
+
+#pubUploadContainer #pubUploadError {
+  background:url(images/alert.gif) no-repeat left;
+  padding-left:31px;
+  height:20px;
+  margin-left:30px;
+}
+#pubUploadContainer #pubUploadErrorMsg {
+  padding-top:3px;
+  font-size:11px;
+}
+
+.pubTitle {
+  width:694px;
+  font: 24px/28px bold "Trebuchet MS", Arial, Helvetica, sans-serif;
+  margin-bottom:10px;
+}
+.pubBody {
+  padding:3px;
+  width:690px;
+  /*height:367px;*/
+  height:80px;
+  overflow:auto;
+}
+.pubTips {
+  float:right;
+  width:210px;
+  margin: 0 5px 0 0;
+  padding: 0;
+  word-wrap: break-word;
+}
+
+.pubTips table {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    width: 205px;
+    float: left;
+}
+
+.pubTipParaBlock {
+  width: 260px;
+  word-wrap: break-word;
+}
+
+.pubControls {
+  margin:20px 0;
+}
+
+/* Publish Button States */
+.pubControls #pubSubmitBtn {
+  /*width:64px;*/
+  height:23px;
+  /*border:none;*/
+  /*margin-bottom:-1px;*/
+}
+.pubControls #pubSubmitBtn.btnDisabled {
+  cursor:default;
+  /*background:url(images/publish/btn_publish_all.png) no-repeat 0 -24px;*/
+}
+.pubControls #pubSubmitBtn.btnEnabled {
+  cursor:pointer;
+  /*background:url(images/publish/btn_publish_all.png) no-repeat 0 0;*/
+}
+.pubControls #pubSubmitBtn.btnProcess {
+  cursor:default;
+  /*background:url(images/publish/btn_publish_all.png) no-repeat 0 -49px;*/
+  /*width:90px;*/ /* IE6 wasn't honoring the new width, so lets remove it */
+}
+
+.embedCode {
+  border-top:1px solid #ccc;
+  margin-top:10px;
+  padding-top:10px;
+}
+
+.mediaUploadEmbedFld {
+  font:normal 12px Verdana;
+  color:#444;
+  padding:3px;
+  margin-left:0px;
+  width:460px;
+}
+
+.mediaUploadStatusLbl {
+  font-weight:bold;
+}
+
+/* Carousel Stlye for Article Publisher */
+.carousel-list li img{cursor:pointer}
+
+/* Hide popup clickability <a> cursor */
+#pubBlock .mediaUploadThumbA{cursor:default}
+
+/* Content Comments
+-------------------------------------------------------- */
+.commentControls {
+  width:60px;
+  text-align:center;
+  font-size:11px;
+}
+
+/* Search
+-------------------------------------------------------- */
+
+#searchControls {
+}
+
+#contentFacets {
+}
+.contentFacetValues {
+  padding:7px 6px 3px;
+  line-height:15px;
+}
+.contentFacetValue {
+  margin-bottom:6px;
+  font-weight:bold;
+}
+#refinements {
+}
+.sectionHeading {
+  background:#eee;
+  padding:6px 7px 4px 7px;
+  /*margin-bottom:12px;*/
+  border-bottom:1px solid #999;
+  color: #690;
+  font-weight:bold;
+  white-space: nowrap;
+}
+.sectionCap {
+  background:#eee;
+  border-top:1px solid #999;
+  padding-top:7px;
+}
+.searchSection {
+  margin-bottom:14px;
+}
+.searchSectionContent {
+  margin:2px 0;
+}
+
+.facetContainer {
+  overflow:hidden;
+  width:600px;
+  background:#fff;
+  position:relative;
+  z-index:10;
+}
+.facetContainerClosed {
+  overflow:hidden;
+  width:600px;
+  background:#fff;
+  position:relative;
+  z-index:10;
+  height:20px;
+}
+.facetOuter {
+  margin-bottom:4px;
+  position: relative;
+}
+.facetOuter:last-child { /* so IE6 will have some minor extra spacing, meh... */
+  margin-bottom:0;
+}
+.facetOverHid {
+  overflow:hidden;
+}
+.facetBorder {
+  border:1px solid #999;
+}
+.facetBorderLt {
+  border:1px solid #ccc;
+}
+#facets {
+  /*margin-top:12px;*/
+}
+
+#facets .heading {
+  font-weight:bold;
+  /*border-bottom:none;*/
+  border-top:none;
+  border-right:none;
+  border-left:none;
+  /*margin-top:12px;*/
+  padding:3px 6px;
+  background:#eee;
+  text-transform:capitalize;
+}
+
+.facetBlock {
+  word-wrap:break-word;
+  width:126px;
+  float:left;
+  margin:10px 15px 0px 7px;
+  overflow:hidden;
+}
+.facetControl {
+  margin:0 0 5px 6px;
+}
+.facetEntry {
+  line-height:15px;
+  margin-bottom:5px;
+}
+.facetEntry a {
+  padding:1px 0;
+}
+.facetCount {
+  font-size:10px;
+  color:#999;
+  font-weight:normal;
+}
+
+#searchResultFormContainer, #searchDetails, #searchMessages, #searchCountsContainer {
+  padding:7px 10px;
+  background:#eee;
+}
+
+#searchResultFormContainer form {
+  margin:0;
+  position: relative; /* fixes an IE glitch */
+}
+
+#advancedSearchHeading {
+  padding:5px 0 20px;
+}
+
+#advancedSearchDiv #publishRangeStart,
+#advancedSearchDiv #publishRangeEnd,
+#advancedSearchDiv #createRangeStart,
+#advancedSearchDiv #createRangeEnd {
+    width: 156px;
+    padding: 1px 0px;
+}
+
+.resetBtn {
+  border:none;
+  background-color:transparent;
+  font-weight:bold;
+  color:#069;
+  cursor:pointer;
+  margin-left:8px;
+}
+.resetBtn:hover {
+  text-decoration:underline;
+}
+#searchDetails {
+  padding:0px 12px 10px 12px;
+  line-height:15px;
+}
+#searchDetails label {
+  font-weight:bold;
+}
+#searchDetails span.val {
+  font-style: italic;
+}
+#searchResultFormContainer a,
+#searchDetails a {
+  color:#069;
+}
+#searchDetails a {
+  margin-right:12px;
+}
+#searchDetails a img {
+  margin-right:4px;
+}
+#searchKeywords {
+  padding-bottom:0px;
+}
+
+#searchResultsBase {
+  text-align:center;
+  margin:16px 0;
+}
+
+#searchSortForm {
+  display:inline;
+}
+
+/* generic form field layout */
+fieldset.stdLblInputs {
+  border:none;
+  margin:0;
+  padding:0;
+}
+fieldset.stdLblInputs label,
+fieldset.stdLblInputs input.lg,
+fieldset.stdLblInputs div.holder {
+  display: block;
+  /*width: 402px;*/
+  width: 380px;
+  float: left;
+  margin-bottom: 15px;
+  padding:4px;
+}
+fieldset.stdLblInputs label.lblMulti {
+  margin-bottom:0;
+}
+fieldset.stdLblInputs label.lblMultiLast {
+  margin-bottom:15px;
+}
+fieldset.stdLblInputs label.withNote,
+fieldset.stdLblInputs input.withNote,
+fieldset.stdLblInputs div.withNote {
+  margin-bottom:0;
+}
+
+fieldset.stdLblInputs div.fldNote {
+  font-size:10px;
+  color:#999;
+  margin-bottom:10px;
+}
+
+.fldNote {
+  font-size:10px;
+  color:#999;
+  margin-bottom:10px;
+}
+
+fieldset.stdLblInputs label {
+  text-align: right;
+  width: 126px;
+  padding-right: 9px;
+}
+fieldset.stdLblInputs input.sm,
+fieldset.stdLblInputs div.holder {
+  margin-right:4px;
+  width:298px;
+}
+fieldset.stdLblInputs div.holder {
+  padding:0;
+  width:auto;
+}
+fieldset.stdLblInputs div.cal button {
+  margin:3px 4px 0 4px;
+}
+fieldset.stdLblInputs div.cal span {
+  margin-right:4px;
+}
+fieldset.stdLblInputs br {
+  clear: left;
+}
+
+fieldset.stdLblInputs div.fieldsetButtons {
+  padding-left:137px;
+}
+fieldset.stdLblInputs select {
+  width:200px;
+}
+
+.viewContentModuleSection .viewContentModuleHeader h2 {
+  color: #f70;
+  float: left;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.viewContentModuleSection .viewContentModuleHeader {
+  padding: 3px 5px 0px 10px;
+  background: #FFF6EE url('images/landing/landing_mod_bar_bg.png') repeat-x top;
+  border-top: 1px solid #E5C7AC;
+  border-bottom: 1px solid #E5C7AC;
+
+}
+
+.viewContentModuleSection {
+  border-bottom: 1px solid #E5C7AC;
+  border-left: 1px solid #E5C7AC;
+  border-right: 1px solid #E5C7AC;
+  margin-bottom: 20px;
+  zoom: 1; /* For IE7, fixes REQ-3561 */
+}
+
+.viewContentModuleTitleDiv {
+  float:left;
+  width:230px;
+  padding-left:8px;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold
+}
+
+.viewContentModuleBody {
+  padding: 10px;
+}  
+
+.relatedAndMoreByArticleHeader {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color:#444;
+}
+
+.relatedAndMoreByArticleTitle {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 13px;
+  color:#006699;
+}
+
+.relatedAndMoreByArticleViewMoreLink {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color:#006699;
+}
+
+
+/* Profile
+----------------------------------------------------------------------------*/
+h1.memberNameProfile {
+  margin: 10px 0 5px;
+}
+
+.profileSection .profileHeader h2 {
+  color: #f70;
+  float: left;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.profileSection .profileHeader {
+  padding: 3px 5px 0px 10px;
+  background: #FFF6EE url('images/landing/landing_mod_bar_bg.png') repeat-x top;
+  border-top: 1px solid #E5C7AC;
+  border-bottom: 1px solid #E5C7AC;
+
+  /*
+  border-top: 4px solid #f90;
+  border-bottom: 2px solid #fc0;
+  background-color: transparent;
+  font-size: 12px;
+  padding: 3px 5px 5px;
+  */
+}
+
+.profilePageColumnA {
+	margin-left: 10px;		
+}
+
+.profileSection .profileHeader a {
+  color: #069;
+  font-size: 12px;
+}
+
+.profileHeader .editLink,
+.feedTabHeader .editLink {
+  float: right;
+  line-height: 22px;
+  position: relative; /* For IE6's benefit */
+}
+
+.feedTabHeader .editLink {
+  line-height: 30px;
+}
+
+.profileSection {
+  border-bottom: 1px solid #E5C7AC;
+  border-left: 1px solid #E5C7AC;
+  border-right: 1px solid #E5C7AC;
+  margin-bottom: 22px;
+  zoom: 1; /* For IE7, fixes REQ-3561 */
+}
+
+.profileProperties {
+  padding: 10px 10px 0;
+}
+
+.profileProperties ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profileProperties li {
+  clear: both;
+  margin: 10px 0 15px;
+  padding: 0;
+  zoom: 1; /* force hasLayout in IE to fix a display bug */
+}
+
+.profileSection .profileProperty,
+.editProfileSection .profileProperty {
+  float: left;
+  text-align: right;
+  width: 140px;
+}
+
+.profileSection .profileValue,
+.editProfileSection .profileValue {
+  display: block;
+  margin-bottom: 6px;
+  margin-left: 155px;
+}
+
+.profileSection .hideLabel .profileProperty {
+  display: none;
+}
+
+.profileSection .hideLabel .profileValue {
+  margin-left: 0;
+}
+
+.profileSection .inline .profileProperty,
+#profileScroller .profileProperty {
+  display: inline;
+  float: none;
+  text-align: left;
+  width: auto;
+}
+
+.profileSection .inline .profileValue,
+#profileScroller .profileValue {
+  display: inline;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+.profileSection .childProperty {
+  margin-left: 155px;
+}
+
+#profileIcon {
+  text-align: center;
+}
+
+#profileBasicInfo .profileProperties ul {
+  margin-bottom: 12px;
+}
+
+#profileBasicInfo .profileProperties li {
+  clear: none;
+  line-height: 17px;
+  margin: 0;
+}
+
+.profileValue .notPublic {
+  color: #999;
+}
+
+.profileEmptySection {
+  padding: 5px;
+}
+
+.profileProperties .profileEmptySection {
+  padding: 0;
+}
+
+.editProfileSection {
+  margin-top: 15px;
+  width: 730px;
+}
+
+.editProfileSection .textInput,
+.editProfileSection select {
+  border: 1px solid #d5d5d5;
+}
+
+.editProfileSection .textInput {
+  padding: 2px;
+}
+
+.editProfileSection .fullWidthInput {
+  width: 350px;
+}
+
+.editProfilePropertyPair {
+  margin-bottom: 6px;
+}
+
+.editProfileSection .childProperty {
+  margin-bottom: 20px;
+}
+
+.editProfileSection .subSection {
+  background: url(images/regform_explain_bg.gif) no-repeat center right;
+  border:1px solid #c8eaf8;
+  margin-bottom: 6px;
+  padding: 8px 0 4px 8px;
+}
+
+.editProfileSection .subSection .sidebarItem {
+  float: right;
+  padding: 0 10px;
+  width: 146px;
+}
+
+.profileEntryPermissionsDiv {
+  background-color: #ddd;
+  border-top: 1px solid #999;
+  padding: 6px 0;
+}
+
+.profileEntryPermissionControls {
+  margin-top: 10px;
+}
+
+.profileEntryPermissionsDiv .profileValue {
+  margin-bottom: 0;
+}
+
+.expandedPermissionsDiv {
+  background-color: #eee;
+  border: 1px solid #999;
+}
+
+.expandedPermissionsDiv .profileProperty,
+.expandedPermissionsDiv .profileValue,
+.expandedPermissionsDiv .sidebarItem {
+  margin-top: 6px;
+}
+
+.example {
+  font-style: italic;
+}
+
+#statusDiv {
+  margin-bottom: 10px;
+}
+
+#memberStatus {
+  width: 320px;
+}
+
+.myPageMemberStatus #memberStatus {
+  width: 219px;
+}
+
+#statusDiv .example {
+  color: #666;
+  line-height: 12px;
+}
+
+.profileEditError {
+  border: 1px solid red;
+  margin-bottom: 0;
+  margin-right: 170px;
+  padding: 6px 0;
+}
+
+.profileEditErrorMessage {
+  color: red;
+  margin-bottom: 6px;
+}
+
+.textScroller {
+  background: #FFF6EE url('images/landing/landing_mod_bar_bg.png') repeat-x top;
+/*background-color: #eee; */
+  height: 18px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  padding: 7px;
+  white-space: nowrap;
+  width: 449px;
+}
+
+/* Profile Pings
+----------------------------------------------------------------------------*/
+#profileCommentBox {
+  /* line-height is a workaround for an ie bug with background colors of divs containing floated objects */
+  line-height: 1.1;
+  background-color: #f7f7f7;
+  padding: 8px;
+}
+
+#profileCommentBox textarea {
+  border: 1px solid #d5d5d5;
+  margin-bottom: 8px;
+  width: 447px;
+}
+
+.profileComment {
+  border: 1px solid #eee;
+  border-top-color: #999;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+}
+
+.profileCommentPending {
+  background-color: #ffffcc;
+}
+
+.profileCommentIconAndControls {
+  float: left;
+  font-size: 10px;
+  margin-left: 8px;
+  margin-top: 6px;
+  text-align: center;
+  width: 60px;
+}
+
+.profileCommentHeader {
+  background-color: #eee;
+  padding: 6px 8px 6px 90px;
+}
+
+.profileCommentMessage {
+  line-height: 18px;
+  margin-left: 90px;
+  padding: 6px 20px 6px 0;
+}
+
+.profileCommentFooter {
+  float: right;
+  margin-right: 8px;
+}
+
+#profileCommentPaging {
+  margin: 6px 8px;
+}
+
+#profileCommentSectionFooter {
+  float: left;
+  margin: 0 8px 20px;
+}
+
+.editPingSettings {
+  width: 400px;
+}
+
+
+.searchKeywords.active {
+    color: #444;
+
+}
+
+.searchKeywords {
+  margin-right:4px;
+  width:290px;
+  border:1px solid #D5D5D5;
+    padding:4px;
+    color: #999;
+}
+
+.searchKeywordsLg.active {
+    color: #444;
+}
+
+.searchKeywordsLg {
+    display:block;
+float:left;
+margin-bottom:15px;
+padding:4px;
+width:380px;
+color: #999;
+border:1px solid #D5D5D5;
+}
+
+.red {
+    color: #FF0000;
+}
+
+.green {
+    color: #339900;
+}
+.wizardRecommendationsFooter {
+    background: #f7f7f7;
+    position: relative;
+    top: 7px;
+    padding-top:5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin-left:-8px;
+    margin-right: -8px
+}
+
+.signInError {
+    display: none;
+    border: 1px solid red;
+    padding: 5px;
+    background: #EEEEEE;
+    color: #FF0000;
+    margin-bottom: 5px;
+}
+
+.signInError.active {
+    display: block;
+}
+
+.connectionRequest {
+  margin: 20px 0;
+}
+
+.connectionRequest .iconDiv {
+  float: left;
+  text-align: center;
+  width: 81px;
+}
+
+.connectionRequest .connectionInfo {
+  margin-left: 100px;
+  word-wrap: break-word;
+}
+
+.lastConnectionRequest {
+  background-color: #fff4e6;
+  border-top: 1px solid #f90;
+  border-bottom: 5px solid #f90;
+  padding: 10px 0;
+}
+
+.groupInvite {
+  margin: 20px 0;
+}
+
+.groupInvite .iconDiv {
+  float: left;
+  text-align: center;
+  width: 121px;
+}
+
+.groupInvite .grpInviteInfo {
+  margin-left: 130px;
+  word-wrap: break-word;
+}
+
+.lastGroupInvite {
+  background-color: #fff4e6;
+  border-top: 1px solid #f90;
+  border-bottom: 1px solid #f90;
+  padding: 10px 0;
+}
+
+/* My Gather page
+----------------------------------------------------------------------------*/
+.feedTabs {
+  border-bottom: 1px solid #bbb;
+  margin-top: 20px;
+  word-wrap: normal; /* It is set to break-word higher up, but this was adding extra space to the tabs in IE, so resetting to normal here */
+  zoom: 1; /* Force hasLayout for IE, otherwise we get weird padding */
+}
+.feedTabs ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.feedTabs li {
+  float: left;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+}
+.feedTabs li.feedTabTitle {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-right: 10px;
+}
+.feedTabs li.current {
+  background: #fffccc url(images/landing/tab_selected_bg.gif) repeat-x top;
+  border-left: 1px solid #bbb;
+  border-right: 1px solid #bbb;
+  border-top: 1px solid #bbb;
+  margin-left: 10px;
+  margin-right: 10px;
+  position: relative;
+  bottom: -1px;
+}
+.feedTabs a, .feedTabs a:visited, .feedTabs a:hover, .feedTabs a:active {
+  line-height: 22px;
+  padding: 4px 10px;
+  text-decoration: none;
+}
+.feedTabs a:hover {
+  text-decoration: underline;
+}
+.feedTabs .current a:link, .feedTabs .current a:visited, .feedTabs .current a:hover, .feedTabs .current a:active {
+  color: #444;
+  position: relative;
+  bottom: 2px;
+}
+.feedTabHeader {
+  background-color: #fffccc;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+}
+.feedTabFooter {
+  background-color: #eee;
+  border-bottom: 1px solid #bbb;
+  padding: 4px 10px;
+}
+
+#feedContent .messageBox,
+#feedComment .messageBox,
+#feedSocial .messageBox {
+  margin-top: 10px;
+}
+
+#socialFeed {
+  width: 300px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* Feed templates
+----------------------------------------------------------------------------*/
+/* Tables */
+/*Feeds*/
+.feedWrapper .feedItem {
+  margin-bottom: 15px;
+}
+
+.feedMetaLine {
+ font-family: Verdana,Arial,Helvetica,sans-serif;
+ font-size: 12px;
+}
+	
+
+.feedWrapper .feedItem.first {
+  margin-top: 4px;
+}
+
+#socialFeed .feedItem, #newUserFeedMessageDiv .feedItem {
+  background: url(images/orange_bullet.gif) no-repeat 0 6px;
+  padding-left: 10px;
+  margin: 0 0 7px;
+  float: left;
+}
+
+.feedWrapper .feedItem .feedText {
+    border-top: 1px solid #cdcdcd;
+    padding-top: 5px;
+    float: left;
+    width: 100%;
+}
+
+#socialFeed .feedItem .feedText {
+  border: none;
+  padding: 1px 0;
+}
+
+.feedWrapper .feedItem.first .feedImage,
+.feedWrapper .feedItem.first .feedText {
+  border-top: none;
+  width: 100%;
+}
+
+.feedWrapper .time_stamp {
+  color: #888;
+  white-space: nowrap;
+  float: right;
+  font-size: 11px;
+}
+#memberFeedDiv .time_stamp {
+  float: none;
+  font-size: 12px;
+}
+#socialFeed .time_stamp {
+  color: #888;
+  border-top: 1px solid #bbb;
+  padding-top: 1px;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  float: left;
+  width: 100%;
+}
+
+#memberFeedDiv .feedText .image {
+  margin-bottom: 15px;
+}
+#memberFeedDiv .feedText .image img,
+#memberFeedDiv .feedText .image .videoIconContainerSmall {
+  margin-right: 15px;
+}
+
+.feedWrapper .feedText img.left {float:left;}
+
+.feedWrapper .feedText .image {
+  float:left;
+  clear:left;
+}
+
+.feedWrapper .feedText .text {
+  float:left;
+  width: 570px;
+}
+
+#friendFeed .feedWrapper .feedText .text {
+  margin-left: 15px;
+  width: 520px;
+}
+
+#interestsFeed .feedWrapper .feedText .text {
+  margin-left: 15px;
+  width: 520px;
+}
+
+#socialFeed .feedText .text {
+  width: 290px;
+  margin: 0;
+}
+
+.feedWrapper .feedItem .feedText .image img {
+    width:60px;
+}
+
+.feedWrapper .feedText img {
+  width: 60px;
+}
+
+.feedWrapper .member_name {
+  font-weight:bold;
+}
+#memberFeedDiv .member_name {
+  font-weight: normal;
+}
+
+#friendFeed .feedWrapper .feedItem .feedText .image img {
+    width:40px;
+}
+#friendFeed .feedWrapper .feedItem .feedText .image {
+  height: 60px;
+  overflow: hidden; 
+  width: 40px;
+  clear: none;
+}
+
+#interestsFeed .feedWrapper .feedItem .feedText .image img {
+    width:40px;
+}
+#interestsFeed .feedWrapper .feedItem .feedText .image {
+  height: 60px;
+  overflow: hidden; 
+  width: 40px;
+  clear: none;
+}
+
+#groupFeed .feedWrapper .feedItem .feedText .image {
+  height: 60px;
+  overflow: hidden; 
+  width: 40px;
+  clear: none;
+}
+
+#groupFeed .feedWrapper .feedItem .feedText .image img {
+    width:40px;
+}
+
+#groupFeed .feedWrapper .feedText .text {
+	margin-left:15px;
+	width:520px;
+}
+
+
+.feedText .spotlightIn,
+.feedText .spotlightOut {
+  display: block;
+  margin-top: 7px;
+  width: 160px;
+}
+
+.feedText .spotlightIn {
+  color: #f90;
+}
+
+.feedItem .contentSummary {
+  margin-left: 40px;
+  clear: both;
+}
+
+.feedItem .contentSummary img,
+.feedItem .contentSummary .videoIconContainerSmall {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.feedItem .contentTitle {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  margin-bottom: 7px;
+}
+
+.feedItem .contentByline {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  float: none;
+  margin: 0;
+  width: auto;
+}
+
+.my2txtmgn {
+    margin-bottom:10px;  
+}
+
+.newUserFeedMessage {
+  font-family: Verdana;
+  font-size: 12px;
+  color: #444;
+  padding: 10px;
+  border-top-color: #FFF;
+  border-top-width: 1px;
+  background: #EEE url('images/newuser_gray_mod_bg.png') repeat-x bottom left;
+}
+
+
+/* Private messaging **************************************************************************************************/
+#composeMessage .registrationErrorCaptcha {
+  float: left;
+  margin-left: 10px;
+  width: 235px;
+}
+
+#composeMessage .registrationErrorCaptcha ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#composeMessage .formField.inline .fieldLabel {
+    width: 80px;
+}
+
+#composeMessage .formIndent {
+    margin-left: 89px;
+}
+
+/* Inbox, Sent, Blocked Messages **************/
+
+#inbox {width:610px;}
+#inbox .messagingInfo {width:610px;border-top:solid 2px #fec200;padding:6px 0;margin:6px 0;}
+#inbox .delete {float:left;margin:0}
+#inbox .messageCounts {float:right;margin-right:25px}
+#inbox .pagination {float:right}
+
+#inbox table {margin:6px 0 0 0;border-top:2px groove #fff;border-collapse:collapse}
+#inbox .header a {font-weight:bold;}
+#inbox .header th {border-left:2px solid #666666;background:#d6d7d7;padding:3px 4px;}
+#inbox .header th.checkbox {border-left:none}
+#inbox .sender img {
+    width:40px;
+    margin:0 15px 0 0;
+    float:left;
+}
+
+#inbox td {padding:3px 4px;word-wrap: break-word;}
+#inbox .sender div { width: 267px; overflow: hidden; }
+#inbox .subject div {width:220px;overflow:hidden}
+#inbox .unread * {font-weight:bold;}
+#inbox .read * {font:normal}
+
+#inbox .even {background:#ededee}
+
+/* Member Support Submission Form (To SalesForce) **************/
+#supportCaseInfo {
+    width:580px;
+    margin-top: 15px;
+}
+
+#supportCaseInfo .formField.inline .fieldLabel {
+  float: left;
+  width: 160px;
+  margin-right: 8px;
+  text-align: right;
+}
+
+#supportCaseInfo .smallInput {
+    padding: 0px;
+    border: solid 1px #8C9EB2;
+    width: 250px;
+    height: 20px;
+}
+
+#supportCaseInfo .ddlInput {
+    border: solid 1px #8C9EB2;
+    width: 252px;
+    height: 20px;
+}
+
+#supportCaseInfo .largeInput {
+    border: solid 1px #8C9EB2;
+    width: 606px;
+    height: 90px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#supportCaseInfo .label {
+    padding-right: 10px;
+    text-align: right;
+    width: 160px;
+}
+
+#supportCaseInfo .lftIndent {
+    padding-left: 15px;
+}
+
+#supportCaseInfo .imageButton {
+    border:none;
+}
+
+.supportErrorMessage {
+    line-height: 18px;
+}
+
+#supportCaseInfo .errorField {
+  border: 1px solid #f00;
+}
+/***  Landing Pages **************/
+.landingContainer {
+  padding: 0;
+  margin-bottom: 0;
+  width: 610px;
+}
+#landingContainerBelowTitle {
+    border-color: #BBBBBB;
+    border-top-width: 0px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-style: solid;
+    padding:  0px;
+    margin-bottom:  20px;
+}
+/**** landing page links *********/
+
+#landingPageLinks {
+   width: 100%;
+   height: 30px;
+   vertical-align: middle;
+    background-image: url(http://www.gather.com/images/landing/tab_normal_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+}
+#landingPageLinks div:hover,
+#landingPageLinks div hover
+{
+    background-image: url(http://www.gather.com/images/landing/tab_hover_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+}
+*.landingSelectedPageLink  {
+    line-height: 30px;
+    height: 30px;
+    color: #444444;
+    width: 150px;
+    background-image: url(images/landing/tab_selected_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+    float: left;
+    margin: 0;
+    font-family: Verdana,serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-color: white;
+    border-right-color: grey;
+    vertical-align: middle;
+}
+
+*.landingPageLink {
+  line-height: 30px;
+  height: 30px;
+  width: 150px;
+  float: left;
+  color: #006699;
+  cursor: pointer;
+  background-image: url(http://www.gather.com/images/landing/tab_normal_bg.gif);
+  background-repeat:   repeat-x;
+  background-position: bottom;
+  margin: 0;
+  font-family: Verdana,serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  border-style: solid;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+  border-left-color: white;
+  border-right-color: grey;
+  vertical-align: middle;
+}
+
+.landingSubnavSelectedPageLink  {
+    height: 30px;
+    color: #444444;
+    background-image: url(images/landing/tab_selected_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+    float: left;
+    margin: 0;
+    font-family: Verdana,serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-color: white;
+    border-right-color: grey;
+    vertical-align: middle;
+    word-wrap: break-word;
+    width:119px;
+}
+
+.landingSubnavPageLink {
+    height: 30px;
+    float: left;
+    color: #006699;
+    background-image: url(http://www.gather.com/images/landing/tab_normal_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+    margin: 0;
+    font-family: Verdana,werif;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-color: white;
+    border-right-color: grey;
+    vertical-align: middle;
+    word-wrap: break-word;
+    width:119px;
+}
+/**** end landing page links *********/
+ #landingDataSelectionBarWithDropdown, .landingDataSelectionBarWithDropdown {
+    line-height: 32px;
+    height: 32px;
+    background-color: #FFFCCC;
+    vertical-align: middle;
+    padding-left: 10px;
+    padding-top: 0px;
+ }
+ #landingDataSelectionBarWithNoDropdown, .landingDataSelectionBarWithNoDropdown {
+    height: 20px;
+    padding-left: 10px;
+    line-height: 20px;
+    background-color: #FFFCCC;
+    vertical-align: middle;
+ }
+
+.landingLinkText {
+    font-family: Verdana,serif;
+    color: #006699;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.landingSelectedLinkText {
+    font-family: Verdana,serif;
+    color: #444444;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.landingProfile {
+    padding:  5px;
+    float:left;
+    width:110px;
+    overflow:hidden;
+    word-wrap:break-word;
+    text-align:center;
+}
+.landingImage {
+    margin-right: 19px;
+    float:left;
+    width:100px;
+    overflow:hidden;
+    word-wrap:break-word;
+    font-size: 11px;
+}
+.landingDataSelection {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: #FFFCCC;
+    width: 100%;
+}
+.landingDataViewAll {
+    float: right;
+    padding-right: 10px;
+}
+.landingDataSelectBox {
+    float:left;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 6px;
+
+}
+.landingDataLabel {
+    padding-bottom: 10px;
+}
+.landingSectionTitle {
+    padding-bottom: 0px;
+    padding-top:4px;
+    padding-left: 10px;
+    background-color: #FF9900;
+    height: 26px;
+    background-image:url(images/landing/module_titlebar_bg.gif);
+    background-repeat:   repeat-x;
+    background-position: bottom;
+}
+
+.landingSectionTitleText {
+    font-family: Georgia,serif;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-style: normal;
+    float: left;
+}
+.landingExploreSubSectionTitleText {
+     padding-right: 5px;
+     padding-left: 0px;
+     padding-bottom: 0px;
+     font-size: 18px;
+     font-family: Georgia, serif;
+     font-weight: normal;
+     color: #690;
+    }
+.landingExploreSectionBreak {
+      padding-top; 15px;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-bottom: 1px solid #BBBBBB;
+
+}
+
+.landingSectionData {
+  padding: 10px 0 15px 10px;
+  overflow: hidden;
+}
+.landingSectionPostData {
+  padding-bottom: 15px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
+}
+#landingPostEntry {
+    padding-right: 0px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    word-wrap:break-word;
+}
+#landingPostSpacer {
+    margin-top: 10px;
+}
+
+.landingPostIcon {
+    float: left;
+    width: 70px;
+}
+.landingPostTitle {
+    font-weight: bold;
+    word-wrap:normal;
+    display:inline;
+}
+.landingPostAuthor {
+    word-wrap:normal;
+    display:inline;
+}
+.landingPostBody {
+    margin-top: 0px;
+    padding-top: 0px;
+    top: -3px;
+    position: relative;
+    float: left;
+    width: 515px;
+}
+.landingSubnavDataSelection {
+    background-color: #FFFCCC;
+}
+
+.landingSubnavDataLabel {
+    padding-bottom: 10px;
+}
+.landingSubnavSectionTitle {
+    float: left;
+    width: 100%;
+    border-bottom: 2px solid #000000;
+    word-wrap: normal; /* It is set to break-word higher up, but this was adding extra space to the tabs in IE, so resetting to normal here */
+    zoom: 1; /* Force hasLayout for IE, otherwise we get weird padding */
+}
+
+.landingSubnavSectionData {
+    padding:10px;
+}
+
+.landingSubnavSectionTitle ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 10px 10px 10px;
+}
+.landingSubnavSectionTitle li {
+    border-right: 1px solid #000000;
+    border-top: 1px solid #000000;
+    float: left;
+    font-size: 12px;
+    margin: 6px 0 0;
+    padding: 5px 5px 5px 5px;
+}
+.landingSubnavSectionTitle li.first {
+  border-left: 1px solid #000000;
+}
+.landingSubnavSectionTitle li.current {
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-top: 1px solid #000000;
+  background-color: #EEEEEE;
+  margin: 0 0 0 -1px;
+}
+
+.landingSubNavSectionTitleText {
+    font-family: Georgia,serif;
+    font-size: 16px;
+    font-style: normal;
+    float: left;
+}
+
+#tagspaceResults {
+    background:#EEEEEE none repeat scroll 0%;
+    padding-left: 10px;
+    padding-top: 7px;
+    line-height: 24px;
+}
+#tagspaceResults .activeResultType {
+    font-weight: bold;
+}
+.valueProposition {
+    padding:  0px;
+    margin-bottom:  15px;
+    margin-left: 0px;
+    margin-right: 20px;
+    width: 610px;
+}
+.valuePropositionViewContent {
+    padding:  0px;
+    margin-bottom:  15px;
+    margin-left:  0px;
+    margin-right: 20px;
+    width: 610px;
+}
+#todayOnGatherContainer {
+  border:0px none #FFFFFF;
+  margin-bottom:20px;
+  width:300px;
+}
+#todayOnGatherInnerContainer .header {
+  color:black;
+  font-size:16px;
+  font-weight:normal;
+}
+#todayOnGatherScroller{
+  width: 100%;
+}
+#todayOnGatherScroller ul{
+  list-style-type: none;
+  padding-left: 1pt;
+  margin: 0px 0px;
+}
+#todayOnGatherScroller li {
+  background: url(images/orange_bullet.gif) left 6px no-repeat;
+  padding-left: 12px;
+  margin-bottom: 8px;
+}
+.todayOnGatherDisplayAll {
+  margin-left: 5px;
+  display:inline;
+  position:relative;
+  top: -3px;
+}
+#memberUpdatesContainer {
+  border:0px none #FFFFFF;
+  margin-bottom:20px;
+  width:300px;
+}
+#memberUpdatesInnerContainer .header {
+  color:black;
+  font-size:16px;
+  font-weight:normal;
+}
+#memberUpdatesList{
+  width: 100%;
+}
+#memberUpdatesList ul{
+  list-style-type: none;
+  padding-left: 1pt;
+  margin: 0px 0px;
+}
+#memberUpdatesList li {
+  margin-bottom: 8px;
+}
+/**** Bulleted Lists Module used for Editorial Interests, related Tags *********/
+.BulletedListModule {
+  margin: 20px 0px;
+  width:300px;
+}
+.BulletedListModule .list ul{
+  list-style-type: none;
+  padding-left: 1pt;
+  margin: 0px 0px;
+}
+.BulletedListModule .list li {
+  background: url(images/orange_bullet.gif) left 6px no-repeat;
+  padding-left: 12px;
+  margin-bottom: 8px;
+}
+
+.greySearchBox {
+  margin-top: 10px;
+  background-color: #eee;
+  border-bottom: 1px solid #bbb;
+  padding: 4px 8px;
+}
+
+.greySearchBox label {
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.greySearchBox #interestsSearchInput {
+  padding: 3px 4px;
+  vertical-align: middle;
+  width: 175px;
+}
+
+.greySearchBox #tagSearchInput {
+  color:#999999;
+  font-family:Verdana,Arial,Helvetica,sans-serif;
+  font-size:12px;
+  font-size-adjust:none;
+  font-stretch:normal;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:normal;
+  line-height:normal;
+  background-color:#FFFFFF;
+  border:1px solid #DBE3ED;
+  padding:2px 4px 3px;
+  width:170px;
+}
+
+.centeredBannerAd {
+    text-align:center;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+}
+h1.aboutTitle {
+  font-size: 20px;
+}
+h2.aboutHeading {
+ color:black;
+ font-weight: bold;
+ font-size: 16px;
+ font-family: Arial,Helvetica,sans-serif;
+}
+#contactTable {
+  border: 1px solid #999999;
+  left: -7px;
+  position:relative;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+#contactTable td {
+ border: 1px solid #999999;
+ line-height: 20px;
+ padding-left: 5px;
+}
+#contactTable td h3 {
+ color:black;
+ font-weight: bold;
+ font-size: 14px;
+ font-family: Arial,Helvetica,sans-serif;
+}
+.bioPhoto {
+  float:left;
+  padding-right:20px;
+  padding-bottom:10px;
+}
+.gatherNewsItem {
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+#shareContentBar {
+  margin-top: 25px;
+  width: 100%;
+}
+.bookmarkContainer {
+    width: 55px;
+    margin-right: 25px;
+    text-align: left;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.bookmarkButton {
+    background-color: #eee;
+    border: solid 1px #bbb;
+    font-size: 11px;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 5px;
+    width: 24px;
+    height: 24px;
+}
+.bookmarkButton.hover {
+    background-color: #bbb;
+    border: solid 1px #444;
+}
+.viewAlbum #shareContentBar {
+  margin: 10px auto;
+}
+#shareContentButton img {
+    vertical-align: top;
+    padding-top: 1px;
+}
+
+
+#personalInvite textarea.personallink
+{
+    border:1px solid #27859f;
+    background:white;
+    overflow:hidden;
+    width:500px;
+    height:20px;
+    padding:5px 5px 0px 5px;
+    line-height:130%;
+}
+
+#personalInvite textarea.largeBlock
+{
+    height:275px;
+    width:250px;
+}
+
+#personalInvite .orangeBG
+{
+    background: url(images/personalInvite/300x250.gif) no-repeat;
+    height: 250px;
+    width: 300px;
+}
+
+#personalInvite .orangeText
+{
+    margin: 15px 20px 0 20px;
+    font: 13px/18px Georgia, Verdana, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+}
+
+#slideshowBody {
+    background:#000;
+    margin: 20px 0px;
+}
+
+#slideshowHeader h1 {
+    color: #ffffff;
+    display: inline;
+}
+
+#slideshowCaption {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+#slideshowCaption a:link, #slideshowCaption a:visited, #slideshowCaption a:active, #slideshowCaption a:hover {
+    text-decoration:underline;
+    color: #ffffff;
+}
+
+#slideshowNav {
+    font-size: 11px;
+    color: #ffffff;
+}
+
+#slideshowAuthorLine {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.albumCoverSmall {
+  background: url(images/album_wrapper120.png) no-repeat;
+  padding: 3px 7px 7px 3px;
+  position: relative;
+}
+.albumCoverSmall .inner {
+  height: 120px;
+  width: 120px;
+  overflow: hidden;
+  display: block;
+}
+
+.albumCoverSmall100 {
+  background: url(images/album_wrapper100.png) no-repeat;
+  padding: 3px 7px 7px 3px;
+  position: relative;
+}
+.albumCoverSmall100 .inner {
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+  display: block;
+}
+
+.albumCoverMini {
+  background: url(images/album_wrapper60.png) no-repeat;
+  padding: 3px 7px 7px 3px;
+  position: relative;
+  margin-right:5px;
+  width: 60px;
+}
+.albumCoverMini .inner {
+  height: 60px;
+  width: 60px;
+  overflow: hidden;
+  display: block;
+}
+
+.greyBox { background-color: #eee; border: 1px solid #bbb; padding: 10px 5px;}
+
+
+.showMoreLessContainer {
+  margin-top: 10px;
+}
+
+.showMoreLessContainer DIV {
+  margin-left: 5px;
+  display:inline;
+  position:relative;
+  top: -3px;
+}
+
+.myGather_dash {
+    width: 350px;
+    overflow: hidden;
+}
+.myGather_dash ul {
+    width: 360px;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+.myGather_dash  ul li
+{
+    background: url(images/orange_bullet.gif) left 6px no-repeat;
+    padding-left: 8px;
+    padding-right: 14px;
+    float: left;
+    font-size: 11px;
+}
+
+.ctaHeaderTxt { font-family: Arial; font-size: 15px; font-weight: bold; height: 20px;}
+.ctaBtnLeft {background-image:url('images/cta_btn_cap_left.png'); background-repeat:no-repeat; width:5px; height: 30px;}
+.ctaBtnRight {background-image:url('images/cta_btn_cap_right.png'); background-repeat:no-repeat; width:5px; height: 30px;}
+.ctaBtnFill {background-image:url('images/cta_btn_bg_mid.png'); background-repeat:repeat-x; padding:3px 5px 0px; height: 27px;}
+.ctaBtnText, .ctaBtnText a, .ctaBtnText a.hover {font-size: 18px; color: #fff; font-family: Arial; font-weight: bold; text-decoration: none;}
+
+.shareContentBtnLeft {background-image:url('images/btn_gray_leftcap.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentBtnRight {background-image:url('images/btn_gray_rightcap.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentBtnFill {background-image:url('images/btn_gray_bg.png'); background-repeat:repeat-x; padding:2px 2px 0px; height: 22px;}
+.shareContentBtnText, .shareContentBtnText a, .shareContentBtnText a.hover {font-size: 12px; text-decoration: none;position:relative;top:0px}
+
+.shareContentInactiveBtnLeft {background-image:url('images/btn_gray_leftcap_inactive.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentInactiveBtnRight {background-image:url('images/btn_gray_rightcap_inactive.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentInactiveBtnFill {background-image:url('images/btn_gray_bg_inactive.png'); background-repeat:repeat-x; padding:2px 2px 0px; height: 22px;}
+
+.shareContentHoverBtnLeft {background-image:url('images/btn_gray_leftcap_hover.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentHoverBtnRight {background-image:url('images/btn_gray_rightcap_hover.png'); background-repeat:no-repeat; width:3px; height: 22px;}
+.shareContentHoverBtnFill {background-image:url('images/btn_gray_bg_hover.png'); background-repeat:repeat-x; padding:2px 2px 0px; height: 22px;}
+
+.friendfeedhover {
+  background-color:#D3EBF8;
+  text-decoration:none;
+}
+  
+.interestfeedhover {
+  background-color:#D3F1C9;
+  text-decoration:none;
+}
+
+.groupfeedhover {
+  background-color:#F2DAF0;
+  text-decoration:none;
+}    
+
+.essentialfeedhover {
+  background-color:#F2C9C2;
+  text-decoration:none;
+}
+  
+.allofgatherfeedhover {
+  background-color:#FFE6BF;
+  text-decoration:none;
+}  
+  
+.feedControlItem {
+  float:left;
+  margin-left: 15px;
+  margin-top:2px;
+  margin-bottom:1px;
+  padding-top:1px;
+  padding-bottom:2px;
+  padding-right:5px;
+  padding-left:3px; 
+  width:168px;
+  color:#444444;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  cursor:pointer;
+}  
+
+.feedControlDividerDiv hr {
+  width:170px;
+  height: 0px;
+  border: 0px;
+  border-bottom: 1px solid #CDCDCD; 
+}
+
+.feedControlTitle {
+   float:left;
+   margin-top:2px;
+   margin-bottom:1px;
+   margin-left:2px;
+   padding-top:3px;
+   padding-left:3px;
+   padding-bottom:1px;
+   width:173px;
+   cursor:pointer;
+   color:#444444;
+   font-family:Arial,Helvetica,sans-serif;
+   font-size:12px;
+}
+
+.feedControlTitleIcon {
+  float:left;
+  padding-top:5px;
+  padding-right:0px;
+}
+
+.feedControlTitleContainer {
+  white-space:nowrap;
+  float:left;
+}
+
+.feedControlMoreLessLink {
+  float:left;
+  padding-left:17px;
+  text-decoration:none;
+}
+
+.feedMoreLessLink {
+  color:#444444;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  text-decoration:none;
+}
+
+.feedControlSettingsLink {
+  float:right;
+  color:#006699;
+  font-family:Verdana,Arial,Helvetica,sans-serif;
+  font-size:11px;
+}
+
+.feedControlSettingsLinkIcon {
+  padding-right:5px;
+  float:right;
+}
+
+.feedControlShowMoreLessContainer {
+  margin-top:1px;
+  width:170px;
+  border-bottom:1px solid #CDCDCD;
+  float:left;
+  padding-bottom:8px;
+}
+
+.feedCheckboxSpan {
+  padding-right:8px;
+}
+
+.notificationPrefCell {
+  width:25%;
+}
+
+.facebookLike {
+  border:solid 1px #bbb;
+  padding:5px;
+  margin-bottom:15px;
+  background-color:#eee;
+}

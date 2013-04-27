@@ -67,6 +67,7 @@ menu2.l2over = function (e) {
         }).done(function(data) {
             var menu = $(this).closest('.menu2')
             $('.l3',menu).append(data);
+            $('.l3 .toggle',menu).bind('click',menu2.l3toggle);
         }).always(function () {
             $(this).removeData('ajax').children('.iconMenuAjax').hide();
         });
@@ -84,6 +85,18 @@ menu2.l2out = function (e) {
     var subID = t.data('subID');
     if (subID) {
         if ($(e.relatedTarget).closest('.sub').attr('id') !=subID) $('#'+subID).hide();
+    }
+}
+
+menu2.l3toggle = function (e) {
+    var t = $(this);
+    var sub = t.parent().next();
+    if (t.attr('show')) {
+        sub.hide();
+        t.text(t.attr('titleshow')).removeAttr('show');
+    } else {
+        sub.show();
+        t.text(t.attr('titlehide')).attr('show',1);
     }
 }
 

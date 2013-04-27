@@ -89,7 +89,7 @@
 
 			try {
 
-//				console.log("SPON - interface: reCountPage");
+				console.log("SPON - interface: reCountPage");
 
 				if (settings.params) {
 					if (settings.newParamsOnly)

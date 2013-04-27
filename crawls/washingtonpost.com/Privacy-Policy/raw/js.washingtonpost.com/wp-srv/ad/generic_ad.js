@@ -1255,6 +1255,7 @@ var wpAd, placeAd2;
     IE: !!/msie/i.test(navigator.userAgent),
     test_fif: !!/test_fif/i.test(location.search),
     debugAds: !!/debugAds/i.test(location.search),
+    postscribe: !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href),
     hpRefresh: !!wpAd.tools.urlCheck('reload=true'),
     is_homepage: !!(win.commercialNode && /^homepage|^washingtonpost\.com/i.test(commercialNode)),
     is_local: wpAd.tools.checkCookieVal('WPATC', 'C=1:'),

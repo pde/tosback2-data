@@ -474,7 +474,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         ageFilter = ageFilter + "|" + getName;
         ageFilter2 = ageFilter2 + "|" + getName + "," + getValue;
-        ageHTML = ageHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' pName='" + getName + "' href='#'></a></span>";
+        ageHTML = ageHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='age updateFilterResults' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     ageFilter = ageFilter.substring(1);
@@ -485,7 +485,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         categoryFilter = categoryFilter + "|" + getName;
         categoryFilter2 = categoryFilter2 + "|" + getName + "," + getValue;
-        categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	if(categoryFilter != "") {
@@ -502,7 +502,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         typeFilter = typeFilter + "|" + getName;
         typeFilter2 = typeFilter2 + "|" + getName + "," + getValue;
-        // typeHTML = typeHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
+        typeHTML = typeHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='type updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     typeFilter = typeFilter.substring(1);
@@ -513,7 +513,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         solutionsFilter = solutionsFilter + "|" + getName;
         solutionsFilter2 = solutionsFilter + "|" + getName + "," + getValue;
-        solutionsHTML = solutionsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='sol updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        solutionsHTML = solutionsHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='sol updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
 	if(solutionsFilter != "") {
@@ -530,7 +530,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         developmentStageFilter = developmentStageFilter + "|" + getName;
         developmentStageFilter2 = developmentStageFilter2 + "|" + getName + "," + getValue;
-        // developmentStageHTML = developmentStageHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
+        developmentStageHTML = developmentStageHTML + "<span>" + $(this).html() + "</span><a class='updateFilterResults' pName='" + getName + "' href='#'></a>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     developmentStageFilter = developmentStageFilter.substring(1);
@@ -541,7 +541,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         collectionsFilter = collectionsFilter + "|" + getName;
         collectionsFilter2 = collectionsFilter2 + "|" + getName + "," + getValue;
-        collectionsHTML = collectionsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='col updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        collectionsHTML = collectionsHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='col updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     collectionsFilter = collectionsFilter.substring(1);
@@ -552,7 +552,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         themesFilter = themesFilter + "|" + getName;
         themesFilter2 = themesFilter2 + "|" + getName + "," + getValue;
-        themesHTML = themesHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='theme updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        themesHTML = themesHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='theme updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     themesFilter = themesFilter.substring(1);
@@ -563,7 +563,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         brandsFilter = brandsFilter + "|" + getName;
         brandsFilter2 = brandsFilter2 + "|" + getName + "," + getValue;
-        brandsHTML = brandsHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
+        brandsHTML = brandsHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='brand updateFilterResults right' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     brandsFilter = brandsFilter.substring(1);
@@ -574,7 +574,7 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
         getValue = $(this).attr('pValue');
         osFilter = osFilter + "|" + getName;
         osFilter2 = osFilter2 + "|" + getName + "," + getValue;
-        osHTML = osHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='os updateFilterResults' pName='" + getName + "' href='#'></a></span>";
+        osHTML = osHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='os updateFilterResults' pName='" + getName + "' href='#'></a></span>";
         googleAnalyticsData = $(this).attr('trackOnSuccess');
     });
     osFilter = osFilter.substring(1);
@@ -826,11 +826,11 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
         gaCategory = 'Category- ' + $(this).html();
         if (i === 0) {
             categoryFilterList = categoryFilterList + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
+            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
             categoryQString = categoryQString + getDataCateryCode;
         } else {
             categoryFilterList = categoryFilterList + ',' + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>";
+            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>";
             categoryQString = categoryQString + ',' + getDataCateryCode;
         }
         optionsSelected = true;
@@ -847,7 +847,7 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
         gaBrand = 'Brand/Character- ' + $(this).attr('data-brand-name');
         //getValue = $(this).attr('pValue');
         brandsFilter = brandsFilter + getBrandCodeName;
-        brandsHTML = brandsHTML + "<span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' data-brand-code='" + $(this).attr('data-brand-code') + "' href='#'></a>";
+        brandsHTML = brandsHTML + "<span class='left removeAClass'>" + $(this).html() + "</span><a class='brand updateFilterResults right' data-brand-code='" + $(this).attr('data-brand-code') + "' href='#'></a>";
         brandsQString = brandsQString + getDataBrandCode;
         optionsSelected = true;
     });
@@ -1019,11 +1019,11 @@ collectDataListForInt = function (pagination, pageIndex, pageSize) {
         gaCategory = 'Category- ' + $(this).html();
         if (i === 0) {
             categoryFilterList = categoryFilterList + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
+            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
             categoryQString = categoryQString + getCategoryCode;
         } else {
             categoryFilterList = categoryFilterList + ',' + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
+            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
             categoryQString = categoryQString + getCategoryCode;
         }
     });
@@ -1342,17 +1342,8 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
 
     }
 
-
+	
     if (finalSelectedCategoriesList[2] !== undefined) {
-        /* var selectedBrandsString = finalSelectedCategoriesList[2];
-        creatHTMLbrands = selectedBrandsString;
-        if (creatHTMLbrands !== '') {
-        $('.selected-brands span').html(creatHTMLbrands).parents('li').css("display", 'block');
-        $('.selected-brands').css('border-bottom', '1px solid #C86F1E');
-        } else {
-        $('.selected-brands span').html('');
-        $('.selected-brands').css('border-bottom', '0px');
-        }*/
         var selectedBrandsString = finalSelectedCategoriesList[2];
         var creatHTMLbrands = '';
         selectedBrandsString = selectedBrandsString.split('$');
@@ -1434,6 +1425,27 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
         }
     }
 
+    if (finalSelectedCategoriesList[4] !== undefined) {
+        var selectedTypeString = finalSelectedCategoriesList[4];
+        var creatHTMLTypes = '';
+        selectedTypeString = selectedTypeString.split('$');
+        for (i = 0; i <= selectedTypeString.length - 1; i++) {
+            creatHTMLTypes = creatHTMLTypes + selectedTypeString[i];
+       }
+
+
+        $(creatHTMLTypes).find('span:last').remove();
+        if (creatHTMLTypes !== '') {
+            $('.selected-type').show();
+            $('.selected-type span.listedItems').html(creatHTMLTypes).parents('li').css("display", 'block');
+            $('.selected-type').css('border-bottom', '1px solid #C86F1E');
+        } else {
+            $('.selected-type').hide();
+            $('.selected-type span.listedItems').html('');
+            $('.selected-type').css('border-bottom', '0px');
+        }
+    }
+
     if (finalSelectedCategoriesList[8] !== undefined) {
         var selectedOsString = finalSelectedCategoriesList[8];
         var creatHTMLOs = '';
@@ -1457,6 +1469,8 @@ updateSelectedfilterList = function (finalSelectedCategoriesList) {
     
     //Hide/show sort by selected area
     display_sortByArea();
+	$('.removeAClass a').contents().unwrap();
+	$('.removeAClass').removeClass('removeAClass');
 
     curvyCornersRedraw();
 };
@@ -1591,6 +1605,14 @@ $(".theme.updateFilterResults").live("click", function (e) {
     getName = $(this).attr('pName');
     categoryCode = 'pName';
     removeSelectedCategory('filter-themes', getName, categoryCode);
+	buildHash(e.hasOwnProperty('originalEvent'));
+    return false;
+});
+
+$(".type.updateFilterResults").live("click", function (e) {
+    getName = $(this).attr('pName');
+    categoryCode = 'pName';
+    removeSelectedCategory('filter-type', getName, categoryCode);
 	buildHash(e.hasOwnProperty('originalEvent'));
     return false;
 });
@@ -2121,6 +2143,12 @@ var display_sortByArea = function () {
     }
 }
 
+function updateLeftNav(obj, oe) {
+	$('.filter-Age, .filter-category, .filter-brands, .filter-development-stage, .filter-solutions, .filter-collections, .filter-type, .filter-themes, .filter-os').click(function(e) {
+		e.preventDefault();
+	});
+}
+
 function buildHash(oe) {
 	if(oe) {
 		window.stopHash = false
@@ -2168,8 +2196,10 @@ function buildHash(oe) {
 		});
 		$('.filter-type li.click-active').each(function () {
 			hash = hash + "typ=" + $(this).attr('categorycode') + "&";
-
-       });
+        });
+		$('.filter-os li.click-active').each(function () {
+			hash = hash + "typ=" + $(this).attr('pvalue') + "&";
+        });
 
 
 		$('.filter-themes li.click-active').each(function () {
@@ -2184,9 +2214,6 @@ function buildHash(oe) {
 			hash = hash + "viewAllProducts=true&";
 		}
 		hash = hash.substring(0, hash.length-1);
-		if(hash == "") {
-			hash = "#_";
-		}
 		window.location.hash = hash;
 	}
 }
@@ -2228,9 +2255,6 @@ function updateHash(obj, oe) {
 		newHash = newHash + 'dataSort' + "=" + $(obj).attr('data-sort') + "&";
 	}
 	newHash = newHash.substring(0, newHash.length-1);
-	if(newHash == "") {
-		newHash = "#_";
-	}
 	window.location.hash = newHash;
 }
 

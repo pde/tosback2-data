@@ -5576,7 +5576,7 @@ $(function() {
                         }
                     });
                     q.find(".dealer_links a.dealer_Xtimeurl").each(function() {
-                        if ($(this).attr("href") == "" || $(this).attr("href") == null || $(this).attr("href") == "http://" || $(this).attr("href") == "http:///" || $(this).attr('href') == 'http://&cs:e=hma' || $(this).attr('href') == 'http:///&cs:e=hma' || $(this).attr('href') == '&cs:e=hma') {
+                        if ($(this).attr("href") == "" || $(this).attr("href") == null || $(this).attr("href") == "http://" || $(this).attr("href") == "http:///" || $(this).attr('href') == 'http://ServiceApptForm/?cs:e=hma' || $(this).attr('href') == 'http:///ServiceApptForm/?cs:e=hma' || $(this).attr('href') == 'ServiceApptForm/?cs:e=hma') {
                             $(this).hide()
                         }
                     });

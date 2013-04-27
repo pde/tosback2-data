@@ -7386,7 +7386,8 @@ for(x=0;
 x<q;
 x++){mb.global.enterLoadingMode(a[x].getElement())
 }mb.preferredDealer.getDealerDetails({id:n})
-}}}};
+}}}d(".byo2.embed .btn-change-dealer").attr("style","display:none")
+};
 function j(k,n,m){var l=k.slice(((m||n)+1)||k.length);
 k.length=n<0?k.length+n:n;
 return k.push.apply(k,l)
@@ -7433,7 +7434,8 @@ r<n;
 r++){i[r].setReturnHash(q);
 i[r].updateChangeDealerLink()
 }})
-}};
+}d(".byo2.embed .btn-change-dealer").attr("style","display:none")
+};
 h.serializeHash=function(k){var m="",l;
 for(l in k){if(k.hasOwnProperty(l)&&l!=="returnHash"&&l!=="dealerId"){m+=l+","+k[l]+"|"
 }}m=m.slice(0,-1);

@@ -458,7 +458,7 @@ var usa_globalMenu = {
 							"title" : "The Moment",
 							"url" : usa_baseUrlDomain + "/series/themoment/index.html",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_themoment.png",
-							"tuneIn" : "THURSDAYS 10/9C"
+							"tuneIn" : "FRIDAYS 11/10C"
 						},
 						/* Featured Slot  - LAST */
 						{

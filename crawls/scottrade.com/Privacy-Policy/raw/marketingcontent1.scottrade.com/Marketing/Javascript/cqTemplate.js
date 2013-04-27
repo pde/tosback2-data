@@ -113,7 +113,7 @@ function sTrackShare(name) {
 * MOD tracking for login button on home page.
 */
 function loadWSODLoginScript() {
-    var activityURL = "http://ad.wsod.com/activity/8bec9b10877d5d7fd7c0fb6e6a631357/11.img.activity/";
+    var activityURL = "https://ad.wsod.com/activity/8bec9b10877d5d7fd7c0fb6e6a631357/11.img.activity/";
     var activityImageObject = new Image();
     activityImageObject.onload = function () { }
     activityImageObject.src = activityURL;
@@ -123,7 +123,7 @@ function loadWSODLoginScript() {
 * loading remessaging tag iframe for home page flood light.
 */
 function loadDelayedItems() {
-    var remessageURL = "http://scottrade.wsod.com/action/8bec9b10877d5d7fd7c0fb6e6a631357/35.iframe.action/";
+    var remessageURL = "https://scottrade.wsod.com/action/8bec9b10877d5d7fd7c0fb6e6a631357/35.iframe.action/";
     var remessageIframeObject = document.getElementById("remessageIframe");
     if (remessageIframeObject != null)
         remessageIframeObject.src = remessageURL;

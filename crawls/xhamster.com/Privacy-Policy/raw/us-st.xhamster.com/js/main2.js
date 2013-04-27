@@ -174,11 +174,14 @@ xEvent.hintHide = function(e) {
 
 xEvent.disable = function(el) {
     el = $(el);
-    var overClass = el.attr('overicon');
-    var hint=el.attr('hint');
-    $(el).removeAttr('href').removeAttr('ajax').removeAttr('href').removeAttr('hint').removeAttr('overicon');
-    if (overClass) $('.'+overClass,el).removeClass(overClass);
-    if (hint) xEvent.hintHide();
+    el.each(function(){
+        var t = $(this);
+        var overClass = t.attr('overicon');
+        var hint=t.attr('hint');
+        $(t).removeAttr('href').removeAttr('ajax').removeAttr('href').removeAttr('hint').removeAttr('overicon');
+        if (overClass) $('.'+overClass,t).removeClass(overClass);
+        if (hint) xEvent.hintHide();
+    });
 }
 
 xEvent.loaderShow = function (el) {

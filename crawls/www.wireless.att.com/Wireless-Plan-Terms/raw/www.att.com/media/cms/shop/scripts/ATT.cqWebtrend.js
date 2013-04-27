@@ -113,7 +113,9 @@ ATT.cqWebtrend = new function ($, doc) {
                 					Body:'#primary-content,#tabsLinks, #right-body', PageHeaderBand:'#underNav', BasicValueTile_:'.basicvalueTile', LeadGenerationBar:'#stayConnectedID',
                 					SecondaryContent_:'#secondary-content'};
                 // if target element has data-preventWtCQClickHit="true" then no wtCqClickId will be generated.
-				if ($target.data('preventWtCQClickHit')==true) return;
+				if ($target.data('preventWtCQClickHit')==true || this.getAttribute("data-preventWtCQClickHit")=="true"){
+					return;
+				}	
                 if ($target.data('linkLoc')) { // if data-linkLoc is specified on anchor this will override the default loc.  Only do this per EDD requirement.
                        loc = $target.data('linkLoc').replace(" ",'');
 				} else {
@@ -312,7 +314,7 @@ ATT.cqWebtrend = new function ($, doc) {
      
     $(doc).bind('CartSuccess CartConflict', function(e, d) {
     	if (!! d.data && !! d.data.wirelessAddToCartResultHolder) {
-			var linesLen, losg, eventType = e.type, statusCode, statusFlag, lines,
+			var linesLen, losg, eventType = e.type, statusCode, statusFlag, lines,skuPrice,skuQty,
 				cartLine, errorCode, 
 				losgInContext =  (ATT.globalVars.cartContents && ATT.globalVars.cartContents.losgInContext) ? ATT.globalVars.cartContents.losgInContext:null,
 				data = ATT.globalVars.cartContents,		
@@ -363,45 +365,117 @@ ATT.cqWebtrend = new function ($, doc) {
 					clickid = "";
 				}
 				
+				v_qtyAllow = jQuery('#qtyAllow').val();
 				
-				while(len--){
-					item.quantity[len] = addItems[len].quantity;
-					item.sku[len] = addItems[len].catalogRefId;
-					item.price[len] = addItems[len].price?addItems[len].price:"";
+				if (typeof v_qtyAllow == "undefined") {
 					
-				}
-				sku = ATT.util.unique(item.sku);
-				var skuQty="";
-				
-				if(sku.length === 1){
-					item.quantity = addArrItems(item.quantity);
-					skuQty = sku+'~'+item.quantity;
-					item.price = addArrItems(item.price).toFixed(2);
-					
+		    		if(typeof ATT.globalVars.cartContents.lob != "undefined"){
+		    			var skuMap ={};
+						var priceMap = {};
+						var lines = ATT.globalVars.cartContents.lob.items;
+						var linesLen = lines.length;
+						
+					while(linesLen--){
+							parts = lines[linesLen].parts;
+							deviceLen = parts.device.length;
+							while(deviceLen--){
+								if(skuMap.hasOwnProperty(parts.device[deviceLen].sku)){
+									skuMap[parts.device[deviceLen].sku]=skuMap[parts.device[deviceLen].sku]+1;
+									
+								}else{
+									skuMap[parts.device[deviceLen].sku]=1;
+									priceMap[parts.device[deviceLen].sku]=parts.device[deviceLen].prices.dueToday;
+								}
+						}
+					  }
+					    skuQty="";
+						 for(var skuKey in skuMap){
+								if(skuQty!=""){
+									skuQty = skuQty+'|'+skuKey +'~'+skuMap[skuKey];
+								}else{
+									skuQty = skuKey +'~'+skuMap[skuKey];
+								}
+						}
+						 skuPrice="";
+						 for(var priceKey in priceMap){
+								if(skuPrice!=""){
+									skuPrice = skuPrice+'|'+priceMap[priceKey];
+								}else{
+									skuPrice = priceMap[priceKey];;
+								}
+						}
+		    		}
+		    		
 				}else{
-					skuItemLen = item.sku.length; 
-					var skuMap ={};
-					while(skuItemLen--){
-						if(skuMap.hasOwnProperty(item.sku[skuItemLen])){
-							skuMap[item.sku[skuItemLen]]=skuMap[item.sku[skuItemLen]]+1;
-						}else{
-							skuMap[item.sku[skuItemLen]]=1;
+					
+					var skuPrice = $('div[id*=DueToday]:isvisible').attr('price') ? $('div[id*=DueToday]:isvisible').attr('price') : "";
+		        	
+		        	var skuVal = $('div[data-sku]').data('sku') ? $('div[data-sku]').data('sku') : "";
+		        	
+		        	
+		    		if (typeof v_qtyAllow == "undefined") {
+		    			v_qtyAllow = 1;
+		    			
+		    		}
+		    		sku=skuVal + '~'+v_qtyAllow;
+		    		
+		    		var lobSku="";
+		    		
+		    		if(typeof ATT.globalVars.cartContents.lob != "undefined"){
+		    			var skuMap ={};
+						var priceMap = {};
+						priceMap[skuVal] = skuPrice;
+		    			var lines = ATT.globalVars.cartContents.lob.items;
+						var linesLen = lines.length;
+
+					while(linesLen--){
+						losg = lines[linesLen].id;
+						if(losgInContext === losg){
+							continue;
 						}
-					}
-					for(var skuKey in skuMap){
-						if(skuQty!=""){
-							skuQty = skuQty+'|'+skuKey +'~'+skuMap[skuKey];
-						}else{
-							skuQty = skuKey +'~'+skuMap[skuKey];
+							parts = lines[linesLen].parts;
+							deviceLen = parts.device.length;
+							while(deviceLen--){
+								if(skuVal==parts.device[deviceLen].sku){
+									v_qtyAllow=parseInt(v_qtyAllow)+1;
+									sku=skuVal + '~'+v_qtyAllow;
+								}else{
+									if(skuMap.hasOwnProperty(parts.device[deviceLen].sku)){
+										skuMap[parts.device[deviceLen].sku]=skuMap[parts.device[deviceLen].sku]+1;
+										
+									}else{
+										skuMap[parts.device[deviceLen].sku]=1;
+										priceMap[parts.device[deviceLen].sku]=parts.device[deviceLen].prices.dueToday;
+									}
+							}
 						}
-					}
-					item.price = item.price.join('|');
+					  }
+						
+						 for(var skuKey in skuMap){
+								if(lobSku!=""){
+									lobSku = lobSku+'|'+skuKey +'~'+skuMap[skuKey];
+								}else{
+									lobSku = skuKey +'~'+skuMap[skuKey];
+								}
+						}
+						 skuPrice="";
+						 for(var priceKey in priceMap){
+								if(skuPrice!=""){
+									skuPrice = skuPrice+'|'+priceMap[priceKey];
+								}else{
+									skuPrice = priceMap[priceKey];;
+								}
+						}
+		    		}
+		    		
+		    		if(lobSku!=""){
+		    			sku=sku +'|'+lobSku;
+		    		}
+		    		skuQty=sku;
 				}
-				if(!item.price){
-					item.price =origTarget.parent('.cartItem').find('div[id*=DueToday]').text() ? $.trim(origTarget.parent('.cartItem').find('div[id*=DueToday]').text()) : '';
-				}
+				
 				if ($('#modalConflictContinue:visible').length == 1) wtevent = 'HRock_Cart_Conflict_Add_Submit';
-				wtargs = ['DCSext.wtEvent', wtevent, "DCSext.wtSkuPrice", item.price, 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
+				wtargs = ['DCSext.wtEvent', wtevent, "DCSext.wtSkuPrice", skuPrice, 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
 							"DCSext.wtSkuQty", skuQty, "DCSext.wtMIRInd", wtMIRInd, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip(),"DCSext.wtCartLine", currentLine(),
 							'DCSext.wtEventType', 'User', 'DCSext.wtStatusCode',statusCode, 'DCSext.wtSuccessFlag', statusFlag, 'DCSext.wtBAN', ATT.globalVars.ban,
                             'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer", 'DCSext.wtCartState', ATT.globalVars.wtCartState,
@@ -411,6 +485,7 @@ ATT.cqWebtrend = new function ($, doc) {
 				if ((extraParams.indexOf('changeToDirectFulfillment') > -1 && ATT.globalVars.cartContents.cartFulfillMethod == 'Store')) {
 					wtargs.push('DCSext.wtStoreFulfillChangeInd','Y');
 					wtargs.push('DCSext.wtCartFulfillMethod','Direct');
+					ATT.globalVars.cartContents.cartFulfillMethod = 'Direct';
 				} else if (origTarget.data('selectedStorePickupDetails')) {
 					// check for changes in store related wtparams for BOPIS fulfillment
 					wtargs.push('DCSext.wtCartFulfillMethod','Store');
@@ -495,25 +570,29 @@ ATT.cqWebtrend = new function ($, doc) {
 
     // event hook for colorbox complete loading
     $(doc).bind('cbox_complete', function () {
-        var mname, wtargs1, modalinit, modalname, modaltitle, modaldcs, flag = true, wtSku, sku, skuPrice, clickid, v_qtyAllow;
+        var mname, wtargs1, modalinit, modalname, modaltitle, modaldcs, flag = true, wtSku, sku, skuPrice, clickid, v_qtyAllow,skuVal,lobSku="";
         //modalinit = $(".modalHeader").attr("title") || $(".modalHeader h1").attr('title') || $($(".modalHeader")[1]).attr("title");
         modalinit = $('.modalHeader:isvisible').find('[title]').attr('title') ? $('.modalHeader:isvisible').find('[title]').attr('title') : $('.modalHeader:isvisible').attr('title') ? $('.modalHeader:isvisible').attr('title') : $('.modalHeader:isvisible').find('h1').text().replace(/,/g,'').replace(/ /g,'').toLowerCase();
         modalname = modalinit ? modalinit : "session";
         modaltitle = "HRock_" + modalname + "_Pg";
         modaldcs = "/wireless/virtual/" + modalname + ".html";
-        wtargs1 = ['DCS.dcsref',location.pathname,'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, "DCSext.wtZipCode",ATT.globalVars.zip(), "DCSext.wtCustType", "consumer"];
+        wtargs1 = ['DCS.dcsref',location.href,'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, "DCSext.wtZipCode",ATT.globalVars.zip(), "DCSext.wtCustType", "consumer"];
 
         if(modalinit === "customerType"){
-        	sku = $('div[data-sku]').data('sku') ? $('div[data-sku]').data('sku') : "";
+        	
+        	skuPrice = $('div[id*=DueToday]:isvisible').attr('price') ? $('div[id*=DueToday]:isvisible').attr('price') : "";
+        	
+        	skuVal = $('div[data-sku]').data('sku') ? $('div[data-sku]').data('sku') : "";
         	
         	v_qtyAllow = jQuery('#qtyAllow').val();
         	
     		if (typeof v_qtyAllow == "undefined") {
     			v_qtyAllow = 1;
+    			
     		}
-    		sku=sku + '~'+v_qtyAllow;
-
-    		skuPrice = $('div[id*=Today]:isvisible').attr('price') ? $('div[id*=Today]:isvisible').attr('price') : "";
+    		sku=skuVal + '~'+v_qtyAllow;
+    		
+    		
         	clickid = $('img[title^=Add]').data('cqpath') ? $('img[title^=Add]').data('cqpath') : "";
 
         	wtargs = ['DCSext.wtEvent', 'HRock_Cart_Add_Submit', "DCSext.wtSkuPrice", skuPrice, 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
@@ -573,8 +652,9 @@ ATT.cqWebtrend = new function ($, doc) {
 
             if (evt === "HRock_Cart_SaveCart_Submit") {
                 wtargscl.push('DCS.dcsuri', '/shop/cart/save-cart-details.html');
+                wtargscl.push('DCSext.wtCustType', "consumer");
             }
-            if (evt === "HRock_Cart_SetrieveCart_Submit") {
+            if (evt === "HRock_Cart_RetrieveCart_Submit") {
                 wtargscl.push('DCS.dcsuri', '/shop/cart/retrievecart.html');
             }
             if (evt === "HRock_Cart_EmptyCart_Submit") {
@@ -817,7 +897,8 @@ ATT.cqWebtrend = new function ($, doc) {
 				  'DCSext.wtCartFulfillMethod',resp.cartFulfillMethod,
 				  'DCSext.wtStorePickupDetails',resp.storePickupDetails,
 				  'DCSext.wtNoHit', 1,
-				  "DCSext.wtZipCode",ATT.globalVars.zip()];
+				  "DCSext.wtZipCode",ATT.globalVars.zip(),
+				  'DCSext.wtCustType', "consumer"];
 
 		window.dcsMultiTrack.apply(this, ecParams(wtargs));
 	});
@@ -867,6 +948,9 @@ ATT.cqWebtrend = new function ($, doc) {
 			ATT.util.setCookie('wtStoreFulfillChangeInd',"Y");
 			
         } else {
+        	wtargs.push('DCSext.wtShipping',storePickupShippingMethod);
+        	wtargs.push('DCS.dcsuri', window.location.pathname);
+        	
 			if (storePickupShippingMethod == 'storePickUp') {
 				wtargs.push('DCSext.wtCartFulfillMethod','Store');
 			} else {
@@ -1023,7 +1107,7 @@ ATT.cqWebtrend = new function ($, doc) {
     });
 
     //media icons logs
-    $("map").bind('click', function (e) {
+    $(doc).delegate('map','click', function (e) {
         var wtShare = e.target.getAttribute("title"),
             wtclick = '/content/att/shop/common/jcr:content/socialmedia';
 
@@ -1131,7 +1215,13 @@ ATT.cqWebtrend = new function ($, doc) {
 
     //1.5 linkfarm stuff
     //$("#linkFarm a").live("mousedown", cbEvents.cqClick);
-
+    $(".bopis .ContinueShopping").live("click", function(){
+    	var dcsURI= window.location.pathname;
+    	var clickID = "/content/att/shop/en/wireless/accessories/cases/sku4890227/jcr:content";
+    	wtargs = ['DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,'DCSext.wtCQClickId',clickID,'DCSext.dcsuri',dcsURI, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip(), 'DCSext.wtCustType', 'Consumer'];
+         
+		window.dcsMultiTrack.apply(this, wtargs);
+    });
 
     //$("a", ".catalogtabcarousel").live("mousedown", cbEvents.cqClick);
 
@@ -1207,8 +1297,10 @@ ATT.cqWebtrend = new function ($, doc) {
             {selector: '#submitPersonalPayment', type: 'wtsubmit', name: 'HRock_CheckOut_PersPmtInfo_Submit', value: function() {
     	    	var wtPaperlessBillOpt = $("#signMe").parent().hasClass("checked") ? "Y" : "N",
     	    		wtclick = $(this).data('cqpath') || "/content/att/shop/checkout/personalpayment/jcr:content/ppibutton";
-                var wtEmailAddr=jQuery("input#email[type=text]").val() ? jQuery("input#email[type=text]").val() : null;
+                var wtEmailAddr=jQuery("input#email[type=text]").val() ? jQuery("input#email[type=text]").val() : jQuery("input#email[type=hidden]").val();
                 var wtTxtOrderNotifyOpt= jQuery("#txtOrderNotify").length>0?(jQuery("#txtOrderNotify").is(':checked')?"Y":"N"):"";
+                var wtSplOfferOpt=jQuery("#offer").length>0?(jQuery("#offer").is(':checked')?"Y":"N"):"";
+                
     	    	reporting.params.wtBAN = ATT.globalVars.ban;
     	    	reporting.params.wtBuyFlowCode = ATT.globalVars.flowcode;
     	    	reporting.params.wtCartContents = eventCheck.wtcartcontent();
@@ -1220,7 +1312,8 @@ ATT.cqWebtrend = new function ($, doc) {
                 reporting.params.wtCartType="eCommerce";
                 reporting.params.wtCartFulfillMethod=ATT.globalVars.cartContents.cartFulfillMethod;
                 reporting.params.wtTxtOrderNotifyOpt=wtTxtOrderNotifyOpt;
-            }, params: 'wtCartType,wtCQClickId,wtCartId,wtEmailAddr,wtCartContents,wtPaperlessBillOpt,wtCartState,wtBAN,wtBuyFlowCode,wtCartFulfillMethod,wtTxtOrderNotifyOpt'},
+                reporting.params.wtSpecialOffersOpt=wtSplOfferOpt;
+            }, params: 'wtCartType,wtCQClickId,wtCartId,wtEmailAddr,wtCartContents,wtPaperlessBillOpt,wtCartState,wtBAN,wtBuyFlowCode,wtCartFulfillMethod,wtTxtOrderNotifyOpt,wtSpecialOffersOpt'},
     		
     		{selector: '#tguardLoginButton:page(/login)', type: 'wtsubmit', name: 'HRock_Login_Submit', value: function() {
     	    	var a=/^[0-9]*$/,
@@ -1306,7 +1399,7 @@ ATT.cqWebtrend = new function ($, doc) {
                  
              }, params: 'wtBAN, wtCartDiscounts, wtCartState, wtCartTotalAmt, wtCartMonthlyAmt, wtCartOneTimeAmt, wtShipping, wtSkuQty, wtCartContents, wtBuyFlowCode, wtZipCode, wtCartId'}, */
              
-             {selector: '#submitorder', type: 'wtsubmit', name: 'HRock_CheckOut_Order_Submit', value: function() {
+            /* {selector: '#submitorder', type: 'wtsubmit', name: 'HRock_CheckOut_Order_Submit', value: function() {
                  
             	 reporting.params.wtBAN = ATT.globalVars.ban;
                  reporting.params.wtCQClickId = "/content/att/shop/en/checkout/orderreview/jcr:content";
@@ -1323,7 +1416,7 @@ ATT.cqWebtrend = new function ($, doc) {
                  
               }, params: 'wtBAN,wtCQClickId,wtCartType,wtCustType,wtCartContents,wtStoreFulfillChangeInd,wtBuyFlowCode,wtZipCode,wtCartId,wtCartState,wtCartFulfillMethod,wtStorePickupDetails'},
             
-            
+            */
              {selector: '#btnPpuSave,  #btnBillingSave, #verifyrangeAddress', type: 'wtsubmit', name: 'HRock_CheckOut_PersPmtInfo_VerifyAddr_Submit', value: function() {
                  
             	 var wtPaperlessBillOpt = $("#signMe").parent().hasClass("checked") ? "Y" : "N",
@@ -1374,7 +1467,16 @@ ATT.cqWebtrend = new function ($, doc) {
 			}
 		}
 		
-    	window.localStorage.setItem("wtCartID",eventCheck.cartId);
+		/* reporting Tags for checkout*/
+		var clickID = "/content/att/shop/en/checkout/orderreview/jcr:content";
+		var  wtargs = ['DCSext.wtCTN', window.localStorage.getItem("wtCTN"),'DCSext.wtSLID', window.localStorage.getItem("wtSLID"), 'DCSext.wtEvent', "HRock_CheckOut_Order_Submit",  'DCSext.wtStatusMsg', "SUCCESS", 'DCSext.wtStoreFulfillChangeInd', ATT.cqWebtrend.storeFulfillChangeInd(),
+                    'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartID',eventCheck.cartId, 'DCSext.wtCartState',eventCheck.wtcartstate, 
+                    'DCSext.wtCartType', "eCommerce",'DCSext.wtCQClickId',clickID, 'DCSext.wtZipCode',ATT.globalVars.zip(),'DCSext.wtCartFulfillMethod',ATT.globalVars.cartContents.cartFulfillMethod,
+                    'DCSext.wtStorePickupDetails',ATT.globalVars.cartContents.storePickupDetails,'DCSext.wtCartContents',eventCheck.wtcartcontent(),'DCSext.wtBuyFlowCode',ATT.globalVars.flowcode]; 
+                
+       
+        window.dcsMultiTrack.apply(this, wtargs);
+      	window.localStorage.setItem("wtCartID",eventCheck.cartId);
         window.localStorage.setItem("wtcartstate",eventCheck.wtcartstate);
         window.localStorage.setItem("wtcartcontent",eventCheck.wtcartcontent());
         window.localStorage.setItem("flowcode",ATT.globalVars.flowcode);

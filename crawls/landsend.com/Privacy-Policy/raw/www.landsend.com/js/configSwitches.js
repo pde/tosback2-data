@@ -17,7 +17,7 @@ metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated
 metric.commissionJunctionActive = true; // set to true if you want Comission Junction activated
 metric.googleAnalyticsActive = true; // set to true if you want Google Analytics activated
-metric.dartFloodlightActive = true; // set to true if you want Dart Floodlight activated
+metric.dartFloodlightActive = false; // set to true if you want Dart Floodlight activated
 
 ratings.leActive = true;  //set to true if you want ratings and reviews active for lestore
 ratings.canvasActive = true;   //set to true if you want ratings and reviews active for canvas

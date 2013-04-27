@@ -22,8 +22,8 @@ function buildDropdown() {
 	document.write('<li class="all"><a href="/shop/Women/_/N-lfx6?cm_sp=womens-_-ddtc-_-vac+021412">VIEW ALL WOMEN\'S CATEGORIES</a></li>');
 	document.write('</ul>');
 	document.write('<ul>');
-	document.write('<li><a href="/shop/Antonio-Melani/Women/_/N-172zjZlfx6/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=womens-_-ddtb-_-antonio+melani+1+032213">Antonio Melani</a></li>');
-	document.write('<li><a href="/shop/Gianni-Bini/Women/_/N-17302Zlfx6/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=womens-_-ddtb-_-gianni+bini+2+032213">Gianni Bini</a></li>');
+	document.write('<li><a href="/shop/Antonio-Melani/Women/_/N-172zjZlfx6?cm_sp=womens-_-ddtb-_-antonio+melani+1+032213">Antonio Melani</a></li>');
+	document.write('<li><a href="/shop/Gianni-Bini/Women/_/N-17302Zlfx6?cm_sp=womens-_-ddtb-_-gianni+bini+2+032213">Gianni Bini</a></li>');
 	document.write('<li><a href="/shop/Eileen-Fisher/Women/_/N-1738eZlfx6/Rpp-1?cm_sp=womens-_-ddtb-_-eileen+fisher+3+120212">Eileen Fisher</a></li>');
 	document.write('<li><a href="/shop/Calvin-Klein/Calvin-Klein-Jeans/Women/_/N-172z2Z173pbZlfx6/Rpp-1?cm_sp=womens-_-ddtb-_-calvin+klein+4+110112">Calvin Klein</a></li>');
 	document.write('<li><a href="/shop/Lauren-Ralph-Lauren/Women/_/N-17477Zlfx6?cm_sp=womens-_-ddtb-_-lauren+5+100312">Lauren Ralph Lauren</a></li>');
@@ -32,9 +32,9 @@ function buildDropdown() {
 	document.write('<ul>');
 	document.write('<li><a href="/content/Dillards-wedding-dresses-style-sites?cm_sp=womens-_-ddf-_-wedding+1+042013">Wedding Shop</a></li>');
 	document.write('<li><a href="/shop/Women-Dresses-Maxi-Dresses/_/N-yxlt/Rpp-1?cm_sp=womens-_-ddf-_-maxi+dresses+2+041713">Maxi Dresses</a></li>');
-	document.write('<li><a href="/shop/Women-Pants-Capris-Cropped-Pants-Capris/_/N-yylgZ1jl/Ntk-all/Ntt-capri/Nty-1/Rpp-1?cm_sp=womens-_-ddf-_-capris+3+042013">A Fresh Crop: Capris</a></li>');
-	document.write('<li><a href="/content/women-bridge-week?cm_sp=womens-_-ddf-_-bridge+week+4+042113">Bridge Lifestyle Week</a></li>');
-	document.write('<li><a href="/shop/Women-Suiting/_/N-ymmq/Rpp-1?cm_sp=womens-_-ddf-_-suiting+5+042013">Spring Suiting</a></li>');
+	document.write('<li><a href="/shop/Women-Shorts-Bermuda/_/N-yai4/Rpp-1?cm_sp=womens-_-ddf-_-bermuda+shorts+3+042713">Bermuda Shorts</a></li>');
+	document.write('<li><a href="/shop/Women-Dresses-Little-White-Dresses/_/N-zrj8/Rpp-1?cm_sp=womens-_-ddf-_-white+dresses+4+042713">White Dresses</a></li>');
+	document.write('<li><a href="/shop/Nicole-Miller/Women/_/N-174iyZlfx6/Rpp-1?cm_sp=womens-_-ddf-_-nicole+miller+5+042713">NEW: Nicole Miller</a></li>');
 	document.write('</ul>');
 	document.write('<div class="promo"><a href="/shop/Adrianna-Papell/Women-Dresses/_/N-173cdZlgam/Rpp-1?cm_sp=womens-_-ddpromo-_-adrianna+papell+042313" >ADRIANNA PAPELL: DRESSES FOR ANY OCCASION></a></div>');
 	document.write('</div>');
@@ -82,7 +82,7 @@ function buildDropdown() {
 	document.write('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-0330/Nty-1?cm_sp=juniors-_-ddf-_-denim+shorts+capris+4+032213">Denim Shorts & Capris</a></li>');
 	document.write('<li><a href="/content/juniors-white-dresses?cm_sp=juniors-_-ddf-_-white+dresses+5+042013">White Dresses</a></li>');
 	document.write('</ul>');
-	document.write('<div class="promo"><a href="/shop/Jessica-Simpson/Juniors/_/N-173dcZlfxq/Rpp-1?cm_sp=juniors-_-ddpromo-_-jessica+simpson+gwp+041313" >Free Gift with Jessica Simpson Clothing Purchase  ></a></div>');
+	document.write('<div class="promo"><a href="/content/juniors-spring-trends-guide?cm_sp=juniors-_-ddpromo-_-spring+trends+042513" >Spring Fever: Hottest Trends For Spring</a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
 	document.write('<a href="/shop/Juniors-Dresses-Prom-Dresses/_/N-zqm2/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=juniors-_-ddimage-_-prom+dresses+041213"><img src="/images/dropDownImages/041113dropdown_juniors.jpg"></a>');
@@ -131,7 +131,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/Shoes/_/N-lfxlZ1jl/Ntk-all/Ntt-ATHLETIC+SHOES/Nty-1?cm_sp=shoes-_-ddpromo-_-shop+athletic+shoes+041913" >STEP UP YOUR GAME: SHOP ALL ATHLETIC SHOES ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Sperry-Top-Sider/Shoes/_/N-17362Zlfxl/Rpp-1?cm_sp=shoes-_-ddimg-_-sperry+041913"><img src="/images/endeca/dropdown/041913-Drop-Down-Banner.jpg"></a>');
+	document.write('<a href="/shop/Nike/Shoes/_/N-1734aZlfxl/Rpp-1?cm_sp=shoes-_-ddimg-_-nike+042613"><img src="/images/endeca/dropdown/042613-Drop-Down-Banner.png"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -177,7 +177,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/Vera-Bradley/Handbags/_/N-173quZlfyu/Rpp-2?cm_sp=handbags-_-ddpromo-_-vb+mom+041913" >GIFTS MOM WILL LOVE FROM VERA BRADLEY ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/HANDBAGS/_/N-ykwv?cm_sp=handbags-_-ddimage-_-new+coach+041913"><img src="/images/dropDownImages/041913dd_hb_coach.jpg"></a>');
+	document.write('<a href="/shop/Brahmin/Handbags/_/N-172ykZlfyu?cm_sp=handbags-_-ddimage-_-brahmin+042613"><img src="/images/dropDownImages/042613dd_hb_brahmin.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -215,7 +215,7 @@ function buildDropdown() {
 	document.write('</ul>');
 	document.write('<ul>');
 	document.write('<li><a href="/content/bridal-accessories?cm_sp=accessories-_-ddf-_-bridal+wedding+accessories+1+042013">BRIDAL Accessories</a></li>');
-	document.write('<li><a href="/shop/Accessories-Sunglasses-Eyewear/_/N-lygkZ1jl/Ns-p_coach_active_date|1/Ntk-all/Ntt-sunglasses/Nty-1?cm_sp=accessories-_-ddf-_-new+sunglasses+2+042013">NEW Arrivals in Sunglasses</a></li>');
+	document.write('<li><a href="/shop/Accessories-Sunglasses-Eyewear/_/N-lygkZ1jl/Ns-p_coach_active_date|1?cm_sp=accessories-_-ddf-_-new+sunglasses+2+042013">NEW Arrivals in Sunglasses</a></li>');
 	document.write('<li><a href="/shop/HUE/Accessories/_/N-173m8Zlfxv?cm_sp=accessories-_-ddf-_-hue+color+3+042013">Right on HUE: Color Leggings for Spring</a></li>');
 	document.write('<li><a href="/product/Anna-Ava-Scarlett-Statement-Necklace_301_-1_301_503437559?cm_sp=accessories-_-ddf-_-pick+of+the+week+03836665+4+042013">OUR PICK OF THE WEEK</a></li>');
 	document.write('<li><a href="/shop/BCBGeneration/Accessories-Jewelry/_/N-173uvZym4tZ1jl/Ntk-all/Ntt-affirmation/Nty-1?cm_sp=accessories-_-ddf-_-bcbg+5+040313">BCBG Affirmation Accessories</a></li>');
@@ -223,7 +223,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/content/spring-accessory-guide?cm_sp=accessories-_-ddpromo-_-spring+ezine+040313" >SENSATIONAL SPRING TRENDS IN ACCESSORIES ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Juicy-Couture/Accessories-Watches-Womens-Watches/_/N-173m0Zzpph?cm_sp=accessories-_-ddimage-_-juicy+couture+watches+042013"><img src="/images/dropDownImages/041913dd_a_juicy.jpg"></a>');
+	document.write('<a href="/shop/MICHAEL-Michael-Kors/Michael-Kors/Accessories/_/N-1738nZ173dxZlfxv?cm_sp=accessories-_-ddimage-_-michael+kors+042613"><img src="/images/dropDownImages/041213dd_a_kors.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -261,7 +261,7 @@ function buildDropdown() {
 	document.write('</ul>');
 	document.write('<ul>');
 	document.write('<li><a href="/content/Lingerie-Bridal?cm_sp=lingerie-_-ddf-_-bridal+lingerie+1+021913">BRIDAL Lingerie Shop</a></li>');
-	document.write('<li><a href="/shop/Lingerie-Plus-Sleepwear-Loungewear/_/N-z27a/Ns-p_coach_active_date%7C1/Rpp-2?cm_sp=lingerie-_-ddf-_-new+arrivals+plus+sleepwear+2+042013">NEW Plus Sleepwear & Loungewear</a></li>');
+	document.write('<li><a href="/shop/Wacoal/Lingerie/_/N-1736tZlfz4/Ns-p_coach_active_date%7C1?cm_sp=lingerie-_-ddf-_-new+arrivals+wacoal+2+040413">NEW Arrivals from WACOAL</a></li>');
 	document.write('<li><a href="/shop/Spanx/Lingerie-Shapewear/_/N-174bsZza2t?cm_sp=lingerie-_-ddf-_-spanx+bestselling+shapewear+3+040413">Bestselling SPANX Shapewear</a></li>');
 	document.write('<li><a href="/product/Lauren-Ralph-Lauren-Tucker%92s-Point-Knit-Short-Gown_301_-1_301_503666336?cm_sp=lingerie-_-ddf-_-pick+of+the+week+4+lrl+03966381+041913">OUR PICK OF THE WEEK</a></li>');
 	document.write('<li><a href="/content/sleepwear-buy-two-save?cm_sp=lingerie-_-ddf-_-buy2andsave+5+011213">Buy 2 and SAVE</a></li>');
@@ -269,7 +269,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/Modern-Movement/_/N-173mxZlfu5?cm_sp=lingerie-_-ddpromo-_-mm+mvp+041913" >SHOP THE NEW MVP BRA FROM MODERN MOVEMENT ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Lingerie-Sleepwear-Pajamas/_/N-ydm0/Rpp-2?cm_sp=lingerie-_-ddimage-_-mothers+day+pajamas+042013"><img src="/images/dropDownImages/041913dd_l_pamjamas.jpg"></a>');
+	document.write('<a href="/shop/Lingerie-Loungewear/_/N-z6ac?cm_sp=lingerie-_-ddimage-_-mothers+day+loungewear+042713"><img src="/images/dropDownImages/042513dd_l_maxi_mothersday.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -361,7 +361,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/shop/JKL-just-keep-livin/Men/_/N-174xbZlfy5/Rpp-1?cm_sp=mens-_-ddpromo-_-introducing+jkl+just+keep+livin++041313" >Introducing JKL Just Keep Livin Performance Wear</a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Levis/Men-Shorts/_/N-1733hZmz7z/Rpp-1?cm_sp=mens-_-ddimage-_-levis+shorts+041613"><img src="/images/dropDownImages/041013dropdown_levis.jpg"></a>');
+	document.write('<a href="/shop/Polo-Ralph-Lauren/Men-Big-Tall/_/N-173m7Zls51/Rpp-1?cm_sp=mens-_-ddimage-_-prl+big+tall+042713"><img src="/images/dropDownImages/042613dropdown_mens_rl.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -407,7 +407,7 @@ function buildDropdown() {
 	document.write('<div class="promo"><a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddpromo-_-shop+girls+spring+dresses+031913" >Shop Spring & Summer Dresses for Girls ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/content/girls-shop-all-casual-cute-dresses?cm_sp=children-_-ddimage-_-cute+casual+dresses+041913"><img src="/images/dropDownImages/041913_dropdown_childrens.jpg"></a>');
+	document.write('<a href="/content/girls-shop-all-dresses?cm_sp=children-_-ddimage-_-cute+dresses+041913"><img src="/images/dropDownImages/042613dropdown_dresses.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');
@@ -445,15 +445,15 @@ function buildDropdown() {
 	document.write('</ul>');
 	document.write('<ul>');
 	document.write('<li><a href="/shop/Home-Gifts-Wedding-Gifts/_/N-ydl1?cm_sp=home-_-ddf-_-wedding+gifts+1+122512">Wedding Gifts</a></li>');
-	document.write('<li><a href="/shop/Swarovski/Home/_/N-17368Zlfya?cm_sp=home-_-swarovski+mom+2+042413">SPARKLING Gifts for Mom from Swarovski</a></li>');
-	document.write('<li><a href="/product/Fiesta-Flamingo-Presentation-Bowl_301_-1_301_503795005?cm_sp=home-_-ddf-_-pick+of+the+week+03999666+3+040413">OUR PICK OF THE WEEK</a></li>');
-	document.write('<li><a href="/shop/Southern-Living/_/N-174mgZlfu5?cm_sp=home-_-ddf-_-southern+living+4+021913">Only Availabe at Dillard\'s: SOUTHERN LIVING Bedding Collections</a></li>');
+	document.write('<li><a href="/shop/Swarovski/Home/_/N-17368Zlfya?cm_sp=home-_-ddf-_-swarovski+mom+2+042413">SPARKLING Gifts for Mom from Swarovski</a></li>');
+	document.write('<li><a href="/shop/Starbucks/Home/_/N-1747cZlfya?cm_sp=home-_-ddf-_-starbucks+verismo+3+042713">Just In: STARBUCKS VERISMO</a></li>');
+	document.write('<li><a href="/shop/Home/_/N-lfyaZ1jl/Ntk-all/Ntt-0718/Nty-1?cm_sp=home-_-ddf-_-718+barware+4+042713">RAISE THE BAR: Shop Wine & Barware</a></li>');
 	document.write('<li><a href="/content/home-special-offers?cm_sp=home-_-ddf-_-special+offers+from+home+5+090212">SPECIAL OFFERS</a></li>');
 	document.write('</ul>');
-	document.write('<div class="promo"><a href="/shop/Home-Outdoor/_/N-lgbl?cm_sp=home-_-ddpromo-_-summer+oasis+042413" >CREATE YOUR OWN BACKYARD SUMMER OASIS ></a></div>');
+	document.write('<div class="promo"><a href="/shop/Wusthof/Home-Kitchen/_/N-17372ZwnsqZ1jl/Ntk-all/Ntt-gourmet/Nty-1?cm_sp=home-_-ddpromo-_-wusthof+sale+042713" >Save on Wusthof Gourmet Cutlery for a Limited Time ></a></div>');
 	document.write('</div>');
 	document.write('<div class="bottom-marketing">');
-	document.write('<a href="/shop/Barbara-Barry/Home-Bedding/_/N-173ppZlgb5?cm_sp=home-_-ddimage-_-barbara+barry+042013"><img src="/images/dropDownImages/041913dd_hm_barbarabarry.jpg"></a>');
+	document.write('<a href="/shop/Tumi-Luggage/Home/_/N-173t8Zlfya/Ns-p_coach_active_date|1?cm_sp=home-_-ddimage-_-tumi+luggage+042613"><img src="/images/dropDownImages/042613dd_hm_tumi.jpg"></a>');
 	document.write('</div>');
 	document.write('</div>');
 	document.write('</li>');

@@ -2120,7 +2120,7 @@ if(urlValueSplit[4].match('business')){
 
 	/****** G4 Product Page Updates ******/
 
-		//ATT
+		/*ATT
 		if( urlValueSplit[6].match('SGH-I337ZKAATT') ){
 			$('.flagship-cta a span').text('Pre-order');
 			$('.flagship-cta a').attr("href", "http://www.att.com/galaxys4");
@@ -2132,9 +2132,9 @@ if(urlValueSplit[4].match('business')){
 			$('.flagship-cta a').attr("href", "http://www.att.com/galaxys4");
 			$('.flagship-cta a').attr("target", "_blank");
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-I337ZWAATT','','product header','o','pre-order');");
-		}
+		} */
 
-		//usc
+		/*usc
 		if( urlValueSplit[6].match('SCH-R970ZKAUSC') ){
 			$('.flagship-cta a span').text('Pre-order');
 			$('.flagship-cta a').attr("href", "http://www.uscellular.com/GS4");
@@ -2146,9 +2146,9 @@ if(urlValueSplit[4].match('business')){
 			$('.flagship-cta a').attr("href", "http://www.uscellular.com/GS4");
 			$('.flagship-cta a').attr("target", "_blank");
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SCH-R970ZWAUSC','','product header','o','pre-order');");
-		}
+		}*/
 
-		//sprint
+		/*sprint
 		if( urlValueSplit[6].match('SPH-L720ZKASPR') ){
 			$('.flagship-cta a span').text('Pre-order');
 			$('.flagship-cta a').attr("href", "http://www.sprint.com/landings/samsung_galaxy_s4/index.html?ECID=vanity:galaxys4");
@@ -2160,7 +2160,7 @@ if(urlValueSplit[4].match('business')){
 			$('.flagship-cta a').attr("href", "http://www.sprint.com/landings/samsung_galaxy_s4/index.html?ECID=vanity:galaxys4");
 			$('.flagship-cta a').attr("target", "_blank");
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SPH-L720ZWASPR','','product header','o','pre-order');");
-		}
+		}*/
 
 		/*tmobile
 		if( urlValueSplit[6].match('SGH-M919ZWATMB') ){
@@ -2176,9 +2176,21 @@ if(urlValueSplit[4].match('business')){
 			$('.flagship-cta a').attr("onclick", "ss_link_click_track_2('','event33','Cell Phones;SGH-M919ZKATMB','','product header','o','pre-order');");
 		}*/
 
-		//hide
-		if( urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') ){
+		/*hide
+		if( urlValueSplit[6].match('SCH-R970ZWAUSC') || urlValueSplit[6].match('SCH-R970ZKAUSC') || urlValueSplit[6].match('SGH-M919ZKATMB') || urlValueSplit[6].match('SGH-M919ZWATMB') || urlValueSplit[6].match('SCH-I545ZKAVZW') || urlValueSplit[6].match('SCH-I545ZWAVZW') ){
 			$('.flagship-cta').hide();
+		}*/
+
+		//laptop
+		if( urlValueSplit[6].match('NP540U4E-K01US') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.ecom-sm-btn span').text('Pre-order');
+			$('.ecom-sm-btn span').css("font-size", "10px");
+		}
+		if( urlValueSplit[6].match('NP680Z5E-X01US') ){
+			$('.flagship-cta a span').text('Pre-order');
+			$('.ecom-sm-btn span').text('Pre-order');
+			$('.ecom-sm-btn span').css("font-size", "10px");
 		}
 });
 
