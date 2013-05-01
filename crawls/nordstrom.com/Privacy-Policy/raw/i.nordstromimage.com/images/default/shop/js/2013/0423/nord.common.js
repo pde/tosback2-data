@@ -1,4 +1,5 @@
-"use strict";(function(window,$,$document,undefined){'count'in Object||(Object.count=function(o){var result=0;for(var key in o){if(o.hasOwnProperty(key)){result++;}}
+"use strict";if(/SignIn.aspx/i.test(window.location.href)){$("#aspnetForm").attr("autocomplete","off");}
+(function(window,$,$document,undefined){'count'in Object||(Object.count=function(o){var result=0;for(var key in o){if(o.hasOwnProperty(key)){result++;}}
 return result>0?result:0;});'create'in Object||(Object.create=function(o){function F(){}
 F.prototype=o;return new F();});'keys'in Object||(Object.keys=function(o){var result=[];for(var key in o){if(o.hasOwnProperty(key)){result.push(key);}}
 return result;});'indexOf'in Array.prototype||(Array.prototype.indexOf=function(searchElement){"use strict";if(this==null){throw new TypeError();}

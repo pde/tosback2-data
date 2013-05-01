@@ -415,9 +415,23 @@ var badgev_params = {
 }
 	
 function onloadBadgevilleInit() {
-	
+	console.log('1j')
 	Badgeville.ready( function() {
-		
+		console.log('2j')
+		var parentals = String(window.location.href);
+		parentals = parentals.split('?');
+		try{ 
+			if (parentals[1] == '221424'){ 
+				console.log('3j');
+				//badgev_params.category = 'parentals';
+				//badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
+			}
+		}
+		catch(e){}
+
+
+
+
 		var badgev_isGalaxyS = false;
 		
 		if (typeof(badgev_is2013smarttv) != 'undefined' && badgev_is2013smarttv){

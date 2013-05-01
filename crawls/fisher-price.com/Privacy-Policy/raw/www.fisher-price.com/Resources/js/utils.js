@@ -1564,7 +1564,12 @@ function ValidateRequestPasswordFormInput() {
     function ValidateName(input) {
         //debugger;
 
-		var reg = /^[A-Za-z ]{2,20}$/; // 2 is the min length, 20 is the max length, includes white space
+        var reg =  /^[A-Za-z ]{2,20}$/; // 2 is the min length, 20 is the max length, includes white space
+
+        if (localInfo.toLowerCase() != 'en_us') {
+            reg = /^((?![0-9\~\!\@\#\$\%\^\&\*\(\)\_\+\=\-\[\]\{\}\;\:\"\\\/\<\>\?]{2,20}).)+$/;
+        }
+        
         if (reg.test(input) == false) {
 
             //return the error code for invalid Name

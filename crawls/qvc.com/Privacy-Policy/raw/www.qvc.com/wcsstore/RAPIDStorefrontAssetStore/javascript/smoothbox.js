@@ -26,7 +26,6 @@ var IS_CHOOSEMORE_OVERLAY = false;
 var IS_CART_IN_OVERLAY = false;
 var IS_AD_CONFIRM_OVERLAY = false;
 var IS_WL_CONFIRM_OVERLAY = false;
-
 var IS_SEARCH_OVERLAY = false;
 var IS_ZOOM_OVERLAY = false;
 var IS_PLAYER = false;
@@ -37,7 +36,10 @@ var PRINT_STYLES = '<link type="text/css" media="print" href="/wcsstore/US/conte
 
 // add smoothbox to href elements that have a class of .smoothbox
 function TB_init(){
-    $$("a.smoothbox").each(function(el){el.onclick = TB_bind});
+	$$("a.smoothbox").each(function(el){
+		if(el.addEventListener) el.addEventListener("click", TB_bind, false);
+		el.onclick = TB_bind;
+	});
 }
 function TB_bind(event){
     var event = new Event(event);
@@ -51,10 +53,8 @@ function TB_bind(event){
     var group = this.rel || false;
     // display the box for the elements href
     TB_show(caption, this.href, group);
-    this.onclick = TB_bind;
     return false;
 }
-
 // called when the user clicks on a smoothbox link
 function TB_show(caption, url, rel){
 	var queryString = url;

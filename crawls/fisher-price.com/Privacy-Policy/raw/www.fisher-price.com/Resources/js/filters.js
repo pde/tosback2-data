@@ -2198,7 +2198,7 @@ function buildHash(oe) {
 			hash = hash + "typ=" + $(this).attr('categorycode') + "&";
         });
 		$('.filter-os li.click-active').each(function () {
-			hash = hash + "typ=" + $(this).attr('pvalue') + "&";
+			hash = hash + "os=" + $(this).attr('pname') + "&";
         });
 
 

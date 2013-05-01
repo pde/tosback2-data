@@ -15198,6 +15198,9 @@ return {
 'user-preferences': path_func(mmdbHost + '/user/%(id)s/preferences/'),
 
 
+'resend-verification-email': path_func(mmdbHost + '/user/%(id)s/resend_verification_email/'),
+
+
 'all-interests': path_func(mmdbHost + '/interests/'),
 
 
@@ -15235,9 +15238,6 @@ return {
 
 
 'user-update-notification': path_func(commonsSecureHost + '/header/user_update_notification/'),
-
-
-'resend-activation-link': path_func(commonsSecureHost + '/header/resend_activation_link/'),
 
 
 'social-register': path_func(commonsSecureHost + '/header/social_register/'),
@@ -15461,6 +15461,7 @@ INVALID_INPUT: "INVALID_INPUT",
 CAPTCHA_INVALID: "CAPTCHA_INVALID",
 INVALID_SERVER_CREDENTIALS: "INVALID_SERVER_CREDENTIALS",
 NO_AVATAR_IN_SESSION: "NO_AVATAR_IN_SESSION",
+INVALID_NEW_EMAIL_MATCH: "INVALID_NEW_EMAIL_MATCH",
 INVALID_PASSWORD: "INVALID_PASSWORD",
 PROFANITY: "PROFANITY",
 REQUIRED: "REQUIRED",
@@ -16297,10 +16298,14 @@ function(
                 self.user = null;
 
                 self.config.global.authDelegate = self.extendAuthDelegate();
+
+                console.log("Calling loadStreams()...");
                 self.loadStreams();
+                console.log("returned from loadStreams(), binding to user-logged-in...");
 
                 // Capture the log in event for future logins
                 self.context.on('user-logged-in', function() {
+                    console.log("caught user-logged-in, calling finishLogin()...");
                     self.finishLogin();
                 });
 
@@ -16336,6 +16341,12 @@ function(
                      ('undefined' == typeof window.livefyreConfig.streams) ||
                      (!window.livefyreConfig.streams.length) ){
 
+                    if('undefined' == typeof fyre) {
+                        console.log("livefyre script not loaded");
+                    } else {
+                        console.log("livefyre config values not found");
+                    }
+
                     // if we're doing intervals and  reached our timeout:
                     if(intervalId) {
                         if(cnt * intervals >= timeout) {
@@ -16348,6 +16359,7 @@ function(
                 } else {
 
                     // found livefyre variables set on page.
+                    console.log("livefyre script is loaded, config values found.");
                     dfd.resolve();
                     if(intervalId) {
                         clearInterval(intervalId); 
@@ -16410,32 +16422,45 @@ function(
         loadStreams: function() {
             // Calls fyre.conv.load to load any streams configured on the page.
             var self = this;
+            console.log("attempting to load stream...");
             fyre.conv.load(
                 this.config.global,
                 this.config.streams,
                 function (widget) { 
-
                     self._livefyreLoaded.resolve(widget);
 
+                    console.log("stream loaded.  checking if user logged in already...");
                     $.when(self.context.isLoggedIn())
                      .done(function(loggedIn) {
                          if (loggedIn) {
+                            console.log("user is logged in");
                              self.finishLogin();
+                         } else {
+                            console.log("user is not logged in");
                          }
+                    })
+                    .fail(function(error) {
+                        console.log("error checking if user logged in: " + error);
                     });
                 });
         },
 
         finishLogin: function() {
             // Logs a user in to livefyre when they log in to the header
+            console.log("in finishLogin(), getting user from context");
+
             $.when(this.context.getUser()).done(function(user) {
                 if (!user) {
                     console.error("User is not logged in!");
                     return;
+                } else {
+                    console.log("Got user from context");
                 }
+
                 self.user = user;
 
                 try {
+                    console.log("trying to log in the livefyre");
                     fyre.conv.login(self.user.get('livefyreToken'));
                 } catch (e) {
                     console.log("Error attempting to login with ", lfCookieName, " cookie value: ", cval, " ", e);
@@ -16449,6 +16474,12 @@ function(
 	return LivefyreManager;
 });
 
+/**
+ * The main membership header context object.  An instance of the class
+ * defined in the module is passed to pretty much all the
+ * views/models/collections.
+ * @module header/context
+ */
 _mmdbHeaderRequire.define('header/context',[
         'module',
         'sprintf',
@@ -16478,12 +16509,15 @@ function(module,
          pageScroller,
          LivefyreManager
         ) {
-
     var USER_LOGIN_EVENT = 'user-logged-in',
         USER_LOGOUT_EVENT = 'user-logged-out',
         USER_REGISTERED_EVENT = 'user-registered',
         MODAL_CLOSED_EVENT = 'modal-closed';
 
+    /**
+     * @constructor
+     * @alias module:header/context
+     */
     function Context(serverContext) {
         this.sc = serverContext || {};
 
@@ -16504,7 +16538,7 @@ function(module,
         },
 
         /**
-         * This provides an asynchronous way for javascript code to access the
+         * Provides an asynchronous way for javascript code to access the
          * "widget" that is returned from fyre.conv.load once the streams are
          * done loading.  Currently YourShot uses this so they can know when
          * comments are posted on their pages...widget.on('commentPosted', func)
@@ -16602,6 +16636,16 @@ function(module,
              });
         },
 
+        /**
+         * Returns a promise object that will resolve with the current logged in.
+         *
+         * @example
+         * $.when(header.getUser).done(function(user) {
+         *    // Do whatever with user here...
+         * });
+         *
+         * @returns {Promise} A jQuery promise
+         */
         getUser: function() {
             var self = this;
             if (this._userInitPromise && this._userInitPromise.state() == 'pending') {
@@ -16627,6 +16671,15 @@ function(module,
             this.trigger(USER_LOGIN_EVENT);
         },
 
+        /**
+         * Accepts a callback that will be invoked with a user object when a
+         * user logs in.  
+         *
+         * @example
+         * header.onUserLoggedIn(function(user) {
+         *     // React to user being logged in...
+         * })
+         */
         onUserLoggedIn: function(callback) {
             //if (this.isLoggedIn()) {
                 //callback(this._user);
@@ -16634,10 +16687,17 @@ function(module,
             this.bind(USER_LOGIN_EVENT, callback);
         },
 
+        /**
+         * Accepts a callback that will be invoked with a user object when a
+         * user logs out.  
+         *
+         * @example
+         * header.onUserLoggedOut(function(user) {
+         *     // React to user being logged out...
+         * })
+         */
         onUserLoggedOut: function(callback) {
-            this.bind(USER_LOGOUT_EVENT, function(user) {
-                callback(user);
-            });
+            this.bind(USER_LOGOUT_EVENT, callback);
         },
 
         onUserRegistered: function(callback) {
@@ -16694,8 +16754,18 @@ function(module,
             self.triggerLogin();
         },
 
+        /**
+         * Returns a promise that resolves with a boolean argument stating
+         * whether there is a currently logged in user or not.
+         *
+         * @example
+         * $.when(header.isLoggedIn()).done(function(isLoggedIn) {
+         *     // isLoggedIn will be true or false here...
+         * });
+         * @returns {Promise} A jQuery promise object
+         */
         isLoggedIn: function() {
-            return this.getUser().pipe(function(user) {
+            return $.when(this.getUser()).pipe(function(user) {
                 if (user) return true;
                 else return false;
             }, function() {
@@ -16824,7 +16894,7 @@ function(module,
              }).fail(function() {
                  console.error("Could not log in to site, now in an undefined state...");
              });
-        }        
+        },        
     });
 
     return Context;
@@ -17264,8 +17334,6 @@ _mmdbHeaderRequire.define("recaptcha", (function (global) {
 
 _mmdbHeaderRequire.define('header/hbs-helpers',['handlebars', 'underscore', 'recaptcha'],
 function(Handlebars, _, Recaptcha) {
-if (!window._ngs_handlebars_header_registered) {
-
     Handlebars.registerHelper('checkerror', function(context, options) {
         var fieldName = context,
             error = this.error,
@@ -17363,9 +17431,6 @@ if (!window._ngs_handlebars_header_registered) {
         return options;
     });
 
-    window._ngs_handlebars_header_registered = true;
-
-}
 });
 
 
@@ -17449,6 +17514,14 @@ Handlebars.registerPartial('partials-welcome-banner', template(function (Handleb
 
 
   return "<div class=\"mem_menu\">\n    <span>Server Error, try again later!</span>\n</div>\n";}
+
+),
+"verification-change-email-success-alert": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<span>\n    Your email address has been successfully updated.\n</span>\n";}
 
 ),
 "header": template(function (Handlebars,depth0,helpers,partials,data) {
@@ -17756,6 +17829,14 @@ function program21(depth0,data) {
   return buffer;}
 
 ),
+"verification-cancelled-alert": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<span>\nThank you for your feedback. The email address change request has been denied.\n</span>\n";}
+
+),
 "verification-failed-alert": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
@@ -17977,8 +18058,12 @@ function program1(depth0,data) {
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        ";
-  stack1 = depth0.disabledAccount;
+  stack1 = depth0.showResendChangeEmailVerification;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  stack1 = depth0.disabledAccount;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n";
   return buffer;}
@@ -17990,9 +18075,14 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   
-  return "\n        <div id=\"disabled-account\"> </div>\n        ";}
+  return "\n        <div id=\"resend-change-email-verification\"> </div>\n        ";}
 
 function program6(depth0,data) {
+  
+  
+  return "\n        <div id=\"disabled-account\"> </div>\n        ";}
+
+function program8(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
   buffer += "\n<div class=\"noticeTop\">\n    ";
@@ -18002,12 +18092,12 @@ function program6(depth0,data) {
   buffer += escapeExpression(stack1) + "\n</div>\n";
   return buffer;}
 
-function program8(depth0,data) {
+function program10(depth0,data) {
   
   
   return " error";}
 
-function program10(depth0,data) {
+function program12(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
@@ -18018,12 +18108,12 @@ function program10(depth0,data) {
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
 
-function program12(depth0,data) {
+function program14(depth0,data) {
   
   
   return " error";}
 
-function program14(depth0,data) {
+function program16(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
@@ -18041,7 +18131,7 @@ function program14(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   stack1 = depth0.notice;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n<h1 class=\"title_333\">Member sign in</h1>\n<hr class=\"dotted\"/>\n<form class=\"login\" action=\"#\" autocomplete=\"on\" id=\"login-form\">\n    <input type=\"email\" name=\"username\" placeholder=\"Email Address\" value=\"";
   stack1 = depth0.fieldsToKeep;
@@ -18051,25 +18141,25 @@ function program14(depth0,data) {
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" maxlength=\"62\"/>\n    ";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    <div class=\"password_wrap\">\n        <input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"text_555 password";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" maxlength=\"30\"/>\n    </div>\n    ";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    <!--<input class=\"submit\" type=\"submit\" value=\"Login\"/>-->\n    ";
   stack1 = depth0.needsRecaptcha;
@@ -18082,6 +18172,14 @@ function program14(depth0,data) {
   else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "\">Register here.</a></div>\n";
   return buffer;}
+
+),
+"alert-disabled-account": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div>\n  <div>\n    <span class=\"text_555\">\n      <b>Disabled Account</b>\n    </span>\n  </div>\n</div>\n\n\n";}
 
 ),
 "reset-password": template(function (Handlebars,depth0,helpers,partials,data) {
@@ -18193,14 +18291,6 @@ function program11(depth0,data) {
   else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "\">Join now.</a></div>\n";
   return buffer;}
-
-),
-"alert-disabled-account": template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  
-
-
-  return "<div>\n  <div>\n    <span class=\"text_555\">\n      <b>Disabled Account</b>\n    </span>\n  </div>\n</div>\n\n\n";}
 
 ),
 "disabled-account": template(function (Handlebars,depth0,helpers,partials,data) {
@@ -18316,6 +18406,144 @@ function program7(depth0,data) {
   return buffer;}
 
 ),
+"verify": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n	<div class=\"errorTop\">\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n	</div>\n	";
+  return buffer;}
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n<div class=\"errorTop\">\n    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n\n        ";
+  stack1 = depth0.showResendActivationLink;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  stack1 = depth0.disabledAccount;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</div>\n";
+  return buffer;}
+function program4(depth0,data) {
+  
+  
+  return "\n        <div id=\"resend-activation-link\"> </div>\n        ";}
+
+function program6(depth0,data) {
+  
+  
+  return "\n        <div id=\"disabled-account\"> </div>\n        ";}
+
+function program8(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n<div class=\"noticeTop\">\n    ";
+  foundHelper = helpers.notice;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.notice; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\n</div>\n";
+  return buffer;}
+
+function program10(depth0,data) {
+  
+  
+  return " error";}
+
+function program12(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "<span class=\"error\">";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>";
+  return buffer;}
+
+function program14(depth0,data) {
+  
+  
+  return " error";}
+
+function program16(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "<span class=\"error\">";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>";
+  return buffer;}
+
+  buffer += "<div class=\"content_50 black_bg\">\n    <h1 class=\"title_gold\">Account Verification</h1>\n    <h1 class=\"title_FFF\">Your account has been<br/>created successfully,<br/>please sign in to access your profile and account settings.</h1>\n</div><div class=\"content_50 white_bg\">\n<!-- 	";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += " -->\n";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  stack1 = depth0.notice;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	<h1 class=\"title_333\">Member sign in</h1>\n	<hr class=\"dotted\"/>\n	<form class=\"login\" action=\"#\" autocomplete=\"on\" id=\"login-form\">\n	    <input type=\"email\" name=\"username\" placeholder=\"Email Address\" value=\"";
+  stack1 = depth0.fieldsToKeep;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"text_555";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" maxlength=\"62\"/>\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <div class=\"password_wrap\">\n	    	<input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"text_555 password";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" maxlength=\"30\"/>\n	    </div>\n	    ";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <!--<input class=\"submit\" type=\"submit\" value=\"Login\"/>-->\n	    ";
+  stack1 = depth0.needsRecaptcha;
+  foundHelper = helpers.show_recaptcha;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "show_recaptcha", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	    <a id=\"login-native-button\" href=\"#\" class=\"submit\">Sign in</a>\n	</form>\n	<a id=\"forgotlink\" class=\"forgot text_blue\" href=\"#forgot-password\">Forgot your password?</a>\n	<div class=\"bottom\"><span class=\"text_555\">Not a member?&nbsp;</span><a id=\"reglink\" class=\"text_blue\" href=\"#";
+  foundHelper = helpers.registerRoute;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.registerRoute; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\">Join now.</a></div>\n</div>\n";
+  return buffer;}
+
+),
 "forgot-password": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
@@ -18425,21 +18653,40 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
+  var buffer = "", stack1;
+  buffer += "\n    ";
+  stack1 = depth0.blockEmailChange;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(6, program6, data),fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  ";
+  return buffer;}
+function program4(depth0,data) {
+  
   var buffer = "", stack1, foundHelper;
-  buffer += "\n    You can also provide a new email address or request the link again. <input type=\"email\" maxlength=\"62\" id=\"resend-activation-email\" value=\"";
+  buffer += "\n      You can also request the link again.  <input type=\"email\" maxlength=\"62\" id=\"resend-activation-email\" value=\"";
   foundHelper = helpers.email;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\" placeholder=\"Email Address\" name=\"email\"> <a id=\"resend-activation-link-button\">Resend</a>\n  ";
+  buffer += escapeExpression(stack1) + "\" placeholder=\"Email Address\" name=\"email\" disabled=\"disabled\"> <a id=\"resend-activation-link-button\">Resend</a>\n    ";
   return buffer;}
 
-function program5(depth0,data) {
+function program6(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += "\n  <span class=\"error\">";
-  foundHelper = helpers.error;
+  buffer += "\n      You can also provide a new email address or request the link again. <input type=\"email\" maxlength=\"62\" id=\"resend-activation-email\" value=\"";
+  foundHelper = helpers.email;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.error; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" placeholder=\"Email Address\" name=\"email\"> <a id=\"resend-activation-link-button\">Resend</a>\n     ";
+  return buffer;}
+
+function program8(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <span class=\"error\">";
+  stack1 = depth0.error;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.topError;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>\n  ";
   return buffer;}
 
@@ -18449,7 +18696,8 @@ function program5(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n  ";
   stack1 = depth0.error;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.topError;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</span>\n";
   return buffer;}
@@ -19094,21 +19342,11 @@ function program7(depth0,data) {
   return buffer;}
 
 ),
-"verify": template(function (Handlebars,depth0,helpers,partials,data) {
+"verification-email-changed": template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n	<div class=\"errorTop\">\n	    ";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n	</div>\n	";
-  return buffer;}
-
-function program3(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n<div class=\"errorTop\">\n    ";
@@ -19117,25 +19355,25 @@ function program3(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n\n        ";
   stack1 = depth0.showResendActivationLink;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        ";
   stack1 = depth0.disabledAccount;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n";
   return buffer;}
-function program4(depth0,data) {
+function program2(depth0,data) {
   
   
   return "\n        <div id=\"resend-activation-link\"> </div>\n        ";}
 
-function program6(depth0,data) {
+function program4(depth0,data) {
   
   
   return "\n        <div id=\"disabled-account\"> </div>\n        ";}
 
-function program8(depth0,data) {
+function program6(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
   buffer += "\n<div class=\"noticeTop\">\n    ";
@@ -19145,12 +19383,12 @@ function program8(depth0,data) {
   buffer += escapeExpression(stack1) + "\n</div>\n";
   return buffer;}
 
-function program10(depth0,data) {
+function program8(depth0,data) {
   
   
   return " error";}
 
-function program12(depth0,data) {
+function program10(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
@@ -19161,12 +19399,12 @@ function program12(depth0,data) {
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
 
-function program14(depth0,data) {
+function program12(depth0,data) {
   
   
   return " error";}
 
-function program16(depth0,data) {
+function program14(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<span class=\"error\">";
@@ -19177,19 +19415,14 @@ function program16(depth0,data) {
   buffer += escapeExpression(stack1) + "</span>";
   return buffer;}
 
-  buffer += "<div class=\"content_50 black_bg\">\n    <h1 class=\"title_gold\">Account Verification</h1>\n    <h1 class=\"title_FFF\">Your account has been<br/>created successfully,<br/>please sign in to access your profile and account settings.</h1>\n</div><div class=\"content_50 white_bg\">\n<!-- 	";
+  buffer += "<div class=\"content_50 black_bg\">\n    <h1 class=\"title_gold\">Account Verification</h1>\n    <h1 class=\"title_FFF\">Your email address has been successfully updated.  Please sign in to access your profile and account settings.</h1>\n</div><div class=\"content_50 white_bg\">\n";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " -->\n";
-  stack1 = depth0.error;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.formErrors;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   stack1 = depth0.notice;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	<h1 class=\"title_333\">Member sign in</h1>\n	<hr class=\"dotted\"/>\n	<form class=\"login\" action=\"#\" autocomplete=\"on\" id=\"login-form\">\n	    <input type=\"email\" name=\"username\" placeholder=\"Email Address\" value=\"";
   stack1 = depth0.fieldsToKeep;
@@ -19199,25 +19432,25 @@ function program16(depth0,data) {
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" maxlength=\"62\"/>\n	    ";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.username;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	    <div class=\"password_wrap\">\n	    	<input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"text_555 password";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" maxlength=\"30\"/>\n	    </div>\n	    ";
   stack1 = depth0.error;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.fieldErrors;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.password;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	    <!--<input class=\"submit\" type=\"submit\" value=\"Login\"/>-->\n	    ";
   stack1 = depth0.needsRecaptcha;
@@ -19242,6 +19475,42 @@ function program16(depth0,data) {
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + " was verified, your registration it is completed\n    </span>\n  </div>\n</div>\n\n\n";
+  return buffer;}
+
+),
+"resend-change-email-verification": template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  
+  return "\n    <b>Verification sent.</b> Please click the email activation link we sent you.\n  ";}
+
+function program3(depth0,data) {
+  
+  
+  return "\n    <a class=\"blue_button\" id=\"resend-change-email-verification-button\">Resend Verification</a>\n  ";}
+
+function program5(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n  <span class=\"error\">";
+  foundHelper = helpers.error;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.error; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "</span>\n  ";
+  return buffer;}
+
+  buffer += "  ";
+  stack1 = depth0.sent;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n  ";
+  stack1 = depth0.error;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
   return buffer;}
 
 ), }
@@ -19979,67 +20248,80 @@ function($,
         template: 'resend-activation-link',
 
         events: {
-            "click #resend-activation-link-button":"resend",
+            "click #resend-activation-link-button": "resend",
         },
 
         initialize: function(options) {
             this.sent = false;
+            this.userId = options.userId;
             this.email = options.email || null;
-            this.changeEmailNonce = options.changeEmailNonce || null;
+            this.resendVerificationNonce = options.resendVerificationNonce || null;
+            this.blockEmailChange = options.blockEmailChange;
+
+            if (typeof this.userId === 'undefined') {
+                throw new Error("You must provide the user id!");
+            }
+
             this.error = null;
         },
 
         toggleState: function() {
-            if(!this.sent)
-            {
-                this.error=false;
-                this.sent=true;
-            } else {
-                this.sent=false;
-            }
+            this.sent = !this.sent
+            this.formErrors.reset();
             this.render();
         },
 
-        resend: function(e) {
+        getNextPage: function() {
+            var uri = new Uri(document.location.toString());
 
-            if(this.sent) {
-                return;
-            }
-
-            uri = new Uri(document.location.toString());
-
-            if(this.context.getCalledFromAction()) {
+            if (this.context.getCalledFromAction()) {
                 uri.setAnchor('login/verify/from-action'); // removes all other fragments and just includes this, show the verification message
             } else {
                 uri.setAnchor('login/verify'); // removes all other fragments and just includes this, show the verification message
             }
-            nextPage = uri.toString();
+            return  uri.toString();
+        },
 
-            frmObj = Util.formToObject(this.$('#resend-activation-email'));
-            this.email = frmObj['email'];
+        /*
+         * Resends the verification email.  Additionally, if the user has provided
+         * a new email address to the form, it will get updated.  This is a special
+         * case scenario and isn't part of the standard "change email" functionality.
+         * In this case, the user is not logged in, and we verify their identity by
+         * passing a nonce back and forth.
+         */
+        resend: function(e) {
+
+            this.formErrors.reset();
+
+            if (this.sent) {
+                return;
+            }
+
+            var formObj = Util.formToObject(this.$('#resend-activation-email'));
+
+            this.email = formObj['email'] || this.email;
 
             var self = this;
-            $.when(Request.post(Urls['resend-activation-link']({}), {
+            $.when(Request.post(Urls['resend-verification-email']({id: this.userId}), {
                     email: this.email,
-                    changeEmailNonce: this.changeEmailNonce,
-                    nextpage: nextPage,
-                }))
+                    resendVerificationNonce: this.resendVerificationNonce,
+                    nextpage: self.getNextPage(),
+               }))
                 .done(function(data) {
                     self.trigger('activation-link-resent');
                     self.toggleState();
                 })
                 .fail(function(error) {
-
-                    if (!error) {
-                        self.error = 'Unknown Server Error';
+                    if (!error || Errors.isCodeEqual(error.code, 'UNKNOWN_USER')) {
+                        self.formErrors.setTopError('Unknown Server Error');
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_EXISTS')) {
-                        self.error = "Error: This email is already in use by another user.";
+                        self.formErrors.setTopError("Error: This email is already in use by another user.");
                     }
-                    else if (Errors.isCodeEqual(error.code, 'UNKNOWN_USER')) {
-                        // When nonce doesn't match a user, don't give any specifics.
-                        self.error = "Unknown Server Error";
+                    else if (Errors.isCodeEqual(error.code, 'INVALID_INPUT')) {
+                        self.formErrors.setTopError("Error: Invalid input.");
                     }
+
                     self.render();
                 });
 
@@ -20050,10 +20332,11 @@ function($,
             return this.renderTemplate({
                 sent: this.sent,
                 email: this.email,
-                changeEmailNonce: this.changeEmailNonce,
-                error: this.error
+                resendVerificationNonce: this.resendVerificationNonce,
+                error: this.formErrors,
+                blockEmailChange: this.blockEmailChange
             });
-        }
+        },
     })
 });
 
@@ -20071,26 +20354,26 @@ function($,
         subTemplate: 'alert-activation-reminder',
 
         initialize: function(options) {
-            TemplateAlert.prototype.initialize.apply(this, arguments);
+            this.constructor.__super__.initialize.apply(this, arguments);
+
+            options = options || {};
 
             this.templateData = {
                 "emailResent": false,
                 "showResendLink": options.showResendLink || false,
-                "changeEmailNonce": options.changeEmailNonce || null
             };
 
             if(this.templateData.showResendLink) {
-
                 // This sub-view only presend after registration.  During login,
                 // if the user hasn't verified their email, this reminder doesn't 
                 // show the resend link in the wireframes, so it's optional:
-
                 var self = this;
 
                 this.resendView = new ResendActivationLinkView({
                     context: this.context,
-                    email: this.model.attributes.email,
-                    changeEmailNonce: this.templateData.changeEmailNonce
+                    email: options.email,
+                    userId: options.userId,
+                    resendVerificationNonce: options.resendVerificationNonce,
                 });
 
                 this.resendView.on('activation-link-resent', function() {
@@ -20099,21 +20382,17 @@ function($,
                 });
                 this.resendView.render();
             }
-
         },
 
         render: function() {
-
             // overriding TemplateAlert's render method.  Unnecessary unless you need to 
             // have custom functionality in the render method, it will usually suffice to
             // specify the template name in initialize and then pass in data the template
             // needs in applyData().  Overridden here to attach the resend email sub view.
-
             var self = this;
 
             return $.when(TemplateAlert.prototype.render.apply(this, arguments))
             .done(function() {
-                
                 if(self.templateData.showResendLink) {
                     $('#resend-activation-link').append(self.resendView.el);
                 }
@@ -20204,6 +20483,7 @@ function($,
             this.error = {};
 
             this.showResendActivationLink = false;
+            this.showResendChangeEmailVerification = false;
 
             this.disabledAccount = false;
 
@@ -20289,24 +20569,23 @@ function($,
                         formError['formErrors'] = 'Authentication failed: invalid username or password specified.';
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_EMAIL_NOT_VERIFIED')) {
-
                         formError['formErrors'] = 'Please verify your email';
 
                         // Show reminder alert to activate, don't include a link to resend verification email
-                        var view = new ActivationReminderAlert({ 
-                            context: self.context, 
-                            showResendLink: false});
-                        view.render();
-
+                        //var view = new ActivationReminderAlert({ 
+                            //context: self.context, 
+                            //showResendLink: false});
+                        //view.render();
 
                         // Show link to resend verification email in the error section of the login modal window (see render below)
                         self.showResendActivationLink = true;
                         self.resendActivationLinkView = new ResendActivationLinkView({
                             context: self.context,
+                            userId: error.userId,
                             email: formObj.username,
-                            changeEmailNonce: error.changeEmailNonce
+                            resendVerificationNonce: error.resendVerificationNonce,
+                            blockEmailChange: error.isChanging
                         });
-
                     }
                     else if (Errors.isCodeEqual(error.code, 'USER_BANNED')) {
 
@@ -20439,6 +20718,7 @@ function($,
                 needsRecaptcha: this.needsRecaptcha,
                 fieldsToKeep: this.fieldsToKeep,
                 showResendActivationLink: this.showResendActivationLink,
+                showResendChangeEmailVerification: this.showResendChangeEmailVerificationView,
                 disabledAccount: this.disabledAccount
             })).done(function(){
                 setTimeout(function(){
@@ -20448,6 +20728,11 @@ function($,
                 if(self.showResendActivationLink) {
                     self.resendActivationLinkView.render();
                     self.$('#resend-activation-link').append(self.resendActivationLinkView.el);
+                }
+
+                if(self.showResendChangeEmailVerification) {
+                    self.showResendChangeEmailVerificationView.render();
+                    self.$('#resend-change-email-verification').append(self.showResendChangeEmailVerificationView.el);
                 }
 
                 if(self.disabledAccount) {
@@ -21485,6 +21770,8 @@ function($,
             this._locationId = prediction.gid;
             this._locationReference = prediction.gid;
             this._locationName = prediction.description;
+            // Trigger updating the displayLocation
+            this.trigger('locationSelected', prediction);
         },
         render: function() {
             var self = this;
@@ -23878,10 +24165,12 @@ function($,
 
                     // Alert reminding to activation, show resend link:
                     var view = new ActivationReminderAlert({ 
-                        context: self.context, 
-                        model: self.model,
-                        changeEmailNonce: data.changeEmailNonce,
-                        showResendLink: true});
+                            context: self.context, 
+                            userId: data.userId,
+                            email: self.model.get('email'),
+                            resendVerificationNonce: data.resendVerificationNonce,
+                            showResendLink: true
+                        });
                     view.render();
 
                 }).fail(function(error) {
@@ -24625,6 +24914,27 @@ function(Request,
     });
 });
 
+_mmdbHeaderRequire.define('header/views/verification-email-changed',['request',
+        './login-start',
+        'page-scroller'
+       ],
+function(Request,
+         LoginView,
+         pageScroller
+        ) {
+    return LoginView.extend({
+        template: 'verification-email-changed',
+
+        id: 'APP200',
+        className: 'regwrap',
+
+        initialize: function(options) {
+            LoginView.prototype.initialize.apply(this, arguments);
+            this.redirectToLandingPage = false;
+        },
+    });
+});
+
 _mmdbHeaderRequire.define('header/views/alerts/registration-complete',['jquery',
         'templates',
         './template-alert',
@@ -24664,6 +24974,7 @@ _mmdbHeaderRequire.define('header/views/login-reg-modal',[
         '../gigya-helper',
         './verification',
         './verification-from-action',
+        './verification-email-changed',
         './alerts/registration-complete',
         'quick-cookies',
         'uriLib'
@@ -24684,6 +24995,7 @@ function($,
          GigyaHelper,
          VerificationView,
          VerificationFromActionView,
+         VerificationEmailChangedView,
          RegistrationCompleteAlert,
          QuickCookies,
          Uri
@@ -24868,6 +25180,11 @@ function($,
             this.showView(view);
         },
 
+        showVerificationEmailChanged: function() {
+            var view = new VerificationEmailChangedView({context: this.context});
+            this.showView(view);
+        },
+
         showEmailVerifiedAlert: function() {
             $.when(this.context.getUser())
                 .done(function(user) {
@@ -24966,9 +25283,12 @@ function(module,
             "verify": "verify",
             "login/:verify": "verify",
             "login/:verify/:from-action": "verifyFromAction",
+            "login/verify/email-changed": "verifyEmailChanged",
             //"login/:verify/:retry": "verify",
             "verification-failed": "verificationFailed",
-            "email-verified-alert": "emailVerifiedAlert"
+            "verification-cancelled":"verificationCancelled",
+            "email-verified-alert": "emailVerifiedAlert",
+            "verification-change-email-success": "verificationChangeEmailSuccess",
         },
 
         initialize: function(options) {
@@ -25034,9 +25354,51 @@ function(module,
             this.loginRegModal.showVerificationFromAction();
         },
 
+        /*
+         * If user is already logged in, just show the 
+         * verification-change-email-success-alert, because it's
+         * a general alert banner that just states that it was
+         * already verified.
+         *
+         */
+        verifyEmailChanged: function(){
+            this.verificationChangeEmailSuccess();
+
+            /*
+            var self = this;            
+            $.when(self.context.isLoggedIn())
+                .done(function(loggedIn) {
+                    if(loggedIn) {
+                        self.verificationChangeEmailSuccess();
+                    } else {
+                        self.loginRegModal.showVerificationEmailChanged();
+                    }
+                })
+                .fail(function() {
+                    self.loginRegModal.showVerificationEmailChanged();
+                })
+            */
+        },
+
         verificationFailed: function() {
             var alert = new TemplateAlert({
                 template:'verification-failed-alert',
+                context: this.context
+            });
+            alert.render();
+        },
+
+        verificationCancelled: function() {
+            var alert = new TemplateAlert({
+                template:'verification-cancelled-alert',
+                context: this.context
+            });
+            alert.render();
+        },
+
+        verificationChangeEmailSuccess: function() {
+            var alert = new TemplateAlert({
+                template:'verification-change-email-success-alert',
                 context: this.context
             });
             alert.render();

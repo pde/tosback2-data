@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 	<head>
-				<!-- Version: 5.3.22.2 -->
+				<!-- Version: 5.4.19.1 -->
 
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,13 +18,14 @@
 		<meta name="og:url" content="http://uverseonline.att.net/sports/network/teamusa" />
 		<link rel="image_src" href="teamusa.html" />
 
-		<title>TeamUSA - AT&amp;T U-verse</title>
+		<title> TeamUSA -
+AT&amp;T U-verse</title>
 
 			<!--[if lte IE 8]>
-				<link rel="stylesheet" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?cache=5.3.22.2" />
+				<link rel="stylesheet" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?cache=5.4.19.1" />
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
-				<link rel="stylesheet" href="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fcache=5.3.22.2.css" />
+				<link rel="stylesheet" href="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fcache=5.4.19.1.css" />
 			<!--<![endif]-->
 
 
@@ -91,7 +92,7 @@
 		dvrMode:  'dvrItems' 
 	};
 
-	Uverse.config.buildVersion = "5.3.22.2";
+	Uverse.config.buildVersion = "5.4.19.1";
 	Uverse.config.scriptPath = "/web_files/NEXTGEN/web_files/nes/js/src/";
 	Uverse.config.vendorPath = "/web_files/NEXTGEN/web_files/nes/vendors/";
 	Uverse.config.jsLibPath = "/web_files/NEXTGEN/web_files/nes/js/lib/";
@@ -146,8 +147,7 @@
 
 	Uverse.config.unsupportedBrowsers = {
 		
-			'MSIE [1-7]\\..*Trident/4': { browserIsSupported: true, name: 'Internet Explorer 8 Compatibility Mode' },
-			'MSIE [1-7]\\.': {name: 'Internet Explorer', src: 'unsupported-browser.png', url: 'http://windows.microsoft.com/en-IE/windows-vista/Update-Internet-Explorer'},
+			'MSIE [1-8]\\.': {name: 'Internet Explorer', src: 'unsupported-browser.png', url: '/unsupported-browser'},
 			'Firefox\\/[0-6]\\.': {name: 'firefox', src: 'unsupported-browser.png', url: 'http://getfirefox.com'},
 			'iPad': {name: 'iPad', src: 'ipad-banner.png', url: 'http://itunes.apple.com/us/app/at-t-u-verse/id410354613?mt=8#'},
 			'Safari(.*)Version\\/4': {'name': 'Safari', src: 'unsupported-browser.png', url: 'http://www.apple.com/safari/'},
@@ -166,6 +166,8 @@
 			, mtv: {}
 			, extend: {}
 			, hbo: {}
+			, disney: {}
+			, espn: {}
 		}
 	};
 
@@ -193,6 +195,27 @@
 			}
 		}
 	};
+
+	Uverse.config.liveTiles = {
+		progressBarInterval: 20000
+		, scheduleSizeWindowSizeMinutes: 960
+		, expirationToast: {
+			infoAlert: ''
+			, infoMessage: 'Due to a lack of activity, this information is out of date. Please refresh the browser.'
+			, buttonText: 'Refresh'
+		}
+		, simulated: {
+			enable: false
+			, date: null
+			, dateDiff: 0
+			, repopulateMethods: []
+			, updateDate: function(date) {
+				Uverse.config.liveTiles.simulated.date = date;
+				Uverse.config.liveTiles.simulated.dateDiff = date - (new Date());
+				Uverse.config.liveTiles.simulated.repopulateMethods.each(function(method) { method(); });
+			}
+		}
+	}
 </script>
 
 <script>
@@ -214,22 +237,21 @@
 			, lf: 1
 		};
 </script>
-			<script src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.min.js%3Fcache=5.3.22.2"></script>
+			<script src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.min.js%3Fcache=5.4.19.1"></script>
 
 
 		
 
-	
-	<meta name="description" content="Welcome to Uverse.com! Presenting more than 250,000 FREE videos for everyone, with thousands more for U-verse TV subscribers.">
-	<meta name="fragment" content="!">
 
+<meta name="description" content="Welcome to Uverse.com! Presenting more than 250,000 FREE videos for everyone, with thousands more for U-verse TV subscribers.">
+<meta name="fragment" content="!">
 	
 
 
 		<script src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/modernizr/modernizr-2.5.3.min.js%3Fcache=true"></script>
 	</head>
 
-	<body class="pageType-default">
+	<body class="pageType-Tile not-logged-in">
 		<section id="pageContainer1" class="page-container">
 
 
@@ -255,9 +277,8 @@
 					<img class="main-logo" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/images/branding/logo.png" alt="AT&amp;T">
 				</a>
 			</div>
-
 			<div class="main-links-wrapper track-hasSubcategory" data-clicktrack-subcategory="Main">
-				<ul id="main-links" class="main-links">
+				<ul id="mainLinks" class="main-links">
 
 						<li class="main-link  current ">
 							<a href="http://uverseonline.att.net/" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksWatchNow.png)" class="track"  data-clicktrack-action="Watch Now"  data-trk-cat="Top navigation" data-trk-act="Watch Now">Watch Now
@@ -278,7 +299,7 @@
 						</li>
 
 						<li class="main-link ">
-							<a href="http://uverseonline.att.net/guide" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksChannelGuide.png)" class="track"  data-clicktrack-action="Channel Guide"  data-trk-cat="Top navigation" data-trk-act="Channel Guide">Channel Guide
+							<a href="http://uverseonline.att.net/guide" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksChannelGuide.png)" class="track"  data-clicktrack-action="TV Listings"  data-trk-cat="Top navigation" data-trk-act="TV Listings">TV Listings
 									<div class="badge  hidden">
 										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
 										<span class="slice-two"></span>
@@ -296,7 +317,6 @@
 						</li>
 				</ul>
 			</div>
-
 			<div class="profile-links-wrapper track-hasSubcategory"  data-clicktrack-subcategory="Profile">
 				<ul id="profile-links" class="profile-links">
 					<li class="login-link hidden">
@@ -321,10 +341,9 @@
 		</div>
 
 		<div id="sections-navigation" class="sections-navigation needsPageWidth track-hasSubcategory" data-clicktrack-subcategory="Navigation">
-			<div id="mainNavigation">
+			<div id="secondaryNavigation">
 				<ul class="main-nav-list">
 					<li id="quickSearch" class="quick-search track-hasSubcategory" data-clicktrack-subcategory="Search">
-
 						<form action='http://uverseonline.att.net/search' method="post" class='track-hasAction' data-trk-cat='Search' data-trk-act='Query - Basic' data-clicktrack-action="Submit Query">
 							<span class="quick-search-active">Searching</span>
 <input type="text" name="query" value="" class="U-control U-control-textbox quick-search-textbox"
@@ -342,14 +361,18 @@ placeholder="Search U-verse"
 
 	<a href="http://uverseonline.att.net/" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="All"  data-trk-cat="Top navigation" data-trk-act="All">All</a>
 									</li>
+									<li class="main-nav-item   ">
+
+	<a href="http://uverseonline.att.net/live" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Live TV"  data-trk-cat="Top navigation" data-trk-act="Live TV">Live TV</a>
+									</li>
 									<li class="main-nav-item  with-dropdown  ">
 
-	<a href="http://uverseonline.att.net/tv" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="TV"  data-trk-cat="Top navigation" data-trk-act="TV">TV</a>
+	<a href="http://uverseonline.att.net/tv" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="TV Shows"  data-trk-cat="Top navigation" data-trk-act="TV Shows">TV Shows</a>
 										<ul class="main-nav-menu menu">
-													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/popular" class="main-nav-menu-item-label track" data-clicktrack-action="TV - Most Popular" data-trk-cat="Top navigation" data-trk-act="TV - Most Popular">Most Popular</a></li>
-													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/new" class="main-nav-menu-item-label track" data-clicktrack-action="TV - Recently Added" data-trk-cat="Top navigation" data-trk-act="TV - Recently Added">Recently Added</a></li>
-													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/all" class="main-nav-menu-item-label track" data-clicktrack-action="TV - All TV Shows" data-trk-cat="Top navigation" data-trk-act="TV - All TV Shows">All TV Shows</a></li>
-													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/tv/es" class="main-nav-menu-item-label track" data-clicktrack-action="TV - En Español" data-trk-cat="Top navigation" data-trk-act="TV - En Español">En Español</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/popular" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - Most Popular" data-trk-cat="Top navigation" data-trk-act="TV Shows - Most Popular">Most Popular</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/new" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - Recently Added" data-trk-cat="Top navigation" data-trk-act="TV Shows - Recently Added">Recently Added</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/all" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - All TV Shows" data-trk-cat="Top navigation" data-trk-act="TV Shows - All TV Shows">All TV Shows</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/tv/es" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - En Español" data-trk-cat="Top navigation" data-trk-act="TV Shows - En Español">En Español</a></li>
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown  ">
@@ -398,7 +421,7 @@ placeholder="Search U-verse"
 			</div>
 		</div>
 	</div>
-	<div class="flyout-content-container">
+	<div id="secondaryNavigationFlyouts" class="flyout-content-container">
 	</div>
 </div>
 
@@ -406,14 +429,14 @@ placeholder="Search U-verse"
 
 <script type="text/javascript">
 	Uverse.load({
-		moduleName: 'Uverse.widgets.MainNavigation'
-		, id: 'mainNavigation'
-		, options: { }
+		moduleName: 'Uverse.widgets.SecondaryNavigation'
+		, id: 'secondaryNavigation'
+		, options: { flyoutsContainerId: 'secondaryNavigationFlyouts' }
 	});
 
 	Uverse.load({
 		moduleName: 'Uverse.widgets.MainLinks'
-		, id: 'main-links'
+		, id: 'mainLinks'
 		, options: { }
 	});
 
@@ -465,7 +488,7 @@ data-clicktrack-action="Record to DVR">
 			<p class="description successful"></p>
 			<p class="time"></p>
 			<p class="channel"><span class="number"></span> <span class="name"></span></p>
-			<p class="manage"><a href="http://uverseonline.att.net/guide/recorded-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
+			<p class="manage"><a href="http://uverseonline.att.net/guide/scheduled-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
 		</form>
 	</div>
 	<div class="drawer-recording recorded">
@@ -473,7 +496,7 @@ data-clicktrack-action="Record to DVR">
 			<p class="description successful"></p>
 			<p class="time"></p>
 			<p class="channel"><span class="number"></span> <span class="name"></span></p>
-			<p class="manage"><a href="http://uverseonline.att.net/guide/recorded-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
+			<p class="manage"><a href="http://uverseonline.att.net/guide/scheduled-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
 		</form>
 	</div>
 	<div class="drawer-recording cannotBeRecorded">
@@ -490,9 +513,9 @@ data-clicktrack-action="Record to DVR">
 			<div class="tv">
 				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
 				<span class="options">
-<label class="U-control U-control-checkbox control-recordings" tabIndex="0">
+<label class="U-control U-control-checkbox control-recordings track" tabIndex="0" data-clicktrack-action="Include Reruns" data-clicktrack-label="">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns" data-clicktrack-label=""></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="includeReruns" value="true" />
 </span>
 Include Reruns
@@ -506,9 +529,9 @@ Include Reruns
 			<div class="sports">
 				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
 				<span class="options">
-<label class="U-control U-control-checkbox control-recordings" tabIndex="0">
+<label class="U-control U-control-checkbox control-recordings track" tabIndex="0" data-clicktrack-action="Include Reruns" data-clicktrack-label="">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns" data-clicktrack-label=""></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="includeReruns" value="true" />
 </span>
 Include Reruns
@@ -587,9 +610,9 @@ Include Reruns
 			<p class="description">
 Access all your best-loved videos by adding them to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
 			<p class="options">
-<label class="U-control U-control-checkbox control-favorites" tabIndex="0">
+<label class="U-control U-control-checkbox control-favorites track" tabIndex="0" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On"></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
 </span>
 <span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
@@ -616,9 +639,9 @@ This movie has been added to <a href="http://uverseonline.att.net/uv/favorites" 
 This artist has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
 
 			<p class="options">
-<label class="U-control U-control-checkbox control-favorites" tabIndex="0">
+<label class="U-control U-control-checkbox control-favorites track" tabIndex="0" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On"></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
 </span>
 <span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
@@ -754,7 +777,7 @@ data-clicktrack-action="Set">
 <div class="slice-three"></div>
 </div>
 </div>
-	<div id="playerTemplate" class="modal-player track-hasSubcategory track-hasCategory " data-clicktrack-subcategory="Player Modal" data-clicktrack-category="Modal">
+	<div id="playerTemplate" class="modal-player track-hasSubcategory track-hasCategory  " data-clicktrack-subcategory="Player Modal" data-clicktrack-category="Modal">
 		<div class="modal-player-header">
 			<div class="modal-player-header-network playerLoader-network">
 			</div>
@@ -763,14 +786,14 @@ data-clicktrack-action="Set">
 						(TITLE)
 				</span>
 			</div>
-	<a class="modal-player-header-close modal-close-button track-hasAction track" href="teamusa.html#" data-clicktrack-action="Close Button">x</a>
+	<a class="modal-close-button track-hasAction track" href="teamusa.html#" data-clicktrack-action="Close Button">x</a>
 		</div>
 
 		<div class="modal-player-media">
 			<div class="extensionPanels">
 	<div class="player-extension  hidden  loadingError-extension player-extension-error">
 		<div class="player-extension-icon">&nbsp;</div>
-		<h2 class="player-extension-title">  Oops... An error has occurred   </h2>
+		<div class="player-extension-title">  Oops... An error has occurred   </div>
 
 		<div class="player-extension-contents">
 		<p>
@@ -785,21 +808,23 @@ AT&amp;T U-verse Support page				</a>
 			</div>
 		</div>
 
-		<div class="modal-player-meta">
-			<div class="modal-player-meta-info">
-				<h2 class="modal-player-meta-info-episode playerLoader-subtitle">
-				</h2>
-				<div class="modal-player-meta-info-description">
-					<p class="playerLoader-description"></p>
+		<div class="modal-player-meta-container">
+			<div class="modal-player-meta">
+				<div class="modal-player-meta-info">
+					<h2 class="modal-player-meta-info-episode playerLoader-subtitle">
+					</h2>
+					<div class="modal-player-meta-info-description">
+						<p class="playerLoader-description"></p>
+					</div>
+					<div class="modal-player-meta-info-share socialLinks">
+					</div>
 				</div>
-				<div class="modal-player-meta-info-share socialLinks">
-				</div>
-			</div>
 
-			<div class="modal-player-meta-sidebar">
-				<div class="modal-player-meta-sidebar-ad companionAd">
-				</div>
-				<div class="modal-player-meta-sidebar-menu">
+				<div class="modal-player-meta-sidebar">
+					<div class="modal-player-meta-sidebar-ad companionAd">
+					</div>
+					<div class="modal-player-meta-sidebar-menu">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -938,18 +963,20 @@ data-clicktrack-label="Alphabetical"
 </div>
 </span>					</div>
 
+			
+
 						<div class='secondary-filter right'>
-<label class="U-control U-control-checkbox control-filter-bar " tabIndex="0">
+<label class="U-control U-control-checkbox control-filter-bar track" tabIndex="0" data-clicktrack-action="CC" data-clicktrack-label="">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="CC" data-clicktrack-label=""></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="checkbox3" value="checkbox3" />
 </span>
 CC
 </label>						</div>
 						<div class='secondary-filter right'>
-<label class="U-control U-control-checkbox control-filter-bar " tabIndex="0">
+<label class="U-control U-control-checkbox control-filter-bar track" tabIndex="0" data-clicktrack-action="HD" data-clicktrack-label="">
 <span class="U-control-checkbox-check-wrapper">
-<span class="U-control-checkbox-check track" data-clicktrack-action="HD" data-clicktrack-label=""></span>
+<span class="U-control-checkbox-check"></span>
 <input type="checkbox" name="checkbox2" value="checkbox2" />
 </span>
 HD
@@ -1477,9 +1504,8 @@ data-clicktrack-label="Tennis"
 				<div class='secondary-filter right first-on-right'>
 Filter By				</div>
 
-			
-
         </form>
+
 		</span><span class="slice-three"></span>
 	</nav>
 	</section>
@@ -1738,6 +1764,7 @@ one-column track-hasCategory track-hasSubcategory track-hasLabel"
 				}
 				, filterBarId: 'myFilterBar1'
 				, tileExtensions: [    ]
+				, timeZoneInfo: ""
 			}
 		});
 	</script>
@@ -1867,8 +1894,8 @@ Proud sponsor of the U.S Olympic Team							</a>
 <div class="mastfooter-placeholder"></div>
 <script type="text/javascript">
 	Uverse.load({
-		moduleName: 'Uverse.widgets.Footer',
-		id: 'mastfooter'
+		moduleName: 'Uverse.widgets.Footer'
+		, id: 'mastfooter'
 	});
 </script>
 		</section>

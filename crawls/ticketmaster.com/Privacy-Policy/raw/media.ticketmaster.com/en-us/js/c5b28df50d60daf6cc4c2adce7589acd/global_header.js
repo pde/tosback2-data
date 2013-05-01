@@ -3,7 +3,7 @@
    if(TMsearchToggle_tt_vars.anchored_tab_enabled == 0) {
         var leaderBoard = $('#leaderBoard');
         if(leaderBoard.length && (leaderBoard.height() > 30)){
-             leaderBoard.show();
+             leaderBoard.addClass("vis");
         }
         
         $('#site-search').find('#search-wrap > input')
@@ -89,12 +89,12 @@
                   var dV = this.dataVals;
                      if(dV.leaderBoard.length){
                          if(dV.leaderBoard.height() < 30){
-                             dV.leaderBoard.hide();
+                             dV.leaderBoard.removeClass('vis');
                              dV.sha_offset = 0;
                              dV.anchorSite.addClass('on-scroll');
                          }else{
                             this.dataVals.lb_outerHeight = (dV.leaderBoard.height()+dV.lb_paddings);
-                            dV.leaderBoard.show();
+                            dV.leaderBoard.addClass("vis");
                             dV.anchorSite.removeClass("on-scroll").show();
                          }
                      }else{

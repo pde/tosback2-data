@@ -1,0 +1,3116 @@
+﻿/***** Begin Shared Scripts *****/
+
+function ShowResultsWindow(results)
+{
+  resultsWindow = window.open('', 'resultsWindow', 'status=1,resizable=1,scrollbars=1,width=500,height=500');
+  resultsWindow.document.write(results);
+  resultsWindow.document.close();
+}
+
+function TrimAll(sString)
+{
+  while (sString.substring(0, 1) == ' ')
+  {
+    sString = sString.substring(1, sString.length);
+  }
+  
+  while (sString.substring(sString.length - 1, sString.length) == ' ')
+  {
+    sString = sString.substring(0, sString.length - 1);
+  }
+
+  return sString;
+}
+
+/***** End Shared Scripts *****/
+
+
+
+/***** Begin Shared Quote Box Scripts *****/
+
+var QuoteBox = new Object();
+
+QuoteBox.clicks                   = 0;
+QuoteBox.booRemoveAccordionExpand = '';
+QuoteBox.zipCodeBoxText           = '';
+QuoteBox.insuranceTypeBoxText     = '';
+QuoteBox.zipCodeAgentBoxText      = '';
+QuoteBox.addressBoxText           = '';
+QuoteBox.cityBoxText              = '';
+QuoteBox.stateBoxText             = '';
+QuoteBox.userNameBoxText          = '';
+
+QuoteBox.accordionExtenderID      = '';
+QuoteBox.lblErrorQuoteZipID       = '';
+QuoteBox.txtZipCodeID             = '';
+QuoteBox.lstInsuranceTypeID       = '';
+QuoteBox.txtZipCodeAgentID        = '';
+QuoteBox.lblErrorAgentZipID       = '';
+QuoteBox.txtCityAgentID           = '';
+QuoteBox.updPnlStatesID           = '';
+QuoteBox.ddStateAgentID           = '';
+QuoteBox.txtAddressAgentID        = '';
+QuoteBox.txtUserNameQuote         = '';
+QuoteBox.txtPasswordQuote         = '';
+QuoteBox.lblErrorIDPassword       = '';
+
+QuoteBox.strCID                   = '';
+QuoteBox.strATT                   = '';
+
+QuoteBox.urlRetrieveQuote         = '';
+urlMyAccountLogOn = '';
+
+// tabbbing
+QuoteBox.QboxType = '';
+
+
+
+// drop down replacement 
+QuoteBox.ddInsuranceType2 = '';
+QuoteBox.ddStateAgent2 = '';
+QuoteBox.lblTypeOfInsur = '';
+QuoteBox.lblState = '';
+QuoteBox.arrStates = null;
+
+
+
+QuoteBox.RemoveAccordionExpand = function()
+{
+  if (QuoteBox.booRemoveAccordionExpand == 'True')
+  {
+    var extender = $find(QuoteBox.accordionExtenderID);
+
+    if ((extender != null) && (extender != undefined))
+    {
+      $removeHandler(extender.get_Pane(2).header, "click", extender._headerClickHandler);
+    }
+    else
+    {
+      setTimeout('QuoteBox.RemoveAccordionExpand()', 500);
+    }
+  }
+}
+
+QuoteBox.InitSiteCatalystValues = function()
+{
+  var scValue = QuoteBox.strCID + '|' + QuoteBox.strATT;
+
+	ProcessMetrics('GetQuoteJS', [scValue]);
+
+}
+
+QuoteBox.InitializeQuoteBox = function() {
+    var ddInsuranceTypes = $find(QuoteBox.lstInsuranceTypeID);
+    var ddStates = $find(QuoteBox.ddStateAgentID);
+    var lblTypeOfInsurance = document.getElementById(QuoteBox.lblTypeOfInsur);    // replacement section
+    var lblState = document.getElementById(QuoteBox.lblState);    // replacement section
+
+    /*                  // replacement section.  removed front end control
+    if ((ddInsuranceTypes != null) && (ddInsuranceTypes != undefined)) {
+        ddInsuranceTypes.set_enabled(false);
+        ddInsuranceTypes._prmTxtDiv.innerHTML = QuoteBox.insuranceTypeBoxText;
+
+    }
+    */
+
+
+/*
+    if ((lblTypeOfInsurance != null) && (lblTypeOfInsurance != undefined)) {// replacement section
+        lblTypeOfInsurance.innerHTML = QuoteBox.insuranceTypeBoxText // replacement section
+    }                                                               // replacement section
+
+    if ((lblState != null) && (lblState != undefined)) {// replacement section
+        lblState.innerHTML = QuoteBox.stateBoxText      // replacement section
+    }                                                   // replacement section
+*/
+
+    /* // replacement section
+    if ((ddStates != null) && (ddStates != undefined)) {
+    ddStates.set_enabled(false);
+    ddStates._prmTxtDiv.innerHTML = QuoteBox.stateBoxText;
+    }
+    */
+
+    QuoteBox.RemoveAccordionExpand();
+    QuoteBox.InitSiteCatalystValues();
+}
+
+QuoteBox.RestrictCharacters = function(e)
+{
+  var zipCode;
+
+  if (e.keyCode == 9)
+  {
+    return true;
+  }
+  else if (e.keyCode != 0)
+  {
+    zipCode = e.keyCode;
+  }
+  else if (e.charCode != 0)
+  {
+    zipCode = e.charCode;
+  }
+
+  if (zipCode == 8)
+  {
+    return true;
+  }
+
+  return /^(\d)$/.test(String.fromCharCode(zipCode));
+}
+
+QuoteBox.RestrictCharactersText = function(allowNumbers, e)
+{
+  var text;
+
+  if (e.keyCode == 9)
+  {
+    return true;
+  }
+  if (e.keyCode != 0)
+  {
+    text = e.keyCode;
+  }
+  else if (e.charCode != 0)
+  {
+    text = e.charCode;
+  }
+
+  if (text == 8)
+  {
+    return true;
+  }
+
+  if (allowNumbers)
+  {
+    return /^[a-zA-Z0-9 -.]$/.test(String.fromCharCode(text));
+  }
+  else
+  {
+    return /^[a-zA-Z -.]$/.test(String.fromCharCode(text));
+  }
+}
+
+
+QuoteBox.PaneSwitch = function(pane, direction, focusTarget) {
+    if ((QuoteBox.booRemoveAccordionExpand == 'False') || ((QuoteBox.booRemoveAccordionExpand == 'True') && (pane < 2))) {
+        var extender = $find(QuoteBox.accordionExtenderID);
+
+        if (pane == 0 && extender.get_SelectedIndex() == 0) {
+            // do nothing
+        }
+        else if (pane == 1 && extender.get_SelectedIndex() == 1) {
+            // do nothing
+        }
+        else if (pane == 2 && extender.get_SelectedIndex() == 2) {
+            // do nothing
+        }
+        else {
+            extender.set_SelectedIndex(pane);
+            if (QuoteBox.QboxType == 'SmallQuote' || QuoteBox.QboxType == 'LargeQuote') {
+                if (document.getElementById(focusTarget)) document.getElementById(focusTarget).focus();
+            }
+
+        }
+
+
+    }
+}
+/***** End Shared Quote Box Scripts *****/
+
+
+
+/***** Begin Quote Container Scripts *****/
+
+QuoteBox.ShowHoverHelp = function(element, divID, divState)
+{
+	if (divState == 'none')
+	{
+		element.style.opacity = '1';
+		element.style.filter = "alpha(opacity=100)";
+	}
+	else
+	{
+		element.style.opacity = '0.2';
+		element.style.filter = "alpha(opacity=20)";
+	}
+
+	document.getElementById(divID).style.display = divState;
+}
+
+QuoteBox.RetrieveQuote = function()
+{
+  ProcessMetrics('RetrieveQuote');
+  document.location.href = QuoteBox.urlRetrieveQuote;
+}
+
+QuoteBox.ValidateZipCode = function(element, submit) {
+    var ddInsuranceTypes = $find(QuoteBox.ddInsuranceType2);
+    //var ddInsuranceTypes = $find(QuoteBox.lstInsuranceTypeID);  //replacement section
+    
+    if (ddInsuranceTypes != null) {
+        if (element.value.length < 5) {
+            if ((element.value.length > 0) || (submit == true)) {
+                document.getElementById(QuoteBox.lblErrorQuoteZipID).style.visibility = 'visible';
+            }
+
+            /*      //replacement section
+            ddInsuranceTypes.set_enabled(false);
+            ddInsuranceTypes._prmTxtDiv.innerHTML = QuoteBox.insuranceTypeBoxText;
+            */
+            return false;
+        }
+        else {
+
+            //var items = ddInsuranceTypes.get_items();     //replacement section
+            if(document.getElementById(QuoteBox.lblErrorQuoteZipID))
+                document.getElementById(QuoteBox.lblErrorQuoteZipID).style.visibility = 'hidden';
+
+            //ddInsuranceTypes.set_enabled(true);   //replacement section
+
+            /*      //replacement section
+            for (i = 0; i < items.length; i++) {
+            if (items[i].Value == ddInsuranceTypes._valDiv.value) {
+            ddInsuranceTypes._prmTxtDiv.innerHTML = items[i].Text;
+
+                    break;
+            }
+            }
+            */
+            if (submit == true) {
+                //ProcessMetrics('GetQuote', [$find(QuoteBox.lstInsuranceTypeID)]); //replacement section
+                ProcessMetrics('GetQuote', [$find(QuoteBox.ddInsuranceType2)]);
+            }
+        }
+    }
+}
+
+QuoteBox.ChangeZipCodeText = function(mode, element)
+{
+	if (mode == 'focus')
+	{
+		element.value = '';
+	}
+	else
+	{
+		if ((element.value == '') && (element.parentNode.parentNode.parentNode.className == 'QuoteOnlyContent'))
+		{
+		  element.value = QuoteBox.zipCodeBoxText;
+		}
+	}
+}
+
+/***** End Quote Container Scripts *****/
+
+
+
+/***** Begin Agent Container Scripts *****/
+
+QuoteBox.ValidateZipCodeAgent = function(element)
+{
+  var address = document.getElementById(QuoteBox.txtAddressAgentID);
+
+  if ((element.value.length < 5) || (element.value == QuoteBox.zipCodeAgentBoxText))
+  {
+    if ((element.value.length > 0) && (element.value != QuoteBox.zipCodeAgentBoxText))
+    {
+      document.getElementById(QuoteBox.lblErrorAgentZipID).style.visibility = 'visible';
+    }
+
+    if ((address != undefined) && (address != null))
+    {
+      address.value = QuoteBox.addressBoxText;
+      address.disabled = true;
+      address.className = 'DisabledBox';
+    }
+
+    return false;
+  }
+  else
+  {
+    document.getElementById(QuoteBox.lblErrorAgentZipID).style.visibility = 'hidden';
+
+    if ((address != undefined) && (address != null))
+    {
+      address.disabled = false;
+      address.className = '';
+    }
+  }
+}
+
+QuoteBox.ChangeZipCodeAgentText = function(mode, element)
+{
+	if (mode == 'focus')
+	{
+		element.value = '';
+	}
+	else
+	{
+		if (element.value == '')
+		{
+		  element.value = QuoteBox.zipCodeAgentBoxText;
+		}
+	}
+}
+
+QuoteBox.ChangeAddressText = function(mode, element)
+{
+	if (mode == 'focus')
+	{
+		element.value = '';
+	}
+	else
+	{
+		if (element.value == '')
+		{
+		  element.value = QuoteBox.addressBoxText;
+		}
+	}
+}
+
+QuoteBox.ValidateCity = function(element) {
+    var ddStates = $find(QuoteBox.ddStateAgentID);
+
+    if ((element.value.length <= 0) || (element.value == QuoteBox.cityBoxText)) {
+        //  ddStates.set_enabled(false);        // replacement section comment out
+        //  ddStates._prmTxtDiv.innerHTML = QuoteBox.stateBoxText;   // replacement section comment out
+
+        return false;
+    }
+    else {
+
+        /*      // replacement section comment out
+        var items = ddStates.get_items();
+
+        ddStates.set_enabled(true);
+
+        for (i = 0; i < items.length; i++) {
+        if (items[i].Value == ddStates._valDiv.value) {
+        ddStates._prmTxtDiv.innerHTML = items[i].Text;
+
+                break;
+        }
+        }
+        */
+        return true;
+
+    }
+}
+
+QuoteBox.ChangeCityText = function(mode, element) {
+    if (mode == 'focus') {
+        element.value = '';
+
+        if (QuoteBox.clicks < 1) {
+            QuoteBox.clicks++;
+
+
+            //__doPostBack(QuoteBox.updPnlStatesID, "customPostback");      // replacent section
+            
+        }
+    }
+    else {
+        if (element.value == '') {
+            element.value = QuoteBox.cityBoxText;
+        }
+    }
+}
+
+
+
+/***** End Agent Container Scripts *****/
+
+
+
+/***** Begin Login Container Scripts *****/
+
+QuoteBox.ChangeUserNameText = function(mode, element)
+{
+	if (mode == 'focus')
+	{
+	  element.value = '';
+
+	  document.getElementById(QuoteBox.lblErrorIDPassword).style.visibility = 'hidden';
+	}
+	else
+	{
+		if (element.value == '')
+		{
+		  element.value = QuoteBox.userNameBoxText;
+		}
+	}
+}
+
+QuoteBox.ChangePasswordText = function(mode)
+{
+  var passwordDiv = document.getElementById('Password');
+  var password = document.getElementById(QuoteBox.txtPasswordQuote);
+  var passwordPlaceholder = document.getElementById('PasswordPlaceholder');
+  
+	if (mode == 'focus')
+	{
+	  passwordDiv.className = '';
+		passwordPlaceholder.className = 'Password';
+		password.value = '';
+		password.focus();
+
+		document.getElementById(QuoteBox.lblErrorIDPassword).style.visibility = 'hidden';
+	}
+	else
+	{
+		if (password.value == '')
+		{
+		  passwordDiv.className = 'Password';
+			passwordPlaceholder.className = '';
+		}
+	}
+}
+
+/***** End Login Container Scripts *****/
+
+
+
+/***** Begin MyAccount Login Scripts *****/
+
+var MyAccountLogin = new Object();
+
+function LoginKeyPress(source, evt)
+{
+  if (window.event)
+  {
+    skeyCode = event.keyCode;
+  }
+  else
+  {
+    skeyCode = evt.which;
+  }
+
+  if (skeyCode == 13)
+  {
+    if (source == "Head")
+    {
+      var headButton = document.getElementById("LoginBtnHead");
+
+      if (headButton)
+      {
+        headButton.click();
+      }
+    }
+    else if (source == "Quote")
+    {
+      var quoteButton = document.getElementById(QuoteBox.imgBtnCustomerLoginQuote);
+
+      if (quoteButton)
+      {
+        quoteButton.click();
+      }
+    }
+
+    return false;
+  }
+}	
+
+function SubmitLoginRequest(source)
+{
+  var frmLogin = document.forms[0];
+
+  if (source == "Head")
+  {
+    if (document.getElementById("usernamehead").value != "Enter User ID Here" && document.getElementById("passwordhead").value != "")
+    {
+      if (document.getElementById("username2") == undefined)
+      {
+        var userName = document.createElement("input");
+
+        userName.type = 'text';
+        userName.name = 'username2';
+        userName.id = 'username2';
+        userName.style.display = 'none';
+
+        frmLogin.appendChild(userName);
+      }
+
+      if (document.getElementById("password2") == undefined)
+      {
+        var password = document.createElement("input");
+
+        password.type = 'password';
+        password.name = 'password2';
+        password.id = 'password2';
+        password.style.display = 'none';
+
+        frmLogin.appendChild(password);
+      }
+
+      document.getElementById("username2").value = document.getElementById("usernamehead").value;
+      document.getElementById("password2").value = document.getElementById("passwordhead").value;
+
+      SubmitLogin(source);
+    }
+  }
+  else
+  {
+    if (document.getElementById(QuoteBox.txtUserNameQuote).value != QuoteBox.userNameBoxText && document.getElementById(QuoteBox.txtPasswordQuote).value != "")
+    {
+      if (document.getElementById("username2") == undefined)
+      {
+        var userName = document.createElement("input");
+
+        userName.type = 'text';
+        userName.name = 'username2';
+        userName.id = 'username2';
+        userName.style.display = 'none';
+
+        frmLogin.appendChild(userName);
+      }
+
+      if (document.getElementById("password2") == undefined)
+      {
+        var password = document.createElement("input");
+
+        password.type = 'password';
+        password.name = 'password2';
+        password.id = 'password2';
+        password.style.display = 'none';
+
+        frmLogin.appendChild(password);
+      }
+
+      document.getElementById("username2").value = document.getElementById(QuoteBox.txtUserNameQuote).value;
+      document.getElementById("password2").value = document.getElementById(QuoteBox.txtPasswordQuote).value;
+
+      SubmitLogin(source);
+    }
+    else
+    {
+      document.getElementById(QuoteBox.lblErrorIDPassword).style.visibility = 'visible';
+      
+      return false;
+    }
+  }
+}
+
+function SubmitLogin(source)
+{
+  if (source == "Head")
+  {
+    ProcessMetrics('LoginHead');
+  }
+  else
+  {
+    ProcessMetrics('Login');
+  }
+
+  CheckCookies();
+
+  if (source != "Head")
+  {
+    if ((QuoteBox.lblErrorIDPassword != undefined) && (document.getElementById(QuoteBox.lblErrorIDPassword) != undefined))
+    {
+      document.getElementById(QuoteBox.lblErrorIDPassword).style.visibility = 'hidden';
+    }
+  }
+  
+  document.forms[0].method = 'post';
+  document.forms[0].submit();
+}
+
+function CheckCookies()
+{
+  document.cookie = "CheckCookies=Yes; path=/";
+
+  if (urlMyAccountLogOn == "")
+  {
+    urlMyAccountLogOn = "https://myaccount.allstate.com/Anon/Handlers/ExternalLoginHandler.ashx?";
+  }
+
+  if (document.cookie.indexOf("CheckCookies=Yes") != -1)
+  {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 100);
+    document.cookie = "CheckCookies=Yes; path=/; expires=" + exp.toGMTString();
+
+    document.forms[0].action = urlMyAccountLogOn + "CookiesEnabled=Yes";
+  }
+  else
+  {
+    document.forms[0].action = urlMyAccountLogOn + "CookiesEnabled=No";
+  }
+}
+
+/***** End MyAccount Login Scripts *****/
+
+
+
+/***** Begin Expandable Paragraph Component  *****/
+
+function ToggleExpandableParagraph(obj)
+{
+  if (obj.getAttribute('class') == 'closed')
+  {
+    obj.setAttribute('class', 'open');
+  }
+  else
+  {
+    obj.setAttribute('class', 'closed');
+  }
+
+  var _content = FindContentNode(obj);
+
+  if (_content.getAttribute('class') == 'closed')
+  {
+    _content.setAttribute('class', 'open');
+  }
+  else
+  {
+    _content.setAttribute('class', 'closed');
+  }
+}
+
+function FindContentNode(start)
+{
+  if (start != null)
+  {
+    if (start.nodeName == 'DD')
+    {
+      return start;
+    }
+    else
+    {
+      return FindContentNode(start.nextSibling);
+    }
+  }
+}
+
+/***** End Expandable Paragraph Component  *****/
+
+
+
+/***** Begin Header Scripts *****/
+
+function ToggleCustomerLoginBox(id)
+{
+  var e = document.getElementById(id);
+  var customerLogin = document.getElementById("customerLogin");
+  var customerLoginLink = document.getElementById("notLoggedIn");
+
+  if (e.className == 'CustomerLoginBoxHeaderShow')
+  {
+    e.className = "CustomerLoginBoxHeaderHide";
+    customerLogin.className = "CustomerLogInHide";
+    customerLoginLink.className = "";
+  }
+  else
+  {
+    e.className = "CustomerLoginBoxHeaderShow";
+    customerLogin.className = "CustomerLogInShow";
+    customerLoginLink.className = "NotLoggedIn";
+  }
+}
+
+function ChangeUserNameTextHead(mode, element, prompt)
+{
+  if (mode == 'focus')
+  {
+    element.value = '';
+  }
+  else
+  {
+    if (element.value == '')
+    {
+      element.value = prompt;
+    }
+  }
+}
+
+function ChangePasswordTextHead(mode)
+{
+  if (mode == 'focus')
+  {
+    document.getElementById('passtempheaddiv').style.display = 'none';
+    document.getElementById('passwordheaddiv').style.display = '';
+    document.getElementById('passwordhead').value = '';
+    document.getElementById('passwordhead').focus();
+  }
+  else
+  {
+    if (document.getElementById('passwordhead').value == '')
+    {
+      document.getElementById('passtempheaddiv').style.display = '';
+      document.getElementById('passwordheaddiv').style.display = 'none';
+    }
+  }
+}
+
+/***** End Header Scripts *****/
+
+
+
+/***** Begin Join Our Mailing List Scripts *****/
+
+var MailingList = new Object();
+
+MailingList.txtEMailID          = '';
+MailingList.txtEMailConfirmID   = '';
+MailingList.urlResponsysFaq     = '';
+MailingList.hnd                 = null;
+
+MailingList.SubmitMailingList = function()
+{
+  if (Page_ClientValidate() == false)
+  {
+    document.getElementById('pnlError').style.display = 'block';
+  }
+
+  for (var i = 0; i < Page_Validators.length; i++)
+  {
+    var val = Page_Validators[i];
+    var ctrl;
+    var ctrl2;
+
+    if (document.getElementById(MailingList.txtEMailID) != null)
+    {
+      ctrl = document.getElementById(MailingList.txtEMailID);
+    }
+    else
+    {
+      ctrl = document.getElementById(val.controltovalidate);
+    }
+
+    if (document.getElementById(MailingList.txtEMailConfirmID) != null)
+    {
+      ctrl2 = document.getElementById(MailingList.txtEMailConfirmID);
+    }
+    else
+    {
+      ctrl2 = document.getElementById(val.controltocompare);
+    }
+
+    if ((ctrl != null) && (ctrl.style != null) && ((val.id.indexOf("rfv") >= 0) || (val.id.indexOf("rev") >= 0) || (val.id.indexOf("cv") >= 0)))
+    {
+      if (!val.isvalid)
+      {
+        if (ctrl.className.indexOf(' ') < 0)
+        {
+          ctrl.className = ctrl.className + ' Error';
+
+          if (ctrl2 != null)
+          {
+            ctrl2.className = ctrl2.className + ' Error';
+          }
+        }
+      }
+      else if ((val.id.indexOf("rfv") >= 0) || (val.id.indexOf("cv") >= 0) || ((val.id.indexOf("rev") >= 0) && (document.getElementById(val.controltovalidate).textLength > 0)))
+      {
+        if (ctrl.className.indexOf(' ') >= 0)
+        {
+          ctrl.className = ctrl.className.substring(0, ctrl.className.indexOf(' '));
+        }
+
+        if (ctrl2 != null)
+        {
+          if (ctrl2.className.indexOf(' ') >= 0)
+          {
+            ctrl2.className = ctrl2.className.substring(0, ctrl2.className.indexOf(' '));
+          }
+        }
+      }
+    }
+  }
+}
+
+MailingList.EnableEMailConfirmation = function()
+{
+  var txtConfirm = document.getElementById(MailingList.txtEMailConfirmID);
+
+  if (document.getElementById(MailingList.txtEMailID).value == '')
+  {
+    txtConfirm.value = '';
+    txtConfirm.disabled = 'disabled';
+  }
+  else
+  {
+    txtConfirm.disabled = '';
+  }
+}
+
+MailingList.UncheckAllPreferences = function()
+{
+  var elements = document.forms[0].elements;
+  
+  for (var i = 0; i < elements.length - 1; i++)
+  {
+    if ((elements[i].type == 'checkbox') && (elements[i].checked == true) && (elements[i].id != 'chkUnsubscribe'))
+    {
+      elements[i].checked = false;
+    }
+  }
+}
+
+MailingList.UncheckUnsubscribe = function()
+{
+  document.getElementById('chkUnsubscribe').checked = false;
+}
+
+MailingList.EmailFaqPopup = function()
+{
+  if (MailingList.hnd == null || MailingList.hnd.closed)
+  {
+    MailingList.hnd = window.open(MailingList.urlResponsysFaq, 'AddressBookInstructions', 'menubar=no,status=yes,location=no,scrollbars=yes,resizable=yes,width=670,height=700,top=175,left=250');
+  }
+  else
+  {
+    MailingList.hnd.focus();
+  }
+  
+  return false;
+}
+
+/***** End Join Our Mailing List Scripts *****/
+
+
+
+/***** Begin MegaMenu Navigation Scripts *****/
+
+function navItemOn(elementID)
+{
+  var menuElement = document.getElementById(elementID);
+  if (!menuElement.className.match("On"))
+  {
+    menuElement.className = menuElement.className + "On";
+  }
+}
+
+function navItemOff(elementID, selectedID)
+{
+  if (elementID != selectedID)
+  {
+    var menuElement = document.getElementById(elementID);
+    menuElement.className = menuElement.className.replace("On", "");
+  }
+}
+
+function mouseHover(elementID, defaultID)
+{
+  if (defaultID != "")
+  {
+    var defaultElement = document.getElementById(defaultID);
+    defaultElement.className = "navOff";
+  }
+
+  var listElement = document.getElementById(elementID);
+  listElement.className = "navOn";
+  listElement.focus();
+}
+
+function mouseOut(elementID, defaultID)
+{
+  var listElement = document.getElementById(elementID);
+  listElement.className = "navOff";
+
+  if (defaultID != "")
+  {
+    var defaultElement = document.getElementById(defaultID);
+    defaultElement.className = "navOn";
+  }
+}
+
+/***** End MegaMenu Navigation Scripts *****/
+
+
+
+/***** Begin Refer a Friend Scripts *****/
+
+var ReferAFriend = new Object();
+
+ReferAFriend.scAccount              = '';
+ReferAFriend.scDestination          = '';
+ReferAFriend.scDescription          = '';
+ReferAFriend.scDomainSource         = '';
+ReferAFriend.scType                 = '';
+ReferAFriend.scAgentID              = '';
+ReferAFriend.scState                = '';
+ReferAFriend.scTerritoryCode        = '';
+ReferAFriend.scTerritoryManagerCode = '';
+ReferAFriend.scAgentType            = '';
+ReferAFriend.scPFRIndicator         = '';
+ReferAFriend.updPnlProspectsID      = '';
+
+
+
+ReferAFriend.AddProspect = function()
+{
+  __doPostBack(ReferAFriend.updPnlProspectsID, "customPostback");
+}
+
+ReferAFriend.SubmitReferrals = function()
+{
+  if (Page_ClientValidate() == false)
+  {
+    document.getElementById('lblErrorMessage').style.display = 'block';
+  }
+
+  for (var i = 0; i < Page_Validators.length; i++)
+  {
+    var val = Page_Validators[i];
+    var ctrl = document.getElementById(val.controltovalidate);
+
+    if ((ctrl != null) && (ctrl.style != null) && ((val.id.indexOf("rfv") >= 0) || (val.id.indexOf("rev") >= 0)))
+    {
+      if (!val.isvalid)
+      {
+        ctrl.className = ctrl.className + ' Error';
+      }
+      else if ((val.id.indexOf("rfv") >= 0) || ((val.id.indexOf("rev") >= 0) && (document.getElementById(val.controltovalidate).textLength > 0)))
+      {
+        if (ctrl.className.indexOf(' ') >= 0)
+        {
+          ctrl.className = ctrl.className.substring(0, ctrl.className.indexOf(' '));
+        }
+      }
+    }
+  }
+
+  if (Page_ClientValidate() == true)
+  {
+    ProcessMetrics('ReferAFriend', [ReferAFriend.scAccount, ReferAFriend.scDestination, ReferAFriend.scType, ReferAFriend.scDescription, ReferAFriend.scDomainSource, ReferAFriend.scAgentID, ReferAFriend.scState, ReferAFriend.scTerritoryCode, ReferAFriend.scTerritoryManagerCode, ReferAFriend.scAgentType, ReferAFriend.scPFRIndicator]);
+  }
+}
+
+/***** End Refer a Friend Scripts *****/
+
+
+
+/***** Begin Text Sizer Scripts *****/
+
+var defaultTextSize = 12;
+var textSizeCookieName = 'com.allstate.textsize';
+var textSizeCookieExpires = 90; //days
+
+function SetTextSize(selectedSize)
+{
+  // ensure valid size
+  if (selectedSize == undefined)
+  {
+    selectedSize = defaultTextSize;
+  }
+
+  // apply to elements
+  var contentTextDiv = document.getElementById('CenterWell');
+
+  if (contentTextDiv != undefined)
+  {
+    var h3s = contentTextDiv.getElementsByTagName('p');
+
+    for (i = 0; i < h3s.length; i++)
+    {
+      h3s[i].style.fontSize = selectedSize + 'px';
+    }
+
+    // set images
+    SetTextSizeImages(selectedSize);
+
+    // persist size
+    WriteTextSizeToCookie(selectedSize);
+  }
+}
+
+function WriteTextSizeToCookie(value)
+{
+  var date = new Date();
+  date.setTime(date.getTime() + (textSizeCookieExpires * 86400000)); // converts days to milliseconds
+  document.cookie = textSizeCookieName + '=' + value + '; expires=' + date.toGMTString() + '; path=/'; //; domain=allstate.com
+}
+
+function ReadTextSizeFromCookie()
+{
+  var nameEQ = textSizeCookieName + '=';
+  var cookieValues = document.cookie.split(';');
+
+  for (var i = 0; i < cookieValues.length; i++)
+  {
+    var c = TrimAll(cookieValues[i]);
+
+    if (c.indexOf(nameEQ) == 0)
+    {
+      return c.substring(nameEQ.length, c.length);
+    }
+  }
+
+  return defaultTextSize;
+}
+
+function SetTextSizeImages(selectedSize)
+{
+  var textSizingDiv = document.getElementById('TextSizing');
+  var buttons = textSizingDiv.getElementsByTagName('a');
+
+  for (i = 0; i < buttons.length; i++)
+  {
+    var buttonid = buttons[i].id;
+
+    if (buttonid.indexOf(selectedSize) > 0)
+    {
+      buttons[i].className = 'selected';
+    }
+    else
+    {
+      buttons[i].className = '';
+    }
+  }
+}
+
+/***** End Text Sizer Scripts *****/
+
+
+
+/***** Begin Top Navigation Scripts *****/
+
+function TopNavItemOn(elementID)
+{
+  var menuElement = document.getElementById(elementID);
+  if (!menuElement.className.match("On"))
+  {
+    menuElement.className = menuElement.className + "On";
+  }
+}
+
+function TopNavItemOff(elementID, selectedID)
+{
+  if (elementID != selectedID)
+  {
+    var menuElement = document.getElementById(elementID);
+    menuElement.className = menuElement.className.replace("On", "");
+  }
+}
+
+function TopNavMouseHover(elementID, defaultID)
+{
+  if (defaultID != "")
+  {
+    var defaultElement = document.getElementById(defaultID);
+    defaultElement.className = "NavOff";
+  }
+
+  var listElement = document.getElementById(elementID);
+  listElement.className = "NavOn";
+}
+
+function TopNavMouseOut(elementID, defaultID)
+{
+  var listElement = document.getElementById(elementID);
+  listElement.className = "NavOff";
+
+  if (defaultID != "")
+  {
+    var defaultElement = document.getElementById(defaultID);
+    defaultElement.className = "NavOn";
+  }
+}
+
+/***** End Top Navigation Scripts *****/
+
+
+
+/***** Start Tabbed Content Component  *****/
+function switchThis(source, tabNumber) {
+    var menu = source.parentNode;
+    // find control container
+    var mycontrol = TabbedContentFindParentElement(source, 'DIV', 'TabbedContentBox'); //'document.getElementById('contentArea');  //establish view
+    // if parent container not found, do nothing.
+    if (mycontrol == null) return;
+    // find content area section within container
+    var view = TabbedContentFindChildElement(mycontrol, 'DIV', 'content-area');
+    //if view not found,  do nothing
+    if (view == null) return;
+
+    menuChildren = menu.childNodes;
+    menuChildLI = [];
+    children = view.childNodes;  //get all the childNodes for view ('tabbed-content')
+    childDivs = [];             //declare array to collect divs
+    
+    // find and filter all LI elements
+    var elementsli = mycontrol.getElementsByTagName('li');   //collect all the tabs for this view
+    var tabs = new Array();
+    for (var i = 0, ii = elementsli.length; i < ii; i++) {
+        var val = elementsli[i].getAttribute('onclick');
+        if (val == null || typeof val == 'undefined' || val == '')
+        { /* do nothing*/ }
+        else {
+            tabs.push(elementsli[i]);
+        }
+    }
+
+    for (var i = 0, ii = menuChildren.length; i < ii; i++) {
+        if (menuChildren[i].tagName == "LI") { menuChildLI.push(menuChildLI[i]) };
+    }
+
+    for (var i = 0, ii = children.length; i < ii; i++) {
+        if (children[i].tagName == "DIV") { childDivs.push(children[i]) };
+    }
+
+    //turn all the tabs off
+    tabs[0].className = 'tab-first tab-off';
+
+    for (i = 1; i < tabs.length - 1; i++) {
+        tabs[i].className = 'tab-middle tab-off';
+
+    }
+
+    tabs[tabs.length - 1].className = 'tab-last tab-off';
+
+    //turn clicked tab on
+    if (tabNumber == 1)
+        tabs[tabNumber - 1].className = 'tab-first tab-on';
+    if (tabNumber == tabs.length)
+        tabs[tabNumber - 1].className = 'tab-last tab-on';
+    if (tabNumber > 1 && tabNumber < tabs.length)
+        tabs[tabNumber - 1].className = 'tab-middle tab-on';
+
+    //turn content divs off
+    for (i = 0; i < childDivs.length; i++)
+        childDivs[i].className = 'contenthidden';
+
+    //turn content div on
+    childDivs[tabNumber - 1].className = 'content';
+    //location href???
+
+    // check if control is rendered with vertical menu
+    var leftcontent = TabbedContentFindChildElement(mycontrol, 'DIV', 'left-content-box');
+    var leftmenu = TabbedContentFindChildElement(mycontrol, 'DIV', 'left-tabs');
+
+    if (leftmenu) {
+        leftcontent.style.height = 'auto';
+        /*   offset leftcontent height by 2 to account for top & bottom border */
+        if (leftcontent.offsetHeight - 2 <= leftmenu.offsetHeight)
+            leftcontent.style.height = (leftmenu.offsetHeight + 'px');
+
+    }
+
+
+}
+
+
+// function returns child element within source element which matches elementname and targetclass
+// ex.  FindChildElement(this, 'DIV', 'goleft');
+function TabbedContentFindChildElement(source, elementname, targetclass) {
+    var undefined;
+    if (typeof (source) == undefined) return null;
+
+    if (source.nodeName == elementname && source.getAttribute('class') == targetclass)
+        return source;
+
+    for (var k = 0, kk = source.childNodes.length; k < kk; k++) {
+        // skip if whitespace
+        if (source.childNodes[k].nodeName == '#text') continue;
+
+        // scan current child
+        var child = TabbedContentFindChildElement(source.childNodes[k], elementname, targetclass);
+
+        // check if child is null,  if it is, function hit dead end, continue with next child
+        // else return found child.
+        if (child == null) continue;
+        else return child;
+
+    }
+
+    // if function runs out of childred without finding target, return null
+    return null;
+}
+
+
+// function returns parent element of THIS object that meets elementname and targetclass
+// ex.  FindParentElement(this, 'DIV', 'control_container');
+function TabbedContentFindParentElement(source, elementname, targetclass) {
+    // verify current object and its parent
+    var undefined;  // declare undefined element
+    if (typeof (source) == undefined) return null;
+
+    // if parent matches return it, else use recursion to find next parent
+    if (source.nodeName == elementname && source.getAttribute('class') == targetclass)
+        return source;
+    else
+        return TabbedContentFindParentElement(source.parentNode, elementname, targetclass);
+}
+
+function InitTabbedContent(src) {
+    var undefined;
+    var tabbedContentArr = [];
+    var tc = document.getElementsByTagName('DIV');
+    for (k = 0, kk = tc.length; k < kk; k++) {
+        if (tc.item(k).getAttribute('class') == src)
+            tabbedContentArr.push(tc.item(k));
+    }
+
+    for (i = 0, ii = tabbedContentArr.length; i < ii; i++) {
+        if (TabbedContentFindChildElement(tabbedContentArr[i], 'DIV', 'left-tabs')) {
+            var leftcontent = TabbedContentFindChildElement(tabbedContentArr[i], 'DIV', 'left-content-box');
+            var leftmenu = TabbedContentFindChildElement(tabbedContentArr[i], 'DIV', 'left-tabs');
+            if (leftmenu) {
+                /*   offset leftcontent height by 2 to account for top & bottom border */
+                if (leftcontent.offsetHeight - 2 <= leftmenu.offsetHeight) {
+                    leftcontent.style.height = (leftmenu.offsetHeight + 'px');
+                }
+                else
+                    leftcontent.style.height = 'auto';
+            }
+        }
+    }
+
+}
+
+/***** End Tabbed Content Component  *****/
+
+
+
+/***** Start Free Text Scroller Component  *****/
+function FreeTextScrollerRotate(scroller, direction) {
+    var panels = GetFreeTextScrollerMenuPanels(scroller);
+    var navigationleft = GetFreeTextScrollerMenu(scroller, 'left');
+    var navigationright = GetFreeTextScrollerMenu(scroller, 'right'); ;
+
+    // create paging image array;
+    var images = GetFreeTextScrollerNavigationImages(scroller);
+    var scrollerpager = FreeTextScrollerFindChildElement(GetFreeTextScroller(scroller, 'DIV', 'FreeTextScroller'), 'DIV', 'ScrollerPage');
+    //for (j = 0, jj = scrollerpager.childNodes.length; j < jj; j++) {
+    //    if (scrollerpager.childNodes[j].nodeName == 'DIV') images.push(scrollerpager.childNodes[j]);
+    //}
+    // find current panel
+    for (i = 0; i < panels.length; i++) {
+        if (panels[i].getAttribute('class') == 'PanelVisible') {
+            break;
+        }
+    }
+
+
+    if (i == 0 && direction == 'left') FreeTextScrollerEnable(scroller, panels.length);
+    else if (i == (panels.length - 1) && direction == 'right') FreeTextScrollerEnable(scroller, 1);
+    else {
+
+
+        if (i > 0 && direction == 'left') {
+            panels[i - 1].setAttribute('class', 'PanelVisible');
+            images[i - 1].setAttribute('class', 'ScrollerPageImageOn');
+        }
+        else if (i < panels.length && direction == 'right') {
+            panels[i + 1].setAttribute('class', 'PanelVisible');
+            images[i + 1].setAttribute('class', 'ScrollerPageImageOn');
+        }
+        // set previously visible element to image off
+        panels[i].setAttribute('class', 'PanelHidden');
+        images[i].setAttribute('class', 'ScrollerPageImageOff');
+    }
+
+
+
+    // reset left right nav based on current position
+    InitFreeTextScrollerMenu(GetFreeTextScroller(scroller, 'DIV', 'FreeTextScroller'));
+}
+
+function FreeTextScrollerGo(scroller, panelNum)
+{
+  var panels = GetFreeTextScrollerMenuPanels(scroller);
+  var images = GetFreeTextScrollerNavigationImages(scroller);
+
+  for (i = 0; i < panels.length; i++)
+  {
+    if (i == panelNum)
+    {
+      panels[i].setAttribute('class', 'PanelVisible');
+      images[i].setAttribute('class', 'ScrollerPageImageOn');
+    }
+    else
+    {
+      panels[i].setAttribute('class', 'PanelHidden');
+      images[i].setAttribute('class', 'ScrollerPageImageOff');
+    }
+  }
+}
+
+function FreeTextScrollerEnable(scroller, panel) {
+    panel--;  // offset
+    var panels = GetFreeTextScrollerMenuPanels(scroller);
+    var images = GetFreeTextScrollerNavigationImages(scroller);
+
+    for (var i = 0; i < panels.length; i++) {
+        panels[i].setAttribute('class', 'PanelHidden');
+    }
+    panels[panel].setAttribute('class', 'PanelVisible');
+
+    for (var j = 0; j < images.length; j++) {
+        images[j].setAttribute('class', 'ScrollerPageImageOff');
+    }
+    images[panel].setAttribute('class', 'ScrollerPageImageOn');
+}
+
+
+
+// Function initiates menu based on which panel is currently visible.
+// ie. if 1st panel is visible, show only right navigation switch.
+//     if n-1 panel is visible, show botwh navigation switches.
+// parameters:  scroller - control which is making the call
+function InitFreeTextScrollerMenu(scroller) {
+    var panels = GetFreeTextScrollerMenuPanels(scroller);
+
+    // find currently open panel
+    for (var i = 0; i < panels.length; i++) {
+        if (panels[i].getAttribute('class') == 'PanelVisible') break;
+    }
+    var navigationleft = GetFreeTextScrollerMenu(scroller, 'left');
+    var navigationright = GetFreeTextScrollerMenu(scroller, 'right');
+    switch (i) {
+        case 0:
+            navigationleft.setAttribute('class', 'golefthidden');
+            navigationright.setAttribute('class', 'goright');
+            break;
+        case panels.length - 1:
+            navigationleft.setAttribute('class', 'goleft');
+            navigationright.setAttribute('class', 'gorighthidden');
+            break;
+        default:
+            navigationleft.setAttribute('class', 'goleft');
+            navigationright.setAttribute('class', 'goright');
+            break;
+
+    }
+
+}
+
+// Function hides navigation switches
+// parameters:  scroller - control which is making the call
+function HideFreeTextScrollerMenu(scroller) {
+    GetFreeTextScrollerMenu(scroller, 'left').setAttribute('class', 'golefthidden');
+    GetFreeTextScrollerMenu(scroller, 'right').setAttribute('class', 'gorighthidden');
+}
+
+
+// supporting functions
+// parameters:  scroller - control which is making the call
+function GetFreeTextScrollerMenuPanels(scroller) {
+    scroller = FreeTextScrollerFindChildElement(GetFreeTextScroller(scroller, 'DIV', 'FreeTextScroller'), 'DIV', 'FreeTextScrollerPanels');
+    var panels = new Array();
+    for (var i = 0; i < scroller.childNodes.length; i++) {
+        if (scroller.childNodes[i].nodeName == 'DIV'
+                    && (scroller.childNodes[i].getAttribute('class') == 'PanelVisible'
+                        || scroller.childNodes[i].getAttribute('class') == 'PanelHidden'))
+            panels.push(scroller.childNodes[i]);
+    }
+    return panels;
+}
+
+// parameters:  scroller - control which is making the call
+function GetFreeTextScrollerNavigationImages(scroller) {
+    scroller = FreeTextScrollerFindChildElement(GetFreeTextScroller(scroller, 'DIV', 'FreeTextScroller'), 'DIV', 'ScrollerPage');
+    var Images = new Array();
+    for (var i = 0; i < scroller.childNodes.length; i++) {
+        if (scroller.childNodes[i].nodeName == 'A'
+                    && (scroller.childNodes[i].getAttribute('class') == 'ScrollerPageImageOff'
+                        || scroller.childNodes[i].getAttribute('class') == 'ScrollerPageImageOn')) {
+            Images.push(scroller.childNodes[i]);
+        }
+    }
+
+    return Images;
+}
+
+// function returns child element within source element which matches elementname and targetclass
+// ex.  FreeTextScrollerFindChildElement(this, 'DIV', 'goleft');
+function FreeTextScrollerFindChildElement(source, elementname, targetclass) {
+    var undefined;
+    if (typeof (source) == undefined) return null;
+
+    if (source.nodeName == elementname && source.getAttribute('class') == targetclass)
+        return source;
+
+    for (var k = 0, kk = source.childNodes.length; k < kk; k++) {
+        // skip if whitespace
+        if (source.childNodes[k].nodeName == '#text') continue;
+
+        // scan current child
+        var child = FreeTextScrollerFindChildElement(source.childNodes[k], elementname, targetclass);
+
+        // check if child is null,  if it is, function hit dead end, continue with next child else return found child.
+        if (child == null) continue;
+        else return child;
+    }
+    // if function runs out of childred without finding target, return null
+    return null;
+}
+
+
+
+// Function finds which switch was pushed and returns the switch as an object
+// parameters:  scroller - control which is making the call
+//              direction - string containing 'left' or 'right' direction of the scroll
+function GetFreeTextScrollerMenu(scroller, direction) {
+    var navigationleft = null;
+    var navigationright = null;
+    navigation = FreeTextScrollerFindChildElement(GetFreeTextScroller(scroller, 'DIV', 'FreeTextScroller')
+        , 'DIV',
+        'Navigation');
+
+    for (var i = 0; i < navigation.childNodes.length; i++) {
+        if (navigation.childNodes[i].nodeName == 'DIV'
+                    && (navigation.childNodes[i].getAttribute('class') == 'goleft'
+                    || navigation.childNodes[i].getAttribute('class') == 'golefthidden'
+                    )) {
+            navigationleft = navigation.childNodes[i];
+
+        }
+        if (navigation.childNodes[i].nodeName == 'DIV'
+                    && (navigation.childNodes[i].getAttribute('class') == 'goright'
+                    || navigation.childNodes[i].getAttribute('class') == 'gorighthidden'
+                    )) {
+            navigationright = navigation.childNodes[i];
+        }
+    }
+    if (direction == 'left') {
+        return navigationleft;
+    }
+    else {
+        return navigationright;
+    }
+}
+
+// function returns parent element of THIS object that meets elementname and targetclass
+// ex.  GetFreeTextScroller(this, 'DIV', 'control_container');
+function GetFreeTextScroller(source, elementname, targetclass) {
+    // verify current object and its parent
+
+    var undefined;  // declare undefined element
+    if (typeof (source) == undefined) return null;
+
+    // if parent matches return it, else use recursion to find next parent
+    if (source.nodeName == elementname && source.getAttribute('class') == targetclass)
+        return source;
+    else
+        return GetFreeTextScroller(source.parentNode, elementname, targetclass);
+}
+
+function FreeTextScrollerPointerOn(source) {
+    source.style.cursor = 'pointer';
+}
+
+function FreeTextScrollerPointerOff(source) {
+    source.style.cursor = 'default';
+}
+
+var freeTextScrollerArr;
+
+
+
+
+function FreeTextScrollerInit() {
+    try {
+        var divs = document.getElementsByTagName('DIV');
+        FreeTextScrollers = new Array();
+        for (var i = 0, ii = divs.length; i < ii; i++) {
+            //alert(divs[i].getAttribute('class'));
+            if (divs[i].getAttribute('class') == 'FreeTextScroller') FreeTextScrollers.push(divs[i]);
+        }
+
+        for (i = 0, ii = FreeTextScrollers.length; i < ii; i++) {
+            // Setup page location images
+            var scrScrollerPage = FreeTextScrollerFindChildElement(FreeTextScrollers[i], 'DIV', 'ScrollerPage');
+            var pagecount = GetFreeTextScrollerMenuPanels(FreeTextScrollers[i]).length;
+            var offset = (FreeTextScrollers[i].offsetWidth - (pagecount * 15 + 7)) / 2
+            scrScrollerPage.setAttribute('style', 'margin-left:' + offset + 'px');
+            var scrFooter = FreeTextScrollerFindChildElement(FreeTextScrollers[i], 'DIV', 'Footer');
+            var scrHeader = FreeTextScrollerFindChildElement(FreeTextScrollers[i], 'DIV', 'Header');
+            var scrScrollerPanel = FreeTextScrollerFindChildElement(FreeTextScrollers[i], 'DIV', 'FreeTextScrollerPanels');
+            var currentScroller = FreeTextScrollers[i];
+            var panels = GetFreeTextScrollerMenuPanels(currentScroller);
+
+            var maxpanelheight = 0;
+            for (j = 0; j < panels.length; j++) {
+                panels[j].setAttribute('class', 'PanelVisible');
+                maxpanelheight = panels[j].offsetHeight > maxpanelheight ? panels[j].offsetHeight : maxpanelheight;
+                panels[j].setAttribute('class', 'PanelHidden');
+            }
+            for (j = 0; j < panels.length; j++) {
+                panels[j].setAttribute('style', 'height:' + maxpanelheight + 'px');
+            }
+
+            panels[0].setAttribute('class', 'PanelVisible');
+
+            var scrNavigation = FreeTextScrollerFindChildElement(FreeTextScrollers[i], 'DIV', 'Navigation');
+            scrNavigation.setAttribute('style', 'top:' + ((FreeTextScrollers[i].offsetHeight / 2) - 5) + 'px');
+        }
+    }
+    catch (ex) {
+        console.log(ex);
+
+
+        /* do nothing */
+    }
+
+}
+/***** End Free Text Scroller Component  *****/
+
+
+
+/***** Begin HTML Rotating Banner Component  *****/
+
+/***************************************************************************************************
+ Description: Javascript for HTML Rotating Banner component.
+
+ Public Functions:
+     HtmlRotatingBanner.initialize      - Must be called to initialize the rotater with appropriate parameters.
+     HtmlRotatingBanner.pause           - Pauses the playing of the banner.
+     HtmlRotatingBanner.play            - Begins the auto rotating of the banners.
+     HtmlRotatingBanner.rotateLeft      - Rotates to the left one banner.
+     HtmlRotatingBanner.rotateRight     - Rotates to the right one banner.
+
+ Author: Jeff Bonifaci
+
+ Created: 2012-03-23
+
+****************************************************************************************************
+ Change History
+****************************************************************************************************
+ Date       Who           Description
+ ---------- ------------- --------------------------------------------------------------------------
+ 2012-03-23 Jeff Bonifaci Initial Creation.
+****************************************************************************************************
+
+
+
+****************************************************************************************************
+ Define Public Global Variables.
+     HtmlRotatingBanner - Object used to interact with all Html Rotating Banner functionality.
+***************************************************************************************************/
+var HtmlRotatingBanner = new Object();
+
+
+
+/***************************************************************************************************
+ Define Private Global Variables.
+     HtmlRotatingBanner._AutoRotate                   - Boolean indicating if auto rotation is currently on.
+     HtmlRotatingBanner._BannerElementIdBasename      - Base name of the id for each banner element.
+     HtmlRotatingBanner._CurrentBanner                - Current banner being displayed.
+     HtmlRotatingBanner._CurrentBannerNumberElementId - Id of Element to use to display current banner number.
+     HtmlRotatingBanner._RotateIntervalSeconds        - Total number of seconds to wait between each rotation.
+     HtmlRotatingBanner._TotalBanners                 - Total number of banners.
+     HtmlRotatingBanner._TotalBannersNumberElementId  - Id of Element to use to display total banners number.
+***************************************************************************************************/
+HtmlRotatingBanner._AutoRotate = false;
+HtmlRotatingBanner._BannerElementIdBasename = '';
+HtmlRotatingBanner._CurrentBanner = 0;
+HtmlRotatingBanner._CurrentBannerNumberElementId = '';
+HtmlRotatingBanner._TotalBanners = 0;
+HtmlRotatingBanner._TotalBannersNumberElementId = '';
+HtmlRotatingBanner._RotateIntervalSeconds = 0;
+
+
+
+/***************************************************************************************************
+ Begin Public Functions.
+     HtmlRotatingBanner.initialize
+     HtmlRotatingBanner.pause
+     HtmlRotatingBanner.play
+     HtmlRotatingBanner.rotateLeft
+     HtmlRotatingBanner.rotateRight
+***************************************************************************************************/
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner.initialize
+ Description: Initializes the html rotating banner based on the passed in parameters.
+ Parameters:
+     bannerElementBaseName        - Base name of the id for each banner element.
+     currentBanner                - First/current banner to display.
+     currentBannerNumberElementId - Id of Element to use to display current banner number.
+     totalBanners                 - Total number of banners.
+     totalBannersNumberElementId  - Id of Element to use to display total banners number.
+     rotateIntervalSeconds        - Total number of seconds to wait between each rotation.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner.initialize = function(bannerElementBaseName, currentBanner, currentBannerNumberElementId, totalBanners, totalBannersNumberElementId, rotateIntervalSeconds)
+{
+  // Store the passed in parameters to their respective global private variables.
+  HtmlRotatingBanner._BannerElementIdBasename = bannerElementBaseName;
+  HtmlRotatingBanner._CurrentBannerNumberElementId = currentBannerNumberElementId
+  HtmlRotatingBanner._TotalBannersNumberElementId = totalBannersNumberElementId
+  HtmlRotatingBanner._RotateIntervalSeconds = rotateIntervalSeconds;
+  HtmlRotatingBanner._setCurrentBannerNumber(currentBanner);
+  HtmlRotatingBanner._setTotalBannersNumber(totalBanners);
+
+  // Show the current banner.
+  HtmlRotatingBanner._showBanner(HtmlRotatingBanner._CurrentBanner);
+} //HtmlRotatingBanner.initialize()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner.pause
+ Description: Pauses the automated banner rotation.
+ Parameters:
+     None.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner.pause = function()
+{
+  // Set auto rotate to false.
+  HtmlRotatingBanner._AutoRotate = false;
+} //HtmlRotatingBanner.pause()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner.play
+ Description: Begins the automated banner rotation.
+ Parameters:
+     None.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner.play = function()
+{
+  // Set auto rotate to true.
+  HtmlRotatingBanner._AutoRotate = true;
+
+  // Call auto rotate after the interval has passed.
+  setTimeout('HtmlRotatingBanner._autoRotate()', HtmlRotatingBanner._RotateIntervalSeconds * 1000);
+} //HtmlRotatingBanner.play()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner.rotateLeft
+ Description: Rotates left one banner.
+ Parameters:
+     autoRotate - Boolean indicating if this was called by the auto rotate function.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner.rotateLeft = function(autoRotate)
+{
+  // Declare local variables.
+  //     newBanner - The new banner to display.
+  var newBanner = HtmlRotatingBanner._CurrentBanner - 1;
+
+  // If this function wasn't called by auto rotate, pause the auto rotation.
+  if (!autoRotate)
+  {
+    HtmlRotatingBanner.pause();
+  }
+
+  // If the newBanner is less than 1, set it to the last banner.
+  if (newBanner < 1)
+  {
+    newBanner = HtmlRotatingBanner._TotalBanners;
+  }
+
+  // Switch banners.
+  HtmlRotatingBanner._switchBanner(HtmlRotatingBanner._CurrentBanner, newBanner);
+} //HtmlRotatingBanner.rotateLeft()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner.rotateRight
+ Description: Rotates left one banner.
+ Parameters:
+     autoRotate - Boolean indicating if this was called by the auto rotate function.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner.rotateRight = function(autoRotate)
+{
+  // Declare local variables.
+  //     newBanner - The new banner to display.
+  var newBanner = HtmlRotatingBanner._CurrentBanner + 1;
+
+  // If this function wasn't called by auto rotate, pause the auto rotation.
+  if (!autoRotate)
+  {
+    HtmlRotatingBanner.pause();
+  }
+
+  // If the newBanner is greater than the total banners, set it to the first banner.
+  if (newBanner > HtmlRotatingBanner._TotalBanners)
+  {
+    newBanner = 1;
+  }
+
+  // Switch banners.
+  HtmlRotatingBanner._switchBanner(HtmlRotatingBanner._CurrentBanner, newBanner);
+} //HtmlRotatingBanner.rotateRight()
+
+/***************************************************************************************************
+ End Public Functions.
+***************************************************************************************************/
+
+
+
+/***************************************************************************************************
+ Begin Private Functions.
+     HtmlRotatingBanner._autoRotate
+     HtmlRotatingBanner._fadeElement
+     HtmlRotatingBanner._fadeInBanner
+     HtmlRotatingBanner._fadeOutBanner
+     HtmlRotatingBanner._hideBanner
+     HtmlRotatingBanner._setCurrentBannerNumber
+     HtmlRotatingBanner._setTotalBannersNumber
+     HtmlRotatingBanner._showBanner
+     HtmlRotatingBanner._switchBanner
+***************************************************************************************************/
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._autoRotate
+ Description: Facilitates the automatic rotation of the banner.
+ Parameters:
+     None.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._autoRotate = function()
+{
+  // If auto rotate is not on, return and do nothing.
+  if (!HtmlRotatingBanner._AutoRotate)
+  {
+    return;
+  }
+
+  // Call rotate right.
+  HtmlRotatingBanner.rotateRight(true);
+
+  // Call auto rotate again the interval has passed.
+  setTimeout('HtmlRotatingBanner._autoRotate()', HtmlRotatingBanner._RotateIntervalSeconds * 1000);
+} //HtmlRotatingBanner._autoRotate
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._fadeElement
+ Description: Fades the element in and sets the class at the end.
+ Parameters:
+     fadeElement       - Element to fade.
+     startOpacityLevel - The level of opacity to start at.
+     endOpacityLevel   - The level of opacity to end at.
+     opacityModifier   - The value to modify the opacity by.
+     startClass        - (optional) The class to set for the element before the fading starts.
+     endClass          - (optional) The class to set for the element when the fading ends.
+     nextFunction      - (optional) Function to call when the fading ends.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._fadeElement = function(fadeElement, startOpacityLevel, endOpacityLevel, opacityModifier, startClass, endClass, nextFunction)
+{
+  // Declare local variables.
+  //     elementOpacityLevel - The current level of opacity for the element.
+  var elementOpacityLevel = startOpacityLevel;
+
+  // Set the initial element opacity before setting the start class.
+  fadeElement.style.opacity = elementOpacityLevel / 100;
+  fadeElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + elementOpacityLevel + ")";
+
+  // Set the element start class if it is defined.
+  if (startClass)
+  {
+    fadeElement.setAttribute("class", startClass);
+  }
+
+  // Build the fade function variable.
+  var fadeFunction = function()
+  {
+    // Modify the opacity level by the opacity modifier.
+    elementOpacityLevel += opacityModifier;
+
+    // Set the element opacity.
+    fadeElement.style.opacity = elementOpacityLevel / 100;
+    fadeElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + elementOpacityLevel + ")";
+
+    // If the opacity level is equal to the end opacity level, end the fading and set the end class.
+    if (elementOpacityLevel == endOpacityLevel)
+    {
+      clearInterval(intervalId);
+
+      if (endClass)
+      {
+        fadeElement.setAttribute("class", endClass);
+      }
+
+      // If there is next function to call, call it.
+      if (nextFunction)
+      {
+        nextFunction();
+      }
+
+      return;
+    }
+  }
+
+  // Call the fadeFunction using setInterval to create the visual fading effect.
+  var intervalId = setInterval(fadeFunction, 1);
+} //HtmlRotatingBanner._fadeElement()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._fadeInBanner
+ Description: Fades the banner element in.
+ Parameters:
+     bannerElement - Banner element to fade in.
+     nextFunction  - (optional) Function to call when the fading ends.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._fadeInBanner = function(bannerElement, nextFunction)
+{
+  // Call the fade element function the appropriate parameters.
+  HtmlRotatingBanner._fadeElement(bannerElement, 0, 100, 10, "selectedBanner", "selectedBanner", nextFunction);
+} //HtmlRotatingBanner._fadeInBanner()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._fadeOutBanner
+ Description: Fades the banner element out.
+ Parameters:
+     bannerElement - Banner element to fade out.
+     nextFunction  - (optional) Function to call when the fading ends.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._fadeOutBanner = function(bannerElement, nextFunction)
+{
+  // Call the fade element function the appropriate parameters.
+  HtmlRotatingBanner._fadeElement(bannerElement, 100, 0, -5, "selectedBanner", "banner", nextFunction);
+} //HtmlRotatingBanner._fadeOutBanner()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._hideBanner
+ Description: Hides the banner div corresponding to the id passed in.
+ Parameters:
+     bannerId - Id of the banner div to hide.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._hideBanner = function(bannerId)
+{
+  // Declare local variables.
+  //     bannerElement - The banner element for the banner id passed in.
+  var bannerElement = document.getElementById(HtmlRotatingBanner._BannerElementIdBasename + bannerId);
+
+  // Fade the banner out.
+  HtmlRotatingBanner._fadeOutBanner(bannerElement);
+} //HtmlRotatingBanner._hideBanner()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._setCurrentBannerNumber
+ Description: Sets the current banner number value and displays it in the corresponding element.
+ Parameters:
+     currentBannerNumber - The current banner number.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._setCurrentBannerNumber = function(currentBannerNumber)
+{
+  // Declare local variables.
+  //     currentBannerNumberElement - The banner element for the banner id passed in.
+  var currentBannerNumberElement = document.getElementById(HtmlRotatingBanner._CurrentBannerNumberElementId);
+
+  // Set the current banner number.
+  HtmlRotatingBanner._CurrentBanner = currentBannerNumber;
+
+  // Display the current banner number in the current banner number element.
+  currentBannerNumberElement.innerHTML = HtmlRotatingBanner._CurrentBanner;
+} //HtmlRotatingBanner._setCurrentBannerNumber
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._setTotalBannersNumber
+ Description: Sets the total banners number value and displays it in the corresponding element.
+ Parameters:
+     totalBannersNumber - The total banners number.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._setTotalBannersNumber = function(totalBannersNumber)
+{
+  // Declare local variables.
+  //     totalBannersNumberElement - The banner element for the banner id passed in.
+  var totalBannersNumberElement = document.getElementById(HtmlRotatingBanner._TotalBannersNumberElementId);
+
+  // Set the total banners number.
+  HtmlRotatingBanner._TotalBanners = totalBannersNumber;
+
+  // Display the total banners number in the total banners number element.
+  totalBannersNumberElement.innerHTML = HtmlRotatingBanner._TotalBanners;
+} //HtmlRotatingBanner._setTotalBannersNumber
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._showBanner
+ Description: Shows the banner div corresponding to the id passed in.
+ Parameters:
+     bannerId - Id of the banner div to show.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._showBanner = function(bannerId)
+{
+  // Declare local variables.
+  //     bannerElement - The banner element for the banner id passed in.
+  var bannerElement = document.getElementById(HtmlRotatingBanner._BannerElementIdBasename + bannerId);
+
+  // Fade the banner in.
+  HtmlRotatingBanner._fadeInBanner(bannerElement);
+} //HtmlRotatingBanner._showBanner()
+
+
+
+/***************************************************************************************************
+ Function: HtmlRotatingBanner._switchBanner
+ Description: Switches the current banner with the new banner based on ids passed in.
+ Parameters:
+     currentBannerId - Id of the current banner div to shown.
+     newBannerId     - Id of the new banner div to show.
+ Return value:
+     None.
+***************************************************************************************************/
+HtmlRotatingBanner._switchBanner = function(currentBannerId, newBannerId)
+{
+  // Declare local variables.
+  //     currentBannerElement - The current banner element for the banner id passed in.
+  //     newBannerElement    - The new banner element for the banner id passed in.
+  var currentBannerElement = document.getElementById(HtmlRotatingBanner._BannerElementIdBasename + currentBannerId);
+  var newBannerElement = document.getElementById(HtmlRotatingBanner._BannerElementIdBasename + newBannerId);
+
+  // Set the current banner number to the new banner number.
+  HtmlRotatingBanner._setCurrentBannerNumber(newBannerId);
+
+  // Create a function object to fade in the new banner to be passed to the fader to call upon completion.
+  var fadeInFunction = function() { HtmlRotatingBanner._fadeInBanner(newBannerElement); };
+
+  // Fade the current banner out and the new banner in.
+  HtmlRotatingBanner._fadeOutBanner(currentBannerElement, fadeInFunction);
+} //HtmlRotatingBanner._showBanner()
+
+
+
+/****************************************************************************************************
+ End Private Functions.
+****************************************************************************************************/
+
+/***** End HTML Rotating Banner Component  *****/
+
+
+
+
+
+/***** Start Quote Box Drop Down Section  *****/
+
+
+var DropDown2 = DropDown2 || {};
+DropDown2.init = function() {
+    function Codebase() {
+
+        this.jsTxtZipCode = null;         // external
+        this.jsTxtCityAgent = null;
+        this.jsDdInsuranceType = null;    // external
+        this.ddInsurReplacement = null;     // set up in setupSelectStartQuoteInsuranceType()
+        this.insurPrompt = null;            // set up in setupSelectStartQuoteInsuranceType()
+        var zipPattern = /\d{5}/;          // internal
+        var cityPattern = /[^\a-\z\A-\Z\s]/; // internal
+        this.cityNotFound = null;
+        this.city = null;
+        this.ddStateReplacement = null;     // set up in setupSelectFindAgentState()
+        this.statePrompt = null;                   // set up in setupSelectFindAgentState()
+        this.statePromptID = null;
+        this.updPnlStatesID = null;
+        this.arrStates = [];
+        var stateDropDownInitiated = false;
+        var blnStatesLoaded = false;
+
+        var jsDdStateAgent = null;     //internal;
+        var jsDdStateAgentID = '';     // external
+
+        function selectRestyle(originalSelect) {
+            originalSelect.className += ' replaced';
+            var ul = document.createElement('ul');
+            ul.setAttribute('TabIndex', '15');
+            ul.className = 'selectReplacement';
+            // collect the ul's options
+            var opts = originalSelect.options;
+            // check for selected option, if none
+            // found default to first
+            var selectedOpt = (originalSelect.selectedIndex != -1 ? originalSelect.selectedIndex : 0);
+            // loop through and create the li's
+            for (var j = 0; j < opts.length; j++) {
+                var li = document.createElement('li');
+                var txt = document.createTextNode(opts[j].text);
+                li.appendChild(txt);
+                li.selIndex = opts[j].index;
+                li.selectID = originalSelect.id;
+                li.onclick = function() {
+                    selectMe(this);
+                }
+                if (j == selectedOpt) {
+                    li.className = 'selected';
+                    li.onclick = '';
+                    li.onclick = function() {
+                        var spanLi = document.getElementById(originalSelect.id + 'SpanLi');
+                        spanLi.innerHTML = this.innerHTML;
+                        spanLi.className = 'show';
+                        this.parentNode.className += ' selectOpen';
+                        this.onclick = function() {
+                            selectMe(this);
+                        }
+                    }
+
+                }
+                if (window.attachEvent) {
+                    li.onmouseover = function() {
+                        this.className += ' selHover';
+                    }
+                    li.onmouseout = function() {
+                        this.className =
+                  this.className.replace(new RegExp(" selHover\\b"), '');
+                    }
+                }
+                ul.appendChild(li);
+            }
+            // add a span tag to hold selected option
+            var spanLi = document.createElement('span');
+            spanLi.id = originalSelect.id + 'SpanLi';
+            spanLi.className = 'hide';
+            spanLi.onclick = function() {
+                // set the focus to hidden select for tabbing
+                originalSelect.focus();
+
+                this.className = 'hide';
+                var ul = this.nextSibling;
+                ul.className =
+                ul.className.replace(new RegExp(" selectOpen\\b"), '');
+                var opts = ul.childNodes;
+                var selectedOpt = (originalSelect.selectedIndex != -1 ? originalSelect.selectedIndex : 0);
+
+                opts[selectedOpt].className = 'selected';
+                opts[selectedOpt].onclick = function() {
+                    this.parentNode.className += ' selectOpen';
+                    this.parentNode.previousSibling.className = 'show';
+                    this.onclick = function() {
+                        selectMe(this);
+                    }
+                }
+            }
+            originalSelect.parentNode.insertBefore(spanLi, originalSelect)
+
+            // add new ul to form just under orig select and spanLi
+            originalSelect.parentNode.insertBefore(ul, originalSelect);
+
+            // add some logic for tab functionaliy
+            originalSelect.onfocus = function() {
+                ul.className += ' selectFocus';
+            }
+
+            originalSelect.onblur = function() {
+                ul.className =
+                ul.className.replace(new RegExp(" selectFocus\\b"), '');
+            }
+
+            originalSelect.onchange = function(evnt) {
+                var selIndex = this.selectedIndex;
+                if (navigator.appName.indexOf('Netscape') != -1) {
+                    if (evnt.keyCode != undefined) {
+                        switch (evnt.keyCode) {
+                            case 40: //down
+                                selIndex = selIndex < (this.length - 1) ? ++selIndex : this.length - 1;
+                                break;
+                            case 38: //up
+                                selIndex = selIndex > 0 ? --selIndex : 0;
+                                break;
+                            case 34: //page down
+                                selIndex = this.length - 1;
+                                break;
+                            case 33: //page down
+                                selIndex = 0;
+                                break;
+                            default:
+                                return;
+                        }
+                    }
+
+                }
+                updateReplacedSelect(ul.childNodes[selIndex]);
+            }
+
+            originalSelect.onkeypress = originalSelect.onchange;
+        } this.selectRestyle = selectRestyle;
+
+        function updateReplacedSelect(liToUpdate) {
+            var spanLi = document.getElementById(liToUpdate.parentNode.previousSibling.id);
+
+            var lis = liToUpdate.parentNode.getElementsByTagName('li');
+
+            for (var i = 0; i < lis.length; i++) {
+                // not select <li>, remove selected class
+                if (lis[i] != liToUpdate) {
+                    lis[i].className = '';
+                    lis[i].onclick = function() {
+                        selectMe(this);
+                    }
+                } else {  // our selected <li>, add selected class
+                    lis[i].className = 'selected';
+                    liToUpdate.onclick = function() {
+                        var spanLi = this.parentNode.previousSibling;
+                        spanLi.className = 'show';
+                        this.parentNode.className += ' selectOpen';
+                        this.onclick = function() {
+                            selectMe(this);
+                        }
+                    }
+                    spanLi.innerHTML = lis[i].innerHTML;
+                }
+            }
+
+        } this.updateReplacedSelect = updateReplacedSelect;
+
+        function selectMe(elem) {
+            var spanLi = document.getElementById(elem.parentNode.previousSibling.id);
+
+            // set the focus to hidden select for tabbing
+            var hidSelect = document.getElementById(elem.selectID);
+            hidSelect.focus();
+
+            //get the <li>'s siblings
+            var lis = elem.parentNode.getElementsByTagName('li');
+            // loop through
+            for (var i = 0; i < lis.length; i++) {
+                // not select <li>, remove selected class
+                if (lis[i] != elem) {
+                    lis[i].className = '';
+                    lis[i].onclick = function() {
+                        selectMe(this);
+                    }
+                } else {  // our selected <li>, add selected class
+                    setVal(elem.selectID, elem.selIndex);
+                    lis[i].className = 'selected';
+                    elem.parentNode.className =
+                elem.parentNode.className.replace(new RegExp(" selectOpen\\b"), '');
+                    elem.onclick = function() {
+                        var spanLi = this.parentNode.previousSibling;
+                        spanLi.className = 'show';
+                        this.parentNode.className += ' selectOpen';
+                        this.onclick = function() {
+                            selectMe(this);
+                        }
+                    }
+                    spanLi.innerHTML = lis[i].innerHTML;
+                }
+            }
+            spanLi.className = 'hide';
+        } this.selectMe = selectMe;
+
+        function setVal(objId, selIndex) {
+            var obj = document.getElementById(objId);
+            obj.selectedIndex = selIndex;
+        } this.setVal = setVal;
+
+        function disableSelectRestyle(selectReplace, selectOriginal) {
+            var visibleLi = selectReplace.childNodes[selectOriginal.selectedIndex];
+            visibleLi.onclick = '';
+            visibleLi.className = 'disabled';
+        } this.disableSelectRestyle = disableSelectRestyle;
+
+        function enableSelectRestyle(selectReplace, selectOriginal) {
+            var visibleLi = selectReplace.childNodes[selectOriginal.selectedIndex];
+            visibleLi.className = 'selected';
+            visibleLi.onclick =
+                function() {
+                    var spanLi = document.getElementById(selectOriginal.id + 'SpanLi');
+                    spanLi.innerHTML = this.innerHTML;
+                    spanLi.className = 'show';
+                    this.parentNode.className += ' selectOpen';
+                    this.onclick = function() {
+                        selectMe(this);
+                    }
+                };
+        } this.enableSelectRestyle = enableSelectRestyle;
+
+        /*function setForm() {
+        var s = document.getElementsByTagName('select');
+        for (var i=0; i<s.length; i++){
+        selectRestyle(s[i]);
+        }
+        }
+
+        window.onload = function() {
+        setForm();
+        }*/
+
+
+
+        // added for dropdown replacement
+
+
+        //////////////////////////////////////////////////////////////
+        // variables declared on the server for use in this js code //
+        // var jsTxtZipCodeID                                       //
+        // var jsDdInsuranceTypeID                                  //
+        //                                                          //   
+        // var jsTxtZipCodeAgentID                                  //
+        // var jsTxtAddressAgentID                                  //
+        // var jsTxtCityAgentID                                     //
+        // var jsDdStateAgentID                                     //
+        //                                                          //
+        // var lblErrInvalidZipID                                   //
+        // var isErrorOnID                                          //
+        //////////////////////////////////////////////////////////////
+        // variables declared on small quote control                //
+        // var jsTxtZipCodeSQID                                     //
+        // var jsDdInsuranceTypeSQID                                //
+        //                                                          //   
+        // var lblErrInvalidZipSQID                                //
+        //////////////////////////////////////////////////////////////
+        // variables declared in this file below                    //
+
+
+        this.jsTxtZipCodeAgent = null;
+        this.jsTxtAddressAgent = null;
+
+        this.jsDdStateAgent = null;
+
+        //<--
+
+
+        this.zipQuoteErrorOn = null;
+        this.zipAgentErrorOn = null;
+        this.addressErrorOn = null;
+        this.cityErrorOn = null;
+
+        this.enterZipVal = null;
+        this.pleaseEnterZipVal = null;
+        this.addressVal = null;
+        this.unknownAddressVal = null;
+        this.cityVal = null;
+        this.cityNotFoundVal = null;
+        //////////////////////////////////////////////////////////////
+        function setenterZipVal(val) {
+            enterZipVal = val;
+        } this.setenterZipVal = setenterZipVal;
+
+        function setpleaseEnterZipVal(val) {
+            pleaseEnterZipVal = val;
+        } this.setpleaseEnterZipVal = setpleaseEnterZipVal;
+
+
+
+
+        function showHideTextPrompt(textBox, prompt, error) {
+            if (textBox.value == prompt || textBox.value == error) {
+                if (textBox.value == error) {
+                    Sys.UI.DomElement.removeCssClass(textBox, 'error');
+                }
+                textBox.style.color = 'black';
+                textBox.value = "";
+            }
+            else if (textBox.value == "") {
+                textBox.value = prompt;
+            }
+        } this.showHideTextPrompt = showHideTextPrompt;
+
+
+
+        function insurancePromptOn(txtZip, ddSelectReplaced, prompt) {
+            if (txtZip.value == enterZipVal || txtZip.value == '' || txtZip.value == pleaseEnterZipVal) {
+                prompt.className = 'promptInsur';
+                ddSelectReplaced.style.display = 'none';
+                return true;
+            }
+            else {
+                prompt.className = 'hidePrompt';
+                ddSelectReplaced.style.display = 'block';
+                return false;
+            }
+        } this.insurancePromptOn = insurancePromptOn;
+
+        function statePromptOn() {
+
+
+            if (jsTxtCityAgent.value == '' || jsTxtCityAgent.value == city) {
+                statePrompt.className = 'promptState';
+                ddStateReplacement.style.display = 'none';
+
+                return true;
+            }
+            else {
+                statePrompt.className = 'hidePrompt';
+                ddStateReplacement.style.display = 'block';
+
+                return false;
+            }
+        } this.statePromptOn = statePromptOn;
+
+        function validateTxtZipCode(txtZipCode) {
+            if (!insurancePromptOn(jsTxtZipCode, ddInsurReplacement, insurPrompt)) {
+                if (!txtZipCode.value.match(zipPattern)) {
+                    // zip must be 5 numbers between 0-9        
+                    disableSelectRestyle(ddInsurReplacement, jsDdInsuranceType);
+                    //jsDdInsuranceType.disabled = true;
+                }
+                else {
+                    // zip pattern satisfied enable insurance dropdown                    
+                    enableSelectRestyle(ddInsurReplacement, jsDdInsuranceType);
+                    //jsDdInsuranceType.disabled = false;
+                    jsDdInsuranceType.removeAttribute('disabled');
+                }
+            }
+
+        } this.validateTxtZipCode = validateTxtZipCode;
+
+        function validateCityAgent(txtCityAgent, validated) {
+            if (!stateDropDownInitiated) {
+                setupSelectFindAgentState(); // runs only once
+            }
+            if (!statePromptOn()) {
+                if (txtCityAgent.value == city || txtCityAgent.value == "" ||
+                    txtCityAgent.value.match(cityPattern) || txtCityAgent.value == cityNotFound) {
+                    disableSelectRestyle(ddStateReplacement, jsDdStateAgent);
+                    jsDdStateAgent.disabled = true;
+                }
+                else {
+                    enableSelectRestyle(ddStateReplacement, jsDdStateAgent);
+                    jsDdStateAgent.disabled = false;
+                }
+            }
+        } this.validateCityAgent = validateCityAgent;
+
+
+        function getStatesAjax() {
+            if (!blnStatesLoaded) {
+                if (document.getElementById(jsDdStateAgentID).length < 1) {
+                    __doPostBack(updPnlStatesID, 'CustomPostback');
+                    blnStatesLoaded = true;
+                }
+            }
+        } this.getStatesAjax = getStatesAjax
+
+
+        function setupSelectFindAgentState() {
+            jsDdStateAgent = document.getElementById(jsDdStateAgentID);
+
+            selectRestyle(jsDdStateAgent);
+            stateDropDownInitiated = true;
+            ddStateReplacement = jsDdStateAgent.previousSibling;
+            statePrompt = document.getElementById(statePromptID).parentNode;   //jsDdStateAgent.parentNode.parentNode.previousSibling;
+
+            if (statePrompt.nodeName.toUpperCase() != 'SPAN') {
+                statePrompt = statePrompt.previousSibling;
+            }
+
+            statePromptOn();
+
+        } this.setupSelectFindAgentState = setupSelectFindAgentState;
+
+        function setupSelectStartQuoteInsuranceType() {
+            selectRestyle(jsDdInsuranceType);
+            ddInsurReplacement = jsDdInsuranceType.previousSibling;
+            insurPrompt = jsDdInsuranceType.parentNode.previousSibling;
+            if (insurPrompt.nodeName.toUpperCase() != 'SPAN') {
+                insurPrompt = insurPrompt.previousSibling;
+            }
+            insurancePromptOn(jsTxtZipCode, ddInsurReplacement, insurPrompt)
+
+        } this.setupSelectStartQuoteInsuranceType = setupSelectStartQuoteInsuranceType;
+
+        function setJsTxtZipCode(val) {
+            jsTxtZipCode = val;
+        } this.setJsTxtZipCode = setJsTxtZipCode;
+
+        function setJsTxtCityAgent(val) {
+            jsTxtCityAgent = document.getElementById(val);
+        } this.setJsTxtCityAgent = setJsTxtCityAgent;
+
+        function setJsDdInsuranceType(val) {
+            jsDdInsuranceType = val;
+        } this.setJsDdInsuranceType = setJsDdInsuranceType;
+
+        function setCity(val) {
+            city = val;
+        } this.setCity = setCity;
+
+        function setStatePromptID(val) {
+            statePromptID = val;
+        } this.setStatePromptID = setStatePromptID;
+
+        function setJsDdStateAgent(val) {
+            jsDdStateAgent = val;
+        } this.setJsDdStateAgent = setJsDdStateAgent;
+
+        function setJsDdStateAgentID(val) {
+            jsDdStateAgentID = val;
+        } this.setJsDdStateAgentID = setJsDdStateAgentID;
+
+        function setCityNotFound(val) {
+            cityNotFound = val;
+        } this.setCityNotFound = setCityNotFound;
+
+        function setArrStates(val) {
+            arrStates = val;
+        } this.setArrStates = setArrStates;
+
+        function setUpdPnlStatesID(val) {
+            updPnlStatesID = val;
+        } this.setUpdPnlStatesID = setUpdPnlStatesID;
+
+        function getJsDdStateAgentID() {
+            return jsDdStateAgentID;
+        } this.getJsDdStateAgentID = getJsDdStateAgentID;
+
+    }
+    this.Codebase = Codebase;
+
+}
+DropDown2.init();
+
+var dropdown2 = new DropDown2.Codebase();
+
+/***** End Quote Box Drop Down Section  *****/
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// File: ContentFeatureScroller.js
+//
+// Description: Javascript file for Content Feature Scroller component.
+//
+// Public Functions:
+//     ContentFeatureScroller.initialize  - Must be called to initialize the scroller with appropriate parameters.
+//     ContentFeatureScroller.goToTab     - Moves the scroller to the passed in tab number.
+//     ContentFeatureScroller.scrollLeft  - Moves the scroller to the left one tab.
+//     ContentFeatureScroller.scrollRight - Moves the scroller to the right one tab.
+//
+// Author: ?
+//
+// Created: ????-??-??
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Change History
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Date       Who           Description
+// ---------- ------------- --------------------------------------------------------------------------------------
+// ????-??-?? ?             Initial Creation.
+// 2011-08-29 Jeff Bonifaci Added name spacing, added comments, removed unnecessary functions, cleaned up
+//                          remaining functions and renamed variables.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Define Public Global Variables.
+//     ContentFeatureScroller - Object used to interact with all Content Feature Scroller functionality.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var ContentFeatureScroller = new Object();
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Define Private Global Variables.
+//     ContentFeatureScroller._CurrentTab           - The tab number that is currently displayed to the user.
+//     ContentFeatureScroller._RowCount             - The total number of rows in the scroller.
+//     ContentFeatureScroller._RowElementIdBasename - The base name of the id for each row element.
+//     ContentFeatureScroller._RowItemWidth         - The width of each item in the row in pixels.
+//     ContentFeatureScroller._ScrollIntervalLength - The interval, in pixels, to use when scrolling each row.
+//     ContentFeatureScroller._ScrollTabWidth       - The width of each tab to use when scrolling.
+//     ContentFeatureScroller._TabIconDiv           - The div element that holds the tab icons.
+//     ContentFeatureScroller._TabIconImageActive   - The tab icon to display for a tab when it is active.
+//     ContentFeatureScroller._TabIconImageInactive - The tab icon to display for a tab when it is inactive.
+//     ContentFeatureScroller._TotalTabs            - The total number of tabs in the scroller.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller._CurrentTab = 1;
+ContentFeatureScroller._RowCount = 0;
+ContentFeatureScroller._RowElementIdBasename = '';
+ContentFeatureScroller._RowItemWidth = 200;
+ContentFeatureScroller._ScrollIntervalLength = 44;
+ContentFeatureScroller._ScrollTabWidth = 800;
+ContentFeatureScroller._TabIconDiv = null;
+ContentFeatureScroller._TabIconImageActive = '/resources/images/BoxCustOrg_8x8_Select.gif';
+ContentFeatureScroller._TabIconImageInactive = '/resources/images/BoxCustGry_8x8_Up.gif';
+ContentFeatureScroller._TotalTabs = 0;
+ContentFeatureScroller._TabClicked = 0;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Begin Public Functions.
+//     ContentFeatureScroller.initialize
+//     ContentFeatureScroller.goToTab
+//     ContentFeatureScroller.scrollLeft
+//     ContentFeatureScroller.scrollRight
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ItemFunctions.initialize
+// Description: Initializes the content feature scroller elements based on the passed in parameters.
+// Parameters:
+//     rowElementBaseName - The base name of the id for each row ul element in the scroller (the row number will be
+//                          appended to this to get each row id).
+//     rowCount           - The total number of rows in the scroller.
+//     tabIconDiv         - The div element to use for the tab icons.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller.initialize = function(rowElementBaseName, rowCount, tabIconDiv)
+{
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Declare local variables.
+  //     maxRowLiCount - Variable used to calculate the row with the highest number of li elements.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var maxRowLiCount = 0;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Store the passed in parameters to their respective global private variables.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._RowElementIdBasename = rowElementBaseName;
+  ContentFeatureScroller._RowCount = rowCount;
+  ContentFeatureScroller._TabIconDiv = tabIconDiv;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Calculate which row has the highest number of li elements and store the result in the max row li count
+  // variable.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  for (var i = 1; i <= ContentFeatureScroller._RowCount; i++)
+  {
+    var rowElement = document.getElementById(ContentFeatureScroller._RowElementIdBasename + i);
+    var rowLiCount = rowElement.getElementsByTagName('li').length;
+
+    if (rowLiCount > maxRowLiCount)
+    {
+      maxRowLiCount = rowLiCount
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Set the width of each row based on the max row li count.  Also set the row style left to 0px. 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  for (var i = 1; i <= ContentFeatureScroller._RowCount; i++)
+  {
+    var rowElement = document.getElementById(ContentFeatureScroller._RowElementIdBasename + i);
+    rowElement.style.width = (maxRowLiCount * ContentFeatureScroller._RowItemWidth) + "px";
+    rowElement.style.left = "0px";
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Set the total tab private variable based on the max row li count.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._TotalTabs = Math.ceil(maxRowLiCount / 4);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Add a tab icon image to the tab icon div for each tab.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  for (var tabNumber = 1; tabNumber <= ContentFeatureScroller._TotalTabs; tabNumber++)
+  {
+    var tabImageIcon = document.createElement("img");
+
+    if (tabNumber == 1)
+    {
+      tabImageIcon.setAttribute("src", ContentFeatureScroller._TabIconImageActive);
+    }
+    else
+    {
+      tabImageIcon.setAttribute("src", ContentFeatureScroller._TabIconImageInactive);
+    }
+
+    tabImageIcon.onclick = Function('ContentFeatureScroller.goToTab(' + tabNumber + ');');
+    tabImageIcon.setAttribute("alt", "");
+    ContentFeatureScroller._TabIconDiv.appendChild(tabImageIcon);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Set the width of the tab icon div based on the number of tabs.  The width should be caculated as follows:
+  //     8px for the left margin.
+  //     8px for each tab icon.
+  //     4px for the space between each tab icon.
+  //     8px for the right margin.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._TabIconDiv.style.width = (
+                                                         8 +
+                                                         (ContentFeatureScroller._TotalTabs * 8) +
+                                                         ((ContentFeatureScroller._TotalTabs - 1) * 4) +
+                                                         8
+                                                     ) + "px";
+} //ContentFeatureScroller.initialize()
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ContentFeatureScroller.goToTab
+// Description: Scrolls to the tab number passed in.  If the tab number passed in is out of the range of tabs, it
+//              will scroll to the first or last tab, based on if the number is above or below the range.
+// Parameters:
+//     tabNumber - The number of the tab to scroll to.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller.goToTab = function(tabNumber)
+{
+  ContentFeatureScroller._TabClicked = 1;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Ensure that our tabNumber is an integer between 1 and ContentFeatureScroller._TotalTabs.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  tabNumber = parseInt(tabNumber);
+  tabNumber = (tabNumber < 1) ? 1 : tabNumber;
+  tabNumber = (tabNumber > ContentFeatureScroller._TotalTabs) ? ContentFeatureScroller._TotalTabs : tabNumber;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // If the tab number is less than the current tab, scroll left until we reach the specified tab.  Otherwise,
+  // scroll right until it is reached.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (tabNumber < ContentFeatureScroller._CurrentTab)
+  {
+    while (tabNumber != ContentFeatureScroller._CurrentTab)
+    {
+      ContentFeatureScroller.scrollLeft();
+    }
+  }
+  else if (tabNumber > ContentFeatureScroller._CurrentTab)
+  {
+    while (tabNumber != ContentFeatureScroller._CurrentTab)
+    {
+      ContentFeatureScroller.scrollRight();
+    }
+  }
+
+  ContentFeatureScroller._TabClicked = 0;
+  
+  ProcessMetrics('AnimateButtonClick', [tabNumber - 1]);
+} //ContentFeatureScroller.goToTab()
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ContentFeatureScroller.scrollLeft
+// Description: Scrolls the scroller left one tab, unless we are on the first tab.
+// Parameters:
+//     None.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller.scrollLeft = function()
+{
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // If we are already on the first tab, return without doing anything.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (ContentFeatureScroller._CurrentTab <= 1)
+  {
+    return;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Perform the scroll by calling the do scroll private function with a modifier of 1, which will make it scroll
+  // to the left.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._doScroll(1);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Decrement the current tab number and update the tab icons.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._CurrentTab--;
+  ContentFeatureScroller._updateTabIcons();
+
+  if (ContentFeatureScroller._TabClicked == 0)
+  {
+    ProcessMetrics('AnimateMoveLeft');
+  }
+} //ContentFeatureScroller.scrollLeft()
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ContentFeatureScroller.scrollRight
+// Description: Scrolls the scroller right one tab, unless we are on the last tab.
+// Parameters:
+//     None.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller.scrollRight = function()
+{
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // If we are already on the last tab, return without doing anything.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (ContentFeatureScroller._CurrentTab >= ContentFeatureScroller._TotalTabs)
+  {
+    return;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Perform the scroll by calling the do scroll private function with a modifier of -1, which will make it
+  // scroll to the left.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._doScroll(-1);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Increment the current tab number and update the tab icons.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ContentFeatureScroller._CurrentTab++;
+  ContentFeatureScroller._updateTabIcons();
+
+  if (ContentFeatureScroller._TabClicked == 0)
+  {
+    ProcessMetrics('AnimateMoveRight');
+  }
+} //ContentFeatureScroller.scrollRight()
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// End Public Functions.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Begin Private Functions.
+//     ContentFeatureScroller._updateTabIcons
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ContentFeatureScroller._doScroll
+// Description: Scrolls the scroller with the given modifier for interval and total length.
+// Parameters:
+//     scrollModifier - The modifier to multiple the scroll interval by when scrolling.  Valid values:
+//                           1 - Will make it scroll left.
+//                          -1 - Will make it scroll right.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ContentFeatureScroller._doScroll = function(scrollModifier)
+{
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Declare local variables.
+  //     totalScrollLength - Variable to keep track of the total amount we have scrolled.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var totalScrollLength = 0;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Build the scroll function variable.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var scrollFunction = function()
+  {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // If the total scroll length is greater than or equal to the global scroll tab width, stop scrolling.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (totalScrollLength >= ContentFeatureScroller._ScrollTabWidth)
+    {
+      clearInterval(intervalId);
+      return;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Increment the total scroll length.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    totalScrollLength += ContentFeatureScroller._ScrollIntervalLength;
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Calculate the nextScrollLength.  This should be equal to the global scroll interval length, unless the
+    // total scroll length is longer than the scroll tab width.  If it puts us over, set it to how far we need
+    // to scroll to get to the scroll tab width.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var nextScrollLength = ContentFeatureScroller._ScrollIntervalLength;
+    if (totalScrollLength > ContentFeatureScroller._ScrollTabWidth)
+    {
+      nextScrollLength -= (totalScrollLength - ContentFeatureScroller._ScrollTabWidth);
+      totalScrollLength = ContentFeatureScroller._ScrollTabWidth
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Scroll each row by the next scroll length.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    for (var rowNumber = 1; rowNumber <= ContentFeatureScroller._RowCount; rowNumber++)
+    {
+      var rowElement = document.getElementById(ContentFeatureScroller._RowElementIdBasename + rowNumber);
+      var leftPixels = parseInt(rowElement.style.left.match(/-?\d+/));
+      leftPixels += nextScrollLength * scrollModifier;
+      rowElement.style.left = leftPixels + "px";
+    }
+  }
+
+  var intervalId = setInterval(scrollFunction, 1);
+} //ContentFeatureScroller._doScroll()
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Function: ContentFeatureScroller._updateTabIcons
+// Description: Updtaes the tab icons based on the current tab.
+// Parameters:
+//     None.
+// Return value:
+//     None.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ContentFeatureScroller._updateTabIcons = function()
+{
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Declare local variables.
+  //     tabIconCount            - Variable to keep track of how many tab icons we have found.
+  //     tabIconDivChildElements - All child elements of the tab icon div.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var tabIconCount = 0;
+  var tabIconDivChildElements = ContentFeatureScroller._TabIconDiv.childNodes;
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Iterate through the child elements of the tab icon div, find the tab icons and set their image path.
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  for (var currentChildElement = 0; currentChildElement < tabIconDivChildElements.length; currentChildElement++)
+  {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // The only child elements that are icons are of type "IMG", ignore all others.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (tabIconDivChildElements[currentChildElement].nodeName == "IMG")
+    {
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////
+      // Increment the tab icon count.
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////
+      tabIconCount++;
+
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////
+      // If we have found the current tab, set it's src attribute to the active image, otherwise set it to
+      // the inactive image.
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////
+      if (tabIconCount == ContentFeatureScroller._CurrentTab)
+      {
+        tabIconDivChildElements[currentChildElement].src = ContentFeatureScroller._TabIconImageActive;
+      }
+      else
+      {
+        tabIconDivChildElements[currentChildElement].src = ContentFeatureScroller._TabIconImageInactive;
+      }
+    }
+  }
+} //ContentFeatureScroller._updateTabIcons()
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// End Private Functions.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var buttonClicks = 0;
+
+// This function is to prevent JavaScript errors caused by Flash files calling old HitBox methods.
+function hbURL(url, hb1, hb2)
+{
+  window.open(url, "Allstate")
+  _hbPageView(hb1, hb2)
+}
+function hbTalk(num, hb1, hb2)
+{
+  webVoicePop('Template=57874'); //webVoicePop('Template='+num);
+  _hbPageView(hb1, hb2)
+}
+// This function is a shell function to capture calls to the old HitBox functions made from Flash files.
+// This can be removed once those Flash files are remediated.
+function _hbPageView(param1, param2)
+{
+}
+// End shell function.
+
+function ProcessMetrics(metricName)
+{
+	ProcessMetrics(metricName, null);
+}
+
+function ProcessMetrics(metricName, variables)
+{
+  if (metricName == "GetQuote")
+  {
+    if (buttonClicks == 0)
+    {
+      var selectedValQuote = "";
+      var arrQuote = variables[0].get_items();
+
+      for (i = 0; i < arrQuote.length; i++)
+      {
+        if (arrQuote[i].Value == variables[0]._valDiv.value)
+        {
+          selectedValQuote = arrQuote[i].Text;
+          break;
+        }
+      }
+
+      _scLV('quote_box|' + selectedValQuote.replace('/', '_').replace(" ", "_").replace(".", "").toLowerCase() + '_start', 1, 'o');
+      buttonClicks++;
+    }
+  }
+  else if (metricName == "RetrieveQuote")
+  {
+    _scLV('quote_box|retrieve', 1, 'o');
+  }
+  else if (metricName == "FindAgentZip")
+  {
+    if (buttonClicks == 0)
+    {
+      _scLV('quote_box|find_agent', 1, 'o');
+      buttonClicks++;
+    }
+  }
+  else if (metricName == "FindAgentCityState")
+  {
+    if (buttonClicks == 0)
+    {
+      _scLV('quote_box|find_agent', 1, 'o');
+      buttonClicks++;
+    }
+  }
+  else if (metricName == "ReferAFriendRefer")
+  {
+    var sc = s_gi(variables[0]);
+
+    sc.linkTrackVars = 'eVar12,eVar41,eVar44,prop21,events';
+    sc.linkTrackEvents = 'event48,event59';
+    sc.eVar12 = s.prop21 = variables[4] + '|' + variables[5] + '|' + variables[6] + '|' + variables[7] + '|' + variables[8] + '|' + variables[9];
+    sc.eVar41 = variables[3] + '|RaF ' + variables[1] + ': Refer ' + variables[2];
+    sc.eVar44 = 'RaF ' + variables[1] + ': Refer ' + variables[2];
+    sc.events = 'event48,event59';
+    
+    sc.tl(this, 'o', 'RaF ' + variables[1] + ': Refer ' + variables[2] + ' Start');
+  }
+  else if (metricName == "ReferAFriendRecommend")
+  {
+    var sc = s_gi(variables[0]);
+
+    sc.linkTrackVars = 'eVar12,eVar41,eVar44,prop21,events';
+    sc.linkTrackEvents = 'event48,event59';
+    sc.eVar12 = s.prop21 = variables[4] + '|' + variables[5] + '|' + variables[6] + '|' + variables[7] + '|' + variables[8] + '|' + variables[9];
+    sc.eVar41 = variables[3] + '|RaF ' + variables[1] + ': Recommend ' + variables[2];
+    sc.eVar44 = 'RaF ' + variables[1] + ': Recommend ' + variables[2];
+    sc.events = 'event48,event59';
+
+    sc.tl(this, 'o', 'RaF ' + variables[1] + ': Recommend ' + variables[2] + ' Start');
+  }
+  else if (metricName == "ReferAFriend")
+  {
+    var sc = s_gi(variables[0]);
+
+    sc.linkTrackVars = 'eVar12,eVar41,prop21,events';
+    sc.linkTrackEvents = 'event49,event60';
+    sc.eVar12 = s.prop21 = variables[5] + '|' + variables[6] + '|' + variables[7] + '|' + variables[8] + '|' + variables[9] + '|' + variables[10];
+    sc.eVar41 = variables[3] + '|RaF ' + variables[1] + ': ' + variables[2];
+    sc.events = 'event49,event60';
+
+    sc.tl(this, 'o', 'RaF ' + variables[1] + ': ' + variables[2] + ' ' + variables[3] + ' Complete');
+    
+    _scLV(s.pageName.substring(s.pageName.lastIndexOf('/') + 1) + 'ReferAFriend', 1, 'o');
+  }
+  else if (metricName == 'LoginHead')
+  {
+    if (buttonClicks == 0)
+    {
+      _scLV('CustLogin - Customer Login', 1, 'o');
+      buttonClicks++;
+    }
+  }
+  else if (metricName == 'Login')
+  {
+    if (buttonClicks == 0)
+    {
+      _scLV('quote_box|ccc_login', 1, 'o');
+      buttonClicks++;
+    }
+  }
+  else if (metricName == 'AnimateMoveLeft')
+  {
+    _scLV('More_content_Right', 1, '0');
+  }
+  else if (metricName == 'AnimateMoveRight')
+  {
+    _scLV('More_content_Left', 1, '0');
+  }
+  else if (metricName == 'AnimateButtonClick')
+  {
+    imgIndex = variables[0];
+
+    _scLV('More_content_Screen' + (imgIndex + 1), 1, '0');
+  }
+  else if (metricName == 'GUIhbURL')
+  {
+    sc1 = variables[0];
+    sc2 = variables[1];
+
+    _scPV(sc2 + sc1);
+  }
+  else if (metricName == 'GUIhbTalk')
+  {
+    sc1 = variables[0];
+    sc2 = variables[1];
+
+    _scPV(sc2 + sc1);
+  }
+}
+function noPostBack(buttonName, evt)
+{
+  if (window.event)
+  {
+    skeyCode = event.keyCode;
+  }
+  else
+  {
+    skeyCode = evt.which;
+  }
+
+  if (skeyCode == 13)
+  {
+    if (buttonName == "Imagebutton2")
+    {
+      searchSubmit('Imagebutton2', evt);
+    }
+    
+    return false;
+  }
+}
+
+function searchSubmit(buttonName, evt)
+{
+  if (document.forms[0].s_Text.value != "")
+  {
+    var searchURL = document.forms[0].s_URL.value;
+    var spA = document.forms[0].sp_a.value;
+    var spP = document.forms[0].sp_p.value;
+    var spQ = document.forms[0].sp_q.value;
+    var spT = document.forms[0].sp_t.value;
+
+    document.forms[0].action = searchURL + "?q=" + spQ;
+    document.location.href = searchURL + "?q=" + spQ;
+
+    document.forms[0].submit;
+    
+    return true;
+  }
+  
+  return false;
+}
+
+function searchBoxMouseOver(box, image)
+{
+  if (typeof box.nextSibling.children != 'undefined')
+  {
+    box.nextSibling.children[0].src = image;
+  }
+  else
+  {
+    box.nextSibling.nextSibling.children[0].src = image;
+  }
+}
+
+function searchBoxMouseOut(box, image)
+{
+  if (typeof box.nextSibling.children != 'undefined')
+  {
+    box.nextSibling.children[0].src = image;
+  }
+  else
+  {
+    box.nextSibling.nextSibling.children[0].src = image;
+  }
+}
+/**
+ * SWFObject v1.5: Flash Player detection and embed - http://blog.deconcept.com/swfobject/
+ *
+ * SWFObject is (c) 2007 Geoff Stearns and is released under the MIT License:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ */
+if(typeof deconcept=="undefined"){var deconcept=new Object();}if(typeof deconcept.util=="undefined"){deconcept.util=new Object();}if(typeof deconcept.SWFObjectUtil=="undefined"){deconcept.SWFObjectUtil=new Object();}deconcept.SWFObject=function(_1,id,w,h,_5,c,_7,_8,_9,_a){if(!document.getElementById){return;}this.DETECT_KEY=_a?_a:"detectflash";this.skipDetect=deconcept.util.getRequestParameter(this.DETECT_KEY);this.params=new Object();this.variables=new Object();this.attributes=new Array();if(_1){this.setAttribute("swf",_1);}if(id){this.setAttribute("id",id);}if(w){this.setAttribute("width",w);}if(h){this.setAttribute("height",h);}if(_5){this.setAttribute("version",new deconcept.PlayerVersion(_5.toString().split(".")));}this.installedVer=deconcept.SWFObjectUtil.getPlayerVersion();if(!window.opera&&document.all&&this.installedVer.major>7){deconcept.SWFObject.doPrepUnload=true;}if(c){this.addParam("bgcolor",c);}var q=_7?_7:"high";this.addParam("quality",q);this.setAttribute("useExpressInstall",false);this.setAttribute("doExpressInstall",false);var _c=(_8)?_8:window.location;this.setAttribute("xiRedirectUrl",_c);this.setAttribute("redirectUrl","");if(_9){this.setAttribute("redirectUrl",_9);}};deconcept.SWFObject.prototype={useExpressInstall:function(_d){this.xiSWFPath=!_d?"expressinstall.swf":_d;this.setAttribute("useExpressInstall",true);},setAttribute:function(_e,_f){this.attributes[_e]=_f;},getAttribute:function(_10){return this.attributes[_10];},addParam:function(_11,_12){this.params[_11]=_12;},getParams:function(){return this.params;},addVariable:function(_13,_14){this.variables[_13]=_14;},getVariable:function(_15){return this.variables[_15];},getVariables:function(){return this.variables;},getVariablePairs:function(){var _16=new Array();var key;var _18=this.getVariables();for(key in _18){_16[_16.length]=key+"="+_18[key];}return _16;},getSWFHTML:function(){var _19="";if(navigator.plugins&&navigator.mimeTypes&&navigator.mimeTypes.length){if(this.getAttribute("doExpressInstall")){this.addVariable("MMplayerType","PlugIn");this.setAttribute("swf",this.xiSWFPath);}_19="<embed type=\"application/x-shockwave-flash\" src=\""+this.getAttribute("swf")+"\" width=\""+this.getAttribute("width")+"\" height=\""+this.getAttribute("height")+"\" style=\""+this.getAttribute("style")+"\"";_19+=" id=\""+this.getAttribute("id")+"\" name=\""+this.getAttribute("id")+"\" ";var _1a=this.getParams();for(var key in _1a){_19+=[key]+"=\""+_1a[key]+"\" ";}var _1c=this.getVariablePairs().join("&");if(_1c.length>0){_19+="flashvars=\""+_1c+"\"";}_19+="/>";}else{if(this.getAttribute("doExpressInstall")){this.addVariable("MMplayerType","ActiveX");this.setAttribute("swf",this.xiSWFPath);}_19="<object id=\""+this.getAttribute("id")+"\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width=\""+this.getAttribute("width")+"\" height=\""+this.getAttribute("height")+"\" style=\""+this.getAttribute("style")+"\">";_19+="<param name=\"movie\" value=\""+this.getAttribute("swf")+"\" /><param name=\"wmode\" value=\"transparent\" />";var _1d=this.getParams();for(var key in _1d){_19+="<param name=\""+key+"\" value=\""+_1d[key]+"\" />";}var _1f=this.getVariablePairs().join("&");if(_1f.length>0){_19+="<param name=\"flashvars\" value=\""+_1f+"\" />";}_19+="</object>";}return _19;},write:function(_20){if(this.getAttribute("useExpressInstall")){var _21=new deconcept.PlayerVersion([6,0,65]);if(this.installedVer.versionIsValid(_21)&&!this.installedVer.versionIsValid(this.getAttribute("version"))){this.setAttribute("doExpressInstall",true);this.addVariable("MMredirectURL",escape(this.getAttribute("xiRedirectUrl")));document.title=document.title.slice(0,47)+" - Flash Player Installation";this.addVariable("MMdoctitle",document.title);}}if(this.skipDetect||this.getAttribute("doExpressInstall")||this.installedVer.versionIsValid(this.getAttribute("version"))){var n=(typeof _20=="string")?document.getElementById(_20):_20;n.innerHTML=this.getSWFHTML();return true;}else{if(this.getAttribute("redirectUrl")!=""){document.location.replace(this.getAttribute("redirectUrl"));}}return false;}};deconcept.SWFObjectUtil.getPlayerVersion=function(){var _23=new deconcept.PlayerVersion([0,0,0]);if(navigator.plugins&&navigator.mimeTypes.length){var x=navigator.plugins["Shockwave Flash"];if(x&&x.description){_23=new deconcept.PlayerVersion(x.description.replace(/([a-zA-Z]|\s)+/,"").replace(/(\s+r|\s+b[0-9]+)/,".").split("."));}}else{if(navigator.userAgent&&navigator.userAgent.indexOf("Windows CE")>=0){var axo=1;var _26=3;while(axo){try{_26++;axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash."+_26);_23=new deconcept.PlayerVersion([_26,0,0]);}catch(e){axo=null;}}}else{try{var axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7");}catch(e){try{var axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");_23=new deconcept.PlayerVersion([6,0,21]);axo.AllowScriptAccess="always";}catch(e){if(_23.major==6){return _23;}}try{axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash");}catch(e){}}if(axo!=null){_23=new deconcept.PlayerVersion(axo.GetVariable("$version").split(" ")[1].split(","));}}}return _23;};deconcept.PlayerVersion=function(_29){this.major=_29[0]!=null?parseInt(_29[0]):0;this.minor=_29[1]!=null?parseInt(_29[1]):0;this.rev=_29[2]!=null?parseInt(_29[2]):0;};deconcept.PlayerVersion.prototype.versionIsValid=function(fv){if(this.major<fv.major){return false;}if(this.major>fv.major){return true;}if(this.minor<fv.minor){return false;}if(this.minor>fv.minor){return true;}if(this.rev<fv.rev){return false;}return true;};deconcept.util={getRequestParameter:function(_2b){var q=document.location.search||document.location.hash;if(_2b==null){return q;}if(q){var _2d=q.substring(1).split("&");for(var i=0;i<_2d.length;i++){if(_2d[i].substring(0,_2d[i].indexOf("="))==_2b){return _2d[i].substring((_2d[i].indexOf("=")+1));}}}return "";}};deconcept.SWFObjectUtil.cleanupSWFs=function(){var _2f=document.getElementsByTagName("OBJECT");for(var i=_2f.length-1;i>=0;i--){_2f[i].style.display="none";for(var x in _2f[i]){if(typeof _2f[i][x]=="function"){_2f[i][x]=function(){};}}}};if(deconcept.SWFObject.doPrepUnload){if(!deconcept.unloadSet){deconcept.SWFObjectUtil.prepUnload=function(){__flash_unloadHandler=function(){};__flash_savedUnloadHandler=function(){};window.attachEvent("onunload",deconcept.SWFObjectUtil.cleanupSWFs);};window.attachEvent("onbeforeunload",deconcept.SWFObjectUtil.prepUnload);deconcept.unloadSet=true;}}if(!document.getElementById&&document.all){document.getElementById=function(id){return document.all[id];};}var getQueryParamValue=deconcept.util.getRequestParameter;var FlashObject=deconcept.SWFObject;var SWFObject=deconcept.SWFObject;
+if(typeof(Sys)!=='undefined')Sys.Application.notifyScriptLoaded();

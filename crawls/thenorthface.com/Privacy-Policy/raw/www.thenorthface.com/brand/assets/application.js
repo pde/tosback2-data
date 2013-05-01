@@ -254,7 +254,7 @@ var Class = (function() {
 	}
 
 	// Handles "data-method" on links such as:
-	// <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+	// <a href="/fr_CA/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
 	function handleMethod(link) {
 		var href = link.attr('href'),
 			method = link.data('method'),
@@ -3961,34 +3961,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T20:24:13Z"
+        "updated_at": "2011-09-21T14:24:13-06:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T21:31:30Z",
+        "created_at": "2011-03-04T14:31:30-07:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T18:12:06Z"
+        "updated_at": "2011-08-19T12:12:06-06:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T22:11:13Z"
+        "updated_at": "2011-09-23T16:11:13-06:00"
       }
     ];
 
@@ -4204,10 +4204,10 @@ $.fn.tnfBrandItemBuilder = function () {
     }
 
     $.fn.extend({
-      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/$2\">$2</a>"),
+      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/fr_CA/$2\">$2</a>"),
       // Support various latin1 (\u00**) and arabic (\u06**) alphanumeric chars
       linkHash: replacer(/(?:^| )[\#]+([\w\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0600-\u06ff]+)/gi,
-                         ' <a href="http://'+s.twitter_search_url+'/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
+                         ' <a href="http://'+s.twitter_search_url+'/fr_CA/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
       capAwesome: replacer(/\b(awesome)\b/gi, '<span class="awesome">$1</span>'),
       capEpic: replacer(/\b(epic)\b/gi, '<span class="epic">$1</span>'),
       makeHeart: replacer(/(&lt;)+[3]/gi, "<tt class='heart'>&#x2665;</tt>")
@@ -5075,69 +5075,6 @@ $.support.transition = (function(){
 
 }).call(this);
 (function() {
-  var Ustream, _ref,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  if ((_ref = this.JST) == null) {
-    this.JST = {};
-  }
-
-  this.JST['ustream-video'] = '<iframe id="ustream-video" src="http://www.ustream.tv/embed/12083483?autoplay=true" width="575" height="610" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe>';
-
-  this.JST['ustream-social'] = '<iframe id="ustream-social" width="340" scrolling="no" height="610" frameborder="0" style="border: 0px none transparent;" src="http://www.ustream.tv/socialstream/12083483"></iframe>';
-
-  this.JST['ustream-ui-close'] = '<a href="#ustream-container" class="video-interface-close">x</a>';
-
-  this.JST['ustream-ui-link'] = '<a href="http://www.ustream.tv/" class="ustream-external" target="_blank">Streaming live video by Ustream</a>';
-
-  this.JST['ustream'] = "<div id='ustream-container'>" + this.JST['ustream-ui-close'] + this.JST['ustream-video'] + this.JST['ustream-social'] + this.JST['ustream-ui-link'] + "</div>";
-
-  Ustream = (function() {
-
-    Ustream.selector = '#ustream';
-
-    Ustream.bootstrap = function(element) {
-      return new Ustream(element);
-    };
-
-    function Ustream(el) {
-      this.el = el;
-      this.close = __bind(this.close, this);
-      this.embed = __bind(this.embed, this);
-      this.panel = this.el.closest('.panel');
-      this.tabs = $('.side-tabs');
-      this.bindEvents();
-    }
-
-    Ustream.prototype.bindEvents = function() {
-      return this.el.click(this.embed);
-    };
-
-    Ustream.prototype.embed = function(event) {
-      event.preventDefault();
-      this.el.trigger('embed_TNF_ustream');
-      this.panel.append(JST['ustream']);
-      this.panel.find('a.video-interface-close').click(this.close);
-      return this.tabs.bind('selected.TNF.herogallerytab', this.close);
-    };
-
-    Ustream.prototype.close = function(event) {
-      if (event != null) {
-        event.preventDefault();
-      }
-      this.el.trigger('close_TNF_ustream');
-      this.panel.find('#ustream-container').remove();
-      return this.tabs.unbind('selected.TNF.herogallerytab', this.close);
-    };
-
-    return Ustream;
-
-  })();
-
-  $.TNF.BRAND.startupManager.registerController(Ustream);
-
-}).call(this);
-(function() {
   var WhistlerVideo,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -5522,4 +5459,40 @@ var fnMain = function()
 ((new Date).getTime()-c)/1E3&&window.setTimeout(arguments.callee,100)})()}}})();
 
 }());
+(function() {
+  var MediaMindTracker,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  MediaMindTracker = (function() {
+
+    function MediaMindTracker(trackingId) {
+      this.trackingId = trackingId;
+      this.trackVideoClick = __bind(this.trackVideoClick, this);
+      $("[data-embed-code]").bind("click", this.trackVideoClick);
+    }
+
+    MediaMindTracker.prototype.trackVideoClick = function() {
+      var ebConversionURL, ebRand, iscript;
+      ebRand = Math.random() + '';
+      ebRand = ebRand * 1000000;
+      iscript = document.createElement('script');
+      ebConversionURL = "HTTPS://bs.serving-sys.com/BurstingPipe/ActivityServer.bs?";
+      ebConversionURL += "cn=as&ActivityID=" + this.trackingId + "&rnd=" + ebRand;
+      iscript.src = ebConversionURL;
+      return document.getElementById("toolbar").appendChild(iscript);
+    };
+
+    return MediaMindTracker;
+
+  })();
+
+  jQuery(function() {
+    var trackingId;
+    trackingId = $('[data-video-tracking-id]').data('video-tracking-id');
+    if (trackingId > 0) {
+      return new MediaMindTracker(trackingId);
+    }
+  });
+
+}).call(this);
 //

@@ -4,11 +4,16 @@ Author: JP Schwinghamer | Mint.com
 
 $(document).ready(function(){
 
-	//Login
+
+
 	
 	if($.cookie('wa_login') == null && $.cookie('userguid') == null){ // If the wa_login and userguid cookie is absent (if the user is not a current active user)
-	   $('#credentials').remove(); // Remove login credentials form
-	}
+	    $('#credentials').remove(); // Remove login credentials form
+
+      $('#user_auth .login.button').click(function(e){
+         document.location.href = 'https://wwws.mint.com/login.event';
+       });
+    }
 	else { // So if the wa_login cookie is present (if the user is an active user)
 	    $.cookie('mintRememberMe', null, {expires: -7, path:'/', domain: '.mint.com'}); // Clear the login.event remember me cookie
 	    $('#credentials #password, #credentials #username').css({opacity: 1});  // Fade In the credentials form
@@ -18,6 +23,8 @@ $(document).ready(function(){
 	    } // Done fading in form
 	    
 	    $('#user_auth .login.button').click(function(e){  // When the user clicks the login button
+
+
 	    	if($('#remember').is(':checked')){  /* If the remember me checkbox is checked */
 	    		$.cookie('hp-mintRememberMe', $('#username').val(), {expires: 7, path: '/', domain: '.mint.com'}); // Create the remember me cookie with the username
 	    	}
@@ -32,7 +39,8 @@ $(document).ready(function(){
 	    	e.preventDefault();
 	    })
 	} // end login cookie
-	
+
+
 	$('#user_auth input').focus(function(){ // On focus
 	    $('.form_box').animate({opacity: 1}, 300);  // Fadein the form background
 	    $('#user_auth .hide').animate({opacity: 1}, 300); // Fadein anything with the hide class (form elements)
@@ -79,6 +87,10 @@ $(document).ready(function(){
 			}, 1000)
 	    }
 	}) // end
+
+    $('#user_auth .signup.button').click(function() {
+        document.location.href='https://wwws.mint.com/login.event?task=S';
+    });
 
     //Placeholder for IE
     $(function() {

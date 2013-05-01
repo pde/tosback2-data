@@ -1,17 +1,18 @@
+
 mybuys.setClient("PACSUN");
 
 //Styles for all zones
 mybuys.setStyle('.mbitem', 'font-family', 'sans-serif', 'text-align', 'left');
 mybuys.setStyle('.mbpricelink:link', 'color', '#000000', 'font-weight', 'normal');
 mybuys.setStyle('.mbpricelink:visited', 'color', '#000000', 'font-weight', 'normal');
-mybuys.setStyle('.mblistsalerowspan', 'text-align', 'left', 'background-color', '#FFFFFF', 'padding-left', '2px');
+mybuys.setStyle('.mblistsalerowspan', 'text-align', 'left', 'background-color', '#FFFFFF', 'padding-left', '2px', 'white-space', 'normal');
 mybuys.setStyle('.mbnamerowspan', 'text-align', 'left', 'overflow', 'hidden', 'background-color', '#FFFFFF', 'padding-left', '2px', 'line-height', 'normal !important');
 mybuys.setStyle('.mbimgspan', 'background-color', '#FFFFFF');
 mybuys.setStyle('.mblegend', 'font-size', '12px', 'font-weight', 'bold', 'color', '#000000', 'text-align', 'left', 'padding', '0', 'font-family', 'sans-serif');
 mybuys.setStyle('.mblistlink:link', 'color', '#999999', 'text-decoration', 'line-through');
 mybuys.setStyle('.mblistlink:visited', 'color', '#999999', 'text-decoration', 'line-through');
-mybuys.setStyle('.mbsalelink:link', 'color', '#FF0000');
-mybuys.setStyle('.mbsalelink:visited', 'color', '#FF0000');
+mybuys.setStyle('.mbsalelink:link', 'color', '#FF0000', 'white-space', 'nowrap');
+mybuys.setStyle('.mbsalelink:visited', 'color', '#FF0000', 'white-space', 'nowrap');
 mybuys.setStyle('.mbdivider', 'height', '0px', 'border-color', '#C1C1C1', 'border-style', 'none none dotted', 'border-width', '0 0 1px');
 mybuys.setStyle('.mbpromotext', 'color', 'red', 'text-align', 'left', 'display', 'inline-block'); 
 
@@ -37,28 +38,79 @@ mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbzone', 'width', '960px');
 mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbitem', 'width', '185px', 'padding', '0px 3px 0px 4px', 'font-size', '11px');
 mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbnamerowspan', 'width', '140px', 'max-height', '28px');
 
+mybuys.oldProcessResponseHTML = mybuys.processResponseHTML;
+
 mybuys.processResponseHTML = function(zoneHtmls) {
-	clearTimeout(this.requestProcId);
-	if (!this.renderOK) return;
-	var leftoverZones=[]
-	for (var zk=0;zk<this.zoneKeysToZoneDivIds.length;zk++)
-	{	if (this.zoneKeysToZoneDivIds[zk])
-			leftoverZones[zk]=true;
-	}
-	for (zonekey in zoneHtmls)
-	{	try { if (typeof zoneHtmls[zonekey] == 'function') continue; } catch(e) { continue; };
-		var zoneDivId = this.zoneKeysToZoneDivIds[zonekey];
-		if (!zoneDivId) continue;
-		var zoneDiv = this.el(zoneDivId);
-		if (zoneDiv)
-		{
-			zoneDiv.innerHTML=zoneHtmls[zonekey];
-			leftoverZones[zonekey]=false;
+	mybuys.oldProcessResponseHTML(zoneHtmls);
+	
+	
+	var currency = mybuys.params.currency;
+	
+	function getPrice(pricesString) {
+		var prices = pricesString.split("|,");
+		var finalPrice = "0";
+		for(var i = 0; i < prices.length; i++) {
+			if(prices[i].indexOf(currency) == 0) {
+				finalPrice = prices[i].substr(3, prices[i].length-3);
+				return finalPrice.replace("|", '');
+			}
 		}
 	}
-	for (var zk=0;zk<leftoverZones.length;zk++)
-	{	if (leftoverZones[zk])
-			this.loadFailoverImage(zk);
+	
+	if(currency) {
+		var cur_index = 0;
+		var currentPriceSpan = document.getElementById("mb_intl_current_price" + cur_index);
+
+		mybuys.setStyle('.mbpromotext', 'display', 'none');
+		while(currentPriceSpan) {
+			//get correct price
+			var pricesString = currentPriceSpan.innerHTML;
+			var finalPrice = getPrice(pricesString);
+			//do current price substitution
+			if(finalPrice) {
+				var priceToChange = document.getElementById("mbcurrent" + cur_index);
+				priceToChange.innerHTML = finalPrice;
+			} else {
+					//console.info(cur_index + " " + pricesString);
+				}
+			//increment loop
+			cur_index += 1;
+			currentPriceSpan = document.getElementById("mb_intl_current_price" + cur_index);
+		}
+		var max_index = cur_index;
+		cur_index = 0;
+		while(cur_index < max_index) {
+			currentPriceSpan = document.getElementById("mb_intl_base_price" + cur_index);
+			if(currentPriceSpan) {
+				//get correct price
+				var pricesString = currentPriceSpan.innerHTML;
+				var finalPrice = getPrice(pricesString);
+				//do base price substitution
+				if(finalPrice) {
+					var priceToChange = document.getElementById("mbbase" + cur_index);
+					priceToChange.innerHTML = finalPrice;
+				} else {
+					//console.info(cur_index + " " + pricesString);
+				}
+			}
+			//increment loop
+			cur_index += 1;
+		}
+		
+		cur_index = 0;
+		while(cur_index < max_index) {
+			currentPromoDiv = document.getElementById("mbpromotext" + cur_index);
+			if(currentPromoDiv) {
+				var promoString = ' ' + currentPromoDiv.innerHTML;
+				if(promoString.indexOf('$') > -1) {
+					currentPromoDiv.setAttribute('style', 'display:none;');
+				} else {
+					//console.info(cur_index + " " + promoString);
+				}
+			}
+			//increment loop
+			cur_index += 1;
+		}
 	}
 	
 	//BEGIN URL FIXING

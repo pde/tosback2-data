@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<title>MSNBC Master HTML Ticker</title>
+	
+	<!-- Style includes -->
+	<link rel="stylesheet" href="styles/shs_reset.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="styles/shs_masterTicker.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	
+	<!--scripts -->
+	<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="scripts/jquery.client.js"></script>
+	
+	<script type="text/javascript" src="scripts/msnbcTicker.js"></script>
+	<script type="text/javascript">
+		var shsMSNBCTicker = null;
+		$(document).ready(function() {
+			var findSports = new RegExp('[?&]sports=([^&]*)','i');
+			var showSports = "mlb|nfl|nba|nhl|cfb|cbk|nascar|golf|cycling|mls|form1";
+			if (location.search.search(findSports) >= 0) {
+				var queryArr = location.search.match(findSports);
+				showSports = queryArr[1];
+			}
+			var findWidth = new RegExp('[?&]width=([^&]*)','i');
+			var useWidth = '100%';
+			if (location.search.search(findWidth) >= 0) {
+				var queryArr = location.search.match(findWidth);
+				useWidth = queryArr[1];
+			}
+			
+			shsMSNBCTicker = new SHS.MSNBCTicker({ 
+				width: useWidth,
+				sports: showSports
+				/*
+				width: 777,
+				sports: "mlb|nfl|nba|nhl|cfb|cbk|nascar|golf|cycling",
+				path: "http://scores.nbcsports.msnbc.com/"
+				*/
+			});
+		});
+	</script>
+	<base target="_top"/>
+</head>
+	<body>
+	
+		<div class="shs_customTicker"></div><!-- shs_customTicker -->
+		<!-- <div id="debug" style="color: #fff"></div> -->
+	</body>​
+​​​​</html>

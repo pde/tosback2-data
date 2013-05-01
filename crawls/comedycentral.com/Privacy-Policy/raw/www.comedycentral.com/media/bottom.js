@@ -4546,7 +4546,68 @@ ZeroClipboard.Client.prototype = {
 	}
 	
 };
-/* basic_b.js */
+/* axe_carousel.js */
+$(function() {
+	if ($(".axe_carousel").length) {
+		if ($(".image.desktop").length) {
+			$(".image.desktop, .banner.desktop").hover(function() {
+				$(this).parents(".wrapper").find(".overlay").show();
+				$(this).parents(".wrapper").find("p").show();
+			}, function() {
+				$(this).parents(".wrapper").find(".overlay").hide();
+				$(this).parents(".wrapper").find("p").hide();
+			});
+		}
+		
+		if ($(".image.mobile").length) {
+			$(".image.mobile, .banner.mobile").hover(function() {
+				$(this).parents(".wrapper").find(".overlay").show();
+				$(this).parents(".wrapper").find("p").show();
+			}, function() {
+					$(this).parents(".wrapper").find(".overlay").hide();
+					$(this).parents(".wrapper").find("p").hide();
+			});
+		}
+	}
+	
+	if ($(".promotion-feed").length) {
+		$("a.load_more[data-page]").on("click", function(event) {
+			event.preventDefault();
+			var url = $(this).attr("data-feed");
+			var page = parseInt($(this).attr("data-page"));
+			page++;
+			url += page;
+			$(this).text("Loading...");
+			$.get(url, function(response) {
+				$("a.load_more[data-page]").remove();
+				$(".promotion-feed .middle").append(response);
+			});
+		});
+	}
+	
+	$("a.axe_link").on("click", function(event) {
+		var promoName = "axe_carousel";
+		var destinationUrl = $(this).attr("href");
+		
+		baseReportingObj = {
+			linkName:promoName + '|' + pageName,
+			linkType:'o',
+			prop8:repCallObject.prop8,
+			prop25:promoName,
+			prop26:promoName + '|' + pageName,
+			prop27:destinationUrl,
+			eVar5:destinationUrl,
+			eVar6:repCallObject.eVar6,
+			eVar7:promoName,
+			eVar8:promoName + '|' + pageName,
+			eVar9:pageName
+		};
+		
+		if (typeof(mtvn) != 'undefined') {
+				mtvn.btg.Controller.sendLinkEvent(baseReportingObj);
+		}
+	});
+});/* basic_b.js */
 /**
  * @author shcherba
  */
@@ -5040,6 +5101,274 @@ $(function() {
 	if ($(".module.miniplayer").length) {
 		CCminiPlayer.init(".module.miniplayer", $Crabapple.playerA.player.video_player_box);
 	}
+});/* cc.overlay.js */
+(function($) {
+	$CC.Overlay = function(){};
+	$Crabapple.extend($Crabapple.Overlay, $CC.Overlay, {
+		showOverlay: function() {
+			$(".overlay_screen").css({opacity: 0.5, "width":$(document).width(),"height":$(document).height()});
+			$(".overlay_screen").fadeIn("fast");
+			$(this.options.payload).fadeIn("fast");
+			$(this.options.payload).addClass("visible_overlay");
+			$(".close").css({"display": "block"});
+			
+			//Stay on current page
+			$(".overlay_holder, .close, .overlay_screen").click(this.onCloseOverlayClick);
+			
+			$(window).resize(this.onWindowResize);
+			
+			if ($(this.options.payload).find("span.countdown").length) {
+				this.startTimer();
+			}
+			
+			this.onWindowResize();
+		},
+		onWindowResize: function() {
+			if ($(this.options.payload).css("display") == "block")
+			{
+				$(".overlay_screen").css("width", $(document).width());
+				
+				var valign = ($(window).height() - $(".visible_overlay").outerHeight())/2;
+				valign = (valign > 0)?valign: 0;
+				
+				var halign = ($(window).width() - $(".visible_overlay").outerWidth())/2;
+				halign = (halign > 0)?halign: 0;
+				
+				valign += $(document).scrollTop();
+				halign += $(document).scrollLeft();
+				
+				if ($("#content_holder").width() <= 350) {
+					halign = 25;
+				}
+
+				$(this.options.payload).css({
+					top:valign,
+					left:halign
+				});
+			}
+		},
+		onCloseOverlayClick: function(event) {
+			$(".visible_overlay, .overlay_screen").css("display", "none");
+			$(".overlay_holder").data("toggle", "false");
+			var o = $(".visible_overlay");
+			o.attr("data-timing", "false");
+			o.removeClass("visible_overlay");
+			
+			if (o.attr("data-mgid")) {
+				mtvnPlayers[o.attr("data-mgid")].destroy();
+			}
+		},
+		startTimer: function() {
+			var overlay = $(".visible_overlay");
+			if (overlay.attr("data-timing") && overlay.attr("data-timing") == "true") return;
+			else {
+				overlay.attr("data-timing", "true");
+				setTimeout(overlayTick, 1000);
+			}
+		}
+	});
+	$.pluginize("overlay", $CC.Overlay, $CC);
+}) (jQuery);
+
+function overlayTick() {
+	var overlay = $(".visible_overlay");
+	if (!overlay.length) {
+		return;
+	}
+	if (overlay.attr("data-timing") == "false") return;
+	var countText = overlay.find("span.count");
+	var count = parseInt(countText.text());
+	if (isNaN(count)) count = 30;
+	if (count <= 0) return;
+	if (count == 1) window.location.href = "http://facescore.tumblr.com/";
+	
+	count--;
+	countText.text(count);
+	setTimeout(overlayTick, 1000);
+}
+
+function hideAllPlayers() {
+	$(".visible_overlay, .overlay_screen").css("display", "none");
+	$(".overlay_holder").data("toggle", "false");
+	var o = $(".visible_overlay");
+	o.removeClass("visible_overlay");
+}
+var mtvnPlayers = new Array();
+$(document).ready(function() {
+	if ($(".axe_carousel").length) {
+		$(".image.desktop p.vote_button, .image.desktop .overlay, .banner.desktop, .image.mobile p.vote_button, .image.mobile .overlay, .banner.mobile").click(function() {
+			$(".vote_overlay_payload").find("span.comedian").text("");
+			$(".vote_overlay_payload").find("span.count").text("30");
+			var comedianName = $(this).parents(".wrapper").data("comedian");
+			$(".vote_overlay_payload").find("span.comedian").text(comedianName);
+			var promoName = "vote_" + comedianName.toLowerCase().replace(" ", "").replace("'", "");
+			var baseReportingObj = {
+				linkName:promoName + '.' + pageName,
+				linkType:'o',
+				prop25:"Axe Facescore",
+				prop26:promoName + '.' + pageName,
+				prop27:window.location.href,
+				eVar5:promoName,
+				eVar7:promoName,
+				eVar8:promoName + '.' + pageName,
+				eVar9:pageName
+			};
+			
+			if (typeof(mtvn) != 'undefined') {
+				mtvn.btg.Controller.sendLinkEvent(baseReportingObj);
+			}
+			
+			$CC(".axe-overlay").overlay({'payload':'.vote_overlay_payload'});
+		});
+		
+		$(".pin.instagram").on("click", function(event) {
+			var p = $(this);
+			var image = $(this).attr("data-image");
+			var caption = $(this).attr("data-caption");
+			var user = $(this).attr("data-user");
+			var userimage = $(this).attr("data-userimage");
+			
+			var payload = $(".image_overlay_payload");
+			payload.find("img.large").attr("src", image);
+			payload.find(".caption").text(caption);
+			payload.find(".share").attr("data-title", caption);
+			payload.find(".share").attr("data-url", window.location.href);
+			payload.find(".share").attr("data-image", image);
+			payload.find(".share").attr("data-description", caption);
+			
+			$(".image_overlay_payload a.share_button").removeClass("active");
+			$(".image_overlay_payload ul.share_button_dropdown").hide();
+			
+			$CC(".axe-overlay").overlay({'payload':'.image_overlay_payload'});
+		});
+	
+		$(".pin[data-mgid], .video[data-mgid]").click(function(event) {
+			event.preventDefault();
+			var p = $(this);
+			var title =p.attr("data-title");
+			var mgid = p.attr("data-mgid");
+			var image = p.attr("data-image");
+			var description = p.attr("data-description");
+			var configParams = escape("site=" + config.getMediaConfigParamSite());
+			if (config.getMediaFreewheelNID()) {
+				configParams += escape("&nid=" + config.getMediaFreewheelNID());	
+			} 
+			var flashvars = { sid:siteSectionId, autoPlay:true, endCapAutoPlay:false, configParams:configParams };
+			
+			$(".video_overlay_payload").attr("data-mgid", mgid);
+			$(".video_overlay_payload .title").text(title);
+			$(".video_overlay_payload .description").text(description);
+			$(".video_overlay_payload .share").attr("data-title", title);
+			$(".video_overlay_payload .share").attr("data-description", description);
+			$(".video_overlay_payload .share").attr("data-url", window.location.href);
+			$(".video_overlay_payload .share").attr("data-image", image);
+			
+			$(".video_overlay_payload a.share_button").removeClass("active");
+			$(".video_overlay_payload ul.share_button_dropdown").hide();
+			
+			$CC(".axe-overlay").overlay({'payload':'.video_overlay_payload'});
+			var parobj = {
+				wmode:'opaque',
+				bgcolor: "#000000",
+				seamlesstabbing:true,
+				swliveconnect:true,
+				allowscriptaccess:'always',
+				allownetworking:'all',
+				allowfullscreen:true
+			};
+			
+			var width = $(".video_overlay_payload .media_wrapper").width();
+			var height = 144;
+			if (width == 512) height = 288;
+			
+			mtvnPlayers[mgid] = new MTVNPlayer.Player("video_overlay_player",
+			{
+				width:width,
+				height:height,
+				uri:mgid,
+				flashVars:flashvars,
+				params:parobj
+			},{
+				onReady:function(event) {
+					// ready
+				},
+				onPlaylistComplete:function(event) {
+					hideAllPlayers();
+				}
+			});
+			
+		});
+	}
+	
+	$(".video_overlay_payload a.share_button, .image_overlay_payload a.share_button").on("click", function(event) {
+		event.preventDefault();
+		$(this).parent().find("ul.share_button_dropdown").toggle();
+		$(this).toggleClass("active");
+	});
+	
+	$(".video_overlay_payload a.share.facebook, .image_overlay_payload a.share.facebook").on("click", function(event) {
+		event.preventDefault();
+		var s = $(this);
+		var title = s.attr("data-title");
+		var link = window.location.href;
+		var description = s.attr("data-description");
+		var image = s.attr("data-image");
+		var mgid = s.parents(".video_overlay_payload").attr("data-mgid");
+		var shareService = 'share_fb';
+		
+		if (mgid) eVar16 = mgid;
+		else eVar16 = image;
+		
+		var baseReportingObj = {
+			linkName:'share',
+			linkType:'o',
+			eVar9:pageName,
+			eVar16:eVar16,
+			eVar19:shareService,
+			events:'event9'
+		};
+		
+		if (typeof(mtvn) != 'undefined') {
+			mtvn.btg.Controller.sendLinkEvent(baseReportingObj);
+		}
+		FB.ui({
+			method: "feed",
+			name: title,
+			link: link,
+			picture: image,
+			caption:"",
+			description:description
+		});
+	});
+	$(".video_overlay_payload a.share.twitter, .image_overlay_payload a.share.twitter").on("click", function(event) {
+		event.preventDefault();
+		var s = $(this);
+		var title = s.attr("data-title");
+		var link = window.location.href;
+		var description = s.attr("data-description");
+		var image = s.attr("data-image");
+		var mgid = s.parents(".video_overlay_payload").attr("data-mgid");
+		var shareService = 'share_twitter';
+		
+		if (mgid) eVar16 = mgid;
+		else eVar16 = image;
+		
+		var baseReportingObj = {
+			linkName:'share',
+			linkType:'o',
+			eVar9:pageName,
+			eVar16:eVar16,
+			eVar19:shareService,
+			events:'event9'
+		};
+		if (typeof(mtvn) != 'undefined') {
+			mtvn.btg.Controller.sendLinkEvent(baseReportingObj);
+		}
+		var url = "https://twitter.com/intent/tweet/";
+		url += "?url=" + encodeURIComponent(link);
+		url += "&text=" + encodeURIComponent(description);
+		window.open(url);
+	});
 });/* cc.photo_gallery.js */
 $(function () {
 		$CC.photoGallery = {	

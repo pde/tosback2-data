@@ -22,6 +22,7 @@ var skaTools = {
 		for (var i=0;i<skaTools.allCookies.length;i++) {
 			var cookiePair = skaTools.allCookies[i].split('=');
 			var cookieName = cookiePair[0];
+			cookieName = cookieName.replace(/^\s+|\s+$/g,'');
 			cookiePair.shift();
 			var cookieValue = cookiePair.join('=');
 			if(cookieName == "GNSESS"){skaTools.GNSessionCookie = new Function("return " + cookieValue)()}
@@ -42,3 +43,4 @@ var skaTools = {
 }
 
 if(document.addEventListener){window.addEventListener("load", skaTools.main, false )}else if(document.attachEvent){window.attachEvent("onload", skaTools.main)}
+

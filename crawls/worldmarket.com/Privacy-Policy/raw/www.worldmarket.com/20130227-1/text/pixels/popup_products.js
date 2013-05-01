@@ -16,9 +16,14 @@ jQuery(function () {
 		openDialogInfo('RugsProductAdvisement1','');
 		return false;
 	});
+	jQuery('.caprop65PopUp').click(function(){
+		jQuery('.pqveMainContent').append('<div id="caprop65PopUp" style="display:none; line-height:1.6"><h2 style="padding-bottom:20px;">ATTENTION CALIFORNIA RESIDENTS</h2><p style="line-height:1.6">The product warnings below have been made available to our customers in accordance with California\'s Safe Drinking Water and Toxic Enforcement Act of 1986 (Prop 65).</p><p style="line-height:1.6">To learn more about California Proposition 65, <a href="http://oehha.ca.gov/prop65/p65faq.html?ab=prop65:oehha:faq" target="_blank">visit the OEHHA\'s FAQ page for Proposition 65.</a></p><p style="line-height:1.6; padding-top:20px"><strong>TDCPP Warning</strong><br>This product contains TDCPP (a flame retardant), a chemical known to the State of California to cause cancer.</p></div>');
+		openDialogInfo('caprop65PopUp','');
+		return false;
+	});
 
 // Removing Popups from the page when close popup
 	jQuery('.popClose img').click(function(){
-		jQuery('#LightingProductAdvisement1, #LightingProductAdvisement2').remove();
+		jQuery('#LightingProductAdvisement1, #LightingProductAdvisement2, #RugsProductAdvisement1, #caprop65').remove();
 	});
 });

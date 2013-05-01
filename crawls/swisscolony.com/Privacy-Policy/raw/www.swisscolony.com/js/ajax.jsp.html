@@ -6,6 +6,7 @@ var queryParams = window.location.search;
 // sets up the affiliate cookies, promocodes
 var ajaxAffiliateRequestURL = site_base_url + "/js/cookie_manager.jsp";
 var ajaxAffiliateParams = queryParams.replace("?","");
+
 $.ajax({
     type: "POST",
     url: ajaxAffiliateRequestURL,
@@ -21,6 +22,7 @@ $.ajax({
                 SetCookie(afObject.affiliateCookieName, afObject.affiliateCookieValue, afObject.affiliateCookieExpiration, afObject.path);
             }
             $("#headerItemCount").html(jsonData.itemsCount);
+            
         });
         return true;
     },
@@ -32,14 +34,11 @@ $.ajax({
 
 //utag for Tealium
 // only call for Akamai pages
-
 var path = window.location.pathname;
 if (false || !pathContains(path)) {
 	path = encodeURIComponent(path);
 	var ajaxUtagURL = site_base_url + "/js/utag_call.jsp";
 	var utagParams = "path="+path+"&referrer="+encodeURIComponent(document.referrer);
-	
-		utagParams += "&errorType=";
 	
 	$.ajax({    
 	    url: ajaxUtagURL,
@@ -47,8 +46,7 @@ if (false || !pathContains(path)) {
 	    timeout: 15000,
 	    dataType: "script",
 	    success: function(data) {
-	       
-	    }
+		}
 	});
 }
 

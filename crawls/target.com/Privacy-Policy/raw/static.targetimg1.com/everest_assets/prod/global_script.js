@@ -24,8 +24,10 @@ $(document).ready(function() {
     
     //setTimeout(function(){$("#MainMenu .home-link a").attr("href", "/")});
      try {
-        var noJS = $(document).find("div.no-js"),
-        sessCookie = Target.controller.header.cookie.read('s_sess');
+        var noJS = $(document).find("div.no-js");
+        if (typeof (Target.controller.header.cookie.areCookiesEnabled) == "undefined") {
+			sessCookie = Target.controller.header.cookie.read('s_sess');}
+		else {sessCookie = Target.controller.header.cookie.areCookiesEnabled()}
          if ((noJS != null || noJS != "") && sessCookie != null) {
             $("div.no-js").hide();
             $("#overlay-curtain").hide();

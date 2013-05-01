@@ -65,7 +65,7 @@ function cmCreateShopAction5Tag(productID,productName,productQuantity,productPri
 	if ((typeof(cm_currencyCode) == "undefined") || (!cm_currencyCode)) {
 		cm_currencyCode = "";
 	}
-	attributes=__vc+"-_-"+__br+"-_-"+__onair+"-_-"+attributes;
+	/* attributes=__vc+"-_-"+__br+"-_-"+__onair+"-_-"+attributes; */
 	productPrice = productPrice.toString().replace(cmPricePattern, "");
 	productID = productID.toString().replace(cmSpacePattern, "");
 	var hashValue = "" + (attributes ? attributes + "|||" : "") + (extraFields ? "extra" + extraFields : "");

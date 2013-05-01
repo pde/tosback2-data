@@ -1064,7 +1064,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "04/27/2013 08:14 AM",
+            DATE_IN_USE: "05/01/2013 08:15 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -3659,11 +3659,15 @@ var wcd_VV = function() {
 				fireVVDisruptor();
 			} else {
 				Event.fire(document, "personalizationService:renderCustomerAttributes");
-				$("rewards").style.display = "block";		
+				if($("rewards")){ 
+					$("rewards").style.display = "block";
+				}				
 			}
 		} else {
 			Event.fire(document, "personalizationService:renderCustomerAttributes");
-			$("rewards").style.display = "block";
+			if($("rewards")){ 
+				$("rewards").style.display = "block";
+			}
 		}
 		// fire virtual value code
 	}
@@ -4864,6 +4868,25 @@ if( shippingOptionsService.controller && shippingOptionsService.controller.close
 <!-- END - WCD Sitewide Container 6 -->
 
 <!-- BEGIN - WCD Sitewide Container 7 -->
+<!-- BEGIN Content Item File: /content/0006/523/453/cn6523453.html -->
+
+<script type="text/javascript">
+var RISShakeout = function() {
+	var risURL = location.href;
+	risURL.toQueryParams();
+	if (risURL.RiS == "true") {
+		if($("storeLocationsList")) {
+			var elementArr = $("storeLocationsList").select("div.reserveInStore");
+			for (i = 0; i < elementArr.length; i++) {
+				elementArr[i].style.display = "block";
+			}
+		}
+	}
+}
+Event.observe(window,"load",RISShakeout);
+</script>
+
+<!-- END Content Item File: /content/0006/523/453/cn6523453.html -->
 
 <!-- END - WCD Sitewide Container 7 -->
 
@@ -5138,7 +5161,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/509/787/cn6509787.html -->
+<!-- BEGIN Content Item File: /content/0006/526/546/cn6526546.html -->
 
 <!-- GOL mobile content -->
 <script type="text/javascript">
@@ -5150,8 +5173,8 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/042513_ALL_DVF_MOB_US.jpg",
-				"url" : "http://www.gap.com/browse/category.do?cid=94065&desktopSiteActive=true&mlink,6509787,MOB_HP_Main_DVF&clink=6509787"
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/042513_ALL_DVF_MOB_US.jpg",
+				"url" : "http://www.gap.com/browse/category.do?cid=94065&mlink,6526546,MOB_HP_Main_DVF&clink=6526546"
 			}
 		]
   	},
@@ -5160,21 +5183,21 @@ contentInfo.mobileContent = {
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/10-25_EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/edfs_popup.html" }
 		},
 		"skinnyBanner":
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/042613_ALL_NewMD_add40_mobile_US_XC.jpg",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/042813_ALL_mysteryOffer35_MOBAN_US.gif",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/787/assets/skinny_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/skinny_popup.html" }
 		}
 	}
 };
 </script>
 
-<!-- END Content Item File: /content/0006/509/787/cn6509787.html -->
+<!-- END Content Item File: /content/0006/526/546/cn6526546.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
@@ -5183,7 +5206,7 @@ contentInfo.mobileContent = {
 <!-- END - WCD Sitewide Container 11 -->
 
 <!-- BEGIN - WCD Sitewide Container 12 -->
-<!-- BEGIN Content Item File: /content/0006/454/708/cn6454708.html -->
+<!-- BEGIN Content Item File: /content/0006/525/766/cn6525766.html -->
 
 <!-- Shopping Bag Larger Image A/B code -->
 <script type="text/javascript">
@@ -5370,7 +5393,7 @@ var hideVLIimage = function(index) {
 	vliContainers[index].style.display = "none";
 	vliContainers[index].style.zIndex = "10";
 }
-if (shoppingBagUrls.include(location.pathname)){
+if ( (shoppingBagUrls.include(location.pathname)) && (!responsiveService.api.isMobile()) ){
 
 	
 	Event.observe(document,"dom:loaded",function() {
@@ -6080,7 +6103,7 @@ if (shoppingBagUrls.include(location.pathname)){
 } // end shopping bag "IF"
 </script>
 
-<!-- END Content Item File: /content/0006/454/708/cn6454708.html -->
+<!-- END Content Item File: /content/0006/525/766/cn6525766.html -->
 
 <!-- END - WCD Sitewide Container 12 -->
 
@@ -7430,13 +7453,13 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/509/683/cn6509683.html -->
-<div id="contentItemContainer10000395" class="6509683" >
+    	<!-- BEGIN Content Item File: /content/0006/526/545/cn6526545.html -->
+<div id="contentItemContainer10000395" class="6526545" >
 
 <style type="text/css">
 #globalBanner {
-	width: 510;
-	height: 59px;
+	width: 636px;
+	height: 63px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
@@ -7487,17 +7510,17 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/683/assets/042613_ALL_NewMD_add40_GB_US_XC.png" alt="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." title="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/545/assets/042813_ALL_mysteryOffer35_GB_US.png" alt="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." title="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,510,59" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/509/683/assets/legal.html" data-jbox-width="350" data-jbox-height="400">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,636,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/545/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/509/683/assets/042613_ALL_NewMD_add40_DISR_US_XC.jpg" alt="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." title="NEW MARKDOWNS! TAKE AN ADDITIONAL 40% OFF ALL SALE STYLES. ONLINE AND IN STORES. END 4/27. ENTER GAPSALE." usemap="#disruptorMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/545/assets/042813_ALL_mysteryOffer35_DISR_US.png" alt="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." title="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." usemap="#disruptorMap">
 		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/509/683/assets/legal.html" data-jbox-width="350" data-jbox-height="400" alt="click for details">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/545/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
         </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -7505,7 +7528,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('042613_GB');
+	globalBannerDisruptor.init('050113_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7627,7 +7650,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/509/683/cn6509683.html -->
+<!-- END Content Item File: /content/0006/526/545/cn6526545.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8985,7 +9008,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6509683,6436342,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6526545,6436342,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

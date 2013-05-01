@@ -160,7 +160,7 @@
 		if(navigator.appName=='Microsoft Internet Explorer'){
 			var re=new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
 			if(re.exec(navigator.userAgent)!=null)
-				if(parseFloat(RegExp.$1)<7){return [-3,'user agent','non-mobile']}
+				if(parseFloat(RegExp.$1)<8){return [-3,'user agent','non-mobile']}
 			if( ! is_contained)
 				if(top.document.compatMode!='CSS1Compat'){return [-4,'unsuitable dom','quirks mode']}
 		}
@@ -213,7 +213,6 @@
 		);
 
 		if( ! (('body' in top.document) && top.document.body)){return retry([-22,'unsuitable dom','top.document.body was not found'])}
-		if(top.document.body.offsetWidth < 1000){return retry([-7,'page width','body',top.document.body.offsetWidth + '-' + window.screen.width])}
 
 		
 		if(1 < Math.random()){return [0,'throttled','placement fill rate']}
@@ -302,6 +301,5 @@
 			i.document.close();
 		}
 	}
-
 };outer_stall();
 })();

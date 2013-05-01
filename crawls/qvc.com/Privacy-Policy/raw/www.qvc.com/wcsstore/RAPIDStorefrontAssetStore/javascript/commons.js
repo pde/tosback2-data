@@ -212,7 +212,7 @@ function checkProfanity(formName, aCallback, aFailureCallback) {
 				 onFailure: function(res) { return handleResponse(res); }
 			 });
 
-			req.send("country=" + countryCode + "&transaction=QVCProfanityFilter&method=GET&message=" + str);
+			req.send("country=" + countryCode + "&transaction=QVCProfanityFilter&method=GET&message=" + urlEncode(str));
 		}
 		else {
 			aCallback.call();
@@ -859,7 +859,6 @@ function validateAddressNickName(isFocusSetFlag){
 	var valMessage_Required_Valid_Address_Nickname = ERR_REQUIRED_VALID_ADDRESS_NICKNAME_NEW;
 
 	var txtAddressNickname = document.getElementById("txtAddressNickname");
-
 	if (txtAddressNickname != null) {
 		var trimmedNickName = trimAll(txtAddressNickname.value);
 		if (trimmedNickName == "") {
@@ -946,7 +945,6 @@ function validateName(isFocusSetFlag){
 
 	var txtFirstName = document.getElementById("txtFirstName");
 	var txtLastName = document.getElementById("txtLastName");
-
 	var regexp_InvalidChars = "[&]";
 	var re = new RegExp(regexp_InvalidChars);
 
@@ -1048,9 +1046,7 @@ function validateAddressInput(isFocusSetFlag){
 	var retValue = true;
 	var valPageError = ERRCONSOLEMESSAGE;
 	var valMessage_Required_Address = ERR_REQUIRED_VALID_ADDRESS;
-
 	var txtAddress1 = document.getElementById("txtAddress1");
-
 	if (txtAddress1 != null && trimAll(txtAddress1.value) == "" ){
 		if (!isFocusSetFlag){
 			txtAddress1.focus();

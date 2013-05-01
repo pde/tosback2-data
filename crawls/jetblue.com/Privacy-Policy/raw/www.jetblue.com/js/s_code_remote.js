@@ -4,7 +4,7 @@ More info available at http://www.omniture.com */
 /* Specify the Report Suite ID(s) to track here */
 
 if(location.href.indexOf('jetblue.com/vacations')>=0)
-   var s_account="jetbluecom2,jetbluepkgcs";
+   var s_account="jetbluecom2";
 else
    var s_account="jetbluecom2"
 

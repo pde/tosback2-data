@@ -1969,7 +1969,7 @@ if ( fastCo.redirect.isMobile() ) {
             for(var i=0; i<patterns.length; i++){
                 var node = uri.match( patterns[i] );
                 if( node && node.length === 1 ){
-                    var url = moburl + '?m=' + domain + '/node/' + node[0].match(/\d+/)[0] + '&url=' + window.location.href;
+                    var url = moburl + '?m=' + domain + '/node/' + node[0].match(/\d+/)[0] + '&url=' + window.location.href + '&' + window.location.search.substring(1);
                     window.location = url;
                 }
             }

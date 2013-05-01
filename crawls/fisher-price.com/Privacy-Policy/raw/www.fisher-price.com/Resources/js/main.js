@@ -3331,6 +3331,7 @@ function selectFilterFromHash() {
 	{
 		var a = params[param].split("=");
 		selectFilter(a, "age", ".filter-Age", "selector-code");
+		selectFilter(a, "age", ".filter-Age", "pname");
 		selectFilter(a, "cat", ".filter-category", "data-cat-code");
 		selectFilter(a, "brand", ".filter-brands", "data-brand-code");
 		selectFilter(a, "age", ".filter-Age", "categorycode");
@@ -3343,6 +3344,7 @@ function selectFilterFromHash() {
 		selectFilter(a, "typ", ".filter-type", "categorycode");
 		selectFilter(a, "the", ".filter-themes", "categorycode");
 		selectFilter(a, "the", ".filter-themes", "pname");
+		selectFilter(a, "os", ".filter-os", "pname");
 		if(a[0] == "viewAllProducts" && a[1] == "true") {
 			$('#viewAllProducts.active').trigger('click');
 		}

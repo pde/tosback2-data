@@ -10,7 +10,7 @@
    mistats.prodPath = mistats.prodPath ? mistats.prodPath[0] : 'http://media.kentucky.com/mistats/products';
 })();
 
-if ((mistats.bizunit || '') === 'TCH')
+if ((mistats.bizunit || '').match(/TCH|LED/))
    document.write('<scr' + 'ipt type="text/javascr' + 'ipt" src="' + mistats.prodPath + '/pubsys_s_code_25.4.js"></scr' + 'ipt>');
 else
    document.write('<scr' + 'ipt type="text/javascr' + 'ipt" src="' + mistats.prodPath + '/pubsys_s_code_20.3.js"></scr' + 'ipt>');

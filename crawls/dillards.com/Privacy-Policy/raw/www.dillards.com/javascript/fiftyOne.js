@@ -128,68 +128,68 @@
 		countryCodeArray[101]="UNITED STATES|US|USD|1|0";
 
 	var currencyCodeArray = new Array();
-		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504200000|2|30630012";
-		currencyCodeArray[1]="Argentine Peso|ARS|5.5648500000|2|30630013";
-		currencyCodeArray[2]="Australian Dollar|AUD|1.0321200000|1|30630014";
-		currencyCodeArray[3]="Barbados Dollar|BBD|2.1402500000|2|30630015";
-		currencyCodeArray[4]="Taka|BDT|84.2869000000|2|30630016";
-		currencyCodeArray[5]="Bulgarian Lev|BGN|1.6178700000|2|30630017";
-		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4054740000|2|30630018";
-		currencyCodeArray[7]="Boliviano|BOB|7.5930300000|2|30630019";
-		currencyCodeArray[8]="Brazilian Real|BRL|2.1535800000|1|30630020";
-		currencyCodeArray[9]="Belize Dollar|BZD|2.1079800000|2|30630021";
-		currencyCodeArray[10]="Canadian Dollar|CAD|1.0691800000|2|30630022";
-		currencyCodeArray[11]="Swiss Franc|CHF|1.0152700000|1|30630023";
-		currencyCodeArray[12]="Chilean Peso|CLP|508.3890000000|-1|30630024";
-		currencyCodeArray[13]="Yuan Renminbi|CNY|6.6307800000|2|30630025";
-		currencyCodeArray[14]="Colombian Peso|COP|1973.5400000000|-2|30630026";
-		currencyCodeArray[15]="Costa Rican Colon|CRC|539.5780000000|2|30630027";
-		currencyCodeArray[16]="Czech Koruna|CZK|21.3272000000|0|30630028";
-		currencyCodeArray[17]="Danish Krone|DKK|6.1675600000|0|30630029";
-		currencyCodeArray[18]="Dominican Peso|DOP|44.2783000000|2|30630030";
-		currencyCodeArray[19]="Egyptian Pound|EGP|7.4654800000|1|30630031";
-		currencyCodeArray[20]="Euro|EUR|0.8155660000|2|30630032";
-		currencyCodeArray[21]="British Pound|GBP|0.6856770000|2|30630033";
-		currencyCodeArray[22]="Quetzal|GTQ|8.4136400000|2|30630034";
-		currencyCodeArray[23]="Hong Kong Dollar|HKD|8.3504000000|2|30630035";
-		currencyCodeArray[24]="Lempira|HNL|20.7787000000|2|30630036";
-		currencyCodeArray[25]="Hungarian Forint|HUF|249.6020000000|0|30630037";
-		currencyCodeArray[26]="Indonesian Rupiah|IDR|10458.2000000000|-2|30630038";
-		currencyCodeArray[27]="Israeli Shekel|ILS|3.8830900000|1|30630039";
-		currencyCodeArray[28]="Indian Rupee|INR|58.4911000000|0|30630040";
-		currencyCodeArray[29]="Jamaican Dollar|JMD|106.9050000000|2|30630041";
-		currencyCodeArray[30]="Jordanian Dinar|JOD|0.7625300000|2|30630042";
-		currencyCodeArray[31]="Japanese Yen|JPY|104.6830000000|0|30630043";
-		currencyCodeArray[32]="Riel|KHR|4284.7900000000|2|30630044";
-		currencyCodeArray[33]="Korean Won|KRW|1195.8700000000|0|30630045";
-		currencyCodeArray[34]="Kuwaiti Dinar|KWD|0.3071840000|2|30630046";
-		currencyCodeArray[35]="Cayman Islands Dollar|KYD|0.8819100000|2|30630047";
-		currencyCodeArray[36]="Sri Lanka Rupee|LKR|137.5560000000|2|30630048";
-		currencyCodeArray[37]="Lithuanian Litas|LTL|2.8555600000|2|30630049";
-		currencyCodeArray[38]="Latvian Lats|LVL|0.5793720000|2|30630050";
-		currencyCodeArray[39]="Rufiyaa|MVR|16.8531000000|2|30630052";
-		currencyCodeArray[40]="Mexican Peso|MXN|13.1120000000|0|30630053";
-		currencyCodeArray[41]="Cordoba Oro|NIO|26.3489000000|2|30630054";
-		currencyCodeArray[42]="Norwegian Krone|NOK|6.3084500000|0|30630055";
-		currencyCodeArray[43]="New Zealand Dollar|NZD|1.2645500000|1|30630057";
-		currencyCodeArray[44]="Omani Rial|OMR|0.4140890000|2|30630058";
-		currencyCodeArray[45]="Balboa|PAB|1.0755000000|2|30630059";
-		currencyCodeArray[46]="Peruvian Nuevo Sol|PEN|2.8172700000|1|30630060";
-		currencyCodeArray[47]="Philippine Peso|PHP|44.3859000000|0|30630061";
-		currencyCodeArray[48]="Pakistan Rupee|PKR|105.8610000000|2|30630062";
-		currencyCodeArray[49]="Polish Zloty|PLN|3.4410600000|2|30630063";
-		currencyCodeArray[50]="Guarani|PYG|4527.8600000000|0|30630064";
-		currencyCodeArray[51]="Qatari Riyal|QAR|3.9160000000|2|30630065";
-		currencyCodeArray[52]="New Romanian Leu|RON|3.5914200000|2|30630066";
-		currencyCodeArray[53]="Russian Ruble|RUB|33.6917000000|2|30630067";
-		currencyCodeArray[54]="Saudi Riyal|SAR|4.0334500000|1|30630068";
-		currencyCodeArray[55]="Swedish Krona|SEK|7.0824900000|0|30630069";
-		currencyCodeArray[56]="Singapore Dollar|SGD|1.3321100000|1|30630070";
-		currencyCodeArray[57]="Thai Baht|THB|31.5444000000|0|30630072";
-		currencyCodeArray[58]="Turkish Lira|TRY|1.9391300000|1|30630073";
-		currencyCodeArray[59]="Taiwan Dollar|TWD|31.8724000000|0|30630074";
-		currencyCodeArray[60]="US Dollar|USD|1.0000000000|2|30630076";
-		currencyCodeArray[61]="South African Rand|ZAR|9.8406100000|1|30630077";
+		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9505300000|2|30671466";
+		currencyCodeArray[1]="Argentine Peso|ARS|5.5730300000|2|30671467";
+		currencyCodeArray[2]="Australian Dollar|AUD|1.0259300000|1|30671468";
+		currencyCodeArray[3]="Barbados Dollar|BBD|2.1402500000|2|30671469";
+		currencyCodeArray[4]="Taka|BDT|83.8460000000|2|30671470";
+		currencyCodeArray[5]="Bulgarian Lev|BGN|1.6086300000|2|30671471";
+		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4054960000|2|30671472";
+		currencyCodeArray[7]="Boliviano|BOB|7.5930300000|2|30671473";
+		currencyCodeArray[8]="Brazilian Real|BRL|2.1660600000|1|30671474";
+		currencyCodeArray[9]="Belize Dollar|BZD|2.1079800000|2|30671475";
+		currencyCodeArray[10]="Canadian Dollar|CAD|1.0602700000|2|30671476";
+		currencyCodeArray[11]="Swiss Franc|CHF|1.0068800000|1|30671477";
+		currencyCodeArray[12]="Chilean Peso|CLP|508.1740000000|-1|30671478";
+		currencyCodeArray[13]="Yuan Renminbi|CNY|6.6307800000|2|30671479";
+		currencyCodeArray[14]="Colombian Peso|COP|1966.5500000000|-2|30671480";
+		currencyCodeArray[15]="Costa Rican Colon|CRC|539.5780000000|2|30671481";
+		currencyCodeArray[16]="Czech Koruna|CZK|21.2035000000|0|30671482";
+		currencyCodeArray[17]="Danish Krone|DKK|6.1335800000|0|30671483";
+		currencyCodeArray[18]="Dominican Peso|DOP|44.2568000000|2|30671484";
+		currencyCodeArray[19]="Egyptian Pound|EGP|7.4580500000|1|30671485";
+		currencyCodeArray[20]="Euro|EUR|0.8108270000|2|30671486";
+		currencyCodeArray[21]="British Pound|GBP|0.6851010000|2|30671487";
+		currencyCodeArray[22]="Quetzal|GTQ|8.4018100000|2|30671488";
+		currencyCodeArray[23]="Hong Kong Dollar|HKD|8.3479200000|2|30671489";
+		currencyCodeArray[24]="Lempira|HNL|20.7356000000|2|30671490";
+		currencyCodeArray[25]="Hungarian Forint|HUF|246.6660000000|0|30671491";
+		currencyCodeArray[26]="Indonesian Rupiah|IDR|10459.2000000000|-2|30671492";
+		currencyCodeArray[27]="Israeli Shekel|ILS|3.8652400000|1|30671493";
+		currencyCodeArray[28]="Indian Rupee|INR|57.8027000000|0|30671494";
+		currencyCodeArray[29]="Jamaican Dollar|JMD|106.9050000000|2|30671495";
+		currencyCodeArray[30]="Jordanian Dinar|JOD|0.7627450000|2|30671496";
+		currencyCodeArray[31]="Japanese Yen|JPY|103.3470000000|0|30671497";
+		currencyCodeArray[32]="Riel|KHR|4284.7900000000|2|30671498";
+		currencyCodeArray[33]="Korean Won|KRW|1185.3300000000|0|30671499";
+		currencyCodeArray[34]="Kuwaiti Dinar|KWD|0.3063350000|2|30671500";
+		currencyCodeArray[35]="Cayman Islands Dollar|KYD|0.8819100000|2|30671501";
+		currencyCodeArray[36]="Sri Lanka Rupee|LKR|136.3730000000|2|30671502";
+		currencyCodeArray[37]="Lithuanian Litas|LTL|2.8392100000|2|30671503";
+		currencyCodeArray[38]="Latvian Lats|LVL|0.5758230000|2|30671504";
+		currencyCodeArray[39]="Rufiyaa|MVR|16.8746000000|2|30671506";
+		currencyCodeArray[40]="Mexican Peso|MXN|13.1039000000|0|30671507";
+		currencyCodeArray[41]="Cordoba Oro|NIO|26.3630000000|2|30671508";
+		currencyCodeArray[42]="Norwegian Krone|NOK|6.2659700000|0|30671509";
+		currencyCodeArray[43]="New Zealand Dollar|NZD|1.2567200000|1|30671511";
+		currencyCodeArray[44]="Omani Rial|OMR|0.4140890000|2|30671512";
+		currencyCodeArray[45]="Balboa|PAB|1.0755000000|2|30671513";
+		currencyCodeArray[46]="Peruvian Nuevo Sol|PEN|2.8387800000|1|30671514";
+		currencyCodeArray[47]="Philippine Peso|PHP|44.3052000000|0|30671515";
+		currencyCodeArray[48]="Pakistan Rupee|PKR|105.8720000000|2|30671516";
+		currencyCodeArray[49]="Polish Zloty|PLN|3.4126700000|2|30671517";
+		currencyCodeArray[50]="Guarani|PYG|4517.1000000000|0|30671518";
+		currencyCodeArray[51]="Qatari Riyal|QAR|3.9152500000|2|30671519";
+		currencyCodeArray[52]="New Romanian Leu|RON|3.5586100000|2|30671520";
+		currencyCodeArray[53]="Russian Ruble|RUB|33.4111000000|2|30671521";
+		currencyCodeArray[54]="Saudi Riyal|SAR|4.0334500000|1|30671522";
+		currencyCodeArray[55]="Swedish Krona|SEK|7.0283900000|0|30671523";
+		currencyCodeArray[56]="Singapore Dollar|SGD|1.3277000000|1|30671524";
+		currencyCodeArray[57]="Thai Baht|THB|31.5498000000|0|30671526";
+		currencyCodeArray[58]="Turkish Lira|TRY|1.9362200000|1|30671527";
+		currencyCodeArray[59]="Taiwan Dollar|TWD|31.7972000000|0|30671528";
+		currencyCodeArray[60]="US Dollar|USD|1.0000000000|2|30671530";
+		currencyCodeArray[61]="South African Rand|ZAR|9.6445500000|1|30671531";
 
 	function setCookies(cookieName,codeValue){
 		$.cookie(cookieName, codeValue,{ path: '/', domain: '.dillards.com' });
@@ -1208,21 +1208,33 @@
 					if ($(this).is(".price")) {
 						if($(this).html().indexOf("<") != -1){
 							var itemPrice; 
+							tempVerbPresent = false; 
 							if($(this).html().indexOf("Orig.") != -1){
 								itemPrice=$(this).text().split("Orig.");
 							}
 							else if($(this).html().indexOf("Orig:") != -1){
 								itemPrice= $(this).text().split("Orig:");
+							}							else {
+								itemPrice= $(this).text();
 							}
-							var itemPrice1 = itemPrice[0].replace('$','').replace(',',''); 
-							var newPrice1 = calculateNewPrice(itemPrice1,exchangeRate,FLC,roundMethod,1); 
-							var tempVerb = $(this).children(this).text();
-							if (typeof itemPrice[1] != "undefined") {
-								var itemPrice2 = itemPrice[1].replace('$','').replace(',','');
-								var newPrice2 = calculateNewPrice(itemPrice2,exchangeRate,FLC,roundMethod,1); 
-								$(this).html(newPrice1 + " "+  "<span class=\"temp-verb\">" + "Orig." + " " + newPrice2  +"</span>");
+
+							if(tempVerbPresent){
+								var itemPrice1 = itemPrice[0].replace('$','').replace(',',''); 
+								var newPrice1 = calculateNewPrice(itemPrice1,exchangeRate,FLC,roundMethod,1); 
+								var tempVerb = $(this).children(this).text();
+								if (typeof itemPrice[1] != "undefined") {
+									var itemPrice2 = itemPrice[1].replace('$','').replace(',','');
+									var newPrice2 = calculateNewPrice(itemPrice2,exchangeRate,FLC,roundMethod,1); 
+									$(this).html(newPrice1 + " "+  "<span class=\"temp-verb\">" + "Orig." + " " + newPrice2  +"</span>");
+								}
+								else{
+									$(this).html(newPrice1 + "<span class=\"temp-verb\">" + tempVerb +"</span>");
+								}
 							}
 							else{
+								var itemPrice1 = itemPrice.replace('$','').replace(',','');
+								var newPrice1 = calculateNewPrice(itemPrice1,exchangeRate,FLC,roundMethod,1);
+								var tempVerb = $(this).children(this).text();
 								$(this).html(newPrice1 + "<span class=\"temp-verb\">" + tempVerb +"</span>");
 							}
 						}

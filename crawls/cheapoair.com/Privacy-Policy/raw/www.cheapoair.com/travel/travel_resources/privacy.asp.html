@@ -375,8 +375,8 @@ GA_googleFillSlot("CA_GE_OP_BTF_B_728x90_G_24Jan11");
 
             signupService.GetAffiliate();
             responseAffiliate = signupService.ResponseFPAffiliate;
-            pageTracker._trackEvent('NewsletterSignup', 'View', 'SignUpBanner' + "," + responseAffiliate);
-
+            _gaq.push(['_trackEvent', 'NewsletterSignup', 'View', 'SignUpBanner' + "," + responseAffiliate]);
+           
             $('#tbEmailSignUp').focus(function () {
                 if ($('#tbEmailSignUp').val() == "Enter your email here" || $('#tbEmailSignUp').val().indexOf(' ') > -1) {
                     signupService.CleanDefault();
@@ -444,8 +444,8 @@ GA_googleFillSlot("CA_GE_OP_BTF_B_728x90_G_24Jan11");
             }
             else {
                 $('#lblMessageSignUp').html(signupService.ErrorInfo.replace("~", ""));
-                pageTracker._trackEvent('NewsletterSignup', 'Signup-Failure', 'SignUpBanner' + "," + responseAffiliate);
-            }
+                _gaq.push(['_trackEvent', 'NewsletterSignup', 'Signup-Failure', 'SignUpBanner' + "," + responseAffiliate]);
+                            }
         }
     }
     function showcouponSignUp() {
@@ -455,7 +455,8 @@ GA_googleFillSlot("CA_GE_OP_BTF_B_728x90_G_24Jan11");
             $('#tbEmailSignUp').hide();
             $('#lblMessageSignUp').hide();
             $('#dvfooterCotent').css('display', 'none');
-            pageTracker._trackEvent('NewsletterSignup', 'Signup-Success', 'SignUpBanner' + "," + responseAffiliate);
+            _gaq.push(['_trackEvent', 'NewsletterSignup', 'Signup-Success', 'SignUpBanner' + "," + responseAffiliate]);
+            
         }
     }
 -->
@@ -646,18 +647,21 @@ Enter Promo at time of check out. Promo code provides $15 or the amount of the p
 </script> 
 <!-- ****************************** Google Analytics Code ****************************** --> 
 <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script> 
-<script type="text/javascript">
-    var pageTracker = _gat._getTracker("UA-423411-1");
-    pageTracker._initData();
-    pageTracker._trackPageview();
-</script> 
-<!-- ****************************** Google Analytics Code ****************************** --> 
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-423411-1']);
 
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+<!-- ****************************** Google Analytics Code ****************************** --> 
+<script type="text/javascript" src="scripts/fp-tracker-0.3.min.js"></script>
 </td>
   </tr>
 </table>
+<span id="spnTName" style="display:none">Info</span>
 </body>
 </html>

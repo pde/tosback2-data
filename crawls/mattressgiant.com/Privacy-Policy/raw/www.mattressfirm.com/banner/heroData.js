@@ -6,8 +6,8 @@ var endDate = "01/01/2020 00:00 ";
 //add one more day for public
 var dateTimeList = new Array(startDate, endDate);
 
-var heroImgList = new Array("Banner/home/01_WK13_Special_399.gif;Banner/home/02_FF_50OffAccessories.gif;Banner/home/03_Tempur_3Years.png");
-var heroLinkList = new Array("Hampton-and-Rhodes-11-Luxury-Pillow-Top-P265.aspx?ref=Home&tag=01_WK13_Special_399;Coupon-L111.aspx?ref=Home&tag=02_FF_50OffAccessories;Tempur-Pedic-0-C20.aspx?ref=Home&tag=03_Tempur_3Years");
+var heroImgList = new Array("Banner/home/01_WK13_Special_399.gif;Banner/home/03_Tempur_3Years.png");
+var heroLinkList = new Array("Hampton-and-Rhodes-11-Luxury-Pillow-Top-P265.aspx?ref=Home&tag=01_WK13_Special_399;Tempur-Pedic-0-C20.aspx?ref=Home&tag=03_Tempur_3Years");
 
 //specify images
 //current data if no chnage needed

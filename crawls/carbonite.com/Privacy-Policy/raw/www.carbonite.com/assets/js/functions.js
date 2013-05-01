@@ -24,3 +24,6 @@ function utag_data(){page_id="",category="",user_id=null,campaign_id=null};$(doc
 //OS ERROR SCRIPT NR - THIS NEEDS REFACTORING UPON LAUNCH
 $(function(){if(navigator.appVersion.indexOf("Mac")!=-1){$(".os-disable").mouseover(function(){$(".os-error").show()});$(".os-disable").mouseout(function(){$(".os-error").hide()});$(".os-disable1").mouseover(function(){$(".os-error-plus").show()});$(".os-disable1").mouseout(function(){$(".os-error-plus").hide()});$(".os-disable2").mouseover(function(){$(".os-error-prem").show()});$(".os-disable2").mouseout(function(){$(".os-error-prem").hide()});$(".os-disable3").mouseover(function(){$(".os-error-plus-tab").show()});
 $(".os-disable3").mouseout(function(){$(".os-error-plus-tab").hide()});$(".os-disable4").mouseover(function(){$(".os-error-prem-tab").show()});$(".os-disable4").mouseout(function(){$(".os-error-prem-tab").hide()})}});
+
+//MOBILE SURVEY NR
+function mobileSurvey() {$('.surveydialog').dialog({modal: true, maxwidth: 330, maxheight:523, height: 523, width:330}).css('font-size', '1.3em');}

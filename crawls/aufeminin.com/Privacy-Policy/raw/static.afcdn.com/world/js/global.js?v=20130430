@@ -1,0 +1,948 @@
+﻿/************************************************/
+/************* login on current page*************/
+/************************************************/
+var af_loginFrame = null;
+function af_toggleLoginFrame(params) {
+	if (params == undefined) params = '';
+	if (params == '') params = 'desturl=' + escape(document.location.href)
+	
+	if (typeof(SITEID) != 'undefined' && (SITEID <= 5 || SITEID == 25 || SITEID >= 29)) {
+		if (SITEID != 1 && document.location.pathname != '/') {
+			document.location = '/#connect,' + params
+			return false;
+		}
+	} else {
+		document.location = '/world/communaute/connexion/quickconnect.asp?' + params;
+		return false;
+	}
+
+	if (af_loginFrame == null) {
+		af_loginFrame = document.createElement('div');
+		
+		var e = document.getElementById('af_btnConnect');
+		if (e == null) e = document.getElementById('af_userbarlog').firstChild.nextSibling;
+		var text = e.innerHTML;
+		
+		af_loginFrame.innerHTML = '<div class="af_navUserBarPopUpLink">' +
+							'<a href="#" onclick="return af_toggleLoginFrame()">'+text+'</a></div>' +
+							'<iframe id="af_ifrUserConnect" class="af_navUserBarPopUpConnect" ' +
+								' src="/world/communaute/users/popup.asp?' + params + '" ' +
+								' width="1" height="0" scrolling="no" FRAMEBORDER="0" allowtransparency="true"></iframe>';
+		af_loginFrame.style.display='none';
+		
+		e = document.getElementById('af_displayPopup')
+		if (e == null) e = document.getElementById('af_headerUserBarLogin');
+		e.appendChild(af_loginFrame);	
+	}
+	
+	if (af_loginFrame.style.display == 'none') {
+		af_loginFrame.style.display = '';
+	
+		if (typeof(afAdScripts) == 'undefined') {
+			var pos = afAdScripts.findPos(document.getElementById('af_btnConnect'));
+			afAdScripts.smoothScroll(400, 0, pos.t);
+		}
+	} else {
+		af_loginFrame.style.display = 'none';
+	}
+	if (typeof(SITEID) != 'undefined' && SITEID == 4) {
+		aff_ivw('');
+	}
+	
+	return false;
+}
+
+function aff_ivw(suffix) {
+	if (typeof IVW != 'undefined' && IVW != '') { aff_ivw.ivw = new Image(); aff_ivw.ivw.src = IVW.replace(/;$/,(suffix ? '-'+suffix+';' : ';')) + '?r=' + escape(document.referrer) + '&d=' + (Math.random() * 100000); }
+	if (typeof NETMX != 'undefined' && NETMX != '') { aff_ivw.netmx = new Image(); aff_ivw.netmx.src = NETMX + (suffix ? '-'+suffix : '') + '?r=' + escape(document.referrer) + '&d=' + (Math.random() * 100000); }
+	if (typeof OEWA != 'undefined' && OEWA != '') { aff_ivw.oewa = new Image(); aff_ivw.oewa.src = OEWA + '?r=' + escape(document.referrer) + '&d=' + (Math.random() * 100000); }
+}
+
+function af_firstLoginFrame(msg,desturl){
+	document.getElementById('af_ifrUserConnect').src='/world/communaute/users/popup.asp?msg='+msg+'&desturl='+desturl;
+}
+
+function aff_inscription(desturl){
+	var oImg = new Image();
+	oImg.src = 'http://network.aufeminin.com/call/pubimppixel/5295084/'+Math.floor(Math.random() * 100000) + 1;
+	oImg.width = '0';
+	oImg.height = '0';
+	oImg.border = '0';
+	oImg.style.position = 'absolute';
+	document.body.appendChild(oImg);
+	top.location.href='/world/communaute/users/inscription.asp?mode=full&desturl='+desturl;
+}
+
+var reg = new RegExp('^#connect,(.+)', 'i');
+if (matches=reg.exec(location.hash)) {
+	if (SITEID == 1) {
+		var oImg = new Image();
+		oImg.src = 'http://network.aufeminin.com/call/pubimppixel/7837436/'+Math.floor(Math.random() * 100000) + 1;
+		oImg.width = '0';
+		oImg.height = '0';
+		oImg.border = '0';
+		oImg.style.position = 'absolute';
+		document.body.appendChild(oImg);
+	}
+	af_toggleLoginFrame(matches[1]);
+}
+ 
+﻿/************************************************/
+/***************** scroll handler ***************/
+/************************************************/
+ 
+function initBarScroll() {
+	var af_navUserBar2012=document.getElementById('af_navUserBar');
+	var af_userBar2012=document.getElementById('af_userBar');
+	var af_nav2012=document.getElementById('af_nav');
+	var af_headerDiv2012=document.getElementById('af_headerDiv');
+	var afSourceBarDistanceFromTop = 0;
+	var af_navSites = document.getElementById('af_navSites');
+	var navSitesHeight = 0;
+	if (af_navSites != undefined)
+		navSitesHeight = af_navSites.offsetHeight;
+	var af_fakeNavUserBar = document.getElementById('af_fakeNavUserBar');
+	if (document.doctype == null && navigator.appName.indexOf("Microsoft") != -1) {}
+	else {
+		if (af_navUserBar2012 != null && af_userBar2012 != null && af_getCookie('cu') != '') {
+			var oBar = af_userBar2012;
+			if (oBar.offsetParent) {
+				afSourceBarDistanceFromTop = oBar.offsetTop;
+				while(oBar = oBar.offsetParent) {
+					afSourceBarDistanceFromTop += oBar.offsetTop;
+				}
+			}
+			var distanceScrolledBar = document.documentElement.scrollTop | document.body.scrollTop;
+			var needsToBeFixedBar = distanceScrolledBar > afSourceBarDistanceFromTop+navSitesHeight;
+			var alreadyBarFixed = af_userBar2012.className.indexOf(' af_userBarFixed') > 0
+			if (needsToBeFixedBar && !alreadyBarFixed) {
+				af_navUserBar2012.style.position='fixed';
+				af_userBar2012.className = af_userBar2012.className + ' af_userBarFixed';
+				af_fakeNavUserBar.style.display='block';
+				/* Too buggy: stop sticky nav
+				if (af_nav2012!=null && af_headerDiv2012!=null) {
+					af_nav2012.style.position='fixed';
+					af_headerDiv2012.className = af_headerDiv2012.className + ' af_headerDivFixed';
+				} */
+			} else if (!needsToBeFixedBar && alreadyBarFixed) {
+				af_navUserBar2012.style.position='static';
+				af_userBar2012.className = af_userBar2012.className.replace(' af_userBarFixed', '');
+				af_fakeNavUserBar.style.display='none';
+				/* Too buggy: stop sticky nav
+				if (af_nav2012!=null && af_headerDiv2012!=null) {
+					af_nav2012.style.position='static';
+					af_headerDiv2012.className = af_headerDiv2012.className.replace(' af_headerDivFixed', '');
+				} */
+			}
+		}
+	}
+}
+
+/************************************************/
+/*********** facebook social reader *************/
+/************************************************/
+ 
+AF_FB_DEBUG = false && typeof(console)!='undefined' && console.log && 
+	(document.location.href.indexOf('http://dev') != -1 || document.location.href.indexOf('http://local.') != -1);
+
+var AF_APP_FB = {
+	'initFB' : function() {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => initFB');
+		
+		FB.getLoginStatus(function(response) {
+			// If user connected to Facebook (+ allowed App), then, fetch datas, and auto refresh
+			if (response.status === 'connected') {
+				if (AF_FB_DEBUG) console.log('Connected to Facebook => Fetching datas');
+				USER_FB.idFB        = response.authResponse.userID;
+				USER_FB.accessToken = response.authResponse.accessToken;
+				AF_APP_FB.setInfoUser();
+				AF_APP_FB.initBar();
+				//AF_APP_FB.showFacepileEdito();
+			} else {
+				if (AF_FB_DEBUG) console.log('Not connected to Facebook');				
+				// Security: force refresh in case of corrupted cookie
+				if (af_getCookie('fbid') != '') {
+					AF_APP_FB.deconnectFB();
+				}
+				if (response.status == 'not_authorized')
+					AF_APP_FB.showFacepileEdito();
+			}
+		});
+	},
+	
+	'deconnectFB' : function () {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => deconnectFB : Will refresh...');
+		setAfXperso('afperso', 'fbid', '');
+		setAfXperso('afperso', 'timeline', '');
+		setAfXperso('afperso', 'feature', '');
+		setAfXperso('afperso', 'popup', '');
+		window.location.reload();
+	},
+	
+	// Init social bar: sharing, activities, featuretour
+	'initBar' : function() {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => initBar, featuretour status = ' + USER_FB.feature);
+
+		AF_APP_FB.initPartage(false);
+		/*if (USER_FB.feature > 0 && SITEID!=7 && SITEID!=8) {
+			var js, id = 'featuretour-script';
+			if (document.getElementById(id)) {return;}
+			js = document.createElement('script');
+			js.id = id;
+			js.async = false;
+			js.src = "/world/static/js/featuretour.js";
+			document.getElementsByTagName('head')[0].appendChild(js);
+			if (AF_FB_DEBUG) console.log('Load feature tour');
+		}*/
+	},
+
+	// Update sharing status (if exists), and make it usable
+	'initPartage' : function (forceCookies) {
+		var e = document.getElementById('activationPartage');
+		if (e) {
+			var active = forceCookies ? (af_getCookie('timeline') == 1) : (USER_FB.timeline == 1);
+			if (active) {
+				e.className = "activationPartageOn";
+				e.onclick = function() { AF_APP_FB.setPartage(0) }
+			} else {
+				e.className = "activationPartageOff";
+				e.onclick = function() { AF_APP_FB.setPartage(1) }
+			}
+		}
+	},
+
+	// Fetch datas or from cookies, either from server (Facebook & Aufeminin)
+	'setInfoUser' : function () {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => setInfoUser');
+		
+		var cookieTimeline     = af_getCookie('timeline');
+		var cookieFeature      = af_getCookie('feature');
+		var cookiePopup        = af_getCookie('popup');
+		var cookieFbid         = af_getCookie('fbid');
+		
+		// Reuse datas from cookies, or AJAX call
+		if (cookieFbid !='' && parseFloat(cookieFbid) > 0 && cookiePopup != '') {
+			if (AF_FB_DEBUG) console.log('setInfoUser with valid cookies. cookieFbid = ' + cookieFbid);
+			USER_FB.timeline = cookieTimeline;
+			USER_FB.feature  = cookieFeature;
+			USER_FB.popup    = cookiePopup;
+		} else {	
+			if (AF_FB_DEBUG) console.log('setInfoUser needs to ask server => AJAX');
+			FB.api('/me', function(response) {
+				USER_FB.fbun = response.name;
+				af_requestGet('/world/communaute/users/users_og_ajax.asp',
+							't=get&fbid='+USER_FB.idFB+'&fbun='+USER_FB.fbun,
+							function (data) {
+								USER_FB.timeline = data.t;
+								USER_FB.feature  = data.f;
+								USER_FB.popup    = data.p;
+								AF_APP_FB.setUserCookie(); // Save datas into cookies
+								if (typeof(notFBConnectedBar) === 'undefined')
+								{
+									AF_APP_FB.setFriends(); // Ask for friends, to save it into our DB
+									AF_APP_FB.initBar(); // Re-init userbar! 
+								}
+							});
+			});	
+		}				
+	},
+
+	// Save user datas into session cookie
+	'setUserCookie' : function() {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => setUserCookie');
+		var previousFbid = af_getCookie('fbid');
+		setAfXperso('afperso', 'timeline', USER_FB.timeline);
+		setAfXperso('afperso', 'feature',  USER_FB.feature);
+		setAfXperso('afperso', 'popup',    USER_FB.popup);
+		setAfXperso('afperso', 'fbid',     USER_FB.idFB);
+		
+		// Autoconnect system => Not connected aufeminin, connected Facebook, force Facebook connect!
+		if ((previousFbid == '' || !(parseFloat(previousFbid) > 0))
+				&& af_getCookie('cu') == '') {
+			if (AF_FB_DEBUG) console.log('setUserCookie => Push Iframe with AuthURL');
+			var af_loginFb = document.createElement('div');
+			af_loginFb.innerHTML = '<div><iframe src="'+fbConnectAuthURL+'" border="0" scrolling="no" ' +
+								'frameborder="0" hspace="0" style="position:absolute;"></iframe></div>';
+			document.getElementById('af_btnFacebook').appendChild(af_loginFb);
+		}
+		if (previousFbid == '' && typeof(notFBConnectedBar) !== 'undefined') window.location.reload();
+	},
+
+	// Deactivate visibility for sharing popup
+	'setOffPopup' : function() {
+		USER_FB.popup = 0;
+		AF_APP_FB.setUserCookie();
+		af_requestGet('/world/communaute/users/users_og_ajax.asp', 't=popup&v=0&fbid='+USER_FB.idFB);
+	},
+
+	// Enable / Disable autosharing
+	'setPartage' : function(val) {
+		USER_FB.timeline = val;
+		AF_APP_FB.setUserCookie();
+		AF_APP_FB.initPartage(false);
+		af_requestGet('/world/communaute/users/users_og_ajax.asp', 't=timeline&v='+val+'&fbid='+USER_FB.idFB);
+		
+		if (val == 1) {
+			// Force direct sharing when user activate autosharing!
+			AF_APP_FB.share();
+		}
+	},
+
+	// Enable / Disable feature tour
+	'setFeatureTour' : function(val) {
+		USER_FB.feature = val;
+		AF_APP_FB.setUserCookie();
+		af_requestGet('/world/communaute/users/users_og_ajax.asp', 't=feature_tour&v='+val+'&fbid='+USER_FB.idFB);
+	},
+	
+	// Save serverside date last "view" friend events
+	'setDtLastClick' : function() {
+		document.getElementById('chiffre_pop').innerHTML = 0;
+		document.getElementById('chiffre').innerHTML = 0;
+		af_requestGet('/world/communaute/users/users_og_ajax.asp', 't=dtLastClick&fbid='+USER_FB.idFB);
+	},
+
+	// Fetch and save friendlist on aufeminin servers
+	'setFriends' : function()
+	{
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => setFriends');
+		FB.api('/me/friends/', function(data) {
+			var friends   = data.data;
+			var nbFriends = friends.length;
+			if (AF_FB_DEBUG) console.log('Friends found : ' + friends.length);
+			var listFriends = '';
+			for (var i = 0; i < nbFriends; i++) {
+				listFriends += friends[i].id;
+				if (i != nbFriends - 1) {
+					listFriends += ',';
+				}
+			}
+			af_requestPost('/world/communaute/users/users_og_ajax.asp', 't=addfriends&fbid='+USER_FB.idFB+'&flist='+listFriends);
+		});
+	},
+
+	// Display publication popup
+	'showPopupPublication' : function() {
+		if (AF_FB_DEBUG) console.log('AF_APP_FB => showPopupPublication');
+		if (USER_FB.popup == 1) {
+			document.getElementById('af_popupPartage').style.display = 'block';
+		}
+	},
+
+	'showFacepileEdito' : function() {
+		//if user is connected to FB, show facepile plugin in edito contents
+		var efp=document.getElementById('af_editoFacepile');
+		if (efp != null) {
+			efp.style.display = '';
+		}
+	},
+
+	/**
+	 ** Timeline sharing function
+	 ** urlObject : l'url de la page
+	 ** object : l'objet opengraph (ex : article)
+	 ** action : l'action opengraph (ex : news.read)
+	 ** objid  : dossier,etc.
+	 ** ouid   : outil
+	 **/
+	'publishOnTimeline' : function(urlObject, object, action, objid, ouid) {
+		// OK si sharable, user ok (timeline value) and not already shared!
+		if (USER_FB.timeline == 1 && objid > 0 && ouid > 0
+				&& (typeof(af_globalSocialVar.ogIdFb) === 'undefined' || af_globalSocialVar.ogIdFb == 0)) {
+			urlObject = af_urlencode(urlObject);
+			if (AF_FB_DEBUG) console.log('AF_APP_FB => publishOnTimeline with: /me/'+action+'?'+
+											object+'=' + urlObject + '&access_token=' + USER_FB.accessToken);
+			
+			FB.api('/me/'+action+'?'+object+'=' + urlObject + '&access_token=' + USER_FB.accessToken,
+					'post',
+					{'expires_in':180},
+					function(response) {
+				if (AF_FB_DEBUG) console.log('Facebook sharing callback: '+response.id);
+				if (response && response.id) {
+					if (AF_FB_DEBUG) console.log('Action published on fb, save it! ID='+response.id);
+					af_globalSocialVar.ogIdFb = response.id;
+					af_requestGet('/world/communaute/users/users_og_ajax.asp',
+								't=addactivities&fbid='+USER_FB.idFB+'&ogid='+response.id+'&act='+
+										action+'&obj='+object+'&objid='+objid+'&ouid='+ouid);
+					AF_APP_FB.showPopupPublication();
+				}
+			});
+		}
+	},
+
+	//Remove Facebook action
+	'deleteAction' : function (idAction) {
+		FB.api('/'+idAction+'?access_token='+USER_FB.accessToken, 'delete', function(response) {
+			if (response) {
+				if (typeof(af_globalSocialVar) !== 'undefined') af_globalSocialVar.ogIdFb = 0;
+				af_requestGet('/world/communaute/users/users_og_ajax.asp', 't=kill&ogid='+idAction+'&fbid='+USER_FB.idFB);
+			}		
+		});
+	},
+	
+	// Autosharing function, based on datas stored in "af_globalSocialVar"
+	'shareWithTimeout' : function() {
+		if (typeof(af_globalSocialVar) !== 'undefined') {
+			setTimeout(AF_APP_FB.share, af_globalSocialVar.timeToWait);
+		}
+	},
+	
+	'share' : function() {
+		if (AF_FB_DEBUG) console.log('Try to share');
+		if (typeof(af_globalSocialVar) !== 'undefined') {
+			if (AF_FB_DEBUG) console.log('Autosharing');
+			AF_APP_FB.publishOnTimeline(af_globalSocialVar.url,
+										af_globalSocialVar.ogType,
+										af_globalSocialVar.ogAction,
+										af_globalSocialVar.objid,
+										af_globalSocialVar.ouid);
+		}
+	}
+};
+
+
+if (typeof(APP_FB_ID) !== 'undefined') {
+	// Function launched by facebook SDK, once loaded
+	window.fbAsyncInit = function() {
+		if (AF_FB_DEBUG) console.log('Facebook SDK loaded');
+		
+		// Init our Facebook application
+		FB.init({
+			appId      : APP_FB_ID, // App ID						
+			status     : true, // check login status
+			cookie     : true, // enable cookies to allow the server to access the session
+			xfbml      : true  // parse XFBML
+		});
+				
+		// Directly make userbar usable by user
+		USER_FB.idFB = af_getCookie('fbid');
+		AF_APP_FB.initPartage(true);
+	};
+	
+	// Load Facebook SDK asynchronously
+	(function(d){
+		var js, id = 'facebook-jssdk';
+		if (d.getElementById(id)) {return;}
+		js = d.createElement('script');
+		js.id = id;
+		js.async = true;
+		js.src = '//connect.facebook.net/en_US/all.js';
+		d.getElementsByTagName('head')[0].appendChild(js);
+		if (AF_FB_DEBUG) console.log('Load Facebook SDK');
+	}(document));
+}
+
+
+/************************************************/
+/***************** tracking misc ****************/
+/************************************************/
+ 
+ function af_getCookie(name) {
+	var i, x, y;		
+	var cookiesTab = document.cookie.split(';');
+	for (i = 0; i < cookiesTab.length; i++) {
+		x = cookiesTab[i].substr(0, cookiesTab[i].indexOf('='));
+		y = cookiesTab[i].substr(cookiesTab[i].indexOf('=') + 1);
+		x = x.replace(/^\s+|\s+$/g,'');
+		if (x == 'afperso') {
+			var j,a,cookiesValuesTab = y.split('&');
+			for (j = 0; j < cookiesValuesTab.length; j++) {
+				a = cookiesValuesTab[j].substr(0,cookiesValuesTab[j].indexOf('='));
+				if (a==name) {
+					return unescape(cookiesValuesTab[j].substr(cookiesValuesTab[j].indexOf('=')+1));
+				}
+			}
+		}
+	}
+	return '';
+}
+
+// AJAX GET request
+function af_requestGet(url, param, callback, json) {
+	var xhr  = af_getXMLHttpRequest();
+	callback = callback || null;
+	json     = json || true;
+	if (url.substr(0,1) == '/') {
+		// Make relative URL absolute (to avoid BASE tag rewrite issues)
+		url = document.location.protocol + '//' + document.location.host + url
+	}
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			if (xhr.responseText) {
+				data = json ? eval('(' + xhr.responseText+ ')') : xhr.responseText;
+			} else {
+				data = null;
+			}
+			if (callback) callback(data);
+		}
+	};
+	xhr.open('GET', url+'?'+param, true);
+	xhr.send(null);
+}
+
+// AJAX POST request
+function af_requestPost(url, param, callback, json) {
+	var xhr  = af_getXMLHttpRequest();
+	callback = callback || null;
+	json     = json || true;
+	param   += '&personalKey=' + af_personalHashValue;
+	if (url.substr(0,1) == '/') {
+		// Make relative URL absolute (to avoid BASE tag rewrite issues)
+		url = document.location.protocol + '//' + document.location.host + url
+	}
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			if (xhr.responseText) {
+				data = json ? eval('(' + xhr.responseText+ ')') : xhr.responseText;
+			} else {
+				data = null;
+			}
+			if (callback) callback(data);
+		}
+	};
+	xhr.open('POST', url, true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhr.send(param);
+}
+
+function af_getXMLHttpRequest() {
+	var xhr = null;
+	if(window.XMLHttpRequest || window.ActiveXObject) {
+		if (window.ActiveXObject) {
+			try {
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch(e) {
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		} else {
+			xhr = new XMLHttpRequest(); 
+		}
+	}
+	return xhr;
+}
+
+function af_urlencode(str) {
+    str = (str + '').toString();
+    return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
+}
+
+function af_gaqRePush() {
+	var u = (''+document.location).replace(/^http:\/\/.*?\//gi,'/virtual/');
+	
+	if (typeof _gaq != 'undefined') {
+		_gaq.push(['_trackPageview',u]);
+	} else if (typeof pageTracker != 'undefined') {
+		pageTracker._trackPageview(u);
+	}
+}
+
+/************************************************/
+/************** afAdScripts utils ***************/
+/************************************************/
+
+// these scripts are not in ads.js because they can be loaded at the end of the page
+
+// on livepreview mode, ads.js is disabled then we need to create the afAdScripts object
+if (typeof(afAdScripts) == 'undefined')  afAdScripts = new Object();
+
+// scroll smoothly to a position
+afAdScripts.smoothScroll=function (delay,left,top) {
+	var s=afAdScripts.smoothScroll, now=(new Date()).getTime(), step=20;
+	if (s.to) { window.clearTimeout(s.to); s.to=0; }
+	if (delay) {
+		s.stop=now+delay; s.left=left; s.top=top;
+		s.to=window.setTimeout(s,step);
+	} else if (now>=s.stop) {
+		window.scrollTo(s.left,s.top);
+	} else {
+		var w=afAdScripts.windowSize(), loop=(s.stop-now)/step;
+		var sl=w.l+(s.left-w.l)/loop, st=w.t+(s.top-w.t)/loop;
+		window.scrollTo(sl,st);
+		s.to=window.setTimeout(s,step);
+	}
+};
+
+// hide all SELECT, EMBED, OBJECT and IFRAME objects from the page to avoid them appearing above layers
+afAdScripts.tagsDisplay=function(show) {
+	if (!afAdScripts.tagsDisplay.selects && !show) afAdScripts.tagsDisplay.selects=document.getElementsByTagName("select");
+	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.selects,show)
+	if (!afAdScripts.tagsDisplay.embeds && !show) afAdScripts.tagsDisplay.embeds=document.getElementsByTagName("embed");
+	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.embeds,show)
+	if (!afAdScripts.tagsDisplay.objects && !show) afAdScripts.tagsDisplay.objects=document.getElementsByTagName("object");
+	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.objects,show)
+	if (!afAdScripts.tagsDisplay.iframes && !show) afAdScripts.tagsDisplay.iframes=document.getElementsByTagName("iframe");
+	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.iframes,show)
+};
+
+afAdScripts.toggleVisibility=function(items,show) {
+	if (!items) return;
+	if ((typeof items.vis!='undefined') && (items.vis==show)) return;
+	for (var i=0;i<items.length;i++) {
+		var o=items[i];
+		if (!show) o.prevVisibility=''+o.style.visibility;
+		o.style.visibility=(show ? o.prevVisibility : 'hidden');
+	}
+	items.vis=show;
+}
+ 
+/************************************************/
+/************* pictures lazyloading *************/
+/************************************************/
+
+var af_lazyloading_timeout = null;
+var af_lazyloading_dist = 200;
+var af_lazyloading_imgs = document.getElementsByTagName('img');
+
+// TODO : utiliser une classe pour cibler les images a bencher ?
+function af_lazyloading() {
+	if (af_lazyloading_timeout == null) {
+		af_lazyloading_timeout = setTimeout(af_lazyloading_real, 50);
+	}
+}
+
+function af_lazyloading_real() {
+	var w = afAdScripts.windowSize();
+	var len = af_lazyloading_imgs.length;
+	for (var i = 0; i < len; i++) {
+		var img = af_lazyloading_imgs[i];
+		var d = img.getAttribute('dataorigin');
+		if (d && d != '') {
+			if (w.b + af_lazyloading_dist >= afAdScripts.findPos(img).b) {
+				img.src = d;
+				img.setAttribute('dataorigin', '');
+			}
+		}
+	}
+	af_lazyloading_timeout = null;
+}
+
+/************************************************/
+/*********** dynamic SeeAlso popup **************/
+/************************************************/
+
+var af_dynamicSA = {
+	'onScroll': function() {
+		af_dynamicSA.update();
+	},
+	
+	'update': function() {
+		// No SeeAlso block, or job already done
+		if (this.links === undefined) {
+			this.links = this.getFirstElementWithClassName('afsa_relLinks', 'div');
+		}
+		if (this.links == null) {
+			return;
+		}
+		
+		// Init
+		if (this.startHeight === undefined) {
+			//var forumElement =  this.getFirstElementWithClassName('aff_bestofdiv', 'div');
+			//if (forumElement != null) {
+			//	this.startHeight = Math.round(document.body.offsetHeight * 0.75);
+			//} else {
+				var p = afAdScripts.findPos(this.links);
+				this.startHeight = p.t - 150;
+			//}
+		}
+		
+		// Maintain position
+		if (this.generated == true) {
+			this.updatePosition();
+		} else {
+			// Check visibility
+			var w = afAdScripts.windowSize();
+			if (w.b >= this.startHeight) {
+				// Display block
+				this.generated = true;
+				this.generate();
+				this.display();
+			}
+		}
+	},
+	
+	'getFirstElementWithClassName': function(classname, objectType) {
+		if (document.getElementsByClassName) {
+			var e = document.getElementsByClassName(classname);
+			if (e && e.length > 0) {
+				return e[0];
+			}
+		} else {
+			var e = document.getElementsByTagName(objectType);
+			for (var i = 0; i < e.length; i++) {
+				if (e[i].className == classname) {
+					return e[i];
+				}
+			}
+		}
+		return null;
+	},
+	
+	'generate': function() {
+		this.mainDiv = document.createElement('div');
+		this.mainDiv.id = 'af_dynamic_seealso';
+		
+		var html = '<a href="#" class="close" title="" onclick="' +
+						'af_dynamicSA.mainDiv.style.display=\'none\';' +
+						'setAfXperso(\'afperso\', \'stopDySA\', \'1\');' +
+						'return false;">x</a>';
+		html = html + '<b>' + this.getFirstElementWithClassName('afsa_relatedTitle', 'h3').firstChild.nextSibling.data + '</b>';
+		html = html + '<ul>';
+		var l = this.links.getElementsByTagName('a');
+		for (var i = 0; i < l.length; i++) {
+			if (l[i].href.replace('http://','').split('/')[1] == '') {
+				html = html + '<li class=homepage><a href="'+l[i].href+'" title="'+l[i].title+'">' +
+								l[i].innerHTML+'</a></li>';
+			} else {
+				html = html + '<li><a href="'+l[i].href+'" title="'+l[i].title+'">' +
+								'<img src="/world/semantic/link2img.asp?link='+escape(l[i].href)+'" width=30 height=30 border=0 class="teaser">' +
+								l[i].innerHTML+'</a></li>';
+			}
+		}
+		html = html + '</ul>';
+		
+		this.mainDiv.innerHTML = html;
+		document.body.appendChild(this.mainDiv);
+	},
+	
+	'display': function() {
+		if (this.isIE()) {
+			this.displayAbsolute();
+		} else {
+			this.displayFixed();
+		}
+	},
+	
+	'displayFixed': function() {
+		this.bottom = -300;
+		this.mainDiv.style.position = 'fixed';
+		this.mainDiv.style.bottom = this.bottom + 'px';
+		
+		this.displayInterval = setInterval(this.displayFixedCallback, 20);
+	},
+	'displayFixedCallback': function() {
+		af_dynamicSA.bottom += 20;
+		af_dynamicSA.mainDiv.style.bottom = af_dynamicSA.bottom + 'px';
+		
+		if (af_dynamicSA.bottom > 0) {
+			clearInterval(af_dynamicSA.displayInterval);
+		}
+	},
+	
+	'displayAbsolute': function() {
+		this.top = 0;
+		this.mainDiv.style.position = 'absolute';
+		var windowHeight = afAdScripts.windowSize().b;
+		this.mainDiv.style.top = (windowHeight - this.top) + 'px';
+		
+		this.displayInterval = setInterval(this.displayAbsoluteCallBack, 20);
+	},
+	'displayAbsoluteCallBack': function() {
+		af_dynamicSA.top += 20;
+		var windowHeight = afAdScripts.windowSize().b;
+		af_dynamicSA.mainDiv.style.top = (windowHeight - af_dynamicSA.top) + 'px';
+		
+		var maxTop = af_dynamicSA.mainDiv.offsetHeight;
+		if (af_dynamicSA.top > maxTop) {
+			clearInterval(af_dynamicSA.displayInterval);
+		}
+	},
+	
+	'updatePosition': function() {
+		var windowSize = afAdScripts.windowSize();
+		var windowHeight = windowSize.b;
+		
+		if (this.isIE()) {
+			if (windowHeight >= this.startHeight) {
+				this.mainDiv.style.top = (windowHeight - this.top) + 'px';
+			}
+		} else {
+			if (windowHeight < this.startHeight) {
+				// Switch to scrollable position...
+				if (this.mainDiv.style.position == 'fixed') {
+					this.mainDiv.style.position = 'absolute';
+					this.mainDiv.style.bottom = (0 - windowSize.t + this.bottom) + 'px';
+				}
+			} else {
+				this.mainDiv.style.position = 'fixed';
+				this.mainDiv.style.bottom = this.bottom + 'px';
+			}
+		}
+	},
+	
+	'isIE': function() {
+		return navigator.appName == 'Microsoft Internet Explorer';
+	}
+}
+
+/************************************************/
+/************** zoom fullscreen *****************/
+/************************************************/
+function af_zoomImage(e, URL, Title, width, height, pixLogType, pixLogId, pixLogCat) {
+	try {
+		var d = afAdScripts.documentSize();
+		
+		var bgDiv = document.getElementById('af_zoomer_background');
+		if (!bgDiv) {
+			bgDiv = document.createElement('div');
+			bgDiv.id='af_zoomer_background';
+			bgDiv.className='af_diapo_background';
+			document.body.appendChild(bgDiv);
+		}
+		bgDiv.style.display='';
+		bgDiv.style.height=d.h+'px';
+
+		var objDiv = document.getElementById('af_zoomer_overlay');
+		if (!objDiv) {
+			objDiv = document.createElement('div');
+			objDiv.id='af_zoomer_overlay';
+			objDiv.className='af_diapo_overlay';
+			document.body.appendChild(objDiv);
+			
+			// Close events
+			afAdScripts.shortcuts.add(27, af_zoomImageHide); // esc = quit zoomer
+			afAdScripts.addEvent(bgDiv, 'click', af_zoomImageHide, false);
+		}
+		
+		var scrollbar = 20;
+		var margin = 30;
+		var spaceWidth = 382;
+		var spaceHeight = 101;
+		var minTemplateWidthHeight = 650;
+
+		var windowWidth = window.innerWidth > 0 ? window.innerWidth : document.body.clientWidth;
+		var windowHeight = window.innerHeight > 0 ? window.innerHeight : document.body.clientHeight;
+
+		
+		var availableWidth = windowWidth - spaceWidth - margin;
+		var availableHeight = windowHeight - spaceHeight - margin;
+		
+		if (availableWidth / availableHeight > width / height) {
+			// vertical image
+			var h = height > availableHeight ? availableHeight : height;
+			var w = Math.round(width * h / height);
+		} else {
+			// horizontal image
+			var w = width > availableWidth ? availableWidth : width;
+			var h = Math.round(height * w / width);
+		}
+		
+		var zoomerWidth =  (w > minTemplateWidthHeight ? w : minTemplateWidthHeight) + spaceWidth;
+		var zoomerHeight = (h > minTemplateWidthHeight ? h : minTemplateWidthHeight) + spaceHeight;
+
+		var zoomerPosX = window.scrollX + Math.round((windowWidth - zoomerWidth) / 2) - Math.round(scrollbar / 2);
+		var zoomerPosY = window.scrollY + Math.round((windowHeight - zoomerHeight) / 2);
+
+		if (zoomerPosX < 0) zoomerPosX = 0;
+		if (zoomerPosY < 0) zoomerPosY = 0;
+		
+		objDiv.style.display='';
+		objDiv.style.top = zoomerPosY + 'px';
+		objDiv.style.left = zoomerPosX + 'px';
+		objDiv.innerHTML='<table class="af_diapo" cellpadding=0 cellspacing=0 border=0><tr>'
+			+'<td class="space">&nbsp;</td>'
+			+'<td class="af_diapo_titre">'
+				+'<h3>'+Title+'</h3>'
+				+'<div class="pagination">&nbsp;</div>'
+			+'</td>'
+			+'<td colspan=2 class="space"></td>'
+			+'<td class="close"><a href="#" onclick="af_zoomImageHide();return false;"></a></td>'
+		+'</tr><tr>'
+			+'<td class="space">&nbsp;</td>'
+			+'<td class="af_diapo_img" align="center">'
+				+'<table class="af_diapo_imgContainer" cellspacing=0 cellpadding=0 border=0 style=""><tr><td>'
+					+'<img id="af_imageZoomer" src="'+URL+'" width="'+w+'" height="'+h+'" border="0" onclick="af_zoomImageHide()" />'
+				+'</td></tr></table>'
+			+'</td>'
+			+'<td class="space">&nbsp;</td>'
+			+'<td class="af_diapo_pub" valign=middle><div id="sas_16863" class="sas_FormatID_16863"></div></td>'
+			+'<td class="space">&nbsp;</td>'
+		+'</tr><tr>'
+			+'<td class="space">&nbsp;</td>'
+			+'<td class="pagination">&nbsp;</td>'
+			+'<td colspan=3 class="space">&nbsp;</td>'
+		+'</tr></table>';
+		
+
+		// init ads
+		/* return true if an element is set in an array, false otherwise */
+		if (!Array.prototype.isset) {
+			Array.prototype.isset=function(o) {
+				for (var i=0; i<this.length; i++) { if (this[i]==o) return true; }
+				return false;
+			};
+		}
+		/* init Smart AJAX library if not already initialized */
+		if (typeof(af_initSmartAdServerAjax)!='undefined') af_initSmartAdServerAjax();
+		/* init ad elements (needed to activate AJAX calls for this format) */
+		if (typeof(sas_fa)=='undefined') sas_fa=new Array(); // array of AJAX formatids
+		if (typeof(sas_ta)=='undefined') sas_ta=new Array(); // array of AJAX targets
+		if (!sas_fa.isset(16863)) { sas_fa.push(16863); sas_ta.push(''); } // ad format has to be added once!
+
+		// reset sas global vars to avoid conflicts with others ads (ex: nav2012 & dynamic pageids)
+		sas_ajax=true;
+		sas_pageid=afAd.siteid+'/'+afAd.pageid;
+		sas_target=afAd.target+';ajax=1;imageZoom';
+		if (typeof(sas_callAd)!='undefined') sas_callAd(16863, sas_target, 1, 1); // master call + reset timestamp
+		
+		afAdScripts.tagsDisplay(false);
+		
+
+		// Google Analytics
+		af_gaqRePush();
+		// aufem tracking
+		var pixlogImg=new Image();
+		pixlogImg.src='/wo'+'rld/'+'edit'+'o/pix'+'LogVis'+'it.as'+'p?t='+pixLogType
+			+'&c='+pixLogId
+			+'&r='+pixLogCat
+			+'&tstp='+Math.floor((Math.random()*100000));
+		// eStat
+		if (typeof(eStatWhap)!='undefined' && _eStat_Whap_loaded) eStatWhap.send();
+		// IVW (DE)
+		if (typeof(IVW)!='undefined' && IVW!='') {
+			var ivwImg=new Image();
+			ivwImg.src=IVW+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+		// NET-Metrix (CH)
+		if (typeof(NETMX)!='undefined' && NETMX!='') {
+			var netmxImg=new Image();
+			netmxImg.src=NETMX+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+		// OEWA (AU)
+		if (typeof(OEWA)!='undefined' && OEWA!='') {
+			var oewaImg=new Image();
+			oewaImg.src=OEWA+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+	} catch(e) {
+		console.log(e.message);
+	}
+	return false; // To stop HREF link
+}
+
+function af_zoomImageHide() {
+	document.getElementById('af_zoomer_background').style.display='none';
+	document.getElementById('af_zoomer_overlay').style.display='none';
+	document.getElementById('af_zoomer_overlay').innerHTML='';
+	afAdScripts.tagsDisplay(true);
+}
+
+
+/************************************************/
+/************** event listeners *****************/
+/************************************************/
+
+if (typeof(afAdScripts) != 'undefined' && afAdScripts.addEvent) {
+	afAdScripts.addEvent(window, 'load', initBarScroll, false);
+
+	afAdScripts.addEvent(window, 'scroll', af_lazyloading, false);
+	afAdScripts.addEvent(window, 'load', af_lazyloading, false);
+
+	if (af_getCookie('stopDySA') != '1') {
+		afAdScripts.addEvent(window, 'scroll', af_dynamicSA.onScroll, false);
+	}
+
+	if (typeof(APP_FB_ID) !== 'undefined') {
+		afAdScripts.addEvent(window, 'load', AF_APP_FB.initFB, false);
+		afAdScripts.addEvent(window, 'load', AF_APP_FB.shareWithTimeout, false);
+	}
+}

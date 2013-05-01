@@ -1,38 +1,38 @@
 $(function() {
 	//$('#tabs-popular > ul').tabs({ fx: { opacity: 'toggle' } });
 	$('.mostpopular').tabs({ fx: { opacity: 'toggle' } });
-	$('#promotion-module > ul > li > p:even').css("height", "100px");	
+	$('#promotion-module > ul > li > p:even').css("height", "100px");
 
 	$('a.button > img').hover(
 		function() {
 			$(this).attr('src', function() {
 				return this.src.replace(/_off/, '_on');
 			});
-		}, 
+		},
 		function() {
 			$(this).attr('src', function() {
 				return this.src.replace(/_on/, '_off');
-			});		
+			});
 		}
-	);	
+	);
 
 	$('.close').hover(
 		function() {
 			$(this).attr('src', function() {
 				return this.src.replace(/_off/, '_on');
 			});
-		}, 
+		},
 		function() {
 			$(this).attr('src', function() {
 				return this.src.replace(/_on/, '_off');
-			});		
+			});
 		}
 	);
 
 	$('form > #searchInput').focus(
 		function() {
 			$(this).attr('value', function() {
-				return (this.value == 'Search The Chronicle')? '' : this.value; 
+				return (this.value == 'Search The Chronicle')? '' : this.value;
 			});
 		}
 	).blur(
@@ -40,13 +40,13 @@ $(function() {
 			$(this).attr('value', function() {
 				return (this.value == '')? 'Search The Chronicle' : this.value;
 			});
-		}	
+		}
 	);
 
 	$('#jobsearch').focus(
 		function() {
 			$(this).attr('value', function() {
-				return (this.value == 'Search Jobs')? '' : this.value; 
+				return (this.value == 'Search Jobs')? '' : this.value;
 			});
 		}
 	).blur(
@@ -54,9 +54,9 @@ $(function() {
 			$(this).attr('value', function() {
 				return (this.value == '')? 'Search Jobs' : this.value;
 			});
-		}	
+		}
 	);
-	
+
 });
 
 function btnOver(o){
@@ -101,23 +101,24 @@ var chronHide = function(hash) {
 
 
 //disqus javascript
-//This function is a hook added after disqus is loaded to change some text to match up with styles in irise 
+//This function is a hook added after disqus is loaded to change some text to match up with styles in irise
 function changeSubscribeText()
 {
-	//adding a new element for text 
+	//adding a new element for text
 	$('.dsq-options .dsq-item-sort').after("<span>Follow comments: </span>");
-	//changing text for subscription by email 
+	//changing text for subscription by email
 	$('.dsq-options #dsq-subscribe').find('a').text("by e-mail");
-	//changing text for subscription by rss 
+	//changing text for subscription by rss
 	$('.dsq-options .dsq-subscribe-rss').find('a').text("by RSS");
 }
-//This function is a hook added after disqus is loaded to prepend some text to match up with styles in irise 
+//This function is a hook added after disqus is loaded to prepend some text to match up with styles in irise
 function placeHeading()
 {
 	$("#disqus_thread").prepend("<div id='commentHeader'>Comments</div><div id='poweredByDisqus'><a href='http://disqus.com' class='dsq-brlink'>Powered by <span class='logo-disqus'>Disqus</span></a></div>");
 	// if we are not logged in lets replace the toolbar with a disqus image
 	if ($("#dsq-new-post").hasClass("dsq-unauthenticated")) {
-		$("#dsq-toolbar-dropdown").html('<a href="http://disqus.com"><img src="http://mediacdn.disqus.com/1296789872/images/embed/disqus-logo.png" alt="Disqus Comments" style="margin-bottom:5px;"></a>');
+		//$("#dsq-toolbar-dropdown").html('<a href="http://disqus.com"><img src="http://mediacdn.disqus.com/1296789872/images/embed/disqus-logo.png" alt="Disqus Comments" style="margin-bottom:5px;"></a>');
+		$('#dsq-toolbar-dropdown #dsq-toolbar-dropdown-wrap > ul > li.dsq-login-link').empty();
 	}
 	if ($('.dsq-global-toolbar-left').length > 0) {
 		$('.dsq-global-toolbar-left').hide();
@@ -131,10 +132,10 @@ function getElement(aID)
 	return (document.getElementById) ? document.getElementById(aID) : document.all[aID];
 }
 
-function getIFrameDocument(aID){ 
-	var rv = null; 
+function getIFrameDocument(aID){
+	var rv = null;
 	var frame=getElement(aID);
-	// if contentDocument exists, W3C compliant (e.g. Mozilla) 
+	// if contentDocument exists, W3C compliant (e.g. Mozilla)
 	if (frame.contentDocument)
 		rv = frame.contentDocument;
 	else // bad Internet Explorer  ;)

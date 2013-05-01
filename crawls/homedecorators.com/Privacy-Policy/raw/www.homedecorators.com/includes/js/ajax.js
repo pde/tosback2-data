@@ -159,7 +159,7 @@ $(document).ready(function(){
 	$("#detailOrderForm").live('submit',function(){
 		$("#ajaxForm").val("1");
 		var popUpElem = $('#addPopUp');
-		popUpElem.html(" ").activity( { color: "#fff"}) ;
+		popUpElem.html(" ").activity() ;
 		if ( popUpElem.data("overlay") ){
 			popUpElem.data("overlay").load();
 		}
@@ -276,7 +276,7 @@ $(document).ready(function(){
 								$.mask.getMask().css({display:"none"});
 								$("#qlAjaxForm").val("1");
 								var popUpElem = $('#addPopUp');
-								popUpElem.html(" ").activity( { color: "#fff"}) ;
+								popUpElem.html(" ").activity() ;
 								if ( popUpElem.data("overlay") ){
 									popUpElem.data("overlay").load();
 								}
@@ -382,7 +382,24 @@ $(document).ready(function(){
 		var $context = $(this).parentsUntil('.upsellContainer');
 		rugPad_PopulatePrices($context);
 	}); // '.upsellContainer .rugPadSelector' change
-	
+
+  if( $("#tabletOverlay").length > 0 ){
+    $('#tabletOverlay').overlay({mask:{ color: '#cccccc' },top: 'center',load: true,fixed: false,
+                                closeOnClick: false,
+                                onLoad: function(){
+                                  $('#tabletSiteButton').click(function(){
+                                        var s=s_gi(s_account); s.tl(this,'o','redirect pop-up_tablet');
+                                    });
+                                    $('#fullSiteButton').click(function(){
+                                      $('#tabletOverlay').data('overlay').close();
+                                    });
+                                },
+                                onClose: function(){
+                                    var s=s_gi(s_account); s.tl(this,'o','redirect pop-up_desktop');
+                                }
+                                });
+  }
+  	
 }); // End doc.ready()
 
 //Need this to load after whole page is loaded to take into account image sizes in Chrome
@@ -570,29 +587,6 @@ function updateBaseIdDetails(sku){
 
 }
 //***************
-
-function createWelcomePanel(popUpDiv,width,timeOutSeconds,cookieName){
-	if(cookieName){ var panelCookie = new Cookie(document, cookieName,"","",".homedecorators.com");}
-	popUp = new YAHOO.widget.Panel(popUpDiv, {
-    close:true,
-    draggable: false,
-    zindex:4,
-    modal: true,
-    visible: false,
-    width:width,
-    fixedcenter:true} );
-  popUp.render(document.body);
-	if(!panelCookie.load()){
-		popUp.show();
-		if(cookieName){
-			panelCookie.value=1;
-			panelCookie.store();
-		}
-		if(timeOutSeconds>0){
-			setTimeout("popUp.hide()",timeOutSeconds*1000);
-		}
-	}
-}
 
 $.fn.quickLookButton = function(url) {
     return this.hover(function(e) {

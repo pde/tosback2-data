@@ -1291,7 +1291,8 @@ var Class = (function() {
     }
 
     HeroGallery.prototype.stopAutoRotation = function() {
-      return this.autoRotator.stop();
+      var _ref;
+      return (_ref = this.autoRotator) != null ? _ref.stop() : void 0;
     };
 
     HeroGallery.prototype.focus = function(e) {

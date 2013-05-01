@@ -54,7 +54,7 @@ function sTracklink(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|eVar46=Share:" + name + ":" + s.getPageName() + "", "Share");
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sTracklink");
 }
 
 /**
@@ -64,7 +64,7 @@ function sCustomTrack(name) {
     if (typeof (s) !== 'undefined' && s && s.customTrack) {
         s.customTrack("pageName=" + s.getPageName() + ":" + name);
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sCustomTrack");
 }
 
 /**
@@ -74,7 +74,7 @@ function sTrackAccordion(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("prop16=" + s.getPageName() + " - " + name, "Accordion");
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sTrackAccordion");
 }
 
 /**
@@ -84,7 +84,7 @@ function sTrackEmbedVideo(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("prop16=" + name + ":" + s.getPageName(), "EmbedVideo");
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sTrackEmbedVideo");
 }
 
 
@@ -96,7 +96,7 @@ function sTrackRSS(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|prop16=RSS:" + name + "|eVar46=RSS:" + name, "RSS");
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sTrackRSS");
 }
 
 /**
@@ -106,12 +106,30 @@ function sTrackShare(name) {
     if (typeof (s) !== 'undefined' && s && s.customTracklink) {
         s.customTracklink("events=event11|prop16=share:" + name + ":" + s.getPageName() + "|eVar46=Share:" + name + ":" + s.getPageName() + "", "Share");
     }
-    googAE(this);
+    googleAnalyticsEvent(name, "sTrackShare");
 }
 
+function googleAnalyticsEvent(name, label) {
+	if (this.event != undefined) {
+		dataLayer.push({
+			'event' : name,
+			'elementId' : this.event.srcElement.id,
+			'elementName' : this.event.srcElement.name,
+			'elementClass' : this.event.srcElement.className,
+			'elementType' : this.event.srcElement.localName,
+			'elementTarget' : this.event.srcElement.title,
+			'elementHref' : this.event.srcElement.href,
+			'eventCategory' : this.event.srcElement.baseURI,
+			'eventAction' : this.event.type,
+			'eventLabel' : label,
+			'eventValue' : this.innerWidth,
+			'eventNonInt' : false
+		});
+	}
+}
 /**
-* MOD tracking for login button on home page.
-*/
+ * MOD tracking for login button on home page.
+ */
 function loadWSODLoginScript() {
     var activityURL = "https://ad.wsod.com/activity/8bec9b10877d5d7fd7c0fb6e6a631357/11.img.activity/";
     var activityImageObject = new Image();

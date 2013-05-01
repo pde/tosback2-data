@@ -79,7 +79,8 @@ else{
     else {
         var y = eval('toCheck.currentStyle.' + 'display');
     }
-    if( y != "none" ) {
+
+    if( y != "none" || my_selector == "leaderBoard") {
         var reg_ex_dma = new RegExp("dmaid=[0-9]{3,5}","gi");
         if( !my_ad.match(reg_ex_dma) ) {
             var new_dma = "&dmaid=" + find_dma();

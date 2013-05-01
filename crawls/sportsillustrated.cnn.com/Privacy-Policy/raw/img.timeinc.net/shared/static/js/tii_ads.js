@@ -1,4 +1,4 @@
-// TII Ads - Version 1.4.4 - 2013.04.15
+// TII Ads - Version 1.4.5 - 2013.04.23
 
 function TiiAdConfig(sitename) {
 	this.sitename	= sitename;
@@ -620,8 +620,8 @@ function tiiHtmlAdWH(mn, width, height) {
  
     var TIICONSTANTS = {
         'bk_allow_deny_mode': 'allow',
-        'bk_enabled_root_domains': 'content.timeinc.net',
-        'bk_disabled_root_domains': 'foodandwine.com,travelandleisure.com,departures.com,executivetravelmagazine.com,allyou.com,health.com,myrecipes.com',
+        'bk_enabled_root_domains': 'content.timeinc.net, people.com, peoplestylewatch.com, celebritybabies.com, realsimple.com',
+        'bk_disabled_root_domains': 'eskyguide.com, foodandwine.com,travelandleisure.com,departures.com,executivetravelmagazine.com,allyou.com,health.com,myrecipes.com',
         'bk_id': '13731',
         'bk_pixel_limit': '6',
         'bk_keys': 'aid, ch, ctype, path, oid, ptype, sch, rhost',
@@ -644,7 +644,7 @@ function tiiHtmlAdWH(mn, width, height) {
 	    bk_addPageCtx("ref", document.referrer.toString().substring(0,250));
 	}
         for (var key in tgxDao.params) {
-                    if (TIICONSTANTS.bk_keys.indexOf(key) >= 0) {bk_addPageCtx('"'+key+'"','"' + tgxDao.params[key] + '"');}
+                    if (TIICONSTANTS.bk_keys.indexOf(key) >= 0) {bk_addPageCtx(key, tgxDao.params[key]);}
         }
         if (typeof(s_time) != 'undefined') {
             bk_addPageCtx("channel", (typeof(s_time.channel)!='undefined')?s_time.channel:'');

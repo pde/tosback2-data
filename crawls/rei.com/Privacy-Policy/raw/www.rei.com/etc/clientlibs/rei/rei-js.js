@@ -2525,17 +2525,6 @@ $(document).ready(function() {
 	'type': 'iframe'
 	});
 });
-$(document).ready(function() {
-    $('.reiDifference-popupLauncher').fancybox( {
-        'height': 615,
-        'padding': 10,
-        'width': 690,
-        'scrolling':'no',
-        'autoScale': false,
-        'titleShow': false,
-        'type': 'iframe'
-    } );
-});
 
 /* $Id:  $ */
 /* $Id: popupgameteaser.js 1958 2012-04-02 21:29:19Z rray $ */

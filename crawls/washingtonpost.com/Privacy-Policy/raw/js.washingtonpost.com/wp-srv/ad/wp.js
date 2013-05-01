@@ -120,8 +120,8 @@
   //called on first placeAd2 call
   wpAd.config.init = function () {
 
-    //sponsorship for surface 2/14/13-2/28/13 - JH
-    if(((!wpAd.flags.is_homepage && win.estNowWithYear >= 201302140000 && /^201302/.test(win.estNowWithYear)) || /testads\=surface_sponsor/.test(location.search)) && win.jQuery){
+    //sponsorship for samsung May 2013 - SP
+    if(((!wpAd.flags.is_homepage && win.estNowWithYear >= 201305010000 && /^201305/.test(win.estNowWithYear)) || /testads\=samsung/.test(location.search)) && win.jQuery){
       $(function(){
         $.ajax({
           cache: true,

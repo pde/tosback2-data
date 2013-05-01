@@ -116,6 +116,10 @@ function renderPrimaryNav() {
 		pid = 'consumerblog';
 		site = 'http://www.att.com';
 	}
+	if (location.href.indexOf('advocate') != '-1') {
+		pid = 'advocate';
+		site = 'http://www.att.com';
+	}
 	
 	
 	//alert(location.href.indexOf('historic_att_stock'));
@@ -123,7 +127,7 @@ function renderPrimaryNav() {
 	document.write('<ul id="PrimaryNav">'
 				 + '<li class="logo"><a href="http://www.att.com/"><img src="/Common/indc/images/new/att_logo_for_nav.gif" height="40" width="40" alt="AT&amp;T" title="AT&amp;T" /></a></li>'
 				 + '<li');
-				 if (pid == '3309' || pid == 'rss' || pid == 'CSRBrochure10' || pid == 'consumerblog' ) { document.write(' class="selected"'); }
+				 if (pid == '3309' || pid == 'rss' || pid == 'CSRBrochure10' || pid == 'consumerblog' || pid == 'advocate' ) { document.write(' class="selected"'); }
  	document.write('><a href="' + site + '/gen/landing-pages?pid=3309" title="ABOUT US" id="pn-compinfo">ABOUT US</a>'
 				 + '<ul class="secondaryNav" id="about_us_nav">'
 				 + '<li><a href="' + site + '/gen/investor-relations?pid=5711" title="Corporate Profile" id="au_corporate_profile_link">Corporate Profile</a>');
