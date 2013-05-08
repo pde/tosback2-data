@@ -24,7 +24,7 @@
 				$bf.fullyLoaded = false;
 				$bf.timer = setTimeout( 
 					function(){
-						$bf.backgroundResize( options, true );
+						$bf.backgroundResize( options, false );
 					},
 					100
 				);

@@ -41,6 +41,12 @@ phx.getUrlVars = (function() {
 		if(vars.pid) vars["pid"] = vars["pid"].replace(/[^0-9]+/g,'');
 		if(vars.vtrack) vars["vtrack"] = vars["vtrack"].replace(/[^0-9]+/g,'');
 
+		//-- clear out cid/pid if vtrack is not set
+		if(!vars["vtrack"]) {
+			vars["cid"] = "";
+			vars["pid"] = "";
+		}
+
 		return vars;
 	}
 })();

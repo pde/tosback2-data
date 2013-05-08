@@ -154,11 +154,11 @@ function s_doPlugins(s) {
 	//s.variableProvider='DFA#1508997:v25=[["DFA:"+lis+":"+lip+":"+lastimp+":"+lastimptime+":"+lastclk+":"+lastclktime]]';
 	//s.partnerDFACheck('s_dfa','ID','prop23'); 
 	
-	s.variableProvider='DFA#1508997:v25=[["DFA-"+lis+"-"+lip+"-"+lastimp+"-"+lastimptime+"-"+lcs+"-"+lcp+"-"+lastclk+"-"+lastclktime]]';
+	//s.variableProvider='DFA#1508997:v25=[["DFA-"+lis+"-"+lip+"-"+lastimp+"-"+lastimptime+"-"+lcs+"-"+lcp+"-"+lastclk+"-"+lastclktime]]';
 	
 	// Line update 03/13/08 by Jesse Bulpitt
 	//s.partnerDFACheck('s_dfa','id','prop23');
-	s.partnerDFACheck('s_dfa','id','');
+	//s.partnerDFACheck('s_dfa','id','');
 
 
 }

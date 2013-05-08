@@ -19,7 +19,7 @@
 			if(remaining_attempts--){
 				setTimeout(outer_stall,100 * (20 - remaining_attempts));
 				why.unshift('stalling');
-				why.unshift(2);
+				why.unshift(4);
 			}else if( ! is_contained && write){
 				write('<\/body><\/html>');
 				i.document.write( iframe_contents );
@@ -272,7 +272,7 @@
 		return [0,'ok','ok'];
 	})(is_contained,td,write,whence_i_came);
 
-	if(2 === result[0]){
+		if(4 === result[0]){
 		result.shift();		result.shift();				write_script_once('stalling',0.05,
 			"//ads.skinected.com"			+'/supplysideinfo.php?track_type=sniffer_initial_stall'
 			+(1 < result.length ? '&track_subtype='+encodeURIComponent(result[1]) : '')

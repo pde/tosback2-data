@@ -1,0 +1,1466 @@
+<!DOCTYPE HTML> 
+<html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = ''; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					var referrer = encodeURIComponent(document.referrer); 
+					referrer = referrer.replace("%3A","%253A"); 
+					if (window.location.search != '') { 
+						window.location = mRedirectURL + window.location.search +  '&referrer=' + referrer; 
+					} else { 
+						window.location = mRedirectURL + '?referrer=' + referrer; 
+					} 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
+<head> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+<script type="text/javascript"> 
+(function SSLredirect(){ 
+	if(window.location.protocol != "http:"){return} 
+	var globalNavCookie; 
+	var allCookies = document.cookie.split('; '); 
+	var httpsPort = ""; 
+	for (var i=0;i<allCookies.length;i++) { 
+		var cookiePair = allCookies[i].split('='); 
+		var cookieName = cookiePair[0]; 
+		cookiePair.shift(); 
+		var cookieValue = cookiePair.join('='); 
+		if(cookieName == "GNSESS"){globalNavCookie = new Function("return " + cookieValue)()} 
+	} 
+	if(typeof globalNavCookie == "object" && typeof globalNavCookie.ENC != "undefined" && globalNavCookie.ENC != ""){ 
+		var newUrl = document.createElement('a'); 
+		if(httpsPort != ""){newUrl.port = httpsPort} 
+		newUrl.href = window.location.href; 
+		newUrl.protocol = "https"; 
+		window.location.href = newUrl.href; 
+	} 
+})(); 
+</script> 
+	<title> 
+            Wireless Home Phone from AT&T 
+	</title> 
+    <meta name="description" content="Wireless Home Phone from AT&amp;T is a landline replacement service using the AT&amp;T wireless network. WHP enables you to use corded &amp; cordless home telephones over the AT&amp;T network &amp; retain your current home phone number." >	 
+	<meta name="keywords" content="whp, wireless home phone, home phone service, cell phones, wireless, 4g, LTE, AT&amp;T" > 
+    <meta name="robots" content="INDEX,FOLLOW" /> 
+	<link rel="canonical" href="http://www.att.com/shop/wireless/devices/wirelesshomephone.html"/>  
+	<meta NAME="DCSext.wtPN" CONTENT="HRock Wireless Home Phone from AT&T"/> 
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<!--[if IE 7]> 
+<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<![endif]--> 
+<!--[if IE]> 
+<style type="text/css"> 
+	#wrapper {margin-top:20px;} 
+</style> 
+<![endif]--> 
+	    <link rel="stylesheet" type="text/css" href="../../../../1.ecom.attccc.com/styles/shop-styles.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../../1.ecom.attccc.com/media/cms/shop/styles/cr1329.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../1.ecom.attccc.com/media/cms/homepage/styles/featuredItemTile.css"/> 
+	<!-- Global JS files --> 
+	<script type="text/javascript"> 
+CQURLInfo = { 
+    "contextPath": null, 
+    "requestPath": '/content/att/shop/en/wireless/devices/wirelesshomephone', 
+    "selectorString": null, 
+    "selectors": [], 
+    "extension": 'html', 
+    "suffix": null 
+};</script> 
+<script type="text/javascript" src="../../../shopcms/shopetc/clientlibs/foundation/jquery.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/ATT.ui.js"></script> 
+			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+    <script type="text/javascript"> 
+jQuery(function(){ 
+if(jQuery.browser.msie && jQuery.browser.version < 9){ 
+if(jQuery('input[type=tel]').parents().is('span') && jQuery('input[type=tel]').parents().hasClass('textInput-wrapper') ){ 
+}else{ 
+jQuery('input[type=tel]').wrap('<span class="textInput-wrapper"/>'); 
+jQuery('input[type=tel]').wrap('<span>'); 
+ } 
+  } 
+});  
+</script> 
+	<!-- what is it: check for page url that includes plan, package or service --> 
+</head> 
+<!-- Add author only code below --> 
+<body class="consumer"> 
+	<div class="clickstreamcloud"> 
+<script type="text/javascript"> 
+CQURLInfo = { 
+    "contextPath": null, 
+    "requestPath": '/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/clickstreamcloud', 
+    "selectorString": null, 
+    "selectors": [], 
+    "extension": 'html', 
+    "suffix": null 
+};</script> 
+<script type="text/javascript" src="../../../shopcms/shopetc/clientlibs/foundation/shared.js"></script> 
+<script type="text/javascript" src="../../../shopcms/libs/cq/personalization/clientlib.js"></script> 
+<div class="analytics"> 
+</div> 
+<script src="../../../media/cms/homepage/scripts/BrowserDetect.js" type="text/javascript"></script> 
+<script type="text/javascript">       
+	atgProfileDataReady = jQuery.Deferred(); 
+	var atgProfileDataTimer = setTimeout(function() { 
+		atgProfileDataReady.reject();  
+	}, 4000); 
+    $CQ.ajax({ url: '/shop/wireless/devices/wirelesshomephone/_jcr_content.atgprofile.xhr.json', cache: false, dataType: 'text', success: function(data){ 
+		var json = jQuery.parseJSON(data);	 
+		$CQ.each(json, function(key, val) {       
+			   var value = val; 
+			   if(typeof val=="boolean"){ 
+                  value = val.toString(); 
+               } 
+			    if(value.indexOf("|")>0){ 
+                   value = value.replace(/[|]/g,"~"); 
+               } 
+			    if (key === 'region_code') { 
+                    key = 'state'; 
+                } 
+				if (key === 'zip') { 
+                    value = value.substring(0,5); 
+                } 
+                if (key === 'network') { 
+                    if (val === 'att') { 
+                        key = 'existDSL'; 
+                        value = 'true'; 
+                        CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'false'); 
+                    } else { 
+                        key = 'existDSL'; 
+                        value = 'false'; 
+                        CQ_Analytics.ProfileDataMgr.setProperty('compISP', 'true');                      
+                    } 
+                } 
+				//set Ready2Go value from ORDER_COOKIE  , instead of profile because of order summary session invalidation limitation. 
+				if (key == 'existR2G') { 
+                    var orderCookie = ATT.util.getCookie('ORDER_COOKIE'); 
+                    if(orderCookie) { 
+                        var orderCookieJson = jQuery.parseJSON(orderCookie); 
+                        value = orderCookieJson.R2GExists; 
+                    } 
+                } 
+              CQ_Analytics.ProfileDataMgr.setProperty(key, value);                     
+		}); 
+	// setting browser and operating system after reading from the client side 
+	CQ_Analytics.ProfileDataMgr.setProperty("browser", BrowserDetect.browser);  
+	CQ_Analytics.ProfileDataMgr.setProperty("os", BrowserDetect.OS); 
+        clearTimeout(atgProfileDataTimer); 
+        atgProfileDataReady.resolve(data); 
+	}});                               
+</script> 
+<script type="text/javascript" src="../../../shopcms/shopetc/segmentation.segment.js"></script> 
+<div id="clickstreamcloud-gui"></div> 
+</div> 
+	<!-- Global Nav header --> 
+<script type="text/javascript"> 
+	var globalNavDefaultSelections = { 
+		"urls":{ 
+			"navService":"/navservice/navservlet", 
+			"store":"http://www.wireless.att.com", 
+			"www":"http://www.att.com", 
+			"olam":"https://www.att.com", 
+			"myAtt":"https://www.att.com", 
+			"urlMap":{} 
+		}, 
+		"useDefaultJSONSource": true, 
+		"locale":"en_US", 
+		"global":"Personal", 
+		"primary": "010000", 
+		"secondary":"" 
+	}; 
+	var customGlobalNavResources = { 
+		"userInfo": 
+							templateSelector('user_info.xhr'), 
+		"segmentationMenu": "/globalnav/includes/segmentation_menu.jsp", 
+		"menuJSON": globalNavDefaultSelections.urls.navService, 
+		"failSafeJSON": "/globalnav/resources/json/GlobalnavLinksInJsonString.txt" 
+	}; 
+	var globalNavResourceParams = {'globalItem': 'Personal','render': '010000','primaryItem': '010000','platform': 'shop','p_linkChangeClass': 'openModal localModal'}; 
+</script> 
+<script src="http://www.att.com/scripts/template/js/vendor/modernizr-2.6.2.min.js"></script> 
+<script> 
+	/* 
+		US9344 Upgrade Browser Message 
+		Get/Set Cookie Function for Upgrade Browser Message Checking 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	function getCookie(name) { 
+		var dc = document.cookie; 
+		var prefix = name + "="; 
+		var begin = dc.indexOf("; " + prefix); 
+		if (begin == -1) { 
+			begin = dc.indexOf(prefix); 
+			if (begin != 0) return null; 
+		} 
+		else 
+		{ 
+			begin += 2; 
+			var end = document.cookie.indexOf(";", begin); 
+			if (end == -1) { 
+			end = dc.length; 
+			} 
+		} 
+		return unescape(dc.substring(begin + prefix.length, end)); 
+	}  
+	function acknowledgeBrowserSupportSeen() { 
+		document.cookie = "GNSESS=" + '{"UG": ["Unauth"]}' + "; path=/"; 
+	} 
+	/* 
+		US9344 Upgrade Browser Message 
+		Browser Detect JS Function 
+		Function called in globalnav.war/includes/globalNav.jsp page 
+	*/ 
+	var BrowserDetect = { 
+		init: function () { 
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser"; 
+			this.version = this.searchVersion(navigator.userAgent) 
+				|| this.searchVersion(navigator.appVersion) 
+				|| "an unknown version"; 
+			this.OS = this.searchString(this.dataOS) || "an unknown OS"; 
+		}, 
+		searchString: function (data) { 
+			for (var i=0;i<data.length;i++)	{ 
+				var dataString = data[i].string; 
+				var dataProp = data[i].prop; 
+				this.versionSearchString = data[i].versionSearch || data[i].identity; 
+				if (dataString) { 
+					if (dataString.indexOf(data[i].subString) != -1) 
+						return data[i].identity; 
+				} 
+				else if (dataProp) 
+					return data[i].identity; 
+			} 
+		}, 
+		searchVersion: function (dataString) { 
+			var index = dataString.indexOf(this.versionSearchString); 
+			if (index == -1) return; 
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1)); 
+		}, 
+		dataBrowser: [ 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Chrome", 
+				identity: "Chrome" 
+			}, 
+			{ 	string: navigator.userAgent, 
+				subString: "OmniWeb", 
+				versionSearch: "OmniWeb/", 
+				identity: "OmniWeb" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Apple", 
+				identity: "Safari", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				prop: window.opera, 
+				identity: "Opera", 
+				versionSearch: "Version" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "iCab", 
+				identity: "iCab" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "KDE", 
+				identity: "Konqueror" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Firefox", 
+				identity: "Firefox" 
+			}, 
+			{ 
+				string: navigator.vendor, 
+				subString: "Camino", 
+				identity: "Camino" 
+			}, 
+			{		// for newer Netscapes (6+) 
+				string: navigator.userAgent, 
+				subString: "Netscape", 
+				identity: "Netscape" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "MSIE", 
+				identity: "Explorer", 
+				versionSearch: "MSIE" 
+			}, 
+			{ 
+				string: navigator.userAgent, 
+				subString: "Gecko", 
+				identity: "Mozilla", 
+				versionSearch: "rv" 
+			}, 
+			{ 		// for older Netscapes (4-) 
+				string: navigator.userAgent, 
+				subString: "Mozilla", 
+				identity: "Netscape", 
+				versionSearch: "Mozilla" 
+			} 
+		], 
+		dataOS : [ 
+			{ 
+				string: navigator.platform, 
+				subString: "Win", 
+				identity: "Windows" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Mac", 
+				identity: "Mac" 
+			}, 
+			{ 
+				   string: navigator.userAgent, 
+				   subString: "iPhone", 
+				   identity: "iPhone/iPod" 
+			}, 
+			{ 
+				string: navigator.platform, 
+				subString: "Linux", 
+				identity: "Linux" 
+			} 
+		] 
+	}; 
+</script> 
+<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+		/*  
+			US9344 Initialize Browser Detect Script  
+			Used to detect the browser name, version and OS 
+		*/ 
+		BrowserDetect.init(); 
+		/*  
+    		US9344 Close Upgrade Browser Message Container after close icon is clicked 
+		*/ 
+		jQuery('#ge5p_z0-close-box-container').click(function(){ 
+			/* Check if upgrade message browser container is visible */ 
+		    if(jQuery('.ge5p_z0-message-container').is(':visible')) 
+		    { 
+		        /* yes - close it */ 
+		        jQuery(".ge5p_z0-message-container").slideToggle(); 
+		    } 
+		    /* Set GNSESS Cookie */ 
+		    acknowledgeBrowserSupportSeen(); 
+		}); 
+		/*  
+		    US9344 Use Modernizr to detect IE browser by hash change feature  
+		*/ 
+		if (!Modernizr.hashchange) { 
+			/*  
+		        IE Browsers found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Explorer') { 
+		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
+				if(BrowserDetect.version < 7) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist 
+						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+					} 
+		        } 
+		    }  
+		} else { 
+		    /*  
+		        Modern Browsers are found so check if 
+		        version is less than we support 
+		        Updated as of: 3/1/2013  
+		    */ 
+		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
+	}); 
+</script> 
+<div id="ge5p_z0-message-container" class="ge5p_z0-message-container"> 
+    <div class="ge5p_z0-browser-alert-message"> 
+        <div class="ge5p_z0-browser-alert-inner"> 
+            <h2>Pages Don't Look Right?</h2> 
+            <p class="ge5p_z0-browser-alert-text">For a better online experience, we recommend updating your current browser or using one of these:</p> 
+            <ul class="ge5p_z0-browser-alert-browser-list"> 
+                <li> 
+                    <a href="../../../../windows.microsoft.com/en-US/internet-explorer/download-ie.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_explorer.png" alt="Internet Explorer Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../www.google.com/intl/en/chrome.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_chrome.png" alt="Chrome Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../support.mozilla.org/en-US/kb/update-firefox-latest-version.html" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_firefox.png" alt="Firefox Browser will open in a new window or tab"/></a> 
+                </li> 
+                <li> 
+                    <a href="../../../../support.apple.com/downloads/index.html#safari" target="_blank"><img src="http://www.att.com/media/att/2013/global/browserdetect/btn_safari.png" alt="Safari Browser will open in a new window or tab"/></a> 
+                </li> 
+            </ul> 
+            <div class="clear"></div> 
+            <div id="ge5p_z0-close-box-container" class="ge5p_z0-close-box-container"> 
+                <div class="ge5p_z0-close-box-text">Close</div> 
+                <div class="ge5p_z0-close-circle"><p>&times;</p></div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+<div id="globalNav" class="en_US hardRock"> 
+	<div id="globalNavInterface" class="ecom"> 
+				<div id="segMenuBar"> 
+				<div id="segMenuContainer" > 
+					<a href="wirelesshomephone.html%3Fsource=ICwh0000050WHP00L.html#wrapper" id="pageID" rel="res">Skip navigation</a> 
+					<div id="segcenterSpan"></div> 
+					<ul class="segMenu" id="leftSegMenu"> 
+						<li> 
+							<a id="segMenuItemPersonal" class="segMenuItem " href="../../../index.html"><span>Personal</span></a> 
+							<div class="segSubMenu" id="segSubMenuPersonal"> 
+								<ul> 
+											<li><a href="../../../index.html">att.com</a></li> 
+											<li><a href="../../../../www.att.net/index.html">att.net</a></li> 
+											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+								</ul> 
+							</div> 
+						</li> 
+						<li> 
+							<a id="segMenuItemBusiness" class="segMenuItem " href="../../../gen/general%3Fpid=11627.html"><span>Business</span></a> 
+							<div class="segSubMenu" id="segSubMenuBusiness"> 
+								<ul> 
+											<li><a href="../../../gen/landing-pages%3Fpid=9213.html">Small Business</a></li> 
+											<li><a href="../../../gen/landing-pages%3Fpid=9214.html">Enterprise Business</a></li> 
+											<li><a href="../../../gen/general%3Fpid=11624.html">Wholesale</a></li> 
+											<li><a href="../../../gen/general%3Fpid=11625.html">Government</a></li> 
+								</ul> 
+							</div> 
+						</li> 
+						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="../../../gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
+					</ul> 
+					<ul class="segMenu" id="rightSegMenu"> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../../www.wireless.att.com/coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Wireless Coverage Maps<span class="segMenuNewWin">&nbsp;</span></span></a></li> 
+						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../../../storelocator/index.html"><span>Find a Store</span></a></li> 
+						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="wirelesshomephone.html%3Fsource=ICwh0000050WHP00L.html#"><span> 
+									Language 
+								</span></a> 
+							<div class="segSubMenu" id="segSubMenuLanguage"> 
+								<ul> 
+															<li><a href="http://www.att.com/shop/es/wireless/devices/wirelesshomephone.html?locale=es_US&amp;source=ICwh0000050WHP00L"><span lang="es_US">P&aacute;gina en Espa&ntilde;ol</span></a></li> 
+													<li><a href="../../../../espanol.att.com/index.html" target="_blank"><span>Sitio en Espa&ntilde;ol</span></a></li> 
+											<li><div class="segSubMenuDivider">&nbsp;</div></li> 
+													<li><a href="../../../../world.att.com/index.html" target="_blank"><span>Other Language Sites</span></a></li> 
+								</ul> 
+							</div> 
+						</li> 
+					</ul> 
+					<div id="segClearFloat"></div> 
+				</div> 
+				</div> 
+				<div id="globalNavUserInfo"> 
+				</div> 
+				<div id="tieredNav"> 
+					<div id="primaryMenu"> 
+						<ul> 
+							<li id="primary_ATTLogo"> 
+										<a class="primaryMenuItem" title="AT&amp;T Home" href="../../../index.html">&nbsp;</a> 
+							</li> 
+								<li class=" selected"><a href="../../index.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a> 
+								</li> 
+								<li class=""><a href="../../../olam/passthroughAction.myworld%3FactionType=Manage.html" id="primary_MyATT" name="MyATT" class="primaryMenuItem">MyATT<span></span></a> 
+								</li> 
+								<li class=""><a href="../../../esupport/index.jsp.html" id="primary_Support" name="Support" class="primaryMenuItem">Support<span></span></a> 
+								</li> 
+							<li id="primary_Search"> 
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" > 
+									<fieldset> 
+										<input type="hidden" name="App_ID" value="HOME"/> 
+										<input type="hidden" name="autoSuggest" value=""/> 
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/> 
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" /> 
+										<button type="button">Submit</button> 
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div> 
+									</fieldset> 
+								</form> 
+							</li> 
+						</ul> 
+					</div> 
+								<ul id="secondaryMenu_Shop" class="secondaryMenu selected" style="display:block;clear:left;"> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../wireless.html" name="Shop_Wireless" >Wireless</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../bundles.html" name="Shop_Bundles" >Bundles</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../tv/index.html" name="Shop_Digital TV" >Digital TV</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../internet/index.html" name="Shop_Internet" >Internet</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../home-phone/index.html" name="Shop_Home Phone" >Home Phone</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../u-verse.html" name="Shop_U-verse" >U-verse</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../special-offers.html" name="Shop_Special Offers" >Special Offers</a> 
+										</li> 
+										<li class=""> 
+											<a class="secondaryMenuItem" href="../../help.html" name="Shop_Shopping Help" >Shopping Help</a> 
+										</li> 
+								</ul> 
+					<div id="trayContent" style="display:block;height:0px;"></div> 
+				</div> 
+	</div> 
+	<div id="globalNavShadows" style="height:15px;*height:40px;" ></div> 
+</div> 
+<!-- social media  --> 
+<div class="socialmedia"> 
+	<script type="text/javascript"> 
+		function setMeteorKeys(){ 
+			meteor.tracking.track('00d78e1f-01f0-45cd-9f9c-79e690335b05', { 
+				'url_storage_source':'hash', 
+				'query_string_tag_key':['mtag', 'source'] 
+			}); 
+			meteor.sharing.configure('00d78e1f-01f0-45cd-9f9c-79e690335b05'); 
+		} 
+		jQuery(document).ready(function(){ 
+			jQuery.getScript('//cdnt.meteorsolutions.com/metsol.js', function(){setMeteorKeys()},true); 
+		}); 
+	</script> 
+	<style type="text/css"> 
+		#socialMedia { 
+			height:207px; 
+			position: relative; 
+			margin-bottom:-140px; 
+			margin-top:27px; 
+			width: 41px; 
+			float: right; 
+			z-index: 3; 
+		} 
+		.socialmedia { 
+			min-width: 1060px; 
+			height: 0px; 
+			margin: 0 auto; 
+		} 
+	</style> 
+	<map name="sharemap"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,10,42,45" title="Twitter" alt="Twitter" href="http://www.twitter.com" onclick="this.href=meteor.sharing.href('Twitter' );"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,45,38,76" title="Facebook" alt="Facebook" href="http://www.facebook.com" onclick="this.href=meteor.sharing.href('Facebook');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,75,42,103" title="LinkedIn" alt="LinkedIn" href="http://www.linkedin.com" onclick="this.href=meteor.sharing.href('Linkedin' );"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,104,42,133" title="digg" alt="digg" href="http://www.digg.com" onclick="this.href=meteor.sharing.href('Digg');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,132,42,161" title="del.icio.us" alt="del.icio.us" href="http://del.icio.us" onclick="this.href=meteor.sharing.href('del.icio.us');"> 
+		<area target="_blank" tabindex="0" shape="rect" coords="10,164,42,200" title="email" alt="email" href="mailto:" onclick="this.href=meteor.sharing.href('Email' );"> 
+	</map> 
+	<img id="socialMedia" src="../../../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
+</div> 
+<div  id="underNav" class="breadcrumbGutter"> 
+      <div class="undernav-ribbon-wrapper"> 
+              <div id="undernav-right"> 
+                  <div id="lpButtonDiv" style="display:inline;"></div> 
+                  <div id="mini-cart-link-container" style="display:inline;"> 
+                      <a id="minicart-link" href="wirelesshomephone.html%3Fsource=ICwh0000050WHP00L.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content;2013112">My Wireless Cart  
+                          <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+                          <span id="minicart-count"></span> 
+                      </a><br/> 
+                      <div id="cart-preview-container" style="display:none;float:right;"></div> 
+                      <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+                  </div> 
+                  <div class="clear"></div> 
+              </div> 
+              <div class="breadcrumb breadcrumb-undernav"> 
+     			 <div class="breadcrumb"> 
+    <a href="../../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../../wireless.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/breadcrumb">Wireless</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../devices.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/breadcrumb">Devices</a>&nbsp;&nbsp;/&nbsp;&nbsp;Wireless Home Phone from AT&amp;T 
+    </div> 
+			</div> 
+		</div> 
+</div> 
+	<!-- main content of page --> 
+	<div id="wrapper"> 
+		<div id="main-container"> 
+<div class="bg-top-shadow"></div> 
+<div class="bg-mid-shadow"> 
+   <div id="content"> 
+      <div class="primary-content-full"> 
+         <div class="base admgr marqueePromo"> 
+<div class="page-title-container"> 
+	    <div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
+<script type="text/javascript"> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/wireless_devices_homephone", 
+	"panel": [{ 
+		"background": "/shopcms/media/att/2013/shop/homephone/wireless-landing/mrq-WirelessHomePhone-975x615-bg.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/wireless_devices_homephone", 
+		"name": "wireless_devices_homephone", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"html": "1", 
+			"name": "CTA_BTN", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "48", 
+			"y": "299", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/att/wireless-home-phone-silver.html", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Shop Now" }] 
+		}, 
+		{ 
+			"name": "gvp_thumb", 
+			"source": "/shopcms/media/att/2013/shop/wireless/landing/img-WHP-video.jpg", 
+			"type": "Media", 
+			"x": "67", 
+			"y": "380", 
+			"cta": [{ 
+				"action": "JS", 
+				"method": "gvp.showPopUp", 
+				"trigger": "click", 
+				"webtrendsType": "impression", 
+				"param": [{ 
+					"name": "val1", 
+					"value": "Wireless Home Phone" 
+				}, 
+				{ 
+					"name": "val2", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val3", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val4", 
+					"value": "gvp" 
+				}, 
+				{ 
+					"name": "val5", 
+					"value": "video_resources/xml/gvp_ATT-Wireless-Home-Phone-4300487_640x360.xml&amp;gvpLgFormat" 
+				}] 
+			}] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size16,linkblue,arial", 
+			"hoverUnderline": "1", 
+			"name": "video_link", 
+			"type": "Link", 
+			"x": "189", 
+			"y": "383", 
+			"cta": [{ 
+				"action": "JS", 
+				"method": "gvp.showPopUp", 
+				"trigger": "click", 
+				"webtrendsType": "impression", 
+				"param": [{ 
+					"name": "val1", 
+					"value": "Wireless Home Phone" 
+				}, 
+				{ 
+					"name": "val2", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val3", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val4", 
+					"value": "gvp" 
+				}, 
+				{ 
+					"name": "val5", 
+					"value": "video_resources/xml/gvp_ATT-Wireless-Home-Phone-4300487_640x360.xml&amp;gvpLgFormat" 
+				}] 
+			}], 
+			"label": [{ "Text": "Learn more \r\nabout Wireless \r\nHome Phone" }] 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"975", height:"615"}); 
+   var parentNode = document.getElementById("marqueeHolder").parentNode; 
+   parentNode.style.height = "550px"; 
+</script> 
+</div> 
+</div></div> 
+         <div id="breadcrumbs-and-facebook-like-container"> 
+            <div align="right" id="facebook-like-container"> 
+               <div class="likebutton"> 
+</div> 
+            </div> 
+            <br class="clear" /> 
+         </div> 
+         <div class="row-seamless"> 
+            <div class="FlexibleWidthLoBT LoBT"> 
+        <div class="tabLinks"> 
+            <ul class="tabs"> 
+                    <li style="min-height:37px;" id="lobTab1" class="top-round">  
+                        <a href="wirelesshomephone.html%3Fsource=ICwh0000050WHP00L.html#tab1" class="tab-overview current" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/LoBT;2013071">Overview</a>  
+                    </li> 
+                    <li style="min-height:37px;" id="lobTab2" class="top-round">  
+                        <a href="wirelesshomephone.html%3Fsource=ICwh0000050WHP00L.html#tab2" class="tab-features " data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/LoBT;2013071">FAQs</a>  
+                    </li> 
+            </ul> 
+        </div> 
+        <div  class="tab-group"> 
+                    <div class="tabcontent clear"> 
+                       <div class="parsys teasertab1"><div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentRightDefault" style="background: url('../../../shopcms/media/att/2013/shop/wireless/landing/tile1_WHP-EasySetUp.jpg') no-repeat scroll left center transparent;"> 
+	<div class="auto"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase titleplustext section"> 
+    <h4 >Easy to set up – even easier to use</h4>  
+    <p><p>Just plug your telephone into the AT&amp;T Wireless Home Phone base unit, plug the base unit into a power outlet, and you’re ready to call.<br> 
+No telephone wall jack required – set it up in your kitchen, your bedroom, or anywhere you have an available power outlet.</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="dottedDivider"></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentLeftDefault" style="background: url('../../../shopcms/media/att/2013/shop/wireless/landing/tile2_WHP-2waystoSave.jpg') no-repeat scroll right center transparent;"> 
+	<div class="h320"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase titleplustext section"> 
+    <h4 >Two ways to save</h4>  
+    <p><p>Choose the plan that’s best for you and get the AT&amp;T Wireless Home Phone base for FREE with two-year agreement. Plus, get these features at no extra charge:</p> 
+<ul> 
+<li>Calling number ID</li> 
+<li>3-way calling</li> 
+<li>Call forwarding</li> 
+<li>Voicemail</li> 
+</ul> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="dottedDivider"></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentRightDefault" style="background: url('../../../shopcms/media/att/2013/shop/wireless/landing/tile3_WHP-WhereYouGo.jpg') no-repeat scroll left top transparent;"> 
+	<div class="auto"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase titleplustext section"> 
+    <h4 >A home phone that goes where you go</h4>  
+    <p><p>If you travel or even move, you don’t have to leave your home phone behind. Just take your AT&amp;T Wireless Home Phone with you and use it wherever you have a strong cellular signal and a power outlet – like a vacation home or RV. It’s that easy!</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+<div class="clear"></div></div> 
+<div class="dottedDivider"></div> 
+<div class="clear"></div></div> 
+<div class="oneup parbase section"> 
+<div class="one-up parbase fullwidthoneup"> 
+<div class="fullWidthTile contentLeftDefault" style="background: url('../../../shopcms/media/att/2013/shop/wireless/landing/tile4_WHP-CustomersAreSaying.jpg') no-repeat scroll right center transparent;"> 
+	<div class="h320"> 
+		<div class="titleAndCopy "> 
+			<div class="TallPromo1 parsys"><div class="text parbase titleplustext section"> 
+    <h4 >See what customers are saying</h4>  
+    <p><p>The reviews are in – and people love AT&amp;T Wireless Home Phone.<br> 
+Ready to experience AT&amp;T Wireless Home Phone for yourself?<br> 
+<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/LoBT/teasertab1/oneup_2/one-up/TallPromo1/titleplustext;2013074"><b>Start shopping now</b></a><br> 
+</p> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p> 
+</p> 
+<div class="clear"></div>                  
+</div> 
+</div> 
+			<div class="fullwidthlegal"><div class="legal text parbase"> 
+<div class="clear"></div></div> 
+</div> 
+		</div> 
+	</div> 
+</div> 
+<div class="clear"></div> 
+</div> 
+    <div class="legal text parbase"> 
+	<div class="legal"> 
+	   <p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p>Geographic, usage, and other terms, conditions, and restrictions apply. <a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/LoBT/teasertab1/oneup_2/legal;2013074">See detailed terms and conditions.</a><br> 
+©2013 AT&amp;T Intellectual Property. All rights reserved. AT&amp;T is a registered trademark of AT&amp;T Intellectual Property.</p> 
+	</div> 
+<div class="clear"></div></div> 
+<div class="dottedDivider"></div> 
+<div class="clear"></div></div> 
+</div> 
+                    </div> 
+                    <div class="tabcontent clear"> 
+                       <div class="parsys teasertab2"><div class="text parbase fullwidthfaqsoneup section"> 
+	<div class="fullwidthfaqs"> 
+	   <p>&nbsp;</p> 
+<h3>AT&amp;T Wireless Home Phone Frequently Asked Questions</h3> 
+<p>&nbsp;</p> 
+<p><b>What is AT&amp;T Wireless Home Phone?</b></p> 
+<p>AT&amp;T Wireless Home Phone is a commercial mobile radio service that can be used with home phone equipment in a residence or office, taken on vacation and used in a hotel, or even operated while in motion like in an RV.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>How does AT&amp;T Wireless Home Phone work?</b></p> 
+<p>Plug your existing corded or cordless telephone into the AT&amp;T Wireless Home Phone base unit, plug the base unit into a power outlet, turn on the base unit, and you’re ready to make or receive calls. Your voice calls connect to the AT&amp;T wireless network.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Will AT&amp;T Wireless Home Phone work with a fax machine or home alarm system?</b></p> 
+<p>AT&amp;T Wireless Home Phone is a voice-only service and isn’t compatible with services requiring data including fax machines, alarm systems, credit card machines, medical alert systems, or dialup Internet service.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Can I transfer my existing home phone number?</b></p> 
+<p>Yes, you can transfer your home number and even use your existing telephone. If you have DSL Internet and a home phone, please check with your Internet provider first before transferring your phone number to avoid any disruption in service. AT&amp;T Wireless Home Phone may not be compatible with your DVR or satellite TV system – please check with your provider.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Does AT&amp;T Wireless Home Phone require a broadband Internet connection?</b></p> 
+<p>No, AT&amp;T Wireless Home Phone doesn’t require an Internet connection to make or receive calls.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Is AT&amp;T Wireless Home Phone portable?</b></p> 
+<p>Since no telephone wall jack is required, you can use your AT&amp;T Wireless Home Phone anywhere you have a strong cellular signal and available power outlet. Set it up in the kitchen, bedroom -- or even take it with you to a vacation home or in an RV. International roaming is not available.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Can I make or receive calls during power outages?</b></p> 
+<p>Yes, AT&amp;T Wireless Home Phone lets you stay in touch, even if you lose power. The AT&amp;T Wireless Home Phone base unit is equipped with a backup battery allowing for up to 3.5 hours of talk time and 36 hours of standby time. As long as your home telephone doesn’t require an electrical outlet, you’ll be able to make or receive calls.</p> 
+<p>&nbsp;</p> 
+<hr> 
+<p>&nbsp;</p> 
+<p><b>Does AT&amp;T Wireless Home Phone work with 911 service?</b></p> 
+<p>911 calls are routed based on the wireless network’s automatic location technology, but you may have to provide your location address to emergency responders.<br> 
+</p> 
+<p>&nbsp;</p> 
+	</div> 
+<div class="clear"></div></div> 
+</div> 
+                    </div> 
+        </div> 
+ <div class="clear"></div> 
+</div> 
+         </div> 
+         <!--  Warranty Info --> 
+         <div class="clear"></div> 
+         <div class="fullwidthwarrantyinfo"> 
+            <!-- warranty info --> 
+            <div class="parbase warranty reference"></div> 
+         </div> 
+         <div class="clear"></div> 
+         <div id="linkFarm" class="fiveCol"> 
+            <div class="parbase lnkfrm teaser"> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/Category-Landing/link-farm/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]}], "first", "_content_att_shop_en_wireless_devices_wirelesshomephone_jcr_content_lnkfrm", "false", null);  }</script> 
+         <div id="_content_att_shop_en_wireless_devices_wirelesshomephone_jcr_content_lnkfrm" class="campaign campaign-campaign"> 
+                <div class="page teaserpage"> 
+<div data-teaserId="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content;2012103" style="visibility:hidden;"> 
+	<div class="linkfarmteaser parbase LoBTabs"> 
+		    <div class="parsys lnkfrmteaser"><div class="linkfarm4col section"> 
+                        <div id="linkFarm" class="fullWidth">  
+                            <div id="linkFarmTopAndMain">  
+                                <div id="linkFarmTopLinks">  
+                                    <p> 
+                                            &nbsp;&nbsp;|&nbsp;&nbsp; 
+                                                    <a href="http://www.att.com/shop/index" data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col;2012103">Shop</a> 
+                                            &nbsp;&nbsp;|&nbsp;&nbsp; 
+                                                    Wireless 
+                                                &nbsp; 
+                                    </p> 
+                                </div> 
+                                <div id="linkFarmMain"> 
+                                    <div class="fourColumnFormat"> 
+                                        <div class="linkFarmCol"> 
+                                            <div class="linkFarmSectionWithImg"> 
+                                                <div class="leftImg" > 
+                                                        <img src="../../../shopcms/media/att/2011/shop/wireless/common/footer-wireless.gif" alt=""/> 
+                                                </div> 
+                                                <div class="titleAndList">  
+                                                <h4>WIRELESS</h4>  
+                                                <ul>  
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/0" href="cellphones.html" target="">Cell phones</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/1" href="../plans.html" target="">Plans</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/2" href="http://www.att.com/shop/wireless/devices/prepaidphones.html" target="">Prepaid GoPhone&reg;</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/3" href="http://www.att.com/shop/wireless/devices/computers.html" target="">Netbooks</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/4" href="../../apps.html" target="">Ringtones & apps</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/5" href="../accessories.html" target="">Accessories</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist1/6" href="http://www.att.com/shop/wireless/packages.html" target="">Packages & deals</a></li> 
+                                                </ul>  
+                                                </div> 
+                                            </div> 
+                                        </div> 
+                                        <div class="linkFarmCol">  
+                                            <div class="linkFarmSectionWithImg">  
+                                                <div class="leftImg" > 
+                                                        <img src="../../../shopcms/media/att/2011/shop/wireless/common/footer-tv.gif" alt=""/> 
+                                                </div>  
+                                                <div class="titleAndList">  
+                                                <h4>DIGITAL TV</h4>  
+                                                <ul>  
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/0" href="../../tv/index.html" target="">Shop Digital TV</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/1" href="../../tv/index.html" target="">Plans</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/2" href="../../bundles.html" target="">Bundles</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/3" href="../../tv/index.html" target="">U-verse&reg; TV</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/4" href="http://www.att.com/gen/general?pid=7901" target="">AT&T &#124; DIRECTV</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/5" href="../../../u-verse/shop/customize.jsp.html" target="">Check availability</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/6" href="../../../u-verse/shop/channel-lineup.jsp.html" target="">Channel Lineup</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/7" href="http://www.att.com/u-verse/explore/default.jsp" target="">What is U-verse?</a></li> 
+                                                </ul>  
+                                                </div>  
+                                            </div> 
+                                        </div> 
+                                        <div class="linkFarmCol">  
+                                            <div class="linkFarmSectionWithImg">  
+                                                <div class="leftImg" > 
+                                                        <img src="../../../shopcms/media/att/2011/shop/wireless/common/footer-internet.gif" alt=""/> 
+                                                </div>  
+                                                <div class="titleAndList">  
+                                                <h4>INTERNET</h4>  
+                                                <ul>  
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/0" href="../../internet/index.html" target="">U-verse Internet</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/1" href="http://www.att.com/gen/general?pid=6431" target="">DSL with home phone</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/2" href="http://www.att.com/gen/general?pid=11523" target="">DSL without home phone</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/3" href="../../../gen/general%3Fpid=5949.html" target="">Wi-Fi</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/4" href="http://www.att.com/gen/general?pid=9212" target="">Broadband via Satellite</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist3/5" href="../../../equipment/index.jsp.html" target="">Equipment</a></li> 
+                                                </ul>  
+                                                </div>  
+                                            </div> 
+                                        </div> 
+                                        <div class="linkFarmCol"> 
+                                            <div class="linkFarmSectionWithImg">  
+                                                <div class="leftImg" > 
+                                                        <img src="../../../shopcms/media/att/2011/shop/wireless/common/footer-homephone.gif" alt=""/> 
+                                                </div>  
+                                                <div class="titleAndList">  
+                                                <h4>HOME PHONE</h4>  
+                                                <ul>  
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/0" href="../../home-phone/index.html" target="">Shop Home Phone</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/1" href="../../home-phone/index.html" target="">Plans</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/2" href="http://localization.att.com/loc/controller?prod-snip=res_homephone_services" target="">Local</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/3" href="http://localization.att.com/loc/controller?prod-snip=res_long_distance_landing" target="">Long Distance</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/4" href="http://localization.att.com/loc/controller?prod-snip=res_long_distance_landing" target="">International</a></li> 
+                                                    <li><a data-cqpath="/content/campaigns/att/en/Category-Landing/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/5" href="../../home-phone/index.html" target="">U-verse Voice</a></li> 
+                                                </ul>  
+                                                </div>  
+                                            </div>  
+                                        </div> 
+                                    </div> 
+                                    <div class="clear"></div> 
+                                </div> 
+                            </div> 
+                        </div> 
+</div> 
+</div> 
+			<div class="clear"></div></div> 
+</div></div> 
+         </div><div class="clear"></div> 
+</div> 
+         </div> 
+         <div class="clear"></div> 
+      </div> 
+   </div> 
+</div> 
+<div class="clear"></div> 
+		</div> 
+		<div id="fiveColLinkFarm">  
+             <div class="bg-gr-bottom-shadow"></div>  
+        </div> 
+	</div>	 
+	<!-- Global Footer  --> 
+	<div class="globalfooter"> 
+		<div class="parsys sessionexpire modal"> 
+<div id="sessionExpire" style="display:none;">  
+	<div class="inlineModalHeader" title="SessionExpireModal"> 
+<style type="text/css"> 
+	.fauxH1 { 
+		font-size: 2em; 
+		font-weight: normal; 
+		color: #333333; 
+		line-height:1.7em; 
+		padding: 0 0 0 25px; 
+	} 
+</style> 
+<div class="fauxH1 authWarn scenarioContent" title="sessionExpire">Session Timeout</div>  
+<div class="fauxH1 unauthWarn scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
+<div class="fauxH1 unauthExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
+<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" class="closeModal authWarn unauthWarn scenarioContent" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire">Close</a> 
+<a href="../../wireless.html" class="closeModal unauthExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire">Close</a> 
+<a href="../../../accounts/index.html%3Fsource=IC4425j4900s2000.html" class="closeModal authExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire">Close</a> 
+	</div> 
+	<div class="inlineModalContent"> 
+<div style="border-bottom:1px solid #E3E3E3;"> 
+	<div class="authWarn scenarioContent"><p>As a security measure, your session will end in 5 minutes.<br /><br />If you need more time, select Continue to extend your session.</p></div> 
+	<div class="unauthWarn scenarioContent"><p>As a security measure, your session will end in 5 minutes.<br /><br />If you need more time, select Save Cart to return at a later time or select Continue to extend your session.</p></div> 
+	<div class="authExpire scenarioContent"><p>Your myAT&T session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to login to myAT&T.</p></div> 
+	<div class="unauthExpire scenarioContent"><p>Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity.<br /><br />Select Continue to return to the AT&T wireless homepage.</p></div> 
+</div>  
+<div class="authWarn unauthWarn scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a id="sessionExpireSaveCart" class="openModal modal705x400" href="http://www.att.com/shop/wireless/modals/shopmodals/jcr:content/mainpar/savecart.xhr.html" style="margin-right:10px;" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire"><img src="http://3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn_en_save_cart_white29.gif" alt="save cart"/></a> 
+	<a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" id="btn_session_authWarn_continue" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"/></a> 
+</div> 
+<div class="authExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+</div> 
+<div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
+	<a href="../../wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+</div> 
+<div class="clear"></div> 
+	</div> 
+</div></div> 
+		<!-- FOOTER --> 
+				<div id="footer"> 
+					<div class="padding"> 
+                        <div id="attonweb"> 
+                            <div class="attOnWeb"> 
+									AT&amp;T on the Web 
+								</div> 
+                            <div class="attCom" style=""><a href="../../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">att.com</a><br/> 
+									Shop, Service, Support. 
+								</div> 
+                            <div class="attNet" style=""><a href="../../../../www.att.net/index.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">att.net</a><br/> 
+									E-mail - News - Weather &amp; More 
+								</div>                             
+                        </div> 
+                    </div>					 
+					<div class="copyright constrained"> 
+                        <div class="bottomLinks"> 
+												<a href="../../../privacy/index.html" style="padding-left:0px;" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Privacy Policy</a> 
+												 | 
+												<a href="../../../../www.att.jobs/index.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Careers</a> 
+												 | 
+													<a href="../../../econtactus/index.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Contact Us</a> 
+													 | 
+												<a href="../../../gen/general%3Fpid=11561.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Terms of Use</a> 
+												 | 
+												<a href="../../../sitemap/index.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Site Map</a> 
+												 | 
+												<a href="../../../gen/general%3Fpid=10190.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Accessibility </a> 
+												 | 
+												<a href="../../../gen/public-affairs%3Fpid=20107.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Wireless Emergency Alerts</a> 
+												 | 
+												<a href="../../../internal/adchoices.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Advertising Choices</a> 
+												 | 
+												<a href="../../../internal/broadbandinfo.html" style="" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">Broadband Information</a> 
+								</div> 
+								<a href="../../../gen/privacy-policy%3Fpid=2587.html" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter">&copy; 2013 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506  
+						</div> 
+					<div class="logoBlock"> 
+								<a target="_blank" href="../../../../www.ctia.org/index.html" class="logoLink ctia" title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../../www.bbb.org/online/consumer/cks.aspx%3Fid=110020911221.html" class="logoLink bbb" title="Click to verify BBB accreditation and to see a BBB report." data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../../clicktoverify.truste.com/pvr.php%3Fpage=validate&amp;companyName=AT%2526T&amp;sealid=101.html" class="logoLink truste" title="This site is certified by TRUSTe" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../../www.yellowpages.com/index.html" class="logoLink yellowpages" title="YELLOWPAGES.COM" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../../www.realpageslive.com/index.html" class="logoLink realpages" title="Digital White and Yellow Pages" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+								<a target="_blank" href="../../../../www.att.net/teamusa.html" class="logoLink olympics" title="USA Proud Sponsor of the U.S. Olympic Team" data-cqpath="/content/att/shop/en/wireless/devices/wirelesshomephone/jcr:content/globalfooter"> 
+								    <div class="logo"></div> 
+								</a> 
+					</div> 
+				</div> 
+		<!-- WebTrends Base Tag : include only at end of page --> 
+		<!-- Webtrend global params --> 
+		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
+	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
+		 <!--X-Renderer: 56602160855145137384835061317208693505 --> 
+		<!-- /FOOTER -->  
+		</div> 
+	<!-- Page Level JS files --> 
+	    <script type="text/javascript">  
+        jQuery(document).ready(function() { 
+            var pathname = window.location.pathname; 
+            if( pathname.indexOf("upgrade-advantage.html") > -1 ){ 
+                jQuery("div.marquee.tile.base").css('height','525px'); 
+                jQuery('div.row-seamless').each(function(){ 
+                    if (jQuery.trim(jQuery(this).text()) == '') { 
+                        jQuery(this).hide(); 
+                    } 
+                });                 
+            }  
+        });  
+    </script>  
+    <script src="../../../media/cms/shop/scripts/wirelessCarousels.js" type="text/javascript"></script> 
+	<!-- Webtrend global --> 
+<script> 
+//<![CDATA[ 
+	ATT.globalVars.wtCartState =  'E';  
+ATT.globalVars.statuscode = ""; 
+ATT.globalVars.custType = ""; 
+ATT.globalVars.ban = ""; 
+ATT.globalVars.flowIndicator = ""; 
+ATT.globalVars.buyflow = "NEW"; 
+ATT.globalVars.ckavailUserZip = "91367"; 
+ATT.globalVars.zip = function (){ 
+	var wtzip; 
+	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
+		wtzip = ATT.globalVars.cartContents.userZip; 
+	} else if (ATT.util.attPLCookie()) { 
+		wtzip = (document.cookie.match(/attPersistantLocalization.*zip=(\d{5})/)||[])[1]; 
+	} else if (ATT.globalVars.ckavailUserZip)	{ 
+	   wtzip = ATT.globalVars.ckavailUserZip; 
+	} 
+	else { 
+		wtzip ="91367"; 
+	} 
+	return wtzip; 
+}; 
+ATT.globalVars.buyflowCheck = function () { 
+	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
+		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
+		flowType =""; 
+	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
+		flowType = ATT.globalVars.cartContents.flowIndicator; 
+	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
+		flowType = ATT.globalVars.cartContents.buyFlowType; 
+	} else { 
+		flowType ="NEW"; 
+	} 
+	return flowType; 
+ }; 
+ATT.globalVars.wtFull = function(){ 
+	var urival = location.pathname.split('/'), href = location.href, wtsku, $ = jQuery,   
+    	regnolist = /\/login\.html|\/bundles\.html|\/wireless\.html|\/internet\.html|\/availability\.html|\/cellphone|\/tablets|\/mobilebroadband|\/packageslist|\/individualplans|\/familyplans|\/prepaidplans|\/dataplans|\/serviceslist|\/cartsummary|\/accessorieslist|\/checkout\//, 
+       teaserid = function () { 
+                var $r = jQuery("div[data-teaserid]"), teaser =[], 
+                	i = $r.length, href = location.href,temp, 
+                	prodid, urlpart1, urlpart2, fullurl, fullpath; 
+                while(i--){ 
+                    teaser[i] = $($r[i]).data('teaserid');// jQuery($r[i]).data('cqpath'); 
+                } 
+                ATT.log("teaser length:" + teaser.length); 
+             teaser = teaser.join('|'); 
+             ATT.log(teaser); 
+             return (teaser || ''); 
+        }; 
+        $('<meta/>', {name: 'DCSext.wtCQDynId', content: teaserid()}).appendTo('head'); 
+        ATT.log('regex block'); 
+        if(~href.indexOf('/accessorieslist') && ~href.indexOf('.prod')){ 
+        	temp = location.pathname.split('/').slice(-1).join('').split('.'); 
+        	prodid = temp[1]; 
+        	urlpart1 = temp[0]; 
+        	fullurl = urlpart1+'.html'; 
+        	fullpath = location.pathname.split('/').slice(0,-1).join('/')+'/' + fullurl; 
+        	$('<meta/>', {name: 'DCS.dcsuri', content:fullpath}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtFullUri', content:location.href}).appendTo('head'); 
+        	$('<meta/>', {name: 'DCS.wtProdId', content:prodid}).appendTo('head'); 
+        } 
+        if ($('meta[name*=detailPage]').length){ 
+        	if($('meta[name*=detailPage]').attr('content') === 'package' || $('meta[name*=detailPage]').attr('content') === 'service'){ 
+        		$('<meta/>', {name: 'DCS.dcsuri', content:urival.slice(0,-1).join('/')}).appendTo('head'); 
+        	}else{ 
+            	$('<meta/>', {name: 'DCS.dcsuri', content:urival.slice(0,-2).join('/')}).appendTo('head'); 
+        	} 
+            $('<meta/>', {name: 'DCSext.wtFullUri', content:location.pathname}).appendTo('head'); 
+            $('<meta/>', {name: 'DCSext.wtSku', content:jQuery("div[data-sku]").data('sku')? jQuery("div[data-sku]").data('sku') : ""}).appendTo('head'); 
+        } 
+}; 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+	// reporting.appname = 'shop'; 
+	if ('') { 
+		reporting.errors.push(''); 
+	} else if(''){ 
+		reporting.errors.push('');	 
+	}else{ 
+		reporting.errors.push(''); 
+	} 
+	reporting.capture([ 
+	    {selector:'head', type:'wtmeta', name:'wtCustType', value:"Consumer"},               
+	    {selector:'head', type:'wtmeta', name:'wtBuyFlowCode', value: function () { 
+	    	var flowCodeck = ATT.globalVars.buyflowCheck() ? ATT.globalVars.buyflowCheck() :  
+	    				     window.localStorage ?  window.localStorage.getItem('buyflowCode') : ''; 
+	    	ATT.globalVars.flowcode = ["HR", flowCodeck,"~W", flowCodeck,"~U","~H", 
+	    	                           "~I","~D","~BW"].join(''); 
+	    	return ATT.globalVars.flowcode; 
+	    }},                
+	    {selector:'head', type:'wtmeta', name:'wtZipCode', value: function () { 
+	    	return ATT.globalVars.zip(); 
+	    }},  
+	    {selector:'head', type:'wtmeta', name:'wtCity', value: function () { 
+	    	var wtCity; 
+	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
+	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
+	    	} else { 
+	    		wtCity = "WOODLAND HILLS"; 
+	    	} 
+	    	return wtCity; 
+	    }}, 
+	    {selector:'head', type:'wtmeta', name:'wtState', value: function () { 
+	    	var wtState; 
+	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
+	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
+	    	} else { 
+	    		wtState = "CA"; 
+	    	} 
+	    	return wtState; 
+	    }}	    
+	]); 
+	reporting.tag.perform('inline'); 
+}); 
+//]]> 
+</script> 
+<script> 
+//<![CDATA[ 
+if (window.webTrendTag_unprototype) webTrendTag_unprototype(); 
+//]]> 
+</script> 
+<script> 
+//<![CDATA[ 
+	ATT.namespace("DCSSignals"); 
+	ATT.DCSSignals = (function(){ 
+		var dfd = new jQuery.Deferred(); 
+		setTimeout(function(){ dfd.resolve(); }, 15000); 
+		return { 
+			"dcs_ready_promise" : dfd.promise(), 
+			"resolveDCSFuncs" : dfd.resolve 
+		}; 
+	}()); 
+    // Use any event to append the code 
+    jQuery(document).ready(function(){ 
+        jQuery.when(reporting_ready).then(function() { 
+        	setTimeout(function () { 
+	        	if (typeof pb_ready == "undefined"){ pb_ready = new jQuery.Deferred(); pb_ready.resolve();} 
+				jQuery.when(pb_ready).then(function() { 
+					ATT.globalVars.wtFull(); 
+					ATT.checkPromo(); 
+					ATT.log('dcs injection block'); 
+					var s = document.createElement("script"); 
+					s.type = "text/javascript"; 
+					s.src = "//www.att.com/webtrends/scripts/dcs_tag.js"; 
+					s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
+					s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
+					// Use any selector 
+					jQuery("head")[0].appendChild(s); 
+					//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+					if (window.JSAM) 
+					JSAM.Stat.reportReady(); 
+				}); 
+        	}, 3000);     
+        }); 
+    }); 
+  //]]> 
+</script> 
+<script src="http://www.att.com/media/cms/shop/scripts/ATT.cqWebtrend.js" type="text/javascript"></script> 
+	<!-- C2C --> 
+	<div class="parbase chat"> 
+<script> 
+//<![CDATA[ 
+//minimal set of configuration setting to set up connection to liveperson server  
+var lpMTagConfig = lpMTagConfig || {}; 
+	lpMTagConfig.vars = lpMTagConfig.vars || []; 
+    ATT.globalVars.custName = ["",""].join(' '); 
+    ATT.globalVars.customerItemsOwned = ATT.util.filter(['','','',''], function(n){return n;}).join('|'); 
+lpMTagConfig.lpServer = "sales.liveperson.net"; 
+lpMTagConfig.lpTagSrv = lpMTagConfig.lpServer; 
+lpMTagConfig.lpNumber = "26709415";	 
+if(~location.href.indexOf('/international')){ 
+	lpMTagConfig.deploymentID = "international"; 
+	jQuery('#lpButtonDiv-2').css('top', '20px'); 
+}else{ 
+	lpMTagConfig.deploymentID = "att"; 
+} 
+if(~location.href.indexOf('/u-verse')){ 
+	lpMTagConfig.vars.push(["page","unit","uverse-residential"]); 
+}else if(~location.href.indexOf('/wireless.html')){ 
+	lpMTagConfig.vars.push(["page","unit","wireless"]); 
+}else if(~location.href.indexOf('/special-offers')){ 
+	lpMTagConfig.vars.push(["page","unit","att"]); 
+}else if(~location.href.indexOf('/international')){ 
+	lpMTagConfig.vars.push(["page","unit","international"]); 
+}else{ 
+	lpMTagConfig.vars.push(["page","unit","supern22"]); 
+} 
+lpMTagConfig.vars.push(["session","language","english"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","B2ZrRJMTRvqhV5wdvszp3qvn!-547753477!1367985267116"]); 
+lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
+lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
+lpMTagConfig.vars.push(["visitor","customerZip",""]); 
+lpMTagConfig.vars.push(["visitor","customerCity",""]); 
+lpMTagConfig.vars.push(["visitor","customerState",""]); 
+lpMTagConfig.vars.push(["visitor","customerAccountInfo", '']); 
+lpMTagConfig.vars.push(["visitor","customerItemsOwned", ATT.globalVars.customerItemsOwned]); 
+lpMTagConfig.vars.push(["visitor","customerQualification",""]); 
+lpMTagConfig.vars.push(["page","applicationName","shop"]); 
+lpMTagConfig.vars.push(["page","departmentName",""]); 
+lpMTagConfig.vars.push(["visitor","customerLocalization",ATT.globalVars.zip()]); 
+lpMTagConfig.vars.push(["session","clickAction",""]); 
+lpMTagConfig.vars.push(["page","errorName",""]); 
+if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){ 
+	lpMTagConfig.vars.push(["page","ChatEligibility","On"]); 
+}else{ 
+	lpMTagConfig.vars.push(["page","ChatEligibility","Off"]); 
+} 
+//]]> 
+</script> 
+    <script src="http://www.att.com/media/cms/shop/scripts/ATT.c2c.js" type="text/javascript"></script> 
+    <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/mtagconfig.js"></script> 
+</div> 
+	<!-- atlastag -->	 
+<script> 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+    reporting.capture([ 
+       // {selector: '#submitButtonField .enabledButton', type: 'wtsubmit', name: 'HRock_Check_Avail_Submit', params: 'wtUserResp'}, 
+       // {selector: 'head:page(internet)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+        {selector: 'head:page(freewifidevice.html)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+		//{selector: 'a[href*=/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.html]', type: 'wtparam', name: 'dcsuri', value: '/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.htm'} 
+    ]); 
+}); 
+</script> 
+</body> 
+</html> 

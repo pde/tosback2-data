@@ -41,8 +41,6 @@ try {
 
 if (window.location.protocol == 'https:') {
     document.write('<s'+'cript src="https://secure.nbc.com/assets/core/js/s_code.js"></s'+'cript>');
-    document.write('<s'+'cript src="https://www.nbcudigitaladops.com/hosted/global_header.js"></s'+'cript>');		
 } else {
     document.write('<s'+'cript src="http://www.nbc.com/assets/core/js/s_code.js"></s'+'cript>');
-    document.write('<s'+'cript src="http://www.nbcudigitaladops.com/hosted/global_header.js"></s'+'cript>');		
 }

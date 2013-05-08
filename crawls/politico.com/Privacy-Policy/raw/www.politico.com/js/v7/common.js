@@ -170,8 +170,14 @@ $(document).ready(function(){
 });
 
 
-
-
+//SHARE TOOLS WINDOW POPUP FOR BREAKING NEWS
+$(document).ready(function(){
+	var shareLinks = $('.p-breaking-news .breaking-share a');
+    shareLinks.click(function(){
+        window.open(this.href, 'Share', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600');
+        return false;
+    });
+});
 
 
 $(document).ready(function()						   
@@ -476,3 +482,4 @@ function cacheBuster(secondsToCache) {
 	returnedString = "?cachebuster=" + dateTime;
 	return returnedString;
 }
+

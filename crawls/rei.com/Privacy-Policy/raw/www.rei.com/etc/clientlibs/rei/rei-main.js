@@ -2720,14 +2720,14 @@ window-resize triggers error */
 							var loggedInUser = Get_Cookie("REI_SESSION_ID");
 							if (loggedInUser == null || loggedInUser === "")
 							{
-								rei.services.Create('/rest/user/guest',{},{
-					    	  		dataType: "text",
+								rei.services.Create('/rest/user/guest/v2.json',{},{
+					    	  		dataType: "json",
 					    	  		async: false,
 					    			success: function(token){
 					    				//Set_Cookie("REI_SESSION_ID", json); Not using Set_Cookie because it escapes the token value due tp which the
 					    				// guest user token returned by server doesn't match the one set in browser cookie
 					    				//$.cookie("REI_SESSION_ID",token,{path:'/', expires: 10}); Can't use this cause even this encodes the token
-					    				_setGuestUserCookie(token);
+					    				_setGuestUserCookie(token.unsecureToken);
 				
 					    			},
 					    			error: function(){
@@ -5640,3 +5640,147 @@ $(window).load(function() {
         });
 	});
 });
+    function socialAnalytics(icon) {
+        try{
+            var s = s_gi(s_account);
+            sp_val = 'cm_sp-_-pagecontent-_-actionbar-_-' + icon;
+            s.eVar38=sp_val;
+            s.eVar39=rei.analytics.options.page_name;
+            s.linkTrackEvents = s.events ='event68';
+            s.linkTrackVars="eVar38,eVar39,events";
+            s.linkName="SP Event";
+        }catch(err){}
+    }
+    
+    function drawSocialIcons() {
+        // scrape page content to append to social and email hrefs
+        var title = encodeURI($("title").html());
+        var description = $("meta[name='description']").attr("content");
+        var pathname = location.pathname;
+        var trackingTag = "&cm_mmc=sm_";
+        var query = window.location.search;
+        if (query == "") {
+            query = "?";
+            trackingTag = trackingTag.replace("&", "");
+        }
+        var url = encodeURI("http://www.rei.com" + pathname + query + trackingTag);
+        url = url.replace(/\+/g, "%2B");
+        url = url.replace(/&/g, "%26");
+        var image = "";
+        var productSku = "";
+        
+        if ($("img[src *= 'skuimage']:first").attr("src") != undefined) {
+            image = $("img[src *= 'skuimage']:first").attr("src");
+        }
+        
+        if ($("div#results img:first").attr("src") != undefined) {
+            image = $("div#results img:first").attr("src");
+        }
+        
+        if ($("div#topCategories img[src *= 'zoom']:first").attr("src") != undefined) {
+            image = $("div#topCategories img[src *= 'zoom']:first").attr("src");
+        }
+        
+        if (pathname.indexOf("product") > -1) {
+            var skuRegex = /\d{6}/;
+            productSku = pathname.match(skuRegex);
+            title = escape($("h1").attr("itemprop", "name").html());
+            image = "http://www.rei.com/skuimage/" + productSku + "/90";
+        }
+
+        if ($("meta[property = 'og:image']").attr("content") != undefined){
+            image = $("meta[property = 'og:image']").attr("content");
+        }
+        
+        if (image != ''){
+            image = "http://www.rei.com" + image.replace(/http:\/\/www.rei.com/, '');
+        } else {
+            image = "http://www.rei.com/pix/common/REI_logo.gif";
+        }
+        
+        // update social and email hrefs
+        try
+          {
+            if ($('#actionBar .facebook.share-facebook')) {
+                $('.facebook.share-facebook').attr('href', 'http://www.facebook.com/dialog/feed?app_id=131317376894863&redirect_uri=http://www.facebook.com/&link=' + url + 'fb-_-share&picture=' + image + '&name=' + title);
+                $('.twitter.share-twitter').attr('href', 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url + 'tw-_-share&related=rei');
+                $('.google-plus.share-google-plus').attr('href', 'https://plus.google.com/share?url=' + url + 'gp-_-share');
+                $('.pinterest.share-pinterest').attr('href', 'http://pinterest.com/pin/create/button/?url=' + url + 'pin-_-share&media=' + image + '&description=' + title);
+                $('.stumbleupon.share-stumbleupon').attr('href', 'http://www.stumbleupon.com/submit?url=' + url + 'stb-_-share&review=' + title);
+            }
+          }
+        catch(err)
+          {
+            
+          }
+                
+         try
+          {
+            if ($('#actionBar .shareemail.share-email')) {
+                $('.shareemail.share-email').attr('href', '/content/rei/en_us/site/fragments/email-this.html?sku=' + productSku + '&image=' + image + '&url=' + url + 'email-_-share&title=' + title);
+               
+            }
+          }
+        catch(err)
+          {
+            
+          }
+    }
+    
+    function openSocialWindow(width, height, iconName, link) {
+        if (iconName == 'shareemail') {
+            return false;
+        }
+        if (iconName == 'shareprint') {
+            window.print();
+            return false;
+        }
+        var winWidth=jQuery(window).width();
+        var winHeight=jQuery(window).height();
+        var windowOptions="dialog=yes,scrollbars=yes,resizable=yes,toolbar=no,personalbar=no,location=yes";
+        var left=Math.round(winWidth/2-width/2),top=Math.round(winHeight/2-height/2);
+
+        window.open(link,iconName,windowOptions+",width="+width+",height="+height+",left="+left+",top="+top);
+        
+        width=height=left=top=null;
+        
+        socialAnalytics(iconName);
+    }
+    
+    $(document).ready(function(){
+
+        drawSocialIcons();
+        
+        $(".social a").mouseenter(function(){
+            $(this).unbind('.analytics');
+        });
+
+        
+        $(".social a").click(function(e){
+            openSocialWindow($(this).attr("width"), $(this).attr("height"), $(this).attr("iconName"), $(this).attr("href"));
+            e.returnValue=false;
+            e.preventDefault&&
+            e.preventDefault();
+        });
+        
+        $(".shareemail").fancybox({
+            'height': 680,
+            'padding': 10,
+            'width': 535,
+            'scrolling':'no',
+            'autoScale': false,
+            'type': 'iframe',
+            'titleShow': false,
+            onComplete: function(){
+                $(document).unbind("keydown"); 
+                $("#fancybox-right").hide();
+                $("#fancybox-left").hide();
+                socialAnalytics('email');       
+                s.tl(true,"o",'SP Event');
+                $('#fancybox-close').bind('click', function(){
+                    socialAnalytics('close-window');        
+                    s.tl(true,"o",'SP Event');
+                });
+            },
+        });
+    });

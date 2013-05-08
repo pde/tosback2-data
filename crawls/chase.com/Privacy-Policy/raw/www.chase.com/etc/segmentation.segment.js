@@ -1,96 +1,189 @@
 
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpo_-_10k_to_20kurpoints","( ( CQ.chase.common.SegmentManager.segmentContains(\'36036557\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpo_-_greater_than20kurpoints","( ( CQ.chase.common.SegmentManager.segmentContains(\'36036558\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_auto_loaneligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595204\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_card_retail","( ( CQ.chase.common.SegmentManager.segmentContains(\'37253582\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_card_acquisitioneligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37610979\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_card_only","( ( CQ.chase.common.SegmentManager.segmentContains(\'37253581\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_credit_worthy","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595212\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_freedom_5enrolleligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595158\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_freedom_appremarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37577138\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_freedom_appremarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566353\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_freedom_lpremarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37578220\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_freedom_lpremarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566441\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_ink_customer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595183\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_knicks_eligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595223\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_no_card_noretail","( ( CQ.chase.common.SegmentManager.segmentContains(\'37565988\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_non-freedommarqueeshown","( ( CQ.chase.common.SegmentManager.segmentContains(\'37568722\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_non-sapphiremarqueeshown","( ( CQ.chase.common.SegmentManager.segmentContains(\'37568725\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_non-slatemarqueeshown","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566690\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_rangers_eligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595225\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_retail_only","( ( CQ.chase.common.SegmentManager.segmentContains(\'37253580\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_sapphire_appremarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37590819\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_sapphire_appremarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566434\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_sapphire_customer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595175\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_sapphire_lpremarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37590857\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_sapphire_lpremarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566440\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_appremarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37590858\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_appremarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566435\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_authusereligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37658331\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_blueprinteligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595166\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_customer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37595197\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_finishiteligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37659149\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_fullpayeligible","( ( CQ.chase.common.SegmentManager.segmentContains(\'37659159\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_lp_remarketcustomer","( ( CQ.chase.common.SegmentManager.segmentContains(\'37592248\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/xpoe_-_slate_lp_remarketprospect","( ( CQ.chase.common.SegmentManager.segmentContains(\'37566442\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_banconeinsmarkets-insmarket","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023458\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_consumerlending-oof","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023456\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-aznorthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022036\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-azsouthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022038\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-canorthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022040\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-casouthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022042\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-chicago","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022053\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-chrltnhtgtnlgnwv","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023437\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-cincinnati","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022055\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-cleveland","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022057\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-co","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022059\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-detroitmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022061\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-flnorthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022063\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-flsouthern","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022065\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ga","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022067\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-greaterla","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022069\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-houston","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022071\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-idnorthwest","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022073\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-incentralmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022044\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-lexingtonky","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022075\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-minorthandwest","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023439\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-misouthandeast","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023429\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-milwaukeemetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022080\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-mvilleelkhartin","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022077\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-neworleansmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022753\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-nv","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022751\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-nycounties","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022755\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-nyexceptnyc","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022749\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohcentralcomm","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022046\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohcentralmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022048\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohnortheastcomm","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023417\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohnortheastmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023419\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohwesterncomm","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023441\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ohwesternmetro","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023443\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ok","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023421\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ornorthwest","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022082\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-phoenix","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023423\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-riogrande","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023425\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-rockfordil","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023427\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-txcentral","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022051\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-txcomm","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023431\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-txnorth","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023433\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-ut","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023435\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-wanorthwest","( ( CQ.chase.common.SegmentManager.segmentContains(\'42022084\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-whlngwvstbvlleoh","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023445\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-winorthcomm","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023447\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_footprintloc-youngstown","( ( CQ.chase.common.SegmentManager.segmentContains(\'42023449\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_dda_-_ct_dda","( ( CQ.chase.common.SegmentManager.segmentContains(\'50139445\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/zip_-_dda_-_nj_dda","( ( CQ.chase.common.SegmentManager.segmentContains(\'50139443\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cig_segment_pcb_jpmsecurities","( ( CQ.chase.common.SegmentManager.segmentContains(\'52945754\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cig_segment_pvb_privatebanking","( ( CQ.chase.common.SegmentManager.segmentContains(\'52945755\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cig_segment_wth_wealthmgmt","( ( CQ.chase.common.SegmentManager.segmentContains(\'52945756\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cigseg_wth_usertypepc","( ( CQ.chase.common.SegmentManager.segmentContains(\'53260037\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cigseg_wth_usertypeam","( ( CQ.chase.common.SegmentManager.segmentContains(\'53260042\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cigseg_pvb_usertypepc","( ( CQ.chase.common.SegmentManager.segmentContains(\'53260045\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/cigseg_pvb_usertypeam","( ( CQ.chase.common.SegmentManager.segmentContains(\'53260048\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/adsegments/test_cn_cigseg_pvbusertypepc","( ( CQ.chase.common.SegmentManager.segmentContains(\'53478622\') ) )",0);
 
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/chasecom/known","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.pagedata, \'userstatus\', \'equals\', \'known\', \'\') ) )",0);
+
 CQ_Analytics.SegmentMgr.register("/etc/segmentation/chasecom/unknown","( ( CQ_Analytics.OperatorActions.operate(clickstreamcloud.pagedata, \'userstatus\', \'equals\', \'unknown\', \'\') ) )",0);
 

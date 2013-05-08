@@ -245,16 +245,16 @@ function setZipPromptCookie(zipCode, divID) {
     else if (divID == '#outServiceAddressForm') {
         options = {
             path: '/'
-        };        
+        };
     }
     $.cookie("zipPromptCookie",zipCode,options);
 }
 function getZipFromPromptCookie() {
     var zipData;
     if($.cookie('zipPromptCookie')) {
-        zipData = jQuery.parseJSON($.cookie('zipPromptCookie'));
+        zipData = $.cookie('zipPromptCookie');
     }
-    return(zipData);   
+    return(zipData);
 }
 function updateZip(zipCode) {
     if (isValidZipCode(zipCode)) {
@@ -262,7 +262,7 @@ function updateZip(zipCode) {
         var locationEl = $(document).find('#twc-location-popup input');
         var locationElButton = $(document).find('#twc-location-popup button');
         locationEl.val(zipCode);
-        locationElButton.trigger('click');      
+        locationElButton.trigger('click');
     } else {
         // Missing required elements, display error
         $('.form_error').show();
@@ -280,7 +280,7 @@ $('#outServiceAddressForm input[type=button]').click(function() {
     var zipCode = $('#outServiceZIP').val();
     updateZip(zipCode);
 });
-jQuery(document).ready(function () {            
+jQuery(document).ready(function () {
     var configText = $('.serviceText').html();
     if(!configText){//Author need to configure the component.
         return;
@@ -289,8 +289,8 @@ jQuery(document).ready(function () {
     var geoLocation = getGeoLocationFromCookie();
     var zipPromptData = getZipFromPromptCookie();
     var divID = determineFootprint();
-    
-    if(! $.cookie('zipPromptCookie') || zipPromptData != geoLocation.postalCode) {        
+
+    if(! $.cookie('zipPromptCookie') || zipPromptData != geoLocation.postalCode) {
        // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
          $.fancybox({
                 'href'   : divID,
@@ -513,8 +513,6 @@ var $window = $(window),
     "use strict";
 
     $.fn.paymentCenters = function(opts) {
-        var myAddress;
-
         var paymentCenters = [];
         var counter = 0;
 
@@ -582,29 +580,16 @@ var $window = $(window),
             $(this).paymentCentersDrivingDirections();
         });
 
-        // Handle click submitting address data
-        $('div#addressForm input[type=button]').click(function() {
-            var address = $('#address').val();
-            var city = $('#city').val();
-            var state = $('#state').val();
-            var zip = $('#zip').val();
-            if(address != "" && city != "" && state != "" && zip != "") {
-                //console.log('Geolocating address:' + [address, city, state, zip].join(' '));
-                geoLocate([address, city, state, zip].join(' '), function(){
-                    setAddress(address, city, state, zip);
-                    // Only trigger full localization when not inside accordion to prevent resetting accordion state
-                    if(!inAccordion()) {
-                        doLocalization(zip);
-                    } else {
-                        initialize();
-                    }
-                    $('#addressForm form')[0].reset();
-                });
-            } else {
-                // Missing required elements, display error
-                notify('Missing required fields');
-            }
-            return(false);
+        $('div#addressForm form').submit(function(e) {
+            e.preventDefault();
+            //console.log('submitted with', $('div#addressForm #address').val(), arguments);
+            geoLocate($('div#addressForm #address').val(), function() {
+                //console.log('Geolocate returned: ', arguments);
+                $('#addressForm form')[0].reset();
+                $.fancybox.close(true);
+                // Only trigger full localization when not inside accordion to prevent resetting accordion state
+                inAccordion() ? initialize() : doLocalization(ClientContext.get('/profile/zip'));
+            });
         });
 
         // Fade out error msg on keydown in form input field
@@ -657,32 +642,13 @@ var $window = $(window),
             $('#paymentcenterresults').empty();
             paymentCenters.length = 0;
 
-//            if(ClientContext.get('/profile/startlat1') && ClientContext.get('/profile/startlng1')) {
-//                // Origin coordinates available from ProfileData, proceed with fetching PC locations
-//                getPaymentCenters();
-//            } else
-            // For now, we geolocate every time.
-            if(ClientContext.get('/profile/postalAddress')) {
-                // Coordinates not available, but address is. Calculate coordinates from address, then fetch locations
-                //console.log('No coordinates available, but postalAddress is present. Attempting to geocode.');
-                geoLocate(ClientContext.get('/profile/postalAddress'), getPaymentCenters);
-            } else {
+            if(ClientContext.get('/profile/zip')) {
+                //console.log('Geolocating using zip:', ClientContext.get('/profile/zip'));
+                geoLocate(ClientContext.get('/profile/zip'), function() { getPaymentCenters(ClientContext.get('/profile/zip')); });
+            }
+            else {
                 // No coordinates or address -- display modal prompting for address
-                //console.log('No geographic coordinates available');
-                // Try to fetch the address from profile data store.
-                // If address not present in profile, display address modal if we're currently visible
-                myAddress = ClientContext.get('/profile/postalAddress');
-                if(!myAddress || myAddress === " ,  ") {
-                    $.fancybox({
-                        href: '#addressForm',
-                        afterClose: function() {
-                            //console.log('Closed');
-                            if(!$('#addressForm #zip').val()) {
-                                $('payment-center-notice').html('closed error').show();
-                            }
-                        }
-                    });
-                }
+                $.fancybox({href: '#addressForm'});
             }
         }
 
@@ -694,6 +660,7 @@ var $window = $(window),
             return($('div.paymentCenterReturns').closest('div.accordion').length > 0 ? true : false);
         }
 
+
         /**
          * Perform geolocation on a given address and invoke callback upon success.
          * This stores the geographic coordinates in the profile store automatically.
@@ -701,41 +668,53 @@ var $window = $(window),
          * @param callback Function to invoke upon successful geolocation
          */
         function geoLocate(address, callback) {
-            //console.log('geoLocate()');
-            // TODO FIXME: redundant code from user-location... make shared
-            var splitAddr = address.split(' ');
-            var zipForSoa = splitAddr[splitAddr.length - 1];
-            zipForSoa ? zipForSoa : ClientContext.get('/profile/zip');
-            $.getJSON(options.geoLocationServletURI + '?zip=' + zipForSoa, function(geoLocation) {
-                // Since you changed your location, we need to get your new soaId/region
-                writeGeoLocationCookie(geoLocation);
-                updateGeoLocationProfile(geoLocation);
-
-                // Call geocoder service to get lat/lon of current location
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({
-                    address: address
-                }, function(locResult, status) {
-                    //console.log(arguments);
-                    if(status === 'OK') {
-                        try {
-                            ClientContext.set('/profile/startlat1', locResult[0].geometry.location.lat());
-                            ClientContext.set('/profile/startlng1', locResult[0].geometry.location.lng());
-                            callback();
-                        } catch(e) {
-                            console.log('Geocoding error:', e);
+            // Call geocoder service to get lat/lon of current location
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                address: address
+            }, function(locResult, status) {
+                //console.log(arguments);
+                if(status === 'OK') {
+                    try {
+                        var zipCode;
+                        for(var i=0; i< locResult.length; i++) {
+                            for(var j=0; j < locResult[i].address_components.length; j++) {
+                                if(jQuery.inArray('postal_code', locResult[i].address_components[j].types) >= 0) {
+                                    zipCode = locResult[i].address_components[j].short_name;
+                                    //console.log('Got postal_code: ', zipCode);
+                                    ClientContext.set('/profile/startlat1', locResult[i].geometry.location.lat());
+                                    ClientContext.set('/profile/startlng1', locResult[i].geometry.location.lng());
+                                    //console.log('Set lat/lng:', ClientContext.get('/profile/startlat1'), ClientContext.get('/profile/startlng1'));
+                                    break;
+                                }
+                            }
                         }
-                    } else {
-                        // Not OK.
-                        //console.log('Error geolocating address:', status);
-                        notify('Error calculating location: ' + status);
+                        if(zipCode) {
+                            $.getJSON(options.geoLocationServletURI + '?zip=' + zipCode, function(geoLocation) {
+                                // Since you changed your location, we need to get your new soaId/region
+                                writeGeoLocationCookie(geoLocation);
+                                updateGeoLocationProfile(geoLocation);
+                                callback();
+                            }).error(function() {
+                                // Bad zip or out of footprint
+                                notify('Error: Specified address is either not found or out of our service area. Please try a different address.');
+                            });
+                        }
+                        else {
+                            //console.log('No zip!');
+                            notify('Error: Please enter a more specific address or include a zipcode');
+                        }
+                    } catch(e) {
+                        console.log('Geocoding error:', e);
                     }
-                });
-            }).error(function() {
-                // Bad zip or out of footprint
-                notify('Error: Specified address is either not found or out of our service area. Please try a different address.');
+                } else {
+                    // Not OK.
+                    //console.log('Error geolocating address:', status);
+                    notify('Error: Specified address is either not found or out of our service area. Please try a different address.');
+                }
             });
         }
+
 
         function writeGeoLocationCookie(locationData) {
             setCookie(JSON.stringify(locationData));
@@ -746,6 +725,7 @@ var $window = $(window),
         }
 
         function updateGeoLocationProfile(geoLocation) {
+            //console.log('Updating geolocation profile:', geoLocation);
             if(geoLocation) {
                 ClientContext.set('/profile/city', geoLocation['city']);
                 ClientContext.set('/profile/state', geoLocation['state']);
@@ -760,31 +740,28 @@ var $window = $(window),
          * calculation, sort by rough distance, weed out centers further than MAX_DISTANCE, then calculate an accurate
          * distance with DistanceMatrix service, and, finally, append resulting centers to the DOM.
          */
-        function getPaymentCenters() {
-            var soaID = ClientContext.get('/profile/soaId');
-            var queryURI = "/bin/querybuilder.json?type=cq:Page&tagid=twc:location/soaID/" + soaID + "&tagid.property=jcr:content/cq:tags&p.hits=full&p.nodedepth=10&p.limit=-1";
+        function getPaymentCenters(zip) {
+            var queryURI = "/bin/services/paymentcenters." + zip + ".json";
+            //console.log("Fetching locations from: ", queryURI);
 
             $('.paymentcentermaps .loaderimage').show();
 
             $.getJSON(queryURI, function(data) {
-                $.each(data.hits, function() {
-                    var paymentCenter = this['jcr:content'].paymentcenter;
-
+                $.each(data.locations, function(idx, pc) {
                     // Store unique identifier for this center
-                    paymentCenter['path'] = this['jcr:path'];
-                    paymentCenter['id'] = paymentCenter['path'].replace(/\//g, '_');
+                    this['id'] = idx;
 
                     // Save lat/lon and build formatted address here for convenience
-                    var lat = parseFloat(paymentCenter.location.lat);
-                    var lng = parseFloat(paymentCenter.location.lng);
-                    paymentCenter.address = paymentCenter.location.addressLine1 + '<br/>' + paymentCenter.location.city + ', ' + paymentCenter.location.state + ' ' + paymentCenter.location.zip;
+                    var lat = parseFloat(this.location.lat);
+                    var lng = parseFloat(this.location.lng);
+                    this.address = this.location.addressLine1 + '<br/>' + this.location.city + ', ' + this.location.state + ' ' + this.location.zip;
 
                     // Do an initial great circle distance estimate to filter out far away results within this region
                     var greatCircleDistance = distance({lat: ClientContext.get('/profile/startlat1'), lon: ClientContext.get('/profile/startlng1')}, {lat:lat, lon:lng}, 'm');
                     if(greatCircleDistance <= MAX_DISTANCE) {
                         paymentCenters.push({
                             gcDistance: greatCircleDistance,
-                            paymentCenter: paymentCenter
+                            paymentCenter: this
                         });
                     }
                 });
@@ -859,7 +836,8 @@ var $window = $(window),
          */
         function calculateDistances(origin, destination, p) {
             var pc = p.paymentCenter;
-            //console.log('calculateDistances(): ', pc);
+//            console.log('calculateDistances(): ', pc);
+            if(!pc.notes) { pc.notes = ""; }
             var service = new google.maps.DistanceMatrixService();
             service.getDistanceMatrix({
                     origins: [origin],
@@ -874,7 +852,7 @@ var $window = $(window),
                     var outputDiv = document.getElementById(p.divName);
                     var encodedAddress = encodeURI(pc.address.replace("<br/>"," "));
                     outputDiv.innerHTML = '<b>' + pc.displayName + '</b><br/><b>Hours:</b> ' + pc.hours + '<br/>' + pc.address + ' - <a href="http://maps.google.com/maps?z=12&t=m&q=' + encodedAddress + '" target="_blank">Get Directions</a><br/><b>Notes:</b> ' + pc.notes + '<br/>';
-                    outputDiv.innerHTML += '<div class="payment-types"><b>Payment Types:</b></div> ' + buildPaymentTypes(pc.types);
+                    outputDiv.innerHTML += '<div class="payment-types"><b>Payment Types:</b></div> ' + buildPaymentTypes(pc.paymentTypes);
                     outputDiv.innerHTML += '<b>Services:</b> ' + buildServices(pc.services);
 
                     for(var i = 0; i < origins.length; i++) {
@@ -990,22 +968,6 @@ var $window = $(window),
         }
 
         /**
-         * Localize client, update both twc-user-location cookie and context cloud
-         * @param {String} address
-         * @param {String} city
-         * @param {String} state
-         * @param {String} zip
-         * @return {String} myAddress A String in the form of "<address> <city>, <state> <zip>"
-         */
-        function setAddress(address, city, state, zip) {
-            ClientContext.set('/profile/postalAddress', address + " " + city + ", " + state + " " + zip);
-            ClientContext.set('/profile/zip', zip);
-            myAddress = ClientContext.get('/profile/postalAddress');
-            $.fancybox.close(true);
-            return(myAddress);
-        }
-
-        /**
          * Trigger localization, reloads page for teasers, etc
          * @param {String} zip
          */
@@ -1016,30 +978,26 @@ var $window = $(window),
 
         /**
          * Build markup for services available at payment center
-         * @param {Object} services Object containing key/value pairs of serviceType -> true||false
+         * @param {Array} services Array containing list of serviceTypes
          * @return {String} Markup containing available services
          */
         function buildServices(services) {
             var out = "";
-            for(var service in services) {
-                if(services.hasOwnProperty(service)) {
-                    if(services[service] == 'true')  out += '<div class="service_' + service + '">'+niceNameMap.service[service]+'</div>';
-                }
+            for(var i=0; i < services.length; i++) {
+                out += '<div class="service_' + services[i] + '">'+niceNameMap.service[services[i]]+'</div>';
             }
             return(out);
         }
 
         /**
          * Build markup for payment types available at payment center
-         * @param {Object} types Object containing key value pairs of paymentType -> true||false
+         * @param {Array} types Array containing list of paymentTypes
          * @return {String} Markup containing available payment types
          */
         function buildPaymentTypes(types) {
             var out = "";
-            for(var pType in types) {
-                if(types.hasOwnProperty(pType)) {
-                    if(types[pType] == 'true') out += '<div class="pType pType_'+ pType + '"></div>';
-                }
+            for(var i=0; i < types.length; i++) {
+                out += '<div class="pType pType_'+ types[i] + '"></div>';
             }
             return(out + '<br/>');
         }
@@ -14389,7 +14347,7 @@ console.log("click");
                             // $bar.children().fadeIn(options.timing.chartBarLable);
                             $speedTitle.animate({ top: titleYPos, opacity: 1}, 1200, 'easeOutQuint', function() {});
                             $('.gaming-logo').animate({ left: '391', opacity: 1}, 1200, 'easeOutQuint');//animate({ top: '300', opacity: 1}, 1200, 'easeOutQuint');
-                            $('p.disclaimer').fadeIn('slow');
+                            $('div.disclaimer').fadeIn('slow');
                            
                         }
                     }
@@ -14451,8 +14409,8 @@ console.log("click");
             this.$speedTitle.stop(true,true).css({'top': -63,'opacity':0});
             this.$gamingLogo.stop(true,true).css({'left': 0,'opacity':0, 'display': 'block'});
             this.$chartBars.stop(true,true).css({'height': 0}).children().stop(true,true).hide();
-            this.$disclaimer.stop(true,true).hide();
-            
+            this.$disclaimer.stop(true,true);
+
         }
 
         var _options = {
@@ -14579,12 +14537,12 @@ console.log("click");
                 
                 $animationChart.prepend($chartItems);
             }
-         
+
             if ($disclaimer.length == 0) {
-            	$disclaimer = $('<p  class="disclaimer">'+_global_disclaimer+'</p>');
-                
+		$disclaimer = $('<div  class="disclaimer linkStyle">'+_global_disclaimer+'</div>');
+
                  $wrap.append($disclaimer);
-            }               
+            }
 
             // Expose the template regions
             this.$background = $this.find('.feature-image img:first');
@@ -17223,8 +17181,13 @@ function callMymoveServlet() {
             // call back submit success
             s.linkTrackVars = "events,eVar7,prop19,eVar59";
             s.linkTrackEvents = "event48";
-            s.eVar7 = "My Move Get a Call Back Submit success";
-            s.prop19 = "My Move Get a Call Back Submit success";
+            var aMessage = "My Move Get a Call Back Submit success";
+            s.eVar7 = aMessage;
+            s.prop19 = aMessage;
+            if($('#mobile_number').is(':checked')){
+                 s.eVar7 = aMessage + " : text optin ";
+                 s.prop19 = aMessage + " : text optin ";               
+            }
             s.eVar59 = s.pageName;
             s.events = "event48";
             s.tl(this, 'o', 'my move get a callback submit success');

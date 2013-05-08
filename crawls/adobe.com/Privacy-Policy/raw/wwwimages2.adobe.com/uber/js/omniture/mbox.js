@@ -8,3 +8,18 @@ document.write('<style>.' + 'mboxDefault' + ' { visibility:visible; }</style>');
 mboxCreate = function(Z ) { return; }
 mboxUpdate = function(Z ) { return; }
 }
+
+/*Next Page Code AAM -> T&T integration*/
+//Cookie Reading Function
+function tnt_readCookie(name) {
+    return (name = new RegExp('(?:^|;\\s*)' + ('' + name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
+}
+//If the cookie exists then read it and place the value(s) into all mboxes that will fire on the page
+var aam_tnt_cval = tnt_readCookie("aam_tnt");
+if(aam_tnt_cval){
+	var aam_tnt_cval_array = unescape(aam_tnt_cval).split(",");
+	if(aam_tnt_cval_array){
+		var tapMboxBuilder = mboxFactoryDefault.getUrlBuilder();
+        tapMboxBuilder.addParameters(aam_tnt_cval_array);
+	}
+}

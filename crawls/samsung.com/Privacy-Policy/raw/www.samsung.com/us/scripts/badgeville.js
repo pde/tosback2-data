@@ -418,17 +418,18 @@ function onloadBadgevilleInit() {
 	console.log('1j')
 	Badgeville.ready( function() {
 		console.log('2j')
-		var parentals = String(window.location.href);
+		/*var parentals = String(window.location.href);
 		parentals = parentals.split('?');
 		try{ 
 			if (parentals[1] == '221424'){ 
-				console.log('3j');
-				//badgev_params.category = 'parentals';
-				//badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
+				//console.log('3j');
+				badgev_params.category = 'parentals';
+				badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
 			}
 		}
-		catch(e){}
+		catch(e){}*/
 
+		
 
 
 
@@ -551,6 +552,12 @@ function onloadBadgevilleInit() {
 			badgev_params.category = 'android';
 			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);  
 		}
+
+		if(urlVal.indexOf("mother-s-day-gift-guide") != -1 || urlVal.indexOf("dads--grads-gift-guide") != -1 ){
+			badgev_params.category = 'parentals';
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',5000);
+		}
+		
 		// Note category
 		if (urlValSplit[6] != undefined &&  
 				(urlValSplit[6] == 'GT-N8013EAYXAR' || urlValSplit[6] == 'GT-N8013EAVXAR' || urlValSplit[6] == 'GT-N8013ZWYXAR'

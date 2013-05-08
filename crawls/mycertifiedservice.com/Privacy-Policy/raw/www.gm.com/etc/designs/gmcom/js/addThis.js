@@ -47,7 +47,7 @@ $(document).ready(function(){
 	$('.addthis_toolbox').live( 'mouseenter', function(){
 		console.log('called clear '+tOut);
 		clearTimeout(tOut);
-		
+		addthis.toolbox(".addthis_toolbox");
 	});
 	function closeToolbox(t){
 

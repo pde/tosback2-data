@@ -134,7 +134,9 @@ function clickTrack(obj, pageEvent) {
 		if (pageEvent) {
 			s.t();
 		} else {
-			s.tl(true, 'o', _pev2);
+			// Update the link category
+			var linkCat = obj['Link Category'] == 'lnk_e' ? 'e' : 'o';
+			s.tl(true, linkCat, _pev2);
 		}
 		
   		// Clear out tracking vars

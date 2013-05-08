@@ -85,6 +85,63 @@ var s_linkTrackEvents="None"
 var s_charSet="UTF-8";
 if (s_exp_account=="expedia28") {var s_charSet="SJIS"; }
 
+   //rolling out global rsid on emea first
+    var globalRsids = ["expedia3",
+		"expedia6",
+		"expedia8",
+		"expedia9",
+		"expedia11",
+		"expedia20",
+		"expedia72",
+		"expedia73",
+		"expedia6-10122",
+		"expedia30007-711",
+		"expedia30007-712",
+		"expedia30009-314",
+		"expedia30035-327",
+		"expedia30036-392",
+		"expedia3mobile",
+		"expedia6mobile",
+		"expedia8mobile",
+		"expedia9mobile",
+		"expedia11mobile"]
+	, devGlobalRsids = ["expedia3dev",
+		"expedia6dev",
+		"expedia8dev",
+		"expedia9dev",
+		"expedia11dev",
+		"expedia20dev",
+		"expedia72dev",
+		"expedia73dev",
+		"expedia6-10122dev",
+		"expedia30007-711dev",
+		"expedia30007-712dev",
+		"expedia30009-314dev",
+		"expedia30035-327dev",
+		"expedia30036-392dev",
+		"expedia3mobiledev",
+		"expedia6mobiledev",
+		"expedia8mobiledev",
+		"expedia9mobiledev",
+		"expedia11mobiledev"]
+    , inGlobalRsid = false;
+    
+    for (var i = 0, max = globalRsids.length; i < max; i++) {
+    	if (globalRsids[i] === s_exp_account) {
+    		s_exp_account += ',expediaglobal';
+    		inGlobalRsid = true;
+    		break;
+    	}
+    }
+    
+    if (!inGlobalRsid) {
+    	for (var i = 0, max = devGlobalRsids.length; i < max; i++) {
+        	if (devGlobalRsids[i] === s_exp_account) {
+        		s_exp_account += ',expediaglobaldev';
+        		break;
+        	}
+        }
+    }
 
 /* Cookie Domain Periods */
 s_cookieDomainPeriods="2"

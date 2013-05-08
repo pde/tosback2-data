@@ -94,8 +94,6 @@ function s_doPlugins(s) {
 			s.eVar12=s.campaign;
 			s.eVar27=s.campaign;
 		}
-
-		s.campaign = s.getValOnce(s.campaign, 'cmpgn', 0);
     }
     
 

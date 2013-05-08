@@ -704,8 +704,8 @@ RichRelevanceTag.base = TagImpl.prototype;
 RichRelevanceTag.miniCartItems = new Array();
 RichRelevanceTag.miniCartParentItems = new Array();
 RichRelevanceTag.miniCartSKUs = new Array();
-RichRelevanceTag.miniCartAdd = "add_to_cart_page.minicart";
-RichRelevanceTag.miniCartView = "cart_page.minicart";
+RichRelevanceTag.miniCartAdd = "add_to_cart_page.RR_MiniCart_1";
+RichRelevanceTag.miniCartView = "cart_page.RR_MiniCart_1";
 RichRelevanceTag.miniCartAddDisplayed = 0;
 RichRelevanceTag.miniCartViewDisplayed = 0;
 RichRelevanceTag.addToMiniCart = false;
@@ -1253,10 +1253,6 @@ RichRelevanceTag.prototype.getMiniCartRecs = function()
   {
     try
     {
-      if(this.addToMiniCart)
-        this.getMiniCartAdd();
-      else
-      {
         if(RichRelevanceTag.miniCartViewDisplayed != RichRelevanceTag.miniCartParentItems.length)
         {
           R3_COMMON.placementTypes = "";
@@ -1277,7 +1273,6 @@ RichRelevanceTag.prototype.getMiniCartRecs = function()
         }
           this.showMiniCartView();
       }
-    }
     catch(error)
     {
       errorHandler(js_filename, "RichRelevanceTag.getMiniCartRecs()", error);
@@ -3174,7 +3169,10 @@ function initUpdateSelect(itemNumVal)
                        // set the text
                          $("#swatch_text_name").text(this.text);
 
-                         setImageSet("BassPro/" + newImageSetString);
+                        // setImageSet("BassPro/" + newImageSetString);
+
+                         setupViewer("BassPro/" + newImageSetString);
+
                   $("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
 
                   swatchCount++;

@@ -164,13 +164,19 @@ function getWTPageName(uri, qualified) {
 
 function getWTPageNameDRockSpecific(uri, qualified, serviceAvailResult, localeZipCode) {
 	var pn = getWTPageName(uri, qualified);
-		
+	function htmlEscape(str) {
+		return String(str)
+	        .replace(/&/g, '&amp;')
+	        .replace(/"/g, '&quot;')
+	        .replace(/'/g, '&#39;')
+	        .replace(/</g, '&lt;')
+	        .replace(/>/g, '&gt;');
+		}	
 	if (uri.toString().indexOf("dsl/message.jsp") > -1) {
 		try {
 			var messageId = window.location.href.toQueryParams().messageId;
 			if(messageId && messageId.length > 0) {
-				pn += (": " + messageId);
-			}
+				pn += (": " + htmlEscape(messageId));			}
 		} catch(ex) {
 		}
 	}

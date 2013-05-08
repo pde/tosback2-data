@@ -111,33 +111,51 @@ function getUserID()
 
 function doLogin()
 {
-	
-	var returnObj = checkFormValues();
-	if(returnObj != null && returnObj == true)
+	try
 	{
-		removeFormatting();
-		eraseUnwantedCookieForAllBrowser();
-		eraseUnwantedCookieForSpecificBrowser();
-		eraseUnwantedCookieByRegExp();
-		jQuery("#cancelURL").val(window.location);
-		setRememberMeVal();
+		var returnObj = checkFormValues();
+		if(returnObj != null && returnObj == true)
+		{
+			removeFormatting();
+			persistUserId();
+			eraseUnwantedCookieForAllBrowser();
+			eraseUnwantedCookieForSpecificBrowser();
+			eraseUnwantedCookieByRegExp();
+			jQuery("#cancelURL").val(window.location);
+			setRememberMeVal();
+			if(isCgateProtected())
+			{
+				jQuery("#login").attr("action",getCgateLoginUrl());
+			}
+			else
+			{
+				jQuery("#login").attr("action",getLoginUrl());
+			}
+			clearErrorDivs();
+		    openPopup();
+		    return true;
+		} 
+		else
+		{
+			return false;
+		}	
+	}
+	catch(exception){
+		// General Exception
+		if(getSelectedAccount() == "Wireless"){
+			var userID = getUserID().val();
+			if(userID!=null){
+				userID = userID.replace(/[^a-zA-Z0-9_@]+/g,'');
+				getUserID().val(userID);
+			}
+		}
 		if(isCgateProtected())
 		{
 			jQuery("#login").attr("action",getCgateLoginUrl());
 		}
-		else
-		{
-			jQuery("#login").attr("action",getLoginUrl());
-		}
-		clearErrorDivs();
-	    openPopup();
-		persistUserId();
-	    return true;
-	} 
-	else
-	{
-		return false;
-	}	
+		openPopup();
+		return true;
+	}
 }
 
 
@@ -600,6 +618,7 @@ function persistUserId()
 					url : urlToPersistUserId,
 					async : false,
 					cache: false,
+					dataType: 'jsonp text',
 					data : "userName=" + userID + "&accountType="+lgnType
 		});
 	}

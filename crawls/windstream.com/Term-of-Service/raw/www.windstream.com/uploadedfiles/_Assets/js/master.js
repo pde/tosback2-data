@@ -723,8 +723,9 @@ var mobileSlideMenu = function () {
 };
 
 var mobileLogo = function () {
-    var $mainNav = $('.main-nav-bar');
-    if (layoutWidth === 320) {
+    var $mainNav = $('.welcome-nav-bar').length ? $('.welcome-nav-bar') : $('.main-nav-bar');
+
+    if (layoutWidth === 320 && $('.main-nav-bar').length) {
         var utilOffset = $('.utility-bar').offset(),
             utilOffsetL = utilOffset.left,
             newOffset = (utilOffsetL + 82);

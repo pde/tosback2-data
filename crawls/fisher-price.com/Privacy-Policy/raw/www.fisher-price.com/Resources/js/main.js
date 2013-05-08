@@ -527,13 +527,12 @@ com.mattel.main = function () {
 				var image = $(".items a[rel=image]").first().attr("href");
 
 				//update facebook, twitter,email,embed links
-				$(".share-facebook a").attr('href', 'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + encodeURIComponent(document.URL) +
-                                        '&p[title]=Watch ' + encodeURIComponent(name) + '&p[images][0]=' + encodeURIComponent(image) +
-                                        '&p[summary]=' + encodeURIComponent(caption) + '&v=1');
+				$(".share-facebook a").attr('href', 'http://www.facebook.com/sharer/sharer.php?u=' + document.URL);
+
 				$(".share-twitter a").attr('href', 'https://twitter.com/intent/tweet?source=webclient&text=Fisher-Price Video' + url);
-				$(".share-facebook a").attr('href', 'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + encodeURIComponent(document.URL) +
-                                        '&p[title]=Watch ' + encodeURIComponent(name) + '&p[images][0]=' + encodeURIComponent(image) +
-                                        '&p[summary]=' + encodeURIComponent(caption) + '&v=1');
+
+				$(".share-facebook-2 a").attr('href', 'http://www.facebook.com/sharer/sharer.php?u=' + document.URL);
+
 				$(".share-twitter-2 a").attr('href', 'https://twitter.com/intent/tweet?source=webclient&text=Fisher-Price Video' + url);
 
 				// -- The Share button triggers --
@@ -839,6 +838,8 @@ com.mattel.main = function () {
 		$('a#btn-award-winner').live('click', function (event) {
 			event.preventDefault();
 			$('div.displayAwardsOverlay').jOverlay({ color: '#8c8c8c', opacity: 0.9 });
+			$('div.displayAwardsOverlay').css("position", "fixed");
+			$('div.displayAwardsOverlay').css("top", "0");
 		});
 
 		//Safety Info Pop Up Overlay in Product Detail
@@ -2176,19 +2177,59 @@ com.mattel.main = function () {
 		});
 
 
-		/* Horizontal Scrollbar - bottom right - in JOL_landing_FINAL */
+		/* Horizontal Scrollbar - bottom right - in FPBaby Apps */
 		$(".lnl-apps-landing-scrollable").scrollable({
 			circular: false,
 			keyboard: false,
 			next: '.lnl-apps-landing-bottom-next',
 			prev: '.lnl-apps-landing-bottom-prev',
 			displaySlideQty: 5, // Number of tiles to be shown at a time in a carousel
-			size: 5,
+			size: 1,
 			initialIndex: 0, onBeforeSeek: function () {
 			}, onSeek: function (event, index) {
 
 				//Access to the API 
 				var api = $(".lnl-apps-landing-scrollable").data("scrollable");
+
+				//Call the function to disable the 'next' button
+				disableNextButtonClass(api);
+
+			}
+		});
+		
+		
+		/* Horizontal Scrollbar - bottom right - in FPBaby Apps */
+		$(".baby-apps-landing-scrollable").scrollable({
+			circular: false,
+			keyboard: false,
+			next: '.baby-apps-landing-bottom-next',
+			prev: '.baby-apps-landing-bottom-prev',
+			displaySlideQty: 5, // Number of tiles to be shown at a time in a carousel
+			size: 1,
+			initialIndex: 0, onBeforeSeek: function () {
+			}, onSeek: function (event, index) {
+
+				//Access to the API 
+				var api = $(".baby-apps-landing-scrollable").data("scrollable");
+
+				//Call the function to disable the 'next' button
+				disableNextButtonClass(api);
+
+			}
+		});		
+		/* Horizontal Scrollbar - bottom right - in JOL_landing_FINAL */
+		$(".lnl-apps .fpBaby-apps-landing-scrollable").scrollable({
+			circular: false,
+			keyboard: false,
+			next: '.lnl-apps .fpBaby-apps-landing-bottom-next',
+			prev: '.lnl-apps .fpBaby-apps-landing-bottom-prev',
+			displaySlideQty: 5, // Number of tiles to be shown at a time in a carousel
+			size: 5,
+			initialIndex: 0, onBeforeSeek: function () {
+			}, onSeek: function (event, index) {
+
+				//Access to the API 
+				var api = $(".lnl-apps .fpBaby-apps-landing-scrollable").data("scrollable");
 
 				//Call the function to disable the 'next' button
 				disableNextButtonClass(api);
@@ -3333,9 +3374,10 @@ function selectFilterFromHash() {
 		selectFilter(a, "age", ".filter-Age", "selector-code");
 		selectFilter(a, "age", ".filter-Age", "pname");
 		selectFilter(a, "cat", ".filter-category", "data-cat-code");
-		selectFilter(a, "brand", ".filter-brands", "data-brand-code");
 		selectFilter(a, "age", ".filter-Age", "categorycode");
+		selectFilter(a, "cat", ".filter-category", "pname");
 		selectFilter(a, "cat", ".filter-category", "categorycode");
+		selectFilter(a, "brand", ".filter-brands", "data-brand-code");
 		selectFilter(a, "brand", ".filter-brands", "categorycode");
 		selectFilter(a, "brand", ".filter-brands", "pname");
 		selectFilter(a, "dev", ".filter-development-stage", "categorycode");

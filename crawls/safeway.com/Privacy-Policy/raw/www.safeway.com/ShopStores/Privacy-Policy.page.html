@@ -171,7 +171,7 @@ body.ls-center
     }
 
   </style><!--ls:end[stylesheet]--><!--ls:begin[meta-keywords]--><meta name="keywords" content="Privacy Policy"><!--ls:end[meta-keywords]--><!--ls:begin[meta-description]--><meta name="description" content="Privacy Policy"><!--ls:end[meta-description]--><!--ls:begin[meta-vpath]--><meta name="vpath" content=""><!--ls:end[meta-vpath]--><!--ls:begin[meta-page-locale-name]--><meta name="page-locale-name" content=""><!--ls:end[meta-page-locale-name]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/global.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/yui.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/container.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/carousel.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/accordion_ex.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[stylesheet]--><link type="text/css" href="../CMS/assets/css/override.css" rel="stylesheet"><!--ls:end[stylesheet]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/global.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/common_utilites.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/ufo.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/iframe_safeway_hosted.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/utilities.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/bubbling.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/accordion.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/override.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/ensighten_call.js"></script><!--ls:end[script]--><!--ls:begin[script]--><script type="text/javascript" src="../CMS/assets/javascript/geo-api.js"></script><!--ls:end[script]--><!--ls:begin[head-injection]-->
-<meta name="searchCategory" content='Shop'><META name="banner" content="Safeway"/><!--ls:end[head-injection]--><!--ls:begin[script]--><!--ls:end[script]--></head><body><!--ls:begin[body]--><div class="ls-canvas" id="ls-canvas"><div class="ls-row fal-header" id="ls-row-1"><div class="ls-lqr" id="ls-gen1-ls-lqr"><div class="ls-area" id="ls-row-1-area-1"><div class="ls-area-body" id="ls-gen2-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1310594400258"><div class="iw_component" id="1310594400258"><script language="javascript">
+<meta name="searchCategory" content='Shop'><META name="banner" content="Safeway"/><!--ls:end[head-injection]--><!--ls:begin[script]--><!--ls:end[script]--></head><body><!--ls:begin[body]--><div class="ls-canvas" id="ls-canvas"><div class="ls-row fal-header" id="ls-row-1"><div class="ls-lqr" id="ls-gen1-ls-lqr"><div class="ls-area" id="ls-row-1-area-1"><div class="ls-area-body" id="ls-gen2-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1310594400258"><div class="iw_component" id="1310594400258"><script src="../CMS/assets/javascript/jquery.min.js" language="javascript"></script><script language="javascript">
               var s_account   ='sfsafewayprod1';
          </script><script src="../CMS/assets/javascript/s_code.js" language="javascript"></script><div class="header">
 <font class="footnote"><script language="javascript">
@@ -184,12 +184,20 @@ body.ls-center
 
                     var varDomainUrl='.Safeway.com';
                     var varDomainLabel = 'Safeway';
-                    
+
+                    var varMyCardUrl        = '/ShopStores/MyCard.page';
+                    var varMyListUrl        = '/ShopStores/MyList.page';
+
                     var lowerDomainLabel = varDomainLabel.toLowerCase().replace(/\s/g,'');
                     setCookie('SWY_BANNER', lowerDomainLabel,0);
                     setCookie('SWY_API_KEY ', 'emjou',0);
                     setCookie('SWY_VERSION', '1.0',0);
 
+                    (function() {
+                        var swy = window.Safeway || (window.Safeway = {}),
+                            config = swy.config || (swy.config = {});
+                            config.bannerName = lowerDomainLabel;
+                    })();
 
                     function setInnerHTML(inputname, value) {
                         var obj = document.getElementById(inputname);
@@ -230,6 +238,12 @@ body.ls-center
                         var caller=checkCaller();
                         goURL(varRssUpdateContactInfoUrl + '?goto='+encodeURIComponent(caller));
                     }
+                    function myList() {
+                        goURL(varMyListUrl);
+                    }
+                    function myCard() {
+                        goURL(varMyCardUrl);
+                    }
                     function checkCaller(){
                         var caller = window.location.href;
                         if(caller.indexOf('StandaloneHeaderView') > -1){
@@ -266,7 +280,8 @@ body.ls-center
                         }
                     }
                     //alert(loggedOn + ' ' + logonId);
-        </script>
+                    
+                </script><script src="../CMS/assets/javascript/safeway-profile-api-app.js" type="text/javascript"></script>
 <div id="globalui_header" class="globalui_header">
 <div class="globalui_header_top">
 <center>
@@ -277,55 +292,146 @@ body.ls-center
 <div class="globalui_header_guest_msg left" id="welcome-header">
 <div id="globalui_signin_text1" class="globalui_header_msg_top"></div>
 <div id="globalui_signin_text2" class="globalui_header_msg_btm"></div>
-<script language="javascript">
-                                        setInnerHTML("globalui_signin_text1", 'Welcome, ' + logonId);
-                                        if(loggedOn != '') {
-                                            setInnerHTML("globalui_signin_text2", '(Not you? <a '
-                                            +'href="javascript:openssoLogoff();">Sign Out</a>) | <a '
-                                            +'href="javascript:rssMyAccount();">My Account</a>');
-                                        } else {
-                                            setInnerHTML("globalui_signin_text2", "<a href="http://www.safeway.com/ShopStores/\&quot;javascript:openssoLogin();\&quot;">Sign "
-                                            +"In</a> | <a href="http://www.safeway.com/ShopStores/\&quot;javascript:rssReg();\&quot;">Register Now</a> | "
-                                            +"<a href="http://www.safeway.com/ShopStores/\&quot;javascript:rssMyAccount();\&quot;">My Account</a>");
-                                        }
-                  </script>
+<div id="globalui_signin_text3" class="globalui_header_msg_btm">
+<a href="javascript:myCard();" class="mycard">You have
+                                        <span id="globalui_signin_text4" class="globalui_header_msg_btm"><span id="headerRewardsAvailable"></span>&nbsp;Gas Rewards!
+                                        </span></a>
 </div>
+</div>
+<script type="text/javascript">
+                                    
+                                    var currentPage = document.location.pathname;
+                                    var myCardStyle = "",
+                                        myListStyle = "",
+                                        myAccountStyle = "";
+
+                                    if (currentPage.indexOf("MyCard.page") !== -1)
+                                      myCardStyle = "class='highlight'";
+                                    if (currentPage.indexOf("MyList.page") !== -1)
+                                      myListStyle = "class='highlight'";
+                                    if (currentPage.indexOf("MyAccount.page") !== -1)
+                                      myAccountStyle = "class='highlight'";
+
+                                    setInnerHTML("globalui_signin_text1", 'Welcome, ' + logonId);
+                                    if(loggedOn != '') {
+                                        document.getElementById('globalui_header').className += ' loggedin';
+
+                                        if (("genuardis" === lowerDomainLabel) || ("carrsqc" === lowerDomainLabel))
+                                        {
+                                            setInnerHTML("globalui_signin_text2", [
+                                                '<a ' + myAccountStyle + ' href="javascript:rssMyAccount();">My Account</a> | ',
+                                                '<a href="javascript:openssoLogoff();">Sign Out</a>'
+                                            ].join(''));
+                                            setInnerHTML("globalui_signin_text3", '');
+                                        }
+                                        else
+                                        {
+                                            setInnerHTML("globalui_signin_text2", [
+                                                '<a ' + myCardStyle + ' href="javascript:myCard();">My Card<span id="headerMyCardCount"></span></a> | ',
+                                                '<a ' + myListStyle + ' href="javascript:myList();">My List<span id="headerMyListCount"></span></a> | ',
+                                                '<a ' + myAccountStyle + ' href="javascript:rssMyAccount();">My Account</a> | ',
+                                                '<a href="javascript:openssoLogoff();">Sign Out</a>'
+                                            ].join(''));
+                                        }
+                                        if (("randalls" === lowerDomainLabel) || ("tomthumb" === lowerDomainLabel))
+                                        {
+                                            setInnerHTML("globalui_signin_text3", '');
+                                        }
+
+                                    } else {
+                                        setInnerHTML("globalui_signin_text2", [
+                                        '<a href="javascript:openssoLogin();">Sign In</a> | ',
+                                        '<a href="http://www.safeway.com/ShopStores/\&quot;javascript:rssReg();\&quot;">Register Now</a>'].join(''));
+                                    }
+                                    (function ($, doc,isLoggedIn) {
+
+                                        var swy = window.Safeway || (window.Safeway = {}),
+                                                header = swy.header || (swy.header = {}),
+                                                config = swy.config || (swy.config = {}),
+                                                profile = swy.Profile;
+
+                                        if(isLoggedIn && profile) {
+                                            swy.header.ProfileAdapter = (function () {
+                                                var api = {
+                                                    init: function () {
+                                                        this.headerMyCardCountEl = doc.getElementById('headerMyCardCount');
+                                                        this.headerMyListCountEl = doc.getElementById('headerMyListCount');
+                                                        this.headerRewardsAvailableCt = doc.getElementById('globalui_signin_text3');
+                                                        this.headerRewardsAvailableEl = doc.getElementById('headerRewardsAvailable');
+
+                                                        profile.on('cardcountchange', this.onUpdateCount, this, {el: this.headerMyCardCountEl});
+                                                        profile.on('listcountchange', this.onUpdateCount, this, {el: this.headerMyListCountEl});
+                                                        profile.on('rewardpointschange', this.onUpdateRewards, this, {el: this.headerRewardsAvailableEl, ct: this.headerRewardsAvailableCt});
+
+                                                        profile.getCardCount({success:this.onUpdateCount,scope:this,el:this.headerMyCardCountEl});
+                                                        profile.getListCount({success:this.onUpdateCount,scope:this,el:this.headerMyListCountEl});
+                                                        profile.getRewardPoints({success:this.onUpdateRewards,scope:this,el: this.headerRewardsAvailableEl, ct: this.headerRewardsAvailableCt});
+
+                                                        return this;
+                                                    },
+                                                    onUpdateCount: function (count, opts) {
+                                                        if( opts && opts.el ) {
+                                                            $(opts.el).text(' (' + count + ')');
+                                                        }
+                                                    },
+                                                    onUpdateRewards: function (rewards, opts) {
+                                                        if (opts && opts.el && opts.ct ) {
+                                                            var rewardsAvailable = rewards ? rewards.rewardsAvailable : false,
+                                                                    $el = $(opts.el), $ct = $(opts.ct);
+                                                            rewardsAvailable = parseInt(rewardsAvailable);
+                                                            if (!isNaN(rewardsAvailable) && rewardsAvailable !== 0) {
+                                                                $el.text(rewardsAvailable);
+                                                                $ct.show();
+                                                            }
+                                                            else {
+                                                                $ct.hide();
+                                                            }
+                                                        }
+                                                    }
+                                                };
+                                                return api.init();
+                                            })();
+                                        }
+
+                                    })(jQuery, document,window.loggedOn && window.loggedOn !== '');
+                                    
+                                </script>
 <div class="globalui_header_right_signed" id="right-header-links">
 <script language="javascript">
-                    var divID = 'right-header-links';
-                    var newInnerHTML = new String();
-                    var newHeaderClass = new String();
+                                        var divID = 'right-header-links';
+                                        var newInnerHTML = new String();
+                                        var newHeaderClass = new String();
 
-                    /*
-                    1: signed, commerce
-                    2: guest, commerce
-                    3: signed, non-commerce
-                    4: guest, non-commerce
-                    */
-                    var isCommerce = true;
-                    var headerScenarioId = isCommerce ? 1 : 3;
-                    if (loggedOn == '') {
-                    headerScenarioId += 1;
-                    }
+                                        /*
+                                        1: signed, commerce
+                                        2: guest, commerce
+                                        3: signed, non-commerce
+                                        4: guest, non-commerce
+                                        */
+                                        var isCommerce = true;
+                                        var headerScenarioId = isCommerce ? 1 : 3;
+                                        if (loggedOn == '') {
+                                        headerScenarioId += 1;
+                                        }
 
-                    newHeaderClass = updateRightHeaderLink(headerScenarioId,
-                    "Safeway");
+                                        newHeaderClass = updateRightHeaderLink(headerScenarioId,
+                                        "Safeway");
 
-                    updateClass(divID, newHeaderClass);
+                                        updateClass(divID, newHeaderClass);
 
-                    newInnerHTML = generateRightHeaderByScenario (headerScenarioId,
-                    "Safeway",
-                    "http://shop.safeway.com/ecom/home?brandid=1")
-                        // yes the domain is constant
+                                        newInnerHTML = generateRightHeaderByScenario (headerScenarioId,
+                                        "Safeway",
+                                        "http://shop.safeway.com/?brandid=1")
+                                        // yes the domain is constant
 
-                    setInnerHTML(divID, newInnerHTML);
+                                        setInnerHTML(divID, newInnerHTML);
 
-                  </script>
+                                    </script>
 <div id="globalui_so_header_search_input_go" class="globalui_so_header_search_input_go">
 <div id="globalui_so_header_search_label" class="globalui_so_header_search_label">
 <span id="header_search_keyword" class="header_search_keyword"><label for="header_txtSearch" class="header_search_keyword">
-                          Search
-                        </label></span>
+                                                    Search
+                                                </label></span>
 </div>
 <form name="SearchForm" action="http://www.safeway.com/ShopStores/Search-Results.page?" id="SearchForm" method="get" target="_top">
 <input name="storeId" value="10352" type="hidden"><input name="langId" value="-1" type="hidden"><input name="pageSize" value="10" type="hidden">
@@ -333,14 +439,14 @@ body.ls-center
 <input name="query" onclick="clearKeyword()" maxlength="100" id="header_txtSearch" class="header_txtSearch" value="" type="text">
 </div>
 <script language="javascript">
-                        var searchTerm = document.getElementById("header_txtSearch");
-                        searchTerm.value = getURLParam('query', 'Enter Keyword');
-                        if(searchTerm.value == '') {
-                        searchTerm.value = 'Enter Keyword';
-                        }
-                      </script>
+                                                var searchTerm = document.getElementById("header_txtSearch");
+                                                searchTerm.value = getURLParam('query', 'Enter Keyword');
+                                                if(searchTerm.value == '') {
+                                                searchTerm.value = 'Enter Keyword';
+                                                }
+                                            </script>
 <div id="globalui_so_header_search_go" class="globalui_so_header_search_go">
-<span id="img_link_search_link"><a href="Privacy-Policy.page.html#" onclick="clearKeyword();document.SearchForm.submit();"><img src="../CMS/assets/media/images/styleimages/header_go.gif" onmouseout="this.src='/CMS/assets/media/images/styleimages/header_go.gif'" onmouseover="this.src='/CMS/assets/media/images/styleimages/header_go_hover.gif'" alt="Go"></a></span>
+<span id="img_link_search_link"><a href="Privacy-Policy.page.html#" onclick="clearKeyword();document.SearchForm.submit();"><img src="../CMS/assets/media/images/styleimages/header_go.gif" onmouseout="this.src='/CMS/assets/media/images/styleimages/header_go.gif'" onmouseover="this.src='/CMS/assets/media/images/styleimages/header_go_hover.gif'" title="Go" alt="Go"></a></span>
 </div>
 </form>
 </div>
@@ -358,7 +464,7 @@ body.ls-center
 <div id="globalui_inner_header_middle_links" class="globalui_inner_header_middle_links">
 <div class="Offers-Landing-IMG_globalui_inner_header_link" id="Offers-Landing-IMG">
 <span class="Offers-Landing-IMG_img_link" id="Offers-Landing-IMG_img_link_2">
-<!--Coupon Center--><a href="http://www.safeway.com/ShopStores/Offers-Landing-IMG.page?"></a></span>
+<!--Coupon Center--><a href="http://www.safeway.com/ShopStores/Offers-Landing-IMG.page?"><img alt="just for U" src="../CMS/assets/media/clear-pixel.png"></a></span>
 </div>
 <div class="Shop_globalui_inner_header_link" id="Shop">
 <span class="Shop_img_link" id="Shop_img_link_2"><a href="http://www.safeway.com/ShopStores/Shop.page?" target="">Our Store</a></span>
@@ -411,7 +517,8 @@ body.ls-center
 </div></div></div></div><div class="ls-row-clr"></div></div></div><div class="ls-row fal-main" id="ls-row-2"><div class="ls-fxr" id="ls-gen3-ls-fxr"><div class="ls-area" id="ls-row-2-area-1"><div class="ls-area-body" id="ls-gen4-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1310594400260"><div class="iw_component" id="1310594400260"><!--Side Nav is empty-->
 </div></div><div class="ls-cmp-wrap" id="w1310594400261"><div class="iw_component" id="1310594400261">
 </div></div><div class="ls-cmp-wrap" id="w1310594400262"><div class="iw_component" id="1310594400262">
-</div></div></div></div><div class="ls-area" id="ls-row-2-area-2"><div class="ls-area-body" id="ls-gen5-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1310594400263"><div class="iw_component" id="1310594400263"><div class="header520" id="header520"><H1 style="font-size: 18px;color: #6A6056;margin:0px;padding:0px;">Safeway Privacy Policy (United States)</H1></div>
+</div></div></div></div><div class="ls-area" id="ls-row-2-area-2"><div class="ls-area-body" id="ls-gen5-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1322792392626"><div class="iw_component" id="1322792392626">
+</div></div><div class="ls-cmp-wrap" id="w1310594400263"><div class="iw_component" id="1310594400263"><div class="header520" id="header520"><H1 style="font-size: 18px;color: #6A6056;margin:0px;padding:0px;">Safeway Privacy Policy (United States)</H1></div>
 </div></div><div class="ls-cmp-wrap" id="w1310594400264"><div class="iw_component" id="1310594400264">
 </div></div><div class="ls-cmp-wrap" id="w1310594400265"><div class="iw_component" id="1310594400265"><div xmlns:exslt="http://exslt.org/common" class="one_cm_520_root" id="one_cm_520_root">
 <div class="body_fragments" id="body_fragments">
@@ -628,12 +735,12 @@ You may agree to provide your personal information separately to third parties t
 </div>
 </div>
 </div></div></div></div><div class="ls-area" id="ls-row-2-area-3"><div class="ls-area-body" id="ls-gen6-ls-area-body"></div></div><div class="ls-row-clr"></div></div></div><div class="ls-row fal-footer" id="ls-row-3"><div class="ls-lqr" id="ls-gen7-ls-lqr"><div class="ls-area" id="ls-row-3-area-1"><div class="ls-area-body" id="ls-gen8-ls-area-body"><div class="ls-cmp-wrap ls-1st" id="w1310594400259"><div class="iw_component" id="1310594400259">
-  <!--default footer 
+  <!-- default footer -->
 <script language='JavaScript' type='text/javascript'> 
   var urlToCheck = window.location.href;
     if (urlToCheck.match(/Justforu-SavingsList/i)) window.location = "/ShopStores/MyList.page?";
     else if (urlToCheck.match(/Justforu-ShoppingList/i)) window.location = "/ShopStores/MyList.page?";
-</script>-->
+</script>
 <script language='JavaScript' type='text/javascript'>
 	var domainName="safeway";
 	var environment="www";

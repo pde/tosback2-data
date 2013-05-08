@@ -1,8 +1,5 @@
 /* Product Filters code  start */
 var ajaxRequestMethod = 'GET';
-if ($('#locale').val().toLowerCase() === 'en_us') {
-	ajaxRequestMethod = 'POST';
-}
 var isEndecaSearch = $("#endecaSearch").val();
 var isSearchResults = $("#searchResults").val();
 var isGrandParentsPage = $('#grandParentsPage').val();
@@ -1195,7 +1192,10 @@ updateProductsListEndeca = function (targetId, finalDataList, googleAnalyticsDat
     } else {
         ajaxURL = localInfo + "/Search/GetProductSearchResults?" + finalQueryString;
     }
-    $.ajax({
+    if (xhr1 && xhr1.readystate != 4) {
+        xhr1.abort();
+    }
+    xhr1 = $.ajax({
         type: ajaxRequestMethod,
         cache: 'false',
         //data: finalDataList,
@@ -1220,7 +1220,10 @@ updateProductsListEndeca = function (targetId, finalDataList, googleAnalyticsDat
 };
 
 updateProductsListforGP = function (ajaxURL, googleAnalyticsData) {
-    $.ajax({
+    if (xhr1 && xhr1.readystate != 4) {
+        xhr1.abort();
+    }
+    xhr1 = $.ajax({
         type: ajaxRequestMethod,
         cache: 'false',
         url: ajaxURL,
@@ -1285,7 +1288,7 @@ updateBrandsFilterSection = function (objBrands) {
 		if(getCode == undefined) {
 			getCode = $(this).attr('categorycode');
 		}
-		getCode = getCode.toLowerCase();
+		getCode2 = getCode.toLowerCase();
         if ($.inArray(getCode, objBrands) !== -1 || $.inArray(getCode2, objBrands) !== -1) {
             $(this).css("display", 'block');
         } else {
@@ -1730,9 +1733,9 @@ $(".pagination-next").live("click", function (e) {
         updateWindowURL(pageSize, pageIndex, 'pageIndex');
     } else {
         if (isEndecaSearch !== 'true') {
-            collectDataList(pagination, pageIndex, pageSize);
+           collectDataList(pagination, pageIndex, pageSize);
         } else {
-                collectDataListEndeca(pagination, pageIndex, pageSize);
+               collectDataListEndeca(pagination, pageIndex, pageSize);
         }
     }
 	if (isShareYourThoughts != 'true') {
@@ -1788,7 +1791,10 @@ updateComponents = function (finalDataList, pageIndex, pageSize, isBrandProductP
         ajaxURL = localInfo + "/Filter/GetResults?filterdata=" + finalDataList + "&PubId=" + $("#PubId").val() + "&Page_type=" + $("#Page_type").val() + "&PageCategoryUri=" + $("#PageCategoryUri").val() + "&isBrandPage=" + $("#isBrandPage").val() + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize;
     }
 
-    $.ajax({
+    if (xhr1 && xhr1.readystate != 4) {
+        xhr1.abort();
+    }
+    xhr1 = $.ajax({
         type: ajaxRequestMethod,
         cache: 'false',
         //data: finalDataList,
@@ -1878,7 +1884,10 @@ collectDataListEndecaForGP = function (pagination, pageIndex, pageSize, navOnly)
 };
 
 updateProductsListEndecaForGP = function (targetId, finalQueryString, ajaxURL) {
-    $.ajax({
+    if (xhr1 && xhr1.readystate != 4) {
+        xhr1.abort();
+    }
+    xhr1 = $.ajax({
         type: ajaxRequestMethod,
         cache: 'false',
         //data: finalDataList,
@@ -1948,7 +1957,10 @@ clearAllCheckBoxes = function () {
 
 
 updateSearchResultsSection = function (ajaxURL) {
-    $.ajax({
+	if(xhr2 && xhr2.readystate != 4){
+		xhr2.abort();
+	}
+	xhr2 = $.ajax({
         type: ajaxRequestMethod,
         cache: 'false',
         url: ajaxURL,
@@ -2169,6 +2181,9 @@ function buildHash(oe) {
 		$('.filter-category li.click-active').each(function () {
 			if($(this).attr('data-cat-code')) {
 				hash = hash + "cat=" + $(this).attr('data-cat-code') + "&";
+			}
+			else if($(this).attr('pname')) {
+				hash = hash + "cat=" + $(this).attr('pname') + "&";
 			}
 			else {
 				hash = hash + "cat=" + $(this).attr('categorycode') + "&";

@@ -329,7 +329,7 @@
 						queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
 					}
 				}
-                queryStr = pr + queryStr;
+                queryStr = queryStr + pr;
 			}
 			
 			return queryStr;

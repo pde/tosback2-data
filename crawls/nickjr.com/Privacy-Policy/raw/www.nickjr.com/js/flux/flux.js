@@ -1,4 +1,5 @@
-if (typeof NICK == 'undefined') { NICK = {}; }
+if(typeof NICK == "undefined" || !NICK) var NICK = {};
+
 NICK.flux = (function() {
 
 	var baseURL = 'http://daapiak.flux.com/2.0/00001/JSON/';
@@ -10,55 +11,63 @@ NICK.flux = (function() {
 	var haloContentUrl = "";
 	var haloContent = false;
 
-	userLoggedIn = function() {
+	// Check Flux login object to see if user is logged in.
+	var userLoggedIn = function() {
 		return window.Widgets4Context.user != null;
 	};
-	launchSignInWidget = function() {
+
+	// Show Flux sign-in box.
+	var launchSignInWidget = function() {
 		Flux4.signIn(null, null, 'Login');
 	};
 
-	/*
-	 *	Roadblocks a page. Shows the login upon page load.
+	// Kicks user to referring page OR homepage.
+	var kickbackUserToReferrer = function() {
+		var referrer = (document.referrer != '') ? document.referrer : '/';
+		document.location = referrer;
+	};
+
+	// Bind event to signOut that kicks them back to the homepage.
+	var setupKickbackBinding = function() {
+		Flux4.addEventListener('signOut', function (eventContext, userContext) {
+			kickbackUserToReferrer();
+		});
+	};
+
+	/**
+	 *	Roadblocks a page.
+	 *	1. It will force a login box if the user is not already logged in.
+	 *	2. It binds an event to the Close button of the login box to kick them out 
+	 *	if they do not login.
+	 *	3. It binds an event to a Flux Sign Out to kick them out if they logout at 
+	 *	any point.
 	 */
-	loginRequired = function(required, wait) {
-		// console.log('login is' + ((!required) ? ' not' : '' ) + ' required on this page.');
+	var loginRequired = function(required) {
 		if (required) {
 			// If they aren't logged in, show the login window on page load.
-			// Grab the referrer to kick them back to
-			var _referrer = (document.referrer != '') ? document.referrer : '/';
 			if (userLoggedIn() === false) {
 				$('.closeButton').live('click', function() {
 					// If they close the signIn window and aren't logged in, 
 					// kick them back to where they arrived from OR the homepage.
 					if (!userLoggedIn()) {
-						// console.log('user is still not logged in. kicking out');
-						document.location = _referrer;
+						kickbackUserToReferrer();
 					}
 				});
 				launchSignInWidget();
 			}
+			// Bind the kickback to the Sign Out event.
+			setupKickbackBinding();
 		}
 	};
 
 	// Display the sign in/logout box in the header. Called on every page load.
-	createUserBar = function() {
+	var createUserBar = function() {
 		Flux4.createWidget('UserBar', {displayMode: 'EmbeddedTop'});
 	};
 
-	// Basically only used for debugging.
-	initialBindings = function() {
-		Flux4.addEventListener('signUp', function (eventContext, userContext) { 
-			// console.log('User has signed up as ' + userContext.name + ' from ' + eventContext.widgetName); 
-		});
-    	Flux4.addEventListener('signIn', function (eventContext, userContext) { 
-    		// console.log('User has signed in as ' + userContext.name + ' from ' + eventContext.widgetName); 
-    	});
-	}
-
 	return {
 		loginRequired: loginRequired,
-		createUserBar: createUserBar,
-		initialBindings: initialBindings
+		createUserBar: createUserBar
 	}
 
 })();

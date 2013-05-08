@@ -328,13 +328,16 @@ jQuery.extend({
  
  
  
- 
+ //current overlay trigger element
+ var $mediaTrigger;
  
  
  
  //Overlay method
   (function($){  
-  $.fn.overlayMedia = function(p) {  
+  $.fn.overlayMedia = function(p) { 
+  
+  	var $this = $(this);
   
   	var _mob = false;
 	(jsdevice == 'mobile' ) ? _mob = true : _mob = false;
@@ -469,7 +472,7 @@ jQuery.extend({
 			
 				target					: '#pwc-media-overlay',
 				//effect 					: 'apple',
-				speed					: 0,
+				speed					: 1,
 				closeOnClick 			: true,
 				closeonEscape			: true,
 				fadeInSpeed				: 0,
@@ -517,7 +520,7 @@ jQuery.extend({
 										},
 				onBeforeLoad			: function() { //START onBeforeLoad of overlay
 					
-          				
+          				$mediaTrigger = $this;
 						this.getOverlay().appendTo('body'); //IE7 fix for z-index issue
 						var formattedtitle = "<h3>"+mediaTitle+"</h3>";
 						$("#media-details").css("width", (mediaWidth+"px"));
@@ -690,7 +693,7 @@ jQuery.extend({
             headertext			: 			'Related videos',
 			nextuptext			:			'Next up - ',
 			nowplayingtext		:			'Now playing',
-			viewdesctext		:			'Full description',
+			viewdesctext		:			'Read more',
 			hidedesctext		:			'Hide',
 			playvideotext		:			'Play video',
 			totaloftext			:			'of',
@@ -718,6 +721,9 @@ jQuery.extend({
 		var _d = new Date();
 		var _n = _d.getTime();
 		var $this = $(this);
+		
+		//player ready
+		var _ready = false;
 		
 		if (settings.inmodal) {
 			settings.showheader = false;  //disable collapsible header in modal
@@ -799,7 +805,15 @@ jQuery.extend({
 		 			//check that it's not 0 to start with, and converts friendly 1,2,3, to 0,1,2 for array access
 					(_startIndex > 0) ? (--_startIndex) : undefined;  
 					
-		 		  }
+		 		  } else {
+					//if in modal, look for trigger element index (like on homepage mediabox
+					if (settings.inmodal) {
+						//$mediaTrigger is defined above the overlay plugin
+						_startIndex = $mediaTrigger.attr('rel');
+							
+					}
+					  
+				  }
 				//can't be more than list of vids
 				(_startIndex >= settings.videolist.length) ? (_startIndex = 0) : undefined;  
 				
@@ -977,7 +991,7 @@ jQuery.extend({
 					
 				}
 				$multiheadnextup.click(function() {
-							(settings.autoplay) ? (ChangeVideo($(this).attr('rel'), 1)) : (ChangeVideo($(this).attr('rel'), 0));	
+							(settings.autoplay) ? (ChangeVideo($multiheadnextup.attr('rel'), 1)) : (ChangeVideo($multiheadnextup.attr('rel'), 0));	
 						});
 				 
 				//main playlist open/close - only create this if showheader = true
@@ -1004,9 +1018,6 @@ jQuery.extend({
 				} $multiplaylistwrapper.css('margin-top', '4px'); //add a little white space above playlist
 				
 				//END events/actions
-				
-				//Show opening video. if in modal, autoplay it - Can't do this because of Chrome
-				//(settings.inmodal) ? ChangeVideo(_startIndex, 1) : ChangeVideo(_startIndex, 0);
 				
 				ChangeVideo(_startIndex, 0);
 				
@@ -1199,6 +1210,7 @@ jQuery.extend({
 			if (settings.inmodal) {
 				
 				var modalready = false;
+				
 				$('#pwc-media-overlay').on('modalready', function() {
 					modalready = true;
 					$this.css('font-size','.75em');
@@ -1208,6 +1220,16 @@ jQuery.extend({
 					(_mob) ? $('#media-inline-html-div').css('overflow-y','auto') : $('#media-inline-html-div').css('overflow-y','hidden');
 					$('#media-player').css('paddiing','0 0 0 0');
 				});
+				
+				$this.bind('changevideo', function(event, index) {
+					
+					ChangeVideo(parseInt(index),false);
+								
+				});
+				
+				
+				
+				 
 				var keepchecking = setInterval(CheckReady, 500);
 				
 			}
@@ -1225,6 +1247,8 @@ jQuery.extend({
 
 
     };
+	
+ 
 })(jQuery);
 
 	

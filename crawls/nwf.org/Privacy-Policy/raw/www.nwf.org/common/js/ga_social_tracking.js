@@ -1,4 +1,4 @@
-var _ga = _ga || {};
+﻿var _ga = _ga || {};
 var _gaq = _gaq || [];
 _ga.trackSocial = function (opt_pageUrl, opt_trackerName) {
     _ga.trackFacebook(opt_pageUrl, opt_trackerName);

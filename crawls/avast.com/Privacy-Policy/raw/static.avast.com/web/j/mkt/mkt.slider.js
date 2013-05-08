@@ -28,6 +28,8 @@ var mktSlider = {
                             "es-ww" : "Compartir",
                             "es-mx" : "Compartir",
                             "es-us" : "Compartir",
+                            "es-ar" : "Compartir",
+                            "es-cl" : "Compartir",
                             "de-de" : "Teilen",
                             "de-ch" : "Teilen",
                             "fr-fr" : "Partager",

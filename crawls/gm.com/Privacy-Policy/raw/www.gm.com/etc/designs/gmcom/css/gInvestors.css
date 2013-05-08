@@ -38,7 +38,7 @@ body#investors div.mini_shaded_container_non_feed div.callToAction + br + div.ca
 }
 
 body#investors div.flexRightContent div.mini_shaded_container_feed {
-	margin-top: 12px;
+	/*margin-top: 12px;*/
 }
 
 body#investors div.flexRightContent, body#investors div.flexLeftContent {
@@ -54,14 +54,20 @@ body#investors div.flexLeftContent div.par.parsys {
 div.subsection_image_link_container ul li {
 	float: left;
 	margin-left: 20px;
+	overflow: hidden;
+
+	display: block;
 }
 
 div.subsection_image_link_container ul li:first-child {
 	margin-left: 0px;
 }
+html.ie7 div.subsection_image_link_container ul li+li{	
+	overflow: hidden;
+}
 
 div.subsection_image_link_container + div.subsection_image_link_container {
-	margin-top: 20px;
+	margin-top: 80px;
 }
 
 div.subsection_image_link_container + div.subsection_image_link_container img {
@@ -71,24 +77,32 @@ div.subsection_image_link_container + div.subsection_image_link_container img {
 
 div.subsection_image_link_container + div.subsection_image_link_container ul li {
 	/*border-right: 1px solid #6c6c6c;*/
-	width: 137px;
+	width: 137px;/*before 137*/
 	height: 95px;
 	margin: 0;
+}
+.ie7 div.subsection_image_link_container + div.subsection_image_link_container ul li {
+	margin-left: 0px;
+}
+
+.ie7 body.mastheadtwocolumn div.subsection_image_link_container ul  li{
+	width: 180px;
+	overflow: hidden;
 }
 
  /*home social links*/
  
 body#investors div.parsys.lowerpar div.parbase.brandpage_social.section{
   position:relative;
-  margin:12px 12px 12px 18px;
-  height:30px;
+  margin:0px 12px 12px 18px;
+  height:21px;
   float:right;
   right: 9px;
 }
 .gecko #investors div.parsys.lowerpar div.parbase.brandpage_social.section {
     float: right;
-    height: 30px;
-    margin: 12px 13px 12px 18px;
+    height: 21px;
+    margin: 0px 13px 1px 18px;
     position: relative;
     right: 9px;
 }
@@ -212,7 +226,10 @@ div.investorMap div:hover a p.description {
 }
 
 /* Mini Shaded Container Feed Section */
-
+body#diversity .callToAction{
+	float: left;
+	margin-right: 10px;
+}
 body#investors div.flexLeftContent {
 	margin-left: 0px !important;
 	margin-right: 22px !important;
@@ -221,6 +238,7 @@ body#investors div.flexLeftContent {
 
 body#investors div.flexRightContent div.mini_shaded_container_feed {
 	width: 480px;
+	margin-top: 0px;/*solo para inventors*/
 }
 
 body#investors div.flexRightContent div.mini_shaded_container_feed .midMid, body#investors div.flexLeftContent div.mini_shaded_container_feed .midMid, body#investors div.flexLeftContent div.mini_shaded_container_non_feed .midMid  {
@@ -237,7 +255,7 @@ body#investors div.mini_shaded_container_feed div.callToAction {
 }
 
 body#investors div.flexRightContent .textimage {
-	height: 169px;
+	/*height: 163px;*//*169*/
 }
 
 
@@ -246,7 +264,8 @@ body#investors div.flexRightContent div.mini_shaded_container_feed h1 {
 }
 
 div.mini_shaded_container_feed {
-	margin-top: 20px;
+	/*margin-top: 14px;*/
+	margin-bottom: 0px;
 }
 
 div.mini_shaded_container_feed {
@@ -390,7 +409,7 @@ div#stockInfo div.callToAction {
 
 div.mini_shaded_container_feed .btnNonCTA {
 	width: auto;
-	margin: 5px 5px 0 0;
+	margin: 5px 5px 10px 0;/*5 5 0 0*/
 }
 
 div.mini_shaded_container_feed div.callToAction + div.callToAction {
@@ -402,7 +421,9 @@ div.mini_shaded_container_feed div.callToAction + div.callToAction  + div.callTo
 }
 
 /* Mini Shaded Container Non Feed */
-
+div.mini_shaded_container_non_feed{
+	margin-bottom: 20px;
+}
 div.mini_shaded_container_non_feed img {
 	float: left;
 	margin: 7px 0 0 18px;
@@ -1086,6 +1107,9 @@ ul#topMenuNav li {
 html.webkit body#stock-financial ul#topMenuNav li {
   margin: -9px -4px -6px 0;
 }
+body.ipad#stock-financial ul#topMenuNav li {
+  margin: -9px -4px -6px 0 !important;
+}
 	
 ul#topMenuNav li a {
   background: none repeat scroll 0 0 #000000;
@@ -1378,11 +1402,11 @@ div.mediaFeedRelatedResources + div.historical_releases {
 
 body#investors div.follow_social {
 	float: right;
-	margin-right: 16px;
+	margin:0 16px 14px 0;
 }
 
 
-body#investors .follow_social.parbase.section h3{float:right; margin:10px 0 0 0;}
+body#investors .follow_social.parbase.section h3{float:right; margin:0;}
 
 body#stock-financial .iframe#stock_quote_financial,
 body#stock-financial iframe#stock_graph{height:380px;}
@@ -1566,3 +1590,7 @@ html.ie9 body#fundamentals table.AnnualIncomeStatement.resultsTable thead th.tab
 html.ie body#corporate-strategy div.container div.flexLeftContent div.callToAction div.actionContainer a.button span.genBtn{
 	padding-top:2px !important;
 }
+
+/*edit Abrahan*/
+#investors div.subsection_image_link {/*height: 55px !important;	*/}
+#investors .mini_shaded_container_non_feed .non_feed_title{display: none;}

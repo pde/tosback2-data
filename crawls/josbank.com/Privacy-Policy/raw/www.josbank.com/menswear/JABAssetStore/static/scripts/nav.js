@@ -1,7 +1,7 @@
 var hideNavTimer;
 var showNavTimer;
 
-$().ready(function(){
+$(window).load(function() {
 	$('#wrapper #main_nav .root').each(function(){
 		$(this).mouseenter(function(){displayNav(this);});
 		$(this).mouseleave(clearShowNavTimer);

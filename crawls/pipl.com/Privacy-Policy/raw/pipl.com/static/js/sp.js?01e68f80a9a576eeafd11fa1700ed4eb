@@ -77,12 +77,56 @@ function get_top_vals_from_query(q) {
 	}
 		
 }
+
+function simpleValueClean(term)
+{
+	return term.toLowerCase().replace(/,/gi, "").replace(/-/gi, ""); //anything else?
+}
+
+var cache = {},lastXhr, maxResults=15;
+function getSource(request, response)
+{
+	var term = request.term, closestTerm;
+	request.limit = maxResults;
+	if ( term in cache ) {
+		response( cache[ term ] );
+		return;
+	} else {
+		//get closest term that exists in cache
+		closestTerm = term.substring(0,term.length-1)
+		for(closestTerm = term.substring(0,term.length-1); closestTerm; closestTerm=closestTerm.substring(0,closestTerm.length-1))
+			if ( closestTerm in cache )
+				break;
+		
+		if (closestTerm) {
+			//filter specific cached response
+			var list = cache[ closestTerm ], newList = [], cleanTerm = simpleValueClean(term);
+			for (var i=0; i<list.length; i++)
+				if (simpleValueClean(list[i].value).indexOf(cleanTerm) > -1)
+					newList.push(list[i]);
+			
+			response(newList)
+		}
+		
+		
+	}
+	
+	if (typeof lastXhr !== "undefined")
+		lastXhr.abort();
+
+	lastXhr = $.getJSON( "/locationautocomplete/", request, function( data, status, xhr ) {
+		cache[ term ] = data;
+		if ( xhr === lastXhr ) {
+			response( data );
+		}
+	});
+}
 	
 $(function () {
     // setup js placeholder for browser that don't support html5 native one
     setupPlaceholder();
     $("[autofocus]").autofocus();
-    $("form").not('#dir_apply_form,#directory-form,#set_user_id').submit(function () {
+    $("form").not('#dir_apply_form,#directory-form,#set_user_id,#advanced_form').submit(function () {
     	var $form = $(this);
     	//try some basic stuff, like if the form has the elements
     	var s_val = $form.find('#findall').val();
@@ -220,49 +264,7 @@ $(function () {
 		$siblings.attr("disabled","disabled");
     }
     
-    function simpleValueClean(term)
-    {
-    	return term.toLowerCase().replace(/,/gi, "").replace(/-/gi, ""); //anything else?
-    }
     
-    var cache = {},lastXhr, maxResults=15;
-    function getSource(request, response)
-    {
-    	var term = request.term, closestTerm;
-		request.limit = maxResults;
-		if ( term in cache ) {
-			response( cache[ term ] );
-			return;
-		} else {
-			//get closest term that exists in cache
-			closestTerm = term.substring(0,term.length-1)
-			for(closestTerm = term.substring(0,term.length-1); closestTerm; closestTerm=closestTerm.substring(0,closestTerm.length-1))
-				if ( closestTerm in cache )
-					break;
-			
-			if (closestTerm) {
-				//filter specific cached response
-				var list = cache[ closestTerm ], newList = [], cleanTerm = simpleValueClean(term);
-				for (var i=0; i<list.length; i++)
-					if (simpleValueClean(list[i].value).indexOf(cleanTerm) > -1)
-						newList.push(list[i]);
-				
-				response(newList)
-			}
-			
-			
-		}
-		
-		if (typeof lastXhr !== "undefined")
-			lastXhr.abort();
-
-		lastXhr = $.getJSON( "/locationautocomplete/", request, function( data, status, xhr ) {
-			cache[ term ] = data;
-			if ( xhr === lastXhr ) {
-				response( data );
-			}
-		});
-    }
     	
     // autocomplete for main search
     $("#findlocation").focus(function (){

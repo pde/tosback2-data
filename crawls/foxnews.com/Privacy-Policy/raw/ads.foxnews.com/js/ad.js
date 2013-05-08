@@ -1390,6 +1390,10 @@
 					window.ggv2id='489afee2';
 					self.insertScript();
 				}
+				if($('meta[name="prism.section"]').attr("content") == "entertainment" && d.ptype == "slideshow"){
+					window.ggv2id='0f459771';
+					self.insertScript();
+				}
 			},
 			insertScript: function(id,automate){
 			

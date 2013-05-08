@@ -1,0 +1,41 @@
+(function ($) {
+  $(function(){
+
+    function placeholder_support() {
+      var i = document.createElement('input');
+      return 'placeholder' in i;
+    }
+    
+    if(!placeholder_support()) {
+      $('input, textarea').each(function(){
+        var placeholder = $(this).attr('placeholder');
+
+        $(this).focus(function(){
+          if($(this).val() == placeholder) {
+            $(this).val('').css('color', '#000000');
+          }
+        }).blur(function(){
+          if($(this).val() == '') {
+            $(this).val(placeholder).css('color', '#666666');
+          }
+        });
+
+        if($(this).val() == '') {
+          $(this).val(placeholder).css('color', '#666666');
+        }
+      });
+
+      $('form').each(function(){
+        $(this).submit(function(){
+          $('input, textarea', this).each(function(){
+            if($(this).val() == $(this).attr('placeholder')) {
+              $(this).val('');
+            }
+          });
+          return true;
+        });
+      });
+    }
+
+  });
+}(jQuery));

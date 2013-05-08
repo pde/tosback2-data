@@ -5,6 +5,7 @@
 
 // usage: log('inside coolFunc', this, arguments);
 // paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog
+
 window.log = function () {
     // store logs to an array for reference
     log.history = log.history || [];
@@ -14,10 +15,10 @@ window.log = function () {
     }
 };
 
+
 /* ============================================================================
  * Other jQuery/helper plugins here, instead of separate, slower script files.
  * ========================================================================= */
-
 
 
 /*!

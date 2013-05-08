@@ -1,5 +1,6 @@
 /* GLOBAL HEADER FOOTER STYLES BEGIN HERE */
 /*.tophat { background: #dedede; }*/
+[class^="dwarf-"], [class*="dwarf-"], [class|="dwarf-"]{float:left;margin-right:5px;}
 .tophat a { padding: 0; display: block; }
 .headerLogo { margin: 18px 0 15px 20px; float: left; }
 #nav { z-index: 1000; padding-bottom: 15px; font-family: Arial,"Helvetica Neue",Helvetica,sans-serif; }
@@ -10,6 +11,7 @@ div#thdProjectHT.btn,div#thdMyAccount.btn, div.search-controls {position:static 
 div#thdProjectHT ul.linkList,div#thdMyAccount ul.linkList,div#thdUtils ul.linkList{z-index:400;}
 ul#hd-deptNav .no-link a{cursor:pointer;}
 .dept-dropdown ul li a{background-image:none; height:auto;}
+#searchButton.btn,#list a.btn,div#thdProjectHT.btn, div#thdMyAccount.btn{box-shadow:none; -webkit-box-shadow:none; -moz-box-shadow:none; -o-box-shadow:none;}
 /****************************************************************/
 /* Header Styles Top Nav (always close - default) Start      */
 /****************************************************************/
@@ -89,6 +91,7 @@ div#header{
 }
 /*div.headerTop{margin: 0 0 15px 0;}*/
 /* Logo Styles */
+.dwarf-thdLogo{margin:0 15px;}
 img.logo{margin: 0 15px;float: left;}		
 /* My Store Styes */
 div#myStore{float: left;font-weight: bold;font-size: 14px;color: #333333;position: relative;}
@@ -293,70 +296,90 @@ i.icon-localization-on{*margin-top: -5px !important}
 .local_close_link {float: right;color: white;width: 70px;cursor: pointer;}
 .unlocal_close_link {float: right;color: white;width: 70px;cursor: pointer;}
 .close_text {float: left;margin-right: 7px;}
-/**=============FOOTER=========================================================================**/
-/* Styles for the footer begin here */
-.emailInputField {width: 114px;height: 18px;padding: 5px 8px;border: solid 1px #999;border-right: none;margin: 0;float: left;font-size: 12px;}
-.emailSubmitButton { margin: 0; padding: 0; float: left; }
-.centeredMenu { width: 100%; overflow: hidden; }
-ul.footerHorzMenu { float: left; position: relative; left: 50%; }
-ul.footerHorzMenu li {position: relative;right: 50%;float: left;padding:0 5px;border-right: solid 1px #999;}
-ul.footerHorzMenu li.end { border-right: none; }
-.container_30 .footerRail { background: #eee; }
-.container_30 .footerRail .normal { padding: 10px 0; }
-.container_30 .footerBorderTopBottom { border-top:1px solid #EEE;} /* QC Defect #13927 Applied to all pages */
-.footer h3.title, .footer h3.title a { font-size: 13px; font-weight: bold; margin-bottom: 7px; text-transform: uppercase; }
-.footer h3.prepend, .footer h3.prepend a { padding-top: 25px; }
-.footer .footerRail h3.title {font-weight: bold;font-color:#666666;font-size:13px;}
-.footer ul.linkList li a {color: #000000 !important;} /* fix for QC Defect #25867 */
-.footer ul.socialList li {padding-left: 25px;margin-bottom: 13px;line-height: 12px;min-height: 19px;}
-.footer ul.socialList li a { font-size: 10px; color: #999; }
-.footer ul.socialList .mobileLink { background: url("../images/headerFooter/icon_mobile.png") left no-repeat; margin-top:20px;height:23px; }
-.footer ul.socialList .facebookLink { background: url("../images/headerFooter/icon_facebook.gif") left no-repeat; }
-.footer ul.socialList .twitterLink { background: url("../images/headerFooter/icon_twitter.gif") left no-repeat; }
-.footer ul.socialList .rssLink { background: url("../images/headerFooter/icon_rss.gif") left no-repeat; }
-.footer ul.socialList .youtubeLink { background: url("../images/headerFooter/icon_youtube.gif") left no-repeat; }
-.footer ul.socialList .pinterestLink { background: url("../images/headerFooter/icon_pinterest.gif") left no-repeat; }
-.footer .googlePlusOne { margin-bottom: 15px; }
-/*Global Footer Verisign logo*/
-#versignFooter{margin:15px auto; width:100px; height:72px;}
+
+/****************************************** NEW FOOTER STYLES *************************************/
+
+div.footer.mainContent{border-width:1px 0px 0px 0px}
+.footerBorderTopBottom { border-top: 1px solid #EEEEEE;}
+div.marketpodDesc>p>a,div.contentimage a,.footer h3 a, .footer h4 a,#versignFooter a{text-decoration:none;cursor:pointer;}
+
+.footer p{line-height:13px;margin-bottom:3px;}
+/*********** Market pods **********************/
+div.mainContent #marketpods{margin:50px 0 30px 0;}
+
+div#marketpods .grid_6{border-width:0 1px 0 0;}/*overriding the class of global.css*/
+div.mainContent #marketpods .pod{height:110px;border-color:#BBBBBB;}
+div.marketpodDesc>p{padding:5px 0 5px 0;margin:0;line-height:12px;font-size:11px;}
+div.marketpodDesc li {line-height: 16px;}
+div.marketpodDesc>p#mobileAppDesc{padding-top:3px;}
+div.contentimage h3{padding:5px 0 0 0;margin:0px;font-size:14px;color:#333;float:left;background:none;display:inline;font-weight:bold;clear:none;}
+.dwarf-toolrental{margin-right:3px;}
+.dwarf-creditcenter{margin-top:3px;}
+.dwarf-mobileApps{margin-top:-6px;}
+
+/*********** Orange Corner **********************/
+.orange_corner p{margin:10px 0px 10px 0px;}
+.dwarf-orangeinsider{*margin-left:-10px;}
+.dogear.orange_corner{position:relative;width:auto;height:auto;float:left;background-color:#eee;margin:10px 0px 5px -10px;padding:10px;border:1px solid #BBBBBB;box-shadow: 0 1px 2px #333333;}
+.dwarf-dogear{position: absolute;left: -1px;top: 101%; *position:relative; *top:93%; *left:-11px;}
+
+/************ Social Icons **********************/	
+
+.footer ul.socialList{margin-bottom:22px;*margin-bottom:9px;}
+.footer ul.socialList li{padding-left:0px;min-height: 19px;}
+:root .footer ul.socialList li{letter-spacing:0.02em;}/*IE9 cSS workaround*/
+.footer ul.socialList li a {color: #999999;font-size: 10px;cursor:pointer;}
+.footer ul.socialList li a p{line-height:10px;margin-bottom:14px;}
+
+/*Phone number*/
+p#phoneIntro{color:#333;}
+.footer p.large{color:#666;}
+
+/************************* Email ************************/
+.footer form#emailsub{width:auto !important;height:auto;}
+.footer .emailInputField { font-size:12px;color:#999;border:1px solid #BBBBBB;float: left;margin: 0;padding: 5px 8px;width: 131px;height: 20px;box-shadow:none;*padding: 8px 8px;*height: 14px;}
+:root .footer .emailInputField { padding: 8px 8px;height: 14px; }/*IE9 cSS workaround*/
+.footer .dwarf-footeremailsubmit {cursor:pointer;border: none;border-radius:0px;margin-right:0px;}
+
+/*********** Section Headers (Department,Online Resources..)**********************/
+
+div#sectionheaders{margin:0px 0px 24px 0px;}
+div#sectionheaders  div.grid_6{border:0px !important;}
+div#sectionheaders h4.title{color:#666;padding-left: 0px;font-size:18px;font-weight:bold;margin-bottom:15px;text-transform:uppercase;background: none repeat scroll 0 0 transparent;}
+div#sectionheaders ul.linkList>li>a,div#sectionheaders h4.title {line-height: normal !important;}
+.footer h4.prepend, .footer h4.prepend a { padding-top: 25px; background: none repeat scroll 0 0 transparent;}
+.customer-care {margin: 40px 0 0 0;}
+
+div.customer-care h4 {margin: 0 0 20px 0;background: none repeat scroll 0 0 transparent;padding: 0px;}
+div.customer-care h4 a{font-size: 18px;font-weight: bold;text-transform: uppercase;text-decoration:none;color:#666;background: none repeat scroll 0 0 transparent;}
+div.customer-care h4 span {font-weight: bold;}/*Overiding base.css h4 span*/
+div.customer-care .dwarf-help,div.customer-care .dwarf-contact,div.customer-care .dwarf-faq,div.customer-care .dwarf-opinions {margin-right:6px;}
+.footer #sectionheaders.row, .footer #sectionheaders .row, .footer #sectionheaders .pod, .footer #sectionheaders .rail{border: transparent;}
+
+/******************** Legal and footer horizontal menu ************/
+
+ul.footerHorzMenu{border:none;top:10px;  float: left;left: 76px;position: relative;}
+ul.footerHorzMenu li { border-right: 1px solid #999999;float: left;padding: 0 5px;position: relative;right: 50%;}
+ul.footerHorzMenu li.end {border-right: medium none;}
+#versignFooter {margin:-13px 0px 0px 15px; height: 72px; width: 100px;}
+.dwarf-verisign{cursor:pointer;}
+.footer-disclaimer>p.legal{padding-left:15px; padding:0px 47px 0 15px;font-size:9px;}
+:root .footer-disclaimer>p.legal{padding-right:74px \0/IE9;}/*IE9 cSS workaround*/
+.footer-disclaimer>p.legal>a{font-weight:bold;color:#F96302;}
+
+/************************************* NEW Footer Styles End *************************************/
 
 /*Styles for the error pages:  500 & oops page*/
-.content_margin_404page
-{
-margin-top:45px; margin-left:20px;
-}
-.content_margin_404page p a {
-    color: #F96302;
-}
-.line1_404page
-{
-margin-top:5px;margin-bottom:20px;
-}
-.buttons_margin_404page
-{
-margin-top:25px;
-}
-#lnReturnHomepage
-{
-margin-right:15px;
-}
-
-
-
-.customercare_404page
-{
-float:left;padding-bottom:20px;margin-top:45px;
-}
+.content_margin_404page{margin-top:45px; margin-left:20px;}
+.content_margin_404page p a {color: #F96302;}
+.line1_404page{margin-top:5px;margin-bottom:20px;}
+.buttons_margin_404page{margin-top:25px;}
+#lnReturnHomepage{margin-right:15px;}
+.customercare_404page{float:left;padding-bottom:20px;margin-top:45px;}
 
 /*closeQuote styles -- need to be moved to closequote.css*/
-#layout h1 {
-    padding-left: 15px;
-}
-#layout{
-
-	 position: relative;
-    z-index: 10;
-}
+#layout h1 {padding-left: 15px;}
+#layout{position: relative; z-index: 10;}
 
 /* Rounded corners for IE */
 .rounded, .roundedTop, .roundedBottom, .roundedLeft, .roundedRight, #nav #hd-deptNav, #dept-search, div#thdProjectHT.btn, div#thdMyAccount.btn, a#cart.btn {position: relative;}
@@ -392,9 +415,7 @@ a#cart.btn.btn-orange .br {background-position: -14px 3718px\9; *background-posi
 #nav #hd-deptNav .br {bottom: -1px; background-position: -14px 3717px;}
 #dept-search .tr {background-position: -14px 3730px;}
 #dept-search .br {background-position: -14px 3717px;}
-div#thdProjectHT.btn:hover .bl, div#thdProjectHT.btn:hover .br, div#thdMyAccount.btn:hover .bl, div#thdMyAccount.btn:hover .br, #nav #hd-deptNav:hover .bl, #nav #hd-deptNav:hover .br, .homepage #nav #hd-deptNav .bl, .homepage #nav #hd-deptNav .br, #dept-search:hover .bl {
-     display: none;
-}
+div#thdProjectHT.btn:hover .bl, div#thdProjectHT.btn:hover .br, div#thdMyAccount.btn:hover .bl, div#thdMyAccount.btn:hover .br, #nav #hd-deptNav:hover .bl, #nav #hd-deptNav:hover .br, .homepage #nav #hd-deptNav .bl, .homepage #nav #hd-deptNav .br, #dept-search:hover .bl {display: none;}
 
 /********************************** Common Styles for table and mobile header ************************************/
 #mobileHeader, #mobileFooter{display:none;}
@@ -424,12 +445,11 @@ div#thdProjectHT.btn:hover .bl, div#thdProjectHT.btn:hover .br, div#thdMyAccount
 
 	 /****************************************menu icons************************************/
 
-	body[class*="transparentHT"] .container_30 .nav-btns i[class^="icon-"], body[class*="transparentHT"] .container_30  .nav-btns i[class*="icon-"], body[class*="transparentHT"] .container_30  .nav-btns i[class|="icon-"] {width: 30px;height: 24px;margin-bottom: 5px;}
-	body[class*="transparentHT"] .container_30 .nav-btns i[class^="icon-"],body[class*="transparentHT"] .container_30  .nav-btns i[class*="icon-"],body[class*="transparentHT"] .container_30  .nav-btns i[class|="icon-"] {	width: 30px;	height: 24px;	margin-bottom: 5px;}
-	body[class*="transparentHT"] .container_30 .nav-btns li:last-child {	padding-right: 0;	border-left: 1px solid #EEE;}
-	body[class*="transparentHT"] .container_30 .nav-btns li:first-child {	padding-left: 0;}
-	body[class*="transparentHT"] .container_30 .how-to-icon {	background-position: right 30px;}
-	body[class*="transparentHT"] .container_30 [class^="icon-"], body[class*="transparentHT"] .container_30  [class*="icon-"],  [class|="icon-"] {	background-image: url("../../../images/mobile/images/mobile-halflings.png");	background-position: 14px 14px;	background-repeat: repeat;	display: inline-block;	vertical-align: text-top;	padding: 0;}
+	body[class*="transparentHT"] .container_30  .nav-btns i[class^="icon-"], body[class*="transparentHT"] .container_30  .nav-btns i[class*="icon-"], body[class*="transparentHT"] .container_30  .nav-btns i[class|="icon-"] {width: 30px;height: 24px;margin-bottom: 5px;}
+	body[class*="transparentHT"] .container_30  .nav-btns i[class^="icon-"],body[class*="transparentHT"] .container_30  .nav-btns i[class*="icon-"],body[class*="transparentHT"] .container_30  .nav-btns i[class|="icon-"] {	width: 30px;	height: 24px;	margin-bottom: 5px;}
+	body[class*="transparentHT"] .container_30  .nav-btns li:last-child {	padding-right: 0;	border-left: 1px solid #EEE;}
+	body[class*="transparentHT"] .container_30  .nav-btns li:first-child {	padding-left: 0;}
+	body[class*="transparentHT"] .container_30  .how-to-icon {	background-position: right 30px;}
 	body[class*="transparentHT"] .container_30 .icon-pdf {background-image: url("../../../images/halflings.png"); background-position: right 256px;}
 	body[class*="transparentHT"] .container_30 .icon-thd-logo {	background-position: 0px 0px;}
 	body[class*="transparentHT"] .container_30 .icon-howto {	background-position: -40px -103px;}
@@ -445,6 +465,7 @@ div#thdProjectHT.btn:hover .bl, div#thdProjectHT.btn:hover .br, div#thdMyAccount
 	body[class*="transparentHT"] .container_30 .icon-carrot-white {	background-position: -28px -173px;}
 	/*Mobile GHF styles end*/
 }
+
 
 /*************************************************** Tablet Portrait View **************************************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
@@ -570,6 +591,14 @@ div#thdProjectHT.btn:hover .bl, div#thdProjectHT.btn:hover .br, div#thdMyAccount
 	body[class*="transparentHT"] .container_30 #mcartnum span {background-color:#F96302;	color:#FFF;	font-size:10px;	font-weight:bold;	padding:1px 2px;	-moz-border-radius:4px;	-webkit-border-radius:4px;	border-radius:4px;	border:2px solid #FFF;	position: absolute;	top: 0px;}
 	body[class*="transparentHT"] .container_30 #mcartnum{margin-right: 18px;}
 
+    /******************* Responsive Content Styles *****************/
+    body[class*="transparentHT"] .container_30, body[class*="transparentHT"] .container_30 .grid_30, body[class*="transparentHT"] .container_30 .grid_24, body[class*="transparentHT"] .container_30 .grid_18, body[class*="transparentHT"] .container_30 .grid_12, body[class*="transparentHT"] .container_30 .grid_10, body[class*="transparentHT"] .container_30 .grid_6, body[class*="transparentHT"] .container_30 .vertical-navigation, body[class*="transparentHT"] .container_30 .related-resource-accordion{width: 320px; overflow: hidden;}
+    body[class*="transparentHT"] .container_30 .grid_8{width: 50%;}
+    body[class*="transparentHT"] .container_30 .content_image > img, body[class*="transparentHT"] .container_30 .content_image > a img {width: 100%;}
+    
+    body[class*="transparentHT"] .container_30 div#mobileHeader, body[class*="transparentHT"] .container_30 div#mobileFooter footer{background-color: #ffffff !important;}
+    body[class*="transparentHT"] .container_30 .pod{height: auto !important;}                                
+                           
 }
 
 

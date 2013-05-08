@@ -154,7 +154,8 @@
 		},
 
 		moveSlider : function( options, position ){
-
+			
+			
 			if( $( 'div#background img' ).queue().length <= 0 ){
 				var $this = this;
 				var $newContent = this.children( ':eq(' + ( position - options.offset ) / options.step + ')').clone().css({ opacity: 0 });
@@ -174,7 +175,7 @@
 						$( this ).siblings().remove();
 					}
 				});
-
+	
 				//add new item to content area
 				$newContent.children( 'p:eq(0)' ).remove();
 				$( 'div#sliderContainer ul#sliderContent' ).append( $newContent );
@@ -219,30 +220,36 @@
 
 				//refresh the addThis code
 				if( $( 'div#sliderContainer div#addThis_container' ).length > 0 ){
-					$( 'div#sliderContainer div#addThis_container div.addthis_toolbox').html(
-						'<a class="addthis_button_facebook"><span></span></a>' +
-						'<a class="addthis_button_twitter"><span></span></a>' +
-						'<a class="addthis_button_blogger"><span></span></a><br />' +
-						'<a class="addthis_button_google"><span></span></a>' +
-						'<a class="addthis_button_myspace"><span></span></a>' +
-						'<a class="addthis_button_tumblr"><span></span></a>'
-					);
-					if (window.addthis){
-						//window.addthis.ost = 0;
-						//window.addthis.ready();
-						window.addthis = null;
-					}
 
-					// prevent jQuery from appending cache busting string to the end of the URL
-					var cache = $.ajaxSettings.cache;
-					$.ajaxSettings.cache = true;
+					var uri=window.location.href.split("/");
+
+					var host=window.location.host,
+						template=uri[3],
+						page=uri[4].split("#")[0],
+						id=$('body').attr("id").split("_");
+
+
+					$.ajaxSetup.cache = true;
 					$.getScript('http://s7.addthis.com/js/250/addthis_widget.js#username=gmcom');
 
-					// Restore jQuery caching setting
-					$.ajaxSettings.cache = cache;
+					var	pillarTitle=$('li.active').attr('title'),
+						facebookBase="https://www.facebook.com/login.php?next=http%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttp%253A%252F%252F"+host+"%252F"+template+"%252F"+page+"%2523%252F",
+						twitterBase="https://twitter.com/intent/session?related=&return_to=%2Fintent%2Ftweet%3Ftext%3DGeneral%2BMotors%2B%257C%2B"+id[0]+"%2B%2526%2B"+id[1]+"%2B%257C%2BGM.com%26url%3Dhttp%253A%252F%252F"+host+"%252F"+template+"%252F"+page+"%2523%252F";
+
+
+					var	facebookAppendix="&display=popup",
+						twitterAppendix1="%26related%3D&shortened_url=http%3A%2F%2F"+host+"%2F"+template+"%2F"+page+"%23%2F",
+						twitterAppendix2="&text=General+Motors+%7C+"+id[0]+"+%26+"+id[1]+"+%7C+GM.com&url=http%3A%2F%2F"+host+"%2F"+template+"%2F"+page+"%23%2F";
+
+
+					$('a.addthis_button_facebook').attr('href', facebookBase+pillarTitle+facebookAppendix).attr('target', '_blank');
+					$('a.addthis_button_twitter').attr('href', twitterBase+pillarTitle+twitterAppendix1+pillarTitle+twitterAppendix2+pillarTitle).attr('target', '_blank');
+
 				}
 
 			}
+			backgroundLoaded();
+		
 		},
 
 		titlePosition : function( options, title ){
@@ -283,3 +290,7 @@
 		}
 	});
 })(jQuery);
+
+$(document).ready(function(){
+
+});

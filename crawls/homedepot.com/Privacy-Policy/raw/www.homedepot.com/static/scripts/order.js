@@ -1985,7 +1985,7 @@ function checkNumber(number)
                               alert ('ENTERING Function: checkNumber(number)' + number  );
                }
  
-               number = number.replace(/\$/g, '').replace(/,/g, '').replace(/\(/g, '-').replace(/\)/g, '').replace('&nbsp;','').replace('&#160;', '');
+               number = number.replace(/\$/g, '').replace(/,/g, '').replace(/\(/g, '-').replace(/\)/g, '').replace('&nbsp;','').replace('&#160;', '').replace(/-/g,'');
               
                number = leftTrim(number);
               

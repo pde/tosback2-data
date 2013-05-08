@@ -42,6 +42,8 @@
 				//Cufon headers
 				$this.cufonHeaders();
 
+				$this.ctaColor();
+
 
 
 
@@ -83,29 +85,84 @@
 				$(window).load(function(){
 				
 					
-					//activate animation pause conditions
-					filmstrip.pauseRotation(options);
+					//if more than one masthead frame, activate animation pause conditions	
+					if($.MHGLOBALS.frameLength>1)
+							filmstrip.pauseRotation(options);
 					
 					//activate animation
+//options.autoscroll=false;
 					if(options.autoscroll==="true")
 						filmstrip.autoRotate(options, null, null);
 						
 
 					if(scrolltop)
-						$('html, body').delay(800).animate({scrollTop:0},
-																		{duration: 200,
-						                                    complete: function(){
-						                                    	// if cufon fails in ipad, retry once
-						                                    	if($('div#rotatingMasthead h1').children('cufon').length===0)
-						                                    		$this.cufonHeaders();
-						                                    }
-						                                 });
-					
+						$('html, body').delay(800)
+										.animate(
+										    {scrollTop:0},
+											{duration: 200,
+		                                    complete: function(){
+		                                    	// if cufon fails in ipad, retry once
+		                                    	if($('div#rotatingMasthead h1').children('cufon').length===0)
+		                                    		$this.cufonHeaders();
+		                                    }
+	                                 });
+
 
 				});
 
 					
 			});
+		},
+		ctaColor : function(){
+
+			var $this=$(this);
+
+			$this.find('div.callToAction span, div.playVideo span').each(function(){
+
+				var tColor=$(this).attr('data-color');
+				var hColor=$(this).attr('data-hover');				
+
+				if(tColor){
+					$(this).data('t', tColor);
+					/*$(this).css({color : '#ff0000'});*/
+				}
+				
+
+				if(hColor){
+					$(this).data('h', hColor);
+					$(this).children().data('h', hColor);			
+					
+					$(this).hover(
+						function(){							
+							$(this).css({color : $(this).data('h')});
+							$(this).children().css({color :$(this).data('h')});
+						},
+						function(){
+							$(this).css({color : $(this).data('h')});
+							$(this).children().css({color : $(this).children().data('t')});
+						}
+					);
+
+					/*$(this).live('mouseover', function(){
+				        $('.dropdown > .options:visible').hide();
+				        $(this).find('.options').show();
+				    });
+				    $(this).live('mouseout', function(e){
+				        if(!$(e.relatedTarget).is('ul.options') && $(e.relatedTarget).parents('ul.options').length==0){
+				            $(this).find('.options').hide();
+				        }
+				    });*/
+
+					$(this).css({color : hColor});
+					$(this).children().css({color : tColor});
+					$(window).load(function(){
+						Cufon.refresh();
+					});
+				}
+				
+
+			});
+
 		},
 		cufonHeaders: function(){
 
@@ -425,6 +482,9 @@
 			$frameHeight=options.frameHeight;
 			$buttonSetLength=$.MHGLOBALS.frameLength;
 
+			// if only one frame, matshead meant to be static single image without buttons
+			if($buttonSetLength<2)
+				return;
 			// create and append buttons container to rotatingMasthead container
 			// clone and append rotatingMasthead ul to button-set
 

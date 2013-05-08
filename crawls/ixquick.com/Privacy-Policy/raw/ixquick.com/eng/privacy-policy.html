@@ -650,7 +650,23 @@ function show_plugin_install (obj_id, do_display) {
 			}
 	}
 }
-
+function show_ixquick_toolbar () {                                                                                                                                                                                  
+    var div_id='';                                                                                                                                                                                                   
+    if(MY_BROWSER == 'Firefox'){                                                                                                                                                                                     
+        div_id='firefox';                                                                                                                                                                                             
+    }                                                                                                                                                                                                                
+    else if(MY_BROWSER == 'Chrome'){                                                                                                                                                                                 
+        div_id='chrome';                                                                                                                                                                                              
+    }                                                                                                                                                                                                                
+    else if(MY_BROWSER == 'Explorer'){                                                                                                                                                                               
+        div_id='ie';                                                                                                                                                                                                  
+    }                        
+    else if(MY_BROWSER == 'Safari'){
+        div_id='safari';
+    }
+    show(div_id);            
+    show(div_id+'_setting');
+}  
 	function add_plugin (plugin_url, favicon_url, brand, custom_text) {
 		plugin_url += '&browser=' + MY_BROWSER + '&version=' + MY_BROWSER_VERSION;
 
@@ -1373,7 +1389,7 @@ function makeHomePage (obj, page_url) {
 <body onload="highlight();">
 <table class="toptable" cellpadding='0' cellspacing='0' id="toptablex" background="../graphics/top_border.gif" style="background-repeat:repeat-x">
 <tr>
-    <td class="tdmenu" valign="top" rowspan="2"><a href="https://ixquick.com/eng/" border="0" class="addsettings"><img src="../graphics/eng/ixquick.gif.html" width="260" height="134" border="0" alt="Ixquick.com"></a> 
+    <td class="tdmenu" valign="top" rowspan="2"><a href="https://ixquick.com/eng/" border="0" class="addsettings"><img src="../graphics/eng/ixquick.gif" width="260" height="134" border="0" alt="Ixquick.com"></a> 
 
      <div class="menucell2"><br /><br /></div>
 
@@ -1534,8 +1550,10 @@ You can periodically delete cookies from your computer's hard drive, clearing ou
 
           srcUrl += Lang;
           var pngUrl = srcUrl + ".png"; pngUrl = pathUrl + '.png';
-          srcUrl += ".src";
-          window.sidebar.addSearchEngine(srcUrl, pngUrl, "Ixquick", "Ixquick Search");
+          //srcUrl += ".src";
+		  srcUrl += ".xml";
+          //window.sidebar.addSearchEngine(srcUrl, pngUrl, "Ixquick", "Ixquick Search");
+		  window.external.AddSearchProvider(srcUrl);
 		  var language = get_language(Lang);
 			//load_img('/do/adviewtrack.pl?a=10&g=463&l=' + language);
 			//load_img('/do/adviewtrack.pl?a=10&g=469&l=' + language);

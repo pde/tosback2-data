@@ -2,7 +2,7 @@ $( document ).ready( function(){
 	/* Column Resizing */
 	if( $( 'body' ).hasClass( 'peoplepage' )){
 		$( 'body.peoplepage > div#content > div.shadedContainer' ).contentFit({ leftColumn : 'flexLeftContent' });
-	} else if( $( 'body' ).hasClass( 'visionconfigpage' )){
+	} else if( $( 'body' ).hasClass( 'visionconfigpage') && !$('html').hasClass('ipad') ){
 		if( $( 'div.cq-colctrl-lt0-c0' ).length > 0 ){
 			$( 'div.contentFit' ).contentFit({ leftColumn : 'cq-colctrl-lt0-c0', rightColumn: 'cq-colctrl-lt0-c1' });
 		} else if( $( 'div.cq-colctrl-lt1-c0' ).length > 0 ){
@@ -52,6 +52,8 @@ $( document ).ready( function(){
 		} else if( $( 'div.cq-colctrl-lt1-c0' ).length > 0 ){
 			$resizerColumn = $( '.cq-colctrl-lt1-c0' );
 		}
+
+
 	} else if( $( 'body#copyrightTrademark, body#user_guidelines' ).length > 0 ){
 		$resizerColumn = $( 'div.par.parsys' );
 	} else if( $( 'body#article' ).length > 0 || $( 'body.peoplepage' ).length > 0 ){
@@ -64,13 +66,20 @@ $( document ).ready( function(){
 	$( '.enlargeText' ).click( function(){
 		//prevent the cta text from sizing
 		$( '.genBtn' ).css({ 'fontSize' : $( '.genBtn' ).css( 'fontSize' )});
+
 		$resizerColumn.css({ fontSize: 18, lineHeight: '1.7em' });
+
+		// do not resize video and image captions
+		$resizerColumn.find('.captionBody').css({fontSize:12,lineHeight:'auto'});
+
+		mrm.js.setArrowListHeight();
 		mrm.js.setArrowListHeight();
 		Cufon.refresh();
 		return false;
 	});
 	$( '.resetText' ).click( function(){
 		$resizerColumn.css({ fontSize: 12 });
+		mrm.js.setArrowListHeight();
 		mrm.js.setArrowListHeight();
 		Cufon.refresh();
 		return false;

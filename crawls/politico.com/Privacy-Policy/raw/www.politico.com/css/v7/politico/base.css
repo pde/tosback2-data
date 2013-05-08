@@ -150,8 +150,11 @@ dl.captioned dd {color: #666; font-style:italic; font-size: 12px;}
 /*red letter text*/
 .head-descrip {color: #ce181f; font-size: 1.29em; letter-spacing:.1em; font-weight:bold; margin-bottom:2px; text-align:center;}
 
-/*live player*/
-a.live-player {margin:0 12px 10px 15px; background:url(http://images.politico.com/global/v5/misc/live-player-arrow.gif) no-repeat; padding-left:20px; color: #b70000;}
+/*prompts (including live video links)*/
+.prompt {margin:0 12px 15px 15px;}
+.prompt a {color:#b70000; display:inline-block; line-height:1.2em; font-size:1.29em;}
+.prompt a.live-player {background:url(http://www.politico.com/design/misc/live-player-icon.png) no-repeat left center; padding:.3em 0 .3em 34px;}
+
 a.live-player + .head-descrip {margin-top:10px;}
 
 /*button styles*/
@@ -432,24 +435,56 @@ li.nav-policy .main-nav-sub {width:330px;}
 .announcement img {display:block;}
 .ie8 .announcement img {display:inline-block;}
 
-.p-breaking-news {background:#c90f0f url(http://www.politico.com/design/announcements/breaking-news-bg.png) repeat-x left bottom; font-size:1.43em; color: #fff; border:1px solid #7c1e1e; border-bottom: 1px solid #6a0000; border-top:1px solid #883333; line-height:1;text-shadow: 0 2px 0 rgba(0,0,0,.5);
-	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-	     -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+.p-breaking-news {background:#aa0101; overflow:hidden; padding:0 15px;}
+
+.p-breaking-news .breaking-message {padding:.65em 0;}
+.p-breaking-news.with-share-tools .breaking-message {float:left; width:865px;}
+.p-breaking-news.urgent .breaking-message {padding:.95em 0;}
+.p-breaking-news .breaking-message p {font-size:1.43em; font-weight:bold; line-height:1.2em; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.5);}
+.p-breaking-news.urgent .breaking-message p {font-size:2.25em;}
+.p-breaking-news .breaking-message p a {color:#fff;}
+
+.p-breaking-news .breaking-share {float:right; border:1px solid #750000; overflow:hidden; margin:.45em 0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -webkit-box-shadow:inset 0 1px 5px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.2);
+    -moz-box-shadow:inset 0 1px 5px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.2);
+    box-shadow:inset 0 1px 5px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.2);
+    background: -moz-linear-gradient(top,  #b60101 0%, #9e0101 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b60101), color-stop(100%,#9e0101));
+    background: -webkit-linear-gradient(top,  #b60101 0%,#9e0101 100%);
+    background: -o-linear-gradient(top,  #b60101 0%,#9e0101 100%);
+    background: -ms-linear-gradient(top,  #b60101 0%,#9e0101 100%);
+    background: linear-gradient(to bottom,  #b60101 0%,#9e0101 100%);
 }
-.p-breaking-news.urgent {font-size:2.25em; line-height: 1.5}
-.p-breaking-news a:link, .p-breaking-news a:visited {color: #fff; display:block; width:100%; height:100%; background: url(http://www.politico.com/design/announcements/breaking-news-arrow.png) no-repeat 98% center;text-shadow: 0 2px 3px rgba(0,0,0,.5); 
-	-webkit-transition: all 0.2s ease-in-out; 
-	   -moz-transition: all 0.2s ease-in-out; 
-	     -o-transition: all 0.2s ease-in-out; 
-	    -ms-transition: all 0.2s ease-in-out; 
-	        transition: all 0.2s ease-in-out; 
+.p-breaking-news.urgent .breaking-share {margin:1.25em 0;}
+.p-breaking-news .breaking-share li {float:left;}
+.p-breaking-news .breaking-share a {display:block; border-left:1px solid #b92727; border-left:1px solid rgba(255,255,255,.15); border-right:1px solid #750000; border-right:1px solid rgba(0,0,0,.3); background:transparent url(http://www.politico.com/design/sprites/breaking-share-sprite.png) no-repeat left top; width:40px; line-height:28px; text-indent:100%; white-space:nowrap; overflow:hidden;
+    -webkit-transition:all .25s ease;
+    -moz-transition:all .25s ease;
+    -o-transition:all .25s ease;
+    transition:all .25s ease;
 }
-.ie6 .p-breaking-news a:link, .ie6 .p-breaking-news a:visited {background:none;}
-.p-breaking-news a:hover {text-decoration:none; background-position: 98.5% center; text-shadow: 0 2px 3px rgba(0,0,0,.9); color: #fff;}
-.ie6 .p-breaking-news a:hover {text-decoration:underline;}
-.p-breaking-news p {padding: 10px; font-weight:bold;}
+.p-breaking-news .breaking-share li:first-child a {border-left:none;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.p-breaking-news .breaking-share li:last-child a {border-right:none;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.p-breaking-news .breaking-share a:hover {background-color:#c70000;}
+.p-breaking-news .breaking-share li.facebook a {background-position:16px 5px;}
+.p-breaking-news .breaking-share li.twitter a {background-position:10px -43px;}
 
 .feature-promo-banner {border-top:1px solid #fff; margin-top:-6px; position:relative; z-index:500;}
 .has-section-masthead .feature-promo-banner {margin-bottom:-5px;}

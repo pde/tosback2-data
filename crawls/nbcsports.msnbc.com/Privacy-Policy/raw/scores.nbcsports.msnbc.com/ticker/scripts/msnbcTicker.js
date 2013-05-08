@@ -718,8 +718,19 @@
 						
 						//figure out if this is being aired on NBC
 						var channels = "/"+ $(gamestate).attr("tv") + "/";
-						var classTV  = (channels.indexOf("/NBC") >= 0 ? "shs_nbcTV" : "");
-						var badgeNBC = (classTV == "" ? "" : "shs_nbcBadge");
+						if (channels.indexOf("/CNBC") >= 0) {
+							var classTV  = (channels.indexOf("/CNBC") >= 0 ? "shs_nbcTV" : "");
+							var badgeNBC = (classTV == "" ? "" : "shs_cnbcBadge");
+						} else if (channels.indexOf("/NBCS") >= 0) {
+							var classTV  = (channels.indexOf("/NBCS") >= 0 ? "shs_nbcTV" : "");
+							var badgeNBC = (classTV == "" ? "" : "shs_nbcsBadge");
+						} else if (channels.indexOf("/NHL") >= 0) {
+							var classTV  = (channels.indexOf("/NHL") >= 0 ? "shs_nbcTV" : "");
+							var badgeNBC = (classTV == "" ? "" : "shs_nhlnwBadge");
+						} else {
+							var classTV  = (channels.indexOf("/NBC") >= 0 ? "shs_nbcTV" : "");
+							var badgeNBC = (classTV == "" ? "" : "shs_nbcBadge");
+						};
 						
 						//figure out if this game is pregame/active/postgame
 						var status = $(gamestate).attr("status")

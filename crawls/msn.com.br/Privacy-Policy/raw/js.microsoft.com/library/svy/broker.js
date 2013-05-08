@@ -2,11 +2,13 @@
 Copyright (c) 2012, comScore Inc. All rights reserved.
 version: 5.0.3
 */
+
 var _sr_config = "broker-config.js";
 var _sr_builder = "builder.js";
 var _sr_sql08_URL = false;
 var qI_flag=false;
 var qI_loaded=true; 
+var _mobile=false;
 var SR_url = window.location.toString().toLowerCase();
 var URLrange= [/\/\/[\w\.]+\/[a-k]/i, /\/\/[\w\.]+\/[l-z]/i];
 
@@ -24,9 +26,13 @@ if(SR_url.search(/www\.microsoft\.com\/windows\/pc-selector/i) !== -1 || SR_url.
 	_sr_config = "broker-config_wp.js";	
 }else if(/[\w\.]+\/learning\/en\/us/i.test(SR_url)) {
 	_sr_config = "broker-config_learning.js";	
-} else if(/[\w\.]+\/en-us\/bi\//i.test(SR_url)) {
+}else if(/[\w\.]+\/en-us\/bi\//i.test(SR_url)) {
 	_sr_builder = "builder_Qbi.js";	
+}else	if(/iphone|ipad|ipod|android|opera (mini|mobi)|blackberry|windows (phone|ce)|iemobile|htc|nokia|mobile/i.test(navigator.userAgent) && /en-us\/(default\.aspx)?$/i.test(SR_url)){
+	_sr_config = "broker-config_M.js";
+	_mobile=true;
 }
+				
 if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('cleflag2') == -1){
 	var c = 'cleflag2=1; path=/; domain=.microsoft.com';
 	document.cookie = c;	
@@ -983,7 +989,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			start: function() {
 				//If Mobile browser NOT detected then run init() function
 				
-				if(/iphone|ipad|ipod|android|opera (mini|mobi)|blackberry|windows (phone|ce)|iemobile|htc|nokia|mobile/i.test(navigator.userAgent)){
+				if(/iphone|ipad|ipod|android|opera (mini|mobi)|blackberry|windows (phone|ce)|iemobile|htc|nokia|mobile/i.test(navigator.userAgent) && !(_mobile)){
 				 //Disable recruitment for mobile
 				}else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
 					// CUSTOM CODE - Check for AR Already Asked cookie

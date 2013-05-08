@@ -4,7 +4,7 @@ var FSR = {
     'enabled': true,
 	'auto' : true,
 	'encode' : false,
-    'files': '/CVSApp/cvscontent/foresee/',
+    'files': '/bizcontent/foresee/',
     'id': '6NE9i8SSKLTCrluejV9LFw==',
     'sites': [{
         path: /\w+-?\w+\.(com|org|edu|gov|net)/

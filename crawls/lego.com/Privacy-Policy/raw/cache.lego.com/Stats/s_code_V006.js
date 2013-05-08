@@ -56,6 +56,7 @@ LEGOSiteStats.GetDefaultLinkTrackingVars = function () {
            'eVar3,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar12,eVar26,eVar27,eVar47,eVar50,' +
            'products';
 };
+LEGOSiteStats.GetS = function () { return LEGOSiteStats ? (LEGOSiteStats.BasicTracking ? LEGOSiteStats.BasicTracking.Private.s : (LEGOSiteStats.s ? LEGOSiteStats.s : s)) : s; };
 LEGOSiteStats.GetSCodeVersion = function () {
     var sCodeSrc, siteStatsSrc, gaDetect, els, i, src, sObj, sVersion;
     sCodeSrc = "";
@@ -102,7 +103,7 @@ function PageStats() {
     prop3val = s.prop3;
     if (args[args.length - 1].toLowerCase().indexOf("tellafriend") === 0) {
         pageEvents = "event1";
-        s.prop3 = ""
+        s.prop3 = "";
     }
     s.pageName = sPageName;
     s.events = pageEvents;
@@ -219,7 +220,7 @@ LEGOSiteStats.TrackingVerification = (function () {
 
     return {
         verifyEVars: function () {
-            var requiredValueAry, v, idx, foundValue, t, sObj;
+            var requiredValueAry, v, idx, foundValue, t, sObj, msg, returnedErrorMessages = [];
             try {
                 if (LEGOSiteStats.hasOwnProperty("s")) {
                     sObj = LEGOSiteStats.s;
@@ -243,7 +244,9 @@ LEGOSiteStats.TrackingVerification = (function () {
                         if (sObj.hasOwnProperty("_trackCallType")) {
                             t = ', tracking type: ' + sObj._trackCallType;
                         }
-                        logVerificationError('Required tracking value missing: ' + v + t);
+                        msg = 'Required tracking value missing: ' + v + t;
+                        returnedErrorMessages.push(msg);
+                        logVerificationError(msg);
                     }
                 }
                 if (sObj.hasOwnProperty("_trackCallType")) {
@@ -265,13 +268,16 @@ LEGOSiteStats.TrackingVerification = (function () {
                             t += (t === "" ? "" : ", " ) + "eVar25";
                         }
                         if (t !== "") {
-                            logVerificationError('LinkHits may not track ' + t + '.');
+                            msg = 'LinkHits may not track ' + t + '.';
+                            returnedErrorMessages.push(msg);
+                            logVerificationError();
                         }
                     }
                 }
             }
             catch (e) {
             }
+            return returnedErrorMessages;
         }
     };
 } ());
@@ -706,11 +712,10 @@ s.p_gn = new Function("t", "h", ""
 s.loadModule("Media");
 s.Media.autoTrack = true;
 s.Media.trackWhilePlaying = true;
-s.Media.trackVars = "None";
-s.Media.trackEvents = "None";
-
+s.Media.trackVars = "events,eVar3,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar12,eVar26,eVar27,eVar31,prop31,eVar32,eVar33,eVar38,eVar47,eVar50,eVar52";
+s.Media.trackEvents = "event41,event42,event43,event44,event45,event46,event47,event61";
 s.Media.trackMilestones = "25,50,75";
-s.Media.playerName = "My Media Player";
+s.Media.playerName = "Unknown mediaplayer";
 s.Media.segmentByMilestones = true;
 s.Media.trackUsingContextData = true;
 s.Media.contextDataMapping = {
@@ -727,7 +732,6 @@ s.Media.contextDataMapping = {
         75: "event46"
     }
 };
-
 s.Media.monitor = function (s, media) {
     s._trackCallType = "MediaHit";
     if (media.mediaEvent === "OPEN" || media.mediaEvent === "MILESTONE") {
@@ -972,10 +976,14 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
     // -------------------------------------------------------------------
     // Patch s_code with LEGO specific business logic rules & requirements
     // -------------------------------------------------------------------
-    var hasValue, sObj, stCpy, stlCpy, clearSValue, restoreSValue, sanitizeTrackedVariables;
+    var hasValue, sObj, stCpy, stlCpy, clearSValue, restoreSValue, sanitizeTrackedVariables, lastTrackedJsonState;
     sObj = s;
     stCpy = sObj.t;
     stlCpy = sObj.tl;
+    LEGOSiteStats.GetJsonData = function () {
+        /** Returns a tracking json data object for the currently active game. Changes/modifications to the data will not affect tracking. */
+        return lastTrackedJsonState;
+    };
     hasValue = function (v) {
         return (v !== undefined && v !== null && v !== "");
     };
@@ -1057,17 +1065,18 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
         return stlCpy.apply(this, arguments);
     };
     sObj._businessLogicDoPlugins = function (s) {
-        /*
-        ** Business Rules to always enforce
-        ** --------------------------------
-        */
+        ///
+        /// Business Rules to always enforce
+        /// --------------------------------
+        ///
+        var getLastProductNo, evList, downloadLink, exitLinkObject, pathElements, hotfix31012013, currentTrackingValues, verificationMessages;
+
         // General rules goes here...
 
         // Make sure the s object cannot be re-initialized (made empty / invalid)
         s_gi = function () { return s; };
 
         // Always track eVar20 with the last added productNo if event 8,28,53 or 54 is fired
-        var getLastProductNo, evList, downloadLink, exitLinkObject, pathElements, hotfix31012013;
         getLastProductNo = function (s) { var pA = (";;;;," + s.products).split(","); return pA[pA.length - 1].split(";")[1]; };
         evList = "," + s.events + ",";
         if (evList.indexOf("event8") > 0 || evList.indexOf("event28") > 0 || evList.indexOf("event53") > 0 || evList.indexOf("event54") > 0) {
@@ -1139,29 +1148,26 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
             applyHotfix(s, "eVar27");
         };
 
-        /*
-        ** Business Rules specific for a link type
-        ** ---------------------------------------
-        */
-        //console.group(s._trackCallType);
+        ///
+        /// Business Rules specific for a link type
+        /// ---------------------------------------
+        ///
         if (hasValue(s._trackCallType)) {
             if (s._trackCallType === "PageHit") {
-                /*
-                ** Rules to enforce for page hits only
-                ** -----------------------------------
-                */
-                //console.log("restore");
+                ///
+                /// Rules to enforce for page hits only
+                /// -----------------------------------
+                ///
                 sanitizeTrackedVariables(s, restoreSValue);
                 hotfix31012013(s);
                 s.eVar26 = s.pageName;
                 s.eVar27 = s.channel;
-            } else /*if (s._trackCallType === "PageHit-LinkHit" || s._trackCallType === "DownloadLink" || s._trackCallType === "ExitLink" || s._trackCallType === "MediaHit" || s._trackCallType === "PageHit-MediaHit")*/ {
-                /*
-                **  Rules to enforce for link hits and download links
-                ** --------------------------------------------------
-                */
+            } else {
+                ///
+                ///  Rules to enforce for link hits and download links
+                /// --------------------------------------------------
+                ///
 
-                //console.log("restore");
                 sanitizeTrackedVariables(s, restoreSValue);
                 hotfix31012013(s);
                 s.eVar26 = s.pageName;
@@ -1183,8 +1189,6 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
                 if (s.prop12) { s.eVar12 = s.prop12; }
                 s.eVar50 = s.prop50;
 
-                //console.log("clear");
-
                 sanitizeTrackedVariables(s, clearSValue);
 
                 if (s.hasOwnProperty("linkTrackVars") === false || s.linkTrackVars === null || s.linkTrackVars === "" || s.linkTrackVars === "None") {
@@ -1193,16 +1197,46 @@ s.gtfsf=function(w) { if(w.location.protocol!='https:'){var s=this,p=w.parent,l=
             }
         }
 
-        /*
-        ** Business Rules Verification
-        ** ---------------------------
-        */
-        LEGOSiteStats.TrackingVerification.verifyEVars();
+        ///
+        /// Business Rules Verification
+        /// ---------------------------
+        ///
+        verificationMessages = LEGOSiteStats.TrackingVerification.verifyEVars();
 
-        //console.group("tracked");
-        //console.log("pageName:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.pageName, s._cpypageName, s.eVar26);
-        //console.log("channel:\n  val=%s,\n  cpy=%s,\n  evar=%s", s.channel, s._cpychannel, s.eVar27);
-        //console.groupEnd();
-        //console.groupEnd(); //_trackCallType
+        ///
+        /// Snapshot current tracking data
+        /// ------------------------------
+        ///
+        currentTrackingValues = function (s) {
+            var eVars = {}, props = {}, idx, key;
+            for (idx = 1; idx <= 75; idx = idx + 1) {
+                key = "eVar" + idx; if (s[key]) { eVars["v" + idx] = s[key]; }
+                key = "prop" + idx; if (s[key]) { props["c" + idx] = s[key]; }
+            }
+            return { "eVars": eVars, "props": props };
+        } (s);
+
+        lastTrackedJsonState = {
+            "dateTime": new Date(),
+            "pageName": s.pageName,
+            "channel": s.channel,
+            "server": s.server,
+            "products": s.products,
+            "events": s.events,
+            "pages": s.eVar26,
+            "variables": currentTrackingValues,
+            "legoId": {
+                "loggedIn": s.prop8 ? s.prop8 : s.eVar8,
+                "userLocation": s.prop9 ? s.prop9 : s.eVar9,
+                "age": s.prop10 ? s.prop10 : s.eVar10,
+                "gender": s.prop11 ? s.prop11 : s.eVar11,
+                "memberCountry": s.prop12 ? s.prop12 : s.eVar12
+            },
+            "linkTrackVars": s.linkTrackVars,
+            "linkTrackEvents": s.linkTrackEvents,
+            "verification": verificationMessages,
+            "siteSections": s.eVar27,
+            "trackCallType": s._trackCallType
+        };
     };
 } (s));

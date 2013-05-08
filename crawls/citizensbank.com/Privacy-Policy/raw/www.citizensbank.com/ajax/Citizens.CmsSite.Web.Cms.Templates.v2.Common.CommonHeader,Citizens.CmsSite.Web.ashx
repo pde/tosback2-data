@@ -5,6 +5,7 @@ RegionLookup:function(zip,callback,context){return new ajax_request(this.url + '
 RegionBrandLookup:function(zip,url,callback,context){return new ajax_request(this.url + '?_method=RegionBrandLookup&_session=no','zip=' + enc(zip)+ '\r\nurl=' + enc(url),callback, context);},
 url:'/ajax/Citizens.CmsSite.Web.Cms.Templates.v2.Common.CommonHeader,Citizens.CmsSite.Web.ashx'
 }
+function AjaxImage(url){var img=new Image();img.src=url;return img;}
 function HtmlControl(id) {
 	var ele = null;
 	if(typeof(id) == 'object') ele = id; else ele = document.getElementById(id);
@@ -35,7 +36,6 @@ if(ff != null && typeof(ff.invoke) == 'function')
 }
 }
 function _getTable(n,e){for(var i=0; i<e.Tables.length; i++){if(e.Tables[i].Name == n)return e.Tables[i];}return null;}
-function AjaxImage(url){var img=new Image();img.src=url;return img;}
 function digi(v, c){v = v + "";var n = "0000";if(v.length < c) return n.substr(0, c-v.length) + v;return v;}
 function DateTime(year,month,day,hours,minutes,seconds){if(year>9999||year<1970||month<1||month>12||day<0||day>31||hours<0||hours>23||minutes<0||minutes>59||seconds<0||seconds>59)throw("ArgumentException");this.Year = year;this.Month = month;this.Day = day;this.Hours = hours;this.Minutes = minutes;this.Seconds = seconds;}
 DateTime.prototype.toString = function(){return digi(this.Year,4) + digi(this.Month,2) + digi(this.Day,2) + digi(this.Hours,2) + digi(this.Minutes,2) + digi(this.Seconds,2);}

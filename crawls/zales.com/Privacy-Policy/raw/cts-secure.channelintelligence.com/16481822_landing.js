@@ -76,24 +76,24 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 		
 		try{
 			//Fire new Invite pixel on all pages
-			ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_SN&clientID=1344&key=segment&returnType=js');
+			//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_SN&clientID=1344&key=segment&returnType=js');
 			
 			if(ci_pagetype=='home'){
-				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_HOME&clientID=1344&key=segment&returnType=js');
+				//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_HOME&clientID=1344&key=segment&returnType=js');
 				ci_FP('r.turn.com/r/beacon?b2=Gb-YJy0BD3vIgXWzGOUtTVPOdGXKomfA1R33Fv3gaAP0JyeSbBHm2m2_ttLI-29KkMT54kXJZjSigSwtwBfhQA&cid=');
 			}
 			if(ci_pagetype=='category'){
-				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_CAT&clientID=1344&key=segment&returnType=js');
+				//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_CAT&clientID=1344&key=segment&returnType=js');
 			}
 			if(ci_pagetype=='family'){
-				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_FAM&clientID=1344&key=segment&returnType=js');
+				//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_FAM&clientID=1344&key=segment&returnType=js');
 			}
 			if(ci_pagetype=='product'){
-				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_PROPAGE&clientID=1344&key=segment&returnType=js');
+				//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_PROPAGE&clientID=1344&key=segment&returnType=js');
 			}
 			
 			if(document.referrer.toLowerCase().indexOf(ci_refDomain)===-1){
-				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_S&partnerID=42&key=segment&returnType=js');
+				//ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_S&partnerID=42&key=segment&returnType=js');
 				ci_FP('r.turn.com/r/beacon?b2=nouNiY0pbYfifhiT3yozTeQa0gSaQP9EejzlAtF087BYFvdW8HkZimkwenJImnJpS8hulgtsK7ff3jKv7KAFJg&cid=');
 			}
 			if(ci_itemid||ci_catid){
@@ -101,36 +101,35 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 				'pixels.youknowbest.com/cfc.html?vid=' + ci_vid
 				+ (ci_itemid ? '&lastsku=' + ci_itemid : '')
 				+ (ci_catid ? '&lastcat=' + ci_catid : '')
-               			);
-
+               	);
 			}
-		}catch(err){CI_LogError(err, 'landing_PerfMkting');}
+		}catch(err){}
 		
 		// Doubleclick Spotlight
 		try{
 			var axel = Math.random()+"";
 			var a = axel * 10000000000000;
 			ci_FP('ad.doubleclick.net/activity;src=2448552;type=landi922;cat=landi187;ord='+ a + '?');
-		}catch(err){CI_LogError(err, 'landing_DoubleClick');}
+		}catch(err){}
 		
 		//SpecificMedia-Vera Wang
 		try{
 			if(ci_catid=='12134615'){
 				ci_FP('bp.specificclick.net?pixid=99069676');
 			}
-		}catch(err){CI_LogError(err, 'landing_VeraWang');}
+		}catch(err){}
 		
 		//SpecificMedia-Jessica Simpson
 		try{
 			if(ci_catid=='12134603'){
 				ci_FP('bp.specificclick.net?pixid=99069675');
 			}
-		}catch(err){CI_LogError(err, 'landing_JessicaSimpson');}
+		}catch(err){}
 		
 		//Yahoo
 		try{
 			ci_FP('idcs.interclick.com/Segment.aspx?sid=8d1a234c-1208-4ddb-9f08-c900b0eeebb6');
-		}catch(err){CI_LogError(err, 'landing_Yahoo');}
+		}catch(err){}
 		
 		//Google Retargeting
 		try{
@@ -139,37 +138,27 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 			var google_custom_params = window.google_tag_params;
 			var google_remarketing_only = true;
 			CI_ExternalJS('http://www.googleadservices.com/pagead/conversion.js');
-		}catch(err){CI_LogError(err, 'landing_Google');}
+		}catch(err){}
 		
 		try{
 			if(ci_cpncode!==null){
-				try{
-					ci_CC('ci_cpncode',ci_cpncode,-1);
-					ci_CC('ci_src',ci_srccode,-1);
-					ci_CC('ci_tid',"",-1);
-				}catch(err){CI_LogError(err, 'landing_CI_1');}
+				ci_CC('ci_cpncode',ci_cpncode,-1);
+				ci_CC('ci_src',ci_srccode,-1);
+				ci_CC('ci_tid',"",-1);
 			} else if(ci_src!==null && ci_sku!==null) {
-				try{
-					ci_CC('ci_cpncode',"",-1);
-					ci_CC('ci_tid',ci_tid,1);
-					ci_CC('ci_src',ci_src,1);
-					ci_PIX(2,23,ci_tid,ci_src,ci_sku,null,ci_catid);
-				}catch(err){CI_LogError(err, 'landing_CI_2');}
+				ci_CC('ci_cpncode',"",-1);
+				ci_CC('ci_tid',ci_tid,1);
+				ci_CC('ci_src',ci_src,1);
+				ci_PIX(2,23,ci_tid,ci_src,ci_sku,null,ci_catid);
 			} else if(ci_tag!==null) {
-				try{
-					ci_CC('ci_cpncode',"",-1);
-					ci_CC('ci_tid',ci_tid,-1);
-					ci_PIX(2,7,ci_tid,null,ci_itemid,ci_tag,ci_catid);
-				}catch(err){CI_LogError(err, 'landing_CI_3');}
+				ci_CC('ci_cpncode',"",-1);
+				ci_CC('ci_tid',ci_tid,-1);
+				ci_PIX(2,7,ci_tid,null,ci_itemid,ci_tag,ci_catid);
 			} else if(document.referrer.toLowerCase().indexOf(ci_refDomain)===-1){
-			    try{
-			    	ci_PIX(2,13,null,null,ci_itemid,null,ci_catid);
-				}catch(err){CI_LogError(err, 'landing_CI_4');}
+			    ci_PIX(2,13,null,null,ci_itemid,null,ci_catid);
 			}
-			try{
 				ci_PIX(1,49,null,null,ci_itemid,'landing',ci_catid);
-			}catch(err){CI_LogError(err, 'landing_CI_5');}
-		}catch(err){CI_LogError(err, 'landing_CI');}
+		}catch(err){}
 		
 		// Collective Media: Zales Friendly Homepage Audience HD Pixel
 		try{
@@ -178,19 +167,20 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 					ci_FP("b.collective-media.net/seg/cm/ai_zlshp");
 				}
 			}
-		}catch(err){CI_LogError(err, 'landing_CMHomepage');}
+		}catch(err){}
 		
 		// Collective Media: Boom Pixel
 		try{
 			ci_FP("ad.doubleclick.net/activity;src=1379696;dcnet=4155;boom=32164;sz=1x1;ord=1?");
-		}catch(err){CI_LogError(err, 'landing_CMBoom');}
+		}catch(err){}
 		
 		//Tiny Toes
 		try{
 			if(location.href.toLowerCase().indexOf('categoryid=11970687')>-1){
 				ci_FP("bp.specificclick.net?pixid=99069672");
 			}
-		}catch(err){CI_LogError(err, 'landing_TinyToes');}
+		}catch(err){}
+		
 		//CheetahMail
 		try{
 			ci_FP("wvw.zales.com/spacer.gif?event=6~~28~zales");
@@ -205,21 +195,27 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 				if(ci_customeremail!==''&&ci_customeremail!==null){hs_aOE+="1003~"+ci_customeremail+"~";}	
 			}
 			CI_ExternalJS("https://cts-secure.channelintelligence.com/sc_zales.js");
-		}catch(err){CI_LogError(err, 'landing_Cheetah');}
+		}catch(err){}
 					 		
  		//Zales Corp Retargeting Pixel
  		try{
  			ci_FP("bp.specificclick.net?pixid=99027498");
- 		}catch(err){CI_LogError(err, 'landing_ZalesRet');}
+ 		}catch(err){}
  		
  		//Teracent
  		try{
 		 	ci_FP("tlcint.teracent.net/tase/int?adv=300&fmt=redir&sec=1&pid=prod&prodID="+ci_itemid);
- 		}catch(err){CI_LogError(err, 'landing_Teracent');}
+ 		}catch(err){}
 		
 		//Google
  		try{
 			ci_FP("www.googleadservices.com/pagead/conversion/1007914368/?label=uegnCKi_mgIQgJvO4AM&amp;guid=ON&amp;script=0");
-		}catch(err){CI_LogError(err, 'landing_Google');}
-	}catch(err1){CI_LogError(err1, 'landing');}
+		}catch(err){}
+		
+		//BevyUp
+		try{
+			document.write('<scr'+'ipt type="text/javascript" async id="bevyup_partner_script" src="//b.bevyup.com/GetTemplateScript/zales_x5"><\/scr'+'ipt>');
+		}catch(err){}
+		
+	}catch(err){}
 }

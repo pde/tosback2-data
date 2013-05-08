@@ -173,6 +173,10 @@ mistats.graffiti = function(a,b) {
  		}
 };
 
+// Do not report popular stories that are more than 30 days old
+if ((mistats.pubdate || '').match(/^\d{4}\/\d{2}\/\d{2}$/)
+ && (new Date()).getTime() - (new Date(mistats.pubdate)).getTime() > 2592000000)
+   mistats.popular = '';
 
 // Taxonomy Error Checking /
 if(mistats.taxonomy.split("|").length != 5) { mistats.taxonomy = "BadTaxonomy||||";}
@@ -207,6 +211,7 @@ s.prop6  = 'D=h1';
 s.prop7  = mistats.custom1;
 s.prop8  = mistats.custom2;
 s.prop9  = mistats.custom3;
+s.prop11 = 'refresh:' + ((location.hash || '').match(/mirefresh/i) ? 'yes' : 'no') + '|hasFocus:' + (document.hasFocus ? (document.hasFocus() ? 'yes' : 'no') : 'unknown');
 s.prop13 = mistats.segments;
 s.prop20 = mistats.cmsid;
 s.prop18 = mistats.altcategories;
@@ -611,17 +616,13 @@ if (!mistats.tagSentV15 && mistats.bizunit && mistats.bizunit === 'MER')
    s.sa(mistats.account);
 }
 
-if ((location.search || '').match(/hashtagtest/i))
-   s.c_w('mi_httest', '1', new Date((new Date()).getTime() + 604800000));
-
-if (s.c_r('mi_httest') == '1')
-   if (location.href.match(/#\s*$/) || (location.hash || '').match(/wgt=|navlinks*=|storylink=/))
-   {
-      if (history.replaceState)
-         history.replaceState('', document.title, location.pathname + (location.search || ''))
-      else if (location.hash !== '#')
-         location.hash = '';
-   }
+if (location.href.match(/#\s*$/) || (location.hash || '').match(/wgt=|navlinks*=|storylink=|mirefresh/i))
+{
+   if (history.replaceState)
+      history.replaceState('', document.title, location.pathname + (location.search || ''))
+   else if (location.hash !== '#')
+      location.hash = '';
+}
 
 // Call quantserve .js file - Added 7/22/2008 - JJ Ticket # 727-5945439
 if (!location.hostname.match(/dealsaver/i))

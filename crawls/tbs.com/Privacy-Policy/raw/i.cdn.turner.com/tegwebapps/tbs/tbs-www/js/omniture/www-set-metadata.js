@@ -264,7 +264,6 @@ else if (window.location.hostname.indexOf("coco") != -1) {
 			"friends": "friends",
 			"savedbythebell": "saved by the bell",
 			"steveharvey": "the steve harvey show",
-			"yesdear": "yes dear",
 			"marriedwithchildren": "married with children",
 			"homeimprovement": "home improvement",
 			"Schedule": "schedule",

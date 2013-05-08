@@ -170,6 +170,12 @@
   if(!dc_user && respScript != '')
   {
 	var responsive = '<script src="../JABAssetStore/static/scripts/responsive.js" language="javascript" />' ;
+	document.write('<script type="text/javascript"'
+		+'src="'+((location.protocol=='http:')?'http:':'https:')
+		+'//s3.amazonaws.com/responsive-production/v1.0/js/5thfinger.responsive.js"></scr'+'ipt>');
+	document.write('<link type="text/css" rel="stylesheet"'
+			+'href="'+((location.protocol=='http:')?'http:':'https:')
+			+'//s3.amazonaws.com/responsive-production/v1.0/css/controls.css" />');	
     document.write(responsive);
   }
 </script>
@@ -534,6 +540,18 @@ function eraseCookie(name) {
 
 
 
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
  
@@ -916,6 +934,10 @@ function eraseCookie(name) {
 						
 					
 				
+					
+						
+					
+				
 				
 				
 				
@@ -1224,6 +1246,10 @@ function eraseCookie(name) {
 				
 					
         					
+				
+					
+						
+					
 				
 					
 						
@@ -1630,6 +1656,10 @@ function eraseCookie(name) {
 						
 					
 				
+					
+						
+					
+				
 				
 				
 				
@@ -1904,6 +1934,10 @@ function eraseCookie(name) {
 						
 					
 				
+					
+						
+					
+				
 				
 				
 				
@@ -1967,7 +2001,7 @@ function eraseCookie(name) {
  				     
 				     
 					   		<a href="http://www.josbank.com/menswear/shop/SubCategory_11001_10050_1001500" title="" target="">
-<img src="../../../content.josbank.com/Navigation/TopNav-promospot_043013.gif" alt="" BORDER="0"/>
+<img src="../../../content.josbank.com/Navigation/TopNav-promospot_050813.gif" alt="" BORDER="0"/>
 </a>
 					    
                      	
@@ -1976,19 +2010,19 @@ function eraseCookie(name) {
 			  </td></tr>
         
         <!--
-        1: 220061
-        TopNav-promospot_043013
-			  <tr><td>Name:</td> <td> TopNav-promospot_043013 </td></tr>
+        1: 220082
+        TopNav-promospot_050513
+			  <tr><td>Name:</td> <td> TopNav-promospot_050513 </td></tr>
 			  <tr><td>DataType:</td> <td> MarketingContent </td></tr>
 			  <tr><td>ActivityIdentifier UniqueID:</td> <td> 198014 </td></tr>
-			  <tr><td>ActivityIdentifier Name:</td> <td> TopNav-promospot_043013 </td></tr>
+			  <tr><td>ActivityIdentifier Name:</td> <td> TopNav-promospot_050513 </td></tr>
 			  <tr><td>CampaignName:</td> <td>  </td></tr>
 			  <tr><td>ActivityFormat:</td> <td> web </td></tr>
 			  <tr><td>ActivityPriority:</td> <td> 0 </td></tr>
         <tr><td>Url Link:</td> <td>  </td></tr>	
         			
         	<tr><td>Marketing Text:</td> <td> &lt;a href=&#034;SubCategory_11001_10050_1001500&#034; title=&#034;&#034; target=&#034;&#034;&gt;
-&lt;img src=&#034;https://content.josbank.com/Navigation/TopNav-promospot_043013.gif&#034; alt=&#034;&#034; BORDER=&#034;0&#034;/&gt;
+&lt;img src=&#034;https://content.josbank.com/Navigation/TopNav-promospot_050813.gif&#034; alt=&#034;&#034; BORDER=&#034;0&#034;/&gt;
 &lt;/a&gt; </td></tr>
         	<tr><td>Location:</td> <td>  </td></tr>
          
@@ -2141,6 +2175,18 @@ function eraseCookie(name) {
 
 
 
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
  
@@ -2579,6 +2625,18 @@ function eraseCookie(name) {
 
 
 
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
 
  
 
@@ -2845,6 +2903,10 @@ function eraseCookie(name) {
 				
 					
         					
+				
+					
+						
+					
 				
 					
 						
@@ -3127,6 +3189,10 @@ function eraseCookie(name) {
 				
 					
         					
+				
+					
+						
+					
 				
 					
 						
@@ -4181,7 +4247,7 @@ function DisplayMiniCart(){
 	$('#branding_cart').html(mcHtml);
 }
 
-$().ready(function(){DisplayMiniCart();});
+$(window).load(function() {DisplayMiniCart();});
 </script>
 	
 													
@@ -5517,8 +5583,8 @@ else
 						
 						
 						<script>
-                            if(!(dc_user && ('Stays Cool' == 'Gift Cards' || 'Stays Cool' == 'Gift Card'))) {
-								document.writeln("<dd><a href='http://www.josbank.com/menswear/shop/SubCategory_11001_10050_9202005'>Stays Cool</a></dd>");
+                            if(!(dc_user && ('Tropical Blend ' == 'Gift Cards' || 'Tropical Blend ' == 'Gift Card'))) {
+								document.writeln("<dd><a href='http://www.josbank.com/menswear/shop/SubCategory_11001_10050_9202005'>Tropical Blend </a></dd>");
 							}
 							
 						</script>
@@ -8730,16 +8796,8 @@ if(!dc_user){
 							
 				else if(document.location.href.indexOf("OrderOKView")!=-1)
 				{
-					for(x = 0; x < myBingitemArray.length; x++)
-					{
-						if(x>0)
-						{
-							seperator=",";
-						}
-						googleCart = googleCart + seperator + myBingitemArray[x] ;
 						google_custom_params.pagetype="purchase";
-						google_custom_params.prodid=googleCart;	
-					}	
+						google_custom_params.prodid=myBingitemArray;		
 				}
 				document.write('<scr'+'ipt '
 				+'src="'+((location.protocol=='http:')?'http:':'https:')
@@ -8758,17 +8816,8 @@ if(!dc_user){
 				}
 				else if(document.location.href.indexOf("CheckoutShoppingCartView")!= -1)
 				{		
-					for (x = 0; x < myGoogleCart.length; x++)
-					{
-						if(x>0)
-						{
-							seperator=",";
-						}
-						googleCart = googleCart + seperator + myGoogleCart[x] ;
 						google_custom_params.pagetype="cart";
-						google_custom_params.prodid=googleCart;										
-					}
-						
+						google_custom_params.prodid=myGoogleCart;
 				}
 				
 				else

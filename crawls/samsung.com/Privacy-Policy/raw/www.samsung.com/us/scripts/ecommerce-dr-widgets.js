@@ -22,7 +22,7 @@ $(document).ready (function () {
 		});
 	if (window.location.pathname.indexOf('-buy') > 0) {
 		var eCommerceYes = $('input#prd_mdl_ecom_fl').val();
-		if (eCommerceYes == 'Y') {
+		if (eCommerceYes == 'Y' && $('input#old_new_prd_typ_cd').val() == 'N') {
 			var dr_productModelCode = omn_ss_productModelCode;
 			dr_productModelCode = dr_productModelCode.replace('/', '_');
 			dr_DisplayDRProductInfo_url = dr_store_domain +'/store/samsung/DisplayDRProductInfo/externalReferenceID.'+ dr_productModelCode +'/output.JSON/content.sku+stockStatus+buyLink+productInventory/';

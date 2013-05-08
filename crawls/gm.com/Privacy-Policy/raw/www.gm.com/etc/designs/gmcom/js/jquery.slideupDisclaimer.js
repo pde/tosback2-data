@@ -122,6 +122,7 @@
 			jQuery('#auxiliaryNavigation').prepend(jQuery('#'+$id+'-container'));
 
 // set disclaimer left margin to equal main shaded container
+			try{
 			jQuery('#'+$id+'-container').css({
 				marginLeft	:	$('#content > .shadedContainer').offset().left
 			});
@@ -130,7 +131,7 @@
 					marginLeft	:	$('#content > .shadedContainer').offset().left
 				})
 			});
-
+			}catch(err){}
 // set width, height options
 			jQuery('#'+$id+'-scroll-box, #'+$id+'-scroll-btns').css({
 				width		:	options.width

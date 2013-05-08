@@ -420,18 +420,28 @@
 
 /*VIDEO LISTS---------------------------*/
 
-.widget .video-list {overflow:hidden; padding:10px 0; border-top:1px solid #e8e8e8;}
+.widget .video-list {overflow:hidden; border-top:1px solid #e8e8e8; display:table;}
 .ie6 .widget .video-list {height:1%;}
 .widget .video-list:first-child {border:none;}
 .widget .video-list li, .widget .video-list-large li {font-size:.86em;}
 .widget .video-list li .timestamp, .widget .video-list-large li .timestamp {font-size:1em;}
-.widget .video-list li {float:left; width:95px; margin:0 6px 0 9px;}
-.ie6 .widget .video-list li {display:inline;}
+.widget .video-list li {display:table-cell; vertical-align:top; padding:10px; margin-left:1px;}
+.ie7 .widget .video-list li, .ie6 .widget .video-list li {float:left; width:91px;}
+.ie7 .widget .video-list li:first-child, .ie6 .widget .video-list li  {margin:0;}
 .widget .video-list li strong, .widget .video-list-large li strong {color:#bb0000;}
 .widget .video-list .thumbnail, .widget .video-list-large .thumbnail {display:block; margin-bottom:4px;}
 .widget .video-list img, .widget .video-list-large img {display:block; background:#fff; padding:1px; border:1px solid #cecece;}
+.widget .video-list img {width:87px;}
+.widget .video-list-large img {width:311px;}
 .widget .video-list a:hover, .widget .video-list-large a:hover {text-decoration:none;}
 .widget .video-list a:hover img, .widget .video-list-large a:hover img {border-color:#aaa;}
+
+.widget .video-list li.sponsor-video {background:#e0e0e0;
+    -webkit-box-shadow:inset 0 0 0 1px #bebebe, inset 0 0 0 2px #fff;
+    -moz-box-shadow:inset 0 0 0 1px #bebebe, inset 0 0 0 2px #fff;
+    box-shadow:inset 0 0 0 1px #bebebe, inset 0 0 0 2px #fff;
+}
+.widget .video-list li.sponsor-video strong {color:#999; font-weight:normal; font-size:.92em; display:block;}
 
 /*Video Lists Large*/
 .widget .video-list-large {padding:10px; background:#f5f5f5;}
@@ -632,7 +642,7 @@
 .widget .widget-form .input-checkbox li {float:left; width:151px; margin:0 0 0 10px;}
 .ie6 .widget .widget-form .input-checkbox li {display:inline;}
 .widget .widget-form .input-checkbox input {float:left;}
-.widget .widget-form .input-checkbox label {font-size:.86em; color:#333; float:right; margin:2px 0 0 0; width:126px;}
+.widget .widget-form .input-checkbox label {font-size:.86em; font-weight:bold; color:#333; float:right; margin:2px 0 0 0; width:126px;}
 .widget .widget-form .input-checkbox label a {display:block; background:transparent url(http://www.politico.com/design/widgets/widget-more-chevron-gray.gif) no-repeat right 3px; padding-right:15px; color:#333; text-decoration:none;}
 
 /*Radio Button Styles*/
@@ -1030,7 +1040,7 @@
 
 
 /*=======================================================================================
-    General Infohttp://www.politico.com/multimedia/video/2012/08/politico-hub-promo.html
+    General Info
 =========================================================================================*/
 #widgetGenInfo .widget-content > p {margin: 5px 10px; font-size:.86em;} /*Potentially make this global*/
 

@@ -1,4 +1,5 @@
 
+
 if(typeof Linicom === 'undefined') {
     Linicom = {
 	"_root" : 'http://linicom.co.il',
@@ -56,6 +57,63 @@ if(typeof Linicom === 'undefined') {
 		var uri = "^((f|ht)tps?:" +  hier_part + "(\\?" + query + ")?(#" + fragment +")?)$";
 		return new RegExp(uri);
 	})(),
+	"_escape":function(part) {
+		var l=part.length;
+		var out='';
+		var allowed=/^[a-zA-Z0-9_\-.~+]$/;
+		var pct_allowed=/^%[0-9a-fA-F][0-9a-fA-F]$/;
+		var c;
+		for(var i=0;i<l;) {
+			if(allowed.test(part.substr(i,1))) {
+				out+=part.substr(i,1);
+				i++;
+			}
+			else if(pct_allowed.test(part.substr(i,3))) {
+				out+=part.substr(i,1);
+				i+=3;
+			}
+			else if((c=part.charCodeAt(i))<128) {
+				if(c < 16)
+					out+='%0' + c.toString(16);
+				else
+					out+='%' + c.toString(16);
+				i++;
+			}
+			else {
+				return null;
+			}
+		}
+		return out;
+	},
+	"_recoverURL":function(url) {
+		var q,f,query,fixed='',result;
+		q=url.indexOf('?');
+		if(q==-1)
+			return null;
+		q+=1;
+		f=url.indexOf('#',q);
+		if(f==-1)
+			f=url.length;
+		queries=url.substr(q,f-q).split('&');
+		for(var i=0;i<queries.length;i++) {
+			var pair=queries[i],key,value;
+			if(fixed!='')
+				fixed+='&';
+			var pos = pair.indexOf('=');
+			if(pos==-1)
+				return null;
+			key=Linicom._escape(pair.substr(0,pos));
+			value=Linicom._escape(pair.substr(pos+1));
+			if(!key || !value)
+				return null;
+			fixed+=key+'='+value;
+		}
+		result=url.substr(0,q) + fixed + url.substr(f);
+		if(!Linicom._queryRegex.test(result)) {
+			return null;
+		}
+		return result;
+	},
 	"_onPrintEvent" : function()  {
 		if(!Linicom._wasShown) {
 			Linicom._showDialog();
@@ -93,7 +151,7 @@ if(typeof Linicom === 'undefined') {
 		var convert = 'remote';
 		var print = false;
 		var regex = null;
-		var blacklist = ['www.googleadservices.com'];
+		var blacklist = ['www.googleadservices.com','class:ob-rec-link-img','class:ob-text-content'];
 		var skip = 0;
 		var options = Linicom._options;
 		var root = Linicom._root;
@@ -124,21 +182,31 @@ if(typeof Linicom === 'undefined') {
 			var count = 0;
 			linksloop:
 			for(var i=0;i<links.length;i++) {
-				var url = links[i].href;
+				var a = links[i];
+				var url = a.href;
 				if(!http_only.test(url))
 					continue;
 				if(url.indexOf(root) == 0)
 					continue;
-				if(convert =='remote'&& url.indexOf(siteUrl) == 0)
+				if(convert =='remote' && url.indexOf(siteUrl) == 0)
 					continue;
 				if(regex != null && regex.test(url))
 					continue;
 				for(var j=0;j<blacklist.length;j++) {
-					if(url.indexOf(blacklist[j])!=-1)
+					if(blacklist[j].indexOf('class:')==0) {
+						var acl = a.getAttribute('class');
+						if(acl && acl.indexOf(blacklist[j].substr(6))!=-1)
+							continue linksloop;
+					}
+					else if(url.indexOf(blacklist[j])!=-1)
 						continue linksloop;
 				}
-				if(!Linicom._queryRegex.test(url))
-					continue;
+				if(!Linicom._queryRegex.test(url)) {
+					var newurl = Linicom._recoverURL(url);
+					if(!newurl)
+						continue;
+					url=newurl;
+				}
 				if(count % (skip + 1) == 0) {
 					url = root + '/external/?u=' + uid + '&a=' + encodeURIComponent(url) ;
 					Linicom._setLink(links[i],url);

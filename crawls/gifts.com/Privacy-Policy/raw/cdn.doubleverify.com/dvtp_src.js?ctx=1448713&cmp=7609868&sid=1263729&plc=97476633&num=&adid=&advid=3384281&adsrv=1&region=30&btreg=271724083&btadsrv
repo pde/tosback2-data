@@ -1,0 +1,313 @@
+function dv_rolloutManager(handlersDefsArray, baseHandler) {
+    this.handle = function () {
+        var errorsArr = [];
+
+        var handler = chooseEvaluationHandler(handlersDefsArray);
+        if (handler) {
+            var errorObj = handleSpecificHandler(handler);
+            if (errorObj == null)
+                return errorsArr;
+            else {
+                handler.onFailure();
+                errorsArr.push(errorObj);
+            }
+        }
+
+        var errorObjHandler = handleSpecificHandler(baseHandler);
+        if (errorObjHandler) {
+            errorObjHandler['dvp_isLostImp'] = 1;
+            errorsArr.push(errorObjHandler);
+        }
+        return errorsArr;
+    }
+
+    function handleSpecificHandler(handler) {
+        var url;
+        var errorObj = null;
+
+        try {
+            url = handler.createRequest();
+            if (url) {
+                url += '&' + handler.getVersionParamName() + '=' + handler.getVersion();
+                if (!handler.sendRequest(url))
+                    errorObj = createAndGetError('sendRequest failed.', url, handler.getVersion(), handler.getVersionParamName(), handler.dv_script);
+            }
+            else
+                errorObj = createAndGetError('createRequest failed.', url, handler.getVersion(), handler.getVersionParamName(), handler.dv_script);
+        }
+        catch (e) {
+            errorObj = createAndGetError(e.name + ': ' + e.message, url, handler.getVersion(), handler.getVersionParamName(), (handler ? handler.dv_script : null));
+        }
+
+        return errorObj;
+    }
+
+    function createAndGetError(error, url, ver, versionParamName, dv_script) {
+        var errorObj = {};
+        errorObj[versionParamName] = ver;
+        errorObj['dvp_jsErrMsg'] = encodeURIComponent(error);
+        if (dv_script && dv_script.parentElement && dv_script.parentElement.tagName && dv_script.parentElement.tagName == 'HEAD')
+            errorObj['dvp_isOnHead'] = '1';
+        if (url)
+            errorObj['dvp_jsErrUrl'] = url;
+        return errorObj;
+    }
+
+    function chooseEvaluationHandler(handlersArray) {
+        var rand = Math.random() * 100;
+        for (var i = 0; i < handlersArray.length; i++) {
+            if (rand >= handlersArray[i].minRate && rand < handlersArray[i].maxRate) {
+                if (handlersArray[i].handler.isApplicable())
+                    return handlersArray[i].handler;
+                else
+                    break;
+            }
+        }
+        return null;
+    }    
+}
+
+function dv_GetParam(url, name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    if (results == null)
+        return null;
+    else
+        return results[1];
+}
+
+function dv_Contains(array, obj) {
+    var i = array.length;
+    while (i--) {
+        if (array[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function dv_GetDynamicParams(url) {
+    try {
+        var regex = new RegExp("[\\?&](dvp_[^&]*=[^&#]*)", "gi");
+        var dvParams = regex.exec(url);
+
+        var results = new Array();
+        while (dvParams != null) {
+            results.push(dvParams[1]);
+            dvParams = regex.exec(url);
+        }
+        return results;
+    }
+    catch (e) {
+        return [];
+    }
+}
+
+function dv_createIframe() {
+    var iframe;
+    if (document.createElement && (iframe = document.createElement('iframe'))) {
+        iframe.name = iframe.id = 'iframe_' + Math.floor((Math.random() + "") * 1000000000000);
+        iframe.width = 0;
+        iframe.height = 0;
+        iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+    }
+
+    return iframe;
+}
+
+function dv_GetRnd() {
+    return ((new Date()).getTime() + "" + Math.floor(Math.random() * 1000000)).substr(0, 16);
+}
+
+function dv_SendErrorImp(serverUrl, errorsArr) {
+
+    for (var j = 0; j < errorsArr.length; j++) {        
+        var errorObj = errorsArr[j];
+        var errorImp = dv_CreateAndGetErrorImp(serverUrl, errorObj);
+        dv_sendImgImp(errorImp);
+    }
+}
+
+function dv_CreateAndGetErrorImp(serverUrl, errorObj) {
+        var errorQueryString = '';
+        for (key in errorObj) {
+            if (errorObj.hasOwnProperty(key)) {
+                if (key.indexOf('dvp_jsErrUrl') == -1) {
+                    errorQueryString += '&' + key + '=' + errorObj[key];
+                }
+                else {
+                    var params = ['ctx', 'cmp', 'plc', 'sid'];
+                    for (var i = 0; i < params.length; i++) {
+                        var pvalue = dv_GetParam(errorObj[key], params[i]);
+                        if (pvalue) {
+                            errorQueryString += '&dvp_js' + params[i] + '=' + pvalue;
+                        }
+                    }
+                }
+            }
+        }
+
+        var errorImp = window._dv_win.location.protocol + '//' + serverUrl + errorQueryString;
+        return errorImp;    
+}
+
+function dv_sendImgImp(url) {
+    (new Image()).src = url;
+}
+
+function dv_getPropSafe(obj, propName) {
+    try {
+        if (obj)
+            return obj[propName];
+    } catch (e) { }
+}
+
+function runSafely(action) {
+    try {
+        var ret = action();
+        return ret !== undefined ? ret : true;
+    } catch (e) { return false; }
+}
+
+function dvType() {
+
+    this.pubSub = new function () {
+
+        var subscribers = [];
+
+        this.subscribe = function (eventName, uid, actionName, func) {
+            if (!subscribers[eventName + uid])
+                subscribers[eventName + uid] = [];
+            subscribers[eventName + uid].push({ Func: func, ActionName: actionName });
+        }
+
+        this.publish = function (eventName, uid) {
+            var actionsResults = [];
+            if (eventName && uid && subscribers[eventName + uid] instanceof Array)
+                for (var i = 0; i < subscribers[eventName + uid].length; i++) {
+                    var funcObject = subscribers[eventName + uid][i];
+                    if (funcObject && funcObject.Func && funcObject.Func instanceof Function && funcObject.ActionName) {
+                        var isSucceeded = runSafely(function () { return funcObject.Func(uid); });
+                        actionsResults.push(encodeURIComponent(funcObject.ActionName) + '=' + (isSucceeded ? '1' : '0'));
+                    }
+                }
+            return actionsResults.join('&');
+        }
+    }
+
+    this.domUtilities = new function () {
+
+        this.addScriptResource = function (url, parentElement) {
+            var scriptElem = parentElement.ownerDocument.createElement("script");
+            scriptElem.type = 'text/javascript';
+            scriptElem.src = url;
+            parentElement.insertBefore(scriptElem, parentElement.firstChild);
+        }
+
+        this.addScriptCode = function (srcCode, parentElement) {
+            var scriptElem = parentElement.ownerDocument.createElement("script");
+            scriptElem.type = 'text/javascript';
+            scriptElem.innerHTML = srcCode;
+            parentElement.insertBefore(scriptElem, parentElement.firstChild);
+        }
+
+        this.addHtml = function (srcHtml, parentElement) {
+            var divElem = parentElement.ownerDocument.createElement("div");
+            divElem.style = "display: inline";
+            divElem.innerHTML = srcHtml;
+            parentElement.insertBefore(divElem, parentElement.firstChild);
+        }
+    }
+
+    this.settings = new function () {
+    }
+
+    this.tagsType = function () { };
+    var that = this;
+    this.tagsPrototype = function () {
+        this.add = function (tagKey, obj) {
+            if (!that.tags[tagKey])
+                that.tags[tagKey] = new that.tag();
+            for (var key in obj)
+                that.tags[tagKey][key] = obj[key];
+        }
+    }
+
+    this.tagsType.prototype = new this.tagsPrototype();
+    this.tagsType.prototype.constructor = this.tags;
+    this.tags = new this.tagsType();
+
+    this.tag = function () { }
+
+    this.tagPrototype = function () {
+        this.set = function (obj) {
+            for (var key in obj)
+                this[key] = obj[key];
+        }
+
+        this.getViewabilityData = function () {
+        }
+    }
+
+    this.tag.prototype = new this.tagPrototype();
+    this.tag.prototype.constructor = this.tag;
+
+}
+
+function dv_handler8(){function n(d){var a;if(document.createElement&&(a=document.createElement("iframe")))a.name=a.id="iframe_"+Math.floor(1E12*(Math.random()+"")),a.width=0,a.height=0,a.style.display="none",a.src=d;return a}function j(d,a,b){var c;if(d.createElement&&(c=d.createElement("iframe")))c.name=c.id="dv_marker_"+Math.floor(1E12*(Math.random()+"")),c.width=1,c.height=1,c.frameBorder=0,c.style.position="absolute",c.style.top=a,c.style.left=b,c.style.zIndex=-1E3,c.src="javascript: window.iiva = undefined; window.wiva = false; window.iv = undefined; window.wv = false; var cnt = 0; setInterval(function() { var pCnt = window[window.parent.S2411('>@K!2:?Er@F?E')]; window.iv = pCnt>cnt; cnt = pCnt; var currScreenY = (window.screen.top-window.screenY) == 8 ? 0 : window.screenY; var currScreenX = (window.screen.left-window.screenX) == 8 ? 0 : window.screenX; var isMaximized = (window.screen.top-window.screenY) == 8 && (window.screen.left-window.screenX) == 8; var topOffest = isMaximized ? 64 : 87; window.iiva = (window.mozInnerScreenY-topOffest)>=currScreenY && window.mozInnerScreenY <= (window.outerHeight + currScreenY) && window.mozInnerScreenX <= (window.outerWidth + currScreenX) && window.mozInnerScreenX>=currScreenX && currScreenX>=window.screen.left; if (window.iiva) window.wiva = true; if (window.iv) window.wv = true; }, 250);",
+d.body.insertBefore(c,d.body.firstChild);return c}function r(d,a){var b=0;for(i=0;i<d.length;i++)d[i].contentWindow[a]&&b++;return b==d.length?1:0==b?0:2}function s(d,a){return("https:"==d.location.protocol?"https:":"http:")+"//tps30.doubleverify.com/visit.gif?ctx=818052&cmp=1793394"+a}function w(d){new String;var a=new String,b,c,l;for(b=0;b<d.length;b++)l=d.charAt(b),c="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~".indexOf(l),0<=c&&(l="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~".charAt((c+
+47)%94)),a+=l;return a}this.sendRequest=function(d){var a;a=this.getVersionParamName();var b=this.getVersion(),c={};c[a]=b;c.dvp_jsErrUrl=d;c.dvp_jsErrMsg=encodeURIComponent("Error loading visit.js");a='try{ script.onerror = function(){ try{(new Image()).src = "'+dv_CreateAndGetErrorImp("tps30.doubleverify.com/visit.jpg?ctx=818052&cmp=1619415&dvtagver=6.1.src&dvp_isLostImp=1",c)+'";}catch(e){}}}catch(e){}';a='<html><head></head><body><script type="text/javascript" src="'+d+'"><\/script><script type="text/javascript">var script = document.getElementsByTagName("script")[0]; if (script.readyState) { script.onreadystatechange = function() { if (script.readyState == "complete") document.close(); } } else document.close(); '+
+a+"<\/script></body></html>";b=n("about:blank");this.dv_script.id=b.id.replace("iframe","script");document.body.insertBefore(b,document.body.firstChild);b=dv_getPropSafe(b,"contentDocument")||dv_getPropSafe(dv_getPropSafe(b,"contentWindow"),"document")||dv_getPropSafe(window._dv_win.frames[b.name],"document");setTimeout(function(){try{window._dv_win.S2411=w;var a,b;if(b=window._dv_win.S2411(">@K!2:?Er@F?E")){var c;var e=window._dv_win;try{c=e.top.document.domain!=e.document.domain}catch(n){c=!0}var p;
+if(p=c){var q;a:{for(var k=window._dv_win,t="CSS1Compat"===k.document.compatMode?k.document.documentElement:k.document.body,g=k.innerWidth||t.clientWidth,x=k.innerHeight||t.clientHeight,y=h.length,e=c=0;e<y;e++)if(5>=Math.abs(g-h[e].w)){c=h[e].h.length;for(g=0;g<c;g++)if(5>=Math.abs(x-h[e].h[g])){q={width:h[e].w,height:h[e].h[g]};break a}break}q=void 0}p=a=q}b=p}if(b){var u="&uid="+dv_GetParam(d,"uid")+"&eparams="+dv_GetParam(d,"eparams");try{var f=[];f.push(j(window._dv_win.document,2,2));f.push(j(window._dv_win.document,
+2,a.width-3));f.push(j(window._dv_win.document,a.height-3,0));f.push(j(window._dv_win.document,a.height-3,a.width-3));f.push(j(window._dv_win.document,a.height/2-3,a.width/2-3));var m=function(a){var b=r(f,"wv"),c=r(f,"wiva"),a=s(window._dv_win,u)+"&dvp_wv="+b+"&dvp_wivp="+c+"&dvp_timing="+a;(new Image).src=a};setTimeout(function(){m(1)},1E3);setTimeout(function(){m(2)},3E4);window._dv_win.onbeforeunload=function(){m(3)};window._dv_win.onunload=function(){m(4)}}catch(v){var z=s(window._dv_win,u)+
+"&dvp_error="+v.message;(new Image).src=z;console.debug("DV error: "+v.message)}}}catch(A){console.debug("DV error: "+A.message)}},1E3);b?(b.open(),b.write(a)):(a='javascript: (function(){document.open(); document.domain="'+window.document.domain+"\"; document.write('"+encodeURIComponent(a)+"');})()",b=n(a),this.dv_script.id=b.id.replace("iframe","script"),document.body.insertBefore(b,document.body.firstChild));return!0};var h=[{w:300,h:[100,250,600,850,1050]},{w:160,h:[600,800]},{w:120,h:[60,90,
+240,600,800]},{w:970,h:[90,250]},{w:728,h:[90,120]},{w:88,h:[31]},{w:250,h:[60,250,300]},{w:180,h:[150,160,600]},{w:234,h:[60]},{w:468,h:[60]},{w:550,h:[480]},{w:125,h:[125]},{w:336,h:[280,600,850]},{w:745,h:[90]},{w:954,h:[60]}];this.getVersionParamName=function(){return"jsver"};this.getVersion=function(){return"8"}};
+
+
+function dv_baseHandler(){function k(a){var b;if(document.createElement&&(b=document.createElement("iframe")))b.name=b.id="iframe_"+Math.floor(1E12*(Math.random()+"")),b.width=0,b.height=0,b.style.display="none",b.src=a;return b}function t(a){try{if(1>=a.depth)return{url:"",depth:""};var b,e=[];e.push({win:window._dv_win.top,depth:0});for(var c,h=1,f=0;0<h&&100>f;){try{if(f++,c=e.shift(),h--,0<c.win.location.toString().length&&c.win!=a)return 0==c.win.document.referrer.length||0==c.depth?{url:c.win.location,
+depth:c.depth}:{url:c.win.document.referrer,depth:c.depth-1}}catch(i){}b=c.win.frames.length;for(var j=0;j<b;j++)e.push({win:c.win.frames[j],depth:c.depth+1}),h++}return{url:"",depth:""}}catch(g){return{url:"",depth:""}}}function l(a){new String;var b=new String,e,c,h;for(e=0;e<a.length;e++)h=a.charAt(e),c="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~".indexOf(h),0<=c&&(h="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~".charAt((c+
+47)%94)),b+=h;return b}this.createRequest=function(){var a=!1,b=window._dv_win,e=0,c=!1;try{for(dv_i=0;10>=dv_i;dv_i++)if(null!=b.parent&&b.parent!=b)if(0<b.parent.location.toString().length)b=b.parent,e++,a=!0;else{a=!1;break}else{0==dv_i&&(a=!0);break}}catch(h){a=!1}var f;0==b.document.referrer.length?f=b.location:a?f=b.location:(f=b.document.referrer,c=!0);var i=null,j=null;null!=window._dv_win.external&&(i=void 0!=window._dv_win.external.QueuePageID?window._dv_win.external.QueuePageID:null,j=
+void 0!=window._dv_win.external.CrawlerUrl?window._dv_win.external.CrawlerUrl:null);window._dv_win._dvScripts||(window._dv_win._dvScripts=[]);var g=document.getElementsByTagName("script");for(dv_i in g)if((a=g[dv_i].src)&&a.match(/^[ \t]*(http(s)?:\/\/)?[a-z\-]*cdn(s)?\.doubleverify\.com:?[0-9]*\/dvtp_src.js/)&&!dv_Contains(window._dv_win._dvScripts,g[dv_i])){this.dv_script=g[dv_i];window._dv_win._dvScripts[g.length]=g[dv_i];var g=dv_GetParam(a,"region")||"",k="http:",r="0";"https"==a.match("^https")&&
+"https"==window._dv_win.location.toString().match("^https")&&(k="https:",r="1");try{for(var u=b,m=b,n=0;10>n&&m!=window._dv_win.top;)n++,m=m.parent;u.depth=n;var s=t(b),p="&aUrl="+encodeURIComponent(s.url),q="&aUrlD="+s.depth,d=b.depth+e;c&&b.depth--}catch(v){q=p=d=b.depth=""}e=dv_GetDynamicParams(a);"41"==g&&(g=50>100*Math.random()?"41":"8",e.push("dvp_region="+g));e=e.join("&");a=k+"//tps"+g+".doubleverify.com/visit.js?ctx="+(dv_GetParam(a,"ctx")||"")+"&cmp="+(dv_GetParam(a,"cmp")||"")+"&ipos="+
+(dv_GetParam(a,"ipos")||"")+"&sid="+(dv_GetParam(a,"sid")||"")+"&plc="+(dv_GetParam(a,"plc")||"")+"&adid="+(dv_GetParam(a,"adid")||"")+"&crt="+(dv_GetParam(a,"crt")||"")+"&dvtagver=6.1.src&srcurlD="+b.depth+"&curl="+(null==j?"":encodeURIComponent(j))+"&qpgid="+(null==i?"":i)+"&btreg="+(dv_GetParam(a,"btreg")||"")+"&btadsrv="+(dv_GetParam(a,"btadsrv")||"")+"&adsrv="+(dv_GetParam(a,"adsrv")||"")+"&advid="+(dv_GetParam(a,"advid")||"")+"&num="+(dv_GetParam(a,"num")||"")+"&pid="+(dv_GetParam(a,"pid")||
+"")+"&crtname="+(dv_GetParam(a,"crtname")||"")+"&unit="+(dv_GetParam(a,"unit")||"")+"&chnl="+(dv_GetParam(a,"chnl")||"")+"&ssl="+r+"&uid="+(dv_GetParam(a,"uid")||"")+"&scusrid="+(dv_GetParam(a,"scusrid")||"")+"&refD="+d;"http:"==a.match("^http:")&&"https"==window._dv_win.location.toString().match("^https")&&(a+="&dvp_diffSSL=1");e&&(a+="&"+e);b="srcurl="+encodeURIComponent(f);if((d=window._dv_win[l("=@42E:@?")][l("2?46DE@C~C:8:?D")])&&0<d.length){f=[];f[0]=window._dv_win.location.protocol+"//"+window._dv_win.location.hostname;
+for(i=0;i<d.length;i++)f[i+1]=d[i];d=f.reverse().join(",")}else d=null;d&&(b+="&ancChain="+encodeURIComponent(d));d=dv_GetParam(a,"uid");null==d?(d=dv_GetRnd(),a+="&uid="+d):""==d&&(d=dv_GetRnd(),a=a.replace("&uid=","&uid="+d));d=4E3;/MSIE (\d+\.\d+);/.test(navigator.userAgent)&&7>=new Number(RegExp.$1)&&(d=2E3);f=navigator.userAgent.toLowerCase();if(-1<f.indexOf("webkit")||-1<f.indexOf("chrome"))f="&referrer="+encodeURIComponent(window._dv_win.location),a.length+f.length<=d&&(a+=f);p.length+q.length+
+a.length<=d&&(a+=q,b+=p);return a+"&eparams="+encodeURIComponent(l(b))}};this.sendRequest=function(a){var b=this.getVersionParamName(),e=this.getVersion(),c={};c[b]=e;c.dvp_jsErrUrl=a;c.dvp_jsErrMsg=encodeURIComponent("Error loading visit.js");b='try{ script.onerror = function(){ try{(new Image()).src = "'+dv_CreateAndGetErrorImp("tps30.doubleverify.com/visit.jpg?ctx=818052&cmp=1619415&dvtagver=6.1.src&dvp_isLostImp=1",c)+'";}catch(e){}}}catch(e){}';a='<html><head></head><body><script type="text/javascript" src="'+
+a+'"><\/script><script type="text/javascript">var script = document.getElementsByTagName("script")[0]; if (script.readyState) { script.onreadystatechange = function() { if (script.readyState == "complete") document.close(); } } else document.close(); '+b+"<\/script></body></html>";b=k("about:blank");this.dv_script.id=b.id.replace("iframe","script");document.body.insertBefore(b,document.body.firstChild);(b=dv_getPropSafe(b,"contentDocument")||dv_getPropSafe(dv_getPropSafe(b,"contentWindow"),"document")||
+dv_getPropSafe(window._dv_win.frames[b.name],"document"))?(b.open(),b.write(a)):(a='javascript: (function(){document.open(); document.domain="'+window.document.domain+"\"; document.write('"+encodeURIComponent(a)+"');})()",b=k(a),this.dv_script.id=b.id.replace("iframe","script"),document.body.insertBefore(b,document.body.firstChild));return!0};this.isApplicable=function(){return!0};this.onFailure=function(){var a=window._dv_win._dvScripts,b=this.dv_script;null!=a&&(void 0!=a&&b)&&(b=a.indexOf(b),-1!=
+b&&a.splice(b,1))};this.getVersionParamName=function(){return"jsver"};this.getVersion=function(){return"7"}};
+
+
+function dv_src_main(dv_baseHandlerIns, dv_handlersDefs) {
+
+    this.baseHandlerIns = dv_baseHandlerIns;
+    this.handlersDefs = dv_handlersDefs;
+
+    this.exec = function() {
+        try{
+            window._dv_win = (window._dv_win || window);
+            window._dv_win.$dv = new dvType();
+            var errorsArr = (new dv_rolloutManager(this.handlersDefs, this.baseHandlerIns)).handle();
+            if (errorsArr && errorsArr.length > 0)
+                dv_SendErrorImp('tps30.doubleverify.com/visit.jpg?ctx=818052&cmp=1619415&dvtagver=6.1.src', errorsArr);
+        }
+        catch(e){
+           try{
+                dv_SendErrorImp('tps30.doubleverify.com/visit.jpg?ctx=818052&cmp=1619415&dvtagver=6.1.src&jsver=0&dvp_isLostImp=1', { dvp_jsErrMsg: encodeURIComponent(e) });   
+           }catch(e){}
+        }
+    }
+}
+
+try {
+    window._dv_win = window;
+    var dv_baseHandlerIns = new dv_baseHandler();
+	dv_handler8.prototype = dv_baseHandlerIns;
+dv_handler8.prototype.constructor = dv_handler8;
+
+    var dv_handlersDefs = [{handler: new dv_handler8(), minRate: 0, maxRate: 5}];
+    (new dv_src_main(dv_baseHandlerIns, dv_handlersDefs)).exec();
+} catch (e) { }

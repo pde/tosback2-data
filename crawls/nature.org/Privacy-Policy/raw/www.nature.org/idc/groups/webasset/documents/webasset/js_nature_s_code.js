@@ -27,6 +27,9 @@ function getAccount() {
 			"magazinestage.nature.org" :"tncoucmtest",
 			"my.nature.org"		:"tncglobalprod1",
 			"natureaustralia.org.au"   :"tncglobalprod1",
+			"naturerocks.cmsstage.tnc.org"	:"tncoucmtest",
+			"naturerocks.cms.tnc.org"	:"tncoucmtest",
+			"naturerocks.org"	:"tncglobalprod1",
 			"plantabillion.org"	:"tncglobalprod1",
 			"photocontest.nature.org"	:"tncglobalprod1",
  			"portugues.tnc.org"	:"tncglobalprod1",
@@ -43,6 +46,7 @@ function getAccount() {
 			"www.greatriverspartnership.org"   : "tncgreatrivers",
 			"www.natureaustralia.org.au"   :"tncglobalprod1",
 			"www.natureconservancy.planyourlegacy.org" :"tncglobalprod1",
+			"www.naturerocks.org" :"tncglobalprod1",
 			"www.plantabillion.org"	:"tncglobalprod1",
 			"www.nature.org"	:"tncglobalprod1"};
 	var curr_host = window.location.host;
@@ -52,6 +56,7 @@ function getAccount() {
 	}
 	return "tncexternal";
 }
+
 
 var s_account=getAccount();
 var s=s_gi(s_account)
@@ -68,7 +73,7 @@ s.trackingServer="thenatureconservancy.112.2o7.net"
 /* Dynamically select report suite */
 s.dynamicAccountSelection=false;
 s.dynamicAccountMatch=window.location.hostname;
-s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co";
+s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co,naturerocks.org";
 
 s.charSet="UTF-8"
 /* Conversion Config */
@@ -78,7 +83,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,docx,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co"
+s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,dedondevienetuagua.org,dedondevienetuagua.co,naturerocks.org"
 
 s.linkLeaveQueryString=false
 s.linkTrackVars="prop36,prop10,eVar10"
@@ -275,6 +280,7 @@ s.prop6=s_site_section;
 s.prop7=s_subsection;
 s.prop8=s_subsection2;
 
+/* Populate Site Group */
 s.prop52=s_site_group;
 s.eVar52="D=c52";
 
@@ -463,6 +469,14 @@ if(s_link_id!="no value")
 s.prop53 = getMetaValue('editorialtheme'); 
 s.eVar53 = s.prop53;
 
+/* set NatureRocks Activity Properties from meta data */
+var actTime = getMetaValue('nrtime'); 
+var actLocation = getMetaValue('nrlocation');
+var actAge = getMetaValue('nrage');
+var actWeather = getMetaValue('nrweather');
+if(actTime) {
+	s.eVar29 = actTime + '|' + actLocation + '|' + actAge + '|' + actWeather;
+}
 
 /* Slideshow Events */
 if(s_slideshow_start) s_slideshow_start=s.getValOnce(s_slideshow_start,'slideshow_start',0);
@@ -544,8 +558,8 @@ s_giftPlanningLead = function () {s_setEvent('gift planning lead', 20);}
 s_contactUs = function () {s_setEvent('contact us', 21);}
 s_homepagePopup = function () {s_setEvent('lightbox open', 28);}
 s_popupClicks = function () {s_setEvent('lightbox click', 29);}
-s_earthdayRSVP = function () {s_setEvent('earthday rsvp', 32);}
-s_earthdayEmail = function () {s_setEvent('earthday email', 33);}
+s_nrEmailPopup = function () {s_setEvent('nature rocks email popup', 32);}
+s_nrEmailThanks = function () {s_setEvent('nature rocks email thanks', 33);}
 /* Events 34-39 are used for the catalog */
 s_photoVote = function () {s_setEvent('photo contest vote', 40);}
 

@@ -35,13 +35,27 @@ $('#cs_most_popular_recent li:first a').bind('click', function() {
 });
 
 $('.cs_module h3 > a').bind('click', function() {
+	
 	var hash = $(this).attr('href').match(/#(.*?)$/)[1];
-	if (document.location.hash != '#' + hash) { document.location.hash = hash; }
-	else if ($(this).closest('.cs_module_subsection').length) {
+	
+	if (document.location.hash != '#' + hash) {
+		
+		document.location.hash = hash;
+		
+	} else if ($(this).closest('.cs_module_subsection').length) {
+		
 		document.location.hash = $(this).closest('.cs_module_section').find('a').attr('href').match(/#(.*?)$/)[1];
+		$('.cs_module_subsection').removeClass('cs_active').find('.cs_module_subsection_content').hide();
+		
+	} else {
+		
+		document.location.hash = '';
+		$('.cs_module_section').removeClass('cs_active').find('.cs_module_section_content').hide();
+		
 	}
-	else { document.location.hash = '!'; }
+	
 	return false;
+	
 });
 
 $(window).hashchange(function() {

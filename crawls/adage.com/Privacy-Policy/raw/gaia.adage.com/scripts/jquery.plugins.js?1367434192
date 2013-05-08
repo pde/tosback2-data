@@ -1,0 +1,1896 @@
+/* plug ins complied */
+
+/*
+ * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
+ *
+ * Uses the built in easing capabilities added In jQuery 1.1
+ * to offer multiple easing options
+ *
+ * TERMS OF USE - jQuery Easing
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright Â© 2008 George McGinley Smith
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+*/
+
+// t: current time, b: begInnIng value, c: change In value, d: duration
+jQuery.easing['jswing'] = jQuery.easing['swing'];
+
+jQuery.extend( jQuery.easing,
+{
+	def: 'easeOutQuad',
+	swing: function (x, t, b, c, d) {
+		//alert(jQuery.easing.default);
+		return jQuery.easing[jQuery.easing.def](x, t, b, c, d);
+	},
+	easeInQuad: function (x, t, b, c, d) {
+		return c*(t/=d)*t + b;
+	},
+	easeOutQuad: function (x, t, b, c, d) {
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeInOutQuad: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t + b;
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInCubic: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t + b;
+	},
+	easeOutCubic: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t + 1) + b;
+	},
+	easeInOutCubic: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t + b;
+		return c/2*((t-=2)*t*t + 2) + b;
+	},
+	easeInQuart: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutQuart: function (x, t, b, c, d) {
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeInOutQuart: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	easeInQuint: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t*t + b;
+	},
+	easeOutQuint: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t*t*t + 1) + b;
+	},
+	easeInOutQuint: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+		return c/2*((t-=2)*t*t*t*t + 2) + b;
+	},
+	easeInSine: function (x, t, b, c, d) {
+		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+	},
+	easeOutSine: function (x, t, b, c, d) {
+		return c * Math.sin(t/d * (Math.PI/2)) + b;
+	},
+	easeInOutSine: function (x, t, b, c, d) {
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	},
+	easeInExpo: function (x, t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function (x, t, b, c, d) {
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function (x, t, b, c, d) {
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	},
+	easeInCirc: function (x, t, b, c, d) {
+		return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+	},
+	easeOutCirc: function (x, t, b, c, d) {
+		return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+	},
+	easeInOutCirc: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+		return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+	},
+	easeInElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	easeOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},
+	easeInOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+	},
+	easeInBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	easeOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	},
+	easeInOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158; 
+		if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	easeInBounce: function (x, t, b, c, d) {
+		return c - jQuery.easing.easeOutBounce (x, d-t, 0, c, d) + b;
+	},
+	easeOutBounce: function (x, t, b, c, d) {
+		if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+		} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+		} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+		}
+	},
+	easeInOutBounce: function (x, t, b, c, d) {
+		if (t < d/2) return jQuery.easing.easeInBounce (x, t*2, 0, c, d) * .5 + b;
+		return jQuery.easing.easeOutBounce (x, t*2-d, 0, c, d) * .5 + c*.5 + b;
+	}
+});
+
+/*
+ *
+ * TERMS OF USE - EASING EQUATIONS
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright Â© 2001 Robert Penner
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ */
+
+ 
+ 
+ /*
+ *  Sharrre.com - Make your sharing widget!
+ *  Version: beta 1.3.2 
+ *  Author: Julien Hany
+ *  License: MIT http://en.wikipedia.org/wiki/MIT_License or GPLv2 http://en.wikipedia.org/wiki/GNU_General_Public_License
+ */
+
+;(function ( $, window, document, undefined ) {
+
+  /* Defaults
+  ================================================== */
+  var pluginName = 'sharrre',
+  defaults = {
+    className: 'sharrre',
+    share: {
+      googlePlus: false,
+      facebook: false,
+      twitter: false,
+      digg: false,
+      delicious: false,
+      stumbleupon: false,
+      linkedin: false,
+      pinterest: false
+    },
+    shareTotal: 0,
+    template: '',
+    title: '',
+    url: document.location.href,
+    text: document.title,
+    urlCurl: 'sharrre.php',  //PHP script for google plus...
+    count: {}, //counter by social network
+    total: 0,  //total of sharing
+    shorterTotal: true, //show total by k or M when number is to big
+    enableHover: true, //disable if you want to personalize hover event with callback
+    enableCounter: true, //disable if you just want use buttons
+    enableTracking: false, //tracking with google analitycs
+    hover: function(){}, //personalize hover event with this callback function
+    hide: function(){}, //personalize hide event with this callback function
+    click: function(){}, //personalize click event with this callback function
+    render: function(){}, //personalize render event with this callback function
+    buttons: {  //settings for buttons
+      googlePlus : {  //http://www.google.com/webmasters/+1/button/
+        url: '',  //if you need to personnalize button url
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        size: 'medium',
+        lang: 'en-US',
+        annotation: 'bubble'
+      },
+      facebook: { //http://developers.facebook.com/docs/reference/plugins/like/
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        action: 'like',
+        layout: 'button_count',
+        width: '',
+        send: 'false',
+        faces: 'false',
+        colorscheme: '',
+        font: '',
+        lang: 'en_US'
+      },
+      twitter: {  //http://twitter.com/about/resources/tweetbutton
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        count: 'horizontal',
+        counturl: '',
+        hashtags: '',
+        via: '',
+        related: '',
+        lang: 'en'
+      },
+      digg: { //http://about.digg.com/downloads/button/smart
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        type: 'DiggCompact'
+      },
+      delicious: {
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        size: 'medium' //medium or tall
+      },
+      stumbleupon: {  //http://www.stumbleupon.com/badges/
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        layout: '1'
+      },
+      linkedin: {  //http://developer.linkedin.com/plugins/share-button
+        url: '',  //if you need to personalize url button
+        urlCount: false,  //if you want to use personnalize button url on global counter
+        counter: ''
+      },
+      pinterest: { //http://pinterest.com/about/goodies/
+        url: '',  //if you need to personalize url button
+        media: '',
+        description: '',
+        layout: 'horizontal'
+      }
+    }
+  },
+  /* Json URL to get count number
+  ================================================== */
+  urlJson = {
+    googlePlus: "",
+    facebook: "http://graph.facebook.com/?id={url}&callback=?",
+    //facebook : "http://api.ak.facebook.com/restserver.php?v=1.0&method=links.getStats&urls={url}&format=json"
+    twitter: "http://cdn.api.twitter.com/1/urls/count.json?url={url}&callback=?",
+    digg: "http://services.digg.com/2.0/story.getInfo?links={url}&type=javascript&callback=?",
+    delicious: 'http://feeds.delicious.com/v2/json/urlinfo/data?url={url}&callback=?',
+    //stumbleupon: "http://www.stumbleupon.com/services/1.01/badge.getinfo?url={url}&format=jsonp&callback=?",
+    stumbleupon: "",
+    linkedin: "http://www.linkedin.com/countserv/count/share?format=jsonp&url={url}&callback=?",
+    pinterest: ""
+  },
+  /* Load share buttons asynchronously
+  ================================================== */
+  loadButton = {
+    googlePlus : function(self){
+      var sett = self.options.buttons.googlePlus;
+      //$(self.element).find('.buttons').append('<div class="button googleplus"><g:plusone size="'+self.options.buttons.googlePlus.size+'" href="'+self.options.url+'"></g:plusone></div>');
+      $(self.element).find('.buttons').append('<div class="button googleplus"><div class="g-plusone" data-size="'+sett.size+'" data-href="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-annotation="'+sett.annotation+'"></div></div>');
+      window.___gcfg = {
+        lang: self.options.buttons.googlePlus.lang
+      };
+      var loading = 0;
+      if(typeof gapi === 'undefined' && loading == 0){
+        loading = 1;
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = '//apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      }
+      else{
+        gapi.plusone.go();
+      }
+    },
+    facebook : function(self){
+      var sett = self.options.buttons.facebook;
+      $(self.element).find('.buttons').append('<div id="fb-root"></div><div class="button facebook"><div class="fb-like" data-href="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-send="'+sett.send+'" data-layout="'+sett.layout+'" data-width="'+sett.width+'" data-show-faces="'+sett.faces+'" data-action="'+sett.action+'" data-colorscheme="'+sett.colorscheme+'" data-font="'+sett.font+'" data-via="'+sett.via+'"></div></div>');
+      var loading = 0;
+      if(typeof FB === 'undefined' && loading == 0){
+        loading = 1;
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = '//connect.facebook.net/'+sett.lang+'/all.js#xfbml=1';
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      }
+      else{
+        FB.XFBML.parse();
+      }
+    },
+    twitter : function(self){
+      var sett = self.options.buttons.twitter;
+      $(self.element).find('.buttons').append('<div class="button twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-counturl="'+sett.counturl+'" data-count="'+sett.count+'" data-text="'+self.options.text+'" data-via="'+sett.via+'" data-hashtags="'+sett.hashtags+'" data-related="'+sett.related+'" data-lang="'+sett.lang+'">Tweet</a></div>');
+      var loading = 0;
+      if(typeof twttr === 'undefined' && loading == 0){
+        loading = 1;
+        (function() {
+          var twitterScriptTag = document.createElement('script');
+          twitterScriptTag.type = 'text/javascript';
+          twitterScriptTag.async = true;
+          twitterScriptTag.src = '//platform.twitter.com/widgets.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(twitterScriptTag, s);
+        })();
+      }
+      else{
+        $.ajax({ url: '//platform.twitter.com/widgets.js', dataType: 'script', cache:true}); //http://stackoverflow.com/q/6536108
+      }
+    },
+    digg : function(self){
+      var sett = self.options.buttons.digg;
+      $(self.element).find('.buttons').append('<div class="button digg"><a class="DiggThisButton '+sett.type+'" rel="nofollow external" href="http://digg.com/submit?url='+encodeURIComponent((sett.url !== '' ? sett.url : self.options.url))+'"></a></div>');
+      var loading = 0;
+      if(typeof __DBW === 'undefined' && loading == 0){
+        loading = 1;
+        (function() {
+          var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+          s.type = 'text/javascript';
+          s.async = true;
+          s.src = '//widgets.digg.com/buttons.js';
+          s1.parentNode.insertBefore(s, s1);
+        })();
+      }
+    },
+    delicious : function(self){
+      if(self.options.buttons.delicious.size == 'tall'){//tall
+        var css = 'width:50px;',
+        cssCount = 'height:35px;width:50px;font-size:15px;line-height:35px;',
+        cssShare = 'height:18px;line-height:18px;margin-top:3px;';
+      }
+      else{//medium
+        var css = 'width:93px;',
+        cssCount = 'float:right;padding:0 3px;height:20px;width:26px;line-height:20px;',
+        cssShare = 'float:left;height:20px;line-height:20px;';
+      }
+      var count = self.shorterTotal(self.options.count.delicious);
+      if(typeof count === "undefined"){
+        count = 0;
+      }
+      $(self.element).find('.buttons').append(
+      '<div class="button delicious"><div style="'+css+'font:12px Arial,Helvetica,sans-serif;cursor:pointer;color:#666666;display:inline-block;float:none;height:20px;line-height:normal;margin:0;padding:0;text-indent:0;vertical-align:baseline;">'+
+      '<div style="'+cssCount+'background-color:#fff;margin-bottom:5px;overflow:hidden;text-align:center;border:1px solid #ccc;border-radius:3px;">'+count+'</div>'+
+      '<div style="'+cssShare+'display:block;padding:0;text-align:center;text-decoration:none;width:50px;background-color:#7EACEE;border:1px solid #40679C;border-radius:3px;color:#fff;">'+
+      '<img src="http://www.delicious.com/static/img/delicious.small.gif" height="10" width="10" alt="Delicious" /> Add</div></div></div>');
+      
+      $(self.element).find('.delicious').on('click', function(){
+        self.openPopup('delicious');
+      });
+    },
+    stumbleupon : function(self){
+      var sett = self.options.buttons.stumbleupon;
+      $(self.element).find('.buttons').append('<div class="button stumbleupon"><su:badge layout="'+sett.layout+'" location="'+(sett.url !== '' ? sett.url : self.options.url)+'"></su:badge></div>');
+      var loading = 0;
+      if(typeof STMBLPN === 'undefined' && loading == 0){
+        loading = 1;
+        (function() {
+          var li = document.createElement('script');li.type = 'text/javascript';li.async = true;
+          li.src = '//platform.stumbleupon.com/1/widgets.js'; 
+          var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(li, s);
+        })();
+        s = window.setTimeout(function(){
+          if(typeof STMBLPN !== 'undefined'){
+            STMBLPN.processWidgets();
+            clearInterval(s);
+          }
+        },500);
+      }
+      else{
+        STMBLPN.processWidgets();
+      }
+    },
+    linkedin : function(self){
+      var sett = self.options.buttons.linkedin;
+      $(self.element).find('.buttons').append('<div class="button linkedin"><script type="in/share" data-url="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-counter="'+sett.counter+'"></script></div>');
+      var loading = 0;
+      if(typeof window.IN === 'undefined' && loading == 0){
+        loading = 1;
+        (function() {
+          var li = document.createElement('script');li.type = 'text/javascript';li.async = true;
+          li.src = '//platform.linkedin.com/in.js'; 
+          var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(li, s);
+        })();
+      }
+      else{
+        window.IN.init();
+      }
+    },
+    pinterest : function(self){
+      var sett = self.options.buttons.pinterest;
+      $(self.element).find('.buttons').append('<div class="button pinterest"><a href="http://pinterest.com/pin/create/button/?url='+(sett.url !== '' ? sett.url : self.options.url)+'&media='+sett.media+'&description='+sett.description+'" class="pin-it-button" count-layout="'+sett.layout+'">Pin It</a></div>');
+
+      (function() {
+        var li = document.createElement('script');li.type = 'text/javascript';li.async = true;
+        li.src = '//assets.pinterest.com/js/pinit.js'; 
+        var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(li, s);
+      })();
+    }
+  },
+  /* Tracking for Google Analytics
+  ================================================== */
+  tracking = {
+    googlePlus: function(){},
+    facebook: function(){
+      //console.log('facebook');
+      fb = window.setInterval(function(){
+        if (typeof FB !== 'undefined') {
+          FB.Event.subscribe('edge.create', function(targetUrl) {
+            _gaq.push(['_trackSocial', 'facebook', 'like', targetUrl]);
+          });
+          FB.Event.subscribe('edge.remove', function(targetUrl) {
+            _gaq.push(['_trackSocial', 'facebook', 'unlike', targetUrl]);
+          });
+          FB.Event.subscribe('message.send', function(targetUrl) {
+            _gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
+          });
+          //console.log('ok');
+          clearInterval(fb);
+        }
+      },1000);
+    },
+    twitter: function(){
+      //console.log('twitter');
+      tw = window.setInterval(function(){
+        if (typeof twttr !== 'undefined') {
+          twttr.events.bind('tweet', function(event) {
+            if (event) {
+              _gaq.push(['_trackSocial', 'twitter', 'tweet']);
+            }
+          });
+          //console.log('ok');
+          clearInterval(tw);
+        }
+      },1000);
+    },
+    digg: function(){
+      //if somenone find a solution, mail me !
+      /*$(this.element).find('.digg').on('click', function(){
+        _gaq.push(['_trackSocial', 'digg', 'add']);
+      });*/
+    },
+    delicious: function(){},
+    stumbleupon: function(){},
+    linkedin: function(){
+      function LinkedInShare() {
+        _gaq.push(['_trackSocial', 'linkedin', 'share']);
+      }
+    },
+    pinterest: function(){
+      //if somenone find a solution, mail me !
+    }
+  },
+  /* Popup for each social network
+  ================================================== */
+  popup = {
+    googlePlus: function(opt){
+      window.open("https://plusone.google.com/_/+1/confirm?hl="+opt.buttons.googlePlus.lang+"&url="+encodeURIComponent((opt.buttons.googlePlus.url !== '' ? opt.buttons.googlePlus.url : opt.url)), "", "toolbar=0, status=0, width=900, height=500");
+    },
+    facebook: function(opt){
+      window.open("http://www.facebook.com/sharer.php?u="+encodeURIComponent((opt.buttons.facebook.url !== '' ? opt.buttons.facebook.url : opt.url))+"&t="+opt.text+"", "", "toolbar=0, status=0, width=900, height=500");
+    },
+    twitter: function(opt){
+      window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(opt.text)+"&url="+encodeURIComponent((opt.buttons.twitter.url !== '' ? opt.buttons.twitter.url : opt.url))+(opt.buttons.twitter.via !== '' ? '&via='+opt.buttons.twitter.via : ''), "", "toolbar=0, status=0, width=650, height=360");
+    },
+    digg: function(opt){
+      window.open("http://digg.com/tools/diggthis/submit?url="+encodeURIComponent((opt.buttons.digg.url !== '' ? opt.buttons.digg.url : opt.url))+"&title="+opt.text+"&related=true&style=true", "", "toolbar=0, status=0, width=650, height=360");
+    },
+    delicious: function(opt){
+      window.open('http://www.delicious.com/save?v=5&noui&jump=close&url='+encodeURIComponent((opt.buttons.delicious.url !== '' ? opt.buttons.delicious.url : opt.url))+'&title='+opt.text, 'delicious', 'toolbar=no,width=550,height=550');
+    },
+    stumbleupon: function(opt){
+      window.open('http://www.stumbleupon.com/badge/?url='+encodeURIComponent((opt.buttons.delicious.url !== '' ? opt.buttons.delicious.url : opt.url)), 'stumbleupon', 'toolbar=no,width=550,height=550');
+    },
+    linkedin: function(opt){
+      window.open('https://www.linkedin.com/cws/share?url='+encodeURIComponent((opt.buttons.delicious.url !== '' ? opt.buttons.delicious.url : opt.url))+'&token=&isFramed=true', 'linkedin', 'toolbar=no,width=550,height=550');
+    },
+    pinterest: function(opt){
+      window.open('http://pinterest.com/pin/create/button/?url='+encodeURIComponent((opt.buttons.pinterest.url !== '' ? opt.buttons.pinterest.url : opt.url))+'&media='+encodeURIComponent(opt.buttons.pinterest.media)+'&description='+opt.buttons.pinterest.description, 'pinterest', 'toolbar=no,width=700,height=300');
+    }
+  };
+
+  /* Plugin constructor
+  ================================================== */
+  function Plugin( element, options ) {
+    this.element = element;
+    
+    this.options = $.extend( true, {}, defaults, options);
+    this.options.share = options.share; //simple solution to allow order of buttons
+    
+    this._defaults = defaults;
+    this._name = pluginName;
+    
+    this.init();
+  };
+  
+  /* Initialization method
+  ================================================== */
+  Plugin.prototype.init = function () {
+    var self = this;
+    if(this.options.urlCurl !== ''){
+      urlJson.googlePlus = this.options.urlCurl + '?url={url}&type=googlePlus'; // PHP script for GooglePlus...
+      urlJson.stumbleupon = this.options.urlCurl + '?url={url}&type=stumbleupon'; // PHP script for Stumbleupon...
+      urlJson.pinterest = this.options.urlCurl + '?url={url}&type=pinterest'; // PHP script for Pinterest...
+    }
+    $(this.element).addClass(this.options.className); //add class
+    
+    //HTML5 Custom data
+    if(typeof $(this.element).data('title') !== 'undefined'){
+      this.options.title = $(this.element).attr('data-title');
+    }
+    if(typeof $(this.element).data('url') !== 'undefined'){
+      this.options.url = $(this.element).data('url');
+    }
+    if(typeof $(this.element).data('text') !== 'undefined'){
+      this.options.text = $(this.element).data('text');
+    }
+    
+    //how many social website have been selected
+    $.each(this.options.share, function(name, val) {
+      if(val === true){
+        self.options.shareTotal ++;
+      }
+    });
+    
+    if(self.options.enableCounter === true){  //if for some reason you don't need counter
+      //get count of social share that have been selected
+      $.each(this.options.share, function(name, val) {
+        if(val === true){
+          //self.getSocialJson(name);
+          try {
+            self.getSocialJson(name);
+          } catch(e){
+          }
+        }
+      });
+    }
+    else{
+      this.loadButtons();
+      this.options.render(this, this.options);
+    }
+    
+    //add hover event
+    $(this.element).hover(function(){
+      //load social button if enable and 1 time
+      if($(this).find('.buttons').length === 0 && self.options.enableHover === true){
+        self.loadButtons();
+      }
+      self.options.hover(self, self.options);
+    }, function(){
+      self.options.hide(self, self.options);
+    });
+    
+    //click event
+    $(this.element).click(function(){
+      self.options.click(self, self.options);
+      return false;
+    });
+  };
+  
+  /* loadButtons methode
+  ================================================== */
+  Plugin.prototype.loadButtons = function () {
+    var self = this;
+    $(this.element).append('<div class="buttons"></div>');
+    $.each(self.options.share, function(name, val) {
+      if(val == true){
+        loadButton[name](self);
+        if(self.options.enableTracking === true){ //add tracking
+          tracking[name]();
+        }
+      }
+    });
+  };
+  
+  /* getSocialJson methode
+  ================================================== */
+  Plugin.prototype.getSocialJson = function (name) {
+    var self = this,
+    count = 0,
+	url = urlJson[name].replace('{url}', encodeURIComponent(this.options.url));
+    if(this.options.buttons[name].urlCount === true && this.options.buttons[name].url !== ''){
+      url = urlJson[name].replace('{url}', this.options.buttons[name].url);
+    }
+
+	//charlie addition
+	if (name == 'twitter') {
+		url = urlJson[name].replace('{url}', encodeURIComponent(this.options.buttons[name].counturl));
+	}
+	
+    //console.log('name : ' + name + ' - url : '+url); //debug
+    if(url != ''){  //urlCurl = '' if you don't want to used PHP script but used social button
+      $.getJSON(url, function(json){
+        if(typeof json.count !== "undefined"){  //GooglePlus, Stumbleupon, Twitter and Digg
+          var temp = json.count + '';
+          temp = temp.replace('\u00c2\u00a0', '');  //remove google plus special chars
+          count += parseInt(temp, 10);
+        }
+        else if(typeof json.likes !== "undefined"){ //Facebook Fan page
+          count += parseInt(json.likes, 10);  //changed shares to likes to use with fanPage url
+        }
+        else if(typeof json.shares !== "undefined"){  //Facebook
+         count += parseInt(json.shares, 10);
+        }
+        else if(typeof json[0] !== "undefined"){  //Delicious
+          count += parseInt(json[0].total_posts, 10);
+        }
+        else if(typeof json[0] !== "undefined"){  //Stumbleupon
+        }
+        self.options.count[name] = count;
+        self.options.total += count;
+        self.renderer();
+        self.rendererPerso();
+        //console.log(json); //debug
+      })
+      .error(function() { 
+        self.options.count[name] = 0;
+        self.rendererPerso();
+       });
+    }
+    else{
+      self.renderer();
+      self.options.count[name] = 0;
+      self.rendererPerso();
+    }
+  };
+  
+  /* launch render methode
+  ================================================== */
+  Plugin.prototype.rendererPerso = function () {
+    //check if this is the last social website to launch render
+    var shareCount = 0;
+    for (e in this.options.count) { shareCount++; }
+    if(shareCount === this.options.shareTotal){
+      this.options.render(this, this.options);
+    }
+  };
+  
+  /* render methode
+  ================================================== */
+  Plugin.prototype.renderer = function () {
+    var total = this.options.total,
+    template = this.options.template;
+    if(this.options.shorterTotal === true){  //format number like 1.2k or 5M
+      total = this.shorterTotal(total);
+    }
+    
+    if(template !== ''){  //if there is a template
+      template = template.replace('{total}', total);
+      $(this.element).html(template);
+    }
+    else{ //template by defaults
+      $(this.element).html(
+                            '<div class="box"><a class="count" href="#">' + total + '</a>' + 
+                            (this.options.title !== '' ? '<a class="share" href="#">' + this.options.title + '</a>' : '') +
+                            '</div>'
+                          );
+    }
+  };
+  
+  /* format total numbers like 1.2k or 5M
+  ================================================== */
+  Plugin.prototype.shorterTotal = function (num) {
+    if (num >= 1e6){
+      num = (num / 1e6).toFixed(2) + "M"
+    } else if (num >= 1e3){ 
+      num = (num / 1e3).toFixed(1) + "k"
+    }
+    return num;
+  };
+  
+  /* Methode for open popup
+  ================================================== */
+  Plugin.prototype.openPopup = function (site) {
+    popup[site](this.options);  //open
+    if(this.options.enableTracking === true){ //tracking!
+      var tracking = {
+        googlePlus: {site: 'Google', action: '+1'},
+        facebook: {site: 'facebook', action: 'like'},
+        twitter: {site: 'twitter', action: 'tweet'},
+        digg: {site: 'digg', action: 'add'},
+        delicious: {site: 'delicious', action: 'add'},
+        stumbleupon: {site: 'stumbleupon', action: 'add'},
+        linkedin: {site: 'linkedin', action: 'share'},
+        pinterest: {site: 'pinterest', action: 'pin'}
+      };
+      _gaq.push(['_trackSocial', tracking[site].site, tracking[site].action]);
+    }
+  };
+  
+  /* Methode for add +1 to a counter
+  ================================================== */
+  Plugin.prototype.simulateClick = function () {
+    var html = $(this.element).html();
+    $(this.element).html(html.replace(this.options.total, this.options.total+1));
+  };
+  
+  /* Methode for add +1 to a counter
+  ================================================== */
+  Plugin.prototype.update = function (url, text) {
+    if(url !== ''){
+      this.options.url = url;
+    }
+    if(text !== ''){
+      this.options.text = text;
+    }
+  };
+
+  /* A really lightweight plugin wrapper around the constructor, preventing against multiple instantiations
+  ================================================== */
+  $.fn[pluginName] = function ( options ) {
+    var args = arguments;
+    if (options === undefined || typeof options === 'object') {
+      return this.each(function () {
+        if (!$.data(this, 'plugin_' + pluginName)) {
+          $.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
+        }
+      });
+    } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+      return this.each(function () {
+        var instance = $.data(this, 'plugin_' + pluginName);
+        if (instance instanceof Plugin && typeof instance[options] === 'function') {
+          instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
+        }
+      });
+    }
+  };
+})(jQuery, window, document);
+
+
+/**
+ * jQuery Horizontal Navigation 1.0
+ * https://github.com/sebnitu/horizontalNav
+ *
+ * By Sebastian Nitu - Copyright 2012 - All rights reserved
+ * Author URL: http://sebnitu.com
+ */
+(function($) {
+    
+    $.fn.horizontalNav = function(options) {
+                
+        // Extend our default options with those provided.
+        var opts = $.extend({}, $.fn.horizontalNav.defaults, options);
+        
+        return this.each(function () {
+        
+            // Save our object
+            var $this = $(this);
+            
+            // Build element specific options
+            // This lets me access options with this syntax: o.optionName
+            var o = $.meta ? $.extend({}, opts, $this.data()) : opts;
+            
+            // Save the wrapper. The wrapper is the element that
+            // we figure out what the full width should be
+            if ($this.is('ul')) {
+                var ul_wrap = $this.parent();
+            } else {
+                var ul_wrap = $this;
+            }
+            
+            // let's append a clearfixing element to the ul wrapper
+            ul_wrap.css({ 'zoom' : '1' }).append('<div class="clearHorizontalNav">');
+            $('.clearHorizontalNav').css({
+                'display' : 'block',
+                'overflow' : 'hidden',
+                'visibility' : 'hidden',
+                'width' : 0,
+                'height' : 0,
+                'clear' : 'both'
+            });
+            
+            // Grab elements we'll need and add some default styles
+            var ul = $this.is('ul') ? $this : ul_wrap.find('> ul'), // The unordered list element
+                li = ul.find('> li'), // All list items
+                li_last = li.last(), // Last list item
+                li_count = li.size(), // The number of navigation elements
+                li_a = li.find('> a'); // Remove padding from the links
+            
+            // If set to responsive, re-construct after every browser resize
+            if ( o.responsive === true ) {
+                // Only need to do this for IE7 and below
+                // or if we set tableDisplay to false
+                if ( (o.tableDisplay != true) || ($.browser.msie && parseInt($.browser.version, 10) <= 7) ) {
+                    resizeTrigger( _construct, o.responsiveDelay );
+                }
+            }
+            
+            // Initiate the plugin
+            _construct();
+            
+            // Returns the true inner width of an element
+            // Essentially it's the inner width without padding.
+            function trueInnerWidth(element) {
+                return element.innerWidth() - ( 
+                    parseInt(element.css('padding-left')) + parseInt(element.css('padding-right')) 
+                );
+            }
+            
+            // Call funcion on browser resize
+            function resizeTrigger(callback, delay) {
+                // Delay before function is called
+                delay = delay || 100;   
+                // Call function on resize
+                var resizeTimer;
+                $(window).resize(function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function() {
+                        callback();
+                    }, delay);
+                });
+            }
+            
+            // The heavy lifting of this plugin. This is where we
+            // find and set the appropriate widths for list items
+            function _construct() {
+            
+                if ( (o.tableDisplay != true) || ($.browser.msie && parseInt($.browser.version, 10) <= 7) ) {
+                    
+                    // IE7 doesn't support the "display: table" method
+                    // so we need to do it the hard way.
+                    
+                    // Add some styles
+                    ul.css({ 'float' : 'left' });
+                    li.css({ 'float' : 'left', 'width' : 'auto' });
+                    li_a.css({ 'padding-left' : 0, 'padding-right' : 0 });
+                    
+                    // Grabbing widths and doing some math
+                    var ul_width = trueInnerWidth(ul),
+                        ul_width_outer = ul.outerWidth(true),
+                        ul_width_extra = ul_width_outer - ul_width,
+                        
+                        full_width = trueInnerWidth(ul_wrap),
+                        extra_width = (full_width - ul_width_extra) - ul_width,
+                        li_padding = Math.floor( extra_width / li_count );
+                    
+                    // Cycle through the list items and give them widths
+                    li.each(function(index) {
+                        var li_width = trueInnerWidth( $(this) );
+                        $(this).css({ 'width' : (li_width + li_padding) + 'px' });
+                    });
+                    
+                    // Get the leftover pixels after we set every itms width
+                    var li_last_width = trueInnerWidth(li_last) + ( (full_width - ul_width_extra) - trueInnerWidth(ul) );
+                    // I hate to do this but for some reason Firefox (v13.0) and IE are always
+                    // one pixel off when rendering. So this is a quick fix for that.
+                    if ($.browser.mozilla || $.browser.msie) {
+                        li_last_width = li_last_width - 1;
+                    }
+                    // Add the leftovers to the last navigation item
+                    li_last.css({ 'width' : li_last_width + 'px' });
+                
+                } else {
+                    // Every modern browser supports the "display: table" method
+                    // so this is the best way to do it for them.
+                    ul.css({ 'display' : 'table', 'float' : 'none', 'width' : '100%' });
+                    li.css({ 'display' : 'table-cell', 'float' : 'none' });
+                }
+            }
+        
+        }); // @end of return this.each()
+
+    };
+    
+    $.fn.horizontalNav.defaults = {
+        responsive : true,
+        responsiveDelay : 100,
+        tableDisplay : true
+    };
+    
+})(jQuery);
+
+/* css3 media queries */
+
+if(typeof Object.create!=="function"){
+Object.create=function(o){
+function F(){
+};
+F.prototype=o;
+return new F();
+};
+}
+var ua={toString:function(){
+return navigator.userAgent;
+},test:function(s){
+return this.toString().toLowerCase().indexOf(s.toLowerCase())>-1;
+}};
+ua.version=(ua.toString().toLowerCase().match(/[\s\S]+(?:rv|it|ra|ie)[\/: ]([\d.]+)/)||[])[1];
+ua.webkit=ua.test("webkit");
+ua.gecko=ua.test("gecko")&&!ua.webkit;
+ua.opera=ua.test("opera");
+ua.ie=ua.test("msie")&&!ua.opera;
+ua.ie6=ua.ie&&document.compatMode&&typeof document.documentElement.style.maxHeight==="undefined";
+ua.ie7=ua.ie&&document.documentElement&&typeof document.documentElement.style.maxHeight!=="undefined"&&typeof XDomainRequest==="undefined";
+ua.ie8=ua.ie&&typeof XDomainRequest!=="undefined";
+var domReady=function(){
+var _1=[];
+var _2=function(){
+if(!arguments.callee.done){
+arguments.callee.done=true;
+for(var i=0;i<_1.length;i++){
+_1[i]();
+}
+}
+};
+if(document.addEventListener){
+document.addEventListener("DOMContentLoaded",_2,false);
+}
+if(ua.ie){
+(function(){
+try{
+document.documentElement.doScroll("left");
+}
+catch(e){
+setTimeout(arguments.callee,50);
+return;
+}
+_2();
+})();
+document.onreadystatechange=function(){
+if(document.readyState==="complete"){
+document.onreadystatechange=null;
+_2();
+}
+};
+}
+if(ua.webkit&&document.readyState){
+(function(){
+if(document.readyState!=="loading"){
+_2();
+}else{
+setTimeout(arguments.callee,10);
+}
+})();
+}
+window.onload=_2;
+return function(fn){
+if(typeof fn==="function"){
+_1[_1.length]=fn;
+}
+return fn;
+};
+}();
+var cssHelper=function(){
+var _3={BLOCKS:/[^\s{][^{]*\{(?:[^{}]*\{[^{}]*\}[^{}]*|[^{}]*)*\}/g,BLOCKS_INSIDE:/[^\s{][^{]*\{[^{}]*\}/g,DECLARATIONS:/[a-zA-Z\-]+[^;]*:[^;]+;/g,RELATIVE_URLS:/url\(['"]?([^\/\)'"][^:\)'"]+)['"]?\)/g,REDUNDANT_COMPONENTS:/(?:\/\*([^*\\\\]|\*(?!\/))+\*\/|@import[^;]+;)/g,REDUNDANT_WHITESPACE:/\s*(,|:|;|\{|\})\s*/g,MORE_WHITESPACE:/\s{2,}/g,FINAL_SEMICOLONS:/;\}/g,NOT_WHITESPACE:/\S+/g};
+var _4,_5=false;
+var _6=[];
+var _7=function(fn){
+if(typeof fn==="function"){
+_6[_6.length]=fn;
+}
+};
+var _8=function(){
+for(var i=0;i<_6.length;i++){
+_6[i](_4);
+}
+};
+var _9={};
+var _a=function(n,v){
+if(_9[n]){
+var _b=_9[n].listeners;
+if(_b){
+for(var i=0;i<_b.length;i++){
+_b[i](v);
+}
+}
+}
+};
+var _c=function(_d,_e,_f){
+if(ua.ie&&!window.XMLHttpRequest){
+window.XMLHttpRequest=function(){
+return new ActiveXObject("Microsoft.XMLHTTP");
+};
+}
+if(!XMLHttpRequest){
+return "";
+}
+var r=new XMLHttpRequest();
+try{
+r.open("get",_d,true);
+r.setRequestHeader("X_REQUESTED_WITH","XMLHttpRequest");
+}
+catch(e){
+_f();
+return;
+}
+var _10=false;
+setTimeout(function(){
+_10=true;
+},5000);
+document.documentElement.style.cursor="progress";
+r.onreadystatechange=function(){
+if(r.readyState===4&&!_10){
+if(!r.status&&location.protocol==="file:"||(r.status>=200&&r.status<300)||r.status===304||navigator.userAgent.indexOf("Safari")>-1&&typeof r.status==="undefined"){
+_e(r.responseText);
+}else{
+_f();
+}
+document.documentElement.style.cursor="";
+r=null;
+}
+};
+r.send("");
+};
+var _11=function(_12){
+_12=_12.replace(_3.REDUNDANT_COMPONENTS,"");
+_12=_12.replace(_3.REDUNDANT_WHITESPACE,"$1");
+_12=_12.replace(_3.MORE_WHITESPACE," ");
+_12=_12.replace(_3.FINAL_SEMICOLONS,"}");
+return _12;
+};
+var _13={mediaQueryList:function(s){
+var o={};
+var idx=s.indexOf("{");
+var lt=s.substring(0,idx);
+s=s.substring(idx+1,s.length-1);
+var mqs=[],rs=[];
+var qts=lt.toLowerCase().substring(7).split(",");
+for(var i=0;i<qts.length;i++){
+mqs[mqs.length]=_13.mediaQuery(qts[i],o);
+}
+var rts=s.match(_3.BLOCKS_INSIDE);
+if(rts!==null){
+for(i=0;i<rts.length;i++){
+rs[rs.length]=_13.rule(rts[i],o);
+}
+}
+o.getMediaQueries=function(){
+return mqs;
+};
+o.getRules=function(){
+return rs;
+};
+o.getListText=function(){
+return lt;
+};
+o.getCssText=function(){
+return s;
+};
+return o;
+},mediaQuery:function(s,mql){
+s=s||"";
+var not=false,_14;
+var exp=[];
+var _15=true;
+var _16=s.match(_3.NOT_WHITESPACE);
+for(var i=0;i<_16.length;i++){
+var _17=_16[i];
+if(!_14&&(_17==="not"||_17==="only")){
+if(_17==="not"){
+not=true;
+}
+}else{
+if(!_14){
+_14=_17;
+}else{
+if(_17.charAt(0)==="("){
+var _18=_17.substring(1,_17.length-1).split(":");
+exp[exp.length]={mediaFeature:_18[0],value:_18[1]||null};
+}
+}
+}
+}
+return {getList:function(){
+return mql||null;
+},getValid:function(){
+return _15;
+},getNot:function(){
+return not;
+},getMediaType:function(){
+return _14;
+},getExpressions:function(){
+return exp;
+}};
+},rule:function(s,mql){
+var o={};
+var idx=s.indexOf("{");
+var st=s.substring(0,idx);
+var ss=st.split(",");
+var ds=[];
+var dts=s.substring(idx+1,s.length-1).split(";");
+for(var i=0;i<dts.length;i++){
+ds[ds.length]=_13.declaration(dts[i],o);
+}
+o.getMediaQueryList=function(){
+return mql||null;
+};
+o.getSelectors=function(){
+return ss;
+};
+o.getSelectorText=function(){
+return st;
+};
+o.getDeclarations=function(){
+return ds;
+};
+o.getPropertyValue=function(n){
+for(var i=0;i<ds.length;i++){
+if(ds[i].getProperty()===n){
+return ds[i].getValue();
+}
+}
+return null;
+};
+return o;
+},declaration:function(s,r){
+var idx=s.indexOf(":");
+var p=s.substring(0,idx);
+var v=s.substring(idx+1);
+return {getRule:function(){
+return r||null;
+},getProperty:function(){
+return p;
+},getValue:function(){
+return v;
+}};
+}};
+var _19=function(el){
+if(typeof el.cssHelperText!=="string"){
+return;
+}
+var o={mediaQueryLists:[],rules:[],selectors:{},declarations:[],properties:{}};
+var _1a=o.mediaQueryLists;
+var ors=o.rules;
+var _1b=el.cssHelperText.match(_3.BLOCKS);
+if(_1b!==null){
+for(var i=0;i<_1b.length;i++){
+if(_1b[i].substring(0,7)==="@media "){
+_1a[_1a.length]=_13.mediaQueryList(_1b[i]);
+ors=o.rules=ors.concat(_1a[_1a.length-1].getRules());
+}else{
+ors[ors.length]=_13.rule(_1b[i]);
+}
+}
+}
+var oss=o.selectors;
+var _1c=function(r){
+var ss=r.getSelectors();
+for(var i=0;i<ss.length;i++){
+var n=ss[i];
+if(!oss[n]){
+oss[n]=[];
+}
+oss[n][oss[n].length]=r;
+}
+};
+for(i=0;i<ors.length;i++){
+_1c(ors[i]);
+}
+var ods=o.declarations;
+for(i=0;i<ors.length;i++){
+ods=o.declarations=ods.concat(ors[i].getDeclarations());
+}
+var ops=o.properties;
+for(i=0;i<ods.length;i++){
+var n=ods[i].getProperty();
+if(!ops[n]){
+ops[n]=[];
+}
+ops[n][ops[n].length]=ods[i];
+}
+el.cssHelperParsed=o;
+_4[_4.length]=el;
+return o;
+};
+var _1d=function(el,s){
+el.cssHelperText=_11(s||el.innerHTML);
+return _19(el);
+};
+var _1e=function(){
+_5=true;
+_4=[];
+var _1f=[];
+var _20=function(){
+for(var i=0;i<_1f.length;i++){
+_19(_1f[i]);
+}
+var _21=document.getElementsByTagName("style");
+for(i=0;i<_21.length;i++){
+_1d(_21[i]);
+}
+_5=false;
+_8();
+};
+var _22=document.getElementsByTagName("link");
+for(var i=0;i<_22.length;i++){
+var _23=_22[i];
+if(_23.getAttribute("rel").indexOf("style")>-1&&_23.href&&_23.href.length!==0&&!_23.disabled){
+_1f[_1f.length]=_23;
+}
+}
+if(_1f.length>0){
+var c=0;
+var _24=function(){
+c++;
+if(c===_1f.length){
+_20();
+}
+};
+var _25=function(_26){
+var _27=_26.href;
+_c(_27,function(_28){
+_28=_11(_28).replace(_3.RELATIVE_URLS,"url("+_27.substring(0,_27.lastIndexOf("/"))+"/$1)");
+_26.cssHelperText=_28;
+_24();
+},_24);
+};
+for(i=0;i<_1f.length;i++){
+_25(_1f[i]);
+}
+}else{
+_20();
+}
+};
+var _29={mediaQueryLists:"array",rules:"array",selectors:"object",declarations:"array",properties:"object"};
+var _2a={mediaQueryLists:null,rules:null,selectors:null,declarations:null,properties:null};
+var _2b=function(_2c,v){
+if(_2a[_2c]!==null){
+if(_29[_2c]==="array"){
+return (_2a[_2c]=_2a[_2c].concat(v));
+}else{
+var c=_2a[_2c];
+for(var n in v){
+if(v.hasOwnProperty(n)){
+if(!c[n]){
+c[n]=v[n];
+}else{
+c[n]=c[n].concat(v[n]);
+}
+}
+}
+return c;
+}
+}
+};
+var _2d=function(_2e){
+_2a[_2e]=(_29[_2e]==="array")?[]:{};
+for(var i=0;i<_4.length;i++){
+_2b(_2e,_4[i].cssHelperParsed[_2e]);
+}
+return _2a[_2e];
+};
+domReady(function(){
+var els=document.body.getElementsByTagName("*");
+for(var i=0;i<els.length;i++){
+els[i].checkedByCssHelper=true;
+}
+if(document.implementation.hasFeature("MutationEvents","2.0")||window.MutationEvent){
+document.body.addEventListener("DOMNodeInserted",function(e){
+var el=e.target;
+if(el.nodeType===1){
+_a("DOMElementInserted",el);
+el.checkedByCssHelper=true;
+}
+},false);
+}else{
+setInterval(function(){
+var els=document.body.getElementsByTagName("*");
+for(var i=0;i<els.length;i++){
+if(!els[i].checkedByCssHelper){
+_a("DOMElementInserted",els[i]);
+els[i].checkedByCssHelper=true;
+}
+}
+},1000);
+}
+});
+var _2f=function(d){
+if(typeof window.innerWidth!="undefined"){
+return window["inner"+d];
+}else{
+if(typeof document.documentElement!="undefined"&&typeof document.documentElement.clientWidth!="undefined"&&document.documentElement.clientWidth!=0){
+return document.documentElement["client"+d];
+}
+}
+};
+return {addStyle:function(s,_30){
+var el=document.createElement("style");
+el.setAttribute("type","text/css");
+document.getElementsByTagName("head")[0].appendChild(el);
+if(el.styleSheet){
+el.styleSheet.cssText=s;
+}else{
+el.appendChild(document.createTextNode(s));
+}
+el.addedWithCssHelper=true;
+if(typeof _30==="undefined"||_30===true){
+cssHelper.parsed(function(_31){
+var o=_1d(el,s);
+for(var n in o){
+if(o.hasOwnProperty(n)){
+_2b(n,o[n]);
+}
+}
+_a("newStyleParsed",el);
+});
+}else{
+el.parsingDisallowed=true;
+}
+return el;
+},removeStyle:function(el){
+return el.parentNode.removeChild(el);
+},parsed:function(fn){
+if(_5){
+_7(fn);
+}else{
+if(typeof _4!=="undefined"){
+if(typeof fn==="function"){
+fn(_4);
+}
+}else{
+_7(fn);
+_1e();
+}
+}
+},mediaQueryLists:function(fn){
+cssHelper.parsed(function(_32){
+fn(_2a.mediaQueryLists||_2d("mediaQueryLists"));
+});
+},rules:function(fn){
+cssHelper.parsed(function(_33){
+fn(_2a.rules||_2d("rules"));
+});
+},selectors:function(fn){
+cssHelper.parsed(function(_34){
+fn(_2a.selectors||_2d("selectors"));
+});
+},declarations:function(fn){
+cssHelper.parsed(function(_35){
+fn(_2a.declarations||_2d("declarations"));
+});
+},properties:function(fn){
+cssHelper.parsed(function(_36){
+fn(_2a.properties||_2d("properties"));
+});
+},broadcast:_a,addListener:function(n,fn){
+if(typeof fn==="function"){
+if(!_9[n]){
+_9[n]={listeners:[]};
+}
+_9[n].listeners[_9[n].listeners.length]=fn;
+}
+},removeListener:function(n,fn){
+if(typeof fn==="function"&&_9[n]){
+var ls=_9[n].listeners;
+for(var i=0;i<ls.length;i++){
+if(ls[i]===fn){
+ls.splice(i,1);
+i-=1;
+}
+}
+}
+},getViewportWidth:function(){
+return _2f("Width");
+},getViewportHeight:function(){
+return _2f("Height");
+}};
+}();
+domReady(function enableCssMediaQueries(){
+var _37;
+var _38={LENGTH_UNIT:/[0-9]+(em|ex|px|in|cm|mm|pt|pc)$/,RESOLUTION_UNIT:/[0-9]+(dpi|dpcm)$/,ASPECT_RATIO:/^[0-9]+\/[0-9]+$/,ABSOLUTE_VALUE:/^[0-9]*(\.[0-9]+)*$/};
+var _39=[];
+var _3a=function(){
+var id="css3-mediaqueries-test";
+var el=document.createElement("div");
+el.id=id;
+var _3b=cssHelper.addStyle("@media all and (width) { #"+id+" { width: 1px !important; } }",false);
+document.body.appendChild(el);
+var ret=el.offsetWidth===1;
+_3b.parentNode.removeChild(_3b);
+el.parentNode.removeChild(el);
+_3a=function(){
+return ret;
+};
+return ret;
+};
+var _3c=function(){
+_37=document.createElement("div");
+_37.style.cssText="position:absolute;top:-9999em;left:-9999em;"+"margin:0;border:none;padding:0;width:1em;font-size:1em;";
+document.body.appendChild(_37);
+if(_37.offsetWidth!==16){
+_37.style.fontSize=16/_37.offsetWidth+"em";
+}
+_37.style.width="";
+};
+var _3d=function(_3e){
+_37.style.width=_3e;
+var _3f=_37.offsetWidth;
+_37.style.width="";
+return _3f;
+};
+var _40=function(_41,_42){
+var l=_41.length;
+var min=(_41.substring(0,4)==="min-");
+var max=(!min&&_41.substring(0,4)==="max-");
+if(_42!==null){
+var _43;
+var _44;
+if(_38.LENGTH_UNIT.exec(_42)){
+_43="length";
+_44=_3d(_42);
+}else{
+if(_38.RESOLUTION_UNIT.exec(_42)){
+_43="resolution";
+_44=parseInt(_42,10);
+var _45=_42.substring((_44+"").length);
+}else{
+if(_38.ASPECT_RATIO.exec(_42)){
+_43="aspect-ratio";
+_44=_42.split("/");
+}else{
+if(_38.ABSOLUTE_VALUE){
+_43="absolute";
+_44=_42;
+}else{
+_43="unknown";
+}
+}
+}
+}
+}
+var _46,_47;
+if("device-width"===_41.substring(l-12,l)){
+_46=screen.width;
+if(_42!==null){
+if(_43==="length"){
+return ((min&&_46>=_44)||(max&&_46<_44)||(!min&&!max&&_46===_44));
+}else{
+return false;
+}
+}else{
+return _46>0;
+}
+}else{
+if("device-height"===_41.substring(l-13,l)){
+_47=screen.height;
+if(_42!==null){
+if(_43==="length"){
+return ((min&&_47>=_44)||(max&&_47<_44)||(!min&&!max&&_47===_44));
+}else{
+return false;
+}
+}else{
+return _47>0;
+}
+}else{
+if("width"===_41.substring(l-5,l)){
+_46=document.documentElement.clientWidth||document.body.clientWidth;
+if(_42!==null){
+if(_43==="length"){
+return ((min&&_46>=_44)||(max&&_46<_44)||(!min&&!max&&_46===_44));
+}else{
+return false;
+}
+}else{
+return _46>0;
+}
+}else{
+if("height"===_41.substring(l-6,l)){
+_47=document.documentElement.clientHeight||document.body.clientHeight;
+if(_42!==null){
+if(_43==="length"){
+return ((min&&_47>=_44)||(max&&_47<_44)||(!min&&!max&&_47===_44));
+}else{
+return false;
+}
+}else{
+return _47>0;
+}
+}else{
+if("device-aspect-ratio"===_41.substring(l-19,l)){
+return _43==="aspect-ratio"&&screen.width*_44[1]===screen.height*_44[0];
+}else{
+if("color-index"===_41.substring(l-11,l)){
+var _48=Math.pow(2,screen.colorDepth);
+if(_42!==null){
+if(_43==="absolute"){
+return ((min&&_48>=_44)||(max&&_48<_44)||(!min&&!max&&_48===_44));
+}else{
+return false;
+}
+}else{
+return _48>0;
+}
+}else{
+if("color"===_41.substring(l-5,l)){
+var _49=screen.colorDepth;
+if(_42!==null){
+if(_43==="absolute"){
+return ((min&&_49>=_44)||(max&&_49<_44)||(!min&&!max&&_49===_44));
+}else{
+return false;
+}
+}else{
+return _49>0;
+}
+}else{
+if("resolution"===_41.substring(l-10,l)){
+var res;
+if(_45==="dpcm"){
+res=_3d("1cm");
+}else{
+res=_3d("1in");
+}
+if(_42!==null){
+if(_43==="resolution"){
+return ((min&&res>=_44)||(max&&res<_44)||(!min&&!max&&res===_44));
+}else{
+return false;
+}
+}else{
+return res>0;
+}
+}else{
+return false;
+}
+}
+}
+}
+}
+}
+}
+}
+};
+var _4a=function(mq){
+var _4b=mq.getValid();
+var _4c=mq.getExpressions();
+var l=_4c.length;
+if(l>0){
+for(var i=0;i<l&&_4b;i++){
+_4b=_40(_4c[i].mediaFeature,_4c[i].value);
+}
+var not=mq.getNot();
+return (_4b&&!not||not&&!_4b);
+}
+};
+var _4d=function(mql){
+var mqs=mql.getMediaQueries();
+var t={};
+for(var i=0;i<mqs.length;i++){
+if(_4a(mqs[i])){
+t[mqs[i].getMediaType()]=true;
+}
+}
+var s=[],c=0;
+for(var n in t){
+if(t.hasOwnProperty(n)){
+if(c>0){
+s[c++]=",";
+}
+s[c++]=n;
+}
+}
+if(s.length>0){
+_39[_39.length]=cssHelper.addStyle("@media "+s.join("")+"{"+mql.getCssText()+"}",false);
+}
+};
+var _4e=function(_4f){
+for(var i=0;i<_4f.length;i++){
+_4d(_4f[i]);
+}
+if(ua.ie){
+document.documentElement.style.display="block";
+setTimeout(function(){
+document.documentElement.style.display="";
+},0);
+setTimeout(function(){
+cssHelper.broadcast("cssMediaQueriesTested");
+},100);
+}else{
+cssHelper.broadcast("cssMediaQueriesTested");
+}
+};
+var _50=function(){
+for(var i=0;i<_39.length;i++){
+cssHelper.removeStyle(_39[i]);
+}
+_39=[];
+cssHelper.mediaQueryLists(_4e);
+};
+var _51=0;
+var _52=function(){
+var _53=cssHelper.getViewportWidth();
+var _54=cssHelper.getViewportHeight();
+if(ua.ie){
+var el=document.createElement("div");
+el.style.position="absolute";
+el.style.top="-9999em";
+el.style.overflow="scroll";
+document.body.appendChild(el);
+_51=el.offsetWidth-el.clientWidth;
+document.body.removeChild(el);
+}
+var _55;
+var _56=function(){
+var vpw=cssHelper.getViewportWidth();
+var vph=cssHelper.getViewportHeight();
+if(Math.abs(vpw-_53)>_51||Math.abs(vph-_54)>_51){
+_53=vpw;
+_54=vph;
+clearTimeout(_55);
+_55=setTimeout(function(){
+if(!_3a()){
+_50();
+}else{
+cssHelper.broadcast("cssMediaQueriesTested");
+}
+},500);
+}
+};
+window.onresize=function(){
+var x=window.onresize||function(){
+};
+return function(){
+x();
+_56();
+};
+}();
+};
+var _57=document.documentElement;
+_57.style.marginLeft="-32767px";
+setTimeout(function(){
+_57.style.marginTop="";
+},20000);
+return function(){
+if(!_3a()){
+cssHelper.addListener("newStyleParsed",function(el){
+_4e(el.cssHelperParsed.mediaQueryLists);
+});
+cssHelper.addListener("cssMediaQueriesTested",function(){
+if(ua.ie){
+_57.style.width="1px";
+}
+setTimeout(function(){
+_57.style.width="";
+_57.style.marginLeft="";
+},0);
+cssHelper.removeListener("cssMediaQueriesTested",arguments.callee);
+});
+_3c();
+_50();
+}else{
+_57.style.marginLeft="";
+}
+_52();
+};
+}());
+try{
+document.execCommand("BackgroundImageCache",false,true);
+}
+catch(e){
+}
+
+
+/* fancybox */
+
+/*! fancyBox v2.1.3 fancyapps.com | fancyapps.com/fancybox/#license */
+(function(B,x,f,q){var r=f(B),m=f(x),b=f.fancybox=function(){b.open.apply(this,arguments)},u=null,n=x.createTouch!==q,s=function(a){return a&&a.hasOwnProperty&&a instanceof f},p=function(a){return a&&"string"===f.type(a)},E=function(a){return p(a)&&0<a.indexOf("%")},k=function(a,d){var e=parseInt(a,10)||0;d&&E(a)&&(e*=b.getViewport()[d]/100);return Math.ceil(e)},v=function(a,b){return k(a,b)+"px"};f.extend(b,{version:"2.1.3",defaults:{padding:15,margin:20,width:800,height:600,minWidth:100,minHeight:100,
+maxWidth:9999,maxHeight:9999,autoSize:!0,autoHeight:!1,autoWidth:!1,autoResize:!0,autoCenter:!n,fitToView:!0,aspectRatio:!1,topRatio:0.5,leftRatio:0.5,scrolling:"auto",wrapCSS:"",arrows:!0,closeBtn:!0,closeClick:!1,nextClick:!1,mouseWheel:!0,autoPlay:!1,playSpeed:3E3,preload:3,modal:!1,loop:!0,ajax:{dataType:"html",headers:{"X-fancyBox":!0}},iframe:{scrolling:"auto",preload:!0},swf:{wmode:"transparent",allowfullscreen:"true",allowscriptaccess:"always"},keys:{next:{13:"left",34:"up",39:"left",40:"up"},
+prev:{8:"right",33:"down",37:"right",38:"down"},close:[27],play:[32],toggle:[70]},direction:{next:"left",prev:"right"},scrollOutside:!0,index:0,type:null,href:null,content:null,title:null,tpl:{wrap:'<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',image:'<img class="fancybox-image" src="{href}" alt="" />',iframe:'<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen'+
+(f.browser.msie?' allowtransparency="true"':"")+"></iframe>",error:'<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',closeBtn:'<a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>',next:'<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',prev:'<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>'},openEffect:"fade",openSpeed:250,openEasing:"swing",
+openOpacity:!0,openMethod:"zoomIn",closeEffect:"fade",closeSpeed:250,closeEasing:"swing",closeOpacity:!0,closeMethod:"zoomOut",nextEffect:"elastic",nextSpeed:250,nextEasing:"swing",nextMethod:"changeIn",prevEffect:"elastic",prevSpeed:250,prevEasing:"swing",prevMethod:"changeOut",helpers:{overlay:!0,title:!0},onCancel:f.noop,beforeLoad:f.noop,afterLoad:f.noop,beforeShow:f.noop,afterShow:f.noop,beforeChange:f.noop,beforeClose:f.noop,afterClose:f.noop},group:{},opts:{},previous:null,coming:null,current:null,
+isActive:!1,isOpen:!1,isOpened:!1,wrap:null,skin:null,outer:null,inner:null,player:{timer:null,isActive:!1},ajaxLoad:null,imgPreload:null,transitions:{},helpers:{},open:function(a,d){if(a&&(f.isPlainObject(d)||(d={}),!1!==b.close(!0)))return f.isArray(a)||(a=s(a)?f(a).get():[a]),f.each(a,function(e,c){var j={},g,h,i,l,k;"object"===f.type(c)&&(c.nodeType&&(c=f(c)),s(c)?(j={href:c.data("fancybox-href")||c.attr("href"),title:c.data("fancybox-title")||c.attr("title"),isDom:!0,element:c},f.metadata&&f.extend(!0,
+j,c.metadata())):j=c);g=d.href||j.href||(p(c)?c:null);h=d.title!==q?d.title:j.title||"";l=(i=d.content||j.content)?"html":d.type||j.type;!l&&j.isDom&&(l=c.data("fancybox-type"),l||(l=(l=c.prop("class").match(/fancybox\.(\w+)/))?l[1]:null));p(g)&&(l||(b.isImage(g)?l="image":b.isSWF(g)?l="swf":"#"===g.charAt(0)?l="inline":p(c)&&(l="html",i=c)),"ajax"===l&&(k=g.split(/\s+/,2),g=k.shift(),k=k.shift()));i||("inline"===l?g?i=f(p(g)?g.replace(/.*(?=#[^\s]+$)/,""):g):j.isDom&&(i=c):"html"===l?i=g:!l&&(!g&&
+j.isDom)&&(l="inline",i=c));f.extend(j,{href:g,type:l,content:i,title:h,selector:k});a[e]=j}),b.opts=f.extend(!0,{},b.defaults,d),d.keys!==q&&(b.opts.keys=d.keys?f.extend({},b.defaults.keys,d.keys):!1),b.group=a,b._start(b.opts.index)},cancel:function(){var a=b.coming;a&&!1!==b.trigger("onCancel")&&(b.hideLoading(),b.ajaxLoad&&b.ajaxLoad.abort(),b.ajaxLoad=null,b.imgPreload&&(b.imgPreload.onload=b.imgPreload.onerror=null),a.wrap&&a.wrap.stop(!0,!0).trigger("onReset").remove(),b.coming=null,b.current||
+b._afterZoomOut(a))},close:function(a){b.cancel();!1!==b.trigger("beforeClose")&&(b.unbindEvents(),b.isActive&&(!b.isOpen||!0===a?(f(".fancybox-wrap").stop(!0).trigger("onReset").remove(),b._afterZoomOut()):(b.isOpen=b.isOpened=!1,b.isClosing=!0,f(".fancybox-item, .fancybox-nav").remove(),b.wrap.stop(!0,!0).removeClass("fancybox-opened"),b.transitions[b.current.closeMethod]())))},play:function(a){var d=function(){clearTimeout(b.player.timer)},e=function(){d();b.current&&b.player.isActive&&(b.player.timer=
+setTimeout(b.next,b.current.playSpeed))},c=function(){d();f("body").unbind(".player");b.player.isActive=!1;b.trigger("onPlayEnd")};if(!0===a||!b.player.isActive&&!1!==a){if(b.current&&(b.current.loop||b.current.index<b.group.length-1))b.player.isActive=!0,f("body").bind({"afterShow.player onUpdate.player":e,"onCancel.player beforeClose.player":c,"beforeLoad.player":d}),e(),b.trigger("onPlayStart")}else c()},next:function(a){var d=b.current;d&&(p(a)||(a=d.direction.next),b.jumpto(d.index+1,a,"next"))},
+prev:function(a){var d=b.current;d&&(p(a)||(a=d.direction.prev),b.jumpto(d.index-1,a,"prev"))},jumpto:function(a,d,e){var c=b.current;c&&(a=k(a),b.direction=d||c.direction[a>=c.index?"next":"prev"],b.router=e||"jumpto",c.loop&&(0>a&&(a=c.group.length+a%c.group.length),a%=c.group.length),c.group[a]!==q&&(b.cancel(),b._start(a)))},reposition:function(a,d){var e=b.current,c=e?e.wrap:null,j;c&&(j=b._getPosition(d),a&&"scroll"===a.type?(delete j.position,c.stop(!0,!0).animate(j,200)):(c.css(j),e.pos=f.extend({},
+e.dim,j)))},update:function(a){var d=a&&a.type,e=!d||"orientationchange"===d;e&&(clearTimeout(u),u=null);b.isOpen&&!u&&(u=setTimeout(function(){var c=b.current;c&&!b.isClosing&&(b.wrap.removeClass("fancybox-tmp"),(e||"load"===d||"resize"===d&&c.autoResize)&&b._setDimension(),"scroll"===d&&c.canShrink||b.reposition(a),b.trigger("onUpdate"),u=null)},e&&!n?0:300))},toggle:function(a){b.isOpen&&(b.current.fitToView="boolean"===f.type(a)?a:!b.current.fitToView,n&&(b.wrap.removeAttr("style").addClass("fancybox-tmp"),
+b.trigger("onUpdate")),b.update())},hideLoading:function(){m.unbind(".loading");f("#fancybox-loading").remove()},showLoading:function(){var a,d;b.hideLoading();a=f('<div id="fancybox-loading"><div></div></div>').click(b.cancel).appendTo("body");m.bind("keydown.loading",function(a){if(27===(a.which||a.keyCode))a.preventDefault(),b.cancel()});b.defaults.fixed||(d=b.getViewport(),a.css({position:"absolute",top:0.5*d.h+d.y,left:0.5*d.w+d.x}))},getViewport:function(){var a=b.current&&b.current.locked||
+!1,d={x:r.scrollLeft(),y:r.scrollTop()};a?(d.w=a[0].clientWidth,d.h=a[0].clientHeight):(d.w=n&&B.innerWidth?B.innerWidth:r.width(),d.h=n&&B.innerHeight?B.innerHeight:r.height());return d},unbindEvents:function(){b.wrap&&s(b.wrap)&&b.wrap.unbind(".fb");m.unbind(".fb");r.unbind(".fb")},bindEvents:function(){var a=b.current,d;a&&(r.bind("orientationchange.fb"+(n?"":" resize.fb")+(a.autoCenter&&!a.locked?" scroll.fb":""),b.update),(d=a.keys)&&m.bind("keydown.fb",function(e){var c=e.which||e.keyCode,j=
+e.target||e.srcElement;if(27===c&&b.coming)return!1;!e.ctrlKey&&(!e.altKey&&!e.shiftKey&&!e.metaKey&&(!j||!j.type&&!f(j).is("[contenteditable]")))&&f.each(d,function(d,j){if(1<a.group.length&&j[c]!==q)return b[d](j[c]),e.preventDefault(),!1;if(-1<f.inArray(c,j))return b[d](),e.preventDefault(),!1})}),f.fn.mousewheel&&a.mouseWheel&&b.wrap.bind("mousewheel.fb",function(d,c,j,g){for(var h=f(d.target||null),i=!1;h.length&&!i&&!h.is(".fancybox-skin")&&!h.is(".fancybox-wrap");)i=h[0]&&!(h[0].style.overflow&&
+"hidden"===h[0].style.overflow)&&(h[0].clientWidth&&h[0].scrollWidth>h[0].clientWidth||h[0].clientHeight&&h[0].scrollHeight>h[0].clientHeight),h=f(h).parent();if(0!==c&&!i&&1<b.group.length&&!a.canShrink){if(0<g||0<j)b.prev(0<g?"down":"left");else if(0>g||0>j)b.next(0>g?"up":"right");d.preventDefault()}}))},trigger:function(a,d){var e,c=d||b.coming||b.current;if(c){f.isFunction(c[a])&&(e=c[a].apply(c,Array.prototype.slice.call(arguments,1)));if(!1===e)return!1;c.helpers&&f.each(c.helpers,function(d,
+e){e&&(b.helpers[d]&&f.isFunction(b.helpers[d][a]))&&(e=f.extend(!0,{},b.helpers[d].defaults,e),b.helpers[d][a](e,c))});f.event.trigger(a+".fb")}},isImage:function(a){return p(a)&&a.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp)((\?|#).*)?$)/i)},isSWF:function(a){return p(a)&&a.match(/\.(swf)((\?|#).*)?$/i)},_start:function(a){var d={},e,c,a=k(a);e=b.group[a]||null;if(!e)return!1;d=f.extend(!0,{},b.opts,e);e=d.margin;c=d.padding;"number"===f.type(e)&&(d.margin=[e,e,e,e]);"number"===f.type(c)&&
+(d.padding=[c,c,c,c]);d.modal&&f.extend(!0,d,{closeBtn:!1,closeClick:!1,nextClick:!1,arrows:!1,mouseWheel:!1,keys:null,helpers:{overlay:{closeClick:!1}}});d.autoSize&&(d.autoWidth=d.autoHeight=!0);"auto"===d.width&&(d.autoWidth=!0);"auto"===d.height&&(d.autoHeight=!0);d.group=b.group;d.index=a;b.coming=d;if(!1===b.trigger("beforeLoad"))b.coming=null;else{c=d.type;e=d.href;if(!c)return b.coming=null,b.current&&b.router&&"jumpto"!==b.router?(b.current.index=a,b[b.router](b.direction)):!1;b.isActive=
+!0;if("image"===c||"swf"===c)d.autoHeight=d.autoWidth=!1,d.scrolling="visible";"image"===c&&(d.aspectRatio=!0);"iframe"===c&&n&&(d.scrolling="scroll");d.wrap=f(d.tpl.wrap).addClass("fancybox-"+(n?"mobile":"desktop")+" fancybox-type-"+c+" fancybox-tmp "+d.wrapCSS).appendTo(d.parent||"body");f.extend(d,{skin:f(".fancybox-skin",d.wrap),outer:f(".fancybox-outer",d.wrap),inner:f(".fancybox-inner",d.wrap)});f.each(["Top","Right","Bottom","Left"],function(a,b){d.skin.css("padding"+b,v(d.padding[a]))});b.trigger("onReady");
+if("inline"===c||"html"===c){if(!d.content||!d.content.length)return b._error("content")}else if(!e)return b._error("href");"image"===c?b._loadImage():"ajax"===c?b._loadAjax():"iframe"===c?b._loadIframe():b._afterLoad()}},_error:function(a){f.extend(b.coming,{type:"html",autoWidth:!0,autoHeight:!0,minWidth:0,minHeight:0,scrolling:"no",hasError:a,content:b.coming.tpl.error});b._afterLoad()},_loadImage:function(){var a=b.imgPreload=new Image;a.onload=function(){this.onload=this.onerror=null;b.coming.width=
+this.width;b.coming.height=this.height;b._afterLoad()};a.onerror=function(){this.onload=this.onerror=null;b._error("image")};a.src=b.coming.href;!0!==a.complete&&b.showLoading()},_loadAjax:function(){var a=b.coming;b.showLoading();b.ajaxLoad=f.ajax(f.extend({},a.ajax,{url:a.href,error:function(a,e){b.coming&&"abort"!==e?b._error("ajax",a):b.hideLoading()},success:function(d,e){"success"===e&&(a.content=d,b._afterLoad())}}))},_loadIframe:function(){var a=b.coming,d=f(a.tpl.iframe.replace(/\{rnd\}/g,
+(new Date).getTime())).attr("scrolling",n?"auto":a.iframe.scrolling).attr("src",a.href);f(a.wrap).bind("onReset",function(){try{f(this).find("iframe").hide().attr("src","//about:blank").end().empty()}catch(a){}});a.iframe.preload&&(b.showLoading(),d.one("load",function(){f(this).data("ready",1);n||f(this).bind("load.fb",b.update);f(this).parents(".fancybox-wrap").width("100%").removeClass("fancybox-tmp").show();b._afterLoad()}));a.content=d.appendTo(a.inner);a.iframe.preload||b._afterLoad()},_preloadImages:function(){var a=
+b.group,d=b.current,e=a.length,c=d.preload?Math.min(d.preload,e-1):0,f,g;for(g=1;g<=c;g+=1)f=a[(d.index+g)%e],"image"===f.type&&f.href&&((new Image).src=f.href)},_afterLoad:function(){var a=b.coming,d=b.current,e,c,j,g,h;b.hideLoading();if(a&&!1!==b.isActive)if(!1===b.trigger("afterLoad",a,d))a.wrap.stop(!0).trigger("onReset").remove(),b.coming=null;else{d&&(b.trigger("beforeChange",d),d.wrap.stop(!0).removeClass("fancybox-opened").find(".fancybox-item, .fancybox-nav").remove());b.unbindEvents();
+e=a.content;c=a.type;j=a.scrolling;f.extend(b,{wrap:a.wrap,skin:a.skin,outer:a.outer,inner:a.inner,current:a,previous:d});g=a.href;switch(c){case "inline":case "ajax":case "html":a.selector?e=f("<div>").html(e).find(a.selector):s(e)&&(e.data("fancybox-placeholder")||e.data("fancybox-placeholder",f('<div class="fancybox-placeholder"></div>').insertAfter(e).hide()),e=e.show().detach(),a.wrap.bind("onReset",function(){f(this).find(e).length&&e.hide().replaceAll(e.data("fancybox-placeholder")).data("fancybox-placeholder",
+!1)}));break;case "image":e=a.tpl.image.replace("{href}",g);break;case "swf":e='<object id="fancybox-swf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%"><param name="movie" value="'+g+'"></param>',h="",f.each(a.swf,function(a,b){e+='<param name="'+a+'" value="'+b+'"></param>';h+=" "+a+'="'+b+'"'}),e+='<embed src="'+g+'" type="application/x-shockwave-flash" width="100%" height="100%"'+h+"></embed></object>"}(!s(e)||!e.parent().is(a.inner))&&a.inner.append(e);b.trigger("beforeShow");
+a.inner.css("overflow","yes"===j?"scroll":"no"===j?"hidden":j);b._setDimension();b.reposition();b.isOpen=!1;b.coming=null;b.bindEvents();if(b.isOpened){if(d.prevMethod)b.transitions[d.prevMethod]()}else f(".fancybox-wrap").not(a.wrap).stop(!0).trigger("onReset").remove();b.transitions[b.isOpened?a.nextMethod:a.openMethod]();b._preloadImages()}},_setDimension:function(){var a=b.getViewport(),d=0,e=!1,c=!1,e=b.wrap,j=b.skin,g=b.inner,h=b.current,c=h.width,i=h.height,l=h.minWidth,t=h.minHeight,m=h.maxWidth,
+n=h.maxHeight,r=h.scrolling,p=h.scrollOutside?h.scrollbarWidth:0,w=h.margin,y=k(w[1]+w[3]),q=k(w[0]+w[2]),x,z,s,C,A,F,B,D,u;e.add(j).add(g).width("auto").height("auto").removeClass("fancybox-tmp");w=k(j.outerWidth(!0)-j.width());x=k(j.outerHeight(!0)-j.height());z=y+w;s=q+x;C=E(c)?(a.w-z)*k(c)/100:c;A=E(i)?(a.h-s)*k(i)/100:i;if("iframe"===h.type){if(u=h.content,h.autoHeight&&1===u.data("ready"))try{u[0].contentWindow.document.location&&(g.width(C).height(9999),F=u.contents().find("body"),p&&F.css("overflow-x",
+"hidden"),A=F.height())}catch(G){}}else if(h.autoWidth||h.autoHeight)g.addClass("fancybox-tmp"),h.autoWidth||g.width(C),h.autoHeight||g.height(A),h.autoWidth&&(C=g.width()),h.autoHeight&&(A=g.height()),g.removeClass("fancybox-tmp");c=k(C);i=k(A);D=C/A;l=k(E(l)?k(l,"w")-z:l);m=k(E(m)?k(m,"w")-z:m);t=k(E(t)?k(t,"h")-s:t);n=k(E(n)?k(n,"h")-s:n);F=m;B=n;h.fitToView&&(m=Math.min(a.w-z,m),n=Math.min(a.h-s,n));z=a.w-y;q=a.h-q;h.aspectRatio?(c>m&&(c=m,i=k(c/D)),i>n&&(i=n,c=k(i*D)),c<l&&(c=l,i=k(c/D)),i<t&&
+(i=t,c=k(i*D))):(c=Math.max(l,Math.min(c,m)),h.autoHeight&&"iframe"!==h.type&&(g.width(c),i=g.height()),i=Math.max(t,Math.min(i,n)));if(h.fitToView)if(g.width(c).height(i),e.width(c+w),a=e.width(),y=e.height(),h.aspectRatio)for(;(a>z||y>q)&&(c>l&&i>t)&&!(19<d++);)i=Math.max(t,Math.min(n,i-10)),c=k(i*D),c<l&&(c=l,i=k(c/D)),c>m&&(c=m,i=k(c/D)),g.width(c).height(i),e.width(c+w),a=e.width(),y=e.height();else c=Math.max(l,Math.min(c,c-(a-z))),i=Math.max(t,Math.min(i,i-(y-q)));p&&("auto"===r&&i<A&&c+w+
+p<z)&&(c+=p);g.width(c).height(i);e.width(c+w);a=e.width();y=e.height();e=(a>z||y>q)&&c>l&&i>t;c=h.aspectRatio?c<F&&i<B&&c<C&&i<A:(c<F||i<B)&&(c<C||i<A);f.extend(h,{dim:{width:v(a),height:v(y)},origWidth:C,origHeight:A,canShrink:e,canExpand:c,wPadding:w,hPadding:x,wrapSpace:y-j.outerHeight(!0),skinSpace:j.height()-i});!u&&(h.autoHeight&&i>t&&i<n&&!c)&&g.height("auto")},_getPosition:function(a){var d=b.current,e=b.getViewport(),c=d.margin,f=b.wrap.width()+c[1]+c[3],g=b.wrap.height()+c[0]+c[2],c={position:"absolute",
+top:c[0],left:c[3]};d.autoCenter&&d.fixed&&!a&&g<=e.h&&f<=e.w?c.position="fixed":d.locked||(c.top+=e.y,c.left+=e.x);c.top=v(Math.max(c.top,c.top+(e.h-g)*d.topRatio));c.left=v(Math.max(c.left,c.left+(e.w-f)*d.leftRatio));return c},_afterZoomIn:function(){var a=b.current;a&&(b.isOpen=b.isOpened=!0,b.wrap.css("overflow","visible").addClass("fancybox-opened"),b.update(),(a.closeClick||a.nextClick&&1<b.group.length)&&b.inner.css("cursor","pointer").bind("click.fb",function(d){!f(d.target).is("a")&&!f(d.target).parent().is("a")&&
+(d.preventDefault(),b[a.closeClick?"close":"next"]())}),a.closeBtn&&f(a.tpl.closeBtn).appendTo(b.skin).bind(n?"touchstart.fb":"click.fb",function(a){a.preventDefault();b.close()}),a.arrows&&1<b.group.length&&((a.loop||0<a.index)&&f(a.tpl.prev).appendTo(b.outer).bind("click.fb",b.prev),(a.loop||a.index<b.group.length-1)&&f(a.tpl.next).appendTo(b.outer).bind("click.fb",b.next)),b.trigger("afterShow"),!a.loop&&a.index===a.group.length-1?b.play(!1):b.opts.autoPlay&&!b.player.isActive&&(b.opts.autoPlay=
+!1,b.play()))},_afterZoomOut:function(a){a=a||b.current;f(".fancybox-wrap").trigger("onReset").remove();f.extend(b,{group:{},opts:{},router:!1,current:null,isActive:!1,isOpened:!1,isOpen:!1,isClosing:!1,wrap:null,skin:null,outer:null,inner:null});b.trigger("afterClose",a)}});b.transitions={getOrigPosition:function(){var a=b.current,d=a.element,e=a.orig,c={},f=50,g=50,h=a.hPadding,i=a.wPadding,l=b.getViewport();!e&&(a.isDom&&d.is(":visible"))&&(e=d.find("img:first"),e.length||(e=d));s(e)?(c=e.offset(),
+e.is("img")&&(f=e.outerWidth(),g=e.outerHeight())):(c.top=l.y+(l.h-g)*a.topRatio,c.left=l.x+(l.w-f)*a.leftRatio);if("fixed"===b.wrap.css("position")||a.locked)c.top-=l.y,c.left-=l.x;return c={top:v(c.top-h*a.topRatio),left:v(c.left-i*a.leftRatio),width:v(f+i),height:v(g+h)}},step:function(a,d){var e,c,f=d.prop;c=b.current;var g=c.wrapSpace,h=c.skinSpace;if("width"===f||"height"===f)e=d.end===d.start?1:(a-d.start)/(d.end-d.start),b.isClosing&&(e=1-e),c="width"===f?c.wPadding:c.hPadding,c=a-c,b.skin[f](k("width"===
+f?c:c-g*e)),b.inner[f](k("width"===f?c:c-g*e-h*e))},zoomIn:function(){var a=b.current,d=a.pos,e=a.openEffect,c="elastic"===e,j=f.extend({opacity:1},d);delete j.position;c?(d=this.getOrigPosition(),a.openOpacity&&(d.opacity=0.1)):"fade"===e&&(d.opacity=0.1);b.wrap.css(d).animate(j,{duration:"none"===e?0:a.openSpeed,easing:a.openEasing,step:c?this.step:null,complete:b._afterZoomIn})},zoomOut:function(){var a=b.current,d=a.closeEffect,e="elastic"===d,c={opacity:0.1};e&&(c=this.getOrigPosition(),a.closeOpacity&&
+(c.opacity=0.1));b.wrap.animate(c,{duration:"none"===d?0:a.closeSpeed,easing:a.closeEasing,step:e?this.step:null,complete:b._afterZoomOut})},changeIn:function(){var a=b.current,d=a.nextEffect,e=a.pos,c={opacity:1},f=b.direction,g;e.opacity=0.1;"elastic"===d&&(g="down"===f||"up"===f?"top":"left","down"===f||"right"===f?(e[g]=v(k(e[g])-200),c[g]="+=200px"):(e[g]=v(k(e[g])+200),c[g]="-=200px"));"none"===d?b._afterZoomIn():b.wrap.css(e).animate(c,{duration:a.nextSpeed,easing:a.nextEasing,complete:function(){setTimeout(b._afterZoomIn,
+20)}})},changeOut:function(){var a=b.previous,d=a.prevEffect,e={opacity:0.1},c=b.direction;"elastic"===d&&(e["down"===c||"up"===c?"top":"left"]=("up"===c||"left"===c?"-":"+")+"=200px");a.wrap.animate(e,{duration:"none"===d?0:a.prevSpeed,easing:a.prevEasing,complete:function(){f(this).trigger("onReset").remove()}})}};b.helpers.overlay={defaults:{closeClick:!0,speedOut:200,showEarly:!0,css:{},locked:!n,fixed:!0},overlay:null,fixed:!1,create:function(a){a=f.extend({},this.defaults,a);this.overlay&&this.close();
+this.overlay=f('<div class="fancybox-overlay"></div>').appendTo("body");this.fixed=!1;a.fixed&&b.defaults.fixed&&(this.overlay.addClass("fancybox-overlay-fixed"),this.fixed=!0)},open:function(a){var d=this,a=f.extend({},this.defaults,a);this.overlay?this.overlay.unbind(".overlay").width("auto").height("auto"):this.create(a);this.fixed||(r.bind("resize.overlay",f.proxy(this.update,this)),this.update());a.closeClick&&this.overlay.bind("click.overlay",function(a){f(a.target).hasClass("fancybox-overlay")&&
+(b.isActive?b.close():d.close())});this.overlay.css(a.css).show()},close:function(){f(".fancybox-overlay").remove();r.unbind("resize.overlay");this.overlay=null;!1!==this.margin&&(f("body").css("margin-right",this.margin),this.margin=!1);this.el&&this.el.removeClass("fancybox-lock")},update:function(){var a="100%",b;this.overlay.width(a).height("100%");f.browser.msie?(b=Math.max(x.documentElement.offsetWidth,x.body.offsetWidth),m.width()>b&&(a=m.width())):m.width()>r.width()&&(a=m.width());this.overlay.width(a).height(m.height())},
+onReady:function(a,b){f(".fancybox-overlay").stop(!0,!0);this.overlay||(this.margin=m.height()>r.height()||"scroll"===f("body").css("overflow-y")?f("body").css("margin-right"):!1,this.el=x.all&&!x.querySelector?f("html"):f("body"),this.create(a));a.locked&&this.fixed&&(b.locked=this.overlay.append(b.wrap),b.fixed=!1);!0===a.showEarly&&this.beforeShow.apply(this,arguments)},beforeShow:function(a,b){b.locked&&(this.el.addClass("fancybox-lock"),!1!==this.margin&&f("body").css("margin-right",k(this.margin)+
+b.scrollbarWidth));this.open(a)},onUpdate:function(){this.fixed||this.update()},afterClose:function(a){this.overlay&&!b.isActive&&this.overlay.fadeOut(a.speedOut,f.proxy(this.close,this))}};b.helpers.title={defaults:{type:"float",position:"bottom"},beforeShow:function(a){var d=b.current,e=d.title,c=a.type;f.isFunction(e)&&(e=e.call(d.element,d));if(p(e)&&""!==f.trim(e)){d=f('<div class="fancybox-title fancybox-title-'+c+'-wrap">'+e+"</div>");switch(c){case "inside":c=b.skin;break;case "outside":c=
+b.wrap;break;case "over":c=b.inner;break;default:c=b.skin,d.appendTo("body"),f.browser.msie&&d.width(d.width()),d.wrapInner('<span class="child"></span>'),b.current.margin[2]+=Math.abs(k(d.css("margin-bottom")))}d["top"===a.position?"prependTo":"appendTo"](c)}}};f.fn.fancybox=function(a){var d,e=f(this),c=this.selector||"",j=function(g){var h=f(this).blur(),i=d,j,k;!g.ctrlKey&&(!g.altKey&&!g.shiftKey&&!g.metaKey)&&!h.is(".fancybox-wrap")&&(j=a.groupAttr||"data-fancybox-group",k=h.attr(j),k||(j="rel",
+k=h.get(0)[j]),k&&(""!==k&&"nofollow"!==k)&&(h=c.length?f(c):e,h=h.filter("["+j+'="'+k+'"]'),i=h.index(this)),a.index=i,!1!==b.open(h,a)&&g.preventDefault())},a=a||{};d=a.index||0;!c||!1===a.live?e.unbind("click.fb-start").bind("click.fb-start",j):m.undelegate(c,"click.fb-start").delegate(c+":not('.fancybox-item, .fancybox-nav')","click.fb-start",j);this.filter("[data-fancybox-start=1]").trigger("click");return this};m.ready(function(){f.scrollbarWidth===q&&(f.scrollbarWidth=function(){var a=f('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo("body"),
+b=a.children(),b=b.innerWidth()-b.height(99).innerWidth();a.remove();return b});if(f.support.fixedPosition===q){var a=f.support,d=f('<div style="position:fixed;top:20px;"></div>').appendTo("body"),e=20===d[0].offsetTop||15===d[0].offsetTop;d.remove();a.fixedPosition=e}f.extend(b.defaults,{scrollbarWidth:f.scrollbarWidth(),fixed:f.support.fixedPosition,parent:f("body")})})})(window,document,jQuery);
+
+
+
+
+
+/* odd facebook like thing */
+
+/*
+  jQuery OneFBLike v1.1 - http://onerutter.com/open-source/jquery-facebook-like-plugin.html
+  Copyright (c) 2010 Jake Rutter
+  This plugin available for use in all personal or commercial projects under both MIT and GPL licenses.
+*/
+
+(function($){  
+jQuery.fn.onefblike = function(options) {  
+        
+  //Set the default values, use comma to separate the settings 
+  var defaults = {  
+  appID: '128123197224946',
+  //siteTitle: '',
+  //siteName: '',
+  //siteImage: '',
+  buttonWidth: 40,
+  buttonHeight: 60,
+  showfaces: true,
+  font: 'lucida grande',
+  layout: 'box_count',
+  action: 'like',
+  colorscheme: 'light'
+}   
+            
+var options =  $.extend(defaults, options);  
+                        
+  return this.each(function() {  
+  var o = options;  
+  var obj = $(this);
+  var dynUrl = document.location;
+  
+  
+  // Add #fb-root div - mandatory - do not remove
+  jQuery('body').append('<div id="fb-root"></div>');
+  jQuery('#fb-like iframe').css('height','35px !important');
+  
+  // setup FB Developers App Link - do not touch
+  window.fbAsyncInit = function() {
+    FB.init({appId: o.appID, status: true, cookie: true, xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    jQuery('#fb-root').append(e);
+  }());
+                                                        
+  // Apply the like button to an element on the page and include all available options
+  // If no options are passed in from the page, the defaults will be applied            
+ 
+  jQuery(obj).html('<fb:like href="'+dynUrl+'" width="'+o.buttonWidth+'" height="'+o.buttonHeight+'" show_faces="'+o.showfaces+'" font="'+o.font+'" layout="'+o.layout+'" action="'+o.action+'" colorscheme="'+o.colorscheme+'"/>');
+
+  });  
+}  
+})(jQuery);
+
+
+/*
+  jQuery OneFBLike v1.1 - http://onerutter.com/open-source/jquery-facebook-like-plugin.html
+  Copyright (c) 2010 Jake Rutter
+  This plugin available for use in all personal or commercial projects under both MIT and GPL licenses.
+*/
+
+(function($){  
+jQuery.fn.onefblikehor = function(options) {  
+        
+  //Set the default values, use comma to separate the settings 
+  var defaults = {  
+  appID: '128123197224946',
+  //siteTitle: '',
+  //siteName: '',
+  //siteImage: '',
+  buttonWidth: 60,
+  buttonHeight: 30,
+  showfaces: true,
+  font: 'lucida grande',
+  layout: 'button_count',
+  action: 'like',
+  colorscheme: 'light'
+}  
+            
+var options =  $.extend(defaults, options);  
+                        
+  return this.each(function() {  
+  var o = options;  
+  var obj = $(this);
+  var dynUrl = document.location;
+  
+  
+  // Add #fb-root div - mandatory - do not remove
+  jQuery('body').append('<div id="fb-root"></div>');
+  jQuery('#fb-like iframe').css('height','35px !important');
+
+  // setup FB Developers App Link - do not touch
+  window.fbAsyncInit = function() {
+    FB.init({appId: o.appID, status: true, cookie: true, xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    jQuery('#fb-root').append(e);
+  }());
+                                                          
+  // Apply the like button to an element on the page and include all available options
+  // If no options are passed in from the page, the defaults will be applied    
+          
+  jQuery(obj).html('<fb:like href="'+dynUrl+'" width="'+o.buttonWidth+'" height="'+o.buttonHeight+'" show_faces="'+o.showfaces+'" font="'+o.font+'" layout="'+o.layout+'" action="'+o.action+'" colorscheme="'+o.colorscheme+'"/>');
+
+  });  
+}  
+})(jQuery);
+
+
+
+
+
+ 
+ 

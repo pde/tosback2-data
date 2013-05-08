@@ -11,9 +11,9 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 	}
 	var showAllQuery = "childrenof:" + currentURL + " type:comment -source:Twitter " +
 	"source:slate.com (state:ModeratorApproved OR (state:Untouched " +
-	"-user.state:ModeratorBanned,ModeratorDeleted)) sortOrder:reverseChronological" +
+	"-user.state:ModeratorBanned,ModeratorDeleted -user.id:http://js-kit.com/ECHO/user/fake_user)) sortOrder:reverseChronological" +
 	" children:3 (state:ModeratorApproved OR (state:Untouched " +
-	"-user.state:ModeratorBanned,ModeratorDeleted)) itemsPerPage:10 " +
+	"-user.state:ModeratorBanned,ModeratorDeleted -user.id:http://js-kit.com/ECHO/user/fake_user)) itemsPerPage:10 " +
 	"childrenSortOrder:chronological childrenItemsPerPage:3";
 	(function($) {
 	    var plugin = Echo.createPlugin({

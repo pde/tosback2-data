@@ -34,6 +34,7 @@ jQuery.fx.interval = results && results.length > 1 && parseInt( results[1] ) > 0
 				});
 
 				$activate = $ul.parent().hasClass( 'active' ) ? null : $ul.parent();
+				$.PRINAVTOUT;
 				$hover = $ul.parent();
 				$slide = $hover.children( 'ul' );
 				$slide.css({ top: 45 });
@@ -46,9 +47,12 @@ jQuery.fx.interval = results && results.length > 1 && parseInt( results[1] ) > 0
 						if(( true || /animate=true/.test( window.location.search )) && ( uri != '/content/gmcom/home' )){
 							$slide.clearQueue();
 							$slide.stop();
+							// if($('html').hasClass('ie'))
+							// 	$slide.show();
+							// else
 							$slide.show().animate({ height: $ul.tnsdoh }, 500 );
 						} else {
-							$slide.show().css({ height: $ul.tnsdoh });
+							$slide.show().animate({ height: $ul.tnsdoh }, 500 );
 						}
 					},
 					function(){
@@ -59,17 +63,23 @@ jQuery.fx.interval = results && results.length > 1 && parseInt( results[1] ) > 0
 						if(( true || /animate=true/.test( window.location.search )) && ( uri != '/content/gmcom/home' )){
 							$slide.clearQueue();
 							$slide.stop();
-							$slide.animate({ height: 0 }, 500, function(){
+							$slide.animate({ height: 0 }, 200, function(){
 								$( this ).hide();
 							});
 						} else {
-							$slide.hide()
+							$.PRINAVTOUT=setTimeout(function(){
+								$slide.animate({ height: 0 }, 200, function(){
+									$( this ).hide();
+								});
+
+							},100);
 						}
 					}
 				);
 				$( 'div#primaryNavigation ul li ul li' ).hover(
 					function(){
 						$( this ).addClass( 'active' );
+						clearTimeout($.PRINAVTOUT);
 					},
 					function(){
 						$( this ).removeClass( 'active' );;

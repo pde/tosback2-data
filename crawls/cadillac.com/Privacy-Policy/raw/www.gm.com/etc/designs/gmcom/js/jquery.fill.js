@@ -24,7 +24,7 @@
 				$ulFill.fillResize( options, false );
 				$ulFill.timer = setTimeout( 
 					function(){
-						$ulFill.fillResize( options, true );
+						$ulFill.fillResize( options, false );
 					},
 					100
 				);
@@ -35,6 +35,7 @@
 		},
 
 		fillResize: function( options, timeout ){
+			
 			$this = this;
 			$this.windowWidth = $( window ).width();
 			$this.eleWidth = 0;
@@ -55,6 +56,7 @@
 					$this.children( options.fill ).css({ width: $this.fillWidth + 'px' }).show();
 					
 				} else {
+					if(navigator.platform!=='iPad')
 					$this.css({ width: ( $this.eleWidth ) + 'px' });
 					$this.fillWidth = 0;
 					$this.children( options.fill ).hide();

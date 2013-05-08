@@ -9,30 +9,6 @@
 var cmwidth,url,pNum,currentSize,currentImg,resultPage,pinterestLink;
 var shouldSwap = 'n';
 
-
-//This is a function to fix Chrome, Safari, and IE's "window.resize" issue.
-//The three browsers mentioned above call the re-size event over and over, not just
-//  when you're finished. This function fixes that. (Developed by John Hann)
-(function($,sr){
-	var debounce = function (func, threshold, execAsap) {
-		var timeout;
-		return function debounced () {
-			var obj = this, args = arguments;
-	        function delayed () {
-	        	if (!execAsap)
-	        		func.apply(obj, args);
-	        	timeout = null; 
-	        };
-	        if (timeout)
-	        	clearTimeout(timeout);
-	        else if (execAsap)
-	        	func.apply(obj, args);
-	        timeout = setTimeout(delayed, threshold || 500); 
-		};
-	} 
-	jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };	 
-})(jQuery,'smartresize');
-
 //This function makes the actual change based on browser size
 function changeImages(size,current) {
 	
@@ -59,6 +35,7 @@ $(window).smartresize(function() {
 
 
 //When the document loads, we determine which images to load (they are blank by default)
+/*
 $(document).ready(function(){
 	
 	if (shouldSwap == 'y'){
@@ -73,7 +50,7 @@ $(document).ready(function(){
 	}
 	//$("#middle-results").show();
 });
-
+*/
 
 //When a swatch is selected we change the item's image
 function bundleSwatchChange(productView, imageDivString, itemPin, colsPerPage, protocol, seoPinURL) {			

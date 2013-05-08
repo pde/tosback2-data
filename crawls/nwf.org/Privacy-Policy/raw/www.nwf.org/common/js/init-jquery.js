@@ -1,11 +1,9 @@
 ﻿jQuery(document).ready(function () {
 
-    // Initialize Spotlight Control
     if (jQuery('#home-featured').length > 0) {
         jQuery().homeFeature();
     }
 
-    // Initialize Horizontal Slider Control
     if (jQuery('div.carousel div.panel').length == 1) {
         jQuery().slider({
             holder: jQuery('div.carousel div.panel'),
@@ -23,7 +21,6 @@
         });
     }
 
-    // Initialize Vertical Slider Control
     if (jQuery('div.scroll ul.features-link').length == 1) {
         jQuery().slider({
             direction: "vert",

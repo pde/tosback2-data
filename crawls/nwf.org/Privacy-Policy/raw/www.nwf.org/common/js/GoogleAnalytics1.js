@@ -1,7 +1,5 @@
 ﻿if (document.domain.match(/(backstage|hq-scqa|hq-scprod|localhost)/i)) {
-    // Don't send GA data from dev or test environments.
 } else {
-    // 10/26/2011 DFR: Update to GA tracking
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-6031864-1']);
     _gaq.push(['_trackPageview']);

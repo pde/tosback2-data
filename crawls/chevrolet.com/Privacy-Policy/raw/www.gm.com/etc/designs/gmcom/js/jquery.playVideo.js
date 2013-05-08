@@ -108,6 +108,8 @@
 			+'</div>';
 
 			$('body').append(markup);
+			
+			addthis.toolbox(".addthis_toolbox");
 
 			$(''+$.playerById+' .actionContainer p#close-btn').click(function(){
 				$($.playerById).remove();
@@ -182,9 +184,9 @@
 			$(''+$.playerById+'  .line').css({
 					height			:	427
 				});
-
+			//595
 			$(''+$.playerById+'  .shadedContainer').css({
-						width			:	595
+						width			:	607
 				});
 
 			$(''+$.playerById+' #playVideoContent').css({
@@ -266,6 +268,9 @@
 					paddingTop	: 35,
 					height			:	310
 			});
+			$('html.ie9 '+$.playerById+' object#bcplayer').css({					
+					height			:	386
+			});
 
 			// if Brightcove native mobile player, give it a sec.
 			if($(''+$.playerById+' #playVideoContent').find('iframe')){
@@ -329,7 +334,7 @@
 			var $videoID=$this.data("data").videoID;
 
 
-			var videoplayer =	'<object id="bcplayer" width="600" height="380" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,47,0">'
+			var videoplayer =	'<object id="bcplayer"  width="600" height="380"  classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,47,0">'																				
 				 +				'<param name="movie" value="/etc/designs/gmcom/flash/bcplayer/bcplayer.swf" />'
 				 +				'<param name="bgcolor" value="#FFFFFF" />'
 				 +				'<param name="base" value="http://admin.brightcove.com" />'
@@ -344,6 +349,7 @@
 
 				$('#playVideoContent').html(videoplayer);
 				$('#playVideoContent').css('height', 'auto');
+				//$('#playVideoContent').css('height', '450px');
 
 			$this.videoPostLoad();
 		}

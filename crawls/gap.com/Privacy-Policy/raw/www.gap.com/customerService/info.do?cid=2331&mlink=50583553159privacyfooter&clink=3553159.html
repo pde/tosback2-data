@@ -1064,7 +1064,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "05/01/2013 08:15 AM",
+            DATE_IN_USE: "05/08/2013 08:58 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -3018,15 +3018,7 @@ Event.observe(window,"load",jbox.checkDataAttributes);
 .siteErrorSpacer {display:none;}
 /* -- contentOverride130 end remove associated JS override -- */
 
-/* begin contentOverride150 */
-#productSearchServiceLink {display: none; visibility: hidden;}
-/* end contentOverride150 */
 
-/*  Begin Hide debug string by default: CNOV-23  */
-div#productSearchServiceLink {
-	display: none;
-}
-/*  End Hide debug string by default: CNOV-23  */
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -3765,135 +3757,30 @@ if (window['ccm'] && ccm && ccm.signIn ) {
 
 <!-- End Checkout: CNOV-42 -->
 
-<!-- CNOV-45: Search omniture fixes-->
+<!-- Begin CNOV-55: Fix for bad left nav links -->
+
 <script type="text/javascript">
-// <![CDATA[
+var leftNavUrlPatch = {
+	init: function() {
+        	var sideNavCategories = $('sideNavCategories');
+                if(sideNavCategories){
+                	var htmlStr = sideNavCategories.innerHTML;
+                        htmlStr = htmlStr.replace(/href=".do/g, 'href="/browse/category.do');
+                        $('sideNavCategories').innerHTML = htmlStr;
 
-if (
-	reportingService &&
-	reportingService.controller &&
-	reportingService.controller.viewManagers &&
-	reportingService.controller.viewManagers.productpageViewManager &&
-	reportingService.controller.viewManagers.productpageViewManager.controller) {
-// 1.  Only reporting v20 on product page (no c17).  
-// If not arriving via search, v20 will be "no keyword"
-
-reportingService.controller.viewManagers.productpageViewManager.controller.setReportTransmissionVars = reportingService.controller.viewManagers.productpageViewManager.controller.setReportTransmissionVars.wrap(function(oMethod) {
-	oMethod();
-
-	var model = reportingService.controller.viewManagers.productpageViewManager.model;
-        s.prop17 = '';
-    	s.eVar20 = model.commonBrandPrefix + ":" + model.keyword;
-
-});
-
-reportingService.controller.viewManagers.productpageViewManager.controller.setReportModel = reportingService.controller.viewManagers.productpageViewManager.controller.setReportModel.wrap(function(oMethod) {
-	oMethod();
-
-	var product = productPage.objP;
-	var brandCode = product.brandCode;
-        var brandSite = gidLib.reporting.getBrandSite(brandCode);
-	var brandAbbr = (brandSite ? brandSite.brandAbbr : "");
-	var productId = product.strProductId;
-	var productEvents = reportingService.controller.viewManagers.productpageViewManager.controller.getProductEvents();
-
-	var model = reportingService.controller.viewManagers.productpageViewManager.model;
-	model.products = [brandAbbr, productId,null,null,productEvents.productStringEvents,'evar2=' + getEvar2Hierarchy()].join(';');
-});
-
-}
-
-// 2.  No event36 on department selection
-
-if (
-	reportingService &&
-	reportingService.controller &&
-	reportingService.controller.viewManagers &&
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager &&
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller
-) {
-
-reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.isEvent36 = function() {
-    			var isEvent36 = 
-    				reportingService.controller.viewManagers.categoryFacetedSearchViewManager.facetSearchManager.model.isInitialPageLoad &&
-    					navigationService.paginationHelper.api.getUrlParams().department === undefined;
-    			
-    			return isEvent36;
+			if (navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && navigationService.controller.managers.categoryFacetedSearchManager.view) {
+				navigationService.controller.managers.categoryFacetedSearchManager.view.updateCurrentCategoryLink();
+			}
+		}
+	}
 };
 
-reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars.wrap(function(oMethod) {
-	oMethod();
-	
-	var isSearchModel = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.facetSearchManager.model.isSearch;
-	var isSearch = isSearchModel === true || isSearchModel === 'true';
+Event.observe(window, "load", leftNavUrlPatch.init);
 
-	if (isSearch && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.isEvent36() && !/event36/.test(s.events)) {
-		if (s.events) {
-    			s.events += ",";
-    		}
-
-		s.events = 'event36';
-	}
-
-	// 3.  correct evar2 on product page
-	if (!isSearch) {
-		var searchAppManager = reportingService.controller.appManagers.searchAppManager;
-		searchAppManager.setSiteSearchActive(false);
-	}
-});
-
-var getEvar2Hierarchy = function() {
-	var model = reportingService.controller.viewManagers.commonViewManager.model;
-				
-        var evar2Hierarchy = model.getHierarchy1();
-        		
-	var searchAppManager = reportingService.controller.appManagers.searchAppManager;
-        if (searchAppManager.getSiteSearchActive()) {
-        	evar2Hierarchy = gidLib.getCookieVar("omniSession","searchPageName");
-        }
-        		
-        return evar2Hierarchy;
-};
-
-
-reportingService.controller.appManagers.searchAppManager.setSiteSearchActive = reportingService.controller.appManagers.searchAppManager.setSiteSearchActive.wrap(function (oMethod,bool) {
-	-oMethod(bool);
-
-	if (bool) {
-		setCookieVar("omniSession","searchPageName", reportingService.controller.viewManagers.commonViewManager.model.commonCurrentPageName);
-	} else {
-		setCookieVar("omniSession","searchPageName", "");
-	}
-
-});
-
-}
-
-if (
-	reportingService &&
-	reportingService.controller &&
-	reportingService.controller.appManagers &&
-	reportingService.controller.appManagers.searchAppManager &&
-	reportingService.controller.appManagers.searchAppManager.getSiteSearchActiveKeyword
-) {
-
-
-// Fix for "no keyword" showing up for autocorrect
-reportingService.controller.appManagers.searchAppManager.getSiteSearchActiveKeyword.wrap(function (oMethod,reportName) {
-	var keyword = oMethod(reportName);
-
-	var searchText = getQuerystringParam("searchText",true);
-	if (searchText && searchText != "") {
-		keyword = searchText;
-	}
-
-	return keyword;
-});
-
-}
-// ]]>
 </script>
-<!-- End CNOV-45 -->
+
+<!-- End CNOV-55: Fix for bad left nav links -->
+
 
 <!-- END Content Item File: /content/0006/278/864/cn6278864.html -->
 
@@ -3931,7 +3818,7 @@ if (location.pathname == "/browse/product.do") {
 <!-- END - WCD Sitewide Container 5 -->
 
 <!-- BEGIN - WCD Sitewide Container 6 -->
-<!-- BEGIN Content Item File: /content/0006/473/669/cn6473669.html -->
+<!-- BEGIN Content Item File: /content/0006/519/036/cn6519036.html -->
 
 
 <style type="text/css">
@@ -3957,6 +3844,8 @@ if (location.pathname == "/browse/product.do") {
 #nativeOrGlobalRegion #globalGatewayCurrency .currencyBritish { font-size:11px; color: #828282; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; height: 22px; bottom: 0; left: 12px; position: absolute; text-align: left; width: 51px; }
 #nativeOrGlobalRegion #globalGatewayCurrency .britishPoundText { font-size: 11px; color: #000000; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; height: 22px; bottom: 0; left: 70px; position: absolute; text-align: left; width: 100px; }
 
+#rollOverNative, #rollOverGlobal { display:none }
+
 </style>
 
 <script type="text/javascript">
@@ -3969,7 +3858,7 @@ if (location.pathname == "/browse/product.do") {
 
 var globalIntercept = {
 	model: {
-		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/349/962/assets/',
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/519/036/assets/',
 		showTranslatedExperienceToEU: true,
 		businessUnit:'GP_US',
 		brandName:'Gap',
@@ -4015,11 +3904,20 @@ var globalIntercept = {
 			// If gatewayPassed parameter in URL then user just came from a gateway popup so mimic cookie settings and set flag
 			var gatewayPassed = gidLib.getQuerystringParam('gatewayPassed',true);
 			if( gatewayPassed != '' ) {
-				gidLib.setCookieVar( 'mktUniversalPersist', 'globalInterceptSeenAlready', 'true' );
-				gidLib.setCookie( 'mktInterceptPersist', 'globalInterceptEUUKSiteCheck=true', gidLib.getFutureDate({'days':'1'}), '/', model.wcdRootDomain );
-				isSetDontDisplayEUUKCookie = 'true';
-				isSetWrongSiteCookie = 'true';
+				gidLib.setCookieVar( 'mktUniversalPersist', 'globalInterceptDontShow', 'true' );
+				gidLib.setCookie( 'mktInterceptPersist', 'globalInterceptSeenAlready=true', gidLib.getFutureDate({'days':'1'}), '/', model.wcdRootDomain );
+				isSetDontDisplayCookie = 'true';
+				isSetSeenAlreadyCookie = 'true';
 			}			
+			
+			// If on shopping bag/checkout pages, do not auto-launch
+			var bagCheckoutDomainCheck = location.pathname;
+			if( bagCheckoutDomainCheck.indexOf('/buy/') > -1 || bagCheckoutDomainCheck.indexOf('/checkout/') > -1 ) {
+				gidLib.setCookieVar( 'mktUniversalPersist', 'globalInterceptDontShow', 'true' );
+				gidLib.setCookie( 'mktInterceptPersist', 'globalInterceptSeenAlready=true', gidLib.getFutureDate({'days':'1'}), '/', model.wcdRootDomain );
+				isSetDontDisplayCookie = 'true';
+				isSetSeenAlreadyCookie = 'true';
+			}
 			
 			// Check that 'don't show' cookie has not been set, 'already seen' cookie has not been set and that country code is valid, else launch!
 			if( ( isSetDontDisplayCookie == '' && isSetSeenAlreadyCookie == '' && isKwidPage != '1' && ( model.wcdInterceptCoutnries.include( model.countryCode ) || model.globalGatewayCountries.include( model.countryCode ) ) || forceVariable != '' ) ) {
@@ -4232,6 +4130,19 @@ if( window["shippingOptionsService"] ) {
 		if( shippingOptionsService.view.displayingBusinessUnits ) {
 			shippingOptionsService.view.displayingBusinessUnits = shippingOptionsService.view.displayingBusinessUnits.wrap( function( om, container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs ) {
 				om( container, brnadsInOrder, innerContainer, businessUnitUrls, brandsDotCom, brandDivs );
+				
+				// Update Borderfree to Borderfree
+				if( $('globalInstructionText') ) {
+					var BorderfreeTxt = $('globalInstructionText').innerHTML;
+					BorderfreeTxt = BorderfreeTxt.replace('Borderfree','Borderfree');
+					$('globalInstructionText').update( BorderfreeTxt );
+				}
+				if( $('bottomGlobalInstruction') ) {
+					var BorderfreeTxt = $('bottomGlobalInstruction').innerHTML;
+					BorderfreeTxt = BorderfreeTxt.replace('Borderfree','Borderfree');
+					$('bottomGlobalInstruction').update( BorderfreeTxt );
+				}
+				
 				var euCountryCodeArray = ['AT','BE','CZ','DK','EE','FI','FR','DE','HU','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','SE','GB'];
 				var currentCountry = shippingOptionsService.model.shippingOptionsInfo.requestedShippingCountryCode;
 				if( euCountryCodeArray.include( currentCountry ) && currentCountry != 'GB' ) {
@@ -4378,6 +4289,7 @@ if( window["shippingOptionsService"] ) {
 var globalInterceptTranslator = {
 	
 	model: {
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0006/519/036/assets/',
 		initialLaunch: false,
 		currentLanguage: 'en_GB',
 		currentTranslatedCopy: {},
@@ -4398,7 +4310,7 @@ var globalInterceptTranslator = {
 				'Continue',
 				'Cancel',
 				'Save preferences',
-				'Shop these <span style="color:#000000">US sites</span> with international shipping from FiftyOne, our global e-commerce provider:',
+				'Shop these <span style="color:#000000">US sites</span> with international shipping from Borderfree, our global e-commerce provider:',
 				'Please note: all prices on gap.eu are displayed in Euros but orders will be charged in British Pounds. Final pricing is determined by the current conversion rate at the time of your order and may vary slightly from the price displayed. Your credit card company may also apply a conversion fee to your transaction.',
 				'<div class="currencyBritish">Currency:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>',
 				'Please note: all prices on bananarepublic.eu are displayed in Euros but orders will be charged in British Pounds.'
@@ -4417,7 +4329,7 @@ var globalInterceptTranslator = {
 				'Fortfahren',
 				'Löschen',
 				'Einstellungen speichern',
-				'Kaufen Sie auf diesen <span style="color:#000">US-Sites</span>, die internationalen Versand durch unseren globalen E-Commerce-Anbieter FiftyOne anbieten.',
+				'Kaufen Sie auf diesen <span style="color:#000">US-Sites</span>, die internationalen Versand durch unseren globalen E-Commerce-Anbieter Borderfree anbieten.',
 				'Bitte beachten Sie: Alle Preise auf gap.eu werden in Euro angezeigt, doch Bestellungen werden in britischen Pfund berechnet. Der Endpreis hängt jeweils von dem Wechselkurs zum Zeitpunkt der Bestellung ab und kann sich leicht von dem angezeigten Preis unterscheiden. Es besteht die Möglichkeit, dass Ihr Kreditkartenunternehmen zusätzlich eine Umrechnungsgebühr für die Transaktion in Rechnung stellt.',
 				'<div class="currencyBritish">Währung:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>',
 				'Bitte beachten Sie: Alle Preise auf bananarepublic.eu werden in Euro angezeigt, doch Bestellungen werden in britischen Pfund berechnet.'
@@ -4436,7 +4348,7 @@ var globalInterceptTranslator = {
 				'Verder gaan',
 				'Annuleren',
 				'Voorkeuren opslaan',
-				'Winkel op deze <span style="color:#000000">US-sites</span> en maak gebruik van internationale verzending via FiftyOne, onze wereldwijde elektronische handelspartner.',
+				'Winkel op deze <span style="color:#000000">US-sites</span> en maak gebruik van internationale verzending via Borderfree, onze wereldwijde elektronische handelspartner.',
 				'Opmerking: alle prijzen op gap.eu worden weergegeven in euro\'s, maar bestellingen worden verwerkt in Britse ponden. De uiteindelijke prijs wordt bepaald door de actuele wisselkoers ten tijde van uw bestelling en kan enigszins afwijken van het getoonde bedrag. Daarnaast kan het zijn dat uw creditcardmaatschappij een omzettingstaks berekent.',
 				'<div class="currencyBritish">Valuta:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>',
 				'Opmerking: alle prijzen op bananarepublic.eu worden weergegeven in euro\'s, maar bestellingen worden verwerkt in Britse ponden.'
@@ -4455,7 +4367,7 @@ var globalInterceptTranslator = {
 				'Continuar',
 				'Cancelar',
 				'Guardar preferencias',
-				'Compra en este <span style="color:#000000">sitio web de U.S.</span> con posibilidad de envío internacional con FiftyOne, nuestro proveedor global de comercio electrónico.',
+				'Compra en este <span style="color:#000000">sitio web de U.S.</span> con posibilidad de envío internacional con Borderfree, nuestro proveedor global de comercio electrónico.',
 				'Tenga en cuenta lo siguiente: Todos los precios de gap.eu se muestran en euros, aunque los pedidos se cobrarán en libras esterlinas. El precio final viene determinado por el tipo de cambio en el momento en que realice el pedido y puede variar ligeramente del precio que se muestra. La compañía emisora de su tarjeta de crédito podría aplicar una tasa de conversión a su transacción.',
 				'<div class="currencyBritish">Moneda:</div> <div id="britishPoundText" class="britishPoundText">British Pounds</div>',
 				'Tenga en cuenta lo siguiente: Todos los precios de bananarepublic.eu se muestran en euros, aunque los pedidos se cobrarán en libras esterlinas.'
@@ -4467,6 +4379,7 @@ var globalInterceptTranslator = {
 	translateGatewayInitialElts: function() {
 		var translatedCopyArray = globalInterceptTranslator.model.currentTranslatedCopy;
 		var currentLanguage = globalInterceptTranslator.model.currentLanguage;
+		var wcdAssetPath = globalInterceptTranslator.model.wcdAssetPath;
 		
 		// Update each text element
 		if( $('internationalRegion') ) {
@@ -4509,54 +4422,54 @@ var globalInterceptTranslator = {
 		if( $('shippingContinueButtonDisable') ) {
 			$('shippingContinueButtonDisable').update();
 			if( currentLanguage == 'de_DE' ) {
-				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px 0px no-repeat' });
+				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -72px 0px no-repeat' });
 			}
 			else if( currentLanguage == 'nl_NL' ) {
-				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px 0px no-repeat' });
+				$('shippingContinueButtonDisable').setStyle({ width:'88px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -165px 0px no-repeat' });
 			}
 			else if( currentLanguage == 'es_ES' ) {
-				$('shippingContinueButtonDisable').setStyle({ width:'77px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px 0px no-repeat' });
+				$('shippingContinueButtonDisable').setStyle({ width:'77px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -258px 0px no-repeat' });
 			}
 			else {
-				$('shippingContinueButtonDisable').setStyle({ width:'67px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 0px no-repeat' });
+				$('shippingContinueButtonDisable').setStyle({ width:'67px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) 0 0px no-repeat' });
 			}
 		}
 		if( $('shippingOptionsContinueButton') ) {
 			$('shippingOptionsContinueButton').update();
 			if( currentLanguage == 'de_DE' ) {
 				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
-				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px -20px no-repeat' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -72px -20px no-repeat' });
 			}
 			else if( currentLanguage == 'nl_NL' ) {
 				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
-				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px -20px no-repeat' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'88px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -165px -20px no-repeat' });
 			}
 			else if( currentLanguage == 'es_ES' ) {
 				$('shippingContinueButtonEnable').setStyle({ width:'77px' });
-				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'77px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px -20px no-repeat' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'77px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -258px -20px no-repeat' });
 			}
 			else {
 				$('shippingContinueButtonEnable').setStyle({ width:'88px' });
-				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'67px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 -20px no-repeat' });
+				$('shippingOptionsContinueButton').setStyle({ display:'block', width:'67px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) 0 -20px no-repeat' });
 			}
 		}
 		if( $('shippingOptionsCancelButton') ) {
 			$('shippingOptionsCancelButton').update();
 			if( currentLanguage == 'de_DE' ) {
 				$('shippingOptionsCancelButtons').setStyle({ width:'70px', left:'125px' });
-				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -72px -40px no-repeat' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -72px -40px no-repeat' });
 			}
 			else if( currentLanguage == 'nl_NL' ) {
 				$('shippingOptionsCancelButtons').setStyle({ width:'79px', left:'125px' });
-				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'79px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -165px -40px no-repeat' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'79px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -165px -40px no-repeat' });
 			}
 			else if( currentLanguage == 'es_ES' ) {
 				$('shippingOptionsCancelButtons').setStyle({ width:'70px', left:'114px' });
-				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) -258px -40px no-repeat' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'70px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) -258px -40px no-repeat' });
 			}
 			else {
 				$('shippingOptionsCancelButtons').setStyle({ width:'55px', left:'104px' });
-				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'55px', height:'20px', background:'url(/Asset_Archive/GPWeb/content/0006/349/962/assets/gatewayButtons.gif) 0 -40px no-repeat' });
+				$('shippingOptionsCancelButton').setStyle({ display:'block', width:'55px', height:'20px', background:'url(' + wcdAssetPath + 'gatewayButtons.gif) 0 -40px no-repeat' });
 			}
 		}
 	},
@@ -4571,7 +4484,14 @@ var globalInterceptTranslator = {
 			var shopInstructEUText = $('regionSpecificNative').select('div.nativeInstructionText');
 			if( shopInstructEUText && shopInstructEUText.length > 0 ) { 
 				shopInstructEUText = shopInstructEUText[0];
-				shopInstructEUText.update( translatedCopyArray[6] + ': <a id="rollOverPopupNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style="display: none" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE CANADA SITES <br>Selecting this option redirects you to the Canada site. However, items in your shopping bag will not automatically transfer to your Canada shopping bag.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a><a id="rollOverNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a>');
+				var instructTextToReplace = translatedCopyArray[6];
+				if( countryCode == 'US' ) { instructTextToReplace = instructTextToReplace.replace('EU','US') + ': <a id="rollOverPopupNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style="display: none" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE CANADA SITES <br>Selecting this option redirects you to the Canada site. However, items in your shopping bag will not automatically transfer to your Canada shopping bag.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a><a id="rollOverNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a>'; }
+				
+				else if( countryCode == 'CA' ) { instructTextToReplace = instructTextToReplace.replace('EU','CA') + ': <a id="rollOverPopupNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE CANADA SITES <br>Selecting this option redirects you to the Canada site. However, items in your shopping bag will not automatically transfer to your Canada shopping bag.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a><a id="rollOverNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a>'; }
+				
+				else { instructTextToReplace = instructTextToReplace + ': <a id="rollOverPopupNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE EU SITES <br>Selecting this option redirects you to the EU site. However, items in your shopping bag will not automatically transfer to your EU shopping bag.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a><a id="rollOverNative" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="NativeInformationIcon" height="10" width="12"></a>'; }
+				
+				shopInstructEUText.update( instructTextToReplace );
 			}
 			
 			if( $('currencyForEurope') ) {
@@ -4589,7 +4509,7 @@ var globalInterceptTranslator = {
 			var shopInstructGlobalText = $('regionSpecificGlobal').select('div.globalInstructionText');
 			if( shopInstructGlobalText && shopInstructGlobalText.length > 0 ) { 
 				shopInstructGlobalText = shopInstructGlobalText[0];
-				shopInstructGlobalText.update( translatedCopyArray[13] + ': <a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverPopupGlobal" style="display: none" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES<br>By placing an international order, you acknowledge that your transaction will be with FiftyOne. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a><a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverGlobal" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a>');
+				shopInstructGlobalText.update( translatedCopyArray[13] + ': <a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverPopupGlobal" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES<br>By placing an international order, you acknowledge that your transaction will be with Borderfree. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onclick="return false;"><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a><a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" id="rollOverGlobal" style=""><img src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif" id="globalInformationIcon" height="10" width="12"></a>');
 			}
 			
 			if( $('regionCurrency') ) { $('regionCurrency').update( translatedCopyArray[9] ); }
@@ -4599,7 +4519,7 @@ var globalInterceptTranslator = {
 			var shopInstructAllGlobalText = $('bottomGlobalInstruction').select('p');
 			if( shopInstructAllGlobalText && shopInstructAllGlobalText.length > 0 ) { 
 				shopInstructAllGlobalText = shopInstructAllGlobalText[0];
-				shopInstructAllGlobalText.update( translatedCopyArray[13] + ': <a onclick="return false;" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES&lt;br&gt;By placing an international order, you acknowledge that your transaction will be with FiftyOne. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#"><img width="12" height="10" id="InformationIcon" src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif"></a>');
+				shopInstructAllGlobalText.update( translatedCopyArray[13] + ': <a onclick="return false;" onmouseout="gidLib.shippingRolloverBubble.closeBubble();" onmouseover="gidLib.shippingRolloverBubble.openBubble(event,{content:\'SHOP THE US SITES&lt;br&gt;By placing an international order, you acknowledge that your transaction will be with Borderfree. Your customer service needs will be handled directly with Gap Inc. International orders are not eligible for free shipping or free returns. Your order total is guaranteed at the exchange rate set when your order is placed.\'});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#"><img width="12" height="10" id="InformationIcon" src="http://www.gap.com/assets/common/shippingOptions/icon_bubble.gif"></a>');
 			}
 			
 			if( $('globalGatewayCurrency') ) { 
@@ -4615,7 +4535,11 @@ var globalInterceptTranslator = {
 		
 		if( $('orderProcessingPounds') ) { $('orderProcessingPounds').update( translatedCopyArray[16] ); }
 		
-		if( $('bottomNativeInstruction') ) {  $('bottomNativeInstruction').update( translatedCopyArray[6] ); }
+		if( $('bottomNativeInstruction') ) {
+			var bottomInstructionText = translatedCopyArray[6];
+			if( countryCode == 'US' ) bottomInstructionText = bottomInstructionText.replace('EU','US');
+			$('bottomNativeInstruction').update( bottomInstructionText );
+		}
 	},
 	
 	// Insert language dropdown into Global Gateway popup
@@ -4754,9 +4678,9 @@ if( globalIntercept && globalIntercept.model && globalIntercept.model.showTransl
 				else { globalInterceptTranslator.setLangauge('en_GB'); }
 			}
 			// Else check preferredLocale
-			else if( preferredLocale != '' && ( preferredLocale == 'de_DE' || preferredLocale == 'nl_NL' || preferredLocale == 'es_ES' ) ) {
+			/*else if( preferredLocale != '' && ( preferredLocale == 'de_DE' || preferredLocale == 'nl_NL' || preferredLocale == 'es_ES' ) ) {
 				globalInterceptTranslator.setLangauge( preferredLocale );
-			}
+			}*/
 			// Else set to English
 			else {
 				globalInterceptTranslator.setLangauge('en_GB');
@@ -4794,10 +4718,13 @@ if( globalIntercept && globalIntercept.model && globalIntercept.model.showTransl
 					href : '/gid/css/profile/shippingOptions/en/shippingOptions.css',
 					media: 'screen'
 				}));
+				
+				var responseString = response.responseText;
+				responseString = responseString.replace('Borderfree','Borderfree');
 
 				var style = 'top:' + top + 'px;left:' + getLeftMargin() + 'px;width:' + width + 'px;height: ' + height + 'px';
 				var div = new Element('div', {'id': 'shippingOptionsPopUp', 'style': style})
-							.update(response.responseText);
+							.update( responseString );
 
 				document.body.appendChild(div);
 
@@ -4863,7 +4790,7 @@ if( shippingOptionsService.controller && shippingOptionsService.controller.close
 
 </script>
 
-<!-- END Content Item File: /content/0006/473/669/cn6473669.html -->
+<!-- END Content Item File: /content/0006/519/036/cn6519036.html -->
 
 <!-- END - WCD Sitewide Container 6 -->
 
@@ -4871,19 +4798,15 @@ if( shippingOptionsService.controller && shippingOptionsService.controller.close
 <!-- BEGIN Content Item File: /content/0006/523/453/cn6523453.html -->
 
 <script type="text/javascript">
-var RISShakeout = function() {
-	var risURL = location.href;
-	risURL.toQueryParams();
-	if (risURL.RiS == "true") {
-		if($("storeLocationsList")) {
-			var elementArr = $("storeLocationsList").select("div.reserveInStore");
-			for (i = 0; i < elementArr.length; i++) {
-				elementArr[i].style.display = "block";
-			}
-		}
-	}
+// WCD RiS (reserve in store) shakeout code
+if ($("storeLocationsList")) { 
+	$('bodyContainer').observe('findInStore:storeListRendered', function() { 
+		var qParams = location.href.toQueryParams();    
+		if (qParams.RiS === 'true') {   
+			$("storeLocationsList").select("div.reserveInStore").invoke("setStyle", { display: 'block' }); 
+		} 	       	
+	});
 }
-Event.observe(window,"load",RISShakeout);
 </script>
 
 <!-- END Content Item File: /content/0006/523/453/cn6523453.html -->
@@ -5161,47 +5084,196 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 <!-- END - WCD Sitewide Container 9 -->
 
 <!-- BEGIN - WCD Sitewide Container 10 -->
-<!-- BEGIN Content Item File: /content/0006/526/546/cn6526546.html -->
-
-<!-- GOL mobile content -->
-<script type="text/javascript">
-var contentInfo = {};
-
-contentInfo.mobileContent = {
-	"home" : 
-	{
-		"carousel" : 
-		[
-			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/042513_ALL_DVF_MOB_US.jpg",
-				"url" : "http://www.gap.com/browse/category.do?cid=94065&mlink,6526546,MOB_HP_Main_DVF&clink=6526546"
-			}
-		]
-  	},
-	  	
-	"global" : 
-	{
-		"headerBanner": 
-		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/10-25_EDFSFR_MobileAsset.png",
-			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/edfs_popup.html" }
-		},
-		"skinnyBanner":
-		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/042813_ALL_mysteryOffer35_MOBAN_US.gif",
-			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/546/assets/skinny_popup.html" }
-		}
-	}
-};
-</script>
-
-<!-- END Content Item File: /content/0006/526/546/cn6526546.html -->
 
 <!-- END - WCD Sitewide Container 10 -->
 
 <!-- BEGIN - WCD Sitewide Container 11 -->
+<!-- BEGIN Content Item File: /content/0006/482/379/cn6482379.html -->
+
+<!-- Guest Checkout A/B 5/7 code -->
+<script type="text/javascript">
+/*
+	Universal Cookie Cutter
+	Version 2.1
+	Created to streamline cross-brand A/B testing
+	New version modularizes variables
+	
+	instantiate new object:
+	
+	MyCookieCutter = new universalCookieCutter([CookieVarName],      // name of your cookie variable
+											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
+											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
+											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
+											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
+											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
+											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
+											   );
+	A sample instantiation:
+	
+	ONBRABCookieCutter = new universalCookieCutter("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
+											   
+	*/
+	
+	var universalCookieCutter = Class.create();
+	
+	
+	universalCookieCutter.prototype = {
+	
+		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+	
+			//Keeping it neat by having two discreet variables that check for and gather cookie information
+			this.EvarToUse = theEvar != "" ? theEvar : false;
+			this.CookieVariableName = CookieVarName;
+			this.CookieUsed = CookieUsedName;
+			this.CookieValueBase = CookieValueBase;
+			this.SegBreakdown = SegmentBreakdown.split("-");
+			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+			this.QuickSegment = '';
+			this.piperlimeException = plExcept;
+			this.userNeedsSync = false;
+			this.ForcedModeBase = ForcedModeBaseName;
+			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
+			this.modeArray = new Array();
+			this.modeArray[0] = "a";
+			this.modeArray[1] = "b";
+			this.modeArray[2] = "c";
+			this.modeArray[3] = "d";
+			this.modeArray[4] = "e";
+			this.modeArray[5] = "f";
+			this.modeArray[6] = "g";
+			//alert(this.piperlimeException);
+			
+			
+			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+				this.forcedMode();
+			}else{
+				this.cookieScanner();
+			}
+		},
+	
+	
+		forcedMode:function() {
+			
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+			
+				if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+					//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
+					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+				}
+				
+			}
+			
+			
+			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+			if (this.EvarToUse) {
+				
+				this.setABTestVariable(this.UserSegment);
+			}
+	
+			userNeedsSync = true;
+			//alert("Forced: Cookie set.");
+			
+		
+		},
+	
+		cookieScanner:function() {
+			
+			//If the cookie isn't available, bake one!
+			if (this.DoesTheCookieExist) {
+	
+				if (this.EvarToUse) {
+					this.setABTestVariable(this.RetrievedCookieValue);
+				}
+	
+				for (i = 0; i < this.ModeArrayIndex; i++) {
+					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+						this.QuickSegment = this.modeArray[i].toUpperCase();
+						break;
+					}
+				}
+	
+			} else {
+				this.tagManager();
+			}
+	
+		},
+	
+	
+		tagManager:function() {
+	
+		
+			//Breaking out the segmentation into specified percentages
+			
+			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+			//alert("Seg: " + this.Segmentation);	
+			this.FloorThreshold = 0;
+			this.TopThreshold = 0;
+			
+			for (i = 0; i < this.ModeArrayIndex; i++){
+	
+				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+	
+				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+					// put me in this segment
+					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				} else {
+					// add top to floor and try next segment
+					this.FloorThreshold = this.TopThreshold;
+				}
+					
+			}
+			
+			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+	
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.UserSegment);
+			}
+	
+			//userNeedsSync = true;
+			//alert("Tag Manager: Cookie set.");
+			
+		},
+		
+			setABTestVariable: function(setValue) {
+			thisEvar = 'eVar' + this.EvarToUse;
+			ABTestVariables[thisEvar] = setValue;
+		}
+	
+		
+	}; 
+	
+	
+	
+	var gcoURL = document.location.hostname;
+	if (gcoURL.indexOf("m.") > -1) {
+		var mobileValue = "0506GCOAHSEGC"
+		gidLib.setCookieVar("mktUniversalPersist","gcahMode50",mobileValue);
+		ABTestVariables['eVar24'] = mobileValue;
+	}
+
+var GuestCheckoutCookieCutter = new universalCookieCutter("gcahMode50","mktUniversalPersist","0506GCOAHSEG","gcahForceMode","0-100","24","none");
+
+Event.observe(document, "dom:loaded", function () {
+  var gcahModeValue = clientStateManagementService.api.retrieve('mktUniversalPersist', 'gcahMode50'); 
+  var gcoSegmentLetter;
+  if (gcahModeValue == "0506GCOAHSEGA") {
+  	gcoSegmentLetter = "A"
+  } else { 
+  	gcoSegmentLetter = "B"
+  }
+  clientStateManagementService.api.persist('gcahMode', 'seg', gcoSegmentLetter);
+  if ($("registrationSaveInfoContainer")){
+  	$("registrationSaveInfoContainer").update('<div class="gcoContent" id="gcoTempContent"><div style="width:401px;height:70px;">Creating an account offers several benefits:<br>&nbsp;&nbsp;&nbsp;&nbsp;-Faster checkout<br>&nbsp;&nbsp;&nbsp;&nbsp;-Easy access to order history<br>&nbsp;&nbsp;&nbsp;&nbsp;-Signs you in to all Gap, Inc. websites<br></div></div>');
+  }
+});	
+
+</script>
+
+<!-- END Content Item File: /content/0006/482/379/cn6482379.html -->
 
 <!-- END - WCD Sitewide Container 11 -->
 
@@ -7377,9 +7449,10 @@ if (thisUserMenuUserAgent.indexOf("iPad") != -1) {
   <div id="topNavTopRow" class="clearfix">
   	<div id="topNavLogoBannerWrapper" class="floatLeft">
     	<div id="topNavLogoContainer" class="floatLeft">		
-        	<!-- BEGIN Content Item File: /content/0005/910/687/cn5910687.html -->
-<div id="contentItemContainer10000397" class="5910687" >
+        	<!-- BEGIN Content Item File: /content/0006/526/474/cn6526474.html -->
+<div id="contentItemContainer10000397" class="6526474" >
 
+<!-- GOL LOGO DO NOT REMOVE -->
 <script type="text/javascript">
 /*override to display gapKids or gapBaby logo */
 function checkGOLLogo() {
@@ -7396,70 +7469,94 @@ function checkGOLLogo() {
 	var bbDivState = $('division42022').className;
 	
 	/* divsion class _selected version */
-
-
 	if ((girlsDivState.indexOf("_selected") >= 0)||(boysDivState.indexOf("_selected") >= 0)) {
-				if (golKidsLogo) {
-					golKidsLogo.style.display = 'block';
-        		}
-				
-						
-	}else if ((tgDivState.indexOf("_selected") >= 0)||(tbDivState.indexOf("_selected") >= 0)||(bgDivState.indexOf("_selected") >= 0)||(bbDivState.indexOf("_selected") >= 0)){
-				if (golBabyLogo) {
-					golBabyLogo.style.display = 'block';
-        		}
-	
-	}else {
-	   				//regular logo
-					if (golRegLogo) {			
-						golRegLogo.style.display = 'block';
-					}
+		if (golKidsLogo) {
+			golKidsLogo.style.display = 'block';
+		}		
+	} else if ((tgDivState.indexOf("_selected") >= 0)||(tbDivState.indexOf("_selected") >= 0)||(bgDivState.indexOf("_selected") >= 0)||(bbDivState.indexOf("_selected") >= 0)) {
+		if (golBabyLogo) {
+			golBabyLogo.style.display = 'block';
+		}
+	} else {
+		//regular logo
+		if (golRegLogo) {			
+			golRegLogo.style.display = 'block';
+		}
 	}	
-	
 	
 }
 
-
-
-
 Event.observe(window,"load",function(){ 
 		
-		
-		if(location.protocol == "https:"){
-				var golLogo = $('golLogo');
-			  
-			  	//regular logo
-					if (golLogo) {			
-						golLogo.style.display = 'block';
-					}
-		}else {
-																		 
-			checkGOLLogo();
+	if(location.protocol == "https:") {
+		var golLogo = $('golLogo');
+	  
+	  	//regular logo
+		if (golLogo) {			
+			golLogo.style.display = 'block';
 		}
+	} else {													 
+		checkGOLLogo();
+	}
 
 });
 </script>
 <div id="LogoContainer_10000397_ContentItem" style="width:62px;height:62px;display:block;">
 
-	<div id="golLogoBaby" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/910/687/assets/babygap_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
-	<div id="golLogoKids" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/910/687/assets/gapkids_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
-	<div id="golLogo" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/910/687/assets/logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogoBaby" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/babygap_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogoKids" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/gapkids_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogo" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
 </div>
+<!-- /GOL LOGO  DO NOT REMOVE-->
+
+<!-- GOL mobile content -->
+<script type="text/javascript">
+var contentInfo = {};
+
+contentInfo.mobileContent = {
+	"home" : 
+	{
+		"carousel" : 
+		[
+			{
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/031512_mobileshoppingApp_US_kids.jpg",
+				"url" : "http://www.gap.com/browse/category.do?cid=8792&mlink,6526474,MOB_Main_NewArrivals&clink=6526474"
+			}
+		]
+  	},
+	  	
+	"global" : 
+	{
+		"headerBanner": 
+		{
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/10-25_EDFSFR_MobileAsset.png",
+			"command" : "displayOverlay",
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/edfs_popup.html" }
+		},
+		"skinnyBanner":
+		{
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/050813_ALL_48hr_MOBAN_US.jpg",
+			"command" : "displayOverlay",
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/skinny_popup.html" }
+		}
+	}
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/910/687/cn5910687.html -->
+<!-- END Content Item File: /content/0006/526/474/cn6526474.html -->
 
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/526/545/cn6526545.html -->
-<div id="contentItemContainer10000395" class="6526545" >
+    	<!-- BEGIN Content Item File: /content/0006/526/480/cn6526480.html -->
+<div id="contentItemContainer10000395" class="6526480" >
 
 <style type="text/css">
 #globalBanner {
-	width: 636px;
-	height: 63px;
+	width: 520px;
+	height: 61px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
@@ -7510,25 +7607,24 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/545/assets/042813_ALL_mysteryOffer35_GB_US.png" alt="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." title="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/480/assets/050813_ALL_48hr_GB_US.png" alt="30% off your purchase." usemap="#gbMap">
 		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,636,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/545/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-		</map>
+<area class="noHideDisruptor" id="globalBannerActivator" coords="0,9,377,65" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/480/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
+</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/545/assets/042813_ALL_mysteryOffer35_DISR_US.png" alt="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." title="DAILY DEAL. 35% OFF YOUR PURCHASE. ONLINE ONLY. ENTER GAP35." usemap="#disruptorMap">
-		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/545/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
-        </map>
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/480/assets/050813_ALL_48hr_DISR_US.png" alt="30% off your purchase." usemap="#disruptorMap">
+		<map name="disruptorMap"><area alt="click for details" coords="0,40,314,313" href="javascript:void(0);" class="noHideDisruptor" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/480/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
+</map>
 	</div><!-- /Global Banner Disruptor -->
 
 </div>
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('050113_GB');
+	globalBannerDisruptor.init('050813_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7650,7 +7746,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/526/545/cn6526545.html -->
+<!-- END Content Item File: /content/0006/526/480/cn6526480.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9008,7 +9104,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5910687,6526545,6436342,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,6526474,6526480,6436342,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>
@@ -9176,66 +9272,6 @@ function validateFormGapFooter()
 <!-- BEGIN Content Item File: /content/0006/122/931/cn6122931.html -->
 <div id="contentItemContainer212633" class="6122931" >
 
-
-<!-- Begin CNOV-28 Search toggle for preview -->
-<script type="text/javascript">
-// <![CDATA[
-
-if (window.navigationService && navigationService.preview) {
-
-    var previewSearchToggle = {
-	gidSearchCookieName :'searchMode',
-
-	isAMode : function() {
-		var cookieValue = gidLib.getCookie(this.gidSearchCookieName);
-		return !cookieValue || !/searchSEGB/.test(cookieValue);
-	},
-
-	getCurrentButtonText : function() {
-		var label = "Switch to EasyAsk Search";
-		if (this.isAMode()) {
-			label = "Switch to SOLR Search";
-		}
-		return label;
-	},
-
-	toggleSearch : function() {
-		var newMode = "A";
-		if (this.isAMode()) {
-			newMode = "B";
-		}
-		var newLocation = window.location.href;
-		
-		newLocation = newLocation.replace(/\&*searchForceMode=[ab]\&*/i,"");		
-		
-		if (/\?/.test(newLocation)) {
-			newLocation = newLocation.replace(/\?/,"?searchForceMode=" + newMode + "&");
-		} else {
-			newLocation += "?searchForceMode=" + newMode;
-		}
-
-		window.location = newLocation;
-	}
-    }
-
-    Event.onDOMReady(function() {
-	function insertPreviewSearchButton() {
-	    var searchToggleLi = "<li><input type='button' id='searchToggleButton' value='" + previewSearchToggle.getCurrentButtonText() + "' onclick='previewSearchToggle.toggleSearch()'/></li>";
-
-	    $('previewPageInfo').previous().childElements()[0].childElements()[2].insert({after:searchToggleLi});
-		    
-	};
-
-	insertPreviewSearchButton.delay(0.1);
-
-    });
-				
-    
-
-}
-// ]]>
-</script>
-<!-- End CNOV-28 -->
 
 
 </div>

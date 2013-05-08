@@ -617,6 +617,14 @@ function loop(x){
 	$(".cotw a.entire-div").mouseleave(function() {
     $(".cotw p.cotw-important").stop(true, true).slideUp();
   });
+
+	$(".cotw-small a.entire-div").mouseenter(function() {
+    $(".cotw-small p.cotw-important").stop(true, true).slideDown();
+  });
+	$(".cotw-small a.entire-div").mouseleave(function() {
+    $(".cotw-small p.cotw-important").stop(true, true).slideUp();
+  });
+
 });
 
 

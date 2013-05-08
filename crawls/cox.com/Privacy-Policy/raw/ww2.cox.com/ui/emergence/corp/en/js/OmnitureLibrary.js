@@ -71,6 +71,9 @@ function s_doPlugins(s) {
 	
 	//Internal Campaigns
 	s.eVar41=s.crossVisitParticipation(s.getQueryParam('campcode'),'s_ev41','1','5',':','purchase',1);
+	
+	//TNT Tracking
+	s.tnt=s.trackTNT();
 }
 s.doPlugins=s_doPlugins
 
@@ -151,20 +154,20 @@ s.repl=new Function("x","o","n",""
 +"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
 +"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
 
-/* Plugin: getQueryParam 2.3 */
-s.getQueryParam=new Function("p","d","u",""
-+"var s=this,v='',i,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.locati"
-+"on);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0?p"
-+".length:i;t=s.p_gpv(p.substring(0,i),u+'');if(t){t=t.indexOf('#')>-"
-+"1?t.substring(0,t.indexOf('#')):t;}if(t)v+=v?d+t:t;p=p.substring(i="
-+"=p.length?i:i+1)}return v");
-s.p_gpv=new Function("k","u",""
-+"var s=this,v='',i=u.indexOf('?'),q;if(k&&i>-1){q=u.substring(i+1);v"
-+"=s.pt(q,'&','p_gvf',k)}return v");
+/* Plugin: getQueryParam 2.4 */
+s.getQueryParam=new Function("p","d","u","h",""
++"var s=this,v='',i,j,t;d=d?d:'';u=u?u:(s.pageURL?s.pageURL:s.wd.loca"
++"tion);if(u=='f')u=s.gtfs().location;while(p){i=p.indexOf(',');i=i<0"
++"?p.length:i;t=s.p_gpv(p.substring(0,i),u+'',h);if(t){t=t.indexOf('#"
++"')>-1?t.substring(0,t.indexOf('#')):t;}if(t)v+=v?d+t:t;p=p.substrin"
++"g(i==p.length?i:i+1)}return v");
+s.p_gpv=new Function("k","u","h",""
++"var s=this,v='',q;j=h==1?'#':'?';i=u.indexOf(j);if(k&&i>-1){q=u.sub"
++"string(i+1);v=s.pt(q,'&','p_gvf',k)}return v");
 s.p_gvf=new Function("t","k",""
 +"if(t){var s=this,i=t.indexOf('='),p=i<0?t:t.substring(0,i),v=i<0?'T"
 +"rue':t.substring(i+1);if(p.toLowerCase()==k.toLowerCase())return s."
-+"epa(v)}return ''");
++"epa(v)}return''");
 
 /* Plugin: getValOnce_v1.0 */
 s.getValOnce=new Function("v","c","e",""
@@ -219,10 +222,17 @@ s.join = new Function("v","p",""
 +";x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);el"
 +"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
 
+/* TNT Integration Plugin v1.0 */
+s.trackTNT=new Function("v","p","b",""
++"var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(s."
++"getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
++"]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
+
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 s.trackingServer="metrics.cox.com"
 s.trackingServerSecure="smetrics.cox.com"
 s.visitorMigrationKey="4EA35815"
+
 /****************************** MODULES *****************************/
 /* Module: Media */
 s.m_Media_c="var m=s.m_i('Media');m.cn=function(n){var m=this;return m.s.rep(m.s.rep(m.s.rep(n,\"\\n\",''),\"\\r\",''),'--**--','')};m.open=function(n,l,p,b){var m=this,i=new Object,tm=new Date,a='',"

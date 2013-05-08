@@ -495,6 +495,8 @@ function onYouTubePlayerReady( playerId ){
 					'</div>' +
 				'</div>'
 			);
+			
+			addthis.toolbox(".addthis_toolbox");
 			$( '#addThis_container .addthis_toolbox' ).css({ opacity: 0, top: 0, left: $( 'a#addThis_custom_link:visible' ).outerWidth() - 50 }).hide();
 			//<!-- AddThis Button End -->
 			$( 'div.shadedContainerPop div.galleryWraper ul li .enlargeLink' ).remove();

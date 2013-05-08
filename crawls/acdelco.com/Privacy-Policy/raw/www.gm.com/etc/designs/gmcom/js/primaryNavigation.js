@@ -90,16 +90,29 @@ function orient() {
 	}
 }
  
+ // add body class for contentpagetwocolumn alternate layout (diversity, foundation, etc.)
+function findMenuBox(){
+	if($('div.menu_box').length)
+ 		$('body').addClass('menuboxpage');
+
+}
+
+
+
 
 $(document).ready( function(){
+
+ if($('body').hasClass('contentpagetwocolumn'))
+ 	findMenuBox();
 	
 	// resolve dropdown offsecreen
-	if($('#primaryNavigation').innerWidth()<1274)
-		$('#primaryNavigation ul li ul').css({left:0, right:'auto'});
+	// if($('#primaryNavigation').innerWidth()<1274)
+	// 	$('#primaryNavigation ul li ul').css({left:0, right:'auto'});
 
 
- if($('body').hasClass('tabpage'))
-	$('meta[name="viewport"]').replaceWith('<meta name="viewport" content="width=1200, initial-scale=0.92 maximum-scale=1.0" />');
+ //if($('body').hasClass('tabpage'))
+	$('meta[name="viewport"]').replaceWith('<meta name="viewport" content="width=content-width, initial-scale=0.92 maximum-scale=1.0 minimum-scale=0.92" />');
+
 
 	addBodyClass();
 	lastOrient=window.orientation;
@@ -129,14 +142,100 @@ if(!($('html').hasClass('mac') && $('html').hasClass('safari'))){
 		}
 	});
 
-	$( '#primaryNavigation li form input' ).focus( function(){
-		if( $( this ).attr( 'value' ) == 'SEARCH' )
-			$( this ).attr( 'value', '' )
-	}).blur( function(){
-		if( $( this ).attr( 'value' ).length <= 0 )
-			$( this ).attr( 'value', 'SEARCH' );
-	});
-	
+
+	// header search field
+	//$('li#search div.clearfix').append('<span class="searchprompt">Search</span>');
+	var searchprompt=$('li#search span.searchprompt'),
+	 	searchaction=$('li#search a#searchAction'),
+	 	searchform=$('li#search form[name="google"]'),
+	 	searchinput=$('li#search input'),
+	 	formaction=searchform.attr('action');
+
+	 searchform.removeAttr('action');
+
+
+	searchinput.bind({
+	 	keydown : function(e){
+
+	 		searchprompt.text("");
+
+			if($(this).val()==="" && e.which===32) // prevent initial white space
+				return false;
+
+			if(e.which===13) // prevent page reload on empty val submit
+				return false;
+
+		},
+		focus:function(e){
+
+	 		searchprompt.text("");
+
+			if($(this).val()==="" && e.which===32) // prevent initial white space
+				return false;
+
+			if(e.which===13) // prevent page reload on empty val submit
+				return false;
+
+		},
+		keyup : function(e){
+
+			if(e.which===13){
+				searchFormSubmit();
+				searchUI($(this));
+				return false;
+			}
+			else
+				searchUI($(this));
+
+		},
+		blur : function(){
+
+			searchUI($(this));
+
+		},
+		change : function(){
+
+			searchUI($(this));
+
+		}
+
+	 }).val('');
+
+	 searchprompt.click(function(){searchinput.focus();});
+	 
+	 searchaction.click(function(){
+
+			searchFormSubmit();
+			return false;
+
+	 });
+
+	 function searchUI(input){
+
+ 		if(input.val()===""){
+	 		searchprompt.text("Search");
+	 		searchaction.removeClass('on');
+	 	}
+	 	else
+	 		searchaction.addClass('on');
+
+	 }
+
+	 function searchFormSubmit(){
+
+	 	if(searchinput.val()==="")
+	 		return false;
+	 	else{
+	 		searchform.attr('action', formaction);
+	 		searchform.submit();
+	 	}
+
+	 	return false;
+
+}
+
+
+
 	$('div#auxiliaryNavigation ul.right li').eq(7).addClass("last");
 	
 	orient();
@@ -146,6 +245,9 @@ if(!($('html').hasClass('mac') && $('html').hasClass('safari'))){
 		orient();
 	});
 	/****************/ 
+
+
+
 	
 });
 

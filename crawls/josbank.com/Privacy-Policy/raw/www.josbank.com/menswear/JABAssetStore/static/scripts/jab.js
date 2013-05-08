@@ -409,3 +409,9 @@ function hasInvalidEntryChar(value)
 function addAddToCartSCTracking(){
 	SC_Sku.addToCart(sc_add_item_ProductId,"1012~"+sc_add_item_ProductId+"~131~"+sc_add_item_ProdName+"~1113~"+sc_add_item_CategoryId+"~1112~"+sc_add_item_CategoryName,sc_add_item_qty,parseFloat(sc_add_item_Price.replace(/[^0-9/.]+/g,'')));
 }
+
+//Google Dymanic remarketing pixel tracking on add to cart event
+function trackAddToCart() {
+	   var img = document.createElement("img");
+	   img.src = "//googleads.g.doubleclick.net/pagead/viewthroughconversion/1060418747/?value=0&label=TlQ-CMGwxgIQu-nS-QM&guid=ON&script=0&data=prodid%3D" + pr_page_id + "%3Bpagetype%3Dcart";
+	}

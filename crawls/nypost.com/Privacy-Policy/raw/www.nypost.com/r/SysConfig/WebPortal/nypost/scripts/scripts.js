@@ -803,6 +803,7 @@ $(document).ready(function(){
 			window.localStorage.removeItem(i.key);
 		});
 	}
+/**	
 	//TABLET APP DOWNLOAD MODULE
 	p.app_d = function(){
 		var c,u,r,t,a = navigator.userAgent;
@@ -834,6 +835,7 @@ $(document).ready(function(){
 		    }, 0);
 	    }
 	}
+**/	
 	//ATTACH OBJECTS TO WINDOW 
 	window.href = href;
 	window.p = window.POST = window.post = p;

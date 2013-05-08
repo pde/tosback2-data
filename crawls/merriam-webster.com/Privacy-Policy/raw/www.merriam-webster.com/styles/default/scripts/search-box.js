@@ -44,6 +44,7 @@ jQuery(function()
 		// Autocomplete options.
 		var options =
 			{	serviceUrl: '/autocomplete',
+				maxHeight: 164,
 				width: 434,
 				delimiter: /(,|;)\s*/,
 				onSelect: onAutocompleteSelect,

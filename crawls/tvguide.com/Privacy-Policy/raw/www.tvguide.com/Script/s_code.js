@@ -129,7 +129,7 @@ function countOmniGridViewEx(strViewType, strFilter, strProviderType, nChannels,
     if (prov != null)
         s.prop21 = "Provider: " + prov;
     else
-        s.prop21 = "Provider:none";
+        s.prop21 = "Provider: None";
 
     if (loc_pathG == "/ipad/" || loc_pathG == "/ipad/default.aspx") {
         s.pageName = "ipad-grid";

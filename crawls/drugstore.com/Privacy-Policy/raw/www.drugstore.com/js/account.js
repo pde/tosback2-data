@@ -432,15 +432,26 @@ function setDropdownValue(p_szElementID, p_nOrdinal)
 //                 is clicked in place order page.
 //Parameters    :  button name and orderfeedback url
 //**************************************************************************************
-function RedirectToURL(btnObj, szURL)
-{
-	try
-	{
+function RedirectToURL(btnObj, szURL) {
+	try {
 		btnObj.form.action = szURL;
 	}
-	catch(e)
-	{}
+	catch (e)
+	{ }
 	return true;
+}
+
+function RedirectTo(btnObj, url) {
+	try
+	{
+		validatePickupPersonDetails();
+		ClearPickUpPersonInfoCookies();
+		btnObj.form.action = url;
+		return true;
+	}
+	catch (e)
+	{ }
+	return false;
 }
 
 // for Modify Until Ship -- open
@@ -583,3 +594,19 @@ function RestrictSpace(evt1, evt2)
 	}
 }
 
+
+
+function StsOverlayIneligibleCart() {
+        
+    var msg = "Some of the items in your order are not eligible for ship to store service.";
+    jQuery.get("#", function (data) {
+        var overLayWidth = "40px";
+        var overLayHeight = "40px";
+        var htmlClose = "<div style=\"width:" + overLayWidth + "height:" + overLayHeight
+			+ "\"><div onclick=\"javascript:showOverlay(this, 'genericOverLay', false); \" ><img alt=\"close\" class=\"closeButton\" src=\"/img/buttons/close-btn.gif\"/></div>";
+        data = htmlClose + "<div>" + msg + "</div>";
+        inlineOverlay(data, "", "genericOverLay", null, false, false, 800, true);
+       
+    });
+    
+}

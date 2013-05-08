@@ -1,22 +1,25 @@
 (function(){
-    var FLAGS = {
-        'ethnio-all': false,'ethnio-home': false,'karma': true,'optimizely': false,'search-ab': true,'surveygizmo': false
-        },
-        SWITCHES = {
-        'wiki-rebuild-on-demand': false,'karma': true,'track-article-reads': true,'hide-total-question-votes': true,'users-dont-limit-by-login': true
-        },
-        SAMPLES = {
-        'inproduct-https': false
-        };
-    window.waffle = {
-        "flag": function waffle_flag(flag_name) {
-            return !!FLAGS[flag_name];
-        },
-        "switch": function waffle_switch(switch_name) {
-            return !!SWITCHES[switch_name];
-        },
-        "sample": function waffle_sample(sample_name) {
-            return !!SAMPLES[sample_name];
-        }
+  var FLAGS = {
+    'ethnio-all': false,'karma': true,'optimizely': true,'search-ab': true,'surveygizmo': false
+    },
+    SWITCHES = {
+    'wiki-rebuild-on-demand': false,'karma': true,'track-article-reads': true,'hide-total-question-votes': true,'users-dont-limit-by-login': true
+    },
+    SAMPLES = {
+    'inproduct-https': false
     };
+  window.waffle = {
+    "flag_is_active": function waffle_flag(flag_name) {
+      
+      return !!FLAGS[flag_name];
+    },
+    "switch_is_active": function waffle_switch(switch_name) {
+      
+      return !!SWITCHES[switch_name];
+    },
+    "sample_is_active": function waffle_sample(sample_name) {
+      
+      return !!SAMPLES[sample_name];
+    }
+  };
 })();

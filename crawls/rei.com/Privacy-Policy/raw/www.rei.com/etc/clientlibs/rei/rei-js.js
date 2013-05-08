@@ -18,6 +18,17 @@ $(document).ready(function(){
  * 
  * @author rray
  */
+$(document).ready(function() {
+    $('.reiDifference-popupLauncher').fancybox( {
+        'height': 615,
+        'padding': 10,
+        'width': 690,
+        'scrolling':'no',
+        'autoScale': false,
+        'titleShow': false,
+        'type': 'iframe'
+    } );
+});
 /* $Id$ */
 
 $(document).ready(function(){

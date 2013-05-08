@@ -147,7 +147,6 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setClient("WORLDMARKET");
 	mybuys.enableZones();
 
-
 	
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
 	mybuys.setStyle('.mblegend','text-align','left');
@@ -233,8 +232,9 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mblistlink:visited','font-size','10px');
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbimg','cursor','pointer');
 	
+	mybuys.setStyleByPageType('CATEGORY','.mbitem','height','280px','width','177px');
+	
+	
 	mybuys.applyStyles();
 
 	mybuys.setFailOverMsecs(5000);
-
-

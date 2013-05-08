@@ -32,7 +32,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1367395203727,
+	timeStamp: 1368000009878,
 
 	scodeSwitch: 'OFF',
 	mBoxSwitch: 'ON',
@@ -118,12 +118,12 @@ function chatActive(dateStamp) {
 		reviewsMasterSwitch: 'ON',	
 		
 		
-		reviewsFeaturedItemsThreshold: '10',
+		reviewsFeaturedItemsThreshold: '0',
 	
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('May 01, 2013 08:24:38'),
+	isChatOpen: chatActive('May 08, 2013 09:11:38'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
@@ -186,6 +186,9 @@ function chatActive(dateStamp) {
 	GENERIC_ERROR_HEADER: 'Sorry, but an error has been made.',
 	GENERIC_ERROR_LINE_2: 'Please check the following field(s):',
 	ERR_CC_NUM_INVAL_FOR_TYPE: 'Please check the credit card information and try again. If this problem persists, please call us at 1-800-3STAPLE (1-800-378-2753)to speak with an associate',
+	
+	
+	miniCompExpand: 'Expand to See More',
 	
 	
     Comparison:{
@@ -271,7 +274,8 @@ function chatActive(dateStamp) {
 	  },
 	
     SKU:{
-	xslLoaderr: 'Stylesheet not loaded.Error in line'
+	xslLoaderr: 'Stylesheet not loaded.Error in line',
+	seeDetails: 'See Details'
  	},
 	
     SearchPage:{

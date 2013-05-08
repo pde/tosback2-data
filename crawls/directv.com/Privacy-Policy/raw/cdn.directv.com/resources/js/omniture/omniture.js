@@ -39,6 +39,7 @@ s.searchTermVariable		    = 'eVar1';
 
 s.dstStart="04/14/2010";
 s.dstEnd="11/07/2010";
+                  
 
 function s_doPlugins(s) {
 
@@ -231,7 +232,7 @@ s.setupLinkTrack=new Function("vl","c",""
 +";__f.exec(h);if(RegExp.$1)h=RegExp.$1}o.lid=h}}}h=o.href?o.href:'';"
 +"i=h.indexOf('?');h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);l"
 +"=s.linkName?s.linkName:s._hbxln(h);t=s.linkType?s.linkType.toLowerC"
-+"ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=s.pageName+'^^'+(o.lid=!o.lid||o.lid=='undefined'?'no &lid':o.lid)"
++"ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=s.pageName+'^^'+(o.lid=!o.lid||o.lid=='undefined'? ( (Reporting.PageData.actionType == 'Add' || Reporting.PageData.actionType == 'Remove') ? Reporting.PageData.actionType :'no &lid') :o.lid)"
 +"+'^^'+s.pageName+' | '+(o.lid=!o.lid||o.lid=='undefined'?'no &lid':o.lid)+'^^'+o.lpos;if"
 +"(t&&(h||l)){cva=s.split(cv,'^^');vla=s.split(vl,',');for(x in vla)s"
 +"._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}else if(!t&&oc.indexOf('.tl(')<"

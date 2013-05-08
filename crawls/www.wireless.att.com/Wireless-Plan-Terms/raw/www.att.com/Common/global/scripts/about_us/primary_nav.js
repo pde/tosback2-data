@@ -59,11 +59,11 @@ function renderGNTop() {
 				 renderPrimaryNav();
 	document.write('</div>'
 				 + '<div id="content-container">');
-				 if (pid == '3309'){
-				 document.write('<div id="aboveContent">');
-				 specialNewsTicker();
-				 document.write('</div>');
-				 }
+		 if (pid == '0'){
+		 document.write('<div id="aboveContent">');
+		 specialNewsTicker();
+		 document.write('</div>');
+	 }
 				 document.write('<div id="content">');
 }
 function renderGNBottom() {

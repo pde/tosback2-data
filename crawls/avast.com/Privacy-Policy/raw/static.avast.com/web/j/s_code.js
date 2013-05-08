@@ -46,6 +46,7 @@ More info available at http://www.omniture.com */
  *14/03/13 update s_code to version vH.25.4.(Ales), eVar27 definition logic changed (Ales), added create cookie helper (Ales)
  *25/03/13 added www.avast.ru (Ales)
  *10/04/13 set tracking servers for .avast.co.jp and .avast.ru. Enable cookies for .avast.co.jp (Ales)
+ *02/05/13 Added eVar43 logic, ppros 99 (Ales)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -303,6 +304,8 @@ function s_doPlugins(s) {
     else {
       if(s.getQueryParam('p_bld') == "FreeInBusiness")
             s.eVar27="Free Program | Free In Business";
+      else if(s.getQueryParam('p_sts') && parseInt(s.getQueryParam('p_lst')) > 2)
+            s.eVar27="Free Program | Soft Trial";
       else if(s.getQueryParam('seg') == "fre_reg" || s.getQueryParam('seg') == "fre_lic")
             s.eVar27="Free Program | Registered";
       else if(s.getQueryParam('seg') == "fre_unr" || s.getQueryParam('seg') == "fre_unl")
@@ -310,7 +313,7 @@ function s_doPlugins(s) {
       else if(s.getQueryParam('seg') == "pai_tri")
             s.eVar27="Paid Program | Trial";
       else if(s.getQueryParam('seg') == "pai_lic")
-            s.eVar27="Paid Program | Licensed";
+            s.eVar27="Paid Program | Licensed";        
       else if(s.getQueryParam('cha') == "ema")
             s.eVar27="Website | Direct";
 
@@ -429,7 +432,8 @@ function s_doPlugins(s) {
 		    	"51":"ep",
 		    	"52":"ca",
 		    	"53":"bu",
-		    	"54":"sc"
+		    	"54":"sc",
+                "99":"whs"
     	}
     	var pproT = "";
     	if(ppros[ppro] !== undefined){
@@ -456,6 +460,21 @@ function s_doPlugins(s) {
         else
             document.cookie="osc_v42="+s.eVar42+";domain=.avast.com;path=/;";
 	}
+
+    /*s.eVar45*/    
+    if(s.getQueryParam('p_sts') === "0"){       
+        if(parseInt(s.getQueryParam('p_pro')) >  0 && parseInt(s.getQueryParam('p_lst')) >  2){
+            s.eVar43="Program Setup: Active"; 
+        } else {
+            s.eVar43="Program Setup: Inactive";
+        }
+    } else if (s.getQueryParam('p_sts') === "1") {
+        if(parseInt(s.getQueryParam('p_pro')) >  0 && parseInt(s.getQueryParam('p_lst')) >  2){
+            s.eVar43="Program Update: Active"; 
+        } else {
+            s.eVar43="Program Update: Inactive";
+        }
+    }
     
     /*********************** TRAFFIC VAR SECTION ************************/
 

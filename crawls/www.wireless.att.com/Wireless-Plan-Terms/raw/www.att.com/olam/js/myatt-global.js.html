@@ -1,0 +1,56 @@
+jQuery(document).ready(function() {
+	var userAgent=navigator.userAgent.toLowerCase();
+	if(userAgent.indexOf("pantech")!=-1 || userAgent.indexOf("iphone")!=-1||userAgent.indexOf("ipad")!=-1||userAgent.indexOf("macintosh")!=-1)
+	{
+		jQuery(window).bind("load",fnSetWidth);
+		function fnSetWidth(e){
+
+			jQuery("select").each(fnIteratorCore);
+			
+			function fnIteratorCore(i){
+
+				var spansetWidth = jQuery(this).siblings("span");
+				if(userAgent.indexOf("pantech") != -1)
+				{
+					spansetWidth.css("width", eval(jQuery(this).width() - 6) + "px");
+				}
+
+				jQuery(this).css("height","32px");
+				var modWidth=0;
+				if ((jQuery(this).parent().width() - jQuery(this).width()) > 200)					/* Fail Safe */
+				{
+					modWidth=jQuery(this).width();
+				}
+				else
+				{
+					if (jQuery(this).is(':visible')) 								/* When dropdown is hidden on load */
+					{
+						modWidth=jQuery(this).parent().width()+24;
+					}
+					else
+					{
+						var objClone = jQuery(this).parent().clone();
+						objClone.css("visibility","hidden");
+						jQuery('body').append(objClone);
+						modWidth = objClone.outerWidth()+24;
+						objClone.remove();
+					}
+				}
+				var modWidthPx=modWidth+"px";
+				jQuery(this).css("width",modWidthPx);
+
+				if(userAgent.indexOf("pantech")!=-1 || userAgent.indexOf("iphone")!=-1 || userAgent.indexOf("ipad")!=-1)
+				{
+					jQuery(this).css("top","-3px");
+					jQuery(this).css("left","-6px")
+				}
+				else if(userAgent.indexOf("macintosh")!=-1)
+				{
+					jQuery(this).css("top","0px");
+					jQuery(this).css("left","-2px")
+				}
+			}
+		}
+	};
+});
+

@@ -1,4 +1,5 @@
 var blazeuser = null;
+var TBZ = window.TBZ || {};
 (function(){
 	/*
 	 * THIS IS FOR TESTING ONLY ON DEV, it will not run on prod
@@ -10,36 +11,6 @@ var blazeuser = null;
 	}
 	//END OF DEV TESTING 
 })();
-function is_touch_device() {
-	try {
-		document.createEvent("TouchEvent");  
-		return true;  
-	} catch (e) {
-		if(typeof Touch == "object"){
-			return true;
-		}
-		return false;  
-	}  
-}
-function isMobile(){
-	var ua = navigator.userAgent;
-	if( ua.match(/Android/i) || ua.match(/webOS/i) || ua.match(/iPhone/i) || ua.match(/iPod/i) || ua.match(/iPad/i) || 
-			ua.match(/Mobile/i) || ua.match(/Blackberry/i) || ua.match(/IEMobile/i) || ua.match(/playbook/i)
-	){
-		return true;
-	}else{
-		return false;
-	}
-}
-function isBot(){
-	var ua = navigator.userAgent;
-	if( ua.match(/Googlebot/i) || ua.match(/Visual Revenue/i) ){
-		return true;
-	}else{
-		return false;
-	}
-}
-
 function GATrackLink(link, scope, desc) {
   	if(!link) return '';
   	if(!desc) var desc = '';
@@ -64,12 +35,6 @@ function GATrackLink(link, scope, desc) {
   		_gat._getTrackerByName()._trackEvent('Outbound Links', link.href, desc);
   	}
 }
-(function(){
-	if(jQuery('.social-tools,.tools').length > 0  && !isBot() ){
-		TBZ.shareTools.init('.social-tools');
-		TBZ.shareTools.setupHandlers();
-	}
-})();
 jQuery.fn.popIn = function (options) {
 	var hasScrolled = false;
 	jQuery(window).bind("scroll",function(){
@@ -118,29 +83,36 @@ jQuery.fn.popIn = function (options) {
 	};
 };
 
-jQuery('.theblaze-promotext').on('click', 'a', function(e) {
-	link = jQuery(this).attr('href');
-	_gat._getTrackerByName()._trackEvent('Marketing Links', link, 'Promotext');
-	if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
-		e.preventDefault();
-		setTimeout('document.location = "' + link + '"', 100);
-	}
-});
-jQuery('#pager').on('click', 'a', function(e) {
-	buttonText = jQuery(this).text();
-	_gat._getTrackerByName()._trackEvent('Site Features', buttonText, 'Carousel Nubs');
-});
-jQuery('#home-content-heading').on('click', 'a', function(e) {
-	link = jQuery(this).attr('href');
-	_gat._getTrackerByName()._trackEvent('Marketing Links', link, 'Home-Content-Heading');
-	if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
-		e.preventDefault();
-		setTimeout('document.location = "' + link + '"', 100);
-	}
-});
-
-
 jQuery(document).ready(function($) {
+    if(jQuery('.social-tools,.tools').length > 0  && !jQuery.blzBrowserFuncs.isBot() ){
+        TBZ.shareTools.init('.social-tools');
+        TBZ.shareTools.setupHandlers();
+    }
+    jQuery('.theblaze-promotext').on('click', 'a', function(e) {
+        link = jQuery(this).attr('href');
+        _gat._getTrackerByName()._trackEvent('Marketing Links', link, 'Promotext');
+        if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
+            e.preventDefault();
+            setTimeout('document.location = "' + link + '"', 100);
+        }
+    });
+
+    jQuery('#pager').on('click', 'a', function(e) {
+        buttonText = jQuery(this).text();
+        _gat._getTrackerByName()._trackEvent('Site Features', buttonText, 'Carousel Nubs');
+    });
+
+    jQuery('#home-content-heading').on('click', 'a', function(e) {
+        link = jQuery(this).attr('href');
+        _gat._getTrackerByName()._trackEvent('Marketing Links', link, 'Home-Content-Heading');
+        if (!(e.which > 1 || e.shiftKey || e.altKey || e.metaKey)) {
+            e.preventDefault();
+            setTimeout('document.location = "' + link + '"', 100);
+        }
+    });
+
+
+
 	$.theBlazerBrowser({'capabilities' : true, 'type' :true, 'system':true, 'tag_id':'body' });
 	headlineObj = $('#headline-close');
 	if(headlineObj.size() === 1) {
@@ -168,7 +140,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// Scrolling callback;
-	if(!isMobile() && !isBot()){
+	if(!jQuery.blzBrowserFuncs.isMobile() && !jQuery.blzBrowserFuncs.isBot()){
 		var hasScrolled = false;
 		$(window).bind('scroll',function() {
 			hasScrolled = true;
@@ -233,10 +205,14 @@ jQuery(document).ready(function($) {
 			jQuery('#tips-text').show();
 		}
 	});
-
 	
+	// While we're at it, need to show captcha for regular forms as well:
+	if(jQuery.trim(jQuery('#form-captcha').html()) === '') {
+		loadCaptcha(0, 'form-captcha');
+	}
+
 	//Lazy-Load specific containers. Don't enable lazy loading on iOS, Android, or webOS
-	if((!isMobile()) && (screen.width > 500) && !isBot()){
+	if((!jQuery.blzBrowserFuncs.isMobile()) && (screen.width > 500) && !jQuery.blzBrowserFuncs.isBot()){
 		$(".story-col img, div#postContent img, div#comments img").lazyload({
 			effect : "fadeIn",
 			failure_limit : 100,
@@ -295,7 +271,7 @@ jQuery(document).ready(function($) {
 		$('#logincontroller #logged_in').hide();
 	}
 
-	if( ( $('#nextStory').length > 0) && (!isMobile()) && (screen.width > 500) && !isBot() ){
+	if( ( $('#nextStory').length > 0) && (!jQuery.blzBrowserFuncs.isMobile()) && (screen.width > 500) && !jQuery.blzBrowserFuncs.isBot() ){
 		//Make sure we don't show the next story flyout on an iPad
 		var off_top = 1300;
 		if(( typeof $(".social-tools.social-tools-bottom").offset().top == 'number')){ off_top = $(".social-tools.social-tools-bottom").offset().top;}

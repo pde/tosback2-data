@@ -15,7 +15,7 @@ div#primaryNavigation > ul {
 	list-style:none; 
 	margin:0; 
 	padding:0;
-	height:45px
+	height:45px;	
 }
 
 
@@ -31,8 +31,12 @@ div#primaryNavigation li#blackFill {
     right: 270px;
     width: 545px;
 */    z-index: -1;
-
-
+	
+	display: inline;
+    float: left !important;
+    margin-left: 625px;
+    margin-top: -45px;
+    width: 100% !important;
 
 }
 
@@ -60,7 +64,8 @@ div#primaryNavigation li#vehicles, div#primaryNavigation li#vision, div#primaryN
 }
 
 div#primaryNavigation li#allGMSites{
-	width: 120px;
+	width: 120px;	
+	background: transparent;
 }
 
 div#primaryNavigation li#contactUs {
@@ -99,8 +104,17 @@ div#primaryNavigation li#contactUs h2, div#primaryNavigation li#allGMSites h2{
 	width: 9em;
 }
 
+div#primaryNavigation li#allGMSites {
+	position: relative;
+}
+.ipad div#primaryNavigation li#allGMSites {
+	position: absolute;
+}
 div#primaryNavigation li#allGMSites h2 {
-	width: 105px;
+    border-right: 1px solid #777;
+    margin-left: -12px;
+    padding-right: 14px;
+    width: 105px;
 }
 div#primaryNavigation li#allGMSites h2 img{
 	float: right;
@@ -134,6 +148,8 @@ div#primaryNavigation ul li.active a span.arrow, div#primaryNavigation ul li a.a
 
 div#primaryNavigation li#search, div#primaryNavigation li#allGMSites, div#primaryNavigation li#contactUs, div#primaryNavigation li#blackFill {
 	float:right;
+	/**/
+	/*background: #000101;*/
 }
 div#primaryNavigation li#allGMSites.active, div#primaryNavigation li#contactUs.active{
 	background: url("../images/background1085.png") repeat scroll 0 0 transparent;
@@ -144,15 +160,20 @@ div#primaryNavigation li#search, div#primaryNavigation li#search form, div#prima
 	margin: 0;
 	width: 150px;
 }
-
 div#primaryNavigation li#search form a#searchAction {
-	background: url("../images/primaryNavigationSearchButton.png") no-repeat scroll 0 0 transparent;  
+	background: url("../images/primaryNavigationSearchButton.png") no-repeat #666;  
 	display: block;
 	float: right;
 	height: 18px;
 	margin: 15px 18px 3px 0;
 	position: relative;
-	width: 22px;
+	width: 18px;
+	cursor:default;
+}
+div#primaryNavigation li#search{background: transparent;}
+div#primaryNavigation li#search form a#searchAction.on {
+	background-color: #fff;
+	cursor:pointer;
 }
 
 div#primaryNavigation li#search form a#searchAction span {
@@ -160,27 +181,46 @@ div#primaryNavigation li#search form a#searchAction span {
 }
 
 div#primaryNavigation li#search form input {
-	background:url("../images/primaryNavigationSearchBox.png") no-repeat scroll 0 0 transparent;
-	border:0 none;
-	color:white;
-	float:right;
-	font-size:9px;
-	height:18px;
-	line-height:16px;
-	margin:15px 0 0;
-	padding:0 0 0 2px;
-	padding:1px 0 0 2px\9;
-	width:105px;
+    color: #000000;
+    float: right;
+    font-size: 9px;
+    height: 16px;
+    line-height: 16px;
+    margin: 15px 0 0;
+    padding: 0 0 0 2px;
+    position: relative;
+    width: 106px;
+    z-index: 2;
+    border:1px #ccc solid;
+    border-right:0;
+    background: transparent;
+    border-radius:0; /* ipad */
 }
 
+div#primaryNavigation li#search form span.searchprompt {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #666666;
+    font: italic 12px Arial;
+    height: 14px;
+    margin: 15px 0 0 6px;
+    padding: 2px 0 2px 2px;
+    position: absolute;
+    width: 106px;
+    z-index: 0;
+}
+html.ie div#primaryNavigation li#search form{
+	position: relative;
+	z-index:10;
+}
 div#primaryNavigation ul li ul{
 	list-style: none outside none;
-	margin: 0;
-	padding: 1px 0 0;
+/*	margin: 0;
+*/	padding: 1px 0 0;
 	position: absolute;
 	top: -999px;
 	/*top: 46px;*/
-	z-index: 999;
+	z-index: 9999;
+	background: url("../images/background1085-t.png") repeat scroll 0 0 transparent;
 }
 
 div#primaryNavigation ul li ul li {
@@ -210,17 +250,92 @@ div#primaryNavigation ul li ul a {
 div#primaryNavigation ul li ul a:hover {
 	color: #00B1E9;
 }
-
-
+/*html.ie div#primaryNavigation ul li ul{
+	margin: 0 !important;
+	padding: 0 !important;
+}
+html.ie div#primaryNavigation ul li ul li{
+	margin: 0 !important;
+	padding: 6px 0 !important;
+}
+*/
 html.mac.safari li#blackFill{
 	width:100% !important;
-	right:0 !important;
-
-
+	/*right:0 !important;
 	float: none !important;
-right: auto !important;
-left: auto !important;
-margin-right: 0 !important;
-width: 100% !important;
-position: relative;
+	right: auto !important;
+	left: auto !important;
+	margin-right: 0 !important;
+	width: 100% !important;
+	position: relative;*/	
+	display:inline;
+	float:left !important;
+	margin-left:625px;
+	margin-top:-45px;
+	background:url("../images/background1085.png") repeat left top !important;
+	/*background: url("../images/blackFill.png") top right repeat-x;*/
 }
+
+/*Add Abrahan*/
+@-ms-viewport {
+  width: device-width;
+}
+@media (min-width: 768px) and (max-width: 979px) {	
+  	div#primaryNavigation li#GMLogo {
+		cursor: pointer;
+		margin: 0 1px 0 0;
+		text-indent: -999px;
+		/*width: 264px;*/
+		width: 245px;
+	}
+	div#primaryNavigation li#vehicles, div#primaryNavigation li#vision, div#primaryNavigation li#company 
+	{	
+		width: 103px; /*max 103*/
+	}
+	div#primaryNavigation li#vehicles h2, div#primaryNavigation li#vision h2, div#primaryNavigation li#company h2 {
+		font-size: 0.9167em;/*Reducir tamaño letra*/
+		line-height: 1.5em;		
+		width: 90px;
+
+		height: 69%;		
+	}
+}
+
+@media (max-width: 768px) {	
+  div#primaryNavigation li#GMLogo {
+		cursor: pointer;
+		margin: 0 1px 0 0;
+		text-indent: -999px;
+		/*width: 264px;*/
+		width: 245px;
+	}
+	div#primaryNavigation li#vehicles, div#primaryNavigation li#vision, div#primaryNavigation li#company 
+	{	
+		width: 103px; /*max 103*/
+	}
+	div#primaryNavigation li#vehicles h2, div#primaryNavigation li#vision h2, div#primaryNavigation li#company h2 {
+		font-size: 0.9167em;/*Reducir tamaño letra*/
+		line-height: 1.5em;		
+		width: 105px;
+		height: 69%;		
+	}
+}
+
+html.ipad div#primaryNavigation li#GMLogo {
+		cursor: pointer;
+		margin: 0 1px 0 -15px;
+		text-indent: -999px;
+		/*width: 264px;*/
+		width: 245px;
+}
+html.ipad div#primaryNavigation li#vehicles,html.ipad div#primaryNavigation li#vision,html.ipad div#primaryNavigation li#company 
+{
+	width: 103px !important; /*max 103*/	
+}
+html.ipad	div#primaryNavigation li#vehicles h2,html.ipad div#primaryNavigation li#vision h2,html.ipad div#primaryNavigation li#company h2 {
+	font-size: 0.9167em;/*Reducir tamaño letra*/
+	line-height: 1.5em;		
+	width: 103px;
+	height: 69%;
+}
+html.ipad div#primaryNavigation li#blackFill{/*background: red !important;*/}

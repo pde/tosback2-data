@@ -633,7 +633,7 @@ function shareThis() {
 
 
 function renderAyudaRightCol() {
-/*	if ( section == 'help' || directory == 'att_home_phone' || directory == 'faq' || directory == 'att_advanced_tv' || directory == 'privacy_policy'  ) {
+	if ( section == 'help' || directory == 'att_home_phone' || directory == 'faq' || directory == 'att_advanced_tv' || directory == 'privacy_policy'  ) {
 document.write('<div class="section nbb"><a href="/residential_customers/att_internet/index.html?id=' + state + '"  title="Internet"><img src="/mlcomm/_images/content/bg_right_premios_internet.png" alt="Internet" /></a></div>');
 }
 
@@ -642,11 +642,11 @@ document.write('<div class="section nbb"><a href="/residential_customers/att_uve
 }
 else {
 document.write('<div class="section nbb"><a href="/residential_customers/att_uverse/uverse_tv/index.html?id=' + state + '"  title="U-verse TV"><img src="/mlcomm/_images/content/bg_right_premios_uverse.png" alt="U-verse TV" /></a></div>');
-}*/
+}
 	
-   document.write('<div id="premios-box" class="section">');
+/*   document.write('<div id="premios-box" class="section">');
     document.write('<p><a href="https://referral.wireless.att.com/postpaid/es/home/landing.do " title="Recomienda a tus familiares y amigos">Recomienda a tus<br />familiares y amigos y<br />gana hasta $599<br /> al a&ntilde;o.</a></p>');
-    document.write('</div>');
+    document.write('</div>');*/
 
 	 
 

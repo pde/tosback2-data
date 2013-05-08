@@ -1,0 +1,66 @@
+/***
+ This script handles the load of us asynchronously
+*/
+
+var scriptName = "asyncPixelLoader.js";
+
+function extract_def(name, def_val)
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( "http://bla?"+queryString );
+  
+  if( results == null )
+    return def_val;
+  else
+    return results[1];
+}
+
+function extract(name)
+{
+	extract_def(name,"");
+}
+
+var scripts = document.getElementsByTagName('script');
+var index;
+for(index=scripts.length - 1; index>=0; index--) {
+  if(typeof scripts[index].src != 'undefined' && scripts[index].src.indexOf(scriptName)>=0) {
+    break;
+  }
+}
+var myScript = scripts[index];
+myScript.parentNode.removeChild(myScript);
+// myScript now contains our script object
+var queryString = myScript.src.replace(/^[^\?]+\??/,'');
+var pixelUrlEnc = extract_def('url');
+
+loadScript(pixelUrlEnc);
+
+function loadScript(url) {
+    if(url == "") {
+		return;
+	} else {
+	    var cacheBuster = Math.ceil(Math.random()*100000);
+	    var currentLocation = document.referrer;
+	    var toAdd = '&cisrf='+encodeURIComponent(currentLocation);
+        var frame = document.createElement('iframe');
+		frame.setAttribute('scrolling','no');
+		frame.setAttribute('frameBorder',0);
+		frame.setAttribute('border',0);
+		frame.setAttribute('marginwidth',0);
+		frame.setAttribute('marginheight',0);
+		frame.setAttribute('width',0);
+		frame.setAttribute('height',0);
+		var suffix = "";
+		var decodedUrl = decodeURIComponent(url);
+		if(decodedUrl.indexOf("?")>=0) {
+			suffix = "&cb=" + cacheBuster;
+		} else {
+			suffix = "?cb=" + cacheBuster;
+		}
+		suffix = suffix + toAdd;
+        frame.src = decodedUrl + suffix;
+        document.getElementsByTagName('head')[0].appendChild(frame);
+	}
+}

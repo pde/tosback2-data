@@ -296,7 +296,7 @@ window.opener.document.cookie = name + "=" + escape(value) +
             }
 
             function signOutClick() {
-            
+                _gaq.push(['_trackEvent', "UserLogInLogOutSource", "Log Out", encodeURIComponent(window.location), 1, true]);
                 signOutEvent("lblUserDetail");
                 window.location = "/Admin/Security/logoff.aspx";
                 //document.getElementById('<%=rowSignIn.ClientID%>').style.display = 'inline';
@@ -529,4 +529,10 @@ window.opener.document.cookie = name + "=" + escape(value) +
                 }
                 catch (e) {
                 }
+            }
+            function SignInSuccess(RedURL) {
+                try {
+                    _gaq.push(['_trackEvent', "UserLogInLogOutSource", "Log In", encodeURIComponent(window.location), 1, true]);
+                } catch (e) { }
+                window.location = RedURL;
             }

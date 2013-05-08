@@ -1,5 +1,5 @@
 /* SiteCatalyst code version: H.22.1. Copyright 1996-2011 Adobe, Inc. All Rights Reserved More info available at http://www.adobe.com */
-var s_code_version = '1.8.GM.03052011';
+var s_code_version = '1.8.GM.03282013';
 var s_account="gmgmcomdev";
 var s=s_gi(s_account);
 // Looks for the iPad user agent and changes the report suite id
@@ -58,6 +58,7 @@ function s_doPlugins(s) {
 	s.eVar25 = s.getQueryParam('evar25');
 	s.eVar29 = s.getQueryParam('seo');
 	s.eVar36 = s.getQueryParam('evar36');
+	s.eVar50 = s.getQueryParam('evar50');
  	var date = new Date();
  	var year = date.getFullYear();
 	s.eVar9=s.getTimeParting('h','-5',year); // Set hour 
@@ -66,7 +67,7 @@ function s_doPlugins(s) {
 	s.eVar12=s.getNewRepeat();
 	s.prop21=s.pageName;
 	s.prop22=s_code_version;
-	s.manageVars("lowercaseVars","eVar22,eVar29,eVar10,eVar11,eVar12,eVar25,eVar36,eVar9",2);
+	s.manageVars("lowercaseVars","eVar22,eVar29,eVar10,eVar11,eVar12,eVar25,eVar36,eVar50,eVar9",2);
 		var percent = s.getPercentPageViewed(s.pageName);
 		try {
 			if (typeof(percent[2]) != "undefined"){
@@ -219,7 +220,7 @@ s.m_Survey_c="var m=s.m_i(\"Survey\");m.launch=function(i,e,c,o,f){this._boot();
 +"ger.js\");}};m._script=function(u){var d=document,e=d.createElement(\"script\");e.type=\"text/javascript\";e.src=u;d.getElementsByTagName(\"head\")[0].appendChild(e);};if(m.onLoad)m.onLoad(s,m)";
 s.m_i("Survey");
 /* WARNING: Changing any of the below variables will cause drastic changes to how your visitor data is collected.  Changes should only be made when instructed to do so by your account manager.*/
-s.dc=112;
+s.visitorNamespace="gmgmcom";
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s._c='s_c';s.wd=window;if(!s.wd.s_c_in){s.wd.s_c_il=new Array;s.wd.s_c_in=0;}s._il=s.wd.s_c_il;s._in=s.wd.s_c_in;s._il[s._in]=s;s.wd.s_c_in++;s"

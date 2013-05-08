@@ -5,9 +5,7 @@
  *   GeoAPI.getStoreData(mycallback);
  */
 var GeoAPI = (function() {
-
-    // PRIVATE METHODS 
-
+    // PRIVATE METHODS
     function setCookie(name, value) {
         var argv = arguments,
             argc = arguments.length,
@@ -40,85 +38,6 @@ var GeoAPI = (function() {
         return null;
     }
 
-    function requestWhere2GetIt() {
-        if ($api.url) return;
-        $api.url = getWhere2GetItUrl();
-
-        request = YAHOO.util.Connect.asyncRequest('GET', $api.url, {
-            success: function(o) {
-                var text = o.responseText,
-                    xmlDoc = getXmlDoc(o.responseText),
-                    poi = xmlDoc.getElementsByTagName('poi'),
-                    obj = poi && poi.length ? xmlToObj(poi.item(0)) : {};
-
-                setCookie('GeoAPI_json', jsonEncode(obj));
-                $api.storedata = obj;
-                dequeueCallbacks();
-            },
-            failure: function(o) { console.log('GeoAPI request failed'); },
-            xdr: true
-        });
-    }
-
-    function getWhere2GetItUrl() {
-        var parts = window.location.hostname.split('.'),
-            domain = parts.slice(parts.length - 2).join('.'),
-            DOMAIN_API_KEY = {
-                'carrsqc.com':   '3499C810-EAD2-11E0-830B-7018E525BB5D',
-                'dominicks.com': 'C28D5DE0-EAD1-11E0-A1EC-290A97B4DA77',
-                'genuardis.com': '5C04F122-EAD2-11E0-B93F-1EC34D48D7F4',
-                'pavilions.com': '47DEA148-EAD2-11E0-A1E8-8CD0A858831C',
-                'randalls.com':  'FD8E4742-EAD1-11E0-B183-AD1AE525BB5D',
-                'safeway.com':   'A73D27DC-EAD1-11E0-A74D-F7CEA858831C',
-                'tomthumb.com':  '1298A7AE-EAD2-11E0-A151-EC14E525BB5D',
-                'vons.com':      'EC6EA920-EAD1-11E0-8FA6-D6EFDDB2B31E'
-            },
-            apikey = DOMAIN_API_KEY[domain] || DOMAIN_API_KEY['safeway.com'],
-            storeid = getCookie('mylocation'),
-            xml;
-
-        xml = storeid
-            ? '<request><appkey>' + apikey + '</appkey><formdata id="getlist"><objectname>Locator::Store</objectname><where><clientkey><eq>' + storeid + '</eq></clientkey></where></formdata></request>'
-            : '<request><appkey>'+ apikey + '</appkey><geoip>1</geoip><formdata id="locatorsearch"><geolocs><geoloc><addressline></addressline><country></country></geoloc></geolocs><limit>1</limit><proximitymethod>straightline</proximitymethod><searchradius>5|10|20</searchradius><radiusuom>mile</radiusuom><where><fuelparticipating><distinctfrom>1</distinctfrom></fuelparticipating></where></formdata></request>';
-
-        return 'http://api.slippymap.com/rest?xml_request=' + encodeURI(xml);
-    }
-
-    function getXmlDoc(text) {
-        var xmlDoc, xmlDocs;
-
-        if (window.ActiveXObject)  {  
-            var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async="false";
-            xmlDoc.loadXML(text);
-        } else {
-            var xmlDoc = (new DOMParser()).parseFromString(text, "text/xml");
-            var xmlDocS = (new XMLSerializer()).serializeToString(xmlDoc);
-        }
-
-        return xmlDoc;
-    }
-
-    function xmlToObj(parentNode) {
-        var obj = {},
-            TEXT_NODE = 3,
-            ELEMENT = 1,
-            i, _i, node, ch;
-
-        for (i=0, _i=parentNode.childNodes.length; i < _i; i++) {
-            var node = parentNode.childNodes[i];
-
-            if (ELEMENT===node.nodeType) {
-                ch = node.firstChild;
-                if (ch && TEXT_NODE===ch.nodeType) {
-                    obj[node.nodeName] = ch.nodeValue.replace(/^ *| *$/g, '');
-                }
-            }
-        }
-
-        return obj;
-    }
-
     /**
      * Converts a simple object into a json string.
      */
@@ -146,11 +65,74 @@ var GeoAPI = (function() {
         while (fn = $api.callbacks.shift()) fn($api.storedata);
     }
 
-    // DEFINE THE API
+    function requestLocatorService() {
 
+        if (!window.jQuery && $api.jqueryAttempts < 10) {
+            $api.jqueryAttempts++;
+            setTimeout(requestLocatorService, 500);
+            return;
+        }
+
+
+        jQuery.get("/emmd/service/locator/getcloseststores?geoip=", "",  function(data) {
+            var oldFormat = {};
+            if (data.stores.length>0)
+            {
+                oldFormat["name"] = data.stores[0].name;
+                oldFormat["city"] = data.stores[0].city;
+                oldFormat["state"] = data.stores[0].state;
+                oldFormat["phone"] = data.stores[0].phone;
+                oldFormat["address1"] = data.stores[0].address;
+                oldFormat["latitude"] = data.stores[0].latitude;
+                oldFormat["longitude"] = data.stores[0].longitude;
+                oldFormat["brandid"] = data.stores[0].brandId;
+                oldFormat["divname"] = data.stores[0].divName;
+                oldFormat["divnumber"] = data.stores[0].divNumber;
+                oldFormat["postalcode"] = data.stores[0].postCode;
+                oldFormat["pharmacyfaxnumber"] = data.stores[0].metaData.pharmacyFaxNumber;
+                oldFormat["pharmacyhours1"] = data.stores[0].metaData.pharmacyHours;
+                oldFormat["pharmacyphonenumber"] = data.stores[0].metaData.pharmacyPhoneNumber;
+                oldFormat["storehours1"] = data.stores[0].metaData.storeHours;
+
+                // Data we have in new format but wasn't in old; adding in case.
+                oldFormat["storeid"] = data.stores[0].storeId;
+                oldFormat["externalstoreid"] = data.stores[0].externalStoreId;
+                oldFormat["distance"] = data.stores[0].distance;
+
+                var storeDetails = data.stores[0].metaData.storeDetails.split(/, /);
+
+                for (var x=0;x<storeDetails.length;x++) {
+                    if (storeDetails[x] === "Bakery") { oldFormat["bakery"] = "1"; }
+                    if (storeDetails[x] === "Blockbuster Express") { oldFormat["blockbusterexpress"] = "1"; }
+                    if (storeDetails[x] === "Chase Bank") { oldFormat["chasebank"] = "1"; }
+                    if (storeDetails[x] === "Deli") { oldFormat["deli"] = "1"; }
+                    if (storeDetails[x] === "Floral") { oldFormat["floral"] = "1"; }
+                    if (storeDetails[x] === "Liquor") { oldFormat["liquor"] = "1"; }
+                    if (storeDetails[x] === "Meat") { oldFormat["meat"] = "1"; }
+                    if (storeDetails[x] === "Pharmacy") { oldFormat["pharmacy"] = "1"; }
+                    if (storeDetails[x] === "Produce") { oldFormat["produce"] = "1"; }
+                    if (storeDetails[x] === "Seafood") { oldFormat["seafood"] = "1"; }
+                    if (storeDetails[x] === "Starbuck's") { oldFormat["starbucks"] = "1"; }
+                    // Not sure of these keys; Need clarifications
+                    if (storeDetails[x] === "Sushi Bar") { oldFormat["sushi_bar"] = "1"; }
+                    if (storeDetails[x] === "DVD Play Kiosk") { oldFormat["dvdplay_kiosk"] = "1"; }
+                    if (storeDetails[x] === "Digital") { oldFormat["digital"] = "1"; }
+                    if (storeDetails[x] === "Flushot Ondemand") { oldFormat["flushot_ondemand"] = "1"; }
+                }
+            }
+            $api.storedata = data;
+            $api.oldstoredata = oldFormat;
+            setCookie('GeoAPI_json', jsonEncode(oldFormat));
+            dequeueCallbacks();
+        }, "json");
+
+    }
+    // DEFINE THE API
     var $api = {
+          jqueryAttempts: 0,
           callbacks: [],
           storedata: null,
+          oldstoredata: null,
           cookie: getCookie('GeoAPI_json'),
           getStoreData: function(callbackFn) {
               // if the storedata is already available, immediately invoke the callback
@@ -162,20 +144,15 @@ var GeoAPI = (function() {
           }            
       };
 
-    // API INITIALIZATION
-
     if ($api.cookie && eval('$api.storedata = ' + $api.cookie)) {
         // data is cached
         $api.cached = true; // helpful for debug
     } else {
-        YAHOO.util.Event.onDOMReady (function (ev) { 
-            YAHOO.util.Connect.transport('/CMS/assets/javascript/connection.swf');
-            YAHOO.util.Connect.xdrReadyEvent.subscribe(requestWhere2GetIt);
-        });
+        requestLocatorService();
     }
-
     // PUBLIC INTERFACE
-
     return $api;
-
 })();
+
+
+

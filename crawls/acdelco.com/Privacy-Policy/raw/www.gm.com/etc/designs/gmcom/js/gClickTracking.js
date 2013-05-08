@@ -57,6 +57,11 @@ $(document).ready (function() {
 		}
 		fireMetrics( 'leftnav', options );
 	});
+	
+	//GMCOM-2975 social link dynamic tracking code
+	$('div.brandpage_social a img').live('click', function(){			
+		fireMetrics('SOCIAL_LINK', {'destination_name' : $(this).attr('alt').toLowerCase()});
+	});
 
 	//-------------------------------------------------------------
 	//menu bar on home page
@@ -988,6 +993,7 @@ $(document).ready (function() {
 			fireMetrics('sign_up_submit');
 		});
 		// Social links
+		/*
 		$( 'a[href*="www.facebook.com/generalmotors"]' ).click( function(){
 			fireMetrics('BRAND_SOCIAL_FACEBOOK');
 		});
@@ -1000,6 +1006,8 @@ $(document).ready (function() {
 		$( 'a[href*="plus.google"]' ).click( function(){
 			fireMetrics('BRAND_SOCIAL_GOOGLEPLUS');
 		});
+		*/				
+		
 		//articles under earning releases
 		$( 'li p.articleTitleBlurb a[href*="/investors/earning-releases"]' ).click( function(){
 			var href = $( this ).attr( 'href' );		
@@ -1914,5 +1922,9 @@ $(document).ready (function() {
 				//fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' ), number_clicked : text});
 			});
 		}
+		
+		$( '#liveChat').live( 'click', function(){
+			fireMetrics('live_chat');
+		});
 	}
 });

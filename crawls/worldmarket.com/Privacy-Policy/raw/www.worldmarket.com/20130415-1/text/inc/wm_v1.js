@@ -16,34 +16,6 @@ jQuery(function() {
 	}
 });
 
-// create openDialog if not exists
-
-
-var openDialogInfo = openDialogInfo  || function (contentDiv,title){
-			
-			jQuery('#dialogContent').html(jQuery('#' + contentDiv).html());
-			jQuery('#dialogContainer .popHeader').html(title);
-			
-			var dialogBox = jQuery('#dialogContainer > .modalDialogBox');
-			
-			dialogBox.css('left',(jQuery(window).width()-dialogBox.outerWidth())/ 2 + 'px');
-			dialogBox.css('top',(jQuery(window).height()-dialogBox.outerHeight())/ 2 + 'px');
-			
-			jQuery.blockUI({message:"",overlayCSS:{backgroundColor:'#fff',cursor:'default'},css:{border:'0px',padding:'10px',boxShadow:'0 0 10px #999'}});
-			
-			jQuery('#dialogContainer').dialog({
-			  autoOpen: false,
-			  closeOnEscape:true,
-			  modal:false,
-			  width:'500',
-			  height:'400',
-			  dialogClass:'modalDialogBox',
-			  beforeClose: function(event,ui){jQuery.unblockUI();}
-			});		
-			jQuery('#dialogContainer').dialog('open');
-			jQuery('#dialogContainer .popContainer').css('height','315px');
-		}
-
 
 jQuery(function() {
 	jQuery('.subscribePopup').insertAfter(jQuery('.wrapper'));

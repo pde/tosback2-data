@@ -90,13 +90,15 @@ if( target==true){
 }
 
 
+	//	 alert(('#content').width());
 
-// set header / footer width for fat pages
+//set header / footer width for fat pages
 if($('body').hasClass('ipad')){
 	if($('#content > .shadedContainer').width()>980){
 		var scWidth=$('#content > .shadedContainer').width()+'px';
-		$('#primaryNavigation').css('width',scWidth);
-		$('#primaryNavigation > ul').css('width',scWidth);
+		$('#primaryNavigation').css({width:scWidth});
+		$('#primaryNavigation > ul').css({width:scWidth});
+	
 		$('#auxiliaryNavigation').css('width',scWidth);
 	}
 	else{

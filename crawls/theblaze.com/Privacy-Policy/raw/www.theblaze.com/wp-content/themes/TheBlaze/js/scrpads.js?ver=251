@@ -7,14 +7,14 @@
 		cats : null,
 		gather_cats : function() {
 			if(this.cats === null) {
-				local_cats = $('meta[name=categories]');
+				var local_cats = $('meta[name=categories]');
 				if(local_cats.length > 0) this.cats = local_cats.attr('value');
 			}
 		},
 		init : function() { 
 			this.ord = this.util.set_ord_val();
 			if(document.location.pathname !== '/') {
-				path = document.location.pathname.split('/');
+				var path = document.location.pathname.split('/');
 				if(path.length >= 2) this.slug = path[path.length-2];
 			}
 			this.gather_cats();
@@ -23,7 +23,44 @@
 			set_ord_val: function(){ 
 				return Math.ceil( Math.random() * 10000000000000000);
 			},
-			iframe : {
+            get_elem_height: function(elem){ return jQuery(elem).css('height').replace('px','');
+            },
+            count_down : function(vars){
+                var takeover_i = 1;
+                function _StartCountDown(){
+                    var stop_interval = setInterval(function() {
+                        $(vars.idname).text(vars.time - takeover_i);
+                        if(takeover_i === vars.time) {
+                            clearInterval(stop_interval);
+                            window[vars.close_ad_func]();
+                        }
+                        takeover_i+=1;
+                    }, 1000);
+                }
+                setTimeout(_StartCountDown,1000);
+            },
+            set_up_time: function(elem){
+            var gthght_i = 0,
+                t_interval = setInterval(function() {
+                var _elem = jQuery('#'+elem.id);
+                var _pelem = _elem.parent();
+                var hgt = jQuery.blzads.util.get_elem_height('#'+elem.id);
+                if(hgt >= elem.height || elem.failover < gthght_i ) {
+                    clearInterval(t_interval);
+                    if(hgt >= elem.height){
+                        _elem.slideDown(1000); _pelem.css({'margin-bottom':'25px'});
+                        var closeAdfunc = elem.id+'closeAdfunc', openAdfunc = elem.id+'openAdfunc';
+                        window[closeAdfunc] =function(){ _elem.slideUp(1000,function(){ $(this).css({'display':'none','visibility':'hidden'}); }); _pelem.find('.close_link').hide(); _pelem.find('.open_link').show(); return false;};
+                        window[openAdfunc]  =function(){ _elem.slideDown(1000,function(){ $(this).css({'display':'block','visibility':'visible'}); }); _pelem.find('.close_link').show(); _pelem.find('.open_link').hide(); return false; };
+                        _pelem.prepend('<div id="billboard_options"><a href="#" onClick="'+closeAdfunc+'();return false;" class="close_link" style="float:right;">Close [x]</a><a id="" href="#" onClick="'+openAdfunc+'();return false;" class="open_link" style="float:right; display:none;">Open [x]</a></div>');
+                        jQuery.blzads.util.count_down({idname:'#takeover_time', time:elem.time,close_ad_func:closeAdfunc})
+                    }
+                }
+                gthght_i++;
+            }, 500);
+
+        },
+            iframe : {
 				create : function(w, h, id) {
 					var ifrm = document.createElement('iframe');
 					ifrm.setAttribute('id', 'iframe-' + id);
@@ -44,9 +81,8 @@
 					} else if (ifr.document) {
 						// For IE5
 						return ifr.document;
-					} else {
-						return;
 					}
+                    return null;
 				},
 				closeDoc: function(doc, i) {
 					if (i==10) {
@@ -94,7 +130,7 @@
 				return rt+'u='+rta;
 			}
 		},
-		create_script_ad : function(id,url,w,h,params,xparams){
+		create_script_ad : function(id,url,w,h,params,xparams,refresh){
 			this.gather_cats();
 			//return '';
 			//var ifram = this.util.iframe.create(w,h,id);
@@ -108,6 +144,10 @@
 			//document.write('<style type="text/css">html,body{margin:0;padding:0;}</style>');
 			//this.util.iframe.closeDoc(doc, 0);
 			this.tile += 1;
+            var time_close = refresh.close || false;
+            if(time_close){
+                this.util.set_up_time({id:id,failover:100,height:h,time:time_close});
+            }
 		},
 		create_iframe_ad : function(id,url,w,h,params,xparams,refresh){
 			this.gather_cats();
@@ -139,24 +179,24 @@
 		},
 		create_takeover_ad : function(takeover,cookieName){
 			takeover = takeover||false;
-			if( !isMobile() && (screen.width > 500) && !isBot() && takeover ){
-				var d = new Date();
-				var ckkie_exp = this.ckkie_exp, entryad_name = 'entryad_D'+d.getDay()+'M'+d.getMonth()+'Y'+d.getFullYear() , entryad_cookie = {};
+			if( !jQuery.blzBrowserFuncs.isMobile() && (screen.width > 500) && !jQuery.blzBrowserFuncs.isBot() && takeover ){
+				//var d = new Date();
+				var ckkie_exp = this.ckkie_exp;//, entryad_name = 'entryad_D'+d.getDay()+'M'+d.getMonth()+'Y'+d.getFullYear();
 				ckkie_exp.expires = 3;
 				var entryad_cookie = $.cookie(cookieName);
 				if (entryad_cookie !== 'hide3') {
 					tb_show( '', '#TB_inline?width=750&height=600&modal=true' );
-					ad_content = '<style type="text/css">#TB_window iframe{display:block;margin:0 auto;}</style><div style="margin-bottom:15px;"><span class="timeout">Closes in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="tb_remove();" class="close_link" style="float:right;">Close [x]</a></div>';
+					var ad_content = '<style type="text/css">#TB_window iframe{display:block;margin:0 auto;}</style><div style="margin-bottom:15px;"><span class="timeout">Closes in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="tb_remove();" class="close_link" style="float:right;">Close [x]</a></div>';
 					ad_content += '<iframe src="http://ad.doubleclick.net/adi/prnd/prn-theblaze;pos=popup;prntype=web;sz=640x480;ord=' + this.ord + '?" width="640" height="480" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">';
 					if (navigator.userAgent.indexOf("Gecko")==-1) {
 						ad_content += '<script type="text/javascript" src="http://ad.doubleclick.net/adj/prnd/prn-theblaze;pos=popup;prntype=web;sz=640x480;abr=!ie;ord=' + this.ord + '?"><\/script>';
 					}
 					ad_content += '</iframe>';
 					$('#TB_ajaxContent').html(ad_content);
-					takeover_alive = true;
-					takeover_i = 1;
+					//var takeover_alive = true;
+					var takeover_i = 1;
 					function _StartCountDown(){
-						takeover_interval = setInterval(function() {
+						var takeover_interval = setInterval(function() {
 							$('#takeover_time').text(15 - takeover_i);
 							if(takeover_i === 15) {
 								clearInterval(takeover_interval);
@@ -175,21 +215,21 @@
 		},
 		create_new_takeover_ad : function(takeover,cookieName){
 			takeover = takeover||false;
-			if( !isMobile() && (screen.width > 500) && !isBot() && takeover ){
-				var d = new Date();
+			if( !jQuery.blzBrowserFuncs.isMobile() && (screen.width > 500) && !jQuery.blzBrowserFuncs.isBot() && takeover ){
+				//var d = new Date();
 				var ckkie_exp = this.ckkie_exp;
 				ckkie_exp.expires = 3;
 				var entryad_cookie = $.cookie(cookieName);
 				if (entryad_cookie !== 'hide3') {
-					ad_content = '<div id="interstitial"><div id="interstitial-header"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/interstitial-logo.png" class="logo"><span class="timeout">Ad will close in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="jQuery.blzads.new_takeover_ad_close();" class="close_link">Close this ad [x]</a></div></div>';
-					ad_content += '<a target="_blank" href="http://www.theblaze.com/redirect.html?id=516e0a757345389d1d60e9e4"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/ads/041613-carbonite/interstitial.jpg"</div></a>';
-					ad_content += '<img src="http://www.theblaze.com/beacon.gif?id=2&ord=' + $.blzads.ord + '" alt="">';
+					var ad_content = '<div id="interstitial"><div id="interstitial-header"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/interstitial-logo.png" class="logo"><span class="timeout">Ad will close in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="jQuery.blzads.new_takeover_ad_close();" class="close_link">Close this ad [x]</a></div></div>';
+					ad_content += '<a target="_blank" href="http://www.theblaze.com/redirect.html?id=51819d9cf9f5356aaaf7c106"><div class="interstitial-header-container"><img src="/wp-content/themes/TheBlaze/images/ads/042613-control-730x440.jpg"</div></a>';
+					ad_content += '<img width="1" height="1" src="http://www.theblaze.com/beacon.gif?id=4&ord=' + $.blzads.ord + '" alt="">';
 					ad_content += '</div>';
 					$('body').prepend(ad_content);
-					takeover_alive = true;
-					takeover_i = 1;
+					//var takeover_alive = true,
+					var takeover_i = 1;
 					function _StartCountDown(){
-						takeover_interval = setInterval(function() {
+						var takeover_interval = setInterval(function() {
 							$('#takeover_time').text(15 - takeover_i);
 							if(takeover_i === 15) {
 								clearInterval(takeover_interval);

@@ -1,8 +1,3 @@
-// NL 07/09/2010:
-// Auto-Rotate function added
-// btnNext.click and btnPrev.click abstracted to functions allowing them to be called independently of an actual click
-// createSwapFunctionality function moved to in-line code so that variables are accessible to the doSwap() function
-// Removed unnecessary checkMaxValue and checkMinValue functions
 (function ($) {
     $.fn.slider = function (settings) {
         // Config Array

@@ -30,7 +30,7 @@ function usa_showMenu(id)
 	{
 		usa_newAdBannerBgColor = $('.globalHeaderSubNavContents').css('background-color');
 	}*/
-
+	
 	if (typeof usa_setPositionForMenu != 'undefined')
 	{
 		usa_setPositionForMenu();
@@ -63,7 +63,7 @@ function usa_showMenu(id)
 
 function usa_hideMenuAll()
 {
-  //console.log('usa_hideMenuAll: ');
+	//console.log('usa_hideMenuAll: ');
 	clearTimeout(usa_t);
 	usa_menuOpen = '';
 	$('#usa_globalHeaderSubNav_shows').css('display', 'none');
@@ -348,7 +348,8 @@ function usa_buildGlobalMenu()
 		var id = ($(this).attr('id')).replace('usa_menu_', '');
 		usa_showMenu(id);
 	});
-		
+	
+	
 	$('.globalHeaderSubNav').mouseenter(function(event){
 		var id = $(this).attr('id').replace('usa_globalHeaderSubNav_', '');
 		usa_setOpenMenu(id);
@@ -524,37 +525,30 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "The Moment",
-							"url" : usa_baseUrlDomain + "/videos/The%20Moment/Full%20Episodes "
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_suits.png",*/
+							"title" : "Burn Notice",
+							"url" : usa_baseUrlDomain + "/videos/Burn%20Notice/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_fl.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 2 */
+						/* Featured Slot 4 */
 						{
 							"title" : "Necessary Roughness",
 							"url" : usa_baseUrlDomain + "/videos/Necessary%20Roughness/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_nr.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 3 */
+						/* Featured Slot 5 */
 						{
 							"title" : "Psych",
 							"url" : usa_baseUrlDomain + "/videos/Psych/Full%20Episodes"
 							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_psych.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
-						/* Featured Slot 4 */
+						/* Featured Slot 6 */
 						{
-							"title" : "Suits",
-							"url" : usa_baseUrlDomain + "/videos/Suits/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_suits.png",*/
-							/*"tuneIn" : "Tune In Time"*/
-						},
-						/* Featured Slot 5 */
-						{
-							"title" : "White Collar",
-							"url" : usa_baseUrlDomain + "/videos/White%20Collar/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_wc.png",*/
+							"title" : "Royal Pains",
+							"url" : usa_baseUrlDomain + "/videos/Royal%20Pains/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_rp.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						}
 					],
@@ -672,30 +666,29 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "FIRDAY",
-							"subtitle" : "SATURDAY MAY 4 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_friday.png"
-						},
-						{
-							"title" : "THE DILEMMA",
-							"subtitle" : "SUNDAY MAY 5 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dilemma.png"
-						},
-						{
-							"title" : "COUPLES RETREAT",
-							"subtitle" : "SUNDAY MAY 5 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
-						},
-						{
 							"title" : "THE BACK-UP PLAN",
 							"subtitle" : "SATURDAY MAY 11 8:30/7:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
+						},
+						{
+							"title" : "THE UGLY TRUTH",
+							"subtitle" : "SATURDAY MAY 11 6:30/5:30C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
+						},
+						{
+							"title" : "LITTLE FOCKERS",
+							"subtitle" : "SATURDAY MAY 11 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
+						},
+						{
+							"title" : "THE 40 YEAR OLD VIRGIN",
+							"subtitle" : "SATURDAY MAY 18 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_40yearoldvirgin.png"
 						}
-
 					]
 				}
 			],
@@ -716,9 +709,7 @@ var usa_globalMenu = {
 
 $(document).ready(function() {
 	usa_buildGlobalMenu();
-    
-
+	
 	// smurfs welcome
 	$('#usa_globalHeaderContents').prepend('<div id="usa_mainLogoExtra"><a href="#"><span></span></a></div>');
 });
-
