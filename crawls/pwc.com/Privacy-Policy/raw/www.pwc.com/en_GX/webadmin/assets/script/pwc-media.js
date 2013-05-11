@@ -939,7 +939,10 @@ jQuery.extend({
 					
 					//actually hide playlist if needed
 					if (!settings.openplaylist) {
-						$(this).hide();
+						//but not on mobile
+						if (!_mob) {
+							$(this).hide();
+						}
 					}
 				
 				

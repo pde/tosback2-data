@@ -245,11 +245,6 @@
 
 
 
-  
-    
-  
-  
-
 
 
 
@@ -692,7 +687,7 @@
 //<![CDATA[
 	var environmentModelValues = {
     	isLoggingServiceActive: 'false',	
-		isReserveInStoreActive: 'false'
+		isReserveInStoreActive: 'true'
     };
     
 	var tealeafOptimizedPath = "/gzip_319345091/optimizedBundles/tealeafOptimized.js";
@@ -925,13 +920,15 @@
             milesOfPcode : "miles of ZIP code",   
 			within: "within",
             storePricesVary: "store prices may vary",
-            limitedBubble:  "We cannot guarantee availability on this item. Please check again or call the store before your visit for updated information.",
+            limitedBubble:  "Before you visit the store, please call to make sure this item is still in stock. A sales associate can put it on hold for you.",
+            limitedBubbleReservable:  "To ensure availability, click the &quot;Reserve in Store&quot; button to have a sales associate look for the item and hold it for you.",
             unitOfMeasure: "miles",
             fisCheckStoreAvailability: "Click &quot;Find In Store&quot; to check store availability",
             checkStoreAvailability: "check store availability",
             select: "select"
         },
         reserveInStore: {
+        	featureButtonLabel: "Reserve In Store",
             baseTitle: "Reserve In Store at ",
             required: "Required",
         	needInfoHeader: "We need a little info to reserve this item",
@@ -940,13 +937,13 @@
         	lastNameLabel: "Last Name",
         	emailLabel: "Email",
         	textMessage: "Should we text you, too? (optional)",
-        	mobileNumberLabel: "Mobile Number",
+        	mobileNumberLabel: "Mobile number",
         	includeAreaCode: "Include area code",
         	dataRatesMessage: "Data rates may apply",
         	reserveButtonLabel: "Reserve",
         	buttonSeperator: "or",
         	cancelButtonLabel: "Cancel",
-        	legalMessage: "We will never use this info for marketing purposes.",
+        	legalMessage: "Used only to contact you about your request.",
         	firstNameError: "Please provide your first name",
         	lastNameError: "Please provide your last name",
         	emailError: "Type a valid email address",
@@ -960,7 +957,7 @@
 			risInfoBodyOpen2: "We'll hold your item until closing time tomorrow, ",
 			risInfoBodyOpen3: "Just give your name to any sales associate when you come to the store.",
 			risInfoBodyClosed1: "The store is currently closed.  As soon as it opens, we'll look for your item.",
-			risInfoBodyClosed2: "After we find it, we'll send you an email to confirm that the item is ready for you -- usually within an hour of opening. (We'll text you, too, if you chose that option.)",
+			risInfoBodyClosed2: "After we find it, we'll send you an email to confirm that the item is ready for you&#151; usually within an hour of opening. (We'll text you, too, if you chose that option.)",
 			risInfoBodyClosed3: "",
 			risOpenerOpen: "After we find it:",
 			risOpenerClosed: "",
@@ -995,7 +992,7 @@
 
 
 	
-		<script type="text/javascript" src="http://www.gap.com/gzip_N1027108809/optimizedBundles/globalOptimized.js" ></script>
+		<script type="text/javascript" src="http://www.gap.com/gzip_N1178330239/optimizedBundles/globalOptimized.js" ></script>
 
 	
 	
@@ -1064,7 +1061,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "05/08/2013 08:58 AM",
+            DATE_IN_USE: "05/11/2013 08:14 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1107,7 +1104,7 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 <!-- localCacheActive  = false -->
 <!-- isLocalCacheDisabled  = true -->
 <!-- isPageContentDataActive  = true -->
-<!-- isKeywordSearchDrivenByEaskAsk  = false -->
+<!-- isKeywordSearchDrivenByEaskAsk  =  -->
 
 <!-- pageTemplateInfo: pageId: 324978
 			isTileOverrideDefinedFromParameter: false
@@ -1260,11 +1257,6 @@ if (navigator.userAgent.indexOf("iPad") != -1) {
 
 <script type="text/javascript">
 	var _checkoutFlowStateMachine = checkoutFlowStateMachine();
-</script>
-
-<script type="text/javascript">
-	<!-- temporary variable for e2/co.uk release -->
-	<!-- var disableCheckoutShippingShippingOptionsContentOverride = true; -->
 </script>
 
 	
@@ -3781,6 +3773,75 @@ Event.observe(window, "load", leftNavUrlPatch.init);
 
 <!-- End CNOV-55: Fix for bad left nav links -->
 
+<!-- BEGIN content override CNOV-57 -->
+<script type="text/javascript">
+  (function() {
+   if (typeof checkout === 'undefined' || typeof ccm === 'undefined') 
+     return;
+
+   var shippingAddressEditedAfterBillingModuleForAccountHolder = false; 
+
+   var oldShippingRequest = ccm.shipping.getShippingRequest;
+   var oldShippingResponse = ccm.shipping.setShippingResponse;
+
+   ccm.shipping.getShippingRequest = function(isShippingOptionRequest) {
+     if (checkout.controller.moduleManager.isDataRequestInProgress)
+       return false;
+
+     if (isAccoundHolderInGuestPathAfterBillingModule()) {
+       checkout.model.data.modules.registration.inProgressRo = true;
+       checkout.model.data.modules.shipping.addressId = null;
+       shippingAddressEditedAfterBillingModuleForAccountHolder = true;
+     }
+
+     oldShippingRequest.call(ccm.shipping, isShippingOptionRequest);
+
+     return false;
+   };
+
+   ccm.shipping.setShippingResponse = function(responseVo) {
+     oldShippingResponse.call(ccm.shipping, responseVo);
+
+     if (shippingAddressEditedAfterBillingModuleForAccountHolder) {
+       shippingAddressEditedAfterBillingModuleForAccountHolder = false;
+       ccm.billing.getBillingRequest();
+     }
+   };
+
+   var isAccoundHolderInGuestPathAfterBillingModule = function() {
+     return !checkout.model.data.context.loggedInRo 
+       && !checkout.model.data.context.newUserRo 
+       && !checkout.model.data.modules.registration.inProgressRo
+       && checkout.model.data.modules.registration.guest;
+   };
+  })();
+</script>
+<!-- END content override CNOV-57 -->
+
+
+<!-- BEGIN content override CNOV-59 -->
+<script type="text/javascript">
+  (function() {
+   if (typeof checkout === 'undefined') 
+     return;
+
+   var oldSetModuleEditDisplay = checkout.controller.moduleManager.setModuleEditDisplay;
+
+   checkout.controller.moduleManager.setModuleEditDisplay = function(moduleName) {
+     oldSetModuleEditDisplay.call(checkout.controller.moduleManager, moduleName);
+
+     if (moduleName === checkout.constants.modules.BILLING_MODULE_NAME) {
+       $('billingCardNumber').value = '';
+       $('billingCreditCardId').value = '';
+       $('billingCardCvvNumber').value = '';
+       $('billingExpirationMonth').value = '';
+       $('billingExpirationYear').value = '';
+     }
+   };
+  })();
+</script>
+<!-- END content override CNOV-59 -->
+
 
 <!-- END Content Item File: /content/0006/278/864/cn6278864.html -->
 
@@ -4797,17 +4858,18 @@ if( shippingOptionsService.controller && shippingOptionsService.controller.close
 <!-- BEGIN - WCD Sitewide Container 7 -->
 <!-- BEGIN Content Item File: /content/0006/523/453/cn6523453.html -->
 
+<!-- Begin CNOV-56 -->
 <script type="text/javascript">
-// WCD RiS (reserve in store) shakeout code
-if ($("storeLocationsList")) { 
-	$('bodyContainer').observe('findInStore:storeListRendered', function() { 
-		var qParams = location.href.toQueryParams();    
-		if (qParams.RiS === 'true') {   
-			$("storeLocationsList").select("div.reserveInStore").invoke("setStyle", { display: 'block' }); 
-		} 	       	
-	});
-}
-</script>
+	if (window['storeLocationsService'] !== undefined) {
+		document.observe('findInStore:storeListRendered', function() {
+			var qParams = location.href.toQueryParams();
+			if (qParams.RiS === 'true') {
+				$("storeLocationsList").select("div.reserveInStore").invoke("setStyle", { display: 'block' });
+			}
+		});
+	}
+</script> 
+<!-- End CNOV-56 -->
 
 <!-- END Content Item File: /content/0006/523/453/cn6523453.html -->
 
@@ -7449,8 +7511,8 @@ if (thisUserMenuUserAgent.indexOf("iPad") != -1) {
   <div id="topNavTopRow" class="clearfix">
   	<div id="topNavLogoBannerWrapper" class="floatLeft">
     	<div id="topNavLogoContainer" class="floatLeft">		
-        	<!-- BEGIN Content Item File: /content/0006/526/474/cn6526474.html -->
-<div id="contentItemContainer10000397" class="6526474" >
+        	<!-- BEGIN Content Item File: /content/0006/541/567/cn6541567.html -->
+<div id="contentItemContainer10000397" class="6541567" >
 
 <!-- GOL LOGO DO NOT REMOVE -->
 <script type="text/javascript">
@@ -7503,9 +7565,9 @@ Event.observe(window,"load",function(){
 </script>
 <div id="LogoContainer_10000397_ContentItem" style="width:62px;height:62px;display:block;">
 
-	<div id="golLogoBaby" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/babygap_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
-	<div id="golLogoKids" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/gapkids_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
-	<div id="golLogo" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogoBaby" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/babygap_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogoKids" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/gapkids_logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
+	<div id="golLogo" style="width:62px;height:62px;display:none;"><a href="http://www.gap.com/"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/logo.gif" style="width:62px;height:62px;" alt="gap.com" /></a></div>
 </div>
 <!-- /GOL LOGO  DO NOT REMOVE-->
 
@@ -7519,8 +7581,8 @@ contentInfo.mobileContent = {
 		"carousel" : 
 		[
 			{
-				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/031512_mobileshoppingApp_US_kids.jpg",
-				"url" : "http://www.gap.com/browse/category.do?cid=8792&mlink,6526474,MOB_Main_NewArrivals&clink=6526474"
+				"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/050913_ALL_dress_MOB_US.jpg",
+				"url" : "http://www.gap.com/browse/category.do?cid=13658&mlink,6541567,MOB_Main_Womens&clink=6541567"
 			}
 		]
   	},
@@ -7529,15 +7591,15 @@ contentInfo.mobileContent = {
 	{
 		"headerBanner": 
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/10-25_EDFSFR_MobileAsset.png",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/EDFSFR_MobileAsset.png",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/edfs_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/edfs_popup.html" }
 		},
 		"skinnyBanner":
 		{
-			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/050813_ALL_48hr_MOBAN_US.jpg",
+			"img" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/051013_ALL_30offEndlessSum_MOBILE_US.gif",
 			"command" : "displayOverlay",
-			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/474/assets/skinny_popup.html" }
+			"parameters" : { "path" : "http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/567/assets/skinny_popup.html" }
 		}
 	}
 };
@@ -7545,13 +7607,13 @@ contentInfo.mobileContent = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/526/474/cn6526474.html -->
+<!-- END Content Item File: /content/0006/541/567/cn6541567.html -->
 
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0006/526/480/cn6526480.html -->
-<div id="contentItemContainer10000395" class="6526480" >
+    	<!-- BEGIN Content Item File: /content/0006/541/540/cn6541540.html -->
+<div id="contentItemContainer10000395" class="6541540" >
 
 <style type="text/css">
 #globalBanner {
@@ -7607,16 +7669,16 @@ contentInfo.mobileContent = {
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/480/assets/050813_ALL_48hr_GB_US.png" alt="30% off your purchase." usemap="#gbMap">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/540/assets/051013_ALL_30offEndlessSum_GB_US.png" alt="30% off your purchase." usemap="#gbMap">
 		<map name="gbMap">
-<area class="noHideDisruptor" id="globalBannerActivator" coords="0,9,377,65" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/480/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
+<area class="noHideDisruptor" id="globalBannerActivator" coords="0,9,280,63" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/541/540/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
 </map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/526/480/assets/050813_ALL_48hr_DISR_US.png" alt="30% off your purchase." usemap="#disruptorMap">
-		<map name="disruptorMap"><area alt="click for details" coords="0,40,314,313" href="javascript:void(0);" class="noHideDisruptor" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/526/480/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0006/541/540/assets/051013_ALL_30offEndlessSum_DISR_US.png" alt="30% off your purchase." usemap="#disruptorMap">
+		<map name="disruptorMap"><area alt="click for details" coords="0,0,314,259" href="javascript:void(0);" class="noHideDisruptor" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0006/541/540/assets/legal.html" data-jbox-width="300" data-jbox-height="300">
 </map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -7624,7 +7686,7 @@ contentInfo.mobileContent = {
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('050813_GB');
+	globalBannerDisruptor.init('051013_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7746,7 +7808,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0006/526/480/cn6526480.html -->
+<!-- END Content Item File: /content/0006/541/540/cn6541540.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9104,7 +9166,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,6526474,6526480,6436342,5754165,5746856,5667166,5746857,6248410";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,6541567,6541540,6436342,5754165,5746856,5667166,5746857,6248410";
 	 </script>
 	
 	<noscript>

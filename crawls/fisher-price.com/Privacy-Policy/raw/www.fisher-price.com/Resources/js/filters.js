@@ -84,7 +84,7 @@ $(".filter-Age li:not('.disabled')").live("click", function (e) {
 });
 
 
-$("ul.filter-category li:not('.disabled')").live("click", function (e) {
+$("ul.filter-category li:not('.disabled,.topCategory')").live("click", function (e) {
     var currentObj = $(this);
     if (isGrandParentsPage === 'true') {
         multiSelectCheckboxforGP("ul.filter-category li", currentObj);
@@ -278,8 +278,7 @@ multiSelectCheckbox = function (selectedCategory, currentObject) {
 	if(pageSize == "") {
 		pageSize = 9;
 	}
-
-	$(currentObject).parents('li.level2').addClass('click-active');
+	
 	if ($(currentObject).hasClass('click-active')) {
 		if (isEndecaSearch !== 'true') {
 			//$(".navigation li.click-active").removeClass('click-active');
@@ -290,6 +289,9 @@ multiSelectCheckbox = function (selectedCategory, currentObject) {
 				collectDataListEndeca(pagination, pageIndex, pageSize);
 		}
 	} else {
+		if($(currentObject).parents('li.level2').children('a').hasClass('plus')) {
+			$(currentObject).parents('li.level2').children('a').trigger('click');
+		}
 		if (isEndecaSearch !== 'true') {
 			//$(".navigation li.click-active").removeClass('click-active');
 			$(currentObject).addClass('click-active');
@@ -776,7 +778,10 @@ collectDataList = function (pagination, pageIndex, pageSize, currentObject) {
 };
 
 var categoryFilterList = '';
-var data_sort = 'pPrice|1';
+var data_sort = '';
+if(!isSearchResults) {
+	data_sort = 'pPrice|1';
+}
 hashSegments = window.location.hash.substr(1, 99999999).split("&");
 for (i = 0; i < hashSegments.length; i++) {
 	pieces = hashSegments[i].split("=");
@@ -852,7 +857,7 @@ collectDataListEndeca = function (pagination, pageIndex, pageSize, navOnly, bran
 
     if (!optionsSelected && window.topNine && navOnly != 1) {
         data_sort = "";
-        collectDataListForInt(pagination, pageIndex, pageSize);
+        collectDataInitialLoad();
         return;
     }
 
@@ -990,82 +995,19 @@ collectDataListForGP = function (pagination, pageIndex, pageSize) {
 
 };
 
-collectDataListForInt = function (pagination, pageIndex, pageSize) {
-    // Following variables are used to form a query string which updtes the left side section based on the selected filters
-    var ageQString = '',
-        categoryQString = '',
-        brandsQString = '';
-    $('.filter-Age li.click-active').each(function () {
-        getMinAge = $(this).attr('data-min-age');
-        getMaxAge = $(this).attr('data-max-age');
-        ageFilter = ageFilter + "minAge=" + getMinAge + "&maxAge=" + getMaxAge;
-        ageHTML = ageHTML + "<span class='left'>" + $(this).html() + "</span><a class='age updateFilterResults' data-age-name='" + $(this).attr('data-age-name') + "' href='#'></a>";
-        ageQString = "cminage=" + $(this).attr('data-min-age') + "&cmaxage=" + $(this).attr('data-max-age') + "&agecode=" + $(this).attr('selector-code');
-        gaAge = 'Age- ' + $(this).attr('data-age-name');
-    });
-
-    //alert(ageFilter);
-    isVewAllSelected = $(".filter-category li.void").hasClass('click-active');
-    if (isVewAllSelected === true) {
-        $('.filter-category li:not(".void")').removeClass('click-active');
-    }
-
-    var selectedFilter_categoryLength = $('.filter-category li.click-active').length;
-    $('.filter-category li.click-active').each(function (i) {
-        getCategoryCode = $(this).attr('data-cat-code');
-        gaCategory = 'Category- ' + $(this).html();
-        if (i === 0) {
-            categoryFilterList = categoryFilterList + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
-            categoryQString = categoryQString + getCategoryCode;
-        } else {
-            categoryFilterList = categoryFilterList + ',' + getCategoryCode;
-            categoryHTML = categoryHTML + "<span class='left listedItems'><span class='left removeAClass'>" + $(this).html() + "</span><a class='cat updateFilterResults right' data-cat-code='" + $(this).attr('data-cat-code') + "' href='#'></a></span>" + "$";
-            categoryQString = categoryQString + getCategoryCode;
-        }
-    });
-
-    // alert(categoryFilterList);
-
-    var selectedFilter_brandLength = $('.filter-brands li.click-active').length;
-    $('.filter-brands li.click-active').each(function (i) {
-        getBrandCode = $(this).attr('data-brand-code');
-        gaBrand = 'Brand/Character- ' + $(this).attr('data-brand-name');
-        if (i === 0) {
-            brandsFilter = brandsFilter + getBrandCode;
-            brandsHTML = brandsHTML + "<span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' data-brand-code='" + $(this).attr('data-brand-code') + "' href='#'></a>";
-            brandsQString = brandsQString + getBrandCode;
-        } else {
-            brandsFilter = brandsFilter + ',' + getBrandCode;
-            brandsHTML = brandsHTML + "<span class='left'>" + $(this).html() + "</span><a class='brand updateFilterResults right' data-brand-code='" + $(this).attr('data-brand-code') + "' href='#'></a>";
-            brandsQString = brandsQString + getBrandCode;
-        }
-    });
-
-    //console.log(ageHTML);
-    var finalSelectedCategoriesList = new Object();
-    finalSelectedCategoriesList[0] = ageHTML;
-    finalSelectedCategoriesList[1] = categoryHTML;
-    finalSelectedCategoriesList[2] = brandsHTML;
-    if (ageFilter === '') {
-        ageFilter = "minAge=&maxAge=";
-    }
-    finalQueryString = ageFilter + "&category=" + categoryFilterList + "&brands=" + brandsFilter + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&sortType=" + data_sort + "&PubId=" + $("#PublicationId").val();
-
-    ajaxURL = localInfo + "/product/GetFilteredProductsForInterrnational?" + finalQueryString;
-    var agequerystring = ageQString ? ageQString : "_nop=1";
-    finalQueryStringToUpdateLeftPanel = agequerystring + "&catcode=" + categoryQString + "&brands=" + brandsQString;
-    var googleAnalyticsData = gaAge + gaCategory + gaBrand + 'SortBy- ' + data_sort + '~None~Toy Finder~Thumbnail~View';
-    $('#productsList').html("");
-    $('#productsList').addClass('loading');
-    // update the left panel
-    updateFilterCategories(finalQueryStringToUpdateLeftPanel);
-    // update the right panel
-    updateProductsListforGP(ajaxURL, googleAnalyticsData);
-    clearObjects();
-    // update the selected filters at the top of the leftside panel:
-    updateSelectedfilterList(finalSelectedCategoriesList);
-    disableAllCheckboxes();
+collectDataInitialLoad = function () {
+	if(window.topNine) {
+		if (xhr1 && xhr1.readystate != 4) {
+			xhr1.abort();
+		}
+		if (xhr2 && xhr2.readystate != 4) {
+			xhr2.abort();
+		}
+        $('#productsList').removeClass('loading');
+		$('#productsList').html(window.topNineHTML);
+		display_sortByArea();
+		enableAllFiltercategories()
+	}
 	data_sort = "pPrice|1";
 };
 
@@ -1525,7 +1467,7 @@ $(".clear-all, .clear-all-icon").live("click", function () {
     } else {
         if ($('#locale').val().toLowerCase() === 'en_us' && window.topNine) {
 			data_sort = "";
-            collectDataListForInt(pagination, pageIndex, pageSize);
+            collectDataInitialLoad();
         } else {
             collectDataListEndeca(pagination, pageIndex, pageSize);
         }
@@ -2159,6 +2101,13 @@ function updateLeftNav(obj, oe) {
 	$('.filter-Age, .filter-category, .filter-brands, .filter-development-stage, .filter-solutions, .filter-collections, .filter-type, .filter-themes, .filter-os').click(function(e) {
 		e.preventDefault();
 	});
+	$('[endeca-attr=""]:not(.void)').hide();
+}
+
+function saveTopNine(obj, oe) {
+	if(window.topNine) {
+		window.topNineHTML = $('#productsList').html();
+	}
 }
 
 function buildHash(oe) {

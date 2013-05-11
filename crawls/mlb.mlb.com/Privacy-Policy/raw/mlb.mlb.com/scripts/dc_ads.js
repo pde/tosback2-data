@@ -178,7 +178,12 @@ function writeAds(options) {
 function setTakeover(skin) {
         var bgColor      = skin.bgColor || '#000000';
         var bgImage      = (skin.bgImage) ? 'url('+skin.bgImage+')' : 'none';
-        var bgPosition   = skin.bgPosition || 'center top';
+        var bgPosition   = '';
+		if (window.page_id === 'index' && window.section === 'homepage' && window.club !== 'mlb') {
+			bgPosition   = skin.bgPosition || 'center 27px';
+		} else {
+			bgPosition   = skin.bgPosition || 'center top';
+		}	
         var bgRepeat     = skin.bgRepeat || 'no-repeat';
         var bgAttachment = skin.bgAttachment || 'scroll';
         var $SKIN = (skin.skinElement) ? $(skin.skinElement) : $('body');

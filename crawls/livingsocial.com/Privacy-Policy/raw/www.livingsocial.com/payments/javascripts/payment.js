@@ -1,4 +1,35 @@
 Payment = {
+  setLocale: function(locale) {
+    Payment._locale = locale;
+  },
+
+  getLocale: function() {
+    if (!Payment._locale) {
+      Payment.setLocale("en");
+    }
+
+    var locale = "en"
+    if (Payment._locale && Payment._locale.match(/^fr/)) {
+      locale = "fr";
+    }
+
+    return locale;
+  },
+
+  errors: function() {
+    var errors = {
+      'credit_card_invalid': 'Credit card number is invalid'
+    }
+
+    if (Payment.getLocale() == "fr") {
+      errors = {
+        'credit_card_invalid': "Numéro de la carte n'est pas valide"
+      }
+    }
+
+    return errors
+  },
+
   creditCardTypeFromNumber: function(cardNumber) {
     // first, sanitize the number by removing all non-digit characters.
     cardNumber = cardNumber.replace(/[^\d]/g,'');
@@ -41,11 +72,14 @@ Payment = {
     cc = values['credit_card[card_number]'];
 
     // Sanitize the input
-    cc = cc.replace(/[^\d]/g,'');
+    if(cc != undefined) {
+      cc = cc.replace(/[^\d]/g,'');
+    }
 
-    if(cc == "" || Payment.checkLuhn(cc) == false || Payment.creditCardTypeFromNumber(cc) == 'UNKNOWN') {
+    if(cc != undefined && (cc == "" || Payment.checkLuhn(cc) == false || Payment.creditCardTypeFromNumber(cc) == 'UNKNOWN')) {
       if (error) {
-        error_msg = JSON.stringify({"errors": ["Credit card number is invalid"] })
+        msg = Payment.errors()['credit_card_invalid']
+        error_msg = JSON.stringify({"errors": [msg] })
         error({ responseText: error_msg });
       }
     }

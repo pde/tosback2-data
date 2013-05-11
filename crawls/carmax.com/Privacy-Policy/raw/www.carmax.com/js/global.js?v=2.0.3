@@ -37,6 +37,13 @@ $j(document).ready(function() {
     //applyColorBox(); 
 });
 
+$j(window).load(function(){
+    // scroll to stock number row when clicked on 'Search Results' link on car page
+    if(window.location.href.indexOf("search-results") > -1)
+    {
+        scrollToStockNumRow();             
+    }
+});
 
 function GetIEVersion() {
 
@@ -1662,6 +1669,29 @@ function isZipValid(zip) {
     });
 
     return isValid;
+};
+
+function scrollToStockNumRow(){
+    var scrollToStockNumParam = 'scrollToStockNum';
+    var stockNum = 0;
+    if (window.location.href.indexOf(scrollToStockNumParam) > -1) {
+        $j.each(window.location.search.substr(1).split('&'), function (c, q) {
+            var param = q.split('=');
+            if (param[0].toString() == scrollToStockNumParam) {
+                stockNum = param[1];
+                return false;
+            }
+        });
+
+        if(stockNum > 0)
+        {
+            var scrollToStockNumRowElem = $j("a[name='" + stockNum + "']");
+            if(scrollToStockNumRowElem.length != 0)
+            {
+                $j(this).scrollTop(scrollToStockNumRowElem.offset().top);
+            }
+        }
+    }  
 };
 
 

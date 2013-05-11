@@ -215,7 +215,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
 
 (function ($) {
     var bizrate, Base64;
-    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/03c8eb47' : 'http://images.bizrate.com/s2static/us/eval/03c8eb47');
+    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/e88f685d' : 'http://images.bizrate.com/s2static/us/eval/e88f685d');
 	var logoPath= (("https:" == document.location.protocol) ? '' : '');
 
     bizrate = {
@@ -241,12 +241,9 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
         tplVars: {
         	mid: 198074,
         	type: 1,
-
-            popupTitle:'Tell Us What You Think!',
-        	pitchType: 3,
             altImageText: 'Tell Us What You Think!',
-            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13680183570241962894002010302021639&rid=1368018357020204832&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1368018357020204832',
+            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13682749778766805498702010302021639&rid=1368274977020207265&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
+            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1368274977020207265',
             inviteImageUrl: 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif',
             merchantLogoUrl: ((logoPath === '') ? '' : (logoPath + 198074 +'.gif')),
             buttonImageUrl:'',
@@ -254,14 +251,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             inviteWidth: '180',
             inviteHeight: '150',
             inviteUrl: 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            popupUrl: 'https://eval.bizrate.com/popupinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1368018357020204832',
             closeWindowText: '[Close]'
-
-            // moving css and jquery inline for performance
-            //jQueryURL: cdnPath + '/js/jquery-br.js',
-            // modalCSSURL: cdnPath + '/css/modal.css'
-
         },
 
 		escapeString:function (mString) {
@@ -305,7 +295,8 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                         x: 0,
                         y: 0,
                         z: 99999,
-                        width: 300
+                        width: 300,
+                        pitchType: 0
                     }, options || {});
                     return this.each(function () {
                         var $this, brdWin, brdHead, brdTitle,
@@ -347,6 +338,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                                 WebkitBoxSizing: 'border-box'
                             });
                         brdClose.click(function () {
+                            bizrate.logInvite(settings.pitchType, 1000100);
                             $this.brDialog('destroy');
                             return false;
                         });
@@ -435,35 +427,19 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 return false;
             }
             this.type = bizrate.tplVars.type;
-            this.pitchType = 3;
-            this.google = (navigator.userAgent.toLowerCase().match(/googlebot/) || document.referrer.toLowerCase().match(/[.]google[.]/)) ? true : false;
-            this.chrome = (navigator.userAgent.toLowerCase().match(/chrome/)) ? true : false;
-            if (this.google) { // If googlebot use DHTML invite
-                this.format = 3;
-            } else if (this.chrome && this.pitchType == 1) {
-                this.format = 3;
-            } else {
-                this.format = this.pitchType;
-            }
-            this.windowName = (bizrate.tplVars.type == 3) ? 'bizrate_pos_survey' : 'bizrate_survey';
 
             this.dhtml = 1;
-            // Use the following to allow user to control if DHTML is shown if pop-up is blocked
-            // this.dhtml = (typeof(br_dhtml) != 'undefined' && (br_dhtml == 0 || br_dhtml == 1)) ? br_dhtml : 1; // Default to displaying DHTML invite if popup is blocked
             this.frequency = (typeof(bizrate.params.br_frequency) != 'undefined' && !isNaN(bizrate.params.br_frequency)) ? bizrate.params.br_frequency : 30;
             this.percentage = (typeof(bizrate.params.br_percentage) != 'undefined' && !isNaN(bizrate.params.br_percentage) && (bizrate.params.br_percentage <= 100) && (bizrate.params.br_percentage >= 0)) ? bizrate.params.br_percentage : 100;
             this.random = Math.round(Math.random() * 99);
 
             this.invited = new Array();
             this.invited['visitor'] = this.getCookie('invited_visitor');
-            this.invited['pos'] = this.getCookie('invited_pos');
             this.invited['cart'] = this.getCookie('invited_cart');
 
             this.blocked = new Array();
             this.blocked['visitor'] = this.getCookie('blocked_visitor');
-            this.blocked['pos'] = this.getCookie('blocked_pos');
             this.blocked['cart'] = this.getCookie('blocked_cart');
-            //this.cart = (typeof(br_cart) != 'undefined') ? br_cart : 0;
 
             if (typeof(br_domain) != 'undefined') {
                 this.domain = br_domain;
@@ -488,33 +464,9 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 this.pageTitle = 'Tell Us What You Think!';
             }
 
-            this.pageTitlePass = '&pageTitle=' + escape(this.pageTitle.replace(/\x26/g,"%26").replace(/\x23/g,"%23").replace(/\x2B/g,"%2B"));
-
-            this.dimensions = new Array(
-                {width: 300, height: 250, closeY: 215},
-                {width: 180, height: 150, closeY: 130},
-                {width: 300, height: 100, closeY: 85},
-                {width: 400, height: 135, closeY: 135}
-            );
-            if (bizrate.tplVars.type == 3) {
-                this.size = 3;
-            } else if (typeof(bizrate.params.br_size) != 'undefined' && bizrate.params.br_size >= 0 && bizrate.params.br_size <= 2) {
-                this.size = bizrate.params.br_size;
-            } else {
-                this.size = 0;
-            }
-            //this.width = this.dimensions[this.size].width;
-            //this.height = this.dimensions[this.size].height;
-            //this.closeY = this.dimensions[this.size].closeY;
-
             this.width = bizrate.tplVars.inviteWidth;
             this.height = bizrate.tplVars.inviteHeight;
             this.closeY = bizrate.tplVars.inviteHeight*0.86;
-
-
-            //this.inviteImageURL = 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif';
-            //this.inviteURL = 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP&imageSize=' + this.size;
-            //this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13680183570241962894002010302021639&rid=1368018357020204832&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP';
 
             this.inviteImageURL = bizrate.tplVars.inviteImageUrl;
             this.surveyURL = bizrate.tplVars.surveyUrl;
@@ -536,14 +488,13 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 this.posY = 50;
                 this.winY = 50;
             }
-            if (bizrate.tplVars.type == 2) { this.URLParameters += '&sc=1'; }
-            //if (typeof(br_zip) != 'undefined') { this.URLParameters += '&cartzip=' + br_zip; };
-            //if (typeof(br_cart) != 'undefined') { this.URLParameters += '&q113195=' + encode64(br_cart); };
+            if (bizrate.tplVars.type == 2) {
+                this.URLParameters += '&sc=1';
+            }
 
             this.winW = (15+this.width);
             this.winH = (15+this.height);
             this.windowParameters = 'width=' + this.winW + ',height=' + this.winH + ',top=' + this.winY + ',left=' + this.winX + ',screenY=' + this.winY + ',screenX=' + this.winX + ',directories=0,status=0,toolbar=0,location=0,menubar=0,resizable=0,scrollbars=0';
-
 
             return true;
         },
@@ -579,47 +530,26 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             expiration.setTime(expiration.getTime() + expires);
             document.cookie = name_mid + "=" + escape(value) + ";path=/;domain=" + this.domain + ';' + ((expires == null) ? "" : ";expires= " + expiration.toGMTString());
         },
-        getFormat: function () {
-            var ua, ref, format;
-            ua = navigator.userAgent.toLowerCase();
-            ref = document.referrer.toLowerCase();
-            if (bizrate.tplVars.pitchType !== 0) {
-                if (ua.match(/googlebot/i) || ref.match(/[.]google[.]/)) {
-                    format = 3;
-                }
-                else if (ua.match(/chrome/i)) {
-                    format = 3;
-                }
-                else {
-                    format = bizrate.tplVars.pitchType;
-                }
+
+        getPitchType: function() {
+            if (bizrate.tplVars.type == 1) {
+                return 22;
+            } else if (bizrate.tplVars.type == 2) {
+                return 32;
             }
-            else {
-                format = bizrate.tplVars.pitchType;
-            }
-            return format;
+            return 21;
         },
 
         init: function () {
 
-            var format = 3;
             bizrate.setParams();
-            format = bizrate.getFormat();
-
-            if (format === 0) {
-
-                bizrate.displayInviteInline();
-            }
-            else {
-                bizrate.brDialog($);
-            	var showInvite = false;
-            	if (this.random < this.percentage) {
-                    // Honor percentage but ignore frequency for POS inline invites
-                    if ((bizrate.tplVars.type == 1 && !this.invited['visitor'] && !this.blocked['visitor'] && !this.invited['cart']) ||
-                        (bizrate.tplVars.type == 2 && !this.invited['cart'] && !this.blocked['cart'] && !this.invited['visitor']) ||
-                        (bizrate.tplVars.type == 3 && ((!this.invited['pos'] && !this.blocked['pos']) || this.format == 0)) ) {
-                    	showInvite = true;
-                    }
+            bizrate.brDialog($);
+            var showInvite = false;
+            if (this.random < this.percentage) {
+                // Honor percentage but ignore frequency for POS inline invites
+                if ((bizrate.tplVars.type == 1 && !this.invited['visitor'] && !this.blocked['visitor'] && !this.invited['cart']) ||
+                    (bizrate.tplVars.type == 2 && !this.invited['cart'] && !this.blocked['cart'] && !this.invited['visitor'])) {
+                    showInvite = true;
                 }
 
                 $(document).ready(function () {
@@ -633,24 +563,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
         },
 
         start: function () {
-            switch (this.format) {
-            case 0:
-                this.displayInline();
-                break;
-            case 3:
-                this.displayInviteModal();
-                break;
-            default:
-                this.inviteWindow = window.open(this.inviteURL + this.URLParameters + this.pageTitlePass, 'br_invite', this.windowParameters);
-                if (this.inviteWindow) {
-                    this.inviteWindow.focus();
-                    this.setCookie('invited_' + this.inviteTypes[this.type], 1, this.frequency);
-                } else {
-                    this.setCookie('blocked_' + this.inviteTypes[this.type], 1, this.frequency);
-                    if (this.dhtml == 1) { this.displayInviteModal(); }
-                }
-                break;
-            }
+            this.displayInviteModal();
         },
 
 
@@ -747,10 +660,6 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
         extendedURLParams: function (extras) {
             var o, s;
             o = {};
-
-            if (!isNaN(bizrate.tplVars.pitchType)) {
-                o['pitch_type'] = bizrate.tplVars.pitchType;
-            }
             if (extras !== undefined) {
                 bizrate.extend(o, extras);
             }
@@ -760,50 +669,6 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
         coordsCenterException: function () {
             return (bizrate.params.modalX === 500 &&
                     bizrate.params.modalY === 500);
-        },
-
-        getPopupCoords: function (w, h) {
-            var o, win, sx, sy, wx, wy,
-                magicPopupTitleHeight, magicWindowTitleHeight;
-            magicPopupTitleHeight = 50;
-            magicWindowTitleHeight = 100;
-            o = {};
-            win = $(window);
-            // Exception to center 500x500 passin
-            if (bizrate.params.modalX !== null &&
-                    bizrate.params.modalY !== null &&
-                    !bizrate.coordsCenterException()) {
-                o.x = bizrate.params.modalX;
-                o.y = bizrate.params.modalY;
-            }
-            else {
-                // X Coords
-                if (window.screenLeft !== undefined) {
-                    sx = window.screenLeft;
-                }
-                else if (window.screenX !== undefined) {
-                    sx = window.screenX;
-                }
-                else {
-                    sx = 0;
-                }
-                wx = Math.floor(win.width() / 2) - Math.floor(w / 2);
-                o.x = sx + wx;
-                // Y Coords
-                if (window.screenTop !== undefined) {
-                    sy = window.screenTop;
-                }
-                else if (window.screenY !== undefined) {
-                    sy = window.screenY;
-                }
-                else {
-                    sy = 0;
-                }
-                wy = ((Math.floor(win.height() / 2) - Math.floor(h / 2)) -
-                      magicPopupTitleHeight);
-                o.y = (sy + wy + magicWindowTitleHeight);
-            }
-            return o;
         },
 
         getModalCoords: function (w, h, isPopup) {
@@ -836,6 +701,17 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             return true;
         },
 
+        logInvite: function (sendPitchType, sendTouchpoint) {
+            var confirmUrl;
+            confirmUrl = bizrate.buildURLParams(bizrate.tplVars.touchpointURL, {
+                pitchType: sendPitchType,
+                touchpoint: sendTouchpoint
+            });
+            bizrate.loadScript(confirmUrl);
+            return true;
+        },
+
+
         openSurvey:function(sURL) {
 
             var width = 760;
@@ -853,35 +729,23 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                     xPos = 0;
                 }
                 WinFeature = 'width='  + width + ',height='  + height + ',top=' + yPos + ',left=' + xPos + ',screenY=' + yPos + ',screenX=' + xPos + ',status=1,toolbar=1,location=1,menubar=1,resizable=0,scrollbars=1';
-                var surveyWindow = window.open(sURL + "&" + location.search, this.windowName, WinFeature);
-
-                if (surveyWindow) {
-                    if (this.type == 3) { surveyWindow.focus(); } else { surveyWindow.blur(); self.focus(); }
-                }
+                var surveyWindow = window.open(sURL, this.windowName, WinFeature);
+                surveyWindow.blur();
+                self.focus();
             }
         },
 
         displayInviteModal: function () {
-            if (this.type == 1) {
-                this.pitchType = 22;
-            } else if (this.type == 2) {
-                this.pitchType = 32;
-            } else {
-                this.pitchType = 21;
-            }
-            this.URLParameters += '&pitch_type=' + this.pitchType + this.pageTitlePass;
+            this.pitchType = bizrate.getPitchType();
+            this.URLParameters += '&pitch_type=' + this.pitchType;
             var im, d, imur, anc, o, u,
             posi, imt, coordWidth, coordHeight, imgWidth, imgHeight;
             o = bizrate.extendedURLParams({
-                pitch_type: bizrate.tplVars.pitchType
             });
-            //u = bizrate.buildURLParams(this.surveyURL, o);
             u = this.surveyURL + this.URLParameters;
 
             coordWidth = parseInt(bizrate.tplVars.inviteWidth) + parseInt(bizrate.config.modalWidth);
             coordHeight = parseInt(bizrate.tplVars.inviteHeight) + parseInt(bizrate.config.modalHeight);
-            //imgWidth = this.width;
-            //imgHeight = this.height;
             imgWidth = parseInt(bizrate.tplVars.inviteWidth) + 26;
             imgHeight = parseInt(bizrate.tplVars.inviteHeight) + 20;
             imgWidthNoPx = imgWidth;
@@ -1014,12 +878,14 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             anc.append(inviteMap);
 
             area1.click(function () {
+                bizrate.logInvite(bizrate.getPitchType(), 1500000);
                 bizrate.openSurvey(u);
                 d.brDialog('destroy');
                 return true;
             });
 
             area2.click(function () {
+                bizrate.logInvite(bizrate.getPitchType(), 1000200);
                 d.brDialog('destroy');
                 return true;
             });
@@ -1033,7 +899,8 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 x: bizrate.posX,
                 y: bizrate.posY,
                 z: bizrate.params.modalZIndex,
-                width: parseInt(bizrate.tplVars.inviteWidth) + parseInt(bizrate.config.modalWidth)
+                width: parseInt(bizrate.tplVars.inviteWidth) + parseInt(bizrate.config.modalWidth),
+                pitchType: this.pitchType
             });
 
 

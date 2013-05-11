@@ -1,0 +1,64 @@
+function Set_CPO_Cookie(name, value, expires)
+{
+    // set time, it's in milliseconds
+    var today = new Date();
+    today.setTime( today.getTime() );
+
+    /*
+    if the expires variable is set, make the correct
+    expires time, the current script below will set
+    it for x number of days, to make it for hours,
+    delete * 24, for minutes, delete * 60 * 24
+    */
+    if ( expires )
+    {
+        expires = expires * 1000 * 60 * 60 * 24;
+    }
+    var expires_date = new Date( today.getTime() + (expires) );
+    var path = '/';
+    
+    document.cookie = name + "=" +escape( value ) +
+    ";path=" + path + ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" );
+}
+
+$(function(){
+	
+	internationalCookieName = false;
+    if (getCookie('cpo') == 'true' ){
+    	internationalCookieName = 'cpo';
+	}else if(getCookie('bongo_cc') == 'true'){ 
+		internationalCookieName = 'bongo_cc';
+	}
+	
+
+	if(internationalCookieName != false) {
+		$(".intship-info").show();
+        
+        if ( 'cpo' == CookieName ) {
+        	$(".intship-info").addClass("intship-canada-info");
+          	$(".intship-info").html("<div class='clearfix'><p class='canada-int-ship'>" +
+          							"<span>Shopping from</span><em>Canada?</em><a href='http://canada.autopartswarehouse.com/?cpocid=apwbanner'>Click Here</a></p>" +
+          							"<p class='canada-int-ship-info'><strong><em>International Shipping Available</em></strong>" +
+          							" Call <strong>404-592-4536</strong> to learn more.</div><span>Close</span></p>");
+        } else if( 'bongo_cc' == CookieName ){
+        	$(".intship-info").html("<p>Shopping outside the US? <strong><em>International Shipping</em></strong> is now available! Call <strong>404-592-4536</strong></p><span>Close</span>");
+        }
+        
+        $(".intship-info > span").click(function () {
+        	$(".intship-info").slideUp(100);
+			Set_CPO_Cookie(internationalCookieName, false);
+			return true;
+		});
+	}
+	
+	
+	
+    $(".new-c").hover(
+      function () {
+        $(".new-c-tx").addClass("new-c-ul");
+      },
+      function () {
+        $(".new-c-tx").removeClass("new-c-ul");
+      }
+    );
+});

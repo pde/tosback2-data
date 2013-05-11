@@ -6,7 +6,7 @@ var s_account="paypalglobal"
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 s.dynamicAccountSelection=true
-s.dynamicAccountList="devpaypalglobal=www.stage,ic.stage,developer.stage,securepayments.stage,localhost,127.0.0.1"
+s.dynamicAccountList="devpaypalglobal=www.stage,ic.stage,developer.stage,securepayments.stage,localhost,127.0.0.1,stage"
 s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true

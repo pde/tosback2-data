@@ -97,22 +97,6 @@ var wpAd, placeAd2;
           doc.write(wpAd.tools.tagBuilder());
         }
       },
-      fif: function () {
-        wpAd.briefcase.fif = true;
-        var pos = arguments[0] || wpAd.briefcase.pos,
-          slug = doc.getElementById('wpni_adi_' + pos) || doc.getElementById('slug_' + pos);
-
-        if(slug) {
-          //wpAd.tools.removeChildren(slug);
-          slug.appendChild(wpAd.tools.iframeBuilder({
-            "src": wpAd.constants.fifURL,
-            "id": "fif_" + pos,
-            "name": "fif_" + pos
-          }));
-        } else {
-          doc.write(wpAd.tools.tagBuilder());
-        }
-      },
       hardcode: function () {
         //if hardcode is a function, execute it:
         var hc = typeof wpAd.briefcase.hardcode === 'function' ? wpAd.briefcase.hardcode() : wpAd.briefcase.hardcode,
@@ -445,7 +429,6 @@ var wpAd, placeAd2;
       dcFileType: function () {
         var types = {
           'adj': 'adj',
-          'fif': 'adj',
           'ajax': 'adi',
           'adi': 'adi',
           'pfadx': 'pfadx',
@@ -481,16 +464,15 @@ var wpAd, placeAd2;
       },
       deliveryType: function (delivery) {
         if(!delivery) {
-          return wpAd.flags.test_fif ? 'fif' : 'adj';
+          return 'adj';
         }
         var types = {
-          'adj': wpAd.flags.test_fif ? 'fif' : 'adj',
-          'dai': wpAd.flags.test_fif ? 'fif' : 'adj',
+          'adj': 'adj',
+          'dai': 'adj',
           'ajax': 'ajax',
           'adi': 'adi',
           'iframe': 'adi',
           'inline': 'adi',
-          'fif': 'fif',
           'pfadx': 'pfadx',
           'pfadxjs': 'pfadxjs',
           'vi': 'vi'
@@ -743,11 +725,6 @@ var wpAd, placeAd2;
             'tag': 'iframe',
             'src': wpAd.briefcase.dcUrl,
             'atts': 'frameborder="0" marginwidth="0" marginheight="0" height="' + wpAd.config.adtypes[wpAd.briefcase.what].size[0][1] + '" width="' + wpAd.config.adtypes[wpAd.briefcase.what].size[0][0] + '" scrolling="no" id="ad_iframe_' + wpAd.briefcase.pos + '" name="ad_iframe_' + wpAd.briefcase.pos + '"'
-          },
-          'fif': {
-            'tag': 'iframe',
-            'src': wpAd.constants.fifURL,
-            'atts': 'frameborder="0" height="0" marginwidth="0" marginheight="0" width="0" scrolling="no" id="fif_' + wpAd.briefcase.pos + '" name="fif_' + wpAd.briefcase.pos + '"'
           }
         },
           tt = arguments[0] || wpAd.briefcase.delivery,
@@ -969,7 +946,7 @@ var wpAd, placeAd2;
         }
 
         //this needs to be before the dcopt check in keyvalues:
-        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
+        if(!wpAd.cache.dcopt && wpAd.briefcase.delivery === 'adj' && !wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
           keys.push('interstitial');
         }
 
@@ -1011,7 +988,6 @@ var wpAd, placeAd2;
             'adj': 'js',
             'ajax': 'iframe',
             'adi': 'iframe',
-            'fif': 'js',
             'pfadx': 'pfadx',
             'pfadxjs': 'pfadxjs',
             'vi': 'iframe'
@@ -1024,12 +1000,15 @@ var wpAd, placeAd2;
         }
       },
       dcopt: function () {
-        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !wpAd.flags.no_interstitials) {
+        if(!wpAd.cache.dcopt && wpAd.briefcase.delivery === 'adj' && !wpAd.flags.no_interstitials) {
           wpAd.cache.dcopt = true;
           return ['ist'];
         } else {
           return [];
         }
+      },
+      domain: function () {
+        return win.location.hostname;
       },
       pageId: function () {
         return wpAd.cache.page_id;
@@ -1039,10 +1018,10 @@ var wpAd, placeAd2;
         return wpAd.cache.hasOwnProperty('exclusion') ? wpAd.cache.exclusion : (function () {
           var rv = [],
             obj = {
-                natural_disaster : ['shell', 'exxon', 'citgo', 'bp', 'chevron', 'hess', 'sunoco', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
-                human_disaster : ['shoot', 'vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11', 'behead', 'decapitate'],
-                financial_crisis : ['corrupt', 'goldman', 'aig', 'foreclosure', 'enron', 'sec', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest', 'labor strike', 'union strike', 'labor issue', 'union issue', 'teacher strike', 'teachers strike', 'election'],
-                inappropriate : ['gambling','sex','alcohol','pornography']
+              natural_disaster : ['shell', 'exxon', 'citgo', 'bp', 'chevron', 'hess', 'sunoco', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
+              human_disaster : ['shoot', 'vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11', 'behead', 'decapitate'],
+              financial_crisis : ['corrupt', 'goldman', 'aig', 'foreclosure', 'enron', 'sec', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest', 'labor strike', 'union strike', 'labor issue', 'union issue', 'teacher strike', 'teachers strike', 'election', 'chase', 'jpmorgan chase', 'jpmorgan'],
+              inappropriate : ['gambling','sex','alcohol','pornography']
             },
             key;
 
@@ -1208,7 +1187,7 @@ var wpAd, placeAd2;
     wpAd.briefcase.what = what;
     wpAd.briefcase.onTheFly = onTheFly;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
-    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx, fif
+    wpAd.briefcase.delivery = wpAd.tools.deliveryType(delivery); //returns adj, adi, ajax, pfadx
 
     if(wpAd.tools.templatecheck()) {
       if(!wpAd.briefcase.hardcode) {
@@ -1253,7 +1232,6 @@ var wpAd, placeAd2;
     no_ads: !!/no_ads/.test(location.search),
     allAds: !!/allAds/i.test(location.search),
     IE: !!/msie/i.test(navigator.userAgent),
-    test_fif: !!/test_fif/i.test(location.search),
     debugAds: !!/debugAds/i.test(location.search),
     postscribe: !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href),
     hpRefresh: !!wpAd.tools.urlCheck('reload=true'),

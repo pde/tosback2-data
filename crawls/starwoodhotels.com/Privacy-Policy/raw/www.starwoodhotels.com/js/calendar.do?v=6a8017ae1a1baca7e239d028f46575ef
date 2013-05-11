@@ -2052,8 +2052,9 @@ YAHOO.widget.DateMath={DAY:"D",WEEK:"W",YEAR:"Y",MONTH:"M",ONE_DAY_MS:1000*60*60
             // subclasses may need to unsubscribe these methods in order to perform animations 
             this.showEvent.subscribe(this.simpleShow, this, true);
             this.hideEvent.subscribe(this.simpleHide, this, true);
-
+            if (!('ontouchstart' in document.documentElement)) {
             this.hoverOverEvent.subscribe(this.showHover, this, true);
+            }
             this.hoverOutEvent.subscribe(this.hideHover, this, true);
 
             this.previousEvent.subscribe(this.showPrevious, this, true);

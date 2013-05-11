@@ -265,7 +265,11 @@ truncatePrefStoreHeader("div#preferredStoreCookieAddress1");
 <input type="hidden" name="storeId" value="10151"/> 
 <input type="hidden" name="catalogId" value="10051"/> 
 <input type="hidden" name="langId" value="-1"/> 
-<input type="hidden" name="filter" value="zip"/> 
+<input type="hidden" name="filter" value="zip"/>
+<input type="hidden" name="json" value="true"/>
+<input type="hidden" name="rnum" value="10"/>
+<input type="hidden" name="min" value="1"/>
+<input type="hidden" name="max" value="10"/> 
 <input class="find-store" autocomplete="off" type="text" maxlength="5" name="zipCode" title="Zip Code" id="strLocatorZip" value="enter zip code"/>
 <div class="red-Btn-forms2">
 <a id="locatorbutton2" class="front-Btn">
@@ -418,16 +422,6 @@ displayCheckOutButton('10151_CVMINICART', 'amount');
 </ul><!-- end header-top -->
 <div class="clear">&nbsp;</div>
 <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
-<style type="text/css">
-#mini-cart-buttons {float:right}
-#mini-cart-buttons .checkout-totals, #shipping_total_wrapper, #shipping_taxes_wrapper {display:none}
-#price_subtotal_wrapper_c1 {font-size: 11pt; font-weight: bold}
-#price_subtotal_wrapper_c2 {color: #CF1D05; font-size: 11pt; font-weight: bold}
-.shopping-cart-mod .price-module {width: 60px}
-</style>
-<script type="text/javascript">
-j(".price-module").empty().append("item(s)");
-</script>
 <ul class="main-sub-nav">
 <li><a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_help___" title="Help" id="header_help" manual_cm_sp="Header-_-Customer+Service-_-Help">Help</a></li>
 <li><a manual_cm_sp="Category-_-Advance+Know-How-_-Advance+Know-How" id="header_adv_know_how" title="Resources &amp; Video" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_article-know-how-index">Resources &amp; Video</a></li>
@@ -449,8 +443,11 @@ j(".price-module").empty().append("item(s)");
 <input type="hidden" value="10151" name="storeId">
 <input type="hidden" value="10051" name="catalogId">
 <input type="hidden" value="-1" name="langId">
+<input type="hidden" name="rnum" value="10"/>
+<input type="hidden" name="min" value="1"/>
+<input type="hidden" name="max" value="10"/> 
 <input type="hidden" value="zip" name="filter"> 
-<input class="sign-up-input find-store searchBox"type="text" value="enter zip code" id="strLocatorZip" title="Zip Code" name="zipCode" maxlength="5" autocomplete="off" />
+<input class="sign-up-input find-store searchBox" type="text" value="enter zip code" id="strLocatorZip" title="Zip Code" name="zipCode" maxlength="5" autocomplete="off" />
 <div class="red-Btn-forms2"> 
 <a class="front-Btn" href="javascript://hdrZipFindStore;" id="locatorbutton"><span class="cap">Find</span></a>
 <div class="clear">&nbsp;</div>
@@ -1299,13 +1296,25 @@ All Vehicles
 <div class="sec-tier">
 <ul>
 <li>
+<a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_accessories_16429" class="ul-link nested-Links sec-set" lid="L2category-Accessories">Accessories</a>
+</li>
+<li>
 <a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_batteries_14943" class="ul-link nested-Links sec-set" lid="L2category-Batteries">Batteries</a>
 </li>
 <li>
 <a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_engines-engine-parts_14945" class="ul-link nested-Links sec-set" lid="L2category-Engines &amp; Engine Parts">Engines & Engine Parts</a>
 </li>
 <li>
+<a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_fishing_16428" class="ul-link nested-Links sec-set" lid="L2category-Fishing">Fishing</a>
+</li>
+<li>
 <a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_gaskets-sealers-grease-lube_14946" class="ul-link nested-Links sec-set" lid="L2category-Gaskets, Sealers, Grease &amp; Lube">Gaskets, Sealers, Grease & Lube</a>
+</li>
+<li>
+<a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_lighting_16434" class="ul-link nested-Links sec-set" lid="L2category-Lighting">Lighting</a>
+</li>
+<li>
+<a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/category_radio-electrical_16427" class="ul-link nested-Links sec-set" lid="L2category-Radio &amp; Electrical">Radio & Electrical</a>
 </li>
 </ul>
 </div>
@@ -1723,6 +1732,29 @@ View full vehicle information in
 <!-- END YOUR VEHICLE MODULE header1YourVehicleInclude.jsp--> 
 <!-- END Header1CachedDisplay.jsp -->
 </div>
+<!-- START Add2CartPopup.jspf -->
+<div id="a2cBackground"></div>
+<div id="a2cOk" style="display:none"> 
+<div class="close-area"><a href="javascript:;" id="popupClose"><img src="../../../../wcsstore/CVB2BDirectStorefrontAssetStore/images/button/closeandX_ymme.gif" title="Close" /></a></div>	
+<div id="a2cOkTitle">This item has been added to your cart:</div>
+<div id="a2cCatName"></div>
+<div>
+<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+<!-- End - JSP ES_AddToCart_Mid: WebServiceeMarketingSpotDisplay.jsp -->
+</div>
+<a href="javascript:;"><img src="../../../../wcsstore/CVB2BDirectStorefrontAssetStore/images/button/continue.png" id="a2cOkShop"/></a>
+<a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=10151&amp;catalogId=10051&amp;langId=-1&amp;URL=OrderItemDisplay&amp;updatePrices=1&amp;calculationUsageId=-2&amp;calculationUsageId=-1&amp;calculationUsageId=-7&amp;orderId=."><img src="../../../../wcsstore/CVB2BDirectStorefrontAssetStore/images/button/proceed_to_cart.png" id="a2cOkCart"/></a>	
+</div>
+<div id="a2cOkNotBuyable" style="display:none">
+<div class="close-areaNB"><a href="javascript:;" id="popupCloseNB"><img src="../../../../wcsstore/CVB2BDirectStorefrontAssetStore/images/button/closeandX_ymme.gif" title="Close" /></a></div>
+<div id="a2cOkTitleNotBuyable">Product is not available to purchase at this time</div>	
+</div>
+<!-- END Add2CartPopup.jspf -->
+<script type = "text/javascript">
+jQuery(function ($) {
+ajaxAddToCartReady();
+}); 
+</script>
 <!-- END HeaderDisplay.jspf -->
 <!-- BEGIN ContentDisplay.jsp -->
 <div id="content-area">
@@ -1806,11 +1838,11 @@ pageViewAttr[3] = engine;
 }
 }
 var priceZone = "";
-var validZone = validateInput(getAAPPriceZoneCookieRegex(), '1091');
+var validZone = validateInput(getAAPPriceZoneCookieRegex(), '1040');
 if(!validZone){
 priceZone = invalidatePriceZoneCookie();
 }else{
-priceZone = "1091";
+priceZone = "1040";
 }
 pageViewAttr[11] = priceZone;
 productViewAttr[2] = priceZone;

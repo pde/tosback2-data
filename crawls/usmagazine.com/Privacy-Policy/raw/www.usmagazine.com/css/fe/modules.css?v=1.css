@@ -17,12 +17,21 @@
 	margin-bottom: 3px;
 }
 #latest-news .news-item.dropshadow-top {
-	background-image: url(../../images/microsites/nordstrom-2012/border-bottom-featured.png);
+	background-image: url(../../images/fe/dropshadow.png);
 	background-repeat: repeat-x;
 }
-#latest-news .news-item img {
+#latest-news-content .news-item a img {
 	float: left;
-	margin-right: 10px;
+	padding-right: 10px;
+}
+#latest-news .featured.news-item img {
+	margin: 20px 10px 0 0;
+	padding: 0;
+}
+.landing-page #latest-news .news-item img,
+.homepage #latest-news .news-item img {
+	float: left;
+	margin: 2px 10px 0 0;
 }
 #latest-news .top {
 	background-image: url(../../images/fe/modules/dropshadow-310px-top-bg.png);
@@ -77,26 +86,37 @@
 	color:#e70b8d;
 	text-transform:uppercase;
 	display:block;
-	margin:0 0 2px 0;
 }
 #latest-news .news-item h4 .link-arrow {
 	color:#e70f8d;
 	font-size: 15px;
 }
-#latest-news .news-item.featured h4 .link-arrow {
-	font-size:21px;
+#latest-news .news-item.featured h4 a {
+	font-size: 21px;
 }
+#latest-news .news-item.featured h4 .link-arrow {
+	font-size: 21px;
+}
+/*-------------------------------------------- */
+/** Reduce font-size for Home and Channel */
+/*-------------------------------------------- */
+.homepage #latest-news .news-item.featured h4 a,
+.landing-page #latest-news .news-item.featured h4 a {
+	font-size: 18px;
+	line-height: 20px;
+}
+.landing-page #latest-news .news-item.featured h4 .link-arrow,
+.homepage #latest-news .news-item.featured h4 .link-arrow {
+	font-size: 18px;
+}
+
 #latest-news .news-item p {
 	color:#6d6e71;
 	font-size:11px;
 }
 #latest-news .news-item.featured {
-	padding:0 10px 10px 10px;
-	border-bottom: 0;
+	padding: 5px 10px 10px 10px;
 	background-color:#fff;
-}
-#latest-news .news-item.featured p {
-	margin-bottom: 15px;
 }
 #latest-news.alt-home .news-item.featured {
 	border-bottom: none;
@@ -116,7 +136,6 @@
 	width:141px; height:178px;
 	display:block;
 	float:left;
-	margin:10px 10px 0 0;
 }
 #latest-news .news-item.featured.highlight-featured img {
 	width:281px; height:167px;
@@ -133,10 +152,6 @@
 }
 #latest-news .news-item.featured.highlight-featured .info {
 	width:280px;
-}
-#latest-news .news-item.featured h4 a {
-	font-size:21px;
-	line-height:24px;
 }
 #latest-news .see-more {
 	text-align: center;
@@ -167,8 +182,55 @@
 	height:50px;
 	background-image: url(../../images/fe/modules/style_news-header-bg.png);
 }
+.no-border {
+	border: 0 !important;
+}
 
 /* End LATEST NEWS Module */
+
+
+/*-------------------------------------------- */
+/** New Latest News Module - grey gradient */
+/*-------------------------------------------- */
+
+#news-module li {
+	height: 107px;
+	margin: 0 0 10px 0;
+	border-top: 2px;
+	border: 1px solid #cccccc;
+	text-align: left;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #e1e1e1 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e1e1e1)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
+}
+#news-module li.more-link {
+	height: auto;
+	color: #000;
+	text-align: center;
+	font-size: 12px;
+	border: 0;
+	padding: 0;
+	background: none;
+	filter: none;
+}
+#news-module li img {
+	float: left;
+	height: 101px;
+	width: 81px;
+	margin: 4px 10px 4px 4px;
+}
+#news-module li .caption {
+	display: block;
+	font: 300 16px Georgia, serif;
+}
+#news-module .type {
+	color: #e82d7c;
+}
 
 /*-------------------------------------------- */
 /** Content Feature Default Styles */
@@ -754,8 +816,8 @@ a.more:after {
     text-decoration: none;
     text-transform: uppercase;
     clear: both;
-    margin-top: 0;
-    width:315px;
+    margin-top: 10px;
+    width: 315px;
 }
 .panel_content.photos .more-link:hover {
 	text-decoration:underline;
@@ -850,6 +912,30 @@ a.more:after {
 
 /* End Default Photo Gallery Styles */
 
+
+/*-------------------------------------------- */
+/** Single Photo Gallery module */
+/*-------------------------------------------- */
+
+.photo-module-single {
+	position: relative;
+	margin-bottom: 10px;
+}
+.photo-module-single img {
+	height: 398px;
+	width: 100%;
+}
+.photo-module-single .caption {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 295px;
+	padding: 20px 10px;
+	color: #fff;
+	font: 300 20px Georgia, serif;
+	text-align: left;
+	background: url(../../images/microsites/hotbodies/2013/opaque-bg.png);
+}
 
 /* HOT PICS SINGLE Module */
 #hot-pics.single {
@@ -1956,6 +2042,7 @@ a.more:after {
 #video-module {
 	position: relative;
 }
+
 #video-module ul li.clearfix h4 {
 	padding-bottom: 15px;
 	border-bottom: 1px solid #dddfdf;
@@ -2201,6 +2288,56 @@ a.video-title{
 	height:43px;
 }
 /* End VIDEOS OF THE DAY */
+
+/*-------------------------------------------- */
+/** Large Videos Module */
+/*-------------------------------------------- */
+
+#videos-module {
+	padding: 5px 8px 0;
+	margin-bottom: 10px;
+	background: #e82d7c;
+	-webkit-box-shadow: 4px 4px 2px #bfbfbf;
+	box-shadow: 4px 4px 2px #bfbfbf;
+}
+#videos-module h2 {
+	height: 33px;
+	width: 128px;
+	margin: 0px auto 10px auto;
+	background: url(../../images/microsites/hotbodies/2013/h2-video-bg.png);
+}
+#videos-module li {
+	text-align: left;
+	position: relative;
+	margin-bottom: 25px;
+}
+#videos-module li img {
+	float: left;
+	height: 179px;
+	width: 301px;
+}
+#videos-module li:after {
+	content: url(../../images/fe/modules/play-btn-med.png);
+	position: absolute;
+	top: 120px;
+	left: 10px;
+}
+#videos-module li .caption a {
+	clear: both;
+	display: inline-block;
+	margin-top: 5px;
+	color: #fff;
+	font-size: 16px;
+}
+.video-module-wrapper {
+	padding-bottom: 10px;
+}
+.video-module-wrapper a.more-link,
+.moreHotBodiesPhotosLink a.more-link
+{
+	font-size: 12px;
+	color: #000;
+}
 
 /* POLL FORM Module */
 
@@ -2673,7 +2810,7 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
 	 background: url(../../images/fe/modules/partners/item-line.png) no-repeat bottom left;
 	 width: 290px;
 }
-.partner_item_image { float: left; width: 75px;}
+.partner_item_image { float: left; width: 100%;}
 .partner_item .p_text_link {
 	display: block;
 	float:left;
@@ -2684,7 +2821,8 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
 }
 .p_img_link {
 	display: block;
-	height: 47px;
+	height: 45px;
+	width: 75px;
 	overflow: hidden;
 	background: url(../../images/fe/modules/partners/bg-partner_img.jpg) no-repeat 0 0;
 	float: left
@@ -2810,7 +2948,6 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
 #red-carpet-slider {
 	width:974px;
 	height:454px;
-	overflow:hidden;
 	margin:0 0 13px 10px;
 	background-image: url(../../images/fe/modules/red_carpet_slider-module-bg.png);
 	background-repeat: no-repeat;
@@ -2818,6 +2955,7 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
 }
 #red-carpet-slider h3 {
 	display:block;
+	float: left;
 	width:148px;
 	height:14px;
 	margin:9px 0 6px 10px;
@@ -2834,7 +2972,7 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
     overflow: hidden;
 }
 #red-carpet-slider .nav-button {
-	top:126px;
+	top: 150px;
 	text-indent:-1000px;
 	overflow:hidden;
 	cursor:pointer;
@@ -2871,14 +3009,15 @@ div.indiv_partners_container div.partner_links .sponsor_hd{
 	float: left;
 	width: 160px;
 	height: 420px;
+	position: relative;
 	border-width: 1px 1px 0px 1px;
 	border-style: solid;
 	border-color: transparent;
-	margin-top: 10px;
+	bottom: 0;
 }
 #red-carpet-slider .red-carpet-item:hover {
-	margin-top: -.1px; 
-	-webkit-transition-property: margin-top, border;
+	bottom: 10px;
+	-webkit-transition-property: bottom, border;
     -webkit-transition-duration: .25s, 0;
     -webkit-transition-timing-function: ease, linear;
 }

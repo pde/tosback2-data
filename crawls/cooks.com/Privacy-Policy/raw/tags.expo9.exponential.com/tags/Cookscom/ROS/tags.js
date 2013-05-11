@@ -19,6 +19,18 @@ if (e9Manager === undefined || e9Manager.init === false)
 	   return rnd;
 	 }
 
+        function isTopAccessible()
+         {
+	   var		isTopAccessible = false;	 
+	   try
+	    {
+              if (window.top.location.href !== undefined)
+                 isTopAccessible = true;
+            }
+           catch(e) { }
+           return isTopAccessible;
+         }
+
 	function sfv() 
 	 {
 	   for (var i =0; i < arguments.length; i++) {
@@ -36,15 +48,65 @@ if (e9Manager === undefined || e9Manager.init === false)
            return parseInt(arg.split("px")[0]);
          }
 
+	function getStyle(el, prop)
+	 {
+           if (document.defaultView && document.defaultView.getComputedStyle)
+	    {
+              return document.defaultView.getComputedStyle(el, null)[prop];
+            }
+	   else if (el.currentStyle)
+	    {
+              return el.currentStyle[prop];
+	    } 
+	   else
+	    {
+              return el.style[prop] || el[prop];
+            }
+         }
+
+	function getDeviceType()
+	 {
+	   var          userAgent = navigator.userAgent.toLowerCase();
+	   var          isMobileDevice = (/iphone|ipad|ipod|android|silk|kindle fire/i.test(userAgent));
+	   var          device = "unknown";
+
+	   if (isMobileDevice)
+            {
+	      if (    (    (userAgent.search("android") >= 0) 
+			&& (userAgent.search("mobile") >= 0)) 
+	           || (userAgent.search("iphone") >= 0)
+		   || (userAgent.search("ipod") >= 0) 
+                 ) 
+               {
+		 device = "mobile";
+               } 
+	      else if (    (    (userAgent.search("android") >= 0) 
+			     && (userAgent.search("mobile") == -1))
+	                || ( userAgent.search("ipad") >= 0)
+			|| ( userAgent.search("silk") >= 0)
+			|| ( userAgent.search("kindle fire") >= 0))
+               {
+	         device = "tablet";             
+               }
+	    }
+	   return device;
+	 }
+
         function getFrameWxH(frame)
          {
 	   var		frameWidth = 0; 
 	   var		frameHeight = 0;
+	   /* Example.
+	      Inline css  style = "width:50(px/%)" 
+	      Class  frameStyle {width:50(px/%)}
+	      Attribute width="300" height="250"
+	   */
 
 	   if (frame.tagName.toLowerCase() === "iframe")
 	    {
-	      frameWidth = pfs(frame.width);
-	      frameHeight= pfs(frame.height);
+	      frameWidth = pfs(getStyle(frame, 'width'));
+	      frameHeight= pfs(getStyle(frame, 'height'));
+	      
 	    }
 	   return { width : frameWidth , height : frameHeight };
          }
@@ -454,6 +516,29 @@ if (e9Manager === undefined || e9Manager.init === false)
               adSpec.noAdChoice = 1;	      
             }
 
+            if (e9.snackbar === true)
+             {
+	       var               winContext = window;
+               var               deviceType = getDeviceType();
+
+	       if (isTopAccessible())
+	          winContext = top;
+               else
+                  e9.snackbar = false;
+		  
+  	       if (    winContext.hasAlreadyServedSnackBar === "loaded" 
+                    || deviceType == "unknown")
+	        {
+ 	          e9.snackbar = false;
+	        }
+
+   	       if (e9.size === undefined)
+ 		  adSpec.size = p.snackBarSizeMap[deviceType];
+
+	       winContext.hasAlreadyServedSnackBar = "loaded";
+               adSpec.snackbar = e9.snackbar;
+             }
+
            if (    (p.enabledAdChoices === undefined) 
 	        || (p.enabledAdChoices === false))
               adSpec.noAdChoice = 1;
@@ -521,6 +606,21 @@ if (e9Manager === undefined || e9Manager.init === false)
 	     function(slotName) 
               {
                 e9Page.displayMultiAd(slotName);
+              },
+ 
+	   collapseAsyncFrame:
+	     function ()
+	      {
+	   	if (    isTopAccessible() === true 
+ 	             && typeof(self.frameElement) !== "undefined" 
+		     && self.frameElement !== null 
+	             && typeof inSingleAsyncFrame !== "undefined" )
+	         {
+                   self.frameElement.style.display ="none";
+                   self.frameElement.style.position ="absolute";
+                   self.frameElement.style.top ="-15000px";
+                   self.frameElement.style.left ="-15000px";              
+                 }
               }
          };
 
@@ -541,14 +641,15 @@ if (e9Manager === undefined || e9Manager.init === false)
 	   tagKey: "1883697412",
 	   enabledRichAdInIframe: true,
 	   enabledAdChoices: true,
-	   enabledSnackBarInIframe: false,
+	   enabledSnackBarInIframe: true,
 	   tagOptions: {},
            
 	   isIE: (navigator.appVersion.indexOf("MSIE") !== -1),
 	   isIEOrOpera : (navigator.appVersion.indexOf("MSIE") !== -1) || (navigator.userAgent.indexOf("Opera") !== -1),
 	   isSafari : (navigator.vendor && (navigator.vendor.indexOf('Apple') != -1)),
-	   isMobileDevice: navigator.userAgent.match(/iPhone|iPad/i) ? true : false,
-           snackBarSizeMap : {iphone : "320x50", ipad: "768x90"},
+	   isMobileDevice: (/iphone|ipad|ipod|android|silk|kindle fire/i.test(navigator.userAgent.toLowerCase())),
+	   isIOS : (/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())),
+           snackBarSizeMap : {mobile : "320x50", tablet: "768x90","unknown":"1x1"},
 
 	   init: 
              function()
@@ -719,35 +820,29 @@ if (e9Manager === undefined || e9Manager.init === false)
 		return adSpec;
 	      },
 
-	   canServeSnackBar:
+	   canServeSnackBarOnThePage:
 	     function(adSpec)
 	      {
                 var             p = this;
-		var		isTopAccessible = false;
-
-                try
-	         {
-                   if (window.top.location.href !== undefined)
-                      isTopAccessible = true;
-                 }
-                 catch(e) { }
                         
-		 if (    (adSpec.size != "1x1")
-                      && (isTopAccessible === true)
-                      &&  (p.isMobileDevice === true)
-		      &&  (! /OS [1-3](.*) like Mac OS X/i.test(navigator.userAgent))
-                      &&  (p.isSafari === true)
-		      &&  (    top === self 
-                            || p.enabledSnackBarInIframe === true)
-		      &&  (window.top.isSnackBarServedOnPage === undefined)
-		      &&  (     (typeof p.tagOptions.snackBar === "undefined")
-                            || (   (    p.tagOptions.snackBar.serveSnackBar  === undefined
+		 if (    (adSpec.size != "1x1")       /* do not piggyback snackbar on data/popup ads*/
+                      && (adSpec.snackbar !== true)   /* do not piggyback snackbar on e9.snackbar=true */
+                      && (isTopAccessible())          /* same domain iframe or on the page*/
+                      && (p.isMobileDevice === true)
+		      && (    (p.isIOS === false) 
+		           || (    (! /OS [1-3](.*) like Mac OS X/i.test(navigator.userAgent))  /* iOS >= 4.0 supported */
+                                && (p.isSafari === true)))
+		      && (    (top === self)
+                           || (p.enabledSnackBarInIframe === true))
+		      && (window.top.hasAlreadyServedSnackBar === undefined)
+		      && (    (typeof p.tagOptions.snackBar === "undefined")
+                           || (    (    p.tagOptions.snackBar.serveSnackBar  === undefined
                                      || p.tagOptions.snackBar.serveSnackBar === true)
                                 && (    p.tagOptions.snackBar.mobileOptimizedSite === undefined
-                                     || p.tagOptions.snackBar.mobileOptimizedSite  === false)))  )
-                 {
-                   return true;
-                 }
+                                     || p.tagOptions.snackBar.mobileOptimizedSite  === false))))
+                  {
+                    return true;
+                  }
 
                 return false;
               },
@@ -756,12 +851,12 @@ if (e9Manager === undefined || e9Manager.init === false)
 	     function()
 	      {
 		var     p = this;
-		var	deviceName = navigator.userAgent.match(/iPad|iPhone/i)[0].toLowerCase();
+		var	deviceName = getDeviceType();
 		var	snackBannerSize = p.snackBarSizeMap[deviceName];
 		var	snackBarClose = true;
 		var	content;
 
-		window.top.isSnackBarServedOnPage = true;
+		window.top.hasAlreadyServedSnackBar = "loading";
 
                 if (   p.tagOptions.snackBar != undefined
 		    && p.tagOptions.snackBar.snackBarClose != undefined )
@@ -786,7 +881,10 @@ if (e9Manager === undefined || e9Manager.init === false)
           	   var	        iframeID = p.getFrameID(top);
                    var	        width = snackBannerSize.split("x")[0];
                    var	        height = snackBannerSize.split("x")[1];
-                   var	        iframe = p.createSameDomainIframeNode(iframeID,0,0);
+                   var	        iframe = p.createSameDomainIframeNode(iframeID,width,height);
+
+		   content =     '<scr' + 'ipt type="text/javascript" > var inSingleAsyncFrame = true;<\/sc' + 'ript>'
+                              +  content;
 
                    top.document.body.appendChild(iframe);
                    p.writeContentInIframe(top,iframeID,content);
@@ -1033,7 +1131,9 @@ if (e9Manager === undefined || e9Manager.init === false)
                         var		frameWidth  = frameWH.width;
                         var		frameHeight = frameWH.height;
 
-           		if ((frameWidth > 0) && (frameHeight > 0))
+           		if (    (frameWidth > 0) 
+			     && (frameHeight > 0) 
+                             && (adSpec.snackbar !== true))
                          {
                            sizeArray = size.split(",");
                            for (var i=0; i<sizeArray.length; i++)
@@ -1301,7 +1401,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 			else
 			   t.drawTags();
 
-			if (p.canServeSnackBar(adSpec) === true)
+			if (p.canServeSnackBarOnThePage(adSpec) === true)
                          {
                            p.drawSnackBarTags();
                          }			
@@ -1633,7 +1733,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 			 inspectNameObj(slotName + ".adResponse",adResponse);
 		       }
 
-                       if (p.canServeSnackBar(adSpec) === true)
+                       if (p.canServeSnackBarOnThePage(adSpec) === true)
 		          p.drawSnackBarTags();
 
                        iframe = p.createSameDomainIframeNode(iframeID,frameWidth,frameHeight);
@@ -1653,10 +1753,15 @@ if (e9Manager === undefined || e9Manager.init === false)
 		var       	sizeArray   = adResponse.size.split("x");
 		var       	frameWidth  = sizeArray[0];
 		var       	frameHeight = sizeArray[1];
-                var             adSpec      = p.pageBuildAdSpec(e9);
                 var             currFrame   = window.frameElement;
                 var             content;
+                var             adSpec;
 
+		if (e9.snackbar === true)
+		   adSpec = e9;
+		else
+		   adSpec = p.pageBuildAdSpec(e9);
+		
                 if (    (currFrame !== null)
                      && (currFrame.width !== frameWidth || currFrame.height !== frameHeight) )
 		 {

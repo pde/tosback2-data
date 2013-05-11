@@ -532,7 +532,7 @@ $h.quiz = {
 				result_image_height = result_image.height();
 			}
 			var share_container_height = share_container.outerHeight(true);
-			if(result_image_height > result_text_height + result_scoreText_height + result_additional_text_height + 90)
+			if(result_image_height > result_text_height + result_scoreText_height + result_additional_text_height + 110)
 			{
 				share_container.addClass("vertical");
 				result_links.addClass("resultLinksVertical");

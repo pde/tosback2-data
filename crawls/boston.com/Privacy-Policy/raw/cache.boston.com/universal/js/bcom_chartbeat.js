@@ -17,7 +17,7 @@ if ( BosDMA && BosDMA === true ) {
 	e.setAttribute('language', 'javascript');
 	e.setAttribute('type', 'text/javascript');
 	e.setAttribute('src',
-	   (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") + "static.chartbeat.com/js/chartbeat.js");
+	   (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") + "static.chartbeat.com/js/chartbeat_pub.js");
 	    document.body.appendChild(e);
 	}
 	var oldonload = window.onload;

@@ -61,11 +61,11 @@
 var ue_csm = window;
 ue_csm.ue_hob=ue_csm.ue_hob||+new Date();(function(d){var a={ec:0,pec:0,ts:0,erl:[],mxe:50,startTimer:function(){a.ts++;setInterval(function(){d.ue&&(a.pec<a.ec)&&d.uex("at");a.pec=a.ec},10000)}};function c(e){if(a.ec>a.mxe){return}a.ec++;a.erl.push(e)}function b(h,g,e){var f={m:h,f:g,l:e,fromOnError:1,args:arguments};d.ueLogError(f);return false}b.skipTrace=1;c.skipTrace=1;d.ueLogError=c;d.ue_err=a;window.onerror=b})(ue_csm);ue_csm.ue_hoe=+new Date();
 
-var ue_id='1AWJDM9E3RWG53TYPGF0',
-ue_sid='276-2625298-1810601',
+var ue_id='112YXFGH861GC47EK2PZ',
+ue_sid='279-2462276-2121747',
 ue_mid='A13V1IB3VIYZZH',
 ue_sn='www.amazon.fr',
-ue_url='/gp/help/customer/display.html/ref=footer_privacy/uedata/unsticky/276-2625298-1810601/GPHelp/ntpoffrw',
+ue_url='/gp/help/customer/display.html/ref=footer_privacy/uedata/unsticky/279-2462276-2121747/GPHelp/ntpoffrw',
 ue_furl='fls-eu.amazon.fr',
 ue_pr=0,
 ue_navtiming=0,
@@ -319,9 +319,9 @@ INPUT { font-family: fixed; }
 
 
 
-<link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/fr-site-wide-css-beacon/site-wide-9297996980._V1_.css' rel='stylesheet'>
+<link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/fr-site-wide-css-beacon/site-wide-5541601444._V1_.css' rel='stylesheet'>
 <link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/wcs-css-buttons/wcs-css-buttons-2172471701._V1_.css' rel='stylesheet'>
-<link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/wcs-help-base/wcs-help-base-3688076920._V1_.css' rel='stylesheet'>
+<link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/wcs-help-base/wcs-help-base-1653315911._V1_.css' rel='stylesheet'>
 <link type='text/css' href='../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/wcs-help-fr-overrides/wcs-help-fr-overrides-3586160851._V1_.css' rel='stylesheet'>
 <style type="text/css">
 
@@ -441,7 +441,7 @@ amznJQ.onReady('wcs-help-omniture', function () {
    s.prop37 = '0'; // encrypted customer id
    s.eVar37 = s.prop37;
    
-   s.prop38 = '276-2625298-1810601'; // session id
+   s.prop38 = '279-2462276-2121747'; // session id
    s.eVar38 = s.prop38;
 
 
@@ -566,13 +566,15 @@ if (window.amznJQ) {
   <script type="text/javascript"><!--
   (function(a){var e=function(){function b(b,c,a){b[a]=function(){d._replay.push(c.concat({m:a,a:[].slice.call(arguments)}))}}var d={_replay:[],getNow:function(b,c){return c},when:function(){var a=[{m:"when",a:[].slice.call(arguments)}],c={};b(c,a,"run");b(c,a,"declare");b(c,a,"publish");b(c,a,"build");return c}};b(d,[],"declare");b(d,[],"build");b(d,[],"publish");b(d,[],"importEvent");e._shims.push(d);return d};e._shims=[];if(!a.$Nav)a.$Nav=e();if(!a.$Nav.make)a.$Nav.make=e})(window);
   if ( !/[?&]navSuppressDependencyManager/.test( window.location.href ) ) {
-    amznJQ.available('navbarJS-revamp', function(){});
-    amznJQ.available('navbarJS-beacon', function(){});
-    amznJQ.available('NavAuiJS', function(){});
+    window.amznJQ && amznJQ.available('navbarJS-revamp', function(){});
+    window.amznJQ && amznJQ.available('navbarJS-beacon', function(){});
+    window.amznJQ && amznJQ.available('NavAuiJS', function(){});
+    window.$Nav && $Nav.importEvent('navbarJS-revamp');
+    window.$Nav && $Nav.importEvent('navbarJS-beacon');
+    window.$Nav && $Nav.importEvent('NavAuiJS');
   }
   window._navbarSpriteUrl = 'http://g-ecx.images-amazon.com/images/G/08/gno/beacon/BeaconSprite-FR-02._V397961267_.png';
-  amznJQ.available('popover', function() {
-    amznJQ.available('navbarBTF', function() {
+  window.$Nav && $Nav.when('$', '$popover', 'btf.full').run(function (jQuery) {
       var ie6 = jQuery.browser.msie && parseInt(jQuery.browser.version) <= 6,
       h = new Image(), v = new Image(), c = 0, b, f, bi,
       fn = function(p){ switch(typeof p){ case'boolean':{b=p;bi=1;break} case'function':{f=p} default:{c++} } if(bi&&c>2)f(b) };
@@ -581,16 +583,18 @@ if (window.amznJQ) {
       v.src = (ie6 ? 'http://g-ecx.images-amazon.com/images/G/08/gno/beacon/nav-pop-8bit-v._V147907147_.png' : 'http://g-ecx.images-amazon.com/images/G/08/gno/beacon/nav-pop-v-v2._V147907141_.png');
       window._navpreload = {'sprite_h':h, 'sprite_v':v, '_protectExposeSBD':fn};
 
+      $Nav.declare('protectExposeSBD', fn);
+
       _navpreload._menuCallback = function() {
         _navpreload.spin = new Image();
         _navpreload.spin.src = 'http://g-ecx.images-amazon.com/images/G/08/javascripts/lib/popover/images/snake._V192199246_.gif';
       };
-    });
+
+      $Nav.declare('preloadSpinner', window._navpreload._menuCallback);
   });
   --></script>
 <img src="../../../../../g-ecx.images-amazon.com/images/G/08/gno/beacon/BeaconSprite-FR-02._V397961267_.png" style="display:none" alt=""/>
 <img src="../../../../../g-ecx.images-amazon.com/images/G/08/x-locale/common/transparent-pixel._V192553961_.gif" style="display:none" alt="" id="nav_trans_pixel"/>
-
 
 
 
@@ -681,7 +685,7 @@ _navbar._ajaxProximity = [141,7,60,150];
 
 --></script>
 
-  <!-- navp-CecBAkvJgEjI6gwRSodTWxXMwAJk9T+to5rrsFnWRaLAFLHTXoCjxzWo44A6J1gdHLQMqtCQ93w= rid-1AWJDM9E3RWG53TYPGF0 templated -->
+  <!-- navp-FWjQh1//XmAdje/5RagPcrHLL6qdiCfuPed3TRmyAnd6iDXCo+sPUN+JAVTljEpSE5UPI1c88OI= rid-112YXFGH861GC47EK2PZ templated -->
   
 
 
@@ -720,18 +724,18 @@ _navbar._ajaxProximity = [141,7,60,150];
 
     <div id='nav-cross-shop'>
 
-      <a href='http://www.amazon.fr/ref=gno_logo/276-2625298-1810601' id='nav-logo' class='nav_a nav-sprite' alt='Amazon'>
+      <a href='http://www.amazon.fr/ref=gno_logo/279-2462276-2121747' id='nav-logo' class='nav_a nav-sprite' alt='Amazon'>
         Amazon
         <span class='nav-prime-tag nav-sprite'></span>
       </a>
 
 
       <ul id='nav-cross-shop-links' >
-                      <li class='nav-xs-link first'><a href='http://www.amazon.fr/gp/yourstore/home/ref=topnav_ys/276-2625298-1810601' class='nav_a' id='nav-your-amazon'>Chez vous</a></li>
-                          <li class='nav-xs-link '><a href='http://www.amazon.fr/promotions-bons-plans/b/ref=topnav_nba/276-2625298-1810601?ie=UTF8&amp;node=51375011' class='nav_a'>Promotions</a></li>
-                          <li class='nav-xs-link '><a href='http://www.amazon.fr/gp/gc/ref=topnav_ccad/276-2625298-1810601' class='nav_a'>Chèques-cadeaux</a></li>
-                          <li class='nav-xs-link '><a href='http://www.amazon.fr/b/ref=topnav_sell/276-2625298-1810601?ie=UTF8&amp;node=2383619031' class='nav_a'>Vendre</a></li>
-                          <li class='nav-xs-link '><a href='http://www.amazon.fr/Aide/b/ref=topnav_help/276-2625298-1810601?ie=UTF8&amp;node=559912' class='nav_a'>Aide</a></li>
+                      <li class='nav-xs-link first'><a href='http://www.amazon.fr/gp/yourstore/home/ref=topnav_ys/279-2462276-2121747' class='nav_a' id='nav-your-amazon'>Chez vous</a></li>
+                          <li class='nav-xs-link '><a href='http://www.amazon.fr/promotions-bons-plans/b/ref=topnav_nba/279-2462276-2121747?ie=UTF8&amp;node=51375011' class='nav_a'>Promotions</a></li>
+                          <li class='nav-xs-link '><a href='http://www.amazon.fr/gp/gc/ref=topnav_ccad/279-2462276-2121747' class='nav_a'>Chèques-cadeaux</a></li>
+                          <li class='nav-xs-link '><a href='http://www.amazon.fr/b/ref=topnav_sell/279-2462276-2121747?ie=UTF8&amp;node=2383619031' class='nav_a'>Vendre</a></li>
+                          <li class='nav-xs-link '><a href='http://www.amazon.fr/Aide/b/ref=topnav_help/279-2462276-2121747?ie=UTF8&amp;node=559912' class='nav_a'>Aide</a></li>
                     
       </ul>
 
@@ -754,7 +758,7 @@ _navbar._ajaxProximity = [141,7,60,150];
 
       <div id='nav-bar-inner' class='nav-sprite'>
 
-        <a id='nav-shop-all-button' href='http://www.amazon.fr/gp/site-directory/ref=topnav_sad/276-2625298-1810601' class='nav_a nav-button-outer nav-menu-inactive' alt='Parcourir par boutiques'>
+        <a id='nav-shop-all-button' href='http://www.amazon.fr/gp/site-directory/ref=topnav_sad/279-2462276-2121747' class='nav_a nav-button-outer nav-menu-inactive' alt='Parcourir par boutiques'>
           <span class='nav-button-mid nav-sprite'>
             <span class='nav-button-inner nav-sprite'>
               <span class='nav-button-title nav-button-line1'>Parcourir les</span>
@@ -770,7 +774,7 @@ _navbar._ajaxProximity = [141,7,60,150];
         
         <div>
           <form
-            action='http://www.amazon.fr/s/ref=nb_sb_noss/276-2625298-1810601'
+            action='http://www.amazon.fr/s/ref=nb_sb_noss/279-2462276-2121747'
             method='get' name='site-search'
             class='nav-searchbar-inner'
             role='search'
@@ -783,7 +787,7 @@ _navbar._ajaxProximity = [141,7,60,150];
                 Toutes nos boutiques
               </span>
               <span class='nav-down-arrow nav-sprite'></span>
-              <select name="url" id="searchDropdownBox" class="searchSelect" title="Rechercher dans"   ><option  value="search-alias=aps" selected="selected">Toutes nos boutiques</option><option  value="search-alias=pets">Animalerie</option><option  value="search-alias=automotive">Auto et Moto</option><option  value="search-alias=jewelry">Bijoux</option><option  value="search-alias=gift-cards">Boutique chèques-cadeaux</option><option  value="search-alias=digital-text">Boutique Kindle</option><option  value="search-alias=diy">Bricolage</option><option  value="search-alias=baby">Bébés & Puériculture</option><option  value="search-alias=shoes">Chaussures et Sacs</option><option  value="search-alias=kitchen">Cuisine & Maison</option><option  value="search-alias=dvd">DVD & Blu-ray</option><option  value="search-alias=office-products">Fournitures de bureau</option><option  value="search-alias=appliances">Gros électroménager</option><option  value="search-alias=computers">Informatique</option><option  value="search-alias=mi">Instruments de musique & Sono</option><option  value="search-alias=toys">Jeux et Jouets</option><option  value="search-alias=videogames">Jeux vidéo</option><option  value="search-alias=english-books">Livres anglais et étrangers</option><option  value="search-alias=stripbooks">Livres en français</option><option  value="search-alias=software">Logiciels</option><option  value="search-alias=lighting">Luminaires et Eclairage</option><option  value="search-alias=watches">Montres</option><option  value="search-alias=popular">Musique</option><option  value="search-alias=classical">Musique classique</option><option  value="search-alias=digital-music">Musique MP3</option><option  value="search-alias=beauty">Parfum et Beauté</option><option  value="search-alias=electronics">Photo, Image, Son et GPS</option><option  value="search-alias=hpc">Santé et Soins du corps</option><option  value="search-alias=sports">Sports et Loisirs</option><option  value="search-alias=clothing">Vêtements et accessoires</option></select>
+              <select name="url" id="searchDropdownBox" class="searchSelect" title="Rechercher dans"   ><option value="search-alias=aps" selected="selected">Toutes nos boutiques</option><option value="search-alias=pets">Animalerie</option><option value="search-alias=automotive">Auto et Moto</option><option value="search-alias=jewelry">Bijoux</option><option value="search-alias=gift-cards">Boutique chèques-cadeaux</option><option value="search-alias=digital-text">Boutique Kindle</option><option value="search-alias=diy">Bricolage</option><option value="search-alias=baby">Bébés & Puériculture</option><option value="search-alias=shoes">Chaussures et Sacs</option><option value="search-alias=kitchen">Cuisine & Maison</option><option value="search-alias=dvd">DVD & Blu-ray</option><option value="search-alias=office-products">Fournitures de bureau</option><option value="search-alias=appliances">Gros électroménager</option><option value="search-alias=computers">Informatique</option><option value="search-alias=mi">Instruments de musique & Sono</option><option value="search-alias=toys">Jeux et Jouets</option><option value="search-alias=videogames">Jeux vidéo</option><option value="search-alias=english-books">Livres anglais et étrangers</option><option value="search-alias=stripbooks">Livres en français</option><option value="search-alias=software">Logiciels</option><option value="search-alias=lighting">Luminaires et Eclairage</option><option value="search-alias=watches">Montres</option><option value="search-alias=popular">Musique</option><option value="search-alias=classical">Musique classique</option><option value="search-alias=digital-music">Musique MP3</option><option value="search-alias=beauty">Parfum et Beauté</option><option value="search-alias=electronics">Photo, Image, Son et GPS</option><option value="search-alias=hpc">Santé et Soins du corps</option><option value="search-alias=sports">Sports et Loisirs</option><option value="search-alias=clothing">Vêtements et accessoires</option></select>
             </span>
 
             <div class='nav-searchfield-outer nav-sprite'>
@@ -809,7 +813,7 @@ _navbar._ajaxProximity = [141,7,60,150];
           </form>
         </div>
 
-        <a id='nav-your-account' href='https://www.amazon.fr/ap/signin/276-2625298-1810601?_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fcss%2Fhomepage.html%3Fie%3DUTF8%26ref_%3Dgno_yam_ya' class='nav_a nav-button-outer nav-menu-inactive' alt='Votre compte'>
+        <a id='nav-your-account' href='https://www.amazon.fr/ap/signin/279-2462276-2121747?_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fcss%2Fhomepage.html%3Fie%3DUTF8%26ref_%3Dgno_yam_ya' class='nav_a nav-button-outer nav-menu-inactive' alt='Votre compte'>
           <span class='nav-button-mid nav-sprite'>
             <span class='nav-button-inner nav-sprite'>
               <span id='nav-signin-title' class='nav-button-title nav-button-line1'  >
@@ -824,7 +828,7 @@ _navbar._ajaxProximity = [141,7,60,150];
 
           <span class='nav-divider nav-divider-prime'></span>
 
-          <a id='nav-your-prime' href='http://www.amazon.fr/gp/prime/ref=nav_menu/276-2625298-1810601' class='nav_a nav-button-outer nav-menu-inactive' alt='Adhérez à Premium'>
+          <a id='nav-your-prime' href='http://www.amazon.fr/gp/prime/ref=nav_menu/279-2462276-2121747' class='nav_a nav-button-outer nav-menu-inactive' alt='Adhérez à Premium'>
             <span class='nav-button-mid nav-sprite'>
               <span class='nav-button-inner nav-sprite'>
                 <span class='nav-button-title nav-button-line1'>Adhérez à</span>
@@ -836,7 +840,7 @@ _navbar._ajaxProximity = [141,7,60,150];
 
           <span class='nav-divider nav-divider-account'></span>
 
-          <a id='nav-cart' href='http://www.amazon.fr/gp/cart/view.html/ref=gno_cart/276-2625298-1810601' class='nav_a nav-button-outer nav-menu-inactive' alt='Panier'>
+          <a id='nav-cart' href='http://www.amazon.fr/gp/cart/view.html/ref=gno_cart/279-2462276-2121747' class='nav_a nav-button-outer nav-menu-inactive' alt='Panier'>
             <span class='nav-button-mid nav-sprite'>
               <span class='nav-button-inner nav-sprite'>
 
@@ -853,7 +857,7 @@ _navbar._ajaxProximity = [141,7,60,150];
 
           <span class='nav-divider nav-divider-cart'></span>
 
-          <a id='nav-wishlist' href='http://www.amazon.fr/gp/registry/wishlist/ref=wish_list/276-2625298-1810601' class='nav_a nav-button-outer nav-menu-inactive' alt='Liste d'envies'>
+          <a id='nav-wishlist' href='http://www.amazon.fr/gp/registry/wishlist/ref=wish_list/279-2462276-2121747' class='nav_a nav-button-outer nav-menu-inactive' alt='Liste d'envies'>
             <span class='nav-button-mid nav-sprite'>
               <span class='nav-button-inner nav-sprite'>
                 <span class='nav-button-title nav-button-line1'>Liste</span>
@@ -894,6 +898,12 @@ _navbar._ajaxProximity = [141,7,60,150];
 
 <!-- nav promo cached -->
 
+
+
+
+<map name="nav_imgmap_auto-bike" id="nav_imgmap_auto-bike">
+<area shape="rect" coords="29,12,481,338" href="http://www.amazon.fr/b/ref=nav-sa-auto-bike?_encoding=UTF8&amp;node=2430868031" alt="Cliquez ici"/>
+</map>
 
 
 
@@ -948,9 +958,9 @@ _navbar._ajaxProximity = [141,7,60,150];
 
 
 <script type="text/javascript"><!--
-_navbar.dynamicMenuUrl = '/gp/navigation/ajax/dynamicmenu.html/276-2625298-1810601';
+_navbar.dynamicMenuUrl = '/gp/navigation/ajax/dynamicmenu.html/279-2462276-2121747';
 
-_navbar.dismissNotificationUrl = '/gp/navigation/ajax/dismissnotification.html/276-2625298-1810601';
+_navbar.dismissNotificationUrl = '/gp/navigation/ajax/dismissnotification.html/279-2462276-2121747';
 
 _navbar.dynamicMenus = true;
 
@@ -1002,6 +1012,14 @@ _navbar.dynamicMenuArgs = {"isPrime":0,"primeMenuWidth":310};
         , iac: 0
         , scs: 0
         , np: 0
+        , deepNodeISS: {
+            searchAliasAccessor: function() {
+              return (window.SearchPageAccess && window.SearchPageAccess.searchAlias()) || 
+                     jQuery('select.searchSelect').children().attr('data-root-alias');
+            },
+            showDeepNodeCorr: 0,
+            stayInDeepNode: 0
+          }
       });
 
       amznJQ.declareAvailable('search-js-autocomplete');
@@ -1033,6 +1051,7 @@ _navbar.dynamicMenuArgs = {"isPrime":0,"primeMenuWidth":310};
 
 
  _navbar.browsepromos['mp3'] = {"destination":"/gp/product/ref=nav_sap_mp3_test?ie=UTF8&ASIN=B00CJY5WS0","productTitle2":"Au Gré Du Vent","button":"Cliquez ici","price":"EUR 4,99","productTitle":"Riké","headline":"Bon Plan MP3 de la semaine","image":"http://ecx.images-amazon.com/images/I/51fjCSYT68L._SS100_.jpg"};
+ _navbar.browsepromos['auto-bike'] = {"width":500,"promoType":"wide","vertOffset":"-20","horizOffset":"-20","height":372,"image":"http://g-ecx.images-amazon.com/images/G/08/Automotive/Fly-outs/Auto_10-04-2013_Travel-Essentials_Flyout_FR._V370523664_.png"}; 
  _navbar.browsepromos['baby-toys-kids'] = {"width":503,"promoType":"wide","vertOffset":"0","horizOffset":"-21","height":378,"image":"http://g-ecx.images-amazon.com/images/G/08/products/toys/foil/fr-toys-flyout-12-4-13._V370828027_.png"}; 
  _navbar.browsepromos['clothing-shoes'] = {"width":460,"promoType":"wide","vertOffset":"0","horizOffset":"-10","height":472,"image":"http://g-ecx.images-amazon.com/images/G/08/apparel/flyout/fr_app_ss13-flyout-tentation1._V372906683_.png"}; 
  _navbar.browsepromos['kindle'] = {"width":440,"promoType":"wide","vertOffset":"-25","horizOffset":"28","height":151,"image":"http://g-ecx.images-amazon.com/images/G/08/kindle/merch/gno/kindle-gno-fr._V371425971_.png"}; 
@@ -1062,7 +1081,7 @@ _navbar.dynamicMenuArgs = {"isPrime":0,"primeMenuWidth":310};
      <div class="cs-logout-node">
     &nbsp;
      </div>
-     <div class="breadcrumb"><span class="help-anchor"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_bc_anchor/276-2625298-1810601?ie=UTF8&amp;nodeId=559912">Aide</a></span>&nbsp;&gt;&nbsp;<a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_bc_nav/276-2625298-1810601?ie=UTF8&amp;nodeId=548706">Sécurité, confidentialité et accessibilité</a>&nbsp;&gt;&nbsp;<span class="selected">Protection de vos informations personnelles</span></div>
+     <div class="breadcrumb"><span class="help-anchor"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_bc_anchor/279-2462276-2121747?ie=UTF8&amp;nodeId=559912">Aide</a></span>&nbsp;&gt;&nbsp;<a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_bc_nav/279-2462276-2121747?ie=UTF8&amp;nodeId=548706">Sécurité, confidentialité et accessibilité</a>&nbsp;&gt;&nbsp;<span class="selected">Protection de vos informations personnelles</span></div>
 
    </div>
   </div>
@@ -1091,7 +1110,7 @@ _navbar.dynamicMenuArgs = {"isPrime":0,"primeMenuWidth":310};
   <div class="cBoxInner">
 
 
-<div class="nav-level step1"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_ac/276-2625298-1810601?ie=UTF8&amp;nodeId=548706">Sécurité, confidentialité et accessibilité</a></div><div class="nav-level step2 selected">Protection de vos informations personnelles</div><ul class="nav-children step2"><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/276-2625298-1810601?ie=UTF8&amp;nodeId=3329791">Systèmes de protection de la vie privée</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/276-2625298-1810601?ie=UTF8&amp;nodeId=201028660">Modification de Protection de vos données personnelles 25 septembre 2012</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/276-2625298-1810601?ie=UTF8&amp;nodeId=200547210">Modification de Protection de vos données personnelles 7 octobre 2010</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/276-2625298-1810601?ie=UTF8&amp;nodeId=200323740">Modification de Protection de vos données personnelles 27 février 2009</a></li></ul>
+<div class="nav-level step1"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_ac/279-2462276-2121747?ie=UTF8&amp;nodeId=548706">Sécurité, confidentialité et accessibilité</a></div><div class="nav-level step2 selected">Protection de vos informations personnelles</div><ul class="nav-children step2"><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/279-2462276-2121747?ie=UTF8&amp;nodeId=3329791">Systèmes de protection de la vie privée</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/279-2462276-2121747?ie=UTF8&amp;nodeId=201028660">Modification de Protection de vos données personnelles 25 septembre 2012</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/279-2462276-2121747?ie=UTF8&amp;nodeId=200547210">Modification de Protection de vos données personnelles 7 octobre 2010</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_left_cn/279-2462276-2121747?ie=UTF8&amp;nodeId=200323740">Modification de Protection de vos données personnelles 27 février 2009</a></li></ul>
 </div>
 </div>  
 
@@ -1341,7 +1360,7 @@ effet immédiat mais non rétroactif.</span>
 <div class="cs-divider-dashed"></div>
 <div class="cs-frst-head-flexi">
 Rubriques connexes: </div>
-<div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/276-2625298-1810601?ie=UTF8&amp;nodeId=3329791">Systèmes de protection de la vie privée</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/276-2625298-1810601?ie=UTF8&amp;nodeId=201028660">Modification de Protection de vos données personnelles 25 septembre 2012</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/276-2625298-1810601?ie=UTF8&amp;nodeId=200547210">Modification de Protection de vos données personnelles 7 octobre 2010</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/276-2625298-1810601?ie=UTF8&amp;nodeId=200323740">Modification de Protection de vos données personnelles 27 février 2009</a></div>
+<div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/279-2462276-2121747?ie=UTF8&amp;nodeId=3329791">Systèmes de protection de la vie privée</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/279-2462276-2121747?ie=UTF8&amp;nodeId=201028660">Modification de Protection de vos données personnelles 25 septembre 2012</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/279-2462276-2121747?ie=UTF8&amp;nodeId=200547210">Modification de Protection de vos données personnelles 7 octobre 2010</a></div><div class="cs-related-links"><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_rel_topic/279-2462276-2121747?ie=UTF8&amp;nodeId=200323740">Modification de Protection de vos données personnelles 27 février 2009</a></div>
 
 
 
@@ -1389,7 +1408,7 @@ Rubriques connexes: </div>
   <span class="cBoxBR"><!-- &nbsp; --></span>
   <span class="cBoxB"><!-- &nbsp; --></span>
   <h2>Libre-service</h2>
-  <div class="cBoxInner"><ul class="cs-list-jq default-actions"><li><a href="https://www.amazon.fr/gp/css/order-history/ref=hp_ss_comp_tmp/276-2625298-1810601">Suivre ou modifier vos commandes expédiées</a></li><li><a href="http://www.amazon.fr/gp/css/account/cards/view.html/ref=hp_ss_comp_mpo/276-2625298-1810601">Gérer les options de paiement</a></li><li><a href="http://www.amazon.fr/gp/css/returns/homepage.html/ref=hp_ss_comp_ri/276-2625298-1810601">Retourner ou remplacer des articles</a></li><li><a href="https://www.amazon.fr/ap/cnep/276-2625298-1810601?_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fhelp%2Fcustomer%2Fdisplay.html%2F276-2625298-1810601%3Fie%3DUTF8%26ref_%3Dhp_ss_comp_cnep">Modifier votre nom, votre e-mail ou votre mot de passe</a></li><li><a href="http://www.amazon.fr/gp/css/account/address/view.html/ref=hp_ss_comp_mab/276-2625298-1810601">Gérer le carnet d'adresses</a></li><li><a href="http://www.amazon.fr/gp/digital/fiona/manage/ref=hp_ss_comp_mk/276-2625298-1810601">Votre compte Kindle</a></li><li class="cs-divider-before"><a href="http://www.amazon.fr/gp/help/customer/forums/ref=hp_ss_comp_ss_forum/276-2625298-1810601">Forum d'aide générale</a></li><li><a href="http://www.amazon.fr/gp/help/customer/forums/kindleqna/ref=hp_ss_comp_kindle_forum_C/276-2625298-1810601">Forum d'aide Kindle</a></li><li id="displayLink" class="cs-divider-before"><a href="https://www.amazon.fr/gp/help/customer/contact-us/ref=hp_ss_comp_cu/276-2625298-1810601?ie=UTF8&amp;nodeId=3329781" class="amzn-btn btn-prim-med-ra" unselectable="on"><span>Nous contacter</span></a></li></ul></div>
+  <div class="cBoxInner"><ul class="cs-list-jq default-actions"><li><a href="https://www.amazon.fr/gp/css/order-history/ref=hp_ss_comp_tmp/279-2462276-2121747">Suivre ou modifier vos commandes expédiées</a></li><li><a href="http://www.amazon.fr/gp/css/account/cards/view.html/ref=hp_ss_comp_mpo/279-2462276-2121747">Gérer les options de paiement</a></li><li><a href="http://www.amazon.fr/gp/css/returns/homepage.html/ref=hp_ss_comp_ri/279-2462276-2121747">Retourner ou remplacer des articles</a></li><li><a href="https://www.amazon.fr/ap/cnep/279-2462276-2121747?_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fhelp%2Fcustomer%2Fdisplay.html%2F279-2462276-2121747%3Fie%3DUTF8%26ref_%3Dhp_ss_comp_cnep">Modifier votre nom, votre e-mail ou votre mot de passe</a></li><li><a href="http://www.amazon.fr/gp/css/account/address/view.html/ref=hp_ss_comp_mab/279-2462276-2121747">Gérer le carnet d'adresses</a></li><li><a href="http://www.amazon.fr/gp/digital/fiona/manage/ref=hp_ss_comp_mk/279-2462276-2121747">Votre compte Kindle</a></li><li class="cs-divider-before"><a href="http://www.amazon.fr/gp/help/customer/forums/ref=hp_ss_comp_ss_forum/279-2462276-2121747">Forum d'aide générale</a></li><li><a href="http://www.amazon.fr/gp/help/customer/forums/kindleqna/ref=hp_ss_comp_kindle_forum_C/279-2462276-2121747">Forum d'aide Kindle</a></li><li id="displayLink" class="cs-divider-before"><a href="https://www.amazon.fr/gp/help/customer/contact-us/ref=hp_ss_comp_cu/279-2462276-2121747?ie=UTF8&amp;nodeId=3329781" class="amzn-btn btn-prim-med-ra" unselectable="on"><span>Nous contacter</span></a></li></ul></div>
 </div>  
 
 
@@ -1414,7 +1433,7 @@ Rubriques connexes: </div>
   <span class="cBoxBR"><!-- &nbsp; --></span>
   <span class="cBoxB"><!-- &nbsp; --></span>
   <h2>Autres sites d'aide</h2>
-  <div class="cBoxInner"><ul class="nav-topics"><li><a href="http://www.amazon.fr/vendre-marketplace/276-2625298-1810601?_encoding=UTF8&amp;ref_=hp_other_selling">Vendez sur Amazon</a></li><li><a href="https://www.amazon.fr:443/gp/redirect.html/ref=hp_other_ah/276-2625298-1810601?location=https://partenaires.amazon.fr/&token=CE7606C50A67BAEA499A54522DC5C569D9CC3382">Programme Partenaires</a></li><li><a href="http://www.amazon.fr/gp/redirect.html/ref=hp_other_aws/276-2625298-1810601?location=http://aws.amazon.com/fr/faqs&amp;token=884CBD83286A3F3592BD77F9E0AD29091A93E245">Amazon Web Services</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_other_pvg/276-2625298-1810601?ie=UTF8&amp;nodeId=200106360">Guides Vendeurs</a></li></ul></div>
+  <div class="cBoxInner"><ul class="nav-topics"><li><a href="http://www.amazon.fr/vendre-marketplace/279-2462276-2121747?_encoding=UTF8&amp;ref_=hp_other_selling">Vendez sur Amazon</a></li><li><a href="https://www.amazon.fr:443/gp/redirect.html/ref=hp_other_ah/279-2462276-2121747?location=https://partenaires.amazon.fr/&token=CE7606C50A67BAEA499A54522DC5C569D9CC3382">Programme Partenaires</a></li><li><a href="http://www.amazon.fr/gp/redirect.html/ref=hp_other_aws/279-2462276-2121747?location=http://aws.amazon.com/fr/faqs&amp;token=884CBD83286A3F3592BD77F9E0AD29091A93E245">Amazon Web Services</a></li><li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=hp_other_pvg/279-2462276-2121747?ie=UTF8&amp;nodeId=200106360">Guides Vendeurs</a></li></ul></div>
 </div>  
 
 
@@ -1461,10 +1480,10 @@ Rubriques connexes: </div>
             <td class="navFooterLinkCol">
 <div class="navFooterColHead">Pour mieux nous connaître</div>
 <ul>
-<li><a href="http://www.amazon.fr/b/ref=gw_m_b_careers/276-2625298-1810601?_encoding=UTF8&amp;node=202589011">Carrières</a></li>
-<li><a href="http://www.amazon.fr/gp/redirect.html/ref=cs_nav_bn_ab/276-2625298-1810601?ie=UTF8&amp;location=http%3A%2F%2Famazon-presse.fr%2Fa-propos-damazon.html&amp;token=6A5789F938F4257C79B73919F3617C18D4753044">Qui sommes-nous ?</a></li>
+<li><a href="http://www.amazon.fr/b/ref=gw_m_b_careers/279-2462276-2121747?_encoding=UTF8&amp;node=202589011">Carrières</a></li>
+<li><a href="http://www.amazon.fr/gp/redirect.html/ref=cs_nav_bn_ab/279-2462276-2121747?ie=UTF8&amp;location=http%3A%2F%2Famazon-presse.fr%2Fa-propos-damazon.html&amp;token=6A5789F938F4257C79B73919F3617C18D4753044">Qui sommes-nous ?</a></li>
 <li><a href="http://www.amazon-presse.fr/">Presse</a></li>
-<li><a href="http://www.amazon.fr/b/ref=footer_corpres/276-2625298-1810601?_encoding=UTF8&amp;node=323594031">Amazon et notre planète</a></li>
+<li><a href="http://www.amazon.fr/b/ref=footer_corpres/279-2462276-2121747?_encoding=UTF8&amp;node=323594031">Amazon et notre planète</a></li>
 </ul>
 </td>
 <td class="navFooterColSpacerInner"></td>
@@ -1473,18 +1492,18 @@ Rubriques connexes: </div>
 <ul>
 <li><a href="http://services.amazon.fr/services/vendre-sur-amazon/comment-ca-marche/?ld=AZFRSOAFooter">Vendez sur Amazon</a></li>
 <li><a href="https://partenaires.amazon.fr">Devenez Partenaire</a></li>
-<li><a href="http://www.amazon.fr/gp/seller-account/mm-product-page.html/276-2625298-1810601?ie=UTF8&amp;topic=200403920">Devenez notre fournisseur via Avantage</a></li>
-<li><span class="navFooterRightArrowBullet">&rsaquo;</span> <a href="http://www.amazon.fr/gp/seller-account/mm-landing.html/ref=footer_seeall/276-2625298-1810601?ie=UTF8&amp;topic=200327870">Tous nos programmes</a></li>
+<li><a href="http://www.amazon.fr/gp/seller-account/mm-product-page.html/279-2462276-2121747?ie=UTF8&amp;topic=200403920">Devenez notre fournisseur via Avantage</a></li>
+<li><span class="navFooterRightArrowBullet">&rsaquo;</span> <a href="http://www.amazon.fr/gp/seller-account/mm-landing.html/ref=footer_seeall/279-2462276-2121747?ie=UTF8&amp;topic=200327870">Tous nos programmes</a></li>
 </ul>
 </td>
 <td class="navFooterColSpacerInner"></td>
 <td class="navFooterLinkCol">
 <div class="navFooterColHead">Besoin d'aide ?</div>
 <ul>
-<li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_shiprates/276-2625298-1810601?ie=UTF8&amp;nodeId=548566">Tarifs et options de livraison</a></li>
-<li><a href="http://www.amazon.fr/gp/subs/primeclub/signup/main.html/ref=footer_prime/276-2625298-1810601">Amazon Premium</a></li>
-<li><a href="http://www.amazon.fr/gp/css/returns/homepage.html/ref=hy_f_4/276-2625298-1810601">Retourner un article</a></li>
-<li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=gw_m_b_he/276-2625298-1810601?ie=UTF8&amp;nodeId=559912">Aide</a></li>
+<li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_shiprates/279-2462276-2121747?ie=UTF8&amp;nodeId=548566">Tarifs et options de livraison</a></li>
+<li><a href="http://www.amazon.fr/gp/subs/primeclub/signup/main.html/ref=footer_prime/279-2462276-2121747">Amazon Premium</a></li>
+<li><a href="http://www.amazon.fr/gp/css/returns/homepage.html/ref=hy_f_4/279-2462276-2121747">Retourner un article</a></li>
+<li><a href="http://www.amazon.fr/gp/help/customer/display.html/ref=gw_m_b_he/279-2462276-2121747?ie=UTF8&amp;nodeId=559912">Aide</a></li>
 </ul>
 </td>
 
@@ -1496,7 +1515,7 @@ Rubriques connexes: </div>
     <tr>
       <td>
         <div class="navFooterLine navFooterLogoLine">
-          <a href="http://www.amazon.fr/ref=footer_logo/276-2625298-1810601"><img src="../../../../../g-ecx.images-amazon.com/images/G/08/gno/images/general/navAmazonLogoFooter._V169459217_.gif" width="100" alt="amazon.fr" height="28" border="0" /></a>
+          <a href="http://www.amazon.fr/ref=footer_logo/279-2462276-2121747"><img src="../../../../../g-ecx.images-amazon.com/images/G/08/gno/images/general/navAmazonLogoFooter._V169459217_.gif" width="100" alt="amazon.fr" height="28" border="0" /></a>
         </div>
         <div class="navFooterLine navFooterLinkLine">
           <a href="http://www.amazon.de/">Allemagne</a>
@@ -1529,8 +1548,8 @@ Rubriques connexes: </div>
           </span>
         </div>
         <div class="navFooterLine navFooterLinkLine">
-          <a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_cou/276-2625298-1810601?ie=UTF8&amp;nodeId=548524">Conditions générales de vente</a>
- | <a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_privacy/276-2625298-1810601?ie=UTF8&amp;nodeId=3329781">Vos informations personnelles</a>
+          <a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_cou/279-2462276-2121747?ie=UTF8&amp;nodeId=548524">Conditions générales de vente</a>
+ | <a href="http://www.amazon.fr/gp/help/customer/display.html/ref=footer_privacy/279-2462276-2121747?ie=UTF8&amp;nodeId=3329781">Vos informations personnelles</a>
  | <a href="http://www.amazon.fr/cookiesetpublicitesurinternet">Cookies et Publicité sur Internet</a>
 <span>
 &nbsp;© 1996-2013, Amazon.com, Inc. ou ses filiales.
@@ -1546,7 +1565,7 @@ Rubriques connexes: </div>
 
   </table>
 </div>
-<!-- whfh-CYhh/LI0cyhsubSCGIqTF04qp7ILHhz417djUz3MgUKRM/lvXtf0anKLJPSAvsQT rid-1AWJDM9E3RWG53TYPGF0 -->
+<!-- whfh-N+310ylftoo2B8R6v/jwqwlBeqzYRwvheVaOAKPh1qoKcaRaVUSJMIEN6Fj23/3i rid-112YXFGH861GC47EK2PZ -->
 
 
 
@@ -1557,7 +1576,7 @@ Rubriques connexes: </div>
 
 
 
-<div id="sis_pixel_r2"></div><script>(function(a,b){a.attachEvent?a.attachEvent("onload",b):a.addEventListener&&a.addEventListener("load",b,!1)})(window,function(){setTimeout(function(){var el=document.getElementById("sis_pixel_r2");el&&(el.innerHTML='<iframe id="DAsis" src="../../../../../aax-eu.amazon-adsystem.com/s/iu3%3Fd=amazon.fr&amp;slot=navFooter&amp;a2=0101d1e8a73d219801d584b66109cfd5128435465a72e53c0c8fbd26d2737ac368d1&amp;old_oo=0&amp;cb=136801867830.html" width="1" height="1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>')},300)});</script>
+<div id="sis_pixel_r2"></div><script>(function(a,b){a.attachEvent?a.attachEvent("onload",b):a.addEventListener&&a.addEventListener("load",b,!1)})(window,function(){setTimeout(function(){var el=document.getElementById("sis_pixel_r2");el&&(el.innerHTML='<iframe id="DAsis" src="../../../../../aax-eu.amazon-adsystem.com/s/iu3%3Fd=amazon.fr&amp;slot=navFooter&amp;a2=01011f44d464440ea808b50fc5104f5e8af4541f4984a86ba024f30cb1c23c34debf&amp;old_oo=0&amp;cb=136827528074.html" width="1" height="1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>')},300)});</script>
 
 
 
@@ -1572,320 +1591,15 @@ Rubriques connexes: </div>
     <div class="nav-ajax-message"></div>
     <div class="nav-ajax-error-msg">
       <p class="nav_p nav-bold">Un problème s'est produit lors du chargement de ce menu pour le moment.</p>
-      <p class="nav_p"><a href="http://www.amazon.fr/gp/prime/ref=nav_prime_ajax_err/276-2625298-1810601" class="nav_a">En savoir plus sur Amazon Prime.</a></p>
+      <p class="nav_p"><a href="http://www.amazon.fr/gp/prime/ref=nav_prime_ajax_err/279-2462276-2121747" class="nav_a">En savoir plus sur Amazon Prime.</a></p>
     </div>
   </div>
 </div>
 
 
+
       
       
-<div style="display: none;">
-
-
-
-
-
-
-
-
-
-<div id="nav_browse_flyout">
-  <div id="nav_subcats_wrap" class="nav_browse_wrap">
-    <div id="nav_subcats">
-      <div id="nav_subcats_0" data-nav-promo-id="mp3"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">MP3 et Cloud Player</li>
-<li class="nav_first nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/T%C3%A9l%C3%A9charger-Musique-mp3/b/ref=sa_menu_mp3_str/276-2625298-1810601?_encoding=UTF8&amp;node=77196031" class="nav_a nav_item">Téléchargements MP3</a><div class="nav_tag">Plus de 20 millions de titres à télécharger</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/dmusic/mp3/player/ref=sa_menu_mp3_acp1/276-2625298-1810601" class="nav_a nav_item">Cloud Player</a><div class="nav_tag">Toute votre musique. Partout.</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_mp3_and/276-2625298-1810601?ie=UTF8&amp;docId=1000656703" class="nav_a nav_item">Cloud Player pour Android</a><div class="nav_tag">Pour téléphone et tablette Android</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_mp3_ios/276-2625298-1810601?ie=UTF8&amp;docId=1000656713" class="nav_a nav_item">Cloud Player pour iOS</a><div class="nav_tag">Pour iPhone et iPod Touch</div></li>
-</ul></div>
-<div id="nav_subcats_1" data-nav-promo-id="cloud-drive"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Amazon Cloud Drive</li>
-<li class="nav_first nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/clouddrive/ref=sa_menu_acd_urc/276-2625298-1810601" class="nav_a nav_item" target="_blank">Votre Cloud Drive</a><div class="nav_tag">5 Go d&#8217;espace de stockage gratuit</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_acd_dsktopapp/276-2625298-1810601?ie=UTF8&amp;docId=1000655953" class="nav_a nav_item">Obtenir l'application de bureau Cloud Drive</a><div class="nav_tag">Pour Windows et Mac</div></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_acd_lrn/276-2625298-1810601?ie=UTF8&amp;docId=1000655943" class="nav_a nav_item">En savoir plus sur Cloud Drive</a></li>
-</ul></div>
-<div id="nav_subcats_2" data-nav-promo-id="android"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">App-Shop pour Android</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_adr_app/276-2625298-1810601?ie=UTF8&amp;docId=1000660743" class="nav_a nav_item">Applis et Jeux</a></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_adr_amz/276-2625298-1810601?_encoding=UTF8&amp;node=541319031" class="nav_a nav_item">Applications Amazon</a><div class="nav_tag">Amazon Mobile, Kindle, MP3 et plus encore</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/mas/your-account/myapps/ref=sa_menu_adr_yad3/276-2625298-1810601" class="nav_a nav_item">Vos applis et vos appareils</a><div class="nav_tag">Voir mes applis et gérer mes appareils</div></li>
-</ul></div>
-<div id="nav_subcats_3" data-nav-promo-id="books"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Livres</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/livre-achat-occasion-litterature-roman/b/ref=sa_menu_lv/276-2625298-1810601?_encoding=UTF8&amp;node=301061" class="nav_a nav_item">Tous les livres</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/ebooks-kindle/b/ref=sa_menu_kbo/276-2625298-1810601?_encoding=UTF8&amp;node=695398031" class="nav_a nav_item">Tous les ebooks Kindle</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/livres-anglais-etranger/b/ref=sa_menu_lae/276-2625298-1810601?_encoding=UTF8&amp;node=52042011" class="nav_a nav_item">Livres anglais et étrangers</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/ecole-cahiers-soutien-scolaire-livre/b/ref=sa_menu_scpr/276-2625298-1810601?_encoding=UTF8&amp;node=301146" class="nav_a nav_item">Manuels scolaires et parascolaires</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/livre-audio-contes-apprendre-musical/b/ref=sa_menu_ab/276-2625298-1810601?_encoding=UTF8&amp;node=1193746" class="nav_a nav_item">Livres audio</a></li>
-</ul></div>
-<div id="nav_subcats_4" data-nav-promo-id="kindle"  class="nav_browse_subcat nav_super_cat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_first nav_pop_li nav_browse_cat_head">Liseuses Kindle</li>
-<li class="nav_first nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B007HCCOD0/ref=sa_menu_kdpszn4/276-2625298-1810601" class="nav_a nav_item">Kindle</a><div class="nav_tag">Petit, léger, parfait pour la lecture</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B007OZO03M/ref=sa_menu_kdpcwin4/276-2625298-1810601" class="nav_a nav_item">Kindle Paperwhite</a><div class="nav_tag">La liseuse la plus perfectionnée au monde</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B007OZNWRC/ref=sa_menu_kdpcwan4/276-2625298-1810601" class="nav_a nav_item">Kindle Paperwhite 3G</a><div class="nav_tag">Avec connexion 3G gratuite</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_kacceseink5/276-2625298-1810601?_encoding=UTF8&amp;node=838317031" class="nav_a nav_item">Accessoires Kindle</a><div class="nav_tag">Étuis, chargeurs, housses et plus encore</div></li>
-<li class="nav_pop_li nav_browse_cat_head nav_divider_before">Boutique Kindle</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/ebooks-kindle/b/ref=sa_menu_kbo4/276-2625298-1810601?_encoding=UTF8&amp;node=695398031" class="nav_a nav_item">Tous les ebooks Kindle</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_kds4/276-2625298-1810601?ie=UTF8&amp;docId=1000660533" class="nav_a nav_item">Bibliothèque de prêt Kindle</a></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu/276-2625298-1810601?ie=UTF8&amp;docId=1000657363" class="nav_a nav_item">Offre Éclair Kindle</a><div class="nav_tag">Chaque jour, un ebook à prix exceptionnel</div></li>
-</ul>
-<ul class="nav_browse_ul nav_browse_cat2_ul">
-<li class="nav_pop_li nav_browse_cat_head">Tablettes Kindle Fire</li>
-<li class="nav_first nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B0083Q04M2/ref=sa_menu_kdpo2n4/276-2625298-1810601" class="nav_a nav_item">Kindle Fire</a><div class="nav_tag">7", la tablette idéale pour toute la famille</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B0083PWAWU/ref=sa_menu_kdptan4/276-2625298-1810601" class="nav_a nav_item">Kindle Fire HD</a><div class="nav_tag">7", HD stupéfiante, audio Dolby, Wi-Fi ultra-rapide</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dp/B00ANZNBJO/ref=sa_menu_kdpjwi4/276-2625298-1810601" class="nav_a nav_item">Kindle Fire HD 8,9''</a><div class="nav_tag">8,9", notre plus grand écran HD, notre résolution la plus élevée</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_kaccestab5/276-2625298-1810601?_encoding=UTF8&amp;node=838317031" class="nav_a nav_item">Accessoires Kindle</a><div class="nav_tag">Étuis, chargeurs, stylets et plus encore</div></li>
-<li class="nav_pop_li nav_browse_cat_head nav_divider_before">Applications et ressources Kindle </li>
-<li class="nav_first nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/feature.html/ref=sa_menu_kcp_ipad_mkt_lnd4/276-2625298-1810601?ie=UTF8&amp;docId=1000538763" class="nav_a nav_item">Applications de lecture gratuites</a><div class="nav_tag">Pour PC, iPad, iPhone, Android, et plus encore</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gp/digital/fiona/manage/ref=sa_menu_myk4/276-2625298-1810601" class="nav_a nav_item">Votre compte Kindle</a><div class="nav_tag">Vos contenus, appareils, paramètres, et plus encore</div></li>
-</ul></div>
-<div id="nav_subcats_5" data-nav-promo-id="music-dvd-bluray"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Musique, DVD et Blu-ray</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Musique-cd-disques-coffrets-classique-imports-doccasion/b/ref=sa_menu_mu/276-2625298-1810601?_encoding=UTF8&amp;node=301062" class="nav_a nav_item">Toute la musique</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Musique-cd-classique/b/ref=sa_menu_clmu/276-2625298-1810601?_encoding=UTF8&amp;node=301174" class="nav_a nav_item">Musique classique</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/T%C3%A9l%C3%A9charger-Musique-mp3/b/ref=sa_menu_mp3/276-2625298-1810601?_encoding=UTF8&amp;node=77196031" class="nav_a nav_item">Téléchargements MP3</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_mi/276-2625298-1810601?_encoding=UTF8&amp;node=340861031" class="nav_a nav_item">Instruments de musique & Sono</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dvd-blu-ray-films/b/ref=sa_menu_dvd/276-2625298-1810601?_encoding=UTF8&amp;node=405322" class="nav_a nav_item">DVD & Blu-ray</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/serie-tv-t%C3%A9l%C3%A9film/b/ref=sa_menu_dvdtv/276-2625298-1810601?_encoding=UTF8&amp;node=409468" class="nav_a nav_item">Séries TV</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/blu-ray-3d-films-HD/b/ref=sa_menu_dvdbr/276-2625298-1810601?_encoding=UTF8&amp;node=294297011" class="nav_a nav_item">Blu-ray</a></li>
-</ul></div>
-<div id="nav_subcats_6" data-nav-promo-id="hightech"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">High-Tech</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/t%C3%A9l%C3%A9phonie-t%C3%A9l%C3%A9phone-portable-smartphone/b/ref=sa_menu_tele/276-2625298-1810601?_encoding=UTF8&amp;node=13910711" class="nav_a nav_item">Téléphones portables & fixes</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/appareils-photo-num%C3%A9riques-canon-camescopes/b/ref=sa_menu_pcam/276-2625298-1810601?_encoding=UTF8&amp;node=13910691" class="nav_a nav_item">Photo & Caméscopes</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/televiseur-lcd-lecteur-dvd-bluray/b/ref=sa_menu_tvv/276-2625298-1810601?_encoding=UTF8&amp;node=13910681" class="nav_a nav_item">TV & Vidéo</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_hchifi/276-2625298-1810601?_encoding=UTF8&amp;node=682942031" class="nav_a nav_item">Home Cinéma & Hi-Fi</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/lecteurs-MP3-accessoires-audio-casque/b/ref=sa_menu_amh/276-2625298-1810601?_encoding=UTF8&amp;node=13910701" class="nav_a nav_item">Lecteurs MP3 & Casques</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/gps-accessoires-radar-TomTom-Garmin/b/ref=sa_menu_igps/276-2625298-1810601?_encoding=UTF8&amp;node=13910721" class="nav_a nav_item">GPS & Auto</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_mi/276-2625298-1810601?_encoding=UTF8&amp;node=340861031" class="nav_a nav_item">Instruments de musique & Sono</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_el_acc/276-2625298-1810601?_encoding=UTF8&amp;node=2403398031" class="nav_a nav_item">Tous les accessoires High-Tech</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/photo-TV-mp3-Hifi-GPS/b/ref=sa_menu_el/276-2625298-1810601?_encoding=UTF8&amp;node=13921051" class="nav_a nav_item">Tout l'univers High-Tech</a></li>
-</ul></div>
-<div id="nav_subcats_7" data-nav-promo-id="computers-office"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Informatique et bureau</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/ordinateurs-pc-portables-mac-tablettes/b/ref=sa_menu_ord_por_tab/276-2625298-1810601?_encoding=UTF8&amp;node=514846031" class="nav_a nav_item">Ordinateurs portables & Tablettes</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/pc-ordinateurs-bureau-imac-hp/b/ref=sa_menu_ord_bur_ecr/276-2625298-1810601?_encoding=UTF8&amp;node=1400411031" class="nav_a nav_item">Ordinateurs de bureau & Ecrans</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/disques-durs-cpl-souris-cables/b/ref=sa_menu_sto_net/276-2625298-1810601?_encoding=UTF8&amp;node=514849031" class="nav_a nav_item">Stockage & Réseaux</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/processeurs-cartes-meres-composants-ram/b/ref=sa_menu_compo/276-2625298-1810601?_encoding=UTF8&amp;node=427941031" class="nav_a nav_item">Composants PC</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Informatique-Imprimante-Cartouche-encre/b/ref=sa_menu_impr/276-2625298-1810601?_encoding=UTF8&amp;node=514847031" class="nav_a nav_item">Imprimantes & Encres</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/logiciels/b/ref=sa_menu_log/276-2625298-1810601?_encoding=UTF8&amp;node=530488" class="nav_a nav_item">Logiciels</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/fournitures-materiel-bureau-papiers-mobilier/b/ref=sa_menu_ilos/276-2625298-1810601?_encoding=UTF8&amp;node=192419031" class="nav_a nav_item">Fournitures scolaires et de bureau</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Jeux-video-PC/b/ref=sa_menu_pcvg/276-2625298-1810601?_encoding=UTF8&amp;node=548026" class="nav_a nav_item">Jeux PC</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_pcacc/276-2625298-1810601?_encoding=UTF8&amp;node=2403398031" class="nav_a nav_item">Tous les accessoires Informatique</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/informatique-ordinateurs-imprimantes-r%C3%A9seaux-composants/b/ref=sa_menu_allpc/276-2625298-1810601?_encoding=UTF8&amp;node=340858031" class="nav_a nav_item">Tout l'univers Informatique</a></li>
-</ul></div>
-<div id="nav_subcats_8" data-nav-promo-id="videogames-consoles"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Jeux vidéo et Consoles</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/jeux-video-consoles-portables-accessoires-pc/b/ref=sa_menu_avg/276-2625298-1810601?_encoding=UTF8&amp;node=530490" class="nav_a nav_item">Tous les jeux vidéo</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Consoles-Accessoires-Jeux-vid%C3%A9o/b/ref=sa_menu_acon/276-2625298-1810601?_encoding=UTF8&amp;node=548738" class="nav_a nav_item">Consoles et Accessoires</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Jeux-video-PC/b/ref=sa_menu_pcvg/276-2625298-1810601?_encoding=UTF8&amp;node=548026" class="nav_a nav_item">Jeux PC</a></li>
-</ul></div>
-<div id="nav_subcats_9" data-nav-promo-id="baby-toys-kids"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Jouets, Enfants et Bébés</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/jeux-jouets/b/ref=sa_menu_jej/276-2625298-1810601?_encoding=UTF8&amp;node=322086011" class="nav_a nav_item">Jeux et Jouets</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/bebes-puericulture/b/ref=sa_menu_baby/276-2625298-1810601?_encoding=UTF8&amp;node=206617031" class="nav_a nav_item">Bébés & Puériculture</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/vetements-chaussures-bebe/b/ref=sa_menu_kidsapr/276-2625298-1810601?_encoding=UTF8&amp;node=214972031" class="nav_a nav_item">Vêtements et Chaussures</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/livre-enfant-album-jeunesse/b/ref=sa_menu_jlv/276-2625298-1810601?_encoding=UTF8&amp;node=301137" class="nav_a nav_item">Livres</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/dvd-blu-ray-enfants-jeunesse/b/ref=sa_menu_jdvd/276-2625298-1810601?_encoding=UTF8&amp;node=409412" class="nav_a nav_item">DVD</a></li>
-</ul></div>
-<div id="nav_subcats_10" data-nav-promo-id="kitchen-home"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Cuisine et Maison</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/petit-%C3%A9lectrom%C3%A9nager/b/ref=sa_menu_pe/276-2625298-1810601?_encoding=UTF8&amp;node=57696031" class="nav_a nav_item">Petit électroménager
-</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_la/276-2625298-1810601?_encoding=UTF8&amp;node=908826031" class="nav_a nav_item">Gros électroménager
-</a></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/casseroles-ustensiles-arts-culinaires/b/ref=sa_menu_cuv/276-2625298-1810601?_encoding=UTF8&amp;node=59451031" class="nav_a nav_item">Arts culinaires et Arts de la Table</a><div class="nav_tag">Casseroles, ustensiles, vaisselle et plus</div></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Ameublement-D%C3%A9coration-Cuisine-Cat%C3%A9gories-Maison/b/ref=sa_menu_dec/276-2625298-1810601?_encoding=UTF8&amp;node=57694031" class="nav_a nav_item">Ameublement et Décoration</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_light/276-2625298-1810601?_encoding=UTF8&amp;node=213080031" class="nav_a nav_item">Luminaires et Eclairage</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/cuisine-maison-%C3%A9lectrom%C3%A9nager/b/ref=sa_menu_acm/276-2625298-1810601?_encoding=UTF8&amp;node=57004031" class="nav_a nav_item">Tous les produits Cuisine et Maison</a></li>
-</ul></div>
-<div id="nav_subcats_11" data-nav-promo-id="beauty-hpc"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Beauté, Hygiène et Santé</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Parfums-cosm%C3%A9tiques/b/ref=sa_menu_perf/276-2625298-1810601?_encoding=UTF8&amp;node=197858031" class="nav_a nav_item">Parfum et Beauté</a></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/hygi%C3%A8ne-sant%C3%A9-soins-du-corps/b/ref=sa_menu_hbody/276-2625298-1810601?_encoding=UTF8&amp;node=197861031" class="nav_a nav_item">Santé et Soins du corps</a><div class="nav_tag">Rasage, Coiffure, Massage, Minceur</div></li>
-<li class="nav_taglined nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_hyghouse/276-2625298-1810601?_encoding=UTF8&amp;node=667755031" class="nav_a nav_item">Hygiène et Entretien</a><div class="nav_tag">Hygiène quotidienne et Produits ménagers</div></li>
-</ul></div>
-<div id="nav_subcats_12" data-nav-promo-id="clothing-shoes"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Vêtements et Chaussures</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/vetements-accessoires-mode/b/ref=sa_menu_clothing/276-2625298-1810601?_encoding=UTF8&amp;node=340855031" class="nav_a nav_item">Vêtements</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/chaussures-sacs-mode/b/ref=sa_menu_apparelshoes/276-2625298-1810601?_encoding=UTF8&amp;node=215934031" class="nav_a nav_item">Chaussures</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/sacs-main-accessoires-portefeuilles-lunettes/b/ref=sa_menu_bags/276-2625298-1810601?_encoding=UTF8&amp;node=600738031" class="nav_a nav_item">Maroquinerie et Bagages</a></li>
-</ul></div>
-<div id="nav_subcats_13" data-nav-promo-id="watches-jewelry"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Montres et Bijoux</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Montres/b/ref=sa_menu_apparelwatches/276-2625298-1810601?_encoding=UTF8&amp;node=60649031" class="nav_a nav_item">Montres</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Bijoux-Bagues-Bracelets-Colliers-Boucles-d-oreilles/b/ref=sa_menu_appareljewelry/276-2625298-1810601?_encoding=UTF8&amp;node=193710031" class="nav_a nav_item">Bijoux</a></li>
-</ul></div>
-<div id="nav_subcats_14" data-nav-promo-id="sports-leisure"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Sports et Loisirs</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/fitness-musculation-electrostimulation-yoga-pilates/b/ref=sa_menu_fitness/276-2625298-1810601?_encoding=UTF8&amp;node=339867031" class="nav_a nav_item">Fitness et Musculation</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/football-foot-supporters-drapeaux-maillots/b/ref=sa_menu_soccer/276-2625298-1810601?_encoding=UTF8&amp;node=339892031" class="nav_a nav_item">Football</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Randonn%C3%A9e-Camping-sport-loisir/b/ref=sa_menu_camping/276-2625298-1810601?_encoding=UTF8&amp;node=339808031" class="nav_a nav_item">Camping et Randonnée</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Cyclisme-v%C3%A9lo-vtt-bmx-roues/b/ref=sa_menu_cycle/276-2625298-1810601?_encoding=UTF8&amp;node=340001031" class="nav_a nav_item">Cyclisme</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/vetements-sport-sweatshirt-veste-debardeur/b/ref=sa_menu_sportswear/276-2625298-1810601?_encoding=UTF8&amp;node=1610709031" class="nav_a nav_item">Vêtements de sport</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/sports-loisirs-fitness/b/ref=sa_menu_outdoorsports/276-2625298-1810601?_encoding=UTF8&amp;node=325614031" class="nav_a nav_item">Tous les Sports et Loisirs</a></li>
-</ul></div>
-<div id="nav_subcats_15" data-nav-promo-id="pets"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Bricolage et Animalerie</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/perceuses-visseuses-scies-meuleuses-ponceuses/b/ref=sa_menu_hi_ptls/276-2625298-1810601?_encoding=UTF8&amp;node=1794242031" class="nav_a nav_item">Outillage électroportatif</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/tournevis-marteaux-cl%C3%A9s-douilles-pinces/b/ref=sa_menu_hi_htls/276-2625298-1810601?_encoding=UTF8&amp;node=1794243031" class="nav_a nav_item">Outillage à main</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_hi_ltg/276-2625298-1810601?_encoding=UTF8&amp;node=213080031" class="nav_a nav_item">Luminaires et Eclairage</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/outillage-%C3%A9lectroportatif-quincaillerie-plomberie-%C3%A9lectricit%C3%A9/b/ref=sa_menu_hi_allhi/276-2625298-1810601?_encoding=UTF8&amp;node=590748031" class="nav_a nav_item">Tous les produits Bricolage</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_ps/276-2625298-1810601?_encoding=UTF8&amp;node=1571268031" class="nav_a nav_item">Animalerie</a></li>
-</ul></div>
-<div id="nav_subcats_16" data-nav-promo-id="auto-bike"  class="nav_browse_subcat"><ul class="nav_browse_ul nav_browse_cat_ul"><li class="nav_pop_li nav_browse_cat_head">Auto et Moto</li>
-<li class="nav_first nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/Voiture-et-moto/b/ref=sa_menu_auto_car_acc_parts/276-2625298-1810601?_encoding=UTF8&amp;node=1571265031" class="nav_a nav_item">Pièces et accessoires Auto</a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_auto_tools_equip/276-2625298-1810601?_encoding=UTF8&amp;node=2567038031" class="nav_a nav_item">Outils et dépannage </a></li>
-<li class="nav_subcat_link nav_pop_li"><a href="http://www.amazon.fr/b/ref=sa_menu_auto_moto_acc_parts/276-2625298-1810601?_encoding=UTF8&amp;node=2429489031" class="nav_a nav_item">Pièces et accessoires Moto</a></li>
-</ul></div>
-
-    </div>
-    <div class="nav_subcats_div"></div>
-    <div class="nav_subcats_div nav_subcats_div2"></div>
-  </div>
-  <div id="nav_cats_wrap" class="nav_browse_wrap">
-    <ul id="nav_cats" class="nav_browse_ul">
-      <li class="nav_first nav_taglined nav_pop_li nav_cat" id="nav_cat_0">MP3 et Cloud Player<div class="nav_tag">Toute votre musique. Partout.</div></li>
-<li class="nav_taglined nav_pop_li nav_cat" id="nav_cat_1">Amazon Cloud Drive<div class="nav_tag">5 Go d&#8217;espace de stockage gratuit</div></li>
-<li class="nav_taglined nav_pop_li nav_cat" id="nav_cat_2">App-Shop pour Android<div class="nav_tag">Une appli offerte par jour</div></li>
-<li class="nav_pop_li nav_cat" id="nav_cat_3">Livres</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_4">Kindle</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_5">Musique, DVD et Blu-ray</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_6">High-Tech</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_7">Informatique et bureau</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_8">Jeux vidéo et Consoles</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_9">Jouets, Enfants et Bébés</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_10">Cuisine et Maison</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_11">Beauté, Hygiène et Santé</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_12">Vêtements et Chaussures</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_13">Montres et Bijoux</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_14">Sports et Loisirs</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_15">Bricolage et Animalerie</li>
-<li class="nav_pop_li nav_cat" id="nav_cat_16">Auto et Moto</li>
-<li class="nav_pop_li nav_divider_before nav_a_carat" id="nav_cat_17"><span class="nav_a_carat">&rsaquo;</span><a href="http://www.amazon.fr/gp/site-directory/ref=sa_menu_top_fullstore/276-2625298-1810601" class="nav_a">Toutes les boutiques</a></li>
-
-    </ul>
-    <div id="nav_cat_indicator" class="nav-sprite"></div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-<!-- Updated -->
-<div id="nav_your_account_flyout" class="nav-flyout-content">  <ul class="nav_pop_ul">
-<li class="nav_pop_li nav_divider_after">
-  <div><a href="https://www.amazon.fr/ap/signin/276-2625298-1810601?_encoding=UTF8&_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fyourstore%2Fhome%3Fie%3DUTF8%26ref_%3Dgno_signin" class="nav-action-button nav-sprite" rel="nofollow">
-      <span class='nav-action-inner nav-sprite'>Identifiez-vous</span>
-    </a></div>
-  <div class="nav_pop_new_cust">Nouveau client ? <a href="https://www.amazon.fr/ap/register/276-2625298-1810601?_encoding=UTF8&_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fyourstore%2Fhome%3Fie%3DUTF8%26ref_%3Dgno_newcust" rel="nofollow" class="nav_a">Commencer ici.</a></div>
-</li>
- <li class="nav_pop_li"><a href="https://www.amazon.fr/gp/css/homepage.html/ref=topnav_ya/276-2625298-1810601" class="nav_a">Votre compte</a></li>
- <li class="nav_pop_li"><a href="https://www.amazon.fr/gp/css/order-history/ref=gno_yam_yrdrs/276-2625298-1810601" class="nav_a" id="nav_prefetch_yourorders">Vos commandes</a></li>
- <li class="nav_pop_li"><a href="http://www.amazon.fr/gp/registry/wishlist/ref=gno_listpop_wi/276-2625298-1810601" class="nav_a">Votre liste d'envies</a></li>
- <li class="nav_pop_li"><a href="http://www.amazon.fr/gp/yourstore/ref=gno_recs/276-2625298-1810601" class="nav_a">Vos recommandations</a></li>
- <li class="nav_pop_li"><a href="https://www.amazon.fr/gp/subscribe-and-save/manager/viewsubscriptions/ref=gno_yam_mysns/276-2625298-1810601" class="nav_a">Gérer vos abonnements</a></li>
- <li class="nav_pop_li nav_divider_before"><a href="http://www.amazon.fr/gp/digital/fiona/manage/ref=gno_yam_myk/276-2625298-1810601" class="nav_a">Votre compte Kindle</a></li>
- <li class="nav_pop_li"><a href="http://www.amazon.fr/gp/dmusic/mp3/player/ref=gno_yam_cldplyr/276-2625298-1810601" class="nav_a">Votre lecteur Cloud</a><div class="nav_tag">Lisez depuis n'importe quel navigateur</div></li>
- <li class="nav_pop_li"><a href="http://www.amazon.fr/clouddrive/ref=gno_yam_clddrv/276-2625298-1810601" class="nav_a">Votre Cloud Drive</a><div class="nav_tag">5 Go d&#8217;espace de stockage gratuit</div></li>
- <li class="nav_pop_li nav_last_li"><a href="https://www.amazon.fr/gp/mas/your-account/myapps/ref=gno_yam_aad/276-2625298-1810601" class="nav_a">Vos applis et vos appareils</a></li>
-   </ul>   <!--[if IE ]>      <div class='nav-ie-min-width' style='width: 160px'></div>    <![endif]-->  </div>
-
-
-
-
-
-
-
-
-
-<div id="nav_cart_flyout" class="nav-empty nav-flyout-content">
-  <ul class='nav_dynamic'></ul>
-  <div class='nav-ajax-message'></div>
-  <div class='nav-dynamic-empty'>
-    <p class='nav_p nav-bold nav-cart-empty'> Votre panier est vide.</p>
-    <p class='nav_p '> Donnez-lui un sens - remplissez-le de livres, de DVD, de vêtements, d'équipements électroniques, et plus encore</p>
-    <p class='nav_p '> Si vous avez déjà un compte, <a href="https://www.amazon.fr/ap/signin/276-2625298-1810601?_encoding=UTF8&_encoding=UTF8&openid.assoc_handle=frflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.fr%2Fgp%2Fyourstore%2Fhome%3Fie%3DUTF8%26ref_%3Dgno_signin_cart" class="nav_a">identifiez-vous</a>.</p>
-  </div>
-  <div class='nav-ajax-error-msg'>
-    <p class='nav_p nav-bold'> Un problème empêche la création d'un aperçu de votre panier pour le moment.</p>
-    <p class='nav_p '> Vérifiez votre connexion Internet et <a href="http://www.amazon.fr/gp/cart/view.html/ref=gno_flyout_viewcart/276-2625298-1810601?ie=UTF8&amp;hasWorkingJavascript=1" class="nav_a">allez sur votre panier</a>, ou <a href='javascript:void(0);' class='nav_a nav-try-again'>réessayez</a>.</p>
-  </div>
-
-      <a href="http://www.amazon.fr/gp/cart/view.html/ref=gno_flyout_viewcart/276-2625298-1810601?ie=UTF8&amp;hasWorkingJavascript=1" id="nav-cart-menu-button" class="nav-action-button nav-sprite"><span class="nav-action-inner nav-sprite">
-      Voir le panier
-      <span class='nav-ajax-success'>
-        <span id='nav-cart-zero'>(<span class='nav-cart-count'>0</span> article)</span>
-        <span id='nav-cart-one' style='display: none;'>(<span class='nav-cart-count'>0</span> article)</span>
-        <span id='nav-cart-many' style='display: none;'>(<span class='nav-cart-count'>0</span> articles)</span>
-      </span>
-    </span></a>
-  
-  
-</div>
-
-
-
-
-
-
-
-
-
-<!-- Updated -->
-<div id="nav_wishlist_flyout" class="nav-empty nav-flyout-content">
-  <div class='nav-ajax-message'></div>
-  <ul class='nav_dynamic nav_pop_ul nav_divider_after'></ul>
-  <ul class="nav_pop_ul">
-     <li class="nav_pop_li nav-dynamic-empty"><a href="http://www.amazon.fr/gp/wishlist/ref=gno_createwl/276-2625298-1810601" class="nav_a">Créer une liste d'envies</a></li>
- <li class="nav_pop_li"><a href="http://www.amazon.fr/gp/registry/search.html/ref=gno_listpop_find/276-2625298-1810601?ie=UTF8&amp;type=wishlist" class="nav_a">Trouver une liste d'envies</a></li>
- <li class="nav_pop_li nav_last_li"><a href="http://www.amazon.fr/wishlist/universal/ref=gno_listpop_uwl/276-2625298-1810601" class="nav_a">Liste d'envies universelle</a><div class="nav_tag">Ajoutez des articles qui vous feraient<br />plaisir depuis n'importe quel site.</div></li>
-
-  </ul>
-</div>
-
-
-
-
-
-<script type='text/html' id='nav-tpl-wishlist'>
-  <# jQuery.each(wishlist, function (i, item) { #>
-    <li class='nav_pop_li'>
-      <a href='http://www.amazon.fr/gp/help/customer/display.html/&lt;#=item.url #>' class='nav_a'>
-        <#=item.name #>
-      </a>
-      <div class='nav_tag'>
-        <# if(typeof item.count !='undefined') { #>
-          <#=
-            (item.count == 1 ? "{count} article" : "{count} articles")
-              .replace("{count}", item.count)
-          #>
-        <# } #>
-      </div>
-    </li>
-  <# }); #>
-</script>
-<script type='text/html' id='nav-tpl-cart'>
-  <# jQuery.each(cart, function (i, item) { #>
-    <li class='nav_cart_item'>
-      <a href='http://www.amazon.fr/gp/help/customer/display.html/&lt;#=item.url #>' class='nav_a'>
-        <img class='nav_cart_img' src='http://www.amazon.fr/gp/help/customer/display.html/&lt;#=item.img #>'/>
-        <span class='nav-cart-title'><#=item.name #></span>
-        <span class='nav-cart-quantity'>
-          <# if(typeof item.wireless !== 'undefined') { #>
-            <#= "".replace("{count}", item.qty) #>
-          <# } else { #>
-            <#= "Quantité : {count}".replace("{count}", item.qty) #>
-          <# } #>
-        </span>
-      </a>
-    </li>
-  <# }); #>
-</script>
-<script type='text/html' id='nav-tpl-asin-promo'>
-  <a href='http://www.amazon.fr/gp/help/customer/display.html/&lt;#=destination #>' class='nav_asin_promo'>
-    <img src='http://www.amazon.fr/gp/help/customer/display.html/&lt;#=image #>' class='nav_asin_promo_img'/>
-    <span class='nav_asin_promo_headline'><#=headline #></span>
-    <span class='nav_asin_promo_info'>
-      <span class='nav_asin_promo_title'><#=productTitle #></span>
-      <span class='nav_asin_promo_title2'><#=productTitle2 #></span>
-      <span class='nav_asin_promo_price'><#=price #></span>
-    </span>
-    <span class='nav_asin_promo_button nav-sprite'><#=button #></span>
-  </a>
-</script>
-</div>
-<script type='text/javascript'>
 
 
 
@@ -1899,28 +1613,15 @@ Rubriques connexes: </div>
 
 
 
-_navbar.prefetch = function() {
-amznJQ.addPL(['http://z-ecx.images-amazon.com/images/G/01/browser-scripts/registriesCSS/FR-combined-1612853300._V376148915_.css',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/fr-site-wide-css-beacon/site-wide-9297996980._V1_.css',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/site-wide-js-1.2.6-beacon/site-wide-12486565132._V1_.js',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized-alt/wcs-ya-homepage-beaconized-alt-3039013041._V1_.js',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized-alt/wcs-ya-homepage-beaconized-alt-852334124._V1_.css',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized/wcs-ya-homepage-beaconized-1899362992._V1_.css',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized/wcs-ya-homepage-beaconized-3074282589._V1_.js',
-'https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-order-history-beaconized/wcs-ya-order-history-beaconized-2950527408._V1_.css',
-'https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/css/images/amznbtn-sprite03._V387356454_.png',
-'https://images-na.ssl-images-amazon.com/images/G/08/gno/beacon/BeaconSprite-FR-02._V397961267_.png',
-'https://images-na.ssl-images-amazon.com/images/G/08/gno/images/general/navAmazonLogoFooter._V169459217_.gif',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/common/transparent-pixel._V192553961_.gif',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/help/images/spotlight/kindle-family-02b._V369420148_.jpg',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/acorn._V192553873_.gif',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/amazon-gcs-100._V192553873_.gif',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/btn-close._V192553878_.gif',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/ya/images/new-link._V232463653_.png',
-'https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/ya/images/shipment_large_lt._V192553575_.gif']);
-}
-    amznJQ.declareAvailable('navbarBTFLite');
-    amznJQ.declareAvailable('navbarBTF');
+<script type='text/javascript'>_navbar = window._navbar || {};
+_navbar.prefetch = function() { window.amznJQ && amznJQ.addPL(["http://z-ecx.images-amazon.com/images/G/01/browser-scripts/registriesCSS/FR-combined-1612853300._V376148915_.css","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/fr-site-wide-css-beacon/site-wide-5541601444._V1_.css","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/site-wide-js-1.2.6-beacon/site-wide-10908055564._V1_.js","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized-alt/wcs-ya-homepage-beaconized-alt-3039013041._V1_.js","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized-alt/wcs-ya-homepage-beaconized-alt-852334124._V1_.css","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized/wcs-ya-homepage-beaconized-1899362992._V1_.css","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-homepage-beaconized/wcs-ya-homepage-beaconized-3074282589._V1_.js","https://images-na.ssl-images-amazon.com/images/G/01/browser-scripts/wcs-ya-order-history-beaconized/wcs-ya-order-history-beaconized-2950527408._V1_.css","https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/css/images/amznbtn-sprite03._V387356454_.png","https://images-na.ssl-images-amazon.com/images/G/08/gno/beacon/BeaconSprite-FR-02._V397961267_.png","https://images-na.ssl-images-amazon.com/images/G/08/gno/images/general/navAmazonLogoFooter._V169459217_.gif","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/common/transparent-pixel._V192553961_.gif","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/help/images/spotlight/kindle-family-02b._V369420148_.jpg","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/acorn._V192553873_.gif","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/amazon-gcs-100._V192553873_.gif","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/orders/images/btn-close._V192553878_.gif","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/ya/images/new-link._V232463653_.png","https://images-na.ssl-images-amazon.com/images/G/08/x-locale/cs/ya/images/shipment_large_lt._V192553575_.gif"]); };
+window.$Nav && $Nav.declare( 'config.prefetch', _navbar.prefetch );
+    window._navbar.flyoutURL="http://static.amazon.fr/gp/navigation/flyouts/flyouts-PbcyS810Aq1vG6UPOZtq1eVxxWPl0nenL3lVAurQtA4j3SjsxHPwyleoQLKIHJ28a-5rS4zqpfO5w-pOhHgLPVT-QqzJ6XV5HjsHfY0IluuZ91OOh_qwQP-WWaBz8qBw_XKKPfaeQqXdSBIj_5tZ7k_QJtkpCstTDNupVFqye3-urg2HrRBgJQ1mWgiMg3sZ2GHKbS7ipbBBqg6vgnrdRG46DIo-Jtc7XEOSa4lF-HrEcoxS9iRhEKqhBCq8vs8kSTmjFpwVrwnI8Tv3tJMDCJn91SsXlCTcyw9iPKeI1yYLtKXo-Iasg9fgK9g5sDFmLg1fpFv2CwosrEMx8FVtNqb2wF5CKc58Z9nTTfcnrXZmBf8gN5clrCZpHDbwBIZHPWuiuNzC97wapNef5_US526oMqEWlctvXzm92djBaTsEicAFty0BK5oUpMAXDKiE_XMvASEeFJY.js?ie=UTF8";
+    window.$Nav && $Nav.declare('config.flyoutURL', window._navbar.flyoutURL);
+    window.$Nav && $Nav.declare('btf.lite');
+    window.amznJQ && amznJQ.declareAvailable('navbarBTFLite');
+    window.$Nav && $Nav.declare('btf.full');
+    window.amznJQ && amznJQ.declareAvailable('navbarBTF');
 </script>
 
 
@@ -1951,7 +1652,7 @@ if (document.body.childNodes.length) {
 
 </script>
 
-    <script type="text/javascript" src="../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/site-wide-js-1.7-beacon/site-wide-12103377754._V1_.js"></script>
+    <script type="text/javascript" src="../../../../../z-ecx.images-amazon.com/images/G/01/browser-scripts/site-wide-js-1.7-beacon/site-wide-10524868186._V1_.js"></script>
 <script type='text/javascript'>
     amznJQ.addLogical('popover', []);
     amznJQ.addLogical('navbarCSSFR-beacon', []);
@@ -2011,11 +1712,11 @@ amznJQ.onReady('popover', function () {
 (function(a){if(document.ue_backdetect&&document.ue_backdetect.ue_back){a.ue.bfini=document.ue_backdetect.ue_back.value}if(a.uet){a.uet("be")}if(a.onLdEnd){if(window.addEventListener){window.addEventListener("load",a.onLdEnd,false)}else{if(window.attachEvent){window.attachEvent("onload",a.onLdEnd)}}}if(a.ueh){a.ueh(0,window,"load",a.onLd,1)}if(a.ue_pr&&(a.ue_pr==3||a.ue_pr==4)){a.ue._uep()}})(ue_csm);
 </script>
 
-<a href='http://www.amazon.fr/gp/uedata/276-2625298-1810601?tepes=1&amp;id=1AWJDM9E3RWG53TYPGF0'>v</a>
-<noscript><img src='../../../uedata/276-2625298-1810601%3Fnoscript&amp;id=1AWJDM9E3RWG53TYPGF0' /></noscript></div>
+<a href='http://www.amazon.fr/gp/uedata/279-2462276-2121747?tepes=1&amp;id=112YXFGH861GC47EK2PZ'>v</a>
+<noscript><img src='../../../uedata/279-2462276-2121747%3Fnoscript&amp;id=112YXFGH861GC47EK2PZ' /></noscript></div>
 <script type='text/javascript'>
 (function(a){a._uec=function(d){var h=window,b=h.performance,f=b?b.navigation.type:0;if(f==0){var e="; expires="+new Date(+new Date+604800000).toGMTString(),c=+new Date-ue_t0;if(c>0){var g=a.ue_tsinc?"|"+ +new Date:"|";document.cookie="csm-hit="+(d/c).toFixed(2)+g+e+"; path=/"}}}})(ue_csm);
-_uec(136359);
+_uec(105167);
 </script>
 </body>
  </html>

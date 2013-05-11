@@ -1,0 +1,33 @@
+(function($) {
+  $(function(){
+
+    function get_query_string() {
+      var result = {}, 
+        query_string = location.search.substring(1), 
+        re = /([^&=]+)=([^&]*)/g, 
+        m;  
+      while(m = re.exec(query_string)) {
+        result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+      }
+      return result;
+    }
+
+    var support_whyb = get_query_string()['support_whyb'] ? true : false;
+    var social = get_query_string()['social'] ? true : false;
+
+    if(support_whyb) {
+      var link;
+      if(social) {
+        link = 'https://supporters.eff.org/donate/who-has-your-back-s';
+      } else {
+        link = 'https://supporters.eff.org/donate/who-has-your-back';
+      }
+      var $bar = $('<a id="support-whyb"></a>')
+        .attr('href', link)
+        .html(Drupal.settings.eff_whyb.html);
+      var $css = $('<style>a:link#support-whyb, a:visited#support-whyb { font-size: 12px; position: fixed; text-align: center; top: 0; z-index: 10; display: block; background-color: #333333; color: #aaaaaa; width: 90%; padding: 10px 5%; line-height: 150%; text-decoration: none; } a:hover#support-whyb { background-color: #666666; color: #ffffff; text-decoration: none; }</style>');
+      $('body').append($bar).append($css).css('padding-top', $('#support-whyb').height()+'px');
+    }
+
+  });
+})(jQuery);

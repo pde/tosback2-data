@@ -1,4 +1,3 @@
-
 mybuys.setClient("PACSUN");
 
 //Styles for all zones
@@ -37,6 +36,22 @@ mybuys.setStyleByPageType("HIGH_LEVEL_CATEGORY", '.mbnamerowspan', 'width', '140
 mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbzone', 'width', '960px');
 mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbitem', 'width', '185px', 'padding', '0px 3px 0px 4px', 'font-size', '11px');
 mybuys.setStyleByPageType("SEARCH_RESULTS", '.mbnamerowspan', 'width', '140px', 'max-height', '28px');
+
+//Cat styles
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTNAMELINK','font-family','Arial, Helvetica, sans-serif','font-size','11px','font-weight','normal','text-transform','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTSLOT','display','inline','width','182px','text-align','center','padding','10px 6px 10px 6px');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTPRICELINK','font-family','Arial, Helvetica, sans-serif','font-size','11px','font-weight','normal','text-transform','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTBRAND','align','left','text-align','left','color','#000000','text-decoration','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTNAME','align','left','text-align','left','color','#000000','text-decoration','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTNOTDISCOUNTEDPRICEWRAPPER','display','inline','width','182px','text-align','left','line-height','normal','padding','0px 0px 0px 2px');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTPRICE','color','#000000','text-decoration','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTDISCOUNTEDPRICEWRAPPER','display','inline','width','182px','text-align','left','line-height','normal','padding','0px 0px 0px 2px');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTBASEPRICE','color','#A2A3A5','text-decoration','line-through');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTSALEPRICELINK','font-family','Arial, Helvetica, sans-serif','color','#FF2F00','font-size','11px','font-weight','normal','text-decoration','none','text-transform','none');
+mybuys.setStyle('.MB_CAT1 .MB_PRODUCTATTRIBUTE\\=promo_text','color','#FF2F00','text-decoration','none');
+mybuys.setStyle('.MB_CAT1 .MB_STY0','display','inline','width','182px','height','282px','text-align','left','line-height','normal','padding','0px 0px 10px 0px');
+mybuys.setStyle('.MB_CAT1 .MB_STY1','display','inline','width','182px','text-align','left','line-height','normal','padding','5px 0px 0px 2px');
+mybuys.setStyle('.MB_CAT1 .MB_STY2','display','inline','width','182px','text-align','left','line-height','normal','padding','0px 0px 0px 2px');
 
 mybuys.oldProcessResponseHTML = mybuys.processResponseHTML;
 

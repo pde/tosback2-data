@@ -1,0 +1,129 @@
+$(function() {
+    // INITIALIZATION
+    $(window).resize(function() {
+        action();
+    });
+
+    popupType = $('.popup-upon-load').length;
+    toHandle = null;
+
+    /* Check if IE 7 */
+    if ( $.browser.msie ) {
+        var version = $.browser.version;
+        var container = ("body");        
+        if (version = "7.0") {
+            $(container).css({
+                position: "static"
+            });
+        }
+    }
+
+    if (typeof CookieGroupHandler !== "undefined") {
+        var cg = CookieGroupHandler.getCookieInstance('apwsession');
+        var ev = cg.getValue('cpolb');
+
+        if (ev != null) {
+            if (ev.enable) {
+                $('#cpoWhiteLabelLb').fadeIn();
+                var arrTags = new Array('CPO Redirect LB', 'CPO Redirect LB', 'CPO Redirect LB');
+
+                setCpoOmnitureTags(arrTags);
+                loadlb();
+            }
+        }
+    }
+
+    /* Set Omniture tags and LB disabled */
+    $('#cpoWhiteLabelLb > .apw-redirect-btn').click( function(e)
+    {
+        setOnclickAnalytics('events', 'event48');
+        disableCpoLb(true);
+    });
+
+
+    // REMOVE OVERLAY WHEN BODY IS CLICKED
+    $('.modal-overlay').live('click', function() {
+        removeOverlay();
+    });
+
+    // REMOVE OVERLAY BUTTON X / CLOSE IS CLICKED
+    $('.lb-close').live('click', function() {
+        removeOverlay();
+    });
+
+    // REMOVE OVERLAY WHEN ESC IS PRESSED
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) { removeOverlay(); }   
+    });
+
+    // DISABLE ENTER KEY WHEN .nlb CLASS IS CLICKED
+    $('#cpoWhiteLabelLb').live('keypress', function(e){
+        if ((e.keyCode == 13) || (e.charCode)) { e.preventDefault(); }      
+    }); 
+
+    // DISPLAY POP UP UPON PAGE LOAD
+    // NOTE : USE CLASS .popup-upon-load FOR THE POP UP DIV 
+    if(popupType){
+        $(window).load(function () {
+            $('.popup-upon-load').fadeIn();
+            loadlb();
+        });
+    }
+
+    // LOAD OVERLAY FIRST THEN PERFORM LIGHTBOX FUNCTION VIA action()
+    function loadlb() {
+        $('body').append('<div class="modal-overlay"></div>');
+        $('.modal-overlay').css('filter', 'alpha(opacity=70)');
+        $('.modal-overlay').fadeIn();
+        window.clearTimeout(toHandle);
+        action();
+    }
+
+    function action() {
+        gWidth = $(window).width();
+        gHeight = $(window).height();
+        mWidth = $('.modal-lb').outerWidth();
+        mHeight = $('.modal-lb').outerHeight();
+        modalPositionL = gWidth/2 - mWidth/2;
+        modalPositionT = gHeight/2 - mHeight/2;
+        $('.modal-overlay').css({
+            width: gWidth,
+            height: gHeight
+        });
+        $('.modal-lb').css({
+            left: modalPositionL,
+            top: modalPositionT
+        });
+    }       // action()
+
+    function removeOverlay(){
+        $('.modal-overlay').fadeOut();
+        $('.modal-lb').fadeOut();
+        toHandle = window.setTimeout(function() {
+            $('.modal-overlay').remove();
+        }, 500);
+
+        disableCpoLb(false); 
+    }
+    /*
+    disabled light-box
+    */
+    function disableCpoLb(isEnabled)
+    {
+        var cg = CookieGroupHandler.getCookieInstance('apwsession');
+        var newCpolbValue =  new Object();
+
+        newCpolbValue['enable'] = isEnabled;
+        newCpolbValue['country_code'] = ev.country_code;
+        
+        cg.setValue('cpolb', newCpolbValue).writeGroup();
+    }
+    /*
+     Omniture tag on load
+    */
+    function setCpoOmnitureTags(arrTags){
+        var tagKey = new Array('pageName','channel','prop3');
+
+        setOnloadAnalytics('omniture_cpolb',tagKey,arrTags);
+    }
+});

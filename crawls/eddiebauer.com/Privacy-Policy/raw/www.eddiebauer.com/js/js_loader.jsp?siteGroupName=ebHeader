@@ -4506,7 +4506,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 /* ~~~~~~~~~~~~~~~~~~~~ Starting the module.tubePlayer.js(228) ~~~~~~~~~~~~~~~~~~~~ */
 (function(jQuery) {
-	/* openYouTubeVideos by Rob Barnett  10/19/2012 */
+	/*************************************************  
+		openYouTubeVideos by rbarnett  10/19/2012
+	 *************************************************/
 	jQuery.fn.openYouTubeVideos = function(options) {
 		var youtubeVideo = jQuery('.product_youtube_video');
 		if (youtubeVideo) {
@@ -4611,8 +4613,11 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 /* ~~~~~~~~~~~~~~~~~~~~ Starting the onYouTubePlayerReady.js(232) ~~~~~~~~~~~~~~~~~~~~ */
 (function(jQuery) {
-	/* openYouTubeVideos by Rob Barnett  11/12/2012 */
-	
+	/*
+	******************************************
+	onYouTubePlayerReady 04/01/2012 - rbarnett
+	******************************************
+	*/
 	jQuery.fn.onYouTubePlayerReady = function(youtubeVideo) {
 		if (youtubeVideo) {
 			
@@ -4795,7 +4800,11 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 /* ~~~~~~~~~~~~~~~~~~~~ Starting the module.parseRSS.js(242) ~~~~~~~~~~~~~~~~~~~~ */
 (function(jQuery) {
-	/* parseRSS by Rob Barnett 10/31/2012 */
+	/*
+	*********************************
+	parseRSS 04/01/2012 - rbarnett
+	*********************************
+	*/
 	jQuery.fn.parseRSS = function(url, callback) {
 		var MaxCount = 3;
 
@@ -5907,7 +5916,9 @@ if(StoreLocator.Locations[i].StoreType.toLowerCase()=="outlet"){pushpin_icon='/a
 else if(StoreLocator.Locations[i].StoreType.toLowerCase()=="afa"){pushpin_icon='/assets/ocp/content/storelocator/111027//pin_graphic.gif';FirstColClass='col1';LastColText="<td class='col4'>"+"<dl>"+"<dd>"+"<span class='afa'></span>"+"</dd>"+"</dl>"+"</td>";}
 else{pushpin_icon='/assets/ocp/content/storelocator/111027//pin_graphic.gif';FirstColClass='col1';LastColText="<td class='col4'>"+"<dl>"+'<dd>'+'<span class="outlet">'+'<span class="notavailable">'+'</span>'+'</span>'+'</dd>'+"</dl>"+"</td>";}
 var options={icon:pushpin_icon,width:31,height:40,text:pos+"",zIndex:1000,typeName:"pushpin"};var pushpin=new Microsoft.Maps.Pushpin(location,options);pushpin._id="pushpin_"+i;Microsoft.Maps.Events.addHandler(pushpin,'click',StoreLocator.pushpinClicked);Microsoft.Maps.Events.addHandler(pushpin,'mouseover',StoreLocator.pushpinMouseOver);Microsoft.Maps.Events.addHandler(pushpin,'mouseout',StoreLocator.pushpinMouseOut);StoreLocator.map.entities.push(pushpin);var pin={Location:prop,LocationNumber:pos,IconElementId:'pushpin_'+pos,text:pos};var wayPoint=prop.Latitude+","+prop.Longitude;var Dist=(prop.__Distance)*StoreLocator.KmToMiles;var aStoreHrs=(prop.StoreHours).split(' ~ ');var StoreHrs='';for(iCtrStHrs=0;iCtrStHrs<aStoreHrs.length;iCtrStHrs++){StoreHrs+=aStoreHrs[iCtrStHrs]+'<br />';}
-var td="<tr class='searchItem'>"+"<td class='"+FirstColClass+"'>"+"<a href='javascript:void(0)'  onclick=\"StoreLocator.OpenDirections(\'"+(i)+"\');\">"+(i+1)+"</a>"+"</td>"+"<td class='col2'>"+"<dl>"+"<dt>"+prop.Name+"</dt>"+"<dd>"+prop.AddressLine+"</dd>"+"<dd>"+prop.PrimaryCity+", "+prop.SubDivision+"  "+prop.PostalCode+"</dd>"+"<dd>"+prop.Phone+"</dd>"+"<dd><a href='javascript:void(0)'  onclick=\"StoreLocator.OpenDirections(\'"+(i)+"\');\">Get Directions</a></dd>"+"</dl>"+"</td>"+"<td class='col3'>"+"<dl>"+"<dt>"+"<span class='openhours'>"+StoreHrs+"</span>"+"</dt>"+"</dl>"+"</td>"+LastColText+"</tr>";sHTML+=td;}
+prop.Accessibity="";if(prop.SubDivision.indexOf('ON')!=-1){prop.Accessibity="<dl class='accessibility'><a href=' /assets/ocp/content/storelocator/Eddie Bauers Ontario Accessible Customer Service Plan.pdf' target='_blank' class='links'><dd>Accessible Customer</dd><dd>Service Plan</dd><dd>(PDF 410K)</dd></a></dl>";}
+var td="<tr class='searchItem clearfix'>"+"<td class='left "+FirstColClass+"'>"+"<a href='javascript:void(0)'  onclick=\"StoreLocator.OpenDirections(\'"+(i)+"\');\">"+(i+1)+"</a>"+"</td>"+"<td class='col2'>"+"<dl>"+"<dt>"+prop.Name+"</dt>"+"<dd>"+prop.AddressLine+"</dd>"+"<dd>"+prop.PrimaryCity+", "+prop.SubDivision+"  "+prop.PostalCode+"</dd>"+"<dd>"+prop.Phone+"</dd>"+"<dd><a href='javascript:void(0)'  onclick=\"StoreLocator.OpenDirections(\'"+(i)+"\');\">Get Directions</a></dd>"+"</dl>"+"</td>"+"<td class='col3'>"+"<dl>"+"<dt>"+"<span class='openhours'>"+StoreHrs+"</span>"+"</dt>"+"</dl>"+
+prop.Accessibity+"</td>"+LastColText+"</tr>";sHTML+=td;}
 var option;if(StoreLocator.autozoom&&StoreLocator.Locations.length>0&&StoreLocator.SetViewFlag==true){StoreLocator.autozoomed=true;if(StoreLocator.Locations.length>1){var locaRect=new Microsoft.Maps.LocationRect.fromLocations(locations);option=StoreLocator.map.getOptions();option.bounds=locaRect;option.bounds.height=option.bounds.height*1.2;option.bounds.width=option.bounds.width*1.2;}
 else if(StoreLocator.Locations.length==1){option=StoreLocator.map.getOptions();option.center=locations[0];}
 StoreLocator.map.setView(option);}

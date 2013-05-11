@@ -892,6 +892,39 @@
             </script>
             
             
+    <div id="headerDealOfTheDay">
+        <a title="eBags Steal of the Day - one incredible deal, every day" id="lnkDealOfDay" href="index.cfm%3Ffuseaction=privacy.html#"><img  alt="Steal of the Day" src='../../cdn2.ebags.com/img/header/btn_dealoftheday.gif'></a>
+    </div>
+
+	    <script type="text/javascript">
+	        require(['get!core/eBags', 'get!dropbox/dropbox'], function (eBags, dropbox) {
+	            eBags.dropbox('#lnkDealOfDay', {
+	                cookie: { name: 'dotdId', value: '5106', domain: 'www.ebags.com', days: 1 },
+                    //This determines if the deal of the day will auto show on the users first visit
+                    autoShowConfig: false,
+                    autoCloseSeconds: 8,
+                    relativeToElem: '#headerDealOfTheDay',
+                    container: '.topSection',
+                    url: '/Catalog/DealOfTheDayPopup',
+                    docWidth: 700,
+                    subscribe: {
+                        linkId: '#lnkSubscribe',
+                        serviceUrl: '/WebService/EmailSubscription.asmx',
+                        serviceEmailMethod: 'ModifyEmailSubscriptionByEmail',
+                        serviceCustIdMethod: 'ModifyEmailSubscriptionByCustomerId',
+                        emailTextbox: '#txtEmail',
+                        submitButton: '#btnDotdSubmit',
+                        subscribeDivId: '#divEmailSubscription',
+                        completeDivId: '#divEmailSubscribeComplete',
+                        customerId: '',
+                        subscribeType: 7,
+                        subscribeStatus: 3,
+                        websiteId: 1
+                        }
+                }, 'dotdDefaults');
+	        });
+	    </script>
+
 
             <div class="headerRewards">
                 <a title="eBags Blog - Get the scoop on eBags &amp; the bags we sell" class="headerLinkStyle" id="headerRewards_Blog" href="http://blog.eBags.com">Blog</a>
@@ -1281,7 +1314,7 @@
                 site are the property of their respective owners.
                 <br />
                 eBags USA &copy; 1999 - 2013 eBags, Inc. All rights reserved.<br />
-                W-2013-05-08<br />
+                W-2013-05-11<br />
             </div>
         </div>
         <!-- / footernav -->

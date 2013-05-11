@@ -5,121 +5,17 @@
 
   wpAd.config = wpAd.config || {};
 
-  //20127-CD
-  if(commercialNode.match("lifestyle/kidspost")){
-    commercialNode = commercialNode.replace(/^lifestyle\/kidspost/i,"kidspost");
-  }
-
-  //21321-CD
-  if(commercialNode === 'cityguide/search' && /Kid\ Friendly/i.test(unescape(location.href))){
-    commercialNode = 'cityguide/kidfriendly';
-  }
-
-  //19879-CD
-  //arkadium games section commercialNode hack:
-  if(/games\.washingtonpost/i.test(doc.domain) && /entertainment\/arkadium/.test(commercialNode) && !wpAd.arkadiumNodeHack){
-    commercialNode += '/' + (function(){
-      var a = location.href.split('/');
-      a = a[a.length-1];
-      wpAd.arkadiumNodeHack = true;
-      return (/\.aspx$/i.test(a)) ? a.split('.aspx')[0] : 'front';
-    })();
-  }
-
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
-  wpAd.flags.vi_test = /vi_test/.test(location.search) && win.wp_meta_data && win.wp_meta_data.contentType && /CompoundStory/i.test(win.wp_meta_data.contentType.toString());
-  //wpAd.flags.postscribe = !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href);
-
-  //Friendly Iframe supported domains and URL's:
-  wpAd.config.fifDomains = {
-    'www.washingtonpost.com': 'http://www.washingtonpost.com/wp-srv/ad/fif.html',
-    'qaprev.digitalink.com': 'http://qaprev.digitalink.com/wp-srv/ad/fif.html',
-    'prodprev.digitalink.com': 'http://prodprev.digitalink.com/wp-srv/ad/fif.html'
-  };
 
   wpAd.constants = {
     'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/wp_config.js',
     'site': 'wpni',
-    'domain': 'washingtonpost.com',
-    'fifURL': (function () {
-      if(!doc.domain) {
-        return './fif.html'; //local test pages
-      }
-      var d = wpAd.config.fifDomains, key;
-      for(key in d) {
-        if(new RegExp(key, 'i').test(doc.domain)) {
-          return d[key];
-        }
-      }
-      //no FIF support on current domain:
-      wpAd.flags.test_fif = false;
-      return false;
-    })()
+    'domain': 'washingtonpost.com'
   };
-
-  wpAd.tools.add_criteo = function(){
-    var cookieName = 'cto_was',
-      script_base = 'http://rtax.criteo.com/delivery/rta/rta.js';
-
-    wpAd.cache.cookies = wpAd.cache.cookies || {};
-
-    if(!wpAd.cache.cookies.hasOwnProperty('criteo')){
-     wpAd.cache.cookies.criteo = wpAd.tools.getCookie(cookieName);
-    }
-
-    win.crtg_content = wpAd.cache.cookies.criteo;
-
-    wpAd.tools.ajax({
-      cache: true,
-      dataType: 'script',
-      url: script_base,
-      timeout: 2000,
-      crossDomain: true,
-      data: {
-        netId: '1180',
-        cookieName: cookieName,
-        rnd: Math.floor(Math.random() * 1E11),
-        varName: 'crtg_content'
-      },
-      error: function(err){
-        if(wpAd.flags.debug){
-          try{win.console.log('CRITEO timeout error:', err);}catch(e){}
-        }
-      },
-      success: function(data){
-        if(wpAd.flags.debug){
-          try{win.console.log(script_base, 'loaded:');}catch(e){}
-        }
-      }
-    });
-  };
-
-  if(!wpAd.flags.no_ads) {
-    //ADD THE TEMPLATES - generated via flight manager tool:
-    wpAd.tools.writeScript(wpAd.constants.ad_config_url);
-
-    //add the tiffany tiles
-    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
-
-    //19882 - Criteo Implementation
-    if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
-      wpAd.tools.add_criteo();
-    }
-
-    //20951 - CW - WP+ pixel for wp sitewide
-    var wp_plus_pix = [
-          'http://pixel.mathtag.com/event/js?mt_id=193782&mt_adid=109699&v1=&v2=&v3=&s1=&s2=&s3='
-        ], wp_plus_pix_l = wp_plus_pix.length;
-    while(wp_plus_pix_l--){
-      wpAd.tools.loadScript(wp_plus_pix[wp_plus_pix_l]);
-    }
-
-  }
 
   //called on first placeAd2 call
   wpAd.config.init = function () {
-
     //sponsorship for samsung May 2013 - SP
     if(((!wpAd.flags.is_homepage && win.estNowWithYear >= 201305010000 && /^201305/.test(win.estNowWithYear)) || /testads\=samsung/.test(location.search)) && win.jQuery){
       $(function(){
@@ -173,20 +69,20 @@
       })();
     },
     author: function () {
-        return wpAd.cache.hasOwnProperty('author') ? wpAd.cache.author : (function() {
-            wpAd.cache.author = [];
-            if (typeof wp_meta_data !== 'undefined' && wp_meta_data.author) {
-                for (var i=0; i < wp_meta_data.author.length; i++) {
-                    wpAd.cache.author[i]=wp_meta_data.author[i].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase();
-                }
-            }
-            if (typeof wp_meta_data !== 'undefined' && wp_meta_data.blogger) {
-                for (var j=0; j < wp_meta_data.blogger.length; j++) {
-                    wpAd.cache.author.push(wp_meta_data.blogger[j].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase());
-                }
-            }
-            return wpAd.cache.author;
-        })();
+      return wpAd.cache.hasOwnProperty('author') ? wpAd.cache.author : (function() {
+        wpAd.cache.author = [];
+        if (typeof wp_meta_data !== 'undefined' && wp_meta_data.author) {
+          for (var i=0; i < wp_meta_data.author.length; i++) {
+            wpAd.cache.author[i]=wp_meta_data.author[i].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase();
+          }
+        }
+        if (typeof wp_meta_data !== 'undefined' && wp_meta_data.blogger) {
+          for (var j=0; j < wp_meta_data.blogger.length; j++) {
+            wpAd.cache.author.push(wp_meta_data.blogger[j].replace(/[^\w\s]/gi, '').replace(/\s/g,"_").toLowerCase());
+          }
+        }
+        return wpAd.cache.author;
+      })();
     },
     page: function () {
       return wpAd.cache.hasOwnProperty('page') ? wpAd.cache.page : (function () {
@@ -453,23 +349,41 @@
     }
   };
 
-  wpAd.tools.initVITest = function(elements){
-    //doing it this way, since waiting for document ready may miss the leaderboard view:
-    if($.fn.viewable){
-      $(elements).viewable({}, function(el, options){
-        var what = el.id.replace('slug_', '');
-        wpAd.tools.addPixel(wpAd.tools.vi_pixels[what][1], what + ' viewed');
-      });
-    } else{
-      setTimeout(function(){ wpAd.tools.initVITest(elements); }, 100);
-    }
-  };
+  wpAd.tools.add_criteo = function(){
+    var cookieName = 'cto_was',
+      script_base = 'http://rtax.criteo.com/delivery/rta/rta.js';
 
-  wpAd.tools.vi_pixels = {
-    'extra_bb': [
-      'http://ad.doubleclick.net/ad/wpni.test/view1;sz=1x1;ord=[timestamp]',
-      'http://ad.doubleclick.net/ad/wpni.test/view2;sz=1x1;ord=[timestamp]'
-    ]
+    wpAd.cache.cookies = wpAd.cache.cookies || {};
+
+    if(!wpAd.cache.cookies.hasOwnProperty('criteo')){
+      wpAd.cache.cookies.criteo = wpAd.tools.getCookie(cookieName);
+    }
+
+    win.crtg_content = wpAd.cache.cookies.criteo;
+
+    wpAd.tools.ajax({
+      cache: true,
+      dataType: 'script',
+      url: script_base,
+      timeout: 2000,
+      crossDomain: true,
+      data: {
+        netId: '1180',
+        cookieName: cookieName,
+        rnd: Math.floor(Math.random() * 1E11),
+        varName: 'crtg_content'
+      },
+      error: function(err){
+        if(wpAd.flags.debug){
+          try{win.console.log('CRITEO timeout error:', err);}catch(e){}
+        }
+      },
+      success: function(data){
+        if(wpAd.flags.debug){
+          try{win.console.log(script_base, 'loaded:');}catch(e){}
+        }
+      }
+    });
   };
 
   //homepage refresh modification:
@@ -479,10 +393,6 @@
     return wpAd.flags.test_ads ? false : true;
   };
 
-  //gog temp /front hack
-  if(commercialNode === 'cityguide' && /^\/gog\/(index\.html)?/.test(location.pathname)){
-    commercialNode += '/front';
-  }
 
   //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {
@@ -499,33 +409,7 @@
       if((tempcase.what === 'leaderboard' || tempcase.what === 'flex_bb_hp') && wpAd.flags.hpRefresh){
         tempcase.where += 'refresh';
       }
-/*
-      if(window.jQuery){
-        if(tempcase.what === 'flex_bb_hp'){
-          $(function(){
-            var $target = $('#eyeDiv');
-            if($target.length){
-              $('li.entertainment, li.lifestyle', '#main-nav').hover(function(){
-                $target.css({left: '-9999px'});
-              }, function(){
-                $target.css({left: '0px'});
-              });
-            }
-          });
-        } else if(tempcase.what === 'pushdown'){
-          $(function(){
-            var $target = $('div.prWrap[id^="prf"]');
-            if($target.length){
-              $('#main-nav>li:not(.jobs)').hover(function(){
-                $target.hide();
-              }, function(){
-                $target.show();
-              });
-            }
-          });
-        }
-      }
-*/
+
       //20007-CD
       if(tempcase.what === 'pushdown'){
         var adi_push = doc.getElementById('wpni_adi_pushdown');
@@ -561,11 +445,6 @@
     if(tempcase.delivery === 'vi'){
       tempcase.where += '/viewable';
       tempcase.keyvalues['!c'].push('media', 'intrusive');
-    }
-
-    //persistant_bb render when viewable
-    if(tempcase.defaults.what === 'persistent_bb' && /viewable_test/.test(location.search)){
-      tempcase.delivery = 'vi';
     }
 
     //19882-criteo implementation
@@ -615,20 +494,10 @@
       tempcase.keyvalues['!c'].push('media');
     }
 
-    //viewable impression pixel test:
-    if(wpAd.tools.vi_pixels[tempcase.what] && wpAd.flags.vi_test){
-      wpAd.tools.addPixel(wpAd.tools.vi_pixels[tempcase.what][0], tempcase.what + ' impression');
-
-      if(!wpAd.flags.vi_script_loaded && !$.fn.viewable){
-        wpAd.flags.vi_script_loaded = true;
-        wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js');
-      }
-
-      wpAd.tools.initVITest('#slug_' + tempcase.what);
-    }
-
     return tempcase;
   };
+
+
 
   win.wpTiles = win.wpTiles || {};
   wpTiles.nnHasAd = function () {
@@ -640,82 +509,124 @@
     placeAd2(commercialNode, a, false, '');
   };
 
-  //MS - promo tile test
-  if(/test_ads\=promotile/.test(location.search) && win.jQuery){
-    $(function(){
-      $(doc.createElement('script')).attr({
-        type: 'text/javascript',
-        src: 'http://ad.doubleclick.net/pfadx/wpni.'+ commercialNode +';sz=184x90,200x60;pos=promo;kw=test_promotile;dcmt=text/javascript;ord=' + Math.floor(Math.random()*1E9) + '?'
-      }).appendTo('head');
-    });
+  //20127-CD
+  if(commercialNode.match("lifestyle/kidspost")){
+    commercialNode = commercialNode.replace(/^lifestyle\/kidspost/i,"kidspost");
   }
 
-  if(wpAd.flags.postscribe){
-    wpAd.tools.ajax({
-      url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
-      cache: true,
-      dataType: 'script',
-      timeout: 2000,
-      crossDomain: true,
-      error: function(err){
-        if(wpAd.flags.debug){
-          try{win.console.log('postscribe ajax error:', err);}catch(e){}
-        }
-      },
-      success: function(data){
-        if(wpAd.flags.debug){
-          try{win.console.log('postscribe script loaded');}catch(e){}
-        }
-      }
-    });
+  //21321-CD
+  if(commercialNode === 'cityguide/search' && /Kid\ Friendly/i.test(unescape(location.href))){
+    commercialNode = 'cityguide/kidfriendly';
   }
 
-  //20999 - JH - brand connect tracking:
-  if(win.jQuery){
-    win.jQuery(function(){
-      var bcdiv = win.jQuery('div.brand-connect-module');
-      if(bcdiv.length){
-        win.jQuery.ajax({
-          cache: true,
-          dataType: 'script',
-          crossDomain: true,
-          url: 'http://js.washingtonpost.com/wp-srv/ad/brandConnectTracking.js',
-          timeout: 2000,
-          error: function(err){
-            if(wpAd.flags.debug){
-              try{win.console.log('brandConnectTracking.js timeout error:', err);}catch(e){}
-            }
-          },
-          success: function(data){
-            wpAd.brandConnect.init();
-            if(wpAd.flags.debug){
-              try{win.console.log('brandConnectTracking.js', 'loaded');}catch(e){}
-            }
+  //19879-CD
+  //arkadium games section commercialNode hack:
+  if(/games\.washingtonpost/i.test(doc.domain) && /entertainment\/arkadium/.test(commercialNode) && !wpAd.arkadiumNodeHack){
+    commercialNode += '/' + (function(){
+      var a = location.href.split('/');
+      a = a[a.length-1];
+      wpAd.arkadiumNodeHack = true;
+      return (/\.aspx$/i.test(a)) ? a.split('.aspx')[0] : 'front';
+    })();
+  }
+
+  //gog temp /front hack
+  if(commercialNode === 'cityguide' && /^\/gog\/(index\.html)?/.test(location.pathname)){
+    commercialNode += '/front';
+  }
+
+
+
+  if(!wpAd.flags.no_ads) {
+    //ADD THE TEMPLATES - generated via flight manager tool:
+    wpAd.tools.writeScript(wpAd.constants.ad_config_url);
+
+    //add the tiffany tiles
+    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
+
+    //19882 - Criteo Implementation
+    if(!/msie 6|msie 7|msie 8/i.test(navigator.userAgent)){
+      wpAd.tools.add_criteo();
+    }
+
+    if(wpAd.flags.postscribe){
+      wpAd.tools.ajax({
+        url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
+        cache: true,
+        dataType: 'script',
+        timeout: 2000,
+        crossDomain: true,
+        error: function(err){
+          if(wpAd.flags.debug){
+            try{win.console.log('postscribe ajax error:', err);}catch(e){}
           }
+        },
+        success: function(data){
+          if(wpAd.flags.debug){
+            try{win.console.log('postscribe script loaded');}catch(e){}
+          }
+        }
+      });
+    }
+
+    //20999 - JH - brand connect tracking:
+    if(win.jQuery){
+      win.jQuery(function(){
+        var bcdiv = win.jQuery('div.brand-connect-module');
+        if(bcdiv.length){
+          win.jQuery.ajax({
+            cache: true,
+            dataType: 'script',
+            crossDomain: true,
+            url: 'http://js.washingtonpost.com/wp-srv/ad/brandConnectTracking.js',
+            timeout: 2000,
+            error: function(err){
+              if(wpAd.flags.debug){
+                try{win.console.log('brandConnectTracking.js timeout error:', err);}catch(e){}
+              }
+            },
+            success: function(data){
+              wpAd.brandConnect.init();
+              if(wpAd.flags.debug){
+                try{win.console.log('brandConnectTracking.js', 'loaded');}catch(e){}
+              }
+            }
+          });
+        }
+      });
+
+      // had to remove from dom ready queue, presumably because jquery on jobs was being overwritten
+      // after this point, but before dom ready
+      // wp+ pixels
+      win.jQuery.ajax({
+        cache: true,
+        dataType: 'script',
+        crossDomain: true,
+        url: 'http://js.washingtonpost.com/wp-srv/ad/wpPlusPixels.js',
+        timeout: 2000,
+        error: function(err){
+          if(wpAd.flags.debug){
+            try{win.console.log('wpPlusPixels.js timeout error:', err);}catch(e){}
+          }
+        },
+        success: function(data){
+          if(wpAd.flags.debug){
+            try{win.console.log('wpPlusPixels.js', 'loaded');}catch(e){}
+          }
+        }
+      });
+
+      //MS - promo tile test
+      if(/test_ads\=promotile/.test(location.search)){
+        win.jQuery(function(){
+          win.jQuery(doc.createElement('script')).attr({
+            type: 'text/javascript',
+            src: 'http://ad.doubleclick.net/pfadx/wpni.'+ commercialNode +';sz=184x90,200x60;pos=promo;kw=test_promotile;dcmt=text/javascript;ord=' + Math.floor(Math.random()*1E9) + '?'
+          }).appendTo('head');
         });
       }
-    });
 
-    // had to remove from dom ready queue, presumably because jquery on jobs was being overwritten
-    // after this point, but before dom ready
-    // wp+ pixels
-    win.jQuery.ajax({
-      cache: true,
-      dataType: 'script',
-      crossDomain: true,
-      url: 'http://js.washingtonpost.com/wp-srv/ad/wpPlusPixels.js',
-      timeout: 2000,
-      error: function(err){
-        if(wpAd.flags.debug){
-          try{win.console.log('wpPlusPixels.js timeout error:', err);}catch(e){}
-        }
-      },
-      success: function(data){
-        if(wpAd.flags.debug){
-          try{win.console.log('wpPlusPixels.js', 'loaded');}catch(e){}
-        }
-      }
-    });
+    }
 
   }
 

@@ -6,7 +6,7 @@ $('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0
 $(document).ready(function() {
 	var num = $('#branding_wrapper').children('#header_freeship');
 	if(num.length == 0){
-		$('#branding_wrapper').append('<a href="/online/handbags/genWCM-10551-10051-en-/Coach_US/CustomerService/OrderInformation/SHIPPING+METHODS+AND+FEES?LOC=TN" id="header_freeship" alt="free shipping"><img src="/popup/20130401/freeship_mom.png"/></a>');
+		$('#branding_wrapper').append('<a href="/online/handbags/genWCM-10551-10051-en-/Coach_US/CustomerService/OrderInformation/SHIPPING+METHODS+AND+FEES?LOC=TN" id="header_freeship" alt="free shipping"><img src="/popup/20130401/freeship.png"/></a>');
 		$('#header_freeship').css({
 			'position':'absolute',
 			'top':'60px',

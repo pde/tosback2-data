@@ -228,14 +228,7 @@ KIDS.reporting.init = function(){
 	KIDS.reporting.domain = "nick.com";
 	KIDS.reporting.config = new Configuration();
 	KIDS.reporting.config.initialize();
-	btg.config.Omniture.account = 'nickvia';
-	btg.config.Omniture.dynamicAccountSelection = 'true';
-	btg.config.Omniture.linkInternalFilters = 'javascript:,nick.com';
-	btg.config.Omniture.trackInlineStats = true;
-	btg.config.Omniture.trackExternalLinks = true;
-	btg.config.Omniture.trackDownloadLinks = true;
-	KIDS.reporting.config.setting.name = "nickvia";
-	
+		
 	//unity detection on hp	
 	KIDS.reporting.unityStatus = NICK.utils.getCookie("unityStatus");
 	if(typeof unityDetectObject != "undefined"){

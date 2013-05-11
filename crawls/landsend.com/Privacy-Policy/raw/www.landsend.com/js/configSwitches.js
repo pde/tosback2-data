@@ -12,12 +12,11 @@ metric.eGainActive = true;     // set to true if you want eGain activated for le
 metric.eGainActiveCanvas = true; //set to true if you want eGain activated for canvas 
 metric.criteoActive = false;    // set to true if you want Criteo activated for lestore
 metric.criteoActiveCanvas = false;    // set to true if you want Criteo activated for canvas
-metric.rocketFuelActive = false;    // set to true if you want RocketFuel activated
 metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated
 metric.commissionJunctionActive = true; // set to true if you want Comission Junction activated
 metric.googleAnalyticsActive = true; // set to true if you want Google Analytics activated
-metric.dartFloodlightActive = false; // set to true if you want Dart Floodlight activated
+metric.dartFloodlightActive = true; // set to true if you want Dart Floodlight activated
 
 ratings.leActive = true;  //set to true if you want ratings and reviews active for lestore
 ratings.canvasActive = true;   //set to true if you want ratings and reviews active for canvas
@@ -56,19 +55,13 @@ metric.writeTags = function() {
 	var isCanvas = location.host.match("canvas") != null;
 	
 	// code for Criteo vs. RocketFuel A/B Test
-	if ($.cookie("CVR032713") == "B") {
+	if ($.cookie("CVR032713") == "B" || $.cookie("CVR032713") == "C") {
 		metric.criteoActive = true;
-	} else if ($.cookie("CVR032713") == "C") {
-		metric.rocketFuelActive = true;
-	}
+	} 
 	
 	if ((isCore && metric.criteoActive) || (isCanvas && metric.criteoActiveCanvas)) {
 		metric.sendCriteo();
-	}	
-
-	if (metric.rocketFuelActive) {
-		metric.sendRocketFuel();
-	}	
+	}		
 	
 	if ((isCore && metric.eGainActive) || (isCanvas && metric.eGainActiveCanvas)) {
 		metric.sendEgain();
@@ -210,94 +203,6 @@ metric.sendCriteo = function() {
 	}
 };
 
-metric.sendRocketFuel = function() {
-	if (window.location.pathname.indexOf("/pp/") != -1 && resx.itemid != null) {
-		// Product Tag
-		var itemid = resx.itemid.split(":", 1);
-		// Begin Rocket Fuel Universal Pixel
-		  (function () {
-		    var cachebust = (Math.random() + "").substr(2);
-		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = itemid;
-		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"&pid="+prodIDs;
-		})();
-		// End Rocket Fuel Universal Pixel
-	} else if (window.location.pathname.indexOf("/ix/") != -1 && resx.links != null) {
-		// Search and Index Tag
-		var items = resx.links.split(";");
-		var productIDs = new Array();
-
-		// only send the first three items
-		for(var i=0; i < items.length && i < 3; i++) {
-			productIDs.push(items[i].split(":")[0]);
-		}
-		// Begin Rocket Fuel Universal Pixel
-		  (function () {
-		    var cachebust = (Math.random() + "").substr(2);
-		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs.join();
-		    new Image().src = protocol+"//20504997p.rfihub.com/ca.gif?rb=2239&ca=20504997&ra="+cachebust+"&pid="+prodIDs;
-		})();
-		// End Rocket Fuel Universal Pixel
-		
-	} else if (window.location.pathname.indexOf("ShoppingBag.html") != -1 && com.landsend.shoppingBag.shoppingBagModel != null) {
-		// Basket Tag
-		var model = com.landsend.shoppingBag.shoppingBagModel;
-		var basket = model.getBasket();
-		var skuItem;
-		
-		var productIDs = new Array();
-
-		for(var i = 0; basket.shipToArray != null && i < basket.shipToArray.length; i++) {
-			for(var j = 0; basket.shipToArray[i].skuItemArray != null && j < basket.shipToArray[i].skuItemArray.length; j++) {
-				skuItem = basket.shipToArray[i].skuItemArray[j];
-				
-				productIDs.push(skuItem.styleNum);
-			}
-		}
-		
-		// Begin Rocket Fuel Shopping Cart Pixel
-		  (function () {
-		    var cachebust = (Math.random() + "").substr(2);
-		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs.join();
-		    new Image().src = protocol+"//20505545p.rfihub.com/ca.gif?rb=2239&ca=20505545&ra="+cachebust+"&pid="+prodIDs;
-		})();
-		// End Rocket Fuel Shopping Cart Pixel
-	} else if (window.location.pathname.indexOf("OrderConfirm") != -1 && resx.itemid != null) {
-		// Purchase Confirmation Tag
-		var resxItems = resx.itemid.split(",");
-		var resxQuantities = resx.qty.split(",");
-		
-		var productIDs = new Array();
-		var quantities = new Array();
-		var customerType = 2; // default to existing customer
-		
-		// if it's the first visit, then it's probably a new customer
-		if (s_omtr.getVisitNum() == 1) {
-			customerType = 1;
-		}
-
-		for(var i=0; i < resxItems.length; i++) {
-			productIDs.push(resxItems[i].split(":")[0]);
-			quantities.push(resxQuantities[i]);
-		}
-		
-		// Begin Rocket Fuel Conversion Pixel
-		  (function () {
-		    var cachebust = (Math.random() + "").substr(2);
-		    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
-			var prodIDs = productIDs.join(); 	//PRODUCT IDs
-			var prodQuan = quantities.join(); 	//PRODUCT QUANTITY
-			var ordrev = resx.total;	//ORDER REVENUES
-			var trid = resx.transactionid; 	//TRANSACTION IDs 
-			var ctype = customerType; 	//1 FOR NEW, 2 FOR EXISTING
-		    new Image().src = protocol+"//20505543p.rfihub.com/ca.gif?rb=2239&ca=20505543&ra="+cachebust+"&pid="+prodIDs+"&pquant="+prodQuan+"&revenue="+ordrev+"&transid="+trid+"&custtype="+ctype;
-		})();
-		// End Rocket Fuel Conversion Pixel
-	} 
-};
-
 metric.sendCommissionJunction = function() {
 	var cm_mmc = $.query.get("cm_mmc");
 	
@@ -417,6 +322,7 @@ metric.sendDartFloodlight = function() {
 	var cm_re = $.query.get("cm_re");
 	var path = window.location.pathname;
 	var catStr = "";
+    var protocol = "https:" == document.location.protocol ? 'https:' : 'http:';
 	
 	if (path == "/kids/" || cm_re == "Kids") {
 		catStr = "type=lands280;cat=kidsu588;ord=";
@@ -457,7 +363,7 @@ metric.sendDartFloodlight = function() {
 	if (catStr != "") {
 		var axel = Math.random() + "";
 		var a = axel * 10000000000000;
-		document.write('<iframe src="http://2267851.fls.doubleclick.net/activityi;src=2267851;' + catStr + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+		document.write('<iframe src="' + protocol + '//2267851.fls.doubleclick.net/activityi;src=2267851;' + catStr + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
 	}
 };
 

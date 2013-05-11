@@ -398,6 +398,23 @@ var ajax = {
 		}
 	},
 	
+	addToCart : function(itemNum, quan, fct) {
+		if (ajax.isBusy) {
+			ajax.requestObj.onreadystatechange = function () {};
+			ajax.requestObj.abort();
+			return;
+		}
+		ajax.requestObj = ajax.getHTTPObject();
+		if (ajax.requestObj) {
+			ajax.requestObj.onreadystatechange = function() {
+				ajax.parseCartResponse(ajax.requestObj, fct);
+			};
+			ajax.requestObj.open("GET", '/AddToCart?storeId=10251&catalogId=10151&orderId=.&URL=OrderItemDisplay?updatePrices=1&calculationUsageId=-1&orderId=.&errorViewName=CatalogItemAddErrorView&langId=-1&partNumber=' + itemNum + '&quantity=' + quan, true);
+			ajax.isBusy = true;
+			ajax.requestObj.send(null);
+		}
+	},
+	
 	getHTTPObject : function() {
 		var xhr = false;
 		if (window.XMLHttpRequest) {
@@ -421,7 +438,15 @@ var ajax = {
 			if (request.status == 200 || request.status == 304) {
 				ajax.data = eval('(' + request.responseText + ')');
 				ajax.isBusy = false;
-				console.log( ajax.data );
+				if (fct != null) { fct.call(); }
+			}
+		}
+	},
+	
+	parseCartResponse : function(request, fct) {
+		if (request.readyState == 4) {
+			if (request.status == 200 || request.status == 304 || request.status == 302) {
+				ajax.isBusy = false;
 				if (fct != null) { fct.call(); }
 			}
 		}

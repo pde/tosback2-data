@@ -224,7 +224,7 @@ dwr.engine.setPollType = function() { dwr.engine._debug("Manually setting the Po
 //==============================================================================
 
 /** The original page id sent from the server */
-dwr.engine._origScriptSessionId = "41F3B58A81F18057303C69B239F0C2EA";
+dwr.engine._origScriptSessionId = "5CE86EF6EC239BE25BCEC97842DCB321";
 
 /** The session cookie name */
 dwr.engine._sessionCookieName = "JSESSIONID"; // JSESSIONID

@@ -459,21 +459,24 @@ var imgs1 = new Array("http://images.medicinenet.com/images/module/featured-slid
 					  "http://images.medicinenet.com/images/module/featured-slideshow-hiv-aids.jpg",
 					  "http://images.medicinenet.com/images/module/featured-slideshow-multiple-sclerosis.jpg",
 					  "http://images.medicinenet.com/images/module/featured-slideshow-adhd-in-children.jpg",
-					  "http://images.medicinenet.com/images/module/featured-slideshow-atrial-fibrillation.jpg");
+					  "http://images.medicinenet.com/images/module/featured-slideshow-atrial-fibrillation.jpg",
+					  "http://images.medicinenet.com/images/module/featured-slideshow-ringworm.jpg");
 					  
 var lnks1 = new Array("http://www.medicinenet.com/skin-problems-pictures-slideshow/article.htm",
 					  "http://www.medicinenet.com/hiv_aids_myths_and_facts_pictures_slideshow/article.htm",
 					  "http://www.medicinenet.com/multiple_sclerosis_pictures_slideshow/article.htm",
 					  "http://www.medicinenet.com/adhd_children_pictures_slideshow/article.htm",
-					  "http://www.medicinenet.com/atrial_fibrillation_pictures_slideshow/article.htm");
+					  "http://www.medicinenet.com/atrial_fibrillation_pictures_slideshow/article.htm",
+					  "http://www.medicinenet.com/ringworm-pictures-slideshow/article.htm");
 					  
 var alt1 = new Array("Adult Skin Problems Slideshow",
 					 "HIV AIDS Myths",
 					 "Multiple Sclerosis",
 					 "ADHD in Children",
-					 "Chronic Fatigue Syndrome");
+					 "Chronic Fatigue Syndrome",
+					 "What is Ringworm");
 var currentAd1 = 0;
-var imgCt1 = 5;
+var imgCt1 = 6;
 var banner1 = document.getElementById('adBanner1');
 var link1 = document.getElementById('ssBanner1'); 
 function cycle1() {

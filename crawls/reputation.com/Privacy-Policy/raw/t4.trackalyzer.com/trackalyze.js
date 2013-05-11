@@ -37,7 +37,6 @@ document.write ("<img src='" + linkreefer + "'>");
 
 
 
-
 function Trackalyzer (myid, page, forward, open)
 {
 	var mypage = page;
@@ -49,7 +48,7 @@ function Trackalyzer (myid, page, forward, open)
 	forward=mypage;
 	};
 
-	var linkreefer = "http://t4.trackalyzer.com/trackalyze.asp?i=" + myid + "&r=" + myref + "&p=" + mypage + "&f=" + forward;
+	var linkreefer = "https://trackalyzer.com/trackalyze_secure.asp?i=" + myid + "&r=" + myref + "&p=" + mypage + "&f=" + forward;
 
 	var el = document.createElement("iframe");
 	el.setAttribute('width', '0%');
@@ -60,11 +59,30 @@ function Trackalyzer (myid, page, forward, open)
 	setTimeout(document.body.appendChild(el), 10000);
 	document.body.appendChild(el);
 
-	if (open=='new')
-//		{ setTimeout("window.open('" + forward + "')", 700); }
-		{ setTimeout(window.open(forward), 700); }
-	else
-		{ setTimeout("location.href = '" + forward + "'", 700); }
 
+	try
+	{
+		if (open=='new')
+			{ setTimeout(window.open(forward), 700); }
+
+		var browser = navigator.userAgent;
+		var browsertype=browser.indexOf("Firefox");
+		if ( browsertype!= -1  ) 
+			{
+			my_window = window.open(linkreefer, "formalyzer","status=1,width=1,height=1");
+			my_window.blur();
+			my_window.close();
+			}
+	}
+
+	catch(e){
+		var browser = navigator.userAgent;
+		var browsertype=browser.indexOf("Firefox");
+		if ( browsertype!= -1  ) 
+			{
+			my_window = window.open(linkreefer, "formalyzer","status=1,width=1,height=1");
+			my_window.blur();
+			my_window.close();
+			}
+		}
 }
-	

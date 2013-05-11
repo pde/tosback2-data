@@ -1834,16 +1834,17 @@ function B(D,C){return D.write('<div id="gallery"><div class="container-16">').p
 }function A(D,C){return D.partial("dailybeast/components/gallery2/slide",C,null)
 }return B
 })();
-(function(){dust.register("dailybeast/components/gallery2/aside",E);
-function E(J,I){return J.write('<div class="copy-style-b copy"><a class="btn-close-x" href="#"><img src="/etc/clientlibs/dailybeast/img/icon/button-close-x.png"/></a>').section(I.get("isIntro"),I,{"else":D,block:C},null).write('<div class="heading-slide"><h2 class="heading-style-t">').reference(I.get("title"),I,"h").write("</h2>").exists(I.get("contentDate"),I,{block:B},null).exists(I.get("location"),I,{block:H},null).exists(I.get("authors"),I,{block:G},null).write('</div><div class="text">').reference(I.get("caption"),I,"h",["s"]).write("</div></div>")
-}function D(J,I){return J.write('<span class="listicle-number">').reference(I.get("listicleNumber"),I,"h").write("</span>")
-}function C(J,I){return J
-}function B(J,I){return J.write('<time class="timestamp" property="dc:created" datetime="').reference(I.get("contentDate"),I,"h").write('" pubdate="pubdate">').helper("formatDate",I,{},{date:I.get("contentDate"),format:"MMM D, YYYY"}).exists(I.get("location"),I,{block:A},null).write("</time>")
-}function A(J,I){return J.write(" - ")
-}function H(J,I){return J.write('<span class="location">').reference(I.get("location"),I,"h").write("</span>")
-}function G(J,I){return J.write('<span class="byline byline-style-a"><span>by</span>\n').section(I.get("authors"),I,{block:F},null).write("</span>")
-}function F(J,I){return J.write('<a rel="author" property="foaf:publications" href="').reference(I.get("url"),I,"h").write('">').reference(I.get("name"),I,"h").write("</a>").reference(I.get("comma"),I,"h")
-}return E
+(function(){dust.register("dailybeast/components/gallery2/aside",I);
+function I(K,J){return K.write('<div class="copy-style-b copy"><a class="btn-close-x" href="#"><img src="/etc/clientlibs/dailybeast/img/icon/button-close-x.png"/></a>').section(J.get("isIntro"),J,{"else":H,block:G},null).write('<div class="heading-slide"><h2 class="heading-style-t">').reference(J.get("title"),J,"h").write("</h2>").exists(J.get("contentDate"),J,{block:F},null).exists(J.get("location"),J,{block:D},null).exists(J.get("authors"),J,{block:C},null).write('</div><div class="text">').reference(J.get("caption"),J,"h",["s"]).write("</div></div>")
+}function H(K,J){return K.write('<span class="listicle-number">').reference(J.get("listicleNumber"),J,"h").write("</span>")
+}function G(K,J){return K
+}function F(K,J){return K.write('<time class="timestamp" property="dc:created" datetime="').reference(J.get("contentDate"),J,"h").write('" pubdate="pubdate">').helper("formatDate",J,{},{date:J.get("contentDate"),format:"MMM D, YYYY"}).exists(J.get("location"),J,{block:E},null).write("</time>")
+}function E(K,J){return K.write(" - ")
+}function D(K,J){return K.write('<span class="location">').reference(J.get("location"),J,"h").write("</span>")
+}function C(K,J){return K.write('<span class="byline byline-style-a"><span>by</span>\n').section(J.get("authors"),J,{block:B},null).write("</span>")
+}function B(K,J){return K.write('<a rel="author" property="foaf:publications" href="').reference(J.get("url"),J,"h").write('">').reference(J.get("name"),J,"h").write("</a>").helper("sep",J,{block:A},null)
+}function A(K,J){return K.write(", ")
+}return I
 })();
 (function(){dust.register("dailybeast/components/gallery2/header",A);
 function A(C,B){return C.write('<div class="heading size1of1"><a class="btn-close-x" href="').reference(B.get("homeUrl"),B,"h").write('"><img src="/etc/clientlibs/dailybeast/img/icon/button-close-x.png"/></a><div class="captions-exit"><a class="captions-button" href="#">show captions</a><a class="exit-fullscreen-button" href="#">exit fullscreen</a></div><div class="logo"><a class="primary-logo" href="').reference(B.get("homeUrl"),B,"h").write('" role="navigation" data-track="{\'title\':\'dailybeastlogo\'}"><img src="/etc/clientlibs/dailybeast/img/logo/daily-beast.png" width="93" height="112" alt="The Daily Beast"/></a></div><div class="title-outer-container"><div class="red-line"></div><div class="title-inner-container"><h1 class="title">').reference(B.get("title"),B,"h").write('</h1></div><a href="#" class="more-gallery heading-style-r"><h4>More Galleries</h4></a></div></div>')

@@ -28,7 +28,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/living_room"><div class="productImage" style="background-position:-200px 0;"></div><span>Living room</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/lighting"><div class="productImage" style="background-position:-425px 0;"></div><span>Lighting</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -54,7 +54,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/workspaces"><div class="productImage" style="background-position:-100px 0;"></div><span>Office furniture</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/living_room"><div class="productImage" style="background-position:-200px 0;"></div><span>Living room</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -80,7 +80,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/outdoor"><img src="/ms/img/menu/products/25x25/outdoor_25x25.gif" alt="" border="0" /><span>Outdoor</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/workspaces"><div class="productImage" style="background-position:-100px 0;"></div><span>Office furniture</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -106,7 +106,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/secondary_storage"><div class="productImage" style="background-position:-225px 0;"></div><span>Secondary storage</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/outdoor"><img src="/ms/img/menu/products/25x25/outdoor_25x25.gif" alt="" border="0" /><span>Outdoor</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -132,7 +132,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/small_storage"><div class="productImage" style="background-position:-50px 0;"></div><span>Small storage</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/secondary_storage"><div class="productImage" style="background-position:-225px 0;"></div><span>Secondary storage</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -158,7 +158,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/Textiles"><div class="productImage" style="background-position:-325px 0;"></div><span>Textiles &amp; Rugs</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/small_storage"><div class="productImage" style="background-position:-50px 0;"></div><span>Small storage</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -184,7 +184,7 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentRight">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/youth_room"><div class="productImage" style="background-position:-175px 0;"></div><span>Youth room</span></a>');
+    document.write('                        <a href="/us/en/catalog/categories/departments/Textiles"><div class="productImage" style="background-position:-325px 0;"></div><span>Textiles &amp; Rugs</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
@@ -250,7 +250,7 @@ function getProducts() {
     
     
     document.write('                <td>');
-    document.write('                    <div class="contentLeft">');
+    document.write('                    <div class="contentLeft noBorder">');
     document.write('                        <a href="/us/en/catalog/categories/departments/laundry"><div class="productImage" style="background-position:-275px 0;"></div><span>Laundry </span></a>');
     document.write('                    </div>');
     document.write('                </td>');
@@ -261,25 +261,12 @@ function getProducts() {
     
     
     document.write('                <td>');
-    document.write('                    <div class="contentRight">');
+    document.write('                    <div class="contentRight noBorder">');
     document.write('                        <a href="/us/en/catalog/categories/seasonal/summer"><img src="/ms/img/menu/products/32x32/summer_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Summer</span></a>');
     document.write('                    </div>');
     document.write('                </td>');
     
     document.write('            </tr>');
-    
-    
-    
-    
-    
-    document.write('            <tr>');
-    
-    
-    document.write('                <td>');
-    document.write('                    <div class="contentLeft noBorder">');
-    document.write('                        <a href="/us/en/catalog/categories/departments/lighting"><div class="productImage" style="background-position:-425px 0;"></div><span>Lighting</span></a>');
-    document.write('                    </div>');
-    document.write('                </td>');
     
     
     

@@ -36,7 +36,7 @@ function s_doPlugins(s) {
 		s.campaign=s.getQueryParam('affiliate_id');
     
     if(s.campaign)
-      s.eVar36 = s.eVar37 = s.eVar38 = s.eVar39 = s.campaign;
+      s.eVar38 = s.eVar39 = s.campaign;
       
    	/* Add calls to plugins here */
 	//s.setClickMapEmail('Email_PageName,Email_OID');

@@ -1,0 +1,3 @@
+
+if('undefined'===typeof ctxt_ad_url){var pageinfo={"yahoo":{"context":{"category":'finance',"tag":'finance',"tier":1}}},ctxt_ad_url='http://www.chron.com',ctxt_ad_interface='http://cm.npc-hearst.overture.com/js_1_0/',ctxt_ad_config='2130893885',ctxt_ad_width=728,ctxt_ad_height=90,ctxt_ad_source='npc_hearst_houstonchronicle_t1_ctxt',ctxt_ad_type='news',ctxt_ad_id='news',ctxt_css_url='http://www.mysanantonio.com/css/hdn/modules/ads/generic_ysm.css';}
+var ysmCSS='/css/modules/ads/ysm.css';ctxt_ad_width=728;ctxt_ad_height=90;window.ctxt_css_url=window.location.protocol+"//"+window.location.host+ysmCSS;

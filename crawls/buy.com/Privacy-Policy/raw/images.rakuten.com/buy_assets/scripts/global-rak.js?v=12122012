@@ -1,11 +1,13 @@
 
 //############################ jquery.main ################################
 
-jQuery(function() {
+jQuery(function ()
+{
     initDrop();
     initAutoComplete();
 })
-function initOpenClose() {
+function initOpenClose()
+{
     jQuery('div.slide-block').OpenClose({
         activeClass: 'active',
         opener: 'a.open-close',
@@ -16,7 +18,8 @@ function initOpenClose() {
 }
 
 // open-close plugin
-jQuery.fn.OpenClose = function(_options) {
+jQuery.fn.OpenClose = function (_options)
+{
     // default options
     var _options = jQuery.extend({
         activeClass: 'active',
@@ -29,7 +32,8 @@ jQuery.fn.OpenClose = function(_options) {
         event: 'click'
     }, _options);
 
-    return this.each(function() {
+    return this.each(function ()
+    {
         // options
         var _holder = jQuery(this);
         var _slideSpeed = _options.animSpeed;
@@ -40,18 +44,25 @@ jQuery.fn.OpenClose = function(_options) {
         var _animEnd = _options.animEnd;
         var _effect = _options.effect;
         var _event = _options.event;
-        if (_slider.length) {
-            _opener.bind(_event, function() {
-                if (!_slider.is(':animated')) {
+        if (_slider.length)
+        {
+            _opener.bind(_event, function ()
+            {
+                if (!_slider.is(':animated'))
+                {
                     if (typeof _animStart === 'function') _animStart();
-                    if (_holder.hasClass(_activeClass)) {
-                        _slider[_effect == 'fade' ? 'fadeOut' : 'slideUp'](_slideSpeed, function() {
+                    if (_holder.hasClass(_activeClass))
+                    {
+                        _slider[_effect == 'fade' ? 'fadeOut' : 'slideUp'](_slideSpeed, function ()
+                        {
                             if (typeof _animEnd === 'function') _animEnd();
                         });
                         _holder.removeClass(_activeClass);
-                    } else {
+                    } else
+                    {
                         _holder.addClass(_activeClass);
-                        _slider[_effect == 'fade' ? 'fadeIn' : 'slideDown'](_slideSpeed, function() {
+                        _slider[_effect == 'fade' ? 'fadeIn' : 'slideDown'](_slideSpeed, function ()
+                        {
                             if (typeof _animEnd === 'function') _animEnd();
                         });
                     }
@@ -63,7 +74,8 @@ jQuery.fn.OpenClose = function(_options) {
         }
     });
 }
-function initGalleries() {
+function initGalleries()
+{
     jQuery('.G1').gallery({
         listOfSlides: '.slide-holder>ul>li'
     });
@@ -82,9 +94,11 @@ function initGalleries() {
         effect: true,
         switcher: '.switcher>li'
     })
-    jQuery('.gallery-block').mouseenter(function() {
+    jQuery('.gallery-block').mouseenter(function ()
+    {
         _gal3.stop();
-    }).mouseleave(function() {
+    }).mouseleave(function ()
+    {
         _gal3.play();
     })
     var _gal4 = jQuery('.gallery-block-buyTV').gallery({
@@ -93,13 +107,16 @@ function initGalleries() {
         effect: true,
         switcher: '.switcher>li'
     })
-    jQuery('.gallery-block-buyTV').mouseenter(function() {
+    jQuery('.gallery-block-buyTV').mouseenter(function ()
+    {
         _gal4.stop();
-    }).mouseleave(function() {
+    }).mouseleave(function ()
+    {
         _gal4.play();
     })
 }
-function initMain() {
+function initMain()
+{
     /*clearFormFields({
     clearInputs: true,
     clearTextareas: true,
@@ -109,39 +126,50 @@ function initMain() {
     });
     */
 }
-function clearFormFields(o) {
+function clearFormFields(o)
+{
     if (o.clearInputs == null) o.clearInputs = true;
     if (o.clearTextareas == null) o.clearTextareas = true;
     if (o.passwordFieldText == null) o.passwordFieldText = false;
     if (o.addClassFocus == null) o.addClassFocus = false;
     if (!o.filter) o.filter = "default";
-    if (o.clearInputs) {
+    if (o.clearInputs)
+    {
         var inputs = document.getElementsByTagName("input");
-        for (var i = 0; i < inputs.length; i++) {
-            if ((inputs[i].type == "text" || inputs[i].type == "password") && inputs[i].className.indexOf(o.filterClass)) {
+        for (var i = 0; i < inputs.length; i++)
+        {
+            if ((inputs[i].type == "text" || inputs[i].type == "password") && inputs[i].className.indexOf(o.filterClass))
+            {
                 inputs[i].valueHtml = inputs[i].value;
-                inputs[i].onfocus = function() {
+                inputs[i].onfocus = function ()
+                {
                     if (this.valueHtml == this.value) this.value = "";
-                    if (this.fake) {
+                    if (this.fake)
+                    {
                         inputsSwap(this, this.previousSibling);
                         this.previousSibling.focus();
                     }
-                    if (o.addClassFocus && !this.fake) {
+                    if (o.addClassFocus && !this.fake)
+                    {
                         this.className += " " + o.addClassFocus;
                         this.parentNode.className += " parent-" + o.addClassFocus;
                     }
                 }
-                inputs[i].onblur = function() {
-                    if (this.value == "") {
+                inputs[i].onblur = function ()
+                {
+                    if (this.value == "")
+                    {
                         this.value = this.valueHtml;
                         if (o.passwordFieldText && this.type == "password") inputsSwap(this, this.nextSibling);
                     }
-                    if (o.addClassFocus) {
+                    if (o.addClassFocus)
+                    {
                         this.className = this.className.replace(o.addClassFocus, "");
                         this.parentNode.className = this.parentNode.className.replace("parent-" + o.addClassFocus, "");
                     }
                 }
-                if (o.passwordFieldText && inputs[i].type == "password") {
+                if (o.passwordFieldText && inputs[i].type == "password")
+                {
                     var fakeInput = document.createElement("input");
                     fakeInput.type = "text";
                     fakeInput.value = inputs[i].value;
@@ -153,21 +181,28 @@ function clearFormFields(o) {
             }
         }
     }
-    if (o.clearTextareas) {
+    if (o.clearTextareas)
+    {
         var textareas = document.getElementsByTagName("textarea");
-        for (var i = 0; i < textareas.length; i++) {
-            if (textareas[i].className.indexOf(o.filterClass)) {
+        for (var i = 0; i < textareas.length; i++)
+        {
+            if (textareas[i].className.indexOf(o.filterClass))
+            {
                 textareas[i].valueHtml = textareas[i].value;
-                textareas[i].onfocus = function() {
+                textareas[i].onfocus = function ()
+                {
                     if (this.value == this.valueHtml) this.value = "";
-                    if (o.addClassFocus) {
+                    if (o.addClassFocus)
+                    {
                         this.className += " " + o.addClassFocus;
                         this.parentNode.className += " parent-" + o.addClassFocus;
                     }
                 }
-                textareas[i].onblur = function() {
+                textareas[i].onblur = function ()
+                {
                     if (this.value == "") this.value = this.valueHtml;
-                    if (o.addClassFocus) {
+                    if (o.addClassFocus)
+                    {
                         this.className = this.className.replace(o.addClassFocus, "");
                         this.parentNode.className = this.parentNode.className.replace("parent-" + o.addClassFocus, "");
                     }
@@ -175,24 +210,32 @@ function clearFormFields(o) {
             }
         }
     }
-    function inputsSwap(el, el2) {
+    function inputsSwap(el, el2)
+    {
         if (el) el.style.display = "none";
         if (el2) el2.style.display = "inline";
     }
 }
-function initDrop() {
-    jQuery('#nav li:has(.drop)').each(function() {
+function initDrop()
+{
+    jQuery('#nav li:has(.drop)').each(function ()
+    {
         var _holder = jQuery(this);
         var _drop1 = jQuery('.drop', _holder)
         var _els = jQuery('li:has(.drop-drop)', _drop1)
-        _els.each(function() {
+        _els.each(function ()
+        {
             var _li = jQuery(this);
             var _drop2 = jQuery('.drop-drop', _li);
             var _c = jQuery('.c', _drop2);
-            _li.mouseenter(function() {
-                setTimeout(function() {
-                    if (!_drop2.hasClass('measured')) {
-                        if (_drop2.height() < _drop1.height()) {
+            _li.mouseenter(function ()
+            {
+                setTimeout(function ()
+                {
+                    if (!_drop2.hasClass('measured'))
+                    {
+                        if (_drop2.height() < _drop1.height())
+                        {
                             _c.css('height', _drop1.height() - 14);
                             _drop2.addClass('measured');
                         }
@@ -203,12 +246,14 @@ function initDrop() {
     })
 }
 
-; (function($) {
-    $.fn.gallery = function(options) { return new Gallery(this.get(0), options); };
+; (function ($)
+{
+    $.fn.gallery = function (options) { return new Gallery(this.get(0), options); };
     function Gallery(context, options) { this.init(context, options); };
     Gallery.prototype = {
         options: {},
-        init: function(context, options) {
+        init: function (context, options)
+        {
             this.options = $.extend({
                 infinite: false, 							//true = infinite gallery
                 duration: 700, 								//duration of effect it 1000 = 1sec
@@ -241,39 +286,46 @@ function initDrop() {
 
             this.woh = _el.outerWidth(true);
             if (!this.options.direction) this.installDirections(this.list.parent().width());
-            else {
+            else
+            {
                 this.woh = _el.outerHeight(true);
                 this.installDirections(this.list.parent().height());
             }
 
-            if (!this.options.effect) {
+            if (!this.options.effect)
+            {
                 this.rew = this.count - this.wrapHolderW + 1;
                 if (!this.options.direction) this.anim = '{marginLeft: -(this.woh * this.active)}';
                 else this.anim = '{marginTop: -(this.woh * this.active)}';
                 eval('this.list.css(' + this.anim + ')');
-				var visibleSlideCount = Math.round(this.list.parent().width() / this.woh),
-					$visibleSlides = _el.slice(this.active, this.active+visibleSlideCount);
-				$visibleSlides.each(function() {
-					var $img = $("img.deferred", this);
-					if ($img.attr("deferredSrc")) {
-						$img.attr("src", $img.attr("deferredSrc"));
-						$img.removeAttr("deferredSrc");
-					}
-				});
+                var visibleSlideCount = Math.round(this.list.parent().width() / this.woh),
+					$visibleSlides = _el.slice(this.active, this.active + visibleSlideCount);
+                $visibleSlides.each(function ()
+                {
+                    var $img = $("img.deferred", this);
+                    if ($img.attr("deferredSrc"))
+                    {
+                        $img.attr("src", $img.attr("deferredSrc"));
+                        $img.removeAttr("deferredSrc");
+                    }
+                });
             }
-            else {
+            else
+            {
                 this.rew = this.count;
                 this.list.css({ opacity: 0 }).removeClass('active').eq(this.active).addClass('active').css({ opacity: 1 }).css('opacity', 'auto');
                 if (this.options.switcher) this.switcher.removeClass('active').eq(this.active).addClass('active');
                 if (this.options.autoHeight) this.list.parent().css({ height: this.list.eq(this.active).outerHeight() });
-				var $img = this.list.eq(this.active).find("img.deferred");
-				if ($img.attr("deferredSrc")) {
-					$img.attr("src", $img.attr("deferredSrc"));
-					$img.removeAttr("deferredSrc");
-				}
+                var $img = this.list.eq(this.active).find("img.deferred");
+                if ($img.attr("deferredSrc"))
+                {
+                    $img.attr("src", $img.attr("deferredSrc"));
+                    $img.removeAttr("deferredSrc");
+                }
             }
             this.flag = true;
-            if (this.options.infinite) {
+            if (this.options.infinite)
+            {
                 this.count++;
                 this.active += this.count;
                 this.list.append(_el.clone());
@@ -287,30 +339,38 @@ function initDrop() {
             if (this.options.autoRotation) this.runTimer(this);
             if (this.options.switcher) this.initEventSwitcher(this, this.switcher);
         },
-        initDisableBtn: function() {
+        initDisableBtn: function ()
+        {
             this.prevBtn.removeClass('prev-' + this.options.disableBtn);
             this.nextBtn.removeClass('next-' + this.options.disableBtn);
             if (this.active == 0 || this.count + 1 == this.wrapHolderW) this.prevBtn.addClass('prev-' + this.options.disableBtn);
             if (this.active == 0 && this.count == 1 || this.count + 1 <= this.wrapHolderW) this.nextBtn.addClass('next-' + this.options.disableBtn);
             if (this.active == this.rew) this.nextBtn.addClass('next-' + this.options.disableBtn);
         },
-        installDirections: function(temp) {
+        installDirections: function (temp)
+        {
             this.wrapHolderW = Math.ceil(temp / this.woh);
             if (((this.wrapHolderW - 1) * this.woh + this.woh / 2) > temp) this.wrapHolderW--;
         },
-        fadeElement: function() {
-            if ($.browser.msie && this.options.IE) {
+        fadeElement: function ()
+        {
+            if ($.browser.msie && this.options.IE)
+            {
                 this.list.eq(this.last).css({ opacity: 0 });
                 this.list.removeClass('active').eq(this.active).addClass('active').css({ opacity: 'auto' });
             }
-            else {
+            else
+            {
                 var $img = $("img.topSpotGraphic", this.list.eq(this.active));
-                if ($img.attr("deferredSrc")) {
-                    $img.load($.proxy(function(e) {
+                if ($img.attr("deferredSrc"))
+                {
+                    $img.load($.proxy(function (e)
+                    {
                         this.list.eq(this.last).animate({ opacity: 0 }, { queue: false, duration: this.options.duration });
                         this.list.removeClass('active').eq(this.active).addClass('active').animate({
                             opacity: 1
-                        }, { queue: false, duration: this.options.duration, complete: function() {
+                        }, { queue: false, duration: this.options.duration, complete: function ()
+                        {
                             jQuery(this).css('opacity', 'auto');
                         }
                         });
@@ -321,11 +381,13 @@ function initDrop() {
                     $img.attr("src", $img.attr("deferredSrc"));
                     $img.removeAttr("deferredSrc");
                 }
-                else {
+                else
+                {
                     this.list.eq(this.last).animate({ opacity: 0 }, { queue: false, duration: this.options.duration });
                     this.list.removeClass('active').eq(this.active).addClass('active').animate({
                         opacity: 1
-                    }, { queue: false, duration: this.options.duration, complete: function() {
+                    }, { queue: false, duration: this.options.duration, complete: function ()
+                    {
                         jQuery(this).css('opacity', 'auto');
                     }
                     });
@@ -335,15 +397,18 @@ function initDrop() {
                 }
             }
         },
-        scrollElement: function($this) {
+        scrollElement: function ($this)
+        {
             var startElement = this.active;
             //TODO: cache container width
             var count = parseInt($this.list.parent().css("width")) / this.woh;
             var $lis = $this.list.children();
             var $img;
-            for (var i = startElement, j = startElement + count; i < j; i++) {
+            for (var i = startElement, j = startElement + count; i < j; i++)
+            {
                 $img = $("img.deferred", $lis.eq(i));
-                if ($img.attr("deferredSrc")) {
+                if ($img.attr("deferredSrc"))
+                {
                     $img.attr("src", $img.attr("deferredSrc"));
                     $img.removeAttr("deferredSrc");
                 }
@@ -352,15 +417,19 @@ function initDrop() {
             else eval('$this.list.animate(' + $this.anim + ', $this.options.duration, function(){ $this.flag = true });');
             if ($this.options.switcher) $this.switcher.removeClass('active').eq($this.active / $this.options.slideElement).addClass('active');
         },
-        runTimer: function($this) {
+        runTimer: function ($this)
+        {
             if ($this._t) clearTimeout($this._t);
-            $this._t = setInterval(function() {
+            $this._t = setInterval(function ()
+            {
                 if ($this.options.infinite) $this.flag = false;
                 $this.toPrepare($this, true);
             }, this.options.autoRotation);
         },
-        initEventSwitcher: function($this, el) {
-            el.bind($this.options.event, function() {
+        initEventSwitcher: function ($this, el)
+        {
+            el.bind($this.options.event, function ()
+            {
                 $this.active = $this.switcher.index(jQuery(this)) * $this.options.slideElement;
                 if ($this._t) clearTimeout($this._t);
                 if ($this.options.disableBtn) $this.initDisableBtn();
@@ -370,9 +439,12 @@ function initDrop() {
                 return false;
             });
         },
-        initEvent: function($this, addEventEl, dir) {
-            addEventEl.bind($this.options.event, function() {
-                if ($this.flag) {
+        initEvent: function ($this, addEventEl, dir)
+        {
+            addEventEl.bind($this.options.event, function ()
+            {
+                if ($this.flag)
+                {
                     if ($this.options.infinite) $this.flag = false;
                     if ($this._t) clearTimeout($this._t);
                     $this.toPrepare($this, dir);
@@ -381,16 +453,20 @@ function initDrop() {
                 return false;
             });
         },
-        toPrepare: function($this, side) {
-            if (!$this.options.infinite) {
+        toPrepare: function ($this, side)
+        {
+            if (!$this.options.infinite)
+            {
                 if (($this.active == $this.rew) && $this.options.circle && side) $this.active = -$this.options.slideElement;
                 if (($this.active == 0) && $this.options.circle && !side) $this.active = $this.rew + $this.options.slideElement;
-                for (var i = 0; i < $this.options.slideElement; i++) {
+                for (var i = 0; i < $this.options.slideElement; i++)
+                {
                     if (side) { if ($this.active + 1 <= $this.rew) $this.active++; }
                     else { if ($this.active - 1 >= 0) $this.active--; }
                 };
             }
-            else {
+            else
+            {
                 if ($this.active >= $this.count + $this.count && side) $this.active -= $this.count;
                 if ($this.active <= $this.count - 1 && !side) $this.active += $this.count;
                 eval('$this.list.css(' + $this.anim + ')');
@@ -401,22 +477,26 @@ function initDrop() {
             if (!$this.options.effect) $this.scrollElement($this);
             else $this.fadeElement();
         },
-        stop: function() {
+        stop: function ()
+        {
             if (this._t) clearTimeout(this._t);
         },
-        play: function() {
+        play: function ()
+        {
             if (this._t) clearTimeout(this._t);
             if (this.options.autoRotation) this.runTimer(this);
         }
     }
 } (jQuery));
 
-function initAutoComplete() {
+function initAutoComplete()
+{
     var _startCount = 1;
     var _hClass = 'hactive';
     var _alwaysRefresh = false;
 
-    $('form.search-form').each(function () {
+    $('form.search-form').each(function ()
+    {
         var _form = $(this);
         //var _queryBox = _form[0].qu;
         //var _queryType = _form[0].queryType;
@@ -431,74 +511,89 @@ function initAutoComplete() {
         var _keyboardFocus = false;
         _input.attr('autocomplete', 'off');
 
-		// autocomplete event
+        // autocomplete event
         _form.removeAttr('title');
         _input.keyup(handleKeydown);
-        _input.blur(function () {
+        _input.blur(function ()
+        {
             //if (!_keyboardFocus) {
-            setTimeout(function () {
+            setTimeout(function ()
+            {
                 _ajaxHolder.hide();
             }, 200);
             //}
         })
 
         // keydown event handler
-        function handleKeydown(e) {
+        function handleKeydown(e)
+        {
             // skip
 
             if (!e) e = window.event;
             if (e.keyCode == 27 || e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) return;
 
             // default key
-            if (_input.val().length < _startCount && !_alwaysRefresh) {
+            if (_input.val().length < _startCount && !_alwaysRefresh)
+            {
                 _ajaxHolder.hide();
                 return;
             }
-            if (_input.val().length >= _startCount || _alwaysRefresh) {
-                $.getJSON("/SR/autocomplete.aspx?q=" + escape(_input.val()) + "&qt=" + _selector.val() + "&method=json", function (json) {
+            if (_input.val().length >= _startCount || _alwaysRefresh)
+            {
+                $.getJSON("/SR/autocomplete.aspx?q=" + escape(_input.val()) + "&qt=" + _selector.val() + "&method=json", function (json)
+                {
                     _ajaxList.empty();
                     if (!json)
                         return false;
 
-                    for (var i = 0; i < json.suggestions.length; i++) {
+                    for (var i = 0; i < json.suggestions.length; i++)
+                    {
                         var liItem = jQuery('<li><a href="#">' + json.suggestions[i].phrase + ((json.suggestions[i].storeName) ? '<span> in <b>' + json.suggestions[i].storeName + '</b></span>' : '') + '</a></li>')
-						liItem.appendTo(_ajaxList);
-						liItem.click((function (suggestion) {
-							return function () {
-								var _a = $(this).find('a');
-								_a.find('span').html('');
-								var _text = _a.text();
-								_suggest.val('1');
+                        liItem.appendTo(_ajaxList);
+                        liItem.click((function (suggestion)
+                        {
+                            return function ()
+                            {
+                                var _a = $(this).find('a');
+                                _a.find('span').html('');
+                                var _text = _a.text();
+                                _suggest.val('1');
 
-								_input.attr('value', _text);
-								if (suggestion.queryType != "home")
-									_selector.val(suggestion.queryType);
-								_form.submit();
-								return false;
-							}
-						})(json.suggestions[i]));
-						liItem.data('s', json.suggestions[i].queryType);
+                                _input.attr('value', _text);
+                                if (suggestion.queryType != "home")
+                                    _selector.val(suggestion.queryType);
+                                _form.submit();
+                                return false;
+                            }
+                        })(json.suggestions[i]));
+                        liItem.data('s', json.suggestions[i].queryType);
                     }
                     filterResults();
                     _ajaxList.children().filter(':visible').filter(':odd').addClass('blue');
                 });
-            } else {
+            } else
+            {
                 filterResults();
             }
         }
         // regexp replace
-        RegExp.escape = function (str) {
+        RegExp.escape = function (str)
+        {
             var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g"); // .*+?|()[]{}\
             return str.replace(specials, "\\$&");
         }
-        function highlightWords(str, word) {
+        function highlightWords(str, word)
+        {
             var regex = new RegExp("(" + RegExp.escape(word) + ")", "gi");
             return str.replace(regex, "<strong>$1</strong>");
         }
         // results filtering
-        function filterResults() {
-            if (!_alwaysRefresh) {
-                _ajaxHolder.find('li').each(function () {
+        function filterResults()
+        {
+            if (!_alwaysRefresh)
+            {
+                _ajaxHolder.find('li').each(function ()
+                {
                     var lnk = jQuery(this).find('a');
                     lnk.html(lnk.html().replace('<strong>', '').replace('</strong>', ''));
 
@@ -506,33 +601,39 @@ function initAutoComplete() {
                     else $(this).hide();
 
                     // hover functions
-                    $(this).mouseenter(function () {
+                    $(this).mouseenter(function ()
+                    {
                         _ajaxHolder.find('li').removeClass(_hClass);
                         $(this).addClass(_hClass);
                     });
                 });
-                _ajaxHolder.mouseleave(function () {
+                _ajaxHolder.mouseleave(function ()
+                {
                     _ajaxHolder.find('li').removeClass(_hClass);
                 });
 
                 _ajaxHolder.show();
                 if (!_ajaxHolder.find('li:visible').length) _ajaxHolder.hide();
                 var matchedItems = _ajaxList.find('li:visible');
-                if (matchedItems.length) {
+                if (matchedItems.length)
+                {
                     // make matching text bold
-                    matchedItems.each(function() {
-						//only highlight the text nodes. we don't want to change the '<span>in <b>electronics</b></span>' section
-                        var txt = $(this).find('a').contents().filter(function() { return this.nodeType == 3; });
-						txt.replaceWith(function(){ return highlightWords($(this).text(), _input.val()); });
+                    matchedItems.each(function ()
+                    {
+                        //only highlight the text nodes. we don't want to change the '<span>in <b>electronics</b></span>' section
+                        var txt = $(this).find('a').contents().filter(function () { return this.nodeType == 3; });
+                        txt.replaceWith(function () { return highlightWords($(this).text(), _input.val()); });
                     });
                 }
             }
         }
 
         // create autocomplete list
-        function autoComplete(msg) {
+        function autoComplete(msg)
+        {
             _ajaxHolder.html(msg).show();
-            _ajaxHolder.find('a').click(function () {
+            _ajaxHolder.find('a').click(function ()
+            {
                 _ajaxHolder.hide();
                 //_input.val($(this).text());
                 //_form.submit();
@@ -541,15 +642,18 @@ function initAutoComplete() {
         }
 
         // autocomplete nav
-        function keyboardNav(direction) {
+        function keyboardNav(direction)
+        {
             var _elements = _ajaxHolder.find('li:visible');
             var _currentIndex = _elements.index(_elements.filter('.' + _hClass).eq(0));
             if (_currentIndex < 0) _currentIndex = -1;
             _keyboardFocus = true;
 
-            if (direction) {
+            if (direction)
+            {
                 if (_currentIndex < _elements.length - 1) _currentIndex++;
-            } else {
+            } else
+            {
                 if (_currentIndex > 0) _currentIndex--;
                 else _currentIndex = 0;
             }
@@ -560,16 +664,20 @@ function initAutoComplete() {
         //_form.submit(function() {
         //    if (_keyboardFocus) return false;
         //})
-        _input.keydown(function (e) {
+        _input.keydown(function (e)
+        {
             if (!e) e = window.event;
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13)
+            {
                 var _elements = _ajaxHolder.find('li:visible');
                 var _cIndex = _elements.index(_elements.filter('.' + _hClass).eq(0));
                 _ajaxHolder.hide();
 
-				if (_cIndex < 0) {
+                if (_cIndex < 0)
+                {
                     //use user input val.
-                } else {
+                } else
+                {
                     var _li = _elements.eq(_cIndex);
                     var queryType = _li.data('s');
                     var _a = _li.find('a');
@@ -586,14 +694,17 @@ function initAutoComplete() {
                 _form.submit();
                 return false;
             }
-            if (e.keyCode == 27) {
+            if (e.keyCode == 27)
+            {
                 _ajaxHolder.hide();
                 _keyboardFocus = false;
             }
-            if (e.keyCode == 38) {
+            if (e.keyCode == 38)
+            {
                 keyboardNav(false);
             }
-            if (e.keyCode == 40) {
+            if (e.keyCode == 40)
+            {
                 keyboardNav(true);
             }
         })
@@ -601,11 +712,14 @@ function initAutoComplete() {
 }
 
 /* initTabs */
-function initTabs() {
-    $('ul.tabset').each(function() {
+function initTabs()
+{
+    $('ul.tabset').each(function ()
+    {
         var _list = $(this);
         var _links = _list.find('a.tab');
-        _links.each(function() {
+        _links.each(function ()
+        {
             var _link = $(this);
             var _href = _link.get(0).hash;
             var _tab = $(_href);
@@ -613,8 +727,10 @@ function initTabs() {
             if (_link.hasClass('active')) _tab.show();
             else _tab.hide();
 
-            _link.click(function(e) {
-                _links.filter('.active').each(function() {
+            _link.click(function (e)
+            {
+                _links.filter('.active').each(function ()
+                {
                     $($(this).removeClass('active').get(0).hash).hide();
                 });
                 _link.addClass('active');
@@ -624,8 +740,10 @@ function initTabs() {
         });
     });
 }
-(function($) {
-    $.fn.simplebox = function(options) {
+(function ($)
+{
+    $.fn.simplebox = function (options)
+    {
         return new Simplebox(this, options);
     };
 
@@ -633,7 +751,8 @@ function initTabs() {
 
     Simplebox.prototype = {
         options: {},
-        init: function(context, options) {
+        init: function (context, options)
+        {
             this.options = $.extend({
                 duration: $.browser.msie ? 0 : 300,
                 linkClose: 'a.close, a.btn-close,a.link-close',
@@ -649,22 +768,28 @@ function initTabs() {
             this.initFader();
             this.btnEvent(this, this.btn);
         },
-        btnEvent: function($this, el) {
-            el.click(function() {
-                if ($this.options.path) {
+        btnEvent: function ($this, el)
+        {
+            el.click(function ()
+            {
+                if ($this.options.path)
+                {
                     $this.toPrepare($this.options.path);
-                } else {
+                } else
+                {
                     if ($(this).attr('href')) $this.toPrepare($(this).attr('href'));
                     else $this.toPrepare($(this).attr('title'));
                 }
                 return false;
             });
         },
-        calcWinWidth: function() {
+        calcWinWidth: function ()
+        {
             this.winWidth = $('body').width();
             if ($(this.options.wrapper).width() > this.winWidth) this.winWidth = $(this.options.wrapper).width();
         },
-        toPrepare: function(obj) {
+        toPrepare: function (obj)
+        {
             this.popup = $(obj);
             this.btnClose = this.popup.find(this.options.linkClose);
             this.submitBtn = this.popup.find(this.options.linkPopap);
@@ -695,10 +820,13 @@ function initTabs() {
             this.initCloseEvent(this, this.submitBtn, false);
             this.initCloseEvent(this, this.fader, true);
         },
-        initCloseEvent: function($this, el, flag) {
-            el.click(function() {
+        initCloseEvent: function ($this, el, flag)
+        {
+            el.click(function ()
+            {
                 $('body > div.outtaHere').removeClass('optionsDivVisible').addClass('optionsDivInvisible')
-                $this.popup.fadeOut($this.options.duration, function() {
+                $this.popup.fadeOut($this.options.duration, function ()
+                {
                     $this.popup.css({ left: '-9999px' }).show();
                     if ($.browser.msie) $this.select.css({ visibility: 'visible' });
                     $this.submitBtn.unbind('click');
@@ -706,7 +834,8 @@ function initTabs() {
                     $this.btnClose.unbind('click');
                     $(window).unbind('resize');
                     if (flag) $this.fader.fadeOut($this.options.duration);
-                    else {
+                    else
+                    {
                         if ($this.submitBtn.attr('href')) $this.toPrepare($this.submitBtn.attr('href'));
                         else $this.toPrepare($this.submitBtn.attr('title'));
                     }
@@ -714,11 +843,14 @@ function initTabs() {
                 return false;
             });
         },
-        initAnimate: function($this) {
-            $this.fader.fadeIn($this.options.duration, function() {
+        initAnimate: function ($this)
+        {
+            $this.fader.fadeIn($this.options.duration, function ()
+            {
                 $this.popup.fadeIn($this.options.duration);
             });
-            $(window).resize(function() {
+            $(window).resize(function ()
+            {
                 $this.calcWinWidth();
                 $this.popup.animate({
                     left: $this.winWidth / 2 - $this.popup.outerWidth(true) / 2
@@ -726,9 +858,11 @@ function initTabs() {
                 $this.fader.css({ width: $this.winWidth });
             });
         },
-        initFader: function() {
+        initFader: function ()
+        {
             if ($(this.options.divFader).length > 0) this.fader = $(this.options.divFader);
-            else {
+            else
+            {
                 this.fader = $('<div class="' + this.options.divFader + '"></div>');
                 $('body').append(this.fader);
                 this.fader.css({
@@ -753,19 +887,23 @@ var buyOpera = navigator.userAgent.indexOf("Opera") > -1
 
 //BROWSER DETECT	
 var BrowserDetect = {
-    init: function() {
+    init: function ()
+    {
         this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
         this.version = this.searchVersion(navigator.userAgent)
 			|| this.searchVersion(navigator.appVersion)
 			|| "an unknown version";
         this.OS = this.searchString(this.dataOS) || "an unknown OS";
     },
-    searchString: function(data) {
-        for (var i = 0; i < data.length; i++) {
+    searchString: function (data)
+    {
+        for (var i = 0; i < data.length; i++)
+        {
             var dataString = data[i].string;
             var dataProp = data[i].prop;
             this.versionSearchString = data[i].versionSearch || data[i].identity;
-            if (dataString) {
+            if (dataString)
+            {
                 if (dataString.indexOf(data[i].subString) != -1)
                     return data[i].identity;
             }
@@ -773,7 +911,8 @@ var BrowserDetect = {
                 return data[i].identity;
         }
     },
-    searchVersion: function(dataString) {
+    searchVersion: function (dataString)
+    {
         var index = dataString.indexOf(this.versionSearchString);
         if (index == -1) return;
         return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
@@ -851,10 +990,12 @@ BrowserDetect.init();
 document.cookie = 'BrowserOS=' + BrowserDetect.OS + ';domain=rakuten.com;path=/';
 document.cookie = 'BrowserClient=' + BrowserDetect.browser + ';domain=rakuten.com;path=/';
 
-function formatCustomerName(name, length) {
+function formatCustomerName(name, length)
+{
     var atSymbolIndex = name.indexOf("@");
 
-    if (atSymbolIndex != -1) {
+    if (atSymbolIndex != -1)
+    {
         name = name.substring(0, atSymbolIndex);
     }
 
@@ -866,33 +1007,39 @@ function formatCustomerName(name, length) {
 
 
 
-function getCookieVal(offset) {
+function getCookieVal(offset)
+{
     var endstr = document.cookie.indexOf(";", offset);
     if (endstr == -1)
         endstr = document.cookie.length;
     return unescape(document.cookie.substring(offset, endstr));
 }
 
-function GetCookie(name) {
+function GetCookie(name)
+{
     var arg = name + "=";
     var alen = arg.length;
     var clen = document.cookie.length;
     var i = 0;
-    while (i < clen) {
+    while (i < clen)
+    {
         var j = i + alen;
         if (document.cookie.substring(i, j) == arg)
             return getCookieVal(j);
         i = document.cookie.indexOf(" ", i) + 1;
         if (i == 0) break;
     }
-    if (name == "basket") {
+    if (name == "basket")
+    {
         return "Basket Empty";
-    } else {
+    } else
+    {
         return "null";
     }
 }
 
-function setCookie() {
+function setCookie()
+{
 }
 
 
@@ -900,12 +1047,14 @@ function setCookie() {
 rnd2.today = new Date();
 rnd2.seed = rnd2.today.getTime();
 
-function rnd2() {
+function rnd2()
+{
     rnd2.seed = (rnd2.seed * 9301 + 49297) % 233280;
     return rnd2.seed / (233280.0);
 };
 
-function rand2(number) {
+function rand2(number)
+{
     return Math.ceil(rnd2() * number);
 };
 
@@ -914,11 +1063,13 @@ function rand2(number) {
 
 rnd.today = new Date();
 rnd.seed = rnd.today.getTime();
-function rnd() {
+function rnd()
+{
     rnd.seed = (rnd.seed * 9301 + 49297) % 233280;
     return rnd.seed / (233280.0);
 };
-function rand(number) {
+function rand(number)
+{
     return Math.ceil(rnd() * number);
 };
 
@@ -931,7 +1082,8 @@ var tabitem = 0;
 var tabheader = 0;
 
 // open hidden layer
-function tabopen(id) {
+function tabopen(id)
+{
     // cancel close timer
     tabcancelclose();
 
@@ -947,37 +1099,45 @@ function tabopen(id) {
 }
 
 // close showed layer
-function closetab() {
+function closetab()
+{
     if (tabitem) tabitem.style.visibility = 'hidden';
     if (tabheader) tabheader.className = 'fullTab';
 }
 
 // go close timer
-function tabclose() {
+function tabclose()
+{
     tabclosetimer = window.setTimeout(closetab, timeout);
 }
 
 // cancel close timer
-function tabcancelclose() {
-    if (tabclosetimer) {
+function tabcancelclose()
+{
+    if (tabclosetimer)
+    {
         window.clearTimeout(tabclosetimer);
         tabclosetimer = null;
     }
 }
 
-function checkfields() {
-    if (document.miniform.EmailAddr.value == "") {
+function checkfields()
+{
+    if (document.miniform.EmailAddr.value == "")
+    {
         alert("You must provide your email address!");
         return false;
     }
-    if (document.miniform.EmailAddr.value.indexOf("@") + "" == "-1" || document.miniform.EmailAddr.value.indexOf(".") + "" == "-1") {
+    if (document.miniform.EmailAddr.value.indexOf("@") + "" == "-1" || document.miniform.EmailAddr.value.indexOf(".") + "" == "-1")
+    {
         alert("The email address you entered does not have a valid\n" +
 							"syntax.  Please re-enter the address and try again.");
         return false;
     }
 }
 
-function deleteBasketCookie(days) {
+function deleteBasketCookie(days)
+{
     var date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     var expires = "; expires=" + date.toGMTString();
@@ -987,10 +1147,12 @@ function deleteBasketCookie(days) {
     window.location.href = "https://secure.rakuten.com/AC/loginAccount.aspx?ReturnUrl=myaccount.aspx";
 }
 
-function formatCustomerName(name, length) {
+function formatCustomerName(name, length)
+{
     var atSymbolIndex = name.indexOf("@");
 
-    if (atSymbolIndex != -1) {
+    if (atSymbolIndex != -1)
+    {
         name = name.substring(0, atSymbolIndex);
     }
 
@@ -1006,11 +1168,12 @@ document.onclick = closetab;
 var isActive = false;
 
 if (typeof BUY === "undefined" || !BUY) { var BUY = {}; }
-if (typeof BUY.Cookies === "undefined" || !BUY.Cookies) {
+if (typeof BUY.Cookies === "undefined" || !BUY.Cookies)
+{
     BUY.Cookies = {
-        init: function() { var cookies = document.cookie.split('; '); for (var i = 0; i < cookies.length; i++) { var content = cookies[i].split('='); this[content[0]] = content[1]; } },
-        add: function(name, value, days) { var expires = ""; if (days) { var date = new Date(); date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); var expires = "; expires=" + date.toGMTString(); } document.cookie = name + "=" + value + expires + "; path=/; domain=rakuten.com"; this[name] = value; },
-        remove: function(name) { this.add(name, '', -1); this[name] = undefined; }
+        init: function () { var cookies = document.cookie.split('; '); for (var i = 0; i < cookies.length; i++) { var content = cookies[i].split('='); this[content[0]] = content[1]; } },
+        add: function (name, value, days) { var expires = ""; if (days) { var date = new Date(); date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); var expires = "; expires=" + date.toGMTString(); } document.cookie = name + "=" + value + expires + "; path=/; domain=rakuten.com"; this[name] = value; },
+        remove: function (name) { this.add(name, '', -1); this[name] = undefined; }
     };
     BUY.Cookies.init();
 }
@@ -1050,18 +1213,22 @@ Dual licensed under the MIT and GPL licenses.
 *   >>> Math.uuid(8, 16) // 8 character ID (base=16)
 *   "098F4D35"
 */
-(function() {
+(function ()
+{
     // Private array of chars to use
     var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
-    Math.uuid = function(len, radix) {
+    Math.uuid = function (len, radix)
+    {
         var chars = CHARS, uuid = [];
         radix = radix || chars.length;
 
-        if (len) {
+        if (len)
+        {
             // Compact form
             for (var i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
-        } else {
+        } else
+        {
             // rfc4122, version 4 form
             var r;
 
@@ -1071,8 +1238,10 @@ Dual licensed under the MIT and GPL licenses.
 
             // Fill in random data.  At i==19 set the high bits of clock sequence as
             // per rfc4122, sec. 4.1.5
-            for (var i = 0; i < 36; i++) {
-                if (!uuid[i]) {
+            for (var i = 0; i < 36; i++)
+            {
+                if (!uuid[i])
+                {
                     r = 0 | Math.random() * 16;
                     uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
                 }
@@ -1084,14 +1253,19 @@ Dual licensed under the MIT and GPL licenses.
 
     // A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
     // by minimizing calls to random()
-    Math.uuidFast = function() {
+    Math.uuidFast = function ()
+    {
         var chars = CHARS, uuid = new Array(36), rnd = 0, r;
-        for (var i = 0; i < 36; i++) {
-            if (i == 8 || i == 13 || i == 18 || i == 23) {
+        for (var i = 0; i < 36; i++)
+        {
+            if (i == 8 || i == 13 || i == 18 || i == 23)
+            {
                 uuid[i] = '-';
-            } else if (i == 14) {
+            } else if (i == 14)
+            {
                 uuid[i] = '4';
-            } else {
+            } else
+            {
                 if (rnd <= 0x02) rnd = 0x2000000 + (Math.random() * 0x1000000) | 0;
                 r = rnd & 0xf;
                 rnd = rnd >> 4;
@@ -1102,8 +1276,10 @@ Dual licensed under the MIT and GPL licenses.
     };
 
     // A more compact, but less performant, RFC4122v4 solution:
-    Math.uuidCompact = function() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    Math.uuidCompact = function ()
+    {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c)
+        {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         }).toUpperCase();
@@ -1131,7 +1307,8 @@ function tagThisClickOnGetShortUrl(onSite, url)
 {
     tagThisUrl = url;
     var tagOnSiteUrl = "";
-    switch (onSite) {
+    switch (onSite)
+    {
         case "myspace":
             tagOnSiteUrl = "http://www.myspace.com/index.cfm?fuseaction=postto&t=" + encodeURIComponent(tagThisTitle) + "&c=" + encodeURIComponent(tagThisDescription) + "&u=" + encodeURIComponent(tagThisUrl);
             break;
@@ -1146,7 +1323,8 @@ function tagThisClickOnGetShortUrl(onSite, url)
             break;
         case "twitter":
             var tagThisTwitterTitle = tagThisTitle;
-            if (tagThisTitle.length > 80) {
+            if (tagThisTitle.length > 80)
+            {
                 tagThisTwitterTitle = tagThisTitle.substring(0, 80);
             }
             tagOnSiteUrl = "http://twitter.com/?status=" + encodeURIComponent("Looking at " + tagThisTwitterTitle + " " + tagThisUrl);
@@ -1159,7 +1337,8 @@ function tagThisClickOnGetShortUrl(onSite, url)
             break;
         case "livespaces":
             var tagThisLiveSpacesDescription = tagThisDescription;
-            if (tagThisDescription.length > 200) {
+            if (tagThisDescription.length > 200)
+            {
                 tagThisLiveSpacesDescription = tagThisDescription.substring(0, 200) + "...";
             }
             tagOnSiteUrl = "http://spaces.live.com/BlogIt.aspx?Title=" + encodeURIComponent(tagThisTitle) + "&SourceURL=" + encodeURIComponent(tagThisUrl) + "&description=" + encodeURIComponent(tagThisLiveSpacesDescription);
@@ -1183,7 +1362,7 @@ function tagThisClickOnGetShortUrl(onSite, url)
     return false;
 }
 
-jQuery.fn.center = function()
+jQuery.fn.center = function ()
 {
     this.css("position", "absolute");
     this.css("top", (($(window).height() - this.outerHeight()) / 2) + $(window).scrollTop() + "px");
@@ -1191,29 +1370,37 @@ jQuery.fn.center = function()
     return this;
 }
 
-function omSetVarsCartConv(event, sku, params, buyButtonPositionId) {
-    if (event = "scAdd") {
-        if (buyButtonPositionId == "10" || buyButtonPositionId == "11") {
+function omSetVarsCartConv(event, sku, params, buyButtonPositionId)
+{
+    if (event = "scAdd")
+    {
+        if (buyButtonPositionId == "10" || buyButtonPositionId == "11")
+        {
             $('<script type="text/javascript">dtmc_product_event="scAdd"; dtmc_product_conversion="' + params + '"; dtmc_product_rec_sku="' + sku + '";</script>').appendTo("head");
             $('<script type="text/javascript" src="http://www.rakuten.com/scripts/omniture/om_complete_rak.js"><\/script>').appendTo("head");
-        } else {
+        } else
+        {
             $('<script type="text/javascript">dtmc_product_event="scAdd"; dtmc_product_recommendation="' + params + '"; dtmc_product_rec_sku="' + sku + '";</script>').appendTo("head");
             $('<script type="text/javascript" src="http://www.rakuten.com/scripts/omniture/om_complete_rak.js"><\/script>').appendTo("head");
         }
     }
 }
-function omSetVarsProduct(event, sku, params) {
-    if (event = "scAdd") {
+function omSetVarsProduct(event, sku, params)
+{
+    if (event = "scAdd")
+    {
         $('<script type="text/javascript">dtmc_product_event="scAdd"; dtmc_product_recommendation="' + params + '"; dtmc_product_rec_sku="' + sku + '";</script>').appendTo("head");
         $('<script type="text/javascript" src="http://www.rakuten.com/scripts/omniture/om_complete_rak.js"><\/script>').appendTo("head");
     }
 }
-function omSetConvCookie(tracking) {
+function omSetConvCookie(tracking)
+{
     var exdate = new Date();
     exdate.setTime(exdate.getTime() + (1000 * 60));
     document.cookie = "prConvTrack=" + tracking + ";expires=" + exdate.toGMTString() + ";path=/";
 }
-function prBasketCallback(data) {
+function prBasketCallback(data)
+{
     var obj = eval('(' + data + ')');
     var qsParam = "";
     var basketLink = "http://cart.rakuten.com/CO/Basket/basketView.aspx";
@@ -1226,27 +1413,34 @@ function prBasketCallback(data) {
     myCartItemCount = obj.data.count;
     $('#addItemOverlay').show();
 
-    if (obj.data.listingID && obj.data.listingID != "") {
+    if (obj.data.listingID && obj.data.listingID != "")
+    {
         if (obj.data.listingID.indexOf("|") == -1)
             qsParam = "&lid=" + obj.data.listingID;
         else
             qsParam = "&lid=" + obj.data.listingID.substring(0, obj.data.listingID.indexOf("|"));
     }
-    else if (obj.data.sku && obj.data.sku != "") {
+    else if (obj.data.sku && obj.data.sku != "")
+    {
         if (obj.data.sku.indexOf("|") == -1)
             qsParam = "&sku=" + obj.data.sku;
         else
             qsParam = "&sku=" + obj.data.sku.substring(0, obj.data.sku.indexOf("|"));
     }
+    if (obj.data.wSku && obj.data.wSku != "")
+        qsParam += "&wsku=" + obj.data.wSku;
 
-    if (obj.data.status != "1" || obj.data.msg.length > 0) {
+    if (obj.data.status != "1" || obj.data.msg.length > 0)
+    {
         $('#addToCart').hide();
         $('#addItemMsg').html("<div class=\"pr-additem-containeritem\"><div class=\"close\">X</div><span class=\"message\">" + obj.data.msg + "</span><p /><span><a href=\"javascript:void(0);\" onclick=\"stopParentOnclicks(event); $('#addItemMsg').effect( 'transfer', { to: '#mycart-holder', className: 'ui-effects-transfer' }, 500, function(){hideAddToCartBox(); prAnimateCart(myCartItemCount);} );\"><img src=\"http://images.rakuten.com/buy_assets/v9/product/btn_contShopping.gif\" border=\"0\" alt=\"Continue Shopping\" /></a><a href=\"" + basketLink + "\" onclick=\"stopParentOnclicks(event);\"><img src=\"http://images.rakuten.com/buy_assets/v9/product/btn_checkout.gif\" border=\"0\" alt=\"View Basket and Checkout\" /></a></span></div>");
         $('#addItemMsg').show();
     }
-    else {
+    else
+    {
         var guid = "&banana=" + prGuidGenerator();
-        $.get("/ct/cart/cart.aspx?osri=1" + qsParam + guid, function(addToCartData) {
+        $.get("/ct/cart/cart.aspx?osri=1" + qsParam + guid, function (addToCartData)
+        {
             $('#addItemMsg').hide();
             $('#addToCart').html(addToCartData).center().show();
         });
@@ -1254,40 +1448,58 @@ function prBasketCallback(data) {
     if (obj.data.count > 0)
         $('#headerCart').html("<a href=\"" + basketLink + "\" class=\"cart\"> <span class=\"itemNumber\">(" + obj.data.count + ")</span></a>");
 }
-function prGuidGenerator() {
-    var S4 = function() {
+function prGuidGenerator()
+{
+    var S4 = function ()
+    {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
-function prShowAddToCartSpinner() {
+function prShowAddToCartSpinner()
+{
     $('#addItemMsg').center().html('<img src="http://images.rakuten.com/buy_assets/search/ajax-loader.gif" style="margin-left: 184px; margin-top: 59px; alt="Loading" />');
     $('#addItemOverlay').show();
     $('#addItemMsg').show();
 }
-function hideAddToCartBox() {
+function hideAddToCartBox()
+{
     $('#addItemOverlay').hide();
     $('#addItemMsg').hide();
     $('#addToCart').hide();
 }
-function prAnimateCart(count) {
-    if (count > 0) {
+function prAnimateCart(count)
+{
+    if (count > 0)
+    {
         $('#mycart-holder').removeClass().addClass("cart-on");
         $('#mycart-items').html(" " + count + " item(s)");
         $('#mycart-items').effect("pulsate", 500);
     }
 }
-function stopParentOnclicks(event) {
+function stopParentOnclicks(event)
+{
     if (event.stopPropagation)
         event.stopPropagation();
     //for pre ie9
     if (event.cancelBubble != null)
         event.cancelBubble = true;
 }
-function AddItemToCart(qsParams, position) {
-    var addItemLink = "http://cart.rakuten.com/CO/";
+//required name specific function for square trade to add warranty
+function onWarrantySelect(productID, warrantyPrice, warrantyDescription)
+{
+    if (productID)
+        $("#mainCartLink").data("warrantySku", productID);
+    else
+        $("#mainCartLink").removeData("warrantySku");
+}
+function AddItemToCart(qsParams, position)
+{
+    var addItemLink = "http://cart.rakuten.com/CO/basket/cartservice.aspx?";
     var quantity = "1";
     var regex = new RegExp("^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$");
+    var warrantySku = $("#mainCartLink").data("warrantySku");
+    var qs = "";
 
     if (position == "1" && $("#qty").length > 0)
     {
@@ -1299,13 +1511,18 @@ function AddItemToCart(qsParams, position) {
         if (regex.test($("input.fp-get-qty").val()))
             quantity = $("input.fp-get-qty").val();
     }
-    
-    if (location.host.indexOf("beta.rakuten.com") > -1)
-        addItemLink = "http://cart.beta.rakuten.com/CO/";
-    else if (location.host.indexOf("test.rakuten.com") > -1)
-        addItemLink = "http://test.cart.rakuten.com/CO/";
 
-    $(window).resize(function() {
+    if (location.host.indexOf("beta.rakuten.com") > -1)
+        addItemLink = "http://cart.beta.rakuten.com/CO/basket/cartservice.aspx?";
+    else if (location.host.indexOf("test.rakuten.com") > -1)
+        addItemLink = "http://test.cart.rakuten.com/CO/basket/cartservice.aspx?";
+
+    qs = 'BtnPosID=' + position + "&" + qsParams + "|" + quantity;
+    if (warrantySku && warrantySku != "")
+        qs += "&warrantySku=" + warrantySku + "|" + $("#mainCartLink").data("sku");
+
+    $(window).resize(function ()
+    {
         //don't try to center unless it's visible
         $('#addItemMsg').filter(":visible").center();
         $('#addToCart').filter(":visible").center();
@@ -1314,7 +1531,7 @@ function AddItemToCart(qsParams, position) {
     prShowAddToCartSpinner();
 
     $.ajax({
-        url: addItemLink + 'basket/cartservice.aspx?BtnPosID=' + position + "&" + qsParams + "|" + quantity,
+        url: addItemLink + qs,
         dataType: 'jsonp',
         jsonpCallback: 'prBasketCallback'
     });
@@ -1322,17 +1539,17 @@ function AddItemToCart(qsParams, position) {
     $("#divCartItemsContainer").hide();
 };
 
-(function($)
+(function ($)
 {
     //IE6 hack to hide any selects that overlap dynamic content
-    $.ie6HideShowSelect = function(visibility)
+    $.ie6HideShowSelect = function (visibility)
     {
         if ($.browser.msie && $.browser.version == '6.0')
             $('select').css({ 'visibility': visibility });
     };
 
     //menu plugin from play.com
-    $.fn.mainNav = function(options)
+    $.fn.mainNav = function (options)
     {
         //set default options
         var opts = {
@@ -1359,7 +1576,7 @@ function AddItemToCart(qsParams, position) {
         //objective is to stop the MDD from displaying outside the page widths
         theBoundary = parseInt($(opts.navID).width());
 
-        $('.' + opts.classPrefix + 'section-container').each(function()
+        $('.' + opts.classPrefix + 'section-container').each(function ()
         {
             var me = $(this),
             sectionBlock = me.find('.' + opts.classPrefix + 'section-block');
@@ -1379,13 +1596,13 @@ function AddItemToCart(qsParams, position) {
             //in each section and applying the last class to it for styling purposes.
             //Then find the largest column height and apply that height to all sections
             //in this container (MDD)
-            sectionBlock.each(function()
+            sectionBlock.each(function ()
             {
                 var col = $(this).find('.nav-col'),
 		        cWidth = 0;
 
                 col.last().addClass('last');
-                col.each(function()
+                col.each(function ()
                 {
                     cWidth += parseInt($(this).outerWidth(true));
                 });
@@ -1429,7 +1646,7 @@ function AddItemToCart(qsParams, position) {
         });
 
         //Hover states (Bloddy stupid method!!!!)
-        $('.' + opts.classPrefix + 'parent').each(function()
+        $('.' + opts.classPrefix + 'parent').each(function ()
         {
             var me = $(this),
 		    tabDeactivationTimer = 0,
@@ -1446,7 +1663,7 @@ function AddItemToCart(qsParams, position) {
             }
 
             me.hover(
-	        function()
+	        function ()
 	        {
 
 	            if (typeof theSelectedTab != 'undefined')//If there's a selected tab
@@ -1457,7 +1674,7 @@ function AddItemToCart(qsParams, position) {
 	                clearTimeout(tabDeactivationTimer);
 
 	            //Fade in MDD after predefined delay... I know!!
-	            tabActivationTimer = window.setTimeout(function()
+	            tabActivationTimer = window.setTimeout(function ()
 	            {
 	                me.find('.' + opts.classPrefix + 'section-container').fadeIn(opts.fadeSpeed);
 	            }, opts.showDelay);
@@ -1466,14 +1683,14 @@ function AddItemToCart(qsParams, position) {
 	            //IE6 hack to hide select for z-index fix
 	            $.ie6HideShowSelect('hidden');
 
-	        }, function()
+	        }, function ()
 	        {
 	            if (typeof theSelectedTab != 'undefined')
 	                $('.' + theSelectedTab).addClass('selected');
 	            clearTimeout(tabActivationTimer);
 
 	            //Hide MDD after predefined delay... tut!!!
-	            tabDeactivationTimer = window.setTimeout(function()
+	            tabDeactivationTimer = window.setTimeout(function ()
 	            {
 	                me.find('.' + opts.classPrefix + 'section-container').hide();
 	            }, opts.hideDelay);
@@ -1487,17 +1704,17 @@ function AddItemToCart(qsParams, position) {
     }
 })(jQuery);
 
-(function($)
+(function ($)
 {
     //IE6 hack to hide any selects that overlap dynamic content
-    $.ie6HideShowSelect = function(visibility)
+    $.ie6HideShowSelect = function (visibility)
     {
         if ($.browser.msie && $.browser.version == '6.0')
             $('select').css({ 'visibility': visibility });
     };
 
     //menu plugin from play.com
-    $.fn.mainNav2 = function(options)
+    $.fn.mainNav2 = function (options)
     {
         //set default options
         var opts = {
@@ -1525,7 +1742,7 @@ function AddItemToCart(qsParams, position) {
         //objective is to stop the MDD from displaying outside the page widths
         theBoundary = parseInt($(opts.navID).width());
 
-        $('.' + opts.classPrefix + 'section-container').each(function()
+        $('.' + opts.classPrefix + 'section-container').each(function ()
         {
             var me = $(this),
             sectionBlock = me.find('.' + opts.classPrefix + 'section-block');
@@ -1545,7 +1762,7 @@ function AddItemToCart(qsParams, position) {
             //in each section and applying the last class to it for styling purposes.
             //Then find the largest column height and apply that height to all sections
             //in this container (MDD)
-            sectionBlock.each(function()
+            sectionBlock.each(function ()
             {
                 var col = $(this).find('.nav-col');
                 col.last().addClass('last');
@@ -1599,7 +1816,7 @@ function AddItemToCart(qsParams, position) {
         });
 
         //Hover states (Bloddy stupid method!!!!)
-        $('.' + opts.classPrefix + 'parent').each(function()
+        $('.' + opts.classPrefix + 'parent').each(function ()
         {
             var me = $(this),
 		    tabDeactivationTimer = 0,
@@ -1616,7 +1833,7 @@ function AddItemToCart(qsParams, position) {
             }
 
             me.hover(
-	        function()
+	        function ()
 	        {
 
 	            if (typeof theSelectedTab != 'undefined')//If there's a selected tab
@@ -1627,7 +1844,7 @@ function AddItemToCart(qsParams, position) {
 	                clearTimeout(tabDeactivationTimer);
 
 	            //Fade in MDD after predefined delay... I know!!
-	            tabActivationTimer = window.setTimeout(function()
+	            tabActivationTimer = window.setTimeout(function ()
 	            {
 	                me.find('.' + opts.classPrefix + 'section-container').fadeIn(opts.fadeSpeed);
 	                if (me.find('.' + opts.classPrefix + 'section-container.box').html() == "")
@@ -1638,7 +1855,7 @@ function AddItemToCart(qsParams, position) {
 	                        addy = '/co/Menu/MenuAjax.aspx?loc=' + loc + '&mode=' + opts.mode;
 	                    else
 	                        addy = '/ct/Menu/MenuAjax.aspx?loc=' + loc + '&mode=' + opts.mode;
-	                    $.get(addy, function(data)
+	                    $.get(addy, function (data)
 	                    {
 	                        me.find('.' + opts.classPrefix + 'section-container.box').html(data);
 
@@ -1686,7 +1903,7 @@ function AddItemToCart(qsParams, position) {
 	                            }
 	                        }
 
-	                        sectionBlock.each(function()
+	                        sectionBlock.each(function ()
 	                        {
 	                            var col = $(this).find('.nav-col');
 	                            col.last().addClass('last');
@@ -1717,7 +1934,7 @@ function AddItemToCart(qsParams, position) {
 	                    //it get's confused and the height doesn't get set right, so just always set the height
 	                    sectionBlock = me.find('.' + opts.classPrefix + 'section-container' + ' .' + opts.classPrefix + 'section-block');
 	                    var theLargestHeight = 0;
-	                    sectionBlock.each(function()
+	                    sectionBlock.each(function ()
 	                    {
 	                        var thisHeight = $(this).height();
 	                        if (thisHeight < 1)
@@ -1737,14 +1954,14 @@ function AddItemToCart(qsParams, position) {
 	            //IE6 hack to hide select for z-index fix
 	            $.ie6HideShowSelect('hidden');
 
-	        }, function()
+	        }, function ()
 	        {
 	            if (typeof theSelectedTab != 'undefined')
 	                $('.' + theSelectedTab).addClass('selected');
 	            clearTimeout(tabActivationTimer);
 
 	            //Hide MDD after predefined delay... tut!!!
-	            tabDeactivationTimer = window.setTimeout(function()
+	            tabDeactivationTimer = window.setTimeout(function ()
 	            {
 	                me.find('.' + opts.classPrefix + 'section-container').hide();
 	            }, opts.hideDelay);
@@ -1799,28 +2016,34 @@ function checkfields2()
 
 //From ct FeaturedProduct
 //the function is a little bit confusing to use, but it's better than having one function for each popup
-function togglePopup(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop, p_strParams, p_blnShowPopup) {
+function togglePopup(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop, p_strParams, p_blnShowPopup)
+{
     if (p_blnShowPopup == null)
         p_blnShowPopup = true;
 
     hidePopups(p_strDivID);
-    if ($("#" + p_strDivID).length < 1) {
-        $.get('/PR/PopupMessageAjax.aspx?' + p_strParams, function(data) {
+    if ($("#" + p_strDivID).length < 1)
+    {
+        $.get('/PR/PopupMessageAjax.aspx?' + p_strParams, function (data)
+        {
             $("#divPopupsGoHere").append(data);
 
-            if (p_blnShowPopup) {
+            if (p_blnShowPopup)
+            {
                 setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop);
                 $("#" + p_strDivID).show();
             }
         });
     }
-    else if (p_blnShowPopup) {
+    else if (p_blnShowPopup)
+    {
         setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop);
         $("#" + p_strDivID).toggle();
     }
 }
 
-function setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop) {
+function setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLeftOffset, p_intTopOffset, p_strSetLeft, p_strSetTop)
+{
     var objOffSetMain = null;
     var objLeftOffSetElement = $("#" + p_strLeftElementID).offset();
     var objTopOffSetElement = null;
@@ -1834,7 +2057,8 @@ function setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLef
     else
         objOffSetMain = $("div:first").offset();
 
-    if (p_strSetTop == "" || p_strSetTop == null) {
+    if (p_strSetTop == "" || p_strSetTop == null)
+    {
         if (p_strTopElementID)
             objTopOffSetElement = $("#" + p_strTopElementID).offset();
 
@@ -1855,11 +2079,14 @@ function setPosition(p_strDivID, p_strLeftElementID, p_strTopElementID, p_intLef
 }
 
 //finds left and top position of an element
-function findPos(obj) {
+function findPos(obj)
+{
     var curleft = curtop = 0;
 
-    if (obj.offsetParent) {
-        do {
+    if (obj.offsetParent)
+    {
+        do
+        {
             curleft += obj.offsetLeft;
             curtop += obj.offsetTop;
         } while (obj = obj.offsetParent);
@@ -1868,7 +2095,8 @@ function findPos(obj) {
     return [curleft, curtop];
 }
 
-function hidePopups(p_strExcludeID) {
+function hidePopups(p_strExcludeID)
+{
     if (p_strExcludeID != "divAlsoAvailablePopup" && $("#divAlsoAvailablePopup").filter(":visible").length != 0)
         $("body").unbind("click");
 
@@ -1878,12 +2106,15 @@ function hidePopups(p_strExcludeID) {
         $("div.popup-info-box").hide();
 }
 
-function addPopupMouseOut(p_strElementID) {
+function addPopupMouseOut(p_strElementID)
+{
     $("#" + p_strElementID).unbind("mouseover").unbind("mouseout").removeAttr("onmouseover").removeAttr("onmouseout");
-    $("#" + p_strElementID).bind("mouseout", function(e) {
+    $("#" + p_strElementID).bind("mouseout", function (e)
+    {
         if (!e) var e = window.event;
         var reltg = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-        while (reltg && reltg.tagName != 'BODY') {
+        while (reltg && reltg.tagName != 'BODY')
+        {
             if (reltg.id == this.id) { return; }
             reltg = reltg.parentNode;
         }
@@ -1892,21 +2123,27 @@ function addPopupMouseOut(p_strElementID) {
     });
 }
 
-function setAlsoAvailable(qsSku) {
-    if ($("#divAlsoAvailablePopup").filter(":visible").length == 0) {
+function setAlsoAvailable(qsSku)
+{
+    if ($("#divAlsoAvailablePopup").filter(":visible").length == 0)
+    {
         togglePopup('divAlsoAvailablePopup', 'anchorAlsoAvailable', null, -100, 15, null, null, 'pw=ThreeHundred&pn=AlsoAvailable&sku=' + qsSku, true);
-        var temp = window.setTimeout(function() { addAlsoAvailableFocusCheck(); }, 100);
+        var temp = window.setTimeout(function () { addAlsoAvailableFocusCheck(); }, 100);
     }
 }
 
-function addAlsoAvailableFocusCheck() {
-    $("body").unbind("click").bind("click", function(e) {
-        if (e) {
+function addAlsoAvailableFocusCheck()
+{
+    $("body").unbind("click").bind("click", function (e)
+    {
+        if (e)
+        {
             var targ;
             if (e.target) targ = e.target;
             else if (e.srcElement) targ = e.srcElement;
             if (targ.nodeType == 3) targ = targ.parentNode;
-            if ($(targ).closest("#divAlsoAvailablePopup").length == 0) {
+            if ($(targ).closest("#divAlsoAvailablePopup").length == 0)
+            {
                 $('#divAlsoAvailablePopup').hide();
                 $("body").unbind("click");
             }
@@ -1914,19 +2151,23 @@ function addAlsoAvailableFocusCheck() {
     });
 }
 
-function koboProductClick(url) {
+function koboProductClick(url)
+{
     hidePopups(null);
     var prKoboCookie = GetCookie("prShowKoboDesc");
     if (prKoboCookie == "0")
         window.location = url + "?utm_source=buydotcom&utm_medium=web&utm_campaign=retailer";
-    else {
+    else
+    {
         togglePopup('divKoboEditionPopup', 'whatsThisKobo', null, -250, -150, null, null, 'pw=SevenHundred&pn=KoboEditionDesc&kpl=' + url, true);
         $('#spanKoboPopupButtons').show();
     }
 }
 
-function koboProductClickContinue(url) {
-    if ($("#chkKoboShowDesc").is(':checked')) {
+function koboProductClickContinue(url)
+{
+    if ($("#chkKoboShowDesc").is(':checked'))
+    {
         var prKoboCookie = GetCookie("prShowKoboDesc");
         var exdate = new Date();
         exdate.setTime(exdate.getTime() + (1000 * 60 * 60 * 24 * 30));
@@ -1936,7 +2177,8 @@ function koboProductClickContinue(url) {
     window.location = url + "?utm_source=buydotcom&utm_medium=web&utm_campaign=retailer";
 }
 
-function disableEnterKey(e) {
+function disableEnterKey(e)
+{
     var key;
     if (window.event)
         key = window.event.keyCode; //IE

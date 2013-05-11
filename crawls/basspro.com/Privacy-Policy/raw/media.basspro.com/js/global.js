@@ -646,6 +646,9 @@ $(document).ready(function(){
 });
 
 
-
+// ----------
+// Rotation for Summer Kickoff Sale - Awkward Showcase plugin - remove after 5/20/13
+// ----------
+document.write("<script type='text/javascript' src='//media.basspro.com/2013/"+"summer-kick-7259/js/jquery.aw-showcase.js'></script>");
 
 

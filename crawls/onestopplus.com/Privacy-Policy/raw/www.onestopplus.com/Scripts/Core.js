@@ -13,6 +13,11 @@ function SelectCurrentMenuItem(id){
     $(id).addClass('selected');
 }
 
+function GetCookieCustomerID() {
+    if (GetSubCookieValue('User', 'Indy.CustomerId') != null)
+        return decode(GetSubCookieValue('User', 'Indy.CustomerId'));
+}
+
 /** Header Menu Tab Selection ************************************************************/
 function SelectCurrentHeaderMenuItem(){
     // Get Current 

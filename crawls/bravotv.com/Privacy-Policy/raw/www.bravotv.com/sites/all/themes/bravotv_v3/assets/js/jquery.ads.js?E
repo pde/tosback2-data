@@ -1,0 +1,42 @@
+jQuery.fn.adManager = function(adPage,iframe_id) {
+	var ads = this;
+	this.adScripts = [];
+	this.refreshedAds = [];
+	this.adPage = adPage;
+	this.iframe_id=iframe_id
+	
+	this.each(
+		function() {
+			var currentAd = jQuery(this);
+			ads.adScripts[currentAd.attr('id')] = jQuery(currentAd.children('script:first'));
+		}
+	);
+		
+	this.refreshAll = function() {
+		this.each(
+			function() {
+				ads.refreshAd(jQuery(this));
+			}
+		);
+	}
+	
+	this.refreshAd = function(ad, adPage) {
+		ad = jQuery(ad);
+		
+		if(!adPage) {
+			adPage = this.adPage;
+		}
+		
+		if(jQuery.inArray(ad.attr('id'), this.refreshedAds) == -1) {
+			var adScript = this.adScripts[ad.attr('id')];
+			ad.children().remove();
+			ad.html('<iframe class="adframe" id="'+this.iframe_id+'"scrolling="no" frameborder="0" src="'+adPage+'&adsrc='+adScript.attr('src')+'"></iframe>'); 
+		
+			this.refreshedAds.push(ad.attr('id'));
+		} else {
+			ad.children('iframe').attr('src', ad.children('iframe').attr('src'));
+		}
+	}
+	
+	return this;
+}

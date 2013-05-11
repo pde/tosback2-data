@@ -3,21 +3,25 @@ Event.observe(window, "load", function() {
     
         var miniCartSubmit = window.miniCartSubmit = function(formObject, redirect) {
             var callback = null
-            if (arguments.length > 2) {
+            if (arguments.length > 3) {
                 callback = arguments[2];
+                clearOmni = arguments[3];
             }
-            $.getJSON('/cartHandler/ajax.jsp', $(formObject).serialize() + '&async=true&no_cache=' + new Date().getTime(), function (json) {
+            
+            $.getJSON('/cartHandler/ajax.jsp?clearOmni='+clearOmni, $(formObject).serialize() + '&async=true&no_cache=' + new Date().getTime(), function (json) {
                 if (json.rdir) {
                     window.location.href = json.rdir;
                 } else {
                     updateCartItemDisplay(json.itemCount);
                     if (callback) {
-                        callback(formObject);
+                        if(!callback(formObject)){
+                            return false;
+                        }
                     }
                     if (redirect) {
                         window.location.href = '/cart/index.jsp' + '?ias2VwCartSkusAdded=' + json.skusAdded;
                     } else {
-                    	window.minicartJson = json;
+                        window.minicartJson = json;
                         showCart(true);
                     }
                 }

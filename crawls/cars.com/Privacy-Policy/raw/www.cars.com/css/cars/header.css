@@ -338,7 +338,11 @@ body#storyPage { width: auto; }
 /*** BEGIN Consumer Profile Header ***/
 .profile-bar {
   font-family: Arial, Helvetica, sans-serif!important;
-  font-size: 14px!important;
+  font-weight: normal;
+  background-color: #3A4951;
+  line-height: 30px;
+  height: 30px;
+  text-align: right;
 }
 .profile-bar .row {
   padding: 0;
@@ -351,18 +355,8 @@ body#storyPage { width: auto; }
   position: relative;
 }
 
-.profile-bar {
-  background-color: #3A4951;
-  color: #95A1AA;
-  font-weight: normal;
-  line-height: 30px;
-  height: 30px;
-  text-align: right;
-}
-
 .profile-bar ul {
   font-family: Arial, Helvetica, sans-serif!important;
-  font-size: 14px!important;
   margin: 0 16px 0 0;
 }
 .profile-bar li {
@@ -394,17 +388,14 @@ body#storyPage { width: auto; }
 .profile-bar ul.dropdown > li > ul.active {
   display: block;
 }
-.profile-bar ul.dropdown > li > ul > li{
-  
-}
 .profile-bar li,
 .profile-bar li > a,
-.profile-bar span {
+.profile-bar li > span {
+  font-size: 12px!important;
   color: #f5fdff;
   text-decoration: none;
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif!important;
-  font-size: 14px!important;
 }
 .profile-bar li > a:hover {
   color: #f5fdff;
@@ -455,12 +446,12 @@ body#storyPage { width: auto; }
   display: block;
   width: 150px;
 }
-.profile-bar li > a.has-sub-menu {
-  padding-right: 10px;
-  background: url("http://www.cars.com/images/core/consumer-profile-header-caret-down.png") no-repeat center right;
+.profile-bar li.user-dropdown a {
+    padding-right: 20px;
+    background: url('http://www.cars.com/images/core/dropdown-menu-caret-down.png') center right no-repeat;
 }
-.profile-bar li > a.has-sub-menu.active {
-  background: url("http://www.cars.com/images/core/consumer-profile-header-caret-up.png") no-repeat center right;
+.profile-bar li.user-dropdown a.active {
+    background: url('http://www.cars.com/images/core/dropdown-menu-caret-up.png') center right no-repeat;
 }
 .profile-bar li > ul > li > a > span {
   color: black;
@@ -469,7 +460,7 @@ body#storyPage { width: auto; }
 .profile-bar li > ul > li > a:hover {
   color: #0d5b99;
 }
-.profile-bar li > ul > li > span.no-saved-favorites-message {
+.profile-bar li.anonymous-user-favorites > ul > li {
   width: 150px;
   padding: 10px;
   margin: 0;
@@ -479,39 +470,8 @@ body#storyPage { width: auto; }
 /*** END Consumer Profile Header ***/
 
 
-/*** BEGIN Front Door Modal ***/
-.frontdoor-modal-container {
-  display: none; /* must be initially hidden */
-  position : fixed;
-  top: 50px;
-  width: 100%;
-  z-index: 9999999;
-}
-.frontdoor-modal-container a {
-  text-decoration: none;
-  color: #0b61a8;;
-}
-.frontdoor-modal-container a:link {
-  text-decoration: none;
-  color: #0b61a8;;
-}
-.frontdoor-modal-container a:visited,
-.frontdoor-modal-container a:hover, 
-.frontdoor-modal-container a:active {
-  color: #0c92ff;
-  text-decoration: none;
-}
-.frontdoor-modal-mesh {
-  position : fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.5;
-  background-color: #000;
-  filter: alpha(opacity=50);
-}
-.frontdoor-modal {
+/*** BEGIN user profile modals ***/
+#user-profile-modal {
   margin: 0 auto;  
   width: 480px!important;
   z-index: 9999999;
@@ -527,9 +487,19 @@ body#storyPage { width: auto; }
   padding: 16px;
   position: relative;
   font-size: 14px;
+  text-align:left;
   font-family: Arial, Helvetica, sans-serif;
+  display: none;
+  color: #333!important;
 }
-.frontdoor-modal .close {
+#user-profile-modal .loading-image {
+    width: 49px;
+    height: 49px;
+    margin: 20px auto;
+    background: url("http://www.cars.com/images/core/loading.gif") center center no-repeat;
+    display: block;
+}
+#user-profile-modal .close {
   background: url(http://www.cars.com/images/core/close-small.png) no-repeat;
   position: absolute;
   right: 16px;
@@ -539,14 +509,28 @@ body#storyPage { width: auto; }
   width: 16px;
   z-index: 10;
 }
-.frontdoor-modal-head,
-.frontdoor-modal-body,
-.frontdoor-modal-footer {
+#user-profile-modal a {
+  text-decoration: none;
+  color: #0b61a8;;
+}
+#user-profile-modal a:link {
+  text-decoration: none;
+  color: #0b61a8;;
+}
+#user-profile-modal a:visited,
+#user-profile-modal a:hover, 
+#user-profile-modal a:active {
+  color: #0c92ff;
+  text-decoration: none;
+}
+#user-profile-modal legend {
+  border: 0px solid #e1e1e1;
+  margin: 0;
   clear: both;
 }
-.frontdoor-modal fieldset,
-.frontdoor-modal form,
-.frontdoor-modal span {
+#user-profile-modal fieldset,
+#user-profile-modal form,
+#user-profile-modal span {
   border: 0;
   font-size: 100%;
   font: inherit;
@@ -554,40 +538,53 @@ body#storyPage { width: auto; }
   margin: 0;
   padding: 0;
 }
-.frontdoor-modal .helper-text {
-  padding: 0;
-  display: block;
-}
-.frontdoor-modal hr {
+#user-profile-modal hr {
   border: 0;
   border-bottom: 1px solid #e1e1e1;
   margin: 20px 0;
   clear: both;
 }
-div.col12 {
-  width: 192px;
+#user-profile-modal div.col5 {
+  float: left;
+  width: 80px;
+  margin-left: 0;
 }
-div.col1, div.col2, div.col3, div.col4, div.col5, div.col6, div.col7, div.col8, div.col9, div.col10, div.col11, div.col12, div.col13, div.col14, div.col15, div.col16, div.col17, div.col18, div.col19, div.col20, div.col21, div.col22, div.col23, div.col24, div.col25, div.col26, div.col27, div.col28, div.col29, div.col30, div.col31, div.col32, div.col33, div.col34, div.col35, div.col36, div.col37, div.col38, div.col39, div.col40, div.col41, div.col42, div.col43, div.col44, div.col45, div.col46, div.col47, div.col48, div.col49, div.col50, div.col51, div.col52, div.col53, div.col54, div.col55, div.col56, div.col57, div.col58, div.col59, div.col60, div.col61 {
+#user-profile-modal div.col6 {
+  float: left;
+  width: 96px;
+  margin-left: 0;
+}
+#user-profile-modal div.col7 {
+  float: left;
+  width: 112px;
+  margin-left: 0;
+}
+#user-profile-modal div.col12 {
+  width: 192px;
   float: left;
   margin-left: 16px;
 }
-div.col7 {
-  width: 112px;
+#user-profile-modal div.col18 {
+  float: left;
+  width: 288px;
+  margin-left: 16px;
 }
-div.col1:first-child, div.col2:first-child, div.col3:first-child, div.col4:first-child, div.col5:first-child, div.col6:first-child, div.col7:first-child, div.col8:first-child, div.col9:first-child, div.col10:first-child, div.col11:first-child, div.col12:first-child, div.col13:first-child, div.col14:first-child, div.col15:first-child, div.col16:first-child, div.col17:first-child, div.col18:first-child, div.col19:first-child, div.col20:first-child, div.col21:first-child, div.col22:first-child, div.col23:first-child, div.col24:first-child, div.col25:first-child, div.col26:first-child, div.col27:first-child, div.col28:first-child, div.col29:first-child, div.col30:first-child, div.col31:first-child, div.col32:first-child, div.col33:first-child, div.col34:first-child, div.col35:first-child, div.col36:first-child, div.col37:first-child, div.col38:first-child, div.col39:first-child, div.col40:first-child, div.col41:first-child, div.col42:first-child, div.col43:first-child, div.col44:first-child, div.col45:first-child, div.col46:first-child, div.col47:first-child, div.col48:first-child, div.col49:first-child, div.col50:first-child, div.col51:first-child, div.col52:first-child, div.col53:first-child, div.col54:first-child, div.col55:first-child, div.col56:first-child, div.col57:first-child, div.col58:first-child, div.col59:first-child, div.col60:first-child, div.col61:first-child {
-  margin-left: 0;
+#user-profile-modal div.col22 {
+  width: 352px;
+  float: left;
+  margin-left: 16px;
 }
-.frontdoor-modal input[type=button].secondary,
-.frontdoor-modal input[type=submit].secondary,
-.frontdoor-modal a.button.secondary {
+#user-profile-modal input[type=button].secondary,
+#user-profile-modal input[type=submit].secondary,
+#user-profile-modal a.button.secondary {
   color: #5C707C;
   background: url(http://www.cars.com/images/core/secondary-button.png) repeat-x 0 0 #EEF1F3;
   border: 1px solid #e1e1e1;
 }
-.frontdoor-modal input[type=button], 
-.frontdoor-modal input[type=submit], 
-.frontdoor-modal a.button, 
-.frontdoor-modal a.button:hover {
+#user-profile-modal input[type=button], 
+#user-profile-modal input[type=submit], 
+#user-profile-modal a.button, 
+#user-profile-modal a.button:hover {
 -moz-appearance: none;
 -webkit-appearance: none;
 appearance: none;
@@ -603,12 +600,12 @@ appearance: none;
   display: inline-block;
   line-height: normal;
 }
-.frontdoor-modal textarea,
-.frontdoor-modal input[type='text'],
-.frontdoor-modal input[type='password'],
-.frontdoor-modal input[type='number'],
-.frontdoor-modal input[type='email'],
-.frontdoor-modal input[type='tel'] {
+#user-profile-modal textarea,
+#user-profile-modal input[type='text'],
+#user-profile-modal input[type='password'],
+#user-profile-modal input[type='number'],
+#user-profile-modal input[type='email'],
+#user-profile-modal input[type='tel'] {
   border-radius: 5px;
   color: #333;
   font-size: 14px;
@@ -619,45 +616,88 @@ appearance: none;
   box-shadow: inset 0 5px 5px #f5f5f5;
   margin: 0 0 10px 0;
   font-family: Arial, Helvetica, sans-serif;
-  width: 50%;
+  width: 96%;
 }
-.frontdoor-modal label {
+#user-profile-modal textarea.error,
+#user-profile-modal input[type='text'].error,
+#user-profile-modal input[type='password'].error,
+#user-profile-modal input[type='number'].error,
+#user-profile-modal input[type='email'].error,
+#user-profile-modal input[type='tel'].error {
+  border: 1px solid #cc1100;
+  background-image: none;
+}
+#user-profile-modal label {
   font-weight: bold;
   font-size: 14px;
   display: block;
   padding: 0 0 5px 0;
   line-height: 20px;
 }
-.frontdoor-modal h1{
-  font-size: 36px;
+#user-profile-modal h1{
   line-height: 38px;
-  height: 48px;
-  font-family: Effra, 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, sans-serif;
+  height: 38px;
+  font-size: 36px;
+  font-family: Effra, 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, sans-serif !important;
   color: #7b2b84;
-  font: normal 36px Effra, 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, sans-serif;
 }
-/*** END Front Door Modal ***/
 
-/*** BEGIN login form, signup form, and password reset forms ***/
-.login-form .row,
-.signup-form .row {
-  margin: 5px 0;
-  clear: both;
+#user-profile-modal .row {
+  margin: 0;
   border-bottom-width: 0;
   padding: 0;
 }
-.login-form .helper-text,
-.signup-form .helper-text {
-  font-size: 12px;
+#user-profile-modal .row-end {
+  clear: both;
+  font: 1px/1px sans-serif;
+  height: 1px;
+  overflow: hidden;
 }
-.error-message {
-  color: #cc1100;
+/*** END user profile modals ***/
+
+/*** BEGIN login form, signup form, and password reset forms ***/
+.login-form .helper-text,
+.signup-form .helper-text,
+.password-reset-form .helper-text  {
+  color: #333;
+  font-size: 12px !important;
+  padding: 0;
   display: block;
+  float: none;
+}
+
+.login-form .inline-alert,
+.password-reset-form .inline-alert,
+.signup-form .inline-alert {
+  margin: -5px 0 10px 0;
+  color: #cc1100;
+  font-size: 12px  !important;
+  display: block;
+}
+.login-form .alert-message.error,
+.password-reset-form .alert-message.error,
+.signup-form .alert-message.error,
+.login-form .inline-alert,
+.password-reset-form .inline-alert,
+.signup-form .inline-alert {
+  display: none;
+}
+.login-form .alert-message.error,
+.password-reset-form .alert-message.error,
+.signup-form .alert-message.error{
+  color: #cc1100;
+  background: url(http://www.cars.com/images/core/error.png) no-repeat 20px 20px #ffe8e5;
+  border-radius: 5px;
+  border: 0;
+  margin: 30px 0 30px 0;
+  padding: 20px 20px 20px 60px;
+}
+.login-form .error-message,
+.signup-form .error-message,
+.password-reset-form .error-message {
+  color: #cc1100;
   border-radius: 5px;
   margin: 5px 0;
-}
-.hide {
-  display: none!important;
 }
 .login-form input.submit-login-form {
   margin: 5px 0;
@@ -678,15 +718,23 @@ appearance: none;
 .deactivate-account-form .additional-action {
   line-height: 31px;
 }
-.login-form .fake-facebook,
-.signup-form .fake-facebook {
-  height: 40px;
-}
 .deactivate-account-form span.title {
   margin-bottom: 20px;
   display: block;
 }
 .deactivate-account-form .alert-message.warning {
   margin: 20px 0 20px;
+}
+.signup-form .additional-action {
+  height: 30px;
+  line-height: 30px;
+}
+.password-reset-form .additional-action {
+  height: 30px;
+  line-height: 30px;
+  margin-left: 25px;
+}
+.deactivate-account-form .additional-action {
+  line-height: 31px;
 }
 /*** END login form, signup form, and password reset forms ***/

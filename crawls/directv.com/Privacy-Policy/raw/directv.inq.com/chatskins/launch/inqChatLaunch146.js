@@ -1,7 +1,7 @@
-/* Timestamp: Thu May 02 22:14:48 PDT 2013*/if (window["v3Lander"]==null){
+/* Timestamp: Thu May 09 23:14:27 PDT 2013*/if (window["v3Lander"]==null){
 v3Lander={
 
-    codeVersion:'1367558088601',
+    codeVersion:'1368166467086',
 	v3Frame:false,
 	domState: "defer-failed",
 	domReady: false,
@@ -81,11 +81,15 @@ v3Lander={
 				for (var i=0; i < temp.length; i++){
 					try{
 						var tempwindow = null;
-						if (this.isAtHostedFileURL && (window.location.search == ""))
+						if (window.location.search == "")
 							tempwindow = window.opener;
-						else if (this.isAtHostedFileURL && (window.location.search.indexOf('?IFRAME') == 0 || window.location.search == "?IEXF"))
+						else if (window.location.search.indexOf('?IFRAME') == 0 || window.location.search == "?IEXF")
 							tempwindow = window.parent;
-						else if (this.isAtHostedFileURL && window.location.search == "?PRXY")
+						else if (window.location.search == "?BLNK")
+							tempwindow = window.parent ;
+						else if (window.location.search == "?XHR")
+							tempwindow = window.parent.parent;
+						else if (window.location.search == "?PRXY")
 							tempwindow = window.parent.parent;
 						else return ;
 
@@ -654,12 +658,13 @@ v3Lander={
 	}
 };
 
-
 	(v3Lander).isAtHostedFileURL=(window.location.href.indexOf(v3Lander.hostedFileURL) > -1);
-	if (window.location.href.indexOf("?BLNK")!=-1) {}/* Do nothing, it's blank :) */
+	(v3Lander).assignDomain();
+
+	if (window.location.href.indexOf("?BLNK")!=-1) {}
 	else if (window.location.href.indexOf("?XHR")!=-1) {
-			v3Lander.xhfToIjsf() ;
-			window.close();
+		v3Lander.xhfToIjsf() ;
+		window.close();
 	}
 	else if (window.location.href.indexOf("?IEXF")!=-1) {
 		v3Lander.assignDomain();
@@ -690,4 +695,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Thu May 02 22:14:48 PDT 2013*/
+/* Timestamp: Thu May 09 23:14:27 PDT 2013*/

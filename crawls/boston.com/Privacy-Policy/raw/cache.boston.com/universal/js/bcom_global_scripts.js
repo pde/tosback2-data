@@ -616,7 +616,7 @@ function checkNowPlaying () {
     }
 }
 
-//$(function() {checkNowPlaying();})
+$(function() {checkNowPlaying();})
 
 
 // adds the 'wmode=transparent' param to any object on the page
@@ -707,8 +707,8 @@ var bcom_regi = {
 		// Check pathCnt cookie
 		var path_count = bcom_cookie.get('pathCnt');
 		path_count = path_count == false ? 1 : parseInt(path_count);
-		if( 1 ){ // disable regi wall
-    //if( path_count <= bcom_regi.max_count ){
+		//if( 1 ){ // disable regi wall
+        if( path_count <= bcom_regi.max_count ){
 		    // Increment pathCnt cookie by 1, then do nothing
 		    path_count++;
 		    bcom_cookie.set('pathCnt', path_count);

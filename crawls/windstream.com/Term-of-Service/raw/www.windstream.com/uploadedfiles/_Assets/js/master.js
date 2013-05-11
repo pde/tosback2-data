@@ -1867,6 +1867,11 @@ $(function () {
                 $('.banner').css('height', 405);
                 $('.banner-box').css('height', 220);
             }
+			
+			if ($(element).hasClass('welcome-banner')) {
+                $('.banner').css('height', 405);
+                $('.banner-box').css('height', 215);
+            }
         });
 
     }

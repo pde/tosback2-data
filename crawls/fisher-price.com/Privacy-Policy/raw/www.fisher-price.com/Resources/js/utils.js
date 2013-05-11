@@ -1,4 +1,4 @@
-var localInfo = "/" + $('#locale').val();
+﻿var localInfo = "/" + $('#locale').val();
 var DynamicContent = function () {
 
     var category_id = null,

@@ -4,3 +4,5 @@
 
 var     g_sBayNoteProducts = null;
 try{ g_sBayNoteProducts = s.products } catch(e) {}
+
+var g_oOmnitureObject = s;
